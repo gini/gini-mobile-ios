@@ -137,6 +137,7 @@ class SkontoProceedContainerView: UIView {
                                                           constant: Constants.savingsAmountLabelTopPadding)
         let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor)
         let trailing = savingsAmountLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor)
+
         return [top, leading, trailing]
     }()
     init(viewModel: SkontoViewModel) {
@@ -228,18 +229,20 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupProceedButtonTopConstraints() {
-        proceedButtonTopToSavingsConstraint = proceedButton.topAnchor.constraint(
-            equalTo: savingsAmountLabel.bottomAnchor,
-            constant: Constants.verticalPadding
-        )
+        let padding = Constants.verticalPadding
+        let topAnchor = proceedButton.topAnchor
 
-        proceedButtonTopToFinalAmountConstraint = proceedButton.topAnchor.constraint(
-            equalTo: finalAmountToPayLabel.bottomAnchor,
-            constant: Constants.verticalPadding
-        )
+        // Constraint to position proceedButton below savingsAmountLabel with padding for portrait mode
+        proceedButtonTopToSavingsConstraint = topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+                                                                   constant: padding)
+
+        // Constraint to position proceedButton below finalAmountToPayLabel with padding fro landscape mode
+        proceedButtonTopToFinalAmountConstraint = topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
+                                                                       constant: padding)
     }
 
     private func activatePortraitConstraints() {
+
         NSLayoutConstraint.deactivate(landscapeSavingsAmountLabelConstraints +
                                       [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
 
@@ -248,6 +251,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func activateLandscapeConstraints() {
+
         NSLayoutConstraint.deactivate(portraitSavingsAmountLabelConstraints +
                                       [proceedButtonTopToSavingsConstraint].compactMap { $0 })
 
@@ -260,6 +264,10 @@ class SkontoProceedContainerView: UIView {
             activatePortraitConstraints()
             return
         }
+
+        // Switches to and activates all constraints appropriate for portrait/landscape orientation for savingsAmountLabel.
+        // This deactivates any constraints that are specific to landscape/portrait mode
+        // including proceed button
 
         if UIDevice.current.isLandscape {
             activateLandscapeConstraints()
