@@ -349,9 +349,7 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     
     /// BanksBottomView event when a bank is selected from the list
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
-        }
+        viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
+        dismiss(animated: true)
     }
 }
