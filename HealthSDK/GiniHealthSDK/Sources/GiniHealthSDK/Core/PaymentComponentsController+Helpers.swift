@@ -149,7 +149,7 @@ extension PaymentComponentsController {
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
         if let presentedViewController = navigationControllerProvided?.presentedViewController {
-            presentedViewController.dismiss(animated: true) { [weak self] in
+            presentedViewController.dismiss(animated: animated) { [weak self] in
                 /// This ensures that the view controller is presented on the topmost view controller.
                 /// For example, in a fresh install first we have the empty payment component bottom sheet, then the selected bank payment component bottom sheet.
                 /// If the user selects a bank, we need to dismiss the empty payment component bottom sheet and present the selected bank payment component bottom sheet.
