@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28004ED62E4CC5D600B89DAC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED52E4CC5D600B89DAC /* FirebaseCrashlytics */; };
+		28004ED82E4CC5D600B89DAC /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED72E4CC5D600B89DAC /* FirebasePerformance */; };
 		281417EA2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
 		281417EB2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */; };
 		281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
@@ -493,9 +495,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28004ED82E4CC5D600B89DAC /* FirebasePerformance in Frameworks */,
 				F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */,
 				502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */,
 				F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */,
+				28004ED62E4CC5D600B89DAC /* FirebaseCrashlytics in Frameworks */,
 				F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */,
 				F4BC984E2ADEA1B600E9E2D0 /* Lottie in Frameworks */,
 			);
@@ -1212,6 +1216,8 @@
 				F439C21C27355C3A0010D77D /* GiniCaptureSDK */,
 				F439C21E27355C430010D77D /* GiniBankAPILibrary */,
 				F4BC984D2ADEA1B600E9E2D0 /* Lottie */,
+				28004ED52E4CC5D600B89DAC /* FirebaseCrashlytics */,
+				28004ED72E4CC5D600B89DAC /* FirebasePerformance */,
 			);
 			productName = "Example Swift";
 			productReference = F490C7E225DE873900D8CA6F /* GiniBankSDKExample.app */;
@@ -1293,6 +1299,7 @@
 			mainGroup = F490C7B625DE72E400D8CA6F;
 			packageReferences = (
 				2815B6F22A0CF51C004ABF06 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = F490C7C125DE72E400D8CA6F /* Products */;
 			projectDirPath = "";
@@ -2185,6 +2192,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 11.15.0;
+			};
+		};
 		2815B6F22A0CF51C004ABF06 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
@@ -2196,6 +2211,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		28004ED52E4CC5D600B89DAC /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		28004ED72E4CC5D600B89DAC /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
 		28C3443B2C5CF8C500FD03C5 /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;
