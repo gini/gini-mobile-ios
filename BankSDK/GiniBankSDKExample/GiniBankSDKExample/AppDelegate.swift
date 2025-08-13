@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniBankSDK
+import Firebase
 
 @UIApplicationMain
     final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,9 @@ import GiniBankSDK
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        FirebaseApp.configure()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         coordinator = AppCoordinator(window: window ?? UIWindow())
         coordinator.start()
