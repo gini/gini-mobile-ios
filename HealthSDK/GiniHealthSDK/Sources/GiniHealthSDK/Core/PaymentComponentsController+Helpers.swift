@@ -409,9 +409,7 @@ extension PaymentComponentsController {
 
             self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
-                    guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
-                    shareInvoiceBottomSheet.updateViews()
-                    self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
+                    self?.shareInvoiceBottomSheet?.updateViews()
                 }
             }
         })
@@ -420,12 +418,14 @@ extension PaymentComponentsController {
     private func loadPDF(paymentRequestId: String, completion: @escaping (Data) -> ()) {
         isLoading = true
         giniSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestId) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-                case .success(let data):
-                    completion(data)
-                case .failure:
-                    break
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoading = false
+                switch result {
+                    case .success(let data):
+                        completion(data)
+                    case .failure:
+                        break
+                }
             }
         }
     }
@@ -470,22 +470,13 @@ extension PaymentComponentsController {
             .saveToCameraRoll
         ]
 
-        // Present the UIActivityViewController
-        DispatchQueue.main.async {
-            if let popoverController = activityViewController.popoverPresentationController {
-                popoverController.sourceView = viewController.view
-                popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
-                popoverController.permittedArrowDirections = []
-            }
-
-            if (viewController.presentedViewController != nil) {
-                viewController.presentedViewController?.dismiss(animated: true, completion: {
-                    viewController.present(activityViewController, animated: true, completion: nil)
-                })
-            } else {
-                viewController.present(activityViewController, animated: true, completion: nil)
-            }
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = viewController.view
+            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
         }
+
+        viewController.giniTopMostViewController().present(activityViewController, animated: true)
     }
 
     // MARK: - Payment Review Screen functions
