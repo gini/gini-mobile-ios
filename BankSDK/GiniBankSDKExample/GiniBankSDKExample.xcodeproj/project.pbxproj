@@ -2051,6 +2051,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "\"-enable-experimental-feature AccessLevelOnImport\"";
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2076,6 +2077,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "\"-enable-experimental-feature AccessLevelOnImport\"";
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
