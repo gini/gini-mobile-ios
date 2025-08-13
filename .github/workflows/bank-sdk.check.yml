@@ -1,11 +1,5 @@
 name: Check Bank SDK
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
-    paths:
-      - 'BankSDK/**'
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
   workflow_call:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:

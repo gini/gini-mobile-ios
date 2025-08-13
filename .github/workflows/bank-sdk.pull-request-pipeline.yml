@@ -1,0 +1,51 @@
+name: PR Checks for GiniBankSDK
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'BankSDK/**'
+      - 'CaptureSDK/**'
+      - 'BankAPILibrary/**'
+  workflow_dispatch:
+
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}-pull-request
+#   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-bank-api-libray:
+    uses: ./.github/workflows/bank-api-library.check.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+    
+  check-bank-api-libray-docs:
+    needs: check-bank-api-libray
+    uses: ./.github/workflows/bank-api-library.build.docs.yml
+
+  check-capture:
+    needs: check-bank-api-libray-docs
+    uses: ./.github/workflows/capture-sdk.check.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
+  check-capture-docs:
+    needs: check-capture
+    uses: ./.github/workflows/capture-sdk.build.docs.yml
+    
+  check-bank:
+    needs: check-capture-docs
+    uses: ./.github/workflows/bank-sdk.check.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
+  check-bank-docs:
+    needs: check-bank
+    uses: ./.github/workflows/bank-sdk.build.docs.yml
+
+  upload-version:
+    needs: check-bank-docs
+    uses: ./.github/workflows/bank-sdk.publish.example.app.firebase.yml
