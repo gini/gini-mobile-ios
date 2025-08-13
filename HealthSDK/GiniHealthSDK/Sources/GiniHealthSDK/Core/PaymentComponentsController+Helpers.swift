@@ -360,6 +360,7 @@ extension PaymentComponentsController {
      */
     public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
         shareInvoiceBottomSheet = nil
+        notifyThatSDKWasDismissedIfNeeded()
     }
 
     /**
@@ -662,6 +663,13 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     public func didDismissPaymentComponent() {
+        let isNavigationControllerEmpty = navigationControllerProvided?.viewControllers.isEmpty == true
+        let isNavigationControllerNotPresenting = navigationControllerProvided?.presentedViewController == nil
+        
+        notifyThatSDKWasDismissedIfNeeded()
+    }
+    
+    private func notifyThatSDKWasDismissedIfNeeded() {
         let isNavigationControllerEmpty = navigationControllerProvided?.viewControllers.isEmpty == true
         let isNavigationControllerNotPresenting = navigationControllerProvided?.presentedViewController == nil
         
