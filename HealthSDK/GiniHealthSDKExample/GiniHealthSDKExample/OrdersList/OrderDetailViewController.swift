@@ -210,16 +210,7 @@ final class OrderDetailViewController: UIViewController {
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
-            guard let navigationController else { return }
-            if shouldUseAlternativeNavigation {
-                let newNavigationController = UINavigationController()
-                newNavigationController.setNavigationBarHidden(true, animated: false)
-                newNavigationController.view.backgroundColor = .clear
-                navigationController.present(newNavigationController, animated: true)
-                health.startPaymentFlow(documentId: nil, paymentInfo: paymentInfo, navigationController: newNavigationController, trackingDelegate: self)
-            } else {
-                health.startPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
-            }
+            startPaymentFlow(paymentInfo: paymentInfo)
         } else {
             showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
@@ -227,6 +218,25 @@ final class OrderDetailViewController: UIViewController {
 
     @objc private func didTapOnView() {
         view.endEditing(true)
+    }
+    
+    private func startPaymentFlow(paymentInfo: GiniHealthSDK.PaymentInfo) {
+        let navigationControllerToUse: UINavigationController
+        
+        if shouldUseAlternativeNavigation {
+            navigationControllerToUse = UINavigationController()
+            navigationControllerToUse.setNavigationBarHidden(true, animated: false)
+            navigationControllerToUse.view.backgroundColor = .clear
+            navigationController?.present(navigationControllerToUse, animated: true)
+        } else {
+            guard let navigationController = navigationController else { return }
+            navigationControllerToUse = navigationController
+        }
+        
+        health.startPaymentFlow(documentId: nil,
+                                paymentInfo: paymentInfo,
+                                navigationController: navigationControllerToUse,
+                                trackingDelegate: self)
     }
 
     private func saveTextFieldData() {

@@ -211,16 +211,25 @@ extension InvoicesListViewModel {
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
+        startPaymentFlow(documentId: documentId)
+    }
+    
+    private func startPaymentFlow(documentId: String?) {
+        let navigationController: UINavigationController
         
         if shouldUseAlternativeNavigation {
-            let navigationController = UINavigationController()
+            navigationController = UINavigationController()
             navigationController.setNavigationBarHidden(true, animated: false)
             navigationController.view.backgroundColor = .clear
             coordinator.invoicesListNavigationController.present(navigationController, animated: true)
-            health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: navigationController, trackingDelegate: self)
         } else {
-            health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
+            navigationController = coordinator.invoicesListNavigationController
         }
+        
+        health.startPaymentFlow(documentId: documentId,
+                                paymentInfo: obtainPaymentInfo(for: documentId),
+                                navigationController: navigationController,
+                                trackingDelegate: self)
     }
 
     private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
@@ -256,7 +265,7 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     
     func didDismissPaymentComponents() {
         if shouldUseAlternativeNavigation {
-            coordinator.invoicesListNavigationController?.presentedViewController?.dismiss(animated: true, completion: nil)
+            coordinator.invoicesListNavigationController?.presentedViewController?.dismiss(animated: true)
         }
     }
 }

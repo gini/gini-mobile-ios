@@ -360,7 +360,7 @@ extension PaymentComponentsController {
      */
     public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
         shareInvoiceBottomSheet = nil
-        notifyThatSDKWasDismissedIfNeeded()
+        notifySDKWasDismissedIfNeeded()
     }
 
     /**
@@ -473,7 +473,11 @@ extension PaymentComponentsController {
 
         if let popoverController = activityViewController.popoverPresentationController {
             popoverController.sourceView = viewController.view
-            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
+            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX,
+                                                  y: viewController.view.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
+            
             popoverController.permittedArrowDirections = []
         }
 
@@ -663,13 +667,10 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     public func didDismissPaymentComponent() {
-        let isNavigationControllerEmpty = navigationControllerProvided?.viewControllers.isEmpty == true
-        let isNavigationControllerNotPresenting = navigationControllerProvided?.presentedViewController == nil
-        
-        notifyThatSDKWasDismissedIfNeeded()
+        notifySDKWasDismissedIfNeeded()
     }
     
-    private func notifyThatSDKWasDismissedIfNeeded() {
+    private func notifySDKWasDismissedIfNeeded() {
         let isNavigationControllerEmpty = navigationControllerProvided?.viewControllers.isEmpty == true
         let isNavigationControllerNotPresenting = navigationControllerProvided?.presentedViewController == nil
         

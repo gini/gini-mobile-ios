@@ -15,7 +15,14 @@ import GiniUtilites
 
 final class AppCoordinator: Coordinator {
     
+    /**
+     * Determines whether to use the pre-existing navigation controller (`false`)
+     * or create a new `UINavigationController` for alternative navigation (`true`).
+     *
+     * Default value is `false`.
+     */
     private var shouldUseAlternativeNavigation = false
+    
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
     fileprivate var screenAPIViewController: UIViewController?

@@ -70,7 +70,9 @@ class DebugMenuViewController: UIViewController {
     /// by using this flow the consumer app will be listening to the new `delegate` method in the `GiniHealthSDK` to handle the navigation.
     private lazy var useAlternativeNavigationLabel = rowTitle("Use alternative navigation")
     private var useAlternativeNavigationSwitch: UISwitch!
-    private lazy var useAlternativeNavigationRow = stackView(axis: .horizontal, subviews: [useAlternativeNavigationLabel, useAlternativeNavigationSwitch])
+    private lazy var useAlternativeNavigationRow = stackView(axis: .horizontal,
+                                                             subviews: [useAlternativeNavigationLabel,
+                                                                        useAlternativeNavigationSwitch])
     
     private lazy var popupDurationTitleLabel: UILabel = rowTitle("Popup Duration Time")
     
