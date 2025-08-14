@@ -303,6 +303,10 @@ class SkontoProceedContainerView: UIView {
             skontoBadgeMinWidthConstraint?.isActive = false
             skontoBadgeCompactLeadingConstraint?.isActive = false
             totalAmountStackViewDefultLeadingConstraint?.isActive = true
+
+            // Set priorities on skontoPercentageLabel to prevent horizontal stretching.
+            skontoPercentageLabel.setContentHuggingPriority(.required, for: .horizontal)
+            skontoPercentageLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         }
 
         layoutIfNeeded()
