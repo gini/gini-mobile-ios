@@ -110,7 +110,6 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the payment bottom view.
      */
     public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
-        previousPresentedViews = [.paymentComponent]
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
@@ -145,13 +144,16 @@ extension PaymentComponentsController {
     
     func presentPaymentViewBottomSheet() {
         let paymentViewBottomSheet = paymentViewBottomSheet(documentId: documentId ?? "")
-        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
+        dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
     }
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
         if let presentedViewController = navigationControllerProvided?.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.navigationControllerProvided?.present(viewController, animated: animated)
+            presentedViewController.dismiss(animated: animated) { [weak self] in
+                /// This ensures that the view controller is presented on the topmost view controller.
+                /// For example, in a fresh install first we have the empty payment component bottom sheet, then the selected bank payment component bottom sheet.
+                /// If the user selects a bank, we need to dismiss the empty payment component bottom sheet and present the selected bank payment component bottom sheet.
+                self?.dismissAndPresent(viewController: viewController, animated: animated)
             }
         } else {
             navigationControllerProvided?.present(viewController, animated: animated)
@@ -164,9 +166,6 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the bank selection options.
      */
     public func bankSelectionBottomSheet() -> UIViewController {
-        if previousPresentedViews.count > 0, previousPresentedViews.first != .paymentReview {
-            previousPresentedViews.removeAll()
-        }
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -198,8 +197,7 @@ extension PaymentComponentsController {
      */
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedViews.append(.paymentReview)
-        let previousPaymentComponentScreenType: PaymentComponentScreenType? = previousPresentedViews.contains(.bankPicker) ? .bankPicker : nil
+        let previousPaymentComponentScreenType: PaymentComponentScreenType? = nil
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
                 completion(nil, nil)
@@ -303,7 +301,6 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
     public func installAppBottomSheet() -> UIViewController {
-        previousPresentedViews.removeAll()
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
                                                                   strings: stringsProvider.installAppStrings,
@@ -328,7 +325,6 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
     public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController {
-        previousPresentedViews.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
@@ -364,11 +360,7 @@ extension PaymentComponentsController {
      */
     public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
         shareInvoiceBottomSheet = nil
-        if previousPresentedView == .bankPicker {
-            previousPresentedViews.append(.bankPicker)
-        } else {
-            previousPresentedViews.removeAll()
-        }
+        notifySDKWasDismissedIfNeeded()
     }
 
     /**
@@ -418,9 +410,7 @@ extension PaymentComponentsController {
 
             self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
-                    guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
-                    shareInvoiceBottomSheet.updateViews()
-                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
+                    self?.shareInvoiceBottomSheet?.updateViews()
                 }
             }
         })
@@ -429,12 +419,14 @@ extension PaymentComponentsController {
     private func loadPDF(paymentRequestId: String, completion: @escaping (Data) -> ()) {
         isLoading = true
         giniSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestId) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-                case .success(let data):
-                    completion(data)
-                case .failure:
-                    break
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoading = false
+                switch result {
+                    case .success(let data):
+                        completion(data)
+                    case .failure:
+                        break
+                }
             }
         }
     }
@@ -479,22 +471,17 @@ extension PaymentComponentsController {
             .saveToCameraRoll
         ]
 
-        // Present the UIActivityViewController
-        DispatchQueue.main.async {
-            if let popoverController = activityViewController.popoverPresentationController {
-                popoverController.sourceView = viewController.view
-                popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
-                popoverController.permittedArrowDirections = []
-            }
-
-            if (viewController.presentedViewController != nil) {
-                viewController.presentedViewController?.dismiss(animated: true, completion: {
-                    viewController.present(activityViewController, animated: true, completion: nil)
-                })
-            } else {
-                viewController.present(activityViewController, animated: true, completion: nil)
-            }
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = viewController.view
+            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX,
+                                                  y: viewController.view.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
+            
+            popoverController.permittedArrowDirections = []
         }
+
+        viewController.giniTopMostViewController().present(activityViewController, animated: true)
     }
 
     // MARK: - Payment Review Screen functions
@@ -647,7 +634,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             let bankSelectionBottomSheet = bankSelectionBottomSheet()
-            dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
+            navigationControllerProvided?.giniTopMostViewController().present(bankSelectionBottomSheet, animated: true)
         }
     }
     
@@ -679,6 +666,19 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
     }
     
+    public func didDismissPaymentComponent() {
+        notifySDKWasDismissedIfNeeded()
+    }
+    
+    private func notifySDKWasDismissedIfNeeded() {
+        let isNavigationControllerEmpty = navigationControllerProvided?.viewControllers.isEmpty == true
+        let isNavigationControllerNotPresenting = navigationControllerProvided?.presentedViewController == nil
+        
+        if isNavigationControllerNotPresenting && isNavigationControllerEmpty {
+            delegate?.didDismissPaymentComponents()
+        }
+    }
+    
     private func presentOrPushPaymentReviewScreen(_ viewController: UIViewController) {
         viewController.modalTransitionStyle = .coverVertical
         viewController.modalPresentationStyle = .overCurrentContext
@@ -707,7 +707,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
                 DispatchQueue.main.async {
                     let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image, paymentRequestId: paymentRequestId)
                     guard let shareInvoiceBottomSheet else { return }
-                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
+                    self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
                 }
             case .failure(let error):
                 self?.handleError(error)
@@ -743,8 +743,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 
     private func presentInstallAppBottomSheet() {
         let installAppBottomSheet = installAppBottomSheet()
-        installAppBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: installAppBottomSheet, animated: false)
+        navigationControllerProvided?.giniTopMostViewController().present(installAppBottomSheet, animated: true)
     }
     
     private func showErrorsIfAny() {
@@ -800,7 +799,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         DispatchQueue.main.async { [weak self] in
             let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: qrCodeData, paymentRequestId: paymentRequestId)
             guard let shareInvoiceBottomSheet else { return }
-            self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
+            self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
         }
     }
 
@@ -822,7 +821,6 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {
-        previousPresentedViews.append(.bankPicker)
         openMoreInformationViewController()
     }
 }
