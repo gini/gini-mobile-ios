@@ -119,7 +119,7 @@ class SkontoProceedContainerView: UIView {
     private var skontoBadgeCompactLeadingConstraint: NSLayoutConstraint?
     private var totalAmountStackViewDefultLeadingConstraint: NSLayoutConstraint?
     private var skontoBadgeMinWidthConstraint: NSLayoutConstraint?
-    private var proceedButtonTopToSavingsConstraint: NSLayoutConstraint?
+    private var savingsAmountLabelPortraitConstraints: NSLayoutConstraint?
     private var proceedButtonTopToFinalAmountConstraint: NSLayoutConstraint?
 
     private lazy var portraitSavingsAmountLabelConstraints: [NSLayoutConstraint] = {
@@ -233,27 +233,25 @@ class SkontoProceedContainerView: UIView {
         let topAnchor = proceedButton.topAnchor
 
         // Constraint to position proceedButton below savingsAmountLabel with padding for portrait mode
-        proceedButtonTopToSavingsConstraint = topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+        savingsAmountLabelPortraitConstraints = topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                                    constant: padding)
 
-        // Constraint to position proceedButton below finalAmountToPayLabel with padding fro landscape mode
+        // Constraint to position proceedButton below finalAmountToPayLabel with padding for landscape mode
         proceedButtonTopToFinalAmountConstraint = topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                                        constant: padding)
     }
 
     private func activatePortraitConstraints() {
-
         NSLayoutConstraint.deactivate(landscapeSavingsAmountLabelConstraints +
                                       [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
 
         NSLayoutConstraint.activate(portraitSavingsAmountLabelConstraints +
-                                    [proceedButtonTopToSavingsConstraint].compactMap { $0 })
+                                    [savingsAmountLabelPortraitConstraints].compactMap { $0 })
     }
 
     private func activateLandscapeConstraints() {
-
         NSLayoutConstraint.deactivate(portraitSavingsAmountLabelConstraints +
-                                      [proceedButtonTopToSavingsConstraint].compactMap { $0 })
+                                      [savingsAmountLabelPortraitConstraints].compactMap { $0 })
 
         NSLayoutConstraint.activate(landscapeSavingsAmountLabelConstraints +
                                     [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
