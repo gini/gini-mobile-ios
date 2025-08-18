@@ -19,7 +19,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        FirebaseApp.configure()
+        let firebaseInfoFileName = "GoogleService-Info"
+        let apiKeyName = "firebaseApiKey"
+        let firebaseInfoFileType = "plist"
+        
+        if let firebaseInfoFilePath = Bundle.main.path(forResource: firebaseInfoFileName,
+                                                       ofType: firebaseInfoFileType),
+           let firebaseOptions = FirebaseOptions(contentsOfFile: firebaseInfoFilePath),
+           let firebaseApiKey = Bundle.main.object(forInfoDictionaryKey: apiKeyName) as? String {
+            firebaseOptions.apiKey = firebaseApiKey
+            FirebaseApp.configure(options: firebaseOptions)
+        }
+        
         coordinator = AppCoordinator(window: window)
         coordinator.start()
 
