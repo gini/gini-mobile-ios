@@ -51,4 +51,7 @@ struct DigitalLineItemTableViewCellViewModel {
             return GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
         }
     }
+    var textTinColorStateDeselected: UIColor {
+        .giniColorScheme().textField.disabledText.uiColor()
+    }
 }
