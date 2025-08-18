@@ -132,7 +132,7 @@ class SkontoProceedContainerView: UIView {
         return [top, leading, trailing]
     }()
 
-    private lazy var landscapeSavingsAmountLabelConstraints: [NSLayoutConstraint] = {
+    private lazy var savingsAmountLandscapeConstraints: [NSLayoutConstraint] = {
         let top = savingsAmountLabel.topAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
                                                           constant: Constants.savingsAmountLabelTopPadding)
         let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor)
@@ -242,7 +242,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func activatePortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeSavingsAmountLabelConstraints +
+        NSLayoutConstraint.deactivate(savingsAmountLandscapeConstraints +
                                       [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
 
         NSLayoutConstraint.activate(portraitSavingsAmountLabelConstraints +
@@ -253,7 +253,7 @@ class SkontoProceedContainerView: UIView {
         NSLayoutConstraint.deactivate(portraitSavingsAmountLabelConstraints +
                                       [savingsAmountLabelPortraitConstraints].compactMap { $0 })
 
-        NSLayoutConstraint.activate(landscapeSavingsAmountLabelConstraints +
+        NSLayoutConstraint.activate(savingsAmountLandscapeConstraints +
                                     [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
     }
 
