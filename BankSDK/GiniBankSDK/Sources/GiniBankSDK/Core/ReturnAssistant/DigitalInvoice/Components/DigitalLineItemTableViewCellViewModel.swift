@@ -42,9 +42,9 @@ struct DigitalLineItemTableViewCellViewModel {
     var modeSwitchTintColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return .GiniBank.accent1
+            return .giniColorScheme().toggle.trackOn.uiColor()
         case .deselected:
-            return GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
+            return .giniColorScheme().toggle.trackOff.uiColor()
         }
     }
     var textTinColorStateDeselected: UIColor {
