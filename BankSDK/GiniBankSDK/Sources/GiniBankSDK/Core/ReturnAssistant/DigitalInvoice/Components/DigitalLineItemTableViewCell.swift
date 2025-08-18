@@ -1,6 +1,6 @@
 //
 //  DigitalLineItemTableViewCell.swift
-// GiniBank
+//  GiniBank
 //
 //  Created by Maciej Trybilo on 22.11.19.
 //
@@ -34,44 +34,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
     var viewModel: DigitalLineItemTableViewCellViewModel? {
         didSet {
-            guard let viewModel = viewModel else { return }
-
-            if let nameLabelString = viewModel.nameLabelString {
-                setTextWithLimit(for: nameLabel,
-                                 text: nameLabelString,
-                                 maxCharacters: viewModel.nameMaxCharactersCount)
-                nameLabel.accessibilityValue = nameLabelString
-            }
-
-            if let priceString = viewModel.totalPriceString {
-                priceLabel.text = priceString
-                priceLabel.accessibilityValue = priceString
-                let format = NSLocalizedStringPreferredGiniBankFormat(
-                                        "ginibank.digitalinvoice.total.accessibilitylabel",
-                                        comment: "Total")
-                priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
-            }
-
-            unitPriceLabel.text = viewModel.unitPriceString
-            unitPriceLabel.accessibilityValue = viewModel.unitPriceString
-
-            modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
-
-            modeSwitch.onTintColor = viewModel.modeSwitchTintColor
-
-            [nameLabel, editButton, unitPriceLabel, priceLabel].forEach { view in
-                view?.alpha = viewModel.lineItem.selectedState == .selected ? 1 : 0.5
-                editButton.isEnabled = viewModel.lineItem.selectedState == .selected
-            }
-
-            switch viewModel.lineItem.selectedState {
-            case .selected:
-                modeSwitch.isOn = true
-            case .deselected:
-                modeSwitch.isOn = false
-            }
-
-            setup()
+            updateUIWithViewModel()
         }
     }
 
@@ -107,9 +70,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
         editButton.contentHorizontalAlignment = .left
         editButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        let editTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.editbutton",
-                                                                 comment: "Edit")
-        editButton.setTitle(editTitle, for: .normal)
+        editButton.setTitle(Strings.editButtonTitle, for: .normal)
         editButton.isExclusiveTouch = true
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
@@ -129,6 +90,53 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                                  unitPriceLabel,
                                  priceLabel,
                                  editButton].compactMap { $0 }
+
+        modeSwitch.removeTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
+        modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
+    }
+
+    private func updateUIWithViewModel() {
+        guard let viewModel = viewModel else { return }
+
+        if let nameLabelString = viewModel.nameLabelString {
+            setTextWithLimit(for: nameLabel,
+                             text: nameLabelString,
+                             maxCharacters: viewModel.nameMaxCharactersCount)
+            nameLabel.accessibilityValue = nameLabelString
+        }
+
+        if let priceString = viewModel.totalPriceString {
+            priceLabel.text = priceString
+            priceLabel.accessibilityValue = priceString
+            priceLabel.accessibilityLabel = String.localizedStringWithFormat(Strings.priceAccessibilityLabel,
+                                                                             priceString)
+        }
+
+        unitPriceLabel.text = viewModel.unitPriceString
+        unitPriceLabel.accessibilityValue = viewModel.unitPriceString
+        editButton.isEnabled = viewModel.lineItem.selectedState == .selected
+
+        if case .deselected = viewModel.lineItem.selectedState {
+            nameLabel.textColor = viewModel.textTinColorStateDeselected
+            unitPriceLabel.textColor = viewModel.textTinColorStateDeselected
+            priceLabel.textColor = viewModel.textTinColorStateDeselected
+            editButton.setTitleColor(viewModel.textTinColorStateDeselected, for: .normal)
+            modeSwitch.isOn = false
+        } else {
+            // Reset to selected state
+            nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+            priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+            unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+            editButton.setTitleColor(.GiniBank.accent1, for: .normal)
+            modeSwitch.isOn = true
+        }
+
+        modeSwitch.onTintColor = viewModel.modeSwitchTintColor
+
+        if viewModel.index == 0 {
+            backgroundContainerView.round(corners: [.topLeft, .topRight], radius: 8)
+            separatorView.isHidden = true
+        }
     }
 
     private func setTextWithLimit(for label: UILabel, text: String, maxCharacters: Int) {
@@ -157,5 +165,18 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         if let viewModel = viewModel {
             delegate?.editTapped(cell: self, lineItemViewModel: viewModel)
         }
+    }
+}
+
+extension DigitalLineItemTableViewCell {
+    private struct Strings {
+        static let priceAccessibilityLabelKey = "ginibank.digitalinvoice.total.accessibilitylabel"
+        static let editButtonTitleKey = "ginibank.digitalinvoice.lineitem.editbutton"
+
+        static let priceAccessibilityLabel = NSLocalizedStringPreferredGiniBankFormat(priceAccessibilityLabelKey,
+                                                                                      comment: "Total")
+
+        static let editButtonTitle = NSLocalizedStringPreferredGiniBankFormat(editButtonTitleKey,
+                                                                              comment: "Edit")
     }
 }
