@@ -218,6 +218,7 @@
 		F4C36A7F270C6EBF00CCC69C = {
 			isa = PBXGroup;
 			children = (
+				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
@@ -255,7 +256,6 @@
 		F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */ = {
 			isa = PBXGroup;
 			children = (
-				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
 				F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */,
 				F4EC3912273C2B41007045DC /* Assets.xcassets */,
 				F4EC38C1273C21E4007045DC /* AppDelegate.swift */,
