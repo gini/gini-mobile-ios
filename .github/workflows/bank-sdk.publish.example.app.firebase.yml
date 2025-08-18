@@ -85,7 +85,11 @@ jobs:
         run: |
             plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-                
+            
+      - name: Setup Firebase API Key
+        run: |
+            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
+
       - name: Archiving project
         run: |
             xcodebuild clean archive \
