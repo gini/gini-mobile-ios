@@ -148,20 +148,36 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
             topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
                                                   constant: Constants.paddingLarge),
-            topImageView.widthAnchor.constraint(equalToConstant: 220),
+            topImageView.widthAnchor.constraint(equalToConstant: topImageViewLayoutWidth()),
 
             // Constraints for the scroll view itself
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
             rightStackViewContainerScrollable.leadingAnchor.constraint(
-                equalTo: topImageView.trailingAnchor,
-                constant: Constants.horizontalSpacingBetweenImageViewAndText),
+                equalTo: scrollViewLeadingAnchor(),
+                constant: scrollViewLeadingConstant()),
             rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
     @objc func doneAction(_ sender: UIButton!) {
         onDone()
+    }
+
+    // Returns the width for the top image view depending on the device.
+    func topImageViewLayoutWidth() -> CGFloat {
+        // Return 0 if non-notch small screen, else 220
+        return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.topImageWidth
+    }
+
+    // Returns the leading anchor for the scroll view depending on the device.
+    func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
+        return UIDevice.current.isNonNotchSmallScreen() ? safeAreaLayoutGuide.leadingAnchor : topImageView.trailingAnchor
+    }
+
+    // Returns the leading constant for the scroll view depending on the device.
+    func scrollViewLeadingConstant() -> CGFloat {
+        return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.horizontalSpacingBetweenImageViewAndText
     }
 }
 
@@ -175,6 +191,7 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
         static let doneButtonHeight: CGFloat = 50
         static let trailingPadding: CGFloat = 16
         static let topMarginStackView: CGFloat = 60
+        static let topImageWidth: CGFloat = 220
     }
 
     func shouldHideButton() -> Bool {
