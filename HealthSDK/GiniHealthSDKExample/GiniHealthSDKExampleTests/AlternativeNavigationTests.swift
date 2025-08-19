@@ -215,7 +215,7 @@ private final class MockNavigationController: UINavigationController {
     }
     
     private func notifySDKWasDismissedIfNeeded() {
-        let isNavigationControllerEmpty = pushedViewControllers.isEmpty == true
+        let isNavigationControllerEmpty = pushedViewControllers.isEmpty
         let isNavigationControllerNotPresenting = presentedViewControllers.isEmpty
         
         if isNavigationControllerNotPresenting && isNavigationControllerEmpty {

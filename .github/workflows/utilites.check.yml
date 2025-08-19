@@ -13,11 +13,11 @@ jobs:
     strategy:
       matrix:
         target: [GiniUtilites]
-        destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
+        destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 15']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
-        xcode-version: '15.3'
+        xcode-version: '16.0'
 
     - name: Checkout
       uses: actions/checkout@v4
