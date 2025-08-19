@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum DeviceConstants {
+    enum Screen {
+        static let smallScreenMaxHeight: CGFloat = 736
+    }
+}
 public extension UIDevice {
     var isIpad: Bool {
         return self.userInterfaceIdiom == .pad
@@ -61,6 +66,19 @@ public extension UIDevice {
         }
     }
 
+    // Returns true for small iPhones without a notch
+    func isNonNotchSmallScreen() -> Bool {
+        guard let windowHeight = keyWindowHeight else { return false }
+
+        // Check for small screen
+        let isSmallScreen = windowHeight < DeviceConstants.Screen.smallScreenMaxHeight
+
+        // Detect small non-notch iPhones
+        let nonNotchIphone = isIphone && !hasNotch && isSmallScreen
+
+        return nonNotchIphone
+    }
+
     var hasNotch: Bool {
         // This covers: iPhone SE (all generations), iPhone 6/6s/7/8 series
         guard let window = keyWindow else {
@@ -71,9 +89,13 @@ public extension UIDevice {
     }
 
     // MARK: - Private helpers
-
     private var interfaceOrientation: UIInterfaceOrientation? {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.interfaceOrientation
+    }
+
+    // Returns the height of the key window, if available.
+    private var keyWindowHeight: CGFloat? {
+        keyWindow?.bounds.height
     }
 
     private var keyWindow: UIWindow? {
