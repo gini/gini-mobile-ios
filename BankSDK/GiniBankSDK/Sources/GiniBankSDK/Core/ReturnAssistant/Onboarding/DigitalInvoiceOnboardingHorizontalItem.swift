@@ -36,11 +36,11 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         stack.spacing = Constants.stackViewItemSpacing
         stack.axis = .vertical
         stack.alignment = .center
-
+        stack.backgroundColor = .yellow
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stack.widthAnchor.constraint(equalToConstant: Constants.stackViewWidth),
+            stack.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.stackViewWidth),
             doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth),
             doneButton.heightAnchor.constraint(equalToConstant: Constants.doneButtonHeight)
         ])
@@ -53,13 +53,12 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         scrollView.alwaysBounceVertical = true
 
         scrollView.addSubview(rightStackView)
+        scrollView.backgroundColor = .red
 
         NSLayoutConstraint.activate([
-            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            rightStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            rightStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+            rightStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: Constants.topMarginStackView),
+            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
         ])
 
         return scrollView
@@ -157,7 +156,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             rightStackViewContainerScrollable.leadingAnchor.constraint(
                 equalTo: topImageView.trailingAnchor,
                 constant: Constants.horizontalSpacingBetweenImageViewAndText),
-            rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
@@ -170,10 +169,12 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
         static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
-        static let stackViewWidth: CGFloat = 276
+        static let stackViewWidth: CGFloat = 400
         static let stackViewItemSpacing: CGFloat = 40
         static let doneButtonMinWidth: CGFloat = 170
         static let doneButtonHeight: CGFloat = 50
+        static let trailingPadding: CGFloat = 16
+        static let topMarginStackView: CGFloat = 60
     }
 
     func shouldHideButton() -> Bool {
