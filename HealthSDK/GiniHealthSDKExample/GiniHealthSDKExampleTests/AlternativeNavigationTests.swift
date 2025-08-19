@@ -22,7 +22,7 @@ struct AlternativeNavigationTests {
         giniHelper = GiniSetupHelper()
         giniHelper.setup()
         giniHealthDelegate = MockGiniHealthDelegate()
-        homeViewController = MockVieWController()
+        homeViewController = MockViewController()
         homeNavigationController = MockNavigationController(rootViewController: homeViewController)
         giniHelper.giniHealth.delegate = giniHealthDelegate
     }
@@ -148,7 +148,7 @@ struct AlternativeNavigationTests {
                                                navigationController: navigationController,
                                                trackingDelegate: nil)
         
-        let anotherViewController = MockVieWController()
+        let anotherViewController = MockViewController()
         navigationController.present(anotherViewController, animated: false)
         
         navigationController.dismiss(animated: true)
@@ -161,7 +161,7 @@ struct AlternativeNavigationTests {
                            iban: "DE1234567890123456789",
                            bic: "",
                            amount: "23.45",
-                           purpose: "testPurpouse",
+                           purpose: "testPurpose",
                            paymentUniversalLink: "",
                            paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
     }
@@ -224,7 +224,7 @@ private final class MockNavigationController: UINavigationController {
     }
 }
 
-private final class MockVieWController: UIViewController {
+private final class MockViewController: UIViewController {
     
     var dismissCount = 0
     var presentCount = 0
