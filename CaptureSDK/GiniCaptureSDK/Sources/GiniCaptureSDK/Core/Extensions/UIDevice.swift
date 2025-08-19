@@ -95,7 +95,9 @@ public extension UIDevice {
 
     // Returns the height of the key window, if available.
     private var keyWindowHeight: CGFloat? {
-        keyWindow?.bounds.height
+        guard let window = keyWindow else { return nil }
+        // Use max to get portrait-equivalent height regardless of orientation
+        return max(window.bounds.width, window.bounds.height)
     }
 
     private var keyWindow: UIWindow? {
