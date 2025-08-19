@@ -7,15 +7,17 @@
 
 import Foundation
 import GiniHealthAPILibrary
-import GiniHealthSDKExample
+import GiniHealthSDK
 
 final class GiniSetupHelper {
     private var giniHealthAPILib: GiniHealthAPI!
     var giniHealthAPIDocumentService: GiniHealthAPILibrary.DefaultDocumentService!
+    var giniHealth: GiniHealth!
 
     func setup() {
         let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
         let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+        let clientDomain = "client_domain"
 
         let client: GiniHealthAPILibrary.Client = Client(id: clientId, secret: clientSecret, domain: "gini.net")
         giniHealthAPILib = GiniHealthAPI
@@ -23,5 +25,6 @@ final class GiniSetupHelper {
             .build()
 
         giniHealthAPIDocumentService = giniHealthAPILib.documentService()
+        giniHealth = GiniHealth(id: clientId, secret: clientSecret, domain: clientDomain)
     }
 }
