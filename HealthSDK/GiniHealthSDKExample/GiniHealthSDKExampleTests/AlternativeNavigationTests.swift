@@ -10,6 +10,7 @@ import GiniUtilites
 @testable import GiniHealthSDK
 @testable import GiniInternalPaymentSDK
 
+@MainActor
 struct AlternativeNavigationTests {
     
     private var giniHelper: GiniSetupHelper
@@ -17,7 +18,6 @@ struct AlternativeNavigationTests {
     private var homeViewController: UIViewController
     private var homeNavigationController: MockNavigationController
 
-    @MainActor
     init() {
         giniHelper = GiniSetupHelper()
         giniHelper.setup()
@@ -27,7 +27,6 @@ struct AlternativeNavigationTests {
         giniHelper.giniHealth.delegate = giniHealthDelegate
     }
     
-    @MainActor
     @Test func presentPaymentComponent() {
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
                                                paymentInfo: nil,
@@ -38,7 +37,6 @@ struct AlternativeNavigationTests {
                 "Payment component should be presented in the navigation controller")
     }
     
-    @MainActor
     @Test func presentPaymentReviewComponent() {
         giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
         
@@ -51,7 +49,6 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the navigation controller")
     }
     
-    @MainActor
     @Test func presentPaymentComponentInANewNavigation() {
         let navigationController = MockNavigationController()
         
@@ -69,7 +66,6 @@ struct AlternativeNavigationTests {
                 "paymentcomponent should be presented in the new navigation controller")
     }
     
-    @MainActor
     @Test func presentPaymentReviewComponentInANewNavigation() {
         let navigationController = MockNavigationController()
         
@@ -89,7 +85,6 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the new navigation controller")
     }
     
-    @MainActor
     @Test func dismissSDKPaymentComponent() {
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -107,7 +102,6 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @MainActor
     @Test func dismissSDKPaymentReviewComponent() {
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -127,7 +121,6 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @MainActor
     @Test func dismissSDKPaymentReviewComponentWithDocument() {
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -147,7 +140,6 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should not be called when dismissing payment review with document")
     }
     
-    @MainActor
     @Test func dismissSDKPaymentComponentNavigationNotEmpty() {
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -238,32 +230,27 @@ private final class MockNavigationController: UINavigationController {
 
 private final class MockViewController: UIViewController {
     
-    var dismissCount = 0
-    var presentCount = 0
-    
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        dismissCount += 1
+        /// No implementation needed for this test, this is just to avoid the execution that throws an UI error of a VC being dismissed from a view
+        /// that is not in the view hierarchy.
     }
     
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        presentCount += 1
+        /// No implementation needed for this test, this is just to avoid the execution that throws an UI error of a VC being presented from a view
+        /// that is not in the view hierarchy.
     }
 }
 
 private final class MockGiniHealthDelegate: GiniHealthDelegate {
     
-    var didCreatePaymentRequestCount = 0
-    var shouldHandleErrorInternallyCount = 0
     var didDismissHealthSDKCount = 0
     
     func didCreatePaymentRequest(paymentRequestId: String) {
-        didCreatePaymentRequestCount += 1
+        /// No implementation needed for this test
     }
     
     func shouldHandleErrorInternally(error: GiniHealthSDK.GiniHealthError) -> Bool {
-        shouldHandleErrorInternallyCount += 1
-        
-        return false
+        false
     }
     
     func didDismissHealthSDK() {
