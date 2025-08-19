@@ -48,7 +48,7 @@ struct DigitalLineItemTableViewCellViewModel {
         }
     }
 
-    var textTinColorStateDeselected: UIColor {
+    var textTintColorStateDeselected: UIColor {
         .giniColorScheme().textField.disabledText.uiColor()
     }
 }

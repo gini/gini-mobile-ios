@@ -117,10 +117,10 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.isEnabled = viewModel.lineItem.selectedState == .selected
 
         if case .deselected = viewModel.lineItem.selectedState {
-            nameLabel.textColor = viewModel.textTinColorStateDeselected
-            unitPriceLabel.textColor = viewModel.textTinColorStateDeselected
-            priceLabel.textColor = viewModel.textTinColorStateDeselected
-            editButton.setTitleColor(viewModel.textTinColorStateDeselected, for: .normal)
+            nameLabel.textColor = viewModel.textTintColorStateDeselected
+            unitPriceLabel.textColor = viewModel.textTintColorStateDeselected
+            priceLabel.textColor = viewModel.textTintColorStateDeselected
+            editButton.setTitleColor(viewModel.textTintColorStateDeselected, for: .normal)
             modeSwitch.isOn = false
         } else {
             // Reset to selected state
