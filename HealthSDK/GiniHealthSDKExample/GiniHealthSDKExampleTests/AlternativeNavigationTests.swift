@@ -212,7 +212,6 @@ private final class MockNavigationController: UINavigationController {
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         if !presentedViewControllers.isEmpty {
             presentedViewControllers.removeLast()
-            
         }
         
         notifySDKWasDismissedIfNeeded()
