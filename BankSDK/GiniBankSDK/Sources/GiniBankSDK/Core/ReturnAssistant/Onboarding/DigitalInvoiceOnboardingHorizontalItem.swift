@@ -36,7 +36,6 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         stack.spacing = Constants.stackViewItemSpacing
         stack.axis = .vertical
         stack.alignment = .center
-        stack.backgroundColor = .yellow
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -53,7 +52,6 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         scrollView.alwaysBounceVertical = true
 
         scrollView.addSubview(rightStackView)
-        scrollView.backgroundColor = .red
 
         NSLayoutConstraint.activate([
             rightStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
