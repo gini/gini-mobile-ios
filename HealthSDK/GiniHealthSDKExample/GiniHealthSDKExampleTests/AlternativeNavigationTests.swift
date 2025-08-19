@@ -135,6 +135,26 @@ struct AlternativeNavigationTests {
         
         #expect(giniHealthDelegate.didDismissHealthSDKCount == 0)
     }
+    
+    @MainActor
+    @Test func dismissSDKPaymentComponentNavigationNotEmpty() {
+        let navigationController = MockNavigationController()
+        navigationController.giniHealthDelegate = giniHealthDelegate
+        
+        homeViewController.present(navigationController, animated: false)
+        
+        giniHelper.giniHealth.startPaymentFlow(documentId: "test",
+                                               paymentInfo: nil,
+                                               navigationController: navigationController,
+                                               trackingDelegate: nil)
+        
+        let anotherViewController = MockVieWController()
+        navigationController.present(anotherViewController, animated: false)
+        
+        navigationController.dismiss(animated: true)
+        
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0)
+    }
 
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
         PaymentInfo(recipient: "testRecipient",
@@ -188,6 +208,17 @@ private final class MockNavigationController: UINavigationController {
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         if !presentedViewControllers.isEmpty {
             presentedViewControllers.removeLast()
+            
+        }
+        
+        notifySDKWasDismissedIfNeeded()
+    }
+    
+    private func notifySDKWasDismissedIfNeeded() {
+        let isNavigationControllerEmpty = pushedViewControllers.isEmpty == true
+        let isNavigationControllerNotPresenting = presentedViewControllers.isEmpty
+        
+        if isNavigationControllerNotPresenting && isNavigationControllerEmpty {
             giniHealthDelegate?.didDismissHealthSDK()
         }
     }
