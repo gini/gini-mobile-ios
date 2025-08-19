@@ -34,7 +34,8 @@ struct AlternativeNavigationTests {
                                                navigationController: homeNavigationController,
                                                trackingDelegate: nil)
         
-        #expect(homeNavigationController.paymentComponentBottomView != nil)
+        #expect(homeNavigationController.paymentComponentBottomView != nil,
+                "Payment component should be presented in the navigation controller")
     }
     
     @MainActor
@@ -46,7 +47,8 @@ struct AlternativeNavigationTests {
                                                navigationController: homeNavigationController,
                                                trackingDelegate: nil)
         
-        #expect(homeNavigationController.paymentComponentReviewViewController != nil)
+        #expect(homeNavigationController.paymentComponentReviewViewController != nil,
+                "payment review component should be presented in the navigation controller")
     }
     
     @MainActor
@@ -60,8 +62,11 @@ struct AlternativeNavigationTests {
                                                navigationController: navigationController,
                                                trackingDelegate: nil)
         
-        #expect(homeNavigationController.paymentComponentBottomView == nil)
-        #expect(navigationController.paymentComponentBottomView != nil)
+        #expect(homeNavigationController.paymentComponentBottomView == nil,
+                "payment component should not be presented in the home navigation controller")
+        
+        #expect(navigationController.paymentComponentBottomView != nil,
+                "paymentcomponent should be presented in the new navigation controller")
     }
     
     @MainActor
@@ -77,8 +82,11 @@ struct AlternativeNavigationTests {
                                                navigationController: navigationController,
                                                trackingDelegate: nil)
         
-        #expect(homeNavigationController.paymentComponentReviewViewController == nil)
-        #expect(navigationController.paymentComponentReviewViewController != nil)
+        #expect(homeNavigationController.paymentComponentReviewViewController == nil,
+                "payment review component should not be presented in the home navigation controller")
+        
+        #expect(navigationController.paymentComponentReviewViewController != nil,
+                "payment review component should be presented in the new navigation controller")
     }
     
     @MainActor
@@ -95,7 +103,8 @@ struct AlternativeNavigationTests {
         
         navigationController.dismiss(animated: true)
         
-        #expect(giniHealthDelegate.didDismissHealthSDKCount == 1)
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 1,
+                "didDismissHealthSDK should be called once")
     }
     
     @MainActor
@@ -114,7 +123,8 @@ struct AlternativeNavigationTests {
         
         navigationController.dismiss(animated: true)
         
-        #expect(giniHealthDelegate.didDismissHealthSDKCount == 1)
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 1,
+                "didDismissHealthSDK should be called once")
     }
     
     @MainActor
@@ -133,7 +143,8 @@ struct AlternativeNavigationTests {
         
         navigationController.dismiss(animated: true)
         
-        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0)
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0,
+                "didDismissHealthSDK should not be called when dismissing payment review with document")
     }
     
     @MainActor
@@ -153,7 +164,8 @@ struct AlternativeNavigationTests {
         
         navigationController.dismiss(animated: true)
         
-        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0)
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0,
+                "didDismissHealthSDK should not be called when the navigation controller is not empty")
     }
 
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
