@@ -162,12 +162,12 @@ struct AlternativeNavigationTests {
 
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
         PaymentInfo(recipient: "testRecipient",
-                           iban: "DE1234567890123456789",
-                           bic: "",
-                           amount: "23.45",
-                           purpose: "testPurpose",
-                           paymentUniversalLink: "",
-                           paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+                    iban: "DE1234567890123456789",
+                    bic: "",
+                    amount: "23.45",
+                    purpose: "testPurpose",
+                    paymentUniversalLink: "",
+                    paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
     }
     
     private func giniPaymentProvider() -> PaymentProvider {
