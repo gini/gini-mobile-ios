@@ -4,19 +4,15 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
-
-import Foundation
 import Testing
 import UIKit
 import GiniUtilites
 @testable import GiniHealthSDK
 @testable import GiniInternalPaymentSDK
-@testable import GiniHealthSDKExample
 
-final class AlternativeNavigationTests {
+struct AlternativeNavigationTests {
     
     private var giniHelper: GiniSetupHelper
-    private var appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var giniHealthDelegate: MockGiniHealthDelegate
     private var homeViewController: UIViewController
     private var homeNavigationController: MockNavigationController
@@ -25,13 +21,10 @@ final class AlternativeNavigationTests {
     init() {
         giniHelper = GiniSetupHelper()
         giniHelper.setup()
-        homeViewController = UIViewController()
-        homeNavigationController = MockNavigationController(rootViewController: homeViewController)
         giniHealthDelegate = MockGiniHealthDelegate()
+        homeViewController = MockVieWController()
+        homeNavigationController = MockNavigationController(rootViewController: homeViewController)
         giniHelper.giniHealth.delegate = giniHealthDelegate
-        
-        appDelegate.coordinator.selectAPIViewController.show(homeNavigationController, sender: nil)
-        _ = homeNavigationController.view
     }
     
     @MainActor
@@ -91,16 +84,16 @@ final class AlternativeNavigationTests {
     @MainActor
     @Test func dismissSDKPaymentComponent() {
         let navigationController = MockNavigationController()
+        navigationController.giniHealthDelegate = giniHealthDelegate
         
-        homeViewController.present(navigationController, animated: true)
-        _ = navigationController.view
+        homeViewController.present(navigationController, animated: false)
         
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
                                                paymentInfo: nil,
                                                navigationController: navigationController,
                                                trackingDelegate: nil)
         
-        navigationController.paymentComponentBottomView?.dismiss(animated: true)
+        navigationController.dismiss(animated: true)
         
         #expect(giniHealthDelegate.didDismissHealthSDKCount == 1)
     }
@@ -108,8 +101,10 @@ final class AlternativeNavigationTests {
     @MainActor
     @Test func dismissSDKPaymentReviewComponent() {
         let navigationController = MockNavigationController()
+        navigationController.giniHealthDelegate = giniHealthDelegate
         
-        homeViewController.present(navigationController, animated: true)
+        homeViewController.present(navigationController, animated: false)
+        
         giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
         
         giniHelper.giniHealth.startPaymentFlow(documentId: nil,
@@ -117,7 +112,28 @@ final class AlternativeNavigationTests {
                                                navigationController: navigationController,
                                                trackingDelegate: nil)
         
+        navigationController.dismiss(animated: true)
+        
         #expect(giniHealthDelegate.didDismissHealthSDKCount == 1)
+    }
+    
+    @MainActor
+    @Test func dismissSDKPaymentReviewComponentWithDocument() {
+        let navigationController = MockNavigationController()
+        navigationController.giniHealthDelegate = giniHealthDelegate
+        
+        homeViewController.present(navigationController, animated: false)
+        
+        giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
+        
+        giniHelper.giniHealth.startPaymentFlow(documentId: "test",
+                                               paymentInfo: giniPaymentInfo(),
+                                               navigationController: navigationController,
+                                               trackingDelegate: nil)
+        
+        navigationController.dismiss(animated: true)
+        
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 0)
     }
 
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
@@ -149,7 +165,7 @@ final class AlternativeNavigationTests {
 private final class MockNavigationController: UINavigationController {
     
     var paymentComponentBottomView: PaymentComponentBottomView? {
-        presentedViewControllers.last as? PaymentComponentBottomView
+        presentedViewControllers.first as? PaymentComponentBottomView
     }
     
     var paymentComponentReviewViewController: PaymentReviewViewController? {
@@ -159,20 +175,35 @@ private final class MockNavigationController: UINavigationController {
     private var presentedViewControllers: [UIViewController] = []
     private var pushedViewControllers: [UIViewController] = []
     
+    var giniHealthDelegate: GiniHealthDelegate?
+    
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.present(viewControllerToPresent, animated: false, completion: completion)
         presentedViewControllers.append(viewControllerToPresent)
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        super.pushViewController(viewController, animated: false)
         pushedViewControllers.append(viewController)
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.dismiss(animated: false, completion: completion)
-        
-        presentedViewControllers.removeLast()
+        if !presentedViewControllers.isEmpty {
+            presentedViewControllers.removeLast()
+            giniHealthDelegate?.didDismissHealthSDK()
+        }
+    }
+}
+
+private final class MockVieWController: UIViewController {
+    
+    var dismissCount = 0
+    var presentCount = 0
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        dismissCount += 1
+    }
+    
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        presentCount += 1
     }
 }
 
