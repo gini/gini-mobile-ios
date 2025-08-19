@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */; };
+		282DD2C52E4CB61C00A4EDCE /* AlternativeNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */; };
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
 		288F88502E4A5563004D7A60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F884F2E4A5563004D7A60 /* FirebaseAnalytics */; };
 		288F88522E4A5563004D7A60 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88512E4A5563004D7A60 /* FirebaseCrashlytics */; };
@@ -77,6 +78,7 @@
 
 /* Begin PBXFileReference section */
 		282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeNavigationTests.swift; sourceTree = "<group>"; };
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		288F88552E4A6289004D7A60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniHealthSDKExampleTests.xctestplan; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 		F4C36A7F270C6EBF00CCC69C = {
 			isa = PBXGroup;
 			children = (
+				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
@@ -253,7 +256,6 @@
 		F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */ = {
 			isa = PBXGroup;
 			children = (
-				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
 				F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */,
 				F4EC3912273C2B41007045DC /* Assets.xcassets */,
 				F4EC38C1273C21E4007045DC /* AppDelegate.swift */,
@@ -293,6 +295,7 @@
 				8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */,
 				8ADEE2F82C2C4822006D3526 /* FileLoader.swift */,
 				8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */,
+				282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */,
 			);
 			path = GiniHealthSDKExampleTests;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				8A77DA1E2C2BF6130049FE10 /* UploadDocumentsTests.swift in Sources */,
 				504435172C5AE5D300105D0B /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */,
 				8ADEE2F92C2C4822006D3526 /* FileLoader.swift in Sources */,
+				282DD2C52E4CB61C00A4EDCE /* AlternativeNavigationTests.swift in Sources */,
 				504435182C5AE5D300105D0B /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */,
 				F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */,
 			);
