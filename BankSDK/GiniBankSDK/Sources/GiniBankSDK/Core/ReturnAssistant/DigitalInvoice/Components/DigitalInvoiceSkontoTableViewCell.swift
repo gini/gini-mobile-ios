@@ -168,7 +168,6 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         } else {
             editButton.setTitleColor(.giniColorScheme().textField.disabledText.uiColor(),
                                      for: .normal)
-            editButton.setTitleColor(.giniColorScheme().textField.disabledText.uiColor(), for: .normal)
             titleLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
             edgeCaseLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
             editButton.isEnabled = false
