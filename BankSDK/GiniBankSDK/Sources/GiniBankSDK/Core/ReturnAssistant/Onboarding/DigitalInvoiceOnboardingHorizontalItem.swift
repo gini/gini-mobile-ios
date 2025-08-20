@@ -20,7 +20,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
                 secondLabel
             ]
         )
-        stack.spacing = 12
+        stack.spacing = Constants.verticalSpacingStackView
         stack.axis = .vertical
         stack.alignment = .center
         return stack
@@ -55,7 +55,8 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
         NSLayoutConstraint.activate([
             rightStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
-            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: Constants.topMarginStackView),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                                constant: Constants.topMarginStackView),
             rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
         ])
 
@@ -140,21 +141,21 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         addSubview(topImageView)
         addSubview(rightStackViewContainerScrollable)
 
+        let safaeArea = safeAreaLayoutGuide
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
-            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+            topImageView.leadingAnchor.constraint(equalTo: safaeArea.leadingAnchor,
                                                   constant: Constants.paddingLarge),
             topImageView.widthAnchor.constraint(equalToConstant: topImageViewLayoutWidth()),
 
             // Constraints for the scroll view itself
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainerScrollable.leadingAnchor.constraint(
-                equalTo: scrollViewLeadingAnchor(),
-                constant: scrollViewLeadingConstant()),
-            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor)
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: scrollViewLeadingAnchor(),
+                                                                       constant: scrollViewLeadingConstant()),
+            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safaeArea.trailingAnchor)
         ])
     }
 
@@ -170,7 +171,9 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
     // Returns the leading anchor for the scroll view depending on the device.
     func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
-        return UIDevice.current.isNonNotchSmallScreen() ? safeAreaLayoutGuide.leadingAnchor : topImageView.trailingAnchor
+        return UIDevice.current.isNonNotchSmallScreen()
+        ? safeAreaLayoutGuide.leadingAnchor
+        : topImageView.trailingAnchor
     }
 
     // Returns the leading constant for the scroll view depending on the device.
@@ -190,6 +193,7 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
         static let trailingPadding: CGFloat = 16
         static let topMarginStackView: CGFloat = 60
         static let topImageWidth: CGFloat = 220
+        static let verticalSpacingStackView: CGFloat = 12
     }
 
     func shouldHideButton() -> Bool {
