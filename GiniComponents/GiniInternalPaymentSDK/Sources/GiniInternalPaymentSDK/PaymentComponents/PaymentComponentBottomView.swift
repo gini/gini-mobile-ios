@@ -51,6 +51,12 @@ public final class PaymentComponentBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        if let paymentComponentView = paymentView as? PaymentComponentView {
+            paymentComponentView.viewModel.delegate?.didDismissPaymentComponent()
+        }
+    }
+    
     /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
     private func notifyLayoutChanged() {
