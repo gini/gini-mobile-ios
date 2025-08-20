@@ -141,12 +141,12 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         addSubview(topImageView)
         addSubview(rightStackViewContainerScrollable)
 
-        let safaeArea = safeAreaLayoutGuide
+        let safeArea = safeAreaLayoutGuide
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
-            topImageView.leadingAnchor.constraint(equalTo: safaeArea.leadingAnchor,
+            topImageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor,
                                                   constant: Constants.paddingLarge),
             topImageView.widthAnchor.constraint(equalToConstant: topImageViewLayoutWidth()),
 
@@ -155,7 +155,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
             rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: scrollViewLeadingAnchor(),
                                                                        constant: scrollViewLeadingConstant()),
-            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safaeArea.trailingAnchor)
+            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor)
         ])
     }
 
@@ -163,15 +163,18 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         onDone()
     }
 
-    // Returns the width for the top image view depending on the device.
+    // Returns the width for the top image view depending on the device
+    // Hide topImageView for smaller devices
     func topImageViewLayoutWidth() -> CGFloat {
         // Return 0 if non-notch small screen, else 220
-        return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.topImageWidth
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        topImageView.isHidden = isSmallDevice
+        return isSmallDevice ? 0 : Constants.topImageWidth
     }
 
     // Returns the leading anchor for the scroll view depending on the device.
     func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
-        return UIDevice.current.isNonNotchSmallScreen()
+        UIDevice.current.isNonNotchSmallScreen()
         ? safeAreaLayoutGuide.leadingAnchor
         : topImageView.trailingAnchor
     }
