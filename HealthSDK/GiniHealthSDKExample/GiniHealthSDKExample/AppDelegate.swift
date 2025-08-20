@@ -18,7 +18,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        #if DEBUG
+        /// This is to not initialize what we don't need in the tests.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return true
+        }
+        #endif
+        
         let window = UIWindow(frame: UIScreen.main.bounds)
+        
         FirebaseApp.configure()
         coordinator = AppCoordinator(window: window)
         coordinator.start()
