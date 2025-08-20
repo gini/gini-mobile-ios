@@ -89,6 +89,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
         firstLabel = .init()
         firstLabel.numberOfLines = 0
+        firstLabel.textAlignment = .center
 
         secondLabel = .init()
         secondLabel.numberOfLines = 0
