@@ -127,20 +127,19 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
         doneButton.isHidden = shouldHideButton()
+
+        setupView()
+        setupConstraints()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setupView() {
         backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
 
         addSubview(topImageView)
         addSubview(rightStackViewContainerScrollable)
+    }
 
+    func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -157,6 +156,11 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
                                                                        constant: scrollViewLeadingConstant()),
             rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor)
         ])
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @objc func doneAction(_ sender: UIButton!) {
