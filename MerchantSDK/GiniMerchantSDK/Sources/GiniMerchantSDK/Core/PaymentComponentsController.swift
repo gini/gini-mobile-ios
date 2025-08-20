@@ -522,6 +522,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
+    
     /// Handles the action when the more information button is tapped on the payment component view, using the provided document ID.
     public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation(documentId: documentId)
@@ -535,6 +536,10 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     /// Handles the action when the pay invoice button is tapped on the payment component view, using the provided document ID.
     public func didTapOnPayInvoice(documentId: String?) {
         viewDelegate?.didTapOnPayInvoice(documentId: documentId)
+    }
+    
+    public func didDismissPaymentComponent() {
+        viewDelegate?.didDismissPaymentComponent()
     }
 }
 
