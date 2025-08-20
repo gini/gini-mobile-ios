@@ -57,7 +57,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     }
 
     private func setup() {
-        let bgColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        let bgColor: UIColor = .giniColorScheme().container.background.uiColor()
         backgroundColor = .clear
         contentView.backgroundColor = bgColor
         backgroundContainerView.backgroundColor = bgColor
@@ -74,12 +74,9 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.setTitle(Strings.editButtonTitle, for: .normal)
         editButton.isExclusiveTouch = true
 
-        separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
-        unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6,
-                                             dark: .GiniBank.light6).uiColor()
-        editButton.setTitleColor(.GiniBank.accent1, for: .normal)
-        nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        separatorView.backgroundColor = .giniColorScheme().textField.border.uiColor()
+
+        applySelectedColors()
 
         priceLabel.font = configuration.textStyleFonts[.body]
         nameLabel.font = configuration.textStyleFonts[.body]
@@ -118,17 +115,11 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.isEnabled = viewModel.lineItem.selectedState == .selected
 
         if case .deselected = viewModel.lineItem.selectedState {
-            nameLabel.textColor = viewModel.textTintColorStateDeselected
-            unitPriceLabel.textColor = viewModel.textTintColorStateDeselected
-            priceLabel.textColor = viewModel.textTintColorStateDeselected
-            editButton.setTitleColor(viewModel.textTintColorStateDeselected, for: .normal)
+            applyDeselectedColors(viewModel)
             modeSwitch.isOn = false
         } else {
             // Reset to selected state
-            nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-            priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-            unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
-            editButton.setTitleColor(.GiniBank.accent1, for: .normal)
+            applySelectedColors()
             modeSwitch.isOn = true
         }
 
@@ -139,6 +130,20 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                                           radius: Constants.cornerRadius)
             separatorView.isHidden = true
         }
+    }
+
+    private func applySelectedColors() {
+        nameLabel.textColor = .giniColorScheme().text.primary.uiColor()
+        priceLabel.textColor = .giniColorScheme().text.primary.uiColor()
+        unitPriceLabel.textColor = .giniColorScheme().text.secondary.uiColor()
+        editButton.setTitleColor(.GiniBank.accent1, for: .normal)
+    }
+
+    private func applyDeselectedColors(_ viewModel: DigitalLineItemTableViewCellViewModel) {
+        nameLabel.textColor = viewModel.textTintColorStateDeselected
+        unitPriceLabel.textColor = viewModel.textTintColorStateDeselected
+        priceLabel.textColor = viewModel.textTintColorStateDeselected
+        editButton.setTitleColor(viewModel.textTintColorStateDeselected, for: .normal)
     }
 
     private func setTextWithLimit(for label: UILabel, text: String, maxCharacters: Int) {
