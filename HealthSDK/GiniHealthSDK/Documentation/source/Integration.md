@@ -143,6 +143,7 @@ This method enables clients to delete multiple documents simultaneously by passi
 Conforming to `GiniHealthDelegate` protocol will allow you:
 - Configure an option for implementing a custom error handling or keep an internal one.
 - Getting a payment requestId which you will need for checking the payment status.
+- Listening to the dismissal of the Gini Health SDK.
 
 Please see the example of implementation:
 
@@ -154,6 +155,10 @@ extension YourCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestId: String) {
         GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
+    }
+    
+    func didDismissHealthSDK() {
+        GiniUtilites.Log("GiniHealthSDK was dismissed", event: .info)
     }
 }
 

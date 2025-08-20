@@ -32,6 +32,7 @@ final class OrderDetailViewController: UIViewController {
 
     private var errors: [String] = []
     private let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
+    private let shouldUseAlternativeNavigation: Bool
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -75,9 +76,10 @@ final class OrderDetailViewController: UIViewController {
         contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)]
     }
 
-    init(_ order: Order, health: GiniHealth) {
+    init(_ order: Order, health: GiniHealth, shouldUseAlternativeNavigation: Bool) {
         self.order = order
         self.health = health
+        self.shouldUseAlternativeNavigation = shouldUseAlternativeNavigation
         super.init(nibName: nil, bundle: nil)
 
         detailView.order = order
@@ -208,8 +210,7 @@ final class OrderDetailViewController: UIViewController {
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
-            guard let navigationController else { return }
-            health.startPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
+            startPaymentFlow(paymentInfo: paymentInfo)
         } else {
             showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
@@ -217,6 +218,25 @@ final class OrderDetailViewController: UIViewController {
 
     @objc private func didTapOnView() {
         view.endEditing(true)
+    }
+    
+    private func startPaymentFlow(paymentInfo: GiniHealthSDK.PaymentInfo) {
+        let navigationControllerToUse: UINavigationController
+        
+        if shouldUseAlternativeNavigation {
+            navigationControllerToUse = UINavigationController()
+            navigationControllerToUse.setNavigationBarHidden(true, animated: false)
+            navigationControllerToUse.view.backgroundColor = .clear
+            navigationController?.present(navigationControllerToUse, animated: true)
+        } else {
+            guard let navigationController = navigationController else { return }
+            navigationControllerToUse = navigationController
+        }
+        
+        health.startPaymentFlow(documentId: nil,
+                                paymentInfo: paymentInfo,
+                                navigationController: navigationControllerToUse,
+                                trackingDelegate: self)
     }
 
     private func saveTextFieldData() {

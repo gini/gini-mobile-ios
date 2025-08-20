@@ -24,7 +24,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '15.3'
+          xcode-version: '16.4'
 
       - name: Setup provisioning profile
         env:
@@ -80,7 +80,11 @@ jobs:
             -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
             -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
             HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
-                            
+
+      - name: Setup Firebase API Key
+        run: |
+            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
+
       - name: Archiving project
         run: |
             xcodebuild clean archive \

@@ -197,6 +197,10 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
             }
         }
     }
+    
+    func didDismissPaymentComponent() {
+        presentedViewController?.dismiss(animated: true)
+    }
 
     private func saveTextFieldData() {
         let textFields = OrderDetailView.textFields
