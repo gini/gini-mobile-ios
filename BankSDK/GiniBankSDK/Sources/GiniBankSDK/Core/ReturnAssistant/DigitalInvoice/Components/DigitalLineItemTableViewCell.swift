@@ -64,7 +64,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         if viewModel?.index == 0 {
-            backgroundContainerView.round(corners: [.topLeft, .topRight], radius: 8)
+            backgroundContainerView.round(corners: [.topLeft, .topRight],
+                                          radius: Constants.cornerRadius)
             separatorView.isHidden = true
         }
 
@@ -134,7 +135,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         modeSwitch.onTintColor = viewModel.modeSwitchTintColor
 
         if viewModel.index == 0 {
-            backgroundContainerView.round(corners: [.topLeft, .topRight], radius: 8)
+            backgroundContainerView.round(corners: [.topLeft, .topRight],
+                                          radius: Constants.cornerRadius)
             separatorView.isHidden = true
         }
     }
@@ -165,6 +167,12 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         if let viewModel = viewModel {
             delegate?.editTapped(cell: self, lineItemViewModel: viewModel)
         }
+    }
+}
+// MARK: - Constants
+private extension DigitalLineItemTableViewCell {
+    struct Constants {
+        static let cornerRadius: CGFloat = 8.0
     }
 }
 
