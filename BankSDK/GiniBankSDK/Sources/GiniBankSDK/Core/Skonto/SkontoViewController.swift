@@ -6,7 +6,8 @@
 
 import UIKit
 import GiniCaptureSDK
-
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 final class SkontoViewController: UIViewController {
     private lazy var documentPreviewView: SkontoDocumentPreviewView = {
         let view = SkontoDocumentPreviewView(viewModel: viewModel)
@@ -161,16 +162,13 @@ final class SkontoViewController: UIViewController {
     // (i.e., have safe area insets)
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-        if firstAppearance {
-            adjustPhoneLayoutForCurrentOrientation()
-        }
+        adjustPhoneLayoutForCurrentOrientation()
     }
 
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        guard UIDevice.current.isIphone else { return }
-
+       
         coordinator.animate(alongsideTransition: { _ in
             self.adjustPhoneLayoutForCurrentOrientation()
         })
@@ -229,13 +227,14 @@ final class SkontoViewController: UIViewController {
     }
 
     private func adjustPhoneLayoutForCurrentOrientation() {
+        guard UIDevice.current.isIphone else { return }
         stackViewWidthConstraint.constant = contentStackViewWidth
         let isLandscape = view.currentInterfaceOrientation.isLandscape
 
         // Always deactivate both constraints before layout switch
         deactivateScrollViewConstraints()
 
-        if isLandscape {
+        if UIDevice.current.isLandscape {
             setupPhoneLandscapeLayout()
             scrollView.contentInset = Constants.scrollViewLandscapeIphoneContentInsets
             scrollView.contentInsetAdjustmentBehavior = .never
@@ -576,6 +575,7 @@ final class SkontoViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+// swiftlint:enable type_body_length
 
 extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
@@ -707,3 +707,4 @@ extension SkontoViewController: GiniInputAccessoryViewDelegate {
         endEditing()
     }
 }
+// swiftlint:enable file_length
