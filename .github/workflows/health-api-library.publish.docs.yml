@@ -1,4 +1,6 @@
 name: Publish docs for Health API Library
+permissions:
+  contents: read 
 on:
   push:
     tags:
@@ -13,9 +15,7 @@ on:
   
 jobs:
   release-documentation:
-    runs-on: macos-latest
-    permissions:
-      contents: write    
+    runs-on: macos-latest   
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
