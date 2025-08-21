@@ -8,8 +8,10 @@
 
 import UIKit
 
-enum DeviceConstants {
+private enum DeviceConstants {
     enum Screen {
+        // 736pt = max height of non-notch iPhones (6s/7/8 Plus).
+        // Devices below this are considered small.
         static let smallScreenMaxHeight: CGFloat = 736
     }
 }
@@ -66,7 +68,11 @@ public extension UIDevice {
         }
     }
 
-    // Returns true for small iPhones without a notch
+    /**
+    Returns true if the device is an iPhone without a notch and
+    has a screen height < 736 points
+    (e.g., iPhone SE, iPhone 7 Plus, iPhone 6s Plus).
+    **/
     func isNonNotchSmallScreen() -> Bool {
         guard let windowHeight = keyWindowHeight else { return false }
 
