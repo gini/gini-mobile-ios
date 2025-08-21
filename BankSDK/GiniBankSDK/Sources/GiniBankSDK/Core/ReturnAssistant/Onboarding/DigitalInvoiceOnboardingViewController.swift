@@ -130,6 +130,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         }
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
         topImageView.setupView()
     }
 
