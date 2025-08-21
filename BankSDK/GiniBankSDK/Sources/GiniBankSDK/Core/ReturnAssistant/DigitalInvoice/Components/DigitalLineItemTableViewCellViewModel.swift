@@ -2,7 +2,7 @@
 //  DigitalLineItemTableViewCellViewModel.swift
 //  
 //
-//  Created by David Vizaknai on 23.02.2023.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK
@@ -16,15 +16,13 @@ struct DigitalLineItemTableViewCellViewModel {
     let invoiceNumTotal: Int
     let invoiceLineItemsCount: Int
     let nameMaxCharactersCount: Int
-    
+
     var index: Int {
         indexPath.row
     }
 
     private var quantityString: String {
-        let string = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.quantity",
-                                                              comment: "Quantity")
-        return String.localizedStringWithFormat(string, lineItem.quantity)
+        return String.localizedStringWithFormat(Strings.quantityText, lineItem.quantity)
     }
 
     var nameLabelString: String? {
@@ -38,17 +36,27 @@ struct DigitalLineItemTableViewCellViewModel {
 
     var unitPriceString: String? {
         guard let priceString = lineItem.price.string else { return nil }
-        let perUnitString = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.unitTitle",
-                                                                     comment: "per unit")
-        return "\(priceString) \(perUnitString)"
+        return "\(priceString) \(Strings.perUnitText)"
     }
 
     var modeSwitchTintColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return .GiniBank.accent1
+            return .giniColorScheme().toggle.trackOn.uiColor()
         case .deselected:
-            return GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
+            return .giniColorScheme().toggle.trackOff.uiColor()
         }
+    }
+
+    var textTintColorStateDeselected: UIColor {
+        .giniColorScheme().textField.disabledText.uiColor()
+    }
+}
+extension DigitalLineItemTableViewCellViewModel {
+    private struct Strings {
+       static let quantityText = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.quantity",
+                                                                             comment: "Quantity")
+       static let perUnitText = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.unitTitle",
+                                                                            comment: "per unit")
     }
 }
