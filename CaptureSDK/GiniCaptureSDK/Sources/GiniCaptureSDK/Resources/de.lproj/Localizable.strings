@@ -226,3 +226,9 @@
 "ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";
 
 "ginicapture.education.loading.accessibility" = "Analyse der Rechnung läuft";
+
+// MARK: - Document marked as paid warning
+"ginicapture.document.paid.warning.title" = "Dokument als bezahlt gekennzeichnet";
+"ginicapture.document.paid.warning.description" = "Auf diesem Dokument steht, dass es bereits bezahlt wurde. Bitte prüfen Sie den Hinweis in dem Dokument, um sicherzugehen.";
+"ginicapture.document.paid.warning.proceedButtonTitle" = "Trotzdem fortfahren";
+"ginicapture.document.paid.warning.cancelButtonTitle" = "Überweisung abbrechen";
