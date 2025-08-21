@@ -4,6 +4,8 @@ xcodebuild_arguments:
 - GiniMobile.xcworkspace
 - "-scheme"
 - GiniHealthAPILibrary
+- "-destination"
+- platform=iOS Simulator,OS=18.5,name=iPhone 16
 author: Gini GmbH
 author_url: https://gini.net
 module: GiniHealthAPILibrary
