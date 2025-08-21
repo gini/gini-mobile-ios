@@ -133,14 +133,16 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         setupConstraints()
     }
 
-    func setupView() {
+    private func setupView() {
         backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
 
         addSubview(topImageView)
         addSubview(rightStackViewContainerScrollable)
+        
+        updateTopImageViewVisibility()
     }
 
-    func setupConstraints() {
+    private func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -169,24 +171,26 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     }
 
     // Returns the width for the top image view depending on the device
-    // Hide topImageView for smaller devices
-    func topImageViewLayoutWidth() -> CGFloat {
+    private func topImageViewLayoutWidth() -> CGFloat {
         // Return 0 if non-notch small screen, else 220
         let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
-        topImageView.isHidden = isSmallDevice
         return isSmallDevice ? 0 : Constants.topImageWidth
     }
 
     // Returns the leading anchor for the scroll view depending on the device.
-    func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
-        UIDevice.current.isNonNotchSmallScreen()
-        ? safeAreaLayoutGuide.leadingAnchor
-        : topImageView.trailingAnchor
+    private func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        return isSmallDevice ? safeAreaLayoutGuide.leadingAnchor : topImageView.trailingAnchor
     }
 
     // Returns the leading constant for the scroll view depending on the device.
-    func scrollViewLeadingConstant() -> CGFloat {
+    private func scrollViewLeadingConstant() -> CGFloat {
         return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.horizontalSpacingBetweenImageViewAndText
+    }
+    
+    // Updates the visibility of the topImageView depending on the device
+    private func updateTopImageViewVisibility() {
+        topImageView.isHidden = UIDevice.current.isNonNotchSmallScreen()
     }
 }
 
