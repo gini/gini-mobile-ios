@@ -2224,7 +2224,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = exactVersion;
-				version = 11.11.0;
+				version = 12.1.0;
 			};
 		};
 		2815B6F22A0CF51C004ABF06 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
