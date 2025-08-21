@@ -119,7 +119,7 @@ class SkontoProceedContainerView: UIView {
     private var skontoBadgeCompactLeadingConstraint: NSLayoutConstraint?
     private var totalAmountStackViewDefultLeadingConstraint: NSLayoutConstraint?
     private var skontoBadgeMinWidthConstraint: NSLayoutConstraint?
-    private var savingsAmountLabelPortraitConstraints: NSLayoutConstraint?
+    private var savingsAmountLabelPortraitConstraint: NSLayoutConstraint?
     private var proceedButtonTopToFinalAmountConstraint: NSLayoutConstraint?
 
     private lazy var portraitSavingsAmountLabelConstraints: [NSLayoutConstraint] = {
@@ -233,7 +233,7 @@ class SkontoProceedContainerView: UIView {
         let topAnchor = proceedButton.topAnchor
 
         // Constraint to position proceedButton below savingsAmountLabel with padding for portrait mode
-        savingsAmountLabelPortraitConstraints = topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+        savingsAmountLabelPortraitConstraint = topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                                    constant: padding)
 
         // Constraint to position proceedButton below finalAmountToPayLabel with padding for landscape mode
@@ -246,12 +246,12 @@ class SkontoProceedContainerView: UIView {
                                       [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
 
         NSLayoutConstraint.activate(portraitSavingsAmountLabelConstraints +
-                                    [savingsAmountLabelPortraitConstraints].compactMap { $0 })
+                                    [savingsAmountLabelPortraitConstraint].compactMap { $0 })
     }
 
     private func activateLandscapeConstraints() {
         NSLayoutConstraint.deactivate(portraitSavingsAmountLabelConstraints +
-                                      [savingsAmountLabelPortraitConstraints].compactMap { $0 })
+                                      [savingsAmountLabelPortraitConstraint].compactMap { $0 })
 
         NSLayoutConstraint.activate(savingsAmountLandscapeConstraints +
                                     [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
