@@ -196,12 +196,19 @@ class SkontoAmountToPayView: UIView {
                    accessibilityValue: String) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
+            containerView.accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            containerView.accessibilityTraits = [.updatesFrequently]
         } else {
             textField.text = price.localizedStringWithCurrencyCode ?? ""
+            containerView.accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            containerView.accessibilityTraits = [.staticText, .notEnabled]
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         containerView.accessibilityValue = accessibilityValue
+
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }
@@ -210,7 +217,7 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
-        
+
         UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
@@ -245,5 +252,11 @@ private extension SkontoAmountToPayView {
         static let padding: CGFloat = 12
         static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
+    }
+
+    struct Strings {
+        static let hintKey: String = "ginibank.skonto.editableField.accessibility"
+        static let hintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(hintKey, comment: hintComment)
     }
 }

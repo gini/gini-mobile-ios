@@ -31,6 +31,11 @@ public protocol GiniHealthDelegate: AnyObject {
      - parameter error: error which will be handled.
      */
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
+    
+    /**
+     Called when the Gini Health SDK has been dismissed.
+     */
+    func didDismissHealthSDK()
 }
 /**
  Errors thrown with Gini Health SDK.
@@ -668,7 +673,9 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
         paymentDelegate?.didFetchedPaymentProviders()
     }
     
-    
+    public func didDismissPaymentComponents() {
+        delegate?.didDismissHealthSDK()
+    }
 }
 
 extension GiniHealth {
