@@ -1,7 +1,6 @@
 name: Release Gini Internal Payment SDK
 permissions:
   contents: write
-  packages: write
 on:
   push:
     tags:
