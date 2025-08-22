@@ -229,7 +229,6 @@ final class SkontoViewController: UIViewController {
     private func adjustPhoneLayoutForCurrentOrientation() {
         guard UIDevice.current.isIphone else { return }
         stackViewWidthConstraint.constant = contentStackViewWidth
-        let isLandscape = view.currentInterfaceOrientation.isLandscape
 
         // Always deactivate both constraints before layout switch
         deactivateScrollViewConstraints()
