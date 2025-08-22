@@ -71,7 +71,7 @@ public extension UIDevice {
     /**
      Returns true if the device is an iPhone without a notch and
      has a screen height < 736 points
-     (e.g., iPhone SE, iPhone 7 Plus, iPhone 6s Plus).
+     (e.g., iPhone SE (1st, 2nd, 3rd gen), iPhone 6 / 6s / 7 / 8).
      **/
     func isNonNotchSmallScreen() -> Bool {
         guard let windowHeight = portraitEquivalentKeyWindowHeight else { return false }
