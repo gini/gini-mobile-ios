@@ -22,11 +22,11 @@ jobs:
     strategy:
       matrix:
         target: [GiniBankSDK, GiniBankSDKPinning]
-        destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
+        destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
-        xcode-version: '15.3'
+        xcode-version: '16.4'
 
     - name: Checkout
       uses: actions/checkout@v4
