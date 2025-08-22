@@ -107,6 +107,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         }
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
         topImageView.setupView()
 
         // title
