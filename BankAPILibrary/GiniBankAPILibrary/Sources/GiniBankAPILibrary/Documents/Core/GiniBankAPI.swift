@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GiniUtilites
 
 /**
 Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GiniUtilites
 
 /// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void

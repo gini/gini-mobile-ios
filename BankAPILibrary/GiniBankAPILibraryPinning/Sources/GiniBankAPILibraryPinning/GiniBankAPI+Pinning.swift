@@ -2,12 +2,11 @@
 //  GiniBankAPI+Pinning.swift
 //  GiniBankAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/21/18.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import TrustKit
 import GiniBankAPILibrary
-import GiniUtilites
 
 public extension GiniBankAPI.Builder {
     
