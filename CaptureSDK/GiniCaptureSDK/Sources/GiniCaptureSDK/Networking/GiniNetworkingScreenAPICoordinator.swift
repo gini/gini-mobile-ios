@@ -228,7 +228,9 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
         if giniConfiguration.multipageEnabled {
             self.startAnalysis(networkDelegate: networkDelegate)
         } else {
-            self.uploadAndStartAnalysis(document: documents[0], networkDelegate: networkDelegate, uploadDidFail: {
+            self.uploadAndStartAnalysis(document: documents[0],
+                                        networkDelegate: networkDelegate,
+                                        uploadDidFail: {
                 self.didReview(documents: documents, networkDelegate: networkDelegate)
             })
         }

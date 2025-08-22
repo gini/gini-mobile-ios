@@ -18,11 +18,11 @@ on:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '15.4'
+          xcode-version: '16.4'
 
       - name: Checkout repository
         uses: actions/checkout@v4

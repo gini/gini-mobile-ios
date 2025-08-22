@@ -24,9 +24,8 @@ final class CameraPane: UIView {
 
     func setupView() {
         let giniConfiguration = GiniConfiguration.shared
-        backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
+        backgroundColor = GiniColor(light: .GiniCapture.dark1,
+                                    dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
         captureButton.setTitle("", for: .normal)
         captureButton.isExclusiveTouch = true
         thumbnailView.isHidden = true

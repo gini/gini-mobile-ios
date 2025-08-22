@@ -39,35 +39,47 @@ public extension UIDevice {
         isIphone && isLandscape
     }
 
-    private func isPortrait() -> Bool {
+    func isPortrait() -> Bool {
         // iOS 16 and higher - the most reliable and up-to-date way
         if #available(iOS 16.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return interfaceOrientation?.isPortrait ?? UIDevice.current.orientation.isPortrait
+        } else {
+
+            // Check first the window orientation (more reliable than statusBarOrientation)
+            guard let interfaceOrientation = interfaceOrientation else {
+                // If we can't get the scene, we try with the physical orientation
                 return UIDevice.current.orientation.isPortrait
             }
 
-            return windowScene.interfaceOrientation.isPortrait
-        } else {
-            // 1. Check first the window orientation (more reliable than statusBarOrientation)
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                let windowOrientation = windowScene.interfaceOrientation
-                let isWindowPortrait = windowOrientation == .portrait || windowOrientation == .portraitUpsideDown
+            let isWindowPortrait = interfaceOrientation.isPortrait
+            let deviceOrientation = UIDevice.current.orientation
 
-                // 2. Check also the physical device orientation
-                let deviceOrientation = UIDevice.current.orientation
-                let isDevicePortrait = deviceOrientation == .portrait || deviceOrientation == .portraitUpsideDown
-
-                // 3. If the device orientation is unknown or flat, trust the window
-                if deviceOrientation == .unknown || deviceOrientation == .faceUp || deviceOrientation == .faceDown {
-                    return isWindowPortrait
-                }
-
-                // 4. If the device orientation is already indicating the new orientation, trust it
-                return isDevicePortrait
+            if deviceOrientation == .unknown || deviceOrientation == .faceUp || deviceOrientation == .faceDown {
+                return isWindowPortrait
             }
-
-            // If we can't get the scene, we try with the physical orientation
-            return UIDevice.current.orientation.isPortrait
+            return deviceOrientation.isPortrait
         }
+    }
+
+    var hasNotch: Bool {
+        // This covers: iPhone SE (all generations), iPhone 6/6s/7/8 series
+        guard let window = keyWindow else {
+            return false
+        }
+        // Devices without notch have no bottom safe area (0pt)
+        return window.safeAreaInsets.bottom > 0
+    }
+
+    // MARK: - Private helpers
+
+    private var interfaceOrientation: UIInterfaceOrientation? {
+        (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.interfaceOrientation
+    }
+
+    private var keyWindow: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first(where: { $0.isKeyWindow })
     }
 }
