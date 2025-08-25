@@ -75,7 +75,7 @@ final class DemoViewController: UIViewController {
 
         dismissKeyboardOnTap()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         subscribeOnKeyboardNotifications()
