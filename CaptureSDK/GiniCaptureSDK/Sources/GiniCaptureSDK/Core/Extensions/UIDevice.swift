@@ -9,9 +9,11 @@
 import UIKit
 
 private enum DeviceConstants {
-    // 736pt = max height of non-notch iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
-    // Devices below this are considered small.
-    static let smallScreenMaxHeight: CGFloat = 736
+    enum Screen {
+        // 736pt = max height of non-notch iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+        // Devices below this are considered small.
+        static let smallScreenMaxHeight: CGFloat = 736
+    }
 }
 public extension UIDevice {
     var isIpad: Bool {
