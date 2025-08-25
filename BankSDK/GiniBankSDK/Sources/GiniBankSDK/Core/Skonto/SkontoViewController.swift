@@ -154,7 +154,7 @@ final class SkontoViewController: UIViewController {
         // viewSafeAreaInsetsDidChange() does not called on first appearance.
         // So we manually trigger the layout adjustment here as a fallback.
         if firstAppearance && !UIDevice.current.hasNotch {
-            adjustPhoneLayoutForCurrentOrientation()
+            adjustLayoutForCurrentOrientation()
         }
     }
 
@@ -162,15 +162,17 @@ final class SkontoViewController: UIViewController {
     // (i.e., have safe area insets)
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-        adjustPhoneLayoutForCurrentOrientation()
+        adjustLayoutForCurrentOrientation()
     }
 
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-       
-        coordinator.animate(alongsideTransition: { _ in
-            self.adjustPhoneLayoutForCurrentOrientation()
+        guard UIDevice.current.isIphone else { return }
+
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self = self else { return }
+            self.adjustLayoutForCurrentOrientation()
         })
     }
 
@@ -226,26 +228,24 @@ final class SkontoViewController: UIViewController {
         navigationItem.leftBarButtonItem = backButton.barButton
     }
 
-    private func adjustPhoneLayoutForCurrentOrientation() {
-        guard UIDevice.current.isIphone else { return }
+    private func adjustLayoutForCurrentOrientation() {
         stackViewWidthConstraint.constant = contentStackViewWidth
-        let isLandscape = view.currentInterfaceOrientation.isLandscape
 
         // Always deactivate both constraints before layout switch
         deactivateScrollViewConstraints()
 
         if UIDevice.current.isLandscape {
-            setupPhoneLandscapeLayout()
-            scrollView.contentInset = Constants.scrollViewLandscapeIphoneContentInsets
+            setupLandscapeLayout()
+            scrollView.contentInset = Constants.scrollViewLandscapeContentInsets
             scrollView.contentInsetAdjustmentBehavior = .never
         } else {
-            setupPhonePortraitLayout()
+            setupPortraitLayout()
             scrollView.contentInset = Constants.scrollViewDefaultContentInset
             scrollView.contentInsetAdjustmentBehavior = .automatic
         }
     }
 
-    private func setupPhoneLandscapeLayout() {
+    private func setupLandscapeLayout() {
         removeExistingBottomComponents()
 
         if configuration.bottomNavigationBarEnabled {
@@ -338,7 +338,7 @@ final class SkontoViewController: UIViewController {
     }
 
     // MARK: - Portrait specific layout
-    private func setupPhonePortraitLayout() {
+    private func setupPortraitLayout() {
         // Cleanup landscape-specific layout
         if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
             defaultBar.navigationBarView.removeFromSuperview()
@@ -676,7 +676,7 @@ private extension SkontoViewController {
         static let navigationBarViewDefaultHeight: CGFloat = 62
         static let landscapeHorizontalPadding: CGFloat = 16
 
-        static var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
+        static var scrollViewLandscapeContentInsets: UIEdgeInsets {
             UIEdgeInsets(top: containerPadding, left: 0, bottom: 0, right: 0)
         }
 
