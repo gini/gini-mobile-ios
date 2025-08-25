@@ -8,6 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
+import GiniUtilites
 
 public final class GiniBankConfiguration: NSObject {
 
@@ -370,7 +371,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    public var logger: GiniLogger = GiniConfiguration.shared.logger
+    public var logger: GiniLogger = DefaultLogger(prefix: "[GiniBank SDK]")
 
     /**
      Should be set if the custom error logging is implemented.
