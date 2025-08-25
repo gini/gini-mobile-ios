@@ -419,8 +419,6 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         GiniAnalyticsManager.track(event: .itemSwitchTapped,
                                    screenName: .returnAssistant,
                                    properties: [GiniAnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
-        
-        tableView.reloadRows(at: [lineItemViewModel.indexPath], with: .none)
         updateValues()
     }
 

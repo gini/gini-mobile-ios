@@ -8,6 +8,13 @@
 
 import UIKit
 
+private enum DeviceConstants {
+    enum Screen {
+        // 736pt = max height of non-notch iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+        // Devices below this are considered small.
+        static let smallScreenMaxHeight: CGFloat = 736
+    }
+}
 public extension UIDevice {
     var isIpad: Bool {
         return self.userInterfaceIdiom == .pad
@@ -61,6 +68,23 @@ public extension UIDevice {
         }
     }
 
+    /**
+     Returns true if the device is an iPhone without a notch and
+     has a screen height < 736 points
+     (e.g., iPhone SE (1st, 2nd, 3rd gen), iPhone 6 / 6s / 7 / 8).
+     **/
+    func isNonNotchSmallScreen() -> Bool {
+        guard let windowHeight = portraitEquivalentKeyWindowHeight else { return false }
+
+        // Check for small screen
+        let isSmallScreen = windowHeight < DeviceConstants.Screen.smallScreenMaxHeight
+
+        // Detect small non-notch iPhones
+        let nonNotchIphone = isIphone && !hasNotch && isSmallScreen
+
+        return nonNotchIphone
+    }
+
     var hasNotch: Bool {
         // This covers: iPhone SE (all generations), iPhone 6/6s/7/8 series
         guard let window = keyWindow else {
@@ -71,9 +95,19 @@ public extension UIDevice {
     }
 
     // MARK: - Private helpers
-
     private var interfaceOrientation: UIInterfaceOrientation? {
         (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.interfaceOrientation
+    }
+
+    /**
+     Returns the portrait-equivalent height of the key window.
+     Uses the maximum of width/height so the value is orientation-independent.
+     Useful for device recognition rather than layout.
+     */
+    private var portraitEquivalentKeyWindowHeight: CGFloat? {
+        guard let window = keyWindow else { return nil }
+        // Use max to get portrait-equivalent height regardless of orientation
+        return max(window.bounds.width, window.bounds.height)
     }
 
     private var keyWindow: UIWindow? {

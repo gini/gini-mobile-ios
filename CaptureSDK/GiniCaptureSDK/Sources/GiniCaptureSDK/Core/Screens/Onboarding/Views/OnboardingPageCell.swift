@@ -21,8 +21,14 @@ class OnboardingPageCell: UICollectionViewCell {
     }
 
     private func setupView() {
+        isAccessibilityElement = false
         iconView.isAccessibilityElement = true
-        iconView.accessibilityTraits = .image
+        iconView.icon?.isAccessibilityElement = false
+        // Tell VoiceOver that this is a static image that doesn't need analysis
+        // .image marks it as an image element
+        //  .staticText indicates it's static content (no dynamic analysis needed)
+        iconView.accessibilityTraits = [.image, .staticText]
+
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                          dark: UIColor.GiniCapture.light1).uiColor()
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]

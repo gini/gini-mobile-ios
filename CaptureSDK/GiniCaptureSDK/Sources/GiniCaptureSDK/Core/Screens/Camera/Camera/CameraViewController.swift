@@ -131,30 +131,20 @@ final class CameraViewController: UIViewController {
     }
 
     fileprivate func configureTitle() {
-        if UIDevice.current.isIphone {
-            if giniConfiguration.onlyQRCodeScanningEnabled {
-                title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
-                                                         comment: "Info label")
-            } else {
-                self.title = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
-                                                              comment: "Info label")
-            }
-        } else {
-            var title: String?
+        let device = UIDevice.current
 
-            if !giniConfiguration.qrCodeScanningEnabled {
-                title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
-                                                         comment: "Info label")
-            } else {
-                if giniConfiguration.onlyQRCodeScanningEnabled {
-                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
-                                                             comment: "Info label")
-                } else {
-                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
-                                                             comment: "Info label")
-                }
-            }
-            self.title = title
+        if device.isIphone && device.isPortrait() {
+            title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
+            return
+        }
+
+        switch (giniConfiguration.qrCodeScanningEnabled, giniConfiguration.onlyQRCodeScanningEnabled) {
+        case (false, _):
+            title = Strings.onlyInvoice
+        case (true, true):
+            title = Strings.onlyQr
+        case (true, false):
+            title = Strings.invoiceAndQr
         }
     }
 
@@ -513,6 +503,7 @@ final class CameraViewController: UIViewController {
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.configureCameraPanesBasedOnOrientation()
             self?.setQRCodeOverlayLayout()
+            self?.configureTitle()
         })
     }
 
@@ -776,6 +767,17 @@ private extension CameraViewController {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
+    }
+
+    private struct Strings {
+        static let onlyInvoice = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
+                                                                  comment: "Info label")
+        static let onlyQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
+                                                             comment: "Info label")
+        static let invoiceAndQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
+                                                                   comment: "Info label")
+        static let cameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
+                                                                  comment: "Camera title")
     }
 }
 // swiftlint:enable type_body_length

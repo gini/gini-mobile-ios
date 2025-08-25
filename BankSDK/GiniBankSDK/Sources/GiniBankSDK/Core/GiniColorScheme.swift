@@ -312,7 +312,7 @@ extension UIColor {
             border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4),
             focusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
             unfocusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-            disabledText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+            disabledText: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
             errorText: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
             labelFocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
             labelUnfocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
