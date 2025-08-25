@@ -170,7 +170,8 @@ final class SkontoViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         guard UIDevice.current.isIphone else { return }
 
-        coordinator.animate(alongsideTransition: { _ in
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self = self else { return }
             self.adjustLayoutForCurrentOrientation()
         })
     }
