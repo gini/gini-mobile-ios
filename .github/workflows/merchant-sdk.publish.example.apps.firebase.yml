@@ -1,4 +1,6 @@
 name: Publish GiniMerchantSDKExample to Firebase Distribution
+permissions:
+  contents: read
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -15,8 +17,6 @@ concurrency:
 jobs:
   upload-version:
     runs-on: macos-latest
-    permissions:
-      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
