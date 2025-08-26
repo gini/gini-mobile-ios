@@ -771,9 +771,13 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         let alertController = UIAlertController(title: NSLocalizedStringPreferredFormat("gini.health.errors.default", comment: ""),
                                                 message: "",
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
+        
+        let okAction = UIAlertAction(title: NSLocalizedStringPreferredFormat("gini.health.alert.ok.title", comment: ""),
+                                     style: .default) { [weak self] _ in
             self?.notifySDKWasDismissedIfNeeded()
-        }))
+        }
+        
+        alertController.addAction(okAction)
         
         navigationControllerProvided?.present(alertController, animated: true)
     }
