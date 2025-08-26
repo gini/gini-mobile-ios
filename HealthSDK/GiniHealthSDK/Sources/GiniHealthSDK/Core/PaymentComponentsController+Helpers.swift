@@ -771,8 +771,11 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         let alertController = UIAlertController(title: NSLocalizedStringPreferredFormat("gini.health.errors.default", comment: ""),
                                                 message: "",
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
-        self.navigationControllerProvided?.present(alertController, animated: true)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
+            self?.notifySDKWasDismissedIfNeeded()
+        }))
+        
+        navigationControllerProvided?.present(alertController, animated: true)
     }
     
     private func handlePaymentRequestResult(_ result: Result<String, GiniHealthAPILibrary.GiniError>) {
