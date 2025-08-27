@@ -21,6 +21,7 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
     private lazy var skipButton = GiniBarButton(ofType: .skip)
+    private var pageIndex:Int = 0
 
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
@@ -127,6 +128,38 @@ class OnboardingViewController: UIViewController {
                 skipBottomBarButton?.isHidden = true
             }
             pagesCollection.reloadData()
+        }
+
+        // --- VoiceOver focus handling ---
+        DispatchQueue.main.async {
+            let pageWidth = self.pagesCollection.bounds.width
+            let currentPageIndex = Int(round(self.pagesCollection.contentOffset.x / pageWidth))
+            print("💡 viewDidLayoutSubviews called")
+            print("Collection view contentOffset.x: \(self.pagesCollection.contentOffset.x)")
+            print("Collection view width: \(pageWidth)")
+            print("Calculated currentPageIndex: \(currentPageIndex)")
+            print("Calculated pageIndex: \(self.pageIndex)")
+
+            
+            let indexPath = IndexPath(item: self.pageIndex, section: 0)
+            if let currentCell = self.pagesCollection.cellForItem(at: indexPath) as? OnboardingPageCell {
+
+                print("Visible Cells Count: \(self.pagesCollection.visibleCells.count)")
+                for (index, cell) in self.pagesCollection.visibleCells.enumerated() {
+                    if let onboardingCell = cell as? OnboardingPageCell {
+                        print("Visible Cell \(index): title='\(onboardingCell.titleLabel.text ?? "")', description='\(onboardingCell.descriptionLabel.text ?? "")', centerX=\(onboardingCell.center.x)")
+                    }
+                }
+                
+                // Log focused cell
+                print("🔹 Accessibility focus will be set on current page cell's titleLabel: \(currentCell.titleLabel.text ?? "")")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    
+                    UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
+                }
+            } else {
+                print("⚠️ Could not find cell at indexPath \(indexPath)")
+            }
         }
     }
 
@@ -241,7 +274,7 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
-        let pageIndex = sender.currentPage
+        pageIndex = sender.currentPage
         let index = IndexPath(item: pageIndex, section: 0)
         pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
         updatePageControlAndNavigationButtons(at: pageIndex)
@@ -303,10 +336,11 @@ class OnboardingViewController: UIViewController {
         }) { [weak self] _ in
             // Reset the flag after the transition completes
             self?.dataSource.isProgrammaticScroll = false
-            self?.notifyLayoutChangedAfterRotation()
+            //self?.notifyLayoutChangedAfterRotation()
         }
     }
 
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
