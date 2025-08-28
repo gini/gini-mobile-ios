@@ -21,10 +21,16 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PageCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
         cell.pageImageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
         let cellModel = model.getCellViewModel(at: indexPath)
         cell.pageImageView.display(image: cellModel.preview)
+        cell.pageImageView.accessibilityTraits = .image
+        cell.pageImageView.isAccessibilityElement = true
+        cell.pageImageView.accessibilityLabel = model.strings.invoiceImageAccessibilityLabel
         return cell
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .zero
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -39,5 +45,14 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
+    
+    @objc func pageControlTapHandler() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
+            guard let self else { return }
+            
+            collectionView.scrollToItem(at: IndexPath(row: 0, section: pageControl.currentPage),
+                                        at: .centeredHorizontally, animated: true)
+        })
     }
 }

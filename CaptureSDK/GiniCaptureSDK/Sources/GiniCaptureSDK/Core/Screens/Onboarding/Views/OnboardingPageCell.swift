@@ -13,7 +13,7 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
 
     @IBOutlet private weak var iconBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topConstraint: NSLayoutConstraint?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,6 +22,7 @@ class OnboardingPageCell: UICollectionViewCell {
 
     private func setupView() {
         iconView.isAccessibilityElement = true
+        iconView.accessibilityTraits = .image
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                          dark: UIColor.GiniCapture.light1).uiColor()
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
@@ -30,7 +31,7 @@ class OnboardingPageCell: UICollectionViewCell {
         titleLabel.isAccessibilityElement = true
 
         descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                               dark: UIColor.GiniCapture.dark7).uiColor()
+                                               dark: UIColor.GiniCapture.light6).uiColor()
         descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.adjustsFontSizeToFitWidth = true
@@ -45,20 +46,16 @@ class OnboardingPageCell: UICollectionViewCell {
         return Constants.iconPadding + diff * min(scaleFactor, 1)
     }
 
-    override func layoutSubviews() {
-        if UIDevice.current.isIpad {
-            if UIWindow.orientation.isLandscape {
-                topConstraint.constant = Constants.compactTopPadding
-                iconBottomConstraint.constant = calculateIconMargin()
-            } else {
-                topConstraint.constant = Constants.regularTopPadding
-                iconBottomConstraint.constant = Constants.maxIconPadding
-            }
-        } else {
-            topConstraint.constant = Constants.compactTopPadding
-            iconBottomConstraint.constant = calculateIconMargin()
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let didVerticalTraitsChange = traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
+        let didHorizontalTraitsChange = traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass
+        let shouldUpdateConstraints =  didVerticalTraitsChange || didHorizontalTraitsChange
+
+        if shouldUpdateConstraints {
+            updateConstraintsForCurrentTraits()
         }
-        super.layoutSubviews()
     }
 
     override func prepareForReuse() {
@@ -68,6 +65,21 @@ class OnboardingPageCell: UICollectionViewCell {
         iconView.subviews.forEach({ $0.removeFromSuperview() })
         titleLabel.text = ""
         descriptionLabel.text = ""
+    }
+
+    func updateConstraintsForCurrentTraits() {
+        if UIDevice.current.isIpad {
+            if UIDevice.current.isLandscape {
+                topConstraint?.constant = Constants.compactTopPadding
+                iconBottomConstraint.constant = calculateIconMargin()
+            } else {
+                topConstraint?.constant = Constants.regularTopPadding
+                iconBottomConstraint.constant = Constants.maxIconPadding
+            }
+        } else if UIDevice.current.isPortrait() {
+            topConstraint?.constant = Constants.compactTopPadding
+            iconBottomConstraint.constant = calculateIconMargin()
+        }
     }
 }
 

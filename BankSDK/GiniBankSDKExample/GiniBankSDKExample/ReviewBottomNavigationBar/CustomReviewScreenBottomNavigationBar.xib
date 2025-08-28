@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,22 +15,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w2u-UC-F67">
-                    <rect key="frame" x="150.66666666666666" y="16" width="119.99999999999997" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="9Qk-XL-ZT4"/>
-                        <constraint firstAttribute="width" constant="120" id="jG0-tZ-xjF"/>
-                    </constraints>
+                    <rect key="frame" x="10" y="16" width="67.666666666666671" height="28"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Process" titleAlignment="center">
                         <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                     </buttonConfiguration>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFb-hA-Tm6">
-                    <rect key="frame" x="286.66666666666669" y="16" width="70" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="70" id="5PR-YR-WGV"/>
-                        <constraint firstAttribute="height" constant="50" id="Wmr-Fm-ykT"/>
-                    </constraints>
+                    <rect key="frame" x="364.66666666666669" y="16" width="46.333333333333314" height="28"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Add" titleAlignment="center">
                         <fontDescription key="titleFontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
@@ -39,10 +31,10 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="aFb-hA-Tm6" firstAttribute="leading" secondItem="w2u-UC-F67" secondAttribute="trailing" constant="16" id="Hkz-3v-kj9"/>
                 <constraint firstItem="aFb-hA-Tm6" firstAttribute="centerY" secondItem="w2u-UC-F67" secondAttribute="centerY" id="TOF-ct-emO"/>
-                <constraint firstItem="w2u-UC-F67" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bNg-1G-5oq"/>
                 <constraint firstItem="w2u-UC-F67" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="l7Q-yn-2zZ"/>
+                <constraint firstItem="w2u-UC-F67" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="o3P-Ou-0IS"/>
+                <constraint firstAttribute="trailing" secondItem="aFb-hA-Tm6" secondAttribute="trailing" constant="10" id="xml-Nw-cix"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

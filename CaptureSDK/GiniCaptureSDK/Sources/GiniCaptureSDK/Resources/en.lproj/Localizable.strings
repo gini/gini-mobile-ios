@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
 "ginicapture.navigationbar.analysis.backToReview" = "Review";
 "ginicapture.navigationbar.accessibility.back" = "Back";
+"ginicapture.navigationbar.error.backToCamera"   = "Camera";
 
 
 "ginicapture.camera.captureButton" = "Capture";
@@ -31,7 +32,7 @@
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
 "ginicapture.camera.filepicker.failedToOpenDocument" = "The file could not be opened. Please use a different file type.";
-"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "It is only possible to select one PDF at a time.";
+"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Only one invoice can be uploaded at a time.";
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Cancel";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Grant permission";
@@ -39,6 +40,7 @@
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "This file is too large.";
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or PDF can be analysed.";
+"ginicapture.camera.documentValidationError.wrongFormatWithXML" = "Only files of the formats jpg, png, gif, PDF or XML can be analysed.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Password protected documents cannot be analysed.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
@@ -64,6 +66,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
 "ginicapture.camera.popupOptionFiles" = "Upload files";
+"ginicapture.camera.popupOptionEInvoice" = "Upload E-Invoice";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
@@ -88,7 +91,7 @@
 "ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
 "ginicapture.review.delete"             = "Delete page";
 
-"ginicapture.analysis.screenTitle" = "Review";
+"ginicapture.analysis.screenTitle" = "Analysis";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
@@ -107,6 +110,9 @@
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
 "ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF document";
+"ginicapture.analysis.education.loadingText" = "analyzing";
+"ginicapture.analysis.education.loading.intro" = "In case you didn’t know...";
+"ginicapture.analysis.education.loading.uploadTip" = "Upload PDFs, images, or GIFs";
 
 "ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
 
@@ -132,8 +138,7 @@
 "ginicapture.help.import.importtoapp.desc" = "Please select your Banking App from the list to start the analysis and transfer process.";
 "ginicapture.help.import.importtoapp.accessibility" = "Select Banking App from the list to start the analysis process";
 "ginicapture.help.import.draganddrop.title" = "Drag and drop on iPad";
-"ginicapture.help.import.draganddrop.desc" = "If your iPad is running iOS 12 or newer, you can
-conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
+"ginicapture.help.import.draganddrop.desc" = "You can conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
 "ginicapture.help.import.draganddrop.accessibility" = "On tablet you can use the drag and drop function to move the file into the banking app";
 
 "ginicapture.help.supportedFormats.title" = "Formats";
@@ -143,6 +148,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
+"ginicapture.help.supportedFormats.section.1.item.6" = "E-Invoices: XRechnung (XML), ZUGFeRD (PDF)";
 "ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
@@ -208,9 +214,12 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.albums.footer" = "Use \"Select more photos\" button to select more photos or deselect to remove access.";
 
 "ginicapture.QRscanning.correct" = "QR code detected";
-"ginicapture.QRscanning.incorrect.title" = "Unkown QR code";
+"ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
+"ginicapture.QRscanning.education.loading.captureTip" = "You can take photos of receipts or remittance slips – even without a QR code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";
+
+"ginicapture.education.loading.accessibility" = "Analyzing invoice in progress";

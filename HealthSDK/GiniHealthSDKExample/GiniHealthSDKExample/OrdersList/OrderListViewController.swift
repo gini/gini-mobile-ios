@@ -77,12 +77,10 @@ final class OrderListViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: viewModel.customOrderText,
-            style: .plain,
+            barButtonSystemItem: .add,
             target: self,
-            action: #selector(customOrderButtonTapped)
-        )
-
+            action: #selector(addButtonTapped))
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: viewModel.cancelText,
             style: .plain,
@@ -90,12 +88,34 @@ final class OrderListViewController: UIViewController {
             action: #selector(dismissViewControllerTapped)
         )
     }
+    
+    @objc func addButtonTapped() {
+        let optionsSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let addorderAction = UIAlertAction(title: viewModel.customOrderText, style: .default) { _ in
+            self.customOrderButtonTapped()
+        }
+        
+        let deletePaymentRequestsAction = UIAlertAction(title: "Delete payment requests", style: .default) { _ in
+            self.viewModel.deleteOders()
+        }
+        
+        let cancelAction = UIAlertAction(title: viewModel.cancelText, style: .cancel)
+        
+        optionsSheet.addAction(addorderAction)
+        optionsSheet.addAction(deletePaymentRequestsAction)
+        optionsSheet.addAction(cancelAction)
+        
+        present(optionsSheet, animated: true)
+    }
 
     @objc func customOrderButtonTapped() {
         let newOrder = Order(amountToPay: "", recipient: "", iban: "", purpose: "")
         viewModel.orders.append(newOrder)
 
-        let orderViewController = OrderDetailViewController(newOrder, health: viewModel.health)
+        let orderViewController = OrderDetailViewController(newOrder,
+                                                            health: viewModel.health,
+                                                            shouldUseAlternativeNavigation: viewModel.shouldUseAlternativeNavigation)
         orderViewController.delegate = self
         self.navigationController?.pushViewController(orderViewController, animated: true)
     }
@@ -143,7 +163,9 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         let order = viewModel.orders[indexPath.row]
 
         // Instantiate InvoiceViewController with the Order instance
-        let orderViewController = OrderDetailViewController(order, health: viewModel.health)
+        let orderViewController = OrderDetailViewController(order,
+                                                            health: viewModel.health,
+                                                            shouldUseAlternativeNavigation: viewModel.shouldUseAlternativeNavigation)
         orderViewController.delegate = self
 
         // Present InvoiceViewController

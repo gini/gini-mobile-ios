@@ -90,6 +90,10 @@ final class CameraPreviewViewController: UIViewController {
             return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
         }
     }
+    private var bottomControlHeight: CGFloat {
+        return view.frame.height * Constants.bottomControlHeightMultiplier +
+        (giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightPortrait : 0)
+    }
 
     var isAuthorized = false
 
@@ -157,6 +161,14 @@ final class CameraPreviewViewController: UIViewController {
         if isViewLoaded {
             setupIBANDetectionIfViewsAreLoaded()
         }
+        if UIDevice.current.isIphone,
+           let defaultImageView,
+           let defaultImage,
+           let cgimage = defaultImage.cgImage {
+            defaultImageView.image = UIImage(cgImage: cgimage,
+                                             scale: 1,
+                                             orientation: currentInterfaceOrientation.isLandscape ? .left : .up)
+        }
     }
 
     private func setupIBANDetectionIfViewsAreLoaded() {
@@ -185,13 +197,18 @@ final class CameraPreviewViewController: UIViewController {
                         cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
                                                                 multiplier: 1 / Constants.a4AspectRatio)
 
+    private lazy var cameraFrameViewBottomConstrant =
+                        cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+                                                                constant: -bottomControlHeight-Constants.padding)
+
     private func setupConstraints() {
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
         qrCodeFrameView.translatesAutoresizingMaskIntoConstraints = false
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.padding),
+                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor,
+                                                     constant: Constants.padding),
                 cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),
@@ -199,19 +216,14 @@ final class CameraPreviewViewController: UIViewController {
                                                          constant: -Constants.cameraPaneWidth/2),
                 cameraFrameViewHeightAnchorPortrait])
         } else {
-            // The height of the bottom controls
-            let bottomControlHeight = view.frame.height * 0.23 +
-            (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
-
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                     constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-                                                        constant: -bottomControlHeight-Constants.padding),
-                cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
-                                                       multiplier: 1 / Constants.a4AspectRatio)
+                cameraFrameViewBottomConstrant,
+                cameraFrameViewHeightAnchorPortrait
             ])
         }
 
@@ -242,7 +254,6 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private func updateFrameOrientation(with orientation: AVCaptureVideoOrientation) {
-        guard UIDevice.current.isIpad else { return }
         let isLandscape = orientation == .landscapeRight || orientation == .landscapeLeft
         if let image = cameraFocusImage?.cgImage {
             NSLayoutConstraint.deactivate([
@@ -255,6 +266,12 @@ final class CameraPreviewViewController: UIViewController {
             } else {
                 cameraFrameViewHeightAnchorPortrait.isActive = true
                 cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
+            }
+
+            if UIDevice.current.isIphone {
+                cameraFrameViewBottomConstrant.constant = isLandscape
+                ? -(giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightLandscape : 0) - Constants.padding
+                : -bottomControlHeight-Constants.padding
             }
         }
     }
@@ -296,24 +313,14 @@ final class CameraPreviewViewController: UIViewController {
         camera.switchTo(newVideoDevice: device)
     }
 
-    func setupCamera() {
+    func setupCamera(bottomAnchor: NSLayoutYAxisAnchor) {
         camera.setup { error in
             if let error = error {
                 switch error {
                 case .notAuthorizedToUseDevice:
-                    self.isAuthorized = false
-                    self.addNotAuthorizedView()
-                    self.delegate?.notAuthorized()
+                    self.handleCameraNotAuthorizedSetup(bottomAnchor: bottomAnchor)
                 default:
-                    if self.giniConfiguration.debugModeOn {
-                        #if targetEnvironment(simulator)
-                        self.isAuthorized = true
-                        self.cameraFrameView.isHidden = false
-                        self.addDefaultImage()
-                        #endif
-                    } else {
-                        self.isAuthorized = false
-                    }
+                    self.setupDebugImageOnCameraConfigureError()
                 }
             } else {
                 self.isAuthorized = true
@@ -322,7 +329,7 @@ final class CameraPreviewViewController: UIViewController {
             }
             self.stopLoadingIndicator()
         }
-        
+
         camera.didDetectQR = { [weak self] qrDocument in
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetect: qrDocument)
@@ -331,7 +338,7 @@ final class CameraPreviewViewController: UIViewController {
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetectInvalid: qrDocument)
         }
-        
+
         camera.didDetectIBANs = { [weak self] ibans in
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetectIBANs: ibans)
@@ -414,7 +421,26 @@ final class CameraPreviewViewController: UIViewController {
 // MARK: - Default and not authorized views
 
 extension CameraPreviewViewController {
-    private func addNotAuthorizedView() {
+    private func setupDebugImageOnCameraConfigureError() {
+        if self.giniConfiguration.debugModeOn {
+            #if targetEnvironment(simulator)
+            self.isAuthorized = true
+            self.cameraFrameView.isHidden = false
+            self.addDefaultImage()
+            self.updatePreviewViewOrientation()
+            #endif
+        } else {
+            self.isAuthorized = false
+        }
+    }
+
+    private func handleCameraNotAuthorizedSetup(bottomAnchor: NSLayoutYAxisAnchor) {
+        self.isAuthorized = false
+        self.addNotAuthorizedView(bottomAnchor: bottomAnchor)
+        self.delegate?.notAuthorized()
+    }
+
+    private func addNotAuthorizedView(bottomAnchor: NSLayoutYAxisAnchor) {
         // Send the 'screen_shown' event every time the user returns to this screen.
         GiniAnalyticsManager.trackScreenShown(screenName: .cameraAccess)
 
@@ -425,20 +451,23 @@ extension CameraPreviewViewController {
 
         notAuthorizedView.translatesAutoresizingMaskIntoConstraints = false
 
-        let withBottomPadding = giniConfiguration.bottomNavigationBarEnabled && !qrCodeScanningOnlyEnabled
-        let bottomPadding: CGFloat = withBottomPadding ? Constants.bottomNavigationBarHeight : 0
-
         NSLayoutConstraint.activate([
             notAuthorizedView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            notAuthorizedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding),
+            notAuthorizedView.bottomAnchor.constraint(equalTo: bottomAnchor),
             notAuthorizedView.topAnchor.constraint(equalTo: view.topAnchor),
             notAuthorizedView.leadingAnchor.constraint(equalTo: view.leadingAnchor)])
     }
 
     /// Adds a default image to the canvas when no camera is available (DEBUG mode only)
     private func addDefaultImage() {
-        guard let defaultImage = defaultImage else { return }
-
+        guard let defaultImageCG = defaultImage?.cgImage else { return }
+        if let defaultImageView {
+            defaultImageView.removeFromSuperview()
+            self.defaultImageView = nil
+        }
+        let iPhoneInLandscape = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
+        let defaultImage = UIImage(cgImage: defaultImageCG, scale: 1,
+                                   orientation: iPhoneInLandscape ? .left : .up)
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
         defaultImageView.alpha = 0.5
@@ -465,9 +494,9 @@ extension CameraPreviewViewController {
                      atDevicePoint: devicePoint,
                      monitorSubjectAreaChange: true)
         let imageView =
-            createFocusIndicator(withImage: cameraFocusSmall,
-                                 atPoint: previewView.videoPreviewLayer
-                                            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
+        createFocusIndicator(withImage: cameraFocusSmall,
+                             atPoint: previewView.videoPreviewLayer
+            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
         showFocusIndicator(imageView)
     }
 
@@ -509,7 +538,7 @@ extension CameraPreviewViewController {
         static let padding: CGFloat = 16
         static let a4AspectRatio: CGFloat = 1.414
         static let cameraPaneWidth: CGFloat = 124
-        static let bottomNavigationBarHeight: CGFloat = 114
         static let QRCodeScannerSize = CGSize(width: 258, height: 258)
+        static let bottomControlHeightMultiplier: CGFloat = 0.23
     }
 }

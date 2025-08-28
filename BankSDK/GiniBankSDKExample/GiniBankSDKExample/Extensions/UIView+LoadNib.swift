@@ -14,4 +14,12 @@ extension UIView {
 		let nib = UINib(nibName: nibName, bundle: nil)
 		return nib.instantiate(withOwner: self, options: nil).first as! UIView
 	}
+    
+    var currentInterfaceOrientation: UIInterfaceOrientation {
+        if #available(iOS 13, *) {
+            return window?.windowScene?.interfaceOrientation ?? UIApplication.shared.statusBarOrientation
+        } else {
+            return UIApplication.shared.statusBarOrientation
+        }
+    }
 }

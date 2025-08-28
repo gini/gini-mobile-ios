@@ -15,7 +15,6 @@ final class CameraPane: UIView {
     @IBOutlet weak var thumbnailView: ThumbnailView!
     @IBOutlet weak var leftButtonsStack: UIView!
     @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
-    @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
 
     private var shouldShowFlashButton: Bool = false
     override func awakeFromNib() {
@@ -25,9 +24,8 @@ final class CameraPane: UIView {
 
     func setupView() {
         let giniConfiguration = GiniConfiguration.shared
-        backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
+        backgroundColor = GiniColor(light: .GiniCapture.dark1,
+                                    dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
         captureButton.setTitle("", for: .normal)
         captureButton.isExclusiveTouch = true
         thumbnailView.isHidden = true
@@ -121,4 +119,8 @@ final class CameraPane: UIView {
         }
     }
 
+    func setupTitlesHidden(isHidden: Bool) {
+        flashButton.actionLabel.isHidden = isHidden
+        fileUploadButton.actionLabel.isHidden = isHidden
+    }
 }

@@ -55,22 +55,22 @@ extension GiniScreenAPICoordinator {
         BottomButtonsViewModel(
             manuallyPressed: { [weak self] in
                 self?.finishWithEnterManually()
-            }, cancelPressed: { [weak self] in
-                self?.finishWithCancellation()
+            },
+            backPressed: { [weak self] in
+                self?.finishWithRetake()
         })
     }
 
     private func createRetakeAndEnterManuallyButtonsViewModel() -> BottomButtonsViewModel {
         return BottomButtonsViewModel(
             retakeBlock: { [weak self] in
-                self?.pages = []
-                self?.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-                self?.backToCamera()
+                self?.finishWithRetake()
             },
             manuallyPressed: { [weak self] in
                 self?.finishWithEnterManually()
-            }, cancelPressed: { [weak self] in
-                self?.finishWithCancellation()
+            },
+            backPressed: { [weak self] in
+                self?.finishWithRetake()
         })
     }
 }
@@ -113,6 +113,9 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             shouldDisplay = true
         case .qrcode:
             noResultType = .qrCode
+            shouldDisplay = true
+        case .xml:
+            noResultType = .xml
             shouldDisplay = true
         default:
             shouldDisplay = false

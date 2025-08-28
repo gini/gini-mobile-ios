@@ -6,24 +6,16 @@ The Gini Health SDK for iOS provides all the UI and functionality needed to use 
 The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. 
 
 > ⚠️  **Important:**
+
 For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
 
 
-## GiniHealthAPI initialization
-
-> ⚠️  **Important:**
-You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
-
-You can easy initialize `GiniHealthAPI` with the client credentials:
-
-```swift
-private lazy var merchant = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
-```
+## GiniHealthAPI initialization (if you use transparent proxy with your own authentication)
 
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
- let apiLib =  GiniHealthAPI.Builder(customApiDomain: "api.custom.net",
+ let giniApiLib =  GiniHealthAPI.Builder(customApiDomain: "api.custom.net",
                                  alternativeTokenSource: MyAlternativeTokenSource)
                                  .build()
 ```
@@ -42,27 +34,38 @@ private class MyAlternativeTokenSource: AlternativeTokenSource {
     }
 }
 ```
+## GiniHealth initialization
 
-## Certificate pinning (optional)
+### Certificate pinning (optional)
 
 If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass your public key pinning configuration as follows:
 ```swift
-    private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain, pinningConfig: ["PinnedDomains" : ["PublicKeyHashes"]])
+    private lazy var healthSDK = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain, pinningConfig: ["PinnedDomains" : ["PublicKeyHashes"]])
 ```
 
-## GiniHealth initialization
+> ⚠️  **Important:**
 
-Now that the `GiniHealthAPI` has been initialized, you can initialize `GiniHealth`:
+You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
+
+You can easily initialize `GiniHealth` with the client credentials:
+
+```swift
+ let healthSDK = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
+```
+Or initialize it with previously created `GiniHealthAPI`:
 
 ```swift
  let healthSDK = GiniHealth(with: giniApiLib)
 ```
-## Document upload
+
+## Handling documents
+
+### Document upload
  
 For the document upload if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
 
 ```swift
-let documentService: DefaultDocumentService = healthSDK.documentService()
+let documentService = healthSDK.documentService()
 documentService.createDocument(fileName:"ginipay-partial",
                                docType: nil,
                                type: .partial(documentData),
@@ -82,7 +85,7 @@ self.healthSDK.documentService
 
 ```
 
-## Check which documents/invoices are payable
+### Check which documents/invoices are payable
 
 We provide 2 ways of doing this.
 1. GiniHealth provides a variable for checking if the document is payable or not. You can look for `payment_state` of the document/invoice. The document/invoice is payable if `payment_state` is `Payable` 
@@ -101,7 +104,7 @@ The method returns success and `true` value if `payment_state` was extracted.
 ```swift
 for giniDocument in dataDocuments {
    dispatchGroup.enter()
-   self.health.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
+   self.healthSDK.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
        switch result {
        // ...
        }
@@ -113,7 +116,7 @@ dispatchGroup.notify(queue: .main) {
 }
 ```
 
-## Check if the document contains multiple invoices
+### Check if the document contains multiple invoices
 
 GiniHealth provides a method to check whether a document contains multiple invoices:
 
@@ -125,7 +128,7 @@ The method returns `true` in the success case if the `contains_multiple_docs` fi
 
 > - Recommendation: Use this check in a specific order. First, call the `checkIfDocumentIsPayable` method, and then call `checkIfDocumentContainsMultipleInvoices` method.
 
-## Delete a batch of documents
+### Delete a batch of documents
 
 GiniHealth provides a method to delete multiple documents at once:
 
@@ -135,46 +138,96 @@ healthSDK.deleteDocuments(documentIds: [String], completion: @escaping (Result<S
 
 This method enables clients to delete multiple documents simultaneously by passing an array of document IDs. Upon success, it returns an array of successfully deleted documents. In case of an error, a specific error message is provided.
 
-## Integrate the Payment flow
+## Subscribing to GiniHealthDelegate
 
-We provide a custom payment flow for the users to pay the invoice/document/digital payment  .
+Conforming to `GiniHealthDelegate` protocol will allow you:
+- Configure an option for implementing a custom error handling or keep an internal one.
+- Getting a payment requestId which you will need for checking the payment status.
+- Listening to the dismissal of the Gini Health SDK.
+
+Please see the example of implementation:
+
+```swift
+extension YourCoordinator: GiniHealthDelegate {
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        return true
+    }
+    
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
+    }
+    
+    func didDismissHealthSDK() {
+        GiniUtilites.Log("GiniHealthSDK was dismissed", event: .info)
+    }
+}
+
+healthSDK.delegate = self
+```
+
+## Starting the Payment flow
+
+We provide a custom payment flow for the users to pay the invoice/document/digital payment.
 Please follow the steps below for the payment component integration.
 
-### 1. Create an instance of the `GiniHealth`.
+### 1. Setup `GiniHealthConfiguration`.
+
+> ⚠️  **Important:**
+If you need to handle a flow with a document/invoice use a code snippet below:
 
 ```swift
-    private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
-    health.paymentDelegate = self // where self is your viewController
+    private let giniHealthConfiguration: GiniHealthConfiguration = {
+        let config = GiniHealthConfiguration()
+        config.useInvoiceWithoutDocument = false
+        return config
+    }()
+
+    healthSDK.setConfiguration(giniHealthConfiguration)
 ```
-* `paymentDelegate` is a delegate for `PaymentComponentsControllerProtocol`
-* `PaymentComponentsControllerProtocol` provides information when the `PaymentComponentsController` is loading.
-You can show/hide an `UIActivityIndicator` based on that.
-
-* `PaymentComponentsControllerProtocol` provides completion handlers when `PaymentComponentsController` fetched successfully payment providers or when it failed with an error.
-
->  **Note:**
-It should be sufficient to call paymentComponentsController.loadPaymentProviderApps() only once when your app starts.
-
-> - We effectively handle situations where there are no payment providers available.
-> - Based on the payment provider's colors, the `UIView` will automatically change its color.
 
 ### 2. Start the Payment Flow
-Once you initialize the healthSDK, there is a function that you should call when users taps on your CTA pay button:
+
+After configuring the healthSDK, you should call can start a payment flow:
+
+If you have a document/invoice:
 
 ```swift
-health.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: self)
+healthSDK.startPaymentFlow(documentId: documentId,
+                           paymentInfo: nil,
+                           navigationController: navigationController,
+                           trackingDelegate: self)
 Initiates the payment flow for a specified document and payment information.
 
          - Parameters:
-           - documentId: An optional identifier for the document associated with the payment flow.
-           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+           - documentId: An optional identifier for the document associated with the payment flow when you use a payment with document/invoice.
+           - paymentInfo: An optional `PaymentInfo` object containing the payment details when you have a payment without a document or previously fetched extraction.
            - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
            - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
 ```
 
-### Optional:
-We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-13711&node-type=instance&t=fLL9Yl3dPpmV51U0-0)
+If you don't have any document/invoice you need to pass `GiniHealthSDK.PaymentInfo` into the method below:
+
+```swift
+
+let paymentInfo = PaymentInfo(recipient: recipient,
+                              iban: iban,
+                              bic: "",
+                              amount: amountToPay,
+                              purpose: purpose,
+                              paymentUniversalLink: "",
+                              paymentProviderId: "")
+
+health.startPaymentFlow(documentId: nil,
+                        paymentInfo: paymentInfo,
+                        navigationController: navigationController,
+                        trackingDelegate: self)
+```
+
+### Optional (Recommended start payment entry button):
+
+We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=16914-16138&t=vrAVy8gvjhDLHRca-1)
 For that please call next method:
+
 ```swift
     let logos = health.fetchBankLogos().logos // for the first two payment providers available
     let additionalBankNumberToShow = health.fetchBankLogos().additionalBankCount // for the number of additional payment providers available
@@ -189,3 +242,13 @@ healthSDK.deletePaymentRequest(id: String, completion: @escaping (Result<String,
 ```
 
 This method enables clients to delete single payment request by passing the payment request ID. Upon success, it returns the ID of successfully deleted payment request. In case of an error, a specific error message is provided.
+
+## Getting a payment
+
+GiniHealth provides a method to retrieve a payment of an specified payment request:
+
+```swift
+healthSDK.getPayment(id: String, completion: @escaping (Result<Payment, GiniError>) -> Void)
+```
+
+This method enables clients to retrieve the `payment` of an specified request by passing the payment request ID. Upon success, it returns the `payment` associated with the given payment request id. In case of an error, a specific error message is provided.
