@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 env:
-  XCODE_VERSION: '15.3'
+  XCODE_VERSION: '16.4'
   APP_IDENTIFIER: 'net.gini.healthsdk.example'
   APP_SCHEME: 'GiniHealthSDKExample'
   TEAM_ID: 'JA825X8F7Z'
