@@ -556,7 +556,8 @@ platform :ios do
       
       # Look for IPA file in parent directory (project root where artifact was downloaded)
       ipa_path = nil
-      parent_ipa_path = "../#{ipa_filename}"
+      parent_dir = File.expand_path('..')                    
+      absolute_ipa_path = File.join(parent_dir, ipa_filename)
 
       if File.exist?(parent_ipa_path)
         ipa_path = parent_ipa_path
