@@ -21,10 +21,16 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PageCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
         cell.pageImageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
         let cellModel = model.getCellViewModel(at: indexPath)
         cell.pageImageView.display(image: cellModel.preview)
+        cell.pageImageView.accessibilityTraits = .image
+        cell.pageImageView.isAccessibilityElement = true
+        cell.pageImageView.accessibilityLabel = model.strings.invoiceImageAccessibilityLabel
         return cell
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .zero
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

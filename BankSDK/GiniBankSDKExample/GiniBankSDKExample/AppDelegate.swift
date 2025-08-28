@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniBankSDK
+import Firebase
 
 @UIApplicationMain
     final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,14 @@ import GiniBankSDK
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+#if DEBUG
+        /// This is to not initialize what we don't need in the tests.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return true
+        }
+#endif
+        FirebaseApp.configure()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         coordinator = AppCoordinator(window: window ?? UIWindow())
         coordinator.start()

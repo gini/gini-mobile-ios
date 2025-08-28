@@ -272,11 +272,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         Self.currentCoordinator = self
         setupAnalytics(withDocuments: documents)
-        configurationService?.fetchConfigurations(completion: { result in
+        configurationService?.fetchConfigurations { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
                     GiniBankUserDefaultsStorage.clientConfiguration = configuration
+                    GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
+                    GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -285,8 +288,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 // We will not implement any caching mechanism on our side if the request is too slow.
                 // In case of a failure, the UJ analytics will remain disabled for that session.
             }
-        })
-        return self.start(withDocuments: documents, animated: animated)
+        }
+        return start(withDocuments: documents, animated: animated)
     }
 
     public static func closeSDK() {
@@ -337,7 +340,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.track(event: .sdkClosed,properties: properties)
     }
 
-    private func setDcoumentIdAsUserProperty() {
+    private func setDocumentIdAsUserProperty() {
         guard let documentId = documentService.document?.id else { return }
         GiniAnalyticsManager.registerSuperProperties([.documentId: documentId])
     }
@@ -349,35 +352,56 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis {[weak self] result in
+        documentService.startAnalysis { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(extractionResult):
-                    self.setDcoumentIdAsUserProperty()
-                DispatchQueue.main.async {
-                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
-                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
-                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-                    } else {
-                        let document = self.documentService.document
-                        // Default case when no Skonto or RA to be displayed
-                        self.handleTransactionDocsAlert(on: self.screenAPINavigationController,
-                                                        extractionResult: extractionResult,
-                                                        documentId: document?.id,
-                                                        deliveryFunction: { [weak self] result in
-                            self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
-                        })
-                    }
+            case .success(let extractionResult):
+                self.setDocumentIdAsUserProperty()
+                Task {
+                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
                 }
-
-            case let .failure(error):
+            case .failure(let error):
                 guard error != .requestCancelled else { return }
 
                 DispatchQueue.main.async { [weak self] in
                     self?.displayError(errorType: ErrorType(error: error), animated: true)
                 }
             }
+        }
+    }
+
+    // handleSuccessfulAnalysis runs entirely on the main actor.
+    @MainActor
+    private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
+                                          networkDelegate: GiniCaptureNetworkDelegate) async {
+        if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+            await analysisVC.waitUntilAnimationCompleted()
+        } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
+                  let task = qrCodeVC.educationTask {
+            _ = await task.value
+        }
+
+        presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
+    }
+
+    @MainActor
+    private func presentNextScreen(extractionResult: ExtractionResult,
+                                   delegate: GiniCaptureNetworkDelegate) {
+        if GiniBankConfiguration.shared.returnAssistantEnabled,
+           let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+            handleReturnAssistantScreenDisplay(extractionResult, delegate)
+        } else if GiniBankConfiguration.shared.skontoEnabled,
+                  let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
+            handleSkontoScreenDisplay(extractionResult, delegate)
+        } else {
+            let document = documentService.document
+            handleTransactionDocsAlert(on: screenAPINavigationController,
+                                       extractionResult: extractionResult,
+                                       documentId: document?.id,
+                                       deliveryFunction: { [weak self] result in
+                guard let self = self else { return }
+                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+            })
         }
     }
 

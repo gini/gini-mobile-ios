@@ -12,11 +12,12 @@ final class NoResultScreenViewController: UIViewController {
         case image
         case pdf
         case qrCode
+        case xml
         case custom(String)
 
         var description: String {
             switch self {
-            case .pdf, .image:
+            case .pdf, .image, .xml:
                 return Strings.noResultsHeader
             case .qrCode:
                 return Strings.noResultsQRHeader
@@ -67,12 +68,10 @@ final class NoResultScreenViewController: UIViewController {
             let tipsDS = HelpTipsDataSource()
             tipsDS.showHeader = true
             self.dataSource = tipsDS
-        case .pdf:
+        case .pdf, .xml, .custom(_):
             self.dataSource = HelpFormatsDataSource()
         case .qrCode:
             self.dataSource = HelpFormatsDataSource(isQRCodeContent: true)
-        case .custom(_):
-            self.dataSource = HelpFormatsDataSource()
         }
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -200,7 +199,7 @@ final class NoResultScreenViewController: UIViewController {
         let helpSectionHeaderNib = UINib(nibName: "HelpFormatSectionHeader", bundle: giniCaptureBundle())
 
         switch type {
-        case .pdf, .qrCode:
+        case .pdf, .qrCode, .xml:
             let nib = UINib(nibName: "HelpFormatCell", bundle: giniCaptureBundle())
             tableView.register(nib, forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
