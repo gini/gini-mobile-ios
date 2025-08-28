@@ -517,10 +517,11 @@ platform :ios do
   lane :distribute_to_firebase do
     UI.message("🔥 Starting Firebase App Distribution")
     
-    # Debug: List current directory contents (where artifact was downloaded)
+    # Debug: Show current directory and parent directory
     UI.message("📁 Current directory: #{Dir.pwd}")
-    UI.message("📂 Files in current directory:")
+    UI.message("📂 Files in current directory (fastlane/):")
     Dir.glob("*").each { |file| UI.message("  - #{file}") }
+    
     UI.message("📂 Files in parent directory (project root):")
     Dir.glob("../*").each { |file| UI.message("  - #{File.basename(file)}") }
     
@@ -545,7 +546,7 @@ platform :ios do
       File.write(service_account_file.path, ENV['FIREBASE_SERVICE_ACCOUNT_JSON'])
       UI.message("📝 Service account file created at: #{service_account_file.path}")
       
-      # Handle IPA file path - the artifact should be downloaded to current directory
+      # Handle IPA file path - look in parent directory where artifact was downloaded
       ipa_filename = ENV['IPA_FILE']
       
       # Add .ipa extension if not present
@@ -554,20 +555,24 @@ platform :ios do
         UI.message("🔧 Added .ipa extension: #{ipa_filename}")
       end
       
-      # Look for IPA file in parent directory (project root where artifact was downloaded)
+      # Get absolute path to parent directory (project root)
+      parent_dir = File.expand_path('..')
+      UI.message("📁 Parent directory absolute path: #{parent_dir}")
+      
+      # Look for IPA file in parent directory using absolute path
       ipa_path = nil
-      parent_dir = File.expand_path('..')                    
       absolute_ipa_path = File.join(parent_dir, ipa_filename)
-
-      if File.exist?(parent_ipa_path)
-        ipa_path = parent_ipa_path
-        UI.message("✅ Found IPA file in parent directory: #{ipa_path}")
-      # If exact filename not found, use any IPA file in parent directory
+      
+      if File.exist?(absolute_ipa_path)
+        ipa_path = absolute_ipa_path
+        UI.message("✅ Found IPA file at absolute path: #{ipa_path}")
+      # If exact filename not found, use any IPA file in parent directory with absolute path
       elsif ipa_files_parent.any?
-        ipa_path = ipa_files_parent.first
-        UI.message("🔍 Using found IPA file from parent directory: #{ipa_path}")
+        relative_ipa_path = ipa_files_parent.first
+        ipa_path = File.expand_path(relative_ipa_path)
+        UI.message("🔍 Using found IPA file with absolute path: #{ipa_path}")
       else
-        UI.user_error!("❌ No IPA files found in parent directory. Expected: #{parent_ipa_path}. Available files in parent: #{Dir.glob('../*').map { |f| File.basename(f) }.join(', ')}")
+        UI.user_error!("❌ No IPA files found in parent directory. Expected: #{absolute_ipa_path}. Available files in parent: #{Dir.glob('../*').map { |f| File.basename(f) }.join(', ')}")
       end
       
       UI.message("📱 Distributing IPA: #{ipa_path}")
