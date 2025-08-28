@@ -521,10 +521,12 @@ platform :ios do
     UI.message("📁 Current directory: #{Dir.pwd}")
     UI.message("📂 Files in current directory:")
     Dir.glob("*").each { |file| UI.message("  - #{file}") }
+    UI.message("📂 Files in parent directory (project root):")
+    Dir.glob("../*").each { |file| UI.message("  - #{File.basename(file)}") }
     
-    # Debug: Look for IPA files specifically
-    ipa_files = Dir.glob("*.ipa")
-    UI.message("🔍 Found IPA files: #{ipa_files}")
+    # Debug: Look for IPA files in parent directory (where artifact is downloaded)
+    ipa_files_parent = Dir.glob("../*.ipa")
+    UI.message("🔍 Found IPA files in parent directory: #{ipa_files_parent.map { |f| File.basename(f) }}")
     
     # Verify required environment variables
     required_vars = ['FIREBASE_APP_ID', 'FIREBASE_SERVICE_ACCOUNT_JSON', 'IPA_FILE', 'DISTRIBUTION_GROUPS']
@@ -552,19 +554,19 @@ platform :ios do
         UI.message("🔧 Added .ipa extension: #{ipa_filename}")
       end
       
-      # Look for the IPA file in current directory (where artifact was downloaded)
+      # Look for IPA file in parent directory (project root where artifact was downloaded)
       ipa_path = nil
-      
-      # First try the exact filename
-      if File.exist?(ipa_filename)
-        ipa_path = ipa_filename
-        UI.message("✅ Found IPA file: #{ipa_path}")
-      # If not found, use any IPA file in the directory
-      elsif ipa_files.any?
-        ipa_path = ipa_files.first
-        UI.message("🔍 Using found IPA file: #{ipa_path}")
+      parent_ipa_path = "../#{ipa_filename}"
+
+      if File.exist?(parent_ipa_path)
+        ipa_path = parent_ipa_path
+        UI.message("✅ Found IPA file in parent directory: #{ipa_path}")
+      # If exact filename not found, use any IPA file in parent directory
+      elsif ipa_files_parent.any?
+        ipa_path = ipa_files_parent.first
+        UI.message("🔍 Using found IPA file from parent directory: #{ipa_path}")
       else
-        UI.user_error!("❌ No IPA files found in current directory. Available files: #{Dir.glob('*').join(', ')}")
+        UI.user_error!("❌ No IPA files found in parent directory. Expected: #{parent_ipa_path}. Available files in parent: #{Dir.glob('../*').map { |f| File.basename(f) }.join(', ')}")
       end
       
       UI.message("📱 Distributing IPA: #{ipa_path}")
