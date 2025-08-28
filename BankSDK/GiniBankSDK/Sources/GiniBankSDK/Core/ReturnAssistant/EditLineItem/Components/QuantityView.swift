@@ -15,9 +15,8 @@ final class QuantityView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light5).uiColor()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
-                                                             comment: "Quantity")
-        label.text = title
+
+        label.text = Strings.title
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -29,6 +28,7 @@ final class QuantityView: UIView {
         textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.adjustsFontForContentSizeCategory = true
+        textField.accessibilityTraits = .staticText
         return textField
     }()
 
@@ -44,10 +44,7 @@ final class QuantityView: UIView {
         button.setImage(prefferedImage(named: "quantity_minus_icon"), for: .normal)
         button.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let minusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.minus.button.accessibility"
-        let descriptor = NSLocalizedStringPreferredGiniBankFormat(minusButtonAccessibilityKey,
-                                                                  comment: "Decrease quantity")
-        button.accessibilityLabel = descriptor
+        button.accessibilityLabel = Strings.minusButtonAccessibility
         return button
     }()
 
@@ -56,11 +53,7 @@ final class QuantityView: UIView {
         button.setImage(prefferedImage(named: "quantity_plus_icon"), for: .normal)
         button.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let plusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.plus.button.accessibility"
-
-        let descriptor = NSLocalizedStringPreferredGiniBankFormat(plusButtonAccessibilityKey,
-                                                                  comment: "Increase quantity")
-        button.accessibilityLabel = descriptor
+        button.accessibilityLabel = Strings.plusButtonAccessibility
         return button
     }()
 
@@ -72,6 +65,7 @@ final class QuantityView: UIView {
         set {
             let newValueString = String(newValue)
             quantityTextField.text = newValueString
+            quantityTextField.accessibilityLabel = Strings.title
             notifyQuantityChange(newValue: newValueString)
         }
     }
@@ -161,5 +155,17 @@ private extension QuantityView {
 		static let textFieldTopPadding: CGFloat = 0
         static let labelPadding: CGFloat = 4
         static let buttonSize = CGSize(width: 44, height: 44)
+    }
+
+    struct Strings {
+        static let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
+                                                                    comment: "Quantity")
+        static let plusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.plus.button.accessibility"
+        static let plusButtonAccessibility = NSLocalizedStringPreferredGiniBankFormat(plusButtonAccessibilityKey,
+                                                                                      comment: "Increase quantity")
+
+        static let minusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.minus.button.accessibility"
+        static let minusButtonAccessibility = NSLocalizedStringPreferredGiniBankFormat(minusButtonAccessibilityKey,
+                                                                                       comment: "Decrease quantity")
     }
 }
