@@ -26,6 +26,10 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
         return view
     }()
 
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -50,16 +54,17 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
 
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        contentView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         clipsToBounds = true
+        backgroundColor = .clear
 
         contentView.addSubview(addOnStackView)
         contentView.addSubview(separatorView)
     }
 
     func configureAsBottomTableCell() {
-        layer.cornerRadius = 8
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        contentView.layer.cornerRadius = 8
+        contentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
 
     private func setupConstraints() {

@@ -17,14 +17,11 @@ import UIKit
 final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
 
     private lazy var tableView: UITableView = {
         var tableView: UITableView
-        if #available(iOS 13.0, *) {
-            tableView = UITableView(frame: .zero, style: .insetGrouped)
-        } else {
-            tableView = UITableView(frame: .zero, style: .grouped)
-        }
+        tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -50,6 +47,7 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
         tableView.reloadData()
     }

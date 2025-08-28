@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
@@ -15,6 +16,8 @@ class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -100,6 +103,25 @@ class SkontoAmountToPayView: UIView {
     private let currencyLabelText: String
     private var isEditable: Bool
     private let configuration = GiniBankConfiguration.shared
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+
+    override var inputAccessoryView: UIView? {
+        get {
+            privateInputAccessoryView
+        }
+
+        set {
+            privateInputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoAmountViewDelegate?
 
     init(title: String,
@@ -115,6 +137,14 @@ class SkontoAmountToPayView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
     }
 
     private func setupView() {
@@ -166,12 +196,19 @@ class SkontoAmountToPayView: UIView {
                    accessibilityValue: String) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
+            containerView.accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            containerView.accessibilityTraits = [.updatesFrequently]
         } else {
             textField.text = price.localizedStringWithCurrencyCode ?? ""
+            containerView.accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            containerView.accessibilityTraits = [.staticText, .notEnabled]
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         containerView.accessibilityValue = accessibilityValue
+
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }
@@ -180,6 +217,8 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
+
+        UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
     }
@@ -213,5 +252,11 @@ private extension SkontoAmountToPayView {
         static let padding: CGFloat = 12
         static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
+    }
+
+    struct Strings {
+        static let hintKey: String = "ginibank.skonto.editableField.accessibility"
+        static let hintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(hintKey, comment: hintComment)
     }
 }

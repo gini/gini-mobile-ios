@@ -21,6 +21,7 @@ final class OrderListViewModel {
     let customOrderText = NSLocalizedString("gini.health.example.custom.order.button.title", comment: "")
     let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
     let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
+    let shouldUseAlternativeNavigation: Bool
 
     var health: GiniHealth
     
@@ -31,12 +32,14 @@ final class OrderListViewModel {
          orders: [Order]? = nil,
          documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedOrdersController: HardcodedOrdersControllerProtocol,
-         health: GiniHealth) {
+         health: GiniHealth,
+         shouldUseAlternativeNavigation: Bool) {
         self.coordinator = coordinator
         self.hardcodedOrdersController = hardcodedOrdersController
         self.orders = orders ?? hardcodedOrdersController.orders
         self.documentService = documentService
         self.health = health
+        self.shouldUseAlternativeNavigation = shouldUseAlternativeNavigation
     }
 
     func updateOrder(updatedOrder: Order) {
@@ -50,6 +53,19 @@ final class OrderListViewModel {
             switch result {
             case .success:
                 self?.handlePaymentRequestDeletion(for: order)
+            case .failure(let error):
+                self?.errorMessage = error.message
+            }
+        })
+    }
+    
+    func deleteOders() {
+        let orderIds = orders.compactMap(\.id)
+        
+        health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
             case .failure(let error):
                 self?.errorMessage = error.message
             }

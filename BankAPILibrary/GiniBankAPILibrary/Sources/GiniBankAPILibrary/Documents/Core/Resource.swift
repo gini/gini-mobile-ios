@@ -36,17 +36,20 @@ enum AuthType: String {
 
 extension Resource {
     
-    var url: URL {
+    var url: URL? {
         var urlComponents = URLComponents()
         urlComponents.scheme = scheme.rawValue
         urlComponents.host = host
         urlComponents.path = path
         urlComponents.queryItems = filteredQueryItems()
         
-        return urlComponents.url!
+        return urlComponents.url
     }
     
-    var request: URLRequest {
+    var request: URLRequest? {
+        guard let url else {
+            return nil
+        }
         var urlRequest = URLRequest(url: url)
         urlRequest.allHTTPHeaderFields = params.headers
         urlRequest.httpMethod = params.method.rawValue
@@ -63,6 +66,6 @@ extension Resource {
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.url.absoluteString == rhs.url.absoluteString
-    }    
+        return lhs.url?.absoluteString == rhs.url?.absoluteString
+    }
 }

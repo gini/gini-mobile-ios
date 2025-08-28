@@ -11,10 +11,12 @@ protocol SkontoExpiryDateViewDelegate: AnyObject {
     func expiryDateTextFieldTapped()
 }
 
-class SkontoExpiryDateView: UIView {
+class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = title
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -55,6 +57,25 @@ class SkontoExpiryDateView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+
+    override var inputAccessoryView: UIView? {
+        get {
+            privateInputAccessoryView
+        }
+
+        set {
+            privateInputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoExpiryDateViewDelegate?
 
     init(viewModel: SkontoViewModel) {
@@ -65,6 +86,14 @@ class SkontoExpiryDateView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
     }
 
     private func setupView() {
@@ -78,6 +107,7 @@ class SkontoExpiryDateView: UIView {
         setupConstraints()
         textField.addTarget(self, action: #selector(textFieldTapped), for: .editingDidBegin)
         configureDatePicker()
+
         bindViewModel()
     }
 
@@ -135,6 +165,19 @@ class SkontoExpiryDateView: UIView {
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
         textField.text = dueDateString
+        configureAccessibility(isSkontoApplied)
+    }
+
+    private func configureAccessibility(_ isSkontoApplied: Bool) {
+        if isSkontoApplied {
+            accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            accessibilityTraits = [.updatesFrequently]
+        } else {
+            accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            accessibilityTraits = [.staticText, .notEnabled]
+        }
     }
 
     private func configureDatePicker() {
@@ -146,7 +189,7 @@ class SkontoExpiryDateView: UIView {
         datePicker.date = viewModel.dueDate
         let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
-        dateComponent.month = 6
+        dateComponent.month = Constants.numberOfMonths
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
@@ -169,5 +212,13 @@ private extension SkontoExpiryDateView {
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 22
         static let cornerRadius: CGFloat = 8
+        static let numberOfMonths = 6
+    }
+
+    struct Strings {
+        static let withoutDiscountHintKey: String = "ginibank.skonto.editableField.accessibility"
+        static let withoutDiscountHintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(withoutDiscountHintKey,
+                                                                                comment: withoutDiscountHintComment)
     }
 }

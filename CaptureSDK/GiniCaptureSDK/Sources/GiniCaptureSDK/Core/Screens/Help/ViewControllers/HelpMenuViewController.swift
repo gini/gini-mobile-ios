@@ -27,15 +27,12 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
     private let tableRowHeight: CGFloat = 44
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
     var bottomNavigationBar: UIView?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
         var tableView: UITableView
-        if #available(iOS 13.0, *) {
-            tableView = UITableView(frame: .zero, style: .insetGrouped)
-        } else {
-            tableView = UITableView(frame: .zero, style: .grouped)
-        }
+        tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -100,6 +97,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
         tableView.reloadData()
     }
 

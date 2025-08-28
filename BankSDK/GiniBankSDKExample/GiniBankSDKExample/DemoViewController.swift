@@ -28,11 +28,11 @@ final class DemoViewController: UIViewController {
     @IBOutlet private weak var transactionListButton: GiniButton!
     @IBOutlet private weak var entrypointContentStackView: UIStackView!
 
-    @IBOutlet private weak var giniLogoTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var giniLogoTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var welcomeTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var stackViewMarginConstraints: [NSLayoutConstraint]!
-    @IBOutlet private weak var metaInformationLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var metaInformationLabelTopConstraint: NSLayoutConstraint!
 
     weak var delegate: DemoViewControllerDelegate?
     private var focusedFormField: UITextField?
@@ -75,7 +75,7 @@ final class DemoViewController: UIViewController {
 
         dismissKeyboardOnTap()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         subscribeOnKeyboardNotifications()

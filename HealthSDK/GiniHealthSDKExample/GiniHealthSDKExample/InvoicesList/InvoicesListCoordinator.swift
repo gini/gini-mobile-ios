@@ -21,13 +21,15 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     func start(documentService: DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
                health: GiniHealth,
-               invoices: [DocumentWithExtractions]? = nil) {
+               invoices: [DocumentWithExtractions]? = nil,
+               shouldUseAlternativeNavigation: Bool) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
                                                                      invoices: invoices,
                                                                      documentService: documentService,
                                                                      hardcodedInvoicesController: hardcodedInvoicesController,
-                                                                     health: health)
+                                                                     health: health,
+                                                                     shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(named: "background")

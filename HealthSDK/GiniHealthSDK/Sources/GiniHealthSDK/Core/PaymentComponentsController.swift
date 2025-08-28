@@ -18,6 +18,7 @@ import GiniUtilites
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine
     func didFetchedPaymentProviders()
+    func didDismissPaymentComponents()
 }
 
 protocol PaymentComponentsProtocol {
@@ -100,8 +101,6 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         }
     }
 
-    /// Previous presented view
-    var previousPresentedViews: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not
@@ -125,7 +124,6 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.giniSDK = giniHealth
         self.configurationProvider = giniHealth
         self.stringsProvider = giniHealth
-        setupObservers()
         loadPaymentProviders()
         fetchAndUpdateClientConfiguration()
     }
@@ -144,15 +142,19 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
      */
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         self.navigationControllerProvided = navigationController
+        
         if let paymentInfo {
             self.paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: paymentInfo)
         }
+        
         self.documentId = documentId
         self.trackingDelegate = trackingDelegate
+        
         guard let _ = selectedPaymentProvider else {
             presentPaymentViewBottomSheet()
             return
         }
+        
         if GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             if GiniHealthConfiguration.shared.showPaymentReviewScreen {
                 didTapOnPayInvoice(documentId: documentId)

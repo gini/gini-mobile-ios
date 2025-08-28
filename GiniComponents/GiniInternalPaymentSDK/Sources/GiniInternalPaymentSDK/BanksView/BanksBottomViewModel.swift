@@ -33,13 +33,15 @@ public final class BanksBottomViewModel {
     let strings: BanksBottomStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
+    let paymentInfoViewModel: PaymentInfoViewModel
+    let internalPaymentProvider: [PaymentProvider] = []
     public weak var viewDelegate: BanksSelectionProtocol?
     public var documentId: String?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?
+    var maximumViewHeight: CGFloat = 0
 
-    let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
     let rowHeight: CGFloat = Constants.cellSizeHeight
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
@@ -59,6 +61,8 @@ public final class BanksBottomViewModel {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 moreInformationConfiguration: MoreInformationConfiguration,
                 moreInformationStrings: MoreInformationStrings,
+                paymentInfoConfiguration: PaymentInfoConfiguration,
+                paymentInfoStrings: PaymentInfoStrings,
                 urlOpener: URLOpener = URLOpener(UIApplication.shared),
                 clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
@@ -67,6 +71,14 @@ public final class BanksBottomViewModel {
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
+        
+        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
+                                                         configuration: paymentInfoConfiguration,
+                                                         strings: paymentInfoStrings,
+                                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
+                                                         poweredByGiniStrings: poweredByGiniStrings,
+                                                         clientConfiguration: clientConfiguration)
+        
         self.clientConfiguration = clientConfiguration
 
         self.paymentProviders = paymentProviders
@@ -85,9 +97,16 @@ public final class BanksBottomViewModel {
         self.calculateHeights()
     }
 
-    private func calculateHeights() {
+    func calculateHeights() {
         let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
+        var topPaddingView: CGFloat = 0
+        if UIDevice.isPortrait() {
+            topPaddingView = Constants.topPaddingViewPortrait
+        } else {
+            topPaddingView = Constants.topPaddingViewLandscape
+        }
+        maximumViewHeight = UIScreen.main.bounds.height - topPaddingView
         if totalBottomViewHeight > maximumViewHeight {
             self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
             self.bottomViewHeight = maximumViewHeight
@@ -117,10 +136,6 @@ public final class BanksBottomViewModel {
         viewDelegate?.didTapOnClose()
     }
 
-    func didTapOnMoreInformation() {
-        viewDelegate?.didTapOnMoreInformation()
-    }
-
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
         if let urlAppScheme = URL(string: paymentProvider.appSchemeIOS) {
             return urlOpener.canOpenLink(url: urlAppScheme)
@@ -133,6 +148,7 @@ extension BanksBottomViewModel {
     enum Constants {
         static let blankBottomViewHeight: CGFloat = 200.0
         static let cellSizeHeight: CGFloat = 64.0
-        static let topPaddingView: CGFloat = 100.0
+        static let topPaddingViewPortrait: CGFloat = 100.0
+        static let topPaddingViewLandscape: CGFloat = 20.0
     }
 }

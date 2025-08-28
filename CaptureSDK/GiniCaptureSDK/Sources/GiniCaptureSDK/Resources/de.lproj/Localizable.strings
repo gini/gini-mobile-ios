@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 "ginicapture.navigationbar.accessibility.back" = "Zurück";
+"ginicapture.navigationbar.error.backToCamera"   = "Kamera";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
@@ -31,7 +32,7 @@
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Fotos benötigt.";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "Es ist nur möglich einen Dateityp gleichzeitig auszuwählen.";
 "ginicapture.camera.filepicker.failedToOpenDocument" = "Die Datei konnte nicht geöffnet werden. Bitte verwenden Sie einen anderen Dateityp.";
-"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Es kann nur eine PDF-Datei gleichzeitig ausgewählt werden.";
+"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Es kann jeweils nur eine Rechnung hochgeladen werden.";
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
@@ -39,6 +40,7 @@
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "Diese Datei ist leider zu groß";
 "ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder PDF können analysiert werden.";
+"ginicapture.camera.documentValidationError.wrongFormatWithXML" = "Nur Dateien vom Format jpg, png, gif, PDF oder XML können analysiert werden.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
@@ -64,7 +66,8 @@
 "ginicapture.camera.popupTitleImportPDF" = "PDF importieren";
 "ginicapture.camera.popupOptionPhotos" = "Fotos hochladen";
 "ginicapture.camera.popupOptionFiles" = "Dokument hochladen";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Fotos oder PDF importieren";
+"ginicapture.camera.popupOptionEInvoice" = "E-Rechnung hochladen";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 
 "ginicapture.onboarding.firstPage"  = "Gerät parallel über die Seite halten";
@@ -88,7 +91,7 @@
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.review.delete"             = "Seite löschen";
 
-"ginicapture.analysis.screenTitle" = "Übersicht";
+"ginicapture.analysis.screenTitle" = "Auswertung";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
@@ -109,6 +112,9 @@
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.cancelled" = "Die Analyse wurde abgebrochen";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF-Dokument";
+"ginicapture.analysis.education.loadingText" = "analysieren";
+"ginicapture.analysis.education.loading.intro" = "Falls Sie es nicht wussten...";
+"ginicapture.analysis.education.loading.uploadTip" = "Laden Sie direkt ein PDF, Bild oder GIF hoch";
 
 "ginicapture.help.openWithTutorial.title" = "Dokumente aus anderen Apps öffnen";
 
@@ -166,7 +172,7 @@
 "ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der angezeigten Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
 "ginicapture.help.import.importtoapp.accessibility" = "Banking App auswählen. Wählen Sie nun die gewünschte App aus mit der das Dokument geteilt werden soll";
 "ginicapture.help.import.draganddrop.title" = "Drag & drop auf dem iPad";
-"ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie ab iOS 12 oder neuer PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
+"ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
 "ginicapture.help.import.draganddrop.accessibility" = "Auf dem Tablet können Sie auch die zu teilende Datei mit Drag and Drop in die Banking App ziehen";
 
 "ginicapture.help.supportedFormats.title" = "Formate";
@@ -176,6 +182,7 @@
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF-Dokumente bis zu 10 Seiten";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR-Codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Monitoraufnahmen oder Screenshots";
+"ginicapture.help.supportedFormats.section.1.item.6" = "E-Rechnungen: XRechnung (XML), ZUGFeRD (PDF)";
 "ginicapture.help.supportedFormats.section.2.title" = "Nicht unterstütztes Format";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handschrift";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
@@ -213,6 +220,9 @@
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
+"ginicapture.QRscanning.education.loading.captureTip" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN erkannt";
 "ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";
+
+"ginicapture.education.loading.accessibility" = "Analyse der Rechnung läuft";

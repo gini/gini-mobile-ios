@@ -8,9 +8,13 @@
 
 import UIKit
 import GiniUtilites
+import Combine
 
 public final class PaymentInfoViewController: UIViewController {
     let viewModel: PaymentInfoViewModel
+
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -43,6 +47,8 @@ public final class PaymentInfoViewController: UIViewController {
         collectionView.isScrollEnabled = true
         collectionView.register(PaymentInfoBankCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PaymentInfoBankCollectionViewCell.identifier)
+        collectionView.isAccessibilityElement = true
+        collectionView.accessibilityLabel = viewModel.accessibilityBankListText
         return collectionView
     }()
     
@@ -107,6 +113,7 @@ public final class PaymentInfoViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.questionTitleHeight
         tableView.estimatedSectionHeaderHeight = Constants.questionTitleHeight
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedSectionFooterHeight = 1.0
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
@@ -114,7 +121,11 @@ public final class PaymentInfoViewController: UIViewController {
         return tableView
     }()
     
-    private var heightsQuestionsTableView: [NSLayoutConstraint] = []
+    private lazy var tableViewQuestionHeightConstraint: NSLayoutConstraint = {
+        questionsTableView.heightAnchor.constraint(equalToConstant: Constants.questionTitleHeight)
+    }()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     public init(viewModel: PaymentInfoViewModel) {
         self.viewModel = viewModel
@@ -129,18 +140,30 @@ public final class PaymentInfoViewController: UIViewController {
         super.viewDidLoad()
         self.title = viewModel.strings.titleText
         self.setupView()
-    }
-
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.post(name: .paymentInfoDissapeared, object: nil)
+        bindToTableViewSizeUpdates()
     }
 
     private func setupView() {
+        addCloseButton()
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
+        setupInitialLayout()
         setupViewVisibility()
+    }
+    
+    private func addCloseButton() {
+        let closeIconTintColor = viewModel.configuration.closeIconTintColor
+        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate)
+
+        let closeButton = UIBarButtonItem(image: closeButtonIcon,
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(didTapCloseButton))
+
+        closeButton.tintColor = closeIconTintColor
+        closeButton.accessibilityLabel = viewModel.strings.accessibilityCloseText
+        navigationItem.leftBarButtonItem = closeButton
     }
     
     private func setupViewHierarchy() {
@@ -166,6 +189,42 @@ public final class PaymentInfoViewController: UIViewController {
         setupQuestionsConstraints()
     }
 
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        deactivateAllConstraints()
+        portraitConstraints = [
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints() {
+        deactivateAllConstraints()
+        landscapeConstraints = [
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.viewPaddingLandscape),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.viewPaddingLandscape)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+    
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
@@ -173,15 +232,13 @@ public final class PaymentInfoViewController: UIViewController {
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
+            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
         ])
     }
     
@@ -222,7 +279,7 @@ public final class PaymentInfoViewController: UIViewController {
             questionsTableView.topAnchor.constraint(equalTo: questionsTitleLabel.bottomAnchor),
             questionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             questionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
-            questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Double(viewModel.questions.count) * Constants.questionTitleHeight),
+            tableViewQuestionHeightConstraint,
             questionsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding)
         ])
     }
@@ -232,10 +289,30 @@ public final class PaymentInfoViewController: UIViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
-        // Small hack needed to satisfy automatic dimension table view inside scrollView
-        NSLayoutConstraint.deactivate(heightsQuestionsTableView)
-        heightsQuestionsTableView = [questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height)]
-        NSLayoutConstraint.activate(heightsQuestionsTableView)
+    }
+    
+    private func bindToTableViewSizeUpdates() {
+        questionsTableView.publisher(for: \.contentSize)
+            .receive(on: DispatchQueue.main)
+            .filter { $0.height > 0 }
+            .sink { [weak self] value in
+                self?.tableViewQuestionHeightConstraint.constant = value.height
+            }.store(in: &cancellables)
+    }
+    
+    @objc private func didTapCloseButton() {
+        dismiss(animated: true)
+    }
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.updateLayoutForCurrentOrientation()
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -269,17 +346,17 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let cellCount = Double(viewModel.paymentProviders.count)
         if cellCount > 0 {
-                let cellWidth = Constants.bankIconsWidth
-                
-                let totalCellWidth = cellWidth * cellCount + Constants.bankIconsSpacing * (cellCount - 1)
-                let contentWidth = collectionView.frame.size.width - (2 * Constants.leftRightPadding)
-                
-                if totalCellWidth < contentWidth {
-                    let padding = (contentWidth - totalCellWidth) / 2.0
-                    return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
-                } else {
-                    return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: Constants.leftRightPadding)
-                }
+            let cellWidth = Constants.bankIconsWidth
+
+            let totalCellWidth = cellWidth * cellCount + Constants.bankIconsSpacing * (cellCount - 1)
+            let contentWidth = collectionView.frame.size.width - (2 * Constants.leftRightPadding)
+
+            if totalCellWidth < contentWidth {
+                let padding = (contentWidth - totalCellWidth) / 2.0
+                return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
+            } else {
+                return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: Constants.leftRightPadding)
+            }
         }
         return UIEdgeInsets.zero
     }
@@ -313,7 +390,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        Constants.questionTitleHeight
+        UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -363,5 +440,7 @@ extension PaymentInfoViewController {
         static let questionSectionSeparatorHeight = 1.0
         
         static let estimatedAnswerHeight = 250.0
+
+        static let viewPaddingLandscape = 126.0
     }
 }
