@@ -15,8 +15,6 @@
 
 default_platform(:ios)
 
-ENV["MATCH_GIT_BASIC_AUTHORIZATION"] = ""
-
 platform :ios do
   desc <<~DOC
     Generate certificates
