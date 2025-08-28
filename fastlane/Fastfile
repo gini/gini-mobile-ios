@@ -516,12 +516,12 @@ platform :ios do
   desc "Distribute the app to Firebase App Distribution"
   lane :distribute_to_firebase do
     UI.message("🔥 Starting Firebase App Distribution")
-
-    # Debug: List current directory contents
+    
+    # Debug: List current directory contents (where artifact was downloaded)
     UI.message("📁 Current directory: #{Dir.pwd}")
     UI.message("📂 Files in current directory:")
     Dir.glob("*").each { |file| UI.message("  - #{file}") }
-
+    
     # Debug: Look for IPA files specifically
     ipa_files = Dir.glob("*.ipa")
     UI.message("🔍 Found IPA files: #{ipa_files}")
@@ -543,25 +543,28 @@ platform :ios do
       File.write(service_account_file.path, ENV['FIREBASE_SERVICE_ACCOUNT_JSON'])
       UI.message("📝 Service account file created at: #{service_account_file.path}")
       
-      # Verify IPA file exists
-      ipa_path = ENV['IPA_FILE']
-
+      # Handle IPA file path - the artifact should be downloaded to current directory
+      ipa_filename = ENV['IPA_FILE']
+      
       # Add .ipa extension if not present
-      unless ipa_path.end_with?('.ipa')
-        ipa_path = "#{ipa_path}.ipa"
-        UI.message("🔧 Added .ipa extension: #{ipa_path}")
+      unless ipa_filename.end_with?('.ipa')
+        ipa_filename = "#{ipa_filename}.ipa"
+        UI.message("🔧 Added .ipa extension: #{ipa_filename}")
       end
-
-      unless File.exist?(ipa_path)
-        UI.message("❓ IPA file not found at: #{ipa_path}")
-
-        # Look for any IPA files in current directory
-        if ipa_files.any?
-          ipa_path = ipa_files.first
-          UI.message("🔍 Using found IPA file: #{ipa_path}")
-        else
-          UI.user_error!("❌ No IPA files found in current directory. Available files: #{Dir.glob('*').join(', ')}")
-        end
+      
+      # Look for the IPA file in current directory (where artifact was downloaded)
+      ipa_path = nil
+      
+      # First try the exact filename
+      if File.exist?(ipa_filename)
+        ipa_path = ipa_filename
+        UI.message("✅ Found IPA file: #{ipa_path}")
+      # If not found, use any IPA file in the directory
+      elsif ipa_files.any?
+        ipa_path = ipa_files.first
+        UI.message("🔍 Using found IPA file: #{ipa_path}")
+      else
+        UI.user_error!("❌ No IPA files found in current directory. Available files: #{Dir.glob('*').join(', ')}")
       end
       
       UI.message("📱 Distributing IPA: #{ipa_path}")
