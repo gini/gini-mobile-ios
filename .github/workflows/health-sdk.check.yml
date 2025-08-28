@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniHealthSDK]
+        target: [GiniHealthSDK, GiniHealthSDKExampleTests]
         destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
 
     steps:
@@ -43,7 +43,7 @@ jobs:
         ruby-version: '3.2.0'
         bundler-cache: true
 
-    - name: Publish GiniHealthSDK documentation to the release repo
+    - name: Build and run tests for "${{ matrix.target }}"
       uses: maierj/fastlane-action@v3.1.0
       with:
           lane: 'run_unit_tests'
@@ -54,29 +54,18 @@ jobs:
               "clientSecret": "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
             }
 
-    - name: Build example app
-      run: |
-        xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+    # - name: Build example app
+    #   run: |
+    #     xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
 
-    - name: Extract Device Name
-      id: extract_name
-      run: |
-        DEVICE_NAME=$(echo "${{ matrix.destination }}" | sed -n 's/.*name=\([^,]*\).*/\1/p')
-        echo "DEVICE_NAME=${DEVICE_NAME}" >> $GITHUB_ENV        
+    # - name: Extract Device Name
+    #   id: extract_name
+    #   run: |
+    #     DEVICE_NAME=$(echo "${{ matrix.destination }}" | sed -n 's/.*name=\([^,]*\).*/\1/p')
+    #     echo "DEVICE_NAME=${DEVICE_NAME}" >> $GITHUB_ENV        
 
-    - name: Start iOS Simulator
-      run: |
-        xcrun simctl boot "$DEVICE_NAME"
-        xcrun simctl bootstatus "$DEVICE_NAME" -b        
-
-    - name: Build example app and run integration tests
-      run: >
-        xcodebuild clean test
-        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKExampleTests"
-        -destination "${{ matrix.destination }}"
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+    # - name: Start iOS Simulator
+    #   run: |
+    #     xcrun simctl boot "$DEVICE_NAME"
+    #     xcrun simctl bootstatus "$DEVICE_NAME" -b        
+ 
