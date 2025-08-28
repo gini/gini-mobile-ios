@@ -36,15 +36,24 @@ jobs:
       run: |
            cd HealthSDK/GiniHealthSDK
            swift package update
-           
-    - name: Build sdk targets
-      run: |
-        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
 
-    - name: Run unit tests
-      run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-   
+    - name: Publish GiniHealthSDK documentation to the release repo
+      uses: maierj/fastlane-action@v3.1.0
+      with:
+          lane: 'run_unit_tests'
+          options: >
+            { 
+              "target":  "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}",
+              "clientSecret": "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+            }
+
     - name: Build example app
       run: |
         xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
