@@ -138,7 +138,6 @@ jobs:
         id: distribute
         uses: maierj/fastlane-action@v3.1.0
         with:
-          echo "🔥 Starting Firebase distribution with Fastlane"
           lane: 'distribute_to_firebase'
         env:
           FIREBASE_APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
