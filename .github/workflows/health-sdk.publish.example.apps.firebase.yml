@@ -114,12 +114,16 @@ jobs:
   distribute:
     needs: build
     runs-on: macos-latest
+    environment: Deploy-approval
     outputs:
       firebase_console_uri: ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
       testing_uri: ${{ steps.distribute.outputs.TESTING_URI }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x ${{ github.workspace }}/.github/bin/*.sh
 
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
@@ -136,9 +140,9 @@ jobs:
 
       - name: Distribute to Firebase
         id: distribute
-        uses: maierj/fastlane-action@v3.1.0
-        with:
-          lane: 'distribute_to_firebase'
+        run: |
+        echo "🔥 Starting Firebase distribution with Fastlane"
+        ${{ github.workspace }}/.github/bin/upload-to-firebase.sh
         env:
           FIREBASE_APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
