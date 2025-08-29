@@ -16,7 +16,6 @@ env:
   APP_IDENTIFIER: 'net.gini.healthsdk.example'
   APP_SCHEME: 'GiniHealthSDKExample'
   TEAM_ID: 'JA825X8F7Z'
-  PROFILE_NAME: 'Gini Health SDK Example App Ad-Hoc Distribution'
 
 jobs:
   prepare:
@@ -59,6 +58,11 @@ jobs:
   build:
     needs: prepare
     runs-on: macos-latest
+    env:
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,26 +80,14 @@ jobs:
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
-
-      - name: Setup credentials and certificates
-        run: ${{ github.workspace }}/.github/bin/setup-credentials.sh
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
-          KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-          CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-          APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
-          TEAM_ID: ${{ env.TEAM_ID }}
-          PROFILE_NAME: ${{ env.PROFILE_NAME }}
-
-      - name: Build and archive project
+      
+      - name: Build and archive project with Match
         uses: maierj/fastlane-action@v3.1.0
         with:
           lane: 'build_health_example_app'
         env:
           APP_SCHEME: ${{ env.APP_SCHEME }}
-          TEAM_ID: ${{ env.TEAM_ID }}
+          APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
           IPA_FILE: GiniHealthSDKExample.ipa
 
       - name: Check IPA existence
