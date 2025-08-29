@@ -85,7 +85,6 @@ jobs:
           IPA_FILE: GiniHealthSDKExample.ipa
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
 
       - name: Check IPA existence
         uses: andstor/file-existence-action@v3
