@@ -501,15 +501,17 @@ platform :ios do
       sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
-
+    MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
   lane :build_health_example_app do
-    bundle_id     = ENV.fetch("APP_IDENTIFIER")
-    scheme        = ENV.fetch("APP_SCHEME")
-    ipaFile       = ENV.fetch("IPA_FILE")
+    bundle_id     = ENV["APP_IDENTIFIER"]
+    scheme        = ENV["APP_SCHEME"]
+    ipaFile       = ENV["IPA_FILE"]
 
     match(
       type: "development",
       app_identifier: [bundle_id],
+      git_url: ENV["MATCH_GIT_URL"],
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"],
       force_for_new_devices: true,
       readonly: true
     )

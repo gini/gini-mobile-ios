@@ -57,11 +57,6 @@ jobs:
   build:
     needs: prepare
     runs-on: macos-latest
-    env:
-      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -88,6 +83,9 @@ jobs:
           APP_SCHEME: ${{ env.APP_SCHEME }}
           APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
           IPA_FILE: GiniHealthSDKExample.ipa
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
 
       - name: Check IPA existence
         uses: andstor/file-existence-action@v3

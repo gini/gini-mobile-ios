@@ -1,4 +1,0 @@
-git_url(ENV["MATCH_GIT_URL"])
-
-username(ENV["MATCH_USERNAME"])
-type("development") # The default type, can be: appstore, adhoc, enterprise or development
