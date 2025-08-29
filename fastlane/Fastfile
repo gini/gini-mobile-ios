@@ -503,14 +503,25 @@ platform :ios do
   end
 
   lane :build_health_example_app do
+    bundle_id     = ENV.fetch("APP_IDENTIFIER")
+    scheme        = ENV.fetch("APP_SCHEME")
+    ipaFile       = ENV.fetch("IPA_FILE")
+
+    match(
+      type: "development",
+      app_identifier: [bundle_id],
+      force_for_new_devices: true,
+      readonly: true
+    )
+  
     gym(
-      scheme: ENV['APP_SCHEME'],
+      scheme: scheme,
       export_method: "ad-hoc",
       silent: true,
       clean:true,
       suppress_xcode_output: true,
       export_options: { manageAppVersionAndBuildNumber: false },
-      output_name: ENV['IPA_FILE']
+      output_name: ipaFile
     )
   end
 
