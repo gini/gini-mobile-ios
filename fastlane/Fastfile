@@ -508,7 +508,7 @@ platform :ios do
     ipaFile       = ENV["IPA_FILE"]
 
     match(
-      type: "development",
+      type: "adhoc",
       app_identifier: [bundle_id],
       git_url: ENV["MATCH_GIT_URL"],
       force_for_new_devices: true,
@@ -517,8 +517,7 @@ platform :ios do
 
     gym(
       scheme: scheme,
-      export_method: "development",
-      configuration: "Debug",
+      export_method: "ad-hoc",
       silent: true,
       clean:true,
       suppress_xcode_output: true,
