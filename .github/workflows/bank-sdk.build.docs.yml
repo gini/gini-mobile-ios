@@ -1,11 +1,9 @@
 name: Builds docs for Bank SDK
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
-    paths:
-      - 'BankSDK/**'
+  workflow_call:
   workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
