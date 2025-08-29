@@ -141,8 +141,8 @@ jobs:
       - name: Distribute to Firebase
         id: distribute
         run: |
-        echo "🔥 Starting Firebase distribution with Fastlane"
-        ${{ github.workspace }}/.github/bin/upload-to-firebase.sh
+          echo "🔥 Starting Firebase distribution with Fastlane"
+          ${{ github.workspace }}/.github/bin/upload-to-firebase.sh
         env:
           FIREBASE_APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
