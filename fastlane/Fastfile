@@ -514,10 +514,11 @@ platform :ios do
       force_for_new_devices: true,
       readonly: true
     )
-  
+
     gym(
       scheme: scheme,
-      export_method: "ad-hoc",
+      export_method: "development",
+      configuration: "Debug",
       silent: true,
       clean:true,
       suppress_xcode_output: true,
