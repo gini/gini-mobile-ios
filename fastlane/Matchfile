@@ -1,4 +1,4 @@
-git_url("git@github.com:gini/ios-certificates.git")
+git_url(ENV["MATCH_GIT_URL"])
 
-username ""
+username(ENV["MATCH_USERNAME"])
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
