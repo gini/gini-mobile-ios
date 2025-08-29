@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniUtilitesVersion = "2.1.0"
+public let GiniUtilitesVersion = "2.1.1"
