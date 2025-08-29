@@ -20,27 +20,27 @@ platform :ios do
     Generate certificates
   DOC
 
-  lane :generate_certificates do
+lane :generate_certificates do
     match(
       app_identifier: ["net.gini.healthsdk.example"],
       type: "development",
       generate_apple_certs: true,
       force_for_new_devices: true
     )
-  end
+end
 
-  lane :refresh_profiles do
+lane :refresh_profiles do
     match(
       app_identifier: ["net.gini.healthsdk.example"],
       type: "development",
       generate_apple_certs: false,
       force_for_new_devices: true
     )
-  end
+end
 
-  lane :register_new_devices do 
+lane :register_new_devices do 
     register_devices(devices_file: "./devices.txt")
-  end
+end
 
   
 desc <<~DOC

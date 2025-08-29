@@ -184,6 +184,22 @@ Parameters:
 
 
 
+### ios build_health_example_app
+
+```sh
+[bundle exec] fastlane ios build_health_example_app
+```
+
+
+
+### ios distribute_to_firebase
+
+```sh
+[bundle exec] fastlane ios distribute_to_firebase
+```
+
+Distribute the app to Firebase App Distribution
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
