@@ -515,25 +515,11 @@ platform :ios do
 
   desc "Distribute the app to Firebase App Distribution"
   lane :distribute_to_firebase do
-    UI.message("🔥 Starting Firebase App Distribution")
-    
-    # Debug: Show current directory and parent directory
-    UI.message("📁 Current directory: #{Dir.pwd}")
-    UI.message("📂 Files in current directory (fastlane/):")
-    Dir.glob("*").each { |file| UI.message("  - #{file}") }
-    
-    UI.message("📂 Files in parent directory (project root):")
-    Dir.glob("../*").each { |file| UI.message("  - #{File.basename(file)}") }
-    
-    # Debug: Look for IPA files in parent directory (where artifact is downloaded)
-    ipa_files_parent = Dir.glob("../*.ipa")
-    UI.message("🔍 Found IPA files in parent directory: #{ipa_files_parent.map { |f| File.basename(f) }}")
-    
     # Verify required environment variables
     required_vars = ['FIREBASE_APP_ID', 'FIREBASE_SERVICE_ACCOUNT_JSON', 'IPA_FILE', 'DISTRIBUTION_GROUPS']
     required_vars.each do |var|
       if ENV[var].nil? || ENV[var].empty?
-        UI.user_error!("❌ Required environment variable '#{var}' is not defined")
+        UI.user_error!("Required environment variable '#{var}' is not defined")
       end
     end
     
@@ -544,7 +530,6 @@ platform :ios do
     begin
       # Write service account credentials to temporary file
       File.write(service_account_file.path, ENV['FIREBASE_SERVICE_ACCOUNT_JSON'])
-      UI.message("📝 Service account file created at: #{service_account_file.path}")
       
       # Handle IPA file path - look in parent directory where artifact was downloaded
       ipa_filename = ENV['IPA_FILE']
@@ -552,12 +537,10 @@ platform :ios do
       # Add .ipa extension if not present
       unless ipa_filename.end_with?('.ipa')
         ipa_filename = "#{ipa_filename}.ipa"
-        UI.message("🔧 Added .ipa extension: #{ipa_filename}")
       end
       
       # Get absolute path to parent directory (project root)
       parent_dir = File.expand_path('..')
-      UI.message("📁 Parent directory absolute path: #{parent_dir}")
       
       # Look for IPA file in parent directory using absolute path
       ipa_path = nil
@@ -565,19 +548,16 @@ platform :ios do
       
       if File.exist?(absolute_ipa_path)
         ipa_path = absolute_ipa_path
-        UI.message("✅ Found IPA file at absolute path: #{ipa_path}")
-      # If exact filename not found, use any IPA file in parent directory with absolute path
-      elsif ipa_files_parent.any?
-        relative_ipa_path = ipa_files_parent.first
-        ipa_path = File.expand_path(relative_ipa_path)
-        UI.message("🔍 Using found IPA file with absolute path: #{ipa_path}")
       else
-        UI.user_error!("❌ No IPA files found in parent directory. Expected: #{absolute_ipa_path}. Available files in parent: #{Dir.glob('../*').map { |f| File.basename(f) }.join(', ')}")
+        # If exact filename not found, use any IPA file in parent directory with absolute path
+        ipa_files_parent = Dir.glob("../*.ipa")
+        if ipa_files_parent.any?
+          relative_ipa_path = ipa_files_parent.first
+          ipa_path = File.expand_path(relative_ipa_path)
+        else
+          UI.user_error!("No IPA files found in parent directory. Expected: #{absolute_ipa_path}")
+        end
       end
-      
-      UI.message("📱 Distributing IPA: #{ipa_path}")
-      UI.message("🎯 App ID: #{ENV['FIREBASE_APP_ID']}")
-      UI.message("👥 Groups: #{ENV['DISTRIBUTION_GROUPS']}")
       
       # Use official Firebase App Distribution plugin
       firebase_app_distribution(
@@ -588,18 +568,14 @@ platform :ios do
         service_credentials_file: service_account_file.path
       )
       
-      UI.success("✅ Firebase distribution completed successfully!")
-      
     rescue => e
-      UI.error("❌ Error during distribution: #{e.message}")
-      UI.error("Error details: #{e.backtrace.first(5).join('\n')}")
+      UI.error("Error during distribution: #{e.message}")
       raise e
     ensure
       # Clean up temporary file
       if service_account_file
         service_account_file.close
         service_account_file.unlink
-        UI.message("🧹 Temporary service account file removed")
       end
     end
   end
