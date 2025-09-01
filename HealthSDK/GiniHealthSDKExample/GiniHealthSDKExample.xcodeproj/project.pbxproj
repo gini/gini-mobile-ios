@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */; };
+		282DD2C52E4CB61C00A4EDCE /* AlternativeNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */; };
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
+		288F88502E4A5563004D7A60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F884F2E4A5563004D7A60 /* FirebaseAnalytics */; };
+		288F88522E4A5563004D7A60 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88512E4A5563004D7A60 /* FirebaseCrashlytics */; };
+		288F88542E4A5563004D7A60 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88532E4A5563004D7A60 /* FirebasePerformance */; };
+		288F88562E4A6289004D7A60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288F88552E4A6289004D7A60 /* GoogleService-Info.plist */; };
 		504435172C5AE5D300105D0B /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */; };
 		504435182C5AE5D300105D0B /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */; };
 		50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */; };
@@ -71,7 +77,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeNavigationTests.swift; sourceTree = "<group>"; };
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		288F88552E4A6289004D7A60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniHealthSDKExampleTests.xctestplan; sourceTree = "<group>"; };
 		50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
@@ -137,6 +146,9 @@
 			files = (
 				F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */,
 				F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */,
+				288F88542E4A5563004D7A60 /* FirebasePerformance in Frameworks */,
+				288F88522E4A5563004D7A60 /* FirebaseCrashlytics in Frameworks */,
+				288F88502E4A5563004D7A60 /* FirebaseAnalytics in Frameworks */,
 				F4EC3900273C245E007045DC /* GiniHealthSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,6 +218,7 @@
 		F4C36A7F270C6EBF00CCC69C = {
 			isa = PBXGroup;
 			children = (
+				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
@@ -267,6 +280,7 @@
 				8ADEE2F12C2C3C9B006D3526 /* Resources */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
 				F4EC38CF273C21E5007045DC /* Info.plist */,
+				282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */,
 			);
 			path = GiniHealthSDKExample;
 			sourceTree = "<group>";
@@ -281,6 +295,7 @@
 				8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */,
 				8ADEE2F82C2C4822006D3526 /* FileLoader.swift */,
 				8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */,
+				282DD2C42E4CB61C00A4EDCE /* AlternativeNavigationTests.swift */,
 			);
 			path = GiniHealthSDKExampleTests;
 			sourceTree = "<group>";
@@ -295,6 +310,7 @@
 				F4EC38BB273C21E4007045DC /* Sources */,
 				F4EC38BC273C21E4007045DC /* Frameworks */,
 				F4EC38BD273C21E4007045DC /* Resources */,
+				282DD2C12E4B2A8100A4EDCE /* Upload DSYM */,
 			);
 			buildRules = (
 			);
@@ -304,6 +320,9 @@
 			packageProductDependencies = (
 				F4EC38FF273C245E007045DC /* GiniHealthSDK */,
 				F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */,
+				288F884F2E4A5563004D7A60 /* FirebaseAnalytics */,
+				288F88512E4A5563004D7A60 /* FirebaseCrashlytics */,
+				288F88532E4A5563004D7A60 /* FirebasePerformance */,
 			);
 			productName = GiniHealthSDKExample;
 			productReference = F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */;
@@ -356,6 +375,9 @@
 				de,
 			);
 			mainGroup = F4C36A7F270C6EBF00CCC69C;
+			packageReferences = (
+				288F884E2E4A5563004D7A60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = F4C36A89270C6EBF00CCC69C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -373,9 +395,11 @@
 			files = (
 				F4EC38CE273C21E5007045DC /* LaunchScreen.storyboard in Resources */,
 				7DB6618C2B554ADF004537AA /* InvoiceTableViewCell.xib in Resources */,
+				288F88562E4A6289004D7A60 /* GoogleService-Info.plist in Resources */,
 				7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */,
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
+				282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */,
 				7DD0B95E2CF75E9100C5176C /* invoice-13MB.pdf in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */,
@@ -396,6 +420,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		282DD2C12E4B2A8100A4EDCE /* Upload DSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Upload DSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F4EC38BB273C21E4007045DC /* Sources */ = {
@@ -441,6 +491,7 @@
 				8A77DA1E2C2BF6130049FE10 /* UploadDocumentsTests.swift in Sources */,
 				504435172C5AE5D300105D0B /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */,
 				8ADEE2F92C2C4822006D3526 /* FileLoader.swift in Sources */,
+				282DD2C52E4CB61C00A4EDCE /* AlternativeNavigationTests.swift in Sources */,
 				504435182C5AE5D300105D0B /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */,
 				F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */,
 			);
@@ -646,10 +697,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GiniHealthSDKExample/GiniHealthSDKExample.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Gini GmbH (JA825X8F7Z)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniHealthSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = GiniHealthSDKExample;
@@ -673,6 +725,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Gini Health SDK Example App App Store Distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -773,7 +826,33 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		288F884E2E4A5563004D7A60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 12.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		288F884F2E4A5563004D7A60 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 288F884E2E4A5563004D7A60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		288F88512E4A5563004D7A60 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 288F884E2E4A5563004D7A60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		288F88532E4A5563004D7A60 /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 288F884E2E4A5563004D7A60 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
 		F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;

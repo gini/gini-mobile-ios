@@ -78,9 +78,9 @@ import UIKit
         if document.type == .pdf,
            let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
             originalDocumentName = documentTitle
-            loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
+            loadingText.text = String(format: Strings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = LocalizedStrings.loadingBaseText
+            loadingText.text = Strings.loadingBaseText
         }
 
         return loadingText
@@ -198,7 +198,7 @@ import UIKit
         addImageView()
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        title = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle", comment: "Analysis screen title")
+        title = Strings.screenTitle
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
@@ -402,7 +402,9 @@ private extension AnalysisViewController {
         static let widthMultiplier: CGFloat = 0.9
     }
 
-    enum LocalizedStrings {
+    struct Strings {
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle",
+                                                                  comment: "Analysis screen title")
         static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                      comment: "Analysis screen loading text for PDF")
 

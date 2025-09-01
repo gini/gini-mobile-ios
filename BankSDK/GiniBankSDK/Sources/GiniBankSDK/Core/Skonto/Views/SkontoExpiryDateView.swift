@@ -60,7 +60,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
 
     /// This is needed to avoid the circular reference between this element and its container
     private var privateInputAccessoryView: UIView?
-    
+
     override var inputAccessoryView: UIView? {
         get {
             privateInputAccessoryView
@@ -165,6 +165,19 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
         textField.text = dueDateString
+        configureAccessibility(isSkontoApplied)
+    }
+
+    private func configureAccessibility(_ isSkontoApplied: Bool) {
+        if isSkontoApplied {
+            accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            accessibilityTraits = [.updatesFrequently]
+        } else {
+            accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            accessibilityTraits = [.staticText, .notEnabled]
+        }
     }
 
     private func configureDatePicker() {
@@ -200,5 +213,12 @@ private extension SkontoExpiryDateView {
         static let imageSize: CGFloat = 22
         static let cornerRadius: CGFloat = 8
         static let numberOfMonths = 6
+    }
+
+    struct Strings {
+        static let withoutDiscountHintKey: String = "ginibank.skonto.editableField.accessibility"
+        static let withoutDiscountHintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(withoutDiscountHintKey,
+                                                                                comment: withoutDiscountHintComment)
     }
 }
