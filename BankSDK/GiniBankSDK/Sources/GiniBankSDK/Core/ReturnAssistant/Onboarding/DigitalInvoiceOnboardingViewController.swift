@@ -225,11 +225,11 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     private func updateAccessibilityElements() {
         let device = UIDevice.current
 
-        view.accessibilityElements = switch (device.isIphone, device.isLandscape) {
+        switch (device.isIphone, device.isLandscape) {
         case (true, true):  // iPhone landscape
-            [horizontalItem]
+            view.accessibilityElements = [horizontalItem]
         case (true, false), (false, _):  // iPhone portrait or iPad
-            [topImageView, firstLabel, secondLabel, doneButton].compactMap { $0 }
+            view.accessibilityElements = [topImageView, firstLabel, secondLabel, doneButton].compactMap { $0 }
         }
     }
 
