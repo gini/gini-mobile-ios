@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -222,6 +222,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		28FB83C62E673C8700DE88EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28FB83B82E673C8600DE88EE;
+			remoteInfo = GiniBankSDKExampleSwiftUI;
+		};
+		28FB83D02E673C8700DE88EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28FB83B82E673C8600DE88EE;
+			remoteInfo = GiniBankSDKExampleSwiftUI;
+		};
 		D7E50A652C32D0AD004C1CBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
@@ -362,6 +376,9 @@
 		28F62FA52AB21C3000D47866 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DemoScreen.strings; sourceTree = "<group>"; };
 		28F62FA62AB2236500D47866 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		28F62FA82AB319A000D47866 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
@@ -473,7 +490,34 @@
 		F4F9AA2C29E99CB1001C69A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUI; sourceTree = "<group>"; };
+		28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUITests; sourceTree = "<group>"; };
+		28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUIUITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		28FB83B62E673C8600DE88EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83C22E673C8700DE88EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83CC2E673C8700DE88EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D7E50A5C2C32D0AD004C1CBF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1075,6 +1119,9 @@
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723AB28F8354400BDDEA7 /* GiniBankSDKShareExtension */,
 				D7E50A602C32D0AD004C1CBF /* GiniBankSDKExampleUITests */,
+				28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */,
+				28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */,
+				28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 				28DAF4802CD292DD0035A1FF /* Recovered References */,
@@ -1090,6 +1137,9 @@
 				F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */,
 				F4C723AA28F8354400BDDEA7 /* GiniBankSDKShareExtension.appex */,
 				D7E50A5F2C32D0AD004C1CBF /* GiniBankSDKExampleUITests.xctest */,
+				28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */,
+				28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */,
+				28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1153,6 +1203,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		28FB83B82E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28FB83DD2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUI" */;
+			buildPhases = (
+				28FB83B52E673C8600DE88EE /* Sources */,
+				28FB83B62E673C8600DE88EE /* Frameworks */,
+				28FB83B72E673C8600DE88EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */,
+			);
+			name = GiniBankSDKExampleSwiftUI;
+			packageProductDependencies = (
+			);
+			productName = GiniBankSDKExampleSwiftUI;
+			productReference = 28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		28FB83C42E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28FB83DE2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUITests" */;
+			buildPhases = (
+				28FB83C12E673C8700DE88EE /* Sources */,
+				28FB83C22E673C8700DE88EE /* Frameworks */,
+				28FB83C32E673C8700DE88EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28FB83C72E673C8700DE88EE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */,
+			);
+			name = GiniBankSDKExampleSwiftUITests;
+			packageProductDependencies = (
+			);
+			productName = GiniBankSDKExampleSwiftUITests;
+			productReference = 28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		28FB83CE2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28FB83DF2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUIUITests" */;
+			buildPhases = (
+				28FB83CB2E673C8700DE88EE /* Sources */,
+				28FB83CC2E673C8700DE88EE /* Frameworks */,
+				28FB83CD2E673C8700DE88EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28FB83D12E673C8700DE88EE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */,
+			);
+			name = GiniBankSDKExampleSwiftUIUITests;
+			packageProductDependencies = (
+			);
+			productName = GiniBankSDKExampleSwiftUIUITests;
+			productReference = 28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		D7E50A5E2C32D0AD004C1CBF /* GiniBankSDKExampleUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7E50A692C32D0AD004C1CBF /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */;
@@ -1265,9 +1383,20 @@
 		F490C7B725DE72E400D8CA6F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					28FB83B82E673C8600DE88EE = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					28FB83C42E673C8700DE88EE = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 28FB83B82E673C8600DE88EE;
+					};
+					28FB83CE2E673C8700DE88EE = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 28FB83B82E673C8600DE88EE;
+					};
 					D7E50A5E2C32D0AD004C1CBF = {
 						CreatedOnToolsVersion = 15.4;
 						LastSwiftMigration = 1540;
@@ -1311,11 +1440,35 @@
 				F4807C33263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723A928F8354400BDDEA7 /* GiniBankSDKShareExtension */,
 				D7E50A5E2C32D0AD004C1CBF /* GiniBankSDKExampleUITests */,
+				28FB83B82E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */,
+				28FB83C42E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */,
+				28FB83CE2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		28FB83B72E673C8600DE88EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83C32E673C8700DE88EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83CD2E673C8700DE88EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D7E50A5D2C32D0AD004C1CBF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1464,6 +1617,27 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		28FB83B52E673C8600DE88EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83C12E673C8700DE88EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28FB83CB2E673C8700DE88EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D7E50A5B2C32D0AD004C1CBF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1638,6 +1812,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		28FB83C72E673C8700DE88EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 28FB83B82E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */;
+			targetProxy = 28FB83C62E673C8700DE88EE /* PBXContainerItemProxy */;
+		};
+		28FB83D12E673C8700DE88EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 28FB83B82E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */;
+			targetProxy = 28FB83D02E673C8700DE88EE /* PBXContainerItemProxy */;
+		};
 		D7E50A662C32D0AD004C1CBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F490C7E125DE873900D8CA6F /* GiniBankSDKExample */;
@@ -1744,6 +1928,199 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		28FB83D72E673C8700DE88EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		28FB83D82E673C8700DE88EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		28FB83D92E673C8700DE88EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniBankSDKExampleSwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniBankSDKExampleSwiftUI";
+			};
+			name = Debug;
+		};
+		28FB83DA2E673C8700DE88EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniBankSDKExampleSwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniBankSDKExampleSwiftUI";
+			};
+			name = Release;
+		};
+		28FB83DB2E673C8700DE88EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUIUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExampleSwiftUI;
+			};
+			name = Debug;
+		};
+		28FB83DC2E673C8700DE88EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.test.GiniBankSDKExampleSwiftUIUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExampleSwiftUI;
+			};
+			name = Release;
+		};
 		D7E50A672C32D0AD004C1CBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2162,6 +2539,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		28FB83DD2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28FB83D72E673C8700DE88EE /* Debug */,
+				28FB83D82E673C8700DE88EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28FB83DE2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28FB83D92E673C8700DE88EE /* Debug */,
+				28FB83DA2E673C8700DE88EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28FB83DF2E673C8700DE88EE /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleSwiftUIUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28FB83DB2E673C8700DE88EE /* Debug */,
+				28FB83DC2E673C8700DE88EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D7E50A692C32D0AD004C1CBF /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
