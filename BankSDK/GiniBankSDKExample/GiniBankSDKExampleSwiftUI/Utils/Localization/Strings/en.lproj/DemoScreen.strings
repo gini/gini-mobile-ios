@@ -1,0 +1,14 @@
+/* 
+  DemoScreen.strings
+  GiniBankSDKExample
+
+  Created by Valentina Iancu on 13.09.23.
+  
+*/
+
+"welcome.title" = "Welcome to Gini - SwiftUI";
+"screen.description" = "Example of Photo Payment integration in the banking app";
+"iban.textfield.placeholder" = "Enter your IBAN code";
+"photo.payment.button.title" = "Photopayment";
+"alternative.text" = "or use";
+"transaction.list.button.title" = "Transaction list";
