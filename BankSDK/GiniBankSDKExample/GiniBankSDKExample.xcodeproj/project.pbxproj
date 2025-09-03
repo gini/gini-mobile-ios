@@ -494,7 +494,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		281B93A92E67553E009AA635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		28146D9C2E6871F50013BD34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -504,7 +504,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (281B93A92E67553E009AA635 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUI; sourceTree = "<group>"; };
+		28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (28146D9C2E6871F50013BD34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUI; sourceTree = "<group>"; };
 		28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUITests; sourceTree = "<group>"; };
 		28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUIUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -1956,7 +1956,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				ENABLE_PREVIEWS = YES;
@@ -2007,7 +2007,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				ENABLE_PREVIEWS = YES;
