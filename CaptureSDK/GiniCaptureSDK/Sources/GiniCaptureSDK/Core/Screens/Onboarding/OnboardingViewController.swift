@@ -158,8 +158,21 @@ class OnboardingViewController: UIViewController {
                     UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
                 }
             } else {
-                print("⚠️ Could not find cell at indexPath \(indexPath)")
+                print("⚠️ Could not find cell at indexPath \(indexPath) with index \(self.pageIndex)")
             }
+//            let visibleOnboardingCells = self.pagesCollection.visibleCells.compactMap { $0 as? OnboardingPageCell }
+//
+//            // Find the cell closest to horizontal center (the one “in focus” visually)
+//            if let focusedCell = visibleOnboardingCells.min(
+//                by: { abs($0.center.x - self.pagesCollection.bounds.midX) < abs($1.center.x - self.pagesCollection.bounds.midX) }
+//            ) {
+//                print("🔹 Accessibility focus will be set on visible page: \(focusedCell.titleLabel.text ?? "")")
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                    UIAccessibility.post(notification: .layoutChanged, argument: focusedCell.titleLabel)
+//                }
+//            } else {
+//                print("⚠️ No visible onboarding cell found for accessibility focus")
+//            }
         }
     }
 
@@ -343,7 +356,12 @@ class OnboardingViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        pagesCollection.collectionViewLayout.invalidateLayout()
+        // Only invalidate if size really changed (rotation or multitasking resize)
+            if pagesCollection.bounds.size != view.bounds.size {
+                print("⚠️ I am changing viewWillLayoutSubviews")
+                pagesCollection.collectionViewLayout.invalidateLayout()
+            }
+//        pagesCollection.collectionViewLayout.invalidateLayout()
     }
     
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
@@ -422,7 +440,9 @@ extension OnboardingViewController: OnboardingScreen {
 
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        print("⚠️ I am changing shouldInvalidateLayout return \(newBounds.size != collectionView?.bounds.size)")
         return true
+//        return newBounds.size != collectionView?.bounds.size
     }
 }
 
