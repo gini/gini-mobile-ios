@@ -84,7 +84,7 @@ jobs:
       - name: Build and archive project with Match
         uses: maierj/fastlane-action@v3.1.0
         with:
-          lane: 'build_health_example_app'
+          lane: 'build_app_development'
         env:
           APP_SCHEME: ${{ env.APP_SCHEME }}
           APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
