@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniHealthSDKVersion = "5.6.1"
+public let GiniHealthSDKVersion = "5.6.2"
