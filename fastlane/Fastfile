@@ -587,7 +587,7 @@ lane :build_health_example_app do
     gym(
       scheme: ENV['APP_SCHEME'],
       export_method: "ad-hoc",
-      silent: true,
+      silent: false,
       clean:true,
       suppress_xcode_output: true,
       export_options: { manageAppVersionAndBuildNumber: false },
