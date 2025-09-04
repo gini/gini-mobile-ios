@@ -517,7 +517,7 @@ platform :ios do
 DOC
 lane :setup_provisioning do |options|
   bundle_id = ENV["APP_IDENTIFIER"]
-  distribution_type = options[:distribution_type] || "adhoc"
+  distribution_type = options[:distribution_type]
   
   match(
     type: distribution_type,
@@ -544,11 +544,11 @@ DOC
 lane :build_app do |options|
   scheme = ENV["APP_SCHEME"]
   ipaFile = ENV["IPA_FILE"]
-  export_method = options[:export_method] || "ad-hoc"
+  export_method = options[:export_method]
 
   # Skip confirmation for development builds in CI
   ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true" if export_method == "development"
-  
+
   gym(
     scheme: scheme,
     export_method: export_method,
@@ -578,8 +578,8 @@ desc <<~DOC
     MATCH_GIT_URL     - Git URL for the match certificates repository
 DOC
 lane :build_app_with_provisioning do |options|
-  distribution_type = options[:distribution_type] || "development"
-  export_method = options[:export_method] || "ad-hoc"
+  distribution_type = options[:distribution_type]
+  export_method = options[:export_method]
   
   setup_provisioning(distribution_type: distribution_type)
   build_app(export_method: export_method)
