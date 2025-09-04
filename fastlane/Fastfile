@@ -518,9 +518,9 @@ platform :ios do
     gym(
       scheme: scheme,
       export_method: "ad-hoc",
-      silent: true,
+      silent: false,
       clean:true,
-      suppress_xcode_output: true,
+      suppress_xcode_output: false,
       export_options: { manageAppVersionAndBuildNumber: false },
       output_name: ipaFile
     )
