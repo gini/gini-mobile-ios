@@ -6,6 +6,7 @@
 
 import Foundation
 import GiniBankAPILibrary
+import GiniUtilites
 
 public protocol GiniCaptureNetworkService: AnyObject  {
     func delete(document: Document,
@@ -111,7 +112,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             switch result {
             case .success(let result):
                 completion(.success(result))
-                GiniCaptureSDK.Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
+                Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
                                    event: "🗑")
             case .failure(let error):
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
@@ -128,7 +129,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
                  completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
-        GiniCaptureSDK.Log(message: "Creating composite document...", event: "📑")
+        Log(message: "Creating composite document...", event: "📑")
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
 
         documentService
@@ -139,7 +140,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 guard let self = self else { return }
                 switch result {
                 case let .success(createdDocument):
-                    GiniCaptureSDK.Log(message: "Starting analysis for composite document \(createdDocument.id)",
+                    Log(message: "Starting analysis for composite document \(createdDocument.id)",
                                        event: "🔎")
                     self.startExtraction(for: createdDocument,
                                          cancellationToken: cancellationToken,
@@ -165,7 +166,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             metadata.addUploadMetadata(uploadMetadata)
             return metadata
         }()
-        GiniCaptureSDK.Log(message: "Creating document...", event: "📝")
+        Log(message: "Creating document...", event: "📝")
 
         let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
 
@@ -175,7 +176,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                                        metadata: documentMetadata) { result in
             switch result {
             case let .success(createdDocument):
-                GiniCaptureSDK.Log(message: "Created document with id: \(createdDocument.id) " +
+                Log(message: "Created document with id: \(createdDocument.id) " +
                     "for vision document \(document.id)", event: "📄")
                 completion(.success(createdDocument))
             case let .failure(error):
@@ -218,7 +219,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     func layout(for document: Document, completion: @escaping DocumentLayoutCompletion) {
-        GiniCaptureSDK.Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
+        Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
         documentService.layout(for: document) { result in
             switch result {
             case let .success(layout):
@@ -232,7 +233,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     func pages(for document: Document, completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
-        GiniCaptureSDK.Log(message: "Getting pages for document with id: \(document.id) ", event: "📝")
+        Log(message: "Getting pages for document with id: \(document.id) ", event: "📝")
         documentService.pages(in: document) { result in
             switch result {
                 case let .success(pages):
@@ -249,7 +250,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                       pageNumber: Int,
                       size: GiniBankAPILibrary.Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
-        GiniCaptureSDK.Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
+        Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
         documentService.documentPage(for: document,
                                      pageNumber: pageNumber,
                                      size: size) { result in
@@ -275,13 +276,13 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                          cancellationToken: cancellationToken) { result in
                 switch result {
                 case let .success(extractionResult):
-                    GiniCaptureSDK.Log(message: "Finished analysis process with no errors", event: .success)
+                    Log("Finished analysis process with no errors", event: .success)
                     completion(.success((document, extractionResult)))
                 case let .failure(error):
                     if error == .requestCancelled {
-                        GiniCaptureSDK.Log(message: "Cancelled analysis process", event: .error)
+                        Log("Cancelled analysis process", event: .error)
                     } else {
-                        GiniCaptureSDK.Log(message: "Finished analysis process with error: \(error)", event: .error)
+                        Log("Finished analysis process with error: \(error)", event: .error)
                     }
                     completion(.failure(error))
                 }
@@ -289,7 +290,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     private func logError(message: String, error: GiniError) {
-        GiniCaptureSDK.Log(message: message, event: .error)
+        Log(message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }

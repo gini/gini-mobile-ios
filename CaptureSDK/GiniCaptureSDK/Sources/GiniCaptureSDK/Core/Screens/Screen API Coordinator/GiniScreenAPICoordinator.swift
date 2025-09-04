@@ -6,6 +6,8 @@
 
 import Foundation
 import UIKit
+import GiniUtilites
+
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
@@ -226,7 +228,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
-            GiniCaptureSDK.Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -234,7 +236,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didPressEnterManually()
         } else {
-            GiniCaptureSDK.Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 

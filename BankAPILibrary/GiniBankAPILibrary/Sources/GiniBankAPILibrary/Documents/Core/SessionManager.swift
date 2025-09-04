@@ -156,7 +156,7 @@ private extension SessionManager {
                          cancellationToken: cancellationToken,
                          completion: completion).resume()
             } else {
-                GiniBankAPILibrary.Log("Stored token is no longer valid", event: .warning)
+                Log("Stored token is no longer valid", event: .warning)
                 handleLoginFlow(resource: resource,
                                 taskType: taskType,
                                 cancellationToken: cancellationToken,
@@ -274,13 +274,13 @@ private extension SessionManager {
 
         do {
             let result = try resource.parsed(response: response, data: data)
-            GiniBankAPILibrary.Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
+            Log("Success: \(method) - \(url)", event: .success)
             completion(.success(result))
         } catch let error {
-            GiniBankAPILibrary.Log("""
-                Failure: \(request.httpMethod!) - \(request.url!)
+            Log("""
+                Failure: \(method) - \(url)
                 Parse error: \(error)
-                Data content: \(String(data: data, encoding: .utf8) ?? "nil")
+                Data content: \(dataString)
                 """, event: .error)
             completion(.failure(.parseError(message: "Failed to parse response",
                                             response: response,

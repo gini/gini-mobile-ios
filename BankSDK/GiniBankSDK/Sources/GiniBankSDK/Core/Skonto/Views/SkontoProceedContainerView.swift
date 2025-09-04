@@ -6,6 +6,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniUtilites
 
 class SkontoProceedContainerView: UIView {
 
@@ -37,7 +38,7 @@ class SkontoProceedContainerView: UIView {
         label.text = labelText
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
-        label.enableScaling(minimumScaleFactor: 15)
+        label.enableScaling(scaleFactor: 15)
         return label
     }()
 
@@ -49,7 +50,7 @@ class SkontoProceedContainerView: UIView {
         let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
         label.numberOfLines = 1
-        label.enableScaling(minimumScaleFactor: 15)
+        label.enableScaling(scaleFactor: 15)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
