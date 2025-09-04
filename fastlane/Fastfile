@@ -607,7 +607,6 @@ lane :build_health_example_app do
       },
       output_name: ENV['IPA_FILE'],
       build_timing_summary: false,
-      xcargs: "-allowProvisioningUpdates -authenticationKeyIssuerID '' -authenticationKeyID '' -authenticationKeyPath ''",
       skip_package_dependencies_resolution: true,
       skip_package_ipa: false,
       skip_build_archive: false
