@@ -23,6 +23,10 @@ load "util/add_files_to_project.rb"
 load "util/sbom.rb"
 import "Fastfile_Health"
 
+before_all do
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"]="20"
+end
+
 platform :ios do
   desc <<~DOC
     Publish a swift package to our release repository.
