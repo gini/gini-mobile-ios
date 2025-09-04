@@ -546,6 +546,9 @@ lane :build_app do |options|
   ipaFile = ENV["IPA_FILE"]
   export_method = options[:export_method] || "ad-hoc"
 
+  # Skip confirmation for development builds in CI
+  ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true" if export_method == "development"
+  
   gym(
     scheme: scheme,
     export_method: export_method,
