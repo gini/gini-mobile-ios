@@ -578,7 +578,6 @@ lane :setup_provisioning_health_example_app do
     type: "adhoc",
     app_identifier: ENV["APP_IDENTIFIER"],
     git_url: ENV["MATCH_GIT_URL"],
-    force_for_new_devices: true,
     readonly: true
   )
 end
@@ -589,9 +588,25 @@ lane :build_health_example_app do
       export_method: "ad-hoc",
       silent: false,
       clean:true,
-      suppress_xcode_output: true,
-      export_options: { manageAppVersionAndBuildNumber: false },
-      output_name: ENV['IPA_FILE']
+      suppress_xcode_output: false,
+      disable_xcpretty: true,
+      export_options: {
+        manageAppVersionAndBuildNumber: false,
+        signingStyle: "manual",
+        uploadBitcode: false,
+        uploadSymbols: false,
+        compileBitcode: false,
+        thinning: "<none>",  # Evita procesamiento adicional
+        provisioningProfiles: {
+          ENV['APP_IDENTIFIER'] => "match AdHoc #{ENV['APP_IDENTIFIER']}"
+        }
+      },
+      output_name: ENV['IPA_FILE'],
+      build_timing_summary: false,
+      xcargs: "-allowProvisioningUpdates -authenticationKeyIssuerID '' -authenticationKeyID '' -authenticationKeyPath ''",
+      skip_package_dependencies_resolution: true,
+      skip_package_ipa: false,
+      skip_build_archive: false
     )
   end
 
