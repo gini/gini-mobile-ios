@@ -701,7 +701,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GiniHealthSDKExample/GiniHealthSDKExample.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Gini GmbH (JA825X8F7Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Gini GmbH (JA825X8F7Z)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
@@ -728,7 +728,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Gini Health SDK Example App App Store Distribution";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AdHoc net.gini.healthsdk.example";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
