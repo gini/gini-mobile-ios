@@ -546,8 +546,16 @@ lane :build_app do |options|
   ipaFile = ENV["IPA_FILE"]
   export_method = options[:export_method]
 
+  puts "➡️  Running build_app"
+  puts "   scheme: #{scheme}"
+  puts "   ipaFile: #{ipaFile}"
+  puts "   export_method: #{export_method}"
+
   # Skip confirmation for development builds in CI
-  ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true" if export_method == "development"
+  if export_method == "development"
+    ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true"
+    puts "⚠️  Skipping waiting for build processing (development build)"
+  end
 
   gym(
     scheme: scheme,
@@ -560,6 +568,7 @@ lane :build_app do |options|
     output_name: ipaFile
   )
 end
+
 
 desc <<~DOC
   Complete build process for app distribution.
@@ -582,6 +591,11 @@ lane :build_app_with_provisioning do |options|
   distribution_type = options[:distribution_type]
   export_method = options[:export_method]
   
+  "➡️  Running build_app_with_provisioning"
+  puts "   distribution_type: #{distribution_type}"
+  puts "   export_method: #{export_method}"
+
+
   setup_provisioning(distribution_type: distribution_type)
   build_app(export_method: export_method)
 end
