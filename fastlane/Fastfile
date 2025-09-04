@@ -541,7 +541,7 @@ desc <<~DOC
     APP_SCHEME    - Xcode scheme to build
     IPA_FILE      - Output name for the generated IPA file (without extension)
 DOC
-lane :build_app do |options|
+lane :build_app_match do |options|
   scheme = ENV["APP_SCHEME"]
   ipaFile = ENV["IPA_FILE"]
   export_method = options[:export_method]
@@ -622,7 +622,7 @@ lane :build_app_with_provisioning do |options|
 
 
   setup_provisioning(distribution_type: distribution_type)
-  build_app(export_method: export_method)
+  build_app_match(export_method: export_method)
 end
 
 # Convenience lanes for specific distribution types
