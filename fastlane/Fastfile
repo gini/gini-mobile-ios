@@ -569,6 +569,31 @@ lane :build_app do |options|
   )
 end
 
+lane :setup_provisioning_health_example_app do 
+  # |options|
+  # bundle_id = ENV["APP_IDENTIFIER"]
+  # distribution_type = options[:distribution_type]
+  
+  match(
+    type: "adhoc",
+    app_identifier: ENV["APP_IDENTIFIER"],
+    git_url: ENV["MATCH_GIT_URL"],
+    force_for_new_devices: true,
+    readonly: true
+  )
+end
+lane :build_health_example_app do
+  setup_provisioning_health_example_app
+    gym(
+      scheme: ENV['APP_SCHEME'],
+      export_method: "ad-hoc",
+      silent: true,
+      clean:true,
+      suppress_xcode_output: true,
+      export_options: { manageAppVersionAndBuildNumber: false },
+      output_name: ENV['IPA_FILE']
+    )
+  end
 
 desc <<~DOC
   Complete build process for app distribution.
