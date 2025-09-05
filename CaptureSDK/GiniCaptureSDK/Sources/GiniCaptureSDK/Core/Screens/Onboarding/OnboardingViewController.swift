@@ -130,36 +130,18 @@ class OnboardingViewController: UIViewController {
         }
     }
     
-    func printLogs() {
-        let pageWidth = self.pagesCollection.bounds.width
-        let currentPageIndex = Int(round(self.pagesCollection.contentOffset.x / pageWidth))
-        print("💡 viewDidLayoutSubviews called")
-        print("Collection view contentOffset.x: \(self.pagesCollection.contentOffset.x)")
-        print("Collection view width: \(pageWidth)")
-        print("Calculated currentPageIndex: \(currentPageIndex)")
-        print("Calculated pageIndex: \(self.pageControl.currentPage)")
-    }
-    
     func postNotificationToCurrentCell() {
-        printLogs()
-        let indexPath = IndexPath(item: self.pageControl.currentPage, section: 0)
-        if let currentCell = self.pagesCollection.cellForItem(at: indexPath) as? OnboardingPageCell {
-
-            print("Visible Cells Count: \(self.pagesCollection.visibleCells.count)")
-            for (index, cell) in self.pagesCollection.visibleCells.enumerated() {
-                if let onboardingCell = cell as? OnboardingPageCell {
-                    print("Visible Cell \(index): title='\(onboardingCell.titleLabel.text ?? "")', description='\(onboardingCell.descriptionLabel.text ?? "")', centerX=\(onboardingCell.center.x)")
-                }
-            }
-            
-            // Log focused cell
-            print("🔹 Accessibility focus will be set on current page cell's titleLabel: \(currentCell.titleLabel.text ?? "")")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                
-                UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
-            }
-        } else {
-            print("⚠️ Could not find cell at indexPath \(indexPath) with index \(self.pageControl.currentPage)")
+        let currentPage = pageControl.currentPage
+        let indexPath = IndexPath(item: currentPage, section: 0)
+        
+        guard let currentCell = pagesCollection.cellForItem(at: indexPath) as? OnboardingPageCell else {
+            // If the cell is not visible yet, accessibility focus cannot be set.
+            return
+        }
+        
+        // Post accessibility notification to focus on the current cell
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
         }
     }
 
@@ -343,21 +325,15 @@ class OnboardingViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        // Only invalidate if size really changed (rotation or multitasking resize)
-            if pagesCollection.bounds.size != view.bounds.size {
-                print("⚠️ I am changing viewWillLayoutSubviews")
-                pagesCollection.collectionViewLayout.invalidateLayout()
-            }
-//        pagesCollection.collectionViewLayout.invalidateLayout()
+        pagesCollection.collectionViewLayout.invalidateLayout()
     }
     
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
     private func notifyLayoutChangedAfterRotation() {
-        
         // --- VoiceOver focus handling ---
+        // Without this small delay, VoiceOver often fails to move focus to the current cell
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            //UIAccessibility.post(notification: .layoutChanged, argument: self.view)
             self.postNotificationToCurrentCell()
         }
     }
@@ -430,9 +406,7 @@ extension OnboardingViewController: OnboardingScreen {
 
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        print("⚠️ I am changing shouldInvalidateLayout return \(newBounds.size != collectionView?.bounds.size)")
         return true
-//        return newBounds.size != collectionView?.bounds.size
     }
 }
 
