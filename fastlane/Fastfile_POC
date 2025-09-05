@@ -260,6 +260,11 @@ lane :unlock_temp_keychain do
   )
 end
 
+desc "Delete temp signing keychain"
+lane :delete_temp_keychain do
+  delete_keychain(name: "app-signing")
+end
+
 
 # TEST lane will be cleaned
 lane :setup_provisioning_health_example_app do 
@@ -272,6 +277,7 @@ lane :setup_provisioning_health_example_app do
     app_identifier: ENV["APP_IDENTIFIER"],
     git_url: ENV["MATCH_GIT_URL"],
     keychain_name: "app-signing",
+    keychain_password:ENV['KEYCHAIN_PASSWORD'],
     readonly: true
   )
 end
@@ -280,9 +286,9 @@ end
 # TEST lane will be cleaned
 lane :build_health_example_app do
   setup_temp_keychain
-  setup_provisioning_health_example_app
   unlock_temp_keychain
-    gym(
+  setup_provisioning_health_example_app
+  gym(
       scheme: ENV['APP_SCHEME'],
       export_method: "ad-hoc",
       silent: true,
@@ -291,8 +297,12 @@ lane :build_health_example_app do
       export_options: {
         manageAppVersionAndBuildNumber: false
       },
-      output_name: ENV['IPA_FILE']
-    )
+      output_name: ENV['IPA_FILE'],
+      export_team_id: "JA825X8F7Z"
+  )
+ensure
+  # Always clean up
+  delete_temp_keychain
 end
 
 desc <<~DOC
