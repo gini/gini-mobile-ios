@@ -61,7 +61,7 @@ jobs:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   build:
-    needs: prepare
+    needs: check
     runs-on: macos-latest
     steps:
       - name: Checkout repository
