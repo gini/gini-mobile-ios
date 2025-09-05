@@ -219,6 +219,42 @@ lane :build_app_match do |options|
   )
 end
 
+desc <<~DOC
+  Create a temporary keychain for CI builds and expose its credentials to the environment.
+
+  Parameters:
+    keychain_name       - Optional. Name of the keychain to create. Default: "temp_keychain".
+    keychain_password   - Optional. Password for the keychain. If omitted, a random one is generated.
+    default_keychain    - Optional. Whether to set the keychain as the default. Default: true.
+    timeout             - Optional. Auto-lock timeout in seconds. Default: 3600 (1 hour).
+
+  Behavior:
+    - Creates and unlocks the keychain.
+    - Exposes MATCH_KEYCHAIN_NAME and MATCH_KEYCHAIN_PASSWORD for reuse in other lanes (e.g., match/gym).
+    - Does NOT delete the keychain; you can remove it later with `delete_keychain`.
+
+  Notes:
+    - Yes, a password is required. This lane generates a random one if you don’t provide it.
+    - Pair this with your signing lane (e.g., `match`) to install certs/profiles into this keychain.
+DOC
+lane :setup_temp_keychain do
+  require "securerandom"
+
+  keychain_name = "app-signing"
+  keychain_password = "temp_password_#{SecureRandom.hex(8)}"
+
+  create_keychain(
+    name: keychain_name,
+    password: keychain_password,
+    default_keychain: options.fetch(:default_keychain, true),
+    unlock: true,
+    timeout: 21600,
+    lock_when_sleeps: false,
+    add_to_search_list: true
+  )
+end
+
+
 # TEST lane will be cleaned
 lane :setup_provisioning_health_example_app do 
   # |options|
@@ -234,22 +270,10 @@ lane :setup_provisioning_health_example_app do
   )
 end
 
-# TEST lane will be cleaned
-lane :setup_keychain_health_example_app do 
-  create_keychain(
-    name: "app-signing",
-    password: "",
-    default_keychain: true,
-    unlock: true,
-    timeout: 21600,
-    lock_when_sleeps: false,
-    add_to_search_list: true
-  )
-end
 
 # TEST lane will be cleaned
 lane :build_health_example_app do
-  setup_keychain_health_example_app
+  setup_temp_keychain
   setup_provisioning_health_example_app
     gym(
       scheme: ENV['APP_SCHEME'],

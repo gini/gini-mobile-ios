@@ -107,7 +107,7 @@ jobs:
           retention-days: 1
 
   distribute:
-    needs: build
+    needs: [prepare, build]
     runs-on: macos-latest
     environment: Deploy-approval
     outputs:
@@ -145,7 +145,7 @@ jobs:
           DISTRIBUTION_GROUPS: gini-internal
           RELEASE_NOTES: |
             🚀 Build ${{ github.run_number }} from ${{ github.ref_name }}
-            📝 Commit: ${{ github.sha }}
+            📝 Commit: jira ticket id ${{ needs.prepare.outputs.jira_ticket }}
             💬 Message: ${{ github.event.head_commit.message }}
 
   post-distribute:
