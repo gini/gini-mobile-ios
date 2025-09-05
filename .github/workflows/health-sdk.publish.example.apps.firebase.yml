@@ -83,6 +83,10 @@ jobs:
           ruby-version: '3.2.0'
           bundler-cache: true
       
+      - name: Setup Firebase API Key
+        run: |
+            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
+      
       - name: Build and archive project with Match
         uses: maierj/fastlane-action@v3.1.0
         with:
