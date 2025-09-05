@@ -238,10 +238,8 @@ desc <<~DOC
     - Pair this with your signing lane (e.g., `match`) to install certs/profiles into this keychain.
 DOC
 lane :setup_temp_keychain do
-  require "securerandom"
-
   keychain_name = "app-signing"
-  keychain_password = ""
+  keychain_password = ENV["KEYCHAIN_PASSWORD"]
 
   create_keychain(
     name: keychain_name,
@@ -251,6 +249,14 @@ lane :setup_temp_keychain do
     timeout: 21600,
     lock_when_sleeps: false,
     add_to_search_list: true
+  )
+end
+
+lane :unlock_temp_keychain do
+  unlock_keychain(
+      path: "app-signing",
+      password: ENV['KEYCHAIN_PASSWORD'],
+      set_default: true
   )
 end
 
@@ -275,6 +281,7 @@ end
 lane :build_health_example_app do
   setup_temp_keychain
   setup_provisioning_health_example_app
+  unlock_temp_keychain
     gym(
       scheme: ENV['APP_SCHEME'],
       export_method: "ad-hoc",
