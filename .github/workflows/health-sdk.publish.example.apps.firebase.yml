@@ -82,7 +82,11 @@ jobs:
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
-      
+       
+      - name: Update credentials in the source code
+        id: setup_credentials
+        run: ${{ github.workspace }}/.github/bin/setup-credentials.sh
+
       - name: Setup Firebase API Key
         run: |
             plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
