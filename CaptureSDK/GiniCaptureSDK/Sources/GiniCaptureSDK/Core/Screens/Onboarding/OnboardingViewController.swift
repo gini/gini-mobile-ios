@@ -129,16 +129,16 @@ class OnboardingViewController: UIViewController {
             pagesCollection.reloadData()
         }
     }
-    
+
     func postNotificationToCurrentCell() {
         let currentPage = pageControl.currentPage
         let indexPath = IndexPath(item: currentPage, section: 0)
-        
+
         guard let currentCell = pagesCollection.cellForItem(at: indexPath) as? OnboardingPageCell else {
             // If the cell is not visible yet, accessibility focus cannot be set.
             return
         }
-        
+
         // Post accessibility notification to focus on the current cell
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
@@ -322,12 +322,11 @@ class OnboardingViewController: UIViewController {
         }
     }
 
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
-    
+
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
     private func notifyLayoutChangedAfterRotation() {
