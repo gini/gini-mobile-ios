@@ -582,7 +582,6 @@ lane :setup_provisioning_health_example_app do
     type: "adhoc",
     app_identifier: ENV["APP_IDENTIFIER"],
     git_url: ENV["MATCH_GIT_URL"],
-    keychain_name: "fastlane_tmp_keychain",
     readonly: true
   )
 end
