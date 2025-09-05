@@ -582,14 +582,15 @@ lane :setup_provisioning_health_example_app do
     type: "adhoc",
     app_identifier: ENV["APP_IDENTIFIER"],
     git_url: ENV["MATCH_GIT_URL"],
-    keychain_name: "fastlane_tmp_keychain",
+    keychain_name: "app-signing",
     readonly: true
   )
 end
+#
 lane :setup_keychain_health_example_app do 
   create_keychain(
-    name: "fastlane_tmp_keychain",
-    password: "",
+    name: "app-signing",
+    password: ENV["KEYCHAIN_PASSWORD"],
     default_keychain: true,
     unlock: true,
     timeout: 21600,
