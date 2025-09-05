@@ -169,7 +169,8 @@ lane :setup_provisioning do |options|
     type: distribution_type,
     app_identifier: [bundle_id],
     git_url: ENV["MATCH_GIT_URL"],
-    force_for_new_devices: true,
+    keychain_name: "app-signing",
+    keychain_password:ENV['KEYCHAIN_PASSWORD'],
     readonly: true
   )
 end
@@ -208,6 +209,7 @@ lane :build_app_match do |options|
     export_options: { 
       manageAppVersionAndBuildNumber: false 
     },
+    export_team_id: "JA825X8F7Z",
     output_name: ipaFile
   )
 end
