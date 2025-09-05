@@ -130,7 +130,7 @@ class OnboardingViewController: UIViewController {
         }
     }
 
-    func postNotificationToCurrentCell() {
+    private func postNotificationToCurrentCell() {
         let currentPage = pageControl.currentPage
         let indexPath = IndexPath(item: currentPage, section: 0)
 
@@ -330,7 +330,8 @@ class OnboardingViewController: UIViewController {
     private func notifyLayoutChangedAfterRotation() {
         // --- VoiceOver focus handling ---
         // Without this small delay, VoiceOver often fails to move focus to the current cell
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.accessibilityFocusDelay) { [weak self] in
+            guard let self = self else { return }
             self.postNotificationToCurrentCell()
         }
     }
@@ -415,7 +416,7 @@ private extension OnboardingViewController {
         static let bottomBarHeightLandscape: CGFloat = 64
         static let iconPadding: CGFloat = 56
         static let iconWidth: CGFloat = 220
-
+        static let accessibilityFocusDelay: TimeInterval = 1.0
     }
 
     func getBottomPaddingForPageController() -> CGFloat {
