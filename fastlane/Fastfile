@@ -582,6 +582,7 @@ lane :setup_provisioning_health_example_app do
     type: "adhoc",
     app_identifier: ENV["APP_IDENTIFIER"],
     git_url: ENV["MATCH_GIT_URL"],
+    keychain_name: "fastlane_tmp_keychain",
     readonly: true
   )
 end
@@ -597,29 +598,17 @@ lane :setup_keychain_health_example_app do
   )
 end
 lane :build_health_example_app do
-  #setup_keychain_health_example_app
+  setup_keychain_health_example_app
   setup_provisioning_health_example_app
     gym(
       scheme: ENV['APP_SCHEME'],
       export_method: "ad-hoc",
-      silent: false,
+      silent: true,
       clean:true,
-      suppress_xcode_output: false,
-      disable_xcpretty: true,
       export_options: {
-        manageAppVersionAndBuildNumber: false,
-        signingStyle: "manual",
-        uploadBitcode: false,
-        uploadSymbols: false,
-        compileBitcode: false,
-        provisioningProfiles: {
-          ENV['APP_IDENTIFIER'] => "match AdHoc #{ENV['APP_IDENTIFIER']}"
-        }
+        manageAppVersionAndBuildNumber: false
       },
-      output_name: ENV['IPA_FILE'],
-      skip_package_ipa: false,
-      skip_build_archive: false,
-      skip_codesigning: false,
+      output_name: ENV['IPA_FILE']
     )
   end
 
