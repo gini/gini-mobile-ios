@@ -241,7 +241,7 @@ lane :setup_temp_keychain do
   require "securerandom"
 
   keychain_name = "app-signing"
-  keychain_password = "temp_password_#{SecureRandom.hex(8)}"
+  keychain_password = ""
 
   create_keychain(
     name: keychain_name,
