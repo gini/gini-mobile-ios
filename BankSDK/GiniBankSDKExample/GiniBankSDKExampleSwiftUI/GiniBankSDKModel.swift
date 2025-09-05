@@ -34,6 +34,7 @@ final class GiniBankSDKModel: NSObject {
         configuration.fileImportSupportedTypes = .pdf_and_images
         // By default, the flash is disabled.
         configuration.flashOnByDefault = false
+        configuration.statusBarStyle = .default
 
         return configuration
     }
