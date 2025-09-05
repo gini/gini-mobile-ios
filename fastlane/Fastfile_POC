@@ -286,7 +286,8 @@ lane :build_health_example_app do
       scheme: ENV['APP_SCHEME'],
       export_method: "ad-hoc",
       silent: true,
-      clean:true,
+      clean: true,
+      skip_codesigning: true,
       export_options: {
         manageAppVersionAndBuildNumber: false
       },
