@@ -54,11 +54,11 @@ jobs:
         id: extract_jira_ticket
         run: ${{ github.workspace }}/.github/bin/extract-jira-ticket.sh
 
-  # check:
-  #   needs: prepare
-  #   uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@poc-match-provision-profiles-and-certificates
-  #   secrets:
-  #     GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+  check:
+    needs: prepare
+    uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@poc-match-provision-profiles-and-certificates
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   build:
     needs: prepare
