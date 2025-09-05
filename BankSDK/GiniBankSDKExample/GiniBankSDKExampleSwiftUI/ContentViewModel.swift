@@ -13,11 +13,13 @@ class ContentViewModel {
     func openModule() {
         var view = ModuleHostView(for: GiniBankSDKModel())
         modalController = UIHostingController(rootView: AnyView(view))
+//        modalController?.modalTransitionStyle = .coverVertical
+//        modalController?.modalPresentationStyle = .fullScreen
 
         view.bankSDKProtocolDelegate = self
 
-        if let topViewController = UIApplication.shared.topViewController {
-            topViewController.present(modalController!, animated: true)
+        if let topViewController = UIApplication.shared.topViewController, let modalController {
+            topViewController.present(modalController, animated: true)
         }
     }
 }
