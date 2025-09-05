@@ -1,8 +1,7 @@
 //
 //  CredentialsManager.swift
-//  Example Swift
 //
-//  Copyright © 2024 Gini GmbH. All rights reserved.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation

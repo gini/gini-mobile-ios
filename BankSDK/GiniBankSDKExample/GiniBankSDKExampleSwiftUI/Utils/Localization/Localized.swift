@@ -2,7 +2,7 @@
 //  Localized.swift
 //  GiniBankSDKExample
 //
-//  Created by Valentina Iancu on 13.09.23.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
