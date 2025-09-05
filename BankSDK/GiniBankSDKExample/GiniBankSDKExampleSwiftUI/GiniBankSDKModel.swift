@@ -19,12 +19,10 @@ final class GiniBankSDKModel: NSObject {
 
     public weak var delegate: GiniBankSDKDelegate?
 
-    // MARK: - vars
     var giniContentView: some View {
         return AnyView(GiniView(viewModel: self))
     }
 
-    // MARK: - methods
     private func createGiniBankConfiguration() -> GiniBankConfiguration {
         let configuration = GiniBankConfiguration.shared
         // General settings
@@ -73,8 +71,8 @@ extension GiniBankSDKModel: GiniCaptureResultsDelegate {
     }
 }
 
+// MARK: - GiniCaptureTrackingDelegate
 class TrackingDelegate: GiniCaptureTrackingDelegate {
-
 
     func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
         print("✏️ Analysis: \(event.type.rawValue), info: \(event.info ?? [:])")

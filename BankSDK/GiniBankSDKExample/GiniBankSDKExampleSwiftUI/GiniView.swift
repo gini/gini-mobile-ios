@@ -41,7 +41,5 @@ struct GiniView: UIViewControllerRepresentable {
             self.parent = view
             self.viewModel = viewModel
         }
-
     }
-
 }

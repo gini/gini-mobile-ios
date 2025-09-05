@@ -26,6 +26,5 @@ struct ModuleHostView: View, BankSDKProtocol {
     var body: some View {
         viewModel.giniContentView
     }
-
 }
 
