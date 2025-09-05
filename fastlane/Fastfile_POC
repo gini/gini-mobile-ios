@@ -111,11 +111,7 @@ Parameters:
 - `target`: The name of the target whose test scheme will be executed. Example: `GinBankSDK`.
 - `destination`: The destination for the tests. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
 - `clientSecret`: The clientSecret for the hosting app
-
 DOC
-# Set the lines below before Fastlane runs in Github Actions
-# env:
-#     FASTLANE_SKIP_SUMMARY: true
 
 lane :run_unit_tests do |options|
   target = options[:target]
@@ -186,6 +182,7 @@ desc <<~DOC
   
   Parameters:
     export_method - Export method: "ad-hoc" or "development" (default: "ad-hoc")
+    configuration - The configuration from the Xcode project setup: "Release", "Debug"
   
   Environment Variables:
     APP_SCHEME    - Xcode scheme to build
@@ -195,26 +192,22 @@ lane :build_app_match do |options|
   scheme = ENV["APP_SCHEME"]
   ipaFile = ENV["IPA_FILE"]
   export_method = options[:export_method]
-
-  puts "➡️  Running build_app"
-  puts "   scheme: #{scheme}"
-  puts "   ipaFile: #{ipaFile}"
-  puts "   export_method: #{export_method}"
+  configuration = options[:configuration]
 
   # Skip confirmation for development builds in CI
   if export_method == "development"
     ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true"
     puts "⚠️  Skipping waiting for build processing (development build)"
   end
-
   gym(
     scheme: scheme,
     export_method: export_method,
-    configuration: "Debug",
+    configuration: configuration,
     silent: false,
     clean: true,
-    suppress_xcode_output: false,
-    export_options: { manageAppVersionAndBuildNumber: false },
+    export_options: { 
+      manageAppVersionAndBuildNumber: false 
+    },
     output_name: ipaFile
   )
 end
@@ -223,19 +216,14 @@ desc <<~DOC
   Create a temporary keychain for CI builds and expose its credentials to the environment.
 
   Parameters:
-    keychain_name       - Optional. Name of the keychain to create. Default: "temp_keychain".
-    keychain_password   - Optional. Password for the keychain. If omitted, a random one is generated.
-    default_keychain    - Optional. Whether to set the keychain as the default. Default: true.
-    timeout             - Optional. Auto-lock timeout in seconds. Default: 3600 (1 hour).
+    keychain_name       - Name of the keychain to create.
+    keychain_password   - Password for the keychain.
+    default_keychain    - Whether to set the keychain as the default.
+    timeout             -Auto-lock timeout in seconds. Default: 3600 (1 hour).
 
   Behavior:
     - Creates and unlocks the keychain.
-    - Exposes MATCH_KEYCHAIN_NAME and MATCH_KEYCHAIN_PASSWORD for reuse in other lanes (e.g., match/gym).
-    - Does NOT delete the keychain; you can remove it later with `delete_keychain`.
-
-  Notes:
-    - Yes, a password is required. This lane generates a random one if you don’t provide it.
-    - Pair this with your signing lane (e.g., `match`) to install certs/profiles into this keychain.
+    - Exposes keychain_name and keychain_password for reuse in other lanes (e.g., match/gym).
 DOC
 lane :setup_temp_keychain do
   keychain_name = "app-signing"
@@ -252,6 +240,21 @@ lane :setup_temp_keychain do
   )
 end
 
+desc <<~DOC
+  Unlock the signing keychain and set it as the default so codesign can access identities.
+
+  Parameters:
+    path            - Keychain name or full path. Example: "app-signing" or "app-signing.keychain-db".
+    password        - Password used to unlock the keychain.
+    set_default     - Whether to make the unlocked keychain the default for this session. Here: true.
+
+  Behavior:
+    - Unlocks the keychain at `path` with the provided password.
+    - Sets it as the default keychain (because set_default: true), which is often required in CI.
+
+  Environment:
+    - KEYCHAIN_PASSWORD must be set to the keychain’s password.
+DOC
 lane :unlock_temp_keychain do
   unlock_keychain(
       path: "app-signing",
@@ -266,45 +269,6 @@ lane :delete_temp_keychain do
 end
 
 
-# TEST lane will be cleaned
-lane :setup_provisioning_health_example_app do 
-  # |options|
-  # bundle_id = ENV["APP_IDENTIFIER"]
-  # distribution_type = options[:distribution_type]
-  
-  match(
-    type: "adhoc",
-    app_identifier: ENV["APP_IDENTIFIER"],
-    git_url: ENV["MATCH_GIT_URL"],
-    keychain_name: "app-signing",
-    keychain_password:ENV['KEYCHAIN_PASSWORD'],
-    readonly: true
-  )
-end
-
-
-# TEST lane will be cleaned
-lane :build_health_example_app do
-  setup_temp_keychain
-  unlock_temp_keychain
-  setup_provisioning_health_example_app
-  gym(
-      scheme: ENV['APP_SCHEME'],
-      export_method: "ad-hoc",
-      silent: true,
-      clean: true,
-      skip_codesigning: true,
-      export_options: {
-        manageAppVersionAndBuildNumber: false
-      },
-      output_name: ENV['IPA_FILE'],
-      export_team_id: "JA825X8F7Z"
-  )
-ensure
-  # Always clean up
-  delete_temp_keychain
-end
-
 desc <<~DOC
   Complete build process for app distribution.
   
@@ -315,6 +279,7 @@ desc <<~DOC
   Parameters:
     distribution_type - Type of distribution for provisioning: "adhoc" or "development" (default: "adhoc")
     export_method     - Export method for build: "ad-hoc" or "development" (default: "ad-hoc")
+    configuration     - The configuration from the Xcode project setup: "Release", "Debug"
   
   Environment Variables:
     APP_IDENTIFIER    - Bundle identifier for the app
@@ -325,25 +290,26 @@ DOC
 lane :build_app_with_provisioning do |options|
   distribution_type = options[:distribution_type]
   export_method = options[:export_method]
+  configuration = options[:configuration]
   
-  "➡️  Running build_app_with_provisioning"
-  puts "   distribution_type: #{distribution_type}"
-  puts "   export_method: #{export_method}"
-
-
+  setup_temp_keychain
+  unlock_temp_keychain
   setup_provisioning(distribution_type: distribution_type)
-  build_app_match(export_method: export_method)
+  build_app_match(export_method: export_method, configuration: configuration)
+ensure
+  # Always clean up
+  delete_temp_keychain
 end
 
 # Convenience lanes for specific distribution types
 desc "Build app for ad-hoc distribution"
 lane :build_app_adhoc do
-  build_app_with_provisioning(distribution_type: "adhoc", export_method: "ad-hoc")
+  build_app_with_provisioning(distribution_type: "adhoc", export_method: "ad-hoc", configuration: "Release")
 end
 
 desc "Build app for development distribution"
 lane :build_app_development do
-  build_app_with_provisioning(distribution_type: "development", export_method: "development")
+  build_app_with_provisioning(distribution_type: "development", export_method: "development", configuration: "Debug")
 end
 
 desc "Distribute the app to Firebase App Distribution"
