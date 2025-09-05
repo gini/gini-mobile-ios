@@ -159,6 +159,21 @@ struct AlternativeNavigationTests {
         #expect(giniHealthDelegate.didDismissHealthSDKCount == 0,
                 "didDismissHealthSDK should not be called when the navigation controller is not empty")
     }
+    
+    @Test func dismissSDKAfterAlertControllerPresentation() {
+        let navigationController = MockNavigationController()
+        navigationController.giniHealthDelegate = giniHealthDelegate
+        
+        let alertController = UIAlertController(title: "test", message: "test", preferredStyle: .alert)
+        
+        homeViewController.present(navigationController, animated: false)
+        navigationController.present(alertController, animated: false)
+        
+        navigationController.dismiss(animated: true)
+        
+        #expect(giniHealthDelegate.didDismissHealthSDKCount == 1,
+                "didDismissHealthSDK should be called after presented alert is dismissed")
+    }
 
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
         PaymentInfo(recipient: "testRecipient",
