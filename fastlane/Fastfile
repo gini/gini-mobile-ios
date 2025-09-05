@@ -598,7 +598,7 @@ lane :setup_keychain_health_example_app do
   )
 end
 lane :build_health_example_app do
-  setup_keychain_health_example_app
+  #setup_keychain_health_example_app
   setup_provisioning_health_example_app
     gym(
       scheme: ENV['APP_SCHEME'],
