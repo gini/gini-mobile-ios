@@ -87,6 +87,7 @@ jobs:
         id: setup_credentials
         run: ${{ github.workspace }}/.github/bin/setup-credentials.sh
 
+      #TODO: needs to be moved in the scripts somewhere
       - name: Setup Firebase API Key
         run: |
             plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
