@@ -246,7 +246,7 @@ lane :setup_temp_keychain do
   create_keychain(
     name: keychain_name,
     password: keychain_password,
-    default_keychain: options.fetch(:default_keychain, true),
+    default_keychain: true,
     unlock: true,
     timeout: 21600,
     lock_when_sleeps: false,
@@ -285,7 +285,7 @@ lane :build_health_example_app do
       },
       output_name: ENV['IPA_FILE']
     )
-  end
+end
 
 desc <<~DOC
   Complete build process for app distribution.
