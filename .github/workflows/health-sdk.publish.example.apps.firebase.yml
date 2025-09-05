@@ -1,4 +1,6 @@
 name: Publish GiniHealthSDKExample to Firebase Distribution
+permissions:
+  contents: read
 on:
   push:
     paths:

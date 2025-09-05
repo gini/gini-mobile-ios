@@ -185,31 +185,27 @@ platform :ios do
         UI.message "Disable jekyll"
         sh("touch .nojekyll")
 
-        if is_stable_release
-          UI.message <<~MESSAGE
-            Update the package root index.html to redirect to this documentation version.
-          MESSAGE
+        UI.message <<~MESSAGE
+          Update the package root index.html to redirect to this documentation version.
+        MESSAGE
   
-          index_html = <<~INDEX_HTML
-          <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <title>#{documentation_title}</title>
-              <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
-            </head>
-            <body>
-              Redirecting to the latest stable version...
-            </body>
-          </html>
-          INDEX_HTML
+        index_html = <<~INDEX_HTML
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <title>#{documentation_title}</title>
+            <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
+          </head>
+          <body>
+            Redirecting to the latest stable version...
+          </body>
+        </html>
+        INDEX_HTML
   
-          File.open("#{package_folder}/index.html", "w") { |f| 
-            f.write index_html
-          }
-        else
-          UI.message "Not changing the project root index.html."
-        end
+        File.open("#{package_folder}/index.html", "w") { |f| 
+          f.write index_html
+        }
 
         if !dry_run 
           UI.message "Commit and push the new documentation"
