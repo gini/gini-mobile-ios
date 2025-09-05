@@ -10,13 +10,13 @@ enum EducationFlowContent {
 
     var items: [QRCodeEducationLoadingItem] {
         let intro = QRCodeEducationLoadingItem(image: Images.intro,
-                                               text: LocalizedStrings.intro,
+                                               text: Strings.intro,
                                                duration: 1.5)
         let captureTip = QRCodeEducationLoadingItem(image: Images.capture,
-                                                    text: LocalizedStrings.capture,
+                                                    text: Strings.capture,
                                                     duration: 3)
         let uploadTip = QRCodeEducationLoadingItem(image: Images.uploadFile,
-                                                   text: LocalizedStrings.uploadFile,
+                                                   text: Strings.uploadFile,
                                                    duration: 3)
 
         switch self {
@@ -30,7 +30,7 @@ enum EducationFlowContent {
 }
 
 private extension EducationFlowContent {
-    enum LocalizedStrings {
+    struct Strings {
         static let intro = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loading.intro",
                                                             comment: "Education loading intro")
         static let capture = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.loading.captureTip",
