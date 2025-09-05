@@ -98,8 +98,8 @@ class OnboardingViewController: UIViewController {
                 let safeareaRightPadding = view.safeAreaInsets.right
 
                 // icon leading constraint size from safearea
-                let iconPadding: CGFloat = 56
-                let iconWidth: CGFloat = 220
+                let iconPadding = Constants.iconPadding
+                let iconWidth = Constants.iconWidth
                 let viewWidth = view.bounds.width
 
                 // it'll be easier to start with the zero point of the view
@@ -140,9 +140,7 @@ class OnboardingViewController: UIViewController {
         }
 
         // Post accessibility notification to focus on the current cell
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
-        }
+        UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
@@ -415,6 +413,9 @@ private extension OnboardingViewController {
         static let pageControlBottomBarPaddingLandscape: CGFloat = 0
         static let bottomBarHeightPortrait: CGFloat = 110
         static let bottomBarHeightLandscape: CGFloat = 64
+        static let iconPadding: CGFloat = 56
+        static let iconWidth: CGFloat = 220
+
     }
 
     func getBottomPaddingForPageController() -> CGFloat {
