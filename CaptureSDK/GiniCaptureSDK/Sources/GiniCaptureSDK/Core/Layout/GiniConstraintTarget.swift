@@ -5,6 +5,20 @@
 //
 import UIKit
 
+/**
+ A wrapper representing a constraint target consisting of:
+ - an item (`UIView` or `UILayoutGuide`)
+ - a layout attribute
+ - an optional constant offset
+
+ This type is mainly used internally when combining a `GiniViewConstraintAttribute`
+ with an offset using the `+` or `-` operators.
+
+ Example:
+ maker.leading.equalTo(otherView.leading + 16)
+ maker.bottom.equalTo(otherView.bottom - 8)
+
+ */
 public struct GiniConstraintTarget {
     let item: AnyObject
     let attribute: NSLayoutConstraint.Attribute

@@ -15,6 +15,10 @@ private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
     var description: String = DocumentMarkedAsPaidViewController.Strings.description
 }
 
+/**
+ A specialized bottom sheet that informs the user a document
+ has been marked as paid, with Cancel and Proceed actions.
+*/
 public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewController {
 
     public init(onCancel: @escaping () -> Void,

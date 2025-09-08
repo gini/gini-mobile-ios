@@ -4,7 +4,28 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 import UIKit
+/**
+ A builder class that exposes a fluent API for creating Auto Layout constraints
+ on a specific view. Each property returns a `GiniConstraintAttribute` or
+ `GiniCompoundConstraintAttribute`, allowing you to chain constraint definitions.
 
+ `GiniConstraintMaker` is typically used inside a closure to declare all
+ constraints for a view in a clean, readable way.
+
+ Example:
+ myView.gini.make { in
+ $0.top.equalToSuperview().constant(16)
+ $0.leading.equalToSuperview().constant(16)
+ $0.trailing.equalToSuperview().constant(16)
+ $0.height.equalTo(44)
+
+ // OR
+ // Shorthand with compound attributes:
+ $0.edges.equalToSuperview().constant(16)
+ $0.center.equalToSuperview()
+ $0.size.equalTo(100)
+ }
+ */
 public class GiniConstraintMaker {
     private let view: UIView
     internal var constraints: [NSLayoutConstraint] = []

@@ -6,8 +6,8 @@
 import UIKit
 
 /**
- An active constraint builder for a specific view and layout attribute.
- Encapsulates the logic for creating and modifying NSLayoutConstraints using a fluent API.
+ Class representing a single constraint attribute for a view.
+ Manages the creation and configuration of an individual NSLayoutConstraint
 
  Example: `maker.top.equalTo(otherView).constant(16)`
 

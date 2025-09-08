@@ -4,8 +4,16 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 import UIKit
-import Combine
 
+
+/**
+ A bottom sheet view controller that displays informational content with an icon, title, description, and action buttons.
+
+ This view controller extends `GiniBottomSheetViewController` to provide a standardized way to present
+ informational dialogs with customizable content and actions. The class conforms to `GiniBottomSheetPresentable`,
+ which is a convenience typealias combining `UIViewController` with `GiniBottomSheetPresentable` protocol,
+ allowing any conforming controller to present itself as a configurable bottom sheet.
+*/
 public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private let viewModel: InfoBottomSheetViewModel
     private let buttonsViewModel: InfoBottomSheetButtonsViewModel
@@ -13,7 +21,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private lazy var configuration = GiniConfiguration.shared
 
     private let contentScrollView = GiniScrollViewContainer()
-    private var cancellables = Set<AnyCancellable>()
 
     private let contentStackView: UIStackView = {
         let stackView = UIStackView()

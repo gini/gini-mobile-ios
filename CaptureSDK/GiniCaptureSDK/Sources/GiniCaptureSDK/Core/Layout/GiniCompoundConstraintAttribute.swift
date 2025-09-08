@@ -5,6 +5,17 @@
 //
 import UIKit
 
+/**
+ A compound constraint builder that groups multiple `GiniConstraintAttribute`s
+ (e.g. top, leading, trailing, bottom) and applies the same operation to all.
+
+ Use this when you want to define constraints for multiple attributes at once,
+ such as pinning all edges to a superview with the same inset.
+
+ Example:
+ maker.edges.equalToSuperview().constant(16).priority(.required)
+ */
+
 public class GiniCompoundConstraintAttribute {
     internal let attributes: [GiniConstraintAttribute]
 
