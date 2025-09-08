@@ -37,11 +37,11 @@ public class GiniConstraintMaker {
     }
 
     public var horizontal: GiniCompoundConstraintAttribute {
-        GiniCompoundConstraintAttribute(attributes: [leading, trailing])
+        .init(attributes: [leading, trailing])
     }
 
     public var vertical: GiniCompoundConstraintAttribute {
-        GiniCompoundConstraintAttribute(attributes: [top, bottom])
+        .init(attributes: [top, bottom])
     }
 
     public func constraint(for attribute: NSLayoutConstraint.Attribute) -> NSLayoutConstraint? {
