@@ -139,10 +139,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         let isIphoneLandscape = UIDevice.current.isIphone && collectionView.currentInterfaceOrientation.isLandscape
         let isIphoneSmall = UIDevice.current.isSmallIphone
         let suffix = isIphoneSmall ? "iphoneland-small" : "iphoneland"
-        let reuseId = isIphoneLandscape ? OnboardingPageCell.reuseIdentifier + suffix : OnboardingPageCell.reuseIdentifier
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: reuseId,
-            for: indexPath) as? OnboardingPageCell {
+        let cellIdentifier = OnboardingPageCell.reuseIdentifier
+        let reuseId = isIphoneLandscape ? cellIdentifier + suffix : cellIdentifier
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseId,
+                                                         for: indexPath) as? OnboardingPageCell {
             configureCell(cell: cell, indexPath: indexPath)
             cell.updateConstraintsForCurrentTraits()
             return cell

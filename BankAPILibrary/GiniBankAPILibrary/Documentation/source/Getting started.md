@@ -18,6 +18,16 @@ To initialize the library, you just need to provide the API credentials:
                                 domain: "your-domain"))
         .build()
 ```
+
+If you want to use only your own authentication, please add `AlternativeTokenSource` protocol implementation:
+
+```swift
+ let apiLib =  GiniBankAPI.Builder(customApiDomain: "pay-api.gini.net",
+                                   alternativeTokenSource: MyAlternativeTokenSource)
+                                 .build()
+```
+The token you provide will be added as a bearer token to all `pay-api.gini.net` requests.
+
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
@@ -83,6 +93,17 @@ For customizing an API domain please, use the following snippet:
         .build()
 ```
 
+
+If you want to use only your own authentication, please add `AlternativeTokenSource` protocol implementation:
+
+```swift
+ let apiLib =  GiniBankAPI.Builder(customApiDomain: "pay-api.gini.net",
+                                   alternativeTokenSource: MyAlternativeTokenSource,
+                                   pinningConfig: yourPublicPinningConfig)
+                          .build()
+```
+The token you provide will be added as a bearer token to all `pay-api.gini.net` requests.
+
 ## Extract Hash From gini.net
 
 The current Gini Bank API public key SHA256 hash digest in Base64 encoding can be extracted with the following openssl commands:
@@ -136,7 +157,7 @@ documentService.createDocument(fileName: "myFirstDocument.jpg",
 }
 ```
 > ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://gini.atlassian.net/wiki/spaces/PA1/pages/36733064/Submit+Files) documentation.
 
 Each page of a document needs to uploaded as a partial document. In addition documents consisting of one page also should be uploaded as a partial document.
 
@@ -150,7 +171,7 @@ Extractions are not available for partial documents. Creating a partial document
 
 #### Setting the document type hint
 
-To easily set the document type hint we introduced the `DocType` enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#document-types)
+To easily set the document type hint we introduced the `DocType` enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the [Gini Bank API documentation](https://gini.atlassian.net/wiki/spaces/PA1/pages/36831615/Document+Types)
 
 ### Getting extractions
 
@@ -196,9 +217,9 @@ documentService
 
 Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us transfer summary for the extractions we are able to continuously improve the extraction quality.
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExampleTests/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B3.8.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
 
-The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
+The sample test case is based on the Bank API documentation's [recommended steps](https://gini.atlassian.net/wiki/spaces/PA1/pages/36733143/Submit+Transfer+Summary+on+Extractions#Test-example) for testing extraction feedback sending.
 
 Your app should send transfer summary only for the extractions the user has seen and accepted. Transfer summary should be sent for corrected extractions and for correct extractions. The code example below shows how to correct extractions and send transfer summary.
 

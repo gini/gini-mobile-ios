@@ -39,6 +39,10 @@ open class ZoomedImageView: UIScrollView {
     private var scaleToRestoreAfterResize: CGFloat = 1.0
     open var maxScaleFromMinScale: CGFloat = 3.0
     
+    open override var canBecomeFocused: Bool {
+        true
+    }
+    
     override open var frame: CGRect {
         willSet {
             if !frame.equalTo(newValue) && !newValue.equalTo(CGRect.zero) && !imageSize.equalTo(CGSize.zero) {
@@ -181,7 +185,7 @@ open class ZoomedImageView: UIScrollView {
         }
         
         zoomView = UIImageView(image: image)
-        zoomView!.isUserInteractionEnabled = true
+        zoomView?.isUserInteractionEnabled = true
         addSubview(zoomView!)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomedImageView.doubleTapGestureRecognizer(_:)))
@@ -196,6 +200,7 @@ open class ZoomedImageView: UIScrollView {
         contentSize = imageSize
         setMaxMinZoomScalesForCurrentBounds()
         zoomScale = minimumZoomScale
+        imageContentMode = .aspectFit
         
         switch initialOffset {
         case .begining:

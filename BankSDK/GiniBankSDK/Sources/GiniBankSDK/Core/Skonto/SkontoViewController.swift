@@ -6,7 +6,8 @@
 
 import UIKit
 import GiniCaptureSDK
-
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 final class SkontoViewController: UIViewController {
     private lazy var documentPreviewView: SkontoDocumentPreviewView = {
         let view = SkontoDocumentPreviewView(viewModel: viewModel)
@@ -148,9 +149,20 @@ final class SkontoViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if firstAppearance {
-            adjustPhoneLayoutForCurrentOrientation()
+
+        // On devices without a notch (i.e., no safe area insets at the top),
+        // viewSafeAreaInsetsDidChange() does not called on first appearance.
+        // So we manually trigger the layout adjustment here as a fallback.
+        if firstAppearance && !UIDevice.current.hasNotch {
+            adjustLayoutForCurrentOrientation()
         }
+    }
+
+    // This is reliably called on devices that does have a notch
+    // (i.e., have safe area insets)
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        adjustLayoutForCurrentOrientation()
     }
 
     override func viewWillTransition(to size: CGSize,
@@ -158,8 +170,9 @@ final class SkontoViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         guard UIDevice.current.isIphone else { return }
 
-        coordinator.animate(alongsideTransition: { _ in
-            self.adjustPhoneLayoutForCurrentOrientation()
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self = self else { return }
+            self.adjustLayoutForCurrentOrientation()
         })
     }
 
@@ -168,7 +181,7 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupView() {
-        title = LocalizedStrings.screenTitle
+        title = Strings.screenTitle
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().background.primary.uiColor()
 
@@ -210,30 +223,29 @@ final class SkontoViewController: UIViewController {
         helpButton.addAction(self, #selector(helpButtonTapped))
         navigationItem.rightBarButtonItem = helpButton.barButton
 
-        let backButton = GiniBarButton(ofType: .back(title: LocalizedStrings.backButtonTitle))
+        let backButton = GiniBarButton(ofType: .back(title: Strings.backButtonTitle))
         backButton.addAction(self, #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton.barButton
     }
 
-    private func adjustPhoneLayoutForCurrentOrientation() {
+    private func adjustLayoutForCurrentOrientation() {
         stackViewWidthConstraint.constant = contentStackViewWidth
-        let isLandscape = UIDevice.current.isLandscape
 
         // Always deactivate both constraints before layout switch
         deactivateScrollViewConstraints()
 
-        if isLandscape {
-            setupPhoneLandscapeLayout()
-            scrollView.contentInset = Constants.scrollViewLandscapeIphoneContentInsets
+        if UIDevice.current.isLandscape {
+            setupLandscapeLayout()
+            scrollView.contentInset = Constants.scrollViewLandscapeContentInsets
             scrollView.contentInsetAdjustmentBehavior = .never
         } else {
-            setupPhonePortraitLayout()
+            setupPortraitLayout()
             scrollView.contentInset = Constants.scrollViewDefaultContentInset
             scrollView.contentInsetAdjustmentBehavior = .automatic
         }
     }
 
-    private func setupPhoneLandscapeLayout() {
+    private func setupLandscapeLayout() {
         removeExistingBottomComponents()
 
         if configuration.bottomNavigationBarEnabled {
@@ -292,18 +304,30 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerInLandscape() {
+
         proceedContainerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(proceedContainerConstraints)
 
-        mainStackView.addArrangedSubview(proceedContainerView)
-        NSLayoutConstraint.activate([
-            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
-                                                          constant: Constants.landscapeHorizontalPadding),
-            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
-                                                           constant: -Constants.landscapeHorizontalPadding)
-        ])
+        // added proceedContainerView to self.view and expand full width for iPad
+        // just like iPhone on portrait
+        if UIDevice.current.isIpad {
+            attachProceedContainerViewIfNeeded()
 
-        updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+            updateScrollViewBottomToViewConstraint(to: proceedContainerView.topAnchor)
+        } else {
+
+            mainStackView.addArrangedSubview(proceedContainerView)
+            NSLayoutConstraint.activate([
+                proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
+                                                              constant: Constants.landscapeHorizontalPadding),
+                proceedContainerView.trailingAnchor.constraint(
+                    equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
+                    constant: -Constants.landscapeHorizontalPadding
+                )
+            ])
+
+            updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+        }
     }
 
     private func attachProceedContainerViewIfNeeded() {
@@ -314,7 +338,7 @@ final class SkontoViewController: UIViewController {
     }
 
     // MARK: - Portrait specific layout
-    private func setupPhonePortraitLayout() {
+    private func setupPortraitLayout() {
         // Cleanup landscape-specific layout
         if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
             defaultBar.navigationBarView.removeFromSuperview()
@@ -551,6 +575,7 @@ final class SkontoViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+// swiftlint:enable type_body_length
 
 extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
@@ -645,11 +670,13 @@ private extension SkontoViewController {
         static let scrollViewSideInset: CGFloat = 0
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
-        static let tabletWidthMultiplier: CGFloat = 0.7
+        // This multiplier was chosen to accommodate 200% text scaling on iPads,
+        // ensuring proper layout and readability for Dynamic Type support.
+        static let tabletWidthMultiplier: CGFloat = 0.71
         static let navigationBarViewDefaultHeight: CGFloat = 62
         static let landscapeHorizontalPadding: CGFloat = 16
 
-        static var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
+        static var scrollViewLandscapeContentInsets: UIEdgeInsets {
             UIEdgeInsets(top: containerPadding, left: 0, bottom: 0, right: 0)
         }
 
@@ -658,7 +685,7 @@ private extension SkontoViewController {
         }
     }
 
-    enum LocalizedStrings {
+    struct Strings {
         static let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                                           comment: "Skonto discount")
         static let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
@@ -680,3 +707,4 @@ extension SkontoViewController: GiniInputAccessoryViewDelegate {
         endEditing()
     }
 }
+// swiftlint:enable file_length
