@@ -42,14 +42,25 @@ public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewContro
 
 extension DocumentMarkedAsPaidViewController {
     struct Strings {
-        static let title = NSLocalizedStringPreferredFormat("ginicapture.document.paid.warning.title",
-                                                            comment: "Document Marked as Paid")
-        static let description = NSLocalizedStringPreferredFormat("ginicapture.document.paid.warning.description",
-                                                                  comment: "This document states that it has already been paid")
-        static let cancelButton = NSLocalizedStringPreferredFormat("ginicapture.document.paid.warning.cancelButtonTitle",
-                                                                   comment: "Cancel transfer")
-        static let proceedButton = NSLocalizedStringPreferredFormat("ginicapture.document.paid.warning.proceedButtonTitle",
-                                                                    comment: "Proceed anyway")
+        static let titleKey = "ginicapture.document.paid.warning.title"
+        static let titleComment = "Document Marked as Paid"
+        static let title = NSLocalizedStringPreferredFormat(titleKey,
+                                                            comment: titleComment)
+
+        static let descriptionKey = "ginicapture.document.paid.warning.description"
+        static let descriptionComment = "This document states that it has already been paid"
+        static let description = NSLocalizedStringPreferredFormat(descriptionKey,
+                                                                  comment: descriptionComment)
+
+        static let cancelButtonKey = "ginicapture.document.paid.warning.cancelButtonTitle"
+        static let cancelButtonComment = "Cancel transfer"
+        static let cancelButton = NSLocalizedStringPreferredFormat(cancelButtonKey,
+                                                                   comment: cancelButtonComment)
+
+        static let proceedButtonKey = "ginicapture.document.paid.warning.proceedButtonTitle"
+        static let proceedButtonComment = "Proceed anyway"
+        static let proceedButton = NSLocalizedStringPreferredFormat(proceedButtonKey,
+                                                                    comment: proceedButtonComment)
     }
 }
 
