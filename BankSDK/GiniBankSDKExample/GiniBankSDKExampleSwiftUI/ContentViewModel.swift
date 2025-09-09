@@ -42,15 +42,15 @@ extension ContentViewModel: GiniBankSDKDelegate {
 extension UIApplication {
 
     var topViewController: UIViewController? {
-        var topViewController: UIViewController?
+        var viewController: UIViewController?
 
         if var topController = keyWindow?.rootViewController {
             while let presentedViewController = topController.presentedViewController {
                 topController = presentedViewController
             }
-            topViewController = topController
+            viewController = topController
         }
-        return topViewController
+        return viewController
     }
 
     private var keyWindow: UIWindow? {
