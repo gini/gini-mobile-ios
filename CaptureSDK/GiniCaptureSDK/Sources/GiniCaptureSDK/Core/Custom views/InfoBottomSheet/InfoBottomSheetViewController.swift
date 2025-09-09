@@ -5,7 +5,6 @@
 //
 import UIKit
 
-
 /**
  A bottom sheet view controller that displays informational content with an icon, title, description, and action buttons.
 
