@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		28004ED62E4CC5D600B89DAC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED52E4CC5D600B89DAC /* FirebaseCrashlytics */; };
 		28004ED82E4CC5D600B89DAC /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED72E4CC5D600B89DAC /* FirebasePerformance */; };
+		280427BA2E705D0F000D658A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 280427B92E705D0F000D658A /* FirebaseCrashlytics */; };
+		280427BC2E705D14000D658A /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 280427BB2E705D14000D658A /* FirebasePerformance */; };
 		281417EA2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
 		281417EB2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */; };
 		281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
@@ -515,6 +517,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				281B93A52E6754AE009AA635 /* GiniBankSDK in Frameworks */,
+				280427BA2E705D0F000D658A /* FirebaseCrashlytics in Frameworks */,
+				280427BC2E705D14000D658A /* FirebasePerformance in Frameworks */,
 				281B93A72E6754AE009AA635 /* GiniCaptureSDK in Frameworks */,
 				281B93A32E6754AE009AA635 /* GiniBankAPILibrary in Frameworks */,
 			);
@@ -1226,6 +1230,7 @@
 				28FB83B52E673C8600DE88EE /* Sources */,
 				28FB83B62E673C8600DE88EE /* Frameworks */,
 				28FB83B72E673C8600DE88EE /* Resources */,
+				280427BF2E705FA1000D658A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1239,6 +1244,8 @@
 				281B93A22E6754AE009AA635 /* GiniBankAPILibrary */,
 				281B93A42E6754AE009AA635 /* GiniBankSDK */,
 				281B93A62E6754AE009AA635 /* GiniCaptureSDK */,
+				280427B92E705D0F000D658A /* FirebaseCrashlytics */,
+				280427BB2E705D14000D658A /* FirebasePerformance */,
 			);
 			productName = GiniBankSDKExampleSwiftUI;
 			productReference = 28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */;
@@ -1591,6 +1598,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		280427BF2E705FA1000D658A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"",
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "## Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
 		281E9BB02E4CBDE4008372EC /* Upload DSYM */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1957,6 +1987,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				ENABLE_PREVIEWS = YES;
@@ -2701,6 +2732,16 @@
 			productName = FirebaseCrashlytics;
 		};
 		28004ED72E4CC5D600B89DAC /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
+		};
+		280427B92E705D0F000D658A /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		280427BB2E705D14000D658A /* FirebasePerformance */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 28004ED42E4CC5D600B89DAC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebasePerformance;

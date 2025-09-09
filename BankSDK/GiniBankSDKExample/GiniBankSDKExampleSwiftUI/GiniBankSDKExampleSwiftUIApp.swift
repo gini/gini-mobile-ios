@@ -6,13 +6,23 @@
 
 import SwiftUI
 import GiniCaptureSDK
+import Firebase
 
 @main
 struct GiniBankSDKExampleSwiftUIApp: App {
+
+    init() {
+        configureFirebase()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView(delegate: AppDelegate.shared, clientId: clientID)
         }
+    }
+
+    private func configureFirebase() {
+        FirebaseApp.configure()
     }
 }
 
