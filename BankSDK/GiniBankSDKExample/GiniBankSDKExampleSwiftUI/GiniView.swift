@@ -18,7 +18,9 @@ struct GiniView: UIViewControllerRepresentable {
         return context.coordinator.viewController
     }
 
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        // No updates needed - the UIViewController maintains its own state
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self, viewModel: viewModel)
