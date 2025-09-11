@@ -30,11 +30,11 @@ desc <<~DOC
     MATCH_GIT_URL     - Git URL with authentication token for the match certificates repository
                         Format: https://<token>@github.com/organization/repo.git
 DOC
-lane :generate_certificates do
+lane :generate_certificates do |options|
     match(
-      app_identifier: ["net.gini.healthsdk.example"],
-      type: "development",
-      generate_apple_certs: true,
+      app_identifier: options[:app_identifier],
+      type: options[:type],
+      generate_apple_certs: false,
       force_for_new_devices: true
     )
 end
@@ -146,7 +146,7 @@ lane :run_unit_tests do |options|
   sh("rm -rf ./tmp_derived_data") if File.exist?("./tmp_derived_data")
 end
 
-
+  
   desc <<~DOC
   Set up provisioning profiles for app distribution.
   
