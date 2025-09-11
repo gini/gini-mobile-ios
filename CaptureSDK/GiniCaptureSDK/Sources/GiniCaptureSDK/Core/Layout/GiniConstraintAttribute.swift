@@ -102,10 +102,13 @@ public class GiniConstraintAttribute {
 
     @discardableResult
     public func multipliedBy(_ multiplier: CGFloat) -> Self {
-        guard let original = createdConstraint else { return self }
+        guard let original = createdConstraint,
+              let firstItem = original.firstItem else {
+            return self
+        }
 
         let newConstraint = NSLayoutConstraint(
-            item: original.firstItem!,
+            item: firstItem,
             attribute: original.firstAttribute,
             relatedBy: original.relation,
             toItem: original.secondItem,
