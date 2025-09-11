@@ -251,7 +251,15 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let contentScrollViewConstraints = contentScrollView.giniMakeConstraints {
             $0.top.equalTo(view.safeTop).constant(Constants.contentScrollViewTopPaddingPortrait)
             $0.horizontal.equalToSuperview().constant(Constants.contentScrollViewHorizontalPaddingPortrait)
-            $0.bottom.equalTo(buttonsViewContainer.top).constant(-Constants.buttonContainerViewTopPadding)
+            // HARD limit: spacing must be ≤ 40
+            $0.bottom.greaterThanOrEqualTo(buttonsViewContainer.top)
+                .constant(-Constants.buttonContainerViewTopPadding.max)
+                .priority(.required)
+
+            // PREFERENCE: spacing = 20 (can be relaxed if needed)
+            $0.bottom.equalTo(buttonsViewContainer.top)
+                .constant(-Constants.buttonContainerViewTopPadding.min)
+                .priority(.defaultHigh) // 750
         }
 
         contentScrollViewTopConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .top }
@@ -259,7 +267,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         contentScrollViewTrailingConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .trailing }
 
         let buttonsViewContainerConstraints = buttonsViewContainer.giniMakeConstraints {
-            $0.top.equalTo(contentScrollView.bottom + Constants.buttonContainerViewTopPadding)
             $0.horizontal.equalToSuperview().constant(Constants.buttonsViewContainerHorizontalPaddingPortrait)
             $0.bottom.equalTo(view.safeBottom).constant(-Constants.contentStackViewBottomPadding)
         }
@@ -318,6 +325,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 extension InfoBottomSheetViewController {
     // MARK: - Constants
     typealias NotchConditionalPadding = (withNotch: CGFloat, withoutNotch: CGFloat)
+    typealias MinMaxPadding = (min: CGFloat, max: CGFloat)
     private struct Constants {
         static let contentScrollViewTopPaddingPortrait: CGFloat = 40
         static let contentScrollViewHorizontalPaddingPortrait: CGFloat = 24
@@ -328,7 +336,7 @@ extension InfoBottomSheetViewController {
         static let contentStackViewBottomPadding: CGFloat = 19
 
         static let buttonsViewContainerHorizontalPaddingPortrait: CGFloat = 24
-        static let buttonContainerViewTopPadding: CGFloat = 40
+        static let buttonContainerViewTopPadding: MinMaxPadding = (20, 40)
         static let buttonsViewContainerLandscapeHorizontalPadding: NotchConditionalPadding = (56, 16)
 
         static let iconSize: CGFloat = 24
