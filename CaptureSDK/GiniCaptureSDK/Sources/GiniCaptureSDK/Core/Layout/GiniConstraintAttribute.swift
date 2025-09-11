@@ -130,4 +130,136 @@ public class GiniConstraintAttribute {
         createdConstraint?.constant = value
         return self
     }
+
+    @discardableResult
+    public func lessThanOrEqualTo(_ target: UIView) -> Self {
+        lessThanOrEqualTo(GiniViewConstraintAttribute(view: target, attribute: attribute))
+    }
+
+    @discardableResult
+    public func lessThanOrEqualTo(_ target: UILayoutGuide) -> Self {
+        lessThanOrEqualTo(GiniViewConstraintAttribute(view: target, attribute: attribute))
+    }
+
+    @discardableResult
+    public func lessThanOrEqualTo(_ target: GiniViewConstraintAttribute) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .lessThanOrEqual,
+            toItem: target.view,
+            attribute: target.attribute,
+            multiplier: 1.0,
+            constant: 0
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func lessThanOrEqualTo(_ target: GiniConstraintTarget) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .lessThanOrEqual,
+            toItem: target.item,
+            attribute: target.attribute,
+            multiplier: 1.0,
+            constant: target.constant
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func lessThanOrEqualTo(_ constant: CGFloat) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .lessThanOrEqual,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: constant
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func lessThanOrEqualToSuperview() -> Self {
+        guard let superview = view.superview else {
+            fatalError("View must have a superview")
+        }
+        return lessThanOrEqualTo(superview)
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualTo(_ target: UIView) -> Self {
+        greaterThanOrEqualTo(GiniViewConstraintAttribute(view: target, attribute: attribute))
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualTo(_ target: UILayoutGuide) -> Self {
+        greaterThanOrEqualTo(GiniViewConstraintAttribute(view: target, attribute: attribute))
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualTo(_ target: GiniViewConstraintAttribute) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .greaterThanOrEqual,
+            toItem: target.view,
+            attribute: target.attribute,
+            multiplier: 1.0,
+            constant: 0
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualTo(_ target: GiniConstraintTarget) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .greaterThanOrEqual,
+            toItem: target.item,
+            attribute: target.attribute,
+            multiplier: 1.0,
+            constant: target.constant
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualTo(_ constant: CGFloat) -> Self {
+        let constraint = NSLayoutConstraint(
+            item: view,
+            attribute: attribute,
+            relatedBy: .greaterThanOrEqual,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: constant
+        )
+        maker.addConstraint(constraint)
+        self.createdConstraint = constraint
+        return self
+    }
+
+    @discardableResult
+    public func greaterThanOrEqualToSuperview() -> Self {
+        guard let superview = view.superview else {
+            fatalError("View must have a superview")
+        }
+        return greaterThanOrEqualTo(superview)
+    }
 }
