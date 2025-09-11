@@ -25,10 +25,7 @@ public extension UIView {
     @discardableResult
     func giniMakeConstraints(_ closure: (GiniConstraintMaker) -> Void) -> [NSLayoutConstraint] {
         translatesAutoresizingMaskIntoConstraints = false
-        let maker = GiniConstraintMaker(view: self)
-        closure(maker)
-        NSLayoutConstraint.activate(maker.constraints)
-        return maker.constraints
+        return giniUpdateConstraints(closure)
     }
 
     /**
