@@ -388,14 +388,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        let paymentHintsEnabled = GiniBankConfiguration.shared.paymentHintsEnabled
-        let paymentStateIsPaid: Bool = {
-            guard let state = extractionResult.extractions
-                .first(where: { $0.name == "paymentState" })?
-                .value else { return false }
-            return state.caseInsensitiveCompare("Paid") == .orderedSame
-        }()
-        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docsx).
         let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
 
@@ -412,13 +405,34 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
-        if paymentHintsEnabled && paymentStateIsPaid {
+        // Check if payment hints should be shown
+        let shouldShowPaymentHints = determineIfPaymentHintsEnabled(for: extractionResult)
+
+        if shouldShowPaymentHints {
             presentDocumentMarkedAsPaidBottomSheet {
                 continueWithFeatureFlow()
             }
         } else {
             continueWithFeatureFlow()
         }
+    }
+
+    private func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = GiniBankConfiguration.shared.paymentHintsEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
+        let documentIsPaid = isDocumentMarkedAsPaid(extractionResult)
+
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
+    }
+
+    private func isDocumentMarkedAsPaid(_ extractionResult: ExtractionResult) -> Bool {
+        guard let paymentState = extractionResult.extractions
+            .first(where: { $0.name == "paymentState" })?
+            .value else {
+            return false
+        }
+
+        return paymentState.lowercased() == "paid"
     }
 
     private func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
