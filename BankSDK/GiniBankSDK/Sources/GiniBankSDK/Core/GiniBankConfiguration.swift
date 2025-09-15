@@ -355,6 +355,14 @@ public final class GiniBankConfiguration: NSObject {
     /// that implements the protocol.
     public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
 
+    // MARK: - User hints for payment
+    /**
+     * Indicates whether the `paymentHintsEnabled` is enabled or not. If set to `true`,
+     * a bottom sheet is shown in the photo payment flow, informing the user about
+     * different statuses of the ongoing payment.
+     */
+    public var paymentHintsEnabled: Bool = true
+
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
