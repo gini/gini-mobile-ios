@@ -6,5 +6,6 @@
     "transactionDocsEnabled": false,
     "instantPaymentEnabled": false,
     "qrCodeEducationEnabled": false,
-    "eInvoiceEnabled": false
+    "eInvoiceEnabled": false,
+    "paymentHintsEnabled": false
 }
