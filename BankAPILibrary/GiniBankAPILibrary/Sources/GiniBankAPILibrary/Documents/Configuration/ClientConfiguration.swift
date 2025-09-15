@@ -24,6 +24,7 @@ public struct ClientConfiguration: Codable {
     public let instantPaymentEnabled: Bool
     public let qrCodeEducationEnabled: Bool
     public let eInvoiceEnabled: Bool
+    public let paymentHintsEnabled: Bool
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -37,6 +38,7 @@ public struct ClientConfiguration: Codable {
         - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
         - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
         - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
+        - paymentHintsEnabled: A flag indicating wheter the user hints are enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -45,7 +47,8 @@ public struct ClientConfiguration: Codable {
                 transactionDocsEnabled: Bool,
                 instantPaymentEnabled: Bool,
                 qrCodeEducationEnabled: Bool,
-                eInvoiceEnabled: Bool) {
+                eInvoiceEnabled: Bool,
+                paymentHintsEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -54,5 +57,6 @@ public struct ClientConfiguration: Codable {
         self.instantPaymentEnabled = instantPaymentEnabled
         self.qrCodeEducationEnabled = qrCodeEducationEnabled
         self.eInvoiceEnabled = eInvoiceEnabled
+        self.paymentHintsEnabled = paymentHintsEnabled
     }
 }
