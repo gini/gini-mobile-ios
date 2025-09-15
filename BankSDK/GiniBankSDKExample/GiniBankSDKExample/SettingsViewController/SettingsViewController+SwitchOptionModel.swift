@@ -58,6 +58,7 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
+        case paymentHintsEnabled
         case closeSDK
 
 		var title: String {
@@ -150,6 +151,8 @@ struct SwitchOptionModel {
                 return "Skonto help bottom navigation bar"
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
+            case .paymentHintsEnabled:
+                return "User warnings feature"
 			case .customDocumentValidations:
 				return "Custom document validations"
 			case .giniErrorLoggerIsOn:
