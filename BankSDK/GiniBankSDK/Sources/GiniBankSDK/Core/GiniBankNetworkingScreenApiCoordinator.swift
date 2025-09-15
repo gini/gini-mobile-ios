@@ -387,27 +387,61 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
-        // TODO: There is a separate ticket to show DocumentMarkedAsPaidViewController based on a backend object
-        // for now will be displayed every time
-        presentDocumentMarkedAsPaidBottomSheet { [weak self] in
+
+        let paymentHintsEnabled = GiniBankConfiguration.shared.paymentHintsEnabled
+        let paymentStateIsPaid: Bool = {
+            guard let state = extractionResult.extractions
+                .first(where: { $0.name == "paymentState" })?
+                .value else { return false }
+            return state.caseInsensitiveCompare("Paid") == .orderedSame
+        }()
+        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
-            if GiniBankConfiguration.shared.returnAssistantEnabled,
-               let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+
+            if shouldShowReturnAssistant(for: extractionResult) {
                 handleReturnAssistantScreenDisplay(extractionResult, delegate)
-            } else if GiniBankConfiguration.shared.skontoEnabled,
-                      let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
-                handleSkontoScreenDisplay(extractionResult, delegate)
-            } else {
-                let document = documentService.document
-                handleTransactionDocsAlert(on: screenAPINavigationController,
-                                           extractionResult: extractionResult,
-                                           documentId: document?.id,
-                                           deliveryFunction: { [weak self] result in
-                    guard let self = self else { return }
-                    self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-                })
+                return
             }
+
+            if shouldShowSkonto(for: extractionResult) {
+                handleSkontoScreenDisplay(extractionResult, delegate)
+                return
+            }
+
+            presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
+
+        if paymentHintsEnabled && paymentStateIsPaid {
+            presentDocumentMarkedAsPaidBottomSheet {
+                continueWithFeatureFlow()
+            }
+        } else {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        GiniBankConfiguration.shared.returnAssistantEnabled &&
+        !(result.lineItems?.isEmpty ?? true)
+    }
+
+    private func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        GiniBankConfiguration.shared.skontoEnabled &&
+        !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    private func presentTransactionDocsAlert(extractionResult: ExtractionResult,
+                                             delegate: GiniCaptureNetworkDelegate) {
+        let document = documentService.document
+        handleTransactionDocsAlert(on: screenAPINavigationController,
+                                   extractionResult: extractionResult,
+                                   documentId: document?.id,
+                                   deliveryFunction: { [weak self] result in
+            guard let self else { return }
+                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+            }
+        )
     }
 
     // MARK: - Deliver with Return Assistant
