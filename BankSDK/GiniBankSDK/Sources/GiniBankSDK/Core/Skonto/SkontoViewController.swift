@@ -103,7 +103,7 @@ final class SkontoViewController: UIViewController {
     private lazy var scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo:
                                                                                             view.bottomAnchor)
     private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
-        .constraint(equalTo: proceedContainerView.bottomAnchor)
+        .constraint(equalTo: proceedContainerView.topAnchor)
 
     private var contentStackViewWidth: CGFloat {
         let horizontalSafeAreaInsets = view.safeAreaInsets.left + view.safeAreaInsets.right
@@ -211,6 +211,8 @@ final class SkontoViewController: UIViewController {
         setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
         setupProceedContainerViewConstraints()
+
+        adjustLayoutForCurrentOrientation()
     }
 
     private func setupTopBarButtonsIfNeeded() {
@@ -245,6 +247,7 @@ final class SkontoViewController: UIViewController {
         }
     }
 
+    // MARK: - Landscape specific layout
     private func setupLandscapeLayout() {
         removeExistingBottomComponents()
 
@@ -259,7 +262,6 @@ final class SkontoViewController: UIViewController {
         }
     }
 
-    // MARK: - Landscape specific layout
     private func removeExistingBottomComponents() {
         proceedContainerView.removeFromSuperview()
         bottomNavigationBar?.removeFromSuperview()
@@ -346,9 +348,6 @@ final class SkontoViewController: UIViewController {
 
             removeLandscapeBottomBarContentView()
         }
-
-        // Deactivate scrollview constraints
-        deactivateScrollViewConstraints()
 
         // Attach correct bottom element and apply correct constraint
         if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
