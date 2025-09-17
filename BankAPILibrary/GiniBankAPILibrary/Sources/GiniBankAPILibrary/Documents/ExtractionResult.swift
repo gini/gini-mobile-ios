@@ -22,6 +22,11 @@ final public class ExtractionResult: NSObject {
 
     // The Skonto information extractions.
     public var skontoDiscounts: [[Extraction]]?
+    
+    
+    // The cross-border payment compound extractions.
+    public var crossBorderPayment: [[Extraction]]?
+
 
     /// The extraction candidates.
     public let candidates: [String: [Extraction.Candidate]]
@@ -30,11 +35,13 @@ final public class ExtractionResult: NSObject {
                 lineItems: [[Extraction]]? = nil,
                 returnReasons: [ReturnReason]? = nil,
                 skontoDiscounts: [[Extraction]]? = nil,
+                crossBorderPayment: [[Extraction]]? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
         self.extractions = extractions
         self.lineItems = lineItems
         self.returnReasons = returnReasons
         self.skontoDiscounts = skontoDiscounts
+        self.crossBorderPayment = crossBorderPayment 
         self.candidates = candidates
 
         super.init()
@@ -46,6 +53,7 @@ final public class ExtractionResult: NSObject {
                   lineItems: extractionsContainer.compoundExtractions?.lineItems,
                   returnReasons: extractionsContainer.returnReasons,
                   skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
+                  crossBorderPayment: extractionsContainer.compoundExtractions?.crossBorderPayment,
                   candidates: extractionsContainer.candidates)
     }
 }
