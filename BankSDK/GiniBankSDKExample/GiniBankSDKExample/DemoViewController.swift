@@ -74,6 +74,10 @@ final class DemoViewController: UIViewController {
         configureSettingsButton()
 
         dismissKeyboardOnTap()
+        
+        metaInformationLabel.isHidden = true
+        transactionListButton.isHidden = true
+        settingsButton.isHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
