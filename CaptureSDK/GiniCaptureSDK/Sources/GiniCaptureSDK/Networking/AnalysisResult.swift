@@ -32,6 +32,12 @@ import GiniBankAPILibrary
      *  Skonto extractions obtained in the analysis.
      */
     public let skontoDiscounts: [[Extraction]]?
+    
+    
+    /**
+     *   Cross-border payment compound extractions obtained in the analysis.
+     */
+    public let crossBorderPayment: [[Extraction]]?
 
     /**
      *  The analyzed Gini Bank API document.
@@ -51,6 +57,7 @@ import GiniBankAPILibrary
     public init(extractions: [String: Extraction],
                 lineItems: [[Extraction]]? = nil,
                 skontoDiscounts: [[Extraction]]? = nil,
+                crossBorderPayment: [[Extraction]]? = nil,
                 images: [UIImage],
                 document: Document? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
@@ -58,6 +65,7 @@ import GiniBankAPILibrary
         self.extractions = extractions
         self.lineItems = lineItems
         self.skontoDiscounts = skontoDiscounts
+        self.crossBorderPayment = crossBorderPayment
         self.document = document
         self.candidates = candidates
     }
