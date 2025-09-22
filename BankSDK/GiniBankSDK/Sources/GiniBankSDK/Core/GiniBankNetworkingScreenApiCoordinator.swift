@@ -417,47 +417,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    private func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
-        let globalPaymentHintsEnabled = GiniBankConfiguration.shared.paymentHintsEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
-        let documentIsPaid = isDocumentMarkedAsPaid(extractionResult)
-
-        return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
-    }
-
-    private func isDocumentMarkedAsPaid(_ extractionResult: ExtractionResult) -> Bool {
-        guard let paymentState = extractionResult.extractions
-            .first(where: { $0.name == "paymentState" })?
-            .value else {
-            return false
-        }
-
-        return paymentState.lowercased() == "paid"
-    }
-
-    private func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
-        GiniBankConfiguration.shared.returnAssistantEnabled &&
-        !(result.lineItems?.isEmpty ?? true)
-    }
-
-    private func shouldShowSkonto(for result: ExtractionResult) -> Bool {
-        GiniBankConfiguration.shared.skontoEnabled &&
-        !(result.skontoDiscounts?.isEmpty ?? true)
-    }
-
-    private func presentTransactionDocsAlert(extractionResult: ExtractionResult,
-                                             delegate: GiniCaptureNetworkDelegate) {
-        let document = documentService.document
-        handleTransactionDocsAlert(on: screenAPINavigationController,
-                                   extractionResult: extractionResult,
-                                   documentId: document?.id,
-                                   deliveryFunction: { [weak self] result in
-            guard let self else { return }
-                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-            }
-        )
-    }
-
     // MARK: - Deliver with Return Assistant
     private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
@@ -541,6 +500,50 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+}
+
+internal extension GiniBankNetworkingScreenApiCoordinator {
+
+    func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = GiniBankConfiguration.shared.paymentHintsEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
+        let documentIsPaid = isDocumentMarkedAsPaid(extractionResult)
+
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
+    }
+
+    func isDocumentMarkedAsPaid(_ extractionResult: ExtractionResult) -> Bool {
+        guard let paymentState = extractionResult.extractions
+            .first(where: { $0.name == "paymentState" })?
+            .value else {
+            return false
+        }
+
+        return paymentState.lowercased() == "paid"
+    }
+
+    func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        GiniBankConfiguration.shared.returnAssistantEnabled &&
+        !(result.lineItems?.isEmpty ?? true)
+    }
+
+    func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        GiniBankConfiguration.shared.skontoEnabled &&
+        !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func presentTransactionDocsAlert(extractionResult: ExtractionResult,
+                                     delegate: GiniCaptureNetworkDelegate) {
+        let document = documentService.document
+        handleTransactionDocsAlert(on: screenAPINavigationController,
+                                   extractionResult: extractionResult,
+                                   documentId: document?.id,
+                                   deliveryFunction: { [weak self] result in
+            guard let self else { return }
+            self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+        }
+        )
     }
 }
 
