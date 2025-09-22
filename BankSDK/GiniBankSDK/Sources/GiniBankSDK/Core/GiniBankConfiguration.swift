@@ -292,7 +292,7 @@ public final class GiniBankConfiguration: NSObject {
      the user will be presented with a digital representation of their invoice where they
 	 can see individual line items and are able to amend them or choose not to pay for them.
      */
-    public var returnAssistantEnabled = true
+    public var returnAssistantEnabled = false
 
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
@@ -327,7 +327,7 @@ public final class GiniBankConfiguration: NSObject {
      * the user will be presented with a screen where they can choose
      * to pay the invoice with or without applying Skonto.
      */
-    public var skontoEnabled: Bool = true
+    public var skontoEnabled: Bool = false
 
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
