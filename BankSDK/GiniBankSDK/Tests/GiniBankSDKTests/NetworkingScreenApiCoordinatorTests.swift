@@ -9,47 +9,6 @@
 @testable import GiniCaptureSDK
 import XCTest
 
-private class MockTokenSource: AlternativeTokenSource {
-    var token: Token?
-    init(token: Token? = nil) {
-        self.token = token
-    }
-    func fetchToken(completion: @escaping (Result<Token, GiniError>) -> Void) {
-        if let token {
-            completion(.success(token))
-        } else {
-            completion(.failure(.requestCancelled))
-        }
-    }
-}
-
-private class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
-    private(set) var closeCalled: Bool = false
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-    }
-    
-    func giniCaptureDidCancelAnalysis() {
-        closeCalled = true
-    }
-    
-    func giniCaptureDidEnterManually() {
-    }
-}
-
-private class MockTrackingDelegate: GiniCaptureTrackingDelegate {
-    func onOnboardingScreenEvent(event: Event<OnboardingScreenEventType>) {
-    }
-    
-    func onCameraScreenEvent(event: Event<CameraScreenEventType>) {
-    }
-    
-    func onReviewScreenEvent(event: Event<ReviewScreenEventType>) {
-    }
-    
-    func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
-    }
-}
-
 final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     private var tokenSource: MockTokenSource!
     private var resultsDelegate: MockCaptureResultsDelegate!
@@ -127,32 +86,175 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         )
         XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
     }
+
+    // MARK: - determineIfPaymentHintsEnabled Tests
+
+    func testDetermineIfPaymentHintsEnabledAllEnabledDocumentPaidReturnsTrue() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentHintsEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        let extractionResult = createExtractionResult(paymentState: "paid")
+
+        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+
+        XCTAssertTrue(result)
+    }
+
+    func testDetermineIfPaymentHintsEnabledGlobalDisabledReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentHintsEnabled = false
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        let extractionResult = createExtractionResult(paymentState: "paid")
+
+        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    func testDetermineIfPaymentHintsEnabledDocumentNotPaidReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentHintsEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        let extractionResult = createExtractionResult(paymentState: "unpaid")
+
+        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    // MARK: - isDocumentMarkedAsPaid Tests
+
+    func testIsDocumentMarkedAsPaidPaidStatusReturnsTrue() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentState: "paid")
+
+        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+
+        XCTAssertTrue(result)
+    }
+
+    func testIsDocumentMarkedAsPaidUnpaidStatusReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentState: "unpaid")
+
+        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    func testIsDocumentMarkedAsPaidNoPaymentStateReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentState: nil)
+
+        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    // MARK: - shouldShowReturnAssistant Tests
+
+    func testShouldShowReturnAssistantEnabledWithLineItemsReturnsTrue() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        let lineItems = createMockLineItems()
+        let extractionResult = createExtractionResult(lineItems: lineItems)
+
+        let result = coordinator.shouldShowReturnAssistant(for: extractionResult)
+
+        XCTAssertTrue(result)
+    }
+
+    func testShouldShowReturnAssistantDisabledWithLineItemsReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.returnAssistantEnabled = false
+        let lineItems = createMockLineItems()
+        let extractionResult = createExtractionResult(lineItems: lineItems)
+
+        let result = coordinator.shouldShowReturnAssistant(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    func testShouldShowReturnAssistantEnabledWithoutLineItemsReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        let extractionResult = createExtractionResult(lineItems: [])
+
+        let result = coordinator.shouldShowReturnAssistant(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    // MARK: - shouldShowSkonto Tests
+
+    func testShouldShowSkontoEnabledWithDiscountsReturnsTrue() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        let skontoDiscounts = createMockSkontoDiscounts()
+        let extractionResult = createExtractionResult(skontoDiscounts: skontoDiscounts)
+
+        let result = coordinator.shouldShowSkonto(for: extractionResult)
+
+        XCTAssertTrue(result)
+    }
+
+    func testShouldShowSkontoDisabledWithDiscountsReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.skontoEnabled = false
+        let skontoDiscounts = createMockSkontoDiscounts()
+        let extractionResult = createExtractionResult(skontoDiscounts: skontoDiscounts)
+
+        let result = coordinator.shouldShowSkonto(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    func testShouldShowSkontoEnabledWithoutDiscountsReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        let extractionResult = createExtractionResult(skontoDiscounts: nil)
+
+        let result = coordinator.shouldShowSkonto(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
 }
+
+// MARK: - Helper Methods
 
 private extension NetworkingScreenApiCoordinatorTests {
     func makeTokenSource() -> MockTokenSource {
         MockTokenSource(
             token:
-                Token(
-                    expiration: .init(),
-                    scope: "the_scope",
-                    type: "the_type",
-                    accessToken: "some_totally_random_gibberish"
-                )
+                Token(expiration: .init(),
+                      scope: "the_scope",
+                      type: "the_type",
+                      accessToken: "some_totally_random_gibberish")
         )
     }
 
-    func makeCoordinatorAndService(fromViewController: Bool = false) throws -> (GiniBankNetworkingScreenApiCoordinator, DefaultDocumentService) {
+    func makeCoordinatorAndService(fromViewController: Bool = false) throws -> (GiniBankNetworkingScreenApiCoordinator,
+                                                                                DefaultDocumentService) {
         let coordinator: GiniBankNetworkingScreenApiCoordinator
         if fromViewController {
             let viewController = try XCTUnwrap(
-                GiniBank.viewController(
-                    withAlternativeTokenSource: tokenSource,
-                    configuration: configuration,
-                    resultsDelegate: resultsDelegate,
-                    documentMetadata: metadata,
-                    trackingDelegate: trackingDelegate
-                ) as? ContainerNavigationController,
+                GiniBank.viewController(withAlternativeTokenSource: tokenSource,
+                                        configuration: configuration,
+                                        resultsDelegate: resultsDelegate,
+                                        documentMetadata: metadata,
+                                        trackingDelegate: trackingDelegate) as? ContainerNavigationController,
                 "There should be an instance of `ContainerNavigationController`"
             )
             coordinator = try XCTUnwrap(
@@ -160,13 +262,11 @@ private extension NetworkingScreenApiCoordinatorTests {
                 "The instance of `ContainerNavigationController` should have a coordinator of type `GiniBankNetworkingScreenApiCoordinator"
             )
         } else {
-            coordinator = GiniBankNetworkingScreenApiCoordinator(
-                alternativeTokenSource: tokenSource,
-                resultsDelegate: resultsDelegate,
-                configuration: configuration,
-                documentMetadata: metadata,
-                trackingDelegate: trackingDelegate
-            )
+            coordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: tokenSource,
+                                                                 resultsDelegate: resultsDelegate,
+                                                                 configuration: configuration,
+                                                                 documentMetadata: metadata,
+                                                                 trackingDelegate: trackingDelegate)
         }
         let documentService = try XCTUnwrap(
             coordinator.documentService as? GiniCaptureSDK.DocumentService,
@@ -177,7 +277,6 @@ private extension NetworkingScreenApiCoordinatorTests {
             "The document service should have a capture network service of type `DefaultCaptureNetworkService"
         )
 
-
         return (coordinator, captureNetworkService.documentService)
     }
 
@@ -186,7 +285,7 @@ private extension NetworkingScreenApiCoordinatorTests {
         var receivedToken: Token?
         service.sessionManager.logIn { result in
             switch result {
-                case .success(let token):
+            case .success(let token):
                 receivedToken = token
                 logInExpectation.fulfill()
             case .failure(let error):
@@ -195,5 +294,62 @@ private extension NetworkingScreenApiCoordinatorTests {
         }
         wait(for: [logInExpectation], timeout: 1)
         return receivedToken
+    }
+
+    // MARK: - Test Data Creation
+
+    func createExtractionResult(paymentState: String? = nil,
+                                lineItems: [[Extraction]]? = nil,
+                                skontoDiscounts: [[Extraction]]? = nil) -> ExtractionResult {
+        var extractions: [Extraction] = []
+
+        if let paymentState = paymentState {
+            let extraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "paymentState",
+                                        value: paymentState,
+                                        name: "paymentState")
+            extractions.append(extraction)
+        }
+
+        return ExtractionResult(extractions: extractions,
+                                lineItems: lineItems,
+                                returnReasons: [],
+                                skontoDiscounts: skontoDiscounts,
+                                candidates: [:])
+    }
+
+    func createMockLineItems() -> [[Extraction]] {
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: "lineItem",
+                                    value: "Test Item",
+                                    name: "lineItem")
+        return [[extraction]]
+    }
+
+    func createMockSkontoDiscounts() -> [[Extraction]] {
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: "skontoDiscount",
+                                    value: "2.0",
+                                    name: "skontoDiscount")
+        return [[extraction]]
+    }
+}
+
+// MARK: - ClientConfiguration Extension
+
+extension ClientConfiguration {
+    init(paymentHintsEnabled: Bool) {
+        self.init(clientID: "test",
+                  userJourneyAnalyticsEnabled: false,
+                  skontoEnabled: false,
+                  returnAssistantEnabled: false,
+                  transactionDocsEnabled: false,
+                  instantPaymentEnabled: false,
+                  qrCodeEducationEnabled: false,
+                  eInvoiceEnabled: false,
+                  paymentHintsEnabled: paymentHintsEnabled)
     }
 }
