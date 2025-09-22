@@ -366,6 +366,12 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func didRequestRescan(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: false)
+        self.remove(childCoordinator: coordinator as Coordinator)
+        showScreenAPI()
+    }
+    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()
