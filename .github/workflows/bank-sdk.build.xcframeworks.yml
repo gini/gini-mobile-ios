@@ -36,13 +36,13 @@ jobs:
 
       - name: Setup swift-create-xcframework 
         run: |
-          /usr/local/bin/brew install mint
-          /usr/local/bin/mint install lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51
+          brew install mint
+          mint install lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51
 
       - name: GiniBankSDKPinning Project File
         run: |
           cd BankSDK/GiniBankSDKPinning
-          /usr/local/bin/mint run swift-create-xcframework
+          mint run swift-create-xcframework
 
       - name: setup ruby
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
