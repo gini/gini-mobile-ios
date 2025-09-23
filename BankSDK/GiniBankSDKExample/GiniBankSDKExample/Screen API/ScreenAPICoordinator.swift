@@ -12,6 +12,7 @@ import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
+    func didRequestRescan(coordinator: ScreenAPICoordinator)
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -59,7 +60,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 											   "bic" : "bic",
 											   "amountToPay" : "amount",
                                                "instantPayment" : "instantPayment"]
-
+    
     private let apiEnvironment: APIEnvironment
 
     init(apiEnvironment: APIEnvironment,
@@ -117,7 +118,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
         customResultsScreen.result = results
-		customResultsScreen.editableFields = editableSpecificExtractions
+        // This option is unavailable for cross-border transactions
+//		customResultsScreen.editableFields = editableSpecificExtractions
 
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
@@ -215,6 +217,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 }
 // MARK: - TransactionSummaryTableViewControllerDelegate
 extension ScreenAPICoordinator: TransactionSummaryTableViewControllerDelegate {
+    func didTapToScanAgain() {
+        configuration.cleanup()
+        delegate?.didRequestRescan(coordinator: self)
+    }
+    
     func didTapCloseAndSendTransferSummary() {
         closeSreenAPIAndSendTransferSummary()
     }
@@ -228,12 +235,36 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-		extractedResults = result.extractions.map { $0.value}
-		for extraction in editableSpecificExtractions {
-			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
-				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
-			}
-		}
+//		extractedResults = result.extractions.map { $0.value}
+        extractedResults = []
+
+//		for extraction in editableSpecificExtractions {
+//			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
+//				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
+//			}
+//		}
+        
+//        // Add cross-border payment extractions
+//        if let crossBorderGroups = result.crossBorderPayment {
+//            for group in crossBorderGroups {
+//                for extraction in group {
+//                    // Only add if not already present
+//                    if extractedResults.first(where: { $0.name == extraction.name }) == nil {
+//                        extractedResults.append(extraction)
+//                    }
+//                }
+//            }
+//        }
+        
+        
+        
+        if let crossBorderGroups = result.crossBorderPayment {
+               for group in crossBorderGroups {
+                   for extraction in group {
+                       extractedResults.append(extraction)
+                   }
+               }
+           }
         showResultsScreen(results: extractedResults, document: result.document)
     }
     

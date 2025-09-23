@@ -11,6 +11,7 @@ import GiniBankSDK
 
 protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
     func didTapCloseAndSendTransferSummary()
+    func didTapToScanAgain()
 }
 /**
  Presents a dictionary of results from the analysis process in a table view.
@@ -28,6 +29,19 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
+    let displayNameMapping: [String: String] = [
+        "bankName": "Recipient Bank Name",
+        "bankAccountNumber": "Account Number",
+        "amountToPay": "Amount",
+        "iban": "IBAN",
+        "currency": "Currency",
+        "bankAddress": "Recipient's Bank Address",
+        "countryRegionCode":"Country/Region",
+        "abaRoutingNumber":"ABA Routing Number",
+        "bic":"SWIFT/BIC Code",
+        "paymentRecipient":"Payment Recipient",
+        "paymentRecipientAddress":"Payment Recipient Address"
+    ]
 
     weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
@@ -45,7 +59,50 @@ final class TransactionSummaryTableViewController: UITableViewController  {
         tableView.estimatedRowHeight = 75
         tableView.register(AttachmentsTableViewCell.self)
         setupNavigationButtons()
+        setupTableFooterButton()
     }
+    
+    private func setupTableFooterButton() {
+            // Create a container view for the footer
+            let footerView = UIView()
+            footerView.backgroundColor = .clear
+
+            // Create the button
+        let button = GiniButton(type: .custom)
+        button.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
+                                                      dark: giniCaptureColor("Accent01")).uiColor()
+        button.setTitle("Test a new document", for: .normal)
+        button.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
+                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
+            button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
+        
+        button.layer.cornerRadius = 4
+        button.clipsToBounds = true
+
+            // Add button to footer view
+            footerView.addSubview(button)
+            button.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -5),
+            button.topAnchor.constraint(equalTo: footerView.topAnchor,constant: 20),
+            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor),
+            button.heightAnchor.constraint(equalToConstant: 50) // optional if you want fixed height
+        ])
+
+            // Important: set frame height for footerView so it has space
+            footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
+
+            // Assign to tableFooterView
+            tableView.tableFooterView = footerView
+        }
+
+        @objc private func footerButtonTapped() {
+            print("Footer button tapped!")
+            tapToScanAgain()
+        }
+    
 
     private func setupNavigationButtons() {
         navigationItem.setHidesBackButton(true, animated: true)
@@ -54,15 +111,21 @@ final class TransactionSummaryTableViewController: UITableViewController  {
                                                      comment: "title for send feedback button",
                                                      isCustomizable: true)
         navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: title,
+            .rightBarButtonItem = UIBarButtonItem(title: "Done",
                                                   style: .plain,
                                                   target: self,
                                                   action: #selector(tapCloseSreenAPIAndSendTransferSummary))
     }
     
+    
+    
     // MARK: - Actions
     @objc func tapCloseSreenAPIAndSendTransferSummary() {
         delegate?.didTapCloseAndSendTransferSummary()
+    }
+    
+    func tapToScanAgain() {
+        delegate?.didTapToScanAgain()
     }
 
     // MARK: - TableViewDataSource and TableViewDelegate
@@ -86,7 +149,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
             cell.detailTextField.text = result[indexPath.row].value
             cell.detailTextField.placeholder = result[indexPath.row].name
             cell.detailTextField.tag = indexPath.row
-            cell.titleLabel.text = result[indexPath.row].name
+            cell.titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
             cell.detailTextField.textColor = GiniColor(light: UIColor.black,
                                                        dark: UIColor.gray).uiColor()
 
