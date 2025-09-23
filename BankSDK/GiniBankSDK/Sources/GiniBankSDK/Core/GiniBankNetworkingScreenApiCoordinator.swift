@@ -679,13 +679,13 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     private func presentDocumentMarkedAsPaidBottomSheet(onProceedTapped: @escaping () -> Void) {
-        let documentWarning = DocumentMarkedAsPaidViewController { [weak self] in
+        let documentWarning = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true)
             self?.didCancelCapturing()
-        } onProceed: { [weak self] in
+        }, onProceed: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true)
             onProceedTapped()
-        }
+        })
 
         let navigationController = UINavigationController(rootViewController: documentWarning)
         navigationController.isModalInPresentation = true
