@@ -388,7 +388,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docsx).
+        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
         let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
 
