@@ -22,11 +22,11 @@ on:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
-          xcode-version: '14.3.1'
+          xcode-version: '16.4'
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
       - name: Setup swift-create-xcframework 
         run: |
           /usr/local/bin/brew install mint
-          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
+          /usr/local/bin/mint install lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51
 
       - name: GiniBankSDKPinning Project File
         run: |
