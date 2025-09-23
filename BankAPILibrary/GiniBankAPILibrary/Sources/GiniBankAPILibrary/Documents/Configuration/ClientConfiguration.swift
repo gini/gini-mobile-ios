@@ -38,7 +38,7 @@ public struct ClientConfiguration: Codable {
         - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
         - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
         - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
-        - paymentHintsEnabled: A flag indicating wheter the user hints are enabled.
+        - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
