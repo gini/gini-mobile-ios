@@ -38,7 +38,7 @@ jobs:
         run: |
           brew install mint
           echo "lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51" > Mintfile
-          mint install lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51
+      #    mint install lestergini/swift-create-xcframework@abfeee079c38408883480ba36e418ada12f28d51
           mint bootstrap
 
       - name: GiniBankSDKPinning Project File
