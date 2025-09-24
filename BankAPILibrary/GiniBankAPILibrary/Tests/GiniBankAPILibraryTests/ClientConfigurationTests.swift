@@ -48,7 +48,7 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertFalse(config.instantPaymentEnabled)
         XCTAssertFalse(config.qrCodeEducationEnabled)
         XCTAssertFalse(config.eInvoiceEnabled)
-        XCTAssertTrue(config.paymentHintsEnabled)
+        XCTAssertFalse(config.paymentHintsEnabled)
     }
 
     func testDecodingFailsWhenMissingRequiredField() {
