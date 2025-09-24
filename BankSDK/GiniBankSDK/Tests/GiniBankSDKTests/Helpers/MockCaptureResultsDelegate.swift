@@ -11,7 +11,7 @@ class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
     private(set) var closeCalled: Bool = false
 
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        // Intentionally left empty
+        // This method will remain empty; no implementation is needed.
     }
 
     func giniCaptureDidCancelAnalysis() {
@@ -19,6 +19,6 @@ class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
     }
 
     func giniCaptureDidEnterManually() {
-        // Intentionally left empty
+        // This method will remain empty; no implementation is needed.
     }
 }
