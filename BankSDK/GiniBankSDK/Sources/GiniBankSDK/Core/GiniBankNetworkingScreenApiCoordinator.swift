@@ -337,7 +337,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func sendAnalyticsEventSDKClose() {
         let properties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .status, value: "successful")]
-        GiniAnalyticsManager.track(event: .sdkClosed,properties: properties)
+        GiniAnalyticsManager.track(event: .sdkClosed, properties: properties)
     }
 
     private func setDocumentIdAsUserProperty() {
@@ -387,21 +387,26 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
-        if GiniBankConfiguration.shared.returnAssistantEnabled,
-           let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
-            handleReturnAssistantScreenDisplay(extractionResult, delegate)
-        } else if GiniBankConfiguration.shared.skontoEnabled,
-                  let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
-            handleSkontoScreenDisplay(extractionResult, delegate)
-        } else {
-            let document = documentService.document
-            handleTransactionDocsAlert(on: screenAPINavigationController,
-                                       extractionResult: extractionResult,
-                                       documentId: document?.id,
-                                       deliveryFunction: { [weak self] result in
-                guard let self = self else { return }
-                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-            })
+        // TODO: There is a separate ticket to show DocumentMarkedAsPaidViewController based on a backend object
+        // for now will be displayed every time
+        presentDocumentMarkedAsPaidBottomSheet { [weak self] in
+            guard let self else { return }
+            if GiniBankConfiguration.shared.returnAssistantEnabled,
+               let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+                handleReturnAssistantScreenDisplay(extractionResult, delegate)
+            } else if GiniBankConfiguration.shared.skontoEnabled,
+                      let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
+                handleSkontoScreenDisplay(extractionResult, delegate)
+            } else {
+                let document = documentService.document
+                handleTransactionDocsAlert(on: screenAPINavigationController,
+                                           extractionResult: extractionResult,
+                                           documentId: document?.id,
+                                           deliveryFunction: { [weak self] result in
+                    guard let self = self else { return }
+                    self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+                })
+            }
         }
     }
 
@@ -671,6 +676,21 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
             deliveryFunction(extractionResult)
         })
+    }
+
+    private func presentDocumentMarkedAsPaidBottomSheet(onProceedTapped: @escaping () -> Void) {
+        let documentWarning = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true)
+            self?.didCancelCapturing()
+        }, onProceed: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true)
+            onProceedTapped()
+        })
+
+        let navigationController = UINavigationController(rootViewController: documentWarning)
+        navigationController.isModalInPresentation = true
+        navigationController.navigationBar.isHidden = true
+        screenAPINavigationController.present(navigationController, animated: true)
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
