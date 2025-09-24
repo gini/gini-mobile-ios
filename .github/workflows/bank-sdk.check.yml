@@ -45,6 +45,7 @@ jobs:
            cd BankSDK/GiniBankSDKPinning
            swift package update
 
+    # Setup ruby to run unit tests for the GiniBankSDK
     - name: Setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
@@ -55,15 +56,20 @@ jobs:
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       env:
         TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+        TEST_CLIENT_ID: "gini-mobile-test"
       with:
         lane: 'run_unit_tests'
         options: >
             {
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
+              "clientId": "$TEST_CLIENT_ID"
               "clientSecret": "$TEST_CLIENT_SECRET"
             }
+    # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
       if: ${{ matrix.target == 'GiniBankSDK' }}
       run: >
         xcodebuild clean test
@@ -74,9 +80,11 @@ jobs:
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        CLIENT_SECRET="$TEST_CLIENT_SECRET"
 
     - name: Build pinning example app and run unit and integration tests
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
       if: ${{ matrix.target == 'GiniBankSDKPinning' }}
       run: >
         xcodebuild clean test
@@ -87,4 +95,4 @@ jobs:
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        CLIENT_SECRET="$TEST_CLIENT_SECRET"
