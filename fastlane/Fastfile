@@ -536,7 +536,6 @@ lane :run_unit_tests do |options|
   
   # Clean up the report files that were generated
   sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
-  sh("rm -rf ./tmp_derived_data") if File.exist?("./tmp_derived_data")
 end
 
 end
