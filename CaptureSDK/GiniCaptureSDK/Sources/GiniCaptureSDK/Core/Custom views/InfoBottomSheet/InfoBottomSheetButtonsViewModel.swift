@@ -6,6 +6,7 @@
 
 import UIKit
 
+// ViewModel for managing primary and secondary buttons in an info bottom sheet
 final class InfoBottomSheetButtonsViewModel {
     struct Button {
         let title: String
