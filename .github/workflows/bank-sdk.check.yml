@@ -63,7 +63,7 @@ jobs:
             {
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
-              "clientId": "$TEST_CLIENT_ID"
+              "clientId": "$TEST_CLIENT_ID",
               "clientSecret": "$TEST_CLIENT_SECRET"
             }
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
