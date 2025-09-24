@@ -56,6 +56,7 @@ public final class GiniScrollViewContainer: UIScrollView {
     private func bindToSizeUpdates() {
         publisher(for: \.contentSize)
             .filter({ $0.height > 0 })
+            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 self?.size = value
