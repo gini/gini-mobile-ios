@@ -164,17 +164,10 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
             return true
         }
 
-        guard UIDevice.current.isIphone else { return false }
-
-        let screenHeight = UIScreen.main.bounds.height
-        let hasNotch = UIDevice.current.hasNotch
-
         // Force full screen on devices without notch or with small screens
-        if !hasNotch && screenHeight < Constants.smallScreenMaxHeight {
-            return true
-        }
+        guard UIDevice.current.isNonNotchSmallScreen() else { return false }
 
-        return false
+        return true
     }
 
     private func setupView() {
