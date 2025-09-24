@@ -50,7 +50,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private let textContentStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 12
+        stack.spacing = Constants.textContentStackViewSpacing
         return stack
     }()
 
@@ -327,6 +327,7 @@ extension InfoBottomSheetViewController {
     typealias NotchConditionalPadding = (withNotch: CGFloat, withoutNotch: CGFloat)
     typealias MinMaxPadding = (min: CGFloat, max: CGFloat)
     private struct Constants {
+        static let textContentStackViewSpacing: CGFloat = 12
         static let contentScrollViewTopPaddingPortrait: CGFloat = 40
         static let contentScrollViewHorizontalPaddingPortrait: CGFloat = 24
         static let contentScrollViewLandscapeTopPadding: NotchConditionalPadding = (108, 81)
