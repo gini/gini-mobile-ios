@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,25 @@
 		281B93A52E6754AE009AA635 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 281B93A42E6754AE009AA635 /* GiniBankSDK */; };
 		281B93A72E6754AE009AA635 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 281B93A62E6754AE009AA635 /* GiniCaptureSDK */; };
 		281E9BA52E4CBB26008372EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 281E9BA42E4CBB26008372EC /* GoogleService-Info.plist */; };
+		284938A02E842A4500EA8709 /* DemoScreenStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849388D2E842A4500EA8709 /* DemoScreenStrings.swift */; };
+		284938A12E842A4500EA8709 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849388E2E842A4500EA8709 /* Localized.swift */; };
+		284938A22E842A4500EA8709 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938902E842A4500EA8709 /* Device.swift */; };
+		284938A32E842A4500EA8709 /* SwiftUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938912E842A4500EA8709 /* SwiftUIColor.swift */; };
+		284938A42E842A4500EA8709 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938942E842A4500EA8709 /* ContentView.swift */; };
+		284938A52E842A4500EA8709 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938952E842A4500EA8709 /* ContentViewModel.swift */; };
+		284938A62E842A4500EA8709 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938962E842A4500EA8709 /* CredentialsManager.swift */; };
+		284938A72E842A4500EA8709 /* GiniBankSDKExampleSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938972E842A4500EA8709 /* GiniBankSDKExampleSwiftUIApp.swift */; };
+		284938A82E842A4500EA8709 /* GiniBankSDKModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938982E842A4500EA8709 /* GiniBankSDKModel.swift */; };
+		284938A92E842A4500EA8709 /* GiniSwiftUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938992E842A4500EA8709 /* GiniSwiftUIButton.swift */; };
+		284938AA2E842A4500EA8709 /* GiniView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849389A2E842A4500EA8709 /* GiniView.swift */; };
+		284938AB2E842A4500EA8709 /* IBANTextFieldSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849389C2E842A4500EA8709 /* IBANTextFieldSwiftUIView.swift */; };
+		284938AC2E842A4500EA8709 /* ModuleHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849389E2E842A4500EA8709 /* ModuleHostView.swift */; };
+		284938AD2E842A4500EA8709 /* DemoScreen.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 2849388B2E842A4500EA8709 /* DemoScreen.xcstrings */; };
+		284938AE2E842A4500EA8709 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 284938932E842A4500EA8709 /* Assets.xcassets */; };
+		284938AF2E842A4500EA8709 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2849389B2E842A4500EA8709 /* GoogleService-Info.plist */; };
+		284938B32E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938B12E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests.swift */; };
+		284938B72E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938B42E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests.swift */; };
+		284938B82E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938B52E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift */; };
 		284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */; };
 		284F520A2BD959F300CF70AD /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52092BD959F300CF70AD /* UIColor.swift */; };
 		2870683C2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */; };
@@ -283,6 +302,26 @@
 		281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_instant_payment_remslips_after_feedback.json; sourceTree = "<group>"; };
 		281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_instant_payment_remslips.pdf; sourceTree = "<group>"; };
 		281E9BA42E4CBB26008372EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2849388B2E842A4500EA8709 /* DemoScreen.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = DemoScreen.xcstrings; sourceTree = "<group>"; };
+		2849388D2E842A4500EA8709 /* DemoScreenStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoScreenStrings.swift; sourceTree = "<group>"; };
+		2849388E2E842A4500EA8709 /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
+		284938902E842A4500EA8709 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		284938912E842A4500EA8709 /* SwiftUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIColor.swift; sourceTree = "<group>"; };
+		284938932E842A4500EA8709 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		284938942E842A4500EA8709 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		284938952E842A4500EA8709 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		284938962E842A4500EA8709 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		284938972E842A4500EA8709 /* GiniBankSDKExampleSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleSwiftUIApp.swift; sourceTree = "<group>"; };
+		284938982E842A4500EA8709 /* GiniBankSDKModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKModel.swift; sourceTree = "<group>"; };
+		284938992E842A4500EA8709 /* GiniSwiftUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSwiftUIButton.swift; sourceTree = "<group>"; };
+		2849389A2E842A4500EA8709 /* GiniView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniView.swift; sourceTree = "<group>"; };
+		2849389B2E842A4500EA8709 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2849389C2E842A4500EA8709 /* IBANTextFieldSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANTextFieldSwiftUIView.swift; sourceTree = "<group>"; };
+		2849389D2E842A4500EA8709 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2849389E2E842A4500EA8709 /* ModuleHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleHostView.swift; sourceTree = "<group>"; };
+		284938B12E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleSwiftUITests.swift; sourceTree = "<group>"; };
+		284938B42E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleSwiftUIUITests.swift; sourceTree = "<group>"; };
+		284938B52E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankCustomResourceProvider.swift; sourceTree = "<group>"; };
 		284F52092BD959F300CF70AD /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceWithSkontoIntegrationTests.swift; sourceTree = "<group>"; };
@@ -495,22 +534,6 @@
 		F4F9AA2C29E99CB1001C69A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		28146D9C2E6871F50013BD34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 28FB83B82E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (28146D9C2E6871F50013BD34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUI; sourceTree = "<group>"; };
-		28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUITests; sourceTree = "<group>"; };
-		28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniBankSDKExampleSwiftUIUITests; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		28FB83B62E673C8600DE88EE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -586,6 +609,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2849388C2E842A4500EA8709 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				2849388B2E842A4500EA8709 /* DemoScreen.xcstrings */,
+			);
+			path = Strings;
+			sourceTree = "<group>";
+		};
+		2849388F2E842A4500EA8709 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				2849388C2E842A4500EA8709 /* Strings */,
+				2849388D2E842A4500EA8709 /* DemoScreenStrings.swift */,
+				2849388E2E842A4500EA8709 /* Localized.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		284938922E842A4500EA8709 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2849388F2E842A4500EA8709 /* Localization */,
+				284938902E842A4500EA8709 /* Device.swift */,
+				284938912E842A4500EA8709 /* SwiftUIColor.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		2849389F2E842A4500EA8709 /* GiniBankSDKExampleSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				284938922E842A4500EA8709 /* Utils */,
+				284938932E842A4500EA8709 /* Assets.xcassets */,
+				284938942E842A4500EA8709 /* ContentView.swift */,
+				284938952E842A4500EA8709 /* ContentViewModel.swift */,
+				284938962E842A4500EA8709 /* CredentialsManager.swift */,
+				284938972E842A4500EA8709 /* GiniBankSDKExampleSwiftUIApp.swift */,
+				284938982E842A4500EA8709 /* GiniBankSDKModel.swift */,
+				284938992E842A4500EA8709 /* GiniSwiftUIButton.swift */,
+				2849389A2E842A4500EA8709 /* GiniView.swift */,
+				2849389B2E842A4500EA8709 /* GoogleService-Info.plist */,
+				2849389C2E842A4500EA8709 /* IBANTextFieldSwiftUIView.swift */,
+				2849389D2E842A4500EA8709 /* Info.plist */,
+				2849389E2E842A4500EA8709 /* ModuleHostView.swift */,
+			);
+			path = GiniBankSDKExampleSwiftUI;
+			sourceTree = "<group>";
+		};
+		284938B22E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests */ = {
+			isa = PBXGroup;
+			children = (
+				284938B12E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests.swift */,
+			);
+			path = GiniBankSDKExampleSwiftUITests;
+			sourceTree = "<group>";
+		};
+		284938B62E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests */ = {
+			isa = PBXGroup;
+			children = (
+				284938B42E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests.swift */,
+				284938B52E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift */,
+			);
+			path = GiniBankSDKExampleSwiftUIUITests;
+			sourceTree = "<group>";
+		};
 		2870683D2CB94EE800D5F2C9 /* DigitalInvoiceWithSkonto */ = {
 			isa = PBXGroup;
 			children = (
@@ -1139,9 +1227,9 @@
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723AB28F8354400BDDEA7 /* GiniBankSDKShareExtension */,
 				D7E50A602C32D0AD004C1CBF /* GiniBankSDKExampleUITests */,
-				28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */,
-				28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */,
-				28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */,
+				2849389F2E842A4500EA8709 /* GiniBankSDKExampleSwiftUI */,
+				284938B22E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests */,
+				284938B62E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 				28DAF4802CD292DD0035A1FF /* Recovered References */,
@@ -1236,9 +1324,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				28FB83BA2E673C8600DE88EE /* GiniBankSDKExampleSwiftUI */,
-			);
 			name = GiniBankSDKExampleSwiftUI;
 			packageProductDependencies = (
 				281B93A22E6754AE009AA635 /* GiniBankAPILibrary */,
@@ -1264,9 +1349,6 @@
 			dependencies = (
 				28FB83C72E673C8700DE88EE /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				28FB83C82E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests */,
-			);
 			name = GiniBankSDKExampleSwiftUITests;
 			packageProductDependencies = (
 			);
@@ -1286,9 +1368,6 @@
 			);
 			dependencies = (
 				28FB83D12E673C8700DE88EE /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				28FB83D22E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests */,
 			);
 			name = GiniBankSDKExampleSwiftUIUITests;
 			packageProductDependencies = (
@@ -1478,6 +1557,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				284938AD2E842A4500EA8709 /* DemoScreen.xcstrings in Resources */,
+				284938AE2E842A4500EA8709 /* Assets.xcassets in Resources */,
+				284938AF2E842A4500EA8709 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1670,6 +1752,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				284938A02E842A4500EA8709 /* DemoScreenStrings.swift in Sources */,
+				284938A12E842A4500EA8709 /* Localized.swift in Sources */,
+				284938A22E842A4500EA8709 /* Device.swift in Sources */,
+				284938A32E842A4500EA8709 /* SwiftUIColor.swift in Sources */,
+				284938A42E842A4500EA8709 /* ContentView.swift in Sources */,
+				284938A52E842A4500EA8709 /* ContentViewModel.swift in Sources */,
+				284938A62E842A4500EA8709 /* CredentialsManager.swift in Sources */,
+				284938A72E842A4500EA8709 /* GiniBankSDKExampleSwiftUIApp.swift in Sources */,
+				284938A82E842A4500EA8709 /* GiniBankSDKModel.swift in Sources */,
+				284938A92E842A4500EA8709 /* GiniSwiftUIButton.swift in Sources */,
+				284938AA2E842A4500EA8709 /* GiniView.swift in Sources */,
+				284938AB2E842A4500EA8709 /* IBANTextFieldSwiftUIView.swift in Sources */,
+				284938AC2E842A4500EA8709 /* ModuleHostView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1677,6 +1772,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				284938B32E842A4A00EA8709 /* GiniBankSDKExampleSwiftUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1684,6 +1780,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				284938B72E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITests.swift in Sources */,
+				284938B82E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2440,7 +2538,6 @@
 		F490C7F325DE873B00D8CA6F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "GiniBankSDKExample/Example Swift.entitlements";
@@ -2470,7 +2567,6 @@
 		F490C7F425DE873B00D8CA6F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "GiniBankSDKExample/Example Swift.entitlements";
