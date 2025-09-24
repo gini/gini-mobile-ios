@@ -53,13 +53,15 @@ jobs:
 
     - name: Build and run tests for "${{ matrix.target }}"
       uses: maierj/fastlane-action@v3.1.0
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
       with:
         lane: 'run_unit_tests'
         options: >
             {
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
-              "clientSecret": "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+              "clientSecret": "$TEST_CLIENT_SECRET"
             }
     - name: Build example app and run unit and integration tests
       if: ${{ matrix.target == 'GiniBankSDK' }}
