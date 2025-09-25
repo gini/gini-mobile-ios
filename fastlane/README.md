@@ -160,6 +160,14 @@ Parameters:
 - `clientSecret`: (Optional) The clientSecret for the hosting app. If provided, clientId must also be provided.
 
 
+### ios build_scheme
+
+```sh
+[bundle exec] fastlane ios build_scheme
+```
+
+
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

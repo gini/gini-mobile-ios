@@ -551,4 +551,30 @@ lane :run_unit_tests do |options|
   # Clean up the report files that were generated
   sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
 end
+
+<<~DOC
+Builds targets using the `gym` action (a wrapper around xcodebuild).
+
+This lane builds the specified target without code signing or archiving, useful for 
+CI/CD pipelines where you only need to verify the build succeeds.
+
+Parameters:
+- `scheme`: The name of the scheme to build. Example: `GinBankSDK`.
+- `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+DOC
+lane :build_scheme do |options|
+  gym(
+    workspace: "GiniMobile.xcworkspace",
+    scheme: options[:target],
+    destination: options[:destination],
+    skip_codesigning: true,
+    skip_archive: true,
+    skip_package_ipa: true,
+    xcargs: {
+      "CODE_SIGN_IDENTITY" => "",
+      "CODE_SIGNING_REQUIRED" => "NO",
+      "ONLY_ACTIVE_ARCH" => "NO"
+    }
+  )
+end
 end
