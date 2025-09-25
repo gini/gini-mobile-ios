@@ -496,4 +496,21 @@ platform :ios do
       sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
+desc <<~DOC
+  Register new devices from a devices file.
+  
+  This lane reads device UDIDs, names, and platforms from a text file and registers them
+  with your Apple Developer account. The devices file should contain one device
+  per line in the format from the content of the `./devices.txt` file.
+  
+  Parameters:
+    devices_file - Path to the devices file (default: "./devices.txt")
+  
+  Example devices.txt format:
+    1234567890abcdef1234567890abcdef12345678	John's ios
+    abcdef1234567890abcdef1234567890123456	Jane's ios
+DOC
+lane :register_new_devices do 
+    register_devices(devices_file: "./devices.txt")
+end
 end
