@@ -145,6 +145,29 @@ Parameters:
 
 
 
+### ios run_unit_tests
+
+```sh
+[bundle exec] fastlane ios run_unit_tests
+```
+
+Runs unit tests for a given target using the `scan` action (a wrapper around xcodebuild).
+
+Parameters:
+- `target`: The name of the target whose test scheme will be executed. Example: `GinBankSDK`.
+- `destination`: The destination for the tests. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+- `clientId`: (Optional) The clientId for the hosting app. If provided, clientSecret must also be provided.
+- `clientSecret`: (Optional) The clientSecret for the hosting app. If provided, clientId must also be provided.
+
+
+### ios build_scheme
+
+```sh
+[bundle exec] fastlane ios build_scheme
+```
+
+
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -43,11 +43,20 @@ jobs:
       run: |
            cd CaptureSDK/GiniCaptureSDKPinning
            swift package update
+    
+    # Setup ruby to run unit tests for the GiniCaptureSDK and GiniCaptureSDKPinning
+    - name: Setup ruby
+      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
 
-    - name: Build sdk targets
-      run: |
-        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-
-    - name: Run unit tests
-      run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+    - name: Build and run tests for "${{ matrix.target }}"
+      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      with:
+        lane: 'run_unit_tests'
+        options: >
+            {
+              "target": "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}"
+            }
