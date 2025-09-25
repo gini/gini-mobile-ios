@@ -29,22 +29,19 @@ jobs:
            cd GiniComponents/GiniUtilites
            swift package update
   
-  # GiniUtilities Build Lane
-  # Purpose: 
-  #   - Current: Build the GiniUtilities target to verify compilation
-  #   - Future: Extend to run unit tests when test suite is implemented
+  # Build the GiniUtilities target to verify compilation
     - name: Setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
         ruby-version: '3.2.0'
         bundler-cache: true
 
-    - name: Build and run tests for "${{ matrix.target }}"
+    - name: Build "${{ matrix.target }}"
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
-        lane: 'run_unit_tests'
+        lane: 'build_scheme'
         options: >
             {
-              "target": "${{ matrix.target }}",
+              "scheme": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}"
             }
