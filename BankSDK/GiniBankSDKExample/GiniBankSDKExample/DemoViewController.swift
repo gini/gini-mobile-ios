@@ -146,9 +146,11 @@ final class DemoViewController: UIViewController {
     private func configurePhotoPaymentButton() {
         photoPaymentButton.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
                                                       dark: giniCaptureColor("Accent01")).uiColor()
-        photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
+        photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized,
+                                    for: .normal)
         photoPaymentButton.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
-                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
+                                                   dark: giniCaptureColor("Light01")).uiColor(),
+                                         for: .normal)
         photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
 
@@ -160,7 +162,8 @@ final class DemoViewController: UIViewController {
                                   dark: giniCaptureColor("Light01")).uiColor()
         transactionListButton.setTitleColor(textColor, for: .normal)
         transactionListButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.transactionListButton.rawValue
-        transactionListButton.addTarget(self, action: #selector(transactionListButtonTapped), for: .touchUpInside)
+        transactionListButton.addTarget(self, action: #selector(transactionListButtonTapped),
+                                        for: .touchUpInside)
     }
 
     private func configureScreenDescriptionTitle() {
