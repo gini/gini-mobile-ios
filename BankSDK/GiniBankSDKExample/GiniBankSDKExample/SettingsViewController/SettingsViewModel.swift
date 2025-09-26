@@ -113,6 +113,8 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .transactionDocsEnabled,
                                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentHintsEnabled,
+                                                                     isSwitchOn: giniConfiguration.paymentHintsEnabled)))
         return featureTogglesSection
     }
 
@@ -326,6 +328,8 @@ final class SettingsViewModel {
             giniConfiguration.skontoEnabled = data.isSwitchOn
         case .transactionDocsEnabled:
             giniConfiguration.transactionDocsEnabled = data.isSwitchOn
+        case .paymentHintsEnabled:
+            giniConfiguration.paymentHintsEnabled = data.isSwitchOn
         case .giniErrorLoggerIsOn:
             giniConfiguration.giniErrorLoggerIsOn = data.isSwitchOn
         case .customGiniErrorLogger:

@@ -21,7 +21,8 @@ final class ClientConfigurationTests: XCTestCase {
                                          transactionDocsEnabled: true,
                                          instantPaymentEnabled: true,
                                          qrCodeEducationEnabled: true,
-                                         eInvoiceEnabled: true)
+                                         eInvoiceEnabled: true,
+                                         paymentHintsEnabled: true)
 
         XCTAssertEqual(config.clientID, testClientID)
         XCTAssertTrue(config.userJourneyAnalyticsEnabled)
@@ -31,6 +32,7 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertTrue(config.instantPaymentEnabled)
         XCTAssertTrue(config.qrCodeEducationEnabled)
         XCTAssertTrue(config.eInvoiceEnabled)
+        XCTAssertTrue(config.paymentHintsEnabled)
     }
 
     func testDecodingFromValidJSON() throws {
@@ -46,6 +48,7 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertFalse(config.instantPaymentEnabled)
         XCTAssertFalse(config.qrCodeEducationEnabled)
         XCTAssertFalse(config.eInvoiceEnabled)
+        XCTAssertFalse(config.paymentHintsEnabled)
     }
 
     func testDecodingFailsWhenMissingRequiredField() {
