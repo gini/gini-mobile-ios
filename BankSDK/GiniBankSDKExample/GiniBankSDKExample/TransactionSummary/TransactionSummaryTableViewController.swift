@@ -84,10 +84,10 @@ final class TransactionSummaryTableViewController: UITableViewController  {
             button.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
-            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -5),
-            button.topAnchor.constraint(equalTo: footerView.topAnchor,constant: 20),
-            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor),
+            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
+            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -10),
+            button.topAnchor.constraint(equalTo: footerView.topAnchor,constant: 10),
+            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10),
             button.heightAnchor.constraint(equalToConstant: 50) // optional if you want fixed height
         ])
 
@@ -141,37 +141,63 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
-                                                           for: indexPath) as? ExtractionResultTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.detailTextField.text = result[indexPath.row].value
-            cell.detailTextField.placeholder = result[indexPath.row].name
-            cell.detailTextField.tag = indexPath.row
-            cell.titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
-            cell.detailTextField.textColor = GiniColor(light: UIColor.black,
-                                                       dark: UIColor.gray).uiColor()
+        
+        // Dequeue prototype cell
+               let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
-            if editableFields.keys.contains(result[indexPath.row].name ?? "") {
-                cell.detailTextField.isEnabled = true
-                cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
-                cell.detailTextField.alpha = 1
+               // Fetch data
 
-                if !enabledRows.contains(indexPath.row) {
-                    enabledRows.append(indexPath.row)
-                }
-            } else {
-                cell.detailTextField.isEnabled = false
-                cell.detailTextField.alpha = 0.5
-            }
+               // Access labels and image via tags
+               if let titleLabel = cell.viewWithTag(201) as? UILabel {
+                   titleLabel.textColor =  GiniColor(light: giniCaptureColor("Accent01"),
+                                                                 dark: giniCaptureColor("Accent01")).uiColor()
+                   titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
+                   
+               }
 
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
-            cell.configure(delegate: self)
-            return cell
-        }
+               if let subtitleLabel = cell.viewWithTag(202) as? UILabel {
+                   subtitleLabel.text =  result[indexPath.row].value
+               }
+
+               if let iconImageView = cell.viewWithTag(203) as? UIImageView {
+                   let imageName = result[indexPath.row].name ?? ""
+                   iconImageView.image = UIImage(named: imageName) ?? UIImage(named: "unknown")
+                   iconImageView.isHidden = true
+               }
+        
+        return cell
+
+//        if indexPath.section == 0 {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
+//                                                           for: indexPath) as? ExtractionResultTableViewCell else {
+//                return UITableViewCell()
+//            }
+//            cell.detailTextField.text = result[indexPath.row].value
+//            cell.detailTextField.placeholder = result[indexPath.row].name
+//            cell.detailTextField.tag = indexPath.row
+//            cell.titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
+//            cell.detailTextField.textColor = GiniColor(light: UIColor.black,
+//                                                       dark: UIColor.gray).uiColor()
+//
+//            if editableFields.keys.contains(result[indexPath.row].name ?? "") {
+//                cell.detailTextField.isEnabled = true
+//                cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
+//                cell.detailTextField.alpha = 1
+//
+//                if !enabledRows.contains(indexPath.row) {
+//                    enabledRows.append(indexPath.row)
+//                }
+//            } else {
+//                cell.detailTextField.isEnabled = false
+//                cell.detailTextField.alpha = 0.5
+//            }
+//
+//            return cell
+//        } else {
+//            let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
+//            cell.configure(delegate: self)
+//            return cell
+//        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
