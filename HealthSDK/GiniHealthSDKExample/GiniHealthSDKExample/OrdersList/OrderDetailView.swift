@@ -124,7 +124,9 @@ extension OrderDetailView: UITextFieldDelegate {
         return true
     }
 
-    func textFieldDidChangeSelection(_ textField: UITextField) {}
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        // This method will remain empty; no implementation is needed.
+    }
 }
 
 extension OrderDetailView {
