@@ -10,14 +10,14 @@ import XCTest
 import PDFKit
 @testable import GiniCaptureSDK
 final class GiniCaptureDocumentValidatorTests: XCTestCase {
-    
+
     let giniConfiguration = GiniConfiguration()
-    
+
     func testExcedeedMaxFileSize() {
         let higherThan10MBData = generateFakeData(megaBytes: 12)
-        
+
         let pdfDocument = GiniPDFDocument(data: higherThan10MBData, fileName: nil)
-        
+
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(pdfDocument,
                                                                       withConfig: giniConfiguration),
                              "Files with a size lower than 10MB should be valid") { error in
@@ -25,12 +25,12 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
                                           "should indicate that max file size has been exceeded")
         }
     }
-    
+
     func testNotExcedeedMaxFileSize() {
         let lowerThanOrEqualTo10MBData = generateFakeData(megaBytes: 10)
-        
+
         let pdfDocument = GiniPDFDocument(data: lowerThanOrEqualTo10MBData, fileName: nil)
-        
+
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(pdfDocument,
                                                                       withConfig: giniConfiguration),
                              "Files with a size greater than 10MB should not be valid") { error in
@@ -38,16 +38,16 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
                                           "should indicate that max file size has been exceeded")
         }
     }
-    
+
     func testImageValidation() {
         let image = GiniCaptureTestsHelper.loadImage(named: "invoice")
         let imageDocument = GiniImageDocument(data: image.jpegData(compressionQuality: 0.2)!, imageSource: .camera)
-        
+
         XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(imageDocument,
                                                                   withConfig: giniConfiguration),
                          "Valid images should validate without throwing an exception")
     }
-    
+
     func testEmptyFileValidation() {
         let pdfDocument = GiniPDFDocument(data: Data(count: 0), fileName: nil)
 
@@ -58,7 +58,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
                                           "should indicate that the file format is invalid")
         }
     }
-    
+
     func testProtectedPdfFileSize() {
         let pdfData = generateSamplePDF()
         guard let documentDirectory = try? FileManager.default.url(for: .documentDirectory,
@@ -69,6 +69,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
             XCTFail("Could not access document directory")
             return
         }
+
         let encryptedFileURL = documentDirectory.appendingPathComponent("encrypted_pdf_file")
         if let pdfDocument = PDFDocument(data: pdfData) {
             // write with password protection
@@ -82,10 +83,10 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
             guard let encryptedPDFDoc = PDFDocument(url: encryptedFileURL) else {
                 return
             }
-            
+
             XCTAssert(encryptedPDFDoc.isEncrypted == true)
             XCTAssert(encryptedPDFDoc.isLocked == true)
-            
+
             if let data = try? Data(contentsOf: encryptedFileURL) {
                 let pdfDocument = GiniPDFDocument(data: data, fileName: nil)
                 XCTAssertThrowsError(
@@ -94,19 +95,19 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
                         withConfig: giniConfiguration
                     ),
                     "Password protected files should not be valid") { error in
-                    XCTAssert(
-                        error as? DocumentValidationError == .pdfPasswordProtected,
-                        "should indicate that the file  is protected")
+                        XCTAssert(
+                            error as? DocumentValidationError == .pdfPasswordProtected,
+                            "should indicate that the file  is protected")
                     }
             }
         }
     }
-    
+
     fileprivate func generateFakeData(megaBytes lengthInMB: Int) -> Data {
         let length = lengthInMB * 1000000
         return Data(count: length)
     }
-    
+
     fileprivate func generateSamplePDF() -> Data {
         let pdfMetaData = [
             kCGPDFContextCreator: "Test Builder",
@@ -131,5 +132,5 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
 
         return data
     }
-    
+
 }
