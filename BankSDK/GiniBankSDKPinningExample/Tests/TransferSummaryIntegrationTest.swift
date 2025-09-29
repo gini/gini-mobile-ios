@@ -91,7 +91,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
          guard let fixtureExtractionsContainer = try? JSONDecoder().decode(ExtractionsContainer.self,
                                                                            from: fixtureExtractionsJson
          ) else {
-            XCTFail("Could not access document directory")
+            XCTFail("Could not access result_Gini_invoice_example.json")
             return
          }
 
@@ -122,7 +122,10 @@ class TransferSummaryIntegrationTest: XCTestCase {
                   case let .success(extractionResult):
                      let extractionsAfterFeedback = extractionResult.extractions
                      let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
-                     let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+                     guard let fixtureExtractionsAfterFeedbackContainer = try? JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson) else {
+                        XCTFail("Could not access result_Gini_invoice_example_after_feedback.json")
+                        return
+                     }
                      XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
                                     extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
 
