@@ -98,7 +98,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
          // 2. Verify we received the correct extractions for this test
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
                         result.extractions["iban"]?.value)
-         
+
          verifyPaymentRecipient(result.extractions["paymentRecipient"])
 
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
