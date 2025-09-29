@@ -61,7 +61,14 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
     
     func testProtectedPdfFileSize() {
         let pdfData = generateSamplePDF()
-        let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+        guard let documentDirectory = try? FileManager.default.url(for: .documentDirectory,
+                                                                   in: .userDomainMask,
+                                                                   appropriateFor: nil,
+                                                                   create:false
+        ) else {
+            XCTFail("Could not access document directory")
+            return
+        }
         let encryptedFileURL = documentDirectory.appendingPathComponent("encrypted_pdf_file")
         if let pdfDocument = PDFDocument(data: pdfData) {
             // write with password protection
