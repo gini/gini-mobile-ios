@@ -88,7 +88,12 @@ class TransferSummaryIntegrationTest: XCTestCase {
          // 1b. Received the extractions for the uploaded document
          let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
 
-         let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
+         guard let fixtureExtractionsContainer = try? JSONDecoder().decode(ExtractionsContainer.self,
+                                                                           from: fixtureExtractionsJson
+         ) else {
+            XCTFail("Could not access document directory")
+            return
+         }
 
          // 2. Verify we received the correct extractions for this test
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
