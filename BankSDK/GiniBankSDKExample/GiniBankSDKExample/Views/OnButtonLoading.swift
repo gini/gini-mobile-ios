@@ -1,6 +1,5 @@
 //
-//  CustomLoadingIndicator.swift
-//  GiniCaptureSDKExample
+//  OnButtonLoading.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -8,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadingIndicatorAdapter {
+public final class OnButtonLoading: UIActivityIndicatorView, OnButtonLoadingIndicatorAdapter {
     public func startAnimation() {
         self.startAnimating()
     }
@@ -19,7 +18,7 @@ public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadin
 
     public func injectedView() -> UIView {
         self.style = .large
-        self.color = .blue
+        self.color = .red
         self.startAnimating()
 
         return self

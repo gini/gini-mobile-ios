@@ -18,17 +18,29 @@ public class PaymentViewModel: NSObject {
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    var onPaymentInfoFetched: (_ info: PaymentInfo) -> Void = { _ in }
+    var onPaymentInfoFetched: (_ info: PaymentInfo) -> Void = { _ in
+        // This method will remain empty;   default implementation does nothing
+    }
 
-    var updateLoadingStatus: () -> Void = {}
+    var updateLoadingStatus: () -> Void = {
+        // This method will remain empty;   default implementation does nothing
+    }
 
-    var onErrorHandling: (_ error: GiniBankError) -> Void = { _ in }
+    var onErrorHandling: (_ error: GiniBankError) -> Void = { _ in
+        // This method will remain empty;   default implementation does nothing
+    }
 
-    var onResolvePaymentRequest: (_ resolved: ResolvedPaymentRequest) -> Void = { _ in }
+    var onResolvePaymentRequest: (_ resolved: ResolvedPaymentRequest) -> Void = { _ in
+        // This method will remain empty;   default implementation does nothing
+    }
 
-    var onResolvePaymentRequestErrorHandling: () -> Void = {}
-    
-    var onGettingPayment: (_ payment: Payment) -> Void = {_ in }
+    var onResolvePaymentRequestErrorHandling: () -> Void = {
+        // This method will remain empty;   default implementation does nothing
+    }
+
+    var onGettingPayment: (_ payment: Payment) -> Void = { _ in
+        // This method will remain empty;   default implementation does nothing
+    }
 
     var isLoading: Bool = false {
         didSet {

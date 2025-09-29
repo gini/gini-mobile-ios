@@ -36,5 +36,6 @@ class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     }
     
     func onDeinit() {
+        // This method will remain empty;   no cleanup needed for this adapter
     }
 }

@@ -2,7 +2,7 @@
 //  ScreenAPICoordinator.swift
 //  Example Swift
 //
-//  Created by Nadya Karaban on 19.02.21.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
