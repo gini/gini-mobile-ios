@@ -122,7 +122,9 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         }
     }
     
-    func cleanup() {}
+    func cleanup() {
+        // This method will remain empty; no implementation is needed.
+    }
     
     func analyse(partialDocuments: [PartialDocumentInfo],
                  metadata: Document.Metadata?,
