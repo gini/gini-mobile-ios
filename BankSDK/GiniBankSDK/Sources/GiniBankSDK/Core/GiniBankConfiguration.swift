@@ -2,7 +2,7 @@
 // GiniBankConfiguration.swift
 // GiniBank
 //
-//  Created by Nadya Karaban on 11.03.21.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -24,7 +24,9 @@ public final class GiniBankConfiguration: NSObject {
      
      - returns: Instance of `GiniBankConfiguration`.
      */
-    override init() {}
+    override init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // MARK: - General options
     /**
