@@ -13,13 +13,13 @@ func loadFile(withName name: String, ofType type: String) -> Data {
     let fileURLPath: String? = Bundle.module
         .path(forResource: name, ofType: type)
     let data = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-    
+
     return data!
 }
 
 func load<T: Decodable>(fromFile named: String, type: String) -> T {
     let jsonData = loadFile(withName: named, ofType: type)
-    
+
     return (try? JSONDecoder().decode(T.self, from: jsonData))!
 }
 
@@ -27,7 +27,7 @@ func loadPaymentRequests() -> PaymentRequests {
     let fileURLPath: String? = Bundle.module
         .path(forResource: "paymentRequests", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-    
+
     return (try? JSONDecoder().decode(PaymentRequests.self, from: jsonData!))!
 }
 func loadPaymentRequest() -> PaymentRequest {
