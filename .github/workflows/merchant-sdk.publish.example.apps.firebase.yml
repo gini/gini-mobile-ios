@@ -54,7 +54,7 @@ jobs:
               "team_id":"JA825X8F7Z",
               "target":"GiniMerchantSDKExample",
               "bundle_identifier": "net.gini.merchantsdk.example",
-              "profile_name": "Gini Merchant SDK Example App Ad-Hoc Distribution",
+              "profile_name": "match AdHoc net.gini.merchantsdk.example",
               "entitlements_file_path": "GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements", 
               "ci": "true"
             }
@@ -74,7 +74,7 @@ jobs:
             -archivePath ./GiniMerchantSDKExample.xcarchive \
             -configuration Release \
             -destination generic/platform=iOS \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_STYLE=Manual \
