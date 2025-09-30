@@ -34,16 +34,6 @@ jobs:
           ruby-version: '3.2.0'
           bundler-cache: true
 
-      - name: Setup provisioning profile
-        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-        env:
-          APP_IDENTIFIER: net.gini.merchantsdk.example
-          DISTRIBUTION_TYPE: adhoc
-          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-        with:
-          lane: 'download_profiles'
-
       - name: Setup Manual Signing for Xcode project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         with:
@@ -67,30 +57,18 @@ jobs:
             MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample/Sources/CredentialsManager.swift
                 
       - name: Archiving project
-        run: |
-            xcodebuild clean archive \
-            -workspace GiniMobile.xcworkspace \
-            -scheme "GiniMerchantSDKExample" \
-            -archivePath ./GiniMerchantSDKExample.xcarchive \
-            -configuration Release \
-            -destination generic/platform=iOS \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            CODE_SIGNING_REQUIRED=NO \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=JA825X8F7Z
-    
-      - name: Exporting .ipa
-        run: |
-            xcodebuild  \
-            -exportArchive \
-            -archivePath GiniMerchantSDKExample.xcarchive \
-            -exportPath . \
-            -exportOptionsPlist ExportOptionsMerchantExample.plist \
-            -destination "generic/platform=iOS" \
-            CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          APP_IDENTIFIER: net.gini.merchantsdk.example
+          DISTRIBUTION_TYPE: adhoc
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          APP_SCHEME: GiniMerchantSDKExample
+          IPA_FILE: GiniMerchantSDKExample
+          CODESIGNING_IDENTITY: iPhone Distribution
+        with:
+          lane: 'build_app_adhoc'
 
       - name: Check file existence
         uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
