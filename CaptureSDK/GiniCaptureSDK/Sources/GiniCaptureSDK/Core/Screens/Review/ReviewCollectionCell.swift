@@ -21,8 +21,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.isAccessibilityElement = true
         imageView.accessibilityTraits = .button
-        imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
-                                                                        comment: "Document")
+        imageView.accessibilityLabel = Strings.imageViewAccessibilityLabel
         imageView.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1,
                                               dark: UIColor.GiniCapture.dark1).uiColor()
         return imageView
@@ -38,7 +37,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         button.isExclusiveTouch = true
         button.isHidden = true
         button.isAccessibilityElement = true
-        button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.delete", comment: "Delete")
+        button.accessibilityLabel = Strings.deleteButtonAccessibilityLabel
         return button
     }()
 
@@ -110,5 +109,12 @@ extension ReviewCollectionCell {
         static let deleteButtonWidth: CGFloat = 44
         static let deleteButtonWidthInset: CGFloat = 16
         static let documentBorderWidth: CGFloat = 2
+    }
+
+    private struct Strings {
+        static let imageViewAccessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
+                                                                                  comment: "Document")
+        static let deleteButtonAccessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.delete",
+                                                                                     comment: "Delete")
     }
 }
