@@ -2,7 +2,6 @@
 //  GiniConfiguration.swift
 //  GiniCapture
 //
-//  Created by Peter Pult on 15/06/16.
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 
@@ -74,7 +73,9 @@ import GiniBankAPILibrary
 
      - returns: Instance of `GiniConfiguration`.
      */
-    override init() {}
+    override init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // MARK: General options
 

@@ -143,9 +143,11 @@ class TransferSummaryIntegrationTest: XCTestCase {
       }
 
       func giniCaptureDidEnterManually() {
+         // This method will remain empty; no implementation is needed.
       }
 
       func giniCaptureDidCancelAnalysis() {
+         // This method will remain empty; no implementation is needed.
       }
 
       /*

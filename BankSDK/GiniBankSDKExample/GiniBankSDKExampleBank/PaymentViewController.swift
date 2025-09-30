@@ -76,7 +76,7 @@ class PaymentViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.viewModel?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: .whiteLarge, color: UIColor.white, scale: 1.0)
+                    self?.view.showLoading(style: .large, color: UIColor.white, scale: 1.0)
                 } else {
                     self?.view.stopLoading()
                 }

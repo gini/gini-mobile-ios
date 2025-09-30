@@ -328,13 +328,21 @@ extension PaymentReviewModel: BanksSelectionProtocol {
         delegate?.openMoreInformationViewController()
     }
 
-    public func didTapOnClose() {}
+    public func didTapOnClose() {
+        // This method will remain empty; no implementation is needed.
+    }
 
-    public func didTapOnContinueOnShareBottomSheet() {}
+    public func didTapOnContinueOnShareBottomSheet() {
+        // This method will remain empty; no implementation is needed.
+    }
 
-    public func didTapForwardOnInstallBottomSheet() {}
+    public func didTapForwardOnInstallBottomSheet() {
+        // This method will remain empty; no implementation is needed.
+    }
 
-    public func didTapOnPayButton() {}
+    public func didTapOnPayButton() {
+        // This method will remain empty; no implementation is needed.
+    }
 
 }
 

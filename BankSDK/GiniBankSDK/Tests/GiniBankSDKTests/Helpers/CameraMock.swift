@@ -2,7 +2,7 @@
 //  CameraMock.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 2/11/19.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation

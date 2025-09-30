@@ -2,7 +2,7 @@
 //  SessionManager.swift
 //  GiniBankAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/20/18.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -109,7 +109,7 @@ public final class CancellationToken {
     public var isCancelled = false
     
     public init() {
-        
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
     }
     
     /// Cancels the current task

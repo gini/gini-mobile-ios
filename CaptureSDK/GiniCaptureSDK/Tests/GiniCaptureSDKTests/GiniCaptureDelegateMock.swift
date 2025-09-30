@@ -2,34 +2,34 @@
 //  GiniCaptureDelegateMock.swift
 //  GiniCapture_Example
 //
-//  Created by Enrique del Pozo Gómez on 3/8/18.
-//  Copyright © 2018 Gini GmbH. All rights reserved.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 @testable import GiniCaptureSDK
+
 final class GiniCaptureDelegateMock: GiniCaptureDelegate {
     func didPressEnterManually() {
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func didReview(documents: [GiniCaptureDocument], networkDelegate: GiniCaptureNetworkDelegate) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func didCancelCapturing() {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func didCancelReview(for document: GiniCaptureDocument) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
-    
+
     func didCancelAnalysis() {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
-    
 }
