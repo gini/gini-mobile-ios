@@ -18,7 +18,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         label.numberOfLines = 1
         label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -27,7 +27,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var textField: TextFieldActionsDisabled = {
         let textField = TextFieldActionsDisabled()
         textField.text = viewModel.dueDate.currentShortString
-        textField.textColor = .giniColorScheme().text.primary.uiColor()
+        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.adjustsFontForContentSizeCategory = true
@@ -37,7 +37,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
 
     private lazy var calendarImageView: UIImageView = {
         let imageView = UIImageView(image: GiniImages.calendar.image)
-        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
+        imageView.tintColor = .giniBankColorScheme().placeholder.tint.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -45,7 +45,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniBankColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -99,7 +99,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
-        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        backgroundColor = .giniBankColorScheme().textField.background.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)

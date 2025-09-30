@@ -8,6 +8,8 @@
 
 import UIKit
 import GiniBankAPILibrary
+import GiniUtilites
+
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
@@ -162,7 +164,7 @@ import GiniBankAPILibrary
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = DefaultLogger()
+    public var logger: GiniLogger = DefaultLogger(prefix: "[GiniCapture SDK]")
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -470,13 +472,13 @@ import GiniBankAPILibrary
     var documentService: DocumentServiceProtocol?
 
     // swiftlint:disable function_parameter_count
-     /// Function for clean up
-     /// - Parameters:
-     ///   - paymentRecipient: paymentRecipient description
-     ///   - paymentReference: paymentReference description
-     ///   - iban: iban description
-     ///   - bic: bic description
-     ///   - amountToPay: amountToPay description
+    /// Function for clean up
+    /// - Parameters:
+    ///   - paymentRecipient: paymentRecipient description
+    ///   - paymentReference: paymentReference description
+    ///   - iban: iban description
+    ///   - bic: bic description
+    ///   - amountToPay: amountToPay description
     // swiftlint:disable line_length
     @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
     // swiftlint:enable line_length

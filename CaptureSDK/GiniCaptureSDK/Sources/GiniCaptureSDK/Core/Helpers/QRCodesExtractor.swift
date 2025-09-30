@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GiniUtilites
 
 public enum QRCodesFormat {
     case epc06912
