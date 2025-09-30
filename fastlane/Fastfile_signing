@@ -1,0 +1,17 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc <<~DOC
+    Download the provisioning profiles stored in the remote repository to be used in github actions
+  DOC
+  lane :download_profiles do
+    match(
+      app_identifier: ENV["APP_IDENTIFIER"],
+      type: ENV["DISTRIBUTION_TYPE"],
+      git_url: ENV["GIT_URL"],
+      password: ENV["MATCH_PASSWORD"],
+      readonly: true
+    )
+  end
+end
