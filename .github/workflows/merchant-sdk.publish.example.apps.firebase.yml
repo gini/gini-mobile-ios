@@ -34,6 +34,21 @@ jobs:
           ruby-version: '3.2.0'
           bundler-cache: true
 
+      - name: Setup Manual Signing for Xcode project
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        with:
+          lane: 'setup_manual_signing'
+          options: >
+            { 
+              "project_path":"MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj",
+              "team_id":"JA825X8F7Z",
+              "target":"GiniMerchantSDKExample",
+              "bundle_identifier": "net.gini.merchantsdk.example",
+              "profile_name": "match AdHoc net.gini.merchantsdk.example",
+              "entitlements_file_path": "GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements", 
+              "ci": "true"
+            }
+
       - name: Setup Credentials
         run: |
             sed -i '' \
