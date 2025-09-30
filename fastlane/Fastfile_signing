@@ -158,7 +158,7 @@ platform :ios do
         manageAppVersionAndBuildNumber: false 
       },
       export_team_id: "JA825X8F7Z",
-      codesigning_identity: ENV["CODESIGNING_IDENTITY"]
+      codesigning_identity: ENV["CODESIGNING_IDENTITY"],
       output_name: ipaFile
     )
   end
