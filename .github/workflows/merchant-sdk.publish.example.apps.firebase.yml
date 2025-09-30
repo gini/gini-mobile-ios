@@ -30,13 +30,13 @@ jobs:
 
       - name: Setup provisioning profile
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          APP_IDENTIFIER: net.gini.merchantsdk.example
+          DISTRIBUTION_TYPE: adhoc
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         with:
           lane: 'download_profiles'
-          env:
-            APP_IDENTIFIER: net.gini.merchantsdk.example
-            DISTRIBUTION_TYPE: adhoc
-            GIT_URL: ${{ secrets.MATCH_GIT_URL }}
-            MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
       - name: Setup Manual Signing for Xcode project
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
