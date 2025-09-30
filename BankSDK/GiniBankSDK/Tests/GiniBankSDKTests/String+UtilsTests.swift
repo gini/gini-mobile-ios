@@ -18,7 +18,7 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat1(){
         let amountToPay = "28"
         guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
@@ -27,7 +27,7 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat2(){
         let amountToPay = "28.12"
         guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
@@ -36,7 +36,7 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat3(){
         let amountToPay = "28.1"
         guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
@@ -45,7 +45,7 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat4(){
         let amountToPay = "28.10"
         guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
@@ -54,17 +54,17 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(parsedAmount, "28.1:EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat5(){
         let amountToPay = "28.10:EUR"
         XCTAssertNotEqual(try? String.parseAmountStringToBackendFormat(string: amountToPay), "28.1:EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat6(){
         let amountToPay = "28,10"
         XCTAssertNotEqual(try? String.parseAmountStringToBackendFormat(string: amountToPay), "28.1:EUR")
     }
-    
+
     func testParseAmountStringToBackendFormat7(){
         let amountToPay = "28.10:EUR"
         var giniBankError = GiniBankError.amountParsingError(amountString: "")
@@ -75,7 +75,7 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(giniBankError, GiniBankError.amountParsingError(amountString: "28.10:EUR"))
     }
-    
+
     func testFormatAmountWithAdditionalDecimals() {
         let amountToPay = "28.100:EUR"
         let formattedAmount = Price.formatAmountString(newText: amountToPay)
@@ -84,13 +84,13 @@ final class StringUtilsTests: XCTestCase {
         ///
         XCTAssertEqual(formattedAmount, "281.00")
     }
-    
+
     func testFormatAmountWithAdditionalZeros() {
         let amountToPay2 = "0000.0000"
         let formattedAmount2 = Price.formatAmountString(newText: amountToPay2)
         XCTAssertEqual(formattedAmount2, "0.00")
     }
-    
+
     func testBigDecimalFormatting() {
         if let d = Decimal(string: "24007.31"), let str = Price.stringWithoutSymbol(from: d) {
             XCTAssertEqual(str.trimmingCharacters(in: .whitespaces), "24,007.31")
@@ -98,7 +98,7 @@ final class StringUtilsTests: XCTestCase {
             XCTAssertEqual(formatStr, "24,007.31")
         }
     }
-    
+
     func testEnablingPayButtonWithoutAmount() {
         let vm = DigitalInvoiceViewModel(invoice: nil)
         let isEnabled = vm.isPayButtonEnabled()
