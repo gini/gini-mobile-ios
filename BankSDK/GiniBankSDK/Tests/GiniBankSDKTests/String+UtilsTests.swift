@@ -12,31 +12,46 @@ import XCTest
 final class StringUtilsTests: XCTestCase {
     func testParseAmountStringToBackendFormat(){
         let amountToPay = "28"
-        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: "28.00")
+        guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: "28.00") else {
+            XCTFail("Could not parse amount via testParseAmountStringToBackendFormat")
+            return
+        }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
     
     func testParseAmountStringToBackendFormat1(){
         let amountToPay = "28"
-        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
+            XCTFail("Could not parse amount via testParseAmountStringToBackendFormat1")
+            return
+        }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
     
     func testParseAmountStringToBackendFormat2(){
         let amountToPay = "28.12"
-        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
+            XCTFail("Could not parse amount via testParseAmountStringToBackendFormat2")
+            return
+        }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
     
     func testParseAmountStringToBackendFormat3(){
         let amountToPay = "28.1"
-        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
+            XCTFail("Could not parse amount via testParseAmountStringToBackendFormat3")
+            return
+        }
         XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
     }
     
     func testParseAmountStringToBackendFormat4(){
         let amountToPay = "28.10"
-        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        guard let parsedAmount = try? String.parseAmountStringToBackendFormat(string: amountToPay) else {
+            XCTFail("Could not parse amount via testParseAmountStringToBackendFormat4")
+            return
+        }
         XCTAssertEqual(parsedAmount, "28.1:EUR")
     }
     
