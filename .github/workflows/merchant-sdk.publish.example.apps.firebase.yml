@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   upload-version:
-    environment: firebase-manual-deploy
+    #environment: firebase-manual-deploy
     runs-on: macos-latest
     steps:
       - name: Checkout repository
