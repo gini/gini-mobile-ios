@@ -34,7 +34,7 @@ func loadPaymentRequest() -> PaymentRequest {
     guard let fileURLPath = Bundle.module.path(forResource: "paymentRequest", ofType: "json"),
           let jsonData = try? Data(contentsOf: URL(fileURLWithPath: fileURLPath)),
           let request = try? JSONDecoder().decode(PaymentRequest.self, from: jsonData) else {
-        fatalError(" Could not load paymentRequest.json in tests")
+        fatalError("Could not load paymentRequest.json in tests")
     }
     return request
 }
