@@ -21,6 +21,7 @@ load "util/git.rb"
 load "util/swift_package_releases.rb"
 load "util/add_files_to_project.rb"
 load "util/sbom.rb"
+load "Fastfile_signing"
 
 platform :ios do
   desc <<~DOC
