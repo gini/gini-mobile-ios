@@ -350,6 +350,7 @@ extension ClientConfiguration {
                   instantPaymentEnabled: false,
                   qrCodeEducationEnabled: false,
                   eInvoiceEnabled: false,
-                  paymentHintsEnabled: paymentHintsEnabled)
+                  paymentHintsEnabled: paymentHintsEnabled,
+                  savePhotosLocallyEnabled: false)
     }
 }

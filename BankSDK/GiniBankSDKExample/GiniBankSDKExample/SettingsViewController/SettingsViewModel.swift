@@ -115,6 +115,8 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentHintsEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentHintsEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .savePhotosLocallyEnabled,
+                                                                     isSwitchOn: giniConfiguration.savePhotosLocallyEnabled)))
         return featureTogglesSection
     }
 
@@ -330,6 +332,8 @@ final class SettingsViewModel {
             giniConfiguration.transactionDocsEnabled = data.isSwitchOn
         case .paymentHintsEnabled:
             giniConfiguration.paymentHintsEnabled = data.isSwitchOn
+        case .savePhotosLocallyEnabled:
+            giniConfiguration.savePhotosLocallyEnabled = data.isSwitchOn
         case .giniErrorLoggerIsOn:
             giniConfiguration.giniErrorLoggerIsOn = data.isSwitchOn
         case .customGiniErrorLogger:
@@ -348,15 +352,25 @@ final class SettingsViewModel {
         case .digitalInvoiceSkontoNavigationBarBottomAdapter:
             giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceSkontoBottomNavigationBarAdapter() : nil
         case .primaryButtonConfiguration:
-            updateButtonConfiguration(for: &giniConfiguration.primaryButtonConfiguration, state: &settingsButtonStates.primaryButtonState, isSwitchOn: data.isSwitchOn)
+            updateButtonConfiguration(for: &giniConfiguration.primaryButtonConfiguration,
+                                      state: &settingsButtonStates.primaryButtonState,
+                                      isSwitchOn: data.isSwitchOn)
         case .secondaryButtonConfiguration:
-            updateButtonConfiguration(for: &giniConfiguration.secondaryButtonConfiguration, state: &settingsButtonStates.secondaryButtonState, isSwitchOn: data.isSwitchOn)
+            updateButtonConfiguration(for: &giniConfiguration.secondaryButtonConfiguration,
+                                      state: &settingsButtonStates.secondaryButtonState,
+                                      isSwitchOn: data.isSwitchOn)
         case .transparentButtonConfiguration:
-            updateButtonConfiguration(for: &giniConfiguration.transparentButtonConfiguration, state: &settingsButtonStates.transparentButtonState, isSwitchOn: data.isSwitchOn)
+            updateButtonConfiguration(for: &giniConfiguration.transparentButtonConfiguration,
+                                      state: &settingsButtonStates.transparentButtonState,
+                                      isSwitchOn: data.isSwitchOn)
         case .cameraControlButtonConfiguration:
-            updateButtonConfiguration(for: &giniConfiguration.cameraControlButtonConfiguration, state: &settingsButtonStates.cameraControlButtonState, isSwitchOn: data.isSwitchOn)
+            updateButtonConfiguration(for: &giniConfiguration.cameraControlButtonConfiguration,
+                                      state: &settingsButtonStates.cameraControlButtonState,
+                                      isSwitchOn: data.isSwitchOn)
         case .addPageButtonConfiguration:
-            updateButtonConfiguration(for: &giniConfiguration.addPageButtonConfiguration, state: &settingsButtonStates.addPageButtonState, isSwitchOn: data.isSwitchOn)
+            updateButtonConfiguration(for: &giniConfiguration.addPageButtonConfiguration,
+                                      state: &settingsButtonStates.addPageButtonState,
+                                      isSwitchOn: data.isSwitchOn)
         case .customDocumentValidations:
             updateCustomDocumentValidations(isSwitchOn: data.isSwitchOn)
         case .skontoNavigationBarBottomAdapter:
