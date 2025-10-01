@@ -29,35 +29,6 @@ jobs:
         with:
           xcode-version: '16.4'
 
-      - name: Setup provisioning profile
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
-          KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
-          # import certificate and provisioning profile from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
-
-          # create temporary keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-          # import certificate to keychain
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-
-          # apply provisioning profile
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Setup Manual Signing for Xcode project
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
@@ -68,12 +39,12 @@ jobs:
           lane: 'setup_manual_signing'
           options: >
             { 
-              "project_path":"HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj",
-              "team_id":"JA825X8F7Z",
-              "target":"GiniHealthSDKExample",
-              "bundle_identifier": "net.gini.healthsdk.example",
-              "profile_name": "Gini Health SDK Example App Ad-Hoc Distribution",
-              "entitlements_file_path": "GiniHealthSDKExample/GiniHealthSDKExample.entitlements", 
+              "project_path":"${{ vars.HEALTH_PROJECT_PATH }}",
+              "team_id":"${{ vars.TEAM_ID }}",
+              "target":"${{ vars.HEALTH_TARGET_NAME }}",
+              "bundle_identifier": "${{ vars.HEALTH_BUNDLE_ID }}",
+              "profile_name": "${{ vars.HEALTH_PROFILE_NAME }}",
+              "entitlements_file_path": "${{ vars.HEALTH_ENTITLEMENTS_PATH }}", 
               "ci": "true"
             }
 
@@ -89,30 +60,17 @@ jobs:
             plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
 
       - name: Archiving project
-        run: |
-            xcodebuild clean archive \
-            -workspace GiniMobile.xcworkspace \
-            -scheme "GiniHealthSDKExample" \
-            -archivePath ./GiniHealthSDKExample.xcarchive \
-            -configuration Release \
-            -destination generic/platform=iOS \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            CODE_SIGNING_REQUIRED=NO \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=JA825X8F7Z
-    
-      - name: Exporting .ipa
-        run: |
-            xcodebuild  \
-            -exportArchive \
-            -archivePath GiniHealthSDKExample.xcarchive \
-            -exportPath . \
-            -exportOptionsPlist ExportOptionsHealthExample.plist \
-            -destination "generic/platform=iOS" \
-            CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          APP_IDENTIFIER: ${{ vars.MERCHANT_BUNDLE_ID }}
+          DISTRIBUTION_TYPE: adhoc
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          APP_SCHEME: ${{ vars.HEALTH_TARGET_NAME }}
+          IPA_FILE: ${{ vars.HEALTH_TARGET_NAME }}
+        with:
+          lane: 'build_app_adhoc'
 
       - name: Check file existence
         uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
