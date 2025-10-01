@@ -15,8 +15,12 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
+  load_constants:
+    uses: ./.github/workflows/constants.yml
+
   upload-version:
     environment: firebase-manual-deploy
+    needs: load_constants
     runs-on: macos-latest
     steps:
       - name: Checkout repository
@@ -40,12 +44,12 @@ jobs:
           lane: 'setup_manual_signing'
           options: >
             { 
-              "project_path":"MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj",
-              "team_id":"JA825X8F7Z",
-              "target":"GiniMerchantSDKExample",
-              "bundle_identifier": "net.gini.merchantsdk.example",
-              "profile_name": "match AdHoc net.gini.merchantsdk.example",
-              "entitlements_file_path": "GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements", 
+              "project_path":"${{ needs.config.outputs.merchant_project_path }}",
+              "team_id":"${{ needs.config.outputs.team_id }}",
+              "target":"${{ needs.config.outputs.merchant_target_name }}",
+              "bundle_identifier": "${{ needs.config.outputs.merchant_bundle_id }}",
+              "profile_name": "${{ needs.config.outputs.merchant_profile_name }}",
+              "entitlements_file_path": "${{ needs.config.outputs.merchant_entitlements_path }}", 
               "ci": "true"
             }
 
@@ -59,13 +63,13 @@ jobs:
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
-          APP_IDENTIFIER: net.gini.merchantsdk.example
+          APP_IDENTIFIER: ${{ needs.config.outputs.merchant_bundle_id }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          APP_SCHEME: GiniMerchantSDKExample
-          IPA_FILE: GiniMerchantSDKExample
+          APP_SCHEME: ${{ needs.config.outputs.merchant_target_name }}
+          IPA_FILE: ${{ needs.config.outputs.merchant_target_name }}
         with:
           lane: 'build_app_adhoc'
 

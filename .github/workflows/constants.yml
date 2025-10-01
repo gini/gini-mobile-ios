@@ -1,0 +1,23 @@
+name: Workflow constants
+
+on:
+  workflow_call:
+    outputs:
+      merchant_project_path:
+        value: "MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj"
+      merchant_target_name:
+        value: "GiniMerchantSDKExample"
+      merchant_bundle_id:
+        value: "net.gini.merchantsdk.example"
+      merchant_profile_name:
+        value: "match AdHoc net.gini.merchantsdk.example"
+      merchant_entitlements_path:
+        value: "GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements"
+      team_id:
+        value: "JA825X8F7Z"
+
+jobs:
+  load_constants:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Constants loaded"
