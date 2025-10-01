@@ -10,7 +10,6 @@ on:
       - 'GiniComponents/**'
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-publish
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
@@ -62,7 +61,7 @@ jobs:
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
-          APP_IDENTIFIER: ${{ vars.MERCHANT_BUNDLE_ID }}
+          APP_IDENTIFIER: ${{ vars.HEALTH_BUNDLE_ID }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
