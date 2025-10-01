@@ -365,6 +365,13 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var paymentHintsEnabled: Bool = true
 
+    // MARK: - Save Photos Locally
+    /**
+     Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
+     photos captured during the payment flow will be automatically saved to the device's
+     local photo library.
+     */
+    public var savePhotosLocallyEnabled: Bool = true
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
