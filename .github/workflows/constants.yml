@@ -18,6 +18,6 @@ on:
 
 jobs:
   load_constants:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - run: echo "Constants loaded"
