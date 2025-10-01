@@ -19,7 +19,7 @@ class SkontoAmountToPayView: UIView {
         label.numberOfLines = 1
         label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -29,7 +29,7 @@ class SkontoAmountToPayView: UIView {
         let textField = PriceTextField()
         textField.priceDelegate = self
         textField.text = textFieldInitialText
-        textField.textColor = .giniColorScheme().text.primary.uiColor()
+        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .numberPad
@@ -45,7 +45,7 @@ class SkontoAmountToPayView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = currencyLabelText
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -65,7 +65,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniBankColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = Constants.cornerRadius
         view.isAccessibilityElement = true
@@ -82,7 +82,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var validationLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .giniColorScheme().textField.supportingError.uiColor()
+        label.textColor = .giniBankColorScheme().textField.supportingError.uiColor()
         label.font = configuration.textStyleFonts[.caption1]
         label.numberOfLines = 0
         label.isHidden = true
@@ -149,7 +149,7 @@ class SkontoAmountToPayView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        backgroundColor = .giniBankColorScheme().textField.background.uiColor()
         addSubview(mainStackView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(stackView)
@@ -196,12 +196,19 @@ class SkontoAmountToPayView: UIView {
                    accessibilityValue: String) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
+            containerView.accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            containerView.accessibilityTraits = [.updatesFrequently]
         } else {
             textField.text = price.localizedStringWithCurrencyCode ?? ""
+            containerView.accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            containerView.accessibilityTraits = [.staticText, .notEnabled]
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         containerView.accessibilityValue = accessibilityValue
+
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }
@@ -210,7 +217,7 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
-        
+
         UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
@@ -245,5 +252,11 @@ private extension SkontoAmountToPayView {
         static let padding: CGFloat = 12
         static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
+    }
+
+    struct Strings {
+        static let hintKey: String = "ginibank.skonto.editableField.accessibility"
+        static let hintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(hintKey, comment: hintComment)
     }
 }

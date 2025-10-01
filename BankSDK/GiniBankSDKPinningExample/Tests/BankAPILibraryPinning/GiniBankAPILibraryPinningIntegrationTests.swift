@@ -8,6 +8,7 @@ import XCTest
 @testable import GiniCaptureSDK
 @testable import GiniBankAPILibrary
 @testable import TrustKit
+@testable import GiniUtilites
 
 class GiniBankAPILibraryPinningIntegrationTests: XCTestCase {
     

@@ -16,7 +16,7 @@ final class SkontoHelpItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .giniColorScheme().text.primary.uiColor()
+        titleLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.footnoteBold]
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.numberOfLines = Constants.labelNumberOfLines
@@ -86,7 +86,7 @@ final class SkontoHelpItemView: UIView {
     private func addDividerView() {
         let dividerView = UIView()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
-        dividerView.backgroundColor = .giniColorScheme().textField.border.uiColor()
+        dividerView.backgroundColor = .giniBankColorScheme().textField.border.uiColor()
         addSubview(dividerView)
         NSLayoutConstraint.activate([
             dividerView.bottomAnchor.constraint(equalTo: bottomAnchor),

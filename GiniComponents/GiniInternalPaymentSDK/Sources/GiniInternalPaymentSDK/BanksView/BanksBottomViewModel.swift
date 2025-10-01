@@ -34,14 +34,14 @@ public final class BanksBottomViewModel {
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
     let paymentInfoViewModel: PaymentInfoViewModel
-    let internalPaymentProvider: [PaymentProvider] = []
+    
     public weak var viewDelegate: BanksSelectionProtocol?
     public var documentId: String?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?
+    var maximumViewHeight: CGFloat = 0
 
-    let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
     let rowHeight: CGFloat = Constants.cellSizeHeight
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
@@ -72,7 +72,7 @@ public final class BanksBottomViewModel {
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
         
-        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
+        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.uniqued(by: { $0.id }),
                                                          configuration: paymentInfoConfiguration,
                                                          strings: paymentInfoStrings,
                                                          poweredByGiniConfiguration: poweredByGiniConfiguration,
@@ -86,6 +86,7 @@ public final class BanksBottomViewModel {
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
             .filter { $0.paymentProvider.gpcSupportedPlatforms.contains(.ios) || $0.paymentProvider.openWithSupportedPlatforms.contains(.ios) }
+            .uniqued(by: { $0.paymentProvider.id })
             .sorted {
                 // First, sort by isInstalled
                 if $0.isInstalled != $1.isInstalled {
@@ -94,12 +95,20 @@ public final class BanksBottomViewModel {
                 // Then sort by paymentProvider.index if both have the same isInstalled value
                 return ($0.paymentProvider.index ?? 0) < ($1.paymentProvider.index ?? 0)
             }
+
         self.calculateHeights()
     }
 
-    private func calculateHeights() {
+    func calculateHeights() {
         let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
+        var topPaddingView: CGFloat = 0
+        if UIDevice.isPortrait() {
+            topPaddingView = Constants.topPaddingViewPortrait
+        } else {
+            topPaddingView = Constants.topPaddingViewLandscape
+        }
+        maximumViewHeight = UIScreen.main.bounds.height - topPaddingView
         if totalBottomViewHeight > maximumViewHeight {
             self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
             self.bottomViewHeight = maximumViewHeight
@@ -141,6 +150,7 @@ extension BanksBottomViewModel {
     enum Constants {
         static let blankBottomViewHeight: CGFloat = 200.0
         static let cellSizeHeight: CGFloat = 64.0
-        static let topPaddingView: CGFloat = 100.0
+        static let topPaddingViewPortrait: CGFloat = 100.0
+        static let topPaddingViewLandscape: CGFloat = 20.0
     }
 }

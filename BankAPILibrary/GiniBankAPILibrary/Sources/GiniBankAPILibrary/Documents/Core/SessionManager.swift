@@ -278,11 +278,10 @@ private extension SessionManager {
             completion(.success(result))
         } catch let error {
             Log("""
-        Failure: \(method) - \(url)
-        Parse error: \(error)
-        Data content: \(dataString)
-        """, event: .error)
-
+                Failure: \(method) - \(url)
+                Parse error: \(error)
+                Data content: \(dataString)
+                """, event: .error)
             completion(.failure(.parseError(message: "Failed to parse response",
                                             response: response,
                                             data: data)))

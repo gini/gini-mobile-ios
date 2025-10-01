@@ -19,7 +19,9 @@ final class ClientConfigurationTests: XCTestCase {
                                          skontoEnabled: true,
                                          returnAssistantEnabled: true,
                                          transactionDocsEnabled: true,
-                                         instantPaymentEnabled: true)
+                                         instantPaymentEnabled: true,
+                                         qrCodeEducationEnabled: true,
+                                         eInvoiceEnabled: true)
 
         XCTAssertEqual(config.clientID, testClientID)
         XCTAssertTrue(config.userJourneyAnalyticsEnabled)
@@ -27,6 +29,8 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertTrue(config.returnAssistantEnabled)
         XCTAssertTrue(config.transactionDocsEnabled)
         XCTAssertTrue(config.instantPaymentEnabled)
+        XCTAssertTrue(config.qrCodeEducationEnabled)
+        XCTAssertTrue(config.eInvoiceEnabled)
     }
 
     func testDecodingFromValidJSON() throws {
@@ -40,10 +44,13 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertTrue(config.returnAssistantEnabled)
         XCTAssertFalse(config.transactionDocsEnabled)
         XCTAssertFalse(config.instantPaymentEnabled)
+        XCTAssertFalse(config.qrCodeEducationEnabled)
+        XCTAssertFalse(config.eInvoiceEnabled)
     }
 
     func testDecodingFailsWhenMissingRequiredField() {
-        XCTAssertThrowsError(try JSONDecoder().decode(ClientConfiguration.self, from: clientConfigurationMissingJson)) { error in
+        XCTAssertThrowsError(try JSONDecoder().decode(ClientConfiguration.self,
+                                                      from: clientConfigurationMissingJson)) { error in
             print("Expected decoding error: \(error)")
         }
     }

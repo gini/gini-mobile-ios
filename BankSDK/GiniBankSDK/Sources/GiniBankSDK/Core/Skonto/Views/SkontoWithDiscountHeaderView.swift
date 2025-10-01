@@ -13,7 +13,7 @@ class SkontoWithDiscountHeaderView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.title",
                                                              comment: "With Skonto discount")
         label.text = title
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
@@ -29,10 +29,16 @@ class SkontoWithDiscountHeaderView: UIView {
                                                              comment: "• Active")
         label.text = title
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = UIColor.giniColorScheme().text.success.uiColor()
+        label.textColor = UIColor.giniBankColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
+        if UIDevice.current.isIpad {
+            label.setContentHuggingPriority(.required, for: .horizontal)
+            label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        } else {
+            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        }
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -40,7 +46,7 @@ class SkontoWithDiscountHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = .giniColorScheme().toggle.trackOn.uiColor()
+        discountSwitch.onTintColor = .giniBankColorScheme().toggle.trackOn.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
@@ -82,7 +88,7 @@ class SkontoWithDiscountHeaderView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().container.background.uiColor()
+        backgroundColor = .giniBankColorScheme().container.background.uiColor()
         addSubview(stackView)
         addSubview(discountSwitch)
         setupConstraints()

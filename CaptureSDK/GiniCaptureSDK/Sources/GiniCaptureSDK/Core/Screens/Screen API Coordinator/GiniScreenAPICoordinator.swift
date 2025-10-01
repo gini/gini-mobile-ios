@@ -6,6 +6,8 @@
 
 import Foundation
 import UIKit
+import GiniUtilites
+
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
@@ -226,7 +228,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -234,7 +236,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didPressEnterManually()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -326,7 +328,7 @@ extension GiniScreenAPICoordinator {
         }
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
-        self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
     }
 
     @objc func backToCamera() {
@@ -404,10 +406,10 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
 
 extension GiniScreenAPICoordinator {
     func hasOnboardingShownOnLaunch() -> Bool {
-        return UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch
     }
 
     func setOnboardingShownStatus(show: Bool = false) {
-        return UserDefaults.standard.set(show, forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch = show
     }
 }
