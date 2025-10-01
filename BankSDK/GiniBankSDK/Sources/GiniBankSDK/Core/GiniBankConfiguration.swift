@@ -21,7 +21,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Returns a `GiniBankConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Bank SDK.
-     
+
      - returns: Instance of `GiniBankConfiguration`.
      */
     override init() {
@@ -30,7 +30,7 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - General options
     /**
-	 The appearance of the status bar in the Gini Bank SDK.
+     The appearance of the status bar in the Gini Bank SDK.
      */
     public var statusBarStyle = UIStatusBarStyle.lightContent
 
@@ -71,13 +71,17 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Enables the customization of resources to override the default Gini resources. The change will affect all screens.
 
-     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations, such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`, `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
+     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations,
+     such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`,
+     `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
      */
     public var customResourceProvider: CustomResourceProvider?
 
     // MARK: - Button configuration options
     /**
-	 A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
+     A configuration that defines the appearance of the primary button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different
+     screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
      */
     public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.accent1,
                                                                      borderColor: .clear,
@@ -88,21 +92,23 @@ public final class GiniBankConfiguration: NSObject {
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
     /**
-     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `No Results`, `Error`.
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `No Results`, `Error`.
      */
     public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.dark4,
                                                                        borderColor: GiniColor(light: .GiniBank.light6,
                                                                                               dark: .clear).uiColor(),
                                                                        titleColor: GiniColor(light: .GiniBank.dark6,
                                                                                              dark: .GiniBank.light1)
-                                                                                  .uiColor(),
+                                                                        .uiColor(),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 16,
                                                                        borderWidth: 2,
                                                                        shadowRadius: 14,
                                                                        withBlurEffect: true)
     /**
-     A configuration that defines the appearance of the transparent button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Onboarding` screen in the bottom navigation bar.
+     A configuration that defines the appearance of the transparent button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Onboarding` screen in the bottom navigation bar.
      */
     public lazy var transparentButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                          borderColor: .clear,
@@ -113,7 +119,8 @@ public final class GiniBankConfiguration: NSObject {
                                                                          shadowRadius: 0,
                                                                          withBlurEffect: false)
     /**
-     A configuration that defines the appearance of the camera buttons, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for `Browse` and `Flash` buttons on `Camera` screen.
+     A configuration that defines the appearance of the camera buttons, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for `Browse` and `Flash` buttons on `Camera` screen.
      */
     public lazy var cameraControlButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                            borderColor: .clear,
@@ -124,13 +131,14 @@ public final class GiniBankConfiguration: NSObject {
                                                                            shadowRadius: 0,
                                                                            withBlurEffect: false)
     /**
-     A configuration that defines the appearance of the "Add Page" button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Review `screen.
+     A configuration that defines the appearance of the "Add Page" button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Review `screen.
      */
     public lazy var addPageButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                      borderColor: .clear,
                                                                      titleColor: GiniColor(light: .GiniBank.dark2,
                                                                                            dark: .GiniBank.light2)
-                                                                                .uiColor(),
+                                                                        .uiColor(),
                                                                      shadowColor: .clear,
                                                                      cornerRadius: 0,
                                                                      borderWidth: 0,
@@ -189,7 +197,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Indicates whether the onboarding screen should be presented at the first
      start of the Gini Bank SDK. It is advised to do so.
-     
+
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
      */
     public var onboardingShowAtFirstLaunch = true
@@ -238,18 +246,20 @@ public final class GiniBankConfiguration: NSObject {
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     // MARK: - Help screens
-	/**
-	 Indicates whether the open with feature is enabled or not. In case of `true`,
-	 a new option with the `Open with` tutorial will be shown on the Help menu.
-	 */
-	public var openWithEnabled = false
+    /**
+     Indicates whether the open with feature is enabled or not. In case of `true`,
+     a new option with the `Open with` tutorial will be shown on the Help menu.
+     */
+    public var openWithEnabled = false
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
     public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     /**
-     Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the `HelpMenuViewController.Item` initialization.
+     Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen.
+     By selecting the cell the user will be redirected to the page, which represented by viewController provided
+     by customer during the `HelpMenuViewController.Item` initialization.
      */
     public var customMenuItems: [HelpMenuItem] = []
 
@@ -261,7 +271,7 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
-	 - note: Available just for iPad
+     - note: Available just for iPad
      */
     public var shouldShowDragAndDropTutorial = true
 
@@ -292,7 +302,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Indicates whether the Return Assistant feature is enabled or not. In the case of `true`,
      the user will be presented with a digital representation of their invoice where they
-	 can see individual line items and are able to amend them or choose not to pay for them.
+     can see individual line items and are able to amend them or choose not to pay for them.
      */
     public var returnAssistantEnabled = true
 
@@ -325,9 +335,9 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: - Skonto feature
 
     /**
-     * Indicates whether the Skonto feature is enabled. If `true`,
-     * the user will be presented with a screen where they can choose
-     * to pay the invoice with or without applying Skonto.
+     Indicates whether the Skonto feature is enabled. If `true`,
+     the user will be presented with a screen where they can choose
+     to pay the invoice with or without applying Skonto.
      */
     public var skontoEnabled: Bool = true
 
@@ -343,25 +353,27 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Transaction Docs feature
     /**
-     * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
-     * the user will be presented with an alert dialog in the photo payment flow to choose
-     * whether to attach images or PDFs to the transaction.
+     Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
+     the user will be presented with an alert dialog in the photo payment flow to choose
+     whether to attach images or PDFs to the transaction.
      */
     public var transactionDocsEnabled: Bool = true
 
-    /// A coordinator that manages the state of transaction documents in the photo payment flow.
-    /// It conforms to `TransactionDocsDataProtocol` and is responsible for tracking,
-    /// modifying, and handling the state related to attaching documents to a transaction.
-    ///
-    /// This instance is initialized with a default `TransactionDocsDataCoordinator` object
-    /// that implements the protocol.
+    /**
+     A coordinator that manages the state of transaction documents in the photo payment flow.
+     It conforms to `TransactionDocsDataProtocol` and is responsible for tracking,
+     modifying, and handling the state related to attaching documents to a transaction.
+
+     This instance is initialized with a default `TransactionDocsDataCoordinator` object
+     that implements the protocol.
+     */
     public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
 
     // MARK: - User hints for payment
     /**
-     * Indicates whether the `paymentHintsEnabled` is enabled or not. If set to `true`,
-     * a bottom sheet is shown in the photo payment flow, informing the user about
-     * different statuses of the ongoing payment.
+     Indicates whether the `paymentHintsEnabled` is enabled or not. If set to `true`,
+     a bottom sheet is shown in the photo payment flow, informing the user about
+     different statuses of the ongoing payment.
      */
     public var paymentHintsEnabled: Bool = true
 
@@ -372,6 +384,7 @@ public final class GiniBankConfiguration: NSObject {
      local photo library.
      */
     public var savePhotosLocallyEnabled: Bool = true
+
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
@@ -397,13 +410,17 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: - Development Debug
     /**
      Can be turned on during development to unlock extra information and to save captured images to the camera roll.
-     
+
      - warning: Should never be used outside of a development enviroment.
      */
     public var debugModeOn = false
 
     // MARK: - Configuration Methods
 
+    /**
+      This method is used to capture the GiniBankConfiguration settings and apply them to
+      the `GiniConfiguration` part of the Gini Capture SDK.
+     */
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
@@ -427,7 +444,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
 
-		configuration.customOnboardingPages = self.customOnboardingPages
+        configuration.customOnboardingPages = self.customOnboardingPages
 
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
@@ -442,7 +459,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
-		configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
 
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
@@ -489,7 +506,7 @@ public final class GiniBankConfiguration: NSObject {
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
 
         let giniBankConfiguration = GiniBankConfiguration.shared
-		giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
+        giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
 
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
 
@@ -504,7 +521,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
 
-		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
+        giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
@@ -518,28 +535,28 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.cameraControlButtonConfiguration = configuration.cameraControlButtonConfiguration
         giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
 
-		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
-		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
-		giniBankConfiguration.customMenuItems = configuration.customMenuItems
+        giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
+        giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
+        giniBankConfiguration.customMenuItems = configuration.customMenuItems
 
         giniBankConfiguration.transactionDocsEnabled = configuration.transactionDocsEnabled
 
-		giniBankConfiguration.customNavigationController = configuration.customNavigationController
-		giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
-		giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
+        giniBankConfiguration.customNavigationController = configuration.customNavigationController
+        giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
+        giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
         giniBankConfiguration.errorNavigationBarBottomAdapter = configuration.errorNavigationBarBottomAdapter
         giniBankConfiguration.noResultsNavigationBarBottomAdapter = configuration.noResultsNavigationBarBottomAdapter
-		giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
-		giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
+        giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
+        giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
 
-		giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
-		giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
-		giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
-		giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
-		giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
+        giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
+        giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
+        giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
+        giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
+        giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
 
         giniBankConfiguration.entryPoint = configuration.entryPoint
-		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
+        giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
 
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
@@ -551,8 +568,10 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
 
-     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
-     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our
+     util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts.
+     Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
@@ -617,13 +636,13 @@ public final class GiniBankConfiguration: NSObject {
      - Send the transfer summary after TAN verification and provide the extraction values the user has used.
 
      - Parameters:
-        - paymentRecipient: The name of the recipient to whom the payment is being made.
-        - paymentReference: A reference string used to identify the payment transaction.
-        - paymentPurpose: A brief description of the purpose of the payment.
-        - iban: The International Bank Account Number of the recipient.
-        - bic: The Bank Identifier Code associated with the recipient’s bank.
-        - amountToPay: The amount to be transferred, including currency information.
-        - instantPayment: A Boolean value indicating whether the payment should be processed as an instant payment.
+     - paymentRecipient: The name of the recipient to whom the payment is being made.
+     - paymentReference: A reference string used to identify the payment transaction.
+     - paymentPurpose: A brief description of the purpose of the payment.
+     - iban: The International Bank Account Number of the recipient.
+     - bic: The Bank Identifier Code associated with the recipient’s bank.
+     - amountToPay: The amount to be transferred, including currency information.
+     - instantPayment: A Boolean value indicating whether the payment should be processed as an instant payment.
      */
     // swiftlint:disable function_parameter_count
     public func sendTransferSummary(paymentRecipient: String,
