@@ -15,12 +15,8 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  load_constants:
-    uses: ./.github/workflows/constants.yml
-
   upload-version:
     environment: firebase-manual-deploy
-    needs: load_constants
     runs-on: macos-latest
     steps:
       - name: Checkout repository
@@ -44,12 +40,12 @@ jobs:
           lane: 'setup_manual_signing'
           options: >
             { 
-              "project_path":"${{ needs.config.outputs.merchant_project_path }}",
-              "team_id":"${{ needs.config.outputs.team_id }}",
-              "target":"${{ needs.config.outputs.merchant_target_name }}",
-              "bundle_identifier": "${{ needs.config.outputs.merchant_bundle_id }}",
-              "profile_name": "${{ needs.config.outputs.merchant_profile_name }}",
-              "entitlements_file_path": "${{ needs.config.outputs.merchant_entitlements_path }}", 
+              "project_path":"${{ vars.MERCHANT_PROJECT_PATH }}",
+              "team_id":"${{ vars.TEAM_ID }}",
+              "target":"${{ vars.MERCHANT_TARGET_NAME }}",
+              "bundle_identifier": "${{ vars.MERCHANT_BUNDLE_ID }}",
+              "profile_name": "${{ vars.MERCHANT_PROFILE_NAME }}",
+              "entitlements_file_path": "${{ vars.MERCHANT_ENTITLEMENTS_PATH }}", 
               "ci": "true"
             }
 
@@ -68,8 +64,8 @@ jobs:
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          APP_SCHEME: ${{ needs.config.outputs.merchant_target_name }}
-          IPA_FILE: ${{ needs.config.outputs.merchant_target_name }}
+          APP_SCHEME: ${{ vars.MERCHANT_TARGET_NAME }}
+          IPA_FILE: ${{ vars.MERCHANT_TARGET_NAME }}
         with:
           lane: 'build_app_adhoc'
 
