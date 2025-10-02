@@ -347,10 +347,7 @@ final class SkontoViewController: UIViewController {
             defaultBar.contentBarView.removeFromSuperview()
 
             removeLandscapeBottomBarContentView()
-        }
-
         // Attach correct bottom element and apply correct constraint
-        if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
             pinToBottom(defaultBar, to: view)
             updateScrollViewBottomToViewConstraint(to: defaultBar.topAnchor)
         } else if let customBar = bottomNavigationBar {
