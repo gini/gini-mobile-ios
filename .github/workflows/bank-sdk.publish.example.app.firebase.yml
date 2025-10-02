@@ -63,13 +63,13 @@ jobs:
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
-          APP_IDENTIFIER: ${{ vars.HEALTH_BUNDLE_ID }}
+          APP_IDENTIFIER: ${{ vars.BANK_BUNDLE_ID }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          APP_SCHEME: ${{ vars.HEALTH_TARGET_NAME }}
-          IPA_FILE: ${{ vars.HEALTH_TARGET_NAME }}
+          APP_SCHEME: ${{ vars.BANK_TARGET_NAME }}
+          IPA_FILE: ${{ vars.BANK_TARGET_NAME }}
         with:
           lane: 'build_app_adhoc'
 
