@@ -6,6 +6,9 @@ platform :ios do
     Download the provisioning profiles stored in the remote repository to be used in github actions
   DOC
   lane :download_profiles do
+    setup_temp_keychain
+    unlock_temp_keychain
+    
     match(
       app_identifier: ENV["APP_IDENTIFIER"],
       type: ENV["DISTRIBUTION_TYPE"],

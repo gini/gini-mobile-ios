@@ -31,8 +31,6 @@ platform :ios do
     export_method = options[:export_method]
     configuration = options[:configuration]
   
-    setup_temp_keychain
-    unlock_temp_keychain
     download_profiles
     build_app_match(export_method: export_method, configuration: configuration)
   ensure
