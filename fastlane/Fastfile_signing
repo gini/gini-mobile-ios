@@ -3,7 +3,18 @@ default_platform(:ios)
 
 platform :ios do
   desc <<~DOC
-    Download the provisioning profiles stored in the remote repository to be used in github actions
+    Download provisioning profiles from the remote repository for GitHub Actions.
+
+    Parameters:
+      APP_IDENTIFIER      - The bundle identifier of the app (from ENV).
+      DISTRIBUTION_TYPE   - The type of provisioning profile (appstore, adhoc, development, enterprise) (from ENV).
+      GIT_URL             - The git repository URL where provisioning profiles are stored (from ENV).
+      KEYCHAIN_PASSWORD   - The password for the temporary keychain (from ENV).
+
+    Behavior:
+      - Sets up and unlocks a temporary keychain for code signing.
+      - Downloads and installs provisioning profiles using match in readonly mode.
+      - Does not modify the profiles repository (readonly: true).
   DOC
   lane :download_profiles do
     setup_temp_keychain
@@ -70,7 +81,17 @@ platform :ios do
     )
   end
 
-  desc "Delete temp signing keychain"
+  desc <<~DOC
+    Delete the temporary signing keychain created for CI builds.
+
+    Parameters:
+      name - The name of the keychain to delete. Default: "app-signing".
+
+    Behavior:
+      - Removes the temporary keychain from the system.
+      - Should be called after build/signing operations are complete to clean up resources.
+      - This is a private lane, intended to be called by other lanes only.
+  DOC
   private_lane :delete_temp_keychain do
     delete_keychain(name: "app-signing")
   end

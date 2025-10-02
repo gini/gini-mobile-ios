@@ -3,7 +3,20 @@ default_platform(:ios)
 
 platform :ios do
 
-  desc "Build app for ad-hoc distribution"
+  desc <<~DOC
+    Build the app for ad-hoc distribution.
+
+    Parameters:
+      distribution_type - Set to "adhoc" for ad-hoc provisioning profile.
+      export_method     - Set to "ad-hoc" for ad-hoc export.
+      configuration     - Build configuration to use. Default: "Release".
+
+    Behavior:
+      - Builds the app using the ad-hoc provisioning profile.
+      - Exports the IPA with ad-hoc distribution method.
+      - Uses the Release build configuration.
+      - Delegates to build_app_with_provisioning lane with ad-hoc parameters.
+  DOC
   lane :build_app_adhoc do
     build_app_with_provisioning(distribution_type: "adhoc", export_method: "ad-hoc", configuration: "Release")
   end
