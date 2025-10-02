@@ -51,7 +51,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             moreInformationAccentColor: GiniColor.standard3.uiColor(),
             moreInformationIcon: GiniMerchantImage.info.preferredUIImage(),
             appStoreIcon: GiniMerchantImage.appStore.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor()
+            bankIconBorderColor: GiniColor.standard5.uiColor(),
+            closeIcon: GiniMerchantImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 
@@ -74,7 +76,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2)
+            subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2),
+            closeIcon: GiniMerchantImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
     
@@ -97,7 +101,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             linksFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor()
+            backgroundColor: GiniColor.standard7.uiColor(),
+            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
     }
     
@@ -139,6 +144,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(), 
             paymentReviewClose: GiniMerchantImage.paymentReviewClose.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
+            rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             statusBarStyle: .default,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),

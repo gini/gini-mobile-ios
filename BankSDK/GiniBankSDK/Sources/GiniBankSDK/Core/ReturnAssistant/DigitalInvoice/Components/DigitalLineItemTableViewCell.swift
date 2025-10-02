@@ -1,6 +1,6 @@
 //
 //  DigitalLineItemTableViewCell.swift
-// GiniBank
+//  GiniBank
 //
 //  Created by Maciej Trybilo on 22.11.19.
 //
@@ -34,44 +34,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
     var viewModel: DigitalLineItemTableViewCellViewModel? {
         didSet {
-            guard let viewModel = viewModel else { return }
-
-            if let nameLabelString = viewModel.nameLabelString {
-                setTextWithLimit(for: nameLabel,
-                                 text: nameLabelString,
-                                 maxCharacters: viewModel.nameMaxCharactersCount)
-                nameLabel.accessibilityValue = nameLabelString
-            }
-
-            if let priceString = viewModel.totalPriceString {
-                priceLabel.text = priceString
-                priceLabel.accessibilityValue = priceString
-                let format = NSLocalizedStringPreferredGiniBankFormat(
-                                        "ginibank.digitalinvoice.total.accessibilitylabel",
-                                        comment: "Total")
-                priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
-            }
-
-            unitPriceLabel.text = viewModel.unitPriceString
-            unitPriceLabel.accessibilityValue = viewModel.unitPriceString
-
-            modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
-
-            modeSwitch.onTintColor = viewModel.modeSwitchTintColor
-
-            [nameLabel, editButton, unitPriceLabel, priceLabel].forEach { view in
-                view?.alpha = viewModel.lineItem.selectedState == .selected ? 1 : 0.5
-                editButton.isEnabled = viewModel.lineItem.selectedState == .selected
-            }
-
-            switch viewModel.lineItem.selectedState {
-            case .selected:
-                modeSwitch.isOn = true
-            case .deselected:
-                modeSwitch.isOn = false
-            }
-
-            setup()
+            updateUIWithViewModel()
         }
     }
 
@@ -94,35 +57,93 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     }
 
     private func setup() {
-        let bgColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        let bgColor: UIColor = .giniBankColorScheme().container.background.uiColor()
         backgroundColor = .clear
         contentView.backgroundColor = bgColor
         backgroundContainerView.backgroundColor = bgColor
         selectionStyle = .none
 
         if viewModel?.index == 0 {
-            backgroundContainerView.round(corners: [.topLeft, .topRight], radius: 8)
+            backgroundContainerView.round(corners: [.topLeft, .topRight],
+                                          radius: Constants.cornerRadius)
             separatorView.isHidden = true
         }
 
         editButton.contentHorizontalAlignment = .left
         editButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        let editTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.editbutton",
-                                                                 comment: "Edit")
-        editButton.setTitle(editTitle, for: .normal)
+        editButton.setTitle(Strings.editButtonTitle, for: .normal)
         editButton.isExclusiveTouch = true
 
-        separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
-        unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6,
-                                             dark: .GiniBank.light6).uiColor()
-        editButton.setTitleColor(.GiniBank.accent1, for: .normal)
-        nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        separatorView.backgroundColor = .giniBankColorScheme().textField.border.uiColor()
+
+        applySelectedColors()
 
         priceLabel.font = configuration.textStyleFonts[.body]
         nameLabel.font = configuration.textStyleFonts[.body]
         unitPriceLabel.font = configuration.textStyleFonts[.body]
         editButton.titleLabel?.font = configuration.textStyleFonts[.body]
+
+        accessibilityElements = [nameLabel,
+                                 modeSwitch,
+                                 unitPriceLabel,
+                                 priceLabel,
+                                 editButton].compactMap { $0 }
+
+        modeSwitch.removeTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
+        modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
+    }
+
+    private func updateUIWithViewModel() {
+        guard let viewModel = viewModel else { return }
+
+        if let nameLabelString = viewModel.nameLabelString {
+            setTextWithLimit(for: nameLabel,
+                             text: nameLabelString,
+                             maxCharacters: viewModel.nameMaxCharactersCount)
+            nameLabel.accessibilityValue = nameLabelString
+        }
+
+        if let priceString = viewModel.totalPriceString {
+            priceLabel.text = priceString
+            priceLabel.accessibilityValue = priceString
+            priceLabel.accessibilityLabel = String.localizedStringWithFormat(Strings.priceAccessibilityLabel,
+                                                                             priceString)
+        }
+
+        unitPriceLabel.text = viewModel.unitPriceString
+        unitPriceLabel.accessibilityValue = viewModel.unitPriceString
+        editButton.isEnabled = viewModel.lineItem.selectedState == .selected
+
+        if case .deselected = viewModel.lineItem.selectedState {
+            applyDeselectedColors(viewModel)
+            modeSwitch.isOn = false
+        } else {
+            // Reset to selected state
+            applySelectedColors()
+            modeSwitch.isOn = true
+        }
+
+        modeSwitch.onTintColor = viewModel.modeSwitchTintColor
+
+        if viewModel.index == 0 {
+            backgroundContainerView.round(corners: [.topLeft, .topRight],
+                                          radius: Constants.cornerRadius)
+            separatorView.isHidden = true
+        }
+    }
+
+    private func applySelectedColors() {
+        nameLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
+        priceLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
+        unitPriceLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
+        editButton.setTitleColor(.GiniBank.accent1, for: .normal)
+    }
+
+    private func applyDeselectedColors(_ viewModel: DigitalLineItemTableViewCellViewModel) {
+        nameLabel.textColor = viewModel.textTintColorStateDeselected
+        unitPriceLabel.textColor = viewModel.textTintColorStateDeselected
+        priceLabel.textColor = viewModel.textTintColorStateDeselected
+        editButton.setTitleColor(viewModel.textTintColorStateDeselected, for: .normal)
     }
 
     private func setTextWithLimit(for label: UILabel, text: String, maxCharacters: Int) {
@@ -151,5 +172,24 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         if let viewModel = viewModel {
             delegate?.editTapped(cell: self, lineItemViewModel: viewModel)
         }
+    }
+}
+// MARK: - Constants
+private extension DigitalLineItemTableViewCell {
+    struct Constants {
+        static let cornerRadius: CGFloat = 8.0
+    }
+}
+
+extension DigitalLineItemTableViewCell {
+    private struct Strings {
+        static let priceAccessibilityLabelKey = "ginibank.digitalinvoice.total.accessibilitylabel"
+        static let editButtonTitleKey = "ginibank.digitalinvoice.lineitem.editbutton"
+
+        static let priceAccessibilityLabel = NSLocalizedStringPreferredGiniBankFormat(priceAccessibilityLabelKey,
+                                                                                      comment: "Total")
+
+        static let editButtonTitle = NSLocalizedStringPreferredGiniBankFormat(editButtonTitleKey,
+                                                                              comment: "Edit")
     }
 }

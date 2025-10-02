@@ -1,4 +1,6 @@
 name: Check Bank SDK
+permissions:
+  contents: read
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -24,9 +26,9 @@ jobs:
         target: [GiniBankSDK]
         destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1.6.0
+    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
-        xcode-version: '15.3'
+        xcode-version: '16.4'
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -37,26 +39,31 @@ jobs:
            cd BankSDK/GiniBankSDK
            swift package update
 
-    - name: Build sdk targets
-      run: |
-        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+    # Setup ruby to run unit tests for the GiniBankSDK
+    - name: Setup ruby
+      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
 
-    - name: Run unit tests
-      run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-
-    - name: Extract Device Name
-      id: extract_name
-      run: |
-        DEVICE_NAME=$(echo "${{ matrix.destination }}" | sed -n 's/.*name=\([^,]*\).*/\1/p')
-        echo "DEVICE_NAME=${DEVICE_NAME}" >> $GITHUB_ENV        
-
-    - name: Start iOS Simulator
-      run: |
-        xcrun simctl boot "$DEVICE_NAME"
-        xcrun simctl bootstatus "$DEVICE_NAME" -b
-   
+    - name: Build and run tests for "${{ matrix.target }}"
+      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+        TEST_CLIENT_ID: "gini-mobile-test"
+      with:
+        lane: 'run_unit_tests'
+        options: >
+            {
+              "target": "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}",
+              "clientId": "$TEST_CLIENT_ID",
+              "clientSecret": "$TEST_CLIENT_SECRET"
+            }
+    # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
       if: ${{ matrix.target == 'GiniBankSDK' }}
       run: >
         xcodebuild clean test

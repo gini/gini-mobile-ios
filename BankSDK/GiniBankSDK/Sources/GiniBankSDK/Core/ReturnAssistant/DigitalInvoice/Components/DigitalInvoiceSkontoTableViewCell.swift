@@ -151,14 +151,29 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     private func configure() {
         guard let viewModel = viewModel else { return }
         edgeCaseLabel.isHidden = (viewModel.edgeCase == nil) ? viewModel.isSkontoApplied : false
-        valueLabel.isHidden = !viewModel.isSkontoApplied
+
         let savingsPrice = "-\(viewModel.savingsPriceString)"
         valueLabel.text = savingsPrice
-        toggleSwitch.isOn = viewModel.isSkontoApplied
+
         edgeCaseLabel.text = viewModel.localizedBannerInfoMessage
 
-        editButton.alpha = viewModel.isSkontoApplied ? 1 : 0.5
-        editButton.isEnabled = viewModel.isSkontoApplied
+        if viewModel.isSkontoApplied {
+            editButton.isEnabled = true
+            editButton.setTitleColor(.GiniBank.accent1, for: .normal)
+            titleLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
+            valueLabel.isHidden = false
+            toggleSwitch.isOn = true
+        } else {
+            editButton.setTitleColor(.giniBankColorScheme().textField.disabledText.uiColor(),
+                                     for: .normal)
+            titleLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
+            editButton.isEnabled = false
+            valueLabel.isHidden = true
+            toggleSwitch.isOn = false
+        }
+
         delegate?.reloadCell(cell: self)
     }
 

@@ -41,15 +41,19 @@ extension UIColor {
 
     private static func createActionSheetColorScheme() -> GiniColorScheme.ActionSheet {
         return GiniColorScheme.ActionSheet(
-            buttonBackground: GiniColor(lightModeColor: .GiniBank.light1.withAlphaComponent(0.72), darkModeColor: .GiniBank.dark5.withAlphaComponent(0.5)),
-            cancelButtonBackground: GiniColor(lightModeColor: .GiniBank.light1, darkModeColor: .GiniBank.dark3)
+            buttonBackground: GiniColor(lightModeColor: .GiniBank.light1.withAlphaComponent(0.72),
+                                        darkModeColor: .GiniBank.dark5.withAlphaComponent(0.5)),
+            cancelButtonBackground: GiniColor(lightModeColor: .GiniBank.light1,
+                                              darkModeColor: .GiniBank.dark3)
         )
     }
 
     private static func createAlertColorScheme() -> GiniColorScheme.Alert {
         return GiniColorScheme.Alert(
-            background: GiniColor(lightModeColor: .GiniBank.light2.withAlphaComponent(0.8), darkModeColor: .GiniBank.dark3.withAlphaComponent(0.8)),
-            divider: GiniColor(lightModeColor: .GiniBank.light6, darkModeColor: .GiniBank.dark4.withAlphaComponent(0.65))
+            background: GiniColor(lightModeColor: .GiniBank.light2.withAlphaComponent(0.8),
+                                  darkModeColor: .GiniBank.dark3.withAlphaComponent(0.8)),
+            divider: GiniColor(lightModeColor: .GiniBank.light6,
+                               darkModeColor: .GiniBank.dark4.withAlphaComponent(0.65))
         )
     }
 
@@ -109,7 +113,8 @@ extension UIColor {
     private static func createPageControllerColorScheme() -> GiniColorScheme.PageController {
         return GiniColorScheme.PageController(
             selected: GiniColor(lightModeColor: .GiniBank.dark1, darkModeColor: .GiniBank.light1),
-            unselected: GiniColor(lightModeColor: .GiniBank.dark1.withAlphaComponent(0.3), darkModeColor: .GiniBank.light1.withAlphaComponent(0.3))
+            unselected: GiniColor(lightModeColor: .GiniBank.dark1.withAlphaComponent(0.3),
+                                  darkModeColor: .GiniBank.light1.withAlphaComponent(0.3))
         )
     }
 
@@ -141,7 +146,8 @@ extension UIColor {
     private static func createButtonColorScheme() -> GiniColorScheme.Button {
         return GiniColorScheme.Button(
             background: GiniColor(lightModeColor: .GiniBank.accent1, darkModeColor: .GiniBank.accent1),
-            backgroundLoading: GiniColor(lightModeColor: .GiniBank.accent1.withAlphaComponent(0.24), darkModeColor: .GiniBank.accent1.withAlphaComponent(0.24)),
+            backgroundLoading: GiniColor(lightModeColor: .GiniBank.accent1.withAlphaComponent(0.24),
+                                         darkModeColor: .GiniBank.accent1.withAlphaComponent(0.24)),
             content: GiniColor(lightModeColor: .GiniBank.light1, darkModeColor: .GiniBank.light1)
         )
     }
@@ -159,7 +165,7 @@ extension UIColor {
             border: GiniColor(lightModeColor: .GiniBank.light3, darkModeColor: .GiniBank.dark4),
             focusedText: GiniColor(lightModeColor: .GiniBank.dark2, darkModeColor: .GiniBank.light1),
             unfocusedText: GiniColor(lightModeColor: .GiniBank.dark2, darkModeColor: .GiniBank.light1),
-            disabledText: GiniColor(lightModeColor: .GiniBank.dark2, darkModeColor: .GiniBank.light1),
+            disabledText: GiniColor(lightModeColor: .GiniBank.dark6, darkModeColor: .GiniBank.dark6),
             errorText: GiniColor(lightModeColor: .GiniBank.error3, darkModeColor: .GiniBank.error3),
             labelFocused: GiniColor(lightModeColor: .GiniBank.dark6, darkModeColor: .GiniBank.dark6),
             labelUnfocused: GiniColor(lightModeColor: .GiniBank.dark6, darkModeColor: .GiniBank.dark6),
