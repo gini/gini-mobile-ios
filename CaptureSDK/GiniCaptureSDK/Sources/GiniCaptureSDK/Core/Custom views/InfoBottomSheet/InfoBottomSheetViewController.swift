@@ -124,9 +124,13 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
             updateBottomSheetHeight(to: Constants.bottomSheetHeightIPad)
         }
     }
+
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configureAccessibility()
+
+        // Notify VoiceOver that screen changed and set focus
+        UIAccessibility.post(notification: .screenChanged, argument: iconImageView)
     }
 
     public override func loadView() {
@@ -308,11 +312,32 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     }
 
     private func configureAccessibility() {
-        isAccessibilityElement = false
+        // Main container must be modal for VoiceOver
+        view.accessibilityViewIsModal = true
+        view.isAccessibilityElement = false
+        view.shouldGroupAccessibilityChildren = true
 
+        // Configure icon
         iconImageView.isAccessibilityElement = true
         iconImageView.accessibilityLabel = viewModel.title
         iconImageView.accessibilityTraits = .image
+
+        // Configure header
+        headerLabel.isAccessibilityElement = true
+        headerLabel.accessibilityTraits = .header
+
+        // Configure description
+        descriptionLabel.isAccessibilityElement = true
+        descriptionLabel.accessibilityTraits = .staticText
+
+        // Set explicit VoiceOver navigation order
+        view.accessibilityElements = [
+            iconImageView,
+            headerLabel,
+            descriptionLabel,
+            buttonsViewContainer.primaryButton,
+            buttonsViewContainer.secondaryButton
+        ].compactMap { $0 }
     }
 }
 extension InfoBottomSheetViewController {
