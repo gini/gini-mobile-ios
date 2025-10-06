@@ -25,7 +25,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: true,
                                          eInvoiceEnabled: true,
                                          paymentHintsEnabled: true,
-                                         savePhotosLocallyEnabled: true)
+                                         savePhotosLocallyEnabled: true,
+                                         paymentDueDateAmountThreshold: "100.00",
+                                         paymentDueDateDaysThreshold: "30")
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -37,6 +39,8 @@ struct ClientConfigurationTests {
         #expect(config.eInvoiceEnabled, "Expected eInvoiceEnabled to be true")
         #expect(config.paymentHintsEnabled, "Expected paymentHintsEnabled to be true")
         #expect(config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true")
+        #expect(config.paymentDueDateAmountThreshold == "100.00", "Expected paymentDueDateAmountThreshold to be 100.00")
+        #expect(config.paymentDueDateDaysThreshold == "30", "Expected paymentDueDateDaysThreshold to be 30")
     }
 
     @Test("Initialization with all flags disabled")
@@ -50,7 +54,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: false,
                                          eInvoiceEnabled: false,
                                          paymentHintsEnabled: false,
-                                         savePhotosLocallyEnabled: false)
+                                         savePhotosLocallyEnabled: false,
+                                         paymentDueDateAmountThreshold: "",
+                                         paymentDueDateDaysThreshold: "")
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(!config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be false")
@@ -62,6 +68,8 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(!config.paymentHintsEnabled, "Expected paymentHintsEnabled to be false")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(config.paymentDueDateAmountThreshold == "", "Expected paymentDueDateAmountThreshold to be empty")
+        #expect(config.paymentDueDateDaysThreshold == "", "Expected paymentDueDateDaysThreshold to be empty")
     }
 
     // MARK: - JSON Decoding Tests
@@ -83,6 +91,8 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false from JSON")
         #expect(!config.paymentHintsEnabled, "Expected paymentHintsEnabled to be false from JSON")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false from JSON")
+        #expect(config.paymentDueDateAmountThreshold == "100", "Expected paymentDueDateAmountThreshold to be 100 from JSON")
+        #expect(config.paymentDueDateDaysThreshold == "30", "Expected paymentDueDateDaysThreshold to be 30 from JSON")
     }
 
     @Test("Decoding fails when missing required clientID field")
@@ -108,7 +118,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: false,
                                          eInvoiceEnabled: true,
                                          paymentHintsEnabled: false,
-                                         savePhotosLocallyEnabled: true)
+                                         savePhotosLocallyEnabled: true,
+                                         paymentDueDateAmountThreshold: "250.50",
+                                         paymentDueDateDaysThreshold: "14")
         let encoder = JSONEncoder()
 
         let data = try encoder.encode(config)
@@ -134,6 +146,10 @@ struct ClientConfigurationTests {
                 "Expected paymentHintsEnabled to be preserved")
         #expect(decodedConfig.savePhotosLocallyEnabled == config.savePhotosLocallyEnabled,
                 "Expected savePhotosLocallyEnabled to be preserved")
+        #expect(decodedConfig.paymentDueDateAmountThreshold == config.paymentDueDateAmountThreshold,
+                "Expected paymentDueDateAmountThreshold to be preserved")
+        #expect(decodedConfig.paymentDueDateDaysThreshold == config.paymentDueDateDaysThreshold,
+                "Expected paymentDueDateDaysThreshold to be preserved")
     }
 
     // MARK: - Property Combinations Tests
@@ -149,7 +165,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: true,
                                          eInvoiceEnabled: false,
                                          paymentHintsEnabled: true,
-                                         savePhotosLocallyEnabled: false)
+                                         savePhotosLocallyEnabled: false,
+                                         paymentDueDateAmountThreshold: "500.00",
+                                         paymentDueDateDaysThreshold: "7")
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
         #expect(!config.skontoEnabled, "Expected skontoEnabled to be false")
@@ -160,5 +178,29 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(config.paymentHintsEnabled, "Expected paymentHintsEnabled to be true")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(config.paymentDueDateAmountThreshold == "500.00", "Expected paymentDueDateAmountThreshold to be 500.00")
+        #expect(config.paymentDueDateDaysThreshold == "7", "Expected paymentDueDateDaysThreshold to be 7")
+    }
+
+    // MARK: - Threshold Property Tests
+
+    @Test("Threshold properties handle empty strings correctly")
+    func thresholdPropertiesWithEmptyStrings() {
+        let config = ClientConfiguration(clientID: testClientID,
+                                         userJourneyAnalyticsEnabled: true,
+                                         skontoEnabled: true,
+                                         returnAssistantEnabled: true,
+                                         transactionDocsEnabled: true,
+                                         instantPaymentEnabled: true,
+                                         qrCodeEducationEnabled: true,
+                                         eInvoiceEnabled: true,
+                                         paymentHintsEnabled: true,
+                                         savePhotosLocallyEnabled: true,
+                                         paymentDueDateAmountThreshold: "",
+                                         paymentDueDateDaysThreshold: "")
+
+        // TODO: check if the paymentDueDateAmountThreshold and paymentDueDateDaysThreshold should be empty or optional
+        #expect(config.paymentDueDateAmountThreshold.isEmpty, "Expected paymentDueDateAmountThreshold to be empty")
+        #expect(config.paymentDueDateDaysThreshold.isEmpty, "Expected paymentDueDateDaysThreshold to be empty")
     }
 }

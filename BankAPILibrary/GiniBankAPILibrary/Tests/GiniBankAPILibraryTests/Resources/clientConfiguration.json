@@ -8,5 +8,7 @@
     "qrCodeEducationEnabled": false,
     "eInvoiceEnabled": false,
     "paymentHintsEnabled": false,
-    "savePhotosLocallyEnabled": false
+    "savePhotosLocallyEnabled": false,
+    "paymentDueDateAmountThreshold": "100",
+    "paymentDueDateDaysThreshold": "30"
 }
