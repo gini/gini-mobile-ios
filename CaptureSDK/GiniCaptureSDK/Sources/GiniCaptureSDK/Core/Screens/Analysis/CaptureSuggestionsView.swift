@@ -24,6 +24,8 @@ final class CaptureSuggestionsView: UIView {
     private let repeatInterval: TimeInterval = 5
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
+    private weak var parentViewController: UIViewController?
+
     private var suggestionIconImages = [
         UIImageNamedPreferred(named: "captureSuggestion1"),
         UIImageNamedPreferred(named: "captureSuggestion2"),
@@ -53,7 +55,7 @@ final class CaptureSuggestionsView: UIView {
                                          comment: "Fourth suggestion description for analysis screen")
     ]
 
-    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor) {
+    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor, parentViewController: UIViewController? = nil) {
         if GiniConfiguration.shared.multipageEnabled {
             suggestionIconImages.append(UIImageNamedPreferred(named: "captureSuggestion5"))
             suggestionTitle.append(NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5",
@@ -74,8 +76,11 @@ final class CaptureSuggestionsView: UIView {
         super.init(frame: .zero)
         alpha = 0
         guard let suggestionContainer = suggestionContainer else { return }
+
         self.addSubview(suggestionContainer)
         superView.addSubview(self)
+
+        self.parentViewController = parentViewController
 
         translatesAutoresizingMaskIntoConstraints = false
         suggestionContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -135,6 +140,13 @@ extension CaptureSuggestionsView {
     func start(after seconds: TimeInterval = 4) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
             guard let self = self, let superview = self.superview else { return }
+
+            if let parentVC = self.parentViewController,
+               parentVC.presentedViewController != nil {
+                // Skipping suggestions - modal is presented
+                return
+            }
+
             bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
             alpha = 1
             UIView.animate(withDuration: 0.5, animations: { [weak self] in
@@ -191,7 +203,10 @@ extension CaptureSuggestionsView {
                                                   title: title,
                                                   description: description)
 
-            UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+            // Only announce if no modal is presented
+            if parentViewController?.presentedViewController == nil {
+                UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+            }
         }
     }
 
