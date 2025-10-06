@@ -232,3 +232,7 @@
 "ginicapture.document.paid.warning.description" = "Auf diesem Dokument steht, dass es bereits bezahlt wurde. Bitte prüfen Sie den Hinweis in dem Dokument, um sicherzugehen.";
 "ginicapture.document.paid.warning.proceedButtonTitle" = "Trotzdem fortfahren";
 "ginicapture.document.paid.warning.cancelButtonTitle" = "Überweisung abbrechen";
+
+// MARK: - Save invoice locally
+"ginicapture.saveinvoice.local.title" = "In Fotos speichern";
+"ginicapture.saveinvoice.local.description" = "Eine Kopie dieser Rechnung wird automatisch in der Fotos-Mediathek gespeichert.";
