@@ -26,21 +26,25 @@ public struct ClientConfiguration: Codable {
     public let eInvoiceEnabled: Bool
     public let paymentHintsEnabled: Bool
     public let savePhotosLocallyEnabled: Bool
+    public let paymentDueDateAmountThreshold: String
+    public let paymentDueDateDaysThreshold: String
 
     /**
      Creates a new `ClientConfiguration` instance.
 
      - Parameters:
-     - clientID: A unique identifier for the client.
-     - userJourneyAnalyticsEnabled: A flag indicating whether user journey analytics is enabled.
-     - skontoEnabled: A flag indicating whether Skonto is enabled.
-     - returnAssistantEnabled: A flag indicating whether the return assistant feature is enabled.
-     - transactionDocsEnabled: A flag indicating whether TransactionDocs feature is enabled.
-     - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
-     - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
-     - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
-     - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
-     - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
+        - clientID: A unique identifier for the client.
+        - userJourneyAnalyticsEnabled: A flag indicating whether user journey analytics is enabled.
+        - skontoEnabled: A flag indicating whether Skonto is enabled.
+        - returnAssistantEnabled: A flag indicating whether the return assistant feature is enabled.
+        - transactionDocsEnabled: A flag indicating whether TransactionDocs feature is enabled.
+        - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
+        - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
+        - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
+        - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
+        - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
+        - paymentDueDateAmountThreshold: The minimum payment amount threshold for due date warnings (default value per customer).
+        - paymentDueDateDaysThreshold: The number of days before payment due date to trigger warnings or notifications (default value per customer).
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -51,7 +55,9 @@ public struct ClientConfiguration: Codable {
                 qrCodeEducationEnabled: Bool,
                 eInvoiceEnabled: Bool,
                 paymentHintsEnabled: Bool,
-                savePhotosLocallyEnabled: Bool) {
+                savePhotosLocallyEnabled: Bool,
+                paymentDueDateAmountThreshold: String,
+                paymentDueDateDaysThreshold: String) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -62,5 +68,7 @@ public struct ClientConfiguration: Codable {
         self.eInvoiceEnabled = eInvoiceEnabled
         self.paymentHintsEnabled = paymentHintsEnabled
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
+        self.paymentDueDateAmountThreshold = paymentDueDateAmountThreshold
+        self.paymentDueDateDaysThreshold = paymentDueDateDaysThreshold
     }
 }
