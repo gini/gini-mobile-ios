@@ -24,8 +24,6 @@ final class CaptureSuggestionsView: UIView {
     private let repeatInterval: TimeInterval = 5
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
-    private weak var parentViewController: UIViewController?
-
     private var suggestionIconImages = [
         UIImageNamedPreferred(named: "captureSuggestion1"),
         UIImageNamedPreferred(named: "captureSuggestion2"),
@@ -55,7 +53,7 @@ final class CaptureSuggestionsView: UIView {
                                          comment: "Fourth suggestion description for analysis screen")
     ]
 
-    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor, parentViewController: UIViewController? = nil) {
+    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor) {
         if GiniConfiguration.shared.multipageEnabled {
             suggestionIconImages.append(UIImageNamedPreferred(named: "captureSuggestion5"))
             suggestionTitle.append(NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5",
@@ -79,8 +77,6 @@ final class CaptureSuggestionsView: UIView {
 
         self.addSubview(suggestionContainer)
         superView.addSubview(self)
-
-        self.parentViewController = parentViewController
 
         translatesAutoresizingMaskIntoConstraints = false
         suggestionContainer.translatesAutoresizingMaskIntoConstraints = false

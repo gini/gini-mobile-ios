@@ -382,8 +382,7 @@ import UIKit
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    parentViewController: self)
+                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions?.start()
     }
 
