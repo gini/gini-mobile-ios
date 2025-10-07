@@ -50,10 +50,13 @@ jobs:
             }
 
       - name: Setup Credentials
+        env:
+          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
             sed -i '' \
-            -e 's/clientID = "client_id"/clientID = "${{ secrets.GINI_MOBILE_CI_USERNAME }}"/' \
-            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_CI_PASSWORD }}"/' \
+            -e 's/clientID = "client_id"/clientID = "$TEST_CLIENT_ID"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "$TEST_CLIENT_SECRET"/' \
             MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample/Sources/CredentialsManager.swift
                 
       - name: Archiving project

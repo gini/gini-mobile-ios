@@ -52,13 +52,18 @@ jobs:
             }
 
       - name: Setup Credentials
+        env:
+          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
-            plutil -replace client_id -string "${{ secrets.GINI_MOBILE_CI_USERNAME }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_CI_PASSWORD }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_id -string "$TEST_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_password -string "$TEST_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             
       - name: Setup Firebase API Key
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
         run: |
-            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
+            plutil -replace API_KEY -string "$FIREBASE_API_KEY" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
 
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
