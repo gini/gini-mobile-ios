@@ -160,15 +160,15 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         if viewModel.isSkontoApplied {
             editButton.isEnabled = true
             editButton.setTitleColor(.GiniBank.accent1, for: .normal)
-            titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
-            edgeCaseLabel.textColor = .giniColorScheme().text.secondary.uiColor()
+            titleLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
             valueLabel.isHidden = false
             toggleSwitch.isOn = true
         } else {
-            editButton.setTitleColor(.giniColorScheme().textField.disabledText.uiColor(),
+            editButton.setTitleColor(.giniBankColorScheme().textField.disabledText.uiColor(),
                                      for: .normal)
-            titleLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
-            edgeCaseLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
+            titleLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
             editButton.isEnabled = false
             valueLabel.isHidden = true
             toggleSwitch.isOn = false
