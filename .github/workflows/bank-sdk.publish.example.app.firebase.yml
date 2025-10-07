@@ -53,8 +53,8 @@ jobs:
 
       - name: Setup Credentials
         run: |
-            plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_id -string "${{ secrets.GINI_MOBILE_CI_USERNAME }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_CI_PASSWORD }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             
       - name: Setup Firebase API Key
         run: |

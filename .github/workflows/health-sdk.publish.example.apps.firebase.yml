@@ -50,8 +50,8 @@ jobs:
       - name: Setup Credentials
         run: |
             sed -i '' \
-            -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
-            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
+            -e 's/clientID = "client_id"/clientID = "${{ secrets.GINI_MOBILE_CI_USERNAME }}"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_CI_PASSWORD }}"/' \
             HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
 
       - name: Setup Firebase API Key
