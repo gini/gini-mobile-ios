@@ -63,8 +63,6 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
             // when the height class is compact — such as in landscape mode on an iPhone.
             presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
-            // Allows VoiceOver to access content
-            presentationController.largestUndimmedDetentIdentifier = shouldIncludeLargeDetent ? .large : .medium
         } else {
             // Fallback for iOS 13–14
             modalPresentationStyle = .pageSheet
