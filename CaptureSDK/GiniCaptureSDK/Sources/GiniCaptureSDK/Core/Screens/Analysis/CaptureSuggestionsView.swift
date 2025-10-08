@@ -74,6 +74,7 @@ final class CaptureSuggestionsView: UIView {
         super.init(frame: .zero)
         alpha = 0
         guard let suggestionContainer = suggestionContainer else { return }
+
         self.addSubview(suggestionContainer)
         superView.addSubview(self)
 
@@ -135,6 +136,13 @@ extension CaptureSuggestionsView {
     func start(after seconds: TimeInterval = 4) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
             guard let self = self, let superview = self.superview else { return }
+
+            if let parentVC = self.parentViewController,
+               parentVC.presentedViewController != nil {
+                // Skipping suggestions - modal is presented
+                return
+            }
+
             bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
             alpha = 1
             UIView.animate(withDuration: 0.5, animations: { [weak self] in
@@ -191,7 +199,10 @@ extension CaptureSuggestionsView {
                                                   title: title,
                                                   description: description)
 
-            UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+            // Only announce if no modal is presented
+            if parentViewController?.presentedViewController == nil {
+                UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+            }
         }
     }
 
