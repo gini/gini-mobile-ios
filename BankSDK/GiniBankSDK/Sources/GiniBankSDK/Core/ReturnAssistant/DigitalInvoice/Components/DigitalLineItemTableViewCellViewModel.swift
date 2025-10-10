@@ -42,14 +42,14 @@ struct DigitalLineItemTableViewCellViewModel {
     var modeSwitchTintColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return .giniColorScheme().toggle.trackOn.uiColor()
+            return .giniBankColorScheme().toggle.trackOn.uiColor()
         case .deselected:
-            return .giniColorScheme().toggle.trackOff.uiColor()
+            return .giniBankColorScheme().toggle.trackOff.uiColor()
         }
     }
 
     var textTintColorStateDeselected: UIColor {
-        .giniColorScheme().textField.disabledText.uiColor()
+        .giniBankColorScheme().textField.disabledText.uiColor()
     }
 }
 extension DigitalLineItemTableViewCellViewModel {

@@ -9,6 +9,7 @@ import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import UIKit
+import GiniUtilites
 
 class PaymentViewController: UIViewController {
     @IBOutlet var receipient: UITextField!
@@ -420,15 +421,5 @@ extension PaymentViewController {
         let OKAction = UIAlertAction(title: "ok", style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
-    }
-}
-
-public extension UITextField {
-    
-    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
-        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
-           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
-            self.selectedTextRange = newSelectedRange
-        }
     }
 }
