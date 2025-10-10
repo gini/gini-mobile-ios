@@ -26,8 +26,6 @@ public struct ClientConfiguration: Codable {
     public let eInvoiceEnabled: Bool
     public let paymentHintsEnabled: Bool
     public let savePhotosLocallyEnabled: Bool
-    public let paymentDueDateAmountThreshold: String
-    public let paymentDueDateDaysThreshold: String
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -43,8 +41,6 @@ public struct ClientConfiguration: Codable {
      - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
      - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
-     - paymentDueDateAmountThreshold: The minimum payment amount threshold to trigger the due date warning(default value per customer).
-     - paymentDueDateDaysThreshold: The number of days before payment due date to trigger the due date warning(default value per customer).
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -55,9 +51,7 @@ public struct ClientConfiguration: Codable {
                 qrCodeEducationEnabled: Bool,
                 eInvoiceEnabled: Bool,
                 paymentHintsEnabled: Bool,
-                savePhotosLocallyEnabled: Bool,
-                paymentDueDateAmountThreshold: String,
-                paymentDueDateDaysThreshold: String) {
+                savePhotosLocallyEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -68,7 +62,5 @@ public struct ClientConfiguration: Codable {
         self.eInvoiceEnabled = eInvoiceEnabled
         self.paymentHintsEnabled = paymentHintsEnabled
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
-        self.paymentDueDateAmountThreshold = paymentDueDateAmountThreshold
-        self.paymentDueDateDaysThreshold = paymentDueDateDaysThreshold
     }
 }
