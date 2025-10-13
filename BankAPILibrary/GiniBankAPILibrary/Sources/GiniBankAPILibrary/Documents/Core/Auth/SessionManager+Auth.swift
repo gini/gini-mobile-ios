@@ -42,7 +42,8 @@ extension SessionManager: SessionAuthenticationProtocol {
         } else {
 
             if let user = user {
-                fetchUserAccessToken(for: user) { result in
+                fetchUserAccessToken(for: user) { [weak self] result in
+                    guard let self = self else { return }
                     switch result {
                     case .success:
                         saveTokenAndComplete(result)
