@@ -88,12 +88,17 @@ class TransferSummaryIntegrationTest: XCTestCase {
          // 1b. Received the extractions for the uploaded document
          let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
 
-         let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
+         guard let fixtureExtractionsContainer = try? JSONDecoder().decode(ExtractionsContainer.self,
+                                                                           from: fixtureExtractionsJson
+         ) else {
+            XCTFail("Could not access result_Gini_invoice_example.json")
+            return
+         }
 
          // 2. Verify we received the correct extractions for this test
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
                         result.extractions["iban"]?.value)
-         
+
          verifyPaymentRecipient(result.extractions["paymentRecipient"])
 
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
@@ -117,7 +122,10 @@ class TransferSummaryIntegrationTest: XCTestCase {
                   case let .success(extractionResult):
                      let extractionsAfterFeedback = extractionResult.extractions
                      let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
-                     let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+                     guard let fixtureExtractionsAfterFeedbackContainer = try? JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson) else {
+                        XCTFail("Could not access result_Gini_invoice_example_after_feedback.json")
+                        return
+                     }
                      XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
                                     extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
 
