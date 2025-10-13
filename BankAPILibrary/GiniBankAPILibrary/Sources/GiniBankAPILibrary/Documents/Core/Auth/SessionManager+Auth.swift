@@ -135,7 +135,7 @@ fileprivate extension SessionManager {
             case .success(let token):
                 
                 self.clientAccessToken = token.accessToken
-
+                
                 let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
                 let user = AuthHelper.generateUser(with: domain)
                 
@@ -143,16 +143,20 @@ fileprivate extension SessionManager {
                                                     userDomain: self.userDomain,
                                                     httpMethod: .post,
                                                     body: try? JSONEncoder().encode(user))
-
-                self.data(resource: resource) { result in
-                    switch result {
-                    case .success:
-                        self.storeUserCredentials(for: user,
-                                                  completion: completion)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+                
+                self.handleDataResource(resource, for: user, completion: completion)
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func handleDataResource(_ resource: UserResource<String>, for user: User, completion: @escaping CompletionResult<User>) {
+        self.data(resource: resource) { result in
+            switch result {
+            case .success:
+                self.storeUserCredentials(for: user, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
