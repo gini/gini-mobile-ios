@@ -11,16 +11,16 @@ typealias DefaultDocumentServiceProtocol = DocumentService & V2DocumentService
 
 /// The default document service. By default interacts with the `APIDomain.default` api.
 public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
-    
+
     let sessionManager: SessionManagerProtocol
-    
+
     public var apiDomain: APIDomain
-    
+
     init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default) {
         self.sessionManager = sessionManager
         self.apiDomain = apiDomain
     }
-    
+
     /**
      *  Creates a partial document from a given image `Data` or a composite document for given partial documents.
      *
@@ -48,7 +48,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                 completion(.failure(error))
             }
         }
-        
+
         switch type {
         case .composite(let compositeDocumentInfo):
             let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
@@ -70,9 +70,9 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                     additionalHeaders: metadata?.headers ?? [:])
             sessionManager.upload(resource: resource, data: data, completion: completionResult)
         }
-        
+
     }
-    
+
     /**
      *  Deletes a document
      *
@@ -90,7 +90,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
             }
         }
     }
-    
+
     private func handleFetchedDocument(_ result: Result<Document, GiniError>, completion: @escaping CompletionResult<String>) {
         switch result {
         case .success(let document):
@@ -99,25 +99,25 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
             document.compositeDocuments?.forEach { compositeDocument in
                 guard let id = compositeDocument.id else { return }
                 dispatchGroup.enter()
-                
+
                 self.deleteDocument(resourceHandler: self.sessionManager.data,
                                     with: id) { _ in
                     dispatchGroup.leave()
                 }
             }
-            
+
             // Once all composite documents are deleted, it proceeds with the partial document
             dispatchGroup.notify(queue: DispatchQueue.global()) {
                 self.deleteDocument(resourceHandler: self.sessionManager.data,
                                     with: document.id,
                                     completion: completion)
             }
-            
+
         case .failure(let error):
             completion(.failure(error))
         }
     }
-    
+
     /**
      *  Fetches the user documents, with the possibility to retrieve them paginated
      *
@@ -128,7 +128,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
         documents(resourceHandler: sessionManager.data, limit: limit, offset: offset, completion: completion)
     }
-    
+
     /**
      *  Retrieves a document for a given document id
      *
@@ -138,7 +138,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         fetchDocument(resourceHandler: sessionManager.data, with: id, completion: completion)
     }
-    
+
     /**
      *  Retrieves the extractions for a given document.
      *
@@ -177,7 +177,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
         layout(resourceHandler: sessionManager.data, for: document, completion: completion)
     }
-    
+
     /**
      *  Retrieves the pages of a given document
      *
@@ -287,7 +287,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                        with: extractions,
                        completion: completion)
     }
-    
+
     /**
      *  Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
      *
@@ -306,7 +306,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                        and: compoundExtractions,
                        completion: completion)
     }
-    
+
     /**
      *  Submits the analysis feedback for a given document id.
      *
@@ -325,7 +325,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                        with: extractions,
                        completion: completion)
     }
-    
+
     /**
      *  Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
      *
