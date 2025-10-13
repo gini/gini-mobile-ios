@@ -42,36 +42,40 @@ extension SessionManager: SessionAuthenticationProtocol {
         } else {
             
             if let user = user {
-
                 fetchUserAccessToken(for: user) { result in
                     switch result {
-                        case .success:
-                            saveTokenAndComplete(result)
-                        case .failure(let error):
-                            if case .unauthorized = error {
-                                self.removeCurrentUserInfo()
-                                self.createUser { result in
-                                    switch result {
-                                        case .success(let user):
-                                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                                        case .failure(let error):
-                                            completion(.failure(error))
-                                    }
-                                }
-                            } else {
-                                completion(.failure(error))
-                            }
+                    case .success:
+                        saveTokenAndComplete(result)
+                    case .failure(let error):
+                        if case .unauthorized = error {
+                            // Call helper function instead of nested switch
+                            self.handleUnauthorizedUserCreation(completion: saveTokenAndComplete)
+                        } else {
+                            completion(.failure(error))
+                        }
                     }
                 }
             } else {
                 createUser { result in
                     switch result {
-                        case .success(let user):
-                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                        case .failure(let error):
-                            completion(.failure(error))
+                    case .success(let user):
+                        self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                    case .failure(let error):
+                        completion(.failure(error))
                     }
                 }
+            }
+        }
+    }
+    
+    private func handleUnauthorizedUserCreation(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        self.removeCurrentUserInfo()
+        self.createUser { result in
+            switch result {
+            case .success(let newUser):
+                self.fetchUserAccessToken(for: newUser, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
