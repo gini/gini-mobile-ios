@@ -730,7 +730,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     private func presentDocumentMarkedAsPaidBottomSheet(onProceedTapped: @escaping () -> Void) {
-        let documentWarning = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+        let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true)
             self?.didCancelCapturing()
         }, onProceed: { [weak self] in
@@ -738,10 +738,10 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             onProceedTapped()
         })
 
-        let navigationController = UINavigationController(rootViewController: documentWarning)
-        navigationController.isModalInPresentation = true
-        navigationController.navigationBar.isHidden = true
-        screenAPINavigationController.present(navigationController, animated: true)
+        documentWarningViewController.view.accessibilityViewIsModal = true
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
