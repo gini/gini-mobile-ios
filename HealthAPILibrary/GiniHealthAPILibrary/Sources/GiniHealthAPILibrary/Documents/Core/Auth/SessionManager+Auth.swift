@@ -44,30 +44,20 @@ extension SessionManager: SessionAuthenticationProtocol {
         if let alternativeTokenSource = alternativeTokenSource {
             alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
         } else {
-            
             if let user = user {
-                
-                fetchUserAccessToken(for: user) { result in
+                fetchUserAccessToken(for: user) { [weak self]  result in
+                    guard let self = self else { return }
                     switch result {
-                        case .success:
-                            saveTokenAndComplete(result)
-                        case .failure(let error):
-                            if case .unauthorized = error {
-                                self.removeCurrentUserInfo()
-                                self.createUser { result in
-                                    switch result {
-                                        case .success(let user):
-                                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                                        case .failure(let error):
-                                            completion(.failure(error))
-                                    }
-                                }
-                            } else {
-                                completion(.failure(error))
-                            }
+                    case .success:
+                        saveTokenAndComplete(result)
+                    case .failure(let error):
+                        if case .unauthorized = error {
+                            self.handleUnauthorizedUserCreation(completion: saveTokenAndComplete)
+                        } else {
+                            completion(.failure(error))
+                        }
                     }
                 }
-
             } else {
                 createUser { result in
                     switch result {
@@ -80,7 +70,19 @@ extension SessionManager: SessionAuthenticationProtocol {
             }
         }
     }
-    
+
+    private func handleUnauthorizedUserCreation(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        self.removeCurrentUserInfo()
+        self.createUser { result in
+            switch result {
+                case .success(let user):
+                self.fetchUserAccessToken(for: user, completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+
     func logOut() {       
         // Remove current user info from SessionManager
         userAccessToken = nil
