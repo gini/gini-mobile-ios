@@ -27,19 +27,7 @@ extension UIViewController {
             message = customValidationError.message
         case let pickerError as FilePickerError:
             message = pickerError.message
-            switch pickerError {
-            case .maxFilesPickedCountExceeded:
-                confirmActionTitle = .localized(resource: CameraStrings.errorPopupReviewPagesButton)
-            case .photoLibraryAccessDenied:
-                confirmActionTitle = .localized(resource: CameraStrings.errorPopupGrantAccessButton)
-            case .mixedDocumentsUnsupported:
-                cancelActionTitle = .localized(resource: CameraStrings.mixedArraysPopupCancelButton)
-                confirmActionTitle = .localized(resource: CameraStrings.mixedArraysPopupUsePhotosButton)
-            case .failedToOpenDocument:
-                break
-            case .multiplePdfsUnsupported:
-                confirmActionTitle = .localized(resource: CameraStrings.errorConfirmButton)
-            }
+            updateActionTitles(for: pickerError, cancelActionTitle: &cancelActionTitle, confirmActionTitle: &confirmActionTitle)
         default:
             message = DocumentValidationError.unknown.message
         }
@@ -52,6 +40,25 @@ extension UIViewController {
                                    screenName: .camera,
                                    properties: [GiniAnalyticsProperty(key: .errorMessage, value: message)])
         present(dialog, animated: true, completion: nil)
+    }
+
+    private func updateActionTitles(for error: FilePickerError,
+                                    cancelActionTitle: inout String,
+                                    confirmActionTitle: inout String?) {
+
+        switch error {
+        case .maxFilesPickedCountExceeded:
+            confirmActionTitle = .localized(resource: CameraStrings.errorPopupReviewPagesButton)
+        case .photoLibraryAccessDenied:
+            confirmActionTitle = .localized(resource: CameraStrings.errorPopupGrantAccessButton)
+        case .mixedDocumentsUnsupported:
+            cancelActionTitle = .localized(resource: CameraStrings.mixedArraysPopupCancelButton)
+            confirmActionTitle = .localized(resource: CameraStrings.mixedArraysPopupUsePhotosButton)
+        case .failedToOpenDocument:
+            break
+        case .multiplePdfsUnsupported:
+            confirmActionTitle = .localized(resource: CameraStrings.errorConfirmButton)
+        }
     }
 
     fileprivate func errorDialog(withMessage message: String,
