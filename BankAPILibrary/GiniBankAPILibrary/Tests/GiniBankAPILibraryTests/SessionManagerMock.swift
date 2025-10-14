@@ -10,7 +10,7 @@ import XCTest
 @testable import GiniBankAPILibrary
 
 final class SessionManagerMock: SessionManagerProtocol {
-    
+
     static let v1DocumentId = "626626a0-749f-11e2-bfd6-000000000000"
     static let partialDocumentId = "726626a0-749f-11e2-bfd6-000000000000"
     static let compositeDocumentId = "826626a0-749f-11e2-bfd6-000000000000"
@@ -30,41 +30,41 @@ final class SessionManagerMock: SessionManagerProtocol {
          urlSession: URLSession = URLSession(configuration: .default)) {
         // This method will remain empty; mock implementation does not perform login
     }
-    
+
     func initializeWithV1MockedDocuments() {
         documents = [
             load(fromFile: "document", type: "json")
         ]
     }
-    
+
     func initializeWithPaymentRequests() {
         paymentRequests = loadPaymentRequests()
     }
-    
+
     func initializeWithV2MockedDocuments() {
         documents = [
             load(fromFile: "partialDocument", type: "json"),
             load(fromFile: "compositeDocument", type: "json")
         ]
     }
-    
+
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
         // This method will remain empty; mock implementation does not perform login
     }
-    
+
     func logOut() {
         // This method will remain empty; mock implementation does not perform login
     }
-    
+
     //swiftlint:disable all
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         if let apiMethod = resource.method as? APIMethod {
-            switch apiMethod {                
+            switch apiMethod {
             case .document(let id):
                 handleDocument(id: id, method: resource.params.method, completion: completion)
-                
+
             case .createDocument(_, _, _, _):
                 completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
             case .paymentRequest(_):
@@ -86,35 +86,35 @@ final class SessionManagerMock: SessionManagerProtocol {
             }
         }
     }
-    
+
     private func handleDocument<T>(id: String, method: HTTPMethod,
                                    completion: @escaping CompletionResult<T>) {
-        
+
         switch (id, method) {
         case (SessionManagerMock.v1DocumentId, .get):
             let document: Document = load(fromFile: "document", type: "json")
             completion(.success(document as! T))
-            
+
         case (SessionManagerMock.v1DocumentId, .delete):
             documents.removeAll(where: { $0.id == id })
             completion(.success("Deleted" as! T))
-            
+
         case (SessionManagerMock.partialDocumentId, .get):
             let document: Document = load(fromFile: "partialDocument", type: "json")
             completion(.success(document as! T))
-            
+
         case (SessionManagerMock.partialDocumentId, .delete):
             documents.removeAll(where: { $0.id == id })
             completion(.success("Deleted" as! T))
-            
+
         case (SessionManagerMock.compositeDocumentId, .get):
             let document: Document = load(fromFile: "compositeDocument", type: "json")
             completion(.success(document as! T))
-            
+
         case (SessionManagerMock.compositeDocumentId, .delete):
             documents.removeAll(where: { $0.id == id })
             completion(.success("Deleted" as! T))
-            
+
         default:
             fatalError("Document id not found in tests")
         }
@@ -125,7 +125,7 @@ final class SessionManagerMock: SessionManagerProtocol {
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         // This method will remain empty; mock implementation does not perform login
     }
-    
+
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
@@ -140,7 +140,7 @@ final class SessionManagerMock: SessionManagerProtocol {
                     completion(.success(SessionManagerMock.partialDocumentId as! T.ResponseType))
                 }
             default: break
-                
+
             }
         }
     }
