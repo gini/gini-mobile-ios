@@ -740,7 +740,6 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             }
         })
 
-        documentWarningViewController.view.accessibilityViewIsModal = true
         documentWarningViewController.isModalInPresentation = true
 
         documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
