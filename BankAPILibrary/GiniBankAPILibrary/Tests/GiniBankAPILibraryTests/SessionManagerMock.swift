@@ -133,14 +133,12 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .createDocument(_, _, _, let documentType):
-                switch documentType {
-                case .none:
-                    completion(.success(SessionManagerMock.v1DocumentId as! T.ResponseType))
-                case .some:
-                    completion(.success(SessionManagerMock.partialDocumentId as! T.ResponseType))
-                }
+                
+                completion(.success(
+                    (documentType == nil ? SessionManagerMock.v1DocumentId : SessionManagerMock.partialDocumentId) as! T.ResponseType )
+                )
             default: break
-
+                
             }
         }
     }
