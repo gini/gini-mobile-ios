@@ -312,8 +312,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     }
 
     private func configureAccessibility() {
-        // Main container must be modal for VoiceOver
-        view.accessibilityViewIsModal = true
         view.isAccessibilityElement = false
         view.shouldGroupAccessibilityChildren = true
 
