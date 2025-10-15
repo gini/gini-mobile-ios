@@ -57,7 +57,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     }
 
     private func setup() {
-        let bgColor: UIColor = .giniColorScheme().container.background.uiColor()
+        let bgColor: UIColor = .giniBankColorScheme().container.background.uiColor()
         backgroundColor = .clear
         contentView.backgroundColor = bgColor
         backgroundContainerView.backgroundColor = bgColor
@@ -74,7 +74,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.setTitle(Strings.editButtonTitle, for: .normal)
         editButton.isExclusiveTouch = true
 
-        separatorView.backgroundColor = .giniColorScheme().textField.border.uiColor()
+        separatorView.backgroundColor = .giniBankColorScheme().textField.border.uiColor()
 
         applySelectedColors()
 
@@ -133,9 +133,9 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     }
 
     private func applySelectedColors() {
-        nameLabel.textColor = .giniColorScheme().text.primary.uiColor()
-        priceLabel.textColor = .giniColorScheme().text.primary.uiColor()
-        unitPriceLabel.textColor = .giniColorScheme().text.secondary.uiColor()
+        nameLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
+        priceLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
+        unitPriceLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
         editButton.setTitleColor(.GiniBank.accent1, for: .normal)
     }
 

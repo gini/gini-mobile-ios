@@ -6,6 +6,7 @@
 
 import Foundation
 import GiniBankAPILibrary
+import GiniUtilites
 
 public protocol GiniCaptureNetworkService: AnyObject  {
     func delete(document: Document,
@@ -112,7 +113,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             case .success(let result):
                 completion(.success(result))
                 Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
-                    event: "🗑")
+                                   event: "🗑")
             case .failure(let error):
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
                     " id: \(document.id)"
@@ -142,10 +143,10 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 switch result {
                 case let .success(createdDocument):
                     Log(message: "Starting analysis for composite document \(createdDocument.id)",
-                        event: "🔎")
-                        self.startExtraction(for: createdDocument,
-                                             cancellationToken: cancellationToken,
-                                             completion: completion)
+                                       event: "🔎")
+                    self.startExtraction(for: createdDocument,
+                                         cancellationToken: cancellationToken,
+                                         completion: completion)
                 case let .failure(error):
                     self.logError(message: "Composite document creation failed with error: \(error)", 
                                      error: error)
@@ -277,13 +278,13 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                          cancellationToken: cancellationToken) { result in
                 switch result {
                 case let .success(extractionResult):
-                    Log(message: "Finished analysis process with no errors", event: .success)
+                    Log("Finished analysis process with no errors", event: .success)
                     completion(.success((document, extractionResult)))
                 case let .failure(error):
                     if error == .requestCancelled {
-                        Log(message: "Cancelled analysis process", event: .error)
+                        Log("Cancelled analysis process", event: .error)
                     } else {
-                        Log(message: "Finished analysis process with error: \(error)", event: .error)
+                        Log("Finished analysis process with error: \(error)", event: .error)
                     }
                     completion(.failure(error))
                 }
@@ -291,7 +292,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     private func logError(message: String, error: GiniError) {
-        Log(message: message, event: .error)
+        Log(message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }

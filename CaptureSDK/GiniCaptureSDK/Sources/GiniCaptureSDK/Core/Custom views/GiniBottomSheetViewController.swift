@@ -70,6 +70,39 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     }
 
     /**
+     Presents this view controller as a bottom sheet with proper accessibility support.
+
+     This method configures the view controller as a bottom sheet and presents it modally.
+     After presentation, it automatically hides the presenting view from accessibility,
+     ensures the bottom sheet captures all accessibility focus, and moves VoiceOver focus
+     to the presented content.
+
+     - Parameters:
+     - presenter: The view controller that will present this bottom sheet.
+     - animated: Whether to animate the presentation. Defaults to `true`.
+     - completion: An optional closure to execute after the presentation and accessibility
+     configuration are complete.
+     */
+    func presentAsBottomSheet(from presenter: UIViewController,
+                              animated: Bool = true,
+                              completion: (() -> Void)? = nil) {
+        configureBottomSheet()
+
+        presenter.present(self, animated: animated) { [weak presenter] in
+            // Hide presenting view from accessibility
+            presenter?.view.accessibilityElementsHidden = true
+
+            // Ensure bottom sheet captures all accessibility focus
+            self.view.accessibilityViewIsModal = true
+
+            // Move focus to the bottom sheet
+            UIAccessibility.post(notification: .screenChanged, argument: self.view)
+
+            completion?()
+        }
+    }
+
+    /**
      Dynamically updates the bottom sheet height using a custom detent.
 
      On iOS 16+, it defines and applies a custom detent with the given height.

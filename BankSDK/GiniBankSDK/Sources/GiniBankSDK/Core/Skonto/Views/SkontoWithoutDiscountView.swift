@@ -12,7 +12,7 @@ class SkontoWithoutDiscountView: UIView, GiniInputAccessoryViewPresentable {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
                                                              comment: "Without Skonto discount")
         label.text = title
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
@@ -28,7 +28,7 @@ class SkontoWithoutDiscountView: UIView, GiniInputAccessoryViewPresentable {
                                                              comment: "• Active")
         label.text = title
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = UIColor.giniColorScheme().text.success.uiColor()
+        label.textColor = UIColor.giniBankColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -93,7 +93,7 @@ class SkontoWithoutDiscountView: UIView, GiniInputAccessoryViewPresentable {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().container.background.uiColor()
+        backgroundColor = .giniBankColorScheme().container.background.uiColor()
         addSubview(stackView)
         addSubview(priceView)
         setupConstraints()
