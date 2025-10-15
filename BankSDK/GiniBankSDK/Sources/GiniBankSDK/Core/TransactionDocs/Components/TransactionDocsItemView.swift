@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class TransactionDocsItemView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().placeholder.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().placeholder.background.uiColor()
         view.layer.cornerRadius = Constants.imageViewCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -19,14 +19,14 @@ class TransactionDocsItemView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
+        imageView.tintColor = .giniBankColorScheme().placeholder.tint.uiColor()
         return imageView
     }()
 
     private lazy var fileNameLabel: UILabel = {
         let label = UILabel()
         label.font = configuration.textStyleFonts[.body]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.numberOfLines = Constants.fileNameLabelNumberOfLines
         label.lineBreakMode = .byWordWrapping
         label.adjustsFontForContentSizeCategory = true
@@ -36,7 +36,7 @@ class TransactionDocsItemView: UIView {
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
         button.setImage(GiniImages.transactionDocsOptionsIcon.image, for: .normal)
-        button.tintColor = .giniColorScheme().icon.primary.uiColor()
+        button.tintColor = .giniBankColorScheme().icon.primary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
     }()

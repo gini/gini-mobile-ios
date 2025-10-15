@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import GiniUtilites
 
 public final class GiniCaptureDocumentValidator {
 
