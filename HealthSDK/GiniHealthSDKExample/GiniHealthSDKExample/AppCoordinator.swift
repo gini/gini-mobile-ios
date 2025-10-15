@@ -202,18 +202,8 @@ final class AppCoordinator: Coordinator {
             self.health.fetchDataForReview(documentId: document.id) { result in
                 switch result {
                 case .success(let data):
-                    self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                        switch result {
-                        case let .success(extractionResult):
-                            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
-                            let invoice = DocumentWithExtractions(documentId: document.id,
-                                                                  extractionResult: extractionResult)
-                            self?.showInvoicesList(invoices: [invoice])
-                        case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
-                                             event: .error)
-                        }
-                    }
+                    self.fetchExtractionsForDocument(data.document)
+                    
                 case .failure(let error):
                     GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
@@ -272,6 +262,26 @@ final class AppCoordinator: Coordinator {
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
+        }
+    }
+    
+    private func handleExtractionsResult(_ result: Result<GiniHealthSDK.ExtractionResult, GiniHealthSDK.GiniError>, document: GiniHealthSDK.Document) {
+        switch result {
+        case let .success(extractionResult):
+            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
+            let invoice = DocumentWithExtractions(documentId: document.id,
+                                                  extractionResult: extractionResult)
+            self.showInvoicesList(invoices: [invoice])
+        case let .failure(error):
+            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                             event: .error)
+        }
+    }
+    
+    private func fetchExtractionsForDocument(_ document: GiniHealthSDK.Document) {
+        
+        self.health.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] result in
+            self?.handleExtractionsResult(result, document: document)
         }
     }
     
