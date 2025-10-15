@@ -198,18 +198,23 @@ extension DocumentService {
                                                                      apiDomain: self.apiDomain,
                                                                      apiVersion: self.apiVersion,
                                                                      httpMethod: .get)
-                    
+
                     resourceHandler(resource, cancellationToken, { result in
-                        switch result {
-                        case .success(let extractionsContainer):
-                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
+                        self.handleExtractionsResult(result, completion: completion)
                     })
                 case .failure(let error):
                     completion(.failure(error))
                 }
+        }
+    }
+
+    private func handleExtractionsResult(_ result: Result<ExtractionsContainer, GiniError>,
+                                         completion: @escaping CompletionResult<ExtractionResult>) {
+        switch result {
+        case .success(let extractionsContainer):
+            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+        case .failure(let error):
+            completion(.failure(error))
         }
     }
     
