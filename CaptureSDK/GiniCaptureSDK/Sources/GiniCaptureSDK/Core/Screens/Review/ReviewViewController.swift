@@ -151,6 +151,12 @@ public final class ReviewViewController: UIViewController {
         return pageControl
     }()
 
+    private lazy var saveToGalleryView: SaveToGalleryView = {
+        let view = SaveToGalleryView()
+
+        return view
+    }()
+
     private lazy var processButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.configure(with: giniConfiguration.primaryButtonConfiguration)
@@ -255,7 +261,7 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var pageControlConstraints: [NSLayoutConstraint] = [
         pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor,
-                                         constant: Constants.largePadding),
+                                         constant: Constants.pageControlTopConstant),
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
@@ -359,7 +365,6 @@ extension ReviewViewController {
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
     }
-
 }
 
 // MARK: - UIViewController
@@ -453,6 +458,12 @@ extension ReviewViewController {
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
         NSLayoutConstraint.activate(constraintsToActivate)
+
+        if isLandscape {
+            addHorizontalSaveToGalleryConstraints()
+        } else {
+            addSaveToGalleryConstraints()
+        }
     }
 
     private func setupView() {
@@ -465,12 +476,19 @@ extension ReviewViewController {
         contentView.addSubview(tipLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
+
+        if giniConfiguration.savePhotosLocallyEnabled {
+            contentView.addSubview(saveToGalleryView)
+        }
+
         if giniConfiguration.multipageEnabled {
             buttonContainer.addArrangedSubview(addPagesButton)
         }
+        
         if !giniConfiguration.bottomNavigationBarEnabled {
             contentView.addSubview(buttonContainer)
         }
+        
         edgesForExtendedLayout = []
     }
 
@@ -575,6 +593,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
+        addSaveToGalleryConstraints()
         NSLayoutConstraint.activate(processButtonConstraints)
 
         if !giniConfiguration.bottomNavigationBarEnabled {
@@ -584,6 +603,25 @@ extension ReviewViewController {
             }
         } else {
             NSLayoutConstraint.activate(bottomNavigationBarAdditionalConstraints)
+        }
+    }
+
+    private func addSaveToGalleryConstraints() {
+        buttonContainerConstraints.forEach { $0.priority = .defaultLow }
+
+        saveToGalleryView.giniMakeConstraints {
+            $0.top.equalTo(pageControl.bottom).constant(Constants.saveToGalleryTopConstant(pages.count))
+            $0.horizontal.equalTo(view.safeAreaLayoutGuide).constant(Constants.padding)
+            $0.bottom.equalTo(buttonContainer.top).constant(-Constants.saveToGalleryBottomConstant)
+        }
+    }
+
+    private func addHorizontalSaveToGalleryConstraints() {
+        buttonContainerConstraints.forEach { $0.priority = .defaultLow }
+
+        saveToGalleryView.giniRemakeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).constant(-Constants.padding)
         }
     }
 
@@ -822,6 +860,11 @@ extension ReviewViewController {
         static let bottomNavigationBarHeight: CGFloat = 114
         static let trailingCollectionPadding: CGFloat = 275
         static let buttonContainerHorizontalTrailingPadding: CGFloat = 85
+        static let pageControlTopConstant: CGFloat = 24.0
+        static let saveToGalleryTopConstant: (Int) -> CGFloat = { pagesCount in
+            pagesCount > 1 ? 27.0 : 0.0
+        }
+        static let saveToGalleryBottomConstant: CGFloat = 11.0
     }
 }
 // swiftlint:enable file_length
