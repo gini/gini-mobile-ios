@@ -313,12 +313,7 @@ extension DocumentService {
                     let urlString = self.urlStringForHighestResolutionPreview(page: page)
                     let url = "https://" + self.apiDomain.domainString + urlString
                     self.file(urlString: url) { result in
-                        switch result {
-                        case let .success(imageData):
-                            completion(.success(imageData))
-                        case let .failure(error):
-                            completion(.failure(error))
-                        }
+                        self.handleFileResult(result, completion: completion)
                     }
                 } else {
                     completion(.failure(.notFound()))
@@ -335,7 +330,17 @@ extension DocumentService {
             }
         }
     }
-    
+
+    private func handleFileResult(_ result: Result<Data, GiniError>,
+                                  completion: @escaping CompletionResult<Data>) {
+
+        switch result {
+        case let .success(imageData):
+            completion(.success(imageData))
+        case let .failure(error):
+            completion(.failure(error))
+        }
+    }
     func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
         let topBoundaryResolutionArea = 4000000
         var imageWithHighestResolution = page.images[0]
