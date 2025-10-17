@@ -33,7 +33,7 @@ public final class QRCodesExtractor {
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
     public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
 
-    class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
+    static func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):
             return extractParameters(fromBezhalCodeString: string)
@@ -48,7 +48,7 @@ public final class QRCodesExtractor {
         }
     }
 
-    class func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
+    static func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
 
         if let encodedString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -85,50 +85,31 @@ public final class QRCodesExtractor {
         return parameters
     }
 
-    class func extractParameters(fromEPC06912CodeString string: String) -> [String: String] {
+    static func extractParameters(fromEPC06912CodeString string: String) -> [String: String] {
         let lines = string.splitlines
+
+        // Get value at index or empty string
+        func getValue(_ index: Int) -> String {
+            lines.indices.contains(index) ? lines[index] : ""
+        }
+
         var parameters: [String: String] = [:]
 
-        if lines.indices.contains(4) && !lines[4].isEmpty {
-            parameters["bic"] = lines[4]
-        } else {
-            parameters["bic"] = ""
-        }
+        parameters["bic"] = getValue(4)
+        parameters["paymentRecipient"] = getValue(5)
+        parameters["paymentReference"] = getValue(9)
 
-        if lines.indices.contains(5) && !lines[5].isEmpty {
-            parameters["paymentRecipient"] = lines[5]
-        } else {
-            parameters["paymentRecipient"] = ""
-        }
+        // IBAN with validation
+        let iban = getValue(6)
+        parameters["iban"] = IBANValidator().isValid(iban: iban) ? iban : ""
 
-        if lines.indices.contains(9) && !lines[9].isEmpty {
-            parameters["paymentReference"] = lines[9]
-        } else {
-            parameters["paymentReference"] = ""
-        }
-
-        // if index out of range, return empty string
-
-        if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
-            parameters["iban"] = lines[6]
-        } else {
-            parameters["iban"] = ""
-        }
-
-        if lines.indices.contains(7) {
-            if let amountToPay = normalize(amount: lines[7], currency: nil) {
-                parameters["amountToPay"] = amountToPay
-            } else {
-                parameters["amountToPay"] = ""
-            }
-        } else {
-            parameters["amountToPay"] = ""
-        }
+        // Amount with normalization
+        parameters["amountToPay"] = normalize(amount: getValue(7), currency: nil) ?? ""
 
         return parameters
     }
 
-    fileprivate class func normalize(amount: String, currency: String?) -> String? {
+    fileprivate static func normalize(amount: String, currency: String?) -> String? {
         let regexCurrency = try? NSRegularExpression(pattern: "[aA-zZ]", options: [])
         let length = amount.count < 3 ? amount.count : 3
 
