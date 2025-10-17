@@ -328,67 +328,98 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section) {
-        case .titleCell: return 1
-        case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
-        case .addOns: return 1
-        case .skonto: return viewModel.hasSkonto ? 1 : 0
-        default: fatalError()
+        guard let section = Section(rawValue: section) else {
+            assertionFailure("Unexpected section index \(section)")
+            return 0
+        }
+        switch section {
+        case .titleCell, .addOns:
+            return 1
+        case .lineItems:
+            return viewModel.invoice?.lineItems.count ?? 0
+        case .skonto:
+            return viewModel.hasSkonto ? 1 : 0
         }
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch Section(rawValue: indexPath.section) {
-        case .titleCell:
-            let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
-            if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
-                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
-                return cell
-            }
+        guard let section = Section(rawValue: indexPath.section) else {
+            assertionFailure("Unexpected section index \(indexPath.section)")
             return UITableViewCell()
-        case .lineItems:
+        }
 
-            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
-                                                        for: indexPath) as? DigitalLineItemTableViewCell {
-                if let invoice = viewModel.invoice {
-                    let maxCharactersCount = Constants.nameMaxCharactersCount
-                    cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
-                                                                           indexPath: indexPath,
-                                                                           invoiceNumTotal: invoice.numTotal,
-                                                                           invoiceLineItemsCount:
-                                                                           invoice.lineItems.count,
-                                                                           nameMaxCharactersCount: maxCharactersCount)
-                }
-                cell.delegate = self
-                return cell
-            }
+        switch section {
+        case .titleCell:
+            return configureTitleCell(tableView: tableView, indexPath: indexPath)
+        case .lineItems:
+            return configureLineItemCell(tableView: tableView, indexPath: indexPath)
+        case .addOns:
+            return configureAddOnCell(tableView: tableView, indexPath: indexPath)
+        case .skonto:
+            return configureSkontoCell(tableView: tableView, indexPath: indexPath)
+        }
+    }
+
+    // MARK: - Cell Configuration Methods
+
+    private func configureTitleCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
+                                                       for: indexPath) as? DigitalInvoiceTableViewTitleCell else {
+            return UITableViewCell()
+        }
+        return cell
+    }
+
+    private func configureLineItemCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? DigitalLineItemTableViewCell else {
             assertionFailure("DigitalLineItemTableViewCell could not been reused")
             return UITableViewCell()
-        case .addOns:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
-                                                        for: indexPath) as? DigitalInvoiceAddOnListCell {
-                cell.addOns = viewModel.invoice?.addons
-                if viewModel.skontoViewModel == nil {
-                    cell.configureAsBottomTableCell()
-                }
-                return cell
-            }
+        }
+
+        if let invoice = viewModel.invoice {
+            let maxCharactersCount = Constants.nameMaxCharactersCount
+            cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
+                                                                   indexPath: indexPath,
+                                                                   invoiceNumTotal: invoice.numTotal,
+                                                                   invoiceLineItemsCount: invoice.lineItems.count,
+                                                                   nameMaxCharactersCount: maxCharactersCount)
+        }
+        cell.delegate = self
+        return cell
+    }
+
+    private func configureAddOnCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
+                                                       for: indexPath) as? DigitalInvoiceAddOnListCell else {
             assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
             return UITableViewCell()
-        case .skonto:
-            guard let skontoViewModel = viewModel.skontoViewModel else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
-                                                     for: indexPath)
-            if let cell = cell as? DigitalInvoiceSkontoTableViewCell {
-                cell.delegate = self
-                cell.configure(with: skontoViewModel)
-                return cell
-            }
+        }
+
+        cell.addOns = viewModel.invoice?.addons
+        if viewModel.skontoViewModel == nil {
+            cell.configureAsBottomTableCell()
+        }
+        return cell
+    }
+
+    private func configureSkontoCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let skontoViewModel = viewModel.skontoViewModel else {
+            return UITableViewCell()
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
+                                                 for: indexPath)
+        guard let skontoCell = cell as? DigitalInvoiceSkontoTableViewCell else {
             assertionFailure("SkontoTableViewCell could not been reused")
             return UITableViewCell()
-        default: fatalError()
         }
+
+        skontoCell.delegate = self
+        skontoCell.configure(with: skontoViewModel)
+        return skontoCell
     }
 }
 
