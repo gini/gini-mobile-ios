@@ -151,7 +151,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             !GiniCaptureUserDefaultsStorage.onboardingShowed {
             GiniCaptureUserDefaultsStorage.onboardingShowed = true
             return true
-        } else if giniConfiguration.onboardingShowAtLaunch && !hasOnboardingShownOnLaunch(){
+        } else if giniConfiguration.onboardingShowAtLaunch && !hasOnboardingShownOnLaunch() {
             return true
         }
 
@@ -208,61 +208,78 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
 extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
-    public func documentPicker(
-        _ coordinator: DocumentPickerCoordinator,
-        didPick documents: [GiniCaptureDocument]) {
+    public func documentPicker(_ coordinator: DocumentPickerCoordinator,
+                               didPick documents: [GiniCaptureDocument]) {
 
-        self.validate(documents) { result in
+        validate(documents) { result in
             switch result {
             case .success(let validatedDocuments):
-                coordinator.dismissCurrentPicker {
-                    self.addToDocuments(new: validatedDocuments)
-                    errorOccurred = false
-                    validatedDocuments.forEach { validatedDocument in
-                        if validatedDocument.error == nil {
-                            self.didCaptureAndValidate(validatedDocument.document)
-                        }
-                    }
-                    self.showNextScreenAfterPicking(pages: validatedDocuments)
-                }
-            case .failure(let error):
-                var positiveAction: (() -> Void)?
+                self.handlePickSuccess(coordinator: coordinator,
+                                        validatedDocuments: validatedDocuments)
 
-                if let error = error as? FilePickerError {
-                    switch error {
-                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
-                        if self.pages.isNotEmpty {
-                            positiveAction = {
-                                coordinator.dismissCurrentPicker {
-                                    self.showReview()
-                                }
-                            }
-                        }
-                    case .photoLibraryAccessDenied, .failedToOpenDocument:
-                        break
-                    }
-                }
-                if coordinator.currentPickerDismissesAutomatically {
-                    self.cameraScreen?.showErrorDialog(for: error,
-                                                       positiveAction: positiveAction)
-                } else {
-                    coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                             positiveAction: positiveAction)
-                }
+            case .failure(let error):
+                self.handleFailure(for: error,
+                                   hasExistingPages: self.pages.isNotEmpty,
+                                   coordinator: coordinator)
             }
         }
     }
 
-        public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
-            let error = FilePickerError.failedToOpenDocument
-            if coordinator.currentPickerDismissesAutomatically {
-                self.cameraScreen?.showErrorDialog(for: error,
-                                                   positiveAction: nil)
-            } else {
-                coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                         positiveAction: nil)
+    private func handlePickSuccess(coordinator: DocumentPickerCoordinator,
+                                   validatedDocuments: [GiniCapturePage]) {
+        coordinator.dismissCurrentPicker { [weak self] in
+            guard let self = self else { return }
+            self.addToDocuments(new: validatedDocuments)
+            errorOccurred = false
+            validatedDocuments
+                .filter { $0.error == nil }
+                .forEach { self.didCaptureAndValidate($0.document) }
+            self.showNextScreenAfterPicking(pages: validatedDocuments)
+        }
+    }
+
+    private func handleFailure(for error: Error,
+                               hasExistingPages: Bool,
+                               coordinator: DocumentPickerCoordinator) {
+        var positiveAction: (() -> Void)?
+
+        if let error = error as? FilePickerError {
+            switch error {
+            case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
+                if self.pages.isNotEmpty {
+                    positiveAction = {
+                        coordinator.dismissCurrentPicker {
+                            self.showReview()
+                        }
+                    }
+                }
+            case .photoLibraryAccessDenied, .failedToOpenDocument:
+                break
             }
         }
+        presentError(error, positiveAction: positiveAction, coordinator: coordinator)
+    }
+
+    private func presentError(_ error: Error,
+                              positiveAction: (() -> Void)?,
+                              coordinator: DocumentPickerCoordinator) {
+        if coordinator.currentPickerDismissesAutomatically {
+            cameraScreen?.showErrorDialog(for: error, positiveAction: positiveAction)
+        } else {
+            coordinator.currentPickerViewController?.showErrorDialog(for: error, positiveAction: positiveAction)
+        }
+    }
+
+    public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
+        let error = FilePickerError.failedToOpenDocument
+        if coordinator.currentPickerDismissesAutomatically {
+            self.cameraScreen?.showErrorDialog(for: error,
+                                               positiveAction: nil)
+        } else {
+            coordinator.currentPickerViewController?.showErrorDialog(for: error,
+                                                                     positiveAction: nil)
+        }
+    }
 
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
