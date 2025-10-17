@@ -209,22 +209,19 @@ private extension SessionManager {
             cancellationToken?.task = task
             return task
     }
-    
-    // swiftlint:disable function_body_length
+
     private typealias DataResponseCompletion<T> = (Data?, URLResponse?, Error?) -> Void
 
     private func taskCompletionHandler<T: Resource>(for resource: T,
-                                            request: URLRequest,
-                                            taskType: TaskType,
-                                            cancellationToken: CancellationToken?,
-                                            completion: @escaping CompletionResult<T.ResponseType>) -> DataResponseCompletion<T> {
+                                                    request: URLRequest,
+                                                    taskType: TaskType,
+                                                    cancellationToken: CancellationToken?,
+                                                    completion: @escaping CompletionResult<T.ResponseType>) -> DataResponseCompletion<T> {
         return { [weak self] data, response, error in
             guard let self = self else { return }
 
-            if let nsError = error as NSError?,
-               nsError.domain == NSURLErrorDomain,
-               nsError.code == NSURLErrorNotConnectedToInternet {
-                return completion(.failure(.noInternetConnection))
+            if handleNetworkError(error, completion: completion) {
+                return
             }
 
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -236,33 +233,60 @@ private extension SessionManager {
                 return
             }
 
-            switch httpResponse.statusCode {
-            case 200..<400:
-                if let jsonData = data {
-                    self.handleSuccess(resource: resource,
-                                       request: request,
-                                       response: httpResponse,
-                                       data: jsonData,
-                                       completion: completion)
-                } else {
-                        completion(.failure(.unknown(response: httpResponse, data: nil)))
-                }
-
-            case 400...599:
-                self.handleError(resource: resource,
-                                 statusCode: httpResponse.statusCode,
-                                 response: httpResponse,
-                                 data: data,
-                                 taskType: taskType,
-                                 cancellationToken: cancellationToken,
-                                  completion: completion)
-
-            default:
-                completion(.failure(.unknown(response: httpResponse, data: data)))
-            }
+            self.handleResponse(for: resource,
+                               request: request,
+                               response: httpResponse,
+                               data: data,
+                               taskType: taskType,
+                               cancellationToken: cancellationToken,
+                               completion: completion)
         }
     }
 
+    private func handleNetworkError<T>(_ error: Error?,
+                                       completion: @escaping CompletionResult<T>) -> Bool {
+        guard let nsError = error as NSError?,
+              nsError.domain == NSURLErrorDomain,
+              nsError.code == NSURLErrorNotConnectedToInternet else {
+            return false
+        }
+
+        completion(.failure(.noInternetConnection))
+        return true
+    }
+
+    private func handleResponse<T: Resource>(for resource: T,
+                                             request: URLRequest,
+                                             response: HTTPURLResponse,
+                                             data: Data?,
+                                             taskType: TaskType,
+                                             cancellationToken: CancellationToken?,
+                                             completion: @escaping CompletionResult<T.ResponseType>) {
+        switch response.statusCode {
+        case 200..<400:
+            guard let jsonData = data else {
+                completion(.failure(.unknown(response: response, data: nil)))
+                return
+            }
+            handleSuccess(resource: resource,
+                          request: request,
+                          response: response,
+                          data: jsonData,
+                          completion: completion)
+
+        case 400...599:
+            handleError(resource: resource,
+                        statusCode: response.statusCode,
+                        response: response,
+                        data: data,
+                        taskType: taskType,
+                        cancellationToken: cancellationToken,
+                        completion: completion)
+
+        default:
+            completion(.failure(.unknown(response: response, data: data)))
+        }
+    }
     private func handleSuccess<T: Resource>(resource: T,
                                             request: URLRequest,
                                             response: HTTPURLResponse,
