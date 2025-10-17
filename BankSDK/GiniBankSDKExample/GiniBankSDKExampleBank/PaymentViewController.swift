@@ -194,38 +194,48 @@ extension PaymentViewController: UITextFieldDelegate {
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
-           let text = textField.text,
-           let textRange = Range(range, in: text) {
-            let updatedText = text.replacingCharacters(in: textRange, with: string)
-            
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                                        .trimmingCharacters(in: .whitespaces)
-                                        .filter { c in c != "," && c != "."}
-                                        .prefix(7))
-            
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-                
-                if let newAmount = amountToPay?.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-                    
-                    textField.text = newAmount
-                    amountToPay?.value = decimalWithFraction
-                    
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
-            return false
-           }
-        return true
+
+        // Only handle the amount field
+        guard TextFieldType(rawValue: textField.tag) == .amountFieldTag else { return true }
+
+        // Ensure we can build the updated string
+        guard let oldText = textField.text,
+              let textRange = Range(range, in: oldText) else { return true }
+
+        // Normalize to (max 7) digits
+        let updated = oldText.replacingCharacters(in: textRange, with: string)
+        let digits = AmountInput.digitsOnlyCapped(updated)
+
+        // Format (xx -> 0.xx, 12345 -> 123.45)
+        guard let amount = AmountInput.amount(fromCentsDigits: digits),
+              let formatted = amountToPay?
+            .stringWithoutSymbol(from: amount)?
+            .trimmingCharacters(in: .whitespaces) else { return false }
+
+        // Update UI + model and keep caret position reasonable
+        let priorSelection = textField.selectedTextRange
+        textField.text = formatted
+        amountToPay?.value = amount
+
+        if let prior = priorSelection {
+            let delta = formatted.count - oldText.count
+            let offset = (delta == 0) ? 1 : delta
+            textField.moveSelectedTextRange(from: prior.start, to: offset)
+        }
+
+        return false
+    }
+
+    private struct AmountInput {
+        static let maxDigits = 7
+
+        static func digitsOnlyCapped(_ s: String) -> String {
+            String(s.unicodeScalars.filter(CharacterSet.decimalDigits.contains).prefix(maxDigits))
+        }
+
+        static func amount(fromCentsDigits s: String) -> Decimal? {
+            Decimal(string: s).map { $0 / 100 }
+        }
     }
 }
 
