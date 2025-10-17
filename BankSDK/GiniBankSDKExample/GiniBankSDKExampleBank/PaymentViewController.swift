@@ -261,36 +261,52 @@ extension PaymentViewController {
     }
     
     fileprivate func validateTextField(_ textField: UITextField) {
-        if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
-            switch fieldIdentifier {
+        guard let field = TextFieldType(rawValue: textField.tag) else { return }
+
+        switch field {
             case .ibanFieldTag:
-                if let ibanText = textField.text, textField.hasText {
-                    if IBANValidator().isValid(iban: ibanText) {
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        showValidationErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
+                validateIBAN(textField, field)
+
             case .amountFieldTag:
-                if let amountString = amount?.text, !amount.isReallyEmpty {
-                    if let decimalPart = amountToPay?.value, decimalPart > 0 {
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        amount.text = ""
-                        showErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
+                validateAmount(field)
+
             case .recipientFieldTag, .usageFieldTag:
-                if textField.hasText && !textField.isReallyEmpty {
-                    hideErrorLabel(textFieldTag: fieldIdentifier)
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
-            }
+                validateNonEmpty(textField, field)
+        }
+    }
+
+    private func validateIBAN(_ textField: UITextField, _ field: TextFieldType) {
+        guard textField.hasText, let iban = textField.text else {
+            showErrorLabel(textFieldTag: field)
+            return
+        }
+
+        if IBANValidator().isValid(iban: iban) {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            showValidationErrorLabel(textFieldTag: field)
+        }
+    }
+
+    private func validateAmount(_ field: TextFieldType) {
+        guard !amount.isReallyEmpty else {
+            showErrorLabel(textFieldTag: field)
+            return
+        }
+
+        if let value = amountToPay?.value, value > 0 {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            amount.text = ""
+            showErrorLabel(textFieldTag: field)
+        }
+    }
+
+    private func validateNonEmpty(_ textField: UITextField, _ field: TextFieldType) {
+        if textField.hasText && !textField.isReallyEmpty {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            showErrorLabel(textFieldTag: field)
         }
     }
 
