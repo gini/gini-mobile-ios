@@ -101,22 +101,27 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
             guard let self = self else { return }
             switch result {
             case let .success(createdDocument):
-                self.documentService
-                    .extractions(for: createdDocument,
-                                 cancellationToken: CancellationToken()) { [weak self] result in
-                        guard self != nil else { return }
-                        switch result {
-                        case let .success(extractionResult):
-                            if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
-                               let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
-                                completion(.success((doc, result)))
-                            } else {
-                                completion(.failure(.parseError(message: "Failed to parse extraction result")))
-                            }
-                        case let .failure(error):
-                            completion(.failure(.unknown(response: error.response, data: error.data)))
-                        }
-                    }
+                fetchExtractions(for: createdDocument, completion: completion)
+            case let .failure(error):
+                completion(.failure(.unknown(response: error.response, data: error.data)))
+            }
+        }
+    }
+    
+    private func fetchExtractions(for createdDocument: GiniMerchantSDK.Document,
+                                  completion: @escaping GiniBankAPIAnalysisCompletion) {
+        
+        self.documentService.extractions(for: createdDocument,
+                                         cancellationToken: CancellationToken()) { [weak self] result in
+            guard self != nil else { return }
+            switch result {
+            case let .success(extractionResult):
+                if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
+                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
+                    completion(.success((doc, result)))
+                } else {
+                    completion(.failure(.parseError(message: "Failed to parse extraction result")))
+                }
             case let .failure(error):
                 completion(.failure(.unknown(response: error.response, data: error.data)))
             }
