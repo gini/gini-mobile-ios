@@ -176,32 +176,35 @@ public struct DataForReview {
 
      */
     public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
             switch result {
             case let .success(createdDocument):
-                self.documentService.extractions(for: createdDocument,
-                                                 cancellationToken: CancellationToken()) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case let .success(extractionResult):
-                            if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
-                                completion(.success(true))
-                            } else if let ibanExtraction = extractionResult.extractions.first(where: { $0.name == "iban"})?.value, !ibanExtraction.isEmpty {
-                                completion(.success(true))
-                            } else {
-                                completion(.success(false))
-                            }
-                        case .failure(let error):
-                            completion(.failure(.apiError(error)))
-                        }
-                    }
-                }
+                self?.fetchPayableStatus(for: createdDocument, completion: completion)
             case .failure(let error):
                 completion(.failure(.apiError(error)))
             }
         }
     }
     
+    private func fetchPayableStatus(for document: Document, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void) {
+        
+        self.documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(extractionResult):
+                    if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
+                        completion(.success(true))
+                    } else if let ibanExtraction = extractionResult.extractions.first(where: { $0.name == "iban"})?.value, !ibanExtraction.isEmpty {
+                        completion(.success(true))
+                    } else {
+                        completion(.success(false))
+                    }
+                case .failure(let error):
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
     /**
      Polls the document via document id.
      
@@ -237,25 +240,11 @@ public struct DataForReview {
      
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniMerchantError>) -> Void){
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
             switch result {
             case let .success(createdDocument):
-                self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: CancellationToken()) { result in
-                            DispatchQueue.main.async {
-                                switch result {
-                                case let .success(extractionResult):
-                                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                        completion(.success(paymentExtractions))
-                                    } else {
-                                        completion(.failure(.noPaymentDataExtracted))
-                                    }
-                                case let .failure(error):
-                                    completion(.failure(.apiError(error)))
-                                }
-                            }
-                        }
+                self?.fetchExtractions(for: createdDocument, completion: completion)
+             
             case let .failure(error):
                 DispatchQueue.main.async {
                     completion(.failure(.apiError(error)))
@@ -263,7 +252,25 @@ public struct DataForReview {
             }
         }
     }
-        
+       
+    private func fetchExtractions(for document: Document, completion: @escaping (Result<[Extraction], GiniMerchantError>) -> Void) {
+        self.documentService.extractions(for: document,
+                                         cancellationToken: CancellationToken()) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(extractionResult):
+                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                        completion(.success(paymentExtractions))
+                    } else {
+                        completion(.failure(.noPaymentDataExtracted))
+                    }
+                case let .failure(error):
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
+
     /**
      Creates a payment request
      
@@ -324,18 +331,22 @@ public struct DataForReview {
         documentService.fetchDocument(with: documentId) { result in
             switch result {
             case .success(let document):
-                self.getExtractions(docId: document.id) { result in
-                    switch result{
-                    case .success(let extractions):
-                        completion(.success(extractions))
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+                self.handleFetchedDocument(document, completion: completion)
             case .failure(let error):
                 DispatchQueue.main.async {
                     completion(.failure(.apiError(error)))
                 }
+            }
+        }
+    }
+    
+    private func handleFetchedDocument(_ document: GiniMerchantSDK.Document, completion: @escaping (Result<[Extraction], GiniMerchantError>) -> Void) {
+        self.getExtractions(docId: document.id) { result in
+            switch result{
+            case .success(let extractions):
+                completion(.success(extractions))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
