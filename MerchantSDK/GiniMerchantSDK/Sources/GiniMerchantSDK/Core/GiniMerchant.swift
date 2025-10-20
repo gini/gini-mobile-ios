@@ -356,25 +356,28 @@ public struct DataForReview {
         documentService.fetchDocument(with: documentId) { result in
             switch result {
             case let .success(document):
-                self.documentService
-                    .extractions(for: document,
-                                 cancellationToken: CancellationToken()) { result in
-                        DispatchQueue.main.async {
-                            switch result {
-                            case let .success(extractionResult):
-                                if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                    let fetchedData = DataForReview(document: document, extractions: paymentExtractions)
-                                    completion(.success(fetchedData))
-                                } else {
-                                    completion(.failure(.noPaymentDataExtracted))
-                                }
-                            case let .failure(error):
-                                completion(.failure(.apiError(error)))
-                            }
-                        }
-                    }
+                self.fetchExtractions(for: document, completion: completion)
             case let .failure(error):
                 DispatchQueue.main.async {
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
+
+    private func fetchExtractions(for document: GiniMerchantSDK.Document, completion: @escaping (Result<DataForReview, GiniMerchantError>) -> Void) {
+        self.documentService.extractions(for: document,
+                                         cancellationToken: CancellationToken()) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(extractionResult):
+                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                        let fetchedData = DataForReview(document: document, extractions: paymentExtractions)
+                        completion(.success(fetchedData))
+                    } else {
+                        completion(.failure(.noPaymentDataExtracted))
+                    }
+                case let .failure(error):
                     completion(.failure(.apiError(error)))
                 }
             }
