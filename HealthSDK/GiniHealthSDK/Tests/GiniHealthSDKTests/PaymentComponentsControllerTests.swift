@@ -95,14 +95,13 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           paymentComponentConfiguration: giniHealth.paymentComponentConfiguration,
                                                           clientConfiguration: giniHealth.clientConfiguration)
 
-        let expectedView = PaymentComponentView(viewModel: expectedViewModel)
         expectedViewModel.documentId = documentId
         // When
         let view = mockPaymentComponentsController.paymentView()
 
         // Then
         XCTAssertTrue(view is PaymentComponentView)
-        guard let view = view as? PaymentComponentView else {
+        guard let _ = view as? PaymentComponentView else {
             XCTFail("Error finding correct view.")
             return
         }
@@ -122,9 +121,6 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
     
     func testLoadPaymentReviewScreenFor_Success() {
-        // Given
-        let documentId = MockSessionManager.payableDocumentID
-
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
