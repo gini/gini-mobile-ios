@@ -135,28 +135,39 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                 guard let self = self else { return }
                 switch result {
                 case let .success(createdDocument):
-                    self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: GiniHealthAPILibrary.CancellationToken()) { [weak self] result in
-                            guard self != nil else { return }
-                            switch result {
-                            case let .success(extractionResult):
-                                if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
-                                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
-                                    completion(.success((doc, result)))
-                                } else {
-                                    completion(.failure(.parseError(message: "Failed to parse extraction result")))
-                                 }
-                            case let .failure(error):
-                                completion(.failure(.unknown(response: error.response, data: error.data)))
-                            }
-                        }
+                    self.fetchExtractionsAndComplete(for: createdDocument, completion: completion)
                 case let .failure(error):
                     completion(.failure(.unknown(response: error.response, data: error.data)))
                 }
             }
     }
-    
+
+    private func fetchExtractionsAndComplete(for document: GiniHealthAPILibrary.Document,
+                                             completion: @escaping GiniBankAPIAnalysisCompletion) {
+        documentService.extractions(for: document,
+                                    cancellationToken: GiniHealthAPILibrary.CancellationToken()) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let extractionResult):
+                self.handleExtractionSuccess(document: document,
+                                             extractionResult: extractionResult,
+                                             completion: completion)
+            case .failure(let error):
+                completion(.failure(.unknown(response: error.response, data: error.data)))
+            }
+        }
+    }
+
+    private func handleExtractionSuccess(document: GiniHealthAPILibrary.Document,
+                                         extractionResult: GiniHealthAPILibrary.ExtractionResult,
+                                         completion: @escaping GiniBankAPIAnalysisCompletion) {
+        let mappedDocument = mapDocumentToGiniBankAPI(doc: document)
+        let mappedResult = mapExtractionResultToGiniBankAPI(result: extractionResult)
+
+        completion(.success((mappedDocument, mappedResult)))
+    }
+
     func upload(document: GiniCaptureSDK.GiniCaptureDocument,
                 metadata: GiniBankAPILibrary.Document.Metadata?,
                 completion: @escaping GiniCaptureSDK.UploadDocumentCompletion) {
