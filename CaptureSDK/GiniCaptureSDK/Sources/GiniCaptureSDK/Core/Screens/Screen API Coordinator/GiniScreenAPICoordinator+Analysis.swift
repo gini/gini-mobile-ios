@@ -9,8 +9,9 @@ import Foundation
 // MARK: - Analysis Screen
 
 extension GiniScreenAPICoordinator {
-    func createAnalysisScreen(withDocument document: GiniCaptureDocument) -> AnalysisViewController {
-        let viewController = AnalysisViewController(document: document)
+    func createAnalysisScreen(withDocument document: GiniCaptureDocument,
+                              shouldSaveToGallery: Bool = false) -> AnalysisViewController {
+        let viewController = AnalysisViewController(document: document, shouldSaveToGallery: shouldSaveToGallery)
 
         let cancelButton = GiniBarButton(ofType: .cancel)
         cancelButton.addAction(self, #selector(back))

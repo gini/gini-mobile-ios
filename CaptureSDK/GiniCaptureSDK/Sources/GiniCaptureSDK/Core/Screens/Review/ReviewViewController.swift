@@ -41,7 +41,7 @@ public protocol ReviewViewControllerDelegate: AnyObject {
 
      - parameter viewController: `ReviewViewController` where the pages are reviewed.
      */
-    func reviewDidTapProcess(_ viewController: ReviewViewController)
+    func reviewDidTapProcess(_ viewController: ReviewViewController, shouldSaveToGallery: Bool)
 
     /**
      Called when a user taps on a page
@@ -753,7 +753,7 @@ extension ReviewViewController {
         GiniAnalyticsManager.track(event: .proceedTapped,
                                    screenName: .review,
                                    properties: eventProperties)
-        delegate?.reviewDidTapProcess(self)
+        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.isOn)
     }
 
     private func deleteItem(at indexPath: IndexPath) {

@@ -38,6 +38,7 @@ import UIKit
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
+    private let shouldSaveToGallery: Bool
     private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
@@ -101,6 +102,8 @@ import UIKit
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
+    var pages: [GiniCapturePage]!
+
     /**
      Designated intitializer for the `AnalysisViewController`.
      
@@ -109,9 +112,12 @@ import UIKit
      
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
-    public init(document: GiniCaptureDocument, giniConfiguration: GiniConfiguration) {
+    public init(document: GiniCaptureDocument,
+                giniConfiguration: GiniConfiguration,
+                shouldSaveToGallery: Bool = false) {
         self.document = document
         self.giniConfiguration = giniConfiguration
+        self.shouldSaveToGallery = shouldSaveToGallery
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -122,8 +128,11 @@ import UIKit
      
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
-    public convenience init(document: GiniCaptureDocument) {
-        self.init(document: document, giniConfiguration: GiniConfiguration.shared)
+    public convenience init(document: GiniCaptureDocument,
+                            shouldSaveToGallery: Bool = false) {
+        self.init(document: document,
+                  giniConfiguration: GiniConfiguration.shared,
+                  shouldSaveToGallery: shouldSaveToGallery)
     }
 
     /**
@@ -310,6 +319,8 @@ import UIKit
      Otherwise, it suspends execution and resumes once the animation finishes.
      */
     public func waitUntilAnimationCompleted() async {
+        saveDocumentPhotoToGalleryIfNeeded()
+
         await withCheckedContinuation { continuation in
             guard loadingViewModel != nil else {
                 continuation.resume()
@@ -321,6 +332,15 @@ import UIKit
             } else {
                 animationCompletionContinuations.append(continuation)
             }
+        }
+    }
+
+    private func saveDocumentPhotoToGalleryIfNeeded() {
+        guard shouldSaveToGallery, !pages.isEmpty else { return }
+        let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
+
+        for document in documentsToSave {
+            UIImageWriteToSavedPhotosAlbum(document, nil, nil, nil)
         }
     }
 

@@ -314,7 +314,7 @@ extension GiniScreenAPICoordinator {
         back()
     }
 
-    @objc func showAnalysisScreen() {
+    @objc func showAnalysisScreen(shouldSaveToGallery: Bool) {
         if screenAPINavigationController.topViewController is ReviewViewController {
             trackingDelegate?.onReviewScreenEvent(event: Event(type: .next))
         }
@@ -326,8 +326,11 @@ extension GiniScreenAPICoordinator {
         if pages.type == .image {
             visionDelegate?.didReview(documents: pages.map { $0.document }, networkDelegate: self)
         }
-        analysisViewController = createAnalysisScreen(withDocument: firstDocument)
+        
+        analysisViewController = createAnalysisScreen(withDocument: firstDocument,
+                                                      shouldSaveToGallery: shouldSaveToGallery)
         analysisViewController?.trackingDelegate = trackingDelegate
+        analysisViewController?.pages = pages
         screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
     }
 
