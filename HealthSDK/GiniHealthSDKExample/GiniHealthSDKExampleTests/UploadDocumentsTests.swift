@@ -39,42 +39,54 @@ class UploadDocumentsTests: XCTestCase {
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {
         giniHelper.giniHealthAPIDocumentService.createDocument(fileName: nil, docType: .invoice, type: .partial(data), metadata: nil) { result in
-            switch result {
-            case .success(let createdDocument):
-                self.giniHelper.giniHealthAPIDocumentService?.extractions(for: createdDocument,
-                                                                              cancellationToken: CancellationToken()) { result in
-                    switch result {
-                    case let .success(extractionResult):
-                        XCTAssertNotNil(extractionResult)
-                        XCTAssertNotNil(extractionResult.payment)
-                        guard let payment = extractionResult.payment?.first else {
-                            XCTFail()
-                            return
-                        }
-                        guard let iban = payment.first(where: { $0.name == "iban" }) else {
-                            XCTFail()
-                            return
-                        }
-                        XCTAssertNotNil(iban.value)
-                        guard let recipient = payment.first(where: { $0.name == "payment_recipient" }) else {
-                            XCTFail()
-                            return
-                        }
-                            XCTAssertNotNil(recipient.value)
-                        expect.fulfill()
-                    case let .failure(error):
-                        if data.isImage() {
-                            XCTFail(String(describing: error))
-                        }
-                        expect.fulfill()
-                    }
-                }
-            case .failure(let error):
-                if data.isImage() {
-                    XCTFail(String(describing: error))
-                }
-                expect.fulfill()
+            self.handleDocumentCreationResult(result, expect: expect, originalData: data)
+        }
+    }
+
+    private func handleDocumentCreationResult(_ result: Result<GiniHealthAPILibrary.Document, GiniHealthAPILibrary.GiniError>,
+                                              expect: XCTestExpectation,
+                                              originalData: Data) {
+        switch result {
+        case .success(let createdDocument):
+            self.giniHelper.giniHealthAPIDocumentService?.extractions(for: createdDocument,
+                                                                      cancellationToken: CancellationToken()) { result in
+                self.handleExtractionResult(result, expect: expect, originalData: originalData)
             }
+        case .failure(let error):
+            if originalData.isImage() {
+                XCTFail(String(describing: error))
+            }
+            expect.fulfill()
+        }
+    }
+
+    private func handleExtractionResult(_ result: Result<GiniHealthAPILibrary.ExtractionResult, GiniHealthAPILibrary.GiniError>,
+                                        expect: XCTestExpectation,
+                                        originalData: Data) {
+        switch result {
+        case let .success(extractionResult):
+            XCTAssertNotNil(extractionResult)
+            XCTAssertNotNil(extractionResult.payment)
+            guard let payment = extractionResult.payment?.first else {
+                XCTFail()
+                return
+            }
+            guard let iban = payment.first(where: { $0.name == "iban" }) else {
+                XCTFail()
+                return
+            }
+            XCTAssertNotNil(iban.value)
+            guard let recipient = payment.first(where: { $0.name == "payment_recipient" }) else {
+                XCTFail()
+                return
+            }
+                XCTAssertNotNil(recipient.value)
+            expect.fulfill()
+        case let .failure(error):
+            if originalData.isImage() {
+                XCTFail(String(describing: error))
+            }
+            expect.fulfill()
         }
     }
 }
