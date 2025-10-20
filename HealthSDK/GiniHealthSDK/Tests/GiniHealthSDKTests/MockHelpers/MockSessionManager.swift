@@ -45,41 +45,74 @@ final class MockSessionManager: SessionManagerProtocol {
         //
     }
     
+    private func handleDocument<T>(resource: T, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
+        
+        guard case let .document(id) = resource.method as! APIMethod else { return }
+
+        let document: Document?
+
+        switch (id, resource.params.method) {
+        case (MockSessionManager.payableDocumentID, .get):
+            let document: Document? = load(fromFile: "document1", type: "json")
+            if let document = document as? T.ResponseType {
+                completion(.success(document))
+            }
+        case (MockSessionManager.notPayableDocumentID, .get):
+            let document: Document? = load(fromFile: "document2", type: "json")
+            if let document = document as? T.ResponseType {
+                completion(.success(document))
+            }
+        case (MockSessionManager.failurePayableDocumentID, .get):
+            let document: Document? = load(fromFile: "document3", type: "json")
+            if let document = document as? T.ResponseType {
+                completion(.success(document))
+            }
+        case (MockSessionManager.missingDocumentID, .get):
+            completion(.failure(.notFound(response: nil, data: nil)))
+        case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
+            let document: Document? = load(fromFile: "document4", type: "json")
+            if let document = document as? T.ResponseType {
+                completion(.success(document))
+            }
+        case (MockSessionManager.doctorsNameDocumentID, .get):
+            let document: Document? = load(fromFile: "document5", type: "json")
+            if let document = document as? T.ResponseType {
+                completion(.success(document))
+            }
+        default:
+            fatalError("Document id not found in tests")
+        }
+    }
+    
+    private func handleExtractions<T>(resource: T,
+                                      completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
+        
+        guard case let .extractions(documentId) = resource.method as! APIMethod else { return }
+
+        let extractionResults: ExtractionsContainer?
+        
+        switch (documentId, resource.params.method) {
+        case (MockSessionManager.payableDocumentID, .get):
+            handleExtractionResults(fromFile: "extractionResultWithIBAN", completion: completion)
+        case (MockSessionManager.notPayableDocumentID, .get):
+            handleExtractionResults(fromFile: "extractionResultWithoutIBAN", completion: completion)
+        case (MockSessionManager.failurePayableDocumentID, .get):
+            completion(.failure(.noResponse))
+        case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
+            handleExtractionResults(fromFile: "extractionsWithPayment", completion: completion)
+        case (MockSessionManager.doctorsNameDocumentID, .get):
+            handleExtractionResults(fromFile: "test_doctorsname", completion: completion)
+        default:
+            fatalError("Document id not found in tests")
+        }
+
+    }
+    
     func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .document(let id):
-                switch (id, resource.params.method) {
-                case (MockSessionManager.payableDocumentID, .get):
-                    let document: Document? = load(fromFile: "document1", type: "json")
-                    if let document = document as? T.ResponseType {
-                        completion(.success(document))
-                    }
-                case (MockSessionManager.notPayableDocumentID, .get):
-                    let document: Document? = load(fromFile: "document2", type: "json")
-                    if let document = document as? T.ResponseType {
-                        completion(.success(document))
-                    }
-                case (MockSessionManager.failurePayableDocumentID, .get):
-                    let document: Document? = load(fromFile: "document3", type: "json")
-                    if let document = document as? T.ResponseType {
-                        completion(.success(document))
-                    }
-                case (MockSessionManager.missingDocumentID, .get):
-                    completion(.failure(.notFound(response: nil, data: nil)))
-                case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
-                    let document: Document? = load(fromFile: "document4", type: "json")
-                    if let document = document as? T.ResponseType {
-                        completion(.success(document))
-                    }
-                case (MockSessionManager.doctorsNameDocumentID, .get):
-                    let document: Document? = load(fromFile: "document5", type: "json")
-                    if let document = document as? T.ResponseType {
-                        completion(.success(document))
-                    }
-                default:
-                    fatalError("Document id not found in tests")
-                }
+                handleDocument(resource: resource, completion: completion)
             case .createPaymentRequest:
                 if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
                     completion(.success(paymentRequestId))
@@ -95,20 +128,8 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(paymentProvidersResponse))
                 }
             case .extractions(let documentId):
-                switch (documentId, resource.params.method) {
-                case (MockSessionManager.payableDocumentID, .get):
-                    handleExtractionResults(fromFile: "extractionResultWithIBAN", completion: completion)
-                case (MockSessionManager.notPayableDocumentID, .get):
-                    handleExtractionResults(fromFile: "extractionResultWithoutIBAN", completion: completion)
-                case (MockSessionManager.failurePayableDocumentID, .get):
-                    completion(.failure(.noResponse))
-                case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
-                    handleExtractionResults(fromFile: "extractionsWithPayment", completion: completion)
-                case (MockSessionManager.doctorsNameDocumentID, .get):
-                    handleExtractionResults(fromFile: "test_doctorsname", completion: completion)
-                default:
-                    fatalError("Document id not found in tests")
-                }
+                handleExtractions(resource: resource, completion: completion)
+      
             case .configurations:
                 let clientConfiguration: ClientConfiguration? = load(fromFile: "clientConfiguration")
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {
