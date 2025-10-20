@@ -88,21 +88,25 @@ final class InvoicesListViewModel {
         self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
-                self?.documentService.extractions(for: document, cancellationToken: CancellationToken()) { resultExtractions in
-                    switch resultExtractions {
-                    case .success(let extractions):
-                        self?.shouldRefetchExtractions = false
-                        self?.documentIdToRefetch = nil
-                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentId: document.id, extractions: extractions)
-                        self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
-                        DispatchQueue.main.async {
-                            self?.coordinator.invoicesListViewController?.hideActivityIndicator()
-                            self?.coordinator.invoicesListViewController?.reloadTableView()
-                        }
-                    case .failure(let error):
-                        self?.errors.append(error.localizedDescription)
-                        self?.showErrorsIfAny()
-                    }
+                self?.handleFetchDocumentResponse(document)
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            }
+        }
+    }
+    
+    private func handleFetchDocumentResponse(_ document: GiniHealthSDK.Document) {
+        self.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] resultExtractions in
+            switch resultExtractions {
+            case .success(let extractions):
+                self?.shouldRefetchExtractions = false
+                self?.documentIdToRefetch = nil
+                self?.hardcodedInvoicesController.updateDocumentExtractions(documentId: document.id, extractions: extractions)
+                self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
+                DispatchQueue.main.async {
+                    self?.coordinator.invoicesListViewController?.hideActivityIndicator()
+                    self?.coordinator.invoicesListViewController?.reloadTableView()
                 }
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
@@ -156,26 +160,31 @@ final class InvoicesListViewModel {
                 switch result {
                 case .success(let createdDocument):
                     GiniUtilites.Log("Successfully created document with id: \(createdDocument.id)", event: .success)
-                    self?.documentService.extractions(for: createdDocument,
-                                                      cancellationToken: CancellationToken()) { [weak self] result in
-                        switch result {
-                        case let .success(extractionResult):
-                            GiniUtilites.Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
-                                                                          extractionResult: extractionResult))
-                        case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))",
-                                             event: .error)
-                            self?.errors.append(error.message)
-                        }
-                        self?.dispatchGroup.leave()
-                    }
+                    self?.handleExtractions(for: createdDocument)
+            
                 case .failure(let error):
                     GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                     self?.errors.append(error.message)
                     self?.dispatchGroup.leave()
                 }
             }
+        }
+    }
+    
+    private func handleExtractions(for createdDocument: GiniHealthSDK.Document) {
+        self.documentService.extractions(for: createdDocument,
+                                         cancellationToken: CancellationToken()) { [weak self] result in
+            switch result {
+            case let .success(extractionResult):
+                GiniUtilites.Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
+                self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
+                                                              extractionResult: extractionResult))
+            case let .failure(error):
+                GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))",
+                                 event: .error)
+                self?.errors.append(error.message)
+            }
+            self?.dispatchGroup.leave()
         }
     }
 

@@ -273,7 +273,7 @@ final class AppCoordinator: Coordinator {
         }
     }
 
-    private func handleExtractionsResult(_ result: Result<GiniHealthSDK.ExtractionResult, GiniHealthSDK.GiniHealthError>, document: GiniHealthSDK.Document) {
+    private func handleExtractionsResult(_ result: Result<GiniHealthSDK.ExtractionResult, GiniHealthSDK.GiniError>, document: GiniHealthSDK.Document) {
         switch result {
         case let .success(extractionResult):
             GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
