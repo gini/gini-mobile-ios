@@ -89,6 +89,8 @@ public final class QRCodesExtractor {
         let lines = string.splitlines
 
         // Get value at index or empty string
+        // Helper that safely accesses lines array
+        // Captures 'lines' from outer scope to avoid passing it repeatedly.
         func getValue(_ index: Int) -> String {
             lines.indices.contains(index) ? lines[index] : ""
         }
