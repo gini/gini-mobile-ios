@@ -287,7 +287,7 @@ public final class ReviewViewController: UIViewController {
                                                             constant: -Constants.padding)
         ]
     }
-    
+
     private var saveToGalleryHorizontalConstraints: [NSLayoutConstraint] {
         guard shouldShowSaveToGalleryView else { return [] }
         
@@ -313,7 +313,7 @@ public final class ReviewViewController: UIViewController {
                                               constant: -Constants.bottomPadding),
         buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
     ]
-    
+
     private var buttonContainerWithSaveToGalleryConstraints: [NSLayoutConstraint] {
         guard shouldShowSaveToGalleryView else { return [] }
 
@@ -630,7 +630,7 @@ extension ReviewViewController {
             pageControl.currentPage = currentPage
         }
     }
-    
+
     private func updateViewForNewPages() {
         if shouldShowSaveToGalleryView {
             if saveToGalleryView.superview == nil {
