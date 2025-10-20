@@ -318,7 +318,12 @@ public final class ReviewViewController: UIViewController {
         guard shouldShowSaveToGalleryView else { return [] }
 
         return [buttonContainer.topAnchor.constraint(equalTo: saveToGalleryView.bottomAnchor,
-                                                    constant: Constants.saveToGalleryBottomConstant)] + buttonContainerConstraints
+                                                    constant: Constants.saveToGalleryBottomConstant),
+                buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+                buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                      constant: -Constants.bottomPadding),
+                buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
+        ]
     }
 
     private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
@@ -484,8 +489,8 @@ extension ReviewViewController {
         trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
 
         // Define constraints based on whether SaveToGalleryView should be shown
-        let portraitButtonConstraints = shouldShowSaveToGalleryView 
-            ? buttonContainerWithSaveToGalleryConstraints 
+        let portraitButtonConstraints = shouldShowSaveToGalleryView
+            ? buttonContainerWithSaveToGalleryConstraints
             : buttonContainerConstraints
 
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
@@ -508,9 +513,9 @@ extension ReviewViewController {
             + (!shouldShowSaveToGalleryView ? [] : buttonContainerConstraints)
 
         let constraintsToDeactivate = isLandscape
-            ? bottomNavigationBarAdditionalConstraints 
-            + portraitButtonConstraints 
-            + pageControlConstraints 
+            ? bottomNavigationBarAdditionalConstraints
+            + portraitButtonConstraints
+            + pageControlConstraints
             + saveToGalleryConstraints
             : portraitConstraintsToDeactivate
 
@@ -636,7 +641,7 @@ extension ReviewViewController {
             if saveToGalleryView.superview == nil {
                 contentView.addSubview(saveToGalleryView)
                 saveToGalleryView.translatesAutoresizingMaskIntoConstraints = false
-                
+
                 // Reapply constraints
                 NSLayoutConstraint.activate(saveToGalleryConstraints)
                 if !giniConfiguration.bottomNavigationBarEnabled {
@@ -648,7 +653,7 @@ extension ReviewViewController {
         } else {
             if saveToGalleryView.superview != nil {
                 saveToGalleryView.removeFromSuperview()
-                
+
                 // Revert to original button constraints
                 if !giniConfiguration.bottomNavigationBarEnabled {
                     NSLayoutConstraint.deactivate(buttonContainerWithSaveToGalleryConstraints)
