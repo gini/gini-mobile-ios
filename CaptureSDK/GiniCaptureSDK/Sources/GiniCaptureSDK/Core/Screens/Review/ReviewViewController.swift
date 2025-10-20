@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import Photos
 // swiftlint:disable file_length
 /**
  The ReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
@@ -153,7 +154,7 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var saveToGalleryView: SaveToGalleryView = {
         let view = SaveToGalleryView()
-
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -275,23 +276,55 @@ public final class ReviewViewController: UIViewController {
                                               constant: -Constants.trailingCollectionPadding)
     ]
 
+    private var saveToGalleryConstraints: [NSLayoutConstraint] {
+        guard shouldShowSaveToGalleryView else { return [] }
+
+        return [saveToGalleryView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                                       constant: Constants.saveToGalleryTopConstant(pages.count)),
+                saveToGalleryView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                           constant: Constants.padding),
+                saveToGalleryView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                            constant: -Constants.padding)
+        ]
+    }
+    
+    private var saveToGalleryHorizontalConstraints: [NSLayoutConstraint] {
+        guard shouldShowSaveToGalleryView else { return [] }
+        
+        return [saveToGalleryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                saveToGalleryView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                            constant: -Constants.padding),
+                saveToGalleryView.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor,
+                                                           constant: Constants.padding),
+                saveToGalleryView.widthAnchor.constraint(equalToConstant: 300) // Fixed width for horizontal
+        ]
+    }
+
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
     ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.largePadding),
+        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                             constant: Constants.largePadding),
         buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
                                               constant: -Constants.bottomPadding),
         buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
     ]
+    
+    private var buttonContainerWithSaveToGalleryConstraints: [NSLayoutConstraint] {
+        guard shouldShowSaveToGalleryView else { return [] }
+
+        return [buttonContainer.topAnchor.constraint(equalTo: saveToGalleryView.bottomAnchor,
+                                                    constant: Constants.saveToGalleryBottomConstant)] + buttonContainerConstraints
+    }
 
     private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
         buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                   constant: -Constants.buttonContainerHorizontalTrailingPadding),
-        buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        shouldShowSaveToGalleryView ? buttonContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.bottomPadding) : buttonContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor)
     ]
 
     private lazy var bottomNavigationBarAdditionalConstraints: [NSLayoutConstraint] = [
@@ -300,6 +333,14 @@ public final class ReviewViewController: UIViewController {
         collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
                                                constant: -Constants.largePadding)
     ]
+
+    private var shouldShowSaveToGalleryView: Bool {
+        let isSaveToGalleryAllowed = PHPhotoLibrary.authorizationStatus() == .authorized
+        let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled
+        let pagesContainsPhotos = pages.contains(where: { !$0.document.isImported })
+
+        return isSaveToGalleryAllowed && isSaveToGalleryEnabled && pagesContainsPhotos
+    }
 
     // MARK: - Init
 
@@ -423,8 +464,9 @@ extension ReviewViewController {
         guard UIDevice.current.isIphone else {
             return
         }
+
         let isLandscape = UIDevice.current.isLandscape
-        buttonContainer.axis = isLandscape ? .vertical : .horizontal
+        buttonContainer.spacing = isLandscape ? Constants.buttonContainerHorizontalSpacing : Constants.buttonContainerSpacing
 
         if giniConfiguration.bottomNavigationBarEnabled {
             if isLandscape {
@@ -440,30 +482,40 @@ extension ReviewViewController {
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
         trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
+
+        // Define constraints based on whether SaveToGalleryView should be shown
+        let portraitButtonConstraints = shouldShowSaveToGalleryView 
+            ? buttonContainerWithSaveToGalleryConstraints 
+            : buttonContainerConstraints
+
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
             ? (bottomNavigationBarAdditionalConstraints + pageControlConstraints)
-            : (buttonContainerConstraints + pageControlConstraints)
+            : (portraitButtonConstraints + pageControlConstraints + saveToGalleryConstraints)
+
         let constraintsToActivate = isLandscape
-            ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+            ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints + saveToGalleryHorizontalConstraints
             : portraitConstraintsToActivate
+
         let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled
             ? bottomNavigationBarAdditionalConstraints
             : []
+
         let portraitConstraintsToDeactivate = buttonContainerHorizontalConstraints
             + pageControlHorizontalConstraints
+            + saveToGalleryHorizontalConstraints
             + portraitBottomBarConstraintsToDeactivate
+            + (shouldShowSaveToGalleryView ? [] : buttonContainerWithSaveToGalleryConstraints)
+            + (!shouldShowSaveToGalleryView ? [] : buttonContainerConstraints)
+
         let constraintsToDeactivate = isLandscape
-            ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
+            ? bottomNavigationBarAdditionalConstraints 
+            + portraitButtonConstraints 
+            + pageControlConstraints 
+            + saveToGalleryConstraints
             : portraitConstraintsToDeactivate
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
         NSLayoutConstraint.activate(constraintsToActivate)
-
-        if isLandscape {
-            addHorizontalSaveToGalleryConstraints()
-        } else {
-            addSaveToGalleryConstraints()
-        }
     }
 
     private func setupView() {
@@ -477,18 +529,14 @@ extension ReviewViewController {
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
 
-        if giniConfiguration.savePhotosLocallyEnabled {
-            contentView.addSubview(saveToGalleryView)
-        }
-
         if giniConfiguration.multipageEnabled {
             buttonContainer.addArrangedSubview(addPagesButton)
         }
-        
+
         if !giniConfiguration.bottomNavigationBarEnabled {
             contentView.addSubview(buttonContainer)
         }
-        
+
         edgesForExtendedLayout = []
     }
 
@@ -568,6 +616,8 @@ extension ReviewViewController {
         }
 
         self.pages = pages
+        updateViewForNewPages()
+
         guard !finishedUpload else { return }
         if pages.isNotEmpty {
             currentPage = pages.count - 1
@@ -578,6 +628,33 @@ extension ReviewViewController {
             guard pages.count > 1 else { return }
             self.scrollToItem(at: IndexPath(row: currentPage, section: 0))
             pageControl.currentPage = currentPage
+        }
+    }
+    
+    private func updateViewForNewPages() {
+        if shouldShowSaveToGalleryView {
+            if saveToGalleryView.superview == nil {
+                contentView.addSubview(saveToGalleryView)
+                saveToGalleryView.translatesAutoresizingMaskIntoConstraints = false
+                
+                // Reapply constraints
+                NSLayoutConstraint.activate(saveToGalleryConstraints)
+                if !giniConfiguration.bottomNavigationBarEnabled {
+                    // Deactivate old button constraints and activate new ones
+                    NSLayoutConstraint.deactivate(buttonContainerConstraints)
+                    NSLayoutConstraint.activate(buttonContainerWithSaveToGalleryConstraints)
+                }
+            }
+        } else {
+            if saveToGalleryView.superview != nil {
+                saveToGalleryView.removeFromSuperview()
+                
+                // Revert to original button constraints
+                if !giniConfiguration.bottomNavigationBarEnabled {
+                    NSLayoutConstraint.deactivate(buttonContainerWithSaveToGalleryConstraints)
+                    NSLayoutConstraint.activate(buttonContainerConstraints)
+                }
+            }
         }
     }
 }
@@ -593,35 +670,28 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
-        addSaveToGalleryConstraints()
         NSLayoutConstraint.activate(processButtonConstraints)
 
+        if shouldShowSaveToGalleryView {
+            NSLayoutConstraint.activate(saveToGalleryConstraints)
+
+            // Use different constraints for buttonContainer when saveToGalleryView is shown
+            if !giniConfiguration.bottomNavigationBarEnabled {
+                NSLayoutConstraint.activate(buttonContainerWithSaveToGalleryConstraints)
+            }
+        } else {
+            // Use normal buttonContainer constraints when saveToGalleryView is not shown
+            if !giniConfiguration.bottomNavigationBarEnabled {
+                NSLayoutConstraint.activate(buttonContainerConstraints)
+            }
+        }
+
         if !giniConfiguration.bottomNavigationBarEnabled {
-            NSLayoutConstraint.activate(buttonContainerConstraints)
             if giniConfiguration.multipageEnabled {
                 buttonContainer.addArrangedSubview(addPagesButton)
             }
         } else {
             NSLayoutConstraint.activate(bottomNavigationBarAdditionalConstraints)
-        }
-    }
-
-    private func addSaveToGalleryConstraints() {
-        buttonContainerConstraints.forEach { $0.priority = .defaultLow }
-
-        saveToGalleryView.giniMakeConstraints {
-            $0.top.equalTo(pageControl.bottom).constant(Constants.saveToGalleryTopConstant(pages.count))
-            $0.horizontal.equalTo(view.safeAreaLayoutGuide).constant(Constants.padding)
-            $0.bottom.equalTo(buttonContainer.top).constant(-Constants.saveToGalleryBottomConstant)
-        }
-    }
-
-    private func addHorizontalSaveToGalleryConstraints() {
-        buttonContainerConstraints.forEach { $0.priority = .defaultLow }
-
-        saveToGalleryView.giniRemakeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).constant(-Constants.padding)
         }
     }
 
@@ -860,6 +930,8 @@ extension ReviewViewController {
         static let bottomNavigationBarHeight: CGFloat = 114
         static let trailingCollectionPadding: CGFloat = 275
         static let buttonContainerHorizontalTrailingPadding: CGFloat = 85
+        static let buttonContainerSpacing: CGFloat = 8.0
+        static let buttonContainerHorizontalSpacing: CGFloat = 82.0
         static let pageControlTopConstant: CGFloat = 24.0
         static let saveToGalleryTopConstant: (Int) -> CGFloat = { pagesCount in
             pagesCount > 1 ? 27.0 : 0.0
