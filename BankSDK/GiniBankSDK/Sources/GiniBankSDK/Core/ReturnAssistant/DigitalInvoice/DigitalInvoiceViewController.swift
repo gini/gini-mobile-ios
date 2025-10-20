@@ -328,11 +328,11 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = Section(rawValue: section) else {
+        guard let sectionType = Section(rawValue: section) else {
             assertionFailure("Unexpected section index \(section)")
             return 0
         }
-        switch section {
+        switch sectionType {
         case .titleCell, .addOns:
             return 1
         case .lineItems:
@@ -344,12 +344,12 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let section = Section(rawValue: indexPath.section) else {
+        guard let sectionType = Section(rawValue: indexPath.section) else {
             assertionFailure("Unexpected section index \(indexPath.section)")
             return UITableViewCell()
         }
 
-        switch section {
+        switch sectionType {
         case .titleCell:
             return configureTitleCell(tableView: tableView, indexPath: indexPath)
         case .lineItems:
