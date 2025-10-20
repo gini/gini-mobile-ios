@@ -32,9 +32,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func initializeWithV1MockedDocuments() {
-        documents = [
-            load(fromFile: "document", type: "json")
-        ]
+        documents = [load(fromFile: "document", type: "json")]
     }
     
     func initializeWithPaymentRequests() {
@@ -42,10 +40,8 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func initializeWithV2MockedDocuments() {
-        documents = [
-            load(fromFile: "partialDocument", type: "json"),
-            load(fromFile: "compositeDocument", type: "json")
-        ]
+        documents = [load(fromFile: "partialDocument", type: "json"),
+                     load(fromFile: "compositeDocument", type: "json")]
     }
     
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
@@ -55,58 +51,86 @@ final class SessionManagerMock: SessionManagerProtocol {
     func logOut() {
         // This method will remain empty; mock implementation does not perform login
     }
-    
-    //swiftlint:disable all
+
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        if let apiMethod = resource.method as? APIMethod {
-            switch apiMethod {                
+        guard let apiMethod = resource.method as? APIMethod else { return }
+
+        switch apiMethod {
+
             case .document(let id):
-                switch (id, resource.params.method) {
-                case (SessionManagerMock.v1DocumentId, .get):
-                    let document: Document = load(fromFile: "document", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.v1DocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                case (SessionManagerMock.partialDocumentId, .get):
-                    let document: Document = load(fromFile: "partialDocument", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.partialDocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                case (SessionManagerMock.compositeDocumentId, .get):
-                    let document: Document = load(fromFile: "compositeDocument", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.compositeDocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                default:
-                    fatalError("Document id not found in tests")
-                }
-            case .createDocument(_, _, _, _):
-                completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
-            case .paymentRequest(_):
-                let paymentRequest: PaymentRequest = loadPaymentRequest()
-                completion(.success(paymentRequest as! T.ResponseType))
-            case .resolvePaymentRequest(_):
-                let paymentRequest: ResolvedPaymentRequest = loadResolvedPaymentRequest()
-                completion(.success(paymentRequest as! T.ResponseType))
-            case .payment(_):
-                let payment: Payment = loadPayment()
-                completion(.success(payment as! T.ResponseType))
-            case .feedback(_):
-                extractionFeedbackBody = resource.request?.httpBody ?? nil
-                completion(.success("Feedback was sent" as! T.ResponseType))
+                handleDocument(id: id,
+                               method: resource.params.method,
+                               completion: completion)
+
+            case .createDocument:
+                deliver(SessionManagerMock.compositeDocumentId, to: completion)
+
+            case .paymentRequest:
+                deliver(loadPaymentRequest(), to: completion)
+
+            case .resolvePaymentRequest:
+                deliver(loadResolvedPaymentRequest(), to: completion)
+
+            case .payment:
+                deliver(loadPayment(), to: completion)
+
+            case .feedback:
+                extractionFeedbackBody = resource.request?.httpBody
+                deliver("Feedback was sent", to: completion)
+
             case .logErrorEvent:
-                logErrorEventBody = resource.request?.httpBody ?? nil
-                completion(.success("Logged" as! T.ResponseType))
-            default: break
-            }
+                logErrorEventBody = resource.request?.httpBody
+                deliver("Logged", to: completion)
+
+            default:
+                break
         }
     }
-    
+
+    // MARK: - Document branch
+
+    private func handleDocument<ResponseType>(id: String,
+                                              method: HTTPMethod,
+                                              completion: @escaping (Result<ResponseType, GiniError>) -> Void) {
+        let fileById: [String: String] = [
+            SessionManagerMock.v1DocumentId: "document",
+            SessionManagerMock.partialDocumentId: "partialDocument",
+            SessionManagerMock.compositeDocumentId: "compositeDocument"
+        ]
+
+        switch method {
+        case .get:
+            guard let filename = fileById[id] else {
+                fatalError("Document id not found in tests")
+            }
+            let document: Document = load(fromFile: filename, type: "json")
+            deliver(document, to: completion)
+
+        case .delete:
+            documents.removeAll { $0.id == id }
+            deliver("Deleted", to: completion)
+
+        default:
+            fatalError("Unsupported HTTP method for document")
+        }
+    }
+
+    /// Safely delivers a value to the completion handler, validating its type at runtime.
+    @inline(__always) // Hint to the compiler to always inline this small helper for performance.
+    private func deliver<Response>(_ value: Any,
+                                   to completion: @escaping (Result<Response, GiniError>) -> Void,
+                                   file: StaticString = #file, line: UInt = #line) {
+        if let typed = value as? Response {
+            completion(.success(typed))
+        } else {
+            // Avoids force-casting
+            fatalError("Type mismatch: expected \(Response.self), got \(type(of: value)) at \(file):\(line)")
+        }
+    }
+
+
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
