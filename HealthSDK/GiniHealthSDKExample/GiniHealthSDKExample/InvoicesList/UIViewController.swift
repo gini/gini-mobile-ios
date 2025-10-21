@@ -67,7 +67,6 @@ extension UIViewController {
         var cancelActionTitle = defaultCancel
         var confirmActionTitle = defaultConfirm
 
-
         switch pickerError {
         case .maxFilesPickedCountExceeded:
             confirmActionTitle = NSLocalizedString("ginicapture.camera.errorPopup.reviewPages",
