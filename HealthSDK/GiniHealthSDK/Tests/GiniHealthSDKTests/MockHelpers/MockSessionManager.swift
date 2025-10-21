@@ -49,7 +49,6 @@ final class MockSessionManager: SessionManagerProtocol {
         
         guard case let .document(id) = resource.method as! APIMethod else { return }
 
-        let document: Document?
 
         switch (id, resource.params.method) {
         case (MockSessionManager.payableDocumentID, .get):
@@ -89,7 +88,6 @@ final class MockSessionManager: SessionManagerProtocol {
         
         guard case let .extractions(documentId) = resource.method as! APIMethod else { return }
 
-        let extractionResults: ExtractionsContainer?
         
         switch (documentId, resource.params.method) {
         case (MockSessionManager.payableDocumentID, .get):
