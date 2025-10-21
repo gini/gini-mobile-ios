@@ -2,7 +2,7 @@
 //  PaymentTests.swift
 //  GiniBankAPI-Unit-Tests
 //
-//  Copyright © 2021 Gini GmbH. All rights reserved..
+//  Copyright © 2021 Gini GmbH. All rights reserved.
 //
 
 import XCTest
