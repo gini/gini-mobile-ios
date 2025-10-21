@@ -27,7 +27,8 @@ extension UIViewController {
             message = customValidationError.message
         case let pickerError as FilePickerError:
             message = pickerError.message
-            updateActionTitles(for: pickerError, cancelActionTitle: &cancelActionTitle, confirmActionTitle: &confirmActionTitle)
+            updateActionTitles(for: pickerError, cancelActionTitle: &cancelActionTitle,
+                               confirmActionTitle: &confirmActionTitle)
         default:
             message = DocumentValidationError.unknown.message
         }
