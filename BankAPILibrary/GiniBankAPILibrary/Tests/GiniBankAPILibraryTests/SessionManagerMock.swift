@@ -117,8 +117,6 @@ final class SessionManagerMock: SessionManagerProtocol {
         }
     }
 
-    /// Safely delivers a value to the completion handler, validating its type at runtime.
-    @inline(__always) // Hint to the compiler to always inline this small helper for performance.
     private func deliver<Response>(_ value: Any,
                                    to completion: @escaping (Result<Response, GiniError>) -> Void,
                                    file: StaticString = #file, line: UInt = #line) {
