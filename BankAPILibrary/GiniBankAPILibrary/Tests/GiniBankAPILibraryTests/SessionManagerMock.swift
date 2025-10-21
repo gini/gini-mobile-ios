@@ -152,7 +152,7 @@ final class SessionManagerMock: SessionManagerProtocol {
             guard let typedResponse = mockId as? T.ResponseType else {
                 assertionFailure("Mock response type mismatch")
                 return
-               }
+            }
 
             completion(.success(typedResponse))
 

@@ -12,7 +12,7 @@ import XCTest
 final class RequestTests: XCTestCase {
 
     let requestParameters = RequestParameters(method: .get,
-                                    headers: ["Accept": "application/vnd.gini.v1+json"])
+                                              headers: ["Accept": "application/vnd.gini.v1+json"])
         
     func testMethodInitialization() {
         let method: HTTPMethod = .get
