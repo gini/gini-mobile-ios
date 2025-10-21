@@ -46,8 +46,6 @@ final class MockSessionManager: SessionManagerProtocol {
 
         guard case let .document(id) = resource.method as! APIMethod else { return }
 
-        let document: Document?
-
         switch (id, resource.params.method) {
         case (MockSessionManager.payableDocumentID, .get):
             let document: Document? = load(fromFile: "document1", type: "json")
@@ -79,8 +77,6 @@ final class MockSessionManager: SessionManagerProtocol {
     private func handleExtractions<T>(resource: T,
                                       completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         guard case let .extractions(documentId) = resource.method as! APIMethod else { return }
-
-        let extractionResults: ExtractionsContainer?
 
         switch (documentId, resource.params.method) {
         case (MockSessionManager.payableDocumentID, .get):
