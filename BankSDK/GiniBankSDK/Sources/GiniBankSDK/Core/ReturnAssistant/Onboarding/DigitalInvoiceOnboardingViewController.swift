@@ -40,21 +40,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
 
-    private var firstLabelText: String {
-        return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1",
-                                                         comment: "title for digital invoice onboarding screen")
-    }
-
-    private var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
-                                                        comment: "title for digital invoice onboarding screen")
-    }
-
-    private var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
-                                                        comment: "title for digital invoice onboarding screen")
-    }
-
     private var doneButtonTapped: Bool = false
 
     override public func viewDidLoad() {
@@ -129,20 +114,20 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             topImageView.icon = topImage
         }
         topImageView.isAccessibilityElement = true
-        topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityValue = Strings.firstLabelText
         topImageView.accessibilityTraits = .image
         topImageView.setupView()
     }
 
     private func setupFirstLabel(with configuration: GiniBankConfiguration) {
-        firstLabel.text = firstLabelText
+        firstLabel.text = Strings.firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         firstLabel.adjustsFontForContentSizeCategory = true
     }
 
     private func setupSecondLabel(with configuration: GiniBankConfiguration) {
-        secondLabel.text = secondLabelText
+        secondLabel.text = Strings.secondLabelText
         secondLabel.font = configuration.textStyleFonts[.subheadline]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
@@ -150,7 +135,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private func setupDoneButton(with configuration: GiniBankConfiguration) {
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
-        doneButton.setTitle(doneButtonTitle, for: .normal)
+        doneButton.setTitle(Strings.doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
@@ -276,5 +261,19 @@ extension DigitalInvoiceOnboardingViewController {
 
     func isiPhoneAndLandscape() -> Bool {
         return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
+    }
+}
+
+private extension DigitalInvoiceOnboardingViewController {
+    struct Strings {
+
+        static let firstLabelText = giniLocalized("ginibank.digitalinvoice.onboarding.text1",
+                                                  comment: "RA onboarding screen first label")
+        
+        static let secondLabelText = giniLocalized("ginibank.digitalinvoice.onboarding.text2",
+                                                   comment: "RA onboarding screen second label")
+        
+        static let doneButtonTitle = giniLocalized("ginibank.digitalinvoice.onboarding.getStartedButton",
+                                                   comment: "RA onboarding screen getStartedButton")
     }
 }
