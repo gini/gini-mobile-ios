@@ -159,6 +159,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         // when the font size changes >= .accessibilityMedium, we need to update the bottom sheet to be full screen
         configureBottomSheet(shouldIncludeLargeDetent: shouldForceFullScreen)
         adjustPhoneLayoutForCurrentOrientation()
+        configureAccessibility()
     }
 
     // MARK: - Setup UI
@@ -328,14 +329,16 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.accessibilityTraits = .staticText
 
+        let isLandscape = UIDevice.current.isLandscape
         // Set explicit VoiceOver navigation order
-        view.accessibilityElements = [
-            iconImageView,
+        var elements: [Any] = isLandscape ? [] : [iconImageView]
+        elements += [
             headerLabel,
             descriptionLabel,
             buttonsViewContainer.primaryButton,
             buttonsViewContainer.secondaryButton
-        ].compactMap { $0 }
+        ]
+        view.accessibilityElements = elements.compactMap { $0 }
     }
 }
 extension InfoBottomSheetViewController {
