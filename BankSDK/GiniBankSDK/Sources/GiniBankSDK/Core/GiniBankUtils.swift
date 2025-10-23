@@ -59,10 +59,10 @@ func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
  comment: "RA onboarding screen first label")
  ```
  */
-func giniLocalized(_ key: String,
-                   fallback: String = "",
-                   comment: String = "",
-                   customizable: Bool = true) -> String {
+internal func giniLocalized(_ key: String,
+                            fallback: String = "",
+                            comment: String = "",
+                            customizable: Bool = true) -> String {
     return NSLocalizedStringPreferredGiniBankFormat(key,
                                                     fallbackKey: fallback,
                                                     comment: comment,
