@@ -347,9 +347,9 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.accessibilityTraits = .staticText
 
-        let isLandscape = UIDevice.current.isLandscape
+        let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
         // Set explicit VoiceOver navigation order
-        var elements: [Any] = isLandscape ? [] : [iconImageView]
+        var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
         elements += [
             headerLabel,
             descriptionLabel,
