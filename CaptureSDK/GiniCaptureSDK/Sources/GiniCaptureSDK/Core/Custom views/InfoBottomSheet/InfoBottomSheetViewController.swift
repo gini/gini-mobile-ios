@@ -140,6 +140,24 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         adjustPhoneLayoutForCurrentOrientation()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // On devices without a notch (i.e., no safe area insets at the top),
+        // viewSafeAreaInsetsDidChange() does not called on first appearance.
+        // So we manually trigger the layout adjustment here as a fallback.
+        if !UIDevice.current.hasNotch {
+            adjustPhoneLayoutForCurrentOrientation()
+        }
+    }
+
+    // This is reliably called on devices that does have a notch
+    // (i.e., have safe area insets)
+    public override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        adjustPhoneLayoutForCurrentOrientation()
+    }
+
     public override func viewWillTransition(to size: CGSize,
                                             with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
