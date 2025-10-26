@@ -9,6 +9,11 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 
+enum PaymentStatus: String {
+    case paid
+    case toBePaid = "tobepaid"
+}
+
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
     var childCoordinators: [Coordinator] { get set }
@@ -401,7 +406,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 handleSkontoScreenDisplay(extractionResult, delegate)
                 return
             }
-
+            
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
@@ -508,19 +513,19 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
-        let documentIsPaid = isDocumentMarkedAsPaid(extractionResult)
+        let documentIsPaid = isDocumentMarked(withStatus: .paid, for: extractionResult)
 
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
     }
 
-    func isDocumentMarkedAsPaid(_ extractionResult: ExtractionResult) -> Bool {
+    func isDocumentMarked(withStatus status: PaymentStatus, for extractionResult: ExtractionResult) -> Bool {
         guard let paymentState = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
             .value else {
             return false
         }
 
-        return paymentState.lowercased() == "paid"
+        return paymentState.lowercased() == status.rawValue.lowercased()
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
@@ -531,6 +536,11 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func shouldShowSkonto(for result: ExtractionResult) -> Bool {
         giniBankConfiguration.skontoEnabled &&
         !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func shouldShowDueDateHint(for result: ExtractionResult) -> Bool {
+        let documentIsTobePaid = isDocumentMarked(withStatus: .toBePaid, for: result)
+        return documentIsTobePaid
     }
 
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
