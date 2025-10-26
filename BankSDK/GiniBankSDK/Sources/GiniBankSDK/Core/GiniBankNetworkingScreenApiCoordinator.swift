@@ -406,20 +406,31 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 handleSkontoScreenDisplay(extractionResult, delegate)
                 return
             }
-            
+
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
-        // Check if payment hints should be shown
-        let shouldShowPaymentHints = determineIfPaymentHintsEnabled(for: extractionResult)
+        /// Step 1: Check if payment hints feature is enabled
+        guard determineIfPaymentHintsEnabled(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
 
-        if shouldShowPaymentHints {
+        /// Step 2: Check document status for multiple states
+        let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
+
+        switch documentPaymentStatus {
+        case .paid:
             presentDocumentMarkedAsPaidBottomSheet {
                 continueWithFeatureFlow()
             }
-        } else {
+        case .toBePaid:
+            /// Update loading message or show hint
+            print("I am to be paid")
+        case .none:
             continueWithFeatureFlow()
         }
+
     }
 
     // MARK: - Deliver with Return Assistant
@@ -513,19 +524,19 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
-        let documentIsPaid = isDocumentMarked(withStatus: .paid, for: extractionResult)
 
-        return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
 
-    func isDocumentMarked(withStatus status: PaymentStatus, for extractionResult: ExtractionResult) -> Bool {
+    /// Returns the payment state of the document, if available
+    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
         guard let paymentState = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
             .value else {
-            return false
+            return nil
         }
 
-        return paymentState.lowercased() == status.rawValue.lowercased()
+        return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
@@ -539,8 +550,8 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     func shouldShowDueDateHint(for result: ExtractionResult) -> Bool {
-        let documentIsTobePaid = isDocumentMarked(withStatus: .toBePaid, for: result)
-        return documentIsTobePaid
+        let documentIsTobePaid = getDocumentPaymentState(for: result)
+        return (documentIsTobePaid != nil)
     }
 
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
