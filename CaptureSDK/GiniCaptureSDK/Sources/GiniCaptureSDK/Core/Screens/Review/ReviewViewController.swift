@@ -200,6 +200,22 @@ public final class ReviewViewController: UIViewController {
         return view
     }()
 
+    private lazy var buttonContainerWrapper: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        return view
+    }()
+
+    private lazy var reviewOptionsContainer: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [saveToGalleryView])
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .vertical
+
+        return view
+    }()
+
     private var bottomNavigationBar: UIView?
 
     private var loadingIndicatorView: UIActivityIndicatorView = {
@@ -233,13 +249,19 @@ public final class ReviewViewController: UIViewController {
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ]
 
-    private lazy var contenViewConstraints: [NSLayoutConstraint] = [
-        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
-        contentView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
-    ]
+    private lazy var contenViewConstraints: [NSLayoutConstraint] = {
+        let heightConstraint = contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        heightConstraint.priority = .defaultLow
+
+        return [
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            heightConstraint,
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
+        ]
+    }()
 
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
         tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
@@ -254,11 +276,17 @@ public final class ReviewViewController: UIViewController {
             tipLabelConstraints[2]
         ]
     }
-    private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
-        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
-        collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        collectionViewHeightConstraint]
+    private lazy var collectionViewConstraints: [NSLayoutConstraint] = {
+        let trailingConstraint = collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        trailingConstraint.priority = .defaultLow
+
+        return [
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            trailingConstraint,
+            collectionViewHeightConstraint
+        ]
+    }()
 
     private lazy var pageControlConstraints: [NSLayoutConstraint] = [
         pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor,
@@ -276,29 +304,24 @@ public final class ReviewViewController: UIViewController {
                                               constant: -Constants.trailingCollectionPadding)
     ]
 
-    private lazy var saveToGalleryConstraints: [NSLayoutConstraint] = {
-        guard shouldShowSaveToGalleryView else { return [] }
+    private lazy var reviewOptionsContainerConstraints: [NSLayoutConstraint] = [
+        reviewOptionsContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                                    constant: Constants.saveToGalleryTopConstant(pages.count)),
+        reviewOptionsContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                        constant: Constants.padding),
+        reviewOptionsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                         constant: -Constants.padding),
+        reviewOptionsContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                       constant: -Constants.bottomPadding)
+    ]
 
-        return [saveToGalleryView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
-                                                       constant: Constants.saveToGalleryTopConstant(pages.count)),
-                saveToGalleryView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                           constant: Constants.padding),
-                saveToGalleryView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                            constant: -Constants.padding)
-        ]
-    }()
-
-    private lazy var saveToGalleryHorizontalConstraints: [NSLayoutConstraint] = {
-        guard shouldShowSaveToGalleryView else { return [] }
-
-        return [saveToGalleryView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                                       constant: 37.0),
-                saveToGalleryView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                            constant: -Constants.padding),
-                saveToGalleryView.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor,
-                                                           constant: Constants.padding)
-        ]
-    }()
+    private lazy var reviewOptionsContainerHorizontalConstraints: [NSLayoutConstraint] = [
+        reviewOptionsContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+        reviewOptionsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                         constant: -Constants.padding),
+        reviewOptionsContainer.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor,
+                                                        constant: Constants.padding)
+    ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
@@ -306,42 +329,10 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
-                                             constant: Constants.largePadding),
-        buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
-                                              constant: -Constants.bottomPadding),
-        buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor)
+        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor),
+        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor),
+        buttonContainer.centerXAnchor.constraint(equalTo: reviewOptionsContainer.centerXAnchor)
     ]
-
-    private lazy var buttonContainerWithSaveToGalleryConstraints: [NSLayoutConstraint] = {
-        guard shouldShowSaveToGalleryView else { return [] }
-
-        return [buttonContainer.topAnchor.constraint(equalTo: saveToGalleryView.bottomAnchor,
-                                                    constant: Constants.saveToGalleryBottomConstant),
-                buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-                buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
-                                                      constant: -Constants.bottomPadding)
-        ]
-    }()
-
-    private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
-        buttonContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                  constant: -Constants.buttonContainerHorizontalTrailingPadding(false)),
-        buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-    ]
-
-    private lazy var buttonContainerWithSaveToGalleryHorizontalConstraints: [NSLayoutConstraint] = {
-        guard shouldShowSaveToGalleryView else { return [] }
-
-        return [buttonContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                          constant: -Constants.buttonContainerHorizontalTrailingPadding(true)),
-                buttonContainer.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor,
-                                                         constant: Constants.padding),
-                buttonContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                        constant: -Constants.bottomPadding)
-        ]
-    }()
 
     private lazy var bottomNavigationBarAdditionalConstraints: [NSLayoutConstraint] = [
         pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
@@ -482,13 +473,14 @@ extension ReviewViewController {
         }
 
         let isLandscape = UIDevice.current.isLandscape
+        buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
         if isLandscape {
-            buttonContainer.axis = shouldShowSaveToGalleryView ? .horizontal : .vertical
-            buttonContainer.spacing = shouldShowSaveToGalleryView ? Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
+            buttonContainer.spacing = shouldShowSaveToGalleryView ?
+            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
         } else {
-            buttonContainer.axis = .horizontal
             buttonContainer.spacing = Constants.buttonContainerSpacing
+            reviewOptionsContainer.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         }
 
         if giniConfiguration.bottomNavigationBarEnabled {
@@ -505,24 +497,18 @@ extension ReviewViewController {
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
         trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
+        trailingConstraints.first?.priority = isLandscape ? .defaultLow : .required
 
-        // Define constraints based on whether SaveToGalleryView should be shown
-        let portraitButtonConstraints = shouldShowSaveToGalleryView
-            ? buttonContainerWithSaveToGalleryConstraints
-            : buttonContainerConstraints
+        let portraitButtonConstraints = buttonContainerConstraints
 
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
             ? (bottomNavigationBarAdditionalConstraints + pageControlConstraints)
             : (portraitButtonConstraints
                + pageControlConstraints
-               + (shouldShowSaveToGalleryView ? saveToGalleryConstraints : []))
-
-        let landscapeButtonConstraints = shouldShowSaveToGalleryView
-            ? buttonContainerWithSaveToGalleryHorizontalConstraints
-            : buttonContainerHorizontalConstraints
+               + reviewOptionsContainerConstraints)
 
         let constraintsToActivate = isLandscape
-            ? landscapeButtonConstraints + pageControlHorizontalConstraints + saveToGalleryHorizontalConstraints
+            ?  pageControlHorizontalConstraints + reviewOptionsContainerHorizontalConstraints
             : portraitConstraintsToActivate
 
         let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled
@@ -531,15 +517,13 @@ extension ReviewViewController {
 
         let portraitConstraintsToDeactivate = pageControlHorizontalConstraints
             + portraitBottomBarConstraintsToDeactivate
-            + buttonContainerWithSaveToGalleryHorizontalConstraints
-            + buttonContainerHorizontalConstraints
-            + saveToGalleryHorizontalConstraints
+            + reviewOptionsContainerHorizontalConstraints
 
         let constraintsToDeactivate = isLandscape
             ? bottomNavigationBarAdditionalConstraints
-            + portraitButtonConstraints
             + pageControlConstraints
-            + saveToGalleryConstraints
+            + portraitButtonConstraints
+            + reviewOptionsContainerConstraints
             : portraitConstraintsToDeactivate
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
@@ -556,13 +540,15 @@ extension ReviewViewController {
         contentView.addSubview(tipLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
+        contentView.addSubview(reviewOptionsContainer)
 
         if giniConfiguration.multipageEnabled {
             buttonContainer.addArrangedSubview(addPagesButton)
         }
 
         if !giniConfiguration.bottomNavigationBarEnabled {
-            contentView.addSubview(buttonContainer)
+            buttonContainerWrapper.addSubview(buttonContainer)
+            reviewOptionsContainer.addArrangedSubview(buttonContainerWrapper)
         }
 
         edgesForExtendedLayout = []
@@ -660,15 +646,7 @@ extension ReviewViewController {
     }
 
     private func updateViewForNewPages() {
-        if shouldShowSaveToGalleryView {
-            if saveToGalleryView.superview == nil {
-                contentView.addSubview(saveToGalleryView)
-                saveToGalleryView.translatesAutoresizingMaskIntoConstraints = false
-            }
-        } else {
-            saveToGalleryView.removeFromSuperview()
-        }
-
+        saveToGalleryView.isHidden = !shouldShowSaveToGalleryView
         updateLayoutBasedOnIphoneOrientation()
     }
 }
@@ -684,6 +662,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(processButtonConstraints)
+        NSLayoutConstraint.activate(pageControlConstraints)
 
         updateLayoutBasedOnIphoneOrientation()
     }
