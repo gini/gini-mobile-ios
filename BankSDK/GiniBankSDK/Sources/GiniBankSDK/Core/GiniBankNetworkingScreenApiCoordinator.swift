@@ -426,9 +426,22 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             }
         case .toBePaid:
             /// Update loading message or show hint
-            print("I am to be paid")
+            if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+                analysisVC.updateLoadingText("I am to be paid")
+                Task { @MainActor in
+                    await analysisVC.waitForContinueOrTimeout(timeout: 4)
+                    //continueWithFeatureFlow()
+                }
+                
+            }
         case .none:
             continueWithFeatureFlow()
+        }
+    }
+    
+    private func handlingHintForDueDate() {
+        if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+            analysisVC.updateLoadingText("I am to be paid")
         }
 
     }
