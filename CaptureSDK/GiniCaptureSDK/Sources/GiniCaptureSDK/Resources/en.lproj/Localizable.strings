@@ -229,3 +229,7 @@
 "ginicapture.document.paid.warning.description" = "This document states that it has already been paid. Please check the note in the document to be sure.";
 "ginicapture.document.paid.warning.proceedButtonTitle" = "Proceed anyway";
 "ginicapture.document.paid.warning.cancelButtonTitle" = "Cancel transfer";
+
+// MARK: - Document has payment due date
+"ginicapture.payment.due.hint.prefix" = "TIP:";
+"ginicapture.payment.due.hint.suggestion" = "TIP: Your invoice is due on %@. You could set it up as a scheduled transfer.";
