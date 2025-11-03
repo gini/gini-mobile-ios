@@ -128,9 +128,9 @@ extension PaymentDueHintView {
 private extension PaymentDueHintView {
     struct Constants {
         static let iconSize: CGFloat = 18
-        static let iconTextSpacing: CGFloat = 10
+        static let iconTextSpacing: CGFloat = 8
         static let cornerRadius: CGFloat = 8
-        static let contentPadding: CGFloat = 12
+        static let contentPadding: CGFloat = 10
     }
 }
 
