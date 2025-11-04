@@ -421,24 +421,28 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
         switch documentPaymentStatus {
         case .paid:
+            /// show pop up for paid invoice
             presentDocumentMarkedAsPaidBottomSheet {
                 continueWithFeatureFlow()
             }
         case .toBePaid:
-            /// Update loading message or show hint
-            if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
-                analysisVC.updateLoadingText("I am to be paid")
+            /// Show payment due date hint if available
+            if let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+               let handler = paymentDueDateHandler {
                 Task { @MainActor in
-                    await analysisVC.waitForContinueOrTimeout(timeout: 4)
-                    //continueWithFeatureFlow()
+                    handler.handlePaymentDueDate(dueDate)
+                    await handler.clearPaymentDueDate(after: 4)
                 }
-                
+            } else {
+                continueWithFeatureFlow()
+
             }
+
         case .none:
             continueWithFeatureFlow()
         }
     }
-    
+
     private func handlingHintForDueDate() {
         if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
             analysisVC.updateLoadingText("I am to be paid")
@@ -550,6 +554,20 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         }
 
         return PaymentStatus(rawValue: paymentState.lowercased())
+    }
+    
+    /// Returns the due date  of the document, if available
+    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> String? {
+        // Try to find the extraction with the key "paymentDueDate"
+        guard let dueDate = extractionResult.extractions
+                .first(where: { $0.name == "paymentDueDate" })?
+                .value,
+              !dueDate.isEmpty else {
+            // Return nil if key not found or value is empty
+            return nil
+        }
+        
+        return dueDate
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
