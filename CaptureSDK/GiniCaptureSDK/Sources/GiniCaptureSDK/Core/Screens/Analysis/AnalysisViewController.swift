@@ -390,10 +390,29 @@ import UIKit
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
     }
+    
+    // MARK: Due Date Configurations
+    func configureDueHintView(withDate:String) {
+        
+        let hintView = PaymentDueHintView()
+        self.view.addSubview(hintView)
+        
+        hintView.giniMakeConstraints {
+            $0.top.equalTo(view.top)
+            $0.horizontal.equalToSuperview().constant(20)
+        }
+
+    }
 }
 
 extension AnalysisViewController: PaymentDueDateHandling {
     public func handlePaymentDueDate(_ dueDate: String) {
+        /// remove suggetsion while handling due date
+        removeCaptureSuggestions()
+        
+        /// show due hint view
+        configureDueHintView(withDate: dueDate)
+        
         print("handlePaymentDueDate: \(dueDate)")
     }
 
