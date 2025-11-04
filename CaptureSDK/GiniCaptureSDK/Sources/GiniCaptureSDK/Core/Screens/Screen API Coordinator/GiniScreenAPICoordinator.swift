@@ -12,11 +12,23 @@ protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
 
+/// Defines how a view can show and hide a payment due date message.
+public protocol PaymentDueDateHandling: AnyObject {
+
+    /// Show the payment due date text
+    func handlePaymentDueDate(_ dueDate: String)
+
+    /// Hide the payment due date after a delay (in seconds)
+    func clearPaymentDueDate(after timeout: TimeInterval) async
+}
+
 open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     var rootViewController: UIViewController {
         return screenAPINavigationController
     }
+    public weak var paymentDueDateHandler: PaymentDueDateHandling?
+
 
     public lazy var screenAPINavigationController: UINavigationController = {
         var navigationController: UINavigationController
@@ -328,6 +340,7 @@ extension GiniScreenAPICoordinator {
         }
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
+        paymentDueDateHandler = analysisViewController
         screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
     }
 
