@@ -24,7 +24,7 @@ final class PaymentDueHintView: UIView {
         label.numberOfLines = 0
         label.textColor = GiniColor(light: .GiniCapture.warning2,
                                     dark: .GiniCapture.warning4).uiColor()
-        label.font = GiniConfiguration.shared.textStyleFonts[.captions2]
+        label.font = GiniConfiguration.shared.textStyleFonts[.caption1]
 
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ final class PaymentDueHintView: UIView {
         let fullText = Strings.hint
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        if let boldFont = GiniConfiguration.shared.textStyleFonts[.calloutBold] {
+        if let boldFont = GiniConfiguration.shared.textStyleFonts[.caption1SemiBold] {
             let prefixRange = (fullText as NSString).range(of: Strings.hintPrefix)
             attributedText.addAttribute(.font,
                                         value: boldFont,
