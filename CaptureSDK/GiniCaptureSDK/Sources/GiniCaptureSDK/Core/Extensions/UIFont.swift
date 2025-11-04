@@ -34,4 +34,5 @@ extension UIFont.TextStyle {
     public static let footnoteBold: UIFont.TextStyle = .init(rawValue: "kFootnoteBold")
     public static let title2Bold: UIFont.TextStyle = .init(rawValue: "kTitle2Bold")
     public static let title1Bold: UIFont.TextStyle = .init(rawValue: "kTitle1Bold")
+    public static let caption1SemiBold: UIFont.TextStyle = .init(rawValue: "KCaption1SemiBold")
 }
