@@ -392,6 +392,16 @@ import UIKit
     }
 }
 
+extension AnalysisViewController: PaymentDueDateHandling {
+    public func handlePaymentDueDate(_ dueDate: String) {
+        print("handlePaymentDueDate: \(dueDate)")
+    }
+
+    public func clearPaymentDueDate(after timeout: TimeInterval) async {
+        print("clearPaymentDueDate: \(timeout)")
+    }
+}
+
 private extension AnalysisViewController {
     enum Constants {
         static let padding: CGFloat = 16
