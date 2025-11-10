@@ -443,13 +443,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    private func handlingHintForDueDate() {
-        if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
-            analysisVC.updateLoadingText("I am to be paid")
-        }
-
-    }
-
     // MARK: - Deliver with Return Assistant
     private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
