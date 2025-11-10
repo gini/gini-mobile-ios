@@ -8,6 +8,8 @@ import UIKit
 
 final class DismissMessageView: UIView {
 
+    var onTap: (() -> Void)?
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +31,7 @@ final class DismissMessageView: UIView {
         let progress = UIProgressView(progressViewStyle: .default)
         progress.progressTintColor = .GiniCapture.accent1
         progress.trackTintColor = .darkGray
-        progress.progress = 0.3
+        progress.progress = 0.0
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
     }()
@@ -39,6 +41,8 @@ final class DismissMessageView: UIView {
         super.init(frame: frame)
         setupView()
         setupConstraints()
+        setProgress()
+        setupGesture()
     }
 
     required init?(coder: NSCoder) {
@@ -57,6 +61,17 @@ final class DismissMessageView: UIView {
         addSubview(progressView)
     }
 
+    private func setupGesture() {
+        isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tap)
+    }
+
+    // MARK: - Actions
+    @objc private func handleTap() {
+        onTap?()
+    }
+
     private func setupConstraints() {
         titleLabel.giniMakeConstraints {
             $0.top.equalToSuperview().constant(Constants.verticalSpacing)
@@ -73,11 +88,19 @@ final class DismissMessageView: UIView {
         }
     }
 
-    // MARK: - Public Method
-    func setProgress(_ value: Float, animated: Bool = true) {
-        progressView.setProgress(value, animated: animated)
-    }
+    private func setProgress(duration: TimeInterval = 4.0, animated: Bool = true) {
 
+        let interval = 0.01
+        var elapsed: TimeInterval = 0
+
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
+            elapsed += interval
+            self.progressView.progress = Float(elapsed / duration)
+            if elapsed >= duration {
+                timer.invalidate()
+            }
+        }
+    }
 }
 
 // MARK: - Strings
