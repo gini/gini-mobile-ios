@@ -429,9 +429,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             /// Show payment due date hint if available
             if let dueDate = getDocumentPaymentDueDate(for: extractionResult),
                let handler = paymentDueDateHandler {
-                Task { @MainActor in
+                Task {
                     handler.handlePaymentDueDate(dueDate)
                     await handler.clearPaymentDueDate(after: 4)
+                    continueWithFeatureFlow()
                 }
             } else {
                 continueWithFeatureFlow()
