@@ -139,6 +139,7 @@ struct PaymentDueHintView_Preview: PreviewProvider {
         GiniViewControllerPreview {
             let viewController = UIViewController()
             let hintView = PaymentDueHintView()
+            hintView.configure(withDueDate: "22-12-2023")
 
             viewController.view.backgroundColor = GiniColor(light: .GiniCapture.light2,
                                                             dark: .GiniCapture.dark2).uiColor()
@@ -155,29 +156,3 @@ struct PaymentDueHintView_Preview: PreviewProvider {
     }
 }
 #endif
-
-/*
- public func waitForContinueOrTimeout(timeout: TimeInterval = 4.0) async {
- await withCheckedContinuation { continuation in
- var didContinue = false
-
- // Store the continuation to call once
- let callOnce: () -> Void = {
- guard !didContinue else { return }
- didContinue = true
- continuation.resume()
- }
-
- // Button tap
- self.continueButtonTapped = {
- callOnce()
- }
-
- // Timeout
- DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
- callOnce()
- }
- }
- }
-
- */
