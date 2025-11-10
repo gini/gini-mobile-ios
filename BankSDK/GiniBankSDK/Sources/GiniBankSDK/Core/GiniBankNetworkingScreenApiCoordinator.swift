@@ -428,7 +428,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         case .toBePaid:
             /// Show payment due date hint if available
             if let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-               let handler = paymentDueDateHandler {
+               let handler = paymentDueDateHandler,
+               !shouldShowReturnAssistant(for: extractionResult),
+               !shouldShowSkonto(for: extractionResult) {
                 Task {
                     handler.handlePaymentDueDate(dueDate)
                     await handler.clearPaymentDueDate(after: 4)
@@ -436,7 +438,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 }
             } else {
                 continueWithFeatureFlow()
-
+                
             }
 
         case .none:
@@ -558,6 +560,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                 .value,
               !dueDate.isEmpty else {
             // Return nil if key not found or value is empty
+            print("Not found paymentDueDate")
             return nil
         }
         
