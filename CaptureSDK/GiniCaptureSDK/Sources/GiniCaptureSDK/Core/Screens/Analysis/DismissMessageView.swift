@@ -52,12 +52,13 @@ final class DismissMessageView: UIView {
 
     private func setupConstraints() {
         titleLabel.giniMakeConstraints {
-            $0.top.equalToSuperview().constant(Constants.padding)
+            $0.top.equalToSuperview().constant(Constants.verticalSpacing)
             $0.leading.equalToSuperview().constant(Constants.horizontalPadding)
             $0.trailing.equalToSuperview().constant(-Constants.horizontalPadding)
         }
 
         progressView.giniMakeConstraints {
+            $0.top.equalTo(titleLabel.bottom).constant(Constants.verticalSpacing)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
@@ -86,7 +87,7 @@ private extension DismissMessageView {
         static let cornerRadius: CGFloat = 14
         static let borderWidth: CGFloat = 1
         static let progressHeight: CGFloat = 6
-        static let padding: CGFloat = 8
+        static let verticalSpacing: CGFloat = 14
         static let horizontalPadding: CGFloat = 16
     }
 }
