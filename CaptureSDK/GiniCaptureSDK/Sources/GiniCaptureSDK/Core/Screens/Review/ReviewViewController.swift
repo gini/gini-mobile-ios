@@ -244,8 +244,8 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var scrollViewConstraints: [NSLayoutConstraint] = [
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ]
 
@@ -263,26 +263,25 @@ public final class ReviewViewController: UIViewController {
         ]
     }()
 
-    private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
-        tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                          constant: Constants.tipLabelPadding),
-        tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-    ]
+    private lazy var tipLabelConstraints: [NSLayoutConstraint] = {
+        let trailingConstraint = tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        trailingConstraint.priority = .defaultLow
 
-    private var trailingConstraints: [NSLayoutConstraint] {
-        [
-            collectionViewConstraints[2],
-            tipLabelConstraints[2]
+        return [
+            tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                              constant: Constants.tipLabelPadding),
+            trailingConstraint
         ]
-    }
+    }()
+
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = {
         let trailingConstraint = collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         trailingConstraint.priority = .defaultLow
 
         return [
             collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
-            collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trailingConstraint,
             collectionViewHeightConstraint
         ]
@@ -496,15 +495,9 @@ extension ReviewViewController {
         bottomNavigationBar?.alpha = isLandscape ? 0 : 1
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
-        trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
-        trailingConstraints.first?.priority = isLandscape ? .defaultLow : .required
-
-        let portraitButtonConstraints = buttonContainerConstraints
-
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
             ? (bottomNavigationBarAdditionalConstraints + pageControlConstraints)
-            : (portraitButtonConstraints
-               + pageControlConstraints
+            : (pageControlConstraints
                + reviewOptionsContainerConstraints)
 
         let constraintsToActivate = isLandscape
@@ -522,7 +515,6 @@ extension ReviewViewController {
         let constraintsToDeactivate = isLandscape
             ? bottomNavigationBarAdditionalConstraints
             + pageControlConstraints
-            + portraitButtonConstraints
             + reviewOptionsContainerConstraints
             : portraitConstraintsToDeactivate
 
@@ -662,7 +654,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(processButtonConstraints)
-        NSLayoutConstraint.activate(pageControlConstraints)
+        NSLayoutConstraint.activate(buttonContainerConstraints)
 
         updateLayoutBasedOnIphoneOrientation()
     }

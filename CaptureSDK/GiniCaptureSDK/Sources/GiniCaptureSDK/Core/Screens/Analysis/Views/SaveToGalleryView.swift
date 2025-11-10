@@ -8,29 +8,35 @@ import UIKit
 
 final class SaveToGalleryView: UIView {
 
-    private var titleLabel: UILabel! {
-        didSet {
-            titleLabel.text = Strings.titleLabel
-            titleLabel.font = configuration.textStyleFonts[.callout]
-        }
-    }
-
-    private var descriptionLabel: UILabel! {
-        didSet {
-            descriptionLabel.text = Strings.descriptionLabel
-            descriptionLabel.numberOfLines = 0
-            descriptionLabel.font = configuration.textStyleFonts[.caption2]
-        }
-    }
-
-    private var enabledSwitch: UISwitch! {
-        didSet {
-            enabledSwitch.onTintColor = GiniColor(light: .GiniCapture.accent1,
-                                                dark: .GiniCapture.accent1).uiColor()
-
-            enabledSwitch.addTarget(self, action: #selector(didToggleSwitch(_:)), for: .valueChanged)
-        }
-    }
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = Strings.titleLabel
+        label.font = configuration.textStyleFonts[.callout]
+        
+        return label
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = Strings.descriptionLabel
+        label.numberOfLines = 0
+        label.font = configuration.textStyleFonts[.caption2]
+        
+        return label
+    }()
+    
+    private lazy var enabledSwitch: UISwitch = {
+        let toggle = UISwitch()
+        
+        toggle.onTintColor = GiniColor(light: .GiniCapture.accent1,
+                                       dark: .GiniCapture.accent1).uiColor()
+        
+        toggle.addTarget(self, action: #selector(didToggleSwitch(_:)), for: .valueChanged)
+        
+        return toggle
+    }()
 
     private let configuration = GiniConfiguration.shared
 
@@ -59,8 +65,6 @@ final class SaveToGalleryView: UIView {
     }
 
     private func addTitleLabel() {
-        titleLabel = UILabel()
-
         addSubview(titleLabel)
 
         titleLabel.giniMakeConstraints {
@@ -70,8 +74,6 @@ final class SaveToGalleryView: UIView {
     }
 
     private func addDescriptionLabel() {
-        descriptionLabel = UILabel()
-
         addSubview(descriptionLabel)
 
         descriptionLabel.giniMakeConstraints {
@@ -82,8 +84,6 @@ final class SaveToGalleryView: UIView {
     }
 
     private func addEnabledSwitch() {
-        enabledSwitch = UISwitch()
-
         addSubview(enabledSwitch)
 
         enabledSwitch.giniMakeConstraints {
