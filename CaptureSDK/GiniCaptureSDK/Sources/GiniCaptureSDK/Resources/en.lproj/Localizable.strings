@@ -233,3 +233,4 @@
 // MARK: - Document has payment due date
 "ginicapture.payment.due.hint.prefix" = "Tip:";
 "ginicapture.payment.due.hint.suggestion" = "Tip: Your invoice is due on %@. You could set it up as a scheduled transfer.";
+"ginicapture.dismiss.message.title" = "Dismiss Message";
