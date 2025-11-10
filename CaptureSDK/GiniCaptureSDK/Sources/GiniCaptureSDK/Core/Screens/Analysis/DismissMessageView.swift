@@ -10,11 +10,18 @@ final class DismissMessageView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = Strings.dismissTitle
-        label.font = GiniConfiguration.shared.textStyleFonts[.bodyBold]
-        label.textColor = UIColor.darkGray
-        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+
+        label.text = Strings.dismissTitle
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+
+        label.textColor = .darkGray
+        label.font = GiniConfiguration.shared.textStyleFonts[.bodyBold]
+
+        label.adjustsFontForContentSizeCategory = true
+
         return label
     }()
 
