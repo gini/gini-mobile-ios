@@ -8,12 +8,10 @@ import UIKit
 
 final class PaymentDueHintView: UIView {
 
-    // MARK: - Subviews
     private lazy var infoIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.image =  UIImageNamedPreferred(named: "hintInfoIcon")
-        imageView.tintColor = GiniColor(light: .GiniCapture.warning2,
-                                        dark: .GiniCapture.warning4).uiColor()
+        imageView.tintColor = .GiniCapture.warning2
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -22,23 +20,12 @@ final class PaymentDueHintView: UIView {
     private lazy var tipLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = GiniColor(light: .GiniCapture.warning2,
-                                    dark: .GiniCapture.warning4).uiColor()
+        label.textColor = .GiniCapture.warning2
         label.font = GiniConfiguration.shared.textStyleFonts[.caption1]
 
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        let fullText = Strings.hint
-        let attributedText = NSMutableAttributedString(string: fullText)
-
-        if let boldFont = GiniConfiguration.shared.textStyleFonts[.caption1SemiBold] {
-            let prefixRange = (fullText as NSString).range(of: Strings.hintPrefix)
-            attributedText.addAttribute(.font,
-                                        value: boldFont,
-                                        range: prefixRange)
-        }
-        label.attributedText = attributedText
         return label
     }()
 
@@ -54,18 +41,15 @@ final class PaymentDueHintView: UIView {
     private lazy var tipContainerView: UIView = {
         let container = UIView()
         container.layer.borderWidth = 1
-        container.layer.borderColor = GiniColor(light: .GiniCapture.warning2,
-                                                dark: .GiniCapture.warning4).uiColor().cgColor
+        container.layer.borderColor = UIColor.GiniCapture.warning2.cgColor
         container.layer.cornerRadius = Constants.cornerRadius
-        container.backgroundColor = GiniColor(light: .GiniCapture.warning5,
-                                              dark: .GiniCapture.warning1).uiColor()
+        container.backgroundColor = .GiniCapture.warning5
         container.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(tipHorizontalStack)
         return container
     }()
 
     // MARK: - Init
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -77,10 +61,24 @@ final class PaymentDueHintView: UIView {
     }
 
     // MARK: - Setup
-
     private func setupView() {
         backgroundColor = .clear
         addSubview(tipContainerView)
+    }
+
+    func configure(withDueDate dueDate: String) {
+
+        let format = Strings.hint
+        let fullText = String(format: format, dueDate)
+
+        let attributedText = NSMutableAttributedString(string: fullText)
+
+        if let boldFont = GiniConfiguration.shared.textStyleFonts[.caption1SemiBold] {
+            let prefixRange = (fullText as NSString).range(of: Strings.hintPrefix)
+            attributedText.addAttribute(.font, value: boldFont, range: prefixRange)
+        }
+
+        tipLabel.attributedText = attributedText
     }
 
     private func setupConstraints() {
@@ -124,7 +122,6 @@ extension PaymentDueHintView {
 }
 
 // MARK: - Constants
-
 private extension PaymentDueHintView {
     struct Constants {
         static let iconSize: CGFloat = 18
