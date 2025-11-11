@@ -19,7 +19,8 @@ final class DismissMessageView: UIView {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
 
-        label.textColor = .darkGray
+        label.textColor = GiniColor(light: .GiniCapture.dark6,
+                                    dark: .GiniCapture.light1).uiColor()
         label.font = GiniConfiguration.shared.textStyleFonts[.bodyBold]
 
         label.adjustsFontForContentSizeCategory = true
@@ -30,7 +31,7 @@ final class DismissMessageView: UIView {
     private lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .default)
         progress.progressTintColor = .GiniCapture.accent1
-        progress.trackTintColor = .darkGray
+        progress.trackTintColor =  GiniColor(light: .GiniCapture.light4, dark: .GiniCapture.light3).uiColor()
         progress.progress = 0.0
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
@@ -53,7 +54,7 @@ final class DismissMessageView: UIView {
     private func setupView() {
         backgroundColor = .clear
         layer.borderWidth = Constants.borderWidth
-        layer.borderColor = UIColor.systemGray5.cgColor
+        layer.borderColor = GiniColor(light: .GiniCapture.light4, dark: .GiniCapture.light1).uiColor().cgColor
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
 
@@ -129,14 +130,15 @@ struct DismissMessageView_Preview: PreviewProvider {
     static var previews: some View {
         GiniViewControllerPreview {
             let viewController = UIViewController()
-            viewController.view.backgroundColor = .lightGray
+            viewController.view.backgroundColor = GiniColor(light: .GiniCapture.light1,
+                                                            dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
 
             let dismissMessageView = DismissMessageView()
             viewController.view.addSubview(dismissMessageView)
 
             dismissMessageView.giniMakeConstraints {
                 $0.center.equalToSuperview()
-                $0.height.equalTo(50)
+                $0.height.equalTo(60)
                 $0.horizontal.equalToSuperview().constant(20)
             }
             return viewController
