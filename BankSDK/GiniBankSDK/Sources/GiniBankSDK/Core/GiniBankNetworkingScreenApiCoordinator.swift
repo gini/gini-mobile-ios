@@ -410,11 +410,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
-        /// Step 1: Check if payment hints feature is enabled
-        guard determineIfPaymentHintsEnabled(for: extractionResult) else {
-            continueWithFeatureFlow()
-            return
-        }
+//        /// Step 1: Check if payment hints feature is enabled
+//        guard determineIfPaymentHintsEnabled(for: extractionResult) else {
+//            continueWithFeatureFlow()
+//            return
+//        }
 
         /// Step 2: Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
@@ -427,14 +427,15 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             }
         case .toBePaid:
             /// Show payment due date hint if available
-            if let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+            if  determineIfPaymentDueHintEnabled(for: extractionResult),
+               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
                let handler = paymentDueDateHandler,
                !shouldShowReturnAssistant(for: extractionResult),
                !shouldShowSkonto(for: extractionResult) {
                 Task {
                     handler.handlePaymentDueDate(dueDate)
                     await handler.clearPaymentDueDate(after: 4)
-                    continueWithFeatureFlow()
+                    //continueWithFeatureFlow()
                 }
             } else {
                 continueWithFeatureFlow()
@@ -535,6 +536,14 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
     func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
+
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+    
+    func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        //paymentDueHintEnabled
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
 
