@@ -60,6 +60,10 @@ final class DismissMessageView: UIView {
 
         addSubview(titleLabel)
         addSubview(progressView)
+
+        isAccessibilityElement = true
+        accessibilityTraits = [.button]
+        accessibilityLabel = titleLabel.text
     }
 
     private func setupGesture() {
