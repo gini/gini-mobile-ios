@@ -25,7 +25,6 @@ final class PaymentDueHintView: UIView {
 
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
@@ -64,6 +63,8 @@ final class PaymentDueHintView: UIView {
     private func setupView() {
         backgroundColor = .clear
         addSubview(tipContainerView)
+
+        tipContainerView.isAccessibilityElement = true
     }
 
     func configure(withDueDate dueDate: String) {
@@ -79,6 +80,9 @@ final class PaymentDueHintView: UIView {
         }
 
         tipLabel.attributedText = attributedText
+
+        tipContainerView.accessibilityLabel = fullText
+        tipContainerView.accessibilityTraits = [.staticText]
     }
 
     private func setupConstraints() {
