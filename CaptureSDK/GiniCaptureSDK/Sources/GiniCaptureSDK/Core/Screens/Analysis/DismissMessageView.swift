@@ -81,7 +81,7 @@ final class DismissMessageView: UIView {
         }
 
         progressView.giniMakeConstraints {
-            $0.top.equalTo(titleLabel.bottom).constant(Constants.verticalSpacing)
+            $0.top.equalTo(titleLabel.bottom).constant(Constants.verticalSpacing/2)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
