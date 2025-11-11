@@ -432,10 +432,18 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                let handler = paymentDueDateHandler,
                !shouldShowReturnAssistant(for: extractionResult),
                !shouldShowSkonto(for: extractionResult) {
-                Task {
-                    handler.handlePaymentDueDate(dueDate)
-                    await handler.clearPaymentDueDate(after: 4)
-                    //continueWithFeatureFlow()
+                
+                let threshold = giniBankConfiguration.paymentDueHintThresholdDays
+                
+                if dueDate.isDueSoon(within: threshold) {
+                    Task {
+                        handler.handlePaymentDueDate(dueDate.toDisplayString())
+                        await handler.clearPaymentDueDate(after: 4)
+                        //continueWithFeatureFlow()
+                    }
+                }
+                else {
+                    continueWithFeatureFlow()
                 }
             } else {
                 continueWithFeatureFlow()
@@ -562,7 +570,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
     
     /// Returns the due date  of the document, if available
-    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> String? {
+    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
         // Try to find the extraction with the key "paymentDueDate"
         guard let dueDate = extractionResult.extractions
                 .first(where: { $0.name == "paymentDueDate" })?
@@ -573,7 +581,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             return nil
         }
         
-        return dueDate
+        return Date.date(fromServerString: "2025-11-14")
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
