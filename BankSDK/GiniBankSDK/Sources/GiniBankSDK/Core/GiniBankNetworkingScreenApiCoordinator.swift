@@ -4,7 +4,7 @@
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
+// swiftlint:disable file_length
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -432,22 +432,21 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                let handler = paymentDueDateHandler,
                !shouldShowReturnAssistant(for: extractionResult),
                !shouldShowSkonto(for: extractionResult) {
-                
+
                 let threshold = giniBankConfiguration.paymentDueHintThresholdDays
-                
+
                 if dueDate.isDueSoon(within: threshold) {
                     Task {
                         handler.handlePaymentDueDate(dueDate.toDisplayString())
-                        await handler.clearPaymentDueDate(after: 4)
-                        //continueWithFeatureFlow()
+                        await handler.clearPaymentDueDate(after: 3)
+                        continueWithFeatureFlow()
                     }
-                }
-                else {
+                } else {
                     continueWithFeatureFlow()
                 }
             } else {
                 continueWithFeatureFlow()
-                
+
             }
 
         case .none:
@@ -549,11 +548,10 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
-    
+
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
-        //paymentDueHintEnabled
-        let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
+        let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
 
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
@@ -568,7 +566,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
-    
+
     /// Returns the due date  of the document, if available
     func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
         // Try to find the extraction with the key "paymentDueDate"
@@ -577,11 +575,10 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                 .value,
               !dueDate.isEmpty else {
             // Return nil if key not found or value is empty
-            print("Not found paymentDueDate")
             return nil
         }
-        
-        return Date.date(fromServerString: "2025-11-14")
+
+        return Date.date(fromServerString: dueDate)
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
