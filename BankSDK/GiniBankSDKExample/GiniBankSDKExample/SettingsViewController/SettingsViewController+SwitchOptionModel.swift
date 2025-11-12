@@ -60,6 +60,7 @@ struct SwitchOptionModel {
         case transactionDocsEnabled
         case paymentHintsEnabled
         case savePhotosLocallyEnabled
+        case paymentDueHintEnabled
         case closeSDK
 
 		var title: String {
@@ -154,6 +155,8 @@ struct SwitchOptionModel {
                 return "Transaction docs feature"
             case .paymentHintsEnabled:
                 return "User payment warnings feature"
+            case .paymentDueHintEnabled:
+                return "Payment due hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
