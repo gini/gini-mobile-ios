@@ -29,8 +29,14 @@ extension Date {
     
     func isDueSoon(within days: Int) -> Bool {
         let now = Date()
+        
+        /// If this date is in the past, it's not considered "due soon"
         guard self >= now else { return false }
+        
+        /// Calculate the latest date that counts as "due soon"
         guard let upperLimit = Calendar.current.date(byAdding: .day, value: days, to: now) else { return false }
+        
+        /// Return true if this date falls within the upcoming 'days' range
         return self <= upperLimit
     }
     
