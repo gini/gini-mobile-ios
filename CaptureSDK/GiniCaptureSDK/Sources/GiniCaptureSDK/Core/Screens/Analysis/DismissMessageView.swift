@@ -98,7 +98,12 @@ final class DismissMessageView: UIView {
         let interval = 0.01
         var elapsed: TimeInterval = 0
 
-        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {  [weak self] timer in
+
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
             elapsed += interval
             self.progressView.progress = Float(elapsed / duration)
             if elapsed >= duration {
