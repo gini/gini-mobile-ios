@@ -16,9 +16,14 @@ protocol Coordinator: AnyObject {
 public protocol PaymentDueDateHandling: AnyObject {
 
     /// Show the payment due date text
+    /// - Parameters:
+    /// dueDate: The payment due date string to show
     func handlePaymentDueDate(_ dueDate: String)
 
-    /// Hide the payment due date after a delay (in seconds)
+    /// Hide the payment due date
+    /// - Parameters:
+    /// timeout:   a delay (in seconds)
+
     func clearPaymentDueDate(after timeout: TimeInterval) async
 }
 
