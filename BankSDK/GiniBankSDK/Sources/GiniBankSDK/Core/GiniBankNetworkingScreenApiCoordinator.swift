@@ -563,7 +563,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     /// Returns the due date  of the document, if available
     func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
-        // Try to find the extraction with the key "paymentDueDate"
+        /// Try to find the extraction with the key "paymentDueDate"
         guard let dueDate = extractionResult.extractions
                 .first(where: { $0.name == "paymentDueDate" })?
                 .value,
