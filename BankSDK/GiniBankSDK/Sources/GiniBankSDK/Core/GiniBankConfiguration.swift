@@ -395,14 +395,14 @@ public final class GiniBankConfiguration: NSObject {
      can change this value as needed.
      */
     public var paymentDueHintThresholdDays: Int = 5
-    
+
     /**
      Indicates whether the Payment Due Hint feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to remind
      the user about the upcoming payment due date.
      */
     public var paymentDueHintEnabled: Bool = true
-    
+
     /**
      Indicates whether the Already Paid Hint feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to inform
