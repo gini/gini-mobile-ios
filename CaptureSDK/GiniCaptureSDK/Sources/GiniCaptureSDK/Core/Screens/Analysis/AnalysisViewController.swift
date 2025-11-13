@@ -448,12 +448,11 @@ import UIKit
 
         /// show due date hint view
         addPaymentDueHintView(withDate: dueDate)
-        
         /// show hint dismiss view
         addDismissMessageView()
     }
 
-    func updateContentStackConstraints() {
+    private func updateContentStackConstraints() {
         // Remove previous constraints first
         // Deactivate all constraints affecting contentStack
         if let superview = contentStack.superview {
@@ -486,7 +485,7 @@ import UIKit
     }
 
     // MARK: - Add Hint View
-    func addPaymentDueHintView(withDate dueDate: String) {
+    private func addPaymentDueHintView(withDate dueDate: String) {
         // configure hintView with due date if needed
         hintView.configure(withDueDate: dueDate)
         contentStack.addArrangedSubview(hintView)
@@ -497,7 +496,7 @@ import UIKit
     }
 
     // MARK: - Add Dismiss Message View
-    func addDismissMessageView() {
+    private func addDismissMessageView() {
         contentStack.addArrangedSubview(dismissHintView)
         dismissHintView.giniMakeConstraints {
             $0.horizontal.equalToSuperview()
@@ -526,19 +525,19 @@ extension AnalysisViewController: PaymentDueDateHandling {
     public func clearPaymentDueDate(after timeout: TimeInterval) async {
         await withCheckedContinuation { continuation in
             var didClear = false
-            
+
             // Helper to resume continuation only once
             let callOnce: () -> Void = {
                 guard !didClear else { return }
                 didClear = true
                 continuation.resume()
             }
-            
+
             // action call when user tap on dismiss button
             dismissHintView.onTap = {
                 callOnce()
             }
-            
+
             // Timeout fallback
             DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
                 callOnce()
