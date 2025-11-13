@@ -515,7 +515,7 @@ import UIKit
 
 extension AnalysisViewController: PaymentDueDateHandling {
     public func handlePaymentDueDate(_ dueDate: String) {
-        /// remove suggetsion while handling due date
+        /// remove suggestion while handling due date
         removeCaptureSuggestions()
 
         /// show due hint view
