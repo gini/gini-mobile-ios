@@ -585,11 +585,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         !(result.skontoDiscounts?.isEmpty ?? true)
     }
 
-    func shouldShowDueDateHint(for result: ExtractionResult) -> Bool {
-        let documentIsTobePaid = getDocumentPaymentState(for: result)
-        return (documentIsTobePaid != nil)
-    }
-
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
                                      delegate: GiniCaptureNetworkDelegate) {
         let document = documentService.document
