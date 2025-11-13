@@ -522,6 +522,7 @@ extension AnalysisViewController: PaymentDueDateHandling {
         setupScrollableStackView(dueDate: dueDate)
     }
 
+    @MainActor
     public func clearPaymentDueDate(after timeout: TimeInterval) async {
         await withCheckedContinuation { continuation in
             var didClear = false
@@ -530,6 +531,10 @@ extension AnalysisViewController: PaymentDueDateHandling {
             let callOnce: () -> Void = {
                 guard !didClear else { return }
                 didClear = true
+
+                // Clear the closure to prevent memory leaks
+                self.dismissHintView.onTap = nil
+
                 continuation.resume()
             }
 
