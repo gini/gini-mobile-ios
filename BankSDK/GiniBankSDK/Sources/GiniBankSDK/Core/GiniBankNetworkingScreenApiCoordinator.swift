@@ -410,13 +410,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
-//        /// Step 1: Check if payment hints feature is enabled
-//        guard determineIfPaymentHintsEnabled(for: extractionResult) else {
-//            continueWithFeatureFlow()
-//            return
-//        }
-
-        /// Step 2: Check document status for multiple states
+        /// Step:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
