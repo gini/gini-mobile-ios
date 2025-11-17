@@ -115,36 +115,39 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
     func testDetermineIfPaymentHintsEnabledDocumentNotPaidReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
-
+        
         coordinator.giniBankConfiguration.paymentHintsEnabled = true
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
-        let extractionResult = createExtractionResult(paymentState: "unpaid")
-
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
-
-        XCTAssertFalse(result)
+        
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
+        
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
+        
+        XCTAssertEqual(result, PaymentStatus.toBePaid)
     }
 
     // MARK: - isDocumentMarkedAsPaid Tests
 
     func testIsDocumentMarkedAsPaidPaidStatusReturnsTrue() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
-
+        
         let extractionResult = createExtractionResult(paymentState: "paid")
-
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
-
-        XCTAssertTrue(result)
+        
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
+        
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result, .paid)
     }
 
     func testIsDocumentMarkedAsPaidUnpaidStatusReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        let extractionResult = createExtractionResult(paymentState: "unpaid")
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
 
-        XCTAssertFalse(result)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result, .toBePaid)
     }
 
     func testIsDocumentMarkedAsPaidNoPaymentStateReturnsFalse() throws {
@@ -152,9 +155,9 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         let extractionResult = createExtractionResult(paymentState: nil)
 
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
 
-        XCTAssertFalse(result)
+        XCTAssertNil(result)
     }
 
     // MARK: - shouldShowReturnAssistant Tests
@@ -351,6 +354,8 @@ extension ClientConfiguration {
                   qrCodeEducationEnabled: false,
                   eInvoiceEnabled: false,
                   paymentHintsEnabled: paymentHintsEnabled,
-                  savePhotosLocallyEnabled: false)
+                  savePhotosLocallyEnabled: false,
+                  alreadyPaidHintEnabled: false,
+                  paymentDueHintEnabled: false)
     }
 }
