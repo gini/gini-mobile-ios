@@ -639,7 +639,10 @@ extension ReviewViewController {
 
     private func updateViewForNewPages() {
         saveToGalleryView.isHidden = !shouldShowSaveToGalleryView
-        updateLayoutBasedOnIphoneOrientation()
+
+        if isViewLoaded && view.window != nil {
+            updateLayoutBasedOnIphoneOrientation()
+        }
     }
 }
 
