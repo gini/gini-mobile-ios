@@ -25,7 +25,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: true,
                                          eInvoiceEnabled: true,
                                          paymentHintsEnabled: true,
-                                         savePhotosLocallyEnabled: true)
+                                         savePhotosLocallyEnabled: true,
+                                         alreadyPaidHintEnabled: true,
+                                         paymentDueHintEnabled: true)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -50,7 +52,11 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: false,
                                          eInvoiceEnabled: false,
                                          paymentHintsEnabled: false,
-                                         savePhotosLocallyEnabled: false)
+                                         savePhotosLocallyEnabled: false,
+                                         alreadyPaidHintEnabled: false,
+                                         paymentDueHintEnabled: false)
+
+        
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(!config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be false")
@@ -108,7 +114,10 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: false,
                                          eInvoiceEnabled: true,
                                          paymentHintsEnabled: false,
-                                         savePhotosLocallyEnabled: true)
+                                         savePhotosLocallyEnabled: true,
+                                         alreadyPaidHintEnabled: true,
+                                         paymentDueHintEnabled: true)
+
         let encoder = JSONEncoder()
 
         let data = try encoder.encode(config)
@@ -149,7 +158,9 @@ struct ClientConfigurationTests {
                                          qrCodeEducationEnabled: true,
                                          eInvoiceEnabled: false,
                                          paymentHintsEnabled: true,
-                                         savePhotosLocallyEnabled: false)
+                                         savePhotosLocallyEnabled: false,
+                                         alreadyPaidHintEnabled: true,
+                                         paymentDueHintEnabled: true)
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
         #expect(!config.skontoEnabled, "Expected skontoEnabled to be false")
