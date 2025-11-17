@@ -342,8 +342,10 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor, constant: 15),
-        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor, constant: 26),
+        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor,
+                                             constant: Constants.buttonsContainerTopPadding),
+        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor,
+                                                constant: Constants.buttonsContainerBottomPadding),
         buttonContainer.centerXAnchor.constraint(equalTo: optionsStackView.centerXAnchor)
     ]
 
@@ -944,15 +946,18 @@ extension ReviewViewController {
             shouldShowSaveToGallery ? 24.0 : 82.0
         }
 
+        static let buttonsContainerTopPadding: CGFloat = 15.0
+        static let buttonsContainerBottomPadding: CGFloat = 26.0
+
         static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24 : 8.0
-        static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28
+        static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28.0
         static let pageControlTopConstant: CGFloat = 24.0
 
         static let saveToGalleryTopConstant: (Int) -> CGFloat = { pagesCount in
             pagesCount > 1 ? 27.0 : 0.0
         }
 
-        static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11 : 28
+        static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11.0 : 28.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
     }
 }
