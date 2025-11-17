@@ -317,16 +317,23 @@ public final class ReviewViewController: UIViewController {
                                               constant: -Constants.trailingCollectionPadding)
     ]
 
-    private lazy var optionsStackViewConstraints: [NSLayoutConstraint] = [
-        optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
-                                                    constant: Constants.saveToGalleryTopConstant(pages.count)),
-        optionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                        constant: Constants.padding),
-        optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                         constant: -Constants.padding),
-        optionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                 constant: -Constants.bottomPadding)
-    ]
+    private lazy var optionsStackViewConstraints: [NSLayoutConstraint] = {
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+
+        let bottomPadding = isSmallDevice ?
+        Constants.buttonsContainerBottomPaddingForSmallDevice :
+        Constants.buttonsContainerBottomPadding
+
+        return [optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                                      constant: Constants.saveToGalleryTopConstant(pages.count)),
+                optionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                          constant: Constants.padding),
+                optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                           constant: -Constants.padding),
+                optionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                         constant: -bottomPadding)
+        ]
+    }()
 
     private lazy var optionsStackViewHorizontalConstraints: [NSLayoutConstraint] = [
         optionsStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -852,6 +859,18 @@ extension ReviewViewController {
 
     private func calculateHeightMultiplier() -> CGFloat {
         let isLandscape = UIDevice.current.isLandscape
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+
+        // Handle small devices (iPhone SE, iPhone 6/7/8, etc.)
+        if isSmallDevice {
+            if isLandscape {
+                return Constants.smallDeviceLandscapeHeightMultiplier
+            } else {
+                // For small devices in portrait, use a smaller multiplier
+                // to ensure everything fits on screen
+                return Constants.smallDevicePortraitHeightMultiplier
+            }
+        }
 
         if isLandscape {
             // Multiplier accounts for tip label, page control, safe areas, and paddings
@@ -951,8 +970,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
 
     private func setCellStatus(for index: Int, isActive: Bool) {
         let indexToSet = min(index, pages.count - 1)
+        let cellIndexPath = IndexPath(row: indexToSet, section: 0)
 
-        let cell = collectionView.cellForItem(at: IndexPath(row: indexToSet, section: 0)) as? ReviewCollectionCell
+        let cell = collectionView.cellForItem(at: cellIndexPath) as? ReviewCollectionCell
         cell?.isActive = isActive
     }
 }
@@ -992,12 +1012,25 @@ extension ReviewViewController {
         static let buttonsContainerTopPadding: CGFloat = 15.0
         static let buttonsContainerBottomPadding: CGFloat = 26.0
 
-        static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24 : 8.0
+        // Small device padding (iPhone SE, iPhone 6/7/8, etc.)
+        static let buttonsContainerBottomPaddingForSmallDevice: CGFloat = 26.0
+
+        static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24.0 : 8.0
         static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28.0
-        static let pageControlTopConstant: CGFloat = 24.0
+        // Figma is 24 but we have some internal padding in the pagecontrol component aroung 8
+        // in total so divided by 2 will be -4 on top to match the figma
+        static let pageControlTopConstant: CGFloat = 16.0
 
         static let saveToGalleryTopConstant: (Int) -> CGFloat = { pagesCount in
-            pagesCount > 1 ? 27.0 : 0.0
+            let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+            if isSmallDevice {
+                // Figma is 27 but we have some internal padding in the pagecontrol component around 8
+                // in total so divided by 2 will be -4 on top to match the figma
+                return pagesCount > 1 ? 0.0 : 10.0
+            } else {
+
+                return pagesCount > 1 ? 0.0 : 23.0
+            }
         }
 
         static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11.0 : 28.0
@@ -1008,6 +1041,10 @@ extension ReviewViewController {
         static let portraitHeightMultiplierWithSafeArea: CGFloat = 0.6
         static let portraitHeightMultiplierWithoutSafeArea: CGFloat = 0.5
         static let saveToGalleryHeightAdjustment: CGFloat = 0.08
+
+        // Small device multipliers (iPhone SE, iPhone 6/7/8, etc.)
+        static let smallDevicePortraitHeightMultiplier: CGFloat = 0.5
+        static let smallDeviceLandscapeHeightMultiplier: CGFloat = 0.5
     }
 }
 // swiftlint:enable file_length
