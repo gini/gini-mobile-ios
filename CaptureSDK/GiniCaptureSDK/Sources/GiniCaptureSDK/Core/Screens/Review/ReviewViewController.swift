@@ -333,7 +333,8 @@ public final class ReviewViewController: UIViewController {
         optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
         optionsStackView.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                      multiplier: 0.38)
+                                                multiplier: 0.38)
+    ]
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
