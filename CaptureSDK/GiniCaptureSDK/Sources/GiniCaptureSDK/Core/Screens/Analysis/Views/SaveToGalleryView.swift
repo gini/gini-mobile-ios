@@ -19,7 +19,7 @@ final class SaveToGalleryView: UIView {
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        
+
         label.text = Strings.descriptionLabel
         label.numberOfLines = 0
         label.font = configuration.textStyleFonts[.caption2]
