@@ -283,16 +283,18 @@ public final class ReviewViewController: UIViewController {
         trailingConstraint.priority = .defaultLow
 
         return [
-            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
+                                                constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trailingConstraint,
             collectionViewHeightConstraint
         ]
     }()
 
-    private lazy var collectionViewConstraintsLandscape: [NSLayoutConstraint] = {
+    private lazy var collectionViewHorizontalConstraints: [NSLayoutConstraint] = {
         return [
-            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
+                                                constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: reviewOptionsContainer.leadingAnchor),
             collectionViewHeightConstraint
@@ -480,17 +482,18 @@ extension ReviewViewController {
     }
 
     private func updateLayoutBasedOnIphoneOrientation() {
-        guard UIDevice.current.isIphone else {
+        let device = UIDevice.current
+        guard device.isIphone else {
             return
         }
 
-        let isLandscape = UIDevice.current.isLandscape
+        let isLandscape = device.isLandscape
         buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
         if isLandscape {
             buttonContainer.spacing = shouldShowSaveToGalleryView ?
-            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : 24
-            reviewOptionsContainer.spacing = 28
+            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
+            reviewOptionsContainer.spacing = Constants.saveToGalleryBottomConstant
         } else {
             buttonContainer.spacing = Constants.buttonContainerSpacing
             reviewOptionsContainer.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
@@ -510,18 +513,18 @@ extension ReviewViewController {
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? ( pageControlConstraints + reviewOptionsContainerConstraints)
+        ? (pageControlConstraints + reviewOptionsContainerConstraints)
         : (pageControlConstraints
            + reviewOptionsContainerConstraints + collectionViewConstraints)
 
         let constraintsToActivate = isLandscape
-        ?  pageControlHorizontalConstraints
+        ? pageControlHorizontalConstraints
         + reviewOptionsContainerHorizontalConstraints
-        + collectionViewConstraintsLandscape
+        + collectionViewHorizontalConstraints
         : portraitConstraintsToActivate
 
         let portraitConstraintsToDeactivate = pageControlHorizontalConstraints
-        + reviewOptionsContainerHorizontalConstraints + collectionViewConstraintsLandscape
+        + reviewOptionsContainerHorizontalConstraints + collectionViewHorizontalConstraints
 
         let constraintsToDeactivate = isLandscape
         ? pageControlConstraints
@@ -570,6 +573,7 @@ extension ReviewViewController {
             loadingIndicator.removeFromSuperview()
             self.loadingIndicator = nil
         }
+
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
@@ -585,8 +589,8 @@ extension ReviewViewController {
         NSLayoutConstraint.activate([
             loadingIndicator.centerXAnchor.constraint(equalTo: processButton.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            loadingIndicator.widthAnchor.constraint(equalToConstant: 45),
-            loadingIndicator.heightAnchor.constraint(equalToConstant: 45)
+            loadingIndicator.widthAnchor.constraint(equalToConstant: Constants.loadingIndicatorSize),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorSize)
         ])
         self.loadingIndicator = loadingIndicator
     }
@@ -911,12 +915,13 @@ extension ReviewViewController {
         static let maxTitleHeight: CGFloat = 100
         static let bottomNavigationBarHeight: CGFloat = 114
         static let trailingCollectionPadding: CGFloat = 275
+        static let loadingIndicatorSize: CGFloat = 45
 
         static let buttonContainerHorizontalTrailingPadding: (Bool) -> CGFloat = { shouldShowSaveToGallery in
             shouldShowSaveToGallery ? 24.0 : 82.0
         }
 
-        static let buttonContainerSpacing: CGFloat = 8.0
+        static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24 : 8.0
         static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28
         static let pageControlTopConstant: CGFloat = 24.0
 
@@ -924,7 +929,7 @@ extension ReviewViewController {
             pagesCount > 1 ? 27.0 : 0.0
         }
 
-        static let saveToGalleryBottomConstant: CGFloat = 11.0
+        static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11 : 28
     }
 }
 // swiftlint:enable file_length
