@@ -295,7 +295,8 @@ public final class ReviewViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
                                                 constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: optionsStackView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: optionsStackView.leadingAnchor,
+                                                     constant: -Constants.collectionViewHorizontalSpaceLandscape),
             collectionViewHeightConstraint
         ]
     }()
@@ -952,6 +953,7 @@ extension ReviewViewController {
         }
 
         static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11 : 28
+        static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
     }
 }
 // swiftlint:enable file_length
