@@ -464,7 +464,7 @@ extension ReviewViewController {
         super.viewDidLayoutSubviews()
         let size = cellSize()
         collectionViewHeightConstraint.constant = size.height + 4
-        updateLayoutBasedOnIphoneOrientation()
+        updateLayout()
         DispatchQueue.main.async {
             guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
             guard self.pages.count > 1 else { return }
@@ -480,13 +480,27 @@ extension ReviewViewController {
         }
     }
 
-    private func updateLayoutBasedOnIphoneOrientation() {
-        let device = UIDevice.current
-        guard device.isIphone else {
-            return
+    private func updateLayout() {
+        if UIDevice.current.isIpad {
+            updateLayoutForIpad()
+        } else {
+            updateLayoutForIphone()
         }
+    }
 
-        let isLandscape = device.isLandscape
+    private func updateLayoutForIpad() {
+        // iPad always uses portrait-style constraints regardless of orientation
+        let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
+        ? (pageControlConstraints + optionsStackViewConstraints)
+        : (pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints)
+
+        NSLayoutConstraint.activate(constraintsToActivate)
+    }
+
+    private func updateLayoutForIphone() {
+        let isLandscape = UIDevice.current.isLandscape
+
+        // Update button container configuration
         buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
         if isLandscape {
@@ -512,10 +526,10 @@ extension ReviewViewController {
         bottomNavigationBar?.alpha = isLandscape ? 0 : 1
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
+        // Handle constraint activation/deactivation based on orientation
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? (pageControlConstraints + reviewOptionsContainerConstraints)
-        : (pageControlConstraints
-           + reviewOptionsContainerConstraints + collectionViewConstraints)
+        ? (pageControlConstraints + optionsStackViewConstraints)
+        : (pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints)
 
         let constraintsToActivate = isLandscape
         ? pageControlHorizontalConstraints
@@ -527,9 +541,7 @@ extension ReviewViewController {
         + optionsStackViewHorizontalConstraints + collectionViewHorizontalConstraints
 
         let constraintsToDeactivate = isLandscape
-        ? pageControlConstraints
-        + reviewOptionsContainerConstraints
-        + collectionViewConstraints
+        ? pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints
         : portraitConstraintsToDeactivate
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
@@ -659,7 +671,7 @@ extension ReviewViewController {
         saveToGalleryView.isHidden = !shouldShowSaveToGalleryView
 
         if isViewLoaded && view.window != nil {
-            updateLayoutBasedOnIphoneOrientation()
+            updateLayout()
         }
     }
 }
@@ -673,11 +685,14 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(scrollViewConstraints)
         NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
-        NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(processButtonConstraints)
         NSLayoutConstraint.activate(buttonContainerConstraints)
 
-        updateLayoutBasedOnIphoneOrientation()
+        // Let updateLayout() handle device/orientation-specific constraints:
+        // - collectionViewConstraints (portrait) vs collectionViewHorizontalConstraints (landscape)
+        // - pageControlConstraints (portrait) vs pageControlHorizontalConstraints (landscape)
+        // - optionsStackViewConstraints (portrait) vs optionsStackViewHorizontalConstraints (landscape)
+        updateLayout()
     }
 
     private func scrollToItem(at indexPath: IndexPath) {
