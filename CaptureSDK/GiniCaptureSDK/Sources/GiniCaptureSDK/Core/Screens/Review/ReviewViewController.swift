@@ -341,8 +341,8 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor),
-        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor),
+        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor, constant: 15),
+        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor, constant: 26),
         buttonContainer.centerXAnchor.constraint(equalTo: optionsStackView.centerXAnchor)
     ]
 
