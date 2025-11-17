@@ -10,13 +10,13 @@ final class SaveToGalleryView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        
+
         label.text = Strings.titleLabel
         label.font = configuration.textStyleFonts[.callout]
         
         return label
     }()
-    
+
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         
@@ -26,15 +26,15 @@ final class SaveToGalleryView: UIView {
         
         return label
     }()
-    
+
     private lazy var enabledSwitch: UISwitch = {
         let toggle = UISwitch()
-        
+
         toggle.onTintColor = GiniColor(light: .GiniCapture.accent1,
                                        dark: .GiniCapture.accent1).uiColor()
-        
+
         toggle.addTarget(self, action: #selector(didToggleSwitch(_:)), for: .valueChanged)
-        
+
         return toggle
     }()
 
