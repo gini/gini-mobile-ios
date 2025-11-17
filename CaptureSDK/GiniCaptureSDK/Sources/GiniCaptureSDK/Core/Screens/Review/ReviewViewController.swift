@@ -197,7 +197,7 @@ public final class ReviewViewController: UIViewController {
         return addPagesButton
     }()
 
-    private lazy var buttonContainer: UIStackView = {
+    private lazy var buttonsStackViewContainer: UIStackView = {
         let view = UIStackView(arrangedSubviews: [processButton])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
@@ -205,7 +205,7 @@ public final class ReviewViewController: UIViewController {
         return view
     }()
 
-    private lazy var buttonContainerWrapper: UIView = {
+    private lazy var buttonsContainerWrapper: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -356,12 +356,12 @@ public final class ReviewViewController: UIViewController {
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
     ]
 
-    private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor,
-                                             constant: Constants.buttonsContainerTopPadding),
-        buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor,
-                                                constant: Constants.buttonsContainerBottomPadding),
-        buttonContainer.centerXAnchor.constraint(equalTo: optionsStackView.centerXAnchor)
+    private lazy var buttonsStackViewContainerConstraints: [NSLayoutConstraint] = [
+        buttonsStackViewContainer.topAnchor.constraint(equalTo: buttonsContainerWrapper.topAnchor,
+                                                       constant: 0),
+        buttonsStackViewContainer.bottomAnchor.constraint(equalTo: buttonsContainerWrapper.bottomAnchor,
+                                                          constant: 0),
+        buttonsStackViewContainer.centerXAnchor.constraint(equalTo: optionsStackView.centerXAnchor)
     ]
 
     private lazy var bottomNavigationBarAdditionalConstraints: [NSLayoutConstraint] = [
@@ -516,7 +516,7 @@ extension ReviewViewController {
     }
 
     private func updateLayoutForIpad() {
-        buttonContainer.spacing = Constants.buttonContainerSpacing
+        buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
         optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         // iPad always uses portrait-style constraints regardless of orientation
         let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
@@ -530,25 +530,25 @@ extension ReviewViewController {
         let isLandscape = UIDevice.current.isLandscape
 
         // Update button container configuration
-        buttonContainer.axis = isLandscape ? .vertical : .horizontal
+        buttonsStackViewContainer.axis = isLandscape ? .vertical : .horizontal
 
         if isLandscape {
-            buttonContainer.spacing = shouldShowSaveToGalleryView ?
+            buttonsStackViewContainer.spacing = shouldShowSaveToGalleryView ?
             Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
             optionsStackView.spacing = Constants.saveToGalleryBottomConstant
         } else {
-            buttonContainer.spacing = Constants.buttonContainerSpacing
+            buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
             optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         }
 
         // Handle bottom navigation bar visibility
         if giniConfiguration.bottomNavigationBarEnabled {
             if isLandscape {
-                view.addSubview(buttonContainer)
+                view.addSubview(buttonsStackViewContainer)
                 addLoadingView()
             } else {
                 loadingIndicator?.removeFromSuperview()
-                buttonContainer.removeFromSuperview()
+                buttonsStackViewContainer.removeFromSuperview()
             }
         }
 
@@ -591,12 +591,12 @@ extension ReviewViewController {
         contentView.addSubview(optionsStackView)
 
         if giniConfiguration.multipageEnabled {
-            buttonContainer.addArrangedSubview(addPagesButton)
+            buttonsStackViewContainer.addArrangedSubview(addPagesButton)
         }
 
         if !giniConfiguration.bottomNavigationBarEnabled {
-            buttonContainerWrapper.addSubview(buttonContainer)
-            optionsStackView.addArrangedSubview(buttonContainerWrapper)
+            buttonsContainerWrapper.addSubview(buttonsStackViewContainer)
+            optionsStackView.addArrangedSubview(buttonsContainerWrapper)
         }
 
         edgesForExtendedLayout = []
@@ -606,7 +606,7 @@ extension ReviewViewController {
 
     private func addLoadingView() {
         let isBottomNavDisabled = !giniConfiguration.bottomNavigationBarEnabled
-        let isButtonInView = buttonContainer.superview != nil
+        let isButtonInView = buttonsStackViewContainer.superview != nil
         let isOnIphone = UIDevice.current.isIphone
 
         guard isBottomNavDisabled || (isButtonInView && isOnIphone) else { return }
@@ -714,8 +714,8 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(scrollViewConstraints)
         NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
-        NSLayoutConstraint.activate(processButtonConstraints)
-        NSLayoutConstraint.activate(buttonContainerConstraints)
+        NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
+        NSLayoutConstraint.activate(processButtonConstraints) // botton size constraints
 
         // Let updateLayout() handle device/orientation-specific constraints:
         // - collectionViewConstraints (portrait) vs collectionViewHorizontalConstraints (landscape)
@@ -1013,7 +1013,7 @@ extension ReviewViewController {
         static let buttonsContainerBottomPadding: CGFloat = 26.0
 
         // Small device padding (iPhone SE, iPhone 6/7/8, etc.)
-        static let buttonsContainerBottomPaddingForSmallDevice: CGFloat = 26.0
+        static let buttonsContainerBottomPaddingForSmallDevice: CGFloat = 14.0
 
         static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24.0 : 8.0
         static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28.0
@@ -1043,7 +1043,7 @@ extension ReviewViewController {
         static let saveToGalleryHeightAdjustment: CGFloat = 0.08
 
         // Small device multipliers (iPhone SE, iPhone 6/7/8, etc.)
-        static let smallDevicePortraitHeightMultiplier: CGFloat = 0.5
+        static let smallDevicePortraitHeightMultiplier: CGFloat = 0.45
         static let smallDeviceLandscapeHeightMultiplier: CGFloat = 0.5
     }
 }
