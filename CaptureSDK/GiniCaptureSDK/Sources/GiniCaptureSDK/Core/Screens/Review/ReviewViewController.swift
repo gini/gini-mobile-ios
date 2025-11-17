@@ -261,9 +261,8 @@ public final class ReviewViewController: UIViewController {
 
         return [
             contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             heightConstraint,
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
         ]
@@ -794,28 +793,36 @@ extension ReviewViewController {
 
     private func cellSize() -> CGSize {
         let a4Ratio = 1.4142
-        let widthRatio: CGFloat = a4Ratio
+
         if UIDevice.current.isIpad {
-            var height = self.view.bounds.height - 260
+            // Calculate available space
+            var availableHeight = self.view.bounds.height
+            availableHeight -= 260 // Base overhead
+
             if giniConfiguration.bottomNavigationBarEnabled {
-                height -= Constants.bottomNavigationBarHeight
-                height -= Constants.padding
-            }
-            let width = height / a4Ratio
-            return CGSize(width: width, height: height)
-        } else {
-            if view.safeAreaInsets.bottom > 0 {
-                let height = self.view.bounds.height * 0.6
-                let width = height / widthRatio
-                let cellSize = CGSize(width: width, height: height)
-                return cellSize
-            } else {
-                let height = self.view.bounds.height * 0.5
-                let width = height / widthRatio
-                let cellSize = CGSize(width: width, height: height)
-                return cellSize
+                availableHeight -= Constants.bottomNavigationBarHeight
+                availableHeight -= Constants.padding
             }
 
+            if shouldShowSaveToGalleryView {
+                availableHeight -= (saveToGalleryView.frame.height
+                                    + Constants.saveToGalleryBottomConstant
+                                    + Constants.saveToGalleryTopConstant(pages.count))
+            }
+
+            let width = availableHeight / a4Ratio
+            return CGSize(width: width, height: availableHeight)
+        } else {
+            // iPhone - use percentage with adjustment
+            var baseMultiplier: CGFloat = view.safeAreaInsets.bottom > 0 ? 0.6 : 0.5
+
+            if shouldShowSaveToGalleryView {
+                baseMultiplier -= 0.08
+            }
+
+            let height = self.view.bounds.height * baseMultiplier
+            let width = height / a4Ratio
+            return CGSize(width: width, height: height)
         }
     }
 }
