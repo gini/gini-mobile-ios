@@ -212,7 +212,7 @@ public final class ReviewViewController: UIViewController {
         return view
     }()
 
-    private lazy var reviewOptionsContainer: UIStackView = {
+    private lazy var optionsStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [saveToGalleryView])
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -255,7 +255,7 @@ public final class ReviewViewController: UIViewController {
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ]
 
-    private lazy var contenViewConstraints: [NSLayoutConstraint] = {
+    private lazy var contentViewConstraints: [NSLayoutConstraint] = {
         let heightConstraint = contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         heightConstraint.priority = .defaultLow
 
@@ -296,7 +296,7 @@ public final class ReviewViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
                                                 constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: reviewOptionsContainer.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: optionsStackView.leadingAnchor),
             collectionViewHeightConstraint
         ]
     }()
@@ -317,24 +317,23 @@ public final class ReviewViewController: UIViewController {
                                               constant: -Constants.trailingCollectionPadding)
     ]
 
-    private lazy var reviewOptionsContainerConstraints: [NSLayoutConstraint] = [
-        reviewOptionsContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+    private lazy var optionsStackViewConstraints: [NSLayoutConstraint] = [
+        optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
                                                     constant: Constants.saveToGalleryTopConstant(pages.count)),
-        reviewOptionsContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+        optionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                         constant: Constants.padding),
-        reviewOptionsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+        optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
-        reviewOptionsContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
-                                                       constant: -Constants.bottomPadding)
+        optionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                 constant: -Constants.bottomPadding)
     ]
 
-    private lazy var reviewOptionsContainerHorizontalConstraints: [NSLayoutConstraint] = [
-        reviewOptionsContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        reviewOptionsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+    private lazy var optionsStackViewHorizontalConstraints: [NSLayoutConstraint] = [
+        optionsStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
-        reviewOptionsContainer.widthAnchor.constraint(equalTo: view.widthAnchor,
+        optionsStackView.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                       multiplier: 0.38)
-
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
@@ -345,7 +344,7 @@ public final class ReviewViewController: UIViewController {
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
         buttonContainer.topAnchor.constraint(equalTo: buttonContainerWrapper.topAnchor),
         buttonContainer.bottomAnchor.constraint(equalTo: buttonContainerWrapper.bottomAnchor),
-        buttonContainer.centerXAnchor.constraint(equalTo: reviewOptionsContainer.centerXAnchor)
+        buttonContainer.centerXAnchor.constraint(equalTo: optionsStackView.centerXAnchor)
     ]
 
     private lazy var bottomNavigationBarAdditionalConstraints: [NSLayoutConstraint] = [
@@ -493,12 +492,13 @@ extension ReviewViewController {
         if isLandscape {
             buttonContainer.spacing = shouldShowSaveToGalleryView ?
             Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
-            reviewOptionsContainer.spacing = Constants.saveToGalleryBottomConstant
+            optionsStackView.spacing = Constants.saveToGalleryBottomConstant
         } else {
             buttonContainer.spacing = Constants.buttonContainerSpacing
-            reviewOptionsContainer.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
+            optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         }
 
+        // Handle bottom navigation bar visibility
         if giniConfiguration.bottomNavigationBarEnabled {
             if isLandscape {
                 view.addSubview(buttonContainer)
@@ -519,12 +519,12 @@ extension ReviewViewController {
 
         let constraintsToActivate = isLandscape
         ? pageControlHorizontalConstraints
-        + reviewOptionsContainerHorizontalConstraints
+        + optionsStackViewHorizontalConstraints
         + collectionViewHorizontalConstraints
         : portraitConstraintsToActivate
 
         let portraitConstraintsToDeactivate = pageControlHorizontalConstraints
-        + reviewOptionsContainerHorizontalConstraints + collectionViewHorizontalConstraints
+        + optionsStackViewHorizontalConstraints + collectionViewHorizontalConstraints
 
         let constraintsToDeactivate = isLandscape
         ? pageControlConstraints
@@ -547,7 +547,7 @@ extension ReviewViewController {
         contentView.addSubview(tipLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
-        contentView.addSubview(reviewOptionsContainer)
+        contentView.addSubview(optionsStackView)
 
         if giniConfiguration.multipageEnabled {
             buttonContainer.addArrangedSubview(addPagesButton)
@@ -555,7 +555,7 @@ extension ReviewViewController {
 
         if !giniConfiguration.bottomNavigationBarEnabled {
             buttonContainerWrapper.addSubview(buttonContainer)
-            reviewOptionsContainer.addArrangedSubview(buttonContainerWrapper)
+            optionsStackView.addArrangedSubview(buttonContainerWrapper)
         }
 
         edgesForExtendedLayout = []
@@ -671,7 +671,7 @@ extension ReviewViewController {
         collectionViewHeightConstraint.priority = .defaultLow
 
         NSLayoutConstraint.activate(scrollViewConstraints)
-        NSLayoutConstraint.activate(contenViewConstraints)
+        NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(processButtonConstraints)
