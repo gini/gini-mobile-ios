@@ -335,6 +335,13 @@ public final class ReviewViewController: UIViewController {
         optionsStackView.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                 multiplier: 0.38)
     ]
+
+    private lazy var optionsStackViewIpadConstraints: [NSLayoutConstraint] = [
+        optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                              constant: Constants.saveToGalleryTopConstant(pages.count)),
+        optionsStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        optionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                 constant: -Constants.bottomPadding)
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
@@ -358,7 +365,17 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private var shouldShowSaveToGalleryView: Bool {
-        let isSaveToGalleryAllowed = PHPhotoLibrary.authorizationStatus() == .authorized
+        let isSaveToGalleryAllowed: Bool
+
+        let status = PHPhotoLibrary.authorizationStatus()
+        if #available(iOS 14, *) {
+            // iOS 14+ uses the new authorization API with access levels
+            isSaveToGalleryAllowed = status == .authorized || status == .limited || status == .notDetermined
+        } else {
+            // iOS 13 uses the legacy authorization API
+            isSaveToGalleryAllowed = status == .authorized || status == .notDetermined
+        }
+
         let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled
         let pagesContainsPhotos = pages.contains(where: { !$0.document.isImported })
 
@@ -492,10 +509,12 @@ extension ReviewViewController {
     }
 
     private func updateLayoutForIpad() {
+        buttonContainer.spacing = Constants.buttonContainerSpacing
+        optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         // iPad always uses portrait-style constraints regardless of orientation
         let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? (pageControlConstraints + optionsStackViewConstraints)
-        : (pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints)
+        ? (pageControlConstraints + optionsStackViewIpadConstraints)
+        : (pageControlConstraints + optionsStackViewIpadConstraints + collectionViewConstraints)
 
         NSLayoutConstraint.activate(constraintsToActivate)
     }
@@ -796,37 +815,59 @@ extension ReviewViewController {
     }
 
     private func cellSize() -> CGSize {
-        let a4Ratio = 1.4142
-
         if UIDevice.current.isIpad {
-            // Calculate available space
-            var availableHeight = self.view.bounds.height
-            availableHeight -= 260 // Base overhead
-
-            if giniConfiguration.bottomNavigationBarEnabled {
-                availableHeight -= Constants.bottomNavigationBarHeight
-                availableHeight -= Constants.padding
-            }
-
-            if shouldShowSaveToGalleryView {
-                availableHeight -= (saveToGalleryView.frame.height
-                                    + Constants.saveToGalleryBottomConstant
-                                    + Constants.saveToGalleryTopConstant(pages.count))
-            }
-
-            let width = availableHeight / a4Ratio
-            return CGSize(width: width, height: availableHeight)
+            return cellSizeForIpad()
         } else {
-            // iPhone - use percentage with adjustment
-            var baseMultiplier: CGFloat = view.safeAreaInsets.bottom > 0 ? 0.6 : 0.5
+            return cellSizeForiPhone()
+        }
+    }
 
+    private func cellSizeForIpad() -> CGSize {
+
+        // Calculate available space
+        var availableHeight = self.view.bounds.height
+        availableHeight -= 260 // Base overhead
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            availableHeight -= Constants.bottomNavigationBarHeight
+            availableHeight -= Constants.padding
+        }
+
+        if shouldShowSaveToGalleryView {
+            availableHeight -= (saveToGalleryView.frame.height
+                                + Constants.saveToGalleryBottomConstant
+                                + Constants.saveToGalleryTopConstant(pages.count))
+        }
+
+        let width = availableHeight / Constants.a4Ratio
+        return CGSize(width: width, height: availableHeight)
+    }
+
+    private func cellSizeForiPhone() -> CGSize {
+        let baseMultiplier = calculateHeightMultiplier()
+        let height = view.bounds.height * baseMultiplier
+        let width = height / Constants.a4Ratio
+        return CGSize(width: width, height: height)
+    }
+
+    private func calculateHeightMultiplier() -> CGFloat {
+        let isLandscape = UIDevice.current.isLandscape
+
+        if isLandscape {
+            // Multiplier accounts for tip label, page control, safe areas, and paddings
+            return Constants.landscapeHeightMultiplier
+        } else {
+            // Portrait multiplier based on device type
+            var multiplier: CGFloat = view.safeAreaInsets.bottom > 0
+            ? Constants.portraitHeightMultiplierWithSafeArea
+            : Constants.portraitHeightMultiplierWithoutSafeArea
+
+            // Adjust for saveToGalleryView in portrait only
             if shouldShowSaveToGalleryView {
-                baseMultiplier -= 0.08
+                multiplier -= Constants.saveToGalleryHeightAdjustment
             }
 
-            let height = self.view.bounds.height * baseMultiplier
-            let width = height / a4Ratio
-            return CGSize(width: width, height: height)
+            return multiplier
         }
     }
 }
@@ -931,6 +972,7 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
 
 extension ReviewViewController {
     private enum Constants {
+        static let a4Ratio = 1.4142
         static let padding: CGFloat = 16
         static let tipLabelPadding: CGFloat = 8
         static let largePadding: CGFloat = 32
@@ -960,6 +1002,12 @@ extension ReviewViewController {
 
         static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11.0 : 28.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
+
+        // Cell size multipliers
+        static let landscapeHeightMultiplier: CGFloat = 0.55
+        static let portraitHeightMultiplierWithSafeArea: CGFloat = 0.6
+        static let portraitHeightMultiplierWithoutSafeArea: CGFloat = 0.5
+        static let saveToGalleryHeightAdjustment: CGFloat = 0.08
     }
 }
 // swiftlint:enable file_length
