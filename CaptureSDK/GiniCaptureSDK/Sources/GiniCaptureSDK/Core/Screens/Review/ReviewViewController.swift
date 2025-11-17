@@ -100,8 +100,8 @@ public final class ReviewViewController: UIViewController {
 
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
-                                               dark: UIColor.GiniCapture.dark2).uiColor()
+        collection.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                               dark: .GiniCapture.dark2).uiColor()
         collection.dataSource = self
         collection.delegate = self
         collection.showsHorizontalScrollIndicator = false
@@ -111,11 +111,13 @@ public final class ReviewViewController: UIViewController {
         collection.isScrollEnabled = false
         collection.contentInsetAdjustmentBehavior = .never
 
-        let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(sender:)))
+        let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self,
+                                                           action: #selector(swipeHandler(sender:)))
         swipeLeftRecognizer.direction = .left
         collection.addGestureRecognizer(swipeLeftRecognizer)
 
-        let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(sender:)))
+        let swipeRightRecognizer = UISwipeGestureRecognizer(target: self,
+                                                            action: #selector(swipeHandler(sender:)))
         swipeRightRecognizer.direction = .right
         collection.addGestureRecognizer(swipeRightRecognizer)
         return collection
@@ -127,7 +129,8 @@ public final class ReviewViewController: UIViewController {
         tipLabel.textAlignment = .center
         tipLabel.adjustsFontForContentSizeCategory = true
         tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        tipLabel.textColor = GiniColor(light: .GiniCapture.dark1,
+                                       dark: .GiniCapture.light1).uiColor()
         tipLabel.isAccessibilityElement = true
         tipLabel.numberOfLines = 0
         tipLabel.text = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.description",
@@ -140,14 +143,16 @@ public final class ReviewViewController: UIViewController {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
-        pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                       dark: UIColor.GiniCapture.light1)
+        pageControl.pageIndicatorTintColor = GiniColor(light: .GiniCapture.dark1,
+                                                       dark: .GiniCapture.light1)
                                                        .uiColor().withAlphaComponent(0.3)
-        pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                              dark: UIColor.GiniCapture.light1).uiColor()
+        pageControl.currentPageIndicatorTintColor = GiniColor(light: .GiniCapture.dark1,
+                                                              dark: .GiniCapture.light1).uiColor()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.isAccessibilityElement = true
-        pageControl.addTarget(self, action: #selector(pageControlSelectionAction(_:)), for: .valueChanged)
+        pageControl.addTarget(self,
+                              action: #selector(pageControlSelectionAction(_:)),
+                              for: .valueChanged)
 
         return pageControl
     }()
@@ -222,7 +227,8 @@ public final class ReviewViewController: UIViewController {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .large
-        indicatorView.color = GiniColor(light: UIColor.GiniCapture.dark3, dark: UIColor.GiniCapture.light3).uiColor()
+        indicatorView.color = GiniColor(light: .GiniCapture.dark3,
+                                        dark: .GiniCapture.light3).uiColor()
         return indicatorView
     }()
 
@@ -264,14 +270,11 @@ public final class ReviewViewController: UIViewController {
     }()
 
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = {
-        let trailingConstraint = tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        trailingConstraint.priority = .defaultLow
-
         return [
             tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
             tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                               constant: Constants.tipLabelPadding),
-            trailingConstraint
+            tipLabel.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
         ]
     }()
 
@@ -283,6 +286,15 @@ public final class ReviewViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trailingConstraint,
+            collectionViewHeightConstraint
+        ]
+    }()
+
+    private lazy var collectionViewConstraintsLandscape: [NSLayoutConstraint] = {
+        return [
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: reviewOptionsContainer.leadingAnchor),
             collectionViewHeightConstraint
         ]
     }()
@@ -315,11 +327,12 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var reviewOptionsContainerHorizontalConstraints: [NSLayoutConstraint] = [
-        reviewOptionsContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+        reviewOptionsContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         reviewOptionsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
-        reviewOptionsContainer.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor,
-                                                        constant: Constants.padding)
+        reviewOptionsContainer.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                      multiplier: 0.38)
+
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
@@ -476,7 +489,8 @@ extension ReviewViewController {
 
         if isLandscape {
             buttonContainer.spacing = shouldShowSaveToGalleryView ?
-            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
+            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : 24
+            reviewOptionsContainer.spacing = 28
         } else {
             buttonContainer.spacing = Constants.buttonContainerSpacing
             reviewOptionsContainer.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
@@ -496,27 +510,24 @@ extension ReviewViewController {
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-            ? (bottomNavigationBarAdditionalConstraints + pageControlConstraints)
-            : (pageControlConstraints
-               + reviewOptionsContainerConstraints)
+        ? ( pageControlConstraints + reviewOptionsContainerConstraints)
+        : (pageControlConstraints
+           + reviewOptionsContainerConstraints + collectionViewConstraints)
 
         let constraintsToActivate = isLandscape
-            ?  pageControlHorizontalConstraints + reviewOptionsContainerHorizontalConstraints
-            : portraitConstraintsToActivate
-
-        let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled
-            ? bottomNavigationBarAdditionalConstraints
-            : []
+        ?  pageControlHorizontalConstraints
+        + reviewOptionsContainerHorizontalConstraints
+        + collectionViewConstraintsLandscape
+        : portraitConstraintsToActivate
 
         let portraitConstraintsToDeactivate = pageControlHorizontalConstraints
-            + portraitBottomBarConstraintsToDeactivate
-            + reviewOptionsContainerHorizontalConstraints
+        + reviewOptionsContainerHorizontalConstraints + collectionViewConstraintsLandscape
 
         let constraintsToDeactivate = isLandscape
-            ? bottomNavigationBarAdditionalConstraints
-            + pageControlConstraints
-            + reviewOptionsContainerConstraints
-            : portraitConstraintsToDeactivate
+        ? pageControlConstraints
+        + reviewOptionsContainerConstraints
+        + collectionViewConstraints
+        : portraitConstraintsToDeactivate
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
         NSLayoutConstraint.activate(constraintsToActivate)
@@ -525,7 +536,8 @@ extension ReviewViewController {
     private func setupView() {
         title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
                                                  comment: "Screen title")
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                         dark: .GiniCapture.dark2).uiColor()
 
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -622,6 +634,8 @@ extension ReviewViewController {
         }
 
         self.pages = pages
+        // Check how to avoid the call of this method because is causing a crash if the view is not yet loaded
+        // The parent method is called from GiniScreenAPICoordinator -> addToDocuments
         updateViewForNewPages()
 
         guard !finishedUpload else { return }
@@ -903,7 +917,7 @@ extension ReviewViewController {
         }
 
         static let buttonContainerSpacing: CGFloat = 8.0
-        static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 82.0
+        static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28
         static let pageControlTopConstant: CGFloat = 24.0
 
         static let saveToGalleryTopConstant: (Int) -> CGFloat = { pagesCount in
