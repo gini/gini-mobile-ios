@@ -374,6 +374,7 @@ public final class ReviewViewController: UIViewController {
     private var shouldShowSaveToGalleryView: Bool {
         let isSaveToGalleryAllowed: Bool
 
+        // TODO: this logic is in progress will be covered in the ticket: PP-2084
         let status = PHPhotoLibrary.authorizationStatus()
         if #available(iOS 14, *) {
             // iOS 14+ uses the new authorization API with access levels
