@@ -440,7 +440,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 }
             } else {
                 continueWithFeatureFlow()
-
             }
 
         case .none:
@@ -546,7 +545,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
-
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
 
@@ -557,7 +555,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .value else {
             return nil
         }
-
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
