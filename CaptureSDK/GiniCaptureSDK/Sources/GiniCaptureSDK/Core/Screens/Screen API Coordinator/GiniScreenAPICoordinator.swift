@@ -23,7 +23,6 @@ public protocol PaymentDueDateHandling: AnyObject {
     /// Hide the payment due date
     /// - Parameters:
     /// timeout:   a delay (in seconds)
-
     func clearPaymentDueDate(after timeout: TimeInterval) async
 }
 
