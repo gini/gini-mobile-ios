@@ -388,10 +388,10 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Payment Due Hint Threshold
     /**
-     Indicates the number of days before the invoice due date when a payment hint should be shown.
+     Indicates the number of days before the invoice due date within which (inclusive of today) the invoice due date falls, for a payment hint to be shown..
 
-     Based on the `paymentDueDate` received from the backend, the app calculates locally how many
-     days are left until the invoice is due. The default threshold is **5 days**, but bank clients
+     Based on the `paymentDueDate` received from the backend, app checks if the due date is within the next
+     `paymentDueHintThresholdDays` days (including today). The default threshold is **5 days**, but bank clients
      can change this value as needed.
      */
     public var paymentDueHintThresholdDays: Int = 5
