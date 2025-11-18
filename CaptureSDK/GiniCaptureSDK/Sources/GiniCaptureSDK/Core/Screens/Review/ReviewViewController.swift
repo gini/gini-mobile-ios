@@ -715,9 +715,12 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(scrollViewConstraints)
         NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
-        NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
         NSLayoutConstraint.activate(processButtonConstraints) // botton size constraints
 
+        // Only add button container constraints when bottomNavigationBar is disabled
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
+        }
         // Let updateLayout() handle device/orientation-specific constraints:
         // - collectionViewConstraints (portrait) vs collectionViewHorizontalConstraints (landscape)
         // - pageControlConstraints (portrait) vs pageControlHorizontalConstraints (landscape)
