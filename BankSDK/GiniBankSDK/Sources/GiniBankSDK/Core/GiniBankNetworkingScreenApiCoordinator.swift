@@ -419,30 +419,36 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             presentDocumentMarkedAsPaidBottomSheet {
                 continueWithFeatureFlow()
             }
+
         case .toBePaid:
             /// Show payment due date hint if available
-            if  determineIfPaymentDueHintEnabled(for: extractionResult),
-               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-               let handler = paymentDueDateHandler,
-               !shouldShowReturnAssistant(for: extractionResult),
-               !shouldShowSkonto(for: extractionResult) {
-
-                let threshold = giniBankConfiguration.paymentDueHintThresholdDays
-
-                if dueDate.isDueSoon(within: threshold) {
-                    Task {
-                        handler.handlePaymentDueDate(dueDate.toDisplayString())
-                        await handler.clearPaymentDueDate(after: 3)
-                        continueWithFeatureFlow()
-                    }
-                } else {
-                    continueWithFeatureFlow()
-                }
-            } else {
-                continueWithFeatureFlow()
-            }
+            handleToBePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .none:
+            continueWithFeatureFlow()
+        }
+    }
+
+    @MainActor
+    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              let handler = paymentDueDateHandler,
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
+        if dueDate.isDueSoon(within: threshold) {
+            Task {
+                handler.handlePaymentDueDate(dueDate.toDisplayString())
+                await handler.clearPaymentDueDate(after: 3)
+                continueWithFeatureFlow()
+            }
+        } else {
             continueWithFeatureFlow()
         }
     }
@@ -568,7 +574,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             // Return nil if key not found or value is empty
             return nil
         }
-
         return Date.date(fromServerString: dueDate)
     }
 
