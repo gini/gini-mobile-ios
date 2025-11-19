@@ -87,37 +87,37 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
     }
 
-    // MARK: - determineIfPaymentHintsEnabled Tests
+    // MARK: - determineIfAlreadyPaidHintEnabled Tests
 
-    func testDetermineIfPaymentHintsEnabledAllEnabledDocumentPaidReturnsTrue() throws {
+    func testDetermineIfAlreadyPaidHintEnabledAllEnabledDocumentPaidReturnsTrue() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        coordinator.giniBankConfiguration.paymentHintsEnabled = true
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
         let extractionResult = createExtractionResult(paymentState: "paid")
 
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+        let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertTrue(result)
     }
 
-    func testDetermineIfPaymentHintsEnabledGlobalDisabledReturnsFalse() throws {
+    func testDetermineIfAlreadyPaidHintEnabledGlobalDisabledReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        coordinator.giniBankConfiguration.paymentHintsEnabled = false
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = false
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
         let extractionResult = createExtractionResult(paymentState: "paid")
 
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+        let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertFalse(result)
     }
 
-    func testDetermineIfPaymentHintsEnabledDocumentNotPaidReturnsFalse() throws {
+    func testDetermineIfAlreadyPaidHintEnabledDocumentNotPaidReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         
-        coordinator.giniBankConfiguration.paymentHintsEnabled = true
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
         
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
         
@@ -344,7 +344,7 @@ private extension NetworkingScreenApiCoordinatorTests {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(paymentHintsEnabled: Bool) {
+    init(alreadyPaidHintEnabled: Bool) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -353,7 +353,6 @@ extension ClientConfiguration {
                   instantPaymentEnabled: false,
                   qrCodeEducationEnabled: false,
                   eInvoiceEnabled: false,
-                  paymentHintsEnabled: paymentHintsEnabled,
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: false,
                   paymentDueHintEnabled: false)

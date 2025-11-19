@@ -30,7 +30,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
         #expect(!configuration.enableReturnReasons, "Expected enableReturnReasons to be false by default")
         #expect(configuration.skontoEnabled, "Expected skontoEnabled to be true by default")
         #expect(configuration.transactionDocsEnabled, "Expected transactionDocsEnabled to be true by default")
-        #expect(configuration.paymentHintsEnabled, "Expected paymentHintsEnabled to be true by default")
+        #expect(configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true by default")
         #expect(configuration.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true by default")
         #expect(configuration.shouldShowSupportedFormatsScreen, "Expected shouldShowSupportedFormatsScreen to be true by default")
         #expect(configuration.shouldShowDragAndDropTutorial, "Expected shouldShowDragAndDropTutorial to be true by default")
@@ -214,14 +214,14 @@ struct GiniBankConfigurationFeatureFlagsTests {
     // MARK: - Payment Hints
 
     @Test("Payment hints can be enabled and disabled")
-    func paymentHintsEnabled() {
+    func alreadyPaymentHintEnabled() {
         var configuration = GiniBankConfiguration()
         
-        configuration.paymentHintsEnabled = false
-        #expect(!configuration.paymentHintsEnabled, "Expected paymentHintsEnabled to be false after disabling")
+        configuration.alreadyPaidHintEnabled = false
+        #expect(!configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false after disabling")
         
-        configuration.paymentHintsEnabled = true
-        #expect(configuration.paymentHintsEnabled, "Expected paymentHintsEnabled to be true after enabling")
+        configuration.alreadyPaidHintEnabled = true
+        #expect(configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true after enabling")
     }
 
     // MARK: - Save Photos Locally
