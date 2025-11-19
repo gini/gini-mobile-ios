@@ -369,6 +369,19 @@ public final class ReviewViewController: UIViewController {
         ]
     }()
 
+    private lazy var optionsStackViewIpadConstraintsWithBottomBar: [NSLayoutConstraint] = {
+        // Account for bottom navigation bar height plus padding
+        let bottomPadding = Constants.bottomNavigationBarHeight + Constants.padding
+
+        return [
+            optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                                  constant: Constants.saveToGalleryTopConstant(pages.count)),
+            optionsStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            optionsStackView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                     constant: -bottomPadding)
+        ]
+    }()
+
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
@@ -542,10 +555,26 @@ extension ReviewViewController {
     private func updateLayoutForIpad() {
         buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
         optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
+
+        // Handle bottom navigation bar placement (always use portrait behavior)
+        if giniConfiguration.bottomNavigationBarEnabled {
+            removeButtonsFromOptionsStack()
+        } else {
+            // Ensure buttons are in optionsStackView when bottom nav is disabled
+            if buttonsStackViewContainer.superview != buttonsContainerWrapper {
+                buttonsContainerWrapper.addSubview(buttonsStackViewContainer)
+            }
+            if !optionsStackView.arrangedSubviews.contains(buttonsContainerWrapper) {
+                optionsStackView.addArrangedSubview(buttonsContainerWrapper)
+            }
+            NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
+        }
+
         // iPad always uses portrait-style constraints regardless of orientation
+        // Use different constraints based on bottom navigation bar state
         let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? (pageControlConstraints + optionsStackViewIpadConstraints)
-        : (pageControlConstraints + optionsStackViewIpadConstraints + collectionViewConstraints)
+        ? pageControlConstraints + optionsStackViewIpadConstraintsWithBottomBar + collectionViewConstraints
+        : pageControlConstraints + optionsStackViewIpadConstraints + collectionViewConstraints
 
         NSLayoutConstraint.activate(constraintsToActivate)
     }
@@ -574,9 +603,11 @@ extension ReviewViewController {
     private func handleBottomNavigationBarPlacement(isLandscape: Bool) {
         guard giniConfiguration.bottomNavigationBarEnabled else { return }
 
-        if isLandscape {
+        if isLandscape && UIDevice.current.isIphone {
+            // iPhone landscape: buttons in optionsStackView
             setupButtonsInOptionsStack()
         } else {
+            // iPhone portrait or iPad (both orientations): buttons in bottom nav bar
             removeButtonsFromOptionsStack()
         }
     }
@@ -658,6 +689,8 @@ extension ReviewViewController {
         return pageControlConstraints
         + optionsStackViewConstraints
         + optionsStackViewConstraintsWithBottomBar
+        + optionsStackViewIpadConstraints
+        + optionsStackViewIpadConstraintsWithBottomBar
         + collectionViewConstraints
     }
 
@@ -666,6 +699,8 @@ extension ReviewViewController {
         + optionsStackViewHorizontalConstraints
         + collectionViewHorizontalConstraints
         + optionsStackViewConstraintsWithBottomBar
+        + optionsStackViewIpadConstraints
+        + optionsStackViewIpadConstraintsWithBottomBar
     }
 
     private func setupView() {
@@ -924,9 +959,8 @@ extension ReviewViewController {
     }
 
     private func cellSizeForIpad() -> CGSize {
-
         // Calculate available space
-        var availableHeight = self.view.bounds.height
+        var availableHeight = view.bounds.height
         availableHeight -= 260 // Base overhead
 
         if giniConfiguration.bottomNavigationBarEnabled {
