@@ -352,8 +352,6 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var optionsStackViewConstraintsWithBottomBar: [NSLayoutConstraint] = {
-        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
-
         // Account for bottom navigation bar height plus padding
         let bottomPadding = Constants.bottomNavigationBarHeight + Constants.padding
 
