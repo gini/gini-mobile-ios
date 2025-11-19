@@ -239,7 +239,7 @@ struct SwitchOptionModel {
             case .skontoHelpNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
             case .alreadyPaidHintEnabled:
-                return "Features included under this flag due date and paid state"
+                return "Features included under this flag paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
 			default:
