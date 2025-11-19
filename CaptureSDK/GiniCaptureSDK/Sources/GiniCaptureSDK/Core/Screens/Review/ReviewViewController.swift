@@ -550,6 +550,7 @@ extension ReviewViewController {
         }
     }
 
+    // MARK: iPad - layout updates
     private func updateLayoutForIpad() {
         buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
         optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
@@ -568,8 +569,14 @@ extension ReviewViewController {
             NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
         }
 
+        // Deactivate all constraints first
+        NSLayoutConstraint.deactivate(pageControlConstraints
+                                      + optionsStackViewIpadConstraints
+                                      + optionsStackViewIpadConstraintsWithBottomBar
+                                      + collectionViewConstraints)
+
         // iPad always uses portrait-style constraints regardless of orientation
-        // Use different constraints based on bottom navigation bar state
+        // Activate appropriate constraints based on bottom navigation bar state
         let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
         ? pageControlConstraints + optionsStackViewIpadConstraintsWithBottomBar + collectionViewConstraints
         : pageControlConstraints + optionsStackViewIpadConstraints + collectionViewConstraints
@@ -577,12 +584,59 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(constraintsToActivate)
     }
 
+    // MARK: iPhone - layout updates
     private func updateLayoutForIphone() {
         let isLandscape = UIDevice.current.isLandscape
 
         configureButtonContainer(isLandscape: isLandscape)
         handleBottomNavigationBarPlacement(isLandscape: isLandscape)
-        updateConstraints(isLandscape: isLandscape)
+        updateiPhoneConstraints(isLandscape: isLandscape)
+    }
+
+    private func updateiPhoneConstraints(isLandscape: Bool) {
+        let shouldShowBottomNav = giniConfiguration.bottomNavigationBarEnabled && !isLandscape
+
+        let portraitConstraints = getPortraitConstraints(shouldShowBottomNav: shouldShowBottomNav)
+        let landscapeConstraints = pageControlHorizontalConstraints
+        + optionsStackViewHorizontalConstraints
+        + collectionViewHorizontalConstraints
+
+        let constraintsToActivate = isLandscape ? landscapeConstraints : portraitConstraints
+        let constraintsToDeactivate = isLandscape
+        ? getPortraitConstraintsToDeactivate()
+        : getLandscapeConstraintsToDeactivate()
+
+        NSLayoutConstraint.deactivate(constraintsToDeactivate)
+        NSLayoutConstraint.activate(constraintsToActivate)
+    }
+
+    private func getPortraitConstraints(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
+        if shouldShowBottomNav {
+            // Portrait with bottom navigation bar
+            return pageControlConstraints
+            + optionsStackViewConstraintsWithBottomBar
+            + collectionViewConstraints
+        } else {
+            // Portrait without bottom navigation bar
+            return pageControlConstraints
+            + optionsStackViewConstraints
+            + collectionViewConstraints
+        }
+    }
+
+    // MARK: - Deactivating constraints - iPhone
+    private func getPortraitConstraintsToDeactivate() -> [NSLayoutConstraint] {
+        return pageControlConstraints
+        + optionsStackViewConstraints
+        + optionsStackViewConstraintsWithBottomBar
+        + collectionViewConstraints
+    }
+
+    private func getLandscapeConstraintsToDeactivate() -> [NSLayoutConstraint] {
+        return pageControlHorizontalConstraints
+        + optionsStackViewHorizontalConstraints
+        + collectionViewHorizontalConstraints
+        + optionsStackViewConstraintsWithBottomBar
     }
 
     private func configureButtonContainer(isLandscape: Bool) {
@@ -650,55 +704,6 @@ extension ReviewViewController {
         }
 
         loadingIndicator?.removeFromSuperview()
-    }
-
-    private func updateConstraints(isLandscape: Bool) {
-        let shouldShowBottomNav = giniConfiguration.bottomNavigationBarEnabled && !isLandscape
-
-        let portraitConstraints = getPortraitConstraints(shouldShowBottomNav: shouldShowBottomNav)
-        let landscapeConstraints = pageControlHorizontalConstraints
-        + optionsStackViewHorizontalConstraints
-        + collectionViewHorizontalConstraints
-
-        let constraintsToActivate = isLandscape ? landscapeConstraints : portraitConstraints
-        let constraintsToDeactivate = isLandscape
-        ? getPortraitConstraintsToDeactivate()
-        : getLandscapeConstraintsToDeactivate()
-
-        NSLayoutConstraint.deactivate(constraintsToDeactivate)
-        NSLayoutConstraint.activate(constraintsToActivate)
-    }
-
-    private func getPortraitConstraints(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
-        if shouldShowBottomNav {
-            // Portrait with bottom navigation bar
-            return pageControlConstraints
-            + optionsStackViewConstraintsWithBottomBar
-            + collectionViewConstraints
-        } else {
-            // Portrait without bottom navigation bar
-            return pageControlConstraints
-            + optionsStackViewConstraints
-            + collectionViewConstraints
-        }
-    }
-
-    private func getPortraitConstraintsToDeactivate() -> [NSLayoutConstraint] {
-        return pageControlConstraints
-        + optionsStackViewConstraints
-        + optionsStackViewConstraintsWithBottomBar
-        + optionsStackViewIpadConstraints
-        + optionsStackViewIpadConstraintsWithBottomBar
-        + collectionViewConstraints
-    }
-
-    private func getLandscapeConstraintsToDeactivate() -> [NSLayoutConstraint] {
-        return pageControlHorizontalConstraints
-        + optionsStackViewHorizontalConstraints
-        + collectionViewHorizontalConstraints
-        + optionsStackViewConstraintsWithBottomBar
-        + optionsStackViewIpadConstraints
-        + optionsStackViewIpadConstraintsWithBottomBar
     }
 
     private func setupView() {
