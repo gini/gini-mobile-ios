@@ -40,7 +40,6 @@ public struct ClientConfiguration: Codable {
      - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
      - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
      - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
-     - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due dates are enabled.
