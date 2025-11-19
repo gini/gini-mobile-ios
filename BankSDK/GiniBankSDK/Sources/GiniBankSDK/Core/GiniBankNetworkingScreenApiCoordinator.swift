@@ -541,11 +541,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
-    func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
-        let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
+    func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
+        let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.alreadyPaidHintEnabled ?? false
 
-        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+        return globalAlreadyPaidHintEnabled && clientAlreadyPaidHintEnabled
     }
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
