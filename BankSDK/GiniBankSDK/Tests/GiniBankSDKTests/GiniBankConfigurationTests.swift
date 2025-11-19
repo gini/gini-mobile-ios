@@ -214,7 +214,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
     // MARK: - Payment Hints
 
     @Test("Payment hints can be enabled and disabled")
-    func alreadyPaymentHintEnabled() {
+    func alreadyPaidHintEnabled() {
         var configuration = GiniBankConfiguration()
         
         configuration.alreadyPaidHintEnabled = false

@@ -354,7 +354,7 @@ extension ClientConfiguration {
                   qrCodeEducationEnabled: false,
                   eInvoiceEnabled: false,
                   savePhotosLocallyEnabled: false,
-                  alreadyPaidHintEnabled: false,
+                  alreadyPaidHintEnabled: alreadyPaidHintEnabled,
                   paymentDueHintEnabled: false)
     }
 }

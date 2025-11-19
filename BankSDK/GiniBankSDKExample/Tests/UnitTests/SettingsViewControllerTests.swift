@@ -2130,13 +2130,13 @@ extension SettingsViewModelTests {
 
     func testUserPaymentWarningsSwitchOff() {
         guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
-            XCTFail("`alreadyPaymentHintEnabled` option not found in sectionData")
+            XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
             return
         }
 
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .alreadyPaidHintEnabled else {
-                XCTFail("Expected type `alreadyPaymentHintEnabled`, found a different one: \(data.type)")
+                XCTFail("Expected type `alreadyPaidHintEnabled`, found a different one: \(data.type)")
                 return
             }
             data.isSwitchOn = false
@@ -2149,13 +2149,13 @@ extension SettingsViewModelTests {
 
     func testUserPaymentWarningsSwitchOn() {
         guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
-            XCTFail("`alreadyPaymentHintEnabled` option not found in sectionData")
+            XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
             return
         }
 
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .alreadyPaidHintEnabled else {
-                XCTFail("Expected type `alreadyPaymentHintEnabled`, found a different one: \(data.type)")
+                XCTFail("Expected type `alreadyPaidHintEnabled`, found a different one: \(data.type)")
                 return
             }
             data.isSwitchOn = true
