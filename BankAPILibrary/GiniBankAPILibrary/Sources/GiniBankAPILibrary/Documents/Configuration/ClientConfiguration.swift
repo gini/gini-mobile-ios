@@ -24,7 +24,6 @@ public struct ClientConfiguration: Codable {
     public let instantPaymentEnabled: Bool
     public let qrCodeEducationEnabled: Bool
     public let eInvoiceEnabled: Bool
-    public let paymentHintsEnabled: Bool
     public let savePhotosLocallyEnabled: Bool
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
@@ -54,7 +53,6 @@ public struct ClientConfiguration: Codable {
                 instantPaymentEnabled: Bool,
                 qrCodeEducationEnabled: Bool,
                 eInvoiceEnabled: Bool,
-                paymentHintsEnabled: Bool,
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool) {
@@ -66,7 +64,6 @@ public struct ClientConfiguration: Codable {
         self.instantPaymentEnabled = instantPaymentEnabled
         self.qrCodeEducationEnabled = qrCodeEducationEnabled
         self.eInvoiceEnabled = eInvoiceEnabled
-        self.paymentHintsEnabled = paymentHintsEnabled
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled
