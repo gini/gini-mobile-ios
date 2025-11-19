@@ -994,7 +994,7 @@ extension ReviewViewController {
             } else {
                 // For small devices in portrait, use a smaller multiplier
                 // to ensure everything fits on screen
-                return Constants.smallDevicePortraitHeightMultiplier
+                return Constants.smallDevicePortraitHeightMultiplier(giniConfiguration.bottomNavigationBarEnabled)
             }
         }
 
@@ -1176,7 +1176,10 @@ extension ReviewViewController {
         }
 
         // Small device multipliers (iPhone SE, iPhone 6/7/8, etc.)
-        static let smallDevicePortraitHeightMultiplier: CGFloat = 0.45
+        static let smallDevicePortraitHeightMultiplier: (Bool) -> CGFloat = { bottomNavEnabled in
+            bottomNavEnabled ? 0.35 : 0.45
+        }
+
         static let smallDeviceLandscapeHeightMultiplier: CGFloat = 0.5
     }
 }
