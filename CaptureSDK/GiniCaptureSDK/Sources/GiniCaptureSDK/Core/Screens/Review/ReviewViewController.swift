@@ -351,6 +351,24 @@ public final class ReviewViewController: UIViewController {
                                                  constant: -Constants.bottomPadding)
     ]
 
+    private lazy var optionsStackViewConstraintsWithBottomBar: [NSLayoutConstraint] = {
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+
+        // Account for bottom navigation bar height plus padding
+        let bottomPadding = Constants.bottomNavigationBarHeight + Constants.padding
+
+        return [
+            optionsStackView.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                                  constant: Constants.saveToGalleryTopConstant(pages.count)),
+            optionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                      constant: Constants.padding),
+            optionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                       constant: -Constants.padding),
+            optionsStackView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                     constant: -bottomPadding)
+        ]
+    }()
+
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
@@ -370,6 +388,8 @@ public final class ReviewViewController: UIViewController {
         collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
                                                constant: -Constants.largePadding)
     ]
+
+    private var bottomNavigationBarConstraints: [NSLayoutConstraint] = []
 
     private var shouldShowSaveToGalleryView: Bool {
         let isSaveToGalleryAllowed: Bool
@@ -445,12 +465,15 @@ extension ReviewViewController {
         bottomNavigationBar = navigationBar
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
-        NSLayoutConstraint.activate([
+
+        bottomNavigationBarConstraints = [
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
-        ])
+        ]
+
+        NSLayoutConstraint.activate(bottomNavigationBarConstraints)
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
     }
@@ -530,7 +553,12 @@ extension ReviewViewController {
     private func updateLayoutForIphone() {
         let isLandscape = UIDevice.current.isLandscape
 
-        // Update button container configuration
+        configureButtonContainer(isLandscape: isLandscape)
+        handleBottomNavigationBarPlacement(isLandscape: isLandscape)
+        updateConstraints(isLandscape: isLandscape)
+    }
+
+    private func configureButtonContainer(isLandscape: Bool) {
         buttonsStackViewContainer.axis = isLandscape ? .vertical : .horizontal
 
         if isLandscape {
@@ -541,41 +569,103 @@ extension ReviewViewController {
             buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
             optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
         }
+    }
 
-        // Handle bottom navigation bar visibility
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if isLandscape {
-                view.addSubview(buttonsStackViewContainer)
-                addLoadingView()
-            } else {
-                loadingIndicator?.removeFromSuperview()
-                buttonsStackViewContainer.removeFromSuperview()
-            }
+    private func handleBottomNavigationBarPlacement(isLandscape: Bool) {
+        guard giniConfiguration.bottomNavigationBarEnabled else { return }
+
+        if isLandscape {
+            setupButtonsInOptionsStack()
+        } else {
+            removeButtonsFromOptionsStack()
+        }
+    }
+
+    private func setupButtonsInOptionsStack() {
+        // In landscape, add buttons to optionsStackView (like when bottom nav is disabled)
+        bottomNavigationBar?.removeFromSuperview()
+
+        // Add buttonsStackViewContainer to buttonsContainerWrapper if not already there
+        if buttonsStackViewContainer.superview != buttonsContainerWrapper {
+            buttonsContainerWrapper.addSubview(buttonsStackViewContainer)
         }
 
-        bottomNavigationBar?.alpha = isLandscape ? 0 : 1
-        bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
+        // Add buttonsContainerWrapper to optionsStackView if not already there
+        if !optionsStackView.arrangedSubviews.contains(buttonsContainerWrapper) {
+            optionsStackView.addArrangedSubview(buttonsContainerWrapper)
+        }
 
-        // Handle constraint activation/deactivation based on orientation
-        let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? (pageControlConstraints + optionsStackViewConstraints)
-        : (pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints)
+        // Activate button container constraints when adding to optionsStackView
+        NSLayoutConstraint.activate(buttonsStackViewContainerConstraints)
 
-        let constraintsToActivate = isLandscape
-        ? pageControlHorizontalConstraints
+        addLoadingView()
+    }
+
+    private func removeButtonsFromOptionsStack() {
+        // In portrait, use bottom navigation bar and remove buttons from optionsStackView
+
+        // Add bottom navigation bar back if it's not in the view hierarchy
+        if let bottomBar = bottomNavigationBar, bottomBar.superview == nil {
+            view.addSubview(bottomBar)
+            NSLayoutConstraint.activate(bottomNavigationBarConstraints)
+            view.bringSubviewToFront(bottomBar)
+        }
+
+        // Deactivate button container constraints before removing from optionsStackView
+        NSLayoutConstraint.deactivate(buttonsStackViewContainerConstraints)
+
+        // Remove buttonsContainerWrapper from optionsStackView if it's there
+        if optionsStackView.arrangedSubviews.contains(buttonsContainerWrapper) {
+            optionsStackView.removeArrangedSubview(buttonsContainerWrapper)
+            buttonsContainerWrapper.removeFromSuperview()
+        }
+
+        loadingIndicator?.removeFromSuperview()
+    }
+
+    private func updateConstraints(isLandscape: Bool) {
+        let shouldShowBottomNav = giniConfiguration.bottomNavigationBarEnabled && !isLandscape
+
+        let portraitConstraints = getPortraitConstraints(shouldShowBottomNav: shouldShowBottomNav)
+        let landscapeConstraints = pageControlHorizontalConstraints
         + optionsStackViewHorizontalConstraints
         + collectionViewHorizontalConstraints
-        : portraitConstraintsToActivate
 
-        let portraitConstraintsToDeactivate = pageControlHorizontalConstraints
-        + optionsStackViewHorizontalConstraints + collectionViewHorizontalConstraints
-
+        let constraintsToActivate = isLandscape ? landscapeConstraints : portraitConstraints
         let constraintsToDeactivate = isLandscape
-        ? pageControlConstraints + optionsStackViewConstraints + collectionViewConstraints
-        : portraitConstraintsToDeactivate
+        ? getPortraitConstraintsToDeactivate()
+        : getLandscapeConstraintsToDeactivate()
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
         NSLayoutConstraint.activate(constraintsToActivate)
+    }
+
+    private func getPortraitConstraints(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
+        if shouldShowBottomNav {
+            // Portrait with bottom navigation bar
+            return pageControlConstraints
+            + optionsStackViewConstraintsWithBottomBar
+            + collectionViewConstraints
+        } else {
+            // Portrait without bottom navigation bar
+            return pageControlConstraints
+            + optionsStackViewConstraints
+            + collectionViewConstraints
+        }
+    }
+
+    private func getPortraitConstraintsToDeactivate() -> [NSLayoutConstraint] {
+        return pageControlConstraints
+        + optionsStackViewConstraints
+        + optionsStackViewConstraintsWithBottomBar
+        + collectionViewConstraints
+    }
+
+    private func getLandscapeConstraintsToDeactivate() -> [NSLayoutConstraint] {
+        return pageControlHorizontalConstraints
+        + optionsStackViewHorizontalConstraints
+        + collectionViewHorizontalConstraints
+        + optionsStackViewConstraintsWithBottomBar
     }
 
     private func setupView() {
@@ -880,10 +970,10 @@ extension ReviewViewController {
             // Multiplier accounts for tip label, page control, safe areas, and paddings
             return Constants.landscapeHeightMultiplier
         } else {
-            // Portrait multiplier based on device type
+            // Portrait multiplier based on device type and bottom navigation bar state
             var multiplier: CGFloat = view.safeAreaInsets.bottom > 0
-            ? Constants.portraitHeightMultiplierWithSafeArea
-            : Constants.portraitHeightMultiplierWithoutSafeArea
+            ? Constants.portraitHeightMultiplierWithSafeArea(giniConfiguration.bottomNavigationBarEnabled)
+            : Constants.portraitHeightMultiplierWithoutSafeArea(giniConfiguration.bottomNavigationBarEnabled)
 
             // Adjust for saveToGalleryView in portrait only
             if shouldShowSaveToGalleryView {
@@ -1042,9 +1132,16 @@ extension ReviewViewController {
 
         // Cell size multipliers
         static let landscapeHeightMultiplier: CGFloat = 0.55
-        static let portraitHeightMultiplierWithSafeArea: CGFloat = 0.6
-        static let portraitHeightMultiplierWithoutSafeArea: CGFloat = 0.5
         static let saveToGalleryHeightAdjustment: CGFloat = 0.08
+
+        // Portrait multipliers based on bottom navigation bar state
+        static let portraitHeightMultiplierWithSafeArea: (Bool) -> CGFloat = { bottomNavEnabled in
+            bottomNavEnabled ? 0.52 : 0.58
+        }
+
+        static let portraitHeightMultiplierWithoutSafeArea: (Bool) -> CGFloat = { bottomNavEnabled in
+            bottomNavEnabled ? 0.42 : 0.5
+        }
 
         // Small device multipliers (iPhone SE, iPhone 6/7/8, etc.)
         static let smallDevicePortraitHeightMultiplier: CGFloat = 0.45
