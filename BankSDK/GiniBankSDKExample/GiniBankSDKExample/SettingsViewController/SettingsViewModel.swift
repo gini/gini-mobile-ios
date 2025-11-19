@@ -113,8 +113,8 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .transactionDocsEnabled,
                                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
-        featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentHintsEnabled,
-                                                                     isSwitchOn: giniConfiguration.paymentHintsEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .alreadyPaidHintEnabled,
+                                                                     isSwitchOn: giniConfiguration.alreadyPaidHintEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .savePhotosLocallyEnabled,
                                                                      isSwitchOn: giniConfiguration.savePhotosLocallyEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentDueHintEnabled,
@@ -332,8 +332,8 @@ final class SettingsViewModel {
             giniConfiguration.skontoEnabled = data.isSwitchOn
         case .transactionDocsEnabled:
             giniConfiguration.transactionDocsEnabled = data.isSwitchOn
-        case .paymentHintsEnabled:
-            giniConfiguration.paymentHintsEnabled = data.isSwitchOn
+        case .alreadyPaidHintEnabled:
+            giniConfiguration.alreadyPaidHintEnabled = data.isSwitchOn
         case .paymentDueHintEnabled:
             giniConfiguration.paymentDueHintEnabled = data.isSwitchOn
         case .savePhotosLocallyEnabled:
