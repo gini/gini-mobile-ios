@@ -666,6 +666,9 @@ extension ReviewViewController {
 
     private func setupButtonsInOptionsStack() {
         // In landscape, add buttons to optionsStackView (like when bottom nav is disabled)
+
+        // Deactivate bottom navigation bar constraints before removing it
+        NSLayoutConstraint.deactivate(bottomNavigationBarConstraints)
         bottomNavigationBar?.removeFromSuperview()
 
         // Add buttonsStackViewContainer to buttonsContainerWrapper if not already there
