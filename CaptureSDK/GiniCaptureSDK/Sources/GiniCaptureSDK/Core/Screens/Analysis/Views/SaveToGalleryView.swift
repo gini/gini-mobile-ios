@@ -13,7 +13,7 @@ final class SaveToGalleryView: UIView {
 
         label.text = Strings.titleLabel
         label.font = configuration.textStyleFonts[.callout]
-        
+
         return label
     }()
 
@@ -23,25 +23,27 @@ final class SaveToGalleryView: UIView {
         label.text = Strings.descriptionLabel
         label.numberOfLines = 0
         label.font = configuration.textStyleFonts[.caption2]
-        
+
         return label
     }()
 
-    private lazy var enabledSwitch: UISwitch = {
-        let toggle = UISwitch()
+    private lazy var switchUIControl: UISwitch = {
+        let switchUIControl = UISwitch()
 
-        toggle.onTintColor = GiniColor(light: .GiniCapture.accent1,
-                                       dark: .GiniCapture.accent1).uiColor()
+        switchUIControl.onTintColor = GiniColor(light: .GiniCapture.accent1,
+                                                dark: .GiniCapture.accent1).uiColor()
 
-        toggle.addTarget(self, action: #selector(didToggleSwitch(_:)), for: .valueChanged)
+        switchUIControl.addTarget(self,
+                                  action: #selector(didToggleSwitch(_:)),
+                                  for: .valueChanged)
 
-        return toggle
+        return switchUIControl
     }()
 
     private let configuration = GiniConfiguration.shared
 
-    var isOn: Bool {
-        enabledSwitch.isOn
+    var switchOn: Bool {
+        switchUIControl.isOn
     }
 
     @Published var valueChanged = false
@@ -49,16 +51,16 @@ final class SaveToGalleryView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setupUI()
+        setupView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupUI() {
+    private func setupView() {
         setCornerRadius()
-        setOffState()
+        applyOffStateAppearance()
         addTitleLabel()
         addDescriptionLabel()
         addEnabledSwitch()
@@ -84,9 +86,9 @@ final class SaveToGalleryView: UIView {
     }
 
     private func addEnabledSwitch() {
-        addSubview(enabledSwitch)
+        addSubview(switchUIControl)
 
-        enabledSwitch.giniMakeConstraints {
+        switchUIControl.giniMakeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(titleLabel.trailing).constant(Constants.switchLeadingSpacing)
             $0.leading.equalTo(descriptionLabel.trailing).constant(Constants.switchLeadingSpacing)
@@ -99,33 +101,46 @@ final class SaveToGalleryView: UIView {
         layer.masksToBounds = true
     }
 
-    private func setOnState() {
+    private func applyOnStateAppearance() {
         backgroundColor = GiniColor(light: .GiniCapture.light1,
                                     dark: .GiniCapture.dark3).uiColor()
-        layer.borderWidth = 0.0
+        layer.borderWidth = Constants.borderWidthOnStateApperance
+
+        switchUIControl.onTintColor = GiniColor(light: .GiniCapture.accent1,
+                                                dark: .GiniCapture.accent1).uiColor()
     }
 
-    private func setOffState() {
+    private func applyOffStateAppearance() {
         backgroundColor = GiniColor(light: .GiniCapture.light2,
                                     dark: .GiniCapture.dark2).uiColor()
 
-        layer.borderWidth = 1.0
+        layer.borderWidth = Constants.borderWidthOffStateApperance
         layer.borderColor = GiniColor(light: .GiniCapture.light3,
                                       dark: .GiniCapture.dark4).uiColor().cgColor
+
+        switchUIControl.onTintColor = GiniColor(light: .GiniCapture.light4,
+                                                dark: .GiniCapture.dark4).uiColor()
     }
 
     @objc private func didToggleSwitch(_ enabledSwitch: UISwitch) {
-        enabledSwitch.isOn ? setOnState() : setOffState()
+        if switchUIControl.isOn {
+            applyOnStateAppearance()
+        } else {
+            applyOffStateAppearance()
+        }
         valueChanged = enabledSwitch.isOn
     }
 
     private struct Constants {
-        static let titleTopPadding = 20.0
-        static let descriptionBottomPadding = -20.0
-        static let descriptionTopSpacing = 4.0
-        static let labelsLeadingPadding = 16.0
-        static let switchLeadingSpacing = 16.0
-        static let switchTrailingPadding = -16.0
+        static let titleTopPadding: CGFloat  = 20.0
+        static let descriptionBottomPadding: CGFloat  = -20.0
+        static let descriptionTopSpacing: CGFloat  = 4.0
+        static let labelsLeadingPadding: CGFloat  = 16.0
+        static let switchLeadingSpacing: CGFloat  = 16.0
+        static let switchTrailingPadding: CGFloat  = -16.0
+        static let cornerRadius: CGFloat = 8.0
+        static let borderWidthOnStateApperance: CGFloat = 0.0
+        static let borderWidthOffStateApperance: CGFloat = 1.0
     }
 
     private struct Strings {
