@@ -102,7 +102,7 @@ import UIKit
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
-    var pages: [GiniCapturePage]!
+    var pages: [GiniCapturePage]?
 
     /**
      Designated intitializer for the `AnalysisViewController`.
@@ -336,7 +336,7 @@ import UIKit
     }
 
     private func saveDocumentPhotoToGalleryIfNeeded() {
-        guard shouldSaveToGallery, !pages.isEmpty else { return }
+        guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
         let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
 
         for document in documentsToSave {
