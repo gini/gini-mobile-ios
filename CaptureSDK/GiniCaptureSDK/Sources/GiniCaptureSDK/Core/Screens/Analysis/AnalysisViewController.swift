@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -339,9 +340,14 @@ import UIKit
         guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
         let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
 
-        for document in documentsToSave {
-            UIImageWriteToSavedPhotosAlbum(document, nil, nil, nil)
-        }
+
+        PHPhotoLibrary.shared().performChanges ({
+            for document in documentsToSave {
+                PHAssetChangeRequest.creationRequestForAsset(from: document)
+            }
+        }, completionHandler: { success, error in
+            // callback NOT guaranteed on the main thread
+        })
     }
 
     private func addLoadingText(below loadingIndicator: UIView) {
