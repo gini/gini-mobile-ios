@@ -123,7 +123,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         
         let result = coordinator.getDocumentPaymentState(for: extractionResult)
         
-        XCTAssertEqual(result, PaymentStatus.toBePaid)
+        XCTAssertEqual(result?.rawValue, "tobepaid")
     }
 
     // MARK: - isDocumentMarkedAsPaid Tests

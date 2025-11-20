@@ -9,11 +9,6 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 
-enum PaymentStatus: String {
-    case paid
-    case toBePaid = "tobepaid"
-}
-
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
     var childCoordinators: [Coordinator] { get set }
@@ -23,6 +18,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     static var currentCoordinator: GiniBankNetworkingScreenApiCoordinator?
     var childCoordinators: [Coordinator] = []
 
+    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
+    /// It does not affect how payment states are parsed.
+    enum PaymentStatus: String {
+        case paid
+        case toBePaid = "tobepaid"
+    }
     // MARK: - GiniCaptureDelegate
 
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
