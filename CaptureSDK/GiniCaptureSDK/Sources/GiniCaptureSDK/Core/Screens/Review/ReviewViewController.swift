@@ -781,7 +781,7 @@ extension ReviewViewController {
         GiniAnalyticsManager.track(event: .proceedTapped,
                                    screenName: .review,
                                    properties: eventProperties)
-        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.isOn)
+        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.switchOn)
     }
 
     private func deleteItem(at indexPath: IndexPath) {
