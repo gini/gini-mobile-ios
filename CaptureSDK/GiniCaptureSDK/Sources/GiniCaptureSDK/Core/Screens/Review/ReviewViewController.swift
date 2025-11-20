@@ -715,7 +715,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(scrollViewConstraints)
         NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
-        NSLayoutConstraint.activate(processButtonConstraints) // botton size constraints
+        NSLayoutConstraint.activate(processButtonConstraints) // button size constraints
 
         // Only add button container constraints when bottomNavigationBar is disabled
         if !giniConfiguration.bottomNavigationBarEnabled {
