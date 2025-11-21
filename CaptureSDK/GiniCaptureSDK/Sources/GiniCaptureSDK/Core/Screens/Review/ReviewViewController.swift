@@ -135,8 +135,7 @@ public final class ReviewViewController: UIViewController {
                                        dark: .GiniCapture.light1).uiColor()
         tipLabel.isAccessibilityElement = true
         tipLabel.numberOfLines = 0
-        tipLabel.text = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.description",
-                                                         comment: "Tip on review screen")
+        tipLabel.text = ReviewStrings.tipTitle.localized
 
         return tipLabel
     }()
@@ -170,8 +169,7 @@ public final class ReviewViewController: UIViewController {
         button.configure(with: giniConfiguration.primaryButtonConfiguration)
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
-                                                        comment: "Process button title"), for: .normal)
+        button.setTitle(ReviewStrings.processButtonTitle.localized, for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         button.isAccessibilityElement = true
         return button
@@ -181,12 +179,8 @@ public final class ReviewViewController: UIViewController {
         let addPagesButton = BottomLabelButton()
         addPagesButton.translatesAutoresizingMaskIntoConstraints = false
         addPagesButton.setupButton(with: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
-                                   name: NSLocalizedStringPreferredFormat(
-                                    "ginicapture.multipagereview.secondaryButtonTitle",
-                                        comment: "Add pages button title"))
-        addPagesButton.accessibilityValue = NSLocalizedStringPreferredFormat(
-                                                "ginicapture.multipagereview.secondaryButton.accessibility",
-                                                comment: "Add pages")
+                                   name: ReviewStrings.addPagesButtonTitle.localized)
+        addPagesButton.accessibilityValue = ReviewStrings.addPagesAccessibility.localized
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
         addPagesButton.actionLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
@@ -710,8 +704,7 @@ extension ReviewViewController {
     }
 
     private func setupView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
-                                                 comment: "Screen title")
+        title = ReviewStrings.screenTitle.localized
         view.backgroundColor = GiniColor(light: .GiniCapture.light2,
                                          dark: .GiniCapture.dark2).uiColor()
 
@@ -901,15 +894,11 @@ extension ReviewViewController {
     }
 
     private func showPermissionDeniedAlert() {
-        let title = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied",
-                                                       comment: "Message shown when Photo library access denied")
-        let cancelActionTitle = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton",
-                                                                 comment: "Cancel")
+        let message = ReviewStrings.photoLibraryAccessDenied.localized
+        let cancelActionTitle = ReviewStrings.photoLibraryAccessDeniedCancelButton.localized
+        let confirmActionTitle = ReviewStrings.photoLibraryAccessDeniedGrantAccessButton.localized
 
-        let confirmActionTitle = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton",
-                                                                  comment: "grant access button title")
-
-        giniShowErrorAlert(message: title,
+        giniShowErrorAlert(message: message,
                            cancelButtonTitle: cancelActionTitle,
                            confirmButtonTitle: confirmActionTitle,
                            confirmAction: {
