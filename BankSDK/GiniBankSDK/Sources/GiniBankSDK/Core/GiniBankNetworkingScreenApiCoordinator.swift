@@ -416,7 +416,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
         switch documentPaymentStatus {
         case .paid:
-            /// show pop up for paid invoice
+            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
+                continueWithFeatureFlow()
+                return
+            }
+            
             presentDocumentMarkedAsPaidBottomSheet {
                 continueWithFeatureFlow()
             }
@@ -542,11 +547,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
-    func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
-        let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
-
-        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
+        let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .alreadyPaidHintEnabled ?? false
+        return globalAlreadyPaidHintEnabled && clientAlreadyPaidHintEnabled
     }
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {

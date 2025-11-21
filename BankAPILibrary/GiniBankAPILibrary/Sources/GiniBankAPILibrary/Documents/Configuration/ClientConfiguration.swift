@@ -24,7 +24,6 @@ public struct ClientConfiguration: Codable {
     public let instantPaymentEnabled: Bool
     public let qrCodeEducationEnabled: Bool
     public let eInvoiceEnabled: Bool
-    public let paymentHintsEnabled: Bool
     public let savePhotosLocallyEnabled: Bool
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
@@ -41,7 +40,6 @@ public struct ClientConfiguration: Codable {
      - instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
      - qrCodeEducationEnabled: A flag indicating whether QR code education is enabled.
      - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
-     - paymentHintsEnabled: A flag indicating whether the user hints are enabled.
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due dates are enabled.
@@ -54,7 +52,6 @@ public struct ClientConfiguration: Codable {
                 instantPaymentEnabled: Bool,
                 qrCodeEducationEnabled: Bool,
                 eInvoiceEnabled: Bool,
-                paymentHintsEnabled: Bool,
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool) {
@@ -66,7 +63,6 @@ public struct ClientConfiguration: Codable {
         self.instantPaymentEnabled = instantPaymentEnabled
         self.qrCodeEducationEnabled = qrCodeEducationEnabled
         self.eInvoiceEnabled = eInvoiceEnabled
-        self.paymentHintsEnabled = paymentHintsEnabled
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled

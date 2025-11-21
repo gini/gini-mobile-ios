@@ -58,7 +58,7 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
-        case paymentHintsEnabled
+        case alreadyPaidHintEnabled
         case savePhotosLocallyEnabled
         case paymentDueHintEnabled
         case closeSDK
@@ -153,7 +153,7 @@ struct SwitchOptionModel {
                 return "Skonto help bottom navigation bar"
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
-            case .paymentHintsEnabled:
+            case .alreadyPaidHintEnabled:
                 return "User payment warnings feature"
             case .paymentDueHintEnabled:
                 return "Payment due hint feature"
@@ -238,8 +238,8 @@ struct SwitchOptionModel {
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
             case .skontoHelpNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-            case .paymentHintsEnabled:
-                return "Features included under this flag due date and paid state"
+            case .alreadyPaidHintEnabled:
+                return "Features included under this flag paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
 			default:
