@@ -13,7 +13,7 @@ protocol Coordinator: AnyObject {
 }
 
 /// Defines how a view can show and hide a payment due date message.
-public protocol PaymentDueDateHandling: AnyObject {
+public protocol PaymentDueDateProtocol: AnyObject {
 
     /// Show the payment due date text
     /// - Parameters:
@@ -31,8 +31,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     var rootViewController: UIViewController {
         return screenAPINavigationController
     }
-    public weak var paymentDueDateHandler: PaymentDueDateHandling?
-
+    public weak var paymentDueDateHandler: PaymentDueDateProtocol?
 
     public lazy var screenAPINavigationController: UINavigationController = {
         var navigationController: UINavigationController

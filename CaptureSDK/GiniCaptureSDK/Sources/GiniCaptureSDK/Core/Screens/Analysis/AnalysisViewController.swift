@@ -513,7 +513,7 @@ import UIKit
     }
 }
 
-extension AnalysisViewController: PaymentDueDateHandling {
+extension AnalysisViewController: PaymentDueDateProtocol {
     public func handlePaymentDueDate(_ dueDate: String) {
         /// remove suggestion while handling due date
         removeCaptureSuggestions()
