@@ -115,42 +115,40 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
     func testDetermineIfAlreadyPaidHintEnabledDocumentNotPaidReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
-        
+
         coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
-        
+
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
-        
+
         let result = coordinator.getDocumentPaymentState(for: extractionResult)
-        
+
         XCTAssertEqual(result?.rawValue, "tobepaid")
     }
 
-    // MARK: - isDocumentMarkedAsPaid Tests
+    // MARK: - getDocumentPaymentState Tests
 
-    func testIsDocumentMarkedAsPaidPaidStatusReturnsTrue() throws {
+    func testGetDocumentPaymentStateWithPaidStatusReturnsPaid() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
-        
+
         let extractionResult = createExtractionResult(paymentState: "paid")
-        
+
         let result = coordinator.getDocumentPaymentState(for: extractionResult)
-        
-        XCTAssertNotNil(result)
+
         XCTAssertEqual(result, .paid)
     }
 
-    func testIsDocumentMarkedAsPaidUnpaidStatusReturnsFalse() throws {
+    func testGetDocumentPaymentStateWithToBePaidStatusReturnsToBePaid() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
         let result = coordinator.getDocumentPaymentState(for: extractionResult)
 
-        XCTAssertNotNil(result)
         XCTAssertEqual(result, .toBePaid)
     }
 
-    func testIsDocumentMarkedAsPaidNoPaymentStateReturnsFalse() throws {
+    func testGetDocumentPaymentStateWithNilPaymentStateReturnsNil() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
         let extractionResult = createExtractionResult(paymentState: nil)
