@@ -61,7 +61,9 @@ class PhotoLibraryPermissionManager {
 
     static let shared = PhotoLibraryPermissionManager()
 
-    private init() {}
+    private init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // MARK: - Check Current Status
     /**
