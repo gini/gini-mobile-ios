@@ -47,10 +47,10 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    static func date(fromServerString serverDateString: String) -> Date? {
+    static func date(from string: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.date(from: serverDateString)
+        return formatter.date(from: string)
     }
 }

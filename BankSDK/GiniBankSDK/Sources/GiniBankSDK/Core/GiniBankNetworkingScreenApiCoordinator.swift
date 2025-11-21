@@ -417,14 +417,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         switch documentPaymentStatus {
         case .paid:
             /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
-            guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
-                continueWithFeatureFlow()
-                return
-            }
-            
-            presentDocumentMarkedAsPaidBottomSheet {
-                continueWithFeatureFlow()
-            }
+            handlePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .toBePaid:
             /// Show payment due date hint if available
@@ -455,6 +448,18 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 continueWithFeatureFlow()
             }
         } else {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handlePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        presentDocumentMarkedAsPaidBottomSheet {
             continueWithFeatureFlow()
         }
     }
@@ -580,7 +585,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             // Return nil if key not found or value is empty
             return nil
         }
-        return Date.date(fromServerString: dueDate)
+        return Date.date(from: dueDate)
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
