@@ -42,7 +42,7 @@ public struct ClientConfiguration: Codable {
      - eInvoiceEnabled: A flag indicating whether the E-Invoice feature is enabled.
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
-     - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due dates are enabled.
+     - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due date is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
