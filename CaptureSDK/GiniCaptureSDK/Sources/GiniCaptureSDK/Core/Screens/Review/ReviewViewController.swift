@@ -95,8 +95,8 @@ public final class ReviewViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = Constants.minCollectionPadding
+        layout.minimumInteritemSpacing = Constants.collectionInterItemSpacing
 
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -571,15 +571,15 @@ extension ReviewViewController {
 
         // Deactivate all constraints first
         NSLayoutConstraint.deactivate(pageControlConstraints
+                                      + collectionViewConstraints
                                       + optionsStackViewIpadConstraints
-                                      + optionsStackViewIpadConstraintsWithBottomBar
-                                      + collectionViewConstraints)
+                                      + optionsStackViewIpadConstraintsWithBottomBar)
 
         // iPad always uses portrait-style constraints regardless of orientation
         // Activate appropriate constraints based on bottom navigation bar state
         let constraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-        ? pageControlConstraints + optionsStackViewIpadConstraintsWithBottomBar + collectionViewConstraints
-        : pageControlConstraints + optionsStackViewIpadConstraints + collectionViewConstraints
+        ? collectionViewConstraints + pageControlConstraints + optionsStackViewIpadConstraintsWithBottomBar
+        : collectionViewConstraints + pageControlConstraints + optionsStackViewIpadConstraints
 
         NSLayoutConstraint.activate(constraintsToActivate)
     }
@@ -613,14 +613,14 @@ extension ReviewViewController {
     private func getPortraitConstraints(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
         if shouldShowBottomNav {
             // Portrait with bottom navigation bar
-            return pageControlConstraints
+            return collectionViewConstraints
+            + pageControlConstraints
             + optionsStackViewConstraintsWithBottomBar
-            + collectionViewConstraints
         } else {
             // Portrait without bottom navigation bar
-            return pageControlConstraints
+            return collectionViewConstraints
+            + pageControlConstraints
             + optionsStackViewConstraints
-            + collectionViewConstraints
         }
     }
 
@@ -873,6 +873,7 @@ extension ReviewViewController {
                 return .centeredHorizontally
             }
         }()
+
         if scrollPosition == .centeredHorizontally {
             collectionView.contentInset.left = 0
             collectionView.contentInset.right = 0
@@ -965,23 +966,23 @@ extension ReviewViewController {
     }
 
     private func cellSizeForIpad() -> CGSize {
-        // Calculate available space
-        var availableHeight = view.bounds.height
-        availableHeight -= 260 // Base overhead
+        let isLandscape = UIDevice.current.isLandscape
 
-        if giniConfiguration.bottomNavigationBarEnabled {
-            availableHeight -= Constants.bottomNavigationBarHeight
-            availableHeight -= Constants.padding
+        let multiplier: CGFloat
+
+        if isLandscape {
+            multiplier = shouldShowSaveToGalleryView
+            ? Constants.ipadLandscapeHeightMultiplier
+            : Constants.ipadLandscapeHeightMultiplierWithoutSaveToGallery
+        } else {
+            multiplier = shouldShowSaveToGalleryView
+            ? Constants.ipadPortraitHeightMultiplier(giniConfiguration.bottomNavigationBarEnabled)
+            : Constants.ipadPortraitHeightMultiplierWithoutSaveToGallery(giniConfiguration.bottomNavigationBarEnabled)
         }
 
-        if shouldShowSaveToGalleryView {
-            availableHeight -= (saveToGalleryView.frame.height
-                                + Constants.saveToGalleryBottomConstant
-                                + Constants.saveToGalleryTopConstant(pages.count))
-        }
-
-        let width = availableHeight / Constants.a4Ratio
-        return CGSize(width: width, height: availableHeight)
+        let height = view.bounds.height * multiplier
+        let width = height / Constants.a4Ratio
+        return CGSize(width: width, height: height)
     }
 
     private func cellSizeForiPhone() -> CGSize {
@@ -1080,9 +1081,11 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
                                            sizeForItemAt: IndexPath(row: 0, section: 0)).width
 
         let trailingPadding = currentInterfaceOrientation.isLandscape &&
-                              UIDevice.current.isIphone ? Constants.trailingCollectionPadding : 0
+        UIDevice.current.isIphone ? Constants.trailingCollectionPadding : 0
 
-        let margin = (self.view.bounds.width - trailingPadding - itemSize) / 2
+        let calculatedMargin = (self.view.bounds.width - trailingPadding - itemSize) / 2
+        let margin = max(calculatedMargin, Constants.minCollectionPadding)
+
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
@@ -1169,6 +1172,8 @@ extension ReviewViewController {
 
         static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11.0 : 28.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
+        static let minCollectionPadding: CGFloat = 5.0
+        static let collectionInterItemSpacing: CGFloat = UIDevice.current.isIpad && UIDevice.current.isPortrait ? 24 : 8
 
         // Cell size multipliers
         static let landscapeHeightMultiplier: CGFloat = 0.55
@@ -1189,6 +1194,16 @@ extension ReviewViewController {
         }
 
         static let smallDeviceLandscapeHeightMultiplier: CGFloat = 0.5
+
+        // iPad cell size multipliers
+        static let ipadLandscapeHeightMultiplier: CGFloat = 0.53
+        static let ipadLandscapeHeightMultiplierWithoutSaveToGallery: CGFloat = 0.65
+        static let ipadPortraitHeightMultiplier: (Bool) -> CGFloat = { bottomNavEnabled in
+            bottomNavEnabled ? 0.55 : 0.68
+        }
+        static let ipadPortraitHeightMultiplierWithoutSaveToGallery: (Bool) -> CGFloat = { bottomNavEnabled in
+            bottomNavEnabled ? 0.62 : 0.75
+        }
     }
 }
 // swiftlint:enable file_length

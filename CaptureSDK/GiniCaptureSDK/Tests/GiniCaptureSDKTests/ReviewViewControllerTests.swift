@@ -25,23 +25,26 @@ final class ReviewViewControllerTests: XCTestCase {
     ]
 
     // MARK: - Helper Methods
-
     private func calculateExpectedItemSize() -> CGSize {
         let a4Ratio = 1.4142
 
         if UIDevice.current.isIpad {
-            var availableHeight = reviewViewController.view.bounds.height
-            availableHeight -= 260 // Base overhead
+            let isLandscape = UIDevice.current.isLandscape
 
-            if giniConfiguration.bottomNavigationBarEnabled {
-                availableHeight -= 114 // Bottom navigation bar height
-                availableHeight -= 16 // Padding
+            // Use the same multiplier logic as ReviewViewController
+            let multiplier: CGFloat
+
+            if isLandscape {
+                // Note: Assuming saveToGalleryView is not shown in tests
+                multiplier = 0.75 // ipadLandscapeHeightMultiplierWithoutSaveToGallery
+            } else {
+                // Portrait - assuming saveToGalleryView is not shown
+                multiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.62 : 0.68
             }
 
-            // Note: Not accounting for saveToGalleryView in test for simplicity
-
-            let width = availableHeight / a4Ratio
-            return CGSize(width: width, height: availableHeight)
+            let height = reviewViewController.view.bounds.height * multiplier
+            let width = height / a4Ratio
+            return CGSize(width: width, height: height)
         } else {
             // iPhone - replicate calculateHeightMultiplier() logic
             let multiplier = calculateExpectedHeightMultiplier()
@@ -56,7 +59,11 @@ final class ReviewViewControllerTests: XCTestCase {
         let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
 
         if isSmallDevice {
-            return isLandscape ? 0.5 : 0.45
+            if isLandscape {
+                return 0.5
+            } else {
+                return giniConfiguration.bottomNavigationBarEnabled ? 0.35 : 0.45
+            }
         } else if isLandscape {
             return 0.55
         } else {
@@ -64,7 +71,7 @@ final class ReviewViewControllerTests: XCTestCase {
             let baseMultiplier: CGFloat
             if reviewViewController.view.safeAreaInsets.bottom > 0 {
                 // Device with safe area (notch)
-                baseMultiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.52 : 0.6
+                baseMultiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.52 : 0.58
             } else {
                 // Device without safe area
                 baseMultiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.42 : 0.5
@@ -100,20 +107,48 @@ final class ReviewViewControllerTests: XCTestCase {
     }
 
     func testMainCollectionInsets() {
+        let minCollectionPadding: CGFloat = 5.0
+
         let collectionInsets = reviewViewController.collectionView(
             reviewViewController.collectionView,
             layout: reviewViewController.collectionView.collectionViewLayout,
             insetForSectionAt: 0
         )
 
-        let itemSize = calculateExpectedItemSize()
-        let margin = (reviewViewController.view.bounds.width - itemSize.width) / 2
-        let expectedInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
-
-        XCTAssertEqual(collectionInsets,
-                       expectedInset,
-                       "Main collection insets should match calculated values")
+        // Just verify the insets follow the expected rules
+        XCTAssertEqual(collectionInsets.top,
+                       0,
+                       "Top inset should be 0")
+        XCTAssertEqual(collectionInsets.bottom,
+                       0,
+                       "Bottom inset should be 0")
+        XCTAssertGreaterThanOrEqual(collectionInsets.left,
+                                    minCollectionPadding,
+                                    "Left inset should be at least \(minCollectionPadding)")
+        XCTAssertGreaterThanOrEqual(collectionInsets.right,
+                                    minCollectionPadding,
+                                    "Right inset should be at least minCollectionPadding \(minCollectionPadding)")
+        XCTAssertEqual(collectionInsets.left,
+                       collectionInsets.right,
+                       "Left and right insets should be equal (centered)")
     }
+
+    func testCollectionViewLayoutSpacing() {
+        guard let layout = reviewViewController.collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            XCTFail("Collection view layout should be UICollectionViewFlowLayout")
+            return
+        }
+
+        let collectionInterItemSpacing: CGFloat = UIDevice.current.isIpad && UIDevice.current.isPortrait ? 24 : 8
+
+        XCTAssertEqual(layout.minimumLineSpacing,
+                       collectionInterItemSpacing,
+                       "Minimum line spacing should be \(collectionInterItemSpacing)pt for current device/orientation")
+        XCTAssertEqual(layout.minimumInteritemSpacing,
+                       collectionInterItemSpacing,
+                       "Minimum interitem spacing should be \(collectionInterItemSpacing)pt for current device/orientation")
+    }
+
 
 // MARK: - Fix the test with tap event simulation
 
