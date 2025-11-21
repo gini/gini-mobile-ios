@@ -115,7 +115,7 @@ final class DismissMessageView: UIView {
 
 // MARK: - Strings
 private extension DismissMessageView {
-    enum Strings {
+    struct Strings {
         static let dismissTitle = NSLocalizedStringPreferredFormat(
             "ginicapture.dismiss.message.title",
             comment: "Title for the dismiss message view"
@@ -123,7 +123,7 @@ private extension DismissMessageView {
     }
 
     // MARK: - Constants
-    enum Constants {
+    struct Constants {
         static let cornerRadius: CGFloat = 14
         static let borderWidth: CGFloat = 1
         static let progressHeight: CGFloat = 6
