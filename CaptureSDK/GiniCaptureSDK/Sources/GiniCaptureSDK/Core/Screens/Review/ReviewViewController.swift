@@ -404,7 +404,7 @@ public final class ReviewViewController: UIViewController {
         let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled
         let pagesContainsPhotos = pages.contains(where: { !$0.document.isImported })
 
-        return  isSaveToGalleryEnabled && pagesContainsPhotos
+        return isSaveToGalleryEnabled && pagesContainsPhotos
     }
 
     // MARK: - Init
@@ -871,7 +871,7 @@ extension ReviewViewController {
     }
 
     private func requestGalleryPermission() {
-        // If the System Permissions Alert where not given yet, request at this step just `addOnly` permissions.
+        // If the System Permissions Alert were not given yet, request at this step just `addOnly` permissions.
         Task { @MainActor in
             let status = await permissionManager.requestPermission(for: .addOnly)
 
