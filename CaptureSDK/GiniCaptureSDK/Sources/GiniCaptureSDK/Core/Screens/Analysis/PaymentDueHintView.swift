@@ -10,7 +10,7 @@ final class PaymentDueHintView: UIView {
 
     private lazy var infoIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image =  UIImageNamedPreferred(named: "hintInfoIcon")
+        imageView.image =  Images.hintIcon
         imageView.tintColor = .GiniCapture.warning2
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +111,9 @@ final class PaymentDueHintView: UIView {
     }
 }
 
-extension PaymentDueHintView {
+private extension PaymentDueHintView {
+
+    // MARK: - Constants
     struct Strings {
         static let suggestionKey = "ginicapture.payment.due.hint.suggestion"
         static let suggestionComment = "Hint suggestions"
@@ -123,15 +125,18 @@ extension PaymentDueHintView {
         static let hintPrefix = NSLocalizedStringPreferredFormat(prefixKey,
                                                                  comment: prefixComment)
     }
-}
 
-// MARK: - Constants
-private extension PaymentDueHintView {
+    // MARK: - Constants
     struct Constants {
         static let iconSize: CGFloat = 18
         static let iconTextSpacing: CGFloat = 8
         static let cornerRadius: CGFloat = 8
         static let contentPadding: CGFloat = 10
+    }
+
+    // MARK: - Images
+    struct Images {
+        static var hintIcon: UIImage? { UIImageNamedPreferred(named: "hintInfoIcon") }
     }
 }
 
