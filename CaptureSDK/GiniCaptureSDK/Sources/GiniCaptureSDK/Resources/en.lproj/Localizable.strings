@@ -233,3 +233,6 @@
 // MARK: - Save invoice locally
 "ginicapture.saveinvoice.local.title" = "Save to Photos";
 "ginicapture.saveinvoice.local.description" = "A copy of this invoice will be saved to your Photos library.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied" = "To save the photo to your camera roll, permission to access your photo gallery is required.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Cancel";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";

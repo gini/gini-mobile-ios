@@ -6,6 +6,8 @@
 
 import UIKit
 import Photos
+import Combine
+
 // swiftlint:disable file_length
 /**
  The ReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
@@ -246,6 +248,8 @@ public final class ReviewViewController: UIViewController {
     // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
     private var previousScreenHeight: CGFloat = UIScreen.main.bounds.height
 
+    private let permissionManager = PhotoLibraryPermissionManager.shared
+
     // MARK: - Constraints
 
     private lazy var scrollViewConstraints: [NSLayoutConstraint] = [
@@ -403,22 +407,10 @@ public final class ReviewViewController: UIViewController {
     private var bottomNavigationBarConstraints: [NSLayoutConstraint] = []
 
     private var shouldShowSaveToGalleryView: Bool {
-        let isSaveToGalleryAllowed: Bool
-
-        // TODO: this logic is in progress will be covered in the ticket: PP-2084
-        let status = PHPhotoLibrary.authorizationStatus()
-        if #available(iOS 14, *) {
-            // iOS 14+ uses the new authorization API with access levels
-            isSaveToGalleryAllowed = status == .authorized || status == .limited || status == .notDetermined
-        } else {
-            // iOS 13 uses the legacy authorization API
-            isSaveToGalleryAllowed = status == .authorized || status == .notDetermined
-        }
-
         let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled
         let pagesContainsPhotos = pages.contains(where: { !$0.document.isImported })
 
-        return isSaveToGalleryAllowed && isSaveToGalleryEnabled && pagesContainsPhotos
+        return  isSaveToGalleryEnabled && pagesContainsPhotos
     }
 
     // MARK: - Init
@@ -441,6 +433,8 @@ public final class ReviewViewController: UIViewController {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(imageDocuments:) has not been implemented")
     }
+
+    private var cancellables = Set<AnyCancellable>()
 }
 
 // MARK: - BottomNavigation
@@ -500,6 +494,12 @@ extension ReviewViewController {
         addConstraints()
         configureBottomNavigationBar()
         addLoadingView()
+        updateSaveToGalleryViewVisibility()
+        saveToGalleryView.$valueChanged.sink { isOn in
+            if isOn {
+                self.handleSaveToGalleryToggle()
+            }
+        }.store(in: &cancellables)
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -829,11 +829,92 @@ extension ReviewViewController {
     }
 
     private func updateViewForNewPages() {
-        saveToGalleryView.isHidden = !shouldShowSaveToGalleryView
+        updateSaveToGalleryViewVisibility()
 
         if isViewLoaded && view.window != nil {
             updateLayout()
         }
+    }
+
+    // MARK: - Photo Library Permission Handling
+
+    private func updateSaveToGalleryViewVisibility() {
+        let status = permissionManager.currentStatus(for: .addOnly)
+        let shouldShow = shouldShowSaveToGalleryView
+
+        saveToGalleryView.isHidden = !shouldShow
+
+        if shouldShow {
+            if status == .authorized || status == .limited {
+                saveToGalleryView.isOn = true
+            } else {
+                // No permission yet / not determined -> keep it off until user opts in
+                saveToGalleryView.isOn = false
+            }
+        } else {
+            // When the view is hidden, make sure the switch is off
+            saveToGalleryView.isOn = false
+        }
+    }
+
+    private func handleSaveToGalleryToggle() {
+        let status = permissionManager.currentStatus(for: .addOnly)
+
+        switch status {
+        case .notDetermined:
+            // First time - request permission
+            requestGalleryPermission()
+
+        case .restricted, .denied:
+            // User previously denied or restricted - show settings alert
+            showPermissionDeniedAlert()
+            // Turn off the switch since permission is denied
+            saveToGalleryView.isOn = false
+
+        case .authorized, .limited:
+            // Already have permission - proceed with save
+            break
+        }
+    }
+
+    private func requestGalleryPermission() {
+        // If the System Permissions Alert where not given yet, request at this step just `addOnly` permissions.
+        Task { @MainActor in
+            let status = await permissionManager.requestPermission(for: .addOnly)
+
+            switch status {
+            case .authorized, .limited:
+                // Permission granted
+                updateSaveToGalleryViewVisibility()
+
+            case .restricted, .denied:
+                // User denied permission
+                showPermissionDeniedAlert()
+                saveToGalleryView.isOn = false
+                updateSaveToGalleryViewVisibility()
+
+            case .notDetermined:
+                // Shouldn't happen, but handle gracefully
+                saveToGalleryView.isOn = false
+            }
+        }
+    }
+
+    private func showPermissionDeniedAlert() {
+        let title = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied",
+                                                       comment: "Message shown when Photo library access denied")
+        let cancelActionTitle = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton",
+                                                                 comment: "Cancel")
+
+        let confirmActionTitle = NSLocalizedStringPreferredFormat("ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton",
+                                                                  comment: "grant access button title")
+
+        giniShowErrorAlert(message: title,
+                           cancelButtonTitle: cancelActionTitle,
+                           confirmButtonTitle: confirmActionTitle,
+                           confirmAction: {
+            UIApplication.shared.openAppSettings()
+        })
     }
 }
 
