@@ -74,7 +74,7 @@ final class PaymentDueHintView: UIView {
 
         let attributedText = NSMutableAttributedString(string: fullText)
 
-        if let boldFont = GiniConfiguration.shared.textStyleFonts[.caption1SemiBold] {
+        if let boldFont = GiniConfiguration.shared.textStyleFonts[.footnoteBold] {
             let prefixRange = (fullText as NSString).range(of: Strings.hintPrefix)
             attributedText.addAttribute(.font, value: boldFont, range: prefixRange)
         }
