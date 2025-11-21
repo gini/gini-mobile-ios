@@ -113,7 +113,7 @@ import UIKit
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .center
-        stack.spacing = 10
+        stack.spacing = Constants.contentStackVerticalSpacing
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -561,6 +561,7 @@ private extension AnalysisViewController {
         static let horizontalPadding: CGFloat = 16
         static let dismissButtonHeight: CGFloat = 40
         static let contentStackBottomPadding: CGFloat = 20
+        static let contentStackVerticalSpacing: CGFloat = 10
     }
 
     struct Strings {
