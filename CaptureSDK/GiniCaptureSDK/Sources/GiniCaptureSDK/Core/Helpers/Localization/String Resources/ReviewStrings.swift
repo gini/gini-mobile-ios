@@ -18,9 +18,15 @@ enum ReviewStrings: LocalizableStringResource {
 
     var tableName: String {
         switch self {
-        case .screenTitle, .tipTitle, .processButtonTitle, .addPagesButtonTitle, .addPagesAccessibility:
+        case .screenTitle,
+             .tipTitle,
+             .processButtonTitle,
+             .addPagesButtonTitle,
+             .addPagesAccessibility:
             return "multipagereview"
-        case .photoLibraryAccessDenied, .photoLibraryAccessDeniedCancelButton, .photoLibraryAccessDeniedGrantAccessButton:
+        case .photoLibraryAccessDenied,
+             .photoLibraryAccessDeniedCancelButton,
+             .photoLibraryAccessDeniedGrantAccessButton:
             return "saveinvoice"
         }
     }
