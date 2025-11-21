@@ -69,19 +69,25 @@ final class PaymentDueHintView: UIView {
 
     func configure(withDueDate dueDate: String) {
 
-        let format = Strings.hint
-        let fullText = String(format: format, dueDate)
+        /// part of text appear bold on UI  (e.g "Tip:")
+        let prefixTip = Strings.hintPrefix
 
-        let attributedText = NSMutableAttributedString(string: fullText)
+        /// hint text
+        let tipText = Strings.hint
+
+        /// formated string with prefix and due date
+        let tipTextFormat = String(format: tipText, prefixTip, dueDate)
+
+        let attributedText = NSMutableAttributedString(string: tipTextFormat)
 
         if let boldFont = GiniConfiguration.shared.textStyleFonts[.footnoteBold] {
-            let prefixRange = (fullText as NSString).range(of: Strings.hintPrefix)
+            let prefixRange = (tipTextFormat as NSString).range(of: prefixTip)
             attributedText.addAttribute(.font, value: boldFont, range: prefixRange)
         }
 
         tipLabel.attributedText = attributedText
 
-        tipContainerView.accessibilityLabel = fullText
+        tipContainerView.accessibilityLabel = tipTextFormat
         tipContainerView.accessibilityTraits = [.staticText]
     }
 
