@@ -28,16 +28,17 @@ extension Date {
     }
     
     func isDueSoon(within days: Int) -> Bool {
-        let now = Date()
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let dueDate = calendar.startOfDay(for: self)
         
-        /// If this date is in the past, it's not considered "due soon"
-        guard self >= now else { return false }
+        // Calculate full days until due date
+        let daysUntilDue = calendar.dateComponents([.day], from: today, to: dueDate).day ?? 0
         
-        /// Calculate the latest date that counts as "due soon"
-        guard let upperLimit = Calendar.current.date(byAdding: .day, value: days, to: now) else { return false }
+        // Counting today as day 1
+        let inclusiveDays = daysUntilDue + 1
         
-        /// Return true if this date falls within the upcoming 'days' range
-        return self <= upperLimit
+        return inclusiveDays >= days
     }
     
     func toDisplayString(format: String = "dd.MM.yyyy") -> String {
