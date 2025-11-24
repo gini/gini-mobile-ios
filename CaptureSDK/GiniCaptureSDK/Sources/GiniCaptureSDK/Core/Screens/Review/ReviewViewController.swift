@@ -96,7 +96,8 @@ public final class ReviewViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = Constants.minCollectionPadding
-        layout.minimumInteritemSpacing = Constants.collectionInterItemSpacing
+        layout.minimumInteritemSpacing = Constants.collectionInterItemSpacing(UIDevice.current.isIpad,
+                                                                              UIDevice.current.isPortrait)
 
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -524,8 +525,6 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let size = cellSize()
-        collectionViewHeightConstraint.constant = size.height + 4
         updateLayout()
         DispatchQueue.main.async {
             guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
@@ -543,6 +542,8 @@ extension ReviewViewController {
     }
 
     private func updateLayout() {
+        updateCollectionViewLayout()
+
         if UIDevice.current.isIpad {
             updateLayoutForIpad()
         } else {
@@ -553,7 +554,8 @@ extension ReviewViewController {
     // MARK: iPad - layout updates
     private func updateLayoutForIpad() {
         buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
-        optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
+        let saveToGalleryBottomConstant = Constants.saveToGalleryBottomConstant(UIDevice.current.isPortrait)
+        optionsStackView.spacing = shouldShowSaveToGalleryView ? saveToGalleryBottomConstant : 0
 
         // Handle bottom navigation bar placement (always use portrait behavior)
         if giniConfiguration.bottomNavigationBarEnabled {
@@ -591,6 +593,17 @@ extension ReviewViewController {
         configureButtonContainer(isLandscape: isLandscape)
         handleBottomNavigationBarPlacement(isLandscape: isLandscape)
         updateiPhoneConstraints(isLandscape: isLandscape)
+    }
+
+    private func updateCollectionViewLayout() {
+        let size = cellSize()
+        collectionViewHeightConstraint.constant = size.height + 4
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+
+        let spacing = Constants.collectionInterItemSpacing(UIDevice.current.isIpad, UIDevice.current.isPortrait)
+        layout.minimumLineSpacing = Constants.minCollectionPadding
+        layout.minimumInteritemSpacing = spacing
+        layout.invalidateLayout()
     }
 
     private func updateiPhoneConstraints(isLandscape: Bool) {
@@ -645,10 +658,10 @@ extension ReviewViewController {
         if isLandscape {
             buttonsStackViewContainer.spacing = shouldShowSaveToGalleryView ?
             Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
-            optionsStackView.spacing = Constants.saveToGalleryBottomConstant
+            optionsStackView.spacing = Constants.saveToGalleryBottomConstant(false)
         } else {
             buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
-            optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant : 0
+            optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant(true) : 0
         }
     }
 
@@ -1174,10 +1187,14 @@ extension ReviewViewController {
             }
         }
 
-        static let saveToGalleryBottomConstant: CGFloat = UIDevice.current.isPortrait ? 11.0 : 28.0
+        static let saveToGalleryBottomConstant: (_ isPortrait: Bool) -> CGFloat = { isPortrait in
+            isPortrait ? 11.0 : 28.0
+        }
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
         static let minCollectionPadding: CGFloat = 5.0
-        static let collectionInterItemSpacing: CGFloat = UIDevice.current.isIpad && UIDevice.current.isPortrait ? 24 : 8
+        static let collectionInterItemSpacing: (_ isIpad: Bool, _ isPortrait: Bool) -> CGFloat = { isIpad, isPortrait in
+            isIpad && isPortrait ? 24 : 8
+        }
 
         // Cell size multipliers
         static let landscapeHeightMultiplier: CGFloat = 0.55
