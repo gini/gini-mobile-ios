@@ -453,8 +453,13 @@ import UIKit
     }
 
     private func updateContentStackConstraints() {
-        // Remove previous constraints first
-        // Deactivate all constraints affecting contentStack
+
+        /// Skip if views are not in the hierarchy(not added as subview) yet to avoid Auto Layout crashes
+        guard contentStack.superview != nil,
+              scrollView.superview != nil else { return }
+
+        /// Remove previous constraints first
+        /// Deactivate all constraints affecting contentStack
         if let superview = contentStack.superview {
             let relatedConstraints = superview.constraints.filter {
                 $0.firstItem === contentStack || $0.secondItem === contentStack
@@ -463,14 +468,14 @@ import UIKit
         }
 
         if UIDevice.current.isLandscape || UIDevice.current.isIpad {
-            // Landscape: center both horizontally and vertically
+            /// Landscape: center both horizontally and vertically
             contentStack.giniMakeConstraints {
                 $0.centerX.equalTo(scrollView)
                 $0.centerY.equalTo(scrollView)
                 $0.width.lessThanOrEqualTo(scrollView.frameLayoutGuide).constant(-Constants.horizontalPadding * 2)
             }
         } else {
-            // Portrait: top-aligned with horizontal padding
+            /// Portrait: top-aligned with horizontal padding
             contentStack.giniMakeConstraints {
                 $0.centerX.equalTo(scrollView)
                 $0.centerY.equalTo(scrollView)
