@@ -4,7 +4,7 @@
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
+// swiftlint:disable file_length
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -18,6 +18,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     static var currentCoordinator: GiniBankNetworkingScreenApiCoordinator?
     var childCoordinators: [Coordinator] = []
 
+    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
+    /// It does not affect how payment states are parsed.
+    enum PaymentStatus: String {
+        case paid
+        case toBePaid = "tobepaid"
+    }
     // MARK: - GiniCaptureDelegate
 
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
@@ -405,14 +411,55 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
         }
 
-        // Check if payment hints should be shown
-        let shouldShowPaymentHints = determineIfPaymentHintsEnabled(for: extractionResult)
+        /// Step:  Check document status for multiple states
+        let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
-        if shouldShowPaymentHints {
-            presentDocumentMarkedAsPaidBottomSheet {
+        switch documentPaymentStatus {
+        case .paid:
+            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            handlePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .toBePaid:
+            /// Show payment due date hint if available
+            handleToBePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .none:
+            continueWithFeatureFlow()
+        }
+    }
+
+    @MainActor
+    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              let handler = paymentDueDateHandler,
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
+        if dueDate.isDueSoon(within: threshold) {
+            Task {
+                handler.handlePaymentDueDate(dueDate.toDisplayString())
+                await handler.clearPaymentDueDate(after: 3)
                 continueWithFeatureFlow()
             }
         } else {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handlePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        presentDocumentMarkedAsPaidBottomSheet {
             continueWithFeatureFlow()
         }
     }
@@ -505,22 +552,40 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
-    func determineIfPaymentHintsEnabled(for extractionResult: ExtractionResult) -> Bool {
-        let globalPaymentHintsEnabled = giniBankConfiguration.paymentHintsEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentHintsEnabled ?? false
-        let documentIsPaid = isDocumentMarkedAsPaid(extractionResult)
-
-        return globalPaymentHintsEnabled && clientPaymentHintsEnabled && documentIsPaid
+    func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
+        let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .alreadyPaidHintEnabled ?? false
+        return globalAlreadyPaidHintEnabled && clientAlreadyPaidHintEnabled
     }
 
-    func isDocumentMarkedAsPaid(_ extractionResult: ExtractionResult) -> Bool {
+    func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    /// Returns the payment state of the document, if available
+    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
         guard let paymentState = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
             .value else {
-            return false
+            return nil
         }
+        return PaymentStatus(rawValue: paymentState.lowercased())
+    }
 
-        return paymentState.lowercased() == "paid"
+    /// Returns the due date  of the document, if available
+    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
+        /// Try to find the extraction with the key "paymentDueDate"
+        guard let dueDate = extractionResult.extractions
+                .first(where: { $0.name == "paymentDueDate" })?
+                .value,
+              !dueDate.isEmpty else {
+            // Return nil if key not found or value is empty
+            return nil
+        }
+        return Date.date(from: dueDate)
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {

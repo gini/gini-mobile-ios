@@ -370,14 +370,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
 
-    // MARK: - User hints for payment
-    /**
-     Indicates whether the `paymentHintsEnabled` is enabled or not. If set to `true`,
-     a bottom sheet is shown in the photo payment flow, informing the user about
-     different statuses of the ongoing payment.
-     */
-    public var paymentHintsEnabled: Bool = true
-
     // MARK: - Save Photos Locally
     /**
      Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
@@ -385,6 +377,30 @@ public final class GiniBankConfiguration: NSObject {
      local photo library.
      */
     public var savePhotosLocallyEnabled: Bool = true
+
+    // MARK: - Payment Due Hint Threshold
+    /**
+     Indicates the number of days before the invoice due date within which (inclusive of today) the invoice due date falls, for a payment hint to be shown..
+
+     Based on the `paymentDueDate` received from the backend, app checks if the due date is within the next
+     `paymentDueHintThresholdDays` days (including today). The default threshold is **5 days**, but bank clients
+     can change this value as needed.
+     */
+    public var paymentDueHintThresholdDays: Int = 5
+
+    /**
+     Indicates whether the Payment Due Hint feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to remind
+     the user about the upcoming payment due date.
+     */
+    public var paymentDueHintEnabled: Bool = true
+
+    /**
+     Indicates whether the Already Paid Hint feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to inform
+     the user that the invoice appears to have already been paid.
+     */
+    public var alreadyPaidHintEnabled: Bool = true
 
     /**
      Set the entry point used for launching the Gini Bank SDK.
