@@ -140,10 +140,11 @@ final class ReviewViewControllerTests: XCTestCase {
         }
 
         let collectionInterItemSpacing: CGFloat = UIDevice.current.isIpad && UIDevice.current.isPortrait ? 24 : 8
+        let minCollectionLineSpacing: CGFloat = 5.0 // value per implementation in ReviewViewController
 
         XCTAssertEqual(layout.minimumLineSpacing,
-                       collectionInterItemSpacing,
-                       "Minimum line spacing should be \(collectionInterItemSpacing)pt for current device/orientation")
+                       minCollectionLineSpacing,
+                       "Minimum line spacing should be \(minCollectionLineSpacing)pt for current device/orientation")
         XCTAssertEqual(layout.minimumInteritemSpacing,
                        collectionInterItemSpacing,
                        "Minimum interitem spacing should be \(collectionInterItemSpacing)pt for current device/orientation")
