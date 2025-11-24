@@ -1129,7 +1129,11 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
 
 extension ReviewViewController {
     private enum Constants {
-        static let a4Ratio = 1.4142
+        // a4Ratio = 1.4142 is used to calculate the width of document preview cells based on their height
+        // This ensures the document preview cells maintain the correct portrait document proportions
+        // like a typical documents would look.
+        static let a4Ratio = 1.4142  // Maintains A4 paper aspect ratio (height/width)
+
         static let padding: CGFloat = 16
         static let tipLabelPadding: CGFloat = 8
         static let largePadding: CGFloat = 32
