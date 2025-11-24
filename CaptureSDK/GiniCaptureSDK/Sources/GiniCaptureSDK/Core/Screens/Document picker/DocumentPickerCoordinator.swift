@@ -148,7 +148,7 @@ public final class DocumentPickerCoordinator: NSObject {
     /**
      Shows the Gallery picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - parameter viewController: View controller which presents the gallery picker
      */
     public func showGalleryPicker(from viewController: UIViewController) {
         Task { @MainActor in
