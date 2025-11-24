@@ -93,6 +93,13 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         return stackView
     }()
 
+    private lazy var backgroundContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .giniBankColorScheme().container.background.uiColor()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override var canBecomeFocused: Bool {
         false
     }
@@ -110,22 +117,27 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniBankColorScheme().container.background.uiColor()
-        clipsToBounds = true
-        layer.cornerRadius = Constants.cornerRadius
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        contentView.addSubview(mainStackView)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        backgroundContainerView.round(corners: [.bottomLeft, .bottomRight],
+                                      radius: Constants.cornerRadius)
+        contentView.addSubview(backgroundContainerView)
+        backgroundContainerView.addSubview(mainStackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            backgroundContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            backgroundContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            backgroundContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            backgroundContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: backgroundContainerView.leadingAnchor,
                                                    constant: Constants.stackViewHorizontalSpacing),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            mainStackView.trailingAnchor.constraint(equalTo: backgroundContainerView.trailingAnchor,
                                                     constant: -Constants.stackViewHorizontalSpacing),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+            mainStackView.topAnchor.constraint(equalTo: backgroundContainerView.topAnchor,
                                                constant: Constants.stackViewVerticalSpacing),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+            mainStackView.bottomAnchor.constraint(equalTo: backgroundContainerView.bottomAnchor,
                                                   constant: -Constants.stackViewVerticalSpacing),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
             editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
