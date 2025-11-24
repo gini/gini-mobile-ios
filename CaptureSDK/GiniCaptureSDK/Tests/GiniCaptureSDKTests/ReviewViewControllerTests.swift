@@ -36,10 +36,10 @@ final class ReviewViewControllerTests: XCTestCase {
 
             if isLandscape {
                 // Note: Assuming saveToGalleryView is not shown in tests
-                multiplier = 0.75 // ipadLandscapeHeightMultiplierWithoutSaveToGallery
+                multiplier = 0.65 // ipadLandscapeHeightMultiplierWithoutSaveToGallery
             } else {
                 // Portrait - assuming saveToGalleryView is not shown
-                multiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.62 : 0.68
+                multiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.62 : 0.75
             }
 
             let height = reviewViewController.view.bounds.height * multiplier
