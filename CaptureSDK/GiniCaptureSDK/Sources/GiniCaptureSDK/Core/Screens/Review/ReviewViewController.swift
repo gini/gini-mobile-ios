@@ -852,14 +852,14 @@ extension ReviewViewController {
 
         if shouldShow {
             if status == .authorized || status == .limited {
-                saveToGalleryView.isOn = true
+                saveToGalleryView.switchOn = true
             } else {
                 // No permission yet / not determined -> keep it off until user opts in
-                saveToGalleryView.isOn = false
+                saveToGalleryView.switchOn = false
             }
         } else {
             // When the view is hidden, make sure the switch is off
-            saveToGalleryView.isOn = false
+            saveToGalleryView.switchOn = false
         }
     }
 
@@ -875,7 +875,7 @@ extension ReviewViewController {
             // User previously denied or restricted - show settings alert
             showPermissionDeniedAlert()
             // Turn off the switch since permission is denied
-            saveToGalleryView.isOn = false
+            saveToGalleryView.switchOn = false
 
         case .authorized, .limited:
             // Already have permission - proceed with save
@@ -896,12 +896,12 @@ extension ReviewViewController {
             case .restricted, .denied:
                 // User denied permission
                 showPermissionDeniedAlert()
-                saveToGalleryView.isOn = false
+                saveToGalleryView.switchOn = false
                 updateSaveToGalleryViewVisibility()
 
             case .notDetermined:
                 // Shouldn't happen, but handle gracefully
-                saveToGalleryView.isOn = false
+                saveToGalleryView.switchOn = false
             }
         }
     }
@@ -929,7 +929,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(scrollViewConstraints)
         NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
-        NSLayoutConstraint.activate(processButtonConstraints) // botton size constraints
+        NSLayoutConstraint.activate(processButtonConstraints) // button size constraints
 
         // Only add button container constraints when bottomNavigationBar is disabled
         if !giniConfiguration.bottomNavigationBarEnabled {
@@ -996,7 +996,7 @@ extension ReviewViewController {
         GiniAnalyticsManager.track(event: .proceedTapped,
                                    screenName: .review,
                                    properties: eventProperties)
-        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.isOn)
+        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.switchOn)
     }
 
     private func deleteItem(at indexPath: IndexPath) {
