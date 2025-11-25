@@ -93,6 +93,7 @@
 
 "ginicapture.analysis.screenTitle" = "Auswertung";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.loadingTextPhotoLibrary" = "Dokument wird analysiert & Download in Fotos vorbereitet";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
