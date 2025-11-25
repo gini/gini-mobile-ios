@@ -9,12 +9,6 @@
 import Foundation
 @testable import GiniCaptureSDK
 final class ReviewVCDelegateMock: ReviewViewControllerDelegate {
-    func reviewDidTapProcess(_ viewController: GiniCaptureSDK.ReviewViewController,
-                             shouldSaveToGallery: Bool) {
-        
-        // This method will remain empty; mock implementation does not perform login
-    }
-    
     func review(_ viewController: ReviewViewController,
                 didTapRetryUploadFor page: GiniCapturePage) {
         // This method will remain empty; mock implementation does not perform login
