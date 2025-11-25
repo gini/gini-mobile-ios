@@ -377,7 +377,13 @@ import GiniUtilites
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
     public var customMenuItems: [HelpMenuItem] = []
-    
+
+    // MARK: - Save Photos Locally
+    /**
+     Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
+     photos captured during the payment flow will be automatically saved to the device's
+     local photo library.
+     */
     public var savePhotosLocallyEnabled: Bool = false
 
     // MARK: - Transaction Docs feature
