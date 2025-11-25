@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -35,6 +36,8 @@ import UIKit
 @objcMembers public final class AnalysisViewController: UIViewController {
 
     var didShowAnalysis: (() -> Void)?
+    var shouldSaveToGallery: Bool = false
+
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
@@ -80,7 +83,11 @@ import UIKit
             originalDocumentName = documentTitle
             loadingText.text = String(format: Strings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = Strings.loadingBaseText
+            if shouldSaveToGallery {
+                loadingText.text = Strings.analysisLoadingTextWithPhotoLibrary
+            } else {
+                loadingText.text = Strings.loadingBaseText
+            }
         }
 
         return loadingText
@@ -133,6 +140,8 @@ import UIKit
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
+    var pages: [GiniCapturePage]?
+
     /**
      Designated intitializer for the `AnalysisViewController`.
 
@@ -141,7 +150,8 @@ import UIKit
 
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
-    public init(document: GiniCaptureDocument, giniConfiguration: GiniConfiguration) {
+    public init(document: GiniCaptureDocument,
+                giniConfiguration: GiniConfiguration) {
         self.document = document
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
@@ -155,7 +165,8 @@ import UIKit
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
     public convenience init(document: GiniCaptureDocument) {
-        self.init(document: document, giniConfiguration: GiniConfiguration.shared)
+        self.init(document: document,
+                  giniConfiguration: GiniConfiguration.shared)
     }
 
     /**
@@ -345,6 +356,8 @@ import UIKit
      Otherwise, it suspends execution and resumes once the animation finishes.
      */
     public func waitUntilAnimationCompleted() async {
+        saveDocumentPhotoToGalleryIfNeeded()
+
         await withCheckedContinuation { continuation in
             guard loadingViewModel != nil else {
                 continuation.resume()
@@ -357,6 +370,20 @@ import UIKit
                 animationCompletionContinuations.append(continuation)
             }
         }
+    }
+
+    private func saveDocumentPhotoToGalleryIfNeeded() {
+        guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
+        let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
+
+        PHPhotoLibrary.shared().performChanges({
+            for documentToSave in documentsToSave {
+                PHAssetChangeRequest.creationRequestForAsset(from: documentToSave)
+            }
+        }, completionHandler: { _, _ in
+            // callback NOT guaranteed on the main thread
+            // we don't handle errors or any success message here for now
+        })
     }
 
     private func addLoadingText(below loadingIndicator: UIView) {
@@ -578,5 +605,9 @@ private extension AnalysisViewController {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                       comment: "Analysis screen loading base text")
 
+        static let analysisLoadingTextWithPhotoLibrary = NSLocalizedStringPreferredFormat(
+            "ginicapture.analysis.loadingTextPhotoLibrary",
+            comment: "loading base text with photo library"
+        )
     }
 }

@@ -512,6 +512,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customResourceBundle = self.customResourceBundle
         configuration.customResourceProvider = self.customResourceProvider
 
+        configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
+
         GiniCapture.setConfiguration(configuration)
 
         return configuration

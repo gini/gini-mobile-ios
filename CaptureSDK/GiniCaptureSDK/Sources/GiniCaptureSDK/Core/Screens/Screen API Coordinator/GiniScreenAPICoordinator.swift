@@ -341,10 +341,14 @@ extension GiniScreenAPICoordinator {
         if pages.type == .image {
             visionDelegate?.didReview(documents: pages.map { $0.document }, networkDelegate: self)
         }
-        analysisViewController = createAnalysisScreen(withDocument: firstDocument)
-        analysisViewController?.trackingDelegate = trackingDelegate
+
+        let analysisViewController = createAnalysisScreen(withDocument: firstDocument,
+                                                          shouldSaveToGallery: reviewViewController.shouldSaveToGallery)
+        analysisViewController.trackingDelegate = trackingDelegate
+        analysisViewController.pages = pages
         paymentDueDateHandler = analysisViewController
-        screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        self.analysisViewController = analysisViewController
+        screenAPINavigationController.pushViewController(analysisViewController, animated: true)
     }
 
     @objc func backToCamera() {
