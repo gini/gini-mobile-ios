@@ -16,7 +16,7 @@ import Photos
 
     /**
      Will display an error screen with predefined type.
-     
+
      - parameter message: The error type to be displayed.
      */
     func displayError(errorType: ErrorType, animated: Bool)
@@ -105,6 +105,38 @@ import Photos
         return overlayView
     }()
 
+    // MARK: - Scrollable Hint View Setup
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.backgroundColor = .clear
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private lazy var contentStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = Constants.contentStackVerticalSpacing
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private lazy var hintView: PaymentDueHintView = {
+        let view = PaymentDueHintView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var dismissHintView: DismissMessageView = {
+        let view = DismissMessageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
@@ -112,10 +144,10 @@ import Photos
 
     /**
      Designated intitializer for the `AnalysisViewController`.
-     
+
      - parameter document: Reviewed document ready for analysis.
      - parameter giniConfiguration: `GiniConfiguration` instance.
-     
+
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
     public init(document: GiniCaptureDocument,
@@ -127,9 +159,9 @@ import Photos
 
     /**
      Convenience intitializer for the `AnalysisViewController`.
-     
+
      - parameter document: Reviewed document ready for analysis.
-     
+
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
     public convenience init(document: GiniCaptureDocument) {
@@ -139,7 +171,7 @@ import Photos
 
     /**
      Returns an object initialized from data in a given unarchiver.
-     
+
      - warning: Not implemented.
      */
     public required init?(coder aDecoder: NSCoder) {
@@ -295,6 +327,9 @@ import Photos
 
         Task {
             await finalizeEducationAnimation(viewModel)
+
+            ///  remove QRCodeEducationLoadingView once animation finished
+            customLoadingView.removeFromSuperview()
         }
     }
 
@@ -417,6 +452,135 @@ import Photos
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
     }
+
+    // MARK: - Handling UI - Payment DueHint
+    private func setupScrollableStackView(dueDate: String) {
+
+        /// hide views before showing hint
+        loadingIndicatorText.isHidden = true
+        loadingIndicatorView.stopAnimating()
+
+        view.addSubview(scrollView)
+
+        scrollView.giniMakeConstraints {
+            $0.top.equalTo(view.safeTop)
+            $0.bottom.equalTo(view.safeBottom)
+            $0.leading.equalTo(view.safeLeading)
+            $0.trailing.equalTo(view.safeTrailing)
+        }
+
+        scrollView.addSubview(contentStack)
+
+        updateContentStackConstraints()
+
+        /// show due date hint view
+        addPaymentDueHintView(withDate: dueDate)
+        /// show hint dismiss view
+        addDismissMessageView()
+    }
+
+    private func updateContentStackConstraints() {
+
+        /// Skip if views are not in the hierarchy(not added as subview) yet to avoid Auto Layout crashes
+        guard contentStack.superview != nil,
+              scrollView.superview != nil else { return }
+
+        /// Remove previous constraints first
+        /// Deactivate all constraints affecting contentStack
+        if let superview = contentStack.superview {
+            let relatedConstraints = superview.constraints.filter {
+                $0.firstItem === contentStack || $0.secondItem === contentStack
+            }
+            NSLayoutConstraint.deactivate(relatedConstraints)
+        }
+
+        if UIDevice.current.isLandscape || UIDevice.current.isIpad {
+            /// Landscape: center both horizontally and vertically
+            contentStack.giniMakeConstraints {
+                $0.centerX.equalTo(scrollView)
+                $0.centerY.equalTo(scrollView)
+                $0.width.lessThanOrEqualTo(scrollView.frameLayoutGuide).constant(-Constants.horizontalPadding * 2)
+            }
+        } else {
+            /// Portrait: top-aligned with horizontal padding
+            contentStack.giniMakeConstraints {
+                $0.centerX.equalTo(scrollView)
+                $0.centerY.equalTo(scrollView)
+                $0.leading.equalTo(scrollView.contentLayoutGuide).constant(Constants.horizontalPadding)
+                $0.trailing.equalTo(scrollView.contentLayoutGuide).constant(-Constants.horizontalPadding)
+                $0.bottom.equalTo(scrollView.contentLayoutGuide).constant(-Constants.contentStackBottomPadding)
+
+                $0.width.equalTo(scrollView.frameLayoutGuide).constant(-Constants.horizontalPadding * 2)
+            }
+        }
+        view.layoutIfNeeded()
+    }
+
+    // MARK: - Add Hint View
+    private func addPaymentDueHintView(withDate dueDate: String) {
+        // configure hintView with due date if needed
+        hintView.configure(withDueDate: dueDate)
+        contentStack.addArrangedSubview(hintView)
+        hintView.giniMakeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+    }
+
+    // MARK: - Add Dismiss Message View
+    private func addDismissMessageView() {
+        contentStack.addArrangedSubview(dismissHintView)
+        dismissHintView.giniMakeConstraints {
+            $0.horizontal.equalToSuperview()
+            $0.height.greaterThanOrEqualTo(Constants.dismissButtonHeight)
+        }
+    }
+
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.updateContentStackConstraints()
+        })
+    }
+}
+
+extension AnalysisViewController: PaymentDueDateProtocol {
+    public func handlePaymentDueDate(_ dueDate: String) {
+        /// remove suggestion while handling due date
+        removeCaptureSuggestions()
+
+        /// show due hint view
+        setupScrollableStackView(dueDate: dueDate)
+    }
+
+    @MainActor
+    public func clearPaymentDueDate(after timeout: TimeInterval) async {
+        await withCheckedContinuation { continuation in
+            var didClear = false
+
+            // Helper to resume continuation only once
+            let callOnce: () -> Void = {
+                guard !didClear else { return }
+                didClear = true
+
+                // Clear the closure to prevent memory leaks
+                self.dismissHintView.onTap = nil
+
+                continuation.resume()
+            }
+
+            // action call when user tap on dismiss button
+            dismissHintView.onTap = {
+                callOnce()
+            }
+
+            // Timeout fallback
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                callOnce()
+            }
+        }
+    }
 }
 
 private extension AnalysisViewController {
@@ -426,6 +590,10 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+        static let horizontalPadding: CGFloat = 16
+        static let dismissButtonHeight: CGFloat = 40
+        static let contentStackBottomPadding: CGFloat = 20
+        static let contentStackVerticalSpacing: CGFloat = 10
     }
 
     struct Strings {

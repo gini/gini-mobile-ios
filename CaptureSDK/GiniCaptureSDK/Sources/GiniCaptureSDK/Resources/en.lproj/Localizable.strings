@@ -237,3 +237,8 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied" = "To save the photo to your camera roll, permission to access your photo gallery is required.";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Cancel";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";
+
+// MARK: - Document has payment due date
+"ginicapture.payment.due.hint.prefix" = "Tip:";
+"ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
+"ginicapture.dismiss.message.title" = "Dismiss Message";

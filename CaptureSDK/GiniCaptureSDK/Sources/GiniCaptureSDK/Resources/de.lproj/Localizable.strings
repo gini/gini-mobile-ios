@@ -240,3 +240,8 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied" = "Zum Speichern des Fotos in deiner Mediathek wird der Zugriff auf deine Fotogalerie benötigt.";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Zugriff erteilen";
+
+// MARK: - Document has payment due date
+"ginicapture.payment.due.hint.prefix" = "Tipp:";
+"ginicapture.payment.due.hint.suggestion" = "%@ Deine Rechnung ist am %@ fällig. Du könntest sie als Terminüberweisung anlegen.";
+"ginicapture.dismiss.message.title" = "Hinweis schließen";
