@@ -353,7 +353,7 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var optionsStackViewConstraintsWithBottomBar: [NSLayoutConstraint] = {
-        // Account for bottom navigation bar height plus padding
+        // Responsible for bottom navigation bar height plus padding
         let bottomPadding = Constants.bottomNavigationBarHeight + Constants.padding
 
         return [
@@ -369,7 +369,7 @@ public final class ReviewViewController: UIViewController {
     }()
 
     private lazy var optionsStackViewIpadConstraintsWithBottomBar: [NSLayoutConstraint] = {
-        // Account for bottom navigation bar height plus padding
+        // Responsible for bottom navigation bar height plus padding
         let bottomPadding = Constants.bottomNavigationBarHeight + Constants.padding
 
         return [
@@ -550,7 +550,7 @@ extension ReviewViewController {
 
     // MARK: iPad - layout updates
     private func updateLayoutForIpad() {
-        buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
+        buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(UIDevice.current.isIphoneAndLandscape)
         let saveToGalleryBottomConstant = Constants.saveToGalleryBottomConstant(UIDevice.current.isPortrait)
         optionsStackView.spacing = shouldShowSaveToGalleryView ? saveToGalleryBottomConstant : 0
 
@@ -606,21 +606,21 @@ extension ReviewViewController {
     private func updateiPhoneConstraints(isLandscape: Bool) {
         let shouldShowBottomNav = giniConfiguration.bottomNavigationBarEnabled && !isLandscape
 
-        let portraitConstraints = getPortraitConstraints(shouldShowBottomNav: shouldShowBottomNav)
+        let portraitConstraints = constraintsInPortrait(shouldShowBottomNav: shouldShowBottomNav)
         let landscapeConstraints = pageControlHorizontalConstraints
         + optionsStackViewHorizontalConstraints
         + collectionViewHorizontalConstraints
 
         let constraintsToActivate = isLandscape ? landscapeConstraints : portraitConstraints
         let constraintsToDeactivate = isLandscape
-        ? getPortraitConstraintsToDeactivate()
-        : getLandscapeConstraintsToDeactivate()
+        ? constraintsToDeactivateInPortrait()
+        : constraintsToDeactivateInLandscape()
 
         NSLayoutConstraint.deactivate(constraintsToDeactivate)
         NSLayoutConstraint.activate(constraintsToActivate)
     }
 
-    private func getPortraitConstraints(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
+    private func constraintsInPortrait(shouldShowBottomNav: Bool) -> [NSLayoutConstraint] {
         if shouldShowBottomNav {
             // Portrait with bottom navigation bar
             return collectionViewConstraints
@@ -635,14 +635,14 @@ extension ReviewViewController {
     }
 
     // MARK: - Deactivating constraints - iPhone
-    private func getPortraitConstraintsToDeactivate() -> [NSLayoutConstraint] {
+    private func constraintsToDeactivateInPortrait() -> [NSLayoutConstraint] {
         return pageControlConstraints
         + optionsStackViewConstraints
         + optionsStackViewConstraintsWithBottomBar
         + collectionViewConstraints
     }
 
-    private func getLandscapeConstraintsToDeactivate() -> [NSLayoutConstraint] {
+    private func constraintsToDeactivateInLandscape() -> [NSLayoutConstraint] {
         return pageControlHorizontalConstraints
         + optionsStackViewHorizontalConstraints
         + collectionViewHorizontalConstraints
@@ -654,10 +654,11 @@ extension ReviewViewController {
 
         if isLandscape {
             buttonsStackViewContainer.spacing = shouldShowSaveToGalleryView ?
-            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing : Constants.buttonContainerSpacing
+            Constants.buttonContainerWithSaveToGalleryHorizontalSpacing
+            : Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = Constants.saveToGalleryBottomConstant(false)
         } else {
-            buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing
+            buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant(true) : 0
         }
     }
@@ -820,7 +821,6 @@ extension ReviewViewController {
         }
 
         self.pages = pages
-        // Check how to avoid the call of this method because is causing a crash if the view is not yet loaded
         // The parent method is called from GiniScreenAPICoordinator -> addToDocuments
         updateViewForNewPages()
 
@@ -1243,7 +1243,10 @@ extension ReviewViewController {
         // Small device padding (iPhone SE, iPhone 6/7/8, etc.)
         static let buttonsContainerBottomPaddingForSmallDevice: CGFloat = 14.0
 
-        static let buttonContainerSpacing: CGFloat = UIDevice.current.isIphoneAndLandscape ? 24.0 : 8.0
+        static let buttonContainerSpacing: (_ isIphoneAndLandscape: Bool) -> CGFloat = { isIphoneAndLandscape in
+            isIphoneAndLandscape ? 24.0 : 8.0
+        }
+
         static let buttonContainerWithSaveToGalleryHorizontalSpacing: CGFloat = 28.0
         // Figma is 24 but we have some internal padding in the pagecontrol component aroung 8
         // in total so divided by 2 will be -4 on top to match the figma
