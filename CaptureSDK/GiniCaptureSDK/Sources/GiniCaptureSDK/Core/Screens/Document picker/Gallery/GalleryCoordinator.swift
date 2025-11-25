@@ -175,6 +175,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
 
         case .notDetermined:
             try await requestAndHandlePermission()
+
         @unknown default:
             throw FilePickerError.photoLibraryAccessDenied
         }
