@@ -11,7 +11,7 @@ extension UIViewController {
     // MARK: - Generic Error Alert
 
     /**
-     A generic UIViewController extension that shows an error alert with customizable actions.
+     A generic UIViewController extension that shows an error alert with customizable title, message, and actions.
 
      - parameter message: The error message to display
      - parameter title: Optional title for the alert (default: nil)
@@ -32,7 +32,7 @@ extension UIViewController {
 
         // Cancel action
         let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                        style: .cancel,
+                                         style: .cancel,
                                          handler: { _ in
             alertViewController.dismiss(animated: true)
         })
@@ -54,7 +54,7 @@ extension UIViewController {
     // MARK: - Camera-Specific Error Dialog
 
     /**
-     A UIViewController extension that shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
+     Shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
      Use this when drag and dropping files into the SDK.
 
      - parameter error: The error to be shown
