@@ -55,8 +55,8 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         screenAPINavigationController.dismiss(animated: true)
     }
 
-    public func reviewDidTapProcess(_ viewController: ReviewViewController, shouldSaveToGallery: Bool) {
-        showAnalysisScreen(shouldSaveToGallery: shouldSaveToGallery)
+    public func reviewDidTapProcess(_ viewController: ReviewViewController) {
+        showAnalysisScreen()
     }
 
     @objc func popBackToReview() {

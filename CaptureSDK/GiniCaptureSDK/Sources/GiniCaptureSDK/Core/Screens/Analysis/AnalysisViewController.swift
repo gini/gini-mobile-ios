@@ -36,10 +36,11 @@ import Photos
 @objcMembers public final class AnalysisViewController: UIViewController {
 
     var didShowAnalysis: (() -> Void)?
+    var shouldSaveToGallery: Bool = false
+
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private let shouldSaveToGallery: Bool
     private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
@@ -118,11 +119,9 @@ import Photos
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
     public init(document: GiniCaptureDocument,
-                giniConfiguration: GiniConfiguration,
-                shouldSaveToGallery: Bool = false) {
+                giniConfiguration: GiniConfiguration) {
         self.document = document
         self.giniConfiguration = giniConfiguration
-        self.shouldSaveToGallery = shouldSaveToGallery
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -133,11 +132,9 @@ import Photos
      
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
-    public convenience init(document: GiniCaptureDocument,
-                            shouldSaveToGallery: Bool = false) {
+    public convenience init(document: GiniCaptureDocument) {
         self.init(document: document,
-                  giniConfiguration: GiniConfiguration.shared,
-                  shouldSaveToGallery: shouldSaveToGallery)
+                  giniConfiguration: GiniConfiguration.shared)
     }
 
     /**
@@ -344,13 +341,13 @@ import Photos
         guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
         let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
 
-
-        PHPhotoLibrary.shared().performChanges ({
+        PHPhotoLibrary.shared().performChanges({
             for document in documentsToSave {
                 PHAssetChangeRequest.creationRequestForAsset(from: document)
             }
-        }, completionHandler: { success, error in
+        }, completionHandler: { _, _ in
             // callback NOT guaranteed on the main thread
+            // we don't handle errors or any success message here for now
         })
     }
 

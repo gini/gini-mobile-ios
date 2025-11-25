@@ -190,14 +190,14 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
         // Creating an array of GiniImageDocuments and filtering it for 'isFromOtherApp'
         if visionDocuments.compactMap({ $0 as? GiniImageDocument }).filter({ $0.isFromOtherApp }).isNotEmpty {
-            showAnalysisScreen(shouldSaveToGallery: false)
+            showAnalysisScreen()
         } else {
             if let documentsType = visionDocuments.type {
                 switch documentsType {
                 case .image:
                     showReview()
                 case .qrcode, .pdf, .xml:
-                    showAnalysisScreen(shouldSaveToGallery: false)
+                    showAnalysisScreen()
                 }
             }
         }

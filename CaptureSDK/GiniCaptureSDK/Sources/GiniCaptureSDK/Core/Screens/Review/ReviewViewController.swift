@@ -43,7 +43,7 @@ public protocol ReviewViewControllerDelegate: AnyObject {
 
      - parameter viewController: `ReviewViewController` where the pages are reviewed.
      */
-    func reviewDidTapProcess(_ viewController: ReviewViewController, shouldSaveToGallery: Bool)
+    func reviewDidTapProcess(_ viewController: ReviewViewController)
 
     /**
      Called when a user taps on a page
@@ -244,6 +244,8 @@ public final class ReviewViewController: UIViewController {
     private var previousScreenHeight: CGFloat = UIScreen.main.bounds.height
 
     private let permissionManager = PhotoLibraryPermissionManager.shared
+
+    var shouldSaveToGallery: Bool = false
 
     // MARK: - Constraints
 
@@ -997,7 +999,8 @@ extension ReviewViewController {
         GiniAnalyticsManager.track(event: .proceedTapped,
                                    screenName: .review,
                                    properties: eventProperties)
-        delegate?.reviewDidTapProcess(self, shouldSaveToGallery: saveToGalleryView.switchOn)
+        shouldSaveToGallery = saveToGalleryView.switchOn
+        delegate?.reviewDidTapProcess(self)
     }
 
     private func deleteItem(at indexPath: IndexPath) {
