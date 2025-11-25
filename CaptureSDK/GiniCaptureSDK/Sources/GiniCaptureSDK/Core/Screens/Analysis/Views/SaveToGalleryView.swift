@@ -48,6 +48,7 @@ final class SaveToGalleryView: UIView {
         }
         set {
             switchUIControl.isOn = newValue
+            updateAppearance(for: newValue)
         }
     }
 
@@ -128,12 +129,16 @@ final class SaveToGalleryView: UIView {
     }
 
     @objc private func didToggleSwitch(_ enabledSwitch: UISwitch) {
-        if switchUIControl.isOn {
+        updateAppearance(for: enabledSwitch.isOn)
+        valueChanged = enabledSwitch.isOn
+    }
+
+    private func updateAppearance(for isOn: Bool) {
+        if isOn {
             applyOnStateAppearance()
         } else {
             applyOffStateAppearance()
         }
-        valueChanged = enabledSwitch.isOn
     }
 
     private struct Constants {
