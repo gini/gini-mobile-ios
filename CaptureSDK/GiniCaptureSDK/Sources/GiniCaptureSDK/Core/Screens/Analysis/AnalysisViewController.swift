@@ -377,8 +377,8 @@ import Photos
         let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
 
         PHPhotoLibrary.shared().performChanges({
-            for document in documentsToSave {
-                PHAssetChangeRequest.creationRequestForAsset(from: document)
+            for documentToSave in documentsToSave {
+                PHAssetChangeRequest.creationRequestForAsset(from: documentToSave)
             }
         }, completionHandler: { _, _ in
             // callback NOT guaranteed on the main thread
