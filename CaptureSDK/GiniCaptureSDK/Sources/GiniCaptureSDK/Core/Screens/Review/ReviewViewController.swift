@@ -402,7 +402,8 @@ public final class ReviewViewController: UIViewController {
     private var bottomNavigationBarConstraints: [NSLayoutConstraint] = []
 
     private var shouldShowSaveToGalleryView: Bool {
-        let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled
+        let clientConfigSavePhotosLocallyEnabled = GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled == true
+        let isSaveToGalleryEnabled = giniConfiguration.savePhotosLocallyEnabled && clientConfigSavePhotosLocallyEnabled
         let pagesContainsPhotos = pages.contains(where: { !$0.document.isImported })
 
         return isSaveToGalleryEnabled && pagesContainsPhotos

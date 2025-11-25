@@ -27,6 +27,11 @@ public struct GiniCaptureUserDefaultsStorage {
                      defaultValue: nil)
     public static var eInvoiceEnabled: Bool?
 
+    // Configuration flag for the Save photos locally feature
+    @GiniUserDefault("ginicapture.defaults.clientConfigurations.savePhotosLocallyEnabled",
+                     defaultValue: nil)
+    public static var savePhotosLocallyEnabled: Bool?
+
     // Counts how many times the education message was shown in the invoice photo flow
     @GiniUserDefault("ginicapture.defaults.captureInvoice.educationMessageDisplayCount",
                      defaultValue: 0)
