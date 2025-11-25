@@ -82,7 +82,11 @@ import Photos
             originalDocumentName = documentTitle
             loadingText.text = String(format: Strings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = Strings.loadingBaseText
+            if shouldSaveToGallery {
+                loadingText.text = Strings.analysisLoadingTextWithPhotoLibrary
+            } else {
+                loadingText.text = Strings.loadingBaseText
+            }
         }
 
         return loadingText
@@ -436,5 +440,9 @@ private extension AnalysisViewController {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                       comment: "Analysis screen loading base text")
 
+        static let analysisLoadingTextWithPhotoLibrary = NSLocalizedStringPreferredFormat(
+            "ginicapture.analysis.loadingTextPhotoLibrary",
+            comment: "loading base text with photo library"
+        )
     }
 }
