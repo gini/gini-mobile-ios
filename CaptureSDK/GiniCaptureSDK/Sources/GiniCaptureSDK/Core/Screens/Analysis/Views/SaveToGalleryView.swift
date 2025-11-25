@@ -103,7 +103,7 @@ final class SaveToGalleryView: UIView {
     }
 
     private func setCornerRadius() {
-        layer.cornerRadius = 8.0
+        layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
     }
 
