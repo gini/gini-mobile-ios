@@ -173,7 +173,7 @@ public final class DocumentPickerCoordinator: NSObject {
      Shows the File explorer picker from a given viewController
 
      - Parameters:
-        - viewController: View controller which presentes the gallery picker
+        - viewController: View controller which presents the gallery picker
      */
     func showDocumentPicker(from viewController: UIViewController) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
