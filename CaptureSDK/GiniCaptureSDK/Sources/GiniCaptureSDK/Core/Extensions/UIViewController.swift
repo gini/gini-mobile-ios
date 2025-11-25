@@ -2,14 +2,59 @@
 //  UIViewController.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 2/20/18.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
-
 extension UIViewController {
+
+    // MARK: - Generic Error Alert
+
     /**
-     A UIViewcontroller extension that shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
+     A generic UIViewController extension that shows an error alert with customizable actions.
+
+     - parameter message: The error message to display
+     - parameter title: Optional title for the alert (default: nil)
+     - parameter cancelButtonTitle: Title for the cancel button
+     - parameter confirmButtonTitle: Optional title for the confirm button
+     - parameter confirmAction: Optional closure to be executed when confirm button is tapped
+     */
+    func giniShowErrorAlert(message: String,
+                            title: String? = nil,
+                            cancelButtonTitle: String,
+                            confirmButtonTitle: String? = nil,
+                            confirmAction: (() -> Void)? = nil) {
+        let alertViewController = UIAlertController(title: title,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+
+        alertViewController.view.tintColor = .GiniCapture.accent1
+
+        // Cancel action
+        let cancelAction = UIAlertAction(title: cancelButtonTitle,
+                                        style: .cancel,
+                                         handler: { _ in
+            alertViewController.dismiss(animated: true)
+        })
+        alertViewController.addAction(cancelAction)
+
+        // Confirm action (if provided)
+        if let confirmButtonTitle = confirmButtonTitle, let confirmAction = confirmAction {
+            let confirmationAction = UIAlertAction(title: confirmButtonTitle,
+                                                   style: .default,
+                                                   handler: { _ in
+                confirmAction()
+            })
+            alertViewController.addAction(confirmationAction)
+        }
+
+        present(alertViewController, animated: true)
+    }
+
+    // MARK: - Camera-Specific Error Dialog
+
+    /**
+     A UIViewController extension that shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
      Use this when drag and dropping files into the SDK.
 
      - parameter error: The error to be shown
@@ -44,41 +89,16 @@ extension UIViewController {
             message = DocumentValidationError.unknown.message
         }
 
-        let dialog = errorDialog(withMessage: message,
-                                 cancelActionTitle: cancelActionTitle,
-                                 confirmActionTitle: confirmActionTitle,
-                                 confirmAction: positiveAction)
+        // Track analytics for camera errors
         GiniAnalyticsManager.track(event: .errorDialogShown,
                                    screenName: .camera,
                                    properties: [GiniAnalyticsProperty(key: .errorMessage, value: message)])
-        present(dialog, animated: true, completion: nil)
-    }
 
-    fileprivate func errorDialog(withMessage message: String,
-                                 title: String? = nil,
-                                 cancelActionTitle: String,
-                                 confirmActionTitle: String? = nil,
-                                 confirmAction: (() -> Void)? = nil) -> UIAlertController {
-
-        let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-
-        alertViewController.view.tintColor = .GiniCapture.accent1
-
-        alertViewController.addAction(UIAlertAction(title: cancelActionTitle,
-                                                    style: .cancel,
-                                                    handler: { _ in
-                                                        alertViewController.dismiss(animated: true, completion: nil)
-        }))
-
-        if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
-            alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
-                                                        style: .default,
-                                                        handler: { _ in
-                                                            confirmAction()
-            }))
-        }
-
-        return alertViewController
+        // Show the generic error alert
+        giniShowErrorAlert(message: message,
+                           cancelButtonTitle: cancelActionTitle,
+                           confirmButtonTitle: confirmActionTitle,
+                           confirmAction: positiveAction)
     }
 }
 

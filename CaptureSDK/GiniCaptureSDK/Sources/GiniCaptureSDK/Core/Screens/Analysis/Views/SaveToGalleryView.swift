@@ -43,7 +43,12 @@ final class SaveToGalleryView: UIView {
     private let configuration = GiniConfiguration.shared
 
     var switchOn: Bool {
-        switchUIControl.isOn
+        get {
+            switchUIControl.isOn
+        }
+        set {
+            switchUIControl.isOn = newValue
+        }
     }
 
     @Published var valueChanged = false
