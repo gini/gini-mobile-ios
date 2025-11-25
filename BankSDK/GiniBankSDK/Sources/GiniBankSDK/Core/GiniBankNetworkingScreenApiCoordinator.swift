@@ -444,7 +444,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         if dueDate.isDueSoon(within: threshold) {
             Task {
                 handler.handlePaymentDueDate(dueDate.toDisplayString())
-                await handler.clearPaymentDueDate(after: 3)
+                await handler.clearPaymentDueDate(after: 5)
                 continueWithFeatureFlow()
             }
         } else {
@@ -453,7 +453,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     private func handlePaidCase(_ extractionResult: ExtractionResult,
-                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+                                _ continueWithFeatureFlow: @escaping () -> Void) {
         guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
             continueWithFeatureFlow()
             return

@@ -93,7 +93,7 @@ final class DismissMessageView: UIView {
         }
     }
 
-    private func setProgress(duration: TimeInterval = 3, animated: Bool = true) {
+    private func setProgress(duration: TimeInterval = 5, animated: Bool = true) {
 
         let interval = 0.01
         var elapsed: TimeInterval = 0
