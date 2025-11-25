@@ -93,7 +93,7 @@
 
 "ginicapture.analysis.screenTitle" = "Analysis";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
-"ginicapture.analysis.loadingTextPhotoLibrary" = "Analyzing Documents & preparing download to Photo library";
+"ginicapture.analysis.loadingTextPhotoLibrary" = "Analyzing documents & preparing download to Photo library";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
 "ginicapture.analysis.suggestion.1.details" = "No flash and proper lighting leads to better results";
