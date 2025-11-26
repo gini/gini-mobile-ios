@@ -33,7 +33,6 @@ import GiniBankAPILibrary
      */
     public let skontoDiscounts: [[Extraction]]?
     
-    
     /**
      *   Cross-border payment compound extractions obtained in the analysis.
      */
