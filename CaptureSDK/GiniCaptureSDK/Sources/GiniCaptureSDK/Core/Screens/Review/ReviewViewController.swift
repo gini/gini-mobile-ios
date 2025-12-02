@@ -491,10 +491,16 @@ extension ReviewViewController {
         configureBottomNavigationBar()
         addLoadingView()
         updateSaveToGalleryViewVisibility()
+        saveToGalleryValueDidChange()
+    }
+
+    private func saveToGalleryValueDidChange() {
         saveToGalleryView.$valueChanged.sink { isOn in
+            GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn = isOn
             if isOn {
                 self.handleSaveToGalleryToggle()
             }
+
         }.store(in: &cancellables)
     }
 
@@ -836,8 +842,6 @@ extension ReviewViewController {
     }
 
     private func updateViewForNewPages() {
-        updateSaveToGalleryViewVisibility()
-
         if isViewLoaded && view.window != nil {
             updateLayout()
         }
@@ -848,16 +852,13 @@ extension ReviewViewController {
     private func updateSaveToGalleryViewVisibility() {
         let status = permissionManager.currentStatus(for: .addOnly)
         let shouldShow = shouldShowSaveToGalleryView
-
         saveToGalleryView.isHidden = !shouldShow
 
         if shouldShow {
-            if status == .authorized || status == .limited {
-                saveToGalleryView.switchOn = true
-            } else {
-                // No permission yet / not determined -> keep it off until user opts in
-                saveToGalleryView.switchOn = false
-            }
+            let userWantsToSave = GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn == true
+            let hasPermissions = status == .authorized || status == .limited
+
+            saveToGalleryView.switchOn = userWantsToSave && hasPermissions
         } else {
             // When the view is hidden, make sure the switch is off
             saveToGalleryView.switchOn = false
@@ -897,12 +898,11 @@ extension ReviewViewController {
             case .restricted, .denied:
                 // User denied permission
                 showPermissionDeniedAlert()
-                saveToGalleryView.switchOn = false
                 updateSaveToGalleryViewVisibility()
 
             case .notDetermined:
                 // Shouldn't happen, but handle gracefully
-                saveToGalleryView.switchOn = false
+                updateSaveToGalleryViewVisibility()
             }
         }
     }
@@ -1007,7 +1007,9 @@ extension ReviewViewController {
         collectionView.deleteItems(at: [indexPath])
         setCurrentPage(basedOn: collectionView)
         delegate?.review(self, didDelete: pageToDelete)
+        updateSaveToGalleryViewVisibility()
         updateViewForNewPages()
+
         if !pages.isEmpty {
             scrollToItem(at: IndexPath(row: currentPage, section: 0))
         }
