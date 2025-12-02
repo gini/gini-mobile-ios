@@ -421,10 +421,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handlePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .toBePaid:
+            handleSavingPhotos()
             /// Show payment due date hint if available
             handleToBePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .none:
+            handleSavingPhotos()
             continueWithFeatureFlow()
         }
     }
@@ -463,6 +465,13 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         presentDocumentMarkedAsPaidBottomSheet {
             continueWithFeatureFlow()
         }
+    }
+
+    private func handleSavingPhotos() {
+        guard let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController else {
+            return
+        }
+        analysisVC.saveDocumentPhotoToGalleryIfNeeded()
     }
 
     // MARK: - Deliver with Return Assistant
@@ -801,6 +810,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 self?.didCancelCapturing()
             }
         }, onProceed: { [weak self] in
+            self?.handleSavingPhotos()
             self?.screenAPINavigationController.dismiss(animated: true) {
                 onProceedTapped()
             }
