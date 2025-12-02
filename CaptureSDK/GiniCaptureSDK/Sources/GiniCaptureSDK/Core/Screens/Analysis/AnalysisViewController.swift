@@ -356,8 +356,6 @@ import Photos
      Otherwise, it suspends execution and resumes once the animation finishes.
      */
     public func waitUntilAnimationCompleted() async {
-        saveDocumentPhotoToGalleryIfNeeded()
-
         await withCheckedContinuation { continuation in
             guard loadingViewModel != nil else {
                 continuation.resume()
@@ -372,7 +370,7 @@ import Photos
         }
     }
 
-    private func saveDocumentPhotoToGalleryIfNeeded() {
+    public func saveDocumentPhotoToGalleryIfNeeded() {
         guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
         let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
 
