@@ -236,7 +236,7 @@
 
 // MARK: - Save invoice locally
 "ginicapture.saveinvoice.local.title" = "In Fotos speichern";
-"ginicapture.saveinvoice.local.description" = "Eine Kopie dieser Rechnung wird automatisch in der Fotos-Mediathek gespeichert.";
+"ginicapture.saveinvoice.local.description" = "Eine Kopie dieser Rechnung wird in der Fotos-Mediathek gespeichert.";
 "ginicapture.saveinvoice.photoLibraryAccessDenied" = "Zum Speichern des Fotos in deiner Mediathek wird der Zugriff auf deine Fotogalerie benötigt.";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Zugriff erteilen";
