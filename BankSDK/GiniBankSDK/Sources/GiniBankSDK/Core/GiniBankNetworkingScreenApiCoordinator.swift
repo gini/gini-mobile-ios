@@ -409,7 +409,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 return
             }
 
-            presentTransactionDocsAlert(extractionResult: extractionResult, delegate: delegate)
+            presentTransactionDocsAlert(extractionResult: extractionResult,
+                                        delegate: delegate)
         }
 
         /// Step:  Check document status for multiple states
@@ -421,12 +422,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handlePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .toBePaid:
-            handleSavingPhotos()
+            handleSavingPhotos(for: extractionResult)
             /// Show payment due date hint if available
             handleToBePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .none:
-            handleSavingPhotos()
+            handleSavingPhotos(for: extractionResult)
             continueWithFeatureFlow()
         }
     }
@@ -462,15 +463,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        presentDocumentMarkedAsPaidBottomSheet {
+        presentDocumentMarkedAsPaidBottomSheet(extractionResult) {
             continueWithFeatureFlow()
         }
     }
 
-    private func handleSavingPhotos() {
-        guard let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController else {
+    private func handleSavingPhotos(for extractionResult: ExtractionResult) {
+        guard let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController,
+        !extractionResult.extractions.isEmpty else {
             return
         }
+
         analysisVC.saveDocumentPhotoToGalleryIfNeeded()
     }
 
@@ -804,13 +807,14 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         })
     }
 
-    private func presentDocumentMarkedAsPaidBottomSheet(onProceedTapped: @escaping () -> Void) {
+    private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
+                                                        onProceedTapped: @escaping () -> Void) {
         let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true) {
                 self?.didCancelCapturing()
             }
         }, onProceed: { [weak self] in
-            self?.handleSavingPhotos()
+            self?.handleSavingPhotos(for: extractionResult)
             self?.screenAPINavigationController.dismiss(animated: true) {
                 onProceedTapped()
             }
