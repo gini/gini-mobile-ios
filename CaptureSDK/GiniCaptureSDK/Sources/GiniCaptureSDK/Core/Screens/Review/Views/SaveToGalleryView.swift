@@ -52,7 +52,7 @@ final class SaveToGalleryView: UIView {
         }
     }
 
-    @Published var valueChanged = false
+    @Published var valueChanged = GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn == true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
