@@ -490,7 +490,6 @@ extension ReviewViewController {
         addConstraints()
         configureBottomNavigationBar()
         addLoadingView()
-        updateSaveToGalleryViewVisibility()
         saveToGalleryValueDidChange()
     }
 
@@ -502,6 +501,11 @@ extension ReviewViewController {
             }
 
         }.store(in: &cancellables)
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateSaveToGalleryViewVisibility()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
