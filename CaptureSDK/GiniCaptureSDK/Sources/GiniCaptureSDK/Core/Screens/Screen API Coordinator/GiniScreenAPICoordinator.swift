@@ -346,7 +346,6 @@ extension GiniScreenAPICoordinator {
                                                           shouldSaveToGallery: reviewViewController.shouldSaveToGallery)
         analysisViewController.trackingDelegate = trackingDelegate
         analysisViewController.pages = pages
-        paymentDueDateHandler = analysisViewController
         self.analysisViewController = analysisViewController
         screenAPINavigationController.pushViewController(analysisViewController, animated: true)
     }
