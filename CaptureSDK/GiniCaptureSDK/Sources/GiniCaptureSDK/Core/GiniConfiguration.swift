@@ -384,7 +384,7 @@ import GiniUtilites
      photos captured during the payment flow will be automatically saved to the device's
      local photo library.
      */
-    public var savePhotosLocallyEnabled: Bool = false
+    public var savePhotosLocallyEnabled: Bool = true
 
     // MARK: - Transaction Docs feature
     /**
