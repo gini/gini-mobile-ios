@@ -8,12 +8,6 @@ on:
       - 'BankSDK/**'
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
-  workflow_call:
-    secrets:
-      GINI_MOBILE_CI_PASSWORD:
-        required: true
-      GINI_MOBILE_CI_USERNAME:
-        required: true
   workflow_dispatch:
 
 concurrency:
