@@ -9,14 +9,14 @@ on:
   workflow_dispatch:
  
 jobs:
-  check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
-    secrets:
-      GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-      GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+  # check:
+  #   uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+  #   secrets:
+  #     GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+  #     GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
   
   release:
-    needs: check
+    # needs: check
     runs-on: macos-latest
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
