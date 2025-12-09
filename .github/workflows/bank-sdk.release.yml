@@ -70,8 +70,8 @@ jobs:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
 
-  build-xcframeworks:
-    needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.build.xcframeworks.yml@main
-    secrets:
-      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+  # build-xcframeworks:
+  #   needs: release
+  #   uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.build.xcframeworks.yml@main
+  #   secrets:
+  #     KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
