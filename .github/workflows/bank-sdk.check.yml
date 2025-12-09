@@ -8,6 +8,7 @@ on:
       - 'BankSDK/**'
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
