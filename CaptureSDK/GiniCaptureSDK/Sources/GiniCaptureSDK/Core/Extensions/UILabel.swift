@@ -20,21 +20,4 @@ extension UILabel {
                                  attributes: [NSAttributedString.Key.font: font],
                                  context: nil).size.height
     }
-
-    /**
-     Enables font scaling with a minimum size of 10pt.
-
-     - Adjusts the font size to fit the label’s width.
-     - Sets the minimum scale factor to `10 / font.pointSize`.
-     For example:
-     - If font size is 20pt → minimumScaleFactor = 0.5
-     - If font size is 15pt → minimumScaleFactor ≈ 0.67
-     - Ensures the font never shrinks below 10pt.
-     - Supports Dynamic Type for accessibility.
-     */
-    public func enableScaling(minimumScaleFactor: CGFloat = 10) {
-        adjustsFontSizeToFitWidth = true
-        self.minimumScaleFactor = minimumScaleFactor / font.pointSize
-        adjustsFontForContentSizeCategory = true
-    }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
@@ -86,7 +87,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
         GiniConfiguration.shared = configuration
 
         if configuration.debugModeOn {
-            Log(message: "DEBUG mode is ON. Never make a release in DEBUG mode!", event: .warning)
+            Log("DEBUG mode is ON. Never make a release in DEBUG mode!", event: .warning)
         }
     }
 

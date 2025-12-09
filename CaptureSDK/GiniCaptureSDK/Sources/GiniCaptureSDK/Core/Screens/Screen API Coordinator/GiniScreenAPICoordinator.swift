@@ -6,8 +6,24 @@
 
 import Foundation
 import UIKit
+import GiniUtilites
+
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
+}
+
+/// Defines how a view can show and hide a payment due date message.
+public protocol PaymentDueDateProtocol: AnyObject {
+
+    /// Show the payment due date text
+    /// - Parameters:
+    /// dueDate: The payment due date string to show
+    func handlePaymentDueDate(_ dueDate: String)
+
+    /// Hide the payment due date
+    /// - Parameters:
+    /// timeout:   a delay (in seconds)
+    func clearPaymentDueDate(after timeout: TimeInterval) async
 }
 
 open class GiniScreenAPICoordinator: NSObject, Coordinator {
@@ -15,6 +31,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     var rootViewController: UIViewController {
         return screenAPINavigationController
     }
+    public weak var paymentDueDateHandler: PaymentDueDateProtocol?
 
     public lazy var screenAPINavigationController: UINavigationController = {
         var navigationController: UINavigationController
@@ -226,7 +243,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -234,7 +251,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didPressEnterManually()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            Log("GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -324,9 +341,13 @@ extension GiniScreenAPICoordinator {
         if pages.type == .image {
             visionDelegate?.didReview(documents: pages.map { $0.document }, networkDelegate: self)
         }
-        analysisViewController = createAnalysisScreen(withDocument: firstDocument)
-        analysisViewController?.trackingDelegate = trackingDelegate
-        screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+
+        let analysisViewController = createAnalysisScreen(withDocument: firstDocument,
+                                                          shouldSaveToGallery: reviewViewController.shouldSaveToGallery)
+        analysisViewController.trackingDelegate = trackingDelegate
+        analysisViewController.pages = pages
+        self.analysisViewController = analysisViewController
+        screenAPINavigationController.pushViewController(analysisViewController, animated: true)
     }
 
     @objc func backToCamera() {
@@ -404,10 +425,10 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
 
 extension GiniScreenAPICoordinator {
     func hasOnboardingShownOnLaunch() -> Bool {
-        return UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch
     }
 
     func setOnboardingShownStatus(show: Bool = false) {
-        return UserDefaults.standard.set(show, forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch = show
     }
 }

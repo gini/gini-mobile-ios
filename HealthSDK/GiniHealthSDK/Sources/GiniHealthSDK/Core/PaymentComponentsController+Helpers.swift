@@ -597,7 +597,9 @@ extension PaymentComponentsController: BanksSelectionProtocol {
     }
 
     /// Handles the action when the pay button is tapped on install bottom sheet.
-    public func didTapOnPayButton() {}
+    public func didTapOnPayButton() {
+        // This method will remain empty; no implementation is needed.
+    }
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
@@ -824,7 +826,9 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     }
     
     /// Notifies the delegate when the close button is tapped on bank selection bottom view
-    public func didTapOnClose() {}
+    public func didTapOnClose() {
+        // This method will remain empty; no implementation is needed.
+    }
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {

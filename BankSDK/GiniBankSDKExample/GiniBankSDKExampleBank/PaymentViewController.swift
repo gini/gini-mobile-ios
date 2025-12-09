@@ -9,6 +9,7 @@ import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import UIKit
+import GiniUtilites
 
 class PaymentViewController: UIViewController {
     @IBOutlet var receipient: UITextField!
@@ -76,7 +77,7 @@ class PaymentViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.viewModel?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: .whiteLarge, color: UIColor.white, scale: 1.0)
+                    self?.view.showLoading(style: .large, color: UIColor.white, scale: 1.0)
                 } else {
                     self?.view.stopLoading()
                 }
@@ -420,15 +421,5 @@ extension PaymentViewController {
         let OKAction = UIAlertAction(title: "ok", style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
-    }
-}
-
-public extension UITextField {
-    
-    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
-        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
-           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
-            self.selectedTextRange = newSelectedRange
-        }
     }
 }

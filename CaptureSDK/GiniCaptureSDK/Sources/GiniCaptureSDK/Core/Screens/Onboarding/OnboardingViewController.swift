@@ -98,8 +98,8 @@ class OnboardingViewController: UIViewController {
                 let safeareaRightPadding = view.safeAreaInsets.right
 
                 // icon leading constraint size from safearea
-                let iconPadding: CGFloat = 56
-                let iconWidth: CGFloat = 220
+                let iconPadding = Constants.iconPadding
+                let iconWidth = Constants.iconWidth
                 let viewWidth = view.bounds.width
 
                 // it'll be easier to start with the zero point of the view
@@ -128,6 +128,19 @@ class OnboardingViewController: UIViewController {
             }
             pagesCollection.reloadData()
         }
+    }
+
+    private func postNotificationToCurrentCell() {
+        let currentPage = pageControl.currentPage
+        let indexPath = IndexPath(item: currentPage, section: 0)
+
+        guard let currentCell = pagesCollection.cellForItem(at: indexPath) as? OnboardingPageCell else {
+            // If the cell is not visible yet, accessibility focus cannot be set.
+            return
+        }
+
+        // Post accessibility notification to focus on the current cell
+        UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
@@ -311,12 +324,15 @@ class OnboardingViewController: UIViewController {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
-    
+
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
     private func notifyLayoutChangedAfterRotation() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            UIAccessibility.post(notification: .layoutChanged, argument: self.view)
+        // --- VoiceOver focus handling ---
+        // Without this small delay, VoiceOver often fails to move focus to the current cell
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.accessibilityFocusDelay) { [weak self] in
+            guard let self = self else { return }
+            self.postNotificationToCurrentCell()
         }
     }
 
@@ -398,6 +414,9 @@ private extension OnboardingViewController {
         static let pageControlBottomBarPaddingLandscape: CGFloat = 0
         static let bottomBarHeightPortrait: CGFloat = 110
         static let bottomBarHeightLandscape: CGFloat = 64
+        static let iconPadding: CGFloat = 56
+        static let iconWidth: CGFloat = 220
+        static let accessibilityFocusDelay: TimeInterval = 1.0
     }
 
     func getBottomPaddingForPageController() -> CGFloat {

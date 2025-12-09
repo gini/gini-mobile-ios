@@ -143,6 +143,7 @@
 		28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28F62FA42AB21C2E00D47866 /* DemoScreen.strings */; };
 		28F62FA72AB2236500D47866 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA62AB2236500D47866 /* Device.swift */; };
 		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
+		28FD73AF2E8AE7A5006EC9BC /* OnButtonLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FD73AE2E8AE7A4006EC9BC /* OnButtonLoading.swift */; };
 		3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */; };
@@ -220,10 +221,7 @@
 		F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3F263C20BB00F30FF3 /* Assets.xcassets */; };
 		F4807C43263C20BB00F30FF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */; };
 		F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F332640177500F30FF3 /* PaymentViewModel.swift */; };
-		F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F532641347F00F30FF3 /* UIView+Utils.swift */; };
-		F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F7326416A5200F30FF3 /* IBANValidator.swift */; };
 		F4807F9026416E2E00F30FF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4807F9226416E2E00F30FF3 /* Localizable.strings */; };
-		F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */; };
 		F4807FB52641713700F30FF3 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FB42641713700F30FF3 /* Amount.swift */; };
 		F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FC12641830D00F30FF3 /* CredentialsManager.swift */; };
 		F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4807FC8264183C000F30FF3 /* Credentials.plist */; };
@@ -423,6 +421,7 @@
 		28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28FD73AE2E8AE7A4006EC9BC /* OnButtonLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnButtonLoading.swift; sourceTree = "<group>"; };
 		3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
@@ -502,11 +501,8 @@
 		F4807C42263C20BB00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4807C44263C20BB00F30FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4807F332640177500F30FF3 /* PaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
-		F4807F532641347F00F30FF3 /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
-		F4807F7326416A5200F30FF3 /* IBANValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANValidator.swift; sourceTree = "<group>"; };
 		F4807F9126416E2E00F30FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4807F9826416E3300F30FF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utils.swift"; sourceTree = "<group>"; };
 		F4807FB42641713700F30FF3 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F4807FC12641830D00F30FF3 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		F4807FC8264183C000F30FF3 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
@@ -753,6 +749,7 @@
 		28B5873F2A37288D008CB210 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				28FD73AE2E8AE7A4006EC9BC /* OnButtonLoading.swift */,
 				84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */,
 				768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */,
 				28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */,
@@ -1209,11 +1206,8 @@
 		F4807FBB264182BD00F30FF3 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				F4807F7326416A5200F30FF3 /* IBANValidator.swift */,
 				F4807FC12641830D00F30FF3 /* CredentialsManager.swift */,
 				F4807FB42641713700F30FF3 /* Amount.swift */,
-				F4807F532641347F00F30FF3 /* UIView+Utils.swift */,
-				F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1821,12 +1815,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */,
-				F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */,
-				F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */,
 				F4807FB52641713700F30FF3 /* Amount.swift in Sources */,
 				F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */,
 				F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */,
-				F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */,
 				F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1899,6 +1890,7 @@
 				28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */,
 				288E78B72D316259004ACB9B /* Attachment.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
+				28FD73AF2E8AE7A5006EC9BC /* OnButtonLoading.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,
 				84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
@@ -2093,6 +2085,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniBankSDKExampleSwiftUI/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu importieren, erlaube den Zugriff auf deine Fotos";
@@ -2145,6 +2138,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniBankSDKExampleSwiftUI/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu importieren, erlaube den Zugriff auf deine Fotos";

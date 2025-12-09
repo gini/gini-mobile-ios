@@ -12,7 +12,8 @@ jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
     secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+      GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }},
+      GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
   
   release:
     needs: check
@@ -70,8 +71,8 @@ jobs:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
 
-  build-xcframeworks:
-    needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.build.xcframeworks.yml@main
-    secrets:
-      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+  # build-xcframeworks:
+  #   needs: release
+  #   uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.build.xcframeworks.yml@main
+  #   secrets:
+  #     KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}

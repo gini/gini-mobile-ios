@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 final class CorrectQRCodeTextContainer: UIView {
     private let configuration = GiniConfiguration.shared

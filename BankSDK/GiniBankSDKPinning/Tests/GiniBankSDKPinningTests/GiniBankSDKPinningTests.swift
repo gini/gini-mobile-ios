@@ -11,5 +11,6 @@ import XCTest
 
 final class GiniBankSDKPinningTests: XCTestCase {
     func testExample() throws {
+        // This method will remain empty; no test needed yet
     }
 }

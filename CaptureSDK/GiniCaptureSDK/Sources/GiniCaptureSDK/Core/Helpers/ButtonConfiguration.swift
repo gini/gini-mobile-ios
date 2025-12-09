@@ -62,7 +62,9 @@ extension BottomLabelButton {
 }
 
 public class GiniCaptureButton: UIButton {
-    var traitCollectionUpdated: () -> Void = {}
+    var traitCollectionUpdated: () -> Void = {
+        // This closure will remain empty; no implementation is needed.
+    }
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         traitCollectionUpdated()
     }
