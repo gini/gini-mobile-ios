@@ -80,7 +80,7 @@ class UploadDocumentsTests: XCTestCase {
                 XCTFail()
                 return
             }
-                XCTAssertNotNil(recipient.value)
+            XCTAssertNotNil(recipient.value)
             expect.fulfill()
         case let .failure(error):
             if originalData.isImage() {

@@ -249,7 +249,7 @@ public struct DataForReview {
 
         switch result {
         case let .success(extractionResult):
-                if let paymentStateExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value, paymentStateExtraction == PaymentState.payable.rawValue {
+            if let paymentStateExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value, paymentStateExtraction == PaymentState.payable.rawValue {
                 completion(.success(true))
             } else {
                 completion(.success(false))
@@ -288,7 +288,7 @@ public struct DataForReview {
                                                     completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         switch result {
         case let .success(extractionResult):
-                if let containsMultipleDocsExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value, containsMultipleDocsExtraction == Constants.hasMultipleDocuments {
+            if let containsMultipleDocsExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value, containsMultipleDocsExtraction == Constants.hasMultipleDocuments {
                 completion(.success(true))
             } else {
                 completion(.success(false))
