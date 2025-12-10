@@ -39,7 +39,7 @@ private extension EducationFlowContent {
                                                                  comment: "Upload tip")
     }
 
-    enum Images {
+    struct Images {
         static let intro = UIImageNamedPreferred(named: "qrCodeEducationIntroIcon")
         static let capture = UIImageNamedPreferred(named: "qrCodeEducationCaptureIcon")
         static let uploadFile = UIImageNamedPreferred(named: "qrCodeEducationUploadIcon")
