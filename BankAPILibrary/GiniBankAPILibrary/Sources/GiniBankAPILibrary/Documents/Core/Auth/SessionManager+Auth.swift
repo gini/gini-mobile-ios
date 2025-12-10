@@ -37,28 +37,35 @@ extension SessionManager: SessionAuthenticationProtocol {
             completion(result)
         }
 
+        // Early exit if alternative token source exists
         if let alternativeTokenSource = alternativeTokenSource {
             alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
-        } else {
+            return
+        }
 
-            if let user = user {
-                fetchUserAccessToken(for: user) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success:
-                        saveTokenAndComplete(result)
-                    case .failure(let error):
-                        handleFailure(error, completion: saveTokenAndComplete)
-                    }
+        // Helper to handle user login flow
+        func handleUserLogin(_ user: User) {
+            fetchUserAccessToken(for: user) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    saveTokenAndComplete(result)
+                case .failure(let error):
+                    handleFailure(error, completion: saveTokenAndComplete)
                 }
-            } else {
-                createUser { result in
-                    switch result {
-                    case .success(let user):
-                        self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
+            }
+        }
+
+        // Check if user exists, else create
+        if let user = user {
+            handleUserLogin(user)
+        } else {
+            createUser { result in
+                switch result {
+                case .success(let user):
+                    handleUserLogin(user)
+                case .failure(let error):
+                    completion(.failure(error))
                 }
             }
         }
