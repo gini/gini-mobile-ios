@@ -333,24 +333,40 @@ public struct DataForReview {
 
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
-            switch result {
-            case let .success(createdDocument):
-                self.documentService
-                    .extractions(for: createdDocument,
-                                 cancellationToken: CancellationToken()) { result in
-                        DispatchQueue.main.async { [weak self] in
-                            self?.handlePaymentExtractionResult(result, completion: completion)
-                        }
-                    }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(.apiError(error)))
-                }
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.handleFetchedDocument(result: result, completion: completion)
+        }
+    }
+    
+    
+    private func handleFetchedDocument(
+        result: Result<Document, GiniError>,
+        completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void
+    ) {
+        switch result {
+        case let .success(document):
+            fetchExtractions(for: document, completion: completion)
+            
+        case let .failure(error):
+            DispatchQueue.main.async {
+                completion(.failure(.apiError(error)))
             }
         }
     }
-
+    
+    private func fetchExtractions(
+        for document: Document,
+        completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void
+    ) {
+        documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
+            DispatchQueue.main.async { [weak self] in
+                self?.handlePaymentExtractionResult(result, completion: completion)
+            }
+        }
+    }
+    
     private func handlePaymentExtractionResult(_ result: Result<ExtractionResult, GiniError>,
                                                completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         switch result {
