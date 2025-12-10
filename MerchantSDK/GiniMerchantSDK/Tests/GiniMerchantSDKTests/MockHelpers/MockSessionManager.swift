@@ -108,19 +108,19 @@ final class MockSessionManager: SessionManagerProtocol {
             case .document(let id):
                 handleDocument(resource: resource, completion: completion)
             case .createPaymentRequest:
-                if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
-                    completion(.success(paymentRequestId))
-                }
+                guard let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType else { return }
+                completion(.success(paymentRequestId))
+
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse? = load(fromFile: "provider")
-                if let providerResponse = providerResponse as? T.ResponseType {
-                    completion(.success(providerResponse))
-                }
+                guard let providerResponse = providerResponse as? T.ResponseType else { return }
+                completion(.success(providerResponse))
+
             case .paymentProviders:
                 let paymentProvidersResponse: [PaymentProviderResponse]? = load(fromFile: "providers")
-                if let paymentProvidersResponse = paymentProvidersResponse as? T.ResponseType {
-                    completion(.success(paymentProvidersResponse))
-                }
+                guard let paymentProvidersResponse = paymentProvidersResponse as? T.ResponseType else { return }
+                completion(.success(paymentProvidersResponse))
+
             case .extractions(let documentId):
                 handleExtractions(resource: resource, completion: completion)
 
