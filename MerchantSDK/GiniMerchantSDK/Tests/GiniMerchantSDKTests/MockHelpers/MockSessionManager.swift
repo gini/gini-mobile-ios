@@ -103,6 +103,10 @@ final class MockSessionManager: SessionManagerProtocol {
 
     func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?,
                  completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+        
+        // mark it as intentionally unused fro sonar qube
+        _ = cancellationToken
+        
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .document(let id):
