@@ -16,8 +16,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniBankAPILibrary", url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.8.0")),
-        .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("2.0.4")),
+        .package(name: "GiniBankAPILibrary", url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.9.0")),
+        .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("2.2.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

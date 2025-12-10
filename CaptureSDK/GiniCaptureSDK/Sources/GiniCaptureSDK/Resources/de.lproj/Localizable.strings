@@ -93,6 +93,7 @@
 
 "ginicapture.analysis.screenTitle" = "Auswertung";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.loadingTextPhotoLibrary" = "Dokument wird analysiert & Download in Fotos vorbereitet";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
@@ -232,3 +233,15 @@
 "ginicapture.document.paid.warning.description" = "Auf diesem Dokument steht, dass es bereits bezahlt wurde. Bitte prüfen Sie den Hinweis in dem Dokument, um sicherzugehen.";
 "ginicapture.document.paid.warning.proceedButtonTitle" = "Trotzdem fortfahren";
 "ginicapture.document.paid.warning.cancelButtonTitle" = "Überweisung abbrechen";
+
+// MARK: - Save invoice locally
+"ginicapture.saveinvoice.local.title" = "In Fotos speichern";
+"ginicapture.saveinvoice.local.description" = "Eine Kopie dieser Rechnung wird in der Fotos-Mediathek gespeichert.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied" = "Zum Speichern des Fotos in deiner Mediathek wird der Zugriff auf deine Fotogalerie benötigt.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Abbrechen";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Zugriff erteilen";
+
+// MARK: - Document has payment due date
+"ginicapture.payment.due.hint.prefix" = "Tipp:";
+"ginicapture.payment.due.hint.suggestion" = "%@ Deine Rechnung ist am %@ fällig. Du könntest sie als Terminüberweisung anlegen.";
+"ginicapture.dismiss.message.title" = "Hinweis schließen";

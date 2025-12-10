@@ -93,6 +93,7 @@
 
 "ginicapture.analysis.screenTitle" = "Analysis";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
+"ginicapture.analysis.loadingTextPhotoLibrary" = "Analyzing documents & preparing download to Photo library";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
 "ginicapture.analysis.suggestion.1.details" = "No flash and proper lighting leads to better results";
@@ -229,3 +230,15 @@
 "ginicapture.document.paid.warning.description" = "This document states that it has already been paid. Please check the note in the document to be sure.";
 "ginicapture.document.paid.warning.proceedButtonTitle" = "Proceed anyway";
 "ginicapture.document.paid.warning.cancelButtonTitle" = "Cancel transfer";
+
+// MARK: - Save invoice locally
+"ginicapture.saveinvoice.local.title" = "Save to Photos";
+"ginicapture.saveinvoice.local.description" = "A copy of this invoice will be saved to your Photos library.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied" = "To save the photo to your camera roll, permission to access your photo gallery is required.";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Cancel";
+"ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";
+
+// MARK: - Document has payment due date
+"ginicapture.payment.due.hint.prefix" = "Tip:";
+"ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
+"ginicapture.dismiss.message.title" = "Dismiss Message";

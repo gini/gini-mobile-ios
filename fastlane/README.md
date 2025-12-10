@@ -15,6 +15,46 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios download_profiles
+
+```sh
+[bundle exec] fastlane ios download_profiles
+```
+
+Download provisioning profiles from the remote repository for GitHub Actions.
+
+Parameters:
+  APP_IDENTIFIER      - The bundle identifier of the app (from ENV).
+  DISTRIBUTION_TYPE   - The type of provisioning profile (appstore, adhoc, development, enterprise) (from ENV).
+  GIT_URL             - The git repository URL where provisioning profiles are stored (from ENV).
+  KEYCHAIN_PASSWORD   - The password for the temporary keychain (from ENV).
+
+Behavior:
+  - Sets up and unlocks a temporary keychain for code signing.
+  - Downloads and installs provisioning profiles using match in readonly mode.
+  - Does not modify the profiles repository (readonly: true).
+
+
+### ios build_app_adhoc
+
+```sh
+[bundle exec] fastlane ios build_app_adhoc
+```
+
+Build the app for ad-hoc distribution.
+
+Parameters:
+  distribution_type - Set to "adhoc" for ad-hoc provisioning profile.
+  export_method     - Set to "ad-hoc" for ad-hoc export.
+  configuration     - Build configuration to use. Default: "Release".
+
+Behavior:
+  - Builds the app using the ad-hoc provisioning profile.
+  - Exports the IPA with ad-hoc distribution method.
+  - Uses the Release build configuration.
+  - Delegates to build_app_with_provisioning lane with ad-hoc parameters.
+
+
 ### ios publish_swift_package
 
 ```sh
@@ -166,6 +206,26 @@ Parameters:
 [bundle exec] fastlane ios build_scheme
 ```
 
+
+
+### ios register_new_devices
+
+```sh
+[bundle exec] fastlane ios register_new_devices
+```
+
+Register new devices from a devices file.
+
+This lane reads device UDIDs, names, and platforms from a text file and registers them
+with your Apple Developer account. The devices file should contain one device
+per line in the format from the content of the `./devices.txt` file.
+
+Parameters:
+  devices_file - Path to the devices file (default: "./devices.txt")
+
+Example devices.txt format:
+  1234567890abcdef1234567890abcdef12345678	John's ios
+  abcdef1234567890abcdef1234567890123456	Jane's ios
 
 
 ----
