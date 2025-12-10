@@ -218,7 +218,7 @@ private extension DocumentServicesTests {
                   let json = try? JSONSerialization.jsonObject(with: httpBody, options: .mutableContainers) as? [String: [Extraction]],
                   let extractions = json["extractions"],
                   let amountToPayFromHttpBody = extractions.first(where: { $0.name == "amountToPay" })?.value else {
-                print("json data malformed or missing amount")
+                XCTFail("json data malformed or missing amount")
                 expectation.fulfill()
                 return
             }
