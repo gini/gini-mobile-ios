@@ -44,51 +44,46 @@ final class MockSessionManager: SessionManagerProtocol {
     func logOut() {
         //
     }
-    
-    private func handleDocument<T>(resource: T, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
-        
+
+    private func handleDocument<T>(
+        resource: T,
+        completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>
+    ) where T: GiniHealthAPILibrary.Resource {
+
         guard case let .document(id) = resource.method as! APIMethod else { return }
+        guard resource.params.method == .get else { fatalError("Unsupported method") }
 
+        let fileMap: [String: String?] = [
+            MockSessionManager.payableDocumentID: "document1",
+            MockSessionManager.notPayableDocumentID: "document2",
+            MockSessionManager.failurePayableDocumentID: "document3",
+            MockSessionManager.extractionsWithPaymentDocumentID: "document4",
+            MockSessionManager.doctorsNameDocumentID: "document5",
+            MockSessionManager.missingDocumentID: nil
+        ]
 
-        switch (id, resource.params.method) {
-        case (MockSessionManager.payableDocumentID, .get):
-            let document: Document? = load(fromFile: "document1", type: "json")
-            if let document = document as? T.ResponseType {
-                completion(.success(document))
-            }
-        case (MockSessionManager.notPayableDocumentID, .get):
-            let document: Document? = load(fromFile: "document2", type: "json")
-            if let document = document as? T.ResponseType {
-                completion(.success(document))
-            }
-        case (MockSessionManager.failurePayableDocumentID, .get):
-            let document: Document? = load(fromFile: "document3", type: "json")
-            if let document = document as? T.ResponseType {
-                completion(.success(document))
-            }
-        case (MockSessionManager.missingDocumentID, .get):
-            completion(.failure(.notFound(response: nil, data: nil)))
-        case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
-            let document: Document? = load(fromFile: "document4", type: "json")
-            if let document = document as? T.ResponseType {
-                completion(.success(document))
-            }
-        case (MockSessionManager.doctorsNameDocumentID, .get):
-            let document: Document? = load(fromFile: "document5", type: "json")
-            if let document = document as? T.ResponseType {
-                completion(.success(document))
-            }
-        default:
+        guard let fileName = fileMap[id] else {
             fatalError("Document id not found in tests")
         }
+
+        // Handle "missing document"
+        guard let fileName else {
+            completion(.failure(.notFound(response: nil, data: nil)))
+            return
+        }
+
+        let document: Document? = load(fromFile: fileName, type: "json")
+        if let document = document as? T.ResponseType {
+            completion(.success(document))
+        }
     }
-    
+
     private func handleExtractions<T>(resource: T,
                                       completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
-        
+
         guard case let .extractions(documentId) = resource.method as! APIMethod else { return }
 
-        
+
         switch (documentId, resource.params.method) {
         case (MockSessionManager.payableDocumentID, .get):
             handleExtractionResults(fromFile: "extractionResultWithIBAN", completion: completion)
@@ -105,7 +100,7 @@ final class MockSessionManager: SessionManagerProtocol {
         }
 
     }
-    
+
     func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
@@ -127,7 +122,7 @@ final class MockSessionManager: SessionManagerProtocol {
                 }
             case .extractions(let documentId):
                 handleExtractions(resource: resource, completion: completion)
-      
+
             case .configurations:
                 let clientConfiguration: ClientConfiguration? = load(fromFile: "clientConfiguration")
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {
