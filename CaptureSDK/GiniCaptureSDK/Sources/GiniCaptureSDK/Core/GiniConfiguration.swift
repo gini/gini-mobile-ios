@@ -378,6 +378,14 @@ import GiniUtilites
     */
     public var customMenuItems: [HelpMenuItem] = []
 
+    // MARK: - Save Photos Locally
+    /**
+     Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
+     photos captured during the payment flow will be automatically saved to the device's
+     local photo library.
+     */
+    public var savePhotosLocallyEnabled: Bool = true
+
     // MARK: - Transaction Docs feature
     /**
      * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,

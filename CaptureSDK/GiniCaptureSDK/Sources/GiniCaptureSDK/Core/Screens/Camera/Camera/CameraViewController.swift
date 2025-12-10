@@ -133,7 +133,7 @@ final class CameraViewController: UIViewController {
     fileprivate func configureTitle() {
         let device = UIDevice.current
 
-        if device.isIphone && device.isPortrait() {
+        if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
             return
         }

@@ -138,8 +138,8 @@ extension UIColor {
 
     private static func createBadgeColorScheme() -> GiniColorScheme.Badge {
         return GiniColorScheme.Badge(
-            background: GiniColor(lightModeColor: .GiniBank.success3, darkModeColor: .GiniBank.success3),
-            content: GiniColor(lightModeColor: .GiniBank.light1, darkModeColor: .GiniBank.light1)
+            background: GiniColor(lightModeColor: .GiniBank.success2, darkModeColor: .GiniBank.success3),
+            content: GiniColor(lightModeColor: .GiniBank.light1, darkModeColor: .GiniBank.dark1)
         )
     }
 

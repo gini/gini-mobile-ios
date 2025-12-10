@@ -2,7 +2,6 @@
 //  UIDevice.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 10/30/17.
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
@@ -38,7 +37,7 @@ public extension UIDevice {
 
     /// Returns true if the current device is currently in landscape orientation.
     var isLandscape: Bool {
-        !isPortrait()
+        !isPortrait
     }
 
     /// Returns true if the current device is an iPhone and is currently in landscape orientation.
@@ -46,7 +45,7 @@ public extension UIDevice {
         isIphone && isLandscape
     }
 
-    func isPortrait() -> Bool {
+    var isPortrait: Bool {
         // iOS 16 and higher - the most reliable and up-to-date way
         if #available(iOS 16.0, *) {
             return interfaceOrientation?.isPortrait ?? UIDevice.current.orientation.isPortrait

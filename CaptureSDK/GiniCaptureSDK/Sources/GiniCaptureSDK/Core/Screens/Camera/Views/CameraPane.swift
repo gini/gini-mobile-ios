@@ -67,9 +67,8 @@ final class CameraPane: UIView {
         cameraTitleLabel.numberOfLines = 1
         cameraTitleLabel.minimumScaleFactor = 5/UIFont.labelFontSize
         cameraTitleLabel.font = giniConfiguration.textStyleFonts[.footnote]
-        cameraTitleLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.light1).uiColor()
+        cameraTitleLabel.textColor = GiniColor(light: .GiniCapture.light1,
+                                               dark: .GiniCapture.light1).uiColor()
     }
 
     func setupFlashButton(state: Bool) {

@@ -87,72 +87,171 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
     }
 
-    // MARK: - determineIfPaymentHintsEnabled Tests
+    // MARK: - determineIfAlreadyPaidHintEnabled Tests
 
-    func testDetermineIfPaymentHintsEnabledAllEnabledDocumentPaidReturnsTrue() throws {
+    func testDetermineIfAlreadyPaidHintEnabledAllEnabledDocumentPaidReturnsTrue() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        coordinator.giniBankConfiguration.paymentHintsEnabled = true
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
         let extractionResult = createExtractionResult(paymentState: "paid")
 
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+        let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertTrue(result)
     }
 
-    func testDetermineIfPaymentHintsEnabledGlobalDisabledReturnsFalse() throws {
+    func testDetermineIfAlreadyPaidHintEnabledGlobalDisabledReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        coordinator.giniBankConfiguration.paymentHintsEnabled = false
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = false
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
         let extractionResult = createExtractionResult(paymentState: "paid")
 
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+        let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertFalse(result)
     }
 
-    func testDetermineIfPaymentHintsEnabledDocumentNotPaidReturnsFalse() throws {
+    func testDetermineIfAlreadyPaidHintEnabledDocumentNotPaidReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        coordinator.giniBankConfiguration.paymentHintsEnabled = true
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(paymentHintsEnabled: true)
-        let extractionResult = createExtractionResult(paymentState: "unpaid")
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true)
 
-        let result = coordinator.determineIfPaymentHintsEnabled(for: extractionResult)
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
+
+        let paymentState = coordinator.getDocumentPaymentState(for: extractionResult)
+        let result = (paymentState?.rawValue == "paid") && coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertFalse(result)
     }
 
-    // MARK: - isDocumentMarkedAsPaid Tests
+    // MARK: - getDocumentPaymentState Tests
 
-    func testIsDocumentMarkedAsPaidPaidStatusReturnsTrue() throws {
+    func testGetDocumentPaymentStateWithPaidStatusReturnsPaid() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
         let extractionResult = createExtractionResult(paymentState: "paid")
 
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
 
-        XCTAssertTrue(result)
+        XCTAssertEqual(result, .paid)
     }
 
-    func testIsDocumentMarkedAsPaidUnpaidStatusReturnsFalse() throws {
+    func testGetDocumentPaymentStateWithToBePaidStatusReturnsToBePaid() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
-        let extractionResult = createExtractionResult(paymentState: "unpaid")
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
 
-        XCTAssertFalse(result)
+        XCTAssertEqual(result, .toBePaid)
     }
 
-    func testIsDocumentMarkedAsPaidNoPaymentStateReturnsFalse() throws {
+    func testGetDocumentPaymentStateWithNilPaymentStateReturnsNil() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
         let extractionResult = createExtractionResult(paymentState: nil)
 
-        let result = coordinator.isDocumentMarkedAsPaid(extractionResult)
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
+
+        XCTAssertNil(result)
+    }
+
+    func testGetDocumentPaymentStateWithUnknownValueReturnsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentState: "unknown")
+
+        let result = coordinator.getDocumentPaymentState(for: extractionResult)
+
+        XCTAssertNil(result)
+    }
+
+    // MARK: - getDocumentPaymentDueDate
+
+    func testGetDocumentPaymentDueDateReturnsCorrectDate() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentDueDate: "2023-01-01")
+
+        let result = coordinator.getDocumentPaymentDueDate(for: extractionResult)
+
+        let expectedDate = Date.date(from: "2023-01-01")
+
+        XCTAssertEqual(result, expectedDate)
+    }
+
+    func testGetDocumentPaymentDueDateReturnsNilForIncorrectDateFormat() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentDueDate: "31-11-2025")
+
+        let result = coordinator.getDocumentPaymentDueDate(for: extractionResult)
+
+        XCTAssertNil(result)
+    }
+
+    func testGetDocumentPaymentDueDateReturnsNilIfMissing() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(paymentState: "paid")
+
+        let result = coordinator.getDocumentPaymentDueDate(for: extractionResult)
+
+        XCTAssertNil(result)
+    }
+
+    // MARK: - determineIfPaymentDueHintEnabled
+
+    func testDetermineIfPaymentDueHintEnabledReturnsTrueWhenEnabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentDueHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            alreadyPaidHintEnabled: false,
+            paymentDueHintEnabled: true
+        )
+
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
+
+        let result = coordinator.determineIfPaymentDueHintEnabled(for: extractionResult)
+
+        XCTAssertTrue(result)
+    }
+
+    func testDetermineIfPaymentDueHintEnabledReturnsFalseWhenDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentDueHintEnabled = false
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            alreadyPaidHintEnabled: false,
+            paymentDueHintEnabled: false
+        )
+
+        let extractionResult = createExtractionResult(paymentState: "tobepaid")
+
+        let result = coordinator.determineIfPaymentDueHintEnabled(for: extractionResult)
+
+        XCTAssertFalse(result)
+    }
+
+    func testDetermineIfPaymentDueHintGlobalDisabledReturnsFalse() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.paymentDueHintEnabled = false
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            alreadyPaidHintEnabled: false,
+            paymentDueHintEnabled: true
+        )
+
+        let extractionResult = createExtractionResult(paymentDueDate: "tobepaid")
+
+        let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertFalse(result)
     }
@@ -299,10 +398,11 @@ private extension NetworkingScreenApiCoordinatorTests {
     // MARK: - Test Data Creation
 
     func createExtractionResult(paymentState: String? = nil,
+                                paymentDueDate: String? = nil,
                                 lineItems: [[Extraction]]? = nil,
                                 skontoDiscounts: [[Extraction]]? = nil) -> ExtractionResult {
         var extractions: [Extraction] = []
-
+        
         if let paymentState = paymentState {
             let extraction = Extraction(box: nil,
                                         candidates: nil,
@@ -311,7 +411,16 @@ private extension NetworkingScreenApiCoordinatorTests {
                                         name: "paymentState")
             extractions.append(extraction)
         }
-
+        
+        if let paymentDueDate = paymentDueDate {
+            let dueDateExtraction = Extraction(box: nil,
+                                               candidates: nil,
+                                               entity: "paymentDueDate",
+                                               value: paymentDueDate,
+                                               name: "paymentDueDate")
+            extractions.append(dueDateExtraction)
+        }
+        
         return ExtractionResult(extractions: extractions,
                                 lineItems: lineItems,
                                 returnReasons: [],
@@ -341,7 +450,7 @@ private extension NetworkingScreenApiCoordinatorTests {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(paymentHintsEnabled: Bool) {
+    init(alreadyPaidHintEnabled: Bool, paymentDueHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -350,7 +459,8 @@ extension ClientConfiguration {
                   instantPaymentEnabled: false,
                   qrCodeEducationEnabled: false,
                   eInvoiceEnabled: false,
-                  paymentHintsEnabled: paymentHintsEnabled,
-                  savePhotosLocallyEnabled: false)
+                  savePhotosLocallyEnabled: false,
+                  alreadyPaidHintEnabled: alreadyPaidHintEnabled,
+                  paymentDueHintEnabled: paymentDueHintEnabled)
     }
 }
