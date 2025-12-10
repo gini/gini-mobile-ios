@@ -33,8 +33,6 @@ struct DigitalInvoiceHelpViewModel {
     }
 
     private struct Strings {
-        private static let baseKey = "ginibank.digitalinvoice.help"
-
         static let titleComment: String = "help title"
         static let descriptionComment: String = "help description"
         static let firstHelpSectionTitle = giniLocalized("ginibank.digitalinvoice.help.title1",
