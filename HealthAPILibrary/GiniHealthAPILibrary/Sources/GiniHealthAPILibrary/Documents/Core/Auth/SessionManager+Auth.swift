@@ -28,42 +28,52 @@ extension SessionManager: SessionAuthenticationProtocol {
     }
     
     func logIn(completion: @escaping CompletionResult<Token>) {
-        
         let saveTokenAndComplete: (Result<Token, GiniError>) -> Void = { result in
-            
             switch result {
             case .failure:
                 self.removeUserAccessToken()
             case .success(let token):
                 self.userAccessToken = token.accessToken
             }
-            
             completion(result)
         }
-        
+
+        //  Use alternative token source if available
         if let alternativeTokenSource = alternativeTokenSource {
             alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
-        } else {
-            if let user = user {
-                fetchUserAccessToken(for: user) { [weak self]  result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success:
-                        saveTokenAndComplete(result)
-                    case .failure(let error):
+            return
+        }
+
+        //  Use existing user if available
+        if let user = user {
+            fetchUserAccessToken(for: user) { [weak self] result in
+                guard let self = self else { return }
+
+                // Flatten switch inside closure
+                guard case .success = result else {
+                    if case let .failure(error) = result {
                         handleFailure(error, completion: saveTokenAndComplete)
                     }
+                    return
                 }
-            } else {
-                createUser { result in
-                    switch result {
-                    case .success(let user):
-                        self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+
+                saveTokenAndComplete(result)
             }
+            return
+        }
+
+        //  Otherwise, create a new user
+        createUser { [weak self] result in
+            guard let self = self else { return }
+
+            guard case let .success(newUser) = result else {
+                if case let .failure(error) = result {
+                    completion(.failure(error))
+                }
+                return
+            }
+
+            self.fetchUserAccessToken(for: newUser, completion: saveTokenAndComplete)
         }
     }
 
