@@ -51,11 +51,7 @@ extension SessionManager: SessionAuthenticationProtocol {
                     case .success:
                         saveTokenAndComplete(result)
                     case .failure(let error):
-                        if case .unauthorized = error {
-                            self.handleUnauthorizedUserCreation(completion: saveTokenAndComplete)
-                        } else {
-                            completion(.failure(error))
-                        }
+                        handleFailure(error, completion: saveTokenAndComplete)
                     }
                 }
             } else {
@@ -68,6 +64,14 @@ extension SessionManager: SessionAuthenticationProtocol {
                     }
                 }
             }
+        }
+    }
+
+    private func handleFailure(_ error: GiniError, completion: @escaping (Result<Token, GiniError>) -> Void) {
+        if case .unauthorized = error {
+            self.handleUnauthorizedUserCreation(completion: completion)
+        } else {
+            completion(.failure(error))
         }
     }
 
