@@ -38,44 +38,72 @@ class UploadDocumentsTests: XCTestCase {
     }
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {
-        giniHelper.giniHealthAPIDocumentService.createDocument(fileName: nil, docType: .invoice, type: .partial(data), metadata: nil) { result in
+        giniHelper.giniHealthAPIDocumentService.createDocument(fileName: nil,
+                                                               docType: .invoice,
+                                                               type: .partial(data),
+                                                               metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
-            case .success(let createdDocument):
-                self.giniHelper.giniHealthAPIDocumentService?.extractions(for: createdDocument,
-                                                                              cancellationToken: CancellationToken()) { result in
-                    switch result {
-                    case let .success(extractionResult):
-                        XCTAssertNotNil(extractionResult)
-                        XCTAssertNotNil(extractionResult.payment)
-                        guard let payment = extractionResult.payment?.first else {
-                            XCTFail()
-                            return
-                        }
-                        guard let iban = payment.first(where: { $0.name == "iban" }) else {
-                            XCTFail()
-                            return
-                        }
-                        XCTAssertNotNil(iban.value)
-                        guard let recipient = payment.first(where: { $0.name == "payment_recipient" }) else {
-                            XCTFail()
-                            return
-                        }
-                            XCTAssertNotNil(recipient.value)
-                        expect.fulfill()
-                    case let .failure(error):
-                        if data.isImage() {
-                            XCTFail(String(describing: error))
-                        }
-                        expect.fulfill()
-                    }
-                }
-            case .failure(let error):
-                if data.isImage() {
-                    XCTFail(String(describing: error))
-                }
-                expect.fulfill()
+                case .success(let createdDocument):
+                    self.fetchAndValidateExtractions(for: createdDocument, expect: expect)
+                case .failure(let error):
+                    self.handleDocumentCreationFailure(error: error, data: data, expect: expect)
             }
         }
+    }
+
+    private func fetchAndValidateExtractions(for document: GiniHealthAPILibrary.Document, expect: XCTestExpectation) {
+        giniHelper.giniHealthAPIDocumentService?.extractions(for: document,
+                                                             cancellationToken: CancellationToken()) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let extractionResult):
+                    self.validateExtractionResult(extractionResult, expect: expect)
+                case .failure(let error):
+                    XCTFail(String(describing: error))
+                    expect.fulfill()
+            }
+        }
+    }
+
+    private func validateExtractionResult(_ extractionResult: GiniHealthAPILibrary.ExtractionResult, expect: XCTestExpectation) {
+        XCTAssertNotNil(extractionResult)
+        XCTAssertNotNil(extractionResult.payment)
+
+        guard let payment = extractionResult.payment?.first else {
+            XCTFail("Payment information not found")
+            expect.fulfill()
+            return
+        }
+
+        validatePaymentFields(payment, expect: expect)
+    }
+
+    private func validatePaymentFields(_ payment: [GiniHealthAPILibrary.Extraction], expect: XCTestExpectation) {
+        guard let iban = payment.first(where: { $0.name == "iban" }) else {
+            XCTFail("IBAN not found in payment")
+            expect.fulfill()
+            return
+        }
+        XCTAssertNotNil(iban.value, "IBAN value should not be nil")
+
+        guard let recipient = payment.first(where: { $0.name == "payment_recipient" }) else {
+            XCTFail("Payment recipient not found")
+            expect.fulfill()
+            return
+        }
+        XCTAssertNotNil(recipient.value, "Recipient value should not be nil")
+
+        expect.fulfill()
+    }
+
+    private func handleDocumentCreationFailure(error: Error, data: Data, expect: XCTestExpectation) {
+        if data.isImage() {
+            XCTFail(String(describing: error))
+        }
+        expect.fulfill()
     }
 }
 

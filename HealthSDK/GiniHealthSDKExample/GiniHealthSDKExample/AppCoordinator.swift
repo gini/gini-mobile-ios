@@ -197,84 +197,107 @@ final class AppCoordinator: Coordinator {
         health.setConfiguration(giniHealthConfiguration)
 
         if let document = self.testDocument {
-            self.selectAPIViewController.showActivityIndicator()
-            
-            self.health.fetchDataForReview(documentId: document.id) { result in
-                switch result {
+            fetchAndShowExistingDocument(document)
+        } else {
+            uploadAndShowNewDocument()
+        }
+    }
+
+    private func fetchAndShowExistingDocument(_ document: GiniHealthSDK.Document) {
+        selectAPIViewController.showActivityIndicator()
+
+        health.fetchDataForReview(documentId: document.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
                 case .success(let data):
-                    self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                        switch result {
-                        case let .success(extractionResult):
-                            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
-                            let invoice = DocumentWithExtractions(documentId: document.id,
-                                                                  extractionResult: extractionResult)
-                            self?.showInvoicesList(invoices: [invoice])
-                        case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
-                                             event: .error)
-                        }
-                    }
+                    self.fetchExtractionsAndShowInvoice(for: data.document)
                 case .failure(let error):
                     GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
-                }
-            }
-        } else {
-            // Upload the test document image
-            let testDocumentImage = UIImage(named: "testDocument")!
-            let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
-            
-            self.selectAPIViewController.showActivityIndicator()
-            
-            self.health.documentService.createDocument(fileName: nil,
-                                                       docType: nil,
-                                                       type: .partial(testDocumentData),
-                                                       metadata: nil) { result in
-                switch result {
-                case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: createdDocument.links.document)
-                    self.health.documentService.createDocument(fileName: nil,
-                                                               docType: nil,
-                                                               type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                               metadata: nil) { [weak self] result in
-                        switch result {
-                        case .success(let compositeDocument):
-                            self?.health.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
-                                switch result {
-                                case .success(let extractions):
-                                    self?.testDocument = compositeDocument
-                                    self?.testDocumentExtractions = extractions
-
-                                    self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
-                                        switch result {
-                                        case let .success(extractionResult):
-                                            GiniUtilites.Log("Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
-                                            let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
-                                                                                  extractionResult: extractionResult)
-                                            self?.showInvoicesList(invoices: [invoice])
-                                        case let .failure(error):
-                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
-                                                             event: .error)
-                                        }
-                                    }
-                                case .failure(let error):
-                                    GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
-                                    self?.selectAPIViewController.hideActivityIndicator()
-                                }
-                            }
-                        case .failure(let error):
-                            GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
-                            self?.selectAPIViewController.hideActivityIndicator()
-                        }
-                    }
-                case .failure(let error):
-                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
-                    self.selectAPIViewController.hideActivityIndicator()
-                }
             }
         }
     }
-    
+
+    private func fetchExtractionsAndShowInvoice(for document: GiniHealthSDK.Document) {
+        health.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let extractionResult):
+                    GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
+                    let invoice = DocumentWithExtractions(documentId: document.id,
+                                                          extractionResult: extractionResult)
+                    self.showInvoicesList(invoices: [invoice])
+                case .failure(let error):
+                    GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                     event: .error)
+                    self.selectAPIViewController.hideActivityIndicator()
+            }
+        }
+    }
+
+    private func uploadAndShowNewDocument() {
+        guard let testDocumentImage = UIImage(named: "testDocument"),
+              let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1) else {
+            GiniUtilites.Log("Failed to load test document image", event: .error)
+            return
+        }
+
+        selectAPIViewController.showActivityIndicator()
+
+        // Create partial document
+        health.documentService.createDocument(fileName: nil,
+                                              docType: nil,
+                                              type: .partial(testDocumentData),
+                                              metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let createdDocument):
+                    self.createCompositeDocument(from: createdDocument)
+                case .failure(let error):
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                    self.selectAPIViewController.hideActivityIndicator()
+            }
+        }
+    }
+
+    private func createCompositeDocument(from partialDocument: GiniHealthSDK.Document) {
+        let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: partialDocument.links.document)
+
+        health.documentService.createDocument(fileName: nil,
+                                              docType: nil,
+                                              type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                              metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let compositeDocument):
+                    self.setDocumentForReview(compositeDocument)
+                case .failure(let error):
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                    self.selectAPIViewController.hideActivityIndicator()
+            }
+        }
+    }
+
+    private func setDocumentForReview(_ document: GiniHealthSDK.Document) {
+        health.setDocumentForReview(documentId: document.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let extractions):
+                    self.testDocument = document
+                    self.testDocumentExtractions = extractions
+                    self.fetchExtractionsAndShowInvoice(for: document)
+                case .failure(let error):
+                    GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
+                    self.selectAPIViewController.hideActivityIndicator()
+            }
+        }
+    }
+
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
