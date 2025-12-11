@@ -266,13 +266,12 @@ extension DigitalInvoiceOnboardingViewController {
 
 private extension DigitalInvoiceOnboardingViewController {
     struct Strings {
-
         static let firstLabelText = giniLocalized("ginibank.digitalinvoice.onboarding.text1",
                                                   comment: "RA onboarding screen first label")
-        
+
         static let secondLabelText = giniLocalized("ginibank.digitalinvoice.onboarding.text2",
                                                    comment: "RA onboarding screen second label")
-        
+
         static let doneButtonTitle = giniLocalized("ginibank.digitalinvoice.onboarding.getStartedButton",
                                                    comment: "RA onboarding screen getStartedButton")
     }

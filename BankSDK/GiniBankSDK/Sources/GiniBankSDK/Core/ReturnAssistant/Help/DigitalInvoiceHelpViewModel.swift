@@ -47,6 +47,5 @@ struct DigitalInvoiceHelpViewModel {
                                                          comment: Strings.titleComment)
         static let thirdHelpSectionDescription = giniLocalized("ginibank.digitalinvoice.help.description3",
                                                                comment: Strings.descriptionComment)
-
     }
 }
