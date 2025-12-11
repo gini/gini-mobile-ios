@@ -13,7 +13,7 @@ class TransactionDocsHeaderView: UIView {
                                                             comment: "Attachments")
         label.text = text
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.isAccessibilityElement = true
         label.accessibilityLabel = text
         label.adjustsFontForContentSizeCategory = true

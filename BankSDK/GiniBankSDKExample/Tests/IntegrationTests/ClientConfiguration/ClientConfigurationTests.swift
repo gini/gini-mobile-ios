@@ -95,10 +95,7 @@ class ClientConfigurationTests: BaseIntegrationTest {
         XCTAssertNotNil(configuration.instantPaymentEnabled, "instantPaymentEnabled should be present")
         XCTAssertNotNil(configuration.qrCodeEducationEnabled, "qrCodeEducationEnabled should be present")
         XCTAssertNotNil(configuration.eInvoiceEnabled, "eInvoiceEnabled should be present")
-        XCTAssertNotNil(configuration.paymentHintsEnabled, "paymentHintsEnabled should be present")
+        XCTAssertNotNil(configuration.alreadyPaidHintEnabled, "alreadyPaidHintEnabled should be present")
         XCTAssertNotNil(configuration.savePhotosLocallyEnabled, "savePhotosLocallyEnabled should be present")
-        // TODO: uncomment the next 2 tests when backend is in place
-//        XCTAssertNotNil(configuration.paymentDueDateAmountThreshold, "paymentDueDateAmountThreshold should be present")
-//        XCTAssertNotNil(configuration.paymentDueDateDaysThreshold, "paymentDueDateDaysThreshold should be present")
     }
 }

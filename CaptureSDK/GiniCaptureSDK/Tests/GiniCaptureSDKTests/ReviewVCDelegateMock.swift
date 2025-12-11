@@ -10,9 +10,9 @@ import Foundation
 @testable import GiniCaptureSDK
 final class ReviewVCDelegateMock: ReviewViewControllerDelegate {
     func review(_ viewController: ReviewViewController,
-                         didTapRetryUploadFor page: GiniCapturePage) {
+                didTapRetryUploadFor page: GiniCapturePage) {
         // This method will remain empty; mock implementation does not perform login
-
+        
     }
     
     func reviewDidTapAddImage(_ controller: ReviewViewController) {

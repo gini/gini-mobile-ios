@@ -124,15 +124,37 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
             updateBottomSheetHeight(to: Constants.bottomSheetHeightIPad)
         }
     }
+
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configureAccessibility()
+
+        // Notify VoiceOver that screen changed and set focus
+        UIAccessibility.post(notification: .screenChanged, argument: iconImageView)
     }
 
     public override func loadView() {
         super.loadView()
 
         setupView()
+        adjustPhoneLayoutForCurrentOrientation()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // On devices without a notch (i.e., no safe area insets at the top),
+        // viewSafeAreaInsetsDidChange() is not called on first appearance.
+        // So we manually trigger the layout adjustment here as a fallback.
+        if !UIDevice.current.hasNotch {
+            adjustPhoneLayoutForCurrentOrientation()
+        }
+    }
+
+    // This is reliably called on devices that do have a notch
+    // (i.e., have safe area insets)
+    public override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
         adjustPhoneLayoutForCurrentOrientation()
     }
 
@@ -155,6 +177,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         // when the font size changes >= .accessibilityMedium, we need to update the bottom sheet to be full screen
         configureBottomSheet(shouldIncludeLargeDetent: shouldForceFullScreen)
         adjustPhoneLayoutForCurrentOrientation()
+        configureAccessibility()
     }
 
     // MARK: - Setup UI
@@ -308,11 +331,32 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     }
 
     private func configureAccessibility() {
-        isAccessibilityElement = false
+        view.isAccessibilityElement = false
+        view.shouldGroupAccessibilityChildren = true
 
+        // Configure icon
         iconImageView.isAccessibilityElement = true
         iconImageView.accessibilityLabel = viewModel.title
         iconImageView.accessibilityTraits = .image
+
+        // Configure header
+        headerLabel.isAccessibilityElement = true
+        headerLabel.accessibilityTraits = .header
+
+        // Configure description
+        descriptionLabel.isAccessibilityElement = true
+        descriptionLabel.accessibilityTraits = .staticText
+
+        let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
+        // Set explicit VoiceOver navigation order
+        var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
+        elements += [
+            headerLabel,
+            descriptionLabel,
+            buttonsViewContainer.primaryButton,
+            buttonsViewContainer.secondaryButton
+        ]
+        view.accessibilityElements = elements.compactMap { $0 }
     }
 }
 extension InfoBottomSheetViewController {

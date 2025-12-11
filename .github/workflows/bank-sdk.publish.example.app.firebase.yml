@@ -28,39 +28,6 @@ jobs:
         with:
           xcode-version: '16.4'
 
-      - name: Setup provisioning profile
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_BANK_SDK_EXAMPLE_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
-          BUILD_PROVISION_PROFILE_EXTENSION_BASE64: ${{ secrets.GINI_BANK_SDK_EXTENSION_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
-          KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH1=$RUNNER_TEMP/build_pp1.mobileprovision
-          PP_PATH2=$RUNNER_TEMP/build_pp2.mobileprovision
-
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
-          # import certificate and provisioning profile from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH1
-          echo -n "$BUILD_PROVISION_PROFILE_EXTENSION_BASE64" | base64 --decode --output $PP_PATH2
-
-          # create temporary keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-          # import certificate to keychain
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-
-          # apply provisioning profile
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Setup Manual Signing for Xcode project
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
@@ -71,53 +38,45 @@ jobs:
           lane: 'setup_manual_signing'
           options: >
             { 
-              "project_path":"BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
-              "team_id":"JA825X8F7Z",
-              "target":"GiniBankSDKExample",
-              "target_extension": "GiniBankSDKShareExtension",
-              "bundle_identifier": "net.gini.banksdk.example",
-              "bundle_identifier_extension": "net.gini.banksdk.example.ShareExtension",
-              "profile_name": "Gini Bank SDK Example App Ad-Hoc Distribution",
-              "profile_name_extension" : "Gini Bank SDK Share Extension Ad-Hoc Distribution",
-              "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
-              "entitlements_file_path_extension": "GiniBankSDKShareExtension/GiniBankSDKShareExtension.entitlements", 
+              "project_path":"${{ vars.BANK_PROJECT_PATH }}",
+              "team_id":"${{ vars.TEAM_ID }}",
+              "target":"${{ vars.BANK_TARGET_NAME }}",
+              "target_extension":"${{ vars.BANK_EXTENSION_TARGET_NAME }}",
+              "bundle_identifier": "${{ vars.BANK_BUNDLE_ID }}",
+              "bundle_identifier_extension": "${{ vars.BANK_EXTENSION_BUNDLE_ID }}",
+              "profile_name": "${{ vars.BANK_PROFILE_NAME }}",
+              "profile_name_extension": "${{ vars.BANK_EXTENSION_PROFILE_NAME }}",
+              "entitlements_file_path": "${{ vars.BANK_ENTITLEMENTS_PATH }}",
+              "entitlements_file_path_extension": "${{ vars.BANK_EXTENSION_ENTITLEMENTS_PATH }}", 
               "ci": "true"
             }
 
       - name: Setup Credentials
+        env:
+          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
-            plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_id -string "$TEST_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_password -string "$TEST_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             
       - name: Setup Firebase API Key
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
         run: |
-            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
+            plutil -replace API_KEY -string "$FIREBASE_API_KEY" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
 
       - name: Archiving project
-        run: |
-            xcodebuild clean archive \
-            -workspace GiniMobile.xcworkspace \
-            -scheme "GiniBankSDKExample" \
-            -archivePath ./GiniBankSDKExample.xcarchive \
-            -configuration Release \
-            -destination generic/platform=iOS \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            CODE_SIGNING_REQUIRED=NO \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=JA825X8F7Z
-    
-      - name: Exporting .ipa
-        run: |
-            xcodebuild  \
-            -exportArchive \
-            -archivePath GiniBankSDKExample.xcarchive \
-            -exportPath . \
-            -exportOptionsPlist ExportOptions.plist \
-            -destination "generic/platform=iOS" \
-            CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          APP_IDENTIFIER: ${{ vars.BANK_BUNDLE_IDS }}
+          DISTRIBUTION_TYPE: adhoc
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          APP_SCHEME: ${{ vars.BANK_TARGET_NAME }}
+          IPA_FILE: ${{ vars.BANK_TARGET_NAME }}
+        with:
+          lane: 'build_app_adhoc'
 
       - name: Check file existence
         uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
