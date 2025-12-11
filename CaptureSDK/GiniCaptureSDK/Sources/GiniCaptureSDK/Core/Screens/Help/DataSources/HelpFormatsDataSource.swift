@@ -229,7 +229,7 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     }
 
     private struct Images {
-        static let supportedFormatsIcon =  UIImageNamedPreferred(named: "supportedFormatsIcon")
+        static let supportedFormatsIcon = UIImageNamedPreferred(named: "supportedFormatsIcon")
         static let nonSupportedFormatsIcon = UIImageNamedPreferred(named: "nonSupportedFormatsIcon")
     }
 }
