@@ -32,7 +32,7 @@ public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewContro
 
         let buttonsViewModel = InfoBottomSheetButtonsViewModel(primaryButton, secondaryButton)
 
-        super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
+        super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel, buttonOrder: [.secondary, .primary])
     }
 
     required init?(coder: NSCoder) {
