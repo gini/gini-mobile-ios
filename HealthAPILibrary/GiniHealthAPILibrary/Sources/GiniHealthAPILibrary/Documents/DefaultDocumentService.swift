@@ -259,11 +259,9 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(
-            resourceHandler: sessionManager.data,
-            documentId: document.id,
-            with: extractions,
-            completion: completion)
+        submitFeedback(for: document.id,
+                       with: extractions,
+                       completion: completion)
     }
 
     /**
