@@ -16,6 +16,7 @@ import UIKit
 public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private let viewModel: InfoBottomSheetViewModel
     private let buttonsViewModel: InfoBottomSheetButtonsViewModel
+    private let buttonOrder: [ButtonsView.ButtonType]
 
     private lazy var configuration = GiniConfiguration.shared
 
@@ -81,7 +82,8 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     lazy var buttonsViewContainer: ButtonsView = {
         let view = ButtonsView(secondaryButtonTitle: buttonsViewModel.secondaryTitle ?? "",
-                               primaryButtonTitle: buttonsViewModel.primaryTitle ?? "")
+                               primaryButtonTitle: buttonsViewModel.primaryTitle ?? "",
+                               buttonOrder: buttonOrder)
         view.secondaryButton.isHidden = buttonsViewModel.secondaryTitle == nil
         view.primaryButton.isHidden = buttonsViewModel.primaryTitle == nil
 
@@ -102,9 +104,11 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     // MARK: - View Lifecycle
 
     init(viewModel: InfoBottomSheetViewModel,
-         buttonsViewModel: InfoBottomSheetButtonsViewModel) {
+         buttonsViewModel: InfoBottomSheetButtonsViewModel,
+         buttonOrder: [ButtonsView.ButtonType] = [.primary, .secondary]) {
         self.viewModel = viewModel
         self.buttonsViewModel = buttonsViewModel
+        self.buttonOrder = buttonOrder
         super.init(nibName: nil, bundle: nil)
     }
 
