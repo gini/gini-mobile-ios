@@ -12,7 +12,7 @@ typealias UploadDocumentCompletion = (Result<Document, GiniError>) -> Void
 typealias AnalysisCompletion = (Result<ExtractionResult, GiniError>) -> Void
 
 protocol DocumentAnalysisHelper: AnyObject {
-    
+
     var analysisCancellationToken: CancellationToken? { get set }
     var pay5Parameters: [String] { get }
 
@@ -34,15 +34,19 @@ extension DocumentAnalysisHelper {
             case .success(let extractionResult):
                 print("✅ Finished analysis process with no errors")
                 completion(.success(extractionResult))
+
             case .failure(let error):
-                switch error {
-                case .requestCancelled:
-                    print("❌ Cancelled analysis process")
-                default:
-                    print("❌ Finished analysis process with error: \(error)")
-                }
+                self.handleAnalysisError(error)
             }
         }
-        
     }
+
+    private func handleAnalysisError(_ error: GiniError) {
+           switch error {
+           case .requestCancelled:
+               print("❌ Cancelled analysis process")
+           default:
+               print("❌ Finished analysis process with error: \(error)")
+           }
+       }
 }

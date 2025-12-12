@@ -195,38 +195,48 @@ class TransferSummaryIntegrationTest: XCTestCase {
          case .success(_):
             // Analyze the uploaded test document
             self.giniCaptureSDKDocumentService?.startAnalysis { result in
-               switch result {
-               case let .success(extractionResult):
-                  let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
-                     guard let name = $0.name else { return nil }
-
-                     return (name, $0)
-                  })
-
-                  let analysisResult = AnalysisResult(extractions: extractions,
-                                                      lineItems: extractionResult.lineItems,
-                                                      images: [],
-                                                      document: self.giniCaptureSDKDocumentService?.document, candidates: [:])
-
-                  delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-                  // 4. Send transfer summary for the extractions the user saw
-                  //    with the final (user confirmed or updated) extraction values
-                  let instantPaymentString = extractions["instantPayment"]?.value ?? ""
-                  GiniBankConfiguration.shared.sendTransferSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
-                                                                   paymentReference: extractions["paymentReference"]?.value ?? "",
-                                                                   paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
-                                                                   iban: extractions["iban"]?.value ?? "",
-                                                                   bic: extractions["bic"]?.value ?? "",
-                                                                   amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
-                                                                   instantPayment: instantPaymentString.lowercased() == "true")
-               case let .failure(error):
-                  XCTFail(String(describing: error))
-               }
+               self.handleAnalysisResult(delegate, result: result)
             }
          case let .failure(error):
             XCTFail(String(describing: error))
          }
       }
+   }
+
+   private func handleAnalysisResult(_ delegate: GiniCaptureResultsDelegate, result: Result<ExtractionResult, GiniError>) {
+       switch result {
+       case let .success(extractionResult):
+           let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
+               guard let name = $0.name else { return nil }
+               return (name, $0)
+           })
+
+           let analysisResult = AnalysisResult(
+               extractions: extractions,
+               lineItems: extractionResult.lineItems,
+               images: [],
+               document: self.giniCaptureSDKDocumentService?.document,
+               candidates: [:]
+           )
+
+           delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+
+           // 4. Send transfer summary for the extractions the user saw
+           //    with the final (user confirmed or updated) extraction values
+           let instantPaymentString = extractions["instantPayment"]?.value ?? ""
+           GiniBankConfiguration.shared.sendTransferSummary(
+               paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+               paymentReference: extractions["paymentReference"]?.value ?? "",
+               paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+               iban: extractions["iban"]?.value ?? "",
+               bic: extractions["bic"]?.value ?? "",
+               amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
+               instantPayment: instantPaymentString.lowercased() == "true"
+           )
+
+       case let .failure(error):
+           XCTFail(String(describing: error))
+       }
    }
 
    /**
