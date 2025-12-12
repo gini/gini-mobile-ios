@@ -613,7 +613,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return type.lowercased() == "creditnote"
     }
 
-
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
         giniBankConfiguration.returnAssistantEnabled &&
         !(result.lineItems?.isEmpty ?? true)

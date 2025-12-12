@@ -298,7 +298,6 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(result, "Should return true regardless of case")
     }
 
-
     // MARK: - shouldShowReturnAssistant Tests
 
     func testShouldShowReturnAssistantEnabledWithLineItemsReturnsTrue() throws {
