@@ -600,7 +600,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         }
         return Date.date(from: dueDate)
     }
-    
+
     /// Returns true if the document is marked as a Credit Note
     func isDocumentMarkedAsCreditNote(from extractionResult: ExtractionResult) -> Bool {
         /// Try to get the business document type from extractions
