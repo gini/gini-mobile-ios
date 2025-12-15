@@ -44,7 +44,20 @@ jobs:
       with:
         ruby-version: '3.2.0'
         bundler-cache: true
-
+    - name: Generate a token
+      id: generate-token
+      # available args: https://github.com/actions/create-github-app-token?tab=readme-ov-file
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+        private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+        owner: gini
+    - name: Use the token
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+      run: |
+        gh auth setup-git
+        
     - name: Publish GiniHealthAPILibrary documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
@@ -55,10 +68,8 @@ jobs:
             "package_folder": "GiniHealthAPILibrary",
             "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift", 
             "documentation_title":"GiniHealthAPILibrary Reference",
-            "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
+            "is_stable_release": "true",
             "git_tag": "${{ github.ref }}",
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
           }
 
