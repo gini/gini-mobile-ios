@@ -413,6 +413,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
+        /// Check document status for 'Credit Note'
+        if isDocumentMarkedAsCreditNote(from: extractionResult) {
+            presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
+                self?.presentTransactionDocsAlert(
+                    extractionResult: extractionResult,
+                    delegate: delegate
+                )
+            }
+            return
+        }
+
         /// Step:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
@@ -835,6 +846,10 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         documentWarningViewController.isModalInPresentation = true
 
         documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    private func presentDocumentMarkedAsCreditNoteBottomSheet(_ extractionResult: ExtractionResult,
+                                                              onProceedTapped: @escaping () -> Void) {
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
