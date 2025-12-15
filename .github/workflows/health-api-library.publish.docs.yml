@@ -57,7 +57,8 @@ jobs:
         GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       run: |
         gh auth setup-git
-        
+        git push origin HEAD:daniel-testing-stuff
+
     - name: Publish GiniHealthAPILibrary documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
