@@ -404,8 +404,8 @@ public final class GiniBankConfiguration: NSObject {
     public var alreadyPaidHintEnabled: Bool = true
 
     // MARK: - Credit Note
-    /*
-     Indicates whether the Credit note feature is enabled or not.
+    /**
+     Indicates whether the Credit Note feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to inform
      the user that the invoice appears to be a credit note.
      */
