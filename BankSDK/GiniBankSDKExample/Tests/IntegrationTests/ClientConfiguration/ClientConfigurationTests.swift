@@ -97,5 +97,7 @@ class ClientConfigurationTests: BaseIntegrationTest {
         XCTAssertNotNil(configuration.eInvoiceEnabled, "eInvoiceEnabled should be present")
         XCTAssertNotNil(configuration.alreadyPaidHintEnabled, "alreadyPaidHintEnabled should be present")
         XCTAssertNotNil(configuration.savePhotosLocallyEnabled, "savePhotosLocallyEnabled should be present")
+        XCTAssertNotNil(configuration.paymentDueHintEnabled, "paymentDueHintEnabled should be present")
+        XCTAssertNotNil(configuration.creditNoteHintEnabled, "creditNoteHintEnabled should be present")
     }
 }
