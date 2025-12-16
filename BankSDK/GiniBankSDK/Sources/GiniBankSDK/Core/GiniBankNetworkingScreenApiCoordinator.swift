@@ -580,37 +580,38 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     /// Returns the payment state of the document, if available
     func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
-        guard let paymentState = extractionResult.extractions
+        let paymentStateValue = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
-            .value else {
-            return nil
-        }
+            .value
+
+        guard let paymentState = paymentStateValue else { return nil }
+
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
     /// Returns the due date  of the document, if available
     func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
         /// Try to find the extraction with the key "paymentDueDate"
-        guard let dueDate = extractionResult.extractions
-                .first(where: { $0.name == "paymentDueDate" })?
-                .value,
-              !dueDate.isEmpty else {
-            // Return nil if key not found or value is empty
-            return nil
-        }
+        let dueDateValue = extractionResult.extractions
+            .first(where: { $0.name == "paymentDueDate" })?
+            .value
+
+        guard let dueDate = dueDateValue, !dueDate.isEmpty else { return nil }
+
         return Date.date(from: dueDate)
     }
 
     /// Returns true if the document is marked as a Credit Note
     func isDocumentMarkedAsCreditNote(from extractionResult: ExtractionResult) -> Bool {
         /// Try to get the business document type from extractions
-        guard let type = extractionResult.extractions
-                .first(where: { $0.name == "businessDocType" })?
-                .value,
-              !type.isEmpty else {
-            return false
-        }
-        return type.lowercased() == "creditnote"
+        let businessDocTypeValue = extractionResult.extractions
+            .first(where: { $0.name == "businessDocType" })?
+            .value
+
+        /// Temporary: return true to test the credit note warning UI until backend support is ready
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
+
+        return businessDocType.lowercased() == "creditnote"
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
