@@ -16,4 +16,13 @@ public protocol InfoBottomSheetViewModel {
     var title: String { get }
     /// Description text for the bottom sheet
     var description: String { get }
+    /// Optional background color to image
+    var imageBackgroundColor: UIColor? { get }
+}
+
+public extension InfoBottomSheetViewModel {
+    var imageBackgroundColor: UIColor? {
+        /// color used by already paid 
+        GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+    }
 }
