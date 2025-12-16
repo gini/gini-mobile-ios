@@ -608,7 +608,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .first(where: { $0.name == "businessDocType" })?
             .value
 
-        /// Temporary: return true to test the credit note warning UI until backend support is ready
+        // TODO: return true to test the credit note warning UI until backend support is ready
         guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
 
         return businessDocType.lowercased() == "creditnote"
