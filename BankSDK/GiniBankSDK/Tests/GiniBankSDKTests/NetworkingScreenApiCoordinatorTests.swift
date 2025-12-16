@@ -256,6 +256,48 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    // MARK: - isDocumentMarkedAsCreditNote Tests
+
+    func testIsDocumentMarkedAsCreditNoteReturnsTrueForCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "creditnote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true when businessDocType is 'creditnote'")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteReturnsFalseForNonCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "Invoice")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when businessDocType is not 'CreditNote'")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteReturnsFalseWhenMissing() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when businessDocType is missing")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteIsCaseInsensitive() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "CreditNote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true regardless of case")
+    }
+
     // MARK: - shouldShowReturnAssistant Tests
 
     func testShouldShowReturnAssistantEnabledWithLineItemsReturnsTrue() throws {
@@ -399,10 +441,12 @@ private extension NetworkingScreenApiCoordinatorTests {
 
     func createExtractionResult(paymentState: String? = nil,
                                 paymentDueDate: String? = nil,
+                                businessDocType: String? = nil,
                                 lineItems: [[Extraction]]? = nil,
                                 skontoDiscounts: [[Extraction]]? = nil) -> ExtractionResult {
         var extractions: [Extraction] = []
-        
+
+        // Payment state extraction
         if let paymentState = paymentState {
             let extraction = Extraction(box: nil,
                                         candidates: nil,
@@ -411,7 +455,8 @@ private extension NetworkingScreenApiCoordinatorTests {
                                         name: "paymentState")
             extractions.append(extraction)
         }
-        
+
+        // Payment due date extraction
         if let paymentDueDate = paymentDueDate {
             let dueDateExtraction = Extraction(box: nil,
                                                candidates: nil,
@@ -420,7 +465,17 @@ private extension NetworkingScreenApiCoordinatorTests {
                                                name: "paymentDueDate")
             extractions.append(dueDateExtraction)
         }
-        
+
+        // Business document type extraction
+        if let businessDocType = businessDocType {
+            let docTypeExtraction = Extraction(box: nil,
+                                               candidates: nil,
+                                               entity: "businessDocType",
+                                               value: businessDocType,
+                                               name: "businessDocType")
+            extractions.append(docTypeExtraction)
+        }
+
         return ExtractionResult(extractions: extractions,
                                 lineItems: lineItems,
                                 returnReasons: [],
