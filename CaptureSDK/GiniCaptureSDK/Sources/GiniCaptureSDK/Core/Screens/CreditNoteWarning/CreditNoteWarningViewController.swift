@@ -11,6 +11,7 @@ private struct CreditNoteContentViewModel: InfoBottomSheetViewModel {
     var imageTintColor: UIColor? = CreditNoteWarningViewController.Colors.errorTintColor
     var title: String = CreditNoteWarningViewController.Strings.title
     var description: String = CreditNoteWarningViewController.Strings.description
+    var imageBackgroundColor: UIColor? = CreditNoteWarningViewController.Colors.imageBGColor
 }
 
 /**
@@ -70,6 +71,10 @@ extension CreditNoteWarningViewController {
     struct Colors {
         static var errorTintColor: UIColor {
             GiniColor(light: .GiniCapture.warning2, dark: .GiniCapture.warning2).uiColor()
+        }
+
+        static var imageBGColor: UIColor {
+            GiniColor(light: .GiniCapture.error5, dark: .GiniCapture.error5).uiColor()
         }
     }
 }
