@@ -34,8 +34,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     private let imageRoundContainer: UIView = {
         let imageContainerView = UIView()
-        imageContainerView.backgroundColor = GiniColor(light: .GiniCapture.warning5,
-                                                       dark: .GiniCapture.warning5).uiColor()
         imageContainerView.round(radius: Constants.imageContainerSize / 2)
         return imageContainerView
     }()
@@ -207,6 +205,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         iconImageView.tintColor = viewModel.imageTintColor
         headerLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
+        imageRoundContainer.backgroundColor = viewModel.imageBackgroundColor
 
         view.addSubview(contentScrollView)
         view.addSubview(buttonsViewContainer)
