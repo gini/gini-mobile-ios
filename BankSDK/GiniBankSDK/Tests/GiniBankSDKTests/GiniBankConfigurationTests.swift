@@ -10,7 +10,7 @@ import Testing
 
 @Suite("GiniBankConfiguration Feature Flags")
 struct GiniBankConfigurationFeatureFlagsTests {
-    /*
+    /**
      Ensures that any change to the stored properties of `GiniBankConfiguration`
      is intentionally reflected in the test suite.
 
