@@ -9,5 +9,6 @@
     "eInvoiceEnabled": false,
     "savePhotosLocallyEnabled": false,
     "alreadyPaidHintEnabled": false,
-    "paymentDueHintEnabled": false
+    "paymentDueHintEnabled": false,
+    "creditNoteHintEnabled": true
 }
