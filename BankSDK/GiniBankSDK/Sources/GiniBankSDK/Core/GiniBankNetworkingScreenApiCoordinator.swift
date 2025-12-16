@@ -619,6 +619,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                 .first(where: { $0.name == "businessDocType" })?
                 .value,
               !type.isEmpty else {
+            /// Temporary: return true to test the credit note warning UI until backend support is ready
             return false
         }
         return type.lowercased() == "creditnote"
@@ -850,6 +851,20 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
     private func presentDocumentMarkedAsCreditNoteBottomSheet(_ extractionResult: ExtractionResult,
                                                               onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = CreditNoteWarningViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
