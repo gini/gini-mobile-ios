@@ -609,7 +609,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .value
 
         // TODO: return true to test the credit note warning UI until backend support is ready
-        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return false }
 
         return businessDocType.lowercased() == "creditnote"
     }
