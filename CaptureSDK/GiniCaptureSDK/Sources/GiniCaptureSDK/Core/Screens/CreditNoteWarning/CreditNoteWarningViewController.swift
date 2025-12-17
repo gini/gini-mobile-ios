@@ -64,7 +64,7 @@ extension CreditNoteWarningViewController {
 
     // MARK: - Images
     struct Images {
-        static var errorIcon: UIImage? { UIImageNamedPreferred(named: "errorOctagon") }
+        static var errorIcon: UIImage? { UIImageNamedPreferred(named: "hintErrorIcon") }
     }
 
     // MARK: - Colors
