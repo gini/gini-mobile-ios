@@ -13,6 +13,7 @@ private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
                                              dark: .GiniCapture.warning2).uiColor()
     var title: String = DocumentMarkedAsPaidViewController.Strings.title
     var description: String = DocumentMarkedAsPaidViewController.Strings.description
+    var imageBackgroundColor: UIColor? = DocumentMarkedAsPaidViewController.Colors.imageBGColor
 }
 
 /**
@@ -61,6 +62,13 @@ extension DocumentMarkedAsPaidViewController {
         static let proceedButtonComment = "Proceed anyway"
         static let proceedButton = NSLocalizedStringPreferredFormat(proceedButtonKey,
                                                                     comment: proceedButtonComment)
+    }
+    
+    // MARK: - Colors
+    struct Colors {
+        static var imageBGColor: UIColor {
+            GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        }
     }
 }
 
