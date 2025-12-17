@@ -248,6 +248,6 @@
 
 // MARK: - Document marked as credit note
 "ginicapture.creditNote.warning.title" = "Achtung: Gutschrift hochgeladen";
-"ginicapture.creditNote.warning.description" = "Anscheinend haben Sie eine Gutschrift statt einer Rechnung hochgeladen. Bitte überprüfen Sie Ihr Dokument auf den Begriff “Gutschrift” oder ob der Betrag negativ ist.";
+"ginicapture.creditNote.warning.description" = "Anscheinend haben Sie eine Gutschrift statt einer Rechnung hochgeladen. Bitte überprüfen Sie Ihr Dokument auf den Begriff „Gutschrift“ oder ob der Betrag negativ ist.";
 "ginicapture.creditNote.warning.proceedButtonTitle" = "Trotzdem fortfahren";
 "ginicapture.creditNote.warning.cancelButtonTitle" = "Überweisung abbrechen";
