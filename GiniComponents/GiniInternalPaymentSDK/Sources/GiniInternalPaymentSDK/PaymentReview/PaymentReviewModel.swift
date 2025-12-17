@@ -60,7 +60,7 @@ public protocol PaymentReviewActionProtocol {
 /**
  View model class for review screen
  */
-public class PaymentReviewModel: NSObject {
+public class PaymentReviewModel {
 
     var onPreviewImagesFetched: (() -> Void)?
     var reloadCollectionViewClosure: (() -> Void)?
@@ -88,7 +88,7 @@ public class PaymentReviewModel: NSObject {
     public var documentId: String?
     var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
-    private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
+    var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
             self.reloadCollectionViewClosure?()
         }
@@ -253,6 +253,48 @@ public class PaymentReviewModel: NSObject {
                     self.cellViewModels.append(contentsOf: vms)
                     self.onPreviewImagesFetched?()
                 }
+            }
+        }
+    }
+    
+    @MainActor
+    func fetchImages() async {
+        guard let document, let documentId else { return }
+        
+        var viewModels: [PageCollectionCellViewModel] = []
+        isImagesLoading = true
+        
+        await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
+            for page in 1 ... document.pageCount {
+                group.addTask { [weak self] in
+                    do {
+                        guard let result = try await self?.fetchPreview(for: documentId, pageNumber: page) else {
+                            return nil
+                        }
+                        
+                        return self?.proccessPreview(result)
+                    } catch {
+                        return nil
+                    }
+                }
+            }
+            
+            for await cellViewModel in group {
+                guard let cellViewModel else { continue }
+                
+                viewModels.append(cellViewModel)
+            }
+            
+            isImagesLoading = false
+            cellViewModels.append(contentsOf: viewModels)
+            onPreviewImagesFetched?()
+        }
+    }
+    
+    private func fetchPreview(for documentId: String, pageNumber: Int) async throws -> Result<Data, GiniError> {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.delegate?.preview(for: documentId, pageNumber: pageNumber) { result in
+                continuation.resume(returning: result)
             }
         }
     }
