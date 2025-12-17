@@ -298,6 +298,21 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(result, "Should return true regardless of case")
     }
 
+    func testExcludingAmountToPayExtractionResultCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00", businessDocType: "creditnote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true when businessDocType is 'creditnote'")
+
+        let endResult = coordinator.excludingAmountToPay(from: extractionResult)
+
+        let hasAmountToPay = endResult.extractions.contains { $0.name == "amountToPay" }
+        XCTAssertFalse(hasAmountToPay, "amountToPay should be excluded from extractions")
+    }
+
     // MARK: - shouldShowReturnAssistant Tests
 
     func testShouldShowReturnAssistantEnabledWithLineItemsReturnsTrue() throws {
@@ -439,12 +454,22 @@ private extension NetworkingScreenApiCoordinatorTests {
 
     // MARK: - Test Data Creation
 
-    func createExtractionResult(paymentState: String? = nil,
+    func createExtractionResult(amountToPay: String? = nil,
+                                paymentState: String? = nil,
                                 paymentDueDate: String? = nil,
                                 businessDocType: String? = nil,
                                 lineItems: [[Extraction]]? = nil,
                                 skontoDiscounts: [[Extraction]]? = nil) -> ExtractionResult {
         var extractions: [Extraction] = []
+        // Amount to pay extraction
+        if let amountToPay = amountToPay {
+            let extraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "amountToPay",
+                                        value: amountToPay,
+                                        name: "amountToPay")
+            extractions.append(extraction)
+        }
 
         // Payment state extraction
         if let paymentState = paymentState {
