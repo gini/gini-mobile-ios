@@ -516,6 +516,7 @@ extension ClientConfiguration {
                   eInvoiceEnabled: false,
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
-                  paymentDueHintEnabled: paymentDueHintEnabled)
+                  paymentDueHintEnabled: paymentDueHintEnabled,
+                  creditNoteHintEnabled: false)
     }
 }
