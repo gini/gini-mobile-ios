@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 public final class FontProvider {
     private var textStyleFonts = FontProvider.defaultFonts
@@ -31,6 +32,10 @@ public final class FontProvider {
      */
     public func font(for textStyle: UIFont.TextStyle) -> UIFont {
         return textStyleFonts[textStyle] ?? UIFont.systemFont(ofSize: 17)
+    }
+    
+    public func font(for textStyle: UIFont.TextStyle) -> Font {
+        Font(uiFont: font(for: textStyle))
     }
 }
 
