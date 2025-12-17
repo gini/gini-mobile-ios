@@ -23,6 +23,6 @@ public protocol InfoBottomSheetViewModel {
 public extension InfoBottomSheetViewModel {
     var imageBackgroundColor: UIColor? {
         /// color used by already paid 
-        GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        return GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
     }
 }
