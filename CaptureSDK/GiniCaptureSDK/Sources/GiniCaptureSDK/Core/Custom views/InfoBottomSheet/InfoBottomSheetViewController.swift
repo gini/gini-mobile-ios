@@ -353,12 +353,16 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
         // Set explicit VoiceOver navigation order
         var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
-        elements += [
-            headerLabel,
-            descriptionLabel,
-            buttonsViewContainer.primaryButton,
-            buttonsViewContainer.secondaryButton
-        ]
+
+        // Add header and description
+        elements.append(headerLabel)
+        elements.append(descriptionLabel)
+
+        // Add buttons in the correct order
+        elements += buttonOrder.map {
+            $0 == .primary ? buttonsViewContainer.primaryButton : buttonsViewContainer.secondaryButton
+        }
+
         view.accessibilityElements = elements.compactMap { $0 }
     }
 }
