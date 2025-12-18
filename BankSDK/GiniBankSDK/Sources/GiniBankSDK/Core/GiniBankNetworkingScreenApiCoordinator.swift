@@ -416,10 +416,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         /// Check document status for 'Credit Note'
         if isDocumentMarkedAsCreditNote(from: extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
-                self?.presentTransactionDocsAlert(
-                    extractionResult: extractionResult,
-                    delegate: delegate
-                )
+                guard let self else { return }
+                let filteredResult = self.excludingAmountToPay(from: extractionResult)
+                self.presentTransactionDocsAlert(extractionResult: filteredResult,
+                                                 delegate: delegate)
             }
             return
         }
@@ -635,6 +635,15 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         !(result.skontoDiscounts?.isEmpty ?? true)
     }
 
+    func excludingAmountToPay(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let filteredExtractions = extractionResult.extractions.filter { $0.name != "amountToPay" }
+        return ExtractionResult(extractions: filteredExtractions,
+                                lineItems: extractionResult.lineItems,
+                                returnReasons: extractionResult.returnReasons,
+                                skontoDiscounts: extractionResult.skontoDiscounts,
+                                candidates: extractionResult.candidates)
+    }
+
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
                                      delegate: GiniCaptureNetworkDelegate) {
         let document = documentService.document
@@ -644,8 +653,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                    deliveryFunction: { [weak self] result in
             guard let self else { return }
             self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-        }
-        )
+        })
     }
 }
 
