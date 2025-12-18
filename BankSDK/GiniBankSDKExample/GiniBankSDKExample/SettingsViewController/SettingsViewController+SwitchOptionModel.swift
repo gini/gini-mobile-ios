@@ -159,7 +159,7 @@ struct SwitchOptionModel {
             case .paymentDueHintEnabled:
                 return "Payment due hint feature"
             case .creditNoteHintEnabled:
-                return "Credit Note warnings feature"
+                return "Credit note warnings feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
