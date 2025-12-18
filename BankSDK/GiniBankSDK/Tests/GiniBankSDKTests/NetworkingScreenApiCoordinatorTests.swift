@@ -309,9 +309,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
             creditNoteHintEnabled: true
         )
 
-        let extractionResult = createExtractionResult(businessDocType: "creditnote")
-
-        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+        let result = coordinator.determineIfCreditNoteHintEnabled()
 
         XCTAssertTrue(result, "Should return true when both global and client flags are enabled")
     }
@@ -325,9 +323,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
             creditNoteHintEnabled: true
         )
 
-        let extractionResult = createExtractionResult(businessDocType: "creditnote")
-
-        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+        let result = coordinator.determineIfCreditNoteHintEnabled()
 
         XCTAssertFalse(result, "Should return false when global flag is disabled")
     }
@@ -341,9 +337,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
             creditNoteHintEnabled: false
         )
 
-        let extractionResult = createExtractionResult(businessDocType: "creditnote")
-
-        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+        let result = coordinator.determineIfCreditNoteHintEnabled()
 
         XCTAssertFalse(result, "Should return false when client credit note hint is disabled")
     }
