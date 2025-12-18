@@ -258,10 +258,6 @@ platform :ios do
         * url                 : "https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html"
      MESSAGE
 
-      # if ci
-      #   configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
-      # end
-
       # Clear gh-pages directory 
       sh("rm -rf gh-pages")
 

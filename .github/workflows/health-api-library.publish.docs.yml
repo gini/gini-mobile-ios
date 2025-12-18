@@ -53,26 +53,13 @@ jobs:
         private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
         owner: gini
 
-    # useful references in the README on: https://github.com/actions/create-github-app-token 
-    - name: Get GitHub App User ID
-      id: get-user-id
-      run: echo "user-id=$(gh api "/users/${{ steps.generate-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
-      env:
-        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-
-    # (feel free to remove this comment before merging, just a note)
-    # @Nadya this can probably work by passing in `x-oauth-token` as username to fastlane and GH_TOKEN as pass.
-    # Otherwise, this handling will give it a clean-ish git conf.
     - name: Configure the git client
       env:
         GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       run: |
-        echo git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-        echo git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
         git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-        git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
-        # We must ditch all the cred details the checkout action fills in
-        # otherwise this conflicts with our basic auth passed in the remote and fails to push
+        git config --local user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+        
         git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
 
     - name: Publish GiniHealthAPILibrary documentation to the release repo
