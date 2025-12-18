@@ -530,7 +530,7 @@ private extension NetworkingScreenApiCoordinatorTests {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(alreadyPaidHintEnabled: Bool, paymentDueHintEnabled: Bool = false) {
+    init(alreadyPaidHintEnabled: Bool = false, paymentDueHintEnabled: Bool = false, creditNoteHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -542,6 +542,6 @@ extension ClientConfiguration {
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
                   paymentDueHintEnabled: paymentDueHintEnabled,
-                  creditNoteHintEnabled: false)
+                  creditNoteHintEnabled: creditNoteHintEnabled)
     }
 }
