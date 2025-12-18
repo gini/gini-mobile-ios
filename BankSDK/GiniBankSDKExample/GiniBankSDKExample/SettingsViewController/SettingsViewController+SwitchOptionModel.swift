@@ -58,9 +58,8 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
-        case alreadyPaidHintEnabled
+        case paymentHintsEnabled
         case savePhotosLocallyEnabled
-        case paymentDueHintEnabled
         case closeSDK
 
 		var title: String {
@@ -153,10 +152,8 @@ struct SwitchOptionModel {
                 return "Skonto help bottom navigation bar"
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
-            case .alreadyPaidHintEnabled:
+            case .paymentHintsEnabled:
                 return "User payment warnings feature"
-            case .paymentDueHintEnabled:
-                return "Payment due hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
@@ -192,29 +189,22 @@ struct SwitchOptionModel {
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
 				return "Overwrites `Onboarding screens at every launch` for the first launch."
-			case .customOnboardingPages:
+            case .customOnboardingPages,
+                    .onboardingAlignCornersIllustrationAdapter,
+                    .onboardingLightingIllustrationAdapter,
+                    .onboardingQRCodeIllustrationAdapter,
+                    .onboardingMultiPageIllustrationAdapter :
 				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingAlignCornersIllustrationAdapter:
-				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingLightingIllustrationAdapter:
-				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingQRCodeIllustrationAdapter:
-				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingMultiPageIllustrationAdapter:
-				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-			case .digitalInvoiceHelpNavigationBarBottomAdapter:
+            case .digitalInvoiceHelpNavigationBarBottomAdapter,
+                 .digitalInvoiceOnboardingNavigationBarBottomAdapter,
+                 .digitalInvoiceNavigationBarBottomAdapter,
+                 .digitalInvoiceSkontoNavigationBarBottomAdapter :
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .digitalInvoiceNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-            case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .helpNavigationBarBottomAdapter, .cameraNavigationBarBottomAdapter,
                     .errorNavigationBarBottomAdapter, .noResultsNavigationBarBottomAdapter,
-                    .reviewNavigationBarBottomAdapter, .imagePickerNavigationBarBottomAdapter:
+                    .reviewNavigationBarBottomAdapter, .imagePickerNavigationBarBottomAdapter,
+                    .skontoNavigationBarBottomAdapter, .skontoHelpNavigationBarBottomAdapter,
+                    .onboardingNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .primaryButtonConfiguration:
 				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
@@ -234,12 +224,8 @@ struct SwitchOptionModel {
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
-            case .skontoNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-            case .skontoHelpNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-            case .alreadyPaidHintEnabled:
-                return "Features included under this flag paid state"
+            case .paymentHintsEnabled:
+                return "Features included under this flag due date and paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
 			default:

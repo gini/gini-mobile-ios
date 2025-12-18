@@ -2,7 +2,6 @@
 //  CameraPreviewView.swift
 //  GiniCapture
 //
-//  Created by Peter Pult / Nikola Sobadjiev on 14/06/16.
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 

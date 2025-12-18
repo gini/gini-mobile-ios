@@ -160,37 +160,34 @@ extension PriceLabelView: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
 
-        if let text = textField.text, let textRange = Range(range, in: text) {
-            let updatedText = text.replacingCharacters(in: textRange, with: string)
+        // Ensure the updated string can build
+        guard let text = textField.text,
+              let textRange = Range(range, in: text) else {
+            return true
+        }
 
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                .trimmingCharacters(in: .whitespaces)
-                .filter { c in c != "," && c != "."}
-                .prefix(7))
+        // Build updated raw text and normalize to (max 7) digits only
+        let updated = text.replacingCharacters(in: textRange, with: string)
+        let digits = AmountInput.digitsOnlyCapped(updated)
 
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-
-                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?
-                                        .trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-
-                    textField.text = newAmount
-
-                    delegate?.priceLabelViewTextFieldDidChange(on: self)
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
+        // Format as price (xx -> 0.xx, 12345 -> 123.45)
+        guard let formatted = AmountInput.format(digits) else {
+            // Block the change if it can't format
             return false
         }
-        return true
+
+        // Preserve cursor relative position after replacing text
+        let priorSelection = textField.selectedTextRange
+        textField.text = formatted
+        delegate?.priceLabelViewTextFieldDidChange(on: self)
+
+        if let priorSelection = priorSelection {
+            let delta = formatted.count - text.count
+            let offset = (delta == 0) ? 1 : delta
+            textField.moveSelectedTextRange(from: priorSelection.start, to: offset)
+        }
+
+        return false
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -199,9 +196,24 @@ extension PriceLabelView: UITextFieldDelegate {
 }
 
 private extension PriceLabelView {
-    enum Constants {
+    struct Constants {
         static let cornerRadius: CGFloat = 8
         static let padding: CGFloat = 12
         static let textFieldTopPadding: CGFloat = 0
+    }
+
+    struct AmountInput {
+        static let maxDigits = 7
+
+        static func digitsOnlyCapped(_ s: String) -> String {
+            let digits = s.unicodeScalars.filter(CharacterSet.decimalDigits.contains)
+            return String(digits.prefix(maxDigits))
+        }
+
+        static func format(_ centsDigits: String) -> String? {
+            guard let cents = Decimal(string: centsDigits) else { return nil }
+            let amount = cents / 100
+            return Price.stringWithoutSymbol(from: amount)?.trimmingCharacters(in: .whitespaces)
+        }
     }
 }

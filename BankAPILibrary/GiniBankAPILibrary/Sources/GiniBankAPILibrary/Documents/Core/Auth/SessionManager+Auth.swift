@@ -8,21 +8,21 @@
 import Foundation
 
 extension SessionManager: SessionAuthenticationProtocol {
-    
+
     var client: Client {
         guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
             let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
             let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) else {
                 preconditionFailure("There should always be a client stored")
         }
-        
+
         return Client(id: id, secret: secret, domain: domain)
     }
-    
+
     var user: User? {
         guard let email = self.keyStore.fetch(service: .auth, key: .userEmail),
             let password = self.keyStore.fetch(service: .auth, key: .userPassword) else { return nil }
-        
+
         return User(email: email, password: password)
     }
 
@@ -36,46 +36,61 @@ extension SessionManager: SessionAuthenticationProtocol {
             }
             completion(result)
         }
-        
+
+        // Early exit if alternative token source exists
         if let alternativeTokenSource = alternativeTokenSource {
             alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
-        } else {
-            
-            if let user = user {
+            return
+        }
 
-                fetchUserAccessToken(for: user) { result in
-                    switch result {
-                        case .success:
-                            saveTokenAndComplete(result)
-                        case .failure(let error):
-                            if case .unauthorized = error {
-                                self.removeCurrentUserInfo()
-                                self.createUser { result in
-                                    switch result {
-                                        case .success(let user):
-                                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                                        case .failure(let error):
-                                            completion(.failure(error))
-                                    }
-                                }
-                            } else {
-                                completion(.failure(error))
-                            }
-                    }
+        // Helper to handle user login flow
+        func handleUserLogin(_ user: User) {
+            fetchUserAccessToken(for: user) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    saveTokenAndComplete(result)
+                case .failure(let error):
+                    handleFailure(error, completion: saveTokenAndComplete)
                 }
-            } else {
-                createUser { result in
-                    switch result {
-                        case .success(let user):
-                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                        case .failure(let error):
-                            completion(.failure(error))
-                    }
+            }
+        }
+
+        // Check if user exists, else create
+        if let user = user {
+            handleUserLogin(user)
+        } else {
+            createUser { result in
+                switch result {
+                case .success(let user):
+                    handleUserLogin(user)
+                case .failure(let error):
+                    completion(.failure(error))
                 }
             }
         }
     }
-    
+
+    private func handleFailure(_ error: GiniError, completion: @escaping (Result<Token, GiniError>) -> Void) {
+        if case .unauthorized = error {
+            self.handleUnauthorizedUserCreation(completion: completion)
+        } else {
+            completion(.failure(error))
+        }
+    }
+
+    private func handleUnauthorizedUserCreation(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        self.removeCurrentUserInfo()
+        self.createUser { result in
+            switch result {
+            case .success(let newUser):
+                self.fetchUserAccessToken(for: newUser, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     func logOut() {
         // Remove current user info from SessionManager
         userAccessToken = nil
@@ -129,46 +144,50 @@ fileprivate extension SessionManager {
         fetchClientAccessToken { result in
             switch result {
             case .success(let token):
-                
+
                 self.clientAccessToken = token.accessToken
 
                 let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
                 let user = AuthHelper.generateUser(with: domain)
-                
+
                 let resource = UserResource<String>(method: .users,
                                                     userDomain: self.userDomain,
                                                     httpMethod: .post,
                                                     body: try? JSONEncoder().encode(user))
 
-                self.data(resource: resource) { result in
-                    switch result {
-                    case .success:
-                        self.storeUserCredentials(for: user,
-                                                  completion: completion)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+                self.handleDataResource(resource, for: user, completion: completion)
+
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
-    
+
+    private func handleDataResource(_ resource: UserResource<String>, for user: User, completion: @escaping CompletionResult<User>) {
+        self.data(resource: resource) { result in
+            switch result {
+            case .success:
+                self.storeUserCredentials(for: user, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     func fetchUserAccessToken(for user: User,
                               completion: @escaping CompletionResult<Token>) {
         let body = "username=\(user.email)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
-        
+
         let resource = UserResource<Token>(method: .token(grantType: .password),
                                            userDomain: self.userDomain,
                                            httpMethod: .post,
                                            body: body)
-        
+
         data(resource: resource, completion: completion)
     }
-    
+
     func fetchClientAccessToken(completion: @escaping CompletionResult<Token>) {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: self.userDomain,
