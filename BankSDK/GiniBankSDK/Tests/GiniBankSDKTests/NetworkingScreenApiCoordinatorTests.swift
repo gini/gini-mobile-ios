@@ -298,6 +298,56 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(result, "Should return true regardless of case")
     }
 
+    // MARK: - determineIfCreditNoteHintEnabled
+
+    func testDetermineIfCreditNoteHintEnabledReturnsTrueWhenEnabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            creditNoteHintEnabled: true
+        )
+
+        let extractionResult = createExtractionResult(businessDocType: "creditnote")
+
+        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+
+        XCTAssertTrue(result, "Should return true when both global and client flags are enabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenGlobalDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = false
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            creditNoteHintEnabled: true
+        )
+
+        let extractionResult = createExtractionResult(businessDocType: "creditnote")
+
+        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when global flag is disabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenClientDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
+            creditNoteHintEnabled: false
+        )
+
+        let extractionResult = createExtractionResult(businessDocType: "creditnote")
+
+        let result = coordinator.determineIfCreditNoteHintEnabled(for: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when client credit note hint is disabled")
+    }
+
     func testExcludingAmountToPayExtractionResultCreditNote() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
