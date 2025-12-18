@@ -414,7 +414,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
 
         /// Check document status for 'Credit Note'
-        if isDocumentMarkedAsCreditNote(from: extractionResult) {
+        if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
                 let filteredResult = self.excludingAmountToPay(from: extractionResult)
@@ -441,6 +441,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handleSavingPhotos(for: extractionResult)
             continueWithFeatureFlow()
         }
+    }
+
+    private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled(for: result)
     }
 
     @MainActor
@@ -587,6 +591,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+    
+    func determineIfCreditNoteHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
+        let clientCreditNoteHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.creditNoteHintEnabled ?? false
+        return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
     }
 
     /// Returns the payment state of the document, if available
