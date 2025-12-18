@@ -5,7 +5,7 @@ Always make sure to ship all license notices and permissions with your applicati
 
 ## The Gini Health API Library for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2025, Gini GmbH
+    Copyright (c) 2014-2026, Gini GmbH
     All rights reserved.
 
     The Gini Health API Library is licensed through Gini GmbH ("Gini") and may not be
@@ -20,7 +20,7 @@ Always make sure to ship all license notices and permissions with your applicati
 
 ## The Gini Health API Library Pinning for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2025, Gini GmbH
+    Copyright (c) 2014-2026, Gini GmbH
     All rights reserved.
 
     The Gini Health API Library Pinning is licensed through Gini GmbH ("Gini") and may not be
