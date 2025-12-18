@@ -15,7 +15,8 @@ The Gini Health API Library for iOS encapsulates the Gini Health API to allow yo
 The [Gini Health API](https://health-api.gini.net/documentation/v3/#gini-health-api-documentation-v3-0) provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients.
 
 Please, find out how to add payment information extraction ([see "payment" compound extraction](https://health-api.gini.net/documentation/v3/#available-compound-extractions))
-capabilities to your app. It also enables your app to create payment requests and retrieve payment providers.
+capabilities to your app. 
+It also enables your app to create payment requests and retrieve payment providers.
 
 ## Documentation
 

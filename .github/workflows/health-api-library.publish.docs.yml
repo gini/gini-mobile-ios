@@ -1,6 +1,6 @@
 name: Publish docs for Health API Library
 permissions:
-  contents: read
+  contents: write
 on:
   push:
     tags:
@@ -73,11 +73,7 @@ jobs:
         git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
         # We must ditch all the cred details the checkout action fills in
         # otherwise this conflicts with our basic auth passed in the remote and fails to push
-        git config --local credential.helper ""
-        git config --local --unset http.https://github.com/.extraheader || true
-        git remote remove origin || true
-        git remote add origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
-        git push origin HEAD:daniel-test-happy-days
+        git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
 
     - name: Publish GiniHealthAPILibrary documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
