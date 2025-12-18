@@ -285,7 +285,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
 
-        XCTAssertFalse(result, "Should return false when businessDocType is missing")
+        XCTAssertTrue(result, "Temporarily returns true until backend provides businessDocType")
     }
 
     func testIsDocumentMarkedAsCreditNoteIsCaseInsensitive() throws {

@@ -34,8 +34,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     private let imageRoundContainer: UIView = {
         let imageContainerView = UIView()
-        imageContainerView.backgroundColor = GiniColor(light: .GiniCapture.warning5,
-                                                       dark: .GiniCapture.warning5).uiColor()
         imageContainerView.round(radius: Constants.imageContainerSize / 2)
         return imageContainerView
     }()
@@ -207,6 +205,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         iconImageView.tintColor = viewModel.imageTintColor
         headerLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
+        imageRoundContainer.backgroundColor = viewModel.imageBackgroundColor
 
         view.addSubview(contentScrollView)
         view.addSubview(buttonsViewContainer)
@@ -354,12 +353,16 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
         // Set explicit VoiceOver navigation order
         var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
-        elements += [
-            headerLabel,
-            descriptionLabel,
-            buttonsViewContainer.primaryButton,
-            buttonsViewContainer.secondaryButton
-        ]
+
+        // Add header and description
+        elements.append(headerLabel)
+        elements.append(descriptionLabel)
+
+        // Add buttons in the correct order
+        elements += buttonOrder.map {
+            $0 == .primary ? buttonsViewContainer.primaryButton : buttonsViewContainer.secondaryButton
+        }
+
         view.accessibilityElements = elements.compactMap { $0 }
     }
 }

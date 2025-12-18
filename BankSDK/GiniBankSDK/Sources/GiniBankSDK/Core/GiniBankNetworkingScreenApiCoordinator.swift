@@ -413,6 +413,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
+        /// Check document status for 'Credit Note'
+        if isDocumentMarkedAsCreditNote(from: extractionResult) {
+            presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
+                self?.presentTransactionDocsAlert(
+                    extractionResult: extractionResult,
+                    delegate: delegate
+                )
+            }
+            return
+        }
+
         /// Step:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
@@ -609,7 +620,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .value
 
         // TODO: return true to test the credit note warning UI until backend support is ready
-        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return false }
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
 
         return businessDocType.lowercased() == "creditnote"
     }
@@ -823,6 +834,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
                                                         onProceedTapped: @escaping () -> Void) {
         let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    private func presentDocumentMarkedAsCreditNoteBottomSheet(_ extractionResult: ExtractionResult,
+                                                              onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = CreditNoteWarningViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true) {
                 self?.didCancelCapturing()
             }

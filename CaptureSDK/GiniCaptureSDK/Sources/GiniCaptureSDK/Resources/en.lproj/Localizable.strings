@@ -242,3 +242,9 @@
 "ginicapture.payment.due.hint.prefix" = "Tip:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
 "ginicapture.dismiss.message.title" = "Dismiss Message";
+
+// MARK: - Document marked as credit note
+"ginicapture.creditNote.warning.title" = "Credit Note Warning";
+"ginicapture.creditNote.warning.description" = "It seems you submitted a credit note instead of a regular invoice. You might want to check your document mentioning “Gutschrift” or if the amount is negative.";
+"ginicapture.creditNote.warning.proceedButtonTitle" = "Proceed anyway";
+"ginicapture.creditNote.warning.cancelButtonTitle" = "Cancel transfer";

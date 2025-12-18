@@ -1,30 +1,28 @@
 //
-//  DocumentMarkedAsPaidViewController.swift
+//  CreditNoteWarningViewController.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
-import Combine
 
-private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
-    var image: UIImage? = UIImageNamedPreferred(named: "infoMessageIcon")
-    var imageTintColor: UIColor? = GiniColor(light: .GiniCapture.warning2,
-                                             dark: .GiniCapture.warning2).uiColor()
-    var title: String = DocumentMarkedAsPaidViewController.Strings.title
-    var description: String = DocumentMarkedAsPaidViewController.Strings.description
-    var imageBackgroundColor: UIColor? = DocumentMarkedAsPaidViewController.Colors.imageBGColor
+private struct CreditNoteContentViewModel: InfoBottomSheetViewModel {
+    var image: UIImage? = CreditNoteWarningViewController.Images.errorIcon
+    var imageTintColor: UIColor? = CreditNoteWarningViewController.Colors.errorTintColor
+    var title: String = CreditNoteWarningViewController.Strings.title
+    var description: String = CreditNoteWarningViewController.Strings.description
+    var imageBackgroundColor: UIColor? = CreditNoteWarningViewController.Colors.imageBGColor
 }
 
 /**
  A specialized bottom sheet that informs the user a document
- has been marked as paid, with Cancel and Proceed actions.
+ has been marked as a credit note, with Cancel and Proceed actions.
 */
-public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewController {
+public final class CreditNoteWarningViewController: InfoBottomSheetViewController {
 
     public init(onCancel: @escaping () -> Void,
                 onProceed: @escaping () -> Void) {
-        let contentViewModel = DocumentMarkedAsPaidContentViewModel()
+        let contentViewModel = CreditNoteContentViewModel()
         let primaryButton = InfoBottomSheetButtonsViewModel.Button(title: Strings.cancelButton,
                                                                    action: onCancel)
 
@@ -41,33 +39,42 @@ public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewContro
     }
 }
 
-extension DocumentMarkedAsPaidViewController {
+extension CreditNoteWarningViewController {
     struct Strings {
-        static let titleKey = "ginicapture.document.paid.warning.title"
-        static let titleComment = "Document Marked as Paid"
+        static let titleKey = "ginicapture.creditNote.warning.title"
+        static let titleComment = "Credit Note Detected"
         static let title = NSLocalizedStringPreferredFormat(titleKey,
                                                             comment: titleComment)
 
-        static let descriptionKey = "ginicapture.document.paid.warning.description"
-        static let descriptionComment = "This document states that it has already been paid"
+        static let descriptionKey = "ginicapture.creditNote.warning.description"
+        static let descriptionComment = "This document is marked as a credit note"
         static let description = NSLocalizedStringPreferredFormat(descriptionKey,
                                                                   comment: descriptionComment)
 
-        static let cancelButtonKey = "ginicapture.document.paid.warning.cancelButtonTitle"
-        static let cancelButtonComment = "Cancel transfer"
+        static let cancelButtonKey = "ginicapture.creditNote.warning.cancelButtonTitle"
+        static let cancelButtonComment = "Cancel"
         static let cancelButton = NSLocalizedStringPreferredFormat(cancelButtonKey,
                                                                    comment: cancelButtonComment)
 
-        static let proceedButtonKey = "ginicapture.document.paid.warning.proceedButtonTitle"
-        static let proceedButtonComment = "Proceed anyway"
+        static let proceedButtonKey = "ginicapture.creditNote.warning.proceedButtonTitle"
+        static let proceedButtonComment = "Proceed"
         static let proceedButton = NSLocalizedStringPreferredFormat(proceedButtonKey,
                                                                     comment: proceedButtonComment)
     }
-    
+
+    // MARK: - Images
+    struct Images {
+        static var errorIcon: UIImage? { UIImageNamedPreferred(named: "hintErrorIcon") }
+    }
+
     // MARK: - Colors
     struct Colors {
+        static var errorTintColor: UIColor {
+            GiniColor(light: .GiniCapture.warning2, dark: .GiniCapture.warning2).uiColor()
+        }
+
         static var imageBGColor: UIColor {
-            GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+            GiniColor(light: .GiniCapture.error5, dark: .GiniCapture.error5).uiColor()
         }
     }
 }
@@ -75,10 +82,10 @@ extension DocumentMarkedAsPaidViewController {
 #if DEBUG
 import SwiftUI
 
-struct DocumentMarkedAsPaidViewController_Preview: PreviewProvider {
+struct CreditNoteWarningViewController_Preview: PreviewProvider {
     static var previews: some View {
         GiniViewControllerPreview {
-            DocumentMarkedAsPaidViewController(
+            CreditNoteWarningViewController(
                 onCancel: { print("Cancel tapped") },
                 onProceed: { print("Proceed tapped") }
             )
