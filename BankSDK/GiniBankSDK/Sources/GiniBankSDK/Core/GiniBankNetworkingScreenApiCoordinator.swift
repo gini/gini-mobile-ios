@@ -444,7 +444,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
-        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled(for: result)
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled()
     }
 
     @MainActor
@@ -593,7 +593,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
     
-    func determineIfCreditNoteHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+    func determineIfCreditNoteHintEnabled() -> Bool {
         let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
         let clientCreditNoteHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.creditNoteHintEnabled ?? false
         return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
