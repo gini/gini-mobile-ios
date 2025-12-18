@@ -59,11 +59,15 @@ jobs:
       run: |
         git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
         git config --local user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
-        
+
         git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
+
+        git remote -v
 
     - name: Publish GiniHealthAPILibrary documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       with:
         lane: 'publish_docs'
         options: >

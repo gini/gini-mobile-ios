@@ -262,7 +262,7 @@ platform :ios do
       sh("rm -rf gh-pages")
 
       # Clone
-      sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
+      sh("git clone -b gh-pages https://x-oauth-token:#{ENV['GH_TOKEN']}@github.com/gini/gini-mobile-ios.git gh-pages")
 
       destination_path = "#{package_folder}/#{package_version}"
 
