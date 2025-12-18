@@ -2,7 +2,6 @@
 //  CameraViewController.swift
 //  
 //
-//  Created by Krzysztof Kryniecki on 06/09/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -673,9 +672,7 @@ final class CameraViewController: UIViewController {
 
     private func playVoiceOverMessage(success: Bool) {
         // Determine the appropriate message based on success
-        let message = success
-        ? NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct", comment: "QR Detected")
-        : NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title", comment: "Unknown QR")
+        let message = success ? Strings.qrDetectedVoiceOverMessage : Strings.unknownQRVoiceOverMessage
 
         // Post the announcement for VoiceOver
         UIAccessibility.post(notification: .announcement, argument: message)
@@ -785,14 +782,19 @@ private extension CameraViewController {
     }
 
     private struct Strings {
-        static let onlyInvoice = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
-                                                                  comment: "Info label")
-        static let onlyQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
-                                                             comment: "Info label")
-        static let invoiceAndQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
-                                                                   comment: "Info label")
-        static let cameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
-                                                                  comment: "Camera title")
+        static let onlyInvoice = giniLocalized("ginicapture.camera.infoLabel.only.invoice",
+                                               comment: "Only invoice label")
+        static let onlyQr = giniLocalized("ginicapture.camera.infoLabel.only.qr",
+                                          comment: "Only QRCode label")
+        static let invoiceAndQr = giniLocalized("ginicapture.camera.infoLabel.invoice.and.qr",
+                                                comment: "Invoice and QRCode label")
+        static let cameraTitle = giniLocalized("ginicapture.navigationbar.camera.title",
+                                               comment: "Camera title")
+
+        static let qrDetectedVoiceOverMessage = giniLocalized("ginicapture.QRscanning.correct",
+                                                              comment: "QR Detected")
+        static let unknownQRVoiceOverMessage = giniLocalized("ginicapture.QRscanning.incorrect.title",
+                                                             comment: "Unknown QR")
     }
 }
 // swiftlint:enable type_body_length
