@@ -413,7 +413,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
-        /// Check document status for 'Credit Note'
+        /// Step 1: Check document status for 'Credit Note'
         if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
@@ -424,7 +424,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        /// Step:  Check document status for multiple states
+        /// Step 2:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
