@@ -135,37 +135,30 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                 guard let self = self else { return }
                 switch result {
                 case let .success(createdDocument):
-                    self.fetchExtractionsAndComplete(for: createdDocument, completion: completion)
+                    self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: GiniHealthAPILibrary.CancellationToken()) { [weak self] result in
+                            guard self != nil else { return }
+                            self?.handleFetchedExtractions(for: createdDocument, result: result, completion: completion)
+
+                        }
                 case let .failure(error):
                     completion(.failure(.unknown(response: error.response, data: error.data)))
                 }
             }
     }
-
-    private func fetchExtractionsAndComplete(for document: GiniHealthAPILibrary.Document,
-                                             completion: @escaping GiniBankAPIAnalysisCompletion) {
-        documentService.extractions(for: document,
-                                    cancellationToken: GiniHealthAPILibrary.CancellationToken()) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let extractionResult):
-                self.handleExtractionSuccess(document: document,
-                                             extractionResult: extractionResult,
-                                             completion: completion)
-            case .failure(let error):
-                completion(.failure(.unknown(response: error.response, data: error.data)))
-            }
+    
+    private func handleFetchedExtractions(for createdDocument: GiniHealthAPILibrary.Document,
+                                          result: Result<GiniHealthAPILibrary.ExtractionResult, GiniHealthAPILibrary.GiniError>,
+                                          completion: @escaping GiniBankAPIAnalysisCompletion) {
+        switch result {
+        case let .success(extractionResult):
+            let doc = self.mapDocumentToGiniBankAPI(doc: createdDocument)
+            let mappedResult = self.mapExtractionResultToGiniBankAPI(result: extractionResult)
+            completion(.success((doc, mappedResult)))
+        case let .failure(error):
+            completion(.failure(.unknown(response: error.response, data: error.data)))
         }
-    }
-
-    private func handleExtractionSuccess(document: GiniHealthAPILibrary.Document,
-                                         extractionResult: GiniHealthAPILibrary.ExtractionResult,
-                                         completion: @escaping GiniBankAPIAnalysisCompletion) {
-        let mappedDocument = mapDocumentToGiniBankAPI(doc: document)
-        let mappedResult = mapExtractionResultToGiniBankAPI(result: extractionResult)
-
-        completion(.success((mappedDocument, mappedResult)))
     }
 
     func upload(document: GiniCaptureSDK.GiniCaptureDocument,
@@ -185,12 +178,12 @@ class HealthNetworkingService: GiniCaptureNetworkService {
             }
         }
     }
-    
+
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
         // This method will remain empty; no implementation is needed.
     }
-    
+
     func sendFeedback(document: GiniBankAPILibrary.Document,
                       updatedExtractions: [GiniBankAPILibrary.Extraction],
                       updatedCompoundExtractions: [String : [[GiniBankAPILibrary.Extraction]]]?,

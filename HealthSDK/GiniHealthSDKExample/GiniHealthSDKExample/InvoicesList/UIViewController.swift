@@ -28,7 +28,7 @@ extension UIViewController {
         var confirmActionTitle: String? = NSLocalizedString("ginicapture.camera.errorPopup.pickanotherfileButton",
                                                             bundle: Bundle(for: GiniCapture.self),
                                                             comment: "pick another file button title")
-        
+
         switch error {
         case let validationError as DocumentValidationError:
             message = validationError.message
@@ -36,60 +36,78 @@ extension UIViewController {
             message = customValidationError.message
         case let pickerError as FilePickerError:
             message = pickerError.message
-            switch pickerError {
-            case .maxFilesPickedCountExceeded:
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.errorPopup.reviewPages",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "review pages button title")
-            case .photoLibraryAccessDenied:
-                cancelActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.cancelButton",
-                                                      bundle: Bundle(for: GiniCapture.self),
-                                                      comment: "cancel button title")
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.grantAccessButton",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "grant access button title")
-            case .mixedDocumentsUnsupported:
-                cancelActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.cancel",
-                                                      bundle: Bundle(for: GiniCapture.self),
-                                                      comment: "cancel button text for popup")
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.usePhotos",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "use photos button text in popup")
-            case .failedToOpenDocument, .multiplePdfsUnsupported:
-                break
-            }
+            let titles = filePickerErrorTitles(for: pickerError, defaultCancel: cancelActionTitle,
+                                               defaultConfirm: confirmActionTitle)
+            cancelActionTitle = titles.cancel
+            confirmActionTitle = titles.confirm
+
         case let visionError as CustomAnalysisError:
             message = visionError.message
             confirmActionTitle = nil
             cancelActionTitle = NSLocalizedString("ginicapture.analysis.error.actionTitle",
-                                                   bundle: Bundle(for: GiniCapture.self),
-                                                   comment: "Retry analysis")
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "Retry analysis")
         default:
             message = DocumentValidationError.unknown.message
         }
-        
+
         let dialog = errorDialog(withMessage: message,
                                  cancelActionTitle: cancelActionTitle,
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
-        
+
         present(dialog, animated: true, completion: nil)
     }
-    
+
+
+    private func filePickerErrorTitles(for pickerError: FilePickerError,
+                                       defaultCancel: String,
+                                       defaultConfirm: String?) -> (cancel: String, confirm: String?) {
+
+        var cancelActionTitle = defaultCancel
+        var confirmActionTitle = defaultConfirm
+
+        switch pickerError {
+        case .maxFilesPickedCountExceeded:
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.errorPopup.reviewPages",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "review pages button title")
+        case .photoLibraryAccessDenied:
+            cancelActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.cancelButton",
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "cancel button title")
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.grantAccessButton",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "grant access button title")
+        case .mixedDocumentsUnsupported:
+            cancelActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.cancel",
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "cancel button text for popup")
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.usePhotos",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "use photos button text in popup")
+        case .failedToOpenDocument, .multiplePdfsUnsupported:
+            break
+        }
+
+        return (cancelActionTitle, confirmActionTitle)
+
+    }
+
     fileprivate func errorDialog(withMessage message: String,
                                  title: String? = nil,
                                  cancelActionTitle: String,
                                  confirmActionTitle: String? = nil,
                                  confirmAction: (() -> Void)? = nil) -> UIAlertController {
-        
+
         let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        
+
         alertViewController.addAction(UIAlertAction(title: cancelActionTitle,
                                                     style: .cancel,
                                                     handler: { _ in
                                                         alertViewController.dismiss(animated: true, completion: nil)
         }))
-        
+
         if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
             alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
                                                         style: .default,
@@ -97,7 +115,7 @@ extension UIViewController {
                                                             confirmAction()
             }))
         }
-        
+
         return alertViewController
     }
 }

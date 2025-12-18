@@ -198,18 +198,23 @@ extension DocumentService {
                                                                      apiDomain: self.apiDomain,
                                                                      apiVersion: self.apiVersion,
                                                                      httpMethod: .get)
-                    
+
                     resourceHandler(resource, cancellationToken, { result in
-                        switch result {
-                        case .success(let extractionsContainer):
-                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
+                        self.handleExtractionsResult(result, completion: completion)
                     })
                 case .failure(let error):
                     completion(.failure(error))
                 }
+        }
+    }
+
+    private func handleExtractionsResult(_ result: Result<ExtractionsContainer, GiniError>,
+                                         completion: @escaping CompletionResult<ExtractionResult>) {
+        switch result {
+        case .success(let extractionsContainer):
+            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+        case .failure(let error):
+            completion(.failure(error))
         }
     }
     
@@ -308,12 +313,7 @@ extension DocumentService {
                     let urlString = self.urlStringForHighestResolutionPreview(page: page)
                     let url = "https://" + self.apiDomain.domainString + urlString
                     self.file(urlString: url) { result in
-                        switch result {
-                        case let .success(imageData):
-                            completion(.success(imageData))
-                        case let .failure(error):
-                            completion(.failure(error))
-                        }
+                        self.handleFileResult(result, completion: completion)
                     }
                 } else {
                     completion(.failure(.notFound()))
@@ -330,7 +330,17 @@ extension DocumentService {
             }
         }
     }
-    
+
+    private func handleFileResult(_ result: Result<Data, GiniError>,
+                                  completion: @escaping CompletionResult<Data>) {
+
+        switch result {
+        case let .success(imageData):
+            completion(.success(imageData))
+        case let .failure(error):
+            completion(.failure(error))
+        }
+    }
     func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
         let topBoundaryResolutionArea = 4000000
         var imageWithHighestResolution = page.images[0]

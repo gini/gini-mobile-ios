@@ -26,19 +26,74 @@ extension SessionManager: SessionAuthenticationProtocol {
         
         return User(email: email, password: password)
     }
-
+    
     func logIn(completion: @escaping CompletionResult<Token>) {
-        let saveTokenAndComplete = createTokenCompletionHandler(completion: completion)
+        let saveTokenAndComplete: (Result<Token, GiniError>) -> Void = { result in
+            switch result {
+            case .failure:
+                self.removeUserAccessToken()
+            case .success(let token):
+                self.userAccessToken = token.accessToken
+            }
+            completion(result)
+        }
 
+        //  Use alternative token source if available
         if let alternativeTokenSource = alternativeTokenSource {
             alternativeTokenSource.fetchToken(completion: saveTokenAndComplete)
             return
         }
 
+        //  Use existing user if available
         if let user = user {
-            handleExistingUser(user: user, completion: completion, saveTokenAndComplete: saveTokenAndComplete)
+            fetchUserAccessToken(for: user) { [weak self] result in
+                guard let self = self else { return }
+
+                // Flatten switch inside closure
+                guard case .success = result else {
+                    if case let .failure(error) = result {
+                        handleFailure(error, completion: saveTokenAndComplete)
+                    }
+                    return
+                }
+
+                saveTokenAndComplete(result)
+            }
+            return
+        }
+
+        //  Otherwise, create a new user
+        createUser { [weak self] result in
+            guard let self = self else { return }
+
+            guard case let .success(newUser) = result else {
+                if case let .failure(error) = result {
+                    completion(.failure(error))
+                }
+                return
+            }
+
+            self.fetchUserAccessToken(for: newUser, completion: saveTokenAndComplete)
+        }
+    }
+
+    private func handleFailure(_ error: GiniError, completion: @escaping (Result<Token, GiniError>) -> Void) {
+        if case .unauthorized = error {
+            self.handleUnauthorizedUserCreation(completion: completion)
         } else {
-            createUserAndFetchToken(completion: completion, saveTokenAndComplete: saveTokenAndComplete)
+            completion(.failure(error))
+        }
+    }
+
+    private func handleUnauthorizedUserCreation(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        self.removeCurrentUserInfo()
+        self.createUser { result in
+            switch result {
+                case .success(let user):
+                self.fetchUserAccessToken(for: user, completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
         }
     }
 
@@ -91,50 +146,6 @@ extension SessionManager: SessionAuthenticationProtocol {
 // MARK: - Fileprivate
 
 fileprivate extension SessionManager {
-
-   func createTokenCompletionHandler(completion: @escaping CompletionResult<Token>) -> (Result<Token, GiniError>) -> Void {
-        return { [weak self] result in
-            switch result {
-                case .failure:
-                    self?.removeUserAccessToken()
-                case .success(let token):
-                    self?.userAccessToken = token.accessToken
-            }
-            completion(result)
-        }
-    }
-
-    func handleExistingUser(user: User,
-                                    completion: @escaping CompletionResult<Token>,
-                                    saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        fetchUserAccessToken(for: user) { [weak self] result in
-            switch result {
-                case .success:
-                    saveTokenAndComplete(result)
-                case .failure(let error):
-                    if case .unauthorized = error {
-                        self?.removeCurrentUserInfo()
-                        self?.createUserAndFetchToken(completion: completion,
-                                                      saveTokenAndComplete: saveTokenAndComplete)
-                    } else {
-                        completion(.failure(error))
-                    }
-            }
-        }
-    }
-
-    func createUserAndFetchToken(completion: @escaping CompletionResult<Token>,
-                                         saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        createUser { [weak self] result in
-            switch result {
-                case .success(let user):
-                    self?.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                case .failure(let error):
-                    completion(.failure(error))
-            }
-        }
-    }
-
     func createUser(completion: @escaping CompletionResult<User>) {
         fetchClientAccessToken { result in
             switch result {
@@ -142,27 +153,31 @@ fileprivate extension SessionManager {
                 self.clientAccessToken = token.accessToken
                 let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
                 let user = AuthHelper.generateUser(with: domain)
-                
+
                 let resource = UserResource<String>(method: .users,
                                                     userDomain: self.userDomain,
                                                     httpMethod: .post,
                                                     body: try? JSONEncoder().encode(user))
 
-                self.data(resource: resource) { result in
-                    switch result {
-                    case .success:
-                        self.storeUserCredentials(for: user,
-                                                  completion: completion)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
+                self.handleDataResource(resource, for: user, completion: completion)
+
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
-    
+
+    private func handleDataResource(_ resource: UserResource<String>, for user: User, completion: @escaping CompletionResult<User>) {
+        self.data(resource: resource) { result in
+            switch result {
+            case .success:
+                self.storeUserCredentials(for: user,
+                                          completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     func fetchUserAccessToken(for user: User,
                               completion: @escaping CompletionResult<Token>) {
         let body = "username=\(user.email)&password=\(user.password)"
@@ -184,8 +199,8 @@ fileprivate extension SessionManager {
         data(resource: resource, completion: completion)
     }
 
-    func storeUserCredentials(for user: User,
-                              completion: @escaping CompletionResult<User>) {
+    private func storeUserCredentials(for user: User,
+                                      completion: @escaping CompletionResult<User>) {
         do {
             try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
                                                              value: user.email,
