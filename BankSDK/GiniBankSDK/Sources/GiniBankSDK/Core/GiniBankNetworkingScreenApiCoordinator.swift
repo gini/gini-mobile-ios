@@ -413,8 +413,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
-        /// Check document status for 'Credit Note'
-        if isDocumentMarkedAsCreditNote(from: extractionResult) {
+        /// Step 1: Check document status for 'Credit Note'
+        if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
                 let filteredResult = self.excludingAmountToPay(from: extractionResult)
@@ -424,7 +424,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        /// Step:  Check document status for multiple states
+        /// Step 2:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
@@ -441,6 +441,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handleSavingPhotos(for: extractionResult)
             continueWithFeatureFlow()
         }
+    }
+
+    private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled()
     }
 
     @MainActor
@@ -587,6 +591,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+    
+    func determineIfCreditNoteHintEnabled() -> Bool {
+        let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
+        let clientCreditNoteHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.creditNoteHintEnabled ?? false
+        return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
     }
 
     /// Returns the payment state of the document, if available
