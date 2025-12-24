@@ -38,6 +38,12 @@ public class GiniColor: NSObject {
         }
     }
     
+    /**
+     Converts the `GiniColor` to a SwiftUI `Color`, maintaining the light/dark mode support
+     based on the current user interface style.
+     
+     - returns: A SwiftUI `Color` that adapts to light and dark mode.
+     */
     public func swiftUIColor() -> Color {
         Color(self.uiColor())
     }

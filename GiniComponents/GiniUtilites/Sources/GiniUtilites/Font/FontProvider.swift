@@ -34,8 +34,15 @@ public final class FontProvider {
         return textStyleFonts[textStyle] ?? UIFont.systemFont(ofSize: 17)
     }
     
+    /**
+     Retrieves the SwiftUI `Font` associated with a specific text style.
+     - parameter textStyle: The text style for which to retrieve the SwiftUI font.
+     - returns: A `SwiftUI.Font` created from the associated `UIFont`.
+     */
     public func font(for textStyle: UIFont.TextStyle) -> Font {
-        Font(uiFont: font(for: textStyle))
+        let uiFont: UIFont = font(for: textStyle)
+        
+        return Font(uiFont: uiFont)
     }
 }
 
