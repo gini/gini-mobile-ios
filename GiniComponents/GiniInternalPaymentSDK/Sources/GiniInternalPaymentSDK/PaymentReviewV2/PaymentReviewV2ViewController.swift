@@ -1,5 +1,5 @@
 //
-//  PaymentReivewV2ViewController.swift
+//  PaymentReviewV2ViewController.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -13,10 +13,6 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
     
     private let selectedPaymentProvider: PaymentProvider
     private var isInfoBarHidden = true
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
         let observableModel = PaymentReviewObservableModel(model: viewModel)
