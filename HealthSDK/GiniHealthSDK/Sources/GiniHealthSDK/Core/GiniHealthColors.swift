@@ -63,7 +63,9 @@ extension GiniHealthColorPalette {
     }
     
     func preferredColor() -> Color {
-        Color(preferredColor())
+        let uiColor: UIColor = preferredColor()
+        
+        return Color(uiColor)
     }
 }
 
