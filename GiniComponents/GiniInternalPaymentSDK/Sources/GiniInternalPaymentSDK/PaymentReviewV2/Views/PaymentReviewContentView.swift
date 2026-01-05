@@ -44,7 +44,7 @@ public struct PaymentReviewContentView: View {
         .sheet(isPresented: $showBottomSheet) {
             
         } content: {
-            PaymentReviewPaymentInformationView()
+            PaymentReviewPaymentInformationView(viewModel: viewModel.model.paymentReviewContainerViewModel())
                 .modifier(GiniBottomSheetModifier())
         }
     }

@@ -5,15 +5,24 @@
 //
 
 import SwiftUI
+import GiniHealthAPILibrary
+import GiniUtilites
 
 struct PaymentReviewPaymentInformationView: View {
+    
+    @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
     @State private var recipient: String = ""
     @State private var iban: String = ""
     @State private var amount: String = ""
-    @State private var referenceNumber: String = ""
+    @State private var paymentPurpose: String = ""
     
     @State private var showBanner: Bool = true
+    
+    init(viewModel: PaymentReviewContainerViewModel) {
+        let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
+        self.viewModel = observableModel
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -42,8 +51,8 @@ struct PaymentReviewPaymentInformationView: View {
                         .textFieldStyle(GiniTextFieldStyle(title: "Amount"))
                 }
                 
-                TextField("", text: $referenceNumber)
-                    .textFieldStyle(GiniTextFieldStyle(title: "Reference number"))
+                TextField("", text: $paymentPurpose)
+                    .textFieldStyle(GiniTextFieldStyle(title: "Payment purpose"))
                 
                 if #available(iOS 15.0, *) {
                     Button(action: {}) {
@@ -67,10 +76,41 @@ struct PaymentReviewPaymentInformationView: View {
                     showBanner = false
                 }
             }
+            
+            populateFields()
         }
     }
-}
-
-#Preview {
-    PaymentReviewPaymentInformationView()
+    
+    // MARK: Private methods
+    
+    private func populateFields() {
+        if !viewModel.extractions.isEmpty {
+            populateFieldsWithExtractions(viewModel.extractions)
+        } else if let paymentInfo = viewModel.model.paymentInfo {
+            populateFieldsWithPaymentInfo(paymentInfo)
+        }
+    }
+    
+    private func populateFieldsWithExtractions(_ extractions: [Extraction]) {
+        recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value ?? ""
+        iban = extractions.first(where: {$0.name == "iban"})?.value.uppercased() ?? ""
+        paymentPurpose = extractions.first(where: {$0.name == "payment_purpose"})?.value ?? ""
+        
+        if let amountString = viewModel.extractions.first(where: {$0.name == "amount_to_pay"})?.value,
+            let amountToPay = Price(extractionString: amountString) {
+            let amountToPayText = amountToPay.string
+            amount = amountToPayText ?? ""
+        }
+    }
+    
+    private func populateFieldsWithPaymentInfo(_ paymentInfo: PaymentInfo) {
+        recipient = paymentInfo.recipient
+        iban = paymentInfo.iban
+        paymentPurpose = paymentInfo.purpose
+        
+        if let amountToPay = Price(extractionString: paymentInfo.amount) {
+            let amountToPayText = amountToPay.string
+            amount = amountToPayText ?? ""
+        }
+    }
 }
