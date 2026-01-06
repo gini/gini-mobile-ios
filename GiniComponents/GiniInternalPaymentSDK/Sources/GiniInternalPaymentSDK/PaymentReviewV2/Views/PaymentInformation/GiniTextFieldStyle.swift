@@ -4,6 +4,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import GiniUtilites
 import SwiftUI
 
 struct GiniTextFieldStyle: TextFieldStyle {
@@ -11,11 +12,20 @@ struct GiniTextFieldStyle: TextFieldStyle {
     @State var lockedIcon: Image?
     @State var title: String
     
+    var textFieldConfiguration: TextFieldConfiguration
+    
+    init(title: String, configuration: TextFieldConfiguration) {
+        self.title = title
+        self.textFieldConfiguration = configuration
+    }
+    
     func _body(configuration: TextField<Self._Label>) -> some View {
         if #available(iOS 15.0, *) {
             VStack(spacing: 0) {
                 HStack {
                     Text(title)
+                        .foregroundColor(Color(textFieldConfiguration.placeholderForegroundColor))
+                        .font(Font(textFieldConfiguration.textFont))
                     
                     if lockedIcon != nil {
                         lockedIcon!
@@ -25,12 +35,16 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 }
                 
                 configuration
+                    .foregroundColor(Color(textFieldConfiguration.textColor))
+                    .font(Font(textFieldConfiguration.textFont))
             }
             .padding(.horizontal, 8.0)
             .frame(height: 56.0)
             .overlay {
-                RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-                    .stroke(Color(.secondarySystemBackground), lineWidth: 1.0)
+                RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+                                 style: .continuous)
+                .stroke(Color(textFieldConfiguration.borderColor),
+                        lineWidth: textFieldConfiguration.borderWidth)
             }
         } else {
             // Fallback on earlier versions

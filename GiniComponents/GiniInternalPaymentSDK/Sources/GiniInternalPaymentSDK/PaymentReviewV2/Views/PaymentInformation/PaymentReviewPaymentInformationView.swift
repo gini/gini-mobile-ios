@@ -10,6 +10,8 @@ import GiniUtilites
 
 struct PaymentReviewPaymentInformationView: View {
     
+    let onBankSelectionTapped: () -> Void
+    
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
     @State private var recipient: String = ""
@@ -19,9 +21,11 @@ struct PaymentReviewPaymentInformationView: View {
     
     @State private var showBanner: Bool = true
     
-    init(viewModel: PaymentReviewContainerViewModel) {
+    init(viewModel: PaymentReviewContainerViewModel,
+         onBankSelectionTapped: @escaping () -> Void) {
         let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
         self.viewModel = observableModel
+        self.onBankSelectionTapped = onBankSelectionTapped
     }
     
     var body: some View {
@@ -39,31 +43,72 @@ struct PaymentReviewPaymentInformationView: View {
             }
             
             VStack(spacing: 8.0) {
+                let textFieldConfiguration = viewModel.model.defaultStyleInputFieldConfiguration
+                
                 TextField("", text: $recipient)
-                    .textFieldStyle(GiniTextFieldStyle(title: "Recipient"))
+                    .textFieldStyle(GiniTextFieldStyle(title: "Recipient",
+                                                       configuration: textFieldConfiguration))
                 
                 HStack(spacing: 8.0) {
                     TextField("", text: $iban)
-                        .textFieldStyle(GiniTextFieldStyle(title: "IBAN"))
+                        .textFieldStyle(GiniTextFieldStyle(title: "IBAN",
+                                                           configuration: textFieldConfiguration))
                     
                     TextField("", text: $amount)
                         .keyboardType(.decimalPad)
-                        .textFieldStyle(GiniTextFieldStyle(title: "Amount"))
+                        .textFieldStyle(GiniTextFieldStyle(title: "Amount",
+                                                           configuration: textFieldConfiguration))
                 }
                 
                 TextField("", text: $paymentPurpose)
-                    .textFieldStyle(GiniTextFieldStyle(title: "Payment purpose"))
+                    .textFieldStyle(GiniTextFieldStyle(title: "Payment purpose",
+                                                       configuration: textFieldConfiguration))
                 
                 if #available(iOS 15.0, *) {
-                    Button(action: {}) {
-                        Text("To the banking app")
-                            .frame(maxWidth: .infinity)
-                            .padding()
+                    HStack(spacing: 8.0) {
+                        Button(action: {
+                            onBankSelectionTapped()
+                        }) {
+                            HStack(spacing: 12.0) {
+                                if let uiImage = UIImage(data: viewModel.selectedPaymentProvider.iconData) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 36, height: 36)
+                                        .cornerRadius(6.0)
+                                }
+                                
+                                if let chevronImage = viewModel.model.configuration.chevronDownIcon {
+                                    Image(uiImage: chevronImage)
+                                        .resizable()
+                                        .renderingMode(.template)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24, height: 24)
+                                        .tint(Color(viewModel.model.configuration.chevronDownIconColor!))
+                                }
+                            }
+                            .frame(width: 96.0, height: 36.0)
+                            .padding(.vertical, 10.0)
+                        }
+                        .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
+                        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
+                                .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
+                                        lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
+                        )
+                        
+                        Button(action: {}) {
+                            Text(viewModel.model.strings.payInvoiceLabelText)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .foregroundColor(Color(viewModel.model.selectedPaymentProvider.colors.text.toColor()!))
+                        .background(Color(viewModel.selectedPaymentProvider.colors.background.toColor()!))
+                        .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+                        .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
+                        .frame(height: 56.0)
                     }
-                    .foregroundColor(.white)
-                    .background(.red)
-                    .cornerRadius(12.0)
-                    .frame(height: 56.0)
                 } else {
                     // Fallback on earlier versions
                 }
