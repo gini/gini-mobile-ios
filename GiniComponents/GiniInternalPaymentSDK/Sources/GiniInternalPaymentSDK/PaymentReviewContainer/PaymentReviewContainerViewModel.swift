@@ -13,8 +13,9 @@ import UIKit
 
 /// The view model for the Payment Review container view.
 public final class PaymentReviewContainerViewModel {
+    @Published var selectedPaymentProvider: PaymentProvider
+    
     var onExtractionFetched: (() -> Void)?
-    var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
     let configuration: PaymentReviewContainerConfiguration
     let strings: PaymentReviewContainerStrings
     let primaryButtonConfiguration: ButtonConfiguration

@@ -11,12 +11,14 @@ import SwiftUI
 final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     @Published var extractions: [Extraction]
+    @Published var selectedPaymentProvider: PaymentProvider
     
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {
         self.model = model
         self.extractions = model.extractions ?? []
+        self.selectedPaymentProvider = model.selectedPaymentProvider
         
         setupBindings()
     }

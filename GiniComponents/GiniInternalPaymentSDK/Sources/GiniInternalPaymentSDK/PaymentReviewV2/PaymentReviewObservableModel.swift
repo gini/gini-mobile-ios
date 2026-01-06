@@ -13,13 +13,10 @@ final class PaymentReviewObservableModel: ObservableObject {
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
     @Published var isImagesLoading: Bool = false
     @Published var isLoading: Bool = false
+    @Published var selectedPaymentProvider: PaymentProvider? = nil
     
     var document: Document? {
         model.document
-    }
-    
-    var selectedPaymentProvider: PaymentProvider? {
-        model.selectedPaymentProvider
     }
     
     let model: PaymentReviewModel
@@ -47,6 +44,10 @@ final class PaymentReviewObservableModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.isLoading = self?.model.isLoading == true
             }
+        }
+        
+        model.onNewPaymentProvider = { [weak self] in
+            self?.selectedPaymentProvider = self?.model.selectedPaymentProvider
         }
     }
     

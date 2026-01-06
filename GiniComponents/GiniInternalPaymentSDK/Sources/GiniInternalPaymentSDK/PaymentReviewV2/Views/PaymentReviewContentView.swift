@@ -44,8 +44,11 @@ public struct PaymentReviewContentView: View {
         .sheet(isPresented: $showBottomSheet) {
             
         } content: {
-            PaymentReviewPaymentInformationView(viewModel: viewModel.model.paymentReviewContainerViewModel())
-                .modifier(GiniBottomSheetModifier())
+            PaymentReviewPaymentInformationView(viewModel: viewModel.model.paymentReviewContainerViewModel(),
+                                                onBankSelectionTapped: {
+                viewModel.model.openBankSelectionBottomSheet()
+            })
+            .modifier(GiniBottomSheetModifier())
         }
     }
 }

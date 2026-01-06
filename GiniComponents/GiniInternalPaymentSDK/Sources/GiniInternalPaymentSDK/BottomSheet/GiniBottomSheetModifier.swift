@@ -12,7 +12,7 @@ struct GiniBottomSheetModifier: ViewModifier {
         if #available(iOS 16.4, *) {
             content
                 .presentationDetents([.fraction(0.45)])
-                .presentationDragIndicator(.automatic)
+                .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled(true)
                 .presentationBackgroundInteraction(.enabled)
         } else {
