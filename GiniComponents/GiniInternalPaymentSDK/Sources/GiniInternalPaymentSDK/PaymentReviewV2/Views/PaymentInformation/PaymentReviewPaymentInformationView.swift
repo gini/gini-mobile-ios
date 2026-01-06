@@ -11,6 +11,7 @@ import GiniUtilites
 struct PaymentReviewPaymentInformationView: View {
     
     let onBankSelectionTapped: () -> Void
+    let onPayTapped: (PaymentInfo) -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
@@ -22,10 +23,12 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var showBanner: Bool = true
     
     init(viewModel: PaymentReviewContainerViewModel,
-         onBankSelectionTapped: @escaping () -> Void) {
+         onBankSelectionTapped: @escaping () -> Void,
+         onPayTapped: @escaping (PaymentInfo) -> Void) {
         let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
         self.viewModel = observableModel
         self.onBankSelectionTapped = onBankSelectionTapped
+        self.onPayTapped = onPayTapped
     }
     
     var body: some View {
@@ -98,7 +101,9 @@ struct PaymentReviewPaymentInformationView: View {
                                         lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
                         )
                         
-                        Button(action: {}) {
+                        Button(action: {
+                            onPayTapped(buildPaymentInfo())
+                        }) {
                             Text(viewModel.model.strings.payInvoiceLabelText)
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -157,5 +162,16 @@ struct PaymentReviewPaymentInformationView: View {
             let amountToPayText = amountToPay.string
             amount = amountToPayText ?? ""
         }
+    }
+    
+    private func buildPaymentInfo() -> PaymentInfo {
+        let paymentInfo = PaymentInfo(recipient: recipient,
+                                      iban: iban,
+                                      bic: "",
+                                      amount: "30.27:EUR",
+                                      purpose: paymentPurpose,
+                                      paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
+                                      paymentProviderId: viewModel.selectedPaymentProvider.id)
+        return paymentInfo
     }
 }

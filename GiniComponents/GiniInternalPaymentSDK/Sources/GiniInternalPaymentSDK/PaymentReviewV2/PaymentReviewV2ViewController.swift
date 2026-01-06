@@ -37,7 +37,7 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
 // MARK: - PaymentReviewViewModelDelegate methods
 extension PaymentReviewV2ViewController: PaymentReviewViewModelDelegate {
     func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
-        present(bottomSheet, animated: true)
+        giniTopMostViewController().present(bottomSheet, animated: true)
     }
 
     func createPaymentRequestAndOpenBankApp() {
