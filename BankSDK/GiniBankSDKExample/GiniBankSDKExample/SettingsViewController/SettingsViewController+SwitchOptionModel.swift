@@ -155,11 +155,11 @@ struct SwitchOptionModel {
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
             case .alreadyPaidHintEnabled:
-                return "User payment warnings feature"
+                return "Already paid hint feature"
             case .paymentDueHintEnabled:
                 return "Payment due hint feature"
             case .creditNoteHintEnabled:
-                return "Credit note warnings feature"
+                return "Credit note hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
@@ -241,8 +241,6 @@ struct SwitchOptionModel {
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
             case .skontoHelpNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-            case .alreadyPaidHintEnabled:
-                return "Features included under this flag paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
 			default:
