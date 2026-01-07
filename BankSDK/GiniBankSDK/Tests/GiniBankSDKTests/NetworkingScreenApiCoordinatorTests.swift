@@ -210,10 +210,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -227,10 +225,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: false
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: false)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -244,10 +240,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentDueDate: "tobepaid")
 
@@ -305,9 +299,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.creditNoteHintEnabled = true
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            creditNoteHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
 
         let result = coordinator.determineIfCreditNoteHintEnabled()
 
@@ -319,9 +311,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.creditNoteHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            creditNoteHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
 
         let result = coordinator.determineIfCreditNoteHintEnabled()
 
@@ -333,9 +323,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.creditNoteHintEnabled = true
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            creditNoteHintEnabled: false
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: false)
 
         let result = coordinator.determineIfCreditNoteHintEnabled()
 
@@ -574,7 +562,9 @@ private extension NetworkingScreenApiCoordinatorTests {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(alreadyPaidHintEnabled: Bool = false, paymentDueHintEnabled: Bool = false, creditNoteHintEnabled: Bool = false) {
+    init(alreadyPaidHintEnabled: Bool = false,
+         paymentDueHintEnabled: Bool = false,
+         creditNoteHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
