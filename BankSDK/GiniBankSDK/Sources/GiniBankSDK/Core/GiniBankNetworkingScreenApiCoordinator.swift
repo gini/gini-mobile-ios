@@ -589,13 +589,15 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientPaymentHintsEnabled = clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
-    
+
     func determineIfCreditNoteHintEnabled() -> Bool {
         let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
-        let clientCreditNoteHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.creditNoteHintEnabled ?? false
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientCreditNoteHintEnabled = clientConfiguration?.creditNoteHintEnabled ?? false
         return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
     }
 
@@ -629,8 +631,9 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .first(where: { $0.name == "businessDocType" })?
             .value
 
-        // TODO: return true to test the credit note warning UI until backend support is ready
-        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else {
+            return false
+        }
 
         return businessDocType.lowercased() == "creditnote"
     }
