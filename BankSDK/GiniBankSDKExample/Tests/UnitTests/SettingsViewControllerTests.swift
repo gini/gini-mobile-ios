@@ -47,6 +47,8 @@ final class SettingsViewModelTests: XCTestCase {
 		configuration.returnAssistantEnabled = true
 		configuration.enableReturnReasons = true
 		configuration.giniErrorLoggerIsOn = true
+        configuration.alreadyPaidHintEnabled = true
+        configuration.savePhotosLocallyEnabled = true
 		configuration.customGiniErrorLoggerDelegate = self
 		configuration.debugModeOn = true
         configuration.customResourceProvider = nil
@@ -2123,7 +2125,87 @@ extension SettingsViewModelTests {
 						   "customGiniErrorLogger should not be enabled in the gini configuration")
 		}
 	}
-	
+
+    //MARK: - User payment warnings
+
+    func testUserPaymentWarningsSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
+            XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .alreadyPaidHintEnabled else {
+                XCTFail("Expected type `alreadyPaidHintEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.alreadyPaidHintEnabled = data.isSwitchOn
+
+            XCTAssertFalse(configuration.alreadyPaidHintEnabled,
+                           "payment hints feature should not be enabled in the gini configuration")
+        }
+    }
+
+    func testUserPaymentWarningsSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
+            XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .alreadyPaidHintEnabled else {
+                XCTFail("Expected type `alreadyPaidHintEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.alreadyPaidHintEnabled = data.isSwitchOn
+
+            XCTAssertTrue(configuration.alreadyPaidHintEnabled,
+                          "payment hints feature should not be enabled in the gini configuration")
+        }
+    }
+
+    //MARK: - Save Photos Locally
+
+    func testSavePhotosLocallySwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .savePhotosLocallyEnabled) else {
+            XCTFail("`savePhotosLocallyEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .savePhotosLocallyEnabled else {
+                XCTFail("Expected type `savePhotosLocallyEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.savePhotosLocallyEnabled = data.isSwitchOn
+
+            XCTAssertFalse(configuration.savePhotosLocallyEnabled,
+                           "Save Photos Locally feature should not be enabled in the gini configuration")
+        }
+    }
+
+    func testSavePhotosLocallySwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .savePhotosLocallyEnabled) else {
+            XCTFail("`savePhotosLocallyEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .savePhotosLocallyEnabled else {
+                XCTFail("Expected type `savePhotosLocallyEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.savePhotosLocallyEnabled = data.isSwitchOn
+
+            XCTAssertTrue(configuration.savePhotosLocallyEnabled,
+                          "Save Photos Locally feature should not be enabled in the gini configuration")
+        }
+    }
+
 	// MARK: - DebugMode
 	
 	func testDebugModeSwitchOn() {

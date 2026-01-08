@@ -10,7 +10,9 @@ on:
       - 'BankAPILibrary/**'
   workflow_call:
     secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET:
+      GINI_MOBILE_CI_PASSWORD:
+        required: true
+      GINI_MOBILE_CI_USERNAME:
         required: true
   workflow_dispatch:
 
@@ -49,8 +51,8 @@ jobs:
     - name: Build and run tests for "${{ matrix.target }}"
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       env:
-        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-        TEST_CLIENT_ID: "gini-mobile-test"
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
       with:
         lane: 'run_unit_tests'
         options: >
@@ -63,7 +65,8 @@ jobs:
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
       env:
-        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
       if: ${{ matrix.target == 'GiniBankSDK' }}
       run: >
         xcodebuild clean test
@@ -73,5 +76,5 @@ jobs:
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
+        CLIENT_ID="$TEST_CLIENT_ID"
         CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"

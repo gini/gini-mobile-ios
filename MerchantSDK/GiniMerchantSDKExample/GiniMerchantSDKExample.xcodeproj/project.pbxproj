@@ -8,15 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3A41C7642C50F9FB00EEDCA2 /* OrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */; };
-		507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E02C355DA900A7106E /* AppDelegate.swift */; };
-		507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E22C355DA900A7106E /* SceneDelegate.swift */; };
-		507A25E52C355DA900A7106E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E42C355DA900A7106E /* ViewController.swift */; };
-		507A25E82C355DA900A7106E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 507A25E72C355DA900A7106E /* Base */; };
-		507A25EA2C355DAA00A7106E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507A25E92C355DAA00A7106E /* Assets.xcassets */; };
-		507A25ED2C355DAA00A7106E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 507A25EC2C355DAA00A7106E /* Base */; };
-		507A25F82C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */; };
-		507A260F2C355F7700A7106E /* GiniMerchantSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = 507A260E2C355F7700A7106E /* GiniMerchantSDKPinning */; };
-		507A26122C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */; };
 		5024D0472C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */; };
 		5076CDC92C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */; };
 		50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D572C245A8900B446A8 /* AppDelegate.swift */; };
@@ -61,19 +52,6 @@
 
 /* Begin PBXFileReference section */
 		3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
-		4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
-		507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		507A25E02C355DA900A7106E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		507A25E22C355DA900A7106E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		507A25E42C355DA900A7106E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		507A25E72C355DA900A7106E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		507A25E92C355DAA00A7106E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		507A25EC2C355DAA00A7106E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		507A25EE2C355DAA00A7106E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		507A25F32C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniMerchantSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleTests.swift; sourceTree = "<group>"; };
-		507A26102C35700F00A7106E /* GiniMerchantSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDKPinning; path = ../GiniMerchantSDKPinning; sourceTree = "<group>"; };
-		507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		4C6B4E552C6206D800FF5B1C /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		4CC69EF52C6141AE00430240 /* GiniMerchantSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniMerchantSDKExampleTests.xctestplan; sourceTree = "<group>"; };
 		5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
@@ -524,12 +502,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -541,8 +522,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example1;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development net.gini.merchantsdk.example";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -559,12 +542,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gini GmbH (JA825X8F7Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -578,6 +565,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore net.gini.merchantsdk.example";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

@@ -7,6 +7,7 @@
 
 import Foundation
 import GiniBankAPILibrary
+import GiniUtilites
 
 struct GiniBankUserDefaultsStorage {
     @GiniUserDefault("ginibank.defaults.client.configurations", defaultValue: nil)

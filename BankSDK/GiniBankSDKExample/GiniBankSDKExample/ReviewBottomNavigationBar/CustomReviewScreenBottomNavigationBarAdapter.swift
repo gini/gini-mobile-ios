@@ -13,7 +13,9 @@ final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBot
     private var secondaryButtonCallback: (() -> Void)?
     var view: CustomReviewScreenBottomNavigationBar?
 
-    public init() {}
+    public init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     public func setMainButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         mainButtonCallback = callback
@@ -42,7 +44,7 @@ final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBot
 	}
 
     public func onDeinit() {
-
+        // This method will remain empty; no implementation is needed.
     }
 }
 

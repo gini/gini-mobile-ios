@@ -55,7 +55,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
     }
 
     private var textSource: ResourceOrigin {
-        if localizedConfigEntry != nil && !localizedConfigEntry!.isEmpty {
+        if let entry = localizedConfigEntry, !entry.isEmpty {
             return .custom
         }
         if let text = localizedTextKey,
