@@ -238,7 +238,7 @@ public class PaymentReviewModel {
                 dispatchGroup.enter()
 
                 self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
-                    if let cellModel = self?.proccessPreview(result) {
+                    if let cellModel = self?.processPreview(result) {
                         vms.append(cellModel)
                     }
                     dispatchSemaphore.signal()
@@ -282,7 +282,7 @@ public class PaymentReviewModel {
                             return nil
                         }
                         
-                        return self?.proccessPreview(result)
+                        return self?.processPreview(result)
                     } catch {
                         return nil
                     }
@@ -309,7 +309,7 @@ public class PaymentReviewModel {
         }
     }
 
-    private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
+    private func processPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
         switch result {
         case let .success(dataImage):
             if let image = UIImage(data: dataImage) {
