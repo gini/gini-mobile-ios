@@ -131,9 +131,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
-    /// Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
-    /// Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
-    /// This is cast from the public-facing protocol for internal SDK use only.
+    /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
+     Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
+     This is cast from the public-facing protocol for internal SDK use only.
+     */
     private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
         return GiniBankConfiguration
             .shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
@@ -143,13 +144,13 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
-     - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
-     - resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - configuration: The Gini Bank configuration to set.
-     - documentMetadata: Additional HTTP headers to send when uploading documents.
-     - api: The API domain to use for Gini Bank API requests.
-     - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
-     - lib: An instance of `GiniBankAPI` used to access document and payment services.
+        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - api: The API domain to use for Gini Bank API requests.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - lib: An instance of `GiniBankAPI` used to access document and payment services.
      */
     public init(client: Client,
                 resultsDelegate: GiniCaptureResultsDelegate,
@@ -195,12 +196,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
-     - resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - configuration: The Gini Bank configuration to set.
-     - documentMetadata: Additional HTTP headers to send when uploading documents.
-     - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
-     - captureNetworkService: The network service implementation used to communicate with the Gini API.
-     - configurationService: Optional configuration service used to fetch remote feature flags or settings.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - captureNetworkService: The network service implementation used to communicate with the Gini API.
+        - configurationService: Optional configuration service used to fetch remote feature flags or settings.
      */
     public init(resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
@@ -227,13 +228,13 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
-     - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
-     - resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - configuration: The Gini Bank configuration to set.
-     - documentMetadata: Additional HTTP headers to send when uploading documents.
-     - api: The API domain to use for Gini Bank API requests.
-     - userApi: The user API domain to use for user-related requests.
-     - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - api: The API domain to use for Gini Bank API requests.
+        - userApi: The user API domain to use for user-related requests.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
      */
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
@@ -261,11 +262,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
 
      - Parameters:
-     - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
-     - resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - configuration: The Gini Bank configuration to set..
-     - documentMetadata: Additional HTTP headers to send when uploading documents.
-     - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set..
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
      */
     convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
                      resultsDelegate: GiniCaptureResultsDelegate,
@@ -288,14 +289,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using Pinning certificates.
 
      - Parameters:
-     - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
-     - resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - configuration: The gini bank configuration to set.
-     - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
-     - documentMetadata: Additional HTTP headers to send when uploading documents.
-     - api: The API domain to use for Gini Bank API requests.
-     - userApi: The user API domain to use for user-related requests.
-     - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The gini bank configuration to set.
+        - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - api: The API domain to use for Gini Bank API requests.
+        - userApi: The user API domain to use for user-related requests.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
      */
 
     convenience init(client: Client,
@@ -325,12 +326,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
       This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
 
       - Parameters:
-      - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
-      - resultsDelegate: Results delegate object where you can get the results of the analysis.
-      - configuration: The Gini Bank configuration to set.
-      - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
-      - documentMetadata: Additional HTTP headers to send when uploading documents.
-      - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
       */
     convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
                      resultsDelegate: GiniCaptureResultsDelegate,
