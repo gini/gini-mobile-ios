@@ -1144,6 +1144,7 @@
 		F459606E2A813CB1004B0112 /* SettingsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				5DCC9FA02C769A0900C1B76A /* APIEnvironment.swift */,
 				84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */,
 				84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */,
 				289570912A30CD7600CC2C56 /* SettingsViewController.swift */,
@@ -1283,7 +1284,6 @@
 				F441DCB225E568C400AAB09A /* LaunchScreen.strings */,
 				F441DD1225E5706F00AAB09A /* Info.plist */,
 				4C84B5DC264ED55100853F33 /* Credentials.plist */,
-				5DCC9FA02C769A0900C1B76A /* APIEnvironment.swift */,
 				288E78B42D316220004ACB9B /* TransactionDocs */,
 			);
 			path = GiniBankSDKExample;

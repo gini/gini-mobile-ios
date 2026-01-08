@@ -1,10 +1,16 @@
+//
+//  APIEnvironment.swift
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
 import GiniBankAPILibrary
 
-public enum APIEnvironment: String {
+enum APIEnvironment: String {
     case production = "Prod"
     case stage = "Stage"
 
-    public var api: APIDomain {
+    var api: APIDomain {
         switch self {
         case .production:
             return .default
@@ -13,7 +19,7 @@ public enum APIEnvironment: String {
         }
     }
 
-    public var userApi: UserDomain {
+   var userApi: UserDomain {
         switch self {
         case .production:
             return .default
