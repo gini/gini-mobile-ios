@@ -261,13 +261,13 @@ public class PaymentReviewModel {
     ///
     /// Use this version from SwiftUI (e.g. inside a `Task` or `.task` modifier) or when you are
     /// already in an async context and want structured concurrency instead of completion handlers.
-    /// The synchronous ``fetchImages()`` overload should be used from legacy, non-async code.
+    /// The synchronous ``fetchImages()`` completion-handler-based version should be used
+    /// from legacy, non-async code.
     ///
     /// This method:
     ///  - Loads all page previews concurrently using a task group.
-    ///  - Updates ``isImagesLoading`` and `cellViewModels` on the main actor.
+    ///  - Updates ``isImagesLoading`` and `cellViewModels`
     ///  - Invokes ``onPreviewImagesFetched`` once all previews have been processed.
-    @MainActor
     func fetchImages() async {
         guard let document, let documentId else { return }
         
