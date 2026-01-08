@@ -13,13 +13,14 @@ final class CameraMock: CameraProtocol {
     var didDetectIBANs: (([String]) -> Void)?
 
     func startOCR() {
+        // This method will remain empty; no implementation is needed.
     }
 
     func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
                             regionOfInterest: CGRect?,
                             videoPreviewLayer: AVCaptureVideoPreviewLayer?,
                             visionToAVFTransform: CGAffineTransform) {
-
+        // This method will remain empty; no implementation is needed.
     }
 
     enum CameraAuthState {
@@ -41,18 +42,18 @@ final class CameraMock: CameraProtocol {
     }
     
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
-        
+        // This method will remain empty; no implementation is needed.
     }
 
     func switchTo(newVideoDevice: AVCaptureDevice) {
-
+        // This method will remain empty; no implementation is needed.
     }
     
     func focus(withMode mode: AVCaptureDevice.FocusMode,
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func setup(completion: ((CameraError?) -> Void)) {
@@ -65,14 +66,14 @@ final class CameraMock: CameraProtocol {
     }
     
     func setupQRScanningOutput(completion: @escaping ((GiniCaptureSDK.CameraError?) -> Void)) {
-
+        // This method will remain empty; no implementation is needed.
     }
     
     func start() {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func stop() {
-        
+        // This method will remain empty; no implementation is needed.
     }
 }

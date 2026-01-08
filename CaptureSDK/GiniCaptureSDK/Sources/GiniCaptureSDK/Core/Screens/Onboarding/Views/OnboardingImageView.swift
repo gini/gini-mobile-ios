@@ -15,12 +15,14 @@ public class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
      Called when the onboarding page appears.
      */
     public func pageDidAppear() {
+        // This method will remain empty; no implementation is needed.
     }
 
     /**
      Called when the onboarding page disappears.
      */
     public func pageDidDisappear() {
+        // This method will remain empty; no implementation is needed.
     }
 
     /**
@@ -38,12 +40,16 @@ public class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     /**
      Initializes and returns a newly allocated ImageOnboardingIllustrationAdapter object.
      */
-    public init() {}
+    public init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     /**
      Called when the ImageOnboardingIllustrationAdapter object is deallocated.
      */
-    public func onDeinit() {}
+    public func onDeinit() {
+        // This method will remain empty; no implementation is needed.
+    }
 }
 
 /**

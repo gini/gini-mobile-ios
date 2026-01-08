@@ -148,30 +148,32 @@ public final class DocumentPickerCoordinator: NSObject {
     /**
      Shows the Gallery picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - parameter viewController: View controller which presents the gallery picker
      */
     public func showGalleryPicker(from viewController: UIViewController) {
-        galleryCoordinator.checkGalleryAccessPermission(deniedHandler: { error in
-            if let error = error as? FilePickerError, error == FilePickerError.photoLibraryAccessDenied {
-                viewController.showErrorDialog(for: error, positiveAction: UIApplication.shared.openAppSettings)
-            }
-        }, authorizedHandler: {
-            DispatchQueue.main.async {
-                self.galleryCoordinator.delegate = self
-                self.currentPickerDismissesAutomatically = false
-                self.currentPickerViewController = self.galleryCoordinator.rootViewController
-                self.galleryCoordinator.galleryManager.reloadAlbums()
+        Task { @MainActor in
+            do {
+                try await galleryCoordinator.checkGalleryAccessPermission()
 
-                viewController.present(self.galleryCoordinator.rootViewController, animated: true, completion: nil)
+                galleryCoordinator.delegate = self
+                currentPickerDismissesAutomatically = false
+                currentPickerViewController = galleryCoordinator.rootViewController
+                galleryCoordinator.galleryManager.reloadAlbums()
+
+                viewController.present(galleryCoordinator.rootViewController, animated: true)
+            } catch {
+                if let error = error as? FilePickerError, error == .photoLibraryAccessDenied {
+                    viewController.showErrorDialog(for: error, positiveAction: UIApplication.shared.openAppSettings)
+                }
             }
-        })
+        }
     }
 
     /**
      Shows the File explorer picker from a given viewController
 
      - Parameters:
-        - viewController: View controller which presentes the gallery picker
+        - viewController: View controller which presents the gallery picker
      */
     func showDocumentPicker(from viewController: UIViewController) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)

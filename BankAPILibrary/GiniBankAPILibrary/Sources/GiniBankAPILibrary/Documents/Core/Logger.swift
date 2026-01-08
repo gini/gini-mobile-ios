@@ -1,9 +1,9 @@
 //
 //  Logger.swift
-//  GiniBankAPI
 //
-//  Created by Enrique del Pozo Gómez on 3/4/19.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
+
 
 import Foundation
 import os
@@ -13,13 +13,13 @@ enum LogEvent {
     case success
     case warning
     case custom(String)
-    
+
     var value: String {
         switch self {
-        case .error: return "❌"
-        case .success: return "✅"
-        case .warning: return "⚠️"
-        case .custom(let emoji): return emoji
+            case .error: return "❌"
+            case .success: return "✅"
+            case .warning: return "⚠️"
+            case .custom(let emoji): return emoji
         }
     }
 }
@@ -32,9 +32,9 @@ public enum LogLevel {
 func Log(_ message: String,
          event: LogEvent) {
     guard case .debug = GiniBankAPI.logLevel else { return }
-    
+
     let prefix = event.value
-    
+
     // When having the `OS_ACTIVITY_MODE` disabled, NSLog messages are not printed
     if ProcessInfo.processInfo.environment["OS_ACTIVITY_MODE"] == "disable" {
         print(prefix, message)

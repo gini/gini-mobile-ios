@@ -65,6 +65,7 @@ final class GiniApiLibTests: XCTestCase {
     
     private class TokenSource: AlternativeTokenSource {
         func fetchToken(completion: @escaping (Result<Token, GiniError>) -> Void) {
+            // This method will remain empty; no implementation is needed.
         }
     }
 

@@ -82,7 +82,7 @@ class OnboardingPageCell: UICollectionViewCell {
                 topConstraint?.constant = Constants.regularTopPadding
                 iconBottomConstraint.constant = Constants.maxIconPadding
             }
-        } else if UIDevice.current.isPortrait() {
+        } else if UIDevice.current.isPortrait {
             topConstraint?.constant = Constants.compactTopPadding
             iconBottomConstraint.constant = calculateIconMargin()
         }

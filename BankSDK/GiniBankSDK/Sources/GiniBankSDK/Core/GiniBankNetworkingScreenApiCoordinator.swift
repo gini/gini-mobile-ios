@@ -4,7 +4,7 @@
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
+// swiftlint:disable file_length
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -18,6 +18,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     static var currentCoordinator: GiniBankNetworkingScreenApiCoordinator?
     var childCoordinators: [Coordinator] = []
 
+    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
+    /// It does not affect how payment states are parsed.
+    enum PaymentStatus: String {
+        case paid
+        case toBePaid = "tobepaid"
+    }
     // MARK: - GiniCaptureDelegate
 
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
@@ -280,6 +286,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniBankUserDefaultsStorage.clientConfiguration = configuration
                     GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
                     GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
+                    GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled = configuration.savePhotosLocallyEnabled
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -337,7 +344,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func sendAnalyticsEventSDKClose() {
         let properties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .status, value: "successful")]
-        GiniAnalyticsManager.track(event: .sdkClosed,properties: properties)
+        GiniAnalyticsManager.track(event: .sdkClosed, properties: properties)
     }
 
     private func setDocumentIdAsUserProperty() {
@@ -387,22 +394,87 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
-        if GiniBankConfiguration.shared.returnAssistantEnabled,
-           let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
-            handleReturnAssistantScreenDisplay(extractionResult, delegate)
-        } else if GiniBankConfiguration.shared.skontoEnabled,
-                  let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
-            handleSkontoScreenDisplay(extractionResult, delegate)
-        } else {
-            let document = documentService.document
-            handleTransactionDocsAlert(on: screenAPINavigationController,
-                                       extractionResult: extractionResult,
-                                       documentId: document?.id,
-                                       deliveryFunction: { [weak self] result in
-                guard let self = self else { return }
-                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-            })
+
+        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        let continueWithFeatureFlow: () -> Void = { [weak self] in
+            guard let self else { return }
+
+            if shouldShowReturnAssistant(for: extractionResult) {
+                handleReturnAssistantScreenDisplay(extractionResult, delegate)
+                return
+            }
+
+            if shouldShowSkonto(for: extractionResult) {
+                handleSkontoScreenDisplay(extractionResult, delegate)
+                return
+            }
+
+            presentTransactionDocsAlert(extractionResult: extractionResult,
+                                        delegate: delegate)
         }
+
+        /// Step:  Check document status for multiple states
+        let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
+
+        switch documentPaymentStatus {
+        case .paid:
+            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            handlePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .toBePaid:
+            handleSavingPhotos(for: extractionResult)
+            /// Show payment due date hint if available
+            handleToBePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .none:
+            handleSavingPhotos(for: extractionResult)
+            continueWithFeatureFlow()
+        }
+    }
+
+    @MainActor
+    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              let handler = paymentDueDateHandler,
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
+        if dueDate.isDueSoon(within: threshold) {
+            Task {
+                handler.handlePaymentDueDate(dueDate.toDisplayString())
+                await handler.clearPaymentDueDate(after: 5)
+                continueWithFeatureFlow()
+            }
+        } else {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handlePaidCase(_ extractionResult: ExtractionResult,
+                                _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        presentDocumentMarkedAsPaidBottomSheet(extractionResult) {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handleSavingPhotos(for extractionResult: ExtractionResult) {
+        guard let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController,
+        !extractionResult.extractions.isEmpty else {
+            return
+        }
+
+        analysisVC.saveDocumentPhotoToGalleryIfNeeded()
     }
 
     // MARK: - Deliver with Return Assistant
@@ -488,6 +560,68 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+}
+
+internal extension GiniBankNetworkingScreenApiCoordinator {
+
+    func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
+        let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .alreadyPaidHintEnabled ?? false
+        return globalAlreadyPaidHintEnabled && clientAlreadyPaidHintEnabled
+    }
+
+    func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    /// Returns the payment state of the document, if available
+    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
+        guard let paymentState = extractionResult.extractions
+            .first(where: { $0.name == "paymentState" })?
+            .value else {
+            return nil
+        }
+        return PaymentStatus(rawValue: paymentState.lowercased())
+    }
+
+    /// Returns the due date  of the document, if available
+    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
+        /// Try to find the extraction with the key "paymentDueDate"
+        guard let dueDate = extractionResult.extractions
+                .first(where: { $0.name == "paymentDueDate" })?
+                .value,
+              !dueDate.isEmpty else {
+            // Return nil if key not found or value is empty
+            return nil
+        }
+        return Date.date(from: dueDate)
+    }
+
+    func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        giniBankConfiguration.returnAssistantEnabled &&
+        !(result.lineItems?.isEmpty ?? true)
+    }
+
+    func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        giniBankConfiguration.skontoEnabled &&
+        !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func presentTransactionDocsAlert(extractionResult: ExtractionResult,
+                                     delegate: GiniCaptureNetworkDelegate) {
+        let document = documentService.document
+        handleTransactionDocsAlert(on: screenAPINavigationController,
+                                   extractionResult: extractionResult,
+                                   documentId: document?.id,
+                                   deliveryFunction: { [weak self] result in
+            guard let self else { return }
+            self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+        }
+        )
     }
 }
 
@@ -671,6 +805,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
             deliveryFunction(extractionResult)
         })
+    }
+
+    private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
+                                                        onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
