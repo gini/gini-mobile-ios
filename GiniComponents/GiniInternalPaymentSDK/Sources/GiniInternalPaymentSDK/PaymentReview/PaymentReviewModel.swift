@@ -272,33 +272,33 @@ public class PaymentReviewModel {
     func fetchImages() async {
         guard let document, let documentId else { return }
         
-        var viewModels: [PageCollectionCellViewModel] = []
         isImagesLoading = true
         
-        await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
+        let viewModels = await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
             for page in 1 ... document.pageCount {
                 group.addTask { [weak self] in
-                    do {
-                        guard let result = try await self?.fetchPreview(for: documentId, pageNumber: page) else {
-                            return nil
-                        }
-                        
-                        return self?.processPreview(result)
-                    } catch {
-                        return nil
-                    }
+                    await self?.buildCellViewModel(documentId: documentId, pageNumber: page)
                 }
             }
             
-            for await cellViewModel in group {
-                guard let cellViewModel else { continue }
-                
-                viewModels.append(cellViewModel)
+            // Collect all the non nil results.
+            return await group.reduce(into: [PageCollectionCellViewModel]()) { result, cellViewModel in
+                guard let cellViewModel else { return }
+                result.append(cellViewModel)
             }
-            
-            isImagesLoading = false
-            cellViewModels.append(contentsOf: viewModels)
-            onPreviewImagesFetched?()
+        }
+        
+        isImagesLoading = false
+        cellViewModels.append(contentsOf: viewModels)
+        onPreviewImagesFetched?()
+    }
+    
+    private func buildCellViewModel(documentId: String, pageNumber: Int) async -> PageCollectionCellViewModel? {
+        do {
+            let result = try await fetchPreview(for: documentId, pageNumber: pageNumber)
+            return processPreview(result)
+        } catch {
+            return nil
         }
     }
     
