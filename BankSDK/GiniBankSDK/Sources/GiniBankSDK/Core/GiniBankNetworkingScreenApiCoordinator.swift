@@ -44,34 +44,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
-        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
         - resultsDelegate: Results delegate object where you can get the results of the analysis.
         - configuration: The Gini Bank configuration to set.
         - documentMetadata: Additional HTTP headers to send when uploading documents.
-        - api: The API domain to use for Gini Bank API requests.
         - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
         - lib: An instance of `GiniBankAPI` used to access document and payment services.
      */
-    public init(client: Client,
-                resultsDelegate: GiniCaptureResultsDelegate,
-                configuration: GiniBankConfiguration,
-                documentMetadata: Document.Metadata?,
-                api: APIDomain,
-                trackingDelegate: GiniCaptureTrackingDelegate?,
-                lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
-        configurationService = lib.configurationService()
-        analyticsService = lib.analyticService()
-        let captureConfiguration = configuration.captureConfiguration()
-        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
-
-        visionDelegate = self
-        GiniBank.setConfiguration(configuration)
-        giniBankConfiguration = configuration
-        giniBankConfiguration.documentService = documentService
-        self.resultsDelegate = resultsDelegate
-        self.trackingDelegate = trackingDelegate
-    }
 
     private init(resultsDelegate: GiniCaptureResultsDelegate,
                  configuration: GiniBankConfiguration,
@@ -147,11 +125,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             .Builder(client: client, api: api, userApi: userApi)
             .build()
 
-        self.init(client: client,
-                  resultsDelegate: resultsDelegate,
+        self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
                   documentMetadata: documentMetadata,
-                  api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
     }
@@ -211,11 +187,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             .Builder(client: client, api: api, userApi: userApi, pinningConfig: pinningConfig)
             .build()
 
-        self.init(client: client,
-                  resultsDelegate: resultsDelegate,
+        self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
                   documentMetadata: documentMetadata,
-                  api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
     }
