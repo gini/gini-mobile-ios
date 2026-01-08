@@ -3,14 +3,14 @@ Release order for GiniBankAPILibrary:
  
 Release order for GiniCaptureSDK:
     1. GiniBankAPILibrary
-    2. GiniCaptureSDK
+    2. GiniUtilites
+    3. GiniCaptureSDK
 
 Release order for GiniBankSDK:
     1. GiniBankAPILibrary
-    2. GiniCaptureSDK 
-    3. GiniBankSDK 
-
-//TODO: Update this file with GiniUtilities for GinBankSDK and dependecies
+    2. GiniUtilites
+    3. GiniCaptureSDK 
+    4. GiniBankSDK 
 
 Release order for GiniHealthAPILibrary:
     1. GiniHealthAPILibrary 
