@@ -210,10 +210,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -227,10 +225,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: false
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: false)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -244,10 +240,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentDueDate: "tobepaid")
 
@@ -285,7 +279,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
 
-        XCTAssertTrue(result, "Temporarily returns true until backend provides businessDocType")
+        XCTAssertFalse(result, "Should return false when businessDocType is missing or empty")
     }
 
     func testIsDocumentMarkedAsCreditNoteIsCaseInsensitive() throws {
@@ -296,6 +290,44 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
 
         XCTAssertTrue(result, "Should return true regardless of case")
+    }
+
+    // MARK: - determineIfCreditNoteHintEnabled
+
+    func testDetermineIfCreditNoteHintEnabledReturnsTrueWhenEnabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertTrue(result, "Should return true when both global and client flags are enabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenGlobalDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = false
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertFalse(result, "Should return false when global flag is disabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenClientDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: false)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertFalse(result, "Should return false when client credit note hint is disabled")
     }
 
     func testExcludingAmountToPayExtractionResultCreditNote() throws {
@@ -530,7 +562,9 @@ private extension NetworkingScreenApiCoordinatorTests {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(alreadyPaidHintEnabled: Bool, paymentDueHintEnabled: Bool = false) {
+    init(alreadyPaidHintEnabled: Bool = false,
+         paymentDueHintEnabled: Bool = false,
+         creditNoteHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -542,6 +576,6 @@ extension ClientConfiguration {
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
                   paymentDueHintEnabled: paymentDueHintEnabled,
-                  creditNoteHintEnabled: false)
+                  creditNoteHintEnabled: creditNoteHintEnabled)
     }
 }

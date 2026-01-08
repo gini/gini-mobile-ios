@@ -414,7 +414,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
 
         /// Check document status for 'Credit Note'
-        if isDocumentMarkedAsCreditNote(from: extractionResult) {
+        if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
                 let filteredResult = self.excludingAmountToPay(from: extractionResult)
@@ -424,7 +424,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        /// Step:  Check document status for multiple states
+        /// Check document status for other states if the document is not a 'Credit Note'
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
@@ -441,6 +441,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handleSavingPhotos(for: extractionResult)
             continueWithFeatureFlow()
         }
+    }
+
+    private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled()
     }
 
     @MainActor
@@ -585,8 +589,16 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientPaymentHintsEnabled = clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    func determineIfCreditNoteHintEnabled() -> Bool {
+        let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientCreditNoteHintEnabled = clientConfiguration?.creditNoteHintEnabled ?? false
+        return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
     }
 
     /// Returns the payment state of the document, if available
@@ -619,8 +631,9 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             .first(where: { $0.name == "businessDocType" })?
             .value
 
-        // TODO: return true to test the credit note warning UI until backend support is ready
-        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else { return true }
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else {
+            return false
+        }
 
         return businessDocType.lowercased() == "creditnote"
     }
