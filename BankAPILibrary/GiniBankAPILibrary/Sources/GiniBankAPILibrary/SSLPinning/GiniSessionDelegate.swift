@@ -14,7 +14,8 @@ class GiniSessionDelegate: NSObject, URLSessionDelegate {
         self.pinningManager = SSLPinningManager(pinningConfig: pinningConfig)
     }
 
-    func urlSession(didReceive challenge: URLAuthenticationChallenge,
+    func urlSession(_ session: URLSession,
+                    didReceive challenge: URLAuthenticationChallenge,
                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         pinningManager.validate(challenge: challenge, completionHandler: completionHandler)
     }
