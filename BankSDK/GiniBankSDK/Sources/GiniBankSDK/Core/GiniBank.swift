@@ -33,7 +33,8 @@ import GiniCaptureSDK
     /**
      Returns a GiniBank instance
 
-     - parameter giniApiLib: GiniBankAPI initialized with client's credentials
+     - Parameters:
+        - giniApiLib: GiniBankAPI initialized with client's credentials
      */
     public init(with giniApiLib: GiniBankAPI) {
         self.giniApiLib = giniApiLib
@@ -45,8 +46,11 @@ import GiniCaptureSDK
     /**
      Fetches the payment request via payment request id.
 
-     - Parameter paymentRequestId: Id of payment request.
-     - Parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+     - Parameters:
+        - paymentRequestId: Id of payment request.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
+        Result is a value that represents either a success or a failure, including an associated value in each case.
+
      Completion block called on main thread.
      In success returns the payment request structure.
      In case of failure error from the server side.
@@ -70,8 +74,10 @@ import GiniCaptureSDK
      Resolves the payment via payment request id.
      **Important**: The amount string in the `PaymentInfo` must be convertible to a `Double`.
            * For ex. "12.39" is valid, but "12.39 €" or "12,39" are not valid.
-     - parameter paymentRequesId: Id of payment request.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+     - Parameters:
+        - paymentRequesId: Id of payment request.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+
      Completion block called on main thread.
      In success returns the resolved payment request structure.
      In case of failure error from the server side.
@@ -112,7 +118,8 @@ import GiniCaptureSDK
     /**
      Returns back to the business app.
 
-     - parameter resolvedPaymentRequest: resolved payment request returned by method 'resolvePaymentRequest'
+     - Parameters:
+        - resolvedPaymentRequest: resolved payment request returned by method 'resolvePaymentRequest'
 
      */
     public func returnBackToBusinessAppHandler(resolvedPaymentRequest: ResolvedPaymentRequest) {
@@ -128,7 +135,8 @@ import GiniCaptureSDK
     /**
      Initiates the process of loading transaction document data.
 
-     - Parameter documentId: The identifier of the document to process.
+     - Parameters:
+        - documentId: The identifier of the document to process.
      */
     public func handleTransactionDocsDataLoading(for documentId: String) {
         self.documentId = documentId
@@ -142,8 +150,9 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
 
-     - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - importedDocuments: Documents that come from a source different than `CameraViewController`.
      There should be either images or one PDF, and they should be validated before calling this method.
 
      - returns: A presentable view controller.
@@ -161,12 +170,13 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
 
-     - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
-     There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - importedDocuments: Documents that come from a source different than `CameraViewController`.
+            There should be either images or one PDF, and they should be validated before calling this method.
+        - trackingDelegate: A delegate object to receive user events
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public static func viewController(withDelegate delegate: GiniCaptureDelegate,
                                       importedDocuments: [GiniCaptureDocument]? = nil,
@@ -182,11 +192,12 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
 
-     - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter importedDocument: Documents that come from a source different than CameraViewController.
-     There should be either images or one PDF, and they should be validated before calling this method.
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - importedDocument: Documents that come from a source different than CameraViewController.
+            There should be either images or one PDF, and they should be validated before calling this method.
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public static func viewController(withDelegate delegate: GiniCaptureDelegate,
                                       importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
@@ -201,12 +212,13 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
 
-     - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter importedDocument: Documents that come from a source different than CameraViewController.
-     There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - importedDocument: Documents that come from a source different than CameraViewController.
+            There should be either images or one PDF, and they should be validated before calling this method.
+        - trackingDelegate: A delegate object to receive user events
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public static func viewController(withDelegate delegate: GiniCaptureDelegate,
                                       importedDocument: GiniCaptureDocument?,
@@ -225,12 +237,13 @@ import GiniCaptureSDK
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the  Gini Bank SDK.
 
-     - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter configuration: The bank configuration to set.
-     - parameter importedDocument: Documents that come from a source different than CameraViewController.
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - configuration: The bank configuration to set.
+        - importedDocument: Documents that come from a source different than CameraViewController.
      There should be either images or one PDF, and they should be validated before calling this method.
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public static func viewController(withDelegate delegate: GiniCaptureDelegate,
                                       withConfiguration configuration: GiniBankConfiguration,
@@ -243,13 +256,14 @@ import GiniCaptureSDK
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the Gini Bank SDK.
 
-     - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter configuration: The configuration to set.
-     - parameter importedDocument: Documents that come from a source different than CameraViewController.
-     There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
+        - configuration: The configuration to set.
+        - importedDocument: Documents that come from a source different than CameraViewController.
+            There should be either images or one PDF, and they should be validated before calling this method.
+        - trackingDelegate: A delegate object to receive user events
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                      withConfiguration configuration: GiniBankConfiguration,
@@ -265,7 +279,8 @@ import GiniCaptureSDK
      Sets a configuration which is used to customize the look and feel of the Gini Bank SDK,
      for example to change texts and colors displayed to the user.
 
-     - parameter configuration: The bank configuration to set.
+     - Parameters:
+        - configuration: The bank configuration to set.
      */
     public static func setConfiguration(_ configuration: GiniBankConfiguration) {
         GiniBankConfiguration.shared = configuration
