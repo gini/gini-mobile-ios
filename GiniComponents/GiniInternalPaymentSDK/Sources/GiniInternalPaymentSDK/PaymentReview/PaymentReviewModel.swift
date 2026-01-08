@@ -257,17 +257,18 @@ public class PaymentReviewModel {
         }
     }
     
-    /// Async/await variant of ``fetchImages()`` tailored for SwiftUI and other async contexts.
-    ///
-    /// Use this version from SwiftUI (e.g. inside a `Task` or `.task` modifier) or when you are
-    /// already in an async context and want structured concurrency instead of completion handlers.
-    /// The synchronous ``fetchImages()`` completion-handler-based version should be used
-    /// from legacy, non-async code.
-    ///
-    /// This method:
-    ///  - Loads all page previews concurrently using a task group.
-    ///  - Updates ``isImagesLoading`` and `cellViewModels`
-    ///  - Invokes ``onPreviewImagesFetched`` once all previews have been processed.
+    /**
+    Async/await variant of ``fetchImages()`` tailored for SwiftUI and other async contexts.
+    Use this version from SwiftUI (e.g. inside a `Task` or `.task` modifier) or when you are
+    already in an async context and want structured concurrency instead of completion handlers.
+    The synchronous ``fetchImages()`` completion-handler-based version should be used
+    from legacy, non-async code.
+     
+    This method:
+     - Loads all page previews concurrently using a task group.
+     - Updates ``isImagesLoading`` and `cellViewModels`
+     - Invokes ``onPreviewImagesFetched`` once all previews have been processed.
+    */
     func fetchImages() async {
         guard let document, let documentId else { return }
         
