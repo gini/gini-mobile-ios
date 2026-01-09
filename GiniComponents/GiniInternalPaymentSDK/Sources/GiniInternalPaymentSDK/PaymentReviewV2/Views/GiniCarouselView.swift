@@ -9,8 +9,13 @@ import SwiftUI
 
 struct GiniCarouselView: View {
     
-    let images: [UIImage]
+    private let images: [UIImage]
+    
     @State private var currentIndex: Int = 0
+    
+    init(images: [UIImage]) {
+        self.images = images
+    }
     
     var body: some View {
         VStack(spacing: 12) {
