@@ -129,30 +129,46 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
-                let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+                let imageData = UIImage(named: "Gini-Test-Payment-Provider",
+                                        in: Bundle.module,
+                                        compatibleWith: nil)?.pngData()
                 completion(.success(imageData as! T.ResponseType))
             default:
                 break
             }
         }
     }
-    
+
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
                              completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        if let apiMethod = resource.method as? APIMethod {
-            switch apiMethod {
-            case .createDocument(_, _, _, let documentType):
-                switch documentType {
-                case .none:
-                    completion(.success(SessionManagerMock.v3DocumentId as! T.ResponseType))
-                case .some:
-                    completion(.success(SessionManagerMock.partialDocumentId as! T.ResponseType))
-                }
-            default: break
-                
+        guard let apiMethod = resource.method as? APIMethod else {
+            return
+        }
+
+        switch apiMethod {
+        case .createDocument(_, _, _, let documentType):
+            let mockId = mockIdForDocumentType(documentType)
+
+            guard let typedResponse = mockId as? T.ResponseType else {
+                assertionFailure("Mock response type mismatch")
+                return
             }
+
+            completion(.success(typedResponse))
+
+        default:
+            break
+        }
+    }
+
+    private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> Any {
+        switch documentType {
+        case .none:
+            return SessionManagerMock.v3DocumentId
+        case .some:
+            return SessionManagerMock.partialDocumentId
         }
     }
 }
