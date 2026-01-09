@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Constants
-iphonesimulatorArchivePath="iphonesimulatorGiniBankSDK.xcarchive"
-iphonesimulatorBuildDir="build-ginibanksdk-iphonesimulator"
+iphonesimulator_archive_path="iphonesimulatorGiniBankSDK.xcarchive"
+iphonesimulator_build_dir="build-ginibanksdk-iphonesimulator"
 
-iphoneosArchivePath="iphoneosGiniBankSDK.xcarchive"
-iphoneosBuildDir="build-ginibanksdk-iphoneos"
+iphoneos_archive_path="iphoneosGiniBankSDK.xcarchive"
+iphoneos_build_dir="build-ginibanksdk-iphoneos"
 
 
 frameworks=("GiniBankAPILibrary" "GiniUtilites" "GiniCaptureSDK" "GiniBankSDK")
@@ -16,8 +16,8 @@ cleanup-artefacts() {
         echo "warning: running without cleaning up"
     else
         echo "Cleaning up intermediate caches and artefacts..."
-        rm -rf $iphonesimulatorArchivePath $iphoneosArchivePath
-        rm -rf $iphoneosBuildDir $iphonesimulatorBuildDir
+        rm -rf $iphonesimulator_archive_path $iphoneos_archive_path
+        rm -rf $iphoneos_build_dir $iphonesimulator_build_dir
     fi
 }
 
@@ -28,55 +28,54 @@ cleanup-frameworks() {
 
 # Function to copy .swiftmodule
 cp-modules() {
-    local frName=$1
-    local srcPath=$2
-    local dstPath=$3
+    local fr_name=$1
+    local src_path=$2
+    local dst_path=$3
 
-    echo "Copying modules for $frName from $srcPath to $dstPath"
-    mkdir -p "$dstPath/$frName.framework/Modules"
-    cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule"
+    echo "Copying modules for $fr_name from $src_path to $dst_path"
+    mkdir -p "$dst_path/$fr_name.framework/Modules"
+    cp -a "$src_path/$fr_name.swiftmodule" "$dst_path/$fr_name.framework/Modules/$fr_name.swiftmodule"
 }
 
 # Function to copy specific resource bundles
 
 copy-resources() {
-    local schemeName=$1
-    local derivedDataPath=$2
-    local dstPath=$3
-    local bundlePath=$4
+    local scheme_name=$1
+    local dst_path=$2
+    local bundle_path=$4
 
-    echo "Copying resources for $schemeName from DerivedDataPath to $dstPath"
+    echo "Copying resources for $scheme_name from DerivedDataPath to $dst_path"
 
     # Create the destination directory if it doesn't exist
-    mkdir -p "$dstPath/$schemeName.framework"
+    mkdir -p "$dst_path/$scheme_name.framework"
 
     # Construct paths for source and destination
-    local srcBundlePath="$bundlePath/${schemeName}_${schemeName}.bundle"
-    local dstBundlePath="$dstPath/$schemeName.framework/${schemeName}_${schemeName}.bundle"
+    local src_bundle_path="$bundle_path/${scheme_name}_${scheme_name}.bundle"
+    local dst_bundle_path="$dst_path/$scheme_name.framework/${scheme_name}_${scheme_name}.bundle"
 
     # Copy the resource bundle
-    if [ -d "$srcBundlePath" ]; then
-        echo "Copying resource bundle from $srcBundlePath to $dstBundlePath"
-        cp -r "$srcBundlePath" "$dstBundlePath"
+    if [[ -d "$src_bundle_path" ]]; then
+        echo "Copying resource bundle from $src_bundle_path to $dst_bundle_path"
+        cp -r "$src_bundle_path" "$dst_bundle_path"
     else
-        echo "Error: Resource bundle not found at $srcBundlePath"
+        echo "Error: Resource bundle not found at $src_bundle_path"
     fi
 }
 
 archive() {
-    local srcPath=$1
+    local src_path=$1
     local platform=$2
     local sdk=$3
-    local derivedDataPath=$4
-    local outputPath=$5
+    local derived_data_path=$4
+    local output_path=$5
 
     echo "Archiving for $platform ($sdk)"
-    xcodebuild archive -workspace "$srcPath" \
+    xcodebuild archive -workspace "$src_path" \
         -scheme GiniBankSDK \
         -configuration Release \
         -destination "generic/platform=$platform" \
-        -archivePath "$outputPath" \
-        -derivedDataPath "$derivedDataPath" \
+        -archivePath "$output_path" \
+        -derivedDataPath "$derived_data_path" \
         SKIP_INSTALL=NO \
         BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
         CODE_SIGNING_ALLOWED=YES \
@@ -84,39 +83,39 @@ archive() {
 
 
     # Copy modules
-    local resultFrameworksPath="$outputPath/Products/usr/local/lib"
-    local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniBankSDK/BuildProductsPath/Release-$sdk"
+    local result_frameworks_path="$output_path/Products/usr/local/lib"
+    local modules_path="$derived_data_path/Build/Intermediates.noindex/ArchiveIntermediates/GiniBankSDK/BuildProductsPath/Release-$sdk"
 
     for framework in "${frameworks[@]}"; do
-        cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
+        cp-modules "$framework" "$modules_path" "$result_frameworks_path"
     done
     
     for framework in "${frameworks[@]}"; do
         # Call copy-resources to handle resource bundles
-        copy-resources "$framework" "$derivedDataPath" "$outputPath/Products/usr/local/lib" "$modulesPath"
+        copy-resources "$framework" "$output_path/Products/usr/local/lib" "$modules_path"
     done
 }
 
 
 # XCFramework Creation Function
 make-xcframework() {
-    local frName=$1
-    local srcPath=$2
-    local srcPathSim=$3
+    local fr_name=$1
+    local src_path=$2
+    local src_path_sim=$3
 
-    local frameworkPath="$srcPath/Products/usr/local/lib/$frName.framework"
-    local frameworkPathSim="$srcPathSim/Products/usr/local/lib/$frName.framework"
+    local framework_path="$src_path/Products/usr/local/lib/$fr_name.framework"
+    local framework_path_sim="$src_path_sim/Products/usr/local/lib/$fr_name.framework"
 
      # Debugging: Display constructed framework paths
-    echo "Framework Path (iPhone): $frameworkPath"
-    echo "Framework Path (Simulator): $frameworkPathSim"
+    echo "Framework Path (iPhone): $framework_path"
+    echo "Framework Path (Simulator): $framework_path_sim"
 
     # Create the XCFramework
-    echo "Creating XCFramework for $frName"
+    echo "Creating XCFramework for $fr_name"
     xcodebuild -create-xcframework \
-        -framework "$frameworkPath" \
-        -framework "$frameworkPathSim" \
-        -output "$frName.xcframework"
+        -framework "$framework_path" \
+        -framework "$framework_path_sim" \
+        -output "$fr_name.xcframework"
 }
 
 # Pre-cleanup
@@ -130,17 +129,17 @@ export GINI_FORCE_DYNAMIC_LIBRARY=1
 archive "BankSDK/GiniBankSDK" \
     "iOS" \
     "iphoneos" \
-    $iphoneosBuildDir \
-    $iphoneosArchivePath
+    $iphoneos_build_dir \
+    $iphoneos_archive_path
 
 archive "BankSDK/GiniBankSDK" \
     "iOS Simulator" \
     "iphonesimulator" \
-    $iphonesimulatorBuildDir \
-    $iphonesimulatorArchivePath
+    $iphonesimulator_build_dir \
+    $iphonesimulator_archive_path
 
 for framework in "${frameworks[@]}"; do
-    make-xcframework "$framework" "$iphoneosArchivePath" "$iphonesimulatorArchivePath"
+    make-xcframework "$framework" "$iphoneos_archive_path" "$iphonesimulator_archive_path"
 done
     
 # swift package checks for "1" so making it empty is enough to clean it
