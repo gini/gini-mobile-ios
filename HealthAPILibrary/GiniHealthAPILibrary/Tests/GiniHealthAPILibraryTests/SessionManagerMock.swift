@@ -129,7 +129,9 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
-                let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+                let imageData = UIImage(named: "Gini-Test-Payment-Provider",
+                                        in: Bundle.module,
+                                        compatibleWith: nil)?.pngData()
                 completion(.success(imageData as! T.ResponseType))
             default:
                 break

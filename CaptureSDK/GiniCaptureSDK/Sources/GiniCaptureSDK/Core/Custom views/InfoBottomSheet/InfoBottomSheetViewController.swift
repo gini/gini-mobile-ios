@@ -140,6 +140,24 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         adjustPhoneLayoutForCurrentOrientation()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // On devices without a notch (i.e., no safe area insets at the top),
+        // viewSafeAreaInsetsDidChange() is not called on first appearance.
+        // So we manually trigger the layout adjustment here as a fallback.
+        if !UIDevice.current.hasNotch {
+            adjustPhoneLayoutForCurrentOrientation()
+        }
+    }
+
+    // This is reliably called on devices that do have a notch
+    // (i.e., have safe area insets)
+    public override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        adjustPhoneLayoutForCurrentOrientation()
+    }
+
     public override func viewWillTransition(to size: CGSize,
                                             with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -159,6 +177,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         // when the font size changes >= .accessibilityMedium, we need to update the bottom sheet to be full screen
         configureBottomSheet(shouldIncludeLargeDetent: shouldForceFullScreen)
         adjustPhoneLayoutForCurrentOrientation()
+        configureAccessibility()
     }
 
     // MARK: - Setup UI
@@ -328,14 +347,16 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.accessibilityTraits = .staticText
 
+        let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
         // Set explicit VoiceOver navigation order
-        view.accessibilityElements = [
-            iconImageView,
+        var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
+        elements += [
             headerLabel,
             descriptionLabel,
             buttonsViewContainer.primaryButton,
             buttonsViewContainer.secondaryButton
-        ].compactMap { $0 }
+        ]
+        view.accessibilityElements = elements.compactMap { $0 }
     }
 }
 extension InfoBottomSheetViewController {

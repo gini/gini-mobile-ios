@@ -58,8 +58,9 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
-        case paymentHintsEnabled
+        case alreadyPaidHintEnabled
         case savePhotosLocallyEnabled
+        case paymentDueHintEnabled
         case closeSDK
 
 		var title: String {
@@ -152,8 +153,10 @@ struct SwitchOptionModel {
                 return "Skonto help bottom navigation bar"
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
-            case .paymentHintsEnabled:
+            case .alreadyPaidHintEnabled:
                 return "User payment warnings feature"
+            case .paymentDueHintEnabled:
+                return "Payment due hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
@@ -224,8 +227,12 @@ struct SwitchOptionModel {
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
-            case .paymentHintsEnabled:
-                return "Features included under this flag due date and paid state"
+            case .skontoNavigationBarBottomAdapter:
+                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+            case .skontoHelpNavigationBarBottomAdapter:
+                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+            case .alreadyPaidHintEnabled:
+                return "Features included under this flag paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
 			default:

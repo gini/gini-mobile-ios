@@ -109,7 +109,6 @@ final class DocumentServicesTests: XCTestCase {
     }
 
     func testSubmitFeedback() {
-        // Setup test expectation and load test data
         let expect = expectation(description: "feedback will be successfully sent")
         let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
         let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
@@ -118,17 +117,12 @@ final class DocumentServicesTests: XCTestCase {
         var amountToPayFromLoadedFeedbackValue = ""
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
-        guard let json = try? JSONSerialization.jsonObject(with: feedbackData, options: .mutableContainers) else {
-            return
-        }
-
-        // Extract amount to pay from the feedback test data
-        if let dictionary = json as? [String: [Extraction]],
-           let extractions = dictionary["extractions"] {
-            let amountToPayFromLoadedFeedback = extractions.first {
-                $0.name == "amountToPay"
-            }
-            amountToPayFromLoadedFeedbackValue = amountToPayFromLoadedFeedback?.value ?? ""
+        // Fix: Parse as nested dictionaries [String: [String: [String: String]]]
+        if let json = try? JSONSerialization.jsonObject(with: feedbackData, options: []) as? [String: Any],
+           let extractions = json["extractions"] as? [String: [String: String]],
+           let amountToPay = extractions["amountToPay"],
+           let value = amountToPay["value"] {
+            amountToPayFromLoadedFeedbackValue = value
         }
 
         // Extract amount to pay from the extraction result that will be submitted
@@ -152,7 +146,7 @@ final class DocumentServicesTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: "3.8.0",
+                                    apiLibVersion: "3.9.0",
                                     description: "Error logging test",
                                     documentId: "1234",
                                     originalRequestId: "5678")
@@ -175,6 +169,7 @@ final class DocumentServicesTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
 }
+
 private extension DocumentServicesTests {
 
     func submitFeedbackWithCompoundExtractions(document: Document,
@@ -214,23 +209,45 @@ private extension DocumentServicesTests {
                                     amountToPayFromLoadedFeedback: String,
                                     expectation: XCTestExpectation) {
         DispatchQueue.main.async {
-            guard let httpBody = self.sessionManagerMock.extractionFeedbackBody,
-                  let json = try? JSONSerialization.jsonObject(with: httpBody, options: .mutableContainers) as? [String: [Extraction]],
-                  let extractions = json["extractions"],
-                  let amountToPayFromHttpBody = extractions.first(where: { $0.name == "amountToPay" })?.value else {
-                print("json data malformed or missing amount")
+            guard let httpBody = self.sessionManagerMock.extractionFeedbackBody else {
+                XCTFail("extractionFeedbackBody is nil")
                 expectation.fulfill()
                 return
             }
 
-            XCTAssertEqual(amountToPay,
-                           amountToPayFromHttpBody,
-                           "amount to pay values should match")
-            XCTAssertEqual(amountToPay,
-                           amountToPayFromLoadedFeedback,
-                           "amount to pay values should match")
+            do {
+                let testExtractionFeedback = try JSONDecoder().decode(TestExtractionsFeedback.self, from: httpBody)
+
+                guard let amountToPayFromHttpBody = testExtractionFeedback.extractionValue(for: "amountToPay") else {
+                    XCTFail("amountToPay not found in extractions")
+                    expectation.fulfill()
+                    return
+                }
+
+                XCTAssertEqual(amountToPay,
+                               amountToPayFromHttpBody,
+                               "amount to pay values should match")
+                XCTAssertEqual(amountToPay,
+                               amountToPayFromLoadedFeedback,
+                               "amount to pay values should match")
+
+            } catch {
+                XCTFail("JSON parsing failed: \(error)")
+            }
 
             expectation.fulfill()
+        }
+    }
+
+    private struct TestExtractionsFeedback: Decodable {
+        let extractions: [String: ExtractionValue]
+
+        struct ExtractionValue: Decodable {
+            let value: String
+        }
+
+        func extractionValue(for key: String) -> String? {
+            return extractions[key]?.value
         }
     }
 }

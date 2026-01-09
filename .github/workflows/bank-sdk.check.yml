@@ -10,7 +10,9 @@ on:
       - 'BankAPILibrary/**'
   workflow_call:
     secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET:
+      GINI_MOBILE_CI_PASSWORD:
+        required: true
+      GINI_MOBILE_CI_USERNAME:
         required: true
   workflow_dispatch:
 
