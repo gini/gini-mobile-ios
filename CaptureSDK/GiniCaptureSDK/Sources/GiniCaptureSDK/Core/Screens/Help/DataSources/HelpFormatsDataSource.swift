@@ -1,8 +1,6 @@
 //
 //  HelpFormatsDataSource.swift
-//  
 //
-//  Created by Krzysztof Kryniecki on 03/08/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -14,74 +12,49 @@ typealias HelpFormatsCollectionSection = (title: String,
 
 class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionSection, HelpFormatCell> {
 
+    // MARK: - Properties
+
     lazy var qrCodeItemSections: [HelpFormatsCollectionSection] = {
-        var sections: [HelpFormatsCollectionSection] =  [
-            (NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.section.1.title",
-                                              comment: "supported format for section 1 title"),
-             [NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.1",
-                                               comment: "QR code type"),
-              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.2",
-                                                comment: "QR code type"),
-              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.3",
-                                                comment: "QR code type"),
-              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.4",
-                                                comment: "QR code type"),
-              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.5",
-                                               comment: "QR code type")],
-            UIImageNamedPreferred(named: "supportedFormatsIcon"))
+        var sections: [HelpFormatsCollectionSection] = [
+            (Strings.section1Title,
+             [Strings.qrcodeItem1,
+              Strings.qrcodeItem2,
+              Strings.qrcodeItem3,
+              Strings.qrcodeItem4,
+              Strings.qrcodeItem5],
+             Images.supportedFormatsIcon)
         ]
 
         return sections
     }()
 
     lazy var pdfItemSections: [HelpFormatsCollectionSection] = {
-        var sections: [HelpFormatsCollectionSection] =  [
-            (NSLocalizedStringPreferredFormat(
-                "ginicapture.help.supportedFormats.section.1.title",
-                comment: "supported format for section 1 title"),
-             [
-                NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.item.1",
-                    comment: "supported format for section 1 item 1")],
-             UIImageNamedPreferred(named: "supportedFormatsIcon")),
-            (NSLocalizedStringPreferredFormat(
-                "ginicapture.help.supportedFormats.section.2.title",
-                comment: "supported format for section 2 title"),
-             [
-                NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.2.item.1",
-                    comment: "supported format for section 2 item 1")],
-             UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
+        var sections: [HelpFormatsCollectionSection] = [
+            (Strings.section1Title,
+             [Strings.section1Item1],
+             Images.supportedFormatsIcon),
+            (Strings.section2Title,
+             [Strings.section2Item1],
+             Images.nonSupportedFormatsIcon)
         ]
 
         if giniConfiguration.fileImportSupportedTypes != .none {
             if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
-                sections[0].formats.append(
-                    NSLocalizedStringPreferredFormat(
-                        "ginicapture.help.supportedFormats.section.1.item.2",
-                        comment: "supported format for section 1 itemm 2"))
+                sections[0].formats.append(Strings.section1Item2)
             }
-            sections[0].formats.append(
-                NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.item.3",
-                    comment: "supported format for section 1 item 3"))
+            sections[0].formats.append(Strings.section1Item3)
         }
 
         if giniConfiguration.qrCodeScanningEnabled {
-            sections[0].formats.append(
-                NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.item.4",
-                    comment: "supported format for section 1 item 4"))
+            sections[0].formats.append(Strings.section1Item4)
         }
-        sections[0].formats.append(
-            NSLocalizedStringPreferredFormat(
-                "ginicapture.help.supportedFormats.section.1.item.5",
-                comment: "supported format for section 1 item 5"))
+
+        sections[0].formats.append(Strings.section1Item5)
+
         if GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false {
-            let item = NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.section.1.item.6",
-                                                        comment: "supported format for section 1 item 6")
-            sections[0].formats.append(item)
+            sections[0].formats.append(Strings.section1Item6)
         }
+
         return sections
     }()
 
@@ -110,9 +83,9 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     private func configureCellAccessibility(
         cell: HelpFormatCell,
         title: String) {
-        cell.iconImageView?.accessibilityTraits = .image
-        cell.iconImageView.accessibilityLabel = title
-    }
+            cell.iconImageView?.accessibilityTraits = .image
+            cell.iconImageView.accessibilityLabel = title
+        }
 
     override func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
         let section = items[indexPath.section]
@@ -140,14 +113,14 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     private func configureHeader(
         header: HelpFormatSectionHeader,
         section: Int) {
-        header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
-        header.titleLabel.adjustsFontForContentSizeCategory = true
-        header.titleLabel.numberOfLines = 0
-        header.titleLabel.textColor =  GiniColor(light: UIColor.GiniCapture.dark1,
-                                                 dark: UIColor.GiniCapture.light1).uiColor()
-        header.titleLabel.text = items[section].title.uppercased()
-        header.backgroundView?.backgroundColor = UIColor.clear
-    }
+            header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
+            header.titleLabel.adjustsFontForContentSizeCategory = true
+            header.titleLabel.numberOfLines = 0
+            header.titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                    dark: UIColor.GiniCapture.light1).uiColor()
+            header.titleLabel.text = items[section].title.uppercased()
+            header.backgroundView?.backgroundColor = UIColor.clear
+        }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(
@@ -179,5 +152,84 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
+    }
+
+    // MARK: - Strings
+
+    private struct Strings {
+        static let section1Title = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.title",
+            comment: "supported format for section 1 title"
+        )
+
+        static let section2Title = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.2.title",
+            comment: "supported format for section 2 title"
+        )
+
+        static let qrcodeItem1 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.1",
+            comment: "QR code type item 1"
+        )
+
+        static let qrcodeItem2 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.2",
+            comment: "QR code type item 2"
+        )
+
+        static let qrcodeItem3 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.3",
+            comment: "QR code type item 3"
+        )
+
+        static let qrcodeItem4 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.4",
+            comment: "QR code type item 4"
+        )
+
+        static let qrcodeItem5 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.5",
+            comment: "QR code type item 5"
+        )
+
+        static let section1Item1 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.1",
+            comment: "supported format for section 1 item 1"
+        )
+
+        static let section1Item2 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.2",
+            comment: "supported format for section 1 item 2"
+        )
+
+        static let section1Item3 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.3",
+            comment: "supported format for section 1 item 3"
+        )
+
+        static let section1Item4 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.4",
+            comment: "supported format for section 1 item 4"
+        )
+
+        static let section1Item5 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.5",
+            comment: "supported format for section 1 item 5"
+        )
+
+        static let section1Item6 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.1.item.6",
+            comment: "supported format for section 1 item 6"
+        )
+
+        static let section2Item1 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.section.2.item.1",
+            comment: "supported format for section 2 item 1"
+        )
+    }
+
+    private struct Images {
+        static let supportedFormatsIcon = UIImageNamedPreferred(named: "supportedFormatsIcon")
+        static let nonSupportedFormatsIcon = UIImageNamedPreferred(named: "nonSupportedFormatsIcon")
     }
 }
