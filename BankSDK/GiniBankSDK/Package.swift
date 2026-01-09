@@ -17,6 +17,9 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        // All dependencies must be declared explicitly for XCFramework generation.
+        // Binary framework builds require the full dependency graph at compile time,
+        // as transitive dependency resolution is not available for archived binaries.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniCaptureSDK", path: "../../CaptureSDK/GiniCaptureSDK"),
         .package(name: "GiniBankAPILibrary", path: "../../BankAPILibrary/GiniBankAPILibrary"),
