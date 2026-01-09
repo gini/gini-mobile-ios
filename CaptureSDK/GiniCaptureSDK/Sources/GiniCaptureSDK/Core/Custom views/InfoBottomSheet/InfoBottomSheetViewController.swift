@@ -4,6 +4,7 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 import UIKit
+import GiniUtilites
 
 /**
  A bottom sheet view controller that displays informational content with an icon, title, description, and action buttons.
