@@ -35,21 +35,6 @@ cp-modules() {
     echo "Copying modules for $frName from $srcPath to $dstPath"
     mkdir -p "$dstPath/$frName.framework/Modules"
     cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule"
-
-     # Copy bundle resources
-    local bankBundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniBankSDK_GiniBankSDK.bundle"
-    if [ -d "$bankBundlePath" ]; then
-        cp -a "$bankBundlePath" "$resultFrameworksPath/GiniBankSDK.framework/GiniBankSDK_GiniBankSDK.bundle"
-    else
-        echo "GiniBank resource bundle not found: $bankBundlePath"
-    fi
-
-    local captureBundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniCaptureSDK_GiniCaptureSDK.bundle"
-    if [ -d "$captureBundlePath" ]; then
-        cp -a "$captureBundlePath" "$resultFrameworksPath/GiniCaptureSDK.framework/GiniCaptureSDK_GiniCaptureSDK.bundle"
-    else
-        echo "GiniCapture resource bundle not found: $captureBundlePath"
-    fi
 }
 
 # Function to copy specific resource bundles
