@@ -305,32 +305,7 @@ final class CameraViewController: UIViewController {
         cameraPaneHorizontal?.setupAuthorization(isHidden: !isIphoneLandscape)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
-            self?.sendGiniAnalyticsEventCapture()
-            self?.cameraPane.toggleCaptureButtonActivation(state: false)
-            self?.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
-            self?.cameraPreviewViewController.captureImage { [weak self] data, error in
-                guard let self = self else { return }
-                var processedImageData = data
-                if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
-                    let croppedImage = self.crop(image: image)
-                    processedImageData = croppedImage.jpegData(compressionQuality: 1)
-#if targetEnvironment(simulator)
-                    processedImageData = imageData
-#endif
-                }
-
-                if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
-                                                                      processedImageData: processedImageData,
-                                                                      error: error,
-                                                                      orientation: UIWindow.orientation,
-                                                                      giniConfiguration: self.giniConfiguration) {
-
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    self.didPick(image)
-                }
-                self.cameraPane.toggleCaptureButtonActivation(state: true)
-                self.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
-            }
+            self?.handleCaptureAction()
         }
 
         cameraPane.captureButton.addTarget(cameraButtonsViewModel,
@@ -345,26 +320,66 @@ final class CameraViewController: UIViewController {
             }
         }
         cameraButtonsViewModel.imagesUpdated = { [weak self] images in
-            if let lastImage = images.last {
-                self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count,
-                                                                             lastImage: lastImage))
-                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .filled(count: images.count,
-                                                                                        lastImage: lastImage))
-            } else {
-                self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
-                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
-            }
-            if self?.giniConfiguration.bottomNavigationBarEnabled == true {
-                self?.updateCustomNavigationBars(containsImage: images.last != nil)
-            }
+            self?.handleImagesUpdated(images)
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)
-        cameraPane.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
-                                                           action: #selector(cameraButtonsViewModel.thumbnailPressed),
-                                                           for: .touchUpInside)
-        cameraPaneHorizontal?.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
-                                                           action: #selector(cameraButtonsViewModel.thumbnailPressed),
-                                                           for: .touchUpInside)
+        cameraPane.thumbnailView
+            .thumbnailButton.addTarget(cameraButtonsViewModel,
+                                       action: #selector(cameraButtonsViewModel.thumbnailPressed),
+                                       for: .touchUpInside)
+        cameraPaneHorizontal?.thumbnailView
+            .thumbnailButton.addTarget(cameraButtonsViewModel,
+                                       action: #selector(cameraButtonsViewModel.thumbnailPressed),
+                                       for: .touchUpInside)
+    }
+
+    private func handleCaptureAction() {
+        sendGiniAnalyticsEventCapture()
+        setCaptureButtonsEnabled(false)
+
+        cameraPreviewViewController.captureImage { [weak self] data, error in
+            guard let self = self else { return }
+
+            var processedImageData = data
+            if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
+                let croppedImage = self.crop(image: image)
+                processedImageData = croppedImage.jpegData(compressionQuality: 1)
+#if targetEnvironment(simulator)
+                processedImageData = imageData
+#endif
+            }
+
+            if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
+                                                                  processedImageData: processedImageData,
+                                                                  error: error,
+                                                                  orientation: UIWindow.orientation,
+                                                                  giniConfiguration: self.giniConfiguration) {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                self.didPick(image)
+            }
+
+            self.setCaptureButtonsEnabled(true)
+        }
+    }
+
+    private func handleImagesUpdated(_ images: [UIImage]) {
+        if let lastImage = images.last {
+            let filledState = ThumbnailView.State.filled(count: images.count, lastImage: lastImage)
+            cameraPane.thumbnailView.updateStackStatus(to: filledState)
+            cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: filledState)
+        } else {
+            cameraPane.thumbnailView.updateStackStatus(to: .empty)
+            cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .empty)
+        }
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            updateCustomNavigationBars(containsImage: images.last != nil)
+        }
+    }
+
+    private func setCaptureButtonsEnabled(_ enabled: Bool) {
+        cameraPane.toggleCaptureButtonActivation(state: enabled)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: enabled)
     }
 
     private func sendGiniAnalyticsEventCapture() {

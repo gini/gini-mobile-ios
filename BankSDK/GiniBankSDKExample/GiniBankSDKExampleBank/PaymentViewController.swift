@@ -194,38 +194,48 @@ extension PaymentViewController: UITextFieldDelegate {
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
-           let text = textField.text,
-           let textRange = Range(range, in: text) {
-            let updatedText = text.replacingCharacters(in: textRange, with: string)
-            
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                                        .trimmingCharacters(in: .whitespaces)
-                                        .filter { c in c != "," && c != "."}
-                                        .prefix(7))
-            
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-                
-                if let newAmount = amountToPay?.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-                    
-                    textField.text = newAmount
-                    amountToPay?.value = decimalWithFraction
-                    
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
-            return false
-           }
-        return true
+
+        // Only handle the amount field
+        guard TextFieldType(rawValue: textField.tag) == .amountFieldTag else { return true }
+
+        // Ensure we can build the updated string
+        guard let oldText = textField.text,
+              let textRange = Range(range, in: oldText) else { return true }
+
+        // Normalize to (max 7) digits
+        let updated = oldText.replacingCharacters(in: textRange, with: string)
+        let digits = AmountInput.digitsOnlyCapped(updated)
+
+        // Format (xx -> 0.xx, 12345 -> 123.45)
+        guard let amount = AmountInput.amount(fromCentsDigits: digits),
+              let formatted = amountToPay?
+            .stringWithoutSymbol(from: amount)?
+            .trimmingCharacters(in: .whitespaces) else { return false }
+
+        // Update UI + model and keep caret position reasonable
+        let priorSelection = textField.selectedTextRange
+        textField.text = formatted
+        amountToPay?.value = amount
+
+        if let prior = priorSelection {
+            let delta = formatted.count - oldText.count
+            let offset = (delta == 0) ? 1 : delta
+            textField.moveSelectedTextRange(from: prior.start, to: offset)
+        }
+
+        return false
+    }
+
+    private struct AmountInput {
+        static let maxDigits = 7
+
+        static func digitsOnlyCapped(_ s: String) -> String {
+            String(s.unicodeScalars.filter(CharacterSet.decimalDigits.contains).prefix(maxDigits))
+        }
+
+        static func amount(fromCentsDigits s: String) -> Decimal? {
+            Decimal(string: s).map { $0 / 100 }
+        }
     }
 }
 
@@ -251,36 +261,52 @@ extension PaymentViewController {
     }
     
     fileprivate func validateTextField(_ textField: UITextField) {
-        if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
-            switch fieldIdentifier {
+        guard let field = TextFieldType(rawValue: textField.tag) else { return }
+
+        switch field {
             case .ibanFieldTag:
-                if let ibanText = textField.text, textField.hasText {
-                    if IBANValidator().isValid(iban: ibanText) {
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        showValidationErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
+                validateIBAN(textField, field)
+
             case .amountFieldTag:
-                if let amountString = amount?.text, !amount.isReallyEmpty {
-                    if let decimalPart = amountToPay?.value, decimalPart > 0 {
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        amount.text = ""
-                        showErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
+                validateAmount(field)
+
             case .recipientFieldTag, .usageFieldTag:
-                if textField.hasText && !textField.isReallyEmpty {
-                    hideErrorLabel(textFieldTag: fieldIdentifier)
-                } else {
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
-            }
+                validateNonEmpty(textField, field)
+        }
+    }
+
+    private func validateIBAN(_ textField: UITextField, _ field: TextFieldType) {
+        guard textField.hasText, let iban = textField.text else {
+            showErrorLabel(textFieldTag: field)
+            return
+        }
+
+        if IBANValidator().isValid(iban: iban) {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            showValidationErrorLabel(textFieldTag: field)
+        }
+    }
+
+    private func validateAmount(_ field: TextFieldType) {
+        guard !amount.isReallyEmpty else {
+            showErrorLabel(textFieldTag: field)
+            return
+        }
+
+        if let value = amountToPay?.value, value > 0 {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            amount.text = ""
+            showErrorLabel(textFieldTag: field)
+        }
+    }
+
+    private func validateNonEmpty(_ textField: UITextField, _ field: TextFieldType) {
+        if textField.hasText && !textField.isReallyEmpty {
+            hideErrorLabel(textFieldTag: field)
+        } else {
+            showErrorLabel(textFieldTag: field)
         }
     }
 
