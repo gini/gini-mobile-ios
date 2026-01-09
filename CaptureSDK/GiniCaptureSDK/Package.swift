@@ -12,6 +12,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "GiniCaptureSDK",
+            //Make package only be of type dynamic when building via bash script that generates xcframeworks
             type: ProcessInfo.processInfo.environment["GINI_FORCE_DYNAMIC_LIBRARY"] == "1" ? .dynamic : nil,
             targets: ["GiniCaptureSDK"]),
     ],
