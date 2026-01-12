@@ -22,8 +22,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 HStack {
                     Text(title)
                     
-                    if lockedIcon != nil {
-                        lockedIcon!
+                    if let lockedIcon {
+                        lockedIcon
                             .resizable()
                             .frame(width: 16, height: 16)
                     }
