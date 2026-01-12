@@ -8,8 +8,13 @@ import SwiftUI
 
 struct GiniTextFieldStyle: TextFieldStyle {
     
-    @State var lockedIcon: Image?
-    @State var title: String
+    private let lockedIcon: Image?
+    private let title: String
+    
+    init(lockedIcon: Image? = nil, title: String) {
+        self.lockedIcon = lockedIcon
+        self.title = title
+    }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         if #available(iOS 15.0, *) {
