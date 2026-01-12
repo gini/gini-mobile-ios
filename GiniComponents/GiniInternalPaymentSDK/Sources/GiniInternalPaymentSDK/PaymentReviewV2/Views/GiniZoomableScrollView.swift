@@ -6,37 +6,38 @@
 
 import UIKit
 
-/// A specialized scroll view that provides zooming and panning capabilities for displaying images.
-///
-/// `GiniZoomableScrollView` extends `UIScrollView` to handle image display with automatic scaling,
-/// centering, and zoom functionality. It manages the layout and positioning of an embedded
-/// image view, ensuring the image fits properly within the scroll view's bounds while maintaining
-/// aspect ratio.
-///
-/// ## Usage
-///
-/// Create an instance and assign an `UIImageView` to the `imageView` property:
-///
-/// ```swift
-/// let scrollView = GiniZoomableScrollView()
-/// let imageView = UIImageView(image: myImage)
-/// scrollView.imageView = imageView
-/// scrollView.addSubview(imageView)
-/// ```
-///
-/// The scroll view automatically calculates the appropriate initial scale and positioning
-/// to fit the entire image within its bounds while maintaining the image's aspect ratio.
-///
-/// ## Layout Behavior
-///
-/// The scroll view performs initial layout calculations only once when:
-/// - The bounds size is non-zero
-/// - An image view has been assigned
-///
-/// Call `resetLayout()` to force a recalculation of the image view's frame, which is useful
-/// when the image or scroll view's bounds change significantly.
-///
-/// - Note: The image view must have a valid `image` property set for proper layout calculations.
+/**
+ A specialized scroll view that provides zooming and panning capabilities for displaying images.
+ 
+ `GiniZoomableScrollView` extends `UIScrollView` to handle image display with automatic scaling,
+ centering, and zoom functionality. It manages the layout and positioning of an embedded
+ image view, ensuring the image fits properly within the scroll view's bounds while maintaining
+ aspect ratio.
+ 
+ ## Usage
+ 
+ Create an instance and assign an `UIImageView` to the `imageView` property:
+ ```swift
+ let scrollView = GiniZoomableScrollView()
+ let imageView = UIImageView(image: myImage)
+ scrollView.imageView = imageView
+ scrollView.addSubview(imageView)
+ ```
+ 
+ The scroll view automatically calculates the appropriate initial scale and positioning
+ to fit the entire image within its bounds while maintaining the image's aspect ratio.
+ 
+ ## Layout Behavior
+ 
+ The scroll view performs initial layout calculations only once when:
+ - The bounds size is non-zero
+ - An image view has been assigned
+ 
+ Call `resetLayout()` to force a recalculation of the image view's frame, which is useful
+ when the image or scroll view's bounds change significantly.
+ 
+ - Note: The image view must have a valid `image` property set for proper layout calculations.
+ */
 final class GiniZoomableScrollView: UIScrollView {
     
     var imageView: UIImageView?
@@ -66,7 +67,7 @@ final class GiniZoomableScrollView: UIScrollView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Only update frame on initial layout or when image changes
+        /// Only update frame on initial layout or when image changes
         if !hasPerformedInitialLayout && bounds.size != .zero, imageView != nil {
             updateImageViewFrame()
             hasPerformedInitialLayout = true
@@ -86,16 +87,16 @@ final class GiniZoomableScrollView: UIScrollView {
         let scrollViewSize = bounds.size
         let imageSize = image.size
         
-        // Calculate scale to fit the entire image
+        /// Calculate scale to fit the entire image
         let widthScale = scrollViewSize.width / imageSize.width
         let heightScale = scrollViewSize.height / imageSize.height
         let minScale = min(widthScale, heightScale)
         
-        // Calculate the frame to fit the image
+        /// Calculate the frame to fit the image
         let scaledWidth = imageSize.width * minScale
         let scaledHeight = imageSize.height * minScale
         
-        // Center the image
+        /// Center the image
         let x = (scrollViewSize.width - scaledWidth) / 2
         let y = (scrollViewSize.height - scaledHeight) / 2
         
@@ -106,10 +107,10 @@ final class GiniZoomableScrollView: UIScrollView {
             height: scaledHeight
         )
         
-        // Update content size
+        /// Update content size
         contentSize = scrollViewSize
         
-        // Set initial zoom scale
+        /// Set initial zoom scale
         zoomScale = minimumZoomScale
     }
     
@@ -117,10 +118,10 @@ final class GiniZoomableScrollView: UIScrollView {
         guard let scrollView = gesture.view as? UIScrollView else { return }
         
         if scrollView.zoomScale > scrollView.minimumZoomScale {
-            // Zoom out to minimum
+            /// Zoom out to minimum
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
         } else {
-            // Zoom in to 2x at tap location
+            /// Zoom in to 2x at tap location
             let location = gesture.location(in: scrollView)
             let zoomRect = zoomRect(for: 2.0, center: location, in: scrollView)
             scrollView.zoom(to: zoomRect, animated: true)
