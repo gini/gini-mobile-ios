@@ -9,6 +9,7 @@ import GiniHealthAPILibrary
 import UIKit
 import SwiftUI
 
+// TODO: Rename the class at the end of development to PaymentReviewViewController to replace the previous version.
 public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewContentView> {
     
     private let selectedPaymentProvider: PaymentProvider
@@ -24,7 +25,8 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
         super.init(rootView: PaymentReviewContentView(viewModel: observableModel))
     }
     
-    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor
+    @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

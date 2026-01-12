@@ -12,6 +12,8 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     
+    /// The init method is internal to prevent users from creating instances of this view directly
+    /// outside of GiniInternalPaymentSDK.
     init(viewModel: PaymentReviewObservableModel) {
         self.viewModel = viewModel
     }

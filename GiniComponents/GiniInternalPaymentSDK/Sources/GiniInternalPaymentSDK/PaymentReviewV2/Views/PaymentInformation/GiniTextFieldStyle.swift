@@ -9,8 +9,13 @@ import SwiftUI
 
 struct GiniTextFieldStyle: TextFieldStyle {
     
-    @State var lockedIcon: Image?
-    @State var title: String
+    private let lockedIcon: Image?
+    private let title: String
+    
+    init(lockedIcon: Image? = nil, title: String) {
+        self.lockedIcon = lockedIcon
+        self.title = title
+    }
     
     var textFieldConfiguration: TextFieldConfiguration
     
@@ -27,8 +32,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
                         .foregroundColor(Color(textFieldConfiguration.placeholderForegroundColor))
                         .font(Font(textFieldConfiguration.textFont))
                     
-                    if lockedIcon != nil {
-                        lockedIcon!
+                    if let lockedIcon {
+                        lockedIcon
                             .resizable()
                             .frame(width: 16, height: 16)
                     }
