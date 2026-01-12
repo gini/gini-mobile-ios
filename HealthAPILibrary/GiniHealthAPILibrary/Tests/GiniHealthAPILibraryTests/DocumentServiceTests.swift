@@ -139,63 +139,30 @@ final class DocumentServicesTests: XCTestCase {
         let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
         let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
         var amountToPayFromLoadedFeedbackValue = ""
-        let feedbackData =
-            loadFile(withName: "feedbackToSend", ofType: "json")
-        if let json = try? JSONSerialization.jsonObject(with: feedbackData, options: .mutableContainers) {
-            if let dictionary = json as? [String: [Extraction]] {
-                if let extractions = dictionary["extractions"] {
-                    let amountToPayFromLoadedFeedback = extractions.first {
-                        $0.name == "amountToPay"
-                    }
-                    amountToPayFromLoadedFeedbackValue = amountToPayFromLoadedFeedback?.value ?? ""
-                }
-            }
-            let amountToPayExtraction = extractionResult.extractions.first {
+        let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
+
+        guard let json = try? JSONSerialization.jsonObject(with: feedbackData, options: .mutableContainers) else {
+            return
+        }
+
+        if let dictionary = json as? [String: [Extraction]],
+           let extractions = dictionary["extractions"] {
+            let amountToPayFromLoadedFeedback = extractions.first {
                 $0.name == "amountToPay"
             }
-            let amountToPay = amountToPayExtraction?.value ?? ""
-
-            if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
-                    let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
-
-                    let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
-
-                    defaultDocumentService.submitFeedback(for: document, with: extractionResult.extractions.filter { extraction in
-                        pay4Keys.contains(extraction.name ?? "")
-                    },
-                    and: filteredCompoundExtractions) { result in
-                        switch result {
-                        case .success:
-                            DispatchQueue.main.async {
-                                if let jsonFromFeedbackHttpBody = try? JSONSerialization.jsonObject(with: self.sessionManagerMock.extractionFeedbackBody!, options: .mutableContainers) {
-                                    if let dictionary = jsonFromFeedbackHttpBody as? [String: [Extraction]] {
-                                        if let extractions = dictionary["extractions"] {
-                                            let amountToPayFromHttpBodyExtraction = extractions.first {
-                                                $0.name == "amountToPay"
-                                            }
-
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromHttpBodyExtraction?.value ?? "",
-                                                           "amout to pay values should match")
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromLoadedFeedbackValue,
-                                                           "amout to pay values should match")
-                                        }
-                                    } else {
-                                        print("json data malformed")
-                                    }
-                                }
-                                expect.fulfill()
-                            }
-                        case .failure:
-                            break
-                        }
-                        self.wait(for: [expect], timeout: 1)
-                    }
-                }
-            }
+            amountToPayFromLoadedFeedbackValue = amountToPayFromLoadedFeedback?.value ?? ""
         }
+
+        let amountToPayExtraction = extractionResult.extractions.first {
+            $0.name == "amountToPay"
+        }
+        let amountToPay = amountToPayExtraction?.value ?? ""
+
+        submitFeedbackWithCompoundExtractions(document: document,
+                                              extractionResult: extractionResult,
+                                              amountToPay: amountToPay,
+                                              amountToPayFromLoadedFeedback: amountToPayFromLoadedFeedbackValue,
+                                              expectation: expect)
     }
     
     func testUrlStringForHighestResolutionPreview() {
@@ -213,4 +180,67 @@ final class DocumentServicesTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
 
+}
+
+private extension DocumentServicesTests {
+
+    func submitFeedbackWithCompoundExtractions(document: Document,
+                                               extractionResult: ExtractionsContainer,
+                                               amountToPay: String,
+                                               amountToPayFromLoadedFeedback: String,
+                                               expectation: XCTestExpectation) {
+        guard let compoundExtractions = extractionResult.compoundExtractions,
+              let lineItems = compoundExtractions["lineItems"] ,
+              let firstLineItem = lineItems.first else {
+            XCTFail("Missing compound extractions or line items")
+            return
+        }
+
+        let filteredCompoundExtractions = ["lineItems": [firstLineItem]]
+        let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
+        let filteredExtractions = extractionResult.extractions.filter { extraction in
+            pay4Keys.contains(extraction.name ?? "")
+        }
+
+        defaultDocumentService.submitFeedback(for: document,
+                                              with: filteredExtractions,
+                                              and: filteredCompoundExtractions) { result in
+            switch result {
+                case .success:
+                    self.verifySuccessfulSubmission(amountToPay: amountToPay,
+                                                    amountToPayFromLoadedFeedback: amountToPayFromLoadedFeedback,
+                                                    expectation: expectation)
+                case .failure:
+                    break
+            }
+        }
+        wait(for: [expectation], timeout: 1)
+    }
+
+    private func verifySuccessfulSubmission(amountToPay: String,
+                                            amountToPayFromLoadedFeedback: String,
+                                            expectation: XCTestExpectation) {
+        DispatchQueue.main.async {
+            guard let httpBody = self.sessionManagerMock.extractionFeedbackBody,
+                  let dictionary = try? JSONSerialization.jsonObject(with: httpBody, options: .mutableContainers) as? [String: [Extraction]],
+                  let extractions = dictionary["extractions"] else {
+                print("json data malformed")
+                expectation.fulfill()
+                return
+            }
+
+            let amountToPayFromHttpBodyExtraction = extractions.first {
+                $0.name == "amountToPay"
+            }
+
+            XCTAssertEqual(amountToPay,
+                           amountToPayFromHttpBodyExtraction?.value ?? "",
+                           "amout to pay values should match")
+            XCTAssertEqual(amountToPay,
+                           amountToPayFromLoadedFeedback,
+                           "amout to pay values should match")
+
+            expectation.fulfill()
+        }
+    }
 }

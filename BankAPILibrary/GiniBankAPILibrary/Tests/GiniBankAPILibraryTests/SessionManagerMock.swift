@@ -2,7 +2,7 @@
 //  SessionManagerMock.swift
 //  GiniBankAPI-Unit-Tests
 //
-//  Created by Enrique del Pozo Gómez on 3/26/19.
+//  Copyright © 2019 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -32,9 +32,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
 
     func initializeWithV1MockedDocuments() {
-        documents = [
-            load(fromFile: "document", type: "json")
-        ]
+        documents = [load(fromFile: "document", type: "json")]
     }
 
     func initializeWithPaymentRequests() {
@@ -42,10 +40,8 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
 
     func initializeWithV2MockedDocuments() {
-        documents = [
-            load(fromFile: "partialDocument", type: "json"),
-            load(fromFile: "compositeDocument", type: "json")
-        ]
+        documents = [load(fromFile: "partialDocument", type: "json"),
+                     load(fromFile: "compositeDocument", type: "json")]
     }
 
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
@@ -56,6 +52,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         // This method will remain empty; mock implementation does not perform login
     }
 
+<<<<<<< HEAD
     //swiftlint:disable all
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
@@ -79,14 +76,46 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .feedback(_):
                 extractionFeedbackBody = resource.request?.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
+=======
+    func data<T: Resource>(resource: T,
+                           cancellationToken: CancellationToken?,
+                           completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
+        guard let apiMethod = resource.method as? APIMethod else { return }
+
+        switch apiMethod {
+
+            case .document(let id):
+                handleDocument(id: id,
+                               method: resource.params.method,
+                               completion: completion)
+
+            case .createDocument:
+                deliver(SessionManagerMock.compositeDocumentId, to: completion)
+
+            case .paymentRequest:
+                deliver(loadPaymentRequest(), to: completion)
+
+            case .resolvePaymentRequest:
+                deliver(loadResolvedPaymentRequest(), to: completion)
+
+            case .payment:
+                deliver(loadPayment(), to: completion)
+
+            case .feedback:
+                extractionFeedbackBody = resource.request?.httpBody
+                deliver("Feedback was sent", to: completion)
+
+>>>>>>> 75ff50af5e905b48e57b8bc961183f859b5257a6
             case .logErrorEvent:
-                logErrorEventBody = resource.request?.httpBody ?? nil
-                completion(.success("Logged" as! T.ResponseType))
-            default: break
-            }
+                logErrorEventBody = resource.request?.httpBody
+                deliver("Logged", to: completion)
+
+            default:
+                break
         }
     }
 
+<<<<<<< HEAD
     private func handleDocument<T>(id: String, method: HTTPMethod,
                                    completion: @escaping CompletionResult<T>) {
 
@@ -120,6 +149,48 @@ final class SessionManagerMock: SessionManagerProtocol {
         }
     }
 
+=======
+    // MARK: - Document branch
+
+    private func handleDocument<ResponseType>(id: String,
+                                              method: HTTPMethod,
+                                              completion: @escaping (Result<ResponseType, GiniError>) -> Void) {
+        let fileById: [String: String] = [
+            SessionManagerMock.v1DocumentId: "document",
+            SessionManagerMock.partialDocumentId: "partialDocument",
+            SessionManagerMock.compositeDocumentId: "compositeDocument"
+        ]
+
+        switch method {
+        case .get:
+            guard let filename = fileById[id] else {
+                fatalError("Document id not found in tests")
+            }
+            let document: Document = load(fromFile: filename, type: "json")
+            deliver(document, to: completion)
+
+        case .delete:
+            documents.removeAll { $0.id == id }
+            deliver("Deleted", to: completion)
+
+        default:
+            fatalError("Unsupported HTTP method for document")
+        }
+    }
+
+    private func deliver<Response>(_ value: Any,
+                                   to completion: @escaping (Result<Response, GiniError>) -> Void,
+                                   file: StaticString = #file, line: UInt = #line) {
+        if let typed = value as? Response {
+            completion(.success(typed))
+        } else {
+            // Avoids force-casting
+            fatalError("Type mismatch: expected \(Response.self), got \(type(of: value)) at \(file):\(line)")
+        }
+    }
+
+
+>>>>>>> 75ff50af5e905b48e57b8bc961183f859b5257a6
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
@@ -130,6 +201,7 @@ final class SessionManagerMock: SessionManagerProtocol {
                              data: Data,
                              cancellationToken: CancellationToken?,
                              completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
+<<<<<<< HEAD
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .createDocument(_, _, _, let documentType):
@@ -143,7 +215,34 @@ final class SessionManagerMock: SessionManagerProtocol {
                 )
             default: break
 
+=======
+        guard let apiMethod = resource.method as? APIMethod else {
+            return
+        }
+
+        switch apiMethod {
+        case .createDocument(_, _, _, let documentType):
+            let mockId = mockIdForDocumentType(documentType)
+
+            guard let typedResponse = mockId as? T.ResponseType else {
+                assertionFailure("Mock response type mismatch")
+                return
+>>>>>>> 75ff50af5e905b48e57b8bc961183f859b5257a6
             }
+
+            completion(.success(typedResponse))
+
+        default:
+            break
+        }
+    }
+
+    private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> Any {
+        switch documentType {
+        case .none:
+            return SessionManagerMock.v1DocumentId
+        case .some:
+            return SessionManagerMock.partialDocumentId
         }
     }
 }

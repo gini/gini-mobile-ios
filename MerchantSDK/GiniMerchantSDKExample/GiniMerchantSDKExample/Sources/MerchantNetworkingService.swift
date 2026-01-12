@@ -85,49 +85,55 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
     func cleanup() {
         // This method will remain empty; no implementation is needed.
     }
-    
+
     func analyse(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo],
                  metadata: GiniBankAPILibrary.Document.Metadata?,
                  cancellationToken: GiniBankAPILibrary.CancellationToken,
                  completion: @escaping GiniBankAPIAnalysisCompletion) {
-        
+
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
         let partialDocs = mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: partialDocuments)
-        
+
         documentService.createDocument(fileName: fileName,
                                        docType: nil,
                                        type: .composite(CompositeDocumentInfo(partialDocuments: partialDocs)),
                                        metadata: nil) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(createdDocument):
-                fetchExtractions(for: createdDocument, completion: completion)
-            case let .failure(error):
-                completion(.failure(.unknown(response: error.response, data: error.data)))
+                case let .success(createdDocument):
+                    self.fetchExtractionsAndComplete(for: createdDocument, completion: completion)
+                case let .failure(error):
+                    completion(.failure(.unknown(response: error.response, data: error.data)))
             }
         }
     }
-    
-    private func fetchExtractions(for createdDocument: GiniMerchantSDK.Document,
-                                  completion: @escaping GiniBankAPIAnalysisCompletion) {
-        
-        self.documentService.extractions(for: createdDocument,
-                                         cancellationToken: CancellationToken()) { [weak self] result in
-            guard self != nil else { return }
+
+    private func fetchExtractionsAndComplete(for document: GiniMerchantSDK.Document,
+                                             completion: @escaping GiniBankAPIAnalysisCompletion) {
+        documentService.extractions(for: document,
+                                    cancellationToken: GiniMerchantSDK.CancellationToken()) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
-            case let .success(extractionResult):
-                if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
-                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
-                    completion(.success((doc, result)))
-                } else {
-                    completion(.failure(.parseError(message: "Failed to parse extraction result")))
-                }
-            case let .failure(error):
-                completion(.failure(.unknown(response: error.response, data: error.data)))
+                case .success(let extractionResult):
+                    self.handleExtractionSuccess(document: document,
+                                                 extractionResult: extractionResult,
+                                                 completion: completion)
+                case .failure(let error):
+                    completion(.failure(.unknown(response: error.response, data: error.data)))
             }
         }
     }
-    
+
+    private func handleExtractionSuccess(document: GiniMerchantSDK.Document,
+                                         extractionResult: GiniMerchantSDK.ExtractionResult,
+                                         completion: @escaping GiniBankAPIAnalysisCompletion) {
+        let mappedDocument = mapDocumentToGiniBankAPI(doc: document)
+        let mappedResult = mapExtractionResultToGiniBankAPI(result: extractionResult)
+
+        completion(.success((mappedDocument, mappedResult)))
+    }
+
     func upload(document: GiniCaptureSDK.GiniCaptureDocument,
                 metadata: GiniBankAPILibrary.Document.Metadata?,
                 completion: @escaping GiniCaptureSDK.UploadDocumentCompletion) {
