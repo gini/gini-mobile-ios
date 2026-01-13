@@ -98,22 +98,30 @@ final class PaymentReviewObservableModel: ObservableObject {
                                                     entity: "text",
                                                     value: paymentInfo.recipient,
                                                     name: "payment_recipient")
+        
         let ibanExtraction = Extraction(box: nil,
                                         candidates: "",
                                         entity: "iban",
                                         value: paymentInfo.iban,
                                         name: "iban")
+        
         let referenceExtraction = Extraction(box: nil,
                                              candidates: "",
                                              entity: "text",
                                              value: paymentInfo.purpose,
                                              name: "payment_purpose")
-        let amoutToPayExtraction = Extraction(box: nil,
-                                              candidates: "",
-                                              entity: "amount",
-                                              value: paymentInfo.amount,
-                                              name: "amount_to_pay")
-        let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
+        
+        let amountToPayExtraction = Extraction(box: nil,
+                                               candidates: "",
+                                               entity: "amount",
+                                               value: paymentInfo.amount,
+                                               name: "amount_to_pay")
+        
+        let updatedExtractions = [paymentRecipientExtraction,
+                                  ibanExtraction,
+                                  referenceExtraction,
+                                  amountToPayExtraction]
+        
         model.sendFeedback(updatedExtractions: updatedExtractions)
     }
 }
