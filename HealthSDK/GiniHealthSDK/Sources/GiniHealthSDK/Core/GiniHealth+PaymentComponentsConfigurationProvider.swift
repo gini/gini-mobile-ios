@@ -38,7 +38,13 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             lockedFields: GiniHealthConfiguration.shared.useInvoiceWithoutDocument ? true : false,
             showBanksPicker: true,
             chevronDownIcon: GiniHealthImage.chevronDown.preferredUIImage(),
-            chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
+            chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor(),
+            infoBarLabelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
+            infoBarLabelFont: GiniHealthConfiguration.shared.font(for: .captions1),
+            infoBarBackgroundColor: GiniColor.success1.uiColor(),
+            isInfoBarHidden: GiniHealthConfiguration.shared.useInvoiceWithoutDocument,
+            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview,
+            infoContainerViewBackgroundColor: GiniColor.standard7.uiColor()
         )
     }
 
