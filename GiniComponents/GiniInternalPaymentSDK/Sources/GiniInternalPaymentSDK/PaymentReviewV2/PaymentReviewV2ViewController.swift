@@ -31,6 +31,8 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
     }
     
     public override func viewDidLoad() {
+        super.viewDidLoad()
+        
         model.viewModelDelegate = self
     }
 }
@@ -44,9 +46,6 @@ extension PaymentReviewV2ViewController: PaymentReviewViewModelDelegate {
 
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
-        /*if paymentInfoContainerView.inputFieldsHaveNoErrors() {
-            createPaymentRequest()
-        }*/
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
