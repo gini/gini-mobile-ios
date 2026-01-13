@@ -103,18 +103,21 @@ struct PaymentReviewPaymentInformationView: View {
                                         lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
                         )
                         
-                        Button(action: {
-                            onPayTapped(buildPaymentInfo())
-                        }) {
-                            Text(viewModel.model.strings.payInvoiceLabelText)
-                                .frame(maxWidth: .infinity)
-                                .padding()
+                        if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
+                           let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
+                            Button(action: {
+                                onPayTapped(buildPaymentInfo())
+                            }) {
+                                Text(viewModel.model.strings.payInvoiceLabelText)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+                            .foregroundColor(Color(selectedPaymentProviderTextColor))
+                            .background(Color(selectedPaymentProviderBackgroundColor))
+                            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+                            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
+                            .frame(height: 56.0)
                         }
-                        .foregroundColor(Color(viewModel.model.selectedPaymentProvider.colors.text.toColor()!))
-                        .background(Color(viewModel.selectedPaymentProvider.colors.background.toColor()!))
-                        .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
-                        .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
-                        .frame(height: 56.0)
                     }
                 } else {
                     // Fallback on earlier versions
