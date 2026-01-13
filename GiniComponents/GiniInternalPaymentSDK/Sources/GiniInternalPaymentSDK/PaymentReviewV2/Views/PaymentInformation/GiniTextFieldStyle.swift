@@ -12,14 +12,12 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private let lockedIcon: Image?
     private let title: String
     
-    init(lockedIcon: Image? = nil, title: String) {
-        self.lockedIcon = lockedIcon
-        self.title = title
-    }
-    
     var textFieldConfiguration: TextFieldConfiguration
     
-    init(title: String, configuration: TextFieldConfiguration) {
+    init(lockedIcon: Image? = nil,
+         title: String,
+         configuration: TextFieldConfiguration) {
+        self.lockedIcon = lockedIcon
         self.title = title
         self.textFieldConfiguration = configuration
     }
