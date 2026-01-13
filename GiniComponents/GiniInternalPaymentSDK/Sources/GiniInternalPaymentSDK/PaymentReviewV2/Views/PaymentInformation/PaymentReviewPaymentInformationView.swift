@@ -35,36 +35,37 @@ struct PaymentReviewPaymentInformationView: View {
         VStack(spacing: 0) {
             if showBanner {
                 HStack {
-                    Text("Please check the pre-filled data.")
-                        .foregroundColor(.black)
+                    Text(viewModel.model.strings.infoBarMessage)
+                        .foregroundColor(Color(viewModel.model.configuration.infoBarLabelTextColor))
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color(red: 0.71, green: 0.77, blue: 0.29))
+                .background(Color(viewModel.model.configuration.infoBarBackgroundColor))
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
             
             VStack(spacing: 8.0) {
                 let textFieldConfiguration = viewModel.model.defaultStyleInputFieldConfiguration
+                let viewModelStrings = viewModel.model.strings
                 
                 TextField("", text: $recipient)
-                    .textFieldStyle(GiniTextFieldStyle(title: "Recipient",
+                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
                                                        configuration: textFieldConfiguration))
                 
                 HStack(spacing: 8.0) {
                     TextField("", text: $iban)
-                        .textFieldStyle(GiniTextFieldStyle(title: "IBAN",
+                        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
                                                            configuration: textFieldConfiguration))
                     
                     TextField("", text: $amount)
                         .keyboardType(.decimalPad)
-                        .textFieldStyle(GiniTextFieldStyle(title: "Amount",
+                        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
                                                            configuration: textFieldConfiguration))
                 }
                 
                 TextField("", text: $paymentPurpose)
-                    .textFieldStyle(GiniTextFieldStyle(title: "Payment purpose",
+                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
                                                        configuration: textFieldConfiguration))
                 
                 if #available(iOS 15.0, *) {
@@ -81,13 +82,14 @@ struct PaymentReviewPaymentInformationView: View {
                                         .cornerRadius(6.0)
                                 }
                                 
-                                if let chevronImage = viewModel.model.configuration.chevronDownIcon {
+                                if let chevronImage = viewModel.model.configuration.chevronDownIcon,
+                                    let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
                                     Image(uiImage: chevronImage)
                                         .resizable()
                                         .renderingMode(.template)
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 24, height: 24)
-                                        .tint(Color(viewModel.model.configuration.chevronDownIconColor!))
+                                        .tint(Color(chevronDownIconColor))
                                 }
                             }
                             .frame(width: 96.0, height: 36.0)
@@ -121,7 +123,7 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.horizontal, 16.0)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.model.configuration.popupAnimationDuration) {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     showBanner = false
                 }
