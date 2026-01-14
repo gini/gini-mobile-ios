@@ -7,7 +7,6 @@
 
 import Foundation
 import XCTest
-@testable import GiniUtilites
 @testable import GiniBankAPILibrary
 @testable import GiniUtilites
 
