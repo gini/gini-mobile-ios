@@ -140,7 +140,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      - Parameters:
         - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
         - resultsDelegate: Results delegate object where you can get the results of the analysis.
-        - configuration: The Gini Bank configuration to set..
+        - configuration: The Gini Bank configuration to set.
         - documentMetadata: Additional HTTP headers to send when uploading documents.
         - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
      */

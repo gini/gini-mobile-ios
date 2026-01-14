@@ -34,7 +34,7 @@ import GiniCaptureSDK
      Returns a GiniBank instance
 
      - Parameters:
-        - giniApiLib: GiniBankAPI initialized with client's credentials
+        - giniApiLib: GiniBankAPI initialized with client's credentials.
      */
     public init(with giniApiLib: GiniBankAPI) {
         self.giniApiLib = giniApiLib
@@ -119,7 +119,7 @@ import GiniCaptureSDK
      Returns back to the business app.
 
      - Parameters:
-        - resolvedPaymentRequest: resolved payment request returned by method 'resolvePaymentRequest'
+        - resolvedPaymentRequest: resolved payment request returned by method 'resolvePaymentRequest'.
 
      */
     public func returnBackToBusinessAppHandler(resolvedPaymentRequest: ResolvedPaymentRequest) {
@@ -155,7 +155,7 @@ import GiniCaptureSDK
         - importedDocuments: Documents that come from a source different than `CameraViewController`.
      There should be either images or one PDF, and they should be validated before calling this method.
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public static func viewController(withDelegate delegate: GiniCaptureDelegate,
                                       importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
