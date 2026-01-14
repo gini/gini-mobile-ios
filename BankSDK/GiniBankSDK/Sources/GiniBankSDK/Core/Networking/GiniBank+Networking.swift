@@ -33,7 +33,7 @@ extension GiniBank {
         - documentMetadata: Additional HTTP headers to send when uploading documents
         - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
         - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */
@@ -66,7 +66,7 @@ extension GiniBank {
         - resultsDelegate: Results delegate object where you can get the results of the analysis.
         - configuration: The configuration to set.
         - documentMetadata: Additional HTTP headers to send when uploading documents
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */
@@ -100,7 +100,7 @@ extension GiniBank {
         - documentMetadata: Additional HTTP headers to send when uploading documents
         - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
         - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */

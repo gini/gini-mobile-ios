@@ -174,7 +174,7 @@ import GiniCaptureSDK
         - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
         - importedDocuments: Documents that come from a source different than `CameraViewController`.
             There should be either images or one PDF, and they should be validated before calling this method.
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */
@@ -216,7 +216,7 @@ import GiniCaptureSDK
         - delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
         - importedDocument: Documents that come from a source different than CameraViewController.
             There should be either images or one PDF, and they should be validated before calling this method.
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */
@@ -261,7 +261,7 @@ import GiniCaptureSDK
         - configuration: The configuration to set.
         - importedDocument: Documents that come from a source different than CameraViewController.
             There should be either images or one PDF, and they should be validated before calling this method.
-        - trackingDelegate: A delegate object to receive user events
+        - trackingDelegate: A delegate object to receive user events.
 
      - Returns: A presentable view controller.
      */

@@ -174,7 +174,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         - userApi: The user API domain to use for user-related requests.
         - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
      */
-
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
                      configuration: GiniBankConfiguration,
