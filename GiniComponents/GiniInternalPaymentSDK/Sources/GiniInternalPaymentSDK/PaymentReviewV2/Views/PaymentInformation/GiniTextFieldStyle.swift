@@ -28,7 +28,6 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 HStack {
                     Text(title)
                         .foregroundColor(Color(textFieldConfiguration.placeholderForegroundColor))
-                        .font(Font(textFieldConfiguration.textFont))
                     
                     if let lockedIcon {
                         lockedIcon
@@ -43,6 +42,9 @@ struct GiniTextFieldStyle: TextFieldStyle {
             }
             .padding(.horizontal, 8.0)
             .frame(height: 56.0)
+            .background(Color(textFieldConfiguration.backgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+                                        style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
                                  style: .continuous)

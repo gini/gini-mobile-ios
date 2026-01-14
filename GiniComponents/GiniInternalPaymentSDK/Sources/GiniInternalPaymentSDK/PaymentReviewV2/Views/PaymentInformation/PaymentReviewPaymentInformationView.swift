@@ -20,6 +20,7 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var amount: String = ""
     @State private var paymentPurpose: String = ""
     
+    @State private var amountToPay: Price
     @State private var showBanner: Bool = true
     
     init(viewModel: PaymentReviewContainerViewModel,
@@ -29,6 +30,7 @@ struct PaymentReviewPaymentInformationView: View {
         self.viewModel = observableModel
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
+        self.amountToPay = Price(value: 0, currencyCode: "€")
     }
     
     var body: some View {
@@ -152,9 +154,10 @@ struct PaymentReviewPaymentInformationView: View {
         paymentPurpose = extractions.first(where: {$0.name == "payment_purpose"})?.value ?? ""
         
         if let amountString = viewModel.extractions.first(where: {$0.name == "amount_to_pay"})?.value,
-            let amountToPay = Price(extractionString: amountString) {
-            let amountToPayText = amountToPay.string
-            amount = amountToPayText ?? ""
+            let amountToPay = Price(extractionString: amountString),
+           let amountToPayString = amountToPay.string {
+            self.amountToPay = amountToPay
+            amount = amountToPayString
         }
     }
     
@@ -163,9 +166,10 @@ struct PaymentReviewPaymentInformationView: View {
         iban = paymentInfo.iban
         paymentPurpose = paymentInfo.purpose
         
-        if let amountToPay = Price(extractionString: paymentInfo.amount) {
-            let amountToPayText = amountToPay.string
-            amount = amountToPayText ?? ""
+        if let amountToPay = Price(extractionString: paymentInfo.amount),
+            let amountToPayText = amountToPay.string {
+            self.amountToPay = amountToPay
+            amount = amountToPayText
         }
     }
     
@@ -173,7 +177,7 @@ struct PaymentReviewPaymentInformationView: View {
         let paymentInfo = PaymentInfo(recipient: recipient,
                                       iban: iban,
                                       bic: "",
-                                      amount: "30.27:EUR",
+                                      amount: amountToPay.extractionString,
                                       purpose: paymentPurpose,
                                       paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
                                       paymentProviderId: viewModel.selectedPaymentProvider.id)
