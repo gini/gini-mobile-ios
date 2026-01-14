@@ -86,24 +86,19 @@ final class AppCoordinator: Coordinator {
     }
 
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
-
+        
         // 1. Build the document
         let documentBuilder = GiniCaptureDocumentBuilder(documentSource: .appName(name: sourceApplication))
         documentBuilder.importMethod = .openWith
 
-        documentBuilder.build(with: url) { [weak self] (document) in
-
+        documentBuilder.build(with: url) { [weak self] document in
             guard let self = self else { return }
-
-            // When a document is imported with "Open with", a dialog allowing to choose between both APIs
-            // is shown in the main screen. Therefore it needs to go to the main screen if it is not there yet.
             self.popToRootViewControllerIfNeeded()
 
             // 2. Validate the document
             if let document = document {
                 do {
-                    try GiniCapture.validate(document,
-                                             withConfig: self.giniConfiguration)
+                    try GiniCapture.validate(document, withConfig: self.giniConfiguration)
                     self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
                 } catch {
                     self.showExternalDocumentNotValidDialog()
@@ -123,22 +118,20 @@ final class AppCoordinator: Coordinator {
 
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
 
-        if let queryItems = components.queryItems {
-            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
-                selectAPIViewController.showActivityIndicator()
-                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+        if let paymentRequestId = components.queryItems?.first(where: { $0.name == "paymentRequestId" })?.value {
+            selectAPIViewController.showActivityIndicator()
+            health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.selectAPIViewController.hideActivityIndicator()
+                }
+                switch result {
+                case .success(let paymentRequest):
+                    GiniUtilites.Log("Successfully obtained payment request", event: .success)
                     DispatchQueue.main.async {
-                        self?.selectAPIViewController.hideActivityIndicator()
+                        self?.showReturnMessage(message: self?.messageFor(status: PaymentStatus(rawValue: paymentRequest.status)) ?? "")
                     }
-                    switch result {
-                    case .success(let paymentRequest):
-                        GiniUtilites.Log("Successfully obtained payment request", event: .success)
-                        DispatchQueue.main.async {
-                            self?.showReturnMessage(message: self?.messageFor(status: PaymentStatus(rawValue: paymentRequest.status)) ?? "")
-                        }
-                    case .failure(let error):
-                        GiniUtilites.Log("Failed to retrieve payment request: \(error.localizedDescription)", event: .error)
-                    }
+                case .failure(let error):
+                    GiniUtilites.Log("Failed to retrieve payment request: \(error.localizedDescription)", event: .error)
                 }
             }
         }
@@ -174,11 +167,9 @@ final class AppCoordinator: Coordinator {
                                                         client: GiniHealthAPILibrary.Client(id: clientID,
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
-                                                                                            documentMetadata: metadata,
+                                                        documentMetadata: metadata,
                                                         hardcodedInvoicesController: hardcodedInvoicesController)
-
         screenAPICoordinator.delegate = self
-
         health.delegate = self
         screenAPICoordinator.giniHealth = health
 
@@ -197,99 +188,103 @@ final class AppCoordinator: Coordinator {
         health.setConfiguration(giniHealthConfiguration)
 
         if let document = self.testDocument {
-            self.selectAPIViewController.showActivityIndicator()
-
-            self.health.fetchDataForReview(documentId: document.id) { result in
-                switch result {
-                case .success(let data):
-                    self.fetchExtractionsForDocument(data.document)
-
-                case .failure(let error):
-                    GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
-                    self.selectAPIViewController.hideActivityIndicator()
-                }
-            }
+            fetchAndShowExistingDocument(document)
         } else {
-            // Upload the test document image
-            let testDocumentImage = UIImage(named: "testDocument")!
-            let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
+            uploadAndShowNewDocument()
+        }
+    }
 
-            self.selectAPIViewController.showActivityIndicator()
+    private func fetchAndShowExistingDocument(_ document: GiniHealthSDK.Document) {
+        selectAPIViewController.showActivityIndicator()
 
-            self.health.documentService.createDocument(fileName: nil,
-                                                       docType: nil,
-                                                       type: .partial(testDocumentData),
-                                                       metadata: nil) { result in
-                switch result {
-                case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: createdDocument.links.document)
-                    self.health.documentService.createDocument(fileName: nil,
-                                                               docType: nil,
-                                                               type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                               metadata: nil) { [weak self] result in
-                        self?.handleCreateDocumentResult(result)
-                    }
-                case .failure(let error):
-                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
-                    self.selectAPIViewController.hideActivityIndicator()
-                }
+        health.fetchDataForReview(documentId: document.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let data):
+                self.fetchExtractionsAndShowInvoice(for: data.document)
+            case .failure(let error):
+                GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
+                self.selectAPIViewController.hideActivityIndicator()
             }
         }
     }
 
-    private func handleCreateDocumentResult(_ result: Result<GiniHealthSDK.Document, GiniHealthSDK.GiniError>) {
-        switch result {
-        case .success(let compositeDocument):
-            self.health.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
-                self?.handleDocumentForReviewResult(result, compositeDocument: compositeDocument)
+    private func fetchExtractionsAndShowInvoice(for document: GiniHealthSDK.Document) {
+        health.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let extractionResult):
+                GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
+                let invoice = DocumentWithExtractions(documentId: document.id,
+                                                      extractionResult: extractionResult)
+                self.showInvoicesList(invoices: [invoice])
+            case .failure(let error):
+                GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                 event: .error)
+                self.selectAPIViewController.hideActivityIndicator()
             }
-        case .failure(let error):
-            GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
-            self.selectAPIViewController.hideActivityIndicator()
         }
     }
 
-    private func handleDocumentForReviewResult(_ result: Result<[GiniHealthSDK.Extraction], GiniHealthSDK.GiniHealthError>, compositeDocument: GiniHealthSDK.Document) {
-        switch result {
-        case .success(let extractions):
-            self.testDocument = compositeDocument
-            self.testDocumentExtractions = extractions
+    private func uploadAndShowNewDocument() {
+        guard let testDocumentImage = UIImage(named: "testDocument"),
+              let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1) else {
+            GiniUtilites.Log("Failed to load test document image", event: .error)
+            return
+        }
 
-            self.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
-                switch result {
-                case let .success(extractionResult):
-                    GiniUtilites.Log("Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
-                    let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
-                                                          extractionResult: extractionResult)
-                    self?.showInvoicesList(invoices: [invoice])
-                case let .failure(error):
-                    GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
-                                     event: .error)
-                }
+        selectAPIViewController.showActivityIndicator()
+
+        health.documentService.createDocument(fileName: nil,
+                                              docType: nil,
+                                              type: .partial(testDocumentData),
+                                              metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let createdDocument):
+                self.createCompositeDocument(from: createdDocument)
+            case .failure(let error):
+                GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                self.selectAPIViewController.hideActivityIndicator()
             }
-        case .failure(let error):
-            GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
-            self.selectAPIViewController.hideActivityIndicator()
         }
     }
 
-    private func handleExtractionsResult(_ result: Result<GiniHealthSDK.ExtractionResult, GiniHealthSDK.GiniError>, document: GiniHealthSDK.Document) {
-        switch result {
-        case let .success(extractionResult):
-            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
-            let invoice = DocumentWithExtractions(documentId: document.id,
-                                                  extractionResult: extractionResult)
-            self.showInvoicesList(invoices: [invoice])
-        case let .failure(error):
-            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
-                             event: .error)
+    private func createCompositeDocument(from partialDocument: GiniHealthSDK.Document) {
+        let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: partialDocument.links.document)
+
+        health.documentService.createDocument(fileName: nil,
+                                              docType: nil,
+                                              type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                              metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let compositeDocument):
+                self.setDocumentForReview(compositeDocument)
+            case .failure(let error):
+                GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                self.selectAPIViewController.hideActivityIndicator()
+            }
         }
     }
 
-    private func fetchExtractionsForDocument(_ document: GiniHealthSDK.Document) {
+    private func setDocumentForReview(_ document: GiniHealthSDK.Document) {
+        health.setDocumentForReview(documentId: document.id) { [weak self] result in
+            guard let self = self else { return }
 
-        self.health.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] result in
-            self?.handleExtractionsResult(result, document: document)
+            switch result {
+            case .success(let extractions):
+                self.testDocument = document
+                self.testDocumentExtractions = extractions
+                self.fetchExtractionsAndShowInvoice(for: document)
+            case .failure(let error):
+                GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
+                self.selectAPIViewController.hideActivityIndicator()
+            }
         }
     }
 
@@ -298,11 +293,9 @@ final class AppCoordinator: Coordinator {
                                                     message: "Möchten Sie die importierte Datei mit dem " +
                                                     "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
-
         alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         })
-
         rootViewController.present(alertViewController, animated: true)
     }
 
@@ -310,11 +303,9 @@ final class AppCoordinator: Coordinator {
         let alertViewController = UIAlertController(title: "Ungültiges Dokument",
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
-
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true)
         })
-
         rootViewController.present(alertViewController, animated: true)
     }
 
@@ -322,11 +313,9 @@ final class AppCoordinator: Coordinator {
         let alertViewController = UIAlertController(title: "Congratulations",
                                                     message: message,
                                                     preferredStyle: .alert)
-
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true)
         })
-
         rootViewController.present(alertViewController, animated: true)
     }
 
@@ -485,7 +474,7 @@ extension AppCoordinator: DebugMenuDelegate {
     func didTapOnBulkDelete() {
         let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
             .map { $0.documentId }
-            .prefix(Constants.numberOfDocumentsToBeDeleted)) // Number of documents to delete
+            .prefix(Constants.numberOfDocumentsToBeDeleted))
 
         health.deleteDocuments(documentIds: documentsToDeleteIds) { [weak self] result in
             switch result {
