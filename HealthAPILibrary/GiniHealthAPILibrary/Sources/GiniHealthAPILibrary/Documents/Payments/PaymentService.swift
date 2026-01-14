@@ -280,29 +280,36 @@ extension PaymentService {
     func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
                           completion: @escaping CompletionResult<PaymentProviders>) {
         let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
-        var providers = [PaymentProvider]()
         resourceHandler(resource, { result in
             switch result {
             case let .success(providersResponse):
-                let dispatchGroup = DispatchGroup()
-                for providerResponse in providersResponse {
-                    dispatchGroup.enter()
-                    
-                    self.file(urlString: providerResponse.iconLocation) { result in
-                        
-                        self.handleProviderFileResult(result, providerResponse: providerResponse,
-                                                      providers: &providers, completion: completion)
-                        dispatchGroup.leave()
-                    }
-                }
-                dispatchGroup.notify(queue: DispatchQueue.global()) {
-                    completion(.success(providers))
-                }
-                
+                self.fetchProviderFile(providersResponse, completion: completion)
+            
             case let .failure(error):
                 completion(.failure(error))
             }
         })
+    }
+    
+    private func fetchProviderFile(_ providersResponse: [PaymentProviderResponse],
+                                    completion: @escaping CompletionResult<[PaymentProvider]>) {
+        
+        var providers = [PaymentProvider]()
+        let dispatchGroup = DispatchGroup()
+        for providerResponse in providersResponse {
+            dispatchGroup.enter()
+            
+            self.file(urlString: providerResponse.iconLocation) { result in
+                
+                self.handleProviderFileResult(result, providerResponse: providerResponse,
+                                              providers: &providers, completion: completion)
+                dispatchGroup.leave()
+            }
+        }
+        dispatchGroup.notify(queue: DispatchQueue.global()) {
+            completion(.success(providers))
+        }
+        
     }
 
     private func handleProviderFileResult(_ result: Result<Data, GiniError>,
@@ -312,12 +319,15 @@ extension PaymentService {
         
         switch result {
         case let .success(imageData):
-            let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
-            providers.append(provider)
+            providers.append(makePaymentProvider(from: providerResponse, imageData: imageData))
         case let .failure(error):
             completion(.failure(error))
         }
         
+    }
+    
+    private func makePaymentProvider(from providerResponse: PaymentProviderResponse, imageData: Data) -> PaymentProvider {
+        return PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
     }
 
     func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProviderResponse>>,
@@ -325,15 +335,23 @@ extension PaymentService {
         let resource = APIResource<PaymentProviderResponse>(method: .paymentProvider(id: id), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
         
         resourceHandler(resource, { result in
-            switch result {
-            case let .success(providerResponse):
-                self.file(urlString: providerResponse.iconLocation) { result in
-                    self.handleFileResult(result, providerResponse: providerResponse, completion: completion)
-                }
-            case let .failure(error):
-                completion(.failure(error))
-            }
+            
+            self.handleProviderResponse(result, completion: completion)
         })
+    }
+    
+    private func handleProviderResponse(
+        _ result: Result<PaymentProviderResponse, GiniError>,
+        completion: @escaping CompletionResult<PaymentProvider>
+    ) {
+        switch result {
+        case let .success(providerResponse):
+            self.file(urlString: providerResponse.iconLocation) { result in
+                self.handleFileResult(result, providerResponse: providerResponse, completion: completion)
+            }
+        case let .failure(error):
+            completion(.failure(error))
+        }
     }
 
     private func handleFileResult(_ result: Result<Data, GiniError>,
