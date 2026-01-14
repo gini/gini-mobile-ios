@@ -58,12 +58,6 @@ final class EditLineItemView: UIView {
         return button
     }()
 
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,10 +135,24 @@ final class EditLineItemView: UIView {
         setupView()
         setupConstraints()
         bindViews()
+        setupAccessibility()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupAccessibility() {
+        accessibilityElements = [
+            cancelButton,
+            titleLabel,
+            saveButton,
+            nameLabelView,
+            nameErrorView,
+            priceLabelView,
+            priceErrorView,
+            quantityView
+        ]
     }
 
     private func setupData(with viewModel: EditLineItemViewModel) {
@@ -161,8 +169,7 @@ final class EditLineItemView: UIView {
         addSubview(titleLabel)
         addSubview(saveButton)
 
-        addSubview(scrollView)
-        scrollView.addSubview(stackView)
+        addSubview(stackView)
 
         stackView.addArrangedSubview(nameContainerView)
         stackView.addArrangedSubview(priceContainerView)
@@ -174,31 +181,21 @@ final class EditLineItemView: UIView {
 
 		priceContainerView.addSubview(priceLabelView)
 		priceContainerView.addSubview(priceErrorView)
-        setupScrollViewConstraints()
 		setupPriceContainerViewConstraints()
         setupStackViewConstraints()
         setupInputAccessoryView(for: [nameLabelView, priceLabelView])
     }
 
-    private func setupScrollViewConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: saveButton.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-
     private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+            stackView.topAnchor.constraint(equalTo: saveButton.bottomAnchor,
                                            constant: Constants.verticalPadding),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor,
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                constant: Constants.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor,
-                                             constant: -2 * Constants.horizontalPadding)
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                constant: -Constants.horizontalPadding),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                              constant: -Constants.verticalPadding)
         ])
     }
 
@@ -401,7 +398,7 @@ extension EditLineItemView: GiniInputAccessoryViewDelegate {
 
 private extension EditLineItemView {
     enum Constants {
-        static let verticalPadding: CGFloat = 24
+        static let verticalPadding: CGFloat = 16
         static let horizontalPadding: CGFloat = 16
         static let titlePadding: CGFloat = 4
         static let errorPadding: CGFloat = 2
