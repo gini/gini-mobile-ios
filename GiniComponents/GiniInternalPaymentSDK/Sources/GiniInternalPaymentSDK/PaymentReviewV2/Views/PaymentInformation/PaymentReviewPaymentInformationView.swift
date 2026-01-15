@@ -169,11 +169,11 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func populateFieldsWithExtractions(_ extractions: [Extraction]) {
-        recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value ?? ""
-        iban = extractions.first(where: {$0.name == "iban"})?.value.uppercased() ?? ""
-        paymentPurpose = extractions.first(where: {$0.name == "payment_purpose"})?.value ?? ""
+        recipient = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? ""
+        iban = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? ""
+        paymentPurpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? ""
         
-        if let amountString = viewModel.extractions.first(where: {$0.name == "amount_to_pay"})?.value,
+        if let amountString = viewModel.extractions.first(where: { $0.name == "amount_to_pay" })?.value,
             let amountToPay = Price(extractionString: amountString),
            let amountToPayString = amountToPay.string {
             self.amountToPay = amountToPay
