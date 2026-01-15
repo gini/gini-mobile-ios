@@ -60,8 +60,6 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
         setupAccessibility()
         configureBottomSheet(shouldIncludeLargeDetent: true)
         bindToSizeUpdates()
-        setupKeyboardObservers()
-        setupTapToDismissKeyboard()
         GiniAnalyticsManager.trackScreenShown(screenName: .editReturnAssistant)
     }
 
@@ -201,27 +199,6 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
                 self.updateBottomSheetHeight(min(size.height, maxHeight))
             }
             .store(in: &cancellables)
-    }
-
-    // MARK: - Keyboard Handling
-
-    private func setupKeyboardObservers() {
-        NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)
-            .compactMap { $0.object as? UITextField }
-            .sink { [weak self] textField in
-                self?.activeTextField = textField
-            }
-            .store(in: &cancellables)
-    }
-
-    private func setupTapToDismissKeyboard() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
     }
 }
 
