@@ -15,6 +15,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedPaymentProvider: PaymentProvider
     
+    lazy var paymentReviewPaymentInformationView: PaymentReviewPaymentInformationView = buildPaymentInformationView()
+    
     var document: Document? {
         model.document
     }
@@ -48,6 +50,16 @@ final class PaymentReviewObservableModel: ObservableObject {
         } else if delegate.supportsOpenWith() {
             createPaymentRequestForOpenWith(paymentInfo: paymentInfo)
         }
+    }
+    
+    private func buildPaymentInformationView() -> PaymentReviewPaymentInformationView {
+        PaymentReviewPaymentInformationView(viewModel: model.paymentReviewContainerViewModel(),
+                                            onBankSelectionTapped: { [weak self] in
+            self?.model.openBankSelectionBottomSheet()
+        },
+                                            onPayTapped: { [weak self] paymentInfo in
+            self?.didTapPay(paymentInfo)
+        })
     }
     
     private func createPaymentRequestForGPC(paymentInfo: PaymentInfo) {
