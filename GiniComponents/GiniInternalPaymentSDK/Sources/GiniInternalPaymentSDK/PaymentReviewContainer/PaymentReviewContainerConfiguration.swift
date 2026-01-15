@@ -35,6 +35,7 @@ public struct PaymentReviewContainerConfiguration {
      - chevronDownIcon: The icon for the chevron pointing downward, used in the UI.
      - chevronDownIconColor: The color of the chevron down icon.
      - infoBarLabelTextColor: The text color for the information bar label.
+     - infoBarLabelFont: The font used for the information bar label.
      - infoBarBackgroundColor: The background color of the information bar.
      - isInfoBarHidden: A flag indicating whether the information bar is hidden.
      - popupAnimationDuration: The duration of the popup animation.
