@@ -101,32 +101,22 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
 
     private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        scrollView.giniMakeConstraints{
+            $0.edges.equalToSuperview()
+        }
     }
 
     private func setupContent() {
         scrollView.addContentSubview(contentView)
 
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor)
-        ])
+        contentView.giniMakeConstraints {
+            $0.edges.equalToSuperview()
+        }
 
         contentView.addSubview(editLineItemView)
-
-        NSLayoutConstraint.activate([
-            editLineItemView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            editLineItemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        editLineItemView.giniMakeConstraints {
+            $0.vertical.equalTo(contentView)
+        }
     }
 
     // MARK: - Accessibility
@@ -164,24 +154,18 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
 
     private func setupPortraitConstraints() {
         deactivateAllConstraints()
-        portraitConstraints = [
-            editLineItemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                      constant: Constants.portraitPadding),
-            editLineItemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                       constant: -Constants.portraitPadding)
-        ]
-        NSLayoutConstraint.activate(portraitConstraints)
+        portraitConstraints = editLineItemView.giniUpdateConstraints {
+            $0.leading.equalTo(contentView).constant(Constants.portraitPadding)
+            $0.trailing.equalTo(contentView).constant(-Constants.portraitPadding)
+        }
     }
 
     private func setupLandscapeConstraints() {
         deactivateAllConstraints()
-        landscapeConstraints = [
-            editLineItemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                      constant: Constants.landscapePadding),
-            editLineItemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                       constant: -Constants.landscapePadding)
-        ]
-        NSLayoutConstraint.activate(landscapeConstraints)
+        landscapeConstraints = editLineItemView.giniUpdateConstraints {
+            $0.leading.equalTo(contentView).constant(Constants.landscapePadding)
+            $0.trailing.equalTo(contentView).constant(-Constants.landscapePadding)
+        }
     }
 
     private func deactivateAllConstraints() {
