@@ -202,20 +202,19 @@ extension DocumentService {
                                   resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
                                   cancellationToken: CancellationToken?,
                                   completion: @escaping CompletionResult<ExtractionResult>) {
-        
-        if case .failure(let error) = result {
+        switch result {
+        case .success:
+            let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
+                                                             apiDomain: self.apiDomain,
+                                                             apiVersion: self.apiVersion,
+                                                             httpMethod: .get)
+            
+            resourceHandler(resource, cancellationToken, { result in
+                self.handleExtractionsResult(result, completion: completion)
+            })
+        case .failure(let error):
             completion(.failure(error))
-            return
         }
-        
-        let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
-                                                         apiDomain: self.apiDomain,
-                                                         apiVersion: self.apiVersion,
-                                                         httpMethod: .get)
-        
-        resourceHandler(resource, cancellationToken, { result in
-            self.handleExtractionsResult(result, completion: completion)
-        })
         
     }
     private func handleExtractionsResult(_ result: Result<ExtractionsContainer, GiniError>,
