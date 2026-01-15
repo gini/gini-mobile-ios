@@ -276,8 +276,8 @@ public class PaymentReviewModel {
         
         let viewModels = await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
             for page in 1 ... document.pageCount {
-                group.addTask { [weak self] in
-                    await self?.buildCellViewModel(documentId: documentId, pageNumber: page)
+                group.addTask {
+                    await self.buildCellViewModel(documentId: documentId, pageNumber: page)
                 }
             }
             
@@ -295,21 +295,33 @@ public class PaymentReviewModel {
     
     private func buildCellViewModel(documentId: String, pageNumber: Int) async -> PageCollectionCellViewModel? {
         do {
-            let result = try await fetchPreview(for: documentId, pageNumber: pageNumber)
-            return processPreview(result)
+            let data = try await fetchPreview(for: documentId, pageNumber: pageNumber)
+            
+            return processPreview(data)
         } catch {
             return nil
         }
     }
     
-    private func fetchPreview(for documentId: String, pageNumber: Int) async throws -> Result<Data, GiniError> {
+    private func fetchPreview(for documentId: String, pageNumber: Int) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in
             self.delegate?.preview(for: documentId, pageNumber: pageNumber) { result in
-                continuation.resume(returning: result)
+                switch result {
+                case .success(let data):
+                    continuation.resume(returning: data)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
             }
         }
     }
 
+    private func processPreview(_ data: Data) -> PageCollectionCellViewModel? {
+        guard let image = UIImage(data: data) else { return nil }
+        
+        return createCellViewModel(previewImage: image)
+    }
+    
     private func processPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
         switch result {
         case let .success(dataImage):
