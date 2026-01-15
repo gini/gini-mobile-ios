@@ -7,7 +7,8 @@
 import UIKit
 
 /**
- A type alias for view controllers that can be presented as bottom sheets.
+ A convenience typealias combining `UIViewController` with `GiniBottomSheetPresentable`,
+ allowing any conforming controller to present itself as a configurable bottom sheet.
  */
 public typealias GiniBottomSheetViewController = UIViewController & GiniBottomSheetPresentable
 
@@ -77,8 +78,9 @@ public protocol GiniBottomSheetPresentable {
      This method creates a custom detent with the specified height and applies it to the
      sheet presentation controller. The custom detent becomes the selected detent.
      
-     - Parameter height: The desired height for the bottom sheet in points.
-     
+     - Parameters
+        - height: The desired height for the bottom sheet in points.
+
      - Note: Custom detents are only available on iOS 16.0 and later.
      On earlier versions, this method will have no effect and the view controller
      will maintain its current presentation behavior.
@@ -93,27 +95,44 @@ public protocol GiniBottomSheetPresentable {
 }
 
 public extension GiniBottomSheetPresentable where Self: UIViewController {
-    
+    /**
+     Configures the view controller to be presented as a bottom sheet.
+
+     - Parameters:
+        - shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()` detent.
+     Otherwise, a `.medium()` detent is used. On iOS 13–14, this falls back to `.pageSheet`.
+     */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
         /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
         if #available(iOS 15, *),
            let presentationController = sheetPresentationController {
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
+            // when the height class is compact — such as in landscape mode on an iPhone.
             presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
             
             if #available(iOS 16, *) {
                 let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
                     self.view.bounds.height / 2
                 }
-                
-                presentationController.detents = [shouldIncludeLargeDetent ? .large() : halfScreenDetent]
+                // when in landscape is not going full screen - needed in HealthSDK -> check shouldShowInFullScreenInLandscapeMode
+                let landscapeDetent: UISheetPresentationController.Detent = shouldShowInFullScreenInLandscapeMode ? .medium() : halfScreenDetent
+                presentationController.detents = [shouldIncludeLargeDetent ? .large() : landscapeDetent]
             } else {
                 presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
             }
         }
     }
     
+    /**
+     Dynamically updates the bottom sheet height using a custom detent.
+
+     On iOS 16+, it defines and applies a custom detent with the given height.
+
+     - Parameters:
+        - height: The target height for the bottom sheet.
+     */
     func updateBottomSheetHeight(_ height: CGFloat) {
         /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
         /// For iOS version prior to 16, this method will have no effect and the sheet will not be resized.
@@ -128,6 +147,39 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.detents = [customDetent]
             presentationController.selectedDetentIdentifier = identifier
+        }
+    }
+
+    /**
+     Presents this view controller as a bottom sheet with proper accessibility support.
+
+     This method configures the view controller as a bottom sheet and presents it modally.
+     After presentation, it automatically hides the presenting view from accessibility,
+     ensures the bottom sheet captures all accessibility focus, and moves VoiceOver focus
+     to the presented content.
+
+     - Parameters:
+        - presenter: The view controller that will present this bottom sheet.
+        - animated: Whether to animate the presentation. Defaults to `true`.
+        - completion: An optional closure to execute after the presentation and accessibility
+     configuration are complete.
+     */
+    func presentAsBottomSheet(from presenter: UIViewController,
+                              animated: Bool = true,
+                              completion: (() -> Void)? = nil) {
+        configureBottomSheet()
+
+        presenter.present(self, animated: animated) { [weak presenter] in
+            // Hide presenting view from accessibility
+            presenter?.view.accessibilityElementsHidden = true
+
+            // Ensure bottom sheet captures all accessibility focus
+            self.view.accessibilityViewIsModal = true
+
+            // Move focus to the bottom sheet
+            UIAccessibility.post(notification: .screenChanged, argument: self.view)
+
+            completion?()
         }
     }
 }
