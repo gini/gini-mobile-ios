@@ -183,7 +183,7 @@ struct PaymentReviewPaymentInformationView: View {
     
     private func populateFieldsWithPaymentInfo(_ paymentInfo: PaymentInfo) {
         recipient = paymentInfo.recipient
-        iban = paymentInfo.iban
+        iban = paymentInfo.iban.uppercased()
         paymentPurpose = paymentInfo.purpose
         
         if let amountToPay = Price(extractionString: paymentInfo.amount),
