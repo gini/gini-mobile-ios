@@ -60,7 +60,27 @@ struct PaymentReviewPaymentInformationView: View {
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
                                                            configuration: textFieldConfiguration))
                     
-                    TextField("", text: $amount)
+                    TextField("", text: $amount,
+                              onEditingChanged: { isBegin in
+                        if isBegin {
+                            amount = amountToPay.stringWithoutSymbol ?? ""
+                        } else {
+                            if !amount.isEmpty,
+                                let decimalAmount = amount.decimal() {
+                                amountToPay.value = decimalAmount
+                                
+                                if decimalAmount > 0,
+                                   let amountString = amountToPay.string {
+                                    amount = amountString
+                                } else {
+                                    amount = ""
+                                }
+                            }
+                        }
+                    })
+                    .onChange(of: amount) { newValue in
+                        adjustAmountValue(updatedText: newValue)
+                    }
                         .keyboardType(.decimalPad)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
                                                            configuration: textFieldConfiguration))
@@ -182,5 +202,22 @@ struct PaymentReviewPaymentInformationView: View {
                                       paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
                                       paymentProviderId: viewModel.selectedPaymentProvider.id)
         return paymentInfo
+    }
+    
+    private func adjustAmountValue(updatedText: String) {
+        // Limit length to 7 digits
+        let onlyDigits = String(updatedText
+                                    .trimmingCharacters(in: .whitespaces)
+                                    .filter { c in c != "," && c != "."}
+                                    .prefix(7))
+
+        if let decimal = Decimal(string: onlyDigits) {
+            let decimalWithFraction = decimal / 100
+
+            if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                amount = newAmount
+                amountToPay.value = decimalWithFraction
+            }
+        }
     }
 }
