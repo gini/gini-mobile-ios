@@ -12,55 +12,53 @@ final class EditLineItemView: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
     private lazy var cancelButton: UIButton = {
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
-                                                             comment: "Cancel")
+        let title = Strings.cancelButtonTitle
         let button = UIButton()
-        button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .body)),
+        button.setAttributedTitle(NSAttributedString(string: title,
+                                                     attributes: textAttributes(for: .body)),
                                   for: .normal)
         button.setTitle(title, for: .normal)
         button.titleLabel?.numberOfLines = 0
-        button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapCancel),
+                         for: .touchUpInside)
         button.isExclusiveTouch = true
         // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
 
     private lazy var titleLabel: UILabel = {
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.title",
-                                                             comment: "Edit")
+        let title = Strings.editTitle
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.attributedText = NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold))
+        label.textColor = GiniColor(light: .GiniBank.dark1,
+                                    dark: .GiniBank.light1).uiColor()
+        label.attributedText = NSAttributedString(string: title,
+                                                  attributes: textAttributes(for: .bodyBold))
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
     private lazy var saveButton: UIButton = {
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.savebutton",
-                                                             comment: "Save")
+        let title = Strings.saveButtonTitle
         let button = UIButton()
         button.titleLabel?.numberOfLines = 0
-        button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
+        button.setAttributedTitle(NSAttributedString(string: title,
+                                                     attributes: textAttributes(for: .bodyBold)),
                                   for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
         button.isExclusiveTouch = true
         // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.distribution = .fill
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
@@ -71,7 +69,6 @@ final class EditLineItemView: UIView {
 
     private lazy var nameLabelView: NameLabelView = {
         let view = NameLabelView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()
@@ -79,10 +76,7 @@ final class EditLineItemView: UIView {
 	private lazy var nameErrorView: ErrorView = {
 		let view = ErrorView()
 		view.alpha = 0
-		view.translatesAutoresizingMaskIntoConstraints = false
-		let errorTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
-																  comment: "Name error title")
-		view.set(errorTitle: errorTitle)
+		view.set(errorTitle: Strings.nameErrorTitle)
 		return view
 	}()
 
@@ -91,30 +85,23 @@ final class EditLineItemView: UIView {
     private lazy var priceLabelView: PriceLabelView = {
         let view = PriceLabelView()
         view.delegate = self
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
 	private lazy var priceErrorView: ErrorView = {
 		let view = ErrorView()
-		view.translatesAutoresizingMaskIntoConstraints = false
 		view.alpha = 0
-
-		let errorTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
-																  comment: "Price error title")
-		view.set(errorTitle: errorTitle)
+		view.set(errorTitle: Strings.priceErrorTitle)
 		return view
 	}()
 
     private lazy var quantityView: QuantityView = {
         let view = QuantityView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private lazy var currencyPicker: CurrencyPickerView = {
         let view = CurrencyPickerView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.alpha = 0
         view.delegate = self
         return view
@@ -164,7 +151,8 @@ final class EditLineItemView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
+        backgroundColor = GiniColor(light: .GiniBank.light1,
+                                    dark: .GiniBank.dark1).uiColor()
         addSubview(cancelButton)
         addSubview(titleLabel)
         addSubview(saveButton)
@@ -177,26 +165,10 @@ final class EditLineItemView: UIView {
 
 		nameContainerView.addSubview(nameLabelView)
 		nameContainerView.addSubview(nameErrorView)
-		setupNameContainerViewConstraints()
 
 		priceContainerView.addSubview(priceLabelView)
 		priceContainerView.addSubview(priceErrorView)
-		setupPriceContainerViewConstraints()
-        setupStackViewConstraints()
         setupInputAccessoryView(for: [nameLabelView, priceLabelView])
-    }
-
-    private func setupStackViewConstraints() {
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: saveButton.bottomAnchor,
-                                           constant: Constants.verticalPadding),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                               constant: Constants.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                constant: -Constants.horizontalPadding),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor,
-                                              constant: -Constants.verticalPadding)
-        ])
     }
 
     private func bindViews() {
@@ -215,59 +187,67 @@ final class EditLineItemView: UIView {
             }.store(in: &cancellables)
     }
 
-	private func setupNameContainerViewConstraints() {
-		NSLayoutConstraint.activate([
-			nameLabelView.topAnchor.constraint(equalTo: nameContainerView.topAnchor),
-			nameLabelView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor),
-			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
-            nameLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
-
-			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor,
-                                               constant: Constants.errorPadding),
-			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor),
-			nameErrorView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
-			nameErrorView.bottomAnchor.constraint(equalTo: nameContainerView.bottomAnchor)
-		])
-	}
-
-	private func setupPriceContainerViewConstraints() {
-		NSLayoutConstraint.activate([
-			priceLabelView.topAnchor.constraint(equalTo: priceContainerView.topAnchor),
-			priceLabelView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
-			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
-            priceLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
-
-			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor,
-                                                constant: Constants.errorPadding),
-			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
-			priceErrorView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
-			priceErrorView.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor)
-		])
-	}
-
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            cancelButton.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                  constant: Constants.horizontalPadding),
-            cancelButton.topAnchor.constraint(equalTo: topAnchor,
-                                              constant: Constants.verticalPadding),
-            cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.headerButtonMinimunHeight),
+        // Cancel button
+        cancelButton.giniMakeConstraints {
+            $0.leading.equalToSuperview().constant(Constants.horizontalPadding)
+            $0.top.equalToSuperview().constant(Constants.verticalPadding)
+            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimunHeight)
+        }
 
-            titleLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.trailingAnchor,
-                                                constant: Constants.titlePadding),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: saveButton.leadingAnchor,
-                                                constant: -Constants.titlePadding),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+        // Title label
+        titleLabel.giniMakeConstraints {
+            $0.centerY.equalTo(cancelButton)
+            $0.centerX.equalToSuperview()
+            $0.leading.greaterThanOrEqualTo(cancelButton.trailing).constant(Constants.titlePadding)
+            $0.trailing.lessThanOrEqualTo(saveButton.leading).constant(Constants.titlePadding)
+        }
 
-            saveButton.topAnchor.constraint(equalTo: topAnchor,
-                                            constant: Constants.verticalPadding),
-            saveButton.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                 constant: -Constants.horizontalPadding),
-            saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.headerButtonMinimunHeight),
+        // Save button
+        saveButton.giniMakeConstraints {
+            $0.top.equalToSuperview().constant(Constants.verticalPadding)
+            $0.trailing.equalToSuperview().constant(-Constants.horizontalPadding)
+            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimunHeight)
+        }
 
-            quantityView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight)
-        ])
+        // Stack view
+        stackView.giniMakeConstraints {
+            $0.top.equalTo(saveButton.bottom).constant(Constants.verticalPadding)
+            $0.leading.equalToSuperview().constant(Constants.horizontalPadding)
+            $0.trailing.equalToSuperview().constant(-Constants.horizontalPadding)
+            $0.bottom.equalToSuperview().constant(-Constants.verticalPadding)
+        }
+
+        // Name container
+        nameLabelView.giniMakeConstraints {
+            $0.top.equalTo(nameContainerView)
+            $0.horizontal.equalTo(nameContainerView)
+            $0.height.greaterThanOrEqualTo(Constants.itemContainerMaxHeight)
+        }
+
+        nameErrorView.giniMakeConstraints {
+            $0.top.equalTo(nameLabelView.bottom).constant(Constants.errorPadding)
+            $0.horizontal.equalTo(nameContainerView)
+            $0.bottom.equalTo(nameContainerView)
+        }
+
+        // Price container
+        priceLabelView.giniMakeConstraints {
+            $0.top.equalTo(priceContainerView)
+            $0.horizontal.equalTo(priceContainerView)
+            $0.height.greaterThanOrEqualTo(Constants.itemContainerMaxHeight)
+        }
+
+        priceErrorView.giniMakeConstraints {
+            $0.top.equalTo(priceLabelView.bottom).constant(Constants.errorPadding)
+            $0.horizontal.equalTo(priceContainerView)
+            $0.bottom.equalTo(priceContainerView)
+        }
+
+        // Quantity view
+        quantityView.giniMakeConstraints {
+            $0.height.greaterThanOrEqualTo(Constants.itemContainerMaxHeight)
+        }
     }
 
     func hideKeyBoard() {
@@ -366,13 +346,11 @@ extension EditLineItemView: PriceLabelViewDelegate {
 
     func showCurrencyPicker(on view: UIView) {
         addSubview(currencyPicker)
-
-        NSLayoutConstraint.activate([
-            currencyPicker.bottomAnchor.constraint(equalTo: view.topAnchor,
-                                                   constant: -Constants.currencyPickerPadding),
-            currencyPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            currencyPicker.widthAnchor.constraint(equalToConstant: Constants.currencyPickerWidth)
-        ])
+        currencyPicker.giniMakeConstraints {
+            $0.bottom.equalTo(view.top).constant(-Constants.currencyPickerPadding)
+            $0.trailing.equalTo(view)
+            $0.width.equalTo(Constants.currencyPickerWidth)
+        }
 
         UIView.animate(withDuration: Constants.animationDuration) {
             self.currencyPicker.alpha = 1
@@ -397,7 +375,7 @@ extension EditLineItemView: GiniInputAccessoryViewDelegate {
 }
 
 private extension EditLineItemView {
-    enum Constants {
+    struct Constants {
         static let verticalPadding: CGFloat = 16
         static let horizontalPadding: CGFloat = 16
         static let titlePadding: CGFloat = 4
@@ -409,5 +387,27 @@ private extension EditLineItemView {
 		static let itemContainerMaxHeight: CGFloat = 64
 		static let animationDuration: CGFloat = 0.3
         static let headerButtonMinimunHeight: CGFloat = 50
+    }
+
+    struct Strings {
+        static let cancelButtonTitleKey = "ginibank.digitalinvoice.cancelButtonTitle"
+        static let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat(cancelButtonTitleKey,
+                                                                                comment: "Cancel")
+
+        static let editTitleKey = "ginibank.digitalinvoice.edit.title"
+        static let editTitle = NSLocalizedStringPreferredGiniBankFormat(editTitleKey,
+                                                                        comment: "Edit")
+
+        static let saveButtonTitleKey = "ginibank.digitalinvoice.lineitem.savebutton"
+        static let saveButtonTitle = NSLocalizedStringPreferredGiniBankFormat(saveButtonTitleKey,
+                                                                              comment: "Save")
+
+        static let nameErrorTitleKey = "ginibank.digitalinvoice.edit.name.error"
+        static let nameErrorTitle = NSLocalizedStringPreferredGiniBankFormat(nameErrorTitleKey,
+                                                                             comment: "Name error title")
+
+        static let priceErrorTitleKey = "ginibank.digitalinvoice.edit.price.error"
+        static let priceErrorTitle = NSLocalizedStringPreferredGiniBankFormat(priceErrorTitleKey,
+                                                                              comment: "Price error title")
     }
 }
