@@ -315,7 +315,7 @@ extension DocumentService {
         resourceHandler(resource) { result in
             switch result {
             case let .success(pages):
-                self.handlePreviewPages(pages, documentId: documentId, pageNumber: pageNumber, completion: completion)
+                self.handlePreviewPages(pages, pageNumber: pageNumber, completion: completion)
             
             case let .failure(error):
                 self.retryPreviewIfNeeded(error: error, resourceHandler: resourceHandler, documentId: documentId, pageNumber: pageNumber, completion: completion)
@@ -324,7 +324,6 @@ extension DocumentService {
     }
     
     private func handlePreviewPages(_ pages: [Document.Page],
-                                    documentId: String,
                                     pageNumber: Int,
                                     completion: @escaping CompletionResult<Data>) {
         
