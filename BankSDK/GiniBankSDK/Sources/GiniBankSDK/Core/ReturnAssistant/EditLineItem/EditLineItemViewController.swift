@@ -9,7 +9,7 @@ import GiniCaptureSDK
 import UIKit
 import GiniUtilites
 
-final class EditLineItemViewController: GiniCaptureSDK.GiniBottomSheetViewController {
+final class EditLineItemViewController: GiniBottomSheetViewController {
 
     // MARK: - Views
 
@@ -198,7 +198,7 @@ final class EditLineItemViewController: GiniCaptureSDK.GiniBottomSheetViewContro
             .sink { [weak self] size in
                 guard let self, size.height > 0 else { return }
                 let maxHeight = UIScreen.main.bounds.height - Constants.topSafeAreaInset
-                self.updateBottomSheetHeight(to: min(size.height, maxHeight))
+                self.updateBottomSheetHeight(min(size.height, maxHeight))
             }
             .store(in: &cancellables)
     }

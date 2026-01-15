@@ -5,6 +5,7 @@
 //
 
 import GiniCaptureSDK
+import GiniUtilites
 import UIKit
 
 protocol DigitalInvoiceCoordinatorDelegate: AnyObject {
