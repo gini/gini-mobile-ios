@@ -7,19 +7,45 @@
 import GiniUtilites
 import SwiftUI
 
+enum GiniTextFieldState {
+    case error
+    case focused
+    case normal
+}
+
 struct GiniTextFieldStyle: TextFieldStyle {
     
     private let lockedIcon: Image?
     private let title: String
+    private let state: GiniTextFieldState
     
-    var textFieldConfiguration: TextFieldConfiguration
+    var normalConfiguration: TextFieldConfiguration
+    var focusedConfiguration: TextFieldConfiguration
+    var errorConfiguration: TextFieldConfiguration
+    
+    private var currentConfiguration: TextFieldConfiguration {
+        switch state {
+        case .error:
+            return errorConfiguration
+        case .focused:
+            return focusedConfiguration
+        case .normal:
+            return normalConfiguration
+        }
+    }
     
     init(lockedIcon: Image? = nil,
          title: String,
-         configuration: TextFieldConfiguration) {
+         state: GiniTextFieldState = .normal,
+         normalConfiguration: TextFieldConfiguration,
+         focusedConfiguration: TextFieldConfiguration,
+         errorConfiguration: TextFieldConfiguration) {
         self.lockedIcon = lockedIcon
         self.title = title
-        self.textFieldConfiguration = configuration
+        self.state = state
+        self.normalConfiguration = normalConfiguration
+        self.focusedConfiguration = focusedConfiguration
+        self.errorConfiguration = errorConfiguration
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -27,7 +53,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
             VStack(spacing: 0) {
                 HStack {
                     Text(title)
-                        .foregroundColor(Color(textFieldConfiguration.placeholderForegroundColor))
+                        .foregroundColor(Color(normalConfiguration.placeholderForegroundColor))
                     
                     if let lockedIcon {
                         lockedIcon
@@ -37,19 +63,19 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 }
                 
                 configuration
-                    .foregroundColor(Color(textFieldConfiguration.textColor))
-                    .font(Font(textFieldConfiguration.textFont))
+                    .foregroundColor(Color(normalConfiguration.textColor))
+                    .font(Font(normalConfiguration.textFont))
             }
             .padding(.horizontal, 8.0)
             .frame(height: 56.0)
-            .background(Color(textFieldConfiguration.backgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+            .background(Color(normalConfiguration.backgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: normalConfiguration.cornerRadius,
                                         style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+                RoundedRectangle(cornerRadius: normalConfiguration.cornerRadius,
                                  style: .continuous)
-                .stroke(Color(textFieldConfiguration.borderColor),
-                        lineWidth: textFieldConfiguration.borderWidth)
+                .stroke(Color(normalConfiguration.borderColor),
+                        lineWidth: normalConfiguration.borderWidth)
             }
         } else {
             // Fallback on earlier versions

@@ -53,12 +53,16 @@ struct PaymentReviewPaymentInformationView: View {
                 
                 TextField("", text: $recipient)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
-                                                       configuration: textFieldConfiguration))
+                                                       normalConfiguration: textFieldConfiguration,
+                                                       focusedConfiguration: textFieldConfiguration,
+                                                       errorConfiguration: textFieldConfiguration))
                 
                 HStack(spacing: 8.0) {
                     TextField("", text: $iban)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
-                                                           configuration: textFieldConfiguration))
+                                                           normalConfiguration: textFieldConfiguration,
+                                                           focusedConfiguration: textFieldConfiguration,
+                                                          errorConfiguration: textFieldConfiguration))
                     
                     TextField("", text: $amount,
                               onEditingChanged: { isBegin in
@@ -83,12 +87,16 @@ struct PaymentReviewPaymentInformationView: View {
                     }
                         .keyboardType(.decimalPad)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
-                                                           configuration: textFieldConfiguration))
+                                                           normalConfiguration: textFieldConfiguration,
+                                                          focusedConfiguration: textFieldConfiguration,
+                                                          errorConfiguration: textFieldConfiguration))
                 }
                 
                 TextField("", text: $paymentPurpose)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
-                                                       configuration: textFieldConfiguration))
+                                                       normalConfiguration: textFieldConfiguration,
+                                                      focusedConfiguration: textFieldConfiguration,
+                                                      errorConfiguration: textFieldConfiguration))
                 
                 if #available(iOS 15.0, *) {
                     HStack(spacing: 8.0) {
