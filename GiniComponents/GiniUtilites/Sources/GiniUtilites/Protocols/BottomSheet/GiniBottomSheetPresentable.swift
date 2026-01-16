@@ -116,7 +116,8 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
                 let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
                     self.view.bounds.height / 2
                 }
-                // when in landscape is not going full screen - needed in HealthSDK -> check shouldShowInFullScreenInLandscapeMode
+                // In landscape mode, control whether the sheet should use a partial-height
+                // or a full-height detent based on the current configuration.
                 let landscapeDetent: UISheetPresentationController.Detent = shouldShowInFullScreenInLandscapeMode ? .medium() : halfScreenDetent
                 presentationController.detents = [shouldIncludeLargeDetent ? .large() : landscapeDetent]
             } else {
