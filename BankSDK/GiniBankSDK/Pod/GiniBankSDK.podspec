@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.documentation_url  = "https://developer.gini.net/gini-mobile-ios/GiniBankSDK/#{spec.version.to_s}/"
   spec.author             = "Gini GmbH"
   spec.license            = { :type => 'Private', :text => <<-LICENSE
-                                Copyright (c) 2021-2024, Gini GmbH
+                                Copyright (c) 2021-2026, Gini GmbH
 
                                 All rights reserved.
                                 

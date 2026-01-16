@@ -34,6 +34,7 @@ final class SettingsViewModel {
     }()
     
     init(apiEnvironment: APIEnvironment,
+         enablePinningSDK: Bool,
          client: Client? = nil,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
@@ -41,14 +42,19 @@ final class SettingsViewModel {
         self.giniConfiguration = giniConfiguration
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
-        setupContentData(apiEnvironment: apiEnvironment, client: client)
+        setupContentData(apiEnvironment: apiEnvironment,
+                         enablePinningSDK: enablePinningSDK,
+                         client: client)
     }
 
-    private func setupContentData(apiEnvironment: APIEnvironment, client: Client? = nil) {
+    private func setupContentData(apiEnvironment: APIEnvironment,
+                                  enablePinningSDK: Bool,
+                                  client: Client? = nil) {
         var sections: [SettingsSection] = []
         
         sections.append(setupDefaultConfigSection())
         sections.append(setupCredentialsSection(apiEnvironment: apiEnvironment, client: client))
+        sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
         sections.append(setupFeatureTogglesSection())
         sections.append(setupBottomNavBarsSection())
         sections.append(setupOnboardingSection())
@@ -83,6 +89,13 @@ final class SettingsViewModel {
             selectedAPISegmentIndex = 1
         }
         credentialsSection.items.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
+        return credentialsSection
+    }
+
+    private func setupSDKTypeSection(enablePinningSDK: Bool) -> SettingsSection {
+        var credentialsSection = SettingsSection(title: "SDK type", items: [])
+        let selectedSegmentIndex = enablePinningSDK ? 1 : 0
+        credentialsSection.items.append(.segmentedOption(data: SDKTypeSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
         return credentialsSection
     }
 
