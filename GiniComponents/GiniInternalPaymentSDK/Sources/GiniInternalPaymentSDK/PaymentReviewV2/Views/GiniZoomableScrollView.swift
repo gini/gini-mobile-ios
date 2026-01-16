@@ -46,8 +46,8 @@ final class GiniZoomableScrollView: UIScrollView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        minimumZoomScale = 1.0
-        maximumZoomScale = 4.0
+        minimumZoomScale = Constants.minimumZoomScale
+        maximumZoomScale = Constants.maximumZoomScale
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         bouncesZoom = true
@@ -56,7 +56,7 @@ final class GiniZoomableScrollView: UIScrollView {
         
         /// Add double tap gesture
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTap.numberOfTapsRequired = 2
+        doubleTap.numberOfTapsRequired = Constants.numberOfTapsRequiredForZoom
         addGestureRecognizer(doubleTap)
     }
     
@@ -97,15 +97,13 @@ final class GiniZoomableScrollView: UIScrollView {
         let scaledHeight = imageSize.height * minScale
         
         /// Center the image
-        let x = (scrollViewSize.width - scaledWidth) / 2
-        let y = (scrollViewSize.height - scaledHeight) / 2
+        let x = (scrollViewSize.width - scaledWidth) / Constants.valueToDivideForZoomRect
+        let y = (scrollViewSize.height - scaledHeight) / Constants.valueToDivideForZoomRect
         
-        imageView.frame = CGRect(
-            x: max(0, x),
-            y: max(0, y),
-            width: scaledWidth,
-            height: scaledHeight
-        )
+        imageView.frame = CGRect(x: max(0, x),
+                                 y: max(0, y),
+                                 width: scaledWidth,
+                                 height: scaledHeight)
         
         /// Update content size
         contentSize = scrollViewSize
@@ -114,7 +112,7 @@ final class GiniZoomableScrollView: UIScrollView {
         zoomScale = minimumZoomScale
     }
     
-    @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+    @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
         guard let scrollView = gesture.view as? UIScrollView else { return }
         
         if scrollView.zoomScale > scrollView.minimumZoomScale {
@@ -123,7 +121,7 @@ final class GiniZoomableScrollView: UIScrollView {
         } else {
             /// Zoom in to 2x at tap location
             let location = gesture.location(in: scrollView)
-            let zoomRect = zoomRect(for: 2.0, center: location, in: scrollView)
+            let zoomRect = zoomRect(for: Constants.doubleTapZoomScale, center: location, in: scrollView)
             scrollView.zoom(to: zoomRect, animated: true)
         }
     }
@@ -131,9 +129,17 @@ final class GiniZoomableScrollView: UIScrollView {
     private func zoomRect(for scale: CGFloat, center: CGPoint, in scrollView: UIScrollView) -> CGRect {
         let width = scrollView.bounds.width / scale
         let height = scrollView.bounds.height / scale
-        let x = center.x - (width / 2.0)
-        let y = center.y - (height / 2.0)
+        let x = center.x - (width / Constants.valueToDivideForZoomRect)
+        let y = center.y - (height / Constants.valueToDivideForZoomRect)
         
         return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    private struct Constants {
+        static let doubleTapZoomScale = 2.0
+        static let maximumZoomScale = 4.0
+        static let minimumZoomScale = 1.0
+        static let numberOfTapsRequiredForZoom = 2
+        static let valueToDivideForZoomRect = 2.0
     }
 }
