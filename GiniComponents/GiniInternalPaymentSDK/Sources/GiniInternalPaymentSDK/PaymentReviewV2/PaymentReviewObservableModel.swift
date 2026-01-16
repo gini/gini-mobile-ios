@@ -29,6 +29,10 @@ final class PaymentReviewObservableModel: ObservableObject {
         setupBindings()
     }
     
+    func fetchImages() async {
+        await model.fetchImages()
+    }
+    
     private func setupBindings() {
         // Observe changes from the original model
         model.onPreviewImagesFetched = { [weak self] in
@@ -48,9 +52,5 @@ final class PaymentReviewObservableModel: ObservableObject {
                 self?.isLoading = self?.model.isLoading == true
             }
         }
-    }
-    
-    func fetchImages() async {
-        await model.fetchImages()
     }
 }
