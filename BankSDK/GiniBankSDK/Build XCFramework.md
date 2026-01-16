@@ -5,11 +5,11 @@
 2. In terminal, run `./build-GiniBankSDK-XCFrameworks.sh `. If it says `Permission denied`, try running `chmod +x build-GiniBankSDK-XCFrameworks.sh` to add permission to execute
 **Note: running this will cleanup all intermediates and artefacts from the previous run, unless you specify `--no-cleanup` in arguments. You can run `./build-GiniBankSDK-XCFrameworks.sh  --help` for more info about how to use the script**
 
-2. After the script from the step above has finished, there should be `GiniBankSDK.xcframework`, `GiniBankAPILibrary.xcframework`, and `GiniCaptureSDK.xcframework` available.
+2. After the script from the step above has finished, there should be `GiniBankSDK.xcframework`, `GiniBankAPILibrary.xcframework`, `GiniCaptureSDK.xcframework`, and `GiniUtilites.xcframework` available.
 
-## Using XCFrameworks in a tetsing project
+## Using XCFrameworks in a testing project
 
-1. Add all 3 XCFrameworks to your Xcode project. Typically, this is done by creating a group called `Frameworks` somewhere in the project, and then drag-and-dropping XCFrameworks there.
+1. Add all XCFrameworks to your Xcode project. Typically, this is done by creating a group called `Frameworks` somewhere in the project, and then drag-and-dropping XCFrameworks there.
 
 2. Go to your target settings, scroll down to `Frameworks, Libraries, and Embedded Content`.
 
