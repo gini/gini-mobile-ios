@@ -55,33 +55,7 @@ struct GiniZoomableImageView: UIViewRepresentable {
         }
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, UIScrollViewDelegate {
-        let parent: GiniZoomableImageView
-        
-        init(_ parent: GiniZoomableImageView) {
-            self.parent = parent
-        }
-        
-        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-            return (scrollView as? GiniZoomableScrollView)?.imageView
-        }
-        
-        func scrollViewDidZoom(_ scrollView: UIScrollView) {
-            guard let zoomableScrollView = scrollView as? GiniZoomableScrollView,
-                  let imageView = zoomableScrollView.imageView else { return }
-            
-            /// Center imageView when zoomed
-            let offsetX = max((scrollView.bounds.width - scrollView.contentSize.width) * 0.5, 0)
-            let offsetY = max((scrollView.bounds.height - scrollView.contentSize.height) * 0.5, 0)
-            
-            imageView.center = CGPoint(
-                x: scrollView.contentSize.width * 0.5 + offsetX,
-                y: scrollView.contentSize.height * 0.5 + offsetY
-            )
-        }
+    func makeCoordinator() -> GiniZoomableImageViewCoordinator {
+        GiniZoomableImageViewCoordinator(self)
     }
 }
