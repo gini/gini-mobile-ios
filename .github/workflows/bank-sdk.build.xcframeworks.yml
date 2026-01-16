@@ -7,134 +7,29 @@ on:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
   workflow_dispatch:
-  workflow_call:
-    secrets:
-      BUILD_CERTIFICATE_BASE64:
-        required: true
-      P12_PASSWORD:
-        required: true
-      BUILD_PROVISION_PROFILE_BASE64:
-        required: true
-      BUILD_PROVISION_PROFILE_EXTENSION_BASE64:
-        required: true
-      KEYCHAIN_PASSWORD:
-        required: true
+
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
-          xcode-version: '14.3.1'
+          xcode-version: '16.4'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Mint
-        uses: fabasoad/setup-mint-action@166083115b0dd726a76c5f9c12fab825a1c7c438 # v1.4.0
-
-      - name: Setup swift-create-xcframework 
-        run: |
-          /usr/local/bin/brew install mint
-          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
-
-      - name: GiniBankSDKPinning Project File
-        run: |
-          cd BankSDK/GiniBankSDKPinning
-          /usr/local/bin/mint run swift-create-xcframework
-
-      - name: setup ruby
+      - name: Setup Ruby
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
-    
-      - name: Add resources to BankSDK target for generated Xcode project
-        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-        with:
-          lane: 'add_resources'
-          options: >
-            { 
-              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
-              "resource_name": "BankSDKResources",
-              "target_name": "GiniBankSDK",
-              "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
-              "ci": "true"
-            }
-        
-      - name: Add resources to CaptureSDK target for generated Xcode project
-        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-        with:
-          lane: 'add_resources'
-          options: >
-            { 
-              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
-              "resource_name": "CaptureSDKResources",
-              "target_name": "GiniCaptureSDK",
-              "resources_path": "../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources",
-              "ci": "true"
-            }
-          
-      - name: Archiving project
-        run: |
-          xcodebuild archive -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
-          -scheme GiniBankSDKPinning \
-          -sdk iphonesimulator \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination="iOS" \
-          -archivePath "iphonesimulatorPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 
-          xcodebuild clean archive -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
-          -scheme GiniBankSDKPinning -sdk iphoneos \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination generic/platform=iOS \
-          -archivePath "iphoneosPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-  
-      - name: Generate XCFrameworks
+      - name: Archiving project and creating XCFrameworks
         run: |
-         xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniUtilites.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniUtilites.framework \
-          -output GiniUtilites.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
-          -output GiniBankAPILibrary.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework \
-          -output GiniCaptureSDK.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework \
-          -output GiniBankSDK.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework \
-          -output GiniBankAPILibraryPinning.xcframework && \
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework \
-          -output GiniCaptureSDKPinning.xcframework && \
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework \
-          -output GiniBankSDKPinning.xcframework && \
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
-          -output TrustKit.xcframework
-      
+          ./build-GiniBankSDK-XCFrameworks.sh
+
       - name: Download profiles
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
@@ -145,32 +40,23 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         with:
           lane: 'download_profiles'
-
+      
       - name: Sign the XCFrameworks
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           # sign xcframeworks
-
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework && \
           codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
           codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibraryPinning.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDKPinning.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDKPinning.xcframework
+          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
+          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
 
-      - name: archive frameworks GiniBankAPILibrary
+      - name: Archive frameworks
         uses: actions/upload-artifact@v4
         with:
           name: GiniBankSDKFramework
           path: |
-            GiniUtilites.xcframework
             GiniBankAPILibrary.xcframework
             GiniBankSDK.xcframework
             GiniCaptureSDK.xcframework
-            TrustKit.xcframework
-            GiniBankSDKPinning.xcframework
-            GiniCaptureSDKPinning.xcframework
-            GiniBankAPILibraryPinning.xcframework
-
+            GiniUtilites.xcframework
