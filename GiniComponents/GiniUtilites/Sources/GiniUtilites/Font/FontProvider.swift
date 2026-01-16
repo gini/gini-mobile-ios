@@ -40,9 +40,9 @@ public final class FontProvider {
      - returns: A `SwiftUI.Font` created from the associated `UIFont`.
      */
     public func font(for textStyle: UIFont.TextStyle) -> Font {
-        let uiFont: UIFont = font(for: textStyle)
+        let giniFont: UIFont = font(for: textStyle)
         
-        return Font(uiFont: uiFont)
+        return Font(giniFont: giniFont)
     }
 }
 
