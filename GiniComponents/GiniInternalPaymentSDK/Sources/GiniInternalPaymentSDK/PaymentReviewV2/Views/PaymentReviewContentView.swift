@@ -20,14 +20,7 @@ public struct PaymentReviewContentView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                if viewModel.isImagesLoading {
-                    ProgressView()
-                        .frame(height: 400)
-                } else if !viewModel.cellViewModels.isEmpty {
-                    let images = viewModel.cellViewModels.compactMap { $0.preview }
-                    GiniCarouselView(images: images)
-                        .frame(height: 500)
-                }
+                documentPreviewContent
             }
             .padding()
         }
@@ -39,5 +32,31 @@ public struct PaymentReviewContentView: View {
                 await viewModel.fetchImages()
             }
         }
+    }
+    
+    // MARK: - Private Views
+    
+    @ViewBuilder
+    private var documentPreviewContent: some View {
+        VStack(spacing: 16) {
+            if viewModel.isImagesLoading {
+                showLoader()
+            } else if !viewModel.cellViewModels.isEmpty {
+                showPreviewImageCarousel()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func showLoader() -> some View {
+        ProgressView()
+            .frame(height: 400)
+    }
+    
+    @ViewBuilder
+    private func showPreviewImageCarousel() -> some View {
+        let images = viewModel.cellViewModels.compactMap { $0.preview }
+        GiniCarouselView(images: images)
+            .frame(height: 500)
     }
 }
