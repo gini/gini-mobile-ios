@@ -49,36 +49,32 @@ struct GiniTextFieldStyle: TextFieldStyle {
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
-        if #available(iOS 15.0, *) {
-            VStack(spacing: 0) {
-                HStack {
-                    Text(title)
-                        .foregroundColor(Color(normalConfiguration.placeholderForegroundColor))
-                    
-                    if let lockedIcon {
-                        lockedIcon
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                    }
-                }
+        VStack(spacing: 0) {
+            HStack {
+                Text(title)
+                    .foregroundColor(Color(currentConfiguration.placeholderForegroundColor))
                 
-                configuration
-                    .foregroundColor(Color(normalConfiguration.textColor))
-                    .font(Font(normalConfiguration.textFont))
+                if let lockedIcon {
+                    lockedIcon
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                }
             }
-            .padding(.horizontal, 8.0)
-            .frame(height: 56.0)
-            .background(Color(normalConfiguration.backgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: normalConfiguration.cornerRadius,
-                                        style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: normalConfiguration.cornerRadius,
-                                 style: .continuous)
-                .stroke(Color(normalConfiguration.borderColor),
-                        lineWidth: normalConfiguration.borderWidth)
-            }
-        } else {
-            // Fallback on earlier versions
+            
+            configuration
+                .foregroundColor(Color(currentConfiguration.textColor))
+                .font(Font(currentConfiguration.textFont))
+        }
+        .padding(.horizontal, 8.0)
+        .frame(height: 56.0)
+        .background(Color(currentConfiguration.backgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius,
+                                    style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius,
+                             style: .continuous)
+            .stroke(Color(currentConfiguration.borderColor),
+                    lineWidth: currentConfiguration.borderWidth)
         }
     }
 }
