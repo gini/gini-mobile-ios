@@ -10,6 +10,13 @@ import GiniUtilites
 
 struct PaymentReviewPaymentInformationView: View {
     
+    private enum Field {
+        case recipient
+        case iban
+        case amount
+        case paymentPurpose
+    }
+    
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
     
@@ -22,6 +29,13 @@ struct PaymentReviewPaymentInformationView: View {
     
     @State private var amountToPay: Price
     @State private var showBanner: Bool = true
+    
+    @FocusState private var focusedField: Field?
+    
+    @State private var recipientHasError: Bool = false
+    @State private var ibanHasError: Bool = false
+    @State private var amountHasError: Bool = false
+    @State private var paymentPurposeHasError: Bool = false
     
     init(viewModel: PaymentReviewContainerViewModel,
          onBankSelectionTapped: @escaping () -> Void,
@@ -49,20 +63,30 @@ struct PaymentReviewPaymentInformationView: View {
             
             VStack(spacing: 8.0) {
                 let textFieldConfiguration = viewModel.model.defaultStyleInputFieldConfiguration
+                let focusedTextFieldConfiguration = viewModel.model.selectionStyleInputFieldConfiguration
+                let errorTextFieldConfiguration = viewModel.model.errorStyleInputFieldConfiguration
                 let viewModelStrings = viewModel.model.strings
                 
-                TextField("", text: $recipient)
+                TextField("", text: $recipient, onEditingChanged: { isBegin in
+                    recipientHasError = isBegin ? false : !isRecipientValid()
+                })
+                    .focused($focusedField, equals: .recipient)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
+                                                       state: fieldState(for: .recipient, hasError: recipientHasError),
                                                        normalConfiguration: textFieldConfiguration,
-                                                       focusedConfiguration: textFieldConfiguration,
-                                                       errorConfiguration: textFieldConfiguration))
+                                                       focusedConfiguration: focusedTextFieldConfiguration,
+                                                       errorConfiguration: errorTextFieldConfiguration))
                 
                 HStack(spacing: 8.0) {
-                    TextField("", text: $iban)
+                    TextField("", text: $iban, onEditingChanged: { isBegin in
+                        ibanHasError = isBegin ? false : !isIBANValid()
+                    })
+                        .focused($focusedField, equals: .iban)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
+                                                           state: fieldState(for: .iban, hasError: ibanHasError),
                                                            normalConfiguration: textFieldConfiguration,
-                                                           focusedConfiguration: textFieldConfiguration,
-                                                          errorConfiguration: textFieldConfiguration))
+                                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                                          errorConfiguration: errorTextFieldConfiguration))
                     
                     TextField("", text: $amount,
                               onEditingChanged: { isBegin in
@@ -80,23 +104,31 @@ struct PaymentReviewPaymentInformationView: View {
                                     amount = ""
                                 }
                             }
+                            
+                            amountHasError = !isAmountValid()
                         }
                     })
+                    .focused($focusedField, equals: .amount)
                     .onChange(of: amount) { newValue in
                         adjustAmountValue(updatedText: newValue)
                     }
                         .keyboardType(.decimalPad)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
+                                                           state: fieldState(for: .amount, hasError: amountHasError),
                                                            normalConfiguration: textFieldConfiguration,
-                                                          focusedConfiguration: textFieldConfiguration,
-                                                          errorConfiguration: textFieldConfiguration))
+                                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                                           errorConfiguration: errorTextFieldConfiguration))
                 }
                 
-                TextField("", text: $paymentPurpose)
+                TextField("", text: $paymentPurpose, onEditingChanged: { isBegin in
+                    paymentPurposeHasError = isBegin ? false : !isPaymentPurposeValid()
+                })
+                    .focused($focusedField, equals: .paymentPurpose)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
+                                                       state: fieldState(for: .paymentPurpose, hasError: paymentPurposeHasError),
                                                        normalConfiguration: textFieldConfiguration,
-                                                      focusedConfiguration: textFieldConfiguration,
-                                                      errorConfiguration: textFieldConfiguration))
+                                                      focusedConfiguration: focusedTextFieldConfiguration,
+                                                      errorConfiguration: errorTextFieldConfiguration))
                 
                 if #available(iOS 15.0, *) {
                     HStack(spacing: 8.0) {
@@ -136,7 +168,9 @@ struct PaymentReviewPaymentInformationView: View {
                         if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
                            let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
                             Button(action: {
-                                onPayTapped(buildPaymentInfo())
+                                if validateFields() {
+                                    onPayTapped(buildPaymentInfo())
+                                }
                             }) {
                                 Text(viewModel.model.strings.payInvoiceLabelText)
                                     .frame(maxWidth: .infinity)
@@ -213,6 +247,8 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func adjustAmountValue(updatedText: String) {
+        amountHasError = false
+        
         // Limit length to 7 digits
         let onlyDigits = String(updatedText
                                     .trimmingCharacters(in: .whitespaces)
@@ -227,5 +263,64 @@ struct PaymentReviewPaymentInformationView: View {
                 amountToPay.value = decimalWithFraction
             }
         }
+    }
+    
+    private func fieldState(for field: Field, hasError: Bool) -> GiniTextFieldState {
+        if hasError {
+            return .error
+        } else if focusedField == field {
+            return .focused
+        } else {
+            return .normal
+        }
+    }
+    
+    private func validateFields() -> Bool {
+        var isValid = true
+        
+        recipientHasError = false
+        ibanHasError = false
+        amountHasError = false
+        paymentPurposeHasError = false
+        
+        isValid = isRecipientValid() && isIBANValid() && isAmountValid() && isPaymentPurposeValid()
+        
+        return isValid
+    }
+    
+    private func isRecipientValid() -> Bool {
+        guard !recipient.trimmingCharacters(in: .whitespaces).isEmpty else {
+            recipientHasError = true
+            return false
+        }
+        
+        return true
+    }
+    
+    private func isIBANValid() -> Bool {
+        guard !iban.trimmingCharacters(in: .whitespaces).isEmpty else {
+            ibanHasError = true
+            return false
+        }
+        
+        return true
+    }
+    
+    private func isAmountValid() -> Bool {
+        if amount.trimmingCharacters(in: .whitespaces).isEmpty || amountToPay.value <= 0 {
+            amountHasError = true
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    private func isPaymentPurposeValid() -> Bool {
+        guard !paymentPurpose.trimmingCharacters(in: .whitespaces).isEmpty else {
+            paymentPurposeHasError = true
+            return false
+        }
+        
+        return true
     }
 }
