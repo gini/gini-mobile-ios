@@ -37,6 +37,11 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var amountHasError: Bool = false
     @State private var paymentPurposeHasError: Bool = false
     
+    @State private var recipientErrorMessage: String?
+    @State private var ibanErrorMessage: String?
+    @State private var amountErrorMessage: String?
+    @State private var paymentPurposeErrorMessage: String?
+    
     init(viewModel: PaymentReviewContainerViewModel,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
@@ -73,6 +78,7 @@ struct PaymentReviewPaymentInformationView: View {
                     .focused($focusedField, equals: .recipient)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
                                                        state: fieldState(for: .recipient, hasError: recipientHasError),
+                                                       errorMessage: recipientErrorMessage,
                                                        normalConfiguration: textFieldConfiguration,
                                                        focusedConfiguration: focusedTextFieldConfiguration,
                                                        errorConfiguration: errorTextFieldConfiguration))
@@ -84,6 +90,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .focused($focusedField, equals: .iban)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
                                                            state: fieldState(for: .iban, hasError: ibanHasError),
+                                                           errorMessage: ibanErrorMessage,
                                                            normalConfiguration: textFieldConfiguration,
                                                            focusedConfiguration: focusedTextFieldConfiguration,
                                                           errorConfiguration: errorTextFieldConfiguration))
@@ -115,6 +122,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .keyboardType(.decimalPad)
                         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
                                                            state: fieldState(for: .amount, hasError: amountHasError),
+                                                           errorMessage: amountErrorMessage,
                                                            normalConfiguration: textFieldConfiguration,
                                                            focusedConfiguration: focusedTextFieldConfiguration,
                                                            errorConfiguration: errorTextFieldConfiguration))
@@ -126,6 +134,7 @@ struct PaymentReviewPaymentInformationView: View {
                     .focused($focusedField, equals: .paymentPurpose)
                     .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
                                                        state: fieldState(for: .paymentPurpose, hasError: paymentPurposeHasError),
+                                                       errorMessage: paymentPurposeErrorMessage,
                                                        normalConfiguration: textFieldConfiguration,
                                                       focusedConfiguration: focusedTextFieldConfiguration,
                                                       errorConfiguration: errorTextFieldConfiguration))
@@ -291,6 +300,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func isRecipientValid() -> Bool {
         guard !recipient.trimmingCharacters(in: .whitespaces).isEmpty else {
             recipientHasError = true
+            recipientErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         }
         
@@ -300,6 +310,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func isIBANValid() -> Bool {
         guard !iban.trimmingCharacters(in: .whitespaces).isEmpty else {
             ibanHasError = true
+            ibanErrorMessage = viewModel.model.strings.ibanCheckErrorMessage
             return false
         }
         
@@ -309,6 +320,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func isAmountValid() -> Bool {
         if amount.trimmingCharacters(in: .whitespaces).isEmpty || amountToPay.value <= 0 {
             amountHasError = true
+            amountErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         } else {
             return true
@@ -318,6 +330,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func isPaymentPurposeValid() -> Bool {
         guard !paymentPurpose.trimmingCharacters(in: .whitespaces).isEmpty else {
             paymentPurposeHasError = true
+            paymentPurposeErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         }
         
