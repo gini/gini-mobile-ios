@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
@@ -35,6 +36,16 @@ public class GiniColor: NSObject {
         return UIColor { traitCollection -> UIColor in
             return traitCollection.userInterfaceStyle == .dark ? self.darkModeColor : self.lightModeColor
         }
+    }
+    
+    /**
+     Converts the `GiniColor` to a SwiftUI `Color`, maintaining the light/dark mode support
+     based on the current user interface style.
+     
+     - returns: A SwiftUI `Color` that adapts to light and dark mode.
+     */
+    public func swiftUIColor() -> Color {
+        Color(self.uiColor())
     }
 }
 

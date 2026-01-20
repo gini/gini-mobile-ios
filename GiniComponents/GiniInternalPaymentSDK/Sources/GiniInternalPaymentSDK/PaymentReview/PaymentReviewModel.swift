@@ -60,7 +60,7 @@ public protocol PaymentReviewActionProtocol {
 /**
  View model class for review screen
  */
-public class PaymentReviewModel: NSObject {
+public class PaymentReviewModel {
 
     var onPreviewImagesFetched: (() -> Void)?
     var reloadCollectionViewClosure: (() -> Void)?
@@ -88,7 +88,7 @@ public class PaymentReviewModel: NSObject {
     public var documentId: String?
     var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
-    private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
+    var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
             self.reloadCollectionViewClosure?()
         }
@@ -238,7 +238,7 @@ public class PaymentReviewModel: NSObject {
                 dispatchGroup.enter()
 
                 self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
-                    if let cellModel = self?.proccessPreview(result) {
+                    if let cellModel = self?.processPreview(result) {
                         vms.append(cellModel)
                     }
                     dispatchSemaphore.signal()
@@ -256,8 +256,73 @@ public class PaymentReviewModel: NSObject {
             }
         }
     }
+    
+    /**
+    Async/await variant of ``fetchImages()`` tailored for SwiftUI and other async contexts.
+    Use this version from SwiftUI (e.g. inside a `Task` or `.task` modifier) or when you are
+    already in an async context and want structured concurrency instead of completion handlers.
+    The synchronous ``fetchImages()`` completion-handler-based version should be used
+    from legacy, non-async code.
+     
+    This method:
+     - Loads all page previews concurrently using a task group.
+     - Updates ``isImagesLoading`` and `cellViewModels`
+     - Invokes ``onPreviewImagesFetched`` once all previews have been processed.
+    */
+    func fetchImages() async {
+        guard let document, let documentId else { return }
+        
+        isImagesLoading = true
+        
+        let viewModels = await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
+            for page in 1 ... document.pageCount {
+                group.addTask {
+                    await self.buildCellViewModel(documentId: documentId, pageNumber: page)
+                }
+            }
+            
+            // Collect all the non nil results.
+            return await group.reduce(into: [PageCollectionCellViewModel]()) { result, cellViewModel in
+                guard let cellViewModel else { return }
+                result.append(cellViewModel)
+            }
+        }
+        
+        isImagesLoading = false
+        cellViewModels.append(contentsOf: viewModels)
+        onPreviewImagesFetched?()
+    }
+    
+    private func buildCellViewModel(documentId: String, pageNumber: Int) async -> PageCollectionCellViewModel? {
+        do {
+            let data = try await fetchPreview(for: documentId, pageNumber: pageNumber)
+            
+            return processPreview(data)
+        } catch {
+            return nil
+        }
+    }
+    
+    private func fetchPreview(for documentId: String, pageNumber: Int) async throws -> Data {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.delegate?.preview(for: documentId, pageNumber: pageNumber) { result in
+                switch result {
+                case .success(let data):
+                    continuation.resume(returning: data)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
 
-    private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
+    private func processPreview(_ data: Data) -> PageCollectionCellViewModel? {
+        guard let image = UIImage(data: data) else { return nil }
+        
+        return createCellViewModel(previewImage: image)
+    }
+    
+    private func processPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
         switch result {
         case let .success(dataImage):
             if let image = UIImage(data: dataImage) {
