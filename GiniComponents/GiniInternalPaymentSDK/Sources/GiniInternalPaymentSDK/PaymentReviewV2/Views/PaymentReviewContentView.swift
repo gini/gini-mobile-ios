@@ -10,6 +10,7 @@ public struct PaymentReviewContentView: View {
     
     @ObservedObject private var viewModel: PaymentReviewObservableModel
     @State private var hasAppeared = false
+    @State private var showBottomSheet = true
     
     /// The init method is internal to prevent users from creating instances of this view directly
     /// outside of GiniInternalPaymentSDK.
@@ -18,19 +19,26 @@ public struct PaymentReviewContentView: View {
     }
     
     public var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
+        ZStack {
+            ScrollView {
                 documentPreviewContent
+                    .padding()
+                    .padding(.bottom, 420)
             }
-            .padding()
+            .onAppear {
+                guard !hasAppeared else { return }
+                hasAppeared = true
+                
+                Task {
+                    await viewModel.fetchImages()
+                }
+            }
         }
-        .onAppear {
-            guard !hasAppeared else { return }
-            hasAppeared = true
+        .sheet(isPresented: $showBottomSheet) {
             
-            Task {
-                await viewModel.fetchImages()
-            }
+        } content: {
+            PaymentReviewPaymentInformationView()
+                .modifier(GiniBottomSheetModifier())
         }
     }
     
@@ -57,6 +65,6 @@ public struct PaymentReviewContentView: View {
     private func showPreviewImageCarousel() -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
         GiniCarouselView(images: images)
-            .frame(height: 500)
+            .frame(height: 420)
     }
 }
