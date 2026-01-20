@@ -341,10 +341,8 @@ public struct DataForReview {
     }
     
     
-    private func handleFetchedDocument(
-        result: Result<Document, GiniError>,
-        completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void
-    ) {
+    private func handleFetchedDocument(result: Result<Document, GiniError>,
+                                       completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         switch result {
         case let .success(document):
             fetchExtractions(for: document, completion: completion)
@@ -356,10 +354,8 @@ public struct DataForReview {
         }
     }
     
-    private func fetchExtractions(
-        for document: Document,
-        completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void
-    ) {
+    private func fetchExtractions(for document: Document,
+                                  completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
             DispatchQueue.main.async { [weak self] in
                 self?.handlePaymentExtractionResult(result, completion: completion)
