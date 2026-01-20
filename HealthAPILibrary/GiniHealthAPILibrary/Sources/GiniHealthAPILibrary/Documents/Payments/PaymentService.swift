@@ -340,10 +340,8 @@ extension PaymentService {
         })
     }
     
-    private func handleProviderResponse(
-        _ result: Result<PaymentProviderResponse, GiniError>,
-        completion: @escaping CompletionResult<PaymentProvider>
-    ) {
+    private func handleProviderResponse(_ result: Result<PaymentProviderResponse, GiniError>,
+                                        completion: @escaping CompletionResult<PaymentProvider>) {
         switch result {
         case let .success(providerResponse):
             self.file(urlString: providerResponse.iconLocation) { result in

@@ -156,7 +156,9 @@ fileprivate extension SessionManager {
         }
     }
 
-    private func handleDataResource(_ resource: UserResource<String>, for user: User, completion: @escaping CompletionResult<User>) {
+    private func handleDataResource(_ resource: UserResource<String>,
+                                    for user: User,
+                                    completion: @escaping CompletionResult<User>) {
         self.data(resource: resource) { result in
             switch result {
             case .success:
