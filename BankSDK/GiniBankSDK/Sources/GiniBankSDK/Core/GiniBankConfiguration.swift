@@ -41,9 +41,9 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Enable/disable the bottom navigation bar.
+     No longer supported. Setting this property has no effect.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    internal var bottomNavigationBarEnabled: Bool = false
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -463,7 +463,6 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.customOnboardingPages = self.customOnboardingPages
 
-        configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
         configuration.noResultsNavigationBarBottomAdapter = self.noResultsNavigationBarBottomAdapter
@@ -546,7 +545,6 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
-        giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
 
         giniBankConfiguration.primaryButtonConfiguration = configuration.primaryButtonConfiguration
         giniBankConfiguration.secondaryButtonConfiguration = configuration.secondaryButtonConfiguration
