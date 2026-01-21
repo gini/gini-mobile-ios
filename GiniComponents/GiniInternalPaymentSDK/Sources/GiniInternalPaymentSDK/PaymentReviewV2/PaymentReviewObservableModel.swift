@@ -15,8 +15,6 @@ final class PaymentReviewObservableModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedPaymentProvider: PaymentProvider
     
-    lazy var paymentReviewPaymentInformationView: PaymentReviewPaymentInformationView = buildPaymentInformationView()
-    
     var document: Document? {
         model.document
     }
@@ -51,9 +49,10 @@ final class PaymentReviewObservableModel: ObservableObject {
             createPaymentRequestForOpenWith(paymentInfo: paymentInfo)
         }
     }
-    
-    private func buildPaymentInformationView() -> PaymentReviewPaymentInformationView {
+
+    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
         PaymentReviewPaymentInformationView(viewModel: model.paymentReviewContainerViewModel(),
+                                            contentHeight: contentHeight,
                                             onBankSelectionTapped: { [weak self] in
             self?.model.openBankSelectionBottomSheet()
         },
