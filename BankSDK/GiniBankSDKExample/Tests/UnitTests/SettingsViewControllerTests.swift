@@ -21,7 +21,6 @@ final class SettingsViewModelTests: XCTestCase {
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = false
-		configuration.bottomNavigationBarEnabled = false
 		configuration.helpNavigationBarBottomAdapter = nil
 		configuration.cameraNavigationBarBottomAdapter = nil
 		configuration.reviewNavigationBarBottomAdapter = nil
