@@ -11,6 +11,7 @@ public struct PaymentReviewContentView: View {
     @ObservedObject private var viewModel: PaymentReviewObservableModel
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
+    @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
     
     /// The init method is internal to prevent users from creating instances of this view directly
     /// outside of GiniInternalPaymentSDK.
@@ -23,7 +24,7 @@ public struct PaymentReviewContentView: View {
             ScrollView {
                 documentPreviewContent
                     .padding()
-                    .padding(.bottom, 420)
+                    .padding(.bottom, bottomSheetHeight - Constants.bottomSheetOverlap)
             }
             .onAppear {
                 guard !hasAppeared else { return }
@@ -37,8 +38,8 @@ public struct PaymentReviewContentView: View {
         .sheet(isPresented: $showBottomSheet) {
             
         } content: {
-            viewModel.paymentReviewPaymentInformationView
-                .modifier(GiniBottomSheetModifier())
+            viewModel.paymentReviewPaymentInformationView(contentHeight: $bottomSheetHeight)
+                .modifier(GiniBottomSheetModifier(contentHeight: bottomSheetHeight))
         }
     }
     
@@ -65,6 +66,12 @@ public struct PaymentReviewContentView: View {
     private func showPreviewImageCarousel() -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
         GiniCarouselView(images: images)
-            .frame(height: 420)
+            .frame(height: 500)
+    }
+    
+    private struct Constants {
+        
+        static let bottomSheetDefaultHeight: CGFloat = 400
+        static let bottomSheetOverlap: CGFloat = 20
     }
 }

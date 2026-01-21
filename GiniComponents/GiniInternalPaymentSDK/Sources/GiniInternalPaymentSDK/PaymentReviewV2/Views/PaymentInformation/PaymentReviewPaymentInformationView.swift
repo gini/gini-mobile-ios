@@ -42,11 +42,15 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var amountErrorMessage: String?
     @State private var paymentPurposeErrorMessage: String?
     
+    @Binding var contentHeight: CGFloat
+    
     init(viewModel: PaymentReviewContainerViewModel,
+         contentHeight: Binding<CGFloat>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
         let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
         self.viewModel = observableModel
+        self._contentHeight = contentHeight
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
         self.amountToPay = Price(value: 0, currencyCode: "€")
@@ -139,65 +143,73 @@ struct PaymentReviewPaymentInformationView: View {
                                                       focusedConfiguration: focusedTextFieldConfiguration,
                                                       errorConfiguration: errorTextFieldConfiguration))
                 
-                if #available(iOS 15.0, *) {
-                    HStack(spacing: 8.0) {
-                        Button(action: {
-                            onBankSelectionTapped()
-                        }) {
-                            HStack(spacing: 12.0) {
-                                if let uiImage = UIImage(data: viewModel.selectedPaymentProvider.iconData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 36, height: 36)
-                                        .cornerRadius(6.0)
-                                }
-                                
-                                if let chevronImage = viewModel.model.configuration.chevronDownIcon,
-                                    let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
-                                    Image(uiImage: chevronImage)
-                                        .resizable()
-                                        .renderingMode(.template)
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .tint(Color(chevronDownIconColor))
-                                }
+                HStack(spacing: 8.0) {
+                    Button(action: {
+                        onBankSelectionTapped()
+                    }) {
+                        HStack(spacing: 12.0) {
+                            if let uiImage = UIImage(data: viewModel.selectedPaymentProvider.iconData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 36, height: 36)
+                                    .cornerRadius(6.0)
                             }
-                            .frame(width: 96.0, height: 36.0)
-                            .padding(.vertical, 10.0)
-                        }
-                        .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
-                        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
-                                .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
-                                        lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
-                        )
-                        
-                        if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
-                           let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
-                            Button(action: {
-                                if validateFields() {
-                                    onPayTapped(buildPaymentInfo())
-                                }
-                            }) {
-                                Text(viewModel.model.strings.payInvoiceLabelText)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
+                            
+                            if let chevronImage = viewModel.model.configuration.chevronDownIcon,
+                                let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
+                                Image(uiImage: chevronImage)
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24, height: 24)
+                                    .tint(Color(chevronDownIconColor))
                             }
-                            .foregroundColor(Color(selectedPaymentProviderTextColor))
-                            .background(Color(selectedPaymentProviderBackgroundColor))
-                            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
-                            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
-                            .frame(height: 56.0)
                         }
+                        .frame(width: 96.0, height: 36.0)
+                        .padding(.vertical, 10.0)
                     }
-                } else {
-                    // Fallback on earlier versions
+                    .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
+                    .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
+                            .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
+                                    lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
+                    )
+                    
+                    if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
+                       let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
+                        Button(action: {
+                            if validateFields() {
+                                onPayTapped(buildPaymentInfo())
+                            }
+                        }) {
+                            Text(viewModel.model.strings.payInvoiceLabelText)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .foregroundColor(Color(selectedPaymentProviderTextColor))
+                        .background(Color(selectedPaymentProviderBackgroundColor))
+                        .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+                        .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
+                        .frame(height: 56.0)
+                    }
                 }
             }
             .padding(.horizontal, 16.0)
+            .padding(.top, 32.0)
         }
+        .background(
+            GeometryReader { geometry in
+                Color.clear.preference(key: GiniViewHeightPreferenceKey.self,
+                                        value: geometry.size.height)
+            }
+        )
+        .onPreferenceChange(GiniViewHeightPreferenceKey.self, perform: { newHeight in
+            DispatchQueue.main.async {
+                contentHeight = newHeight
+            }
+        })
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.model.configuration.popupAnimationDuration) {
                 withAnimation(.easeInOut(duration: 0.3)) {
