@@ -8,20 +8,34 @@ import SwiftUI
 
 struct GiniBottomSheetModifier: ViewModifier {
     
+    private let contentHeight: CGFloat
+    
+    init(contentHeight: CGFloat) {
+        self.contentHeight = max(contentHeight, Constants.minimumHeight)
+    }
+    
     func body(content: Content) -> some View {
         if #available(iOS 16.4, *) {
             content
-                .presentationDetents([.fraction(0.45)])
+                .presentationDetents([.height(contentHeight)])
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled(true)
-                .presentationBackgroundInteraction(.enabled)
+                .presentationBackgroundInteraction(.enabled(upThrough: .height(contentHeight)))
+        } else if #available(iOS 16.0, *) {
+            content
+                .presentationDetents([.height(contentHeight)])
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled(true)
+        } else if #available(iOS 15.0, *) {
+            content
+                .interactiveDismissDisabled(true)
         } else {
-            if #available(iOS 15.0, *) {
-                content
-                    .interactiveDismissDisabled(true)
-            } else {
-                content
-            }
+            content
         }
+    }
+    
+    private struct Constants {
+        
+        static let minimumHeight: CGFloat = 300
     }
 }
