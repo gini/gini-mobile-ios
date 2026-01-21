@@ -43,7 +43,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      No longer supported. Setting this property has no effect.
      */
-    internal var bottomNavigationBarEnabled: Bool = false
+    internal let bottomNavigationBarEnabled: Bool = false
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
