@@ -252,9 +252,9 @@ import GiniUtilites
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * Enable/disable the bottom navigation bar.
+      * No longer supported. Setting this property has no effect.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    internal var bottomNavigationBarEnabled: Bool = false
 
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
