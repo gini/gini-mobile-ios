@@ -390,46 +390,6 @@ extension SettingsViewModelTests {
 		}
 	}
 	
-	// MARK: - Bottom Naviagtion Bar
-	
-	func testBottomNaviagtionBarSwitchOn() {
-		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
-			XCTFail("`bottomNavigationBar` option not found in sectionData")
-			return
-		}
-		
-		if case .switchOption(var data) = contentData[index.section].items[index.row] {
-			guard data.type == .bottomNavigationBar else {
-				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
-				return
-			}
-			data.isSwitchOn = true
-			configuration.bottomNavigationBarEnabled = data.isSwitchOn
-			
-			XCTAssertTrue(configuration.bottomNavigationBarEnabled,
-						  "bottomNaviagtionBar should be enabled in the gini configuration")
-		}
-	}
-	
-	func testBottomNaviagtionBarSwitchOff() {
-		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
-			XCTFail("`bottomNavigationBar` option not found in sectionData")
-			return
-		}
-		
-		if case .switchOption(var data) = contentData[index.section].items[index.row] {
-			guard data.type == .bottomNavigationBar else {
-				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
-				return
-			}
-			data.isSwitchOn = false
-			configuration.bottomNavigationBarEnabled = data.isSwitchOn
-			
-			XCTAssertFalse(configuration.bottomNavigationBarEnabled,
-						   "bottomNavigationBar should not be enabled in the gini configuration")
-		}
-	}
-	
 	// MARK: - HelpNavigationBarBottomAdapter
 	
 	func testHelpCustomNavigationBarBottomSwitchOff() {

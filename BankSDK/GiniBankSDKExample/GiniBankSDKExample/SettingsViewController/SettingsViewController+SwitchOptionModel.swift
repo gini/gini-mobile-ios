@@ -17,7 +17,6 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
         case customResourceProvider
-		case bottomNavigationBar
 		case helpNavigationBarBottomAdapter
 		case cameraNavigationBarBottomAdapter
         case errorNavigationBarBottomAdapter
@@ -79,8 +78,6 @@ struct SwitchOptionModel {
 				return "Flash default state"
             case .customResourceProvider:
                 return "Use custom resource provider"
-			case .bottomNavigationBar:
-				return "Bottom navigation bar"
 			case .helpNavigationBarBottomAdapter:
 				return "Help screens custom bottom navigation bar"
 			case .cameraNavigationBarBottomAdapter:

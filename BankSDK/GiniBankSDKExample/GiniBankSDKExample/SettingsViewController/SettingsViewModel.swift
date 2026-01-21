@@ -137,8 +137,6 @@ final class SettingsViewModel {
 
     private func setupBottomNavBarsSection() -> SettingsSection {
         var bottomNavBarsSection = SettingsSection(title: "Bottom Navigation Bars", items: [])
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .bottomNavigationBar,
-                                                                    isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
         bottomNavBarsSection.items.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
                                                                     isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
         bottomNavBarsSection.items.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
@@ -290,8 +288,6 @@ final class SettingsViewModel {
             giniConfiguration.flashOnByDefault = data.isSwitchOn
         case .customResourceProvider:
             giniConfiguration.customResourceProvider = data.isSwitchOn ? GiniBankCustomResourceProvider() : nil
-        case .bottomNavigationBar:
-            giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
         case .helpNavigationBarBottomAdapter:
             giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .cameraNavigationBarBottomAdapter:
