@@ -52,7 +52,6 @@ final class SessionManagerMock: SessionManagerProtocol {
         // This method will remain empty; mock implementation does not perform login
     }
     
-    //swiftlint:disable all
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
