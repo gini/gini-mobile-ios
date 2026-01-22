@@ -66,7 +66,7 @@ struct PaymentReviewPaymentInformationView: View {
                             amount = amountToPay.stringWithoutSymbol ?? ""
                         } else {
                             if !amount.isEmpty,
-                                let decimalAmount = amount.decimal() {
+                               let decimalAmount = amount.decimal() {
                                 amountToPay.value = decimalAmount
                                 
                                 if decimalAmount > 0,
@@ -81,9 +81,9 @@ struct PaymentReviewPaymentInformationView: View {
                     .onChange(of: amount) { newValue in
                         adjustAmountValue(updatedText: newValue)
                     }
-                        .keyboardType(.decimalPad)
-                        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
-                                                           configuration: textFieldConfiguration))
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
+                                                       configuration: textFieldConfiguration))
                 }
                 
                 TextField("", text: $paymentPurpose)
@@ -105,7 +105,7 @@ struct PaymentReviewPaymentInformationView: View {
                                 }
                                 
                                 if let chevronImage = viewModel.model.configuration.chevronDownIcon,
-                                    let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
+                                   let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
                                     Image(uiImage: chevronImage)
                                         .resizable()
                                         .renderingMode(.template)
@@ -174,7 +174,7 @@ struct PaymentReviewPaymentInformationView: View {
         paymentPurpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? ""
         
         if let amountString = viewModel.extractions.first(where: { $0.name == "amount_to_pay" })?.value,
-            let amountToPay = Price(extractionString: amountString),
+           let amountToPay = Price(extractionString: amountString),
            let amountToPayString = amountToPay.string {
             self.amountToPay = amountToPay
             amount = amountToPayString
@@ -187,7 +187,7 @@ struct PaymentReviewPaymentInformationView: View {
         paymentPurpose = paymentInfo.purpose
         
         if let amountToPay = Price(extractionString: paymentInfo.amount),
-            let amountToPayText = amountToPay.string {
+           let amountToPayText = amountToPay.string {
             self.amountToPay = amountToPay
             amount = amountToPayText
         }
@@ -205,19 +205,10 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func adjustAmountValue(updatedText: String) {
-        // Limit length to 7 digits
-        let onlyDigits = String(updatedText
-                                    .trimmingCharacters(in: .whitespaces)
-                                    .filter { c in c != "," && c != "."}
-                                    .prefix(7))
-
-        if let decimal = Decimal(string: onlyDigits) {
-            let decimalWithFraction = decimal / 100
-
-            if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                amount = newAmount
-                amountToPay.value = decimalWithFraction
-            }
+        if let newPrice = updatedText.toPrice(maxDigitsLength: 7),
+           let newAmount = newPrice.stringWithoutSymbol {
+            amount = newAmount
+            amountToPay.value = newPrice.value
         }
     }
 }
