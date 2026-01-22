@@ -117,11 +117,11 @@ final class PaymentReviewObservableModel: ObservableObject {
                                         value: paymentInfo.iban,
                                         name: "iban")
         
-        let referenceExtraction = Extraction(box: nil,
-                                             candidates: "",
-                                             entity: "text",
-                                             value: paymentInfo.purpose,
-                                             name: "payment_purpose")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: "",
+                                                  entity: "text",
+                                                  value: paymentInfo.purpose,
+                                                  name: "payment_purpose")
         
         let amountToPayExtraction = Extraction(box: nil,
                                                candidates: "",
@@ -131,7 +131,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         let updatedExtractions = [paymentRecipientExtraction,
                                   ibanExtraction,
-                                  referenceExtraction,
+                                  paymentPurposeExtraction,
                                   amountToPayExtraction]
         
         model.sendFeedback(updatedExtractions: updatedExtractions)
