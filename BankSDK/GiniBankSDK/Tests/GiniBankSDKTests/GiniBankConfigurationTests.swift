@@ -38,20 +38,6 @@ struct GiniBankConfigurationFeatureFlagsTests {
         #expect(!configuration.debugModeOn, "Expected debugModeOn to be false by default")
     }
 
-    // MARK: - Bottom Navigation Bar
-
-    @Test("Bottom navigation bar can be enabled and disabled")
-    func bottomNavigationBarEnabled() {
-        var configuration = GiniBankConfiguration()
-
-        configuration.bottomNavigationBarEnabled = true
-        #expect(configuration.bottomNavigationBarEnabled, "Expected bottomNavigationBarEnabled to be true after enabling")
-
-        
-        configuration.bottomNavigationBarEnabled = false
-        #expect(!configuration.bottomNavigationBarEnabled, "Expected bottomNavigationBarEnabled to be false after disabling")
-    }
-
     // MARK: - Multipage Feature
 
     @Test("Multipage feature can be enabled and disabled")
@@ -293,7 +279,6 @@ struct GiniBankConfigurationFeatureFlagsTests {
     func captureConfigurationTransfersAllFlags() {
         var configuration = GiniBankConfiguration()
 
-        configuration.bottomNavigationBarEnabled = true
         configuration.multipageEnabled = true
         configuration.qrCodeScanningEnabled = true
         configuration.onlyQRCodeScanningEnabled = true
@@ -310,7 +295,6 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
         let config = configuration.captureConfiguration()
 
-        #expect(config.bottomNavigationBarEnabled, "Expected bottomNavigationBarEnabled to be transferred as true")
         #expect(config.multipageEnabled, "Expected multipageEnabled to be transferred as true")
         #expect(config.qrCodeScanningEnabled, "Expected qrCodeScanningEnabled to be transferred as true")
         #expect(config.onlyQRCodeScanningEnabled, "Expected onlyQRCodeScanningEnabled to be transferred as true")
