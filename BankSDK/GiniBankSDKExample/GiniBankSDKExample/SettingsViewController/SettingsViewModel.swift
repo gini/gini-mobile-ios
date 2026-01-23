@@ -56,7 +56,6 @@ final class SettingsViewModel {
         sections.append(setupCredentialsSection(apiEnvironment: apiEnvironment, client: client))
         sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
         sections.append(setupFeatureTogglesSection())
-        sections.append(setupBottomNavBarsSection())
         sections.append(setupOnboardingSection())
         
         if flashToggleSettingEnabled {
@@ -133,37 +132,6 @@ final class SettingsViewModel {
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentDueHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentDueHintEnabled)))
         return featureTogglesSection
-    }
-
-    private func setupBottomNavBarsSection() -> SettingsSection {
-        var bottomNavBarsSection = SettingsSection(title: "Bottom Navigation Bars", items: [])
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.cameraNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .errorNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.errorNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .noResultsNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.noResultsNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.reviewNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.imagePickerNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
-        return bottomNavBarsSection
     }
 
     private func setupOnboardingSection() -> SettingsSection {
