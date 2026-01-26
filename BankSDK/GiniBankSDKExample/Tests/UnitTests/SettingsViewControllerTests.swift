@@ -27,7 +27,6 @@ final class SettingsViewModelTests: XCTestCase {
 		configuration.onboardingLightingIllustrationAdapter = nil
 		configuration.onboardingQRCodeIllustrationAdapter = nil
 		configuration.onboardingMultiPageIllustrationAdapter = nil
-		configuration.onboardingNavigationBarBottomAdapter = nil
 		configuration.customOnboardingPages = nil
 		configuration.onButtonLoadingIndicator = nil
 		configuration.customLoadingIndicator = nil
@@ -36,9 +35,6 @@ final class SettingsViewModelTests: XCTestCase {
 		configuration.customNavigationController = nil
 		configuration.shouldShowDragAndDropTutorial = true
 		configuration.digitalInvoiceOnboardingIllustrationAdapter = nil
-		configuration.digitalInvoiceHelpNavigationBarBottomAdapter = nil
-		configuration.digitalInvoiceHelpNavigationBarBottomAdapter = nil
-		configuration.digitalInvoiceNavigationBarBottomAdapter = nil
 		configuration.returnAssistantEnabled = true
 		configuration.enableReturnReasons = true
 		configuration.giniErrorLoggerIsOn = true
