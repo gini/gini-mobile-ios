@@ -210,9 +210,9 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
     /**
      Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
@@ -283,15 +283,15 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Error screens
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     No longer supported. Setting this property has no effect.
      */
-    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     // MARK: - No results screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     // MARK: - Digital Invoice
 
@@ -308,19 +308,19 @@ public final class GiniBankConfiguration: NSObject {
     public var returnAssistantEnabled = true
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
+     No longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+    internal let digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice onboarding screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+    internal let digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
+    internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
 
     /**
      Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
@@ -329,9 +329,9 @@ public final class GiniBankConfiguration: NSObject {
     public var enableReturnReasons: Bool = false
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice screen which include Skonto information.
+     No longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
+    internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil
 
     // MARK: - Skonto feature
 
@@ -343,14 +343,14 @@ public final class GiniBankConfiguration: NSObject {
     public var skontoEnabled: Bool = true
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
+    internal let skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
+     No longer supported. Setting this property has no effect.
      */
-    public var skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
+    internal let skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter? = nil
 
     // MARK: - Transaction Docs feature
     /**
