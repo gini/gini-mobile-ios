@@ -185,9 +185,9 @@ public final class GiniBankConfiguration: NSObject {
     public var flashOnByDefault = false
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
     // MARK: - Onboarding screens
     /**
@@ -236,15 +236,15 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Review screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     // MARK: - Gallery screen
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
      */
-    public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
+    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
     // MARK: - Help screens
     /**
@@ -253,9 +253,9 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var openWithEnabled = false
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     No longer supported. Setting this property has no effect.
      */
-    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
      Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen.
@@ -463,20 +463,12 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.customOnboardingPages = self.customOnboardingPages
 
-        configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
-        configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
-        configuration.noResultsNavigationBarBottomAdapter = self.noResultsNavigationBarBottomAdapter
-        configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
-        configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
-        configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
-
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-        configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
 
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
 
@@ -559,17 +551,10 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.transactionDocsEnabled = configuration.transactionDocsEnabled
 
         giniBankConfiguration.customNavigationController = configuration.customNavigationController
-        giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
-        giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
-        giniBankConfiguration.errorNavigationBarBottomAdapter = configuration.errorNavigationBarBottomAdapter
-        giniBankConfiguration.noResultsNavigationBarBottomAdapter = configuration.noResultsNavigationBarBottomAdapter
-        giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
-        giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
 
         giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
         giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
         giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
-        giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
         giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
 
         giniBankConfiguration.entryPoint = configuration.entryPoint
