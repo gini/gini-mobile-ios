@@ -44,6 +44,8 @@ struct PaymentReviewPaymentInformationView: View {
     
     @Binding var contentHeight: CGFloat
     
+    private let ibanValidator = IBANValidator()
+    
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
     }
@@ -361,6 +363,12 @@ struct PaymentReviewPaymentInformationView: View {
     
     private func isIBANValid() -> Bool {
         guard !iban.trimmingCharacters(in: .whitespaces).isEmpty else {
+            ibanHasError = true
+            ibanErrorMessage = viewModel.model.strings.ibanErrorMessage
+            return false
+        }
+        
+        guard ibanValidator.isValid(iban: iban) else {
             ibanHasError = true
             ibanErrorMessage = viewModel.model.strings.ibanCheckErrorMessage
             return false
