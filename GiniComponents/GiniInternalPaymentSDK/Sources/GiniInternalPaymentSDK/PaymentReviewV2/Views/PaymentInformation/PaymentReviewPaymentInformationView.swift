@@ -17,22 +17,6 @@ struct PaymentReviewPaymentInformationView: View {
         case paymentPurpose
     }
     
-    private var textFieldConfiguration: TextFieldConfiguration {
-        viewModel.model.defaultStyleInputFieldConfiguration
-    }
-    
-    private var focusedTextFieldConfiguration: TextFieldConfiguration {
-        viewModel.model.selectionStyleInputFieldConfiguration
-    }
-    
-    private var errorTextFieldConfiguration: TextFieldConfiguration {
-        viewModel.model.errorStyleInputFieldConfiguration
-    }
-    
-    private var viewModelStrings: PaymentReviewContainerStrings {
-        viewModel.model.strings
-    }
-    
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
     
@@ -59,6 +43,22 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var paymentPurposeErrorMessage: String?
     
     @Binding var contentHeight: CGFloat
+    
+    private var textFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.defaultStyleInputFieldConfiguration
+    }
+    
+    private var focusedTextFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.selectionStyleInputFieldConfiguration
+    }
+    
+    private var errorTextFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.errorStyleInputFieldConfiguration
+    }
+    
+    private var viewModelStrings: PaymentReviewContainerStrings {
+        viewModel.model.strings
+    }
     
     init(viewModel: PaymentReviewContainerViewModel,
          contentHeight: Binding<CGFloat>,

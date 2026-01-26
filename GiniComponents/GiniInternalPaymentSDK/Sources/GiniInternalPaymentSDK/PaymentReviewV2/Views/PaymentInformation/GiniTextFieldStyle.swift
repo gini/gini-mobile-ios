@@ -52,25 +52,16 @@ struct GiniTextFieldStyle: TextFieldStyle {
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            VStack(spacing: 0) {
-                HStack {
-                    Text(title)
-                        .foregroundColor(Color(currentConfiguration.placeholderForegroundColor))
-                    
-                    if let lockedIcon {
-                        lockedIcon
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                    }
-                }
+        VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
+            VStack(spacing: Constants.titleSpacing) {
+                titleView
                 
                 configuration
                     .foregroundColor(Color(currentConfiguration.textColor))
                     .font(Font(currentConfiguration.textFont))
             }
-            .padding(.horizontal, 8.0)
-            .frame(height: 56.0)
+            .padding(.horizontal, Constants.horizontalPadding)
+            .frame(height: Constants.textFieldHeight)
             .background(Color(currentConfiguration.backgroundColor))
             .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius,
                                         style: .continuous))
@@ -81,17 +72,54 @@ struct GiniTextFieldStyle: TextFieldStyle {
                         lineWidth: currentConfiguration.borderWidth)
             }
             
-            if state == .error, let errorMessage, !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .foregroundStyle(Color(errorConfiguration.borderColor))
-                    .font(Font(errorConfiguration.textFont))
-                    .padding(.horizontal, 8.0)
-                    .multilineTextAlignment(.leading)
-                    .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
-                                            removal: .opacity))
+            if state == .error,
+               let errorMessage, !errorMessage.isEmpty {
+                errorMessageView(errorMessage)
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: state)
-        .animation(.easeInOut(duration: 0.25), value: errorMessage)
+        .animation(.easeInOut(duration: Constants.animationDuration), value: state)
+        .animation(.easeInOut(duration: Constants.animationDuration), value: errorMessage)
+    }
+    
+    // MARK: PRivate views
+    
+    @ViewBuilder
+    private var titleView: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(Color(currentConfiguration.placeholderForegroundColor))
+            
+            if let lockedIcon {
+                lockedIcon
+                    .resizable()
+                    .frame(width: Constants.lockedIconSize.width,
+                           height: Constants.lockedIconSize.height)
+            }
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    @ViewBuilder
+    private func errorMessageView(_ errorMessage: String) -> some View {
+        Text(errorMessage)
+            .foregroundStyle(Color(errorConfiguration.borderColor))
+            .font(Font(errorConfiguration.textFont))
+            .padding(.horizontal, Constants.errorMessageHorizontalPadding)
+            .multilineTextAlignment(.leading)
+            .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
+                                    removal: .opacity))
+    }
+    
+    private struct Constants {
+        
+        static let verticalSpacing = 4.0
+        static let horizontalPadding = 8.0
+        static let textFieldHeight = 56.0
+        static let titleSpacing = 0.0
+        static let errorMessageHorizontalPadding = 8.0
+        static let lockedIconSize = CGSize(width: 16, height: 16)
+        static let animationDuration = 0.25
     }
 }
