@@ -192,7 +192,7 @@ final class EditLineItemView: UIView {
         cancelButton.giniMakeConstraints {
             $0.leading.equalToSuperview().constant(Constants.horizontalPadding)
             $0.top.equalToSuperview().constant(Constants.verticalPadding)
-            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimunHeight)
+            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimumHeight)
         }
 
         // Title label
@@ -207,7 +207,7 @@ final class EditLineItemView: UIView {
         saveButton.giniMakeConstraints {
             $0.top.equalToSuperview().constant(Constants.verticalPadding)
             $0.trailing.equalToSuperview().constant(-Constants.horizontalPadding)
-            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimunHeight)
+            $0.height.greaterThanOrEqualTo(Constants.headerButtonMinimumHeight)
         }
 
         // Stack view
@@ -386,7 +386,7 @@ private extension EditLineItemView {
         static let maximumFontSize: CGFloat = 20
 		static let itemContainerMaxHeight: CGFloat = 64
 		static let animationDuration: CGFloat = 0.3
-        static let headerButtonMinimunHeight: CGFloat = 50
+        static let headerButtonMinimumHeight: CGFloat = 50
     }
 
     struct Strings {
