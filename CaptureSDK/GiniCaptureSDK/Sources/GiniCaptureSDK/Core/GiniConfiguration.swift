@@ -257,39 +257,39 @@ import GiniUtilites
     internal let bottomNavigationBarEnabled: Bool = false
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+      * No longer supported. Setting this property has no effect.
      */
-    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+      * No longer supported. Setting this property has no effect.
      */
-    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+      * No longer supported. Setting this property has no effect.
      */
-    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+      * No longer supported. Setting this property has no effect.
      */
-    public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
+    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     No longer supported. Setting this property has no effect.
      */
-    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     No longer supported. Setting this property has no effect.
      */
-    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+      * No longer supported. Setting this property has no effect.
      */
-    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
     /**
       * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
