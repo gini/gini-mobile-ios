@@ -101,7 +101,7 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
 
     private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.giniMakeConstraints{
+        scrollView.giniMakeConstraints {
             $0.edges.equalToSuperview()
         }
     }
