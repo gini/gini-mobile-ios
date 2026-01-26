@@ -256,18 +256,6 @@ final class SettingsViewModel {
             giniConfiguration.flashOnByDefault = data.isSwitchOn
         case .customResourceProvider:
             giniConfiguration.customResourceProvider = data.isSwitchOn ? GiniBankCustomResourceProvider() : nil
-        case .helpNavigationBarBottomAdapter:
-            giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .cameraNavigationBarBottomAdapter:
-            giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? CustomCameraBottomNavigationBarAdapter() : nil
-        case .errorNavigationBarBottomAdapter:
-            giniConfiguration.errorNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .noResultsNavigationBarBottomAdapter:
-            giniConfiguration.noResultsNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .reviewNavigationBarBottomAdapter:
-            giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? CustomReviewScreenBottomNavigationBarAdapter() : nil
-        case .imagePickerNavigationBarBottomAdapter:
-            giniConfiguration.imagePickerNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .onboardingShowAtLaunch:
             giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
         case .onboardingShowAtFirstLaunch:
@@ -287,8 +275,6 @@ final class SettingsViewModel {
         case .onboardingMultiPageIllustrationAdapter:
             giniConfiguration.onboardingMultiPageIllustrationAdapter = createCustomIllustrationAdapter(
                 isSwitchOn: data.isSwitchOn, animationName: "uploadAnimation", color: .green)
-        case .onboardingNavigationBarBottomAdapter:
-            giniConfiguration.onboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomOnboardingBottomNavigationBarAdapter() : nil
         case .onButtonLoadingIndicator:
             giniConfiguration.onButtonLoadingIndicator = data.isSwitchOn ? OnButtonLoading() : nil
         case .customLoadingIndicator:
@@ -324,14 +310,6 @@ final class SettingsViewModel {
         case .digitalInvoiceOnboardingIllustrationAdapter:
             giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = createCustomIllustrationAdapter(
                 isSwitchOn: data.isSwitchOn, animationName: "magicAnimation", color: .blue)
-        case .digitalInvoiceHelpNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceSkontoBottomNavigationBarAdapter() : nil
         case .primaryButtonConfiguration:
             updateButtonConfiguration(for: &giniConfiguration.primaryButtonConfiguration,
                                       state: &settingsButtonStates.primaryButtonState,
@@ -354,10 +332,6 @@ final class SettingsViewModel {
                                       isSwitchOn: data.isSwitchOn)
         case .customDocumentValidations:
             updateCustomDocumentValidations(isSwitchOn: data.isSwitchOn)
-        case .skontoNavigationBarBottomAdapter:
-            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomSkontoNavigationBarBottomAdapter() : nil
-        case .skontoHelpNavigationBarBottomAdapter:
-            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .closeSDK:
             Self.shouldCloseSDKAfterTenSeconds = data.isSwitchOn
         }
