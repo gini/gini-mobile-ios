@@ -70,6 +70,7 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        cancellables.removeAll()
         // Notify that the bottom sheet was dismissed
         onDismiss?()
     }
@@ -135,6 +136,8 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
     }
 
     private func notifyAccessibilityLayoutChanged() {
+        /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
+        /// VoiceOver has already finished processing the UI changes.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             guard let self else { return }
             UIAccessibility.post(notification: .layoutChanged,
