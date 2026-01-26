@@ -21,6 +21,7 @@ struct GiniBottomSheetModifier: ViewModifier {
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled(true)
                 .presentationBackgroundInteraction(.enabled(upThrough: .height(contentHeight)))
+                .presentationCompactAdaptation(.sheet)
         } else if #available(iOS 16.0, *) {
             content
                 .presentationDetents([.height(contentHeight)])
