@@ -130,16 +130,21 @@ final class EditLineItemView: UIView {
     }
 
     func setupAccessibility() {
-        accessibilityElements = [
+        var elements: [Any] = [
             cancelButton,
             titleLabel,
             saveButton,
             nameLabelView,
-            nameErrorView,
             priceLabelView,
-            priceErrorView,
             quantityView
         ]
+        if !nameErrorView.isHidden && nameErrorView.alpha > 0 {
+            elements.append(nameErrorView)
+        }
+        if !priceErrorView.isHidden && priceErrorView.alpha > 0 {
+            elements.append(priceErrorView)
+        }
+        accessibilityElements = elements
     }
 
     private func setupData(with viewModel: EditLineItemViewModel) {
