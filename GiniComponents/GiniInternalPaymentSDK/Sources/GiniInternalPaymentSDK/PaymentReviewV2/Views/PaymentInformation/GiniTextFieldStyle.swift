@@ -4,6 +4,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import GiniUtilites
 import SwiftUI
 
 struct GiniTextFieldStyle: TextFieldStyle {
@@ -11,9 +12,14 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private let lockedIcon: Image?
     private let title: String
     
-    init(lockedIcon: Image? = nil, title: String) {
+    var textFieldConfiguration: TextFieldConfiguration
+    
+    init(lockedIcon: Image? = nil,
+         title: String,
+         configuration: TextFieldConfiguration) {
         self.lockedIcon = lockedIcon
         self.title = title
+        self.textFieldConfiguration = configuration
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -21,6 +27,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
             VStack(spacing: 0) {
                 HStack {
                     Text(title)
+                        .foregroundColor(Color(textFieldConfiguration.placeholderForegroundColor))
                     
                     if let lockedIcon {
                         lockedIcon
@@ -30,12 +37,19 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 }
                 
                 configuration
+                    .foregroundColor(Color(textFieldConfiguration.textColor))
+                    .font(Font(textFieldConfiguration.textFont))
             }
             .padding(.horizontal, 8.0)
             .frame(height: 56.0)
+            .background(Color(textFieldConfiguration.backgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+                                        style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-                    .stroke(Color(.secondarySystemBackground), lineWidth: 1.0)
+                RoundedRectangle(cornerRadius: textFieldConfiguration.cornerRadius,
+                                 style: .continuous)
+                .stroke(Color(textFieldConfiguration.borderColor),
+                        lineWidth: textFieldConfiguration.borderWidth)
             }
         } else {
             // Fallback on earlier versions

@@ -37,7 +37,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.label",
                                                                           comment: "Accessibility label for the select bank button"),
             selectBankAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.hint",
-                                                                          comment: "Accessibility hint for the select bank button")
+                                                                          comment: "Accessibility hint for the select bank button"),
+            infoBarMessage: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.infobar.message",
+                                                             comment: "info bar message")
         )
     }
 
