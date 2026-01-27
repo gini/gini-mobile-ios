@@ -41,7 +41,7 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     No longer supported. Setting this property has no effect.
+     Bottom navigation bar support is removed. This property has no effect.
      */
     internal let bottomNavigationBarEnabled: Bool = false
 
@@ -185,7 +185,7 @@ public final class GiniBankConfiguration: NSObject {
     public var flashOnByDefault = false
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
@@ -210,7 +210,7 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
@@ -236,13 +236,13 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Review screen
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     // MARK: - Gallery screen
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
@@ -253,7 +253,7 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var openWithEnabled = false
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
@@ -283,13 +283,13 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Error screens
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     // MARK: - No results screen
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
@@ -308,17 +308,17 @@ public final class GiniBankConfiguration: NSObject {
     public var returnAssistantEnabled = true
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `DigitalInvoiceHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter? = nil
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `DigitalInvoiceOnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter? = nil
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `DigitalInvoiceNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
 
@@ -329,7 +329,7 @@ public final class GiniBankConfiguration: NSObject {
     public var enableReturnReasons: Bool = false
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `DigitalInvoiceSkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil
 
@@ -343,12 +343,12 @@ public final class GiniBankConfiguration: NSObject {
     public var skontoEnabled: Bool = true
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `SkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter? = nil
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `SkontoHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter? = nil
 
