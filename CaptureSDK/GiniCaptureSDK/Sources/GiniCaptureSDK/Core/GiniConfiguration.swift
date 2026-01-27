@@ -252,42 +252,42 @@ import GiniUtilites
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Bottom navigation bar support is removed. This property has no effect.
      */
     internal let bottomNavigationBarEnabled: Bool = false
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-     No longer supported. Setting this property has no effect.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-      * No longer supported. Setting this property has no effect.
+      * Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
