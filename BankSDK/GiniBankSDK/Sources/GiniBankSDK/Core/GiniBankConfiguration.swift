@@ -242,7 +242,7 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Gallery screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+     No longer supported. Setting this property has no effect.
      */
     internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
