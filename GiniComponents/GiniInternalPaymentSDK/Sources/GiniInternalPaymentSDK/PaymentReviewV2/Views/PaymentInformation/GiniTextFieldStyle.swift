@@ -81,7 +81,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
         .animation(.easeInOut(duration: Constants.animationDuration), value: errorMessage)
     }
     
-    // MARK: PRivate views
+    // MARK: Private views
     
     @ViewBuilder
     private var titleView: some View {

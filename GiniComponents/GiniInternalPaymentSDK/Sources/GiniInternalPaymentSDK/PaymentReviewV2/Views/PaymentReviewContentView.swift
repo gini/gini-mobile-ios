@@ -36,7 +36,7 @@ public struct PaymentReviewContentView: View {
                         await viewModel.fetchImages()
                     }
                 }
-                .onChange(of: bottomSheetHeight) { newValue in
+                .onChange(of: bottomSheetHeight) { _ in
                     updateCarouselHeight(screenHeight: geometry.size.height)
                 }
                 .onChange(of: geometry.size.height) { newHeight in
