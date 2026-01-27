@@ -28,7 +28,7 @@ struct PaymentReviewPaymentInformationView: View {
     @State private var paymentPurpose: String = Constants.emptyString
     
     @State private var amountToPay: Price
-    @State private var showBanner: Bool = true
+    @State private var showBanner: Bool
     
     @FocusState private var focusedField: Field?
     
@@ -62,16 +62,17 @@ struct PaymentReviewPaymentInformationView: View {
         viewModel.model.strings
     }
     
-    init(viewModel: PaymentReviewContainerViewModel,
+    init(viewModel: PaymentReviewPaymentInformationObservableModel,
          contentHeight: Binding<CGFloat>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
-        let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
+        let observableModel = viewModel
         self.viewModel = observableModel
         self._contentHeight = contentHeight
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
         self.amountToPay = Price(value: 0, currencyCode: "€")
+        self.showBanner = !viewModel.model.configuration.isInfoBarHidden
     }
     
     var body: some View {
@@ -126,6 +127,7 @@ struct PaymentReviewPaymentInformationView: View {
     private var infoBannerView: some View {
         HStack {
             Text(viewModel.model.strings.infoBarMessage)
+                .font(Font(viewModel.model.configuration.infoBarLabelFont))
                 .foregroundColor(Color(viewModel.model.configuration.infoBarLabelTextColor))
                 .multilineTextAlignment(.center)
         }
@@ -155,6 +157,7 @@ struct PaymentReviewPaymentInformationView: View {
             ibanHasError = isBegin ? false : !isIBANValid()
         })
         .focused($focusedField, equals: .iban)
+        .textInputAutocapitalization(.characters)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
                                            state: fieldState(for: .iban, hasError: ibanHasError),
                                            errorMessage: ibanErrorMessage,
@@ -404,8 +407,6 @@ struct PaymentReviewPaymentInformationView: View {
         static let bannerDismissDelay = 0.3
         static let textFieldsContainerSpacing = 8.0
         static let buttonsContainerSpacing = 8.0
-        static let paymentProviderPickerWidth = 96.0
-        static let paymentButtonHeight = 36.0
         static let paymentProviderPickerSpacing = 12.0
         static let paymentProviderPickerCornerRadius = 6.0
         static let paymentProviderPickerVerticalPadding = 10.0
