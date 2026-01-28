@@ -396,7 +396,13 @@ public struct DataForReview {
      
      */
     public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
-        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: paymentInfo.sourceDoucumentLocation,
+                                            paymentProvider: paymentInfo.paymentProviderId,
+                                            recipient: paymentInfo.recipient,
+                                            iban: paymentInfo.iban,
+                                            bic: "",
+                                            amount: paymentInfo.amount,
+                                            purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(requestId):
