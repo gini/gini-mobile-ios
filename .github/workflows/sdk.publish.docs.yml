@@ -65,7 +65,7 @@ jobs:
           echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
@@ -88,7 +88,7 @@ jobs:
           git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
 
       - name: Publish documentation
-        uses: maierj/fastlane-action@v3.1.0
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
