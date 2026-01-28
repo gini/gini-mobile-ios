@@ -95,9 +95,9 @@ jobs:
               "package_folder": "${{ inputs.package_folder }}",
               "version_file_path": "${{ inputs.version_file_path }}",
               "documentation_title": "${{ inputs.documentation_title }}",
-              "is_stable_release": "${{ inputs.is_stable_release }}",
+              "is_stable_release": ${{ inputs.is_stable_release }},
               "git_tag": "${{ inputs.git_tag }}",
-              "ci": "true"
+              "ci": true
             }
 
       - name: Archive documentation
