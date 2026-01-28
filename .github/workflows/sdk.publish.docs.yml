@@ -1,0 +1,111 @@
+name: Publish SDK Docs (Reusable)
+
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      project_folder:
+        description: 'The folder containing the project to document'
+        required: true
+        type: string
+      package_folder:
+        description: 'The folder containing the package'
+        required: true
+        type: string
+      version_file_path:
+        description: 'The path to the version file'
+        required: true
+        type: string
+      documentation_title:
+        description: 'The title for the documentation'
+        required: true
+        type: string
+      git_tag:
+        description: 'The Git tag for the release'
+        required: true
+        type: string
+      is_stable_release:
+        description: 'Indicates if this is a stable release'
+        required: true
+        type: boolean
+    secrets:
+      RELEASE_GITHUB_USER:
+        required: true
+      RELEASE_GITHUB_PASSWORD:
+        required: true
+      MOBILE_CI_APP_ID:
+        required: true
+      MOBILE_CI_APP_PRIVATE_KEY:
+        required: true
+
+  workflow_dispatch:
+
+jobs:
+  release-documentation:
+    runs-on: macos-latest
+
+    steps:
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd
+        with:
+          xcode-version: '16.4'
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get branch name
+        id: branch
+        shell: bash
+        run: |
+          branch_ref=$(git branch -r --contains "${{ inputs.git_tag }}")
+          branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
+          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
+      - name: Configure the git client
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+          git config --local user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+          git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
+
+      - name: Publish documentation
+        uses: maierj/fastlane-action@v3.1.0
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          lane: publish_docs
+          options: >
+            {
+              "project_folder": "${{ inputs.project_folder }}",
+              "package_folder": "${{ inputs.package_folder }}",
+              "version_file_path": "${{ inputs.version_file_path }}",
+              "documentation_title": "${{ inputs.documentation_title }}",
+              "is_stable_release": "${{ inputs.is_stable_release }}",
+              "git_tag": "${{ inputs.git_tag }}",
+              "ci": "true"
+            }
+
+      - name: Archive documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.package_folder }}Documentation
+          path: ${{ inputs.project_folder }}/${{ inputs.package_folder }}/Documentation/Api
