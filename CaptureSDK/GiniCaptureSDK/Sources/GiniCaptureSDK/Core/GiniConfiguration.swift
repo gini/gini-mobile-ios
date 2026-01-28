@@ -252,7 +252,7 @@ import GiniUtilites
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * Bottom navigation bar support is removed. This property has no effect.
+      * Setting this property has no effect.
      */
     internal let bottomNavigationBarEnabled: Bool = false
 
