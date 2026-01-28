@@ -788,9 +788,9 @@ public extension PaymentReviewContainerView {
         paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }
     }
 
-    func obtainPaymentInfo(documentId: String? = nil) -> PaymentInfo {
+    func obtainPaymentInfo(documentLink: String? = nil) -> PaymentInfo {
         let amountText = amountToPay.extractionString
-        let paymentInfo = PaymentInfo(sourceDocumentLocation: documentId,
+        let paymentInfo = PaymentInfo(sourceDocumentLocation: documentLink,
                                       recipient: recipientTextFieldView.text ?? "",
                                       iban: ibanTextFieldView.text ?? "",
                                       bic: "", 
