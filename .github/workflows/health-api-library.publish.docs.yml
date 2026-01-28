@@ -8,6 +8,8 @@ on:
 
 jobs:
   publish:
+    permissions:
+      contents: write
     uses: ./.github/workflows/sdk.publish.docs.yml
     with:
       project_folder: 'HealthAPILibrary'
