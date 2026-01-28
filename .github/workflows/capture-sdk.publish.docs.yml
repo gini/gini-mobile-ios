@@ -1,16 +1,11 @@
 name: Publish docs for Capture SDK
 permissions:
-  contents: read
+  contents: write
 on:
   push:
     tags:
       - 'GiniCaptureSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
   workflow_call:
-    secrets:
-      RELEASE_GITHUB_USER:
-        required: true
-      RELEASE_GITHUB_PASSWORD:
-        required: true
   workflow_dispatch:
 
 jobs:
@@ -44,6 +39,25 @@ jobs:
       with:
         ruby-version: '3.2.0'
         bundler-cache: true
+        
+    - name: Generate a token
+      id: generate-token
+      # available args: https://github.com/actions/create-github-app-token?tab=readme-ov-file
+      uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 #2.0.0
+      with:
+        app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+        private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+        owner: gini
+
+    - name: Configure the git client
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+      run: |
+        git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+        git config --local user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+        git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
+        git remote -v
 
     - name: Publish GiniCaptureSDK documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
@@ -57,13 +71,11 @@ jobs:
             "documentation_title":"GiniCaptureSDK Reference",
             "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
             "git_tag": "${{ github.ref }}",
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
           }
 
     - name: archive documentation
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.0.0
       with:
         name: GiniCaptureSDKDocumentation
         path: CaptureSDK/GiniCaptureSDK/Documentation/Api              

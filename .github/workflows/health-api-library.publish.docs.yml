@@ -19,7 +19,5 @@ jobs:
       git_tag: ${{ github.ref }}
       is_stable_release: true
     secrets:
-      RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
-      RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
