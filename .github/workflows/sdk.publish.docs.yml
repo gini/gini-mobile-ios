@@ -31,10 +31,6 @@ on:
         required: true
         type: boolean
     secrets:
-      RELEASE_GITHUB_USER:
-        required: true
-      RELEASE_GITHUB_PASSWORD:
-        required: true
       MOBILE_CI_APP_ID:
         required: true
       MOBILE_CI_APP_PRIVATE_KEY:
