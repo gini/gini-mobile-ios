@@ -99,17 +99,6 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
             .padding(.top, Constants.textFieldsContainerTopPadding)
         }
-        .background(
-            GeometryReader { geometry in
-                Color.clear.preference(key: GiniViewHeightPreferenceKey.self,
-                                       value: geometry.size.height)
-            }
-        )
-        .onPreferenceChange(GiniViewHeightPreferenceKey.self, perform: { newHeight in
-            DispatchQueue.main.async {
-                contentHeight = newHeight
-            }
-        })
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.model.configuration.popupAnimationDuration) {
                 withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
@@ -119,6 +108,7 @@ struct PaymentReviewPaymentInformationView: View {
             
             populateFields()
         }
+        .getHeight(for: $contentHeight)
     }
     
     // MARK: Private views
