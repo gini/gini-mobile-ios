@@ -193,7 +193,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             createPaymentRequest()
         } else if delegate.supportsOpenWith() {
             if !paymentInfoContainerView.isTextFieldEmpty(textFieldType: .amountFieldTag) {
-                let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
+                let paymentInfo = paymentInfoContainerView.obtainPaymentInfo(documentId: model.documentId)
                 model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
                     self?.model.openOnboardingShareInvoiceBottomSheet(paymentRequestId: requestId, paymentInfo: paymentInfo)
                 })
@@ -204,7 +204,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     func createPaymentRequest() {
         if !paymentInfoContainerView.isTextFieldEmpty(textFieldType: .amountFieldTag) {
-            let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
+            let paymentInfo = paymentInfoContainerView.obtainPaymentInfo(documentId: model.documentId)
             model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
                 self?.model.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             })
