@@ -172,14 +172,15 @@ platform :ios do
       # Create a temporary credential helper script that uses GH_TOKEN
       # This approach keeps the token out of command lines and process listings
       credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
-      File.write(credential_helper, <<~SCRIPT)
-        #!/bin/bash
-        echo "username=x-access-token"
-        echo "password=${GH_TOKEN}"
-      SCRIPT
-      sh("chmod +x #{credential_helper}")
       
       begin
+        File.write(credential_helper, <<~SCRIPT)
+          #!/bin/bash
+          echo "username=x-access-token"
+          echo "password=${GH_TOKEN}"
+        SCRIPT
+        sh("chmod +x #{credential_helper}")
+        
         # Configure git to use the credential helper and clone
         sh("git config --global credential.helper '#{credential_helper}'")
         sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
