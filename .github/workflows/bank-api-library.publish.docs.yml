@@ -35,8 +35,8 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
         branch_ref=$(git branch -r --contains "${{ github.ref }}")
         # Remove "origin/" prefix from branch_ref and trim whitespace
-        branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
-        echo "{branch_name}={branch_name}" >> $GITHUB_OUTPUT
+        branch_name=$(echo "$branch_ref" | sed 's/^[[:space:]]*origin\///' | tr -d '[:space:]')
+        echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
         echo "branch_name: $branch_name"
 
     - name: setup ruby
