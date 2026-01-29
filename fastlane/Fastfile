@@ -179,13 +179,13 @@ platform :ios do
       SCRIPT
       sh("chmod +x #{credential_helper}")
       
-      # Configure git to use the credential helper and clone
-      sh("git config --global credential.helper '#{credential_helper}'")
-      sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
-
-      destination_path = "#{package_folder}/#{package_version}"
-
       begin
+        # Configure git to use the credential helper and clone
+        sh("git config --global credential.helper '#{credential_helper}'")
+        sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
+
+        destination_path = "#{package_folder}/#{package_version}"
+
         Dir.chdir("gh-pages") do
           UI.message "Clear out the existing documentation"
           sh("git rm -rf #{destination_path} --ignore-unmatch && git clean -fd")
