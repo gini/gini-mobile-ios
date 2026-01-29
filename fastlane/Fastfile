@@ -132,6 +132,11 @@ platform :ios do
       # Optional options
       dry_run = options[:dry_run]
 
+      # Coerce boolean strings to actual booleans
+      is_stable_release = is_stable_release.to_s.downcase == "true"
+      ci = ci.to_s.downcase == "true"
+      dry_run = dry_run.to_s.downcase == "true"
+
       # Validate GH_TOKEN is present
       if ENV['GH_TOKEN'].nil? || ENV['GH_TOKEN'].empty?
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
@@ -166,8 +171,22 @@ platform :ios do
       # Clear gh-pages directory 
       sh("rm -rf gh-pages")
 
-      # Clone
-      sh("git clone -b gh-pages https://x-oauth-token:#{ENV['GH_TOKEN']}@github.com/gini/gini-mobile-ios.git gh-pages")
+      # Create a temporary credential helper script that uses GH_TOKEN
+      # This approach keeps the token out of command lines and process listings
+      credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
+      File.write(credential_helper, <<~SCRIPT)
+        #!/bin/bash
+        echo "username=x-access-token"
+        echo "password=${GH_TOKEN}"
+      SCRIPT
+      sh("chmod +x #{credential_helper}")
+      
+      # Configure git to use the credential helper and clone
+      sh("git config --global credential.helper '#{credential_helper}'")
+      sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
+      
+      # Clean up credential helper
+      sh("rm -f #{credential_helper}")
 
       destination_path = "#{package_folder}/#{package_version}"
 

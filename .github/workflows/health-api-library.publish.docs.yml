@@ -1,6 +1,6 @@
 name: Publish docs for Health API Library
 permissions:
-  contents: write
+  contents: read
 on:
   push:
     tags:
@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           branch_ref=$(git branch -r --contains "${{ github.ref }}")
-          branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
+          branch_name=$(echo "$branch_ref" | sed 's/^[[:space:]]*origin\///' | tr -d '[:space:]')
           echo "branch_name=$branch_name"
           if [ "$branch_name" = "main" ]; then
             echo "is_stable_release=true" >> $GITHUB_OUTPUT

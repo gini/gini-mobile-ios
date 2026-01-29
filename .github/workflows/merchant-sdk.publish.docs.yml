@@ -6,6 +6,11 @@ on:
     tags:
       - 'GiniMerchantSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
   workflow_call:
+    secrets:
+      MOBILE_CI_APP_ID:
+        required: true
+      MOBILE_CI_APP_PRIVATE_KEY:
+        required: true
   workflow_dispatch:
  
 jobs:
@@ -30,8 +35,8 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
         branch_ref=$(git branch -r --contains "${{ github.ref }}")
         # Remove "origin/" prefix from branch_ref and trim whitespace
-        branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
-        echo "{branch_name}={branch_name}" >> $GITHUB_OUTPUT
+        branch_name=$(echo "$branch_ref" | sed 's/^[[:space:]]*origin\///' | tr -d '[:space:]')
+        echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
         echo "branch_name: $branch_name"
 
     - name: setup ruby
@@ -57,7 +62,6 @@ jobs:
         git config --global user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
 
         git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
-        git remote -v
 
     - name: Publish GiniMerchantSDK documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
