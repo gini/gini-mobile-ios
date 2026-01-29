@@ -12,7 +12,7 @@ import Foundation
 
 public struct PaymentInfo {
 
-    public let sourceDoucumentLocation: String?
+    public let sourceDocumentLocation: String?
     public let recipient: String
     public let iban: String
     public let bic: String
@@ -29,7 +29,7 @@ public struct PaymentInfo {
                 purpose: String,
                 paymentUniversalLink: String,
                 paymentProviderId: String) {
-        self.sourceDoucumentLocation = sourceDocumentLocation
+        self.sourceDocumentLocation = sourceDocumentLocation
         self.recipient = recipient
         self.iban = iban.uppercased()
         self.bic = bic
