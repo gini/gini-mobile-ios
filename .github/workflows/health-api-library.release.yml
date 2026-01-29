@@ -47,5 +47,9 @@ jobs:
           }
 
 
-  # Documentation is automatically published by the health-api-library.publish.docs.yml workflow
-  # which is triggered by the documentation tag push    
+  release-documentation:
+      needs: release
+      uses: gini/gini-mobile-ios/.github/workflows/health-api-library.publish.docs.yml@main
+      secrets:
+        RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
+        RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}    
