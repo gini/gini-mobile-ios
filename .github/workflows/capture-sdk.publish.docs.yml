@@ -72,7 +72,8 @@ jobs:
             "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
             "documentation_title":"GiniCaptureSDK Reference",
             "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
-            "git_tag": "${{ github.ref }}"
+            "git_tag": "${{ github.ref }}",
+            "ci": "true"
           }
 
     - name: archive documentation

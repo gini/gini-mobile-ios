@@ -72,7 +72,8 @@ jobs:
             "version_file_path": "BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift",
             "documentation_title":"GiniBankSDK Reference",
             "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
-            "git_tag": "${{ github.ref }}"
+            "git_tag": "${{ github.ref }}",
+            "ci": "true"
           }
 
     - name: archive documentation
