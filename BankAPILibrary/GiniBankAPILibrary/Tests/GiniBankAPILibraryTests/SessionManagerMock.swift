@@ -25,7 +25,6 @@ final class SessionManagerMock: SessionManagerProtocol {
     var extractionFeedbackBody: Data?
     var logErrorEventBody: Data?
     
-    
     init(keyStore: KeyStore = KeychainStore(),
          urlSession: URLSession = URLSession(configuration: .default)) {
         // This method will remain empty; mock implementation does not perform login
@@ -127,7 +126,6 @@ final class SessionManagerMock: SessionManagerProtocol {
             fatalError("Type mismatch: expected \(Response.self), got \(type(of: value)) at \(file):\(line)")
         }
     }
-    
     
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
