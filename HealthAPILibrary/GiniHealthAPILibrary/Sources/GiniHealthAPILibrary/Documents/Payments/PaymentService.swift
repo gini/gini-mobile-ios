@@ -306,6 +306,8 @@ extension PaymentService {
                 dispatchGroup.leave()
             }
         }
+        
+        /// Success is emitted only after all provider file fetches complete.
         dispatchGroup.notify(queue: DispatchQueue.global()) {
             completion(.success(providers))
         }
@@ -319,6 +321,7 @@ extension PaymentService {
         
         switch result {
         case let .success(imageData):
+            /// There is no individual success callback per provider.
             providers.append(makePaymentProvider(from: providerResponse, imageData: imageData))
         case let .failure(error):
             completion(.failure(error))

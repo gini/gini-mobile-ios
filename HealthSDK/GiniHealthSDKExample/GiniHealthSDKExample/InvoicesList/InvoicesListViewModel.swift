@@ -88,6 +88,7 @@ final class InvoicesListViewModel {
         self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
+                /// Success is handled in `handleFetchDocumentResponse` via table view reload.
                 self?.handleFetchDocumentResponse(document)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
