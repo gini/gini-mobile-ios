@@ -21,13 +21,12 @@ jobs:
         id: check-branch
         shell: bash
         run: |
-          branch_ref=$(git branch -r --contains "${{ github.ref }}")
-          branch_name=$(echo "$branch_ref" | sed 's/^[[:space:]]*origin\///' | tr -d '[:space:]')
-          echo "branch_name=$branch_name"
-          if [ "$branch_name" = "main" ]; then
+          if git branch -r --contains "${{ github.ref }}" | grep -q '^ *origin/main$'; then
             echo "is_stable_release=true" >> $GITHUB_OUTPUT
+            echo "Tag is on main branch (stable release)"
           else
             echo "is_stable_release=false" >> $GITHUB_OUTPUT
+            echo "Tag is not on main branch (non-stable release)"
           fi
 
   publish:

@@ -30,14 +30,14 @@ jobs:
       id: branch
       shell: bash
       run: |
-        # Get the branch ref that contains the tag in github.ref
-        # (github.ref contains the tag because this workflow is triggered by tags: 
-        # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
-        branch_ref=$(git branch -r --contains "${{ github.ref }}")
-        # Remove "origin/" prefix from branch_ref and trim whitespace
-        branch_name=$(echo "$branch_ref" | sed 's/^[[:space:]]*origin\///' | tr -d '[:space:]')
-        echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-        echo "branch_name: $branch_name"
+        # Check if the tag is on the main branch
+        if git branch -r --contains "${{ github.ref }}" | grep -q '^ *origin/main$'; then
+          echo "branch_name=main" >> $GITHUB_OUTPUT
+          echo "branch_name: main"
+        else
+          echo "branch_name=other" >> $GITHUB_OUTPUT
+          echo "branch_name: other"
+        fi
 
     - name: setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0

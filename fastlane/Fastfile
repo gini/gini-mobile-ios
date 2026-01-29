@@ -174,66 +174,70 @@ platform :ios do
       # Create a temporary credential helper script that uses GH_TOKEN
       # This approach keeps the token out of command lines and process listings
       credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
-      File.write(credential_helper, <<~SCRIPT)
-        #!/bin/bash
-        echo "username=x-access-token"
-        echo "password=${GH_TOKEN}"
-      SCRIPT
-      sh("chmod +x #{credential_helper}")
       
-      # Configure git to use the credential helper and clone
-      sh("git config --global credential.helper '#{credential_helper}'")
-      sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
+      begin
+        File.write(credential_helper, <<~SCRIPT)
+          #!/bin/bash
+          echo "username=x-access-token"
+          echo "password=${GH_TOKEN}"
+        SCRIPT
+        sh("chmod +x #{credential_helper}")
+        
+        # Configure git to use the credential helper and clone
+        sh("git config --global credential.helper '#{credential_helper}'")
+        sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
+
+        destination_path = "#{package_folder}/#{package_version}"
+
+        Dir.chdir("gh-pages") do
+          UI.message "Clear out the existing documentation"
+          sh("git rm -rf #{destination_path} --ignore-unmatch && git clean -fd")
+
+          UI.message "Copy over the current documentation"
+          sh("mkdir -p #{destination_path} && cp -R ../../#{project_folder}/#{package_folder}/Documentation/Api/ #{destination_path}")
+
+          UI.message "Disable jekyll"
+          sh("touch .nojekyll")
+
+          if is_stable_release
+            UI.message <<~MESSAGE
+              Update the package root index.html to redirect to this documentation version.
+            MESSAGE
       
-      # Clean up credential helper
-      sh("rm -f #{credential_helper}")
+            index_html = <<~INDEX_HTML
+            <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8">
+                <title>#{documentation_title}</title>
+                <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
+              </head>
+              <body>
+                Redirecting to the latest stable version...
+              </body>
+            </html>
+            INDEX_HTML
+      
+            File.open("#{package_folder}/index.html", "w") { |f| 
+              f.write index_html
+            }
+          else
+            UI.message "Skipping root index.html update (not a stable release)"
+          end
 
-      destination_path = "#{package_folder}/#{package_version}"
-
-      Dir.chdir("gh-pages") do
-        UI.message "Clear out the existing documentation"
-        sh("git rm -rf #{destination_path} --ignore-unmatch && git clean -fd")
-
-        UI.message "Copy over the current documentation"
-        sh("mkdir -p #{destination_path} && cp -R ../../#{project_folder}/#{package_folder}/Documentation/Api/ #{destination_path}")
-
-        UI.message "Disable jekyll"
-        sh("touch .nojekyll")
-
-        if is_stable_release
-          UI.message <<~MESSAGE
-            Update the package root index.html to redirect to this documentation version.
-          MESSAGE
-    
-          index_html = <<~INDEX_HTML
-          <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <title>#{documentation_title}</title>
-              <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
-            </head>
-            <body>
-              Redirecting to the latest stable version...
-            </body>
-          </html>
-          INDEX_HTML
-    
-          File.open("#{package_folder}/index.html", "w") { |f| 
-            f.write index_html
-          }
-        else
-          UI.message "Skipping root index.html update (not a stable release)"
+          if !dry_run 
+            UI.message "Commit and push the new documentation"
+            sh("git add --all")
+            sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
+            git_push_with_retry("gh-pages", UI)
+          else
+            UI.message "Skipping commit and push (dry run)"
+          end
         end
-
-        if !dry_run 
-          UI.message "Commit and push the new documentation"
-          sh("git add --all")
-          sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
-          git_push_with_retry("gh-pages", UI)
-        else
-          UI.message "Skipping commit and push (dry run)"
-        end
+      ensure
+        # Clean up credential helper and git config
+        sh("git config --global --unset credential.helper || true")
+        sh("rm -f #{credential_helper}")
       end
 
       UI.success <<~MESSAGE
