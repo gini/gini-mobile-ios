@@ -61,6 +61,8 @@ jobs:
         
     - name: Publish GiniHealthSDK documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       with:
         lane: 'publish_docs'
         options: >
@@ -70,8 +72,7 @@ jobs:
             "version_file_path": "HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/GiniHealthSDKVersion.swift",
             "documentation_title":"GiniHealthSDK Reference",
             "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
-            "git_tag": "${{ github.ref }}",
-            "ci": "true"
+            "git_tag": "${{ github.ref }}"
           }
 
     - name: archive documentation

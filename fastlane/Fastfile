@@ -119,7 +119,6 @@ platform :ios do
       package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
       version_file_path     - the path to the file containing the package version
       git_tag               - the git tag name used to release the project
-      ci                    - set to true if running on a CI machine
       documentation_title   - the title used on the root index page
       is_stable_release     - set to true if it's a stable release that should be shown by default 
       dry_run               - (optional) executes without permanent side effects
@@ -127,18 +126,14 @@ platform :ios do
   DOC
   lane :publish_docs do |options|
     # Required options
-    (project_folder, package_folder, version_file_path, git_tag, ci, documentation_title, is_stable_release) = 
-      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :ci, :documentation_title, :is_stable_release], UI)
+    (project_folder, package_folder, version_file_path, git_tag, documentation_title, is_stable_release) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :documentation_title, :is_stable_release], UI)
       # Optional options
       dry_run = options[:dry_run]
 
       # Validate GH_TOKEN is present
       if ENV['GH_TOKEN'].nil? || ENV['GH_TOKEN'].empty?
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
-      end
-
-      if ci
-        configure_git_on_ci_machines("Team Mobile", "team-mobile@gini.net")
       end
 
       build_docs(project_folder: project_folder, package_folder: package_folder)
