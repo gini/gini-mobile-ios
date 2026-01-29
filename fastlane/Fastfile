@@ -132,6 +132,11 @@ platform :ios do
       # Optional options
       dry_run = options[:dry_run]
 
+      # Coerce boolean strings to actual booleans
+      is_stable_release = is_stable_release.to_s.downcase == "true"
+      ci = ci.to_s.downcase == "true"
+      dry_run = dry_run.to_s.downcase == "true" if dry_run
+
       # Validate GH_TOKEN is present
       if ENV['GH_TOKEN'].nil? || ENV['GH_TOKEN'].empty?
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
@@ -166,8 +171,8 @@ platform :ios do
       # Clear gh-pages directory 
       sh("rm -rf gh-pages")
 
-      # Clone
-      sh("git clone -b gh-pages https://x-oauth-token:#{ENV['GH_TOKEN']}@github.com/gini/gini-mobile-ios.git gh-pages")
+      # Clone using environment-based authentication (GH_TOKEN is configured via git remote URL in the workflow)
+      sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
 
       destination_path = "#{package_folder}/#{package_version}"
 

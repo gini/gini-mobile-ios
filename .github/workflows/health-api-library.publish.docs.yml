@@ -1,6 +1,6 @@
 name: Publish docs for Health API Library
 permissions:
-  contents: write
+  contents: read
 on:
   push:
     tags:
