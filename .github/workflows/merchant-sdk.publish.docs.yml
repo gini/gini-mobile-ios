@@ -53,14 +53,16 @@ jobs:
       env:
         GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       run: |
-        git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-        git config --local user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+        git config --global user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+        git config --global user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
 
         git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
         git remote -v
 
     - name: Publish GiniMerchantSDK documentation to the release repo
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
       with:
         lane: 'publish_docs'
         options: >
@@ -71,8 +73,6 @@ jobs:
             "documentation_title":"GiniMerchantSDK Reference",
             "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
             "git_tag": "${{ github.ref }}",
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
           }
 

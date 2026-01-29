@@ -104,12 +104,38 @@ platform :ios do
 
   end
 
+  desc <<~DOC
+    Publish documentation to gh-pages.
+
+    Releases the documentation into a folder hierarchy constructed from the package_folder and project version:
+    <gh_pages_url>/<package_folder>/<project_version>
+    Example: <gh_pages_url>/GiniCaptureSDK/1.11.0
+
+    If the 'is_stable_release' option is set to true, then it updates the package root index.html 
+    (at <gh_pages_url>/<package_folder>/index.html) to automatically redirect to the released version.
+    
+    Parameters:
+      project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
+      package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
+      version_file_path     - the path to the file containing the package version
+      git_tag               - the git tag name used to release the project
+      ci                    - set to true if running on a CI machine
+      documentation_title   - the title used on the root index page
+      is_stable_release     - set to true if it's a stable release that should be shown by default 
+      dry_run               - (optional) executes without permanent side effects
+
+  DOC
   lane :publish_docs do |options|
     # Required options
     (project_folder, package_folder, version_file_path, git_tag, ci, documentation_title, is_stable_release) = 
       check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :ci, :documentation_title, :is_stable_release], UI)
       # Optional options
       dry_run = options[:dry_run]
+
+      # Validate GH_TOKEN is present
+      if ENV['GH_TOKEN'].nil? || ENV['GH_TOKEN'].empty?
+        UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
+      end
 
       build_docs(project_folder: project_folder, package_folder: package_folder)
 
@@ -155,27 +181,31 @@ platform :ios do
         UI.message "Disable jekyll"
         sh("touch .nojekyll")
 
-        UI.message <<~MESSAGE
-          Update the package root index.html to redirect to this documentation version.
-        MESSAGE
-  
-        index_html = <<~INDEX_HTML
-        <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <title>#{documentation_title}</title>
-            <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
-          </head>
-          <body>
-            Redirecting to the latest stable version...
-          </body>
-        </html>
-        INDEX_HTML
-  
-        File.open("#{package_folder}/index.html", "w") { |f| 
-          f.write index_html
-        }
+        if is_stable_release
+          UI.message <<~MESSAGE
+            Update the package root index.html to redirect to this documentation version.
+          MESSAGE
+    
+          index_html = <<~INDEX_HTML
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <title>#{documentation_title}</title>
+              <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
+            </head>
+            <body>
+              Redirecting to the latest stable version...
+            </body>
+          </html>
+          INDEX_HTML
+    
+          File.open("#{package_folder}/index.html", "w") { |f| 
+            f.write index_html
+          }
+        else
+          UI.message "Skipping root index.html update (not a stable release)"
+        end
 
         if !dry_run 
           UI.message "Commit and push the new documentation"
