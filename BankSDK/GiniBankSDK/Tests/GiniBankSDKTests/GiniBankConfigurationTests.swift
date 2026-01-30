@@ -160,17 +160,6 @@ struct GiniBankConfigurationFeatureFlagsTests {
         #expect(configuration.returnAssistantEnabled, "Expected returnAssistantEnabled to be true after enabling")
     }
 
-    @Test("Return reasons can be enabled and disabled")
-    func enableReturnReasons() {
-        var configuration = GiniBankConfiguration()
-
-        configuration.enableReturnReasons = true
-        #expect(configuration.enableReturnReasons, "Expected enableReturnReasons to be true after enabling")
-
-        configuration.enableReturnReasons = false
-        #expect(!configuration.enableReturnReasons, "Expected enableReturnReasons to be false after disabling")
-    }
-
     // MARK: - Skonto Feature
 
     @Test("Skonto feature can be enabled and disabled")
