@@ -41,7 +41,7 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Setting this property has no effect.
+     Bottom navigation bar is no longer supported. Setting this property has no effect.
      */
     internal let bottomNavigationBarEnabled: Bool = false
 
