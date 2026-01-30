@@ -1,7 +1,7 @@
 Installation
 =============================
 
-Gini Health API Library can either be installed by using Swift Package Manager or by manually dragging the required files to your project.
+Gini Health API Library can be installed using Swift Package Manager.
 
 ## Swift Package Manager
 
