@@ -12,14 +12,14 @@ import Foundation
 
 public struct PaymentInfo {
 
-    public let sourceDocumentLocation: String?
-    public let recipient: String
-    public let iban: String
-    public let bic: String
-    public let amount: String
-    public let purpose: String
-    public let paymentUniversalLink: String
-    public let paymentProviderId: String
+    public var sourceDocumentLocation: String?
+    public var recipient: String
+    public var iban: String
+    public var bic: String
+    public var amount: String
+    public var purpose: String
+    public var paymentUniversalLink: String
+    public var paymentProviderId: String
 
     public init(sourceDocumentLocation: String? = nil,
                 recipient: String,
