@@ -14,74 +14,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-documentation:
-    runs-on: macos-latest
+  compute-inputs:
+    runs-on: ubuntu-latest
+    outputs:
+      is_stable_release: ${{ steps.check-branch.outputs.is_stable_release }}
     steps:
-    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
-      with:
-        xcode-version: '16.4'
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check if tag is on main branch
+        id: check-branch
+        shell: bash
+        run: |
+          if git branch -r --contains "${{ github.ref }}" | grep -q '^ *origin/main$'; then
+            echo "is_stable_release=true" >> $GITHUB_OUTPUT
+            echo "Tag is on main branch (stable release)"
+          else
+            echo "is_stable_release=false" >> $GITHUB_OUTPUT
+            echo "Tag is not on main branch (non-stable release)"
+          fi
 
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: get branch name
-      id: branch
-      shell: bash
-      run: |
-        # Check if the tag is on the main branch
-        if git branch -r --contains "${{ github.ref }}" | grep -q '^ *origin/main$'; then
-          echo "branch_name=main" >> $GITHUB_OUTPUT
-          echo "branch_name: main"
-        else
-          echo "branch_name=other" >> $GITHUB_OUTPUT
-          echo "branch_name: other"
-        fi
-
-    - name: setup ruby
-      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
-      with:
-        ruby-version: '3.2.0'
-        bundler-cache: true
-
-    - name: Generate a token
-      id: generate-token
-      # available args: https://github.com/actions/create-github-app-token?tab=readme-ov-file
-      uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 #2.0.0
-      with:
-        app-id: ${{ secrets.MOBILE_CI_APP_ID }}
-        private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
-        owner: gini
-
-    - name: Configure the git client
-      env:
-        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-      run: |
-        git config --global user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-        git config --global user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
-
-        git remote set-url origin https://x-oauth-token:${GH_TOKEN}@github.com/gini/gini-mobile-ios.git
-
-    - name: Publish GiniBankAPILibrary documentation to the release repo
-      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-      env:
-        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-      with:
-        lane: 'publish_docs'
-        options: >
-          { 
-            "project_folder": "BankAPILibrary",
-            "package_folder": "GiniBankAPILibrary",
-            "version_file_path": "BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift",
-            "documentation_title":"GiniBankAPILibrary Reference",
-            "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
-            "git_tag": "${{ github.ref }}",
-            "ci": "true"
-          }
-
-    - name: archive documentation
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.0.0
-      with:
-        name: GiniBankAPILibraryDocumentation
-        path: BankAPILibrary/GiniBankAPILibrary/Documentation/Api              
+  publish:
+    needs: compute-inputs
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sdk.publish.docs.yml
+    with:
+      project_folder: 'BankAPILibrary'
+      package_folder: 'GiniBankAPILibrary'
+      version_file_path: 'BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift'
+      documentation_title: 'GiniBankAPILibrary Reference'
+      git_tag: ${{ github.ref }}
+      is_stable_release: ${{ needs.compute-inputs.outputs.is_stable_release == 'true' }}
+    secrets:
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}              
