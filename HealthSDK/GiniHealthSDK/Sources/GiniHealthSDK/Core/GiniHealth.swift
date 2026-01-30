@@ -396,11 +396,18 @@ public struct DataForReview {
      
      */
     public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
+        let bic: String?
+        if let bicValue = paymentInfo.bic, !bicValue.isEmpty {
+            bic = bicValue
+        } else {
+            bic = nil
+        }
+        
         paymentService.createPaymentRequest(sourceDocumentLocation: paymentInfo.sourceDocumentLocation,
                                             paymentProvider: paymentInfo.paymentProviderId,
                                             recipient: paymentInfo.recipient,
                                             iban: paymentInfo.iban,
-                                            bic: "",
+                                            bic: bic,
                                             amount: paymentInfo.amount,
                                             purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
