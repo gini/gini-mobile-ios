@@ -142,6 +142,10 @@ platform :ios do
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
       end
 
+      if ci
+        configure_git_on_ci_machines("Team Mobile", "team-mobile@gini.net")
+      end
+
       build_docs(project_folder: project_folder, package_folder: package_folder)
 
       tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
