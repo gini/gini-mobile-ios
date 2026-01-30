@@ -41,7 +41,7 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Setting this property has no effect.
+     Bottom navigation bar is no longer supported. Setting this property has no effect.
      */
     internal let bottomNavigationBarEnabled: Bool = false
 
@@ -323,7 +323,7 @@ public final class GiniBankConfiguration: NSObject {
     internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
 
     /**
-     Return Reasons feature is  no longer supported. This property has no effect.
+     Return Reasons feature is  no longer supported. Setting this property has no effect. 
      */
     internal let enableReturnReasons: Bool = false
 
