@@ -71,8 +71,10 @@ jobs:
       - name: Check if tag is on main branch
         id: check-branch
         shell: bash
+        env:
+          GIT_TAG: ${{ inputs.git_tag }}
         run: |
-          if git branch -r --contains "${{ inputs.git_tag }}" | grep -q '^ *origin/main$'; then
+          if git branch -r --contains "$GIT_TAG" | grep -q '^ *origin/main$'; then
             echo "is_stable_release=true" >> $GITHUB_OUTPUT
             echo "Tag is on main branch (stable release)"
           else
