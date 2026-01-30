@@ -114,6 +114,79 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         XCTAssertEqual(sessionManagerMock.lastPaymentRequestBody?.bic, "COLSDE33")
     }
     
+    func testCreatePaymentRequestWithEmptyBIC() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        
+        // When
+        let expectation = self.expectation(description: "Creating payment request with empty BIC")
+        var receivedRequestId: String?
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: nil,
+                                                             recipient: "Uno Flüchtlingshilfe",
+                                                             iban: "DE78370501980020008850",
+                                                             bic: "",
+                                                             amount: "1.00:EUR",
+                                                             purpose: "ReNr 12345",
+                                                             paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                             paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedRequestId)
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        
+        // Verify empty BIC string is converted to nil
+        XCTAssertNotNil(sessionManagerMock.lastPaymentRequestBody)
+        XCTAssertNil(sessionManagerMock.lastPaymentRequestBody?.bic)
+    }
+    
+    func testCreatePaymentRequestWithEmptySourceDocumentLocation() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        
+        // When
+        let expectation = self.expectation(description: "Creating payment request with empty source document location")
+        var receivedRequestId: String?
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: "",
+                                                             recipient: "Uno Flüchtlingshilfe",
+                                                             iban: "DE78370501980020008850",
+                                                             bic: "COLSDE33",
+                                                             amount: "1.00:EUR",
+                                                             purpose: "ReNr 12345",
+                                                             paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                             paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedRequestId)
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        
+        // Verify empty sourceDocumentLocation string is converted to nil
+        XCTAssertNotNil(sessionManagerMock.lastPaymentRequestBody)
+        XCTAssertNil(sessionManagerMock.lastPaymentRequestBody?.sourceDocumentLocation)
+        
+        // Verify BIC was sent in the request body
+        XCTAssertEqual(sessionManagerMock.lastPaymentRequestBody?.bic, "COLSDE33")
+    }
+    
     func testDeletePaymentRequestSuccess() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
