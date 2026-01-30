@@ -14,30 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  compute-inputs:
-    runs-on: ubuntu-latest
-    outputs:
-      is_stable_release: ${{ steps.check-branch.outputs.is_stable_release }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Check if tag is on main branch
-        id: check-branch
-        shell: bash
-        run: |
-          if git branch -r --contains "${{ github.ref }}" | grep -q '^ *origin/main$'; then
-            echo "is_stable_release=true" >> $GITHUB_OUTPUT
-            echo "Tag is on main branch (stable release)"
-          else
-            echo "is_stable_release=false" >> $GITHUB_OUTPUT
-            echo "Tag is not on main branch (non-stable release)"
-          fi
-
   publish:
-    needs: compute-inputs
     permissions:
       contents: write
     uses: ./.github/workflows/sdk.publish.docs.yml
@@ -47,7 +24,6 @@ jobs:
       version_file_path: 'BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift'
       documentation_title: 'GiniBankSDK Reference'
       git_tag: ${{ github.ref }}
-      is_stable_release: ${{ needs.compute-inputs.outputs.is_stable_release == 'true' }}
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}              
