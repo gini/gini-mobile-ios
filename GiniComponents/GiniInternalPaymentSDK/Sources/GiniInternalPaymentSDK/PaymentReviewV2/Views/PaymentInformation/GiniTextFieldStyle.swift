@@ -20,9 +20,9 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private let state: GiniTextFieldState
     private let errorMessage: String?
     
-    var normalConfiguration: TextFieldConfiguration
-    var focusedConfiguration: TextFieldConfiguration
-    var errorConfiguration: TextFieldConfiguration
+    private let normalConfiguration: TextFieldConfiguration
+    private let focusedConfiguration: TextFieldConfiguration
+    private let errorConfiguration: TextFieldConfiguration
     
     private var currentConfiguration: TextFieldConfiguration {
         switch state {
