@@ -61,8 +61,6 @@ on:
       is_stable_release:
         description: 'Indicates if this is a stable release'
         required: true
-        type: boolean
-
 jobs:
   release-documentation:
     runs-on: macos-latest
