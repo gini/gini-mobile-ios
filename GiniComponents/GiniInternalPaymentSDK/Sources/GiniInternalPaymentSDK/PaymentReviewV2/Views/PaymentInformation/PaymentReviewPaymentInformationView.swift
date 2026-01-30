@@ -22,25 +22,19 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
-    @State private var recipient: String = Constants.emptyString
-    @State private var iban: String = Constants.emptyString
-    @State private var amount: String = Constants.emptyString
-    @State private var paymentPurpose: String = Constants.emptyString
-    
     @State private var amountToPay: Price
     @State private var showBanner: Bool
     
+    @State private var recipientInputState = GiniInputFieldState(text: Constants.emptyString,
+                                                                 hasError: false)
+    @State private var ibanInputState = GiniInputFieldState(text: Constants.emptyString,
+                                                            hasError: false)
+    @State private var amountInputState = GiniInputFieldState(text: Constants.emptyString,
+                                                              hasError: false)
+    @State private var paymentPurposeInputState = GiniInputFieldState(text: Constants.emptyString,
+                                                                      hasError: false)
+    
     @FocusState private var focusedField: Field?
-    
-    @State private var recipientHasError: Bool = false
-    @State private var ibanHasError: Bool = false
-    @State private var amountHasError: Bool = false
-    @State private var paymentPurposeHasError: Bool = false
-    
-    @State private var recipientErrorMessage: String?
-    @State private var ibanErrorMessage: String?
-    @State private var amountErrorMessage: String?
-    @State private var paymentPurposeErrorMessage: String?
     
     @Binding var contentHeight: CGFloat
     
@@ -129,13 +123,13 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var recipientTextField: some View {
-        TextField(Constants.emptyString, text: $recipient, onEditingChanged: { isBegin in
-            recipientHasError = isBegin ? false : !isRecipientValid()
+        TextField(Constants.emptyString, text: $recipientInputState.text, onEditingChanged: { isBegin in
+            recipientInputState.hasError = isBegin ? false : !isRecipientValid()
         })
         .focused($focusedField, equals: .recipient)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
-                                           state: fieldState(for: .recipient, hasError: recipientHasError),
-                                           errorMessage: recipientErrorMessage,
+                                           state: fieldState(for: .recipient, hasError: recipientInputState.hasError),
+                                           errorMessage: recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -143,14 +137,14 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var ibanTextField: some View {
-        TextField(Constants.emptyString, text: $iban, onEditingChanged: { isBegin in
-            ibanHasError = isBegin ? false : !isIBANValid()
+        TextField(Constants.emptyString, text: $ibanInputState.text, onEditingChanged: { isBegin in
+            ibanInputState.hasError = isBegin ? false : !isIBANValid()
         })
         .focused($focusedField, equals: .iban)
         .textInputAutocapitalization(.characters)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
-                                           state: fieldState(for: .iban, hasError: ibanHasError),
-                                           errorMessage: ibanErrorMessage,
+                                           state: fieldState(for: .iban, hasError: ibanInputState.hasError),
+                                           errorMessage: ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -158,34 +152,34 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var amountTextField: some View {
-        TextField(Constants.emptyString, text: $amount,
+        TextField(Constants.emptyString, text: $amountInputState.text,
                   onEditingChanged: { isBegin in
             if isBegin {
-                amount = amountToPay.stringWithoutSymbol ?? Constants.emptyString
+                amountInputState.text = amountToPay.stringWithoutSymbol ?? Constants.emptyString
             } else {
-                if !amount.isEmpty,
-                   let decimalAmount = amount.decimal() {
+                if !amountInputState.text.isEmpty,
+                   let decimalAmount = amountInputState.text.decimal() {
                     amountToPay.value = decimalAmount
                     
                     if decimalAmount > 0,
                        let amountString = amountToPay.string {
-                        amount = amountString
+                        amountInputState.text = amountString
                     } else {
-                        amount = Constants.emptyString
+                        amountInputState.text = Constants.emptyString
                     }
                 }
                 
-                amountHasError = !isAmountValid()
+                amountInputState.hasError = !isAmountValid()
             }
         })
         .focused($focusedField, equals: .amount)
-        .onChange(of: amount) { newValue in
+        .onChange(of: amountInputState.text) { newValue in
             adjustAmountValue(updatedText: newValue)
         }
         .keyboardType(.decimalPad)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
-                                           state: fieldState(for: .amount, hasError: amountHasError),
-                                           errorMessage: amountErrorMessage,
+                                           state: fieldState(for: .amount, hasError: amountInputState.hasError),
+                                           errorMessage: amountInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -193,13 +187,13 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var paymentPurposeTextField: some View {
-        TextField(Constants.emptyString, text: $paymentPurpose, onEditingChanged: { isBegin in
-            paymentPurposeHasError = isBegin ? false : !isPaymentPurposeValid()
+        TextField(Constants.emptyString, text: $paymentPurposeInputState.text, onEditingChanged: { isBegin in
+            paymentPurposeInputState.hasError = isBegin ? false : !isPaymentPurposeValid()
         })
         .focused($focusedField, equals: .paymentPurpose)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
-                                           state: fieldState(for: .paymentPurpose, hasError: paymentPurposeHasError),
-                                           errorMessage: paymentPurposeErrorMessage,
+                                           state: fieldState(for: .paymentPurpose, hasError: paymentPurposeInputState.hasError),
+                                           errorMessage: paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -276,47 +270,47 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func populateFieldsWithExtractions(_ extractions: [Extraction]) {
-        recipient = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? Constants.emptyString
-        iban = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? Constants.emptyString
-        paymentPurpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? Constants.emptyString
+        recipientInputState.text = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? Constants.emptyString
+        ibanInputState.text = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? Constants.emptyString
+        paymentPurposeInputState.text = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? Constants.emptyString
         
         if let amountString = viewModel.extractions.first(where: { $0.name == "amount_to_pay" })?.value,
            let amountToPay = Price(extractionString: amountString),
            let amountToPayString = amountToPay.string {
             self.amountToPay = amountToPay
-            amount = amountToPayString
+            amountInputState.text = amountToPayString
         }
     }
     
     private func populateFieldsWithPaymentInfo(_ paymentInfo: PaymentInfo) {
-        recipient = paymentInfo.recipient
-        iban = paymentInfo.iban.uppercased()
-        paymentPurpose = paymentInfo.purpose
+        recipientInputState.text = paymentInfo.recipient
+        ibanInputState.text = paymentInfo.iban.uppercased()
+        paymentPurposeInputState.text = paymentInfo.purpose
         
         if let amountToPay = Price(extractionString: paymentInfo.amount),
            let amountToPayText = amountToPay.string {
             self.amountToPay = amountToPay
-            amount = amountToPayText
+            amountInputState.text = amountToPayText
         }
     }
     
     private func buildPaymentInfo() -> PaymentInfo {
-        let paymentInfo = PaymentInfo(recipient: recipient,
-                                      iban: iban,
+        let paymentInfo = PaymentInfo(recipient: recipientInputState.text,
+                                      iban: ibanInputState.text,
                                       bic: Constants.emptyString,
                                       amount: amountToPay.extractionString,
-                                      purpose: paymentPurpose,
+                                      purpose: paymentPurposeInputState.text,
                                       paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
                                       paymentProviderId: viewModel.selectedPaymentProvider.id)
         return paymentInfo
     }
     
     private func adjustAmountValue(updatedText: String) {
-        amountHasError = false
+        amountInputState.hasError = false
         
         if let newPrice = updatedText.toPrice(maxDigitsLength: 7),
            let newAmount = newPrice.stringWithoutSymbol {
-            amount = newAmount
+            amountInputState.text = newAmount
             amountToPay.value = newPrice.value
         }
     }
@@ -334,10 +328,10 @@ struct PaymentReviewPaymentInformationView: View {
     private func validateFields() -> Bool {
         var isValid = true
         
-        recipientHasError = false
-        ibanHasError = false
-        amountHasError = false
-        paymentPurposeHasError = false
+        recipientInputState.hasError = false
+        ibanInputState.hasError = false
+        amountInputState.hasError = false
+        paymentPurposeInputState.hasError = false
         
         isValid = isRecipientValid() && isIBANValid() && isAmountValid() && isPaymentPurposeValid()
         
@@ -345,9 +339,9 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func isRecipientValid() -> Bool {
-        guard !recipient.trimmingCharacters(in: .whitespaces).isEmpty else {
-            recipientHasError = true
-            recipientErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
+        guard !recipientInputState.text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            recipientInputState.hasError = true
+            recipientInputState.errorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         }
         
@@ -355,15 +349,15 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func isIBANValid() -> Bool {
-        guard !iban.trimmingCharacters(in: .whitespaces).isEmpty else {
-            ibanHasError = true
-            ibanErrorMessage = viewModel.model.strings.ibanErrorMessage
+        guard !ibanInputState.text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            ibanInputState.hasError = true
+            ibanInputState.errorMessage = viewModel.model.strings.ibanErrorMessage
             return false
         }
         
-        guard ibanValidator.isValid(iban: iban) else {
-            ibanHasError = true
-            ibanErrorMessage = viewModel.model.strings.ibanCheckErrorMessage
+        guard ibanValidator.isValid(iban: ibanInputState.text) else {
+            ibanInputState.hasError = true
+            ibanInputState.errorMessage = viewModel.model.strings.ibanCheckErrorMessage
             return false
         }
         
@@ -371,9 +365,9 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func isAmountValid() -> Bool {
-        if amount.trimmingCharacters(in: .whitespaces).isEmpty || amountToPay.value <= 0 {
-            amountHasError = true
-            amountErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
+        if amountInputState.text.trimmingCharacters(in: .whitespaces).isEmpty || amountToPay.value <= 0 {
+            amountInputState.hasError = true
+            amountInputState.errorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         } else {
             return true
@@ -381,9 +375,9 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func isPaymentPurposeValid() -> Bool {
-        guard !paymentPurpose.trimmingCharacters(in: .whitespaces).isEmpty else {
-            paymentPurposeHasError = true
-            paymentPurposeErrorMessage = viewModel.model.strings.emptyCheckErrorMessage
+        guard !paymentPurposeInputState.text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            paymentPurposeInputState.hasError = true
+            paymentPurposeInputState.errorMessage = viewModel.model.strings.emptyCheckErrorMessage
             return false
         }
         
