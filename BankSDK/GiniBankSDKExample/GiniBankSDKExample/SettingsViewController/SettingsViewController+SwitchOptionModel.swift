@@ -37,7 +37,6 @@ struct SwitchOptionModel {
 		case cameraControlButtonConfiguration
 		case addPageButtonConfiguration
 		case returnAssistantEnabled
-		case enableReturnReasons
 		case customDocumentValidations
 		case giniErrorLoggerIsOn
 		case customGiniErrorLogger
@@ -105,8 +104,6 @@ struct SwitchOptionModel {
 				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
-            case .enableReturnReasons:
-                return "Return reasons dialog"
             case .skontoEnabled:
                 return "Skonto feature"
             case .transactionDocsEnabled:

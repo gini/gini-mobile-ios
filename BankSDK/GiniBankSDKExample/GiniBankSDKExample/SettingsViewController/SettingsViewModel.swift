@@ -173,8 +173,6 @@ final class SettingsViewModel {
 
     private func setupReturnAssistantSection() -> SettingsSection {
         var returnAssistantSection = SettingsSection(title: "Return Assistant", items: [])
-        returnAssistantSection.items.append(.switchOption(data: .init(type: .enableReturnReasons,
-                                                                      isSwitchOn: giniConfiguration.enableReturnReasons)))
         returnAssistantSection.items.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
                                                                       isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
         return returnAssistantSection
@@ -289,8 +287,6 @@ final class SettingsViewModel {
             giniConfiguration.shouldShowDragAndDropTutorial = data.isSwitchOn
         case .returnAssistantEnabled:
             giniConfiguration.returnAssistantEnabled = data.isSwitchOn
-        case .enableReturnReasons:
-            giniConfiguration.enableReturnReasons = data.isSwitchOn
         case .skontoEnabled:
             giniConfiguration.skontoEnabled = data.isSwitchOn
         case .transactionDocsEnabled:
