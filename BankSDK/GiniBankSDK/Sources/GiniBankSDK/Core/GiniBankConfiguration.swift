@@ -41,9 +41,9 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Enable/disable the bottom navigation bar.
+     Bottom navigation bar is no longer supported. Setting this property has no effect.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    internal let bottomNavigationBarEnabled: Bool = false
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -185,9 +185,9 @@ public final class GiniBankConfiguration: NSObject {
     public var flashOnByDefault = false
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+     Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
     // MARK: - Onboarding screens
     /**
@@ -210,9 +210,9 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
     /**
      Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
@@ -236,15 +236,15 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Review screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     // MARK: - Gallery screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+     Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
+    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
     // MARK: - Help screens
     /**
@@ -253,9 +253,9 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var openWithEnabled = false
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
      Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen.
@@ -283,15 +283,15 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Error screens
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     // MARK: - No results screen
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     // MARK: - Digital Invoice
 
@@ -308,19 +308,19 @@ public final class GiniBankConfiguration: NSObject {
     public var returnAssistantEnabled = true
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
+     Custom bottom navigation adapters (like `DigitalInvoiceHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+    internal let digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice onboarding screen.
+     Custom bottom navigation adapters (like `DigitalInvoiceOnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+    internal let digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
+     Custom bottom navigation adapters (like `DigitalInvoiceNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
+    internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
 
     /**
      Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
@@ -329,9 +329,9 @@ public final class GiniBankConfiguration: NSObject {
     public var enableReturnReasons: Bool = false
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice screen which include Skonto information.
+     Custom bottom navigation adapters (like `DigitalInvoiceSkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
+    internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil
 
     // MARK: - Skonto feature
 
@@ -343,14 +343,14 @@ public final class GiniBankConfiguration: NSObject {
     public var skontoEnabled: Bool = true
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
+     Custom bottom navigation adapters (like `SkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
+    internal let skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
+     Custom bottom navigation adapters (like `SkontoHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
+    internal let skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter? = nil
 
     // MARK: - Transaction Docs feature
     /**
@@ -463,21 +463,12 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.customOnboardingPages = self.customOnboardingPages
 
-        configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
-        configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
-        configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
-        configuration.noResultsNavigationBarBottomAdapter = self.noResultsNavigationBarBottomAdapter
-        configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
-        configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
-        configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
-
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-        configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
 
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
 
@@ -546,7 +537,6 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
-        giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
 
         giniBankConfiguration.primaryButtonConfiguration = configuration.primaryButtonConfiguration
         giniBankConfiguration.secondaryButtonConfiguration = configuration.secondaryButtonConfiguration
@@ -561,17 +551,10 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.transactionDocsEnabled = configuration.transactionDocsEnabled
 
         giniBankConfiguration.customNavigationController = configuration.customNavigationController
-        giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
-        giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
-        giniBankConfiguration.errorNavigationBarBottomAdapter = configuration.errorNavigationBarBottomAdapter
-        giniBankConfiguration.noResultsNavigationBarBottomAdapter = configuration.noResultsNavigationBarBottomAdapter
-        giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
-        giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
 
         giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
         giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
         giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
-        giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
         giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
 
         giniBankConfiguration.entryPoint = configuration.entryPoint
