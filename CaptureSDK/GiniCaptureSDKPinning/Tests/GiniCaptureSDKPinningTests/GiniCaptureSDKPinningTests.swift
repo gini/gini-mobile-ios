@@ -11,5 +11,6 @@ import XCTest
 
 final class GiniCaptureSDKPinningTests: XCTestCase {
     func testExample() throws {
+        // This method will remain empty; no test needed yet
     }
 }

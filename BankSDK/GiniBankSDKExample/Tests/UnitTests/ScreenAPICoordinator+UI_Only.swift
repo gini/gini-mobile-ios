@@ -37,7 +37,10 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
     }
     
     func testInitializationWithTrackingDelegate() {
-        _ = GiniBank.viewController(withDelegate: screenAPICoordinator, withConfiguration: configuration, importedDocument: nil, trackingDelegate: screenAPICoordinator)
+        _ = GiniBank.viewController(withDelegate: screenAPICoordinator,
+                                    withConfiguration: configuration,
+                                    importedDocument: nil,
+                                    trackingDelegate: screenAPICoordinator)
         let bankConfiguration = GiniBankConfiguration.shared
         let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
         
@@ -61,38 +64,49 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
     }
     
     class ScreenAPIUIOnlyCoordinator: GiniCaptureDelegate, GiniCaptureTrackingDelegate {
-        
+
         func didPressEnterManually() {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func onCameraScreenEvent(event: Event<CameraScreenEventType>) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func onOnboardingScreenEvent(event: Event<OnboardingScreenEventType>) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func onReviewScreenEvent(event: Event<ReviewScreenEventType>) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func didReview(documents: [GiniCaptureDocument], networkDelegate: GiniCaptureNetworkDelegate) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func didCancelCapturing() {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func didCancelReview(for document: GiniCaptureDocument) {
+            // This method will remain empty; no implementation is needed.
         }
-        
+
         func didCancelAnalysis() {
+            // This method will remain empty; no implementation is needed.
         }
 
         func giniCaptureDidEnterManually() {
+            // This method will remain empty; no implementation is needed.
         }
     }
 }

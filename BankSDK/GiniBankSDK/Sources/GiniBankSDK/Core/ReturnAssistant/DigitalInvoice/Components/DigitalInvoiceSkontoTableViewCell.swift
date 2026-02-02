@@ -21,7 +21,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.body]
-        label.textColor = .giniColorScheme().text.tertiary.uiColor()
+        label.textColor = .giniBankColorScheme().text.tertiary.uiColor()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                               comment: "Skonto discount")
         label.numberOfLines = 0
@@ -32,7 +32,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.caption2]
-        label.textColor = .giniColorScheme().text.tertiary.uiColor()
+        label.textColor = .giniBankColorScheme().text.tertiary.uiColor()
         label.numberOfLines = 0
         return label
     }()
@@ -41,7 +41,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.bodyBold]
-        label.textColor = .giniColorScheme().text.success.uiColor()
+        label.textColor = .giniBankColorScheme().text.success.uiColor()
         label.numberOfLines = 0
         return label
     }()
@@ -93,6 +93,13 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         return stackView
     }()
 
+    private lazy var backgroundContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .giniBankColorScheme().container.background.uiColor()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override var canBecomeFocused: Bool {
         false
     }
@@ -111,22 +118,26 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     private func setupViews() {
         selectionStyle = .none
         backgroundColor = .clear
-        contentView.backgroundColor = .giniColorScheme().container.background.uiColor()
-        clipsToBounds = true
-        layer.cornerRadius = Constants.cornerRadius
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        contentView.addSubview(mainStackView)
+        contentView.backgroundColor = .clear
+        backgroundContainerView.round(corners: [.bottomLeft, .bottomRight],
+                                      radius: Constants.cornerRadius)
+        contentView.addSubview(backgroundContainerView)
+        backgroundContainerView.addSubview(mainStackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            backgroundContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            backgroundContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            backgroundContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            backgroundContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: backgroundContainerView.leadingAnchor,
                                                    constant: Constants.stackViewHorizontalSpacing),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            mainStackView.trailingAnchor.constraint(equalTo: backgroundContainerView.trailingAnchor,
                                                     constant: -Constants.stackViewHorizontalSpacing),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+            mainStackView.topAnchor.constraint(equalTo: backgroundContainerView.topAnchor,
                                                constant: Constants.stackViewVerticalSpacing),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+            mainStackView.bottomAnchor.constraint(equalTo: backgroundContainerView.bottomAnchor,
                                                   constant: -Constants.stackViewVerticalSpacing),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
             editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
@@ -161,15 +172,15 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         if viewModel.isSkontoApplied {
             editButton.isEnabled = true
             editButton.setTitleColor(.GiniBank.accent1, for: .normal)
-            titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
-            edgeCaseLabel.textColor = .giniColorScheme().text.secondary.uiColor()
+            titleLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
             valueLabel.isHidden = false
             toggleSwitch.isOn = true
         } else {
-            editButton.setTitleColor(.giniColorScheme().textField.disabledText.uiColor(),
+            editButton.setTitleColor(.giniBankColorScheme().textField.disabledText.uiColor(),
                                      for: .normal)
-            titleLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
-            edgeCaseLabel.textColor = .giniColorScheme().textField.disabledText.uiColor()
+            titleLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
+            edgeCaseLabel.textColor = .giniBankColorScheme().textField.disabledText.uiColor()
             editButton.isEnabled = false
             valueLabel.isHidden = true
             toggleSwitch.isOn = false

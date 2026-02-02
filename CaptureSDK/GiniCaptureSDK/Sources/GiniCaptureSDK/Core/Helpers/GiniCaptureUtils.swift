@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 public func giniCaptureBundle() -> Bundle {
     Bundle.resource

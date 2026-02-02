@@ -21,7 +21,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniHealthAPILibrary]
+        target: [GiniHealthAPILibrary, GiniHealthAPILibraryExampleTests]
         destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
@@ -36,24 +36,25 @@ jobs:
       run: |
            cd HealthAPILibrary/GiniHealthAPILibrary
            swift package update
+    
+     # Setup ruby to run unit tests for the GiniBankSDK
+    - name: Setup ruby
+      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
 
-    - name: Build sdk targets
-      run: |
-        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-
-    - name: Run unit tests
-      run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-   
-    - name: Build example app and run integration tests
-      if: ${{ matrix.target == 'GiniHealthAPILibrary' }}
-      run: >
-        xcodebuild clean test
-        -project HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj
-        -scheme "GiniHealthAPILibraryExampleTests"
-        -destination "${{ matrix.destination }}"
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+    - name: Build and run tests for "${{ matrix.target }}"
+      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      env:
+        TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+      with:
+        lane: 'run_unit_tests'
+        options: >
+            {
+              "target": "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}",
+              "clientId": "$TEST_CLIENT_ID",
+              "clientSecret": "$TEST_CLIENT_SECRET"
+            }

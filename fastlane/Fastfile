@@ -21,6 +21,8 @@ load "util/git.rb"
 load "util/swift_package_releases.rb"
 load "util/add_files_to_project.rb"
 load "util/sbom.rb"
+import "Fastfile_signing"
+import "Fastfile_archiving"
 
 platform :ios do
   desc <<~DOC
@@ -496,4 +498,102 @@ platform :ios do
       sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
+
+desc <<~DOC
+Runs unit tests for a given target using the `scan` action (a wrapper around xcodebuild).
+
+Parameters:
+- `target`: The name of the target whose test scheme will be executed. Example: `GinBankSDK`.
+- `destination`: The destination for the tests. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+- `clientId`: (Optional) The clientId for the hosting app. If provided, clientSecret must also be provided.
+- `clientSecret`: (Optional) The clientSecret for the hosting app. If provided, clientId must also be provided.
+DOC
+
+lane :run_unit_tests do |options|
+  target = options[:target]
+  destination = options[:destination]
+  clientId = options[:clientId]
+  clientSecret = options[:clientSecret]
+
+  unless target && destination
+    UI.user_error!("Missing 'target' or 'destination' parameter. Pass both to run the tests.")
+  end
+
+  # Validate that clientId and clientSecret are used together
+  if (clientId && !clientSecret) || (!clientId && clientSecret)
+    UI.user_error!("clientId and clientSecret must be provided together or not at all.")
+  end
+
+  # Build xcargs array conditionally
+  xcargs = [
+    'CODE_SIGNING_REQUIRED=NO',
+    'CODE_SIGN_IDENTITY=""',
+    'ONLY_ACTIVE_ARCH=NO'
+  ]
+  
+  # Add CLIENT_ID and CLIENT_SECRET only if both are provided
+  if clientId && clientSecret && !clientId.empty? && !clientSecret.empty?
+    xcargs << "CLIENT_ID=#{clientId}"
+    xcargs << "CLIENT_SECRET=#{clientSecret}"
+  end
+
+  scan(
+    workspace: "GiniMobile.xcworkspace",
+    scheme: target,
+    clean: true,
+    destination: destination,
+    disable_concurrent_testing: false,
+    xcargs: xcargs.join(' '),
+    output_types: "",                 # prevent report generation
+    output_directory: "./tmp_test_output",
+    fail_build: true,
+    code_coverage: true
+  )
+  
+  # Clean up the report files that were generated
+  sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
+end
+
+<<~DOC
+Builds targets using the `gym` action (a wrapper around xcodebuild).
+
+This lane builds the specified target without code signing or archiving, useful for 
+CI/CD pipelines where you only need to verify the build succeeds.
+
+Parameters:
+- `scheme`: The name of the scheme to build. Example: `GinBankSDK`.
+- `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+DOC
+lane :build_scheme do |options|
+  gym(
+    workspace: "GiniMobile.xcworkspace",
+    scheme: options[:target],
+    destination: options[:destination],
+    skip_codesigning: true,
+    skip_archive: true,
+    skip_package_ipa: true,
+    xcargs: {
+      "CODE_SIGN_IDENTITY" => "",
+      "CODE_SIGNING_REQUIRED" => "NO",
+      "ONLY_ACTIVE_ARCH" => "NO"
+    }
+  )
+end
+desc <<~DOC
+  Register new devices from a devices file.
+  
+  This lane reads device UDIDs, names, and platforms from a text file and registers them
+  with your Apple Developer account. The devices file should contain one device
+  per line in the format from the content of the `./devices.txt` file.
+  
+  Parameters:
+    devices_file - Path to the devices file (default: "./devices.txt")
+  
+  Example devices.txt format:
+    1234567890abcdef1234567890abcdef12345678	John's ios
+    abcdef1234567890abcdef1234567890123456	Jane's ios
+DOC
+lane :register_new_devices do 
+    register_devices(devices_file: "./devices.txt")
+end
 end

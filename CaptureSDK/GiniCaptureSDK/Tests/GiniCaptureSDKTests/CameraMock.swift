@@ -14,12 +14,13 @@ final class CameraMock: CameraProtocol {
                             regionOfInterest: CGRect?,
                             videoPreviewLayer: AVCaptureVideoPreviewLayer?,
                             visionToAVFTransform: CGAffineTransform) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     var didDetectIBANs: (([String]) -> Void)?
 
     func startOCR() {
+        // This method will remain empty; no implementation is needed.
     }
 
     var didDetectInvalidQR: ((GiniCaptureSDK.GiniQRCodeDocument) -> Void)?
@@ -42,18 +43,18 @@ final class CameraMock: CameraProtocol {
     }
 
     func switchTo(newVideoDevice: AVCaptureDevice) {
-
+        // This method will remain empty; no implementation is needed.
     }
     
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func focus(withMode mode: AVCaptureDevice.FocusMode,
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func setup(completion: ((CameraError?) -> Void)) {
@@ -66,14 +67,14 @@ final class CameraMock: CameraProtocol {
     }
     
     func setupQRScanningOutput(completion: @escaping ((GiniCaptureSDK.CameraError?) -> Void)) {
-
+        // This method will remain empty; no implementation is needed.
     }
     
     func start() {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func stop() {
-        
+        // This method will remain empty; no implementation is needed.
     }
 }

@@ -14,7 +14,7 @@ protocol SkontoDocumentPreviewViewDelegate: AnyObject {
 class SkontoDocumentPreviewView: UIButton {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().placeholder.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().placeholder.background.uiColor()
         view.layer.cornerRadius = Constants.imageViewCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -23,7 +23,7 @@ class SkontoDocumentPreviewView: UIButton {
     private lazy var documentPreviewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.invoicePlaceholderIcon.image
-        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
+        imageView.tintColor = .giniBankColorScheme().placeholder.tint.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -34,7 +34,7 @@ class SkontoDocumentPreviewView: UIButton {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.title",
                                                              comment: "Invoice")
         label.text = title
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.font = previewConfiguration.textStyleFonts[.footnoteBold]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,8 +46,7 @@ class SkontoDocumentPreviewView: UIButton {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.subtitle",
                                                              comment: "Tap to view")
         label.text = title
-        label.numberOfLines = 0
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.font = previewConfiguration.textStyleFonts[.footnote]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +72,7 @@ class SkontoDocumentPreviewView: UIButton {
     private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().container.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)

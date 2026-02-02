@@ -2,8 +2,7 @@
 //  CustomLoadingIndicator.swift
 //  GiniCaptureSDKExample
 //
-//  Created by David Vizaknai on 14.09.2022.
-//  Copyright © 2022 Gini GmbH. All rights reserved.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -27,27 +26,6 @@ public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadin
     }
 
     public func onDeinit() {
-    }
-}
-
-public final class OnButtonLoading: UIActivityIndicatorView, OnButtonLoadingIndicatorAdapter {
-    public func startAnimation() {
-        self.startAnimating()
-    }
-
-    public func stopAnimation() {
-        self.stopAnimating()
-    }
-
-    public func injectedView() -> UIView {
-        self.style = .large
-        self.color = .red
-        self.startAnimating()
-
-        return self
-    }
-
-    public func onDeinit() {
-
+        // Intentionally left empty
     }
 }
