@@ -13,25 +13,25 @@ import GiniInternalPaymentSDK
 /**
  Delegate to inform about the current status of the Gini Health SDK.
  Makes use of callback for handling payment request creation.
- 
+
  */
 public protocol GiniHealthDelegate: AnyObject {
-    
+
     /**
      Called when the payment request was successfully created
-     
+
      - parameter paymentRequestId: Id of created payment request.
      */
     func didCreatePaymentRequest(paymentRequestId: String)
-    
+
     /**
      Error handling. If delegate is set and error is going to  be handled internally the method should return true.
      If error hadling is planned to be custom return false for specific error case.
-     
+
      - parameter error: error which will be handled.
      */
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
-    
+
     /**
      Called when the Gini Health SDK has been dismissed.
      */
@@ -84,7 +84,7 @@ public struct DataForReview {
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
     public var clientConfiguration: ClientConfiguration? = GiniHealthConfiguration.shared.clientConfiguration
-    
+
     public var paymentComponentsController: PaymentComponentsController!
 
     /**
@@ -112,12 +112,12 @@ public struct DataForReview {
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
     }
-    
+
     /**
      Initializes a new instance of GiniHealth.
-     
+
      This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
-     
+
      - Parameters:
      - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
      - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
@@ -157,7 +157,7 @@ public struct DataForReview {
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
     }
-    
+
     /**
          Initiates the payment flow for a specified document and payment information.
 
@@ -166,7 +166,7 @@ public struct DataForReview {
            - paymentInfo: An optional `PaymentInfo` object containing the payment details.
            - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
            - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
-         
+
          This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
          If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
          depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
@@ -174,7 +174,7 @@ public struct DataForReview {
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
     }
-    
+
     /**
      Fetches bank logos for the available payment providers.
 
@@ -186,14 +186,14 @@ public struct DataForReview {
 
     /**
      Getting a list of the banking apps supported by SDK
-     
+
      - Parameters:
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
      Result is a value that represents either a success or a failure, including an associated value in each case.
      In success case it includes array of payment providers supported by SDK.
      In case of failure error provided by API.
      */
-    
+
     public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
@@ -205,14 +205,14 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Sets a configuration which is used to customize the look of the Gini Health SDK,
      for example to change texts and colors displayed to the user.
-     
+
      - Parameters:
         - configuration: The configuration to set.
-     
+
      */
     public func setConfiguration(_ configuration: GiniHealthConfiguration) {
         GiniHealthConfiguration.shared = configuration
@@ -235,16 +235,7 @@ public struct DataForReview {
                self.documentService.extractions(for: createdDocument,
                                                 cancellationToken: CancellationToken()) { result in
                    DispatchQueue.main.async {
-                       switch result {
-                       case let .success(extractionResult):
-                               if let paymentStateExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value, paymentStateExtraction == PaymentState.payable.rawValue {
-                               completion(.success(true))
-                           } else {
-                               completion(.success(false))
-                           }
-                       case .failure(let error):
-                           completion(.failure(.apiError(error)))
-                       }
+                       self.handleExtractionResult(result, completion: completion)
                    }
                }
            case .failure(let error):
@@ -253,6 +244,20 @@ public struct DataForReview {
        }
    }
 
+    private func handleExtractionResult(_ result: Result<ExtractionResult, GiniError>,
+                                        completion: @escaping (Result<Bool, GiniHealthError>) -> Void)  {
+
+        switch result {
+        case let .success(extractionResult):
+            if let paymentStateExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value, paymentStateExtraction == PaymentState.payable.rawValue {
+                completion(.success(true))
+            } else {
+                completion(.success(false))
+            }
+        case .failure(let error):
+            completion(.failure(.apiError(error)))
+        }
+    }
     /**
     Checks if the document contains multiple invoices.
 
@@ -268,18 +273,9 @@ public struct DataForReview {
             switch result {
             case let .success(createdDocument):
                 self.documentService.extractions(for: createdDocument,
-                                                 cancellationToken: CancellationToken()) { result in
+                                                 cancellationToken: CancellationToken()) { [weak self] result in
                     DispatchQueue.main.async {
-                        switch result {
-                        case let .success(extractionResult):
-                                if let containsMultipleDocsExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value, containsMultipleDocsExtraction == Constants.hasMultipleDocuments {
-                                completion(.success(true))
-                            } else {
-                                completion(.success(false))
-                            }
-                        case .failure(let error):
-                            completion(.failure(.apiError(error)))
-                        }
+                        self?.handleMultipleDocsExtractionResult(result, completion: completion)
                     }
                 }
             case .failure(let error):
@@ -288,9 +284,23 @@ public struct DataForReview {
         }
     }
 
+    private func handleMultipleDocsExtractionResult(_ result: Result<ExtractionResult, GiniError>,
+                                                    completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        switch result {
+        case let .success(extractionResult):
+            if let containsMultipleDocsExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value, containsMultipleDocsExtraction == Constants.hasMultipleDocuments {
+                completion(.success(true))
+            } else {
+                completion(.success(false))
+            }
+        case .failure(let error):
+            completion(.failure(.apiError(error)))
+        }
+    }
+
     /**
      Polls the document via document id.
-     
+
      - Parameters:
         - docId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
@@ -311,45 +321,61 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Get extractions for the document.
-     
+
      - parameter docId: Id of the uploaded document.
      - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
      Completion block called on main thread.
      In success case it includes array of extractions.
      In case of failure in case of failure error from the server side.
-     
+
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
-            switch result {
-            case let .success(createdDocument):
-                self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: CancellationToken()) { result in
-                            DispatchQueue.main.async {
-                                switch result {
-                                case let .success(extractionResult):
-                                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                        completion(.success(paymentExtractions))
-                                    } else {
-                                        completion(.failure(.noPaymentDataExtracted))
-                                    }
-                                case let .failure(error):
-                                    completion(.failure(.apiError(error)))
-                                }
-                            }
-                        }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(.apiError(error)))
-                }
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.handleFetchedDocument(result: result, completion: completion)
+        }
+    }
+    
+    
+    private func handleFetchedDocument(result: Result<Document, GiniError>,
+                                       completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        switch result {
+        case let .success(document):
+            fetchExtractions(for: document, completion: completion)
+            
+        case let .failure(error):
+            DispatchQueue.main.async {
+                completion(.failure(.apiError(error)))
             }
         }
     }
-
+    
+    private func fetchExtractions(for document: Document,
+                                  completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
+            DispatchQueue.main.async { [weak self] in
+                self?.handlePaymentExtractionResult(result, completion: completion)
+            }
+        }
+    }
+    
+    private func handlePaymentExtractionResult(_ result: Result<ExtractionResult, GiniError>,
+                                               completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        switch result {
+        case let .success(extractionResult):
+            if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                completion(.success(paymentExtractions))
+            } else {
+                completion(.failure(.noPaymentDataExtracted))
+            }
+        case let .failure(error):
+            completion(.failure(.apiError(error)))
+        }
+    }
     /**
      Get all extractions for the document. Medical information included.
 
@@ -365,17 +391,13 @@ public struct DataForReview {
             switch result {
             case let .success(createdDocument):
                 self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: CancellationToken()) { result in
-                            DispatchQueue.main.async {
-                                switch result {
-                                case let .success(extractionResult):
-                                    completion(.success(extractionResult.extractions))
-                                case let .failure(error):
-                                    completion(.failure(.apiError(error)))
-                                }
-                            }
+                    .extractions(for: createdDocument,
+                                 cancellationToken: CancellationToken()) { result in
+
+                        DispatchQueue.main.async {
+                            self.handleGetAllExtractionsResult(result, completion: completion)
                         }
+                    }
             case let .failure(error):
                 DispatchQueue.main.async {
                     completion(.failure(.apiError(error)))
@@ -384,16 +406,27 @@ public struct DataForReview {
         }
     }
 
+    private func handleGetAllExtractionsResult(_ result: Result<ExtractionResult, GiniError>,
+                                               completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        switch result {
+        case let .success(extractionResult):
+            completion(.success(extractionResult.extractions))
+        case let .failure(error):
+            completion(.failure(.apiError(error)))
+        }
+    }
+
+
     /**
      Creates a payment request
-     
+
      - Parameters:
         - paymentInfo: Model object for payment information.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
         In success it includes the id of created payment request.
         In case of failure error from the server side.
-     
+
      */
     public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
@@ -407,17 +440,17 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Deletes a payment request
-     
+
      - Parameters:
         - id: Id of the payment request to delete.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
         In success it includes the id of deleted payment request.
         In case of failure error from the server side.
-     
+
      */
     public func deletePaymentRequest(id: String, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.deletePaymentRequest(id: id) { result in
@@ -431,17 +464,17 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Deletes a batch of payment request
-     
+
      - Parameters:
         - ids: An array of paymen request ids to be deleted
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
         In success it includes an array of deleted ids
         In case of failure error from the server side.
-     
+
      */
     public func deletePaymentRequests(ids: [String], completion: @escaping (Result<[String], GiniError>) -> Void) {
         paymentService.deletePaymentRequests(ids) { result in
@@ -455,11 +488,11 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Opens an app of selected payment provider.
         openUrl called on main thread.
-     
+
      - Parameters:
         - requestId: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
@@ -474,10 +507,10 @@ public struct DataForReview {
             urlOpener.openLink(url: resultUrl, completion: completion)
         }
     }
-    
+
     /**
      Sets a data for payment review screen
-     
+
      - Parameters:
         - documentId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
@@ -485,7 +518,7 @@ public struct DataForReview {
         Completion block called on main thread.
         In success it includes array of extractions.
         In case of failure error from the server side.
-     
+
      */
     public func setDocumentForReview(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: documentId) { result in
@@ -506,10 +539,10 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Fetches document and extractions for payment review screen
-     
+
      - Parameters:
         - documentId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
@@ -527,17 +560,7 @@ public struct DataForReview {
                     .extractions(for: document,
                                  cancellationToken: CancellationToken()) { result in
                         DispatchQueue.main.async {
-                            switch result {
-                            case let .success(extractionResult):
-                                if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                    let fetchedData = DataForReview(document: document, extractions: paymentExtractions)
-                                    completion(.success(fetchedData))
-                                } else {
-                                    completion(.failure(.noPaymentDataExtracted))
-                                }
-                            case let .failure(error):
-                                completion(.failure(.apiError(error)))
-                            }
+                            self.handleFetchDataForReviewResult(document: document, result: result, completion: completion)
                         }
                     }
             case let .failure(error):
@@ -547,17 +570,34 @@ public struct DataForReview {
             }
         }
     }
-    
+
+    private func handleFetchDataForReviewResult(document: Document, result: Result<ExtractionResult, GiniError>,
+                                                completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void) {
+
+        switch result {
+        case let .success(extractionResult):
+            if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                let fetchedData = DataForReview(document: document, extractions: paymentExtractions)
+                completion(.success(fetchedData))
+            } else {
+                completion(.failure(.noPaymentDataExtracted))
+            }
+        case let .failure(error):
+            completion(.failure(.apiError(error)))
+        }
+
+    }
+
     /**
         Retrieves a payment request by ID.
-         
+
     - Parameters:
        - id: The ID of the payment request to retrieve.
        - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
        Completion block called on main thread.
        In success, it includes the retrieved payment request.
        In case of failure, error from the server side.
-     
+
     */
     public func getPaymentRequest(by id: String,
                                   completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
@@ -595,7 +635,7 @@ public struct DataForReview {
             }
         }
     }
-    
+
     /**
      Retrieve a `Payment` of the specified `PaymentRequest`
 
@@ -631,11 +671,11 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
     public func isLoadingStateChanged(isLoading: Bool) {
         paymentDelegate?.isLoadingStateChanged(isLoading: isLoading)
     }
-    
+
     public func didFetchedPaymentProviders() {
         paymentDelegate?.didFetchedPaymentProviders()
     }
-    
+
     public func didDismissPaymentComponents() {
         delegate?.didDismissHealthSDK()
     }

@@ -87,14 +87,9 @@ extension DigitalInvoice {
                 switch key {
                 case .description:
                     extraction.value = name ?? ""
+                    
                 case .quantity:
-
-                    switch selectedState {
-                    case .selected:
-                        extraction.value =  String(quantity)
-                    case .deselected:
-                        extraction.value = "0"
-                    }
+                    extraction.value = (selectedState == .selected ? String(quantity) : "0")
 
                 case .baseGross:
                     extraction.value = price.extractionString

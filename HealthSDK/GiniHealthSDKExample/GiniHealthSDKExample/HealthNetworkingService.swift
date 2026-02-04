@@ -185,12 +185,12 @@ class HealthNetworkingService: GiniCaptureNetworkService {
             }
         }
     }
-    
+
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
         // This method will remain empty; no implementation is needed.
     }
-    
+
     func sendFeedback(document: GiniBankAPILibrary.Document,
                       updatedExtractions: [GiniBankAPILibrary.Extraction],
                       updatedCompoundExtractions: [String : [[GiniBankAPILibrary.Extraction]]]?,

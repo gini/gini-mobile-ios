@@ -36,28 +36,8 @@ extension UIViewController {
             message = customValidationError.message
         case let pickerError as FilePickerError:
             message = pickerError.message
-            switch pickerError {
-            case .maxFilesPickedCountExceeded:
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.errorPopup.reviewPages",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "review pages button title")
-            case .photoLibraryAccessDenied:
-                cancelActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.cancelButton",
-                                                      bundle: Bundle(for: GiniCapture.self),
-                                                      comment: "cancel button title")
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.grantAccessButton",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "grant access button title")
-            case .mixedDocumentsUnsupported:
-                cancelActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.cancel",
-                                                      bundle: Bundle(for: GiniCapture.self),
-                                                      comment: "cancel button text for popup")
-                confirmActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.usePhotos",
-                                                       bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "use photos button text in popup")
-            case .failedToOpenDocument, .multiplePdfsUnsupported:
-                break
-            }
+            updateActionTitles(for: pickerError, cancelActionTitle: &cancelActionTitle, confirmActionTitle: &confirmActionTitle)
+
         case let visionError as CustomAnalysisError:
             message = visionError.message
             confirmActionTitle = nil
@@ -76,6 +56,34 @@ extension UIViewController {
         present(dialog, animated: true, completion: nil)
     }
     
+    private func updateActionTitles(for pickerError: FilePickerError,
+                                    cancelActionTitle: inout String,
+                                    confirmActionTitle: inout String?) {
+        
+        switch pickerError {
+        case .maxFilesPickedCountExceeded:
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.errorPopup.reviewPages",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "review pages button title")
+        case .photoLibraryAccessDenied:
+            cancelActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.cancelButton",
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "cancel button title")
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.grantAccessButton",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "grant access button title")
+        case .mixedDocumentsUnsupported:
+            cancelActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.cancel",
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "cancel button text for popup")
+            confirmActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.usePhotos",
+                                                   bundle: Bundle(for: GiniCapture.self),
+                                                   comment: "use photos button text in popup")
+        case .failedToOpenDocument, .multiplePdfsUnsupported:
+            break
+        }
+        
+    }
     fileprivate func errorDialog(withMessage message: String,
                                  title: String? = nil,
                                  cancelActionTitle: String,
