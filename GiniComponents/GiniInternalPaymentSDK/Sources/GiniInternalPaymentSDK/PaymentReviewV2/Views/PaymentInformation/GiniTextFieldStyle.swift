@@ -57,7 +57,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 titleView
                 
                 configuration
-                    .foregroundColor(Color(currentConfiguration.textColor))
+                    .foregroundStyle(Color(currentConfiguration.textColor))
                     .font(Font(currentConfiguration.textFont))
             }
             .padding(.horizontal, Constants.horizontalPadding)
@@ -87,7 +87,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private var titleView: some View {
         HStack {
             Text(title)
-                .foregroundColor(Color(currentConfiguration.placeholderForegroundColor))
+                .foregroundStyle(Color(currentConfiguration.placeholderForegroundColor))
             
             if let lockedIcon {
                 lockedIcon

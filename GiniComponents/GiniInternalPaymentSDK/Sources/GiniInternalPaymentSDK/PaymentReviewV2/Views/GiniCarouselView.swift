@@ -20,8 +20,8 @@ struct GiniCarouselView: View {
     var body: some View {
         VStack(spacing: 12) {
             TabView(selection: $currentIndex) {
-                ForEach(images.indices, id: \.self) { index in
-                    GiniZoomableImageView(image: images[index])
+                ForEach(Array(images.enumerated()), id: \.offset) { index, image in
+                    GiniZoomableImageView(image: image)
                         .tag(index)
                 }
             }

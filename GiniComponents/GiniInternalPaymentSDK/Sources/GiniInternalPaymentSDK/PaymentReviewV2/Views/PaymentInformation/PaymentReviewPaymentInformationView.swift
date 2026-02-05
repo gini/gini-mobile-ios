@@ -94,8 +94,9 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.top, Constants.textFieldsContainerTopPadding)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.model.configuration.popupAnimationDuration) {
-                withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
+            Task {
+                try await Task.sleep(for: .seconds(viewModel.model.configuration.popupAnimationDuration))
+                withAnimation(.easeInOut(duration: 0.3)) {
                     showBanner = false
                 }
             }
@@ -112,7 +113,7 @@ struct PaymentReviewPaymentInformationView: View {
         HStack {
             Text(viewModel.model.strings.infoBarMessage)
                 .font(Font(viewModel.model.configuration.infoBarLabelFont))
-                .foregroundColor(Color(viewModel.model.configuration.infoBarLabelTextColor))
+                .foregroundStyle(Color(viewModel.model.configuration.infoBarLabelTextColor))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -251,7 +252,7 @@ struct PaymentReviewPaymentInformationView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
             }
-            .foregroundColor(Color(selectedPaymentProviderTextColor))
+            .foregroundStyle(Color(selectedPaymentProviderTextColor))
             .background(Color(selectedPaymentProviderBackgroundColor))
             .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
