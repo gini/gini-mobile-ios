@@ -67,6 +67,10 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedRequestId)
         XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        
+        // Assert that sourceDocumentLocation is nil when not provided
+        XCTAssertNotNil(sessionManagerMock.lastPaymentRequestBody, "Payment request body should be captured")
+        XCTAssertNil(sessionManagerMock.lastPaymentRequestBody?.sourceDocumentLocation, "sourceDocumentLocation should be nil when not provided")
     }
     
     func testCreatePaymentRequestSuccessWithDocument() {
