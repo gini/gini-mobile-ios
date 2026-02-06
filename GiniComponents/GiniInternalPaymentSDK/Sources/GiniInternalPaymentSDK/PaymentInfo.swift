@@ -15,7 +15,7 @@ public struct PaymentInfo {
     public var sourceDocumentLocation: String?
     public var recipient: String
     public var iban: String
-    public var bic: String
+    public var bic: String?
     public var amount: String
     public var purpose: String
     public var paymentUniversalLink: String
@@ -24,7 +24,7 @@ public struct PaymentInfo {
     public init(sourceDocumentLocation: String? = nil,
                 recipient: String,
                 iban: String,
-                bic: String,
+                bic: String? = nil,
                 amount: String,
                 purpose: String,
                 paymentUniversalLink: String,

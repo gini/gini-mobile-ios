@@ -793,7 +793,6 @@ public extension PaymentReviewContainerView {
         let paymentInfo = PaymentInfo(sourceDocumentLocation: documentLink,
                                       recipient: recipientTextFieldView.text ?? "",
                                       iban: ibanTextFieldView.text ?? "",
-                                      bic: "", 
                                       amount: amountText,
                                       purpose: usageTextFieldView.text ?? "",
                                       paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
