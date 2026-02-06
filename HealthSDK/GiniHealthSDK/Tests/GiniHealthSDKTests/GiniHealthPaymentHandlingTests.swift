@@ -40,15 +40,15 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     func testCreatePaymentRequestSuccess() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
-        let documentLink = "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004"
-        let fileName = "extractionsWithPayment"
+        let documentLink = "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657"
+        let fileName = "wish_receipt_extractions"
         let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
         guard let expectedExtractionContainer else {
             XCTFail("Error loading file: `\(fileName).json`")
             return
         }
         let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
-        let documentFileName = "document4"
+        let documentFileName = "wish_receipt"
 
         let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName)!
         let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
