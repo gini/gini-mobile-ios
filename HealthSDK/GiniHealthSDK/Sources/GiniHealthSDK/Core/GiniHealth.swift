@@ -400,7 +400,6 @@ public struct DataForReview {
                                             paymentProvider: paymentInfo.paymentProviderId,
                                             recipient: paymentInfo.recipient,
                                             iban: paymentInfo.iban,
-                                            bic: "",
                                             amount: paymentInfo.amount,
                                             purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
