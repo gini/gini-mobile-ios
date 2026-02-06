@@ -53,8 +53,8 @@ jobs:
           TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
             sed -i '' \
-            -e 's/clientID = "client_id"/clientID = "$TEST_CLIENT_ID"/' \
-            -e 's/clientPassword = "client_password"/clientPassword = "$TEST_CLIENT_SECRET"/' \
+            -e 's/clientID = "client_id"/clientID = "'"$TEST_CLIENT_ID"'"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "'"$TEST_CLIENT_SECRET"'"/' \
             HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
 
       - name: Setup Firebase API Key
