@@ -16,11 +16,12 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
+    var sessionManagerMock: MockSessionManager!
     private let versionAPI = 4
 
     
     override func setUp() {
-        let sessionManagerMock = MockSessionManager()
+        sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
@@ -34,6 +35,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     override func tearDown() {
         giniHealthAPI = nil
         giniHealth = nil
+        sessionManagerMock = nil
         super.tearDown()
     }
     
@@ -70,11 +72,12 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     func testCreatePaymentRequestSuccessWithDocument() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        let expectedSourceDocumentLocation = "https://health-api.gini.net/documents/bb385cf9-21b7-4990-93f7-4cfcfa626436"
         
         // When
         let expectation = self.expectation(description: "Creating payment request")
         var receivedRequestId: String?
-        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: "https://health-api.gini.net/documents/bb385cf9-21b7-4990-93f7-4cfcfa626436",
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: expectedSourceDocumentLocation,
                                                              recipient: "Uno Flüchtlingshilfe",
                                                              iban: "DE78370501980020008850",
                                                              bic: "COLSDE33",
@@ -96,6 +99,10 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedRequestId)
         XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        
+        // Assert that sourceDocumentLocation was sent in the request body
+        XCTAssertNotNil(sessionManagerMock.lastPaymentRequestBody, "Payment request body should be captured")
+        XCTAssertEqual(sessionManagerMock.lastPaymentRequestBody?.sourceDocumentLocation, expectedSourceDocumentLocation, "sourceDocumentLocation should be forwarded to the POST body")
     }
     
     func testDeletePaymentRequestSuccess() {

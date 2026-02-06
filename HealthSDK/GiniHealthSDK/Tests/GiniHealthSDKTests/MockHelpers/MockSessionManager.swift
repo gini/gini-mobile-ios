@@ -18,6 +18,9 @@ final class MockSessionManager: SessionManagerProtocol {
     static let doctorsNameDocumentID = "626626a0-749f-11e2-bfd6-000000000005"
     static let paymentRequestIdWithExpirationDate = "1"
     static let paymentRequestIdWithMissingExpirationDate = "2"
+    
+    // Property to capture the last payment request body for testing
+    var lastPaymentRequestBody: PaymentRequestBody?
 
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
@@ -81,6 +84,11 @@ final class MockSessionManager: SessionManagerProtocol {
                     fatalError("Document id not found in tests")
                 }
             case .createPaymentRequest:
+                // Capture the request body for test verification
+                if let bodyData = resource.params.body,
+                   let requestBody = try? JSONDecoder().decode(PaymentRequestBody.self, from: bodyData) {
+                    self.lastPaymentRequestBody = requestBody
+                }
                 if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
                     completion(.success(paymentRequestId))
                 }
