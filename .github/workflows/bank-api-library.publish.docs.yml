@@ -10,9 +10,7 @@ on:
       MOBILE_CI_APP_ID:
         required: true
       MOBILE_CI_APP_PRIVATE_KEY:
-        required: true
-  workflow_dispatch:
-
+        required: true       
 jobs:
   publish:
     permissions:

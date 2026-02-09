@@ -11,8 +11,6 @@ on:
         required: true
       MOBILE_CI_APP_PRIVATE_KEY:
         required: true
-  workflow_dispatch:
-
 jobs:
   publish:
     permissions:

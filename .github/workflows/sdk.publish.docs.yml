@@ -31,29 +31,6 @@ on:
         required: true
       MOBILE_CI_APP_PRIVATE_KEY:
         required: true
-
-  workflow_dispatch:
-    inputs:
-      project_folder:
-        description: 'The folder containing the project to document'
-        required: true
-        type: string
-      package_folder:
-        description: 'The folder containing the package'
-        required: true
-        type: string
-      version_file_path:
-        description: 'The path to the version file'
-        required: true
-        type: string
-      documentation_title:
-        description: 'The title for the documentation'
-        required: true
-        type: string
-      git_tag:
-        description: 'The Git tag for the release'
-        required: true
-        type: string
 jobs:
   release-documentation:
     runs-on: macos-latest

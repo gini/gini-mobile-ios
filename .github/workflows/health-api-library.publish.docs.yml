@@ -5,7 +5,12 @@ on:
   push:
     tags:
       - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+;doc**'
-
+  workflow_call:
+    secrets:
+      MOBILE_CI_APP_ID:
+        required: true
+      MOBILE_CI_APP_PRIVATE_KEY:
+        required: true
 jobs:
   publish:
     permissions:
