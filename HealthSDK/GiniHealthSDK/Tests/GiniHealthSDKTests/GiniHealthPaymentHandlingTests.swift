@@ -50,16 +50,20 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
         let documentFileName = "wish_receipt"
 
-        let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName)!
+        guard let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName) else {
+            XCTFail("Cannot load file `\(documentFileName).json")
+            return
+        }
+        
         let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
 
         guard let expectedDocument else {
             XCTFail("Error loading file: `\(documentFileName).json`")
             return
         }
-        let expectedDatForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
+        let expectedDataForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
         let expectedDocumentLink = expectedDocument.links.document.absoluteString
-        let extractions = expectedDatForReview.extractions
+        let extractions = expectedDataForReview.extractions
 
         // When
         let expectation = self.expectation(description: "Creating payment request")
