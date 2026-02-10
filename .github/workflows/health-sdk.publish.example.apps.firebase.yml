@@ -52,10 +52,22 @@ jobs:
           TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
           TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
-            sed -i '' \
-            -e 's/let clientID = "client_id"/let clientID = "'"$TEST_CLIENT_ID"'"/' \
-            -e 's/let clientPassword = "client_password"/let clientPassword = "'"$TEST_CLIENT_SECRET"'"/' \
-            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+          python3 -c "
+          import os
+
+          file_path = 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift'
+          client_id = os.environ['TEST_CLIENT_ID']
+          client_secret = os.environ['TEST_CLIENT_SECRET']
+
+          with open(file_path, 'r') as f:
+          content = f.read()
+
+          content = content.replace('clientID = \"client_id\"', f'clientID = \"{client_id}\"')
+          content = content.replace('clientPassword = \"client_password\"', f'clientPassword = \"{client_secret}\"')
+
+          with open(file_path, 'w') as f:
+          f.write(content)
+          "
 
       - name: Setup Firebase API Key
         run: |
