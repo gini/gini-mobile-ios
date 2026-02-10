@@ -54,17 +54,38 @@ jobs:
         run: |
           python3 - <<'PY'
           import os
+          import sys
 
           file_path = 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift'
           client_id = os.environ['TEST_CLIENT_ID']
           client_secret = os.environ['TEST_CLIENT_SECRET']
 
           with open(file_path, 'r') as f:
-              content = f.read()
+              original_content = f.read()
 
-          content = content.replace('clientID = "client_id"', f'clientID = "{client_id}"')
-          content = content.replace('clientPassword = "client_password"', f'clientPassword = "{client_secret}"')
+          placeholder_client_id = 'clientID = "client_id"'
+          placeholder_client_password = 'clientPassword = "client_password"'
 
+          count_client_id = original_content.count(placeholder_client_id)
+          count_client_password = original_content.count(placeholder_client_password)
+
+          if count_client_id != 1 or count_client_password != 1:
+              sys.stderr.write(
+                  f"Error: Expected exactly one occurrence of each credential placeholder in {file_path}, "
+                  f"but found clientID={count_client_id}, clientPassword={count_client_password}.\n"
+              )
+              sys.exit(1)
+
+          content = original_content.replace(
+              placeholder_client_id,
+              f'clientID = "{client_id}"',
+              1,
+          )
+          content = content.replace(
+              placeholder_client_password,
+              f'clientPassword = "{client_secret}"',
+              1,
+          )
           with open(file_path, 'w') as f:
               f.write(content)
           PY
