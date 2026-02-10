@@ -60,11 +60,18 @@ jobs:
             client_id = os.environ['TEST_CLIENT_ID']
             client_secret = os.environ['TEST_CLIENT_SECRET']
             
+            # Escape special characters for Swift string literals
+            def escape_swift_string(s):
+                return s.replace('\\\\', '\\\\\\\\').replace('\"', '\\\\\"')
+            
+            client_id_escaped = escape_swift_string(client_id)
+            client_secret_escaped = escape_swift_string(client_secret)
+            
             with open(file_path, 'r') as f:
                 content = f.read()
             
-            content = content.replace('clientID = \"client_id\"', f'clientID = \"{client_id}\"')
-            content = content.replace('clientPassword = \"client_password\"', f'clientPassword = \"{client_secret}\"')
+            content = content.replace('clientID = \"client_id\"', f'clientID = \"{client_id_escaped}\"')
+            content = content.replace('clientPassword = \"client_password\"', f'clientPassword = \"{client_secret_escaped}\"')
             
             with open(file_path, 'w') as f:
                 f.write(content)
