@@ -125,6 +125,8 @@ strip-code-signatures() {
     find "$framework_path" -type f -exec xattr -c {} \; 2>/dev/null || true
     
     echo "Code signatures stripped from $(basename "$framework_path")"
+    
+    return 0
 }
 
 archive() {
