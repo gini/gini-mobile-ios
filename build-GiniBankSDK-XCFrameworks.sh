@@ -3,8 +3,11 @@
 # Constants
 iphonesimulator_archive_path="iphonesimulatorGiniBankSDK.xcarchive"
 iphonesimulator_build_dir="build-ginibanksdk-iphonesimulator"
+
 iphoneos_archive_path="iphoneosGiniBankSDK.xcarchive"
 iphoneos_build_dir="build-ginibanksdk-iphoneos"
+
+
 frameworks=("GiniBankAPILibrary" "GiniUtilites" "GiniCaptureSDK" "GiniBankSDK")
 
 # Function to cleanup simulator and iOS archives
