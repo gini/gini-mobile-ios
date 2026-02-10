@@ -37,14 +37,53 @@ public protocol GiniCustomErrorProtocol {
     var missingCompositeItems: [String]? { get }
 }
 
+public struct ErrorItem: Codable, Equatable {
+    var code: String
+    var message: String?
+    var object: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case code
+        case message
+        case object
+    }
+
+    public init(code: String = "", message: String = "") {
+        self.code = code
+        self.message = message
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.code = try container.decodeIfPresent(String.self, forKey: .code) ?? ""
+        self.message = try container.decodeIfPresent(String.self, forKey: .message) ?? ""
+        if let object = try? container.decodeIfPresent(
+            [String].self,
+            forKey: .object
+        ) {
+            self.object = object
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(code, forKey: .code)
+        try container.encode(message, forKey: .message)
+        try container.encode(object, forKey: .object)
+    }
+}
+
 struct GiniCustomError: GiniCustomErrorProtocol, Codable {
     var message: String?
+    var items: [ErrorItem]?
+    var requestId: String?
     var unauthorizedItems: [String]?
     var notFoundItems: [String]?
     var missingCompositeItems: [String]?
     
     enum CodingKeys: CodingKey {
         case message
+        case items
         case unauthorizedItems
         case notFoundItems
         case missingCompositeItems
@@ -61,7 +100,9 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         message = try? container.decodeIfPresent(String.self, forKey: .message)
-        
+
+        items = try? container.decodeIfPresent([ErrorItem].self, forKey: .items)
+
         if let items = try? container.decodeIfPresent([String].self, forKey: .missingCompositeDocuments) {
             missingCompositeItems = items
         } else {
@@ -89,6 +130,7 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encodeIfPresent(message, forKey: .message)
+        try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(missingCompositeItems, forKey: .missingCompositeItems)
         try container.encodeIfPresent(unauthorizedItems, forKey: .unauthorizedItems)
         try container.encodeIfPresent(notFoundItems, forKey: .notFoundItems)
@@ -104,7 +146,9 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
     case requestCancelled
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
+    @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(response:data:statusCode:)")
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
+    case customError(items: [ErrorItem]? = nil, statusCode: Int? = nil)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
     public var message: String {
@@ -127,10 +171,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
             return "Unauthorized"
         case .unknown:
             return "Unknown"
-        case .customError(_, _):
-            if let message = customError?.message {
-                return message
-            }
+        default:
             return getCustomErrorMessage() ?? localizedDescription
         }
     }
@@ -143,8 +184,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
              .parseError(_, let response, _),
              .tooManyRequests(let response, _),
              .unauthorized(let response, _),
-             .unknown(let response, _),
-             .customError(let response, _):
+             .unknown(let response, _):
             return response
         default:
             return nil
@@ -159,11 +199,36 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
              .parseError(_, _, let data),
              .tooManyRequests(_, let data),
              .unauthorized(_, let data),
-             .unknown(_, let data),
-             .customError(_, let data):
+             .unknown(_, let data):
             return data
         default:
             return nil
+        }
+    }
+
+    public var statusCode: Int? {
+        switch self {
+            case .badRequest(let response, _),
+                    .notAcceptable(let response, _),
+                    .notFound(let response, _),
+                    .parseError(_, let response, _),
+                    .tooManyRequests(let response, _),
+                    .unauthorized(let response, _),
+                    .unknown(let response, _):
+                return response?.statusCode
+            case .customError( _, let statusCode):
+                return statusCode
+            default:
+                return nil
+        }
+    }
+
+    public var items: [ErrorItem]? {
+        switch self {
+            case .customError(let items, _):
+                return items
+            default:
+                return nil
         }
     }
 
@@ -173,7 +238,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
         return customErrorDecoded
     }
-
+// Todo remove
     public var unauthorizedItems: [String]? {
         return customError?.unauthorizedItems
     }
@@ -214,3 +279,4 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         return nil
     }
 }
+

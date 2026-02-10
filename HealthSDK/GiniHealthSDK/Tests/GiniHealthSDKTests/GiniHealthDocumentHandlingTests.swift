@@ -8,7 +8,7 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
 
     var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
@@ -157,6 +157,39 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedError)
+    }
+
+    func testIfDeleteBatchDocumentsFailure() {
+        // Given
+        let fileName = "batchDocumentDeletionError"
+        // Load expected error response from fixtures
+        let expectedError: GiniCustomError? = GiniHealthSDKTests.load(
+            fromFile: fileName
+        )
+        guard let expectedError else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+
+        // When
+        let expectation = self.expectation(description: "Checking delete batch documents failure")
+        var receivedErrorItems: [ErrorItem]?
+        let documentsToDeleteIds = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"] as [String]
+        giniHealth.deleteDocuments(documentIds: documentsToDeleteIds) { result in
+            switch result {
+            case .success:
+                XCTFail("Test should fail, but it passed")
+            case .failure(let error):
+                    let error = GiniError.decorator(error)
+                    receivedErrorItems = error.items
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedErrorItems)
+        XCTAssertEqual(receivedErrorItems?.count, expectedError.items?.count)
     }
 
     // MARK: - Delete Batch Of Documents Tests

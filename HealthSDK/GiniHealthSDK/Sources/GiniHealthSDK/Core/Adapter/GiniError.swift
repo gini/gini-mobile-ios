@@ -16,7 +16,8 @@ public protocol GiniErrorProtocol {
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
 public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
-    
+    //TODO
+
     case decorator(GiniHealthAPILibrary.GiniError)
 
     public var message: String {
@@ -40,6 +41,21 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
+    public var statusCode: Int? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.statusCode
+        }
+    }
+
+    public var items: [ErrorItem]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.items
+        }
+    }
+
+    @available(*, deprecated, message: "This property will be removed in a next release. Use items instead")
     public var unauthorizedItems: [String]? {
         switch self {
         case .decorator(let giniError):
@@ -47,13 +63,15 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
+    @available(*, deprecated, message: "This property will be removed in a next release. Use items instead")
     public var notFoundItems: [String]? {
         switch self {
         case .decorator(let giniError):
             return giniError.notFoundItems
         }
     }
-    
+
+    @available(*, deprecated, message: "This property will be removed in a next release. Use items instead")
     public var missingCompositeItems: [String]? {
         switch self {
         case .decorator(let giniError):

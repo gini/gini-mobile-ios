@@ -583,14 +583,16 @@ public struct DataForReview {
         In case of failure error from the server side.
 
      */
-    public func deleteDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
+    public func deleteDocuments(documentIds: [String],
+                                completion: @escaping (Result<String, GiniError>) -> Void) {
         documentService.deleteDocuments(documentIds) { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(message):
                     completion(.success(message))
                 case let .failure(error):
-                    completion(.failure(error))
+                   // let healthError = GiniHealthAPILibrary.GiniError.customError(items: error.items, statusCode: error.statusCode)
+                        completion(.failure(error))
                 }
             }
         }
@@ -643,7 +645,8 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
 
 extension GiniHealth {
     public enum Constants {
-        public static let defaultVersionAPI = 4
+        public static let defaultVersionAPI = 5
         static let hasMultipleDocuments = "true"
     }
 }
+
