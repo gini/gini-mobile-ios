@@ -57,8 +57,13 @@ jobs:
           import sys
 
           file_path = 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift'
-          client_id = os.environ['TEST_CLIENT_ID']
-          client_secret = os.environ['TEST_CLIENT_SECRET']
+          client_id = os.environ.get('TEST_CLIENT_ID')
+          client_secret = os.environ.get('TEST_CLIENT_SECRET')
+          if not client_id or not client_secret:
+              sys.stderr.write(
+                  "Error: Required environment variables TEST_CLIENT_ID and/or TEST_CLIENT_SECRET are not set.\n"
+              )
+              sys.exit(1)
 
           with open(file_path, 'r') as f:
               original_content = f.read()
