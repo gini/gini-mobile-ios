@@ -12,7 +12,7 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
-    @State private var carouselHeight = Constants.carouselDefaultHeight
+    @State private var collapsedHeight = Constants.collapsedDefaultHeight
     
     /// The init method is internal to prevent users from creating instances of this view directly
     /// outside of GiniInternalPaymentSDK.
@@ -22,12 +22,17 @@ public struct PaymentReviewContentView: View {
     
     public var body: some View {
         GeometryReader { geometry in
+            let isLandscape = geometry.size.width > geometry.size.height
+            let carouselHeight = computedCarouselHeight(for: geometry, isLandscape: isLandscape)
+            
             ZStack {
                 ScrollView {
-                    documentPreviewContent()
+                    documentPreviewContent(carouselHeight: carouselHeight)
                         .padding()
                         .padding(.bottom, max(bottomSheetHeight - Constants.bottomSheetOverlap, 0))
+                        .frame(width: geometry.size.width)
                 }
+                .id(isLandscape)
                 .onAppear {
                     guard !hasAppeared else { return }
                     hasAppeared = true
@@ -36,18 +41,14 @@ public struct PaymentReviewContentView: View {
                         await viewModel.fetchImages()
                     }
                 }
-                .onChange(of: bottomSheetHeight) { _ in
-                    updateCarouselHeight(screenHeight: geometry.size.height)
-                }
-                .onChange(of: geometry.size.height) { newHeight in
-                    updateCarouselHeight(screenHeight: newHeight)
-                }
             }
             .sheet(isPresented: $showBottomSheet) {
                 
             } content: {
-                viewModel.paymentReviewPaymentInformationView(contentHeight: $bottomSheetHeight)
-                    .modifier(GiniBottomSheetModifier(contentHeight: bottomSheetHeight))
+                viewModel.paymentReviewPaymentInformationView(contentHeight: $bottomSheetHeight,
+                                                              collapsedHeight: $collapsedHeight)
+                    .modifier(GiniBottomSheetModifier(contentHeight: bottomSheetHeight,
+                                                      collapsedHeight: collapsedHeight))
             }
         }
     }
@@ -55,41 +56,48 @@ public struct PaymentReviewContentView: View {
     // MARK: - Private Views
     
     @ViewBuilder
-    private func documentPreviewContent() -> some View {
+    private func documentPreviewContent(carouselHeight: CGFloat) -> some View {
         VStack(spacing: 16) {
             if viewModel.isImagesLoading {
-                showLoader()
+                showLoader(carouselHeight: carouselHeight)
             } else if !viewModel.cellViewModels.isEmpty {
-                showPreviewImageCarousel()
+                showPreviewImageCarousel(carouselHeight: carouselHeight)
             }
         }
     }
     
     @ViewBuilder
-    private func showLoader() -> some View {
+    private func showLoader(carouselHeight: CGFloat) -> some View {
         ProgressView()
             .frame(height: carouselHeight)
     }
     
     @ViewBuilder
-    private func showPreviewImageCarousel() -> some View {
+    private func showPreviewImageCarousel(carouselHeight: CGFloat) -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
         
         GiniCarouselView(images: images)
             .frame(height: carouselHeight)
     }
     
-    private func updateCarouselHeight(screenHeight: CGFloat) {
+    private func computedCarouselHeight(for geometry: GeometryProxy, isLandscape: Bool) -> CGFloat {
         let totalPaddings = 32.0
         let effectiveBottomSheetHeight = bottomSheetHeight > 0 ? bottomSheetHeight : Constants.bottomSheetDefaultHeight
-        let calculatedHeight = screenHeight - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - totalPaddings
         
-        carouselHeight = max(calculatedHeight, Constants.carouselDefaultHeight)
+        let calculatedHeight: CGFloat
+        if isLandscape {
+            calculatedHeight = geometry.size.height - totalPaddings
+        } else {
+            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - totalPaddings
+        }
+        
+        return max(calculatedHeight, Constants.carouselDefaultHeight)
     }
     
     private struct Constants {
         
         static let bottomSheetDefaultHeight: CGFloat = 300
+        static let collapsedDefaultHeight: CGFloat = 90
         static let bottomSheetOverlap: CGFloat = 20
         static let carouselDefaultHeight = 300.0
     }

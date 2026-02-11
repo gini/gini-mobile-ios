@@ -37,6 +37,7 @@ struct PaymentReviewPaymentInformationView: View {
     @FocusState private var focusedField: Field?
     
     @Binding var contentHeight: CGFloat
+    @Binding var collapsedHeight: CGFloat
     
     private let ibanValidator = IBANValidator()
     
@@ -58,11 +59,13 @@ struct PaymentReviewPaymentInformationView: View {
     
     init(viewModel: PaymentReviewPaymentInformationObservableModel,
          contentHeight: Binding<CGFloat>,
+         collapsedHeight: Binding<CGFloat>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
         let observableModel = viewModel
         self.viewModel = observableModel
         self._contentHeight = contentHeight
+        self._collapsedHeight = collapsedHeight
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
         self.amountToPay = Price(value: 0, currencyCode: "€")
@@ -89,6 +92,7 @@ struct PaymentReviewPaymentInformationView: View {
                     paymentProviderSelectionPicker
                     payButton
                 }
+                .getHeight(for: $collapsedHeight)
             }
             .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
             .padding(.top, Constants.textFieldsContainerTopPadding)
