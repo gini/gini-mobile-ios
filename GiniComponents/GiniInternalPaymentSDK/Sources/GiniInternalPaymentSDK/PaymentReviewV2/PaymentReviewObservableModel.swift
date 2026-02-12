@@ -10,14 +10,21 @@ import SwiftUI
 
 final class PaymentReviewObservableModel: ObservableObject {
     
+    private var selectedPaymentProvider: PaymentProvider {
+        containerViewModel.selectedPaymentProvider
+    }
+    
+    private lazy var containerViewModel: PaymentReviewContainerViewModel = {
+        model.paymentReviewContainerViewModel()
+    }()
+    
+    private lazy var paymentInformationObservableModel: PaymentReviewPaymentInformationObservableModel = {
+        PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
+    }()
+    
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
     @Published var isImagesLoading: Bool = false
     @Published var isLoading: Bool = false
-    @Published var selectedPaymentProvider: PaymentProvider
-    
-    private lazy var paymentInformationObservableModel: PaymentReviewPaymentInformationObservableModel = {
-        PaymentReviewPaymentInformationObservableModel(model: model.paymentReviewContainerViewModel())
-    }()
     
     var document: Document? {
         model.document
@@ -27,7 +34,6 @@ final class PaymentReviewObservableModel: ObservableObject {
     
     init(model: PaymentReviewModel) {
         self.model = model
-        self.selectedPaymentProvider = model.selectedPaymentProvider
         setupBindings()
     }
     
@@ -105,7 +111,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         model.onNewPaymentProvider = { [weak self] in
             guard let self else { return }
-            selectedPaymentProvider = model.selectedPaymentProvider
+            containerViewModel.selectedPaymentProvider = model.selectedPaymentProvider
         }
     }
     

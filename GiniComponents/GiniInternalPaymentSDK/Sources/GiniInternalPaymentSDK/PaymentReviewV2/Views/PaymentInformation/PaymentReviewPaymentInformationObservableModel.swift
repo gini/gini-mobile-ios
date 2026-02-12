@@ -10,6 +10,8 @@ import SwiftUI
 
 final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
+    private var cancellables = Set<AnyCancellable>()
+    
     @Published var extractions: [Extraction]
     @Published var selectedPaymentProvider: PaymentProvider
     
@@ -29,5 +31,12 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
                 self?.extractions = self?.model.extractions ?? []
             }
         }
+        
+        /// Subscribe to payment provider changes
+        model.$selectedPaymentProvider
+            .sink { [weak self] newProvider in
+                self?.selectedPaymentProvider = newProvider
+            }
+            .store(in: &cancellables)
     }
 }
