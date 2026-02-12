@@ -82,13 +82,14 @@ public struct PaymentReviewContentView: View {
     
     private func computedCarouselHeight(for geometry: GeometryProxy, isLandscape: Bool) -> CGFloat {
         let totalPaddings = 32.0
+        let pageIndicatorSpace = 30.0
         let effectiveBottomSheetHeight = bottomSheetHeight > 0 ? bottomSheetHeight : Constants.bottomSheetDefaultHeight
         
         let calculatedHeight: CGFloat
         if isLandscape {
-            calculatedHeight = geometry.size.height - totalPaddings
+            calculatedHeight = geometry.size.height - totalPaddings - pageIndicatorSpace
         } else {
-            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - totalPaddings
+            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - totalPaddings - pageIndicatorSpace
         }
         
         return max(calculatedHeight, Constants.carouselDefaultHeight)
