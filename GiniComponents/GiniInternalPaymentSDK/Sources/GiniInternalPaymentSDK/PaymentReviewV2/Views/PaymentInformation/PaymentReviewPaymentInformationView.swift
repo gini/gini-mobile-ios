@@ -73,11 +73,7 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        VStack(spacing: Constants.stackSpacingZero) {
-            if showBanner {
-                infoBannerView
-            }
-            
+        VStack(spacing: Constants.zero) {
             VStack(spacing: Constants.textFieldsContainerSpacing) {
                 recipientTextField
                 
@@ -97,10 +93,16 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
             .padding(.top, Constants.textFieldsContainerTopPadding)
         }
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .top) {
+            if showBanner {
+                infoBannerView
+            }
+        }
         .onAppear {
             Task {
                 try await Task.sleep(for: .seconds(viewModel.model.configuration.popupAnimationDuration))
-                withAnimation(.easeInOut(duration: 0.3)) {
+                withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
                     showBanner = false
                 }
             }
@@ -123,6 +125,15 @@ struct PaymentReviewPaymentInformationView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, Constants.bannerVerticalPadding)
         .background(Color(viewModel.model.configuration.infoBarBackgroundColor))
+        .clipShape(
+            .rect(
+                topLeadingRadius: Constants.bannerCornerRadius,
+                bottomLeadingRadius: Constants.zero,
+                bottomTrailingRadius: Constants.zero,
+                topTrailingRadius: Constants.bannerCornerRadius
+            )
+        )
+        .offset(y: Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
     
@@ -391,9 +402,11 @@ struct PaymentReviewPaymentInformationView: View {
     
     private struct Constants {
         static let emptyString = ""
-        static let stackSpacingZero = 0.0
+        static let zero = 0.0
         static let bannerVerticalPadding = 16.0
         static let bannerDismissDelay = 0.3
+        static let bannerCornerRadius = 12.0
+        static let bannerYOffset = -8.0
         static let textFieldsContainerSpacing = 8.0
         static let buttonsContainerSpacing = 8.0
         static let paymentProviderPickerSpacing = 12.0
