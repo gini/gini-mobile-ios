@@ -52,48 +52,10 @@ jobs:
           TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
           TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
         run: |
-          python3 - <<'PY'
-          import os
-          import sys
-
-          file_path = 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift'
-          client_id = os.environ.get('TEST_CLIENT_ID')
-          client_secret = os.environ.get('TEST_CLIENT_SECRET')
-          if not client_id or not client_secret:
-              sys.stderr.write(
-                  "Error: Required environment variables TEST_CLIENT_ID and/or TEST_CLIENT_SECRET are not set.\n"
-              )
-              sys.exit(1)
-
-          with open(file_path, 'r') as f:
-              original_content = f.read()
-
-          placeholder_client_id = 'clientID = "client_id"'
-          placeholder_client_password = 'clientPassword = "client_password"'
-
-          count_client_id = original_content.count(placeholder_client_id)
-          count_client_password = original_content.count(placeholder_client_password)
-
-          if count_client_id != 1 or count_client_password != 1:
-              sys.stderr.write(
-                  f"Error: Expected exactly one occurrence of each credential placeholder in {file_path}, "
-                  f"but found clientID={count_client_id}, clientPassword={count_client_password}.\n"
-              )
-              sys.exit(1)
-
-          content = original_content.replace(
-              placeholder_client_id,
-              f'clientID = "{client_id}"',
-              1,
-          )
-          content = content.replace(
-              placeholder_client_password,
-              f'clientPassword = "{client_secret}"',
-              1,
-          )
-          with open(file_path, 'w') as f:
-              f.write(content)
-          PY
+          sed -i '' \
+          -e "s/clientID = \"client_id\"/clientID = \"$TEST_CLIENT_ID\"/" \
+          -e "s/clientPassword = \"client_password\"/clientPassword = \"$TEST_CLIENT_SECRET\"/" \
+          HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
 
       - name: Setup Firebase API Key
         run: |
