@@ -10,7 +10,7 @@ on:
 
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
 
@@ -49,7 +49,7 @@ jobs:
 
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.publish.docs.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.publish.docs.yml@main
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

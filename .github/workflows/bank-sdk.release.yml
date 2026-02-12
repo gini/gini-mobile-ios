@@ -10,7 +10,7 @@ on:
  
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
     secrets:
       GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
       GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
@@ -50,7 +50,7 @@ jobs:
 
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.publish.docs.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.publish.docs.yml@main
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
