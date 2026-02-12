@@ -26,7 +26,7 @@ extension GiniBank {
      all screens and transitions out of the box, including the networking.
 
      - Parameters:
-        - client: `GiniClient` with the information needed to enable document analysis
+        - client: The Gini client with the information needed to enable document analysis
         - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
         - configuration: The configuration to set.
         - resultsDelegate: Results delegate object where you can get the results of the analysis.
@@ -92,7 +92,7 @@ extension GiniBank {
      all screens and transitions out of the box, including the networking.
 
      - Parameters:
-        - client: `GiniClient` with the information needed to enable document analysis
+        - client: The Gini client with the information needed to enable document analysis
         - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
         - configuration: The configuration to set.
         - resultsDelegate: Results delegate object where you can get the results of the analysis.
