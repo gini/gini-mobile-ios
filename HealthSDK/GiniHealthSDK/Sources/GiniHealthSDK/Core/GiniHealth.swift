@@ -591,8 +591,7 @@ public struct DataForReview {
                 case let .success(message):
                     completion(.success(message))
                 case let .failure(error):
-                   // let healthError = GiniHealthAPILibrary.GiniError.customError(items: error.items, statusCode: error.statusCode)
-                        completion(.failure(error))
+                    completion(.failure(error))
                 }
             }
         }

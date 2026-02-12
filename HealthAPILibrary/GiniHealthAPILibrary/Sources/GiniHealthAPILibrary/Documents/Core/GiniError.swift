@@ -48,9 +48,10 @@ public struct ErrorItem: Codable, Equatable {
         case object
     }
 
-    public init(code: String = "", message: String = "") {
+    public init(code: String = "", message: String = "", object: [String]? = nil) {
         self.code = code
         self.message = message
+        self.object = object
     }
 
     public init(from decoder: Decoder) throws {
@@ -87,7 +88,7 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         case unauthorizedItems
         case notFoundItems
         case missingCompositeItems
-        
+        case requestId
         //backend values
         case unauthorizedPaymentRequests
         case notFoundPaymentRequests
@@ -102,6 +103,8 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         message = try? container.decodeIfPresent(String.self, forKey: .message)
 
         items = try? container.decodeIfPresent([ErrorItem].self, forKey: .items)
+
+        requestId = try? container.decodeIfPresent(String.self, forKey: .requestId)
 
         if let items = try? container.decodeIfPresent([String].self, forKey: .missingCompositeDocuments) {
             missingCompositeItems = items
@@ -131,6 +134,7 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         
         try container.encodeIfPresent(message, forKey: .message)
         try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(requestId, forKey: .requestId)
         try container.encodeIfPresent(missingCompositeItems, forKey: .missingCompositeItems)
         try container.encodeIfPresent(unauthorizedItems, forKey: .unauthorizedItems)
         try container.encodeIfPresent(notFoundItems, forKey: .notFoundItems)
@@ -148,7 +152,8 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
     @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(response:data:statusCode:)")
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
-    case customError(items: [ErrorItem]? = nil, statusCode: Int? = nil)
+    case customError( items: [ErrorItem]? = nil, statusCode: Int? = nil, requestId: String? = nil
+    )
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
     public var message: String {
@@ -216,7 +221,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
                     .unauthorized(let response, _),
                     .unknown(let response, _):
                 return response?.statusCode
-            case .customError( _, let statusCode):
+            case .customError( _, let statusCode, _):
                 return statusCode
             default:
                 return nil
@@ -225,8 +230,17 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
 
     public var items: [ErrorItem]? {
         switch self {
-            case .customError(let items, _):
+            case .customError(let items, _, _):
                 return items
+            default:
+                return nil
+        }
+    }
+
+    public var requestId: String? {
+        switch self {
+            case .customError(_, _, let requestId):
+                return requestId
             default:
                 return nil
         }

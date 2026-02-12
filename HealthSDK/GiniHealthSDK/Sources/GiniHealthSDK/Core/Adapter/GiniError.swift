@@ -12,6 +12,8 @@ public protocol GiniErrorProtocol {
     var message: String { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
+    var statusCode: Int? { get }
+    var items: [ErrorItem]? { get }
 }
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
@@ -52,6 +54,13 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         switch self {
         case .decorator(let giniError):
             return giniError.items
+        }
+    }
+
+    public var requestId: String? {
+        switch self {
+            case .decorator(let giniError):
+                return giniError.requestId
         }
     }
 
