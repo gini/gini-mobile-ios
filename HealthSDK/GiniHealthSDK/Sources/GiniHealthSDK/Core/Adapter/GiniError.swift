@@ -64,7 +64,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var unauthorizedItems: [String]? {
         switch self {
         case .decorator(let giniError):
@@ -72,7 +72,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var notFoundItems: [String]? {
         switch self {
         case .decorator(let giniError):
@@ -80,7 +80,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var missingCompositeItems: [String]? {
         switch self {
         case .decorator(let giniError):

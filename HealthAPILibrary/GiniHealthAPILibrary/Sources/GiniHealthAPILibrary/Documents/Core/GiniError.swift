@@ -33,7 +33,7 @@ public protocol GiniErrorProtocol {
  - `notFoundItems`: An array of items that were not found during a bulk deletion attempt.
  - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
  */
-@available(*, deprecated, message: "Confirming this protocol will not have any effect and will be removed in a next release. Use `items` for the specicific errors instead")
+@available(*, deprecated, message: "Conforming to this protocol will not have any effect and will be removed in a next release. Use `items` for the specific errors instead")
 public protocol GiniCustomErrorProtocol {
     var unauthorizedItems: [String]? { get }
     var notFoundItems: [String]? { get }
@@ -81,11 +81,11 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
     var message: String
     var items: [ErrorItem]?
     var requestId: String
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     var unauthorizedItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     var notFoundItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     var missingCompositeItems: [String]?
     
     enum CodingKeys: CodingKey {
@@ -103,11 +103,11 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        message = try container.decodeIfPresent(String.self, forKey: .message) ?? "No message availiable"
+        message = try container.decodeIfPresent(String.self, forKey: .message) ?? "No message available"
 
         items = try? container.decodeIfPresent([ErrorItem].self, forKey: .items)
 
-        requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No message availiable"
+        requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No requestId available"
 
         missingCompositeItems = try? container.decodeIfPresent([String].self, forKey: .missingCompositeItems)
 
@@ -247,22 +247,22 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         return customErrorDecoded
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")    public var unauthorizedItems: [String]? {
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")    public var unauthorizedItems: [String]? {
         return customError?.unauthorizedItems
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var notFoundItems: [String]? {
         return customError?.notFoundItems
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var missingCompositeItems: [String]? {
         return customError?.missingCompositeItems
     }
 
     /// Helper Function to Get Custom Document / PaymentRequest Errors Message
-    @available(*, deprecated, message: "This method will not return values and will be removed in a next release. Use `items` for the specicific errors instead")
+    @available(*, deprecated, message: "This method will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     private func getCustomErrorMessage() -> String? {
         if let unauthorizedItems = customError?.unauthorizedItems {
             return "Unauthorized items: \(unauthorizedItems.joined(separator: ", "))"
