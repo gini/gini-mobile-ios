@@ -7,63 +7,21 @@ on:
       - 'GiniCaptureSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
   workflow_call:
     secrets:
-      RELEASE_GITHUB_USER:
+      MOBILE_CI_APP_ID:
         required: true
-      RELEASE_GITHUB_PASSWORD:
+      MOBILE_CI_APP_PRIVATE_KEY:
         required: true
-  workflow_dispatch:
-
 jobs:
-  release-documentation:
-    runs-on: macos-latest
-    steps:
-    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
-      with:
-        xcode-version: '16.4'
-
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: get branch name
-      id: branch
-      shell: bash
-      run: |
-        # Get the branch ref that contains the tag in github.ref
-        # (github.ref contains the tag because this workflow is triggered by tags: 
-        # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
-        branch_ref=$(git branch -r --contains "${{ github.ref }}")
-        # Remove "origin/" prefix from branch_ref and trim whitespace
-        branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
-        echo "{branch_name}={branch_name}" >> $GITHUB_OUTPUT
-        echo "branch_name: $branch_name"
-
-    - name: setup ruby
-      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
-      with:
-        ruby-version: '3.2.0'
-        bundler-cache: true
-
-    - name: Publish GiniCaptureSDK documentation to the release repo
-      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-      with:
-        lane: 'publish_docs'
-        options: >
-          { 
-            "project_folder": "CaptureSDK",
-            "package_folder": "GiniCaptureSDK",
-            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
-            "documentation_title":"GiniCaptureSDK Reference",
-            "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
-            "git_tag": "${{ github.ref }}",
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-            "ci": "true"
-          }
-
-    - name: archive documentation
-      uses: actions/upload-artifact@v4
-      with:
-        name: GiniCaptureSDKDocumentation
-        path: CaptureSDK/GiniCaptureSDK/Documentation/Api              
+  publish:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sdk.publish.docs.yml
+    with:
+      project_folder: 'CaptureSDK'
+      package_folder: 'GiniCaptureSDK'
+      version_file_path: 'CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift'
+      documentation_title: 'GiniCaptureSDK Reference'
+      git_tag: ${{ github.ref }}
+    secrets:
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
