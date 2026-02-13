@@ -15,6 +15,7 @@ struct SegmentedOptionCellModel {
 	let title: String
 	let items: [String]
 	let selectedIndex: Int
+    let description: String?
 }
 
 final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
@@ -22,10 +23,11 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 	@IBOutlet private weak var stackViewContainer: UIStackView!
 	@IBOutlet private weak var titleLabel: UILabel!
 	@IBOutlet private weak var segmentedControl: UISegmentedControl!
+    @IBOutlet private weak var descriptionLabel: UILabel!
 
     var indexPath: IndexPath = .init(row: 0, section: 0)
     
-	private (set) var selectedSegmentIndex: Int = 0 {
+	private(set) var selectedSegmentIndex: Int = 0 {
 		didSet {
 			guard oldValue != selectedSegmentIndex else { return }
 			segmentedControl.selectedSegmentIndex = selectedSegmentIndex
@@ -65,6 +67,8 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 		}
 
 		segmentedControl.selectedSegmentIndex = data.selectedIndex
+
+        descriptionLabel.text = data.description
 	}
 	
 	// MARK: - Actions

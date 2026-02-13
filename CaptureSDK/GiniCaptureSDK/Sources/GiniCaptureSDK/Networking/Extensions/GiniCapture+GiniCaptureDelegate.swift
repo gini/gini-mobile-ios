@@ -14,7 +14,7 @@ extension GiniCapture {
      It's the easiest way to get started with the Gini Capture SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
      
-     - parameter client: `GiniClient` with the information needed to enable document analysis
+     - parameter client: The Gini client with the information needed to enable document analysis
      - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
      - parameter configuration: The configuration to set.
      - parameter documentMetadata: Additional HTTP headers to send when uploading documents

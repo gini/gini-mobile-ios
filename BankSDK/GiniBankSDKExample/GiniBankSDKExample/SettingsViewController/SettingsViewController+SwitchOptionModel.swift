@@ -17,20 +17,12 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
         case customResourceProvider
-		case bottomNavigationBar
-		case helpNavigationBarBottomAdapter
-		case cameraNavigationBarBottomAdapter
-        case errorNavigationBarBottomAdapter
-        case noResultsNavigationBarBottomAdapter
-		case reviewNavigationBarBottomAdapter
-		case imagePickerNavigationBarBottomAdapter
 		case onboardingShowAtLaunch
 		case onboardingShowAtFirstLaunch
 		case onboardingAlignCornersIllustrationAdapter
 		case onboardingLightingIllustrationAdapter
 		case onboardingQRCodeIllustrationAdapter
 		case onboardingMultiPageIllustrationAdapter
-		case onboardingNavigationBarBottomAdapter
 		case customOnboardingPages
 		case onButtonLoadingIndicator
 		case customLoadingIndicator
@@ -39,23 +31,16 @@ struct SwitchOptionModel {
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
 		case digitalInvoiceOnboardingIllustrationAdapter
-		case digitalInvoiceHelpNavigationBarBottomAdapter
-		case digitalInvoiceOnboardingNavigationBarBottomAdapter
-		case digitalInvoiceNavigationBarBottomAdapter
-        case digitalInvoiceSkontoNavigationBarBottomAdapter
 		case primaryButtonConfiguration
 		case secondaryButtonConfiguration
 		case transparentButtonConfiguration
 		case cameraControlButtonConfiguration
 		case addPageButtonConfiguration
 		case returnAssistantEnabled
-		case enableReturnReasons
 		case customDocumentValidations
 		case giniErrorLoggerIsOn
 		case customGiniErrorLogger
 		case debugModeOn
-        case skontoNavigationBarBottomAdapter
-        case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
         case alreadyPaidHintEnabled
@@ -79,20 +64,6 @@ struct SwitchOptionModel {
 				return "Flash default state"
             case .customResourceProvider:
                 return "Use custom resource provider"
-			case .bottomNavigationBar:
-				return "Bottom navigation bar"
-			case .helpNavigationBarBottomAdapter:
-				return "Help screens custom bottom navigation bar"
-			case .cameraNavigationBarBottomAdapter:
-				return "Camera screen custom bottom navigation bar"
-            case .errorNavigationBarBottomAdapter:
-                return "Error screen custom bottom navigation bar"
-            case .noResultsNavigationBarBottomAdapter:
-                return "No results screen custom bottom navigation bar"
-			case .reviewNavigationBarBottomAdapter:
-				return "Review screen custom bottom navigation bar"
-			case .imagePickerNavigationBarBottomAdapter:
-				return "Image picker screen custom bottom navigation bar"
 			case .onboardingShowAtLaunch:
 				return "Onboarding screens at every launch"
 			case .onboardingShowAtFirstLaunch:
@@ -105,8 +76,6 @@ struct SwitchOptionModel {
 				return "Onboarding `QR code` page custom illustration"
 			case .onboardingMultiPageIllustrationAdapter:
 				return "Onboarding `multi page` page custom illustration"
-			case .onboardingNavigationBarBottomAdapter:
-				return "Onboarding custom bottom navigation bar"
 			case .customOnboardingPages:
 				return "Custom onboarding pages"
 			case .onButtonLoadingIndicator:
@@ -123,14 +92,6 @@ struct SwitchOptionModel {
 				return "Drag and drop tutorial"
 			case .digitalInvoiceOnboardingIllustrationAdapter:
 				return "Digital invoice onboarding custom illustration"
-			case .digitalInvoiceHelpNavigationBarBottomAdapter:
-				return "Digital invoice help bottom navigation bar"
-			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-				return "Digital invoice onboarding bottom navigation bar"
-			case .digitalInvoiceNavigationBarBottomAdapter:
-				return "Digital invoice bottom navigation bar"
-            case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-                return "Digital invoice Skonto bottom navigation bar"
 			case .primaryButtonConfiguration:
 				return "Custom configuration for the primary button"
 			case .secondaryButtonConfiguration:
@@ -143,14 +104,8 @@ struct SwitchOptionModel {
 				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
-            case .enableReturnReasons:
-                return "Return reasons dialog"
             case .skontoEnabled:
                 return "Skonto feature"
-            case .skontoNavigationBarBottomAdapter:
-                return "Skonto bottom navigation bar"
-            case .skontoHelpNavigationBarBottomAdapter:
-                return "Skonto help bottom navigation bar"
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
             case .alreadyPaidHintEnabled:
@@ -202,20 +157,6 @@ struct SwitchOptionModel {
 				return "This will work if the `Onboarding show at every launch` switch is also enabled."
 			case .onboardingMultiPageIllustrationAdapter:
 				return "This will work if the `Onboarding show at every launch` switch is also enabled."
-			case .onboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-			case .digitalInvoiceHelpNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .digitalInvoiceNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-            case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .helpNavigationBarBottomAdapter, .cameraNavigationBarBottomAdapter,
-                    .errorNavigationBarBottomAdapter, .noResultsNavigationBarBottomAdapter,
-                    .reviewNavigationBarBottomAdapter, .imagePickerNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .primaryButtonConfiguration:
 				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
 			case .secondaryButtonConfiguration:
@@ -234,10 +175,6 @@ struct SwitchOptionModel {
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
-            case .skontoNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-            case .skontoHelpNavigationBarBottomAdapter:
-                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
             case .alreadyPaidHintEnabled:
                 return "Features included under this flag paid state"
             case .closeSDK:
