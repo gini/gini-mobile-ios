@@ -19,6 +19,24 @@ final class MockSessionManager: SessionManagerProtocol {
     static let paymentRequestIdWithExpirationDate = "1"
     static let paymentRequestIdWithMissingExpirationDate = "2"
 
+//    enum BatchDocsDeletionParams {
+//        static let notFoundDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//        static let unauthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//        static let missingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//        static let mixedNotFoundAndNotUnAuthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//        static let mixedNotFoundAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//        static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+//    }
+
+    enum BatchDocsDeleteErrorType {
+        case notFoundDocuments
+        case unauthorizedDocuments
+        case missingCompositeItems
+        case mixedNotFoundAndNotUnAuthorizedDocuments
+        case mixedNotFoundAndMissingCompositeItems
+        case mixedNotFoundAndUnAuthorizedAndMissingCompositeItems
+    }
+
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
     }
@@ -121,8 +139,71 @@ final class MockSessionManager: SessionManagerProtocol {
                     processPaymentRequest(paymentRequestId, completion: completion)
                 }
             case .documents(_, _):
-                guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
-                handleBodyStringArray(bodyStringArray, completion: completion)
+                // Decode the body as an array of IDs
+                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
+                    let error = GiniError.unknown(response: nil, data: nil)
+                    completion(.failure(error))
+                    break
+                }
+
+                // Simulate validation rules:
+                // 1) Array size validation fails (empty array) -> 400 with message
+                if bodyStringArray.isEmpty {
+                    // Build a custom error matching: items: [], message: "No payment requests to delete"
+                    let customError = GiniError.customError(
+                        items: [],
+                        requestId: "b66a-2a15-8935-dbe4-f239-8457"
+                    )
+                   // GiniError.customError(items: [], message: "No payment requests to delete", requestId: "b66a-2a15-8935-dbe4-f239-8457")
+                    // Return as a custom error
+                    completion(.failure(customError))
+                    break
+                }
+
+                // Special-case: a single empty string [""] should be treated as success
+
+                    if bodyStringArray == [""] {
+                        if let emptyResponse = "" as? T.ResponseType {
+                            completion(.success(emptyResponse))
+                            break
+                        }
+                    }
+                // 2) Per-ID validation fails when known invalid IDs are present
+                // Define some IDs to trigger different validation error codes
+                let invalidNotFound = [
+                    "3db07630-8f16-11ec-bd63-31f9d04e200e",
+                    "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+                ]
+                let invalidMissingComposite = [
+                    "bfb74b1b-567e-471e-ac5d-9e4494d0d049"
+                ]
+
+                var items: [ErrorItem] = []
+                if bodyStringArray.contains(where: { invalidNotFound.contains($0) }) {
+                    items.append(ErrorItem(code: "2016", object: invalidNotFound))
+                }
+                if bodyStringArray.contains(where: { invalidMissingComposite.contains($0) }) {
+                    items.append(ErrorItem(code: "2017", object: invalidMissingComposite))
+                }
+
+                if !items.isEmpty {
+                    let customError = GiniError.customError(
+                        items:items,
+                        requestId: "b66a-2a15-8935-dbe4-f239-8457"
+                    )
+                    completion(.failure(customError))
+                    break
+                }
+
+                // 3) Success path (simulate 204 No Content). Since we must produce a T.ResponseType,
+                // return an empty array for endpoints that expect a body, or any sentinel value used by tests.
+                // Here we assume the expected response type is [String] or Void-like; return an empty array.
+//                if let successResponse = ([] as [String]) as? T.ResponseType {
+//                    completion(.success(successResponse))
+//                } else {
+//                    // Fallback: return unknown error if typing doesn't match in tests
+//                    completion(.failure(.unknown(response: nil, data: nil)))
+//                }
             case .payment(_):
                 let paymentResponse: Payment? = load(fromFile: "payment")
                 if let paymentResponse = paymentResponse as? T.ResponseType {
@@ -158,25 +239,25 @@ final class MockSessionManager: SessionManagerProtocol {
         return try? JSONDecoder().decode([String].self, from: body)
     }
 
-    /// Helper function to handle the body array types
-    private func handleBodyStringArray<ResponseType>(
-        _ bodyStringArray: [String],
-        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
+    private func handleBatchDeleteDocumentsError<ResponseType>(errorType: BatchDocsDeleteErrorType,
+                                                               completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
     ) {
-        switch bodyStringArray {
-        case [""]:
-            if let emptyResponse = "" as? ResponseType {
-                completion(.success(emptyResponse))
-            }
-        case ["unauthorizedDocuments"]:
-            handleDeleteDocumentsError(fromFile: "unauthorizedDocumentsError", completion: completion)
-        case ["notFoundDocuments"]:
-            handleDeleteDocumentsError(fromFile: "notFoundDocumentsError", completion: completion)
-        case ["missingCompositeDocuments"]:
-            handleDeleteDocumentsError(fromFile: "missingCompositeDocumentsError", completion: completion)
-        default:
-            completion(.failure(GiniError.unknown(response: nil, data: nil)))
+        let fileName: String
+        switch errorType {
+            case .notFoundDocuments:
+                fileName = "batchDocsDeletionErrorNotFound"
+            case .unauthorizedDocuments:
+                fileName = "batchDocsDeletionErrorNotAutorized"
+            case .missingCompositeItems:
+                fileName = "batchDocsDeletionErrorCompositeMissing"
+            case .mixedNotFoundAndNotUnAuthorizedDocuments:
+                fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
+            case .mixedNotFoundAndMissingCompositeItems:
+                fileName = "batchDocumentDeletionFailureMissingCompositeItems"
+            case .mixedNotFoundAndUnAuthorizedAndMissingCompositeItems:
+                fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
         }
+        handleDeleteDocumentsError(fromFile: fileName, completion: completion)
     }
 
     /// Helper function to load and encode errors
@@ -185,11 +266,11 @@ final class MockSessionManager: SessionManagerProtocol {
         completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
     ) {
         guard let extractionResults: GiniCustomError = load(fromFile: fileName),
-              let jsonData = try? JSONEncoder().encode(extractionResults) else {
+              let _ = try? JSONEncoder().encode(extractionResults) else {
             return
         }
 
-        let error = GiniError.customError(response: nil, data: jsonData)
+        let error = GiniError.customError(items: extractionResults.items)
         completion(.failure(error))
     }
 

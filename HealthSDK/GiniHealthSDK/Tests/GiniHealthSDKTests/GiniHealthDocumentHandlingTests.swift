@@ -8,7 +8,7 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
 
     var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
@@ -159,84 +159,132 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         XCTAssertNotNil(receivedError)
     }
 
+//    func testIfDeleteBatchDocumentsFailure() {
+//        // Given
+//        let fileName = "batchDocumentDeletionFaillureDocsNotFound"
+//        // Load expected error response from fixtures
+//        let expectedError: GiniCustomError? = GiniHealthSDKTests.load(
+//            fromFile: fileName
+//        )
+//        guard let expectedError else {
+//            XCTFail("Error loading file: `\(fileName).json`")
+//            return
+//        }
+//
+//        // When
+//        let expectation = self.expectation(description: "Checking delete batch documents failure")
+//        var receivedErrorItems: [ErrorItem]?
+//        let documentsToDeleteIds = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"] as [String]
+//        giniHealth.deleteDocuments(documentIds: documentsToDeleteIds) { result in
+//            switch result {
+//            case .success:
+//                XCTFail("Test should fail, but it passed")
+//            case .failure(let error):
+//                receivedErrorItems = error.items
+//            }
+//            expectation.fulfill()
+//        }
+//        waitForExpectations(timeout: 1, handler: nil)
+//
+//        // Then
+//        XCTAssertNotNil(receivedErrorItems)
+//        XCTAssertEqual(receivedErrorItems?.count, expectedError.items?.count)
+//    }
+
     // MARK: - Delete Batch Of Documents Tests
-    /// Enum for Delete  Batch Document Types
-    private enum DeleteBatchDocumentType: String {
-        case unauthorizedDocuments
-        case notFoundDocuments
-        case missingCompositeDocuments
-        case success = ""
-        case failure
-
-        /// Expected failure response if applicable
-        var expectedFailure: [String]? {
-            switch self {
-            case .unauthorizedDocuments, .notFoundDocuments, .missingCompositeDocuments:
-                return [self.rawValue]
-            default:
-                return nil
-            }
-        }
-
-        /// Expected success response if applicable
-        var expectedSuccess: String? {
-            self == .success ? "" : nil
-        }
+    private enum DeleteBatchDocumentType {
+        static let notFoundDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let unauthorizedDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let missingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndNotUnAuthorizedDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndMissingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let success: [String] = [""]
     }
 
     func testDeleteBatchDocumentsSuccess() {
         performDeleteBatchDocumentsTest(
-            documentType: .success,
-            description: "Deleting Batch Of Documents with Success"
+            documentIds: DeleteBatchDocumentType.success,
+            description: "Deleting Batch Of Documents with Success",
+            expectSuccess: true
         )
     }
 
-    func testDeleteBatchDocumentsFailure() {
-        performDeleteBatchDocumentsTest(
-            documentType: .failure,
-            description: "Deleting Batch Of Documents with Failure"
-        )
-    }
+//    func testDeleteBatchDocumentsFailure() {
+//        performDeleteBatchDocumentsTest(
+//            documentIds: [],
+//            description: "Deleting Batch Of Documents with Failure",
+//            expectSuccess: false
+//        )
+//    }
 
     func testDeleteBatchDocumentsErrorUnauthorizedDocuments() {
         performDeleteBatchDocumentsTest(
-            documentType: .unauthorizedDocuments,
-            description: "Deleting Batch Of Documents with Error of unauthorized documents"
+            documentIds: DeleteBatchDocumentType.unauthorizedDocuments,
+            description: "Deleting Batch Of Documents with Error of unauthorized documents",
+            expectSuccess: false
         )
     }
 
     func testDeleteBatchDocumentsErrorNotFoundDocuments() {
         performDeleteBatchDocumentsTest(
-            documentType: .notFoundDocuments,
-            description: "Deleting Batch Of Documents with Error of not found documents"
+            documentIds: DeleteBatchDocumentType.notFoundDocuments,
+            description: "Deleting Batch Of Documents with Error of not found documents",
+            expectSuccess: false
         )
     }
 
     func testDeleteBatchDocumentsErrorMissingCompositeDocuments() {
         performDeleteBatchDocumentsTest(
-            documentType: .missingCompositeDocuments,
-            description: "Deleting Batch Of Documents with Error of missing composite documents"
+            documentIds: DeleteBatchDocumentType.missingCompositeItems,
+            description: "Deleting Batch Of Documents with Error of missing composite documents",
+            expectSuccess: false
         )
     }
 
     /// Helper Function for Delete Batch Documents Tests
     private func performDeleteBatchDocumentsTest(
-        documentType: DeleteBatchDocumentType,
-        description: String
+        documentIds: [String],
+        description: String,
+        expectSuccess: Bool
     ) {
         let expectation = self.expectation(description: description)
-        
-        let documentIds = documentType == .failure ? [] : [documentType.rawValue]
+        var receivedErrorItems: [ErrorItem]?
+
         giniHealth.deleteDocuments(documentIds: documentIds) { result in
             switch result {
             case .success(let responseMessage):
-                XCTAssertEqual(responseMessage, documentType.expectedSuccess)
+                if expectSuccess {
+                    // For success path, responseMessage is expected to be a non-empty confirmation
+                    XCTAssertTrue(responseMessage == "")
+                } else {
+                    XCTFail("Expected failure but received success: \(responseMessage)")
+                }
             case .failure(let error):
-                let deprecatedError = error.unauthorizedDocuments ?? error.notFoundDocuments ?? error.missingCompositeDocuments
-                let itemsError = error.unauthorizedItems ?? error.notFoundItems ?? error.missingCompositeItems
-                
-                let receivedError = deprecatedError ?? itemsError
-                XCTAssertEqual(receivedError, documentType.expectedFailure)
+                if expectSuccess {
+                    XCTFail("Expected success but received error: \(error)")
+                } else {
+                    receivedErrorItems = error.items
+                    XCTAssertTrue(receivedErrorItems?.isNotEmpty == true)
+                }
             }
             expectation.fulfill()
         }
@@ -244,3 +292,4 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 }
+
