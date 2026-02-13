@@ -18,15 +18,17 @@ struct GiniCarouselView: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
-            TabView(selection: $currentIndex) {
-                ForEach(images.indices, id: \.self) { index in
-                    GiniZoomableImageView(image: images[index])
-                        .tag(index)
+        GeometryReader { geometry in
+            VStack(spacing: 12) {
+                TabView(selection: $currentIndex) {
+                    ForEach(Array(images.enumerated()), id: \.offset) { index, image in
+                        GiniZoomableImageView(image: image, size: geometry.size)
+                            .tag(index)
+                    }
                 }
+                .tabViewStyle(PageTabViewStyle())
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
             }
-            .tabViewStyle(PageTabViewStyle())
-            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         }
     }
 }

@@ -32,6 +32,7 @@ import SwiftUI
 struct GiniZoomableImageView: UIViewRepresentable {
     
     let image: UIImage
+    let size: CGSize
     
     func makeUIView(context: Context) -> GiniZoomableScrollView {
         let scrollView = GiniZoomableScrollView()
@@ -50,6 +51,11 @@ struct GiniZoomableImageView: UIViewRepresentable {
     func updateUIView(_ scrollView: GiniZoomableScrollView, context: Context) {
         if scrollView.imageView?.image != image {
             scrollView.imageView?.image = image
+        }
+        
+        // Reset layout when image or size changes
+        if context.coordinator.lastSize != size {
+            context.coordinator.lastSize = size
             scrollView.resetLayout()
             scrollView.layoutIfNeeded()
         }

@@ -24,6 +24,8 @@ final class GiniZoomableImageViewCoordinator: NSObject, UIScrollViewDelegate {
     
     private let parent: GiniZoomableImageView
     
+    var lastSize: CGSize = .zero
+    
     init(_ parent: GiniZoomableImageView) {
         self.parent = parent
     }
