@@ -147,8 +147,8 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
     @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(items:statusCode:requestId:message:)")
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
-    case customError( items: [ErrorItem]? = nil, statusCode: Int? = nil, requestId: String? = nil)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
+    case customError(statusCode: Int? = nil, message: String? = nil, items: [ErrorItem]? = nil, requestId: String? = nil)
 
     public var message: String {
         switch self {
@@ -215,7 +215,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
                     .unauthorized(let response, _),
                     .unknown(let response, _):
                 return response?.statusCode
-            case .customError( _, let statusCode, _):
+            case .customError(let statusCode, _, _, _):
                 return statusCode
             default:
                 return nil
@@ -224,7 +224,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
 
     public var items: [ErrorItem]? {
         switch self {
-            case .customError(let items, _, _):
+            case .customError(_, _, let items, _):
                 return items
             default:
                 return nil
@@ -233,7 +233,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
 
     public var requestId: String {
         switch self {
-            case .customError(_, _, let requestId):
+            case .customError(_, _, _, let requestId):
                 return requestId ?? "no requestId is available"
             default:
                 return "no requestId is available"
