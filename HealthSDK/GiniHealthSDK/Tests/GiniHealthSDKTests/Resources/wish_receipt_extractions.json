@@ -1,0 +1,111 @@
+{
+    "extractions": {
+        "amount_to_pay": {
+            "entity": "amount",
+            "value": "30.27:EUR"
+        },
+        "bic": {
+            "entity": "bic",
+            "value": "DEUTDEMM760",
+            "box": {
+                "top": 1359.5,
+                "left": 419.5,
+                "width": 308.0,
+                "height": 21.0,
+                "page": 1
+            }
+        },
+        "payment_recipient": {
+            "entity": "text",
+            "value": "KLARNA"
+        },
+        "payment_state": {
+            "entity": "text",
+            "value": "Other"
+        },
+        "payment_purpose": {
+            "entity": "text",
+            "value": "3963757910434"
+        },
+        "invoice_date": {
+            "entity": "date",
+            "value": "2020-07-24",
+            "box": {
+                "top": 199.6,
+                "left": 441.6,
+                "width": 85.8,
+                "height": 16.0,
+                "page": 1
+            },
+            "candidates": "dates"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE13760700120500154000"
+        }
+    },
+    "compoundExtractions": {
+        "payment": [{
+            "amount_to_pay": {
+                "entity": "amount",
+                "value": "30.27:EUR"
+            },
+            "bic": {
+                "entity": "bic",
+                "value": "DEUTDEMM760",
+                "box": {
+                    "top": 1359.5,
+                    "left": 419.5,
+                    "width": 308.0,
+                    "height": 21.0,
+                    "page": 1
+                }
+            },
+            "payment_recipient": {
+                "entity": "text",
+                "value": "KLARNA"
+            },
+            "payment_purpose": {
+                "entity": "text",
+                "value": "3963757910434"
+            },
+            "iban": {
+                "entity": "iban",
+                "value": "DE13760700120500154000"
+            }
+        }]
+    },
+    "candidates": {
+        "dates": [{
+            "entity": "date",
+            "value": "2020-09-23",
+            "box": {
+                "top": 162.3,
+                "left": 443.3,
+                "width": 84.4,
+                "height": 15.0,
+                "page": 1
+            }
+        }, {
+            "entity": "date",
+            "value": "2020-07-24",
+            "box": {
+                "top": 199.6,
+                "left": 441.6,
+                "width": 85.8,
+                "height": 16.0,
+                "page": 1
+            }
+        }, {
+            "entity": "date",
+            "value": "2020-10-07",
+            "box": {
+                "top": 316.2,
+                "left": 1092.2,
+                "width": 87.6,
+                "height": 19.0,
+                "page": 1
+            }
+        }]
+    }
+}

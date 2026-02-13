@@ -51,7 +51,7 @@ public final class PaymentService: PaymentServiceProtocol {
                                      paymentProvider: String,
                                      recipient: String,
                                      iban: String,
-                                     bic: String?,
+                                     bic: String? = nil,
                                      amount: String,
                                      purpose: String,
                                      completion: @escaping CompletionResult<String>) {
