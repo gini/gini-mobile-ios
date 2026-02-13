@@ -245,11 +245,11 @@ final class MockSessionManager: SessionManagerProtocol {
         let fileName: String
         switch errorType {
             case .notFoundDocuments:
-                fileName = "batchDocumentDeletionFaillureDocsNotFound"
+                fileName = "batchDocsDeletionErrorNotFound"
             case .unauthorizedDocuments:
-                fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
+                fileName = "batchDocsDeletionErrorNotAutorized"
             case .missingCompositeItems:
-                fileName = "batchDocumentDeletionFailureMissingCompositeItems"
+                fileName = "batchDocsDeletionErrorCompositeMissing"
             case .mixedNotFoundAndNotUnAuthorizedDocuments:
                 fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
             case .mixedNotFoundAndMissingCompositeItems:
