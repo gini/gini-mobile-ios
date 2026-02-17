@@ -345,8 +345,6 @@ private extension SessionManager {
             case 406:
                 completion(.failure(.notAcceptable(response: response, data: data)))
             case 429:
-                // use     case customError(items: [ErrorItem]? = nil, statusCode: Int? = nil)
-
                 completion(
                     .failure(
                         .tooManyRequests(response: response, data: data)))
