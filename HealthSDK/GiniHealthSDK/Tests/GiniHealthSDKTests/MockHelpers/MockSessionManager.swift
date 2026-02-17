@@ -19,14 +19,14 @@ final class MockSessionManager: SessionManagerProtocol {
     static let paymentRequestIdWithExpirationDate = "1"
     static let paymentRequestIdWithMissingExpirationDate = "2"
 
-//    enum BatchDocsDeletionParams {
-//        static let notFoundDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//        static let unauthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//        static let missingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//        static let mixedNotFoundAndNotUnAuthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//        static let mixedNotFoundAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//        static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
-//    }
+    enum BatchDocsDeletionParams {
+        static let notFoundDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let unauthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let missingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let mixedNotFoundAndNotUnAuthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let mixedNotFoundAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
+    }
 
     enum BatchDocsDeleteErrorType {
         case notFoundDocuments
@@ -138,29 +138,29 @@ final class MockSessionManager: SessionManagerProtocol {
                 } else {
                     processPaymentRequest(paymentRequestId, completion: completion)
                 }
-            case .documents(_, _):
-                // Decode the body as an array of IDs
-                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
-                    let error = GiniError.unknown(response: nil, data: nil)
-                    completion(.failure(error))
-                    break
-                }
+                case .documents(_, _):
+                    // Decode the body as an array of IDs
+                    guard let bodyStringArray = decodeBody(from: resource.params.body) else {
+                        let error = GiniError.unknown(response: nil, data: nil)
+                        completion(.failure(error))
+                        break
+                    }
 
-                // Simulate validation rules:
-                // 1) Array size validation fails (empty array) -> 400 with message
-                if bodyStringArray.isEmpty {
-                    // Build a custom error matching: items: [], message: "No payment requests to delete"
-                    let customError = GiniError.customError(
-                        items: [],
-                        requestId: "b66a-2a15-8935-dbe4-f239-8457"
-                    )
-                   // GiniError.customError(items: [], message: "No payment requests to delete", requestId: "b66a-2a15-8935-dbe4-f239-8457")
-                    // Return as a custom error
-                    completion(.failure(customError))
-                    break
-                }
+                    // Simulate validation rules:
+                    // 1) Array size validation fails (empty array) -> 400 with message
+                    if bodyStringArray.isEmpty {
+                        // Build a custom error matching: items: [], message: "No payment requests to delete"
+                        let customError = GiniError.customError(
+                            items: [],
+                            requestId: "b66a-2a15-8935-dbe4-f239-8457"
+                        )
+                        // GiniError.customError(items: [], message: "No payment requests to delete", requestId: "b66a-2a15-8935-dbe4-f239-8457")
+                        // Return as a custom error
+                        completion(.failure(customError))
+                        break
+                    }
 
-                // Special-case: a single empty string [""] should be treated as success
+                    // Special-case: a single empty string [""] should be treated as success
 
                     if bodyStringArray == [""] {
                         if let emptyResponse = "" as? T.ResponseType {
@@ -168,42 +168,71 @@ final class MockSessionManager: SessionManagerProtocol {
                             break
                         }
                     }
-                // 2) Per-ID validation fails when known invalid IDs are present
-                // Define some IDs to trigger different validation error codes
-                let invalidNotFound = [
-                    "3db07630-8f16-11ec-bd63-31f9d04e200e",
-                    "0db26fec-4a7f-4376-b5d5-5155adf8adca"
-                ]
-                let invalidMissingComposite = [
-                    "bfb74b1b-567e-471e-ac5d-9e4494d0d049"
-                ]
+                    // 2) Per-ID validation fails when known invalid IDs are present
+                    // Define some IDs to trigger different validation error codes
+                    var errorType = BatchDocsDeleteErrorType.notFoundDocuments
+                    let notFoundErrorItem = ErrorItem(code: "2016", object: MockSessionManager.BatchDocsDeletionParams.notFoundDocuments)
+                    let missingCompositeItemsErrorItem = ErrorItem(code: "2017", object: MockSessionManager.BatchDocsDeletionParams.missingCompositeItems)
+                    let unauthorizedErrorItem = ErrorItem(code: "2015", object: MockSessionManager.BatchDocsDeletionParams.unauthorizedDocuments)
+                    var items: [ErrorItem] = []
+                    if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.notFoundDocuments.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(notFoundErrorItem)
+                        errorType = .notFoundDocuments
+                    } else if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.missingCompositeItems.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(missingCompositeItemsErrorItem)
+                        errorType = .missingCompositeItems
+                    } else if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.unauthorizedDocuments.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(unauthorizedErrorItem)
+                        errorType = .unauthorizedDocuments
+                    } else if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndMissingCompositeItems.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(notFoundErrorItem)
+                        items.append(missingCompositeItemsErrorItem)
+                        errorType = .mixedNotFoundAndMissingCompositeItems
+                    } else if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndNotUnAuthorizedDocuments.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(notFoundErrorItem)
+                        items.append(unauthorizedErrorItem)
 
-                var items: [ErrorItem] = []
-                if bodyStringArray.contains(where: { invalidNotFound.contains($0) }) {
-                    items.append(ErrorItem(code: "2016", object: invalidNotFound))
-                }
-                if bodyStringArray.contains(where: { invalidMissingComposite.contains($0) }) {
-                    items.append(ErrorItem(code: "2017", object: invalidMissingComposite))
-                }
+                        errorType = .mixedNotFoundAndNotUnAuthorizedDocuments
+                    } else if bodyStringArray.contains(
+                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndUnAuthorizedAndMissingCompositeItems.contains(
+                            $0
+                        )
+                        }) {
+                        items.append(notFoundErrorItem)
+                        items.append(unauthorizedErrorItem)
+                        items.append(missingCompositeItemsErrorItem)
 
-                if !items.isEmpty {
-                    let customError = GiniError.customError(
-                        items:items,
-                        requestId: "b66a-2a15-8935-dbe4-f239-8457"
-                    )
-                    completion(.failure(customError))
-                    break
-                }
+                        errorType = .mixedNotFoundAndUnAuthorizedAndMissingCompositeItems
+                    }
 
-                // 3) Success path (simulate 204 No Content). Since we must produce a T.ResponseType,
-                // return an empty array for endpoints that expect a body, or any sentinel value used by tests.
-                // Here we assume the expected response type is [String] or Void-like; return an empty array.
-//                if let successResponse = ([] as [String]) as? T.ResponseType {
-//                    completion(.success(successResponse))
-//                } else {
-//                    // Fallback: return unknown error if typing doesn't match in tests
-//                    completion(.failure(.unknown(response: nil, data: nil)))
-//                }
+                    if !items.isEmpty {
+
+                        handleBatchDeleteDocumentsError(
+                            errorType: errorType,
+                            completion: completion
+                        )
+                        break
+                    }
             case .payment(_):
                 let paymentResponse: Payment? = load(fromFile: "payment")
                 if let paymentResponse = paymentResponse as? T.ResponseType {
