@@ -77,7 +77,7 @@ public struct ErrorItem: Codable, Equatable {
     }
 }
 
-struct GiniCustomError: GiniCustomErrorProtocol, Codable {
+struct GiniCustomError: Codable {
     var message: String
     var items: [ErrorItem]?
     var requestId: String
@@ -108,20 +108,6 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         items = try? container.decodeIfPresent([ErrorItem].self, forKey: .items)
 
         requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No requestId available"
-
-        missingCompositeItems = try? container.decodeIfPresent([String].self, forKey: .missingCompositeItems)
-
-        if let items = try? container.decodeIfPresent([String].self, forKey: .unauthorizedPaymentRequests) {
-            unauthorizedItems = items
-        } else {
-            unauthorizedItems = try? container.decodeIfPresent([String].self, forKey: .unauthorizedItems)
-        }
-        
-        if let items = try? container.decodeIfPresent([String].self, forKey: .notFoundPaymentRequests) {
-            notFoundItems = items
-        } else {
-            notFoundItems = try? container.decodeIfPresent([String].self, forKey: .notFoundItems)
-        }
     }
     
     func encode(to encoder: any Encoder) throws {
@@ -130,9 +116,6 @@ struct GiniCustomError: GiniCustomErrorProtocol, Codable {
         try container.encodeIfPresent(message, forKey: .message)
         try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(requestId, forKey: .requestId)
-        try container.encodeIfPresent(missingCompositeItems, forKey: .missingCompositeItems)
-        try container.encodeIfPresent(unauthorizedItems, forKey: .unauthorizedItems)
-        try container.encodeIfPresent(notFoundItems, forKey: .notFoundItems)
     }
 }
 
@@ -145,7 +128,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
     case requestCancelled
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
-    @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(items:statusCode:requestId:message:)")
+    @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(statusCode:message:items:requestId:)")
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     case customError(statusCode: Int? = nil, message: String? = nil, items: [ErrorItem]? = nil, requestId: String? = nil)
