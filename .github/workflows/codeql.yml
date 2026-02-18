@@ -1,0 +1,70 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Weekly Monday 06:00 UTC
+
+jobs:
+  analyze-swift:
+    name: Analyze Swift
+    runs-on: macos-latest
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+      with:
+        xcode-version: '16.4'
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      with:
+        languages: swift
+
+    - name: Build GiniBankSDKExample
+      run: >
+        xcodebuild build
+        -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
+        -scheme GiniBankSDKExample
+        -destination 'platform=iOS Simulator,OS=18.5,name=iPhone 16'
+        -skipPackagePluginValidation
+        CODE_SIGNING_REQUIRED=NO
+        CODE_SIGNING_ALLOWED=NO
+        COMPILER_INDEX_STORE_ENABLE=NO
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      with:
+        category: "/language:swift"
+
+  analyze-ruby:
+    name: Analyze Ruby
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      with:
+        languages: ruby
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      with:
+        category: "/language:ruby"
