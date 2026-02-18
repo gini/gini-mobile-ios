@@ -476,9 +476,22 @@ extension AppCoordinator: DebugMenuDelegate {
                 let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
                 GiniUtilites.Log(successMessage, event: .success)
                 self?.presentError(title: "Success", message: successMessage)
-            case .failure(let failure):
-                GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
-                self?.presentError(title: "Error", message: failure.message)
+            case .failure(let error):
+                let statusCode = error.statusCode ?? 0
+                let message = error.message
+                let requestId = error.requestId
+                let itemsDescription: String
+                if let errorItems = error.items, !errorItems.isEmpty {
+                    itemsDescription = errorItems
+                        .map { "\($0.code): [\($0.object?.joined(separator: ", ") ?? "no objects")]" }
+                        .joined(separator: "; ")
+                } else {
+                    itemsDescription = "No error items"
+                }
+
+                let detailedMessage = "StatusCode: \(statusCode), RequestId: \(requestId), Message: \(message). Items: \(itemsDescription)"
+                GiniUtilites.Log(detailedMessage, event: .error)
+                self?.presentError(title: "Error", message: detailedMessage)
             }
         }
     }
@@ -489,3 +502,4 @@ extension AppCoordinator {
         static let numberOfDocumentsToBeDeleted = 2
     }
 }
+
