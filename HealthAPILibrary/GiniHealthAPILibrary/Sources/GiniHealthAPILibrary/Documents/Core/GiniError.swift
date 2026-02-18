@@ -40,9 +40,17 @@ public protocol GiniCustomErrorProtocol {
     var missingCompositeItems: [String]? { get }
 }
 
+/// Represents a single error item from the API error response.
+///
+/// Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
 public struct ErrorItem: Codable, Equatable {
+    /// The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
     public var code: String
+    
+    /// Optional human-readable error message describing the error.
     public var message: String?
+    
+    /// Optional array of object identifiers (e.g., document IDs) that are affected by this error.
     public var object: [String]?
 
     enum CodingKeys: String, CodingKey {
@@ -51,6 +59,11 @@ public struct ErrorItem: Codable, Equatable {
         case object
     }
 
+    /// Creates a new error item.
+    /// - Parameters:
+    ///   - code: The error code identifying the type of error
+    ///   - message: Optional human-readable error message
+    ///   - object: Optional array of affected object identifiers
     public init(code: String = "", message: String = "", object: [String]? = nil) {
         self.code = code
         self.message = message
@@ -189,6 +202,10 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
+    /// HTTP status code from the error response, if available.
+    ///
+    /// Returns the status code from the HTTP response, or `nil` if no response is available.
+    /// - Returns: The HTTP status code (e.g., 400, 401, 404) or `nil`
     public var statusCode: Int? {
         switch self {
             case .badRequest(let response, _),
@@ -205,10 +222,28 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
+    /// Array of error items containing specific error details from the API.
+    ///
+    /// Each item includes an error code, optional message, and optional list of affected objects.
+    /// Use this property to identify which specific documents or objects failed and why.
+    ///
+    /// Example:
+    /// ```swift
+    /// if let items = error.items {
+    ///     for item in items {
+    ///         print("Error \(item.code): \(item.object?.joined(separator: ", ") ?? "no objects")")
+    ///     }
+    /// }
+    /// ```
+    /// - Returns: Array of `ErrorItem` objects, or `nil` if no items are available
     public var items: [ErrorItem]? {
         return customError?.items
     }
 
+    /// The request ID from the API response, useful for debugging and support.
+    ///
+    /// This identifier can be used to trace the request in server logs.
+    /// - Returns: The request ID string, or a default message if not available
     public var requestId: String {
         return customError?.requestId ?? "no requestId is available"
     }
@@ -252,8 +287,12 @@ public extension GiniError {
     /// Formatted description of all error items for logging or display.
     ///
     /// Returns a human-readable string with all error codes and their associated objects.
+    /// This property formats all error items into a concise, readable string suitable for display
+    /// in UI alerts or logging. Each error code is shown with its associated object IDs.
     ///
     /// Example output: `"2013: [doc-id-1, doc-id-2]; 2014: [doc-id-3]"`
+    ///
+    /// - Returns: A formatted string describing all error items, or "No specific error details" if none exist
     var itemsDescription: String {
         guard let items = items, !items.isEmpty else {
             return "No specific error details"
@@ -269,13 +308,18 @@ public extension GiniError {
     
     /// Returns all object IDs (e.g., document IDs) that failed with the specified error code.
     ///
-    /// - Parameter code: The error code to filter by (e.g., "2013" for unauthorized)
+    /// Use this method to extract document IDs or other object identifiers for a specific error code.
+    /// If multiple error items share the same code, all their objects are merged into a single array.
+    ///
+    /// - Parameter code: The error code to filter by (e.g., "2013" for unauthorized, "2014" for not found)
     /// - Returns: Array of object IDs associated with that error code, or empty array if none found
     ///
     /// Example:
     /// ```swift
     /// let unauthorizedDocs = error.objectsWithCode("2013")
-    /// print("Unauthorized documents: \(unauthorizedDocs)")
+    /// if !unauthorizedDocs.isEmpty {
+    ///     print("Unauthorized documents: \(unauthorizedDocs.joined(separator: ", "))")
+    /// }
     /// ```
     func objectsWithCode(_ code: String) -> [String] {
         guard let items = items else { return [] }
@@ -287,7 +331,8 @@ public extension GiniError {
     
     /// Comprehensive error summary including status code, request ID, message, and all error items.
     ///
-    /// This property is ideal for detailed logging and debugging.
+    /// This property provides a complete error description ideal for detailed logging and debugging.
+    /// It combines all error information into a multi-line formatted string.
     ///
     /// Example output:
     /// ```
@@ -295,6 +340,8 @@ public extension GiniError {
     /// Message: Bad request
     /// Items: 2013: [doc-id-1, doc-id-2]
     /// ```
+    ///
+    /// - Returns: A multi-line string with complete error details
     var detailedDescription: String {
         """
         Status: \(statusCode ?? 0) | Request ID: \(requestId)
