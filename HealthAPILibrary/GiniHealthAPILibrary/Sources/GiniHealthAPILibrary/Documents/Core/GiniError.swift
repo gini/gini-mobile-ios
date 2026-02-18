@@ -103,9 +103,6 @@ struct GiniCustomError: Codable {
         case unauthorizedItems
         case notFoundItems
         case missingCompositeItems
-        //backend values
-        case unauthorizedPaymentRequests
-        case notFoundPaymentRequests
     }
 
     init(from decoder: Decoder) throws {
