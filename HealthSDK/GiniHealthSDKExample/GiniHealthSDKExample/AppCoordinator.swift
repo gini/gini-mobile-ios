@@ -477,21 +477,17 @@ extension AppCoordinator: DebugMenuDelegate {
                 GiniUtilites.Log(successMessage, event: .success)
                 self?.presentError(title: "Success", message: successMessage)
             case .failure(let error):
-                let statusCode = error.statusCode ?? 0
-                let message = error.message
-                let requestId = error.requestId
-                let itemsDescription: String
-                if let errorItems = error.items, !errorItems.isEmpty {
-                    itemsDescription = errorItems
-                        .map { "\($0.code): [\($0.object?.joined(separator: ", ") ?? "no objects")]" }
-                        .joined(separator: "; ")
-                } else {
-                    itemsDescription = "No error items"
+                // Use the convenience helper for detailed logging
+                GiniUtilites.Log(error.detailedDescription, event: .error)
+                
+                // Display user-friendly error message
+                self?.presentError(title: "Error", message: error.message)
+                
+                // Optional: Handle specific error codes if needed
+                let unauthorizedDocs = error.objectsWithCode("2013")
+                if !unauthorizedDocs.isEmpty {
+                    GiniUtilites.Log("⚠️ Unauthorized documents: \(unauthorizedDocs)", event: .warning)
                 }
-
-                let detailedMessage = "StatusCode: \(statusCode), RequestId: \(requestId), Message: \(message). Items: \(itemsDescription)"
-                GiniUtilites.Log(detailedMessage, event: .error)
-                self?.presentError(title: "Error", message: detailedMessage)
             }
         }
     }
