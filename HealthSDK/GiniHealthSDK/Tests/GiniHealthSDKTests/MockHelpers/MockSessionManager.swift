@@ -19,7 +19,7 @@ final class MockSessionManager: SessionManagerProtocol {
     static let paymentRequestIdWithExpirationDate = "1"
     static let paymentRequestIdWithMissingExpirationDate = "2"
 
-    enum BatchDocsDeletionParams {
+    enum BulkDocsDeletionParams {
         static let notFoundDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
         static let unauthorizedDocuments = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
         static let missingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
@@ -28,13 +28,25 @@ final class MockSessionManager: SessionManagerProtocol {
         static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems = ["3db07630-8f16-11ec-bd63-31f9d04e200e", "0db26fec-4a7f-4376-b5d5-5155adf8adca"]
     }
 
-    enum BatchDocsDeleteErrorType {
+    enum BulkDocsDeleteErrorType {
         case notFoundDocuments
         case unauthorizedDocuments
         case missingCompositeItems
         case mixedNotFoundAndNotUnAuthorizedDocuments
         case mixedNotFoundAndMissingCompositeItems
         case mixedNotFoundAndUnAuthorizedAndMissingCompositeItems
+    }
+    
+    enum BulkPaymentRequestsDeletionParams {
+        static let notFoundPaymentRequests = ["bfb74b1b-567e-471e-ac5d-9e4494d0d049"]
+        static let unauthorizedPaymentRequests = ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca"]
+        static let mixedPaymentRequests = ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca", "bfb74b1b-567e-471e-ac5d-9e4494d0d049"]
+    }
+    
+    enum BulkPaymentRequestsDeleteErrorType {
+        case notFoundPaymentRequests
+        case unauthorizedPaymentRequests
+        case mixedPaymentRequests
     }
 
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
@@ -175,34 +187,34 @@ final class MockSessionManager: SessionManagerProtocol {
                     }
                     // 2) Per-ID validation fails when known invalid IDs are present
                     // Define some IDs to trigger different validation error codes
-                    var errorType = BatchDocsDeleteErrorType.notFoundDocuments
-                    let notFoundErrorItem = ErrorItem(code: "2016", object: MockSessionManager.BatchDocsDeletionParams.notFoundDocuments)
-                    let missingCompositeItemsErrorItem = ErrorItem(code: "2017", object: MockSessionManager.BatchDocsDeletionParams.missingCompositeItems)
-                    let unauthorizedErrorItem = ErrorItem(code: "2015", object: MockSessionManager.BatchDocsDeletionParams.unauthorizedDocuments)
+                    var errorType = BulkDocsDeleteErrorType.notFoundDocuments
+                    let notFoundErrorItem = ErrorItem(code: "2016", object: MockSessionManager.BulkDocsDeletionParams.notFoundDocuments)
+                    let missingCompositeItemsErrorItem = ErrorItem(code: "2017", object: MockSessionManager.BulkDocsDeletionParams.missingCompositeItems)
+                    let unauthorizedErrorItem = ErrorItem(code: "2015", object: MockSessionManager.BulkDocsDeletionParams.unauthorizedDocuments)
                     var items: [ErrorItem] = []
                     if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.notFoundDocuments.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.notFoundDocuments.contains(
                             $0
                         )
                         }) {
                         items.append(notFoundErrorItem)
                         errorType = .notFoundDocuments
                     } else if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.missingCompositeItems.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.missingCompositeItems.contains(
                             $0
                         )
                         }) {
                         items.append(missingCompositeItemsErrorItem)
                         errorType = .missingCompositeItems
                     } else if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.unauthorizedDocuments.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.unauthorizedDocuments.contains(
                             $0
                         )
                         }) {
                         items.append(unauthorizedErrorItem)
                         errorType = .unauthorizedDocuments
                     } else if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndMissingCompositeItems.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.mixedNotFoundAndMissingCompositeItems.contains(
                             $0
                         )
                         }) {
@@ -210,7 +222,7 @@ final class MockSessionManager: SessionManagerProtocol {
                         items.append(missingCompositeItemsErrorItem)
                         errorType = .mixedNotFoundAndMissingCompositeItems
                     } else if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndNotUnAuthorizedDocuments.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.mixedNotFoundAndNotUnAuthorizedDocuments.contains(
                             $0
                         )
                         }) {
@@ -219,7 +231,7 @@ final class MockSessionManager: SessionManagerProtocol {
 
                         errorType = .mixedNotFoundAndNotUnAuthorizedDocuments
                     } else if bodyStringArray.contains(
-                        where: { MockSessionManager.BatchDocsDeletionParams.mixedNotFoundAndUnAuthorizedAndMissingCompositeItems.contains(
+                        where: { MockSessionManager.BulkDocsDeletionParams.mixedNotFoundAndUnAuthorizedAndMissingCompositeItems.contains(
                             $0
                         )
                         }) {
@@ -232,12 +244,55 @@ final class MockSessionManager: SessionManagerProtocol {
 
                     if !items.isEmpty {
 
-                        handleBatchDeleteDocumentsError(
+                        handleBulkDeleteDocumentsError(
                             errorType: errorType,
                             completion: completion
                         )
                         break
                     }
+            case .paymentRequests(_, _):
+                // Handle bulk payment request deletion
+                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
+                    let error = GiniError.unknown(response: nil, data: nil)
+                    completion(.failure(error))
+                    break
+                }
+                
+                // Check for empty array
+                if bodyStringArray.isEmpty {
+                    let errorData = GiniCustomError(
+                        message: "No payment requests to delete",
+                        items: [],
+                        requestId: "c77b-3b26-9046-ecf5-g350-9568"
+                    )
+                    if let jsonData = try? JSONEncoder().encode(errorData) {
+                        let error = GiniError.customError(response: nil, data: jsonData)
+                        completion(.failure(error))
+                    }
+                    break
+                }
+                
+                // Check for specific test IDs that should trigger errors
+                if bodyStringArray == [""] {
+                    if let emptyResponse = "" as? T.ResponseType {
+                        completion(.success(emptyResponse))
+                        break
+                    }
+                }
+                
+                var errorType = BulkPaymentRequestsDeleteErrorType.notFoundPaymentRequests
+                let hasUnauthorized = bodyStringArray.contains(where: { BulkPaymentRequestsDeletionParams.unauthorizedPaymentRequests.contains($0) })
+                let hasNotFound = bodyStringArray.contains(where: { BulkPaymentRequestsDeletionParams.notFoundPaymentRequests.contains($0) })
+                
+                if hasUnauthorized && hasNotFound {
+                    errorType = .mixedPaymentRequests
+                } else if hasUnauthorized {
+                    errorType = .unauthorizedPaymentRequests
+                } else if hasNotFound {
+                    errorType = .notFoundPaymentRequests
+                }
+                
+                handleBulkDeletePaymentRequestsError(errorType: errorType, completion: completion)
             case .payment(_):
                 let paymentResponse: Payment? = load(fromFile: "payment")
                 if let paymentResponse = paymentResponse as? T.ResponseType {
@@ -273,23 +328,38 @@ final class MockSessionManager: SessionManagerProtocol {
         return try? JSONDecoder().decode([String].self, from: body)
     }
 
-    private func handleBatchDeleteDocumentsError<ResponseType>(errorType: BatchDocsDeleteErrorType,
+    private func handleBulkDeleteDocumentsError<ResponseType>(errorType: BulkDocsDeleteErrorType,
                                                                completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
     ) {
         let fileName: String
         switch errorType {
             case .notFoundDocuments:
-                fileName = "batchDocsDeletionErrorNotFound"
+                fileName = "bulkDocsDeletionErrorNotFound"
             case .unauthorizedDocuments:
-                fileName = "batchDocsDeletionErrorNotAutorized"
+                fileName = "bulkDocsDeletionErrorNotAutorized"
             case .missingCompositeItems:
-                fileName = "batchDocsDeletionErrorCompositeMissing"
+                fileName = "bulkDocsDeletionErrorCompositeMissing"
             case .mixedNotFoundAndNotUnAuthorizedDocuments:
                 fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
             case .mixedNotFoundAndMissingCompositeItems:
                 fileName = "batchDocumentDeletionFailureMissingCompositeItems"
             case .mixedNotFoundAndUnAuthorizedAndMissingCompositeItems:
                 fileName = "batchDocumentDeletionFailureUnauthorizedDocuments"
+        }
+        handleDeleteDocumentsError(fromFile: fileName, completion: completion)
+    }
+    
+    private func handleBulkDeletePaymentRequestsError<ResponseType>(errorType: BulkPaymentRequestsDeleteErrorType,
+                                                                       completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
+    ) {
+        let fileName: String
+        switch errorType {
+            case .notFoundPaymentRequests:
+                fileName = "bulkPaymentRequestsDeletionErrorNotFound"
+            case .unauthorizedPaymentRequests:
+                fileName = "bulkPaymentRequestsDeletionErrorUnauthorized"
+            case .mixedPaymentRequests:
+                fileName = "bulkPaymentRequestsDeletionErrorMixed"
         }
         handleDeleteDocumentsError(fromFile: fileName, completion: completion)
     }

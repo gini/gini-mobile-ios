@@ -19,7 +19,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testItemsDescription_withRealTestFile_unauthorized() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -41,7 +41,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testItemsDescription_withRealTestFile_notFound() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotFound", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -62,7 +62,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testItemsDescription_withRealTestFile_compositeMissing() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorCompositeMissing", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorCompositeMissing", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -122,7 +122,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withRealTestFile_unauthorized() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -144,7 +144,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withRealTestFile_notFound() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotFound", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -164,7 +164,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withNonMatchingCode_returnsEmptyArray() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotFound", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -222,7 +222,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testDetailedDescription_withRealTestFile_includesAllFields() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -252,7 +252,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testDetailedDescription_withNoStatusCode_showsZero() {
         // Given - Use actual test resource without response
-        guard let jsonData = FileLoader.loadFile(withName: "batchDocsDeletionErrorNotFound", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -274,9 +274,9 @@ final class GiniErrorHelpersTests: XCTestCase {
     func testDetailedDescription_withMultipleRealFiles_formatsCorrectly() {
         // Given - Test all three error types
         let fileNames = [
-            "batchDocsDeletionErrorNotAutorized",
-            "batchDocsDeletionErrorNotFound", 
-            "batchDocsDeletionErrorCompositeMissing"
+            "bulkDocsDeletionErrorNotAutorized",
+            "bulkDocsDeletionErrorNotFound", 
+            "bulkDocsDeletionErrorCompositeMissing"
         ]
         
         for fileName in fileNames {

@@ -152,4 +152,95 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         XCTAssertNotNil(receivedPayment)
         XCTAssertEqual(receivedPayment?.iban, expectedIBAN)
     }
+    
+    // MARK: - Bulk Payment Request Deletion Tests
+    
+    func testDeletePaymentRequests_Unauthorized() {
+        // Given
+        let unauthorizedIds = MockSessionManager.BulkPaymentRequestsDeletionParams.unauthorizedPaymentRequests
+        
+        // When
+        let expectation = self.expectation(description: "Deleting payment requests with unauthorized error")
+        var receivedError: GiniHealthSDK.GiniError?
+        
+        giniHealth.paymentService.deletePaymentRequests(unauthorizedIds) { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error but got success")
+            case .failure(let error):
+                receivedError = GiniHealthSDK.GiniError.decorator(error)
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.items?.first?.code, "2016")
+        XCTAssertEqual(receivedError?.items?.first?.object, unauthorizedIds)
+        XCTAssertEqual(receivedError?.requestId, "b608-02bb-c7g1-dd28-54e4-87b9")
+    }
+    
+    func testDeletePaymentRequests_NotFound() {
+        // Given
+        let notFoundIds = MockSessionManager.BulkPaymentRequestsDeletionParams.notFoundPaymentRequests
+        
+        // When
+        let expectation = self.expectation(description: "Deleting payment requests with not found error")
+        var receivedError: GiniHealthSDK.GiniError?
+        
+        giniHealth.paymentService.deletePaymentRequests(notFoundIds) { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error but got success")
+            case .failure(let error):
+                receivedError = GiniHealthSDK.GiniError.decorator(error)
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.items?.first?.code, "2017")
+        XCTAssertEqual(receivedError?.items?.first?.object, notFoundIds)
+    }
+    
+    func testDeletePaymentRequests_Mixed() {
+        // Given
+        let mixedIds = MockSessionManager.BulkPaymentRequestsDeletionParams.mixedPaymentRequests
+        
+        // When
+        let expectation = self.expectation(description: "Deleting payment requests with mixed errors")
+        var receivedError: GiniHealthSDK.GiniError?
+        
+        giniHealth.paymentService.deletePaymentRequests(mixedIds) { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error but got success")
+            case .failure(let error):
+                receivedError = GiniHealthSDK.GiniError.decorator(error)
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedError)
+        XCTAssertEqual(receivedError?.items?.count, 2)
+        
+        // Verify both error codes are present
+        let errorCodes = receivedError?.items?.map { $0.code } ?? []
+        XCTAssertTrue(errorCodes.contains("2016"))
+        XCTAssertTrue(errorCodes.contains("2017"))
+        
+        // Verify objects are correctly assigned to each error code
+        let unauthorizedObjects = receivedError?.objectsWithCode("2016") ?? []
+        let notFoundObjects = receivedError?.objectsWithCode("2017") ?? []
+        XCTAssertEqual(unauthorizedObjects, ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca"])
+        XCTAssertEqual(notFoundObjects, ["bfb74b1b-567e-471e-ac5d-9e4494d0d049"])
+    }
 }
