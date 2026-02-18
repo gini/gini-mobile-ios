@@ -1,41 +1,57 @@
-name: "CodeQL"
+name: "CodeQL Advanced"
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  schedule:
-    - cron: '0 6 * * 1' # Weekly Monday 06:00 UTC
 
 jobs:
-  analyze-swift:
-    name: Analyze Swift
-    runs-on: macos-latest
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     permissions:
       security-events: write
+      packages: read
+      actions: read
       contents: read
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: actions
+          build-mode: none
+        - language: ruby
+          build-mode: none
+        - language: swift
+          build-mode: manual
+
     steps:
-    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+    - name: Setup Xcode
+      if: matrix.language == 'swift'
+      uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
         xcode-version: '16.4'
 
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
-        languages: swift
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
 
     - name: Setup ruby
+      if: matrix.build-mode == 'manual'
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
         ruby-version: '3.3.0'
         bundler-cache: true
 
     - name: Build GiniBankSDKExample
+      if: matrix.build-mode == 'manual'
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
         lane: 'build_scheme'
@@ -48,49 +64,4 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
-        category: "/language:swift"
-
-  analyze-ruby:
-    name: Analyze Ruby
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
-      with:
-        languages: ruby
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
-      with:
-        category: "/language:ruby"
-
-  analyze-actions:
-    name: Analyze Actions
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
-      with:
-        languages: actions
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
-      with:
-        category: "/language:actions"
+        category: "/language:${{ matrix.language }}"
