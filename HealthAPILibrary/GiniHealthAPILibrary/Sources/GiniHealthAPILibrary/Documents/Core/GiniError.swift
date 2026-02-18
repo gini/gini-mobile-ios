@@ -61,12 +61,7 @@ public struct ErrorItem: Codable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.code = try container.decodeIfPresent(String.self, forKey: .code) ?? ""
         self.message = try container.decodeIfPresent(String.self, forKey: .message) ?? ""
-        if let object = try? container.decodeIfPresent(
-            [String].self,
-            forKey: .object
-        ) {
-            self.object = object
-        }
+        self.object = try container.decodeIfPresent([String].self, forKey: .object)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -105,7 +100,7 @@ struct GiniCustomError: Codable {
         
         message = try container.decodeIfPresent(String.self, forKey: .message) ?? "No message available"
 
-        items = try? container.decodeIfPresent([ErrorItem].self, forKey: .items)
+        items = try container.decodeIfPresent([ErrorItem].self, forKey: .items)
 
         requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No requestId available"
     }
