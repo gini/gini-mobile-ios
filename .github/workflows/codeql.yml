@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
         languages: swift
 
@@ -41,7 +41,7 @@ jobs:
         COMPILER_INDEX_STORE_ENABLE=NO
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
         category: "/language:swift"
 
@@ -57,14 +57,35 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
         languages: ruby
 
     - name: Autobuild
-      uses: github/codeql-action/autobuild@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      uses: github/codeql-action/autobuild@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@60d8f0d1f1f8c8d07ef53bd027032705d414ec28 # v3
+      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
         category: "/language:ruby"
+
+  analyze-actions:
+    name: Analyze Actions
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
+      with:
+        languages: actions
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
+      with:
+        category: "/language:actions"
