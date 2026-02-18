@@ -35,6 +35,7 @@ public struct PaymentReviewContentView: View {
         }
         .onAppear {
             fetchImagesIfNeeded()
+            viewModel.dismissBannerAfterDelay()
         }
     }
     

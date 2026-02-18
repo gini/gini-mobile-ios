@@ -22,6 +22,10 @@ final class PaymentReviewObservableModel: ObservableObject {
         PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
     }()
     
+    private var bannerDismissed: Bool = false
+    
+    @Published private var showBanner: Bool
+    
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
     @Published var isImagesLoading: Bool = false
     @Published var isLoading: Bool = false
@@ -34,11 +38,26 @@ final class PaymentReviewObservableModel: ObservableObject {
     
     init(model: PaymentReviewModel) {
         self.model = model
+        self.showBanner = !model.configuration.isInfoBarHidden
         setupBindings()
     }
     
     func fetchImages() async {
         await model.fetchImages()
+    }
+    
+    func dismissBannerAfterDelay() {
+        guard !bannerDismissed else { return }
+        
+        let duration = model.paymentReviewContainerViewModel().configuration.popupAnimationDuration
+        
+        Task { @MainActor in
+            try await Task.sleep(for: .seconds(duration))
+            withAnimation(.easeInOut(duration: 0.3)) {
+                showBanner = false
+                bannerDismissed = true
+            }
+        }
     }
     
     func didTapPay(_ paymentInfo: PaymentInfo) {
@@ -65,6 +84,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         PaymentReviewPaymentInformationView(viewModel: paymentInformationObservableModel,
                                             contentHeight: contentHeight,
                                             collapsedHeight: collapsedHeight,
+                                            showBanner: Binding( get: { self.showBanner }, set: { self.showBanner = $0 }),
                                             onBankSelectionTapped: { [weak self] in
             self?.model.openBankSelectionBottomSheet()
         },

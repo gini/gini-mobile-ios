@@ -23,7 +23,6 @@ struct PaymentReviewPaymentInformationView: View {
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
     @State private var amountToPay: Price
-    @State private var showBanner: Bool
     
     @State private var recipientInputState = GiniInputFieldState(text: Constants.emptyString,
                                                                  hasError: false)
@@ -36,8 +35,9 @@ struct PaymentReviewPaymentInformationView: View {
     
     @FocusState private var focusedField: Field?
     
-    @Binding var contentHeight: CGFloat
-    @Binding var collapsedHeight: CGFloat
+    @Binding private var contentHeight: CGFloat
+    @Binding private var collapsedHeight: CGFloat
+    @Binding private var showBanner: Bool
     
     private let ibanValidator = IBANValidator()
     
@@ -60,16 +60,17 @@ struct PaymentReviewPaymentInformationView: View {
     init(viewModel: PaymentReviewPaymentInformationObservableModel,
          contentHeight: Binding<CGFloat>,
          collapsedHeight: Binding<CGFloat>,
+         showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
         let observableModel = viewModel
         self.viewModel = observableModel
         self._contentHeight = contentHeight
         self._collapsedHeight = collapsedHeight
+        self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
         self.amountToPay = Price(value: 0, currencyCode: "€")
-        self.showBanner = !viewModel.model.configuration.isInfoBarHidden
     }
     
     var body: some View {
@@ -100,13 +101,6 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onAppear {
-            Task {
-                try await Task.sleep(for: .seconds(viewModel.model.configuration.popupAnimationDuration))
-                withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
-                    showBanner = false
-                }
-            }
-            
             populateFields()
         }
         .getHeight(for: $contentHeight)
