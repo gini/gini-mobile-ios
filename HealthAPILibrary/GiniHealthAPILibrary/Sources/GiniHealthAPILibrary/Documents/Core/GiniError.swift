@@ -41,9 +41,9 @@ public protocol GiniCustomErrorProtocol {
 }
 
 public struct ErrorItem: Codable, Equatable {
-    var code: String
-    var message: String?
-    var object: [String]?
+    public var code: String
+    public var message: String?
+    public var object: [String]?
 
     enum CodingKeys: String, CodingKey {
         case code
@@ -110,6 +110,12 @@ struct GiniCustomError: Codable {
         requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No requestId available"
     }
     
+    init(message: String, items: [ErrorItem]? = nil, requestId: String) {
+        self.message = message
+        self.items = items
+        self.requestId = requestId
+    }
+    
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
@@ -128,10 +134,8 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
     case requestCancelled
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
-    @available(*, deprecated, message: "Use the overload with statusCode instead", renamed: "customError(statusCode:message:items:requestId:)")
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
-    case customError(statusCode: Int? = nil, message: String? = nil, items: [ErrorItem]? = nil, requestId: String? = nil)
 
     public var message: String {
         switch self {
@@ -166,6 +170,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
              .parseError(_, let response, _),
              .tooManyRequests(let response, _),
              .unauthorized(let response, _),
+             .customError(let response, _),
              .unknown(let response, _):
             return response
         default:
@@ -181,6 +186,7 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
              .parseError(_, _, let data),
              .tooManyRequests(_, let data),
              .unauthorized(_, let data),
+             .customError(_, let data),
              .unknown(_, let data):
             return data
         default:
@@ -196,31 +202,20 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
                     .parseError(_, let response, _),
                     .tooManyRequests(let response, _),
                     .unauthorized(let response, _),
+                    .customError(let response, _),
                     .unknown(let response, _):
                 return response?.statusCode
-            case .customError(let statusCode, _, _, _):
-                return statusCode
             default:
                 return nil
         }
     }
 
     public var items: [ErrorItem]? {
-        switch self {
-            case .customError(_, _, let items, _):
-                return items
-            default:
-                return nil
-        }
+        return customError?.items
     }
 
     public var requestId: String {
-        switch self {
-            case .customError(_, _, _, let requestId):
-                return requestId ?? "no requestId is available"
-            default:
-                return "no requestId is available"
-        }
+        return customError?.requestId ?? "no requestId is available"
     }
 
     var customError: GiniCustomError? {
@@ -230,31 +225,28 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         return customErrorDecoded
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")    public var unauthorizedItems: [String]? {
-        return customError?.unauthorizedItems
+    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    public var unauthorizedItems: [String]? {
+        // API v5 doesn't return this field - customers must use `items` array
+        return nil
     }
 
     @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var notFoundItems: [String]? {
-        return customError?.notFoundItems
+        // API v5 doesn't return this field - customers must use `items` array
+        return nil
     }
 
     @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     public var missingCompositeItems: [String]? {
-        return customError?.missingCompositeItems
+        // API v5 doesn't return this field - customers must use `items` array
+        return nil
     }
 
     /// Helper Function to Get Custom Document / PaymentRequest Errors Message
     @available(*, deprecated, message: "This method will not return values and will be removed in a next release. Use `items` for the specific errors instead")
     private func getCustomErrorMessage() -> String? {
-        if let unauthorizedItems = customError?.unauthorizedItems {
-            return "Unauthorized items: \(unauthorizedItems.joined(separator: ", "))"
-        } else if let notFoundItems = customError?.notFoundItems {
-            return "Not found items: \(notFoundItems.joined(separator: ", "))"
-        } else if let missingCompositeDocuments = customError?.missingCompositeItems {
-            return "Missing composite items: \(missingCompositeDocuments.joined(separator: ", "))"
-        }
-        
+        // Deprecated - returns nil since API v5 uses items array
         return nil
     }
 }

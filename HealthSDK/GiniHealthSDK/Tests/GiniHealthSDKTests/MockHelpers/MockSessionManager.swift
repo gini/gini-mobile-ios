@@ -150,11 +150,16 @@ final class MockSessionManager: SessionManagerProtocol {
                     // 1) Array size validation fails (empty array) -> 400 with message
                     if bodyStringArray.isEmpty {
                         // Build a custom error matching: items: [], message: "No payment requests to delete"
-                        let customError = GiniError.customError(
+                        let errorData = GiniCustomError(
+                            message: "No payment requests to delete",
                             items: [],
                             requestId: "b66a-2a15-8935-dbe4-f239-8457"
                         )
-                        // GiniError.customError(items: [], message: "No payment requests to delete", requestId: "b66a-2a15-8935-dbe4-f239-8457")
+                        let jsonData = try? JSONEncoder().encode(errorData)
+                        let customError = GiniError.customError(
+                            response: nil,
+                            data: jsonData
+                        )
                         // Return as a custom error
                         completion(.failure(customError))
                         break
@@ -295,11 +300,11 @@ final class MockSessionManager: SessionManagerProtocol {
         completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
     ) {
         guard let extractionResults: GiniCustomError = load(fromFile: fileName),
-              let _ = try? JSONEncoder().encode(extractionResults) else {
+              let jsonData = try? JSONEncoder().encode(extractionResults) else {
             return
         }
 
-        let error = GiniError.customError(items: extractionResults.items)
+        let error = GiniError.customError(response: nil, data: jsonData)
         completion(.failure(error))
     }
 

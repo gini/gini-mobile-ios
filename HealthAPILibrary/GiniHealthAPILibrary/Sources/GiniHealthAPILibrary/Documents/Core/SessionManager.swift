@@ -327,10 +327,8 @@ private extension SessionManager {
                     completion(
                         .failure(
                             .customError(
-                                statusCode: statusCode,
-                                message: response?.statusCode.description ?? "No error description available",
-                                items: customError.items,
-                                requestId: customError.requestId
+                                response: response,
+                                data: responseData
                             )
                         )
                     )
