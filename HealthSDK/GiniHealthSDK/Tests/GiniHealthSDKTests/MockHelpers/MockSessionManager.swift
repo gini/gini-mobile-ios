@@ -336,7 +336,7 @@ final class MockSessionManager: SessionManagerProtocol {
             case .notFoundDocuments:
                 fileName = "bulkDocsDeletionErrorNotFound"
             case .unauthorizedDocuments:
-                fileName = "bulkDocsDeletionErrorNotAutorized"
+                fileName = "bulkDocsDeletionErrorNotAuthorized"
             case .missingCompositeItems:
                 fileName = "bulkDocsDeletionErrorCompositeMissing"
             case .mixedNotFoundAndNotUnAuthorizedDocuments:

@@ -33,7 +33,7 @@ public protocol GiniErrorProtocol {
  - `notFoundItems`: An array of items that were not found during a bulk deletion attempt.
  - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
  */
-@available(*, deprecated, message: "Conforming to this protocol will not have any effect and will be removed in a next release. Use `items` for the specific errors instead")
+@available(*, deprecated, message: "Conforming to this protocol will not have any effect and will be removed in a future release. Use `items` for the specific errors instead")
 public protocol GiniCustomErrorProtocol {
     var unauthorizedItems: [String]? { get }
     var notFoundItems: [String]? { get }
@@ -89,11 +89,11 @@ struct GiniCustomError: Codable {
     var message: String
     var items: [ErrorItem]?
     var requestId: String
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     var unauthorizedItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     var notFoundItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     var missingCompositeItems: [String]?
     
     enum CodingKeys: CodingKey {
@@ -252,26 +252,26 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         return customErrorDecoded
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     public var unauthorizedItems: [String]? {
         // API v5 doesn't return this field - customers must use `items` array
         return nil
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     public var notFoundItems: [String]? {
         // API v5 doesn't return this field - customers must use `items` array
         return nil
     }
 
-    @available(*, deprecated, message: "This property will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     public var missingCompositeItems: [String]? {
         // API v5 doesn't return this field - customers must use `items` array
         return nil
     }
 
     /// Helper Function to Get Custom Document / PaymentRequest Errors Message
-    @available(*, deprecated, message: "This method will not return values and will be removed in a next release. Use `items` for the specific errors instead")
+    @available(*, deprecated, message: "This method will not return values and will be removed in a future release. Use `items` for the specific errors instead")
     private func getCustomErrorMessage() -> String? {
         // Deprecated - returns nil since API v5 uses items array
         return nil

@@ -19,7 +19,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testItemsDescription_withRealTestFile_unauthorized() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -122,7 +122,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withRealTestFile_unauthorized() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -222,7 +222,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testDetailedDescription_withRealTestFile_includesAllFields() {
         // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAutorized", ofType: "json") else {
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
             XCTFail("Failed to load test resource")
             return
         }
@@ -274,8 +274,8 @@ final class GiniErrorHelpersTests: XCTestCase {
     func testDetailedDescription_withMultipleRealFiles_formatsCorrectly() {
         // Given - Test all three error types
         let fileNames = [
-            "bulkDocsDeletionErrorNotAutorized",
-            "bulkDocsDeletionErrorNotFound", 
+            "bulkDocsDeletionErrorNotAuthorized",
+            "bulkDocsDeletionErrorNotFound",
             "bulkDocsDeletionErrorCompositeMissing"
         ]
         
