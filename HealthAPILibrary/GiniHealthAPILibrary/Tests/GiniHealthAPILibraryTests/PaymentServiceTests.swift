@@ -71,7 +71,25 @@ class PaymentServiceTests: XCTestCase {
         }
         wait(for: [expect], timeout: 10)
     }
-    
+
+    func testPaymentProvidersConcurrency() {
+        let expectation = XCTestExpectation(description: "Providers loaded")
+        var results: [Result<PaymentProviders, GiniError>] = []
+
+        // Call completion multiple times to detect double-call bug
+        paymentService.paymentProviders { result in
+            results.append(result)
+            if results.count == 1 {
+                expectation.fulfill()
+            } else {
+                XCTFail("Completion called \(results.count) times!")
+            }
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(results.count, 1, "Completion should only be called once")
+    }
+
     func testPaymentProvider() {
         let expect = expectation(description: "returns a payment provider via id")
         let paymentProvider = loadProviderResponse()
