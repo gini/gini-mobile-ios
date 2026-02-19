@@ -188,9 +188,9 @@ final class MockSessionManager: SessionManagerProtocol {
                     // 2) Per-ID validation fails when known invalid IDs are present
                     // Define some IDs to trigger different validation error codes
                     var errorType = BulkDocsDeleteErrorType.notFoundDocuments
-                    let notFoundErrorItem = ErrorItem(code: "2016", object: MockSessionManager.BulkDocsDeletionParams.notFoundDocuments)
-                    let missingCompositeItemsErrorItem = ErrorItem(code: "2017", object: MockSessionManager.BulkDocsDeletionParams.missingCompositeItems)
-                    let unauthorizedErrorItem = ErrorItem(code: "2015", object: MockSessionManager.BulkDocsDeletionParams.unauthorizedDocuments)
+                    let notFoundErrorItem = ErrorItem(code: "2014", object: MockSessionManager.BulkDocsDeletionParams.notFoundDocuments)
+                    let missingCompositeItemsErrorItem = ErrorItem(code: "2015", object: MockSessionManager.BulkDocsDeletionParams.missingCompositeItems)
+                    let unauthorizedErrorItem = ErrorItem(code: "2013", object: MockSessionManager.BulkDocsDeletionParams.unauthorizedDocuments)
                     var items: [ErrorItem] = []
                     if bodyStringArray.contains(
                         where: { MockSessionManager.BulkDocsDeletionParams.notFoundDocuments.contains(
