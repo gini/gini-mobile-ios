@@ -311,10 +311,9 @@ struct PaymentReviewPaymentInformationView: View {
     private func adjustAmountValue(updatedText: String) {
         amountInputState.hasError = false
         
-        if let newPrice = updatedText.toPrice(maxDigitsLength: 7),
-           let newAmount = newPrice.stringWithoutSymbol {
-            amountInputState.text = newAmount
-            amountToPay.value = newPrice.value
+        if let result = viewModel.adjustAmountValue(text: updatedText) {
+            amountInputState.text = result.adjustedText
+            amountToPay.value = result.newValue
         }
     }
     

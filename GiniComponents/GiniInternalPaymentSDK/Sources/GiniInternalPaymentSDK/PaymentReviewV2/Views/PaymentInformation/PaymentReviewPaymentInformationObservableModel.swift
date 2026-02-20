@@ -107,6 +107,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
               let newAmount = newPrice.stringWithoutSymbol else {
             return nil
         }
+        
         return (newAmount, newPrice.value)
     }
     
