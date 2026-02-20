@@ -311,7 +311,7 @@ private extension SessionManager {
                                           cancellationToken: CancellationToken?,
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
-            case 400:
+        case 400:
                 guard let responseData = data else {
                     completion(.failure(.badRequest(response: response, data: nil)))
                     return
@@ -329,17 +329,17 @@ private extension SessionManager {
                 }
 
                 completion(.failure(.badRequest(response: response, data: data)))
-            case 401:
+        case 401:
                 completion(.failure(.unauthorized(response: response, data: data)))
-            case 404:
+        case 404:
                 completion(.failure(.notFound(response: response, data: data)))
-            case 406:
+        case 406:
                 completion(.failure(.notAcceptable(response: response, data: data)))
-            case 429:
+        case 429:
                 completion(
                     .failure(
                         .tooManyRequests(response: response, data: data)))
-            default:
+        default:
                 completion(
                     .failure(
                         .unknown(response: response, data: data)))
