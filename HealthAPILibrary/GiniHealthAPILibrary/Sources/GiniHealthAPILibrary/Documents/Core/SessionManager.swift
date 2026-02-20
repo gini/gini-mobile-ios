@@ -312,37 +312,37 @@ private extension SessionManager {
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
-                guard let responseData = data else {
-                    completion(.failure(.badRequest(response: response, data: nil)))
-                    return
-                }
+            guard let responseData = data else {
+                completion(.failure(.badRequest(response: response, data: nil)))
+                return
+            }
 
-                if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                   errorInfo["error"] == "invalid_grant" {
-                    completion(.failure(.unauthorized(response: response, data: data)))
-                    return
-                }
-
-                if (try? JSONDecoder().decode(GiniCustomError.self, from: responseData)) != nil {
-                    completion(.failure(.customError(response: response, data: responseData)))
-                    return
-                }
-
-                completion(.failure(.badRequest(response: response, data: data)))
-        case 401:
+            if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
+               errorInfo["error"] == "invalid_grant" {
                 completion(.failure(.unauthorized(response: response, data: data)))
+                return
+            }
+
+            if (try? JSONDecoder().decode(GiniCustomError.self, from: responseData)) != nil {
+                completion(.failure(.customError(response: response, data: responseData)))
+                return
+            }
+
+            completion(.failure(.badRequest(response: response, data: data)))
+        case 401:
+            completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
-                completion(.failure(.notFound(response: response, data: data)))
+            completion(.failure(.notFound(response: response, data: data)))
         case 406:
-                completion(.failure(.notAcceptable(response: response, data: data)))
+            completion(.failure(.notAcceptable(response: response, data: data)))
         case 429:
-                completion(
-                    .failure(
-                        .tooManyRequests(response: response, data: data)))
+            completion(
+                .failure(
+                    .tooManyRequests(response: response, data: data)))
         default:
-                completion(
-                    .failure(
-                        .unknown(response: response, data: data)))
+            completion(
+                .failure(
+                    .unknown(response: response, data: data)))
         }
     }
 
