@@ -18,7 +18,7 @@ public protocol GiniErrorProtocol {
 }
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
-public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
+public enum GiniError: Error, GiniErrorProtocol, Equatable {
 
     case decorator(GiniHealthAPILibrary.GiniError)
 

@@ -25,20 +25,6 @@ public protocol GiniErrorProtocol {
     var requestId: String { get }
 }
 
-/**
- A protocol representing custom errors that may occur when interacting with the Gini Health API.
-
- This protocol defines three properties:
- - `unauthorizedItems`: An array of items that could not be deleted due to insufficient permissions.
- - `notFoundItems`: An array of items that were not found during a bulk deletion attempt.
- - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
- */
-@available(*, deprecated, message: "Conforming to this protocol will not have any effect and will be removed in a future release. Use `items` for the specific errors instead")
-public protocol GiniCustomErrorProtocol {
-    var unauthorizedItems: [String]? { get }
-    var notFoundItems: [String]? { get }
-    var missingCompositeItems: [String]? { get }
-}
 
 /// Represents a single error item from the API error response.
 ///
@@ -89,20 +75,11 @@ struct GiniCustomError: Codable {
     var message: String
     var items: [ErrorItem]?
     var requestId: String
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    var unauthorizedItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    var notFoundItems: [String]?
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    var missingCompositeItems: [String]?
     
     enum CodingKeys: CodingKey {
         case message
         case items
         case requestId
-        case unauthorizedItems
-        case notFoundItems
-        case missingCompositeItems
     }
 
     init(from decoder: Decoder) throws {
