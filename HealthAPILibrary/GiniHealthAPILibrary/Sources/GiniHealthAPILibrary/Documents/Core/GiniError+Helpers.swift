@@ -71,7 +71,7 @@ public extension GiniError {
     var detailedDescription: String {
         """
         Status: \(statusCode ?? 0) | Request ID: \(requestId)
-        Message: \(message)
+        Message: \(String(describing: message))
         Items: \(itemsDescription)
         """
     }

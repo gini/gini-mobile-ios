@@ -17,7 +17,7 @@ import Foundation
  */
 
 public protocol GiniErrorProtocol {
-    var message: String { get }
+    var message: String? { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
     var statusCode: Int? { get }
@@ -50,7 +50,7 @@ public struct ErrorItem: Codable, Equatable, Sendable {
     ///   - code: The error code identifying the type of error
     ///   - message: Optional human-readable error message
     ///   - object: Optional array of affected object identifiers
-    public init(code: String = "", message: String = "", object: [String]? = nil) {
+    public init(code: String = "", message: String? = nil, object: [String]? = nil) {
         self.code = code
         self.message = message
         self.object = object
@@ -59,7 +59,7 @@ public struct ErrorItem: Codable, Equatable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.code = try container.decodeIfPresent(String.self, forKey: .code) ?? ""
-        self.message = try container.decodeIfPresent(String.self, forKey: .message) ?? ""
+        self.message = try container.decodeIfPresent(String.self, forKey: .message)
         self.object = try container.decodeIfPresent([String].self, forKey: .object)
     }
 
@@ -72,7 +72,7 @@ public struct ErrorItem: Codable, Equatable, Sendable {
 }
 
 struct GiniCustomError: Codable {
-    var message: String
+    var message: String?
     var items: [ErrorItem]?
     var requestId: String
     
@@ -85,7 +85,7 @@ struct GiniCustomError: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        message = try container.decodeIfPresent(String.self, forKey: .message) ?? "No message available"
+        message = try container.decodeIfPresent(String.self, forKey: .message)
 
         items = try container.decodeIfPresent([ErrorItem].self, forKey: .items)
 
@@ -119,7 +119,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
-    public var message: String {
+    public var message: String? {
         switch self {
         case .badRequest:
             return "Bad request"

@@ -9,7 +9,7 @@ import Foundation
 import GiniHealthAPILibrary
 
 public protocol GiniErrorProtocol {
-    var message: String { get }
+    var message: String? { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
     var statusCode: Int? { get }
@@ -22,7 +22,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
 
     case decorator(GiniHealthAPILibrary.GiniError)
 
-    public var message: String {
+    public var message: String? {
         switch self {
         case .decorator(let giniError):
             return giniError.message
