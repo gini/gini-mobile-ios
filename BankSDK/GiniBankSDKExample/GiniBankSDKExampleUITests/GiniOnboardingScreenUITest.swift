@@ -17,7 +17,6 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
 
     func testOnboardingGetStartedButton() throws {
     //Preconditions
-        throw XCTSkip("Preconditions update required")
         //Open settings screen
         mainScreen.configurationButton.tap()
         //Enable Onboarding screens at every launch
@@ -45,7 +44,6 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     func testOnboardingSkipButton() throws {
     
     //Preconditions
-        throw XCTSkip("Preconditions update required")
         //Open settings screen
         mainScreen.configurationButton.tap()
         //Enable Bottom navigation bar
@@ -72,7 +70,6 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     func testOnboardingSwipeAction() throws {
         
     //Preconditions
-        throw XCTSkip("Preconditions update required")
         //Open settings screen
         mainScreen.configurationButton.tap()
         //Enable Onboarding at every launch switch
@@ -100,7 +97,6 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     func testOnboardingSwipeActionBottomNavBar() throws {
         
     //Preconditions
-        throw XCTSkip("Preconditions update required")
         //Open settings screen
         mainScreen.configurationButton.tap()
         //Enable Bottom navigation bar
@@ -130,7 +126,6 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     func testOnboardingSwipeActionCustomBottomNavBar() throws {
         
     //Preconditions
-        throw XCTSkip("Preconditions update required")
         //Open settings screen
         mainScreen.configurationButton.tap()
         //Enable Bottom navigation bar

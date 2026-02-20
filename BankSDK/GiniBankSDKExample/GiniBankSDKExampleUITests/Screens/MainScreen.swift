@@ -37,7 +37,7 @@ class MainScreen {
         default:
             fatalError("Locale \(locale) is not supported")
         }
-        //photoPaymentButton
+        
         photoPaymentButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.cameraIconButton.rawValue]
         configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.settingsButton.rawValue]
