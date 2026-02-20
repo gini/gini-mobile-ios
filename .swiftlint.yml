@@ -1,0 +1,63 @@
+line_length: warning
+force_try: warning
+
+disabled_rules:
+  - class_delegate_protocol
+  - notification_center_detachment
+  - identifier_name
+  - empty_enum_arguments
+  - multiple_closures_with_trailing_closure
+  - todo
+  - type_name
+
+type_body_length:
+  - 300 # warning
+
+cyclomatic_complexity:
+  ignores_case_statements: true
+
+line_length:
+  ignores_comments: true
+  ignores_urls: true
+
+file_length:
+  ignore_comment_only_lines: true
+
+excluded:
+  - "**/.build"
+  - "**/.swiftpm"
+  - "**/Pods"
+  - "**/build"
+
+included:
+  # BankSDK
+  - BankSDK/GiniBankSDK/Sources
+  - BankSDK/GiniBankSDK/Tests
+  - BankSDK/GiniBankSDKExample
+
+  # CaptureSDK
+  - CaptureSDK/GiniCaptureSDK/Sources
+  - CaptureSDK/GiniCaptureSDK/Tests
+  - CaptureSDK/GiniCaptureSDKExample
+
+  # HealthSDK
+  - HealthSDK/GiniHealthSDK/Sources
+  - HealthSDK/GiniHealthSDK/Tests
+  - HealthSDK/GiniHealthSDKExample
+
+  # BankAPILibrary
+  - BankAPILibrary/GiniBankAPILibrary/Sources
+  - BankAPILibrary/GiniBankAPILibrary/Tests
+  - BankAPILibrary/GiniBankAPILibraryExample
+
+  # HealthAPILibrary
+  - HealthAPILibrary/GiniHealthAPILibrary/Sources
+  - HealthAPILibrary/GiniHealthAPILibraryExample
+
+  # MerchantSDK
+  - MerchantSDK/GiniMerchantSDK/Sources
+  - MerchantSDK/GiniMerchantSDKExample
+
+  # GiniComponents
+  - GiniComponents/GiniInternalPaymentSDK/Sources
+  - GiniComponents/GiniUtilites/Sources
