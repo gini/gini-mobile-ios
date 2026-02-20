@@ -72,15 +72,15 @@ public struct PaymentReviewContentView: View {
     @ViewBuilder
     private func landscapeLayout(geometry: GeometryProxy) -> some View {
         let carouselHeight = computedCarouselHeight(for: geometry, isLandscape: true)
-        let sheetWidth = geometry.size.width * 0.55
+        let sheetWidth = geometry.size.width * Constants.screenPercentage
         
-        HStack(spacing: 0) {
+        HStack(spacing: Constants.zero) {
             ScrollView {
                 viewModel.paymentReviewPaymentInformationView(
                     contentHeight: $bottomSheetHeight,
                     collapsedHeight: $collapsedHeight
                 )
-                .padding(.vertical, 16)
+                .padding(.vertical, Constants.paymentInformationViewHorizontalPadding)
             }
             .frame(width: sheetWidth)
             
@@ -96,7 +96,7 @@ public struct PaymentReviewContentView: View {
     
     @ViewBuilder
     private func documentPreviewContent(carouselHeight: CGFloat) -> some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Constants.documentPreviewStackSpacing) {
             if viewModel.isImagesLoading {
                 showLoader(carouselHeight: carouselHeight)
             } else if !viewModel.cellViewModels.isEmpty {
@@ -131,24 +131,28 @@ public struct PaymentReviewContentView: View {
     }
     
     private func computedCarouselHeight(for geometry: GeometryProxy, isLandscape: Bool) -> CGFloat {
-        let totalPaddings = 32.0
-        let pageIndicatorSpace = 30.0
         let effectiveBottomSheetHeight = bottomSheetHeight > 0 ? bottomSheetHeight : Constants.bottomSheetDefaultHeight
         
         let calculatedHeight: CGFloat
         if isLandscape {
-            calculatedHeight = geometry.size.height - totalPaddings - pageIndicatorSpace
+            calculatedHeight = geometry.size.height - Constants.totalPaddings - Constants.pageIndicatorSpace
         } else {
-            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - totalPaddings - pageIndicatorSpace
+            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - Constants.totalPaddings - Constants.pageIndicatorSpace
         }
         
         return max(calculatedHeight, Constants.carouselDefaultHeight)
     }
     
     private struct Constants {
+        static let zero: CGFloat = 0.0
         static let bottomSheetDefaultHeight: CGFloat = 300
         static let collapsedDefaultHeight: CGFloat = 90
-        static let bottomSheetOverlap: CGFloat = 20
-        static let carouselDefaultHeight = 300.0
+        static let bottomSheetOverlap: CGFloat = 20.0
+        static let carouselDefaultHeight: CGFloat = 300.0
+        static let screenPercentage: CGFloat = 0.55
+        static let paymentInformationViewHorizontalPadding: CGFloat = 16.0
+        static let documentPreviewStackSpacing: CGFloat = 16.0
+        static let totalPaddings: CGFloat = 32.0
+        static let pageIndicatorSpace: CGFloat = 30.0
     }
 }
