@@ -37,7 +37,7 @@ enum MockErrorGenerator {
         ]
         
         guard let data = try? JSONSerialization.data(withJSONObject: errorResponse) else {
-            fatalError("Failed to encode mock error response")
+            return Data() // Return empty data to let tests fail with proper assertions
         }
         return data
     }

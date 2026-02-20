@@ -145,7 +145,7 @@ final class MockSessionManager: SessionManagerProtocol {
                     // Simulate validation rules:
                     // 1) Array size validation fails (empty array) -> 400 with message
                     if bodyStringArray.isEmpty {
-                        // Build a custom error matching: items: [], message: "No payment requests to delete"
+                        // Build a custom error matching: items: [], message: "No documents to delete"
                         let errorData = GiniCustomError(
                             message: "No documents to delete",
                             items: [],
