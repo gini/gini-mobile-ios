@@ -32,9 +32,11 @@ jobs:
             - 'BankSDK/**'
             - 'CaptureSDK/**'
             - 'BankAPILibrary/**'
+            - 'GiniComponents/GiniUtilites/**'
           health-sdk:
             - 'HealthSDK/**'
             - 'HealthAPILibrary/**'
+            - 'GiniComponents/GiniUtilites/**'
           merchant-sdk:
             - 'MerchantSDK/**'
           health-api-library:
