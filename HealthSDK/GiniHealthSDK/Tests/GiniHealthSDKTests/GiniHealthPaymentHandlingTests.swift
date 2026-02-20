@@ -157,7 +157,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     
     func testDeletePaymentRequests_Unauthorized() {
         // Given
-        let unauthorizedIds = MockSessionManager.BulkPaymentRequestsDeletionParams.unauthorizedPaymentRequests
+        let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
         
         // When
         let expectation = self.expectation(description: "Deleting payment requests with unauthorized error")
@@ -184,7 +184,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     
     func testDeletePaymentRequests_NotFound() {
         // Given
-        let notFoundIds = MockSessionManager.BulkPaymentRequestsDeletionParams.notFoundPaymentRequests
+        let notFoundIds = MockTestData.BulkDeletePaymentRequests.notFound
         
         // When
         let expectation = self.expectation(description: "Deleting payment requests with not found error")
@@ -210,7 +210,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     
     func testDeletePaymentRequests_Mixed() {
         // Given
-        let mixedIds = MockSessionManager.BulkPaymentRequestsDeletionParams.mixedPaymentRequests
+        let mixedIds = MockTestData.BulkDeletePaymentRequests.mixed
         
         // When
         let expectation = self.expectation(description: "Deleting payment requests with mixed errors")
