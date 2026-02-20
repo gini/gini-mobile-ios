@@ -2,13 +2,15 @@
 //  AlbumsHeaderView.swift
 //  GiniCapture
 //
-//  Created by Nadya Karaban on 20.08.21.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
 final class AlbumsHeaderView: UITableViewHeaderFooterView {
-    var didTapSelectButton: (() -> Void) = {}
+    var didTapSelectButton: (() -> Void) = {
+        // This closure will remain empty; no implementation is needed.
+    }
     @IBOutlet var selectPhotosButton: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()

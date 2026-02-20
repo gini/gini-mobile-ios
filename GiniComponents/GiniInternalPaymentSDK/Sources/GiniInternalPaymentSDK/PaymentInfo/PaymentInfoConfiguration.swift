@@ -25,6 +25,9 @@ public struct PaymentInfoConfiguration {
     let linksColor: UIColor
     let separatorColor: UIColor
     let backgroundColor: UIColor
+    let closeIcon: UIImage?
+    let closeIconTintColor: UIColor?
+    let questionHeaderIconTintColor: UIColor
 
     public init(giniFont: UIFont,
                 answersFont: UIFont,
@@ -43,7 +46,10 @@ public struct PaymentInfoConfiguration {
                 linksFont: UIFont,
                 linksColor: UIColor,
                 separatorColor: UIColor,
-                backgroundColor: UIColor) {
+                backgroundColor: UIColor,
+                closeIcon: UIImage? = nil,
+                closeIconTintColor: UIColor? = nil,
+                questionHeaderIconTintColor: UIColor) {
         self.giniFont = giniFont
         self.answersFont = answersFont
         self.answerCellTextColor = answerCellTextColor
@@ -62,13 +68,17 @@ public struct PaymentInfoConfiguration {
         self.linksColor = linksColor
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
+        self.closeIcon = closeIcon
+        self.closeIconTintColor = closeIconTintColor
+        self.questionHeaderIconTintColor = questionHeaderIconTintColor
     }
 }
 
 public struct PaymentInfoStrings {
+    let accessibilityCloseText: String
     let giniWebsiteText: String
     let giniURLText: String
-
+    let supportedBanksText: String
     let questionsTitleText: String
     let answerPrivacyPolicyText: String
     let privacyPolicyURLText: String
@@ -79,8 +89,10 @@ public struct PaymentInfoStrings {
     let answers: [String]
     let questions: [String]
 
-    public init(giniWebsiteText: String,
+    public init(accessibilityCloseText: String,
+                giniWebsiteText: String,
                 giniURLText: String,
+                supportedBanksText: String,
                 questionsTitleText: String,
                 answerPrivacyPolicyText: String,
                 privacyPolicyURLText: String,
@@ -89,10 +101,12 @@ public struct PaymentInfoStrings {
                 payBillsDescriptionText: String,
                 answers: [String],
                 questions: [String]) {
+        self.accessibilityCloseText = accessibilityCloseText
         self.answers = answers
         self.questions = questions
         self.giniURLText = giniURLText
         self.giniWebsiteText = giniWebsiteText
+        self.supportedBanksText = supportedBanksText
         self.titleText = titleText
         self.payBillsTitleText = payBillsTitleText
         self.payBillsDescriptionText = payBillsDescriptionText

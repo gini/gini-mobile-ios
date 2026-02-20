@@ -4,7 +4,7 @@
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
+// swiftlint:disable file_length
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -15,11 +15,286 @@ protocol Coordinator: AnyObject {
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
+    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
+    /// It does not affect how payment states are parsed.
+   internal enum PaymentStatus: String {
+        case paid
+        case toBePaid = "tobepaid"
+    }
+
     static var currentCoordinator: GiniBankNetworkingScreenApiCoordinator?
     var childCoordinators: [Coordinator] = []
 
-    // MARK: - GiniCaptureDelegate
+    weak var resultsDelegate: GiniCaptureResultsDelegate?
+    let documentService: DocumentServiceProtocol
+    private var configurationService: ClientConfigurationServiceProtocol?
+    private var analyticsService: AnalyticsServiceProtocol?
+    var giniBankConfiguration = GiniBankConfiguration.shared
 
+    /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
+     Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
+     This is cast from the public-facing protocol for internal SDK use only.
+     */
+    private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return GiniBankConfiguration
+            .shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
+    }
+
+    /**
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
+
+     - Parameters:
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - lib: An instance of `GiniBankAPI` used to access document and payment services.
+     */
+
+    private init(resultsDelegate: GiniCaptureResultsDelegate,
+                 configuration: GiniBankConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 lib: GiniBankAPI) {
+        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
+        configurationService = lib.configurationService()
+        analyticsService = lib.analyticService()
+        let captureConfiguration = configuration.captureConfiguration()
+        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
+
+        visionDelegate = self
+        GiniBank.setConfiguration(configuration)
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
+
+    /**
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
+
+     - Parameters:
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+        - captureNetworkService: The network service implementation used to communicate with the Gini API.
+        - configurationService: Optional configuration service used to fetch remote feature flags or settings.
+     */
+    public init(resultsDelegate: GiniCaptureResultsDelegate,
+                configuration: GiniBankConfiguration,
+                documentMetadata: Document.Metadata?,
+                trackingDelegate: GiniCaptureTrackingDelegate?,
+                captureNetworkService: GiniCaptureNetworkService,
+                configurationService: ClientConfigurationServiceProtocol?) {
+        documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
+                                          metadata: Self.makeMetadata(with: documentMetadata))
+        self.configurationService = configurationService
+        let captureConfiguration = configuration.captureConfiguration()
+
+        super.init(withDelegate: nil,
+                   giniConfiguration: captureConfiguration)
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
+        GiniBank.setConfiguration(configuration)
+        visionDelegate = self
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
+
+    /**
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
+
+     - Parameters:
+        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - api: The API domain to use for Gini Bank API requests.
+        - userApi: The user API domain to use for user-related requests.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+     */
+    convenience init(client: Client,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     documentMetadata: Document.Metadata?,
+                     api: APIDomain,
+                     userApi: UserDomain,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(client: client, api: api, userApi: userApi)
+            .build()
+
+        self.init(resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+    /**
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using an `AlternativeTokenSource`.
+
+     This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
+
+     - Parameters:
+        - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+     */
+    convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     documentMetadata: Document.Metadata?,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(alternativeTokenSource: tokenSource)
+            .build()
+
+        self.init(resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+    // MARK: Pinning certificates
+    /**
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using Pinning certificates.
+
+     - Parameters:
+        - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The gini bank configuration to set.
+        - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - api: The API domain to use for Gini Bank API requests.
+        - userApi: The user API domain to use for user-related requests.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+     */
+    convenience init(client: Client,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     pinningConfig: [String: [String]],
+                     documentMetadata: Document.Metadata?,
+                     api: APIDomain,
+                     userApi: UserDomain,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(client: client, api: api, userApi: userApi, pinningConfig: pinningConfig)
+            .build()
+
+        self.init(resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+     /**
+      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using an `AlternativeTokenSource`.
+
+      This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
+
+      - Parameters:
+        - tokenSource: The alternative token source used to fetch access tokens for authenticating with the Gini API.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The Gini Bank configuration to set.
+        - pinningConfig: The SSL pinning configuration for secure communication with the Gini API.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: Optional delegate for tracking user interactions within the SDK.
+      */
+    convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     pinningConfig: [String: [String]],
+                     documentMetadata: Document.Metadata?,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(alternativeTokenSource: tokenSource, pinningConfig: pinningConfig)
+            .build()
+
+        self.init(resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+    private func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
+        let hasExtractions = result.extractions.count > 0
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if hasExtractions {
+                let images = self.pages.compactMap { $0.document.previewImage }
+                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
+                    guard let name = $0.name else { return nil }
+
+                    return (name, $0)
+                })
+
+                let result = AnalysisResult(extractions: extractions,
+                                            lineItems: result.lineItems,
+                                            images: images,
+                                            candidates: result.candidates)
+
+                let documentService = self.documentService
+
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                documentService.resetToInitialState()
+            } else {
+                analysisDelegate.tryDisplayNoResultsScreen()
+                self.documentService.resetToInitialState()
+            }
+        }
+    }
+
+    public func didPressEnterManually() {
+        self.resultsDelegate?.giniCaptureDidEnterManually()
+    }
+
+    /**
+     This method first attempts to fetch configuration settings using the `configurationService`.
+     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
+     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
+     SDK with the provided documents.
+     */
+    public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        Self.currentCoordinator = self
+        setupAnalytics(withDocuments: documents)
+        configurationService?.fetchConfigurations { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let configuration):
+                DispatchQueue.main.async {
+                    GiniBankUserDefaultsStorage.clientConfiguration = configuration
+                    GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
+                    GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
+                    GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled = configuration.savePhotosLocallyEnabled
+                    self.initializeAnalytics(with: configuration)
+                }
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
+            }
+        }
+        return start(withDocuments: documents, animated: animated)
+    }
+
+    public static func closeSDK() {
+        currentCoordinator?.finishWithCancellation()
+        currentCoordinator?.giniBankConfiguration.cleanup()
+        currentCoordinator = nil
+    }
+}
+
+// MARK: - GiniCaptureDelegate
+extension GiniBankNetworkingScreenApiCoordinator {
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
         // Common logic for creating extractions
         func createExtractions(for key: String, from document: GiniQRCodeDocument) -> [Extraction] {
@@ -118,182 +393,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             documentService.resetToInitialState()
         }
     }
-
-    weak var resultsDelegate: GiniCaptureResultsDelegate?
-    let documentService: DocumentServiceProtocol
-    private var configurationService: ClientConfigurationServiceProtocol?
-    private var analyticsService: AnalyticsServiceProtocol?
-    var giniBankConfiguration = GiniBankConfiguration.shared
-
-    /// Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
-    /// Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
-    /// This is cast from the public-facing protocol for internal SDK use only.
-    private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
-        return GiniBankConfiguration
-            .shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
-    }
-
-    public init(client: Client,
-                resultsDelegate: GiniCaptureResultsDelegate,
-                configuration: GiniBankConfiguration,
-                documentMetadata: Document.Metadata?,
-                api: APIDomain,
-                trackingDelegate: GiniCaptureTrackingDelegate?,
-                lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
-        configurationService = lib.configurationService()
-        analyticsService = lib.analyticService()
-        let captureConfiguration = configuration.captureConfiguration()
-        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
-
-        visionDelegate = self
-        GiniBank.setConfiguration(configuration)
-        giniBankConfiguration = configuration
-        giniBankConfiguration.documentService = documentService
-        self.resultsDelegate = resultsDelegate
-        self.trackingDelegate = trackingDelegate
-    }
-
-    private init(resultsDelegate: GiniCaptureResultsDelegate,
-                 configuration: GiniBankConfiguration,
-                 documentMetadata: Document.Metadata?,
-                 trackingDelegate: GiniCaptureTrackingDelegate?,
-                 lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
-        configurationService = lib.configurationService()
-        analyticsService = lib.analyticService()
-        let captureConfiguration = configuration.captureConfiguration()
-        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
-
-        visionDelegate = self
-        GiniBank.setConfiguration(configuration)
-        giniBankConfiguration = configuration
-        giniBankConfiguration.documentService = documentService
-        self.resultsDelegate = resultsDelegate
-        self.trackingDelegate = trackingDelegate
-    }
-
-    public init(resultsDelegate: GiniCaptureResultsDelegate,
-                configuration: GiniBankConfiguration,
-                documentMetadata: Document.Metadata?,
-                trackingDelegate: GiniCaptureTrackingDelegate?,
-                captureNetworkService: GiniCaptureNetworkService,
-                configurationService: ClientConfigurationServiceProtocol?) {
-        documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
-                                          metadata: Self.makeMetadata(with: documentMetadata))
-        self.configurationService = configurationService
-        let captureConfiguration = configuration.captureConfiguration()
-
-        super.init(withDelegate: nil,
-                   giniConfiguration: captureConfiguration)
-        giniBankConfiguration = configuration
-        giniBankConfiguration.documentService = documentService
-        GiniBank.setConfiguration(configuration)
-        visionDelegate = self
-        self.resultsDelegate = resultsDelegate
-        self.trackingDelegate = trackingDelegate
-    }
-
-    convenience init(client: Client,
-                     resultsDelegate: GiniCaptureResultsDelegate,
-                     configuration: GiniBankConfiguration,
-                     documentMetadata: Document.Metadata?,
-                     api: APIDomain,
-                     userApi: UserDomain,
-                     trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(client: client, api: api, userApi: userApi)
-            .build()
-
-        self.init(client: client,
-                  resultsDelegate: resultsDelegate,
-                  configuration: configuration,
-                  documentMetadata: documentMetadata,
-                  api: api,
-                  trackingDelegate: trackingDelegate,
-                  lib: lib)
-    }
-
-    convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
-                     resultsDelegate: GiniCaptureResultsDelegate,
-                     configuration: GiniBankConfiguration,
-                     documentMetadata: Document.Metadata?,
-                     trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(alternativeTokenSource: tokenSource)
-            .build()
-
-        self.init(resultsDelegate: resultsDelegate,
-                  configuration: configuration,
-                  documentMetadata: documentMetadata,
-                  trackingDelegate: trackingDelegate,
-                  lib: lib)
-    }
-
-    private func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
-        let hasExtractions = result.extractions.count > 0
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if hasExtractions {
-                let images = self.pages.compactMap { $0.document.previewImage }
-                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
-                    guard let name = $0.name else { return nil }
-
-                    return (name, $0)
-                })
-
-                let result = AnalysisResult(extractions: extractions,
-                                            lineItems: result.lineItems,
-                                            images: images,
-                                            candidates: result.candidates)
-
-                let documentService = self.documentService
-
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                documentService.resetToInitialState()
-            } else {
-                analysisDelegate.tryDisplayNoResultsScreen()
-                self.documentService.resetToInitialState()
-            }
-        }
-    }
-
-    public func didPressEnterManually() {
-        self.resultsDelegate?.giniCaptureDidEnterManually()
-    }
-
-    /**
-     This method first attempts to fetch configuration settings using the `configurationService`.
-     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
-     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
-     SDK with the provided documents.
-     */
-    public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
-        Self.currentCoordinator = self
-        setupAnalytics(withDocuments: documents)
-        configurationService?.fetchConfigurations(completion: { result in
-            switch result {
-            case .success(let configuration):
-                DispatchQueue.main.async {
-                    GiniBankUserDefaultsStorage.clientConfiguration = configuration
-                    self.initializeAnalytics(with: configuration)
-                }
-            case .failure(let error):
-                print("❌ configurationService with error: \(error)")
-                // There will be no retries if the endpoint fails.
-                // We will not implement any caching mechanism on our side if the request is too slow.
-                // In case of a failure, the UJ analytics will remain disabled for that session.
-            }
-        })
-        return self.start(withDocuments: documents, animated: animated)
-    }
-
-    public static func closeSDK() {
-        currentCoordinator?.finishWithCancellation()
-        currentCoordinator?.giniBankConfiguration.cleanup()
-        currentCoordinator = nil
-    }
 }
 
 // MARK: - Analytics Handling Extension
@@ -334,10 +433,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func sendAnalyticsEventSDKClose() {
         let properties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .status, value: "successful")]
-        GiniAnalyticsManager.track(event: .sdkClosed,properties: properties)
+        GiniAnalyticsManager.track(event: .sdkClosed, properties: properties)
     }
 
-    private func setDcoumentIdAsUserProperty() {
+    private func setDocumentIdAsUserProperty() {
         guard let documentId = documentService.document?.id else { return }
         GiniAnalyticsManager.registerSuperProperties([.documentId: documentId])
     }
@@ -349,29 +448,15 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis {[weak self] result in
+        documentService.startAnalysis { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(extractionResult):
-                    self.setDcoumentIdAsUserProperty()
-                DispatchQueue.main.async {
-                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
-                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
-                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-                    } else {
-                        let document = self.documentService.document
-                        // Default case when no Skonto or RA to be displayed
-                        self.handleTransactionDocsAlert(on: self.screenAPINavigationController,
-                                                        extractionResult: extractionResult,
-                                                        documentId: document?.id,
-                                                        deliveryFunction: { [weak self] result in
-                            self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
-                        })
-                    }
+            case .success(let extractionResult):
+                self.setDocumentIdAsUserProperty()
+                Task {
+                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
                 }
-
-            case let .failure(error):
+            case .failure(let error):
                 guard error != .requestCancelled else { return }
 
                 DispatchQueue.main.async { [weak self] in
@@ -379,6 +464,106 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 }
             }
         }
+    }
+
+    // handleSuccessfulAnalysis runs entirely on the main actor.
+    @MainActor
+    private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
+                                          networkDelegate: GiniCaptureNetworkDelegate) async {
+        if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+            await analysisVC.waitUntilAnimationCompleted()
+        } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
+                  let task = qrCodeVC.educationTask {
+            _ = await task.value
+        }
+
+        presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
+    }
+
+    @MainActor
+    private func presentNextScreen(extractionResult: ExtractionResult,
+                                   delegate: GiniCaptureNetworkDelegate) {
+
+        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        let continueWithFeatureFlow: () -> Void = { [weak self] in
+            guard let self else { return }
+
+            if shouldShowReturnAssistant(for: extractionResult) {
+                handleReturnAssistantScreenDisplay(extractionResult, delegate)
+                return
+            }
+
+            if shouldShowSkonto(for: extractionResult) {
+                handleSkontoScreenDisplay(extractionResult, delegate)
+                return
+            }
+
+            presentTransactionDocsAlert(extractionResult: extractionResult,
+                                        delegate: delegate)
+        }
+
+        /// Step:  Check document status for multiple states
+        let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
+
+        switch documentPaymentStatus {
+        case .paid:
+            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            handlePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .toBePaid:
+            handleSavingPhotos(for: extractionResult)
+            /// Show payment due date hint if available
+            handleToBePaidCase(extractionResult, continueWithFeatureFlow)
+
+        case .none:
+            handleSavingPhotos(for: extractionResult)
+            continueWithFeatureFlow()
+        }
+    }
+
+    @MainActor
+    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                                    _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              let handler = paymentDueDateHandler,
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
+        if dueDate.isDueSoon(within: threshold) {
+            Task {
+                handler.handlePaymentDueDate(dueDate.toDisplayString())
+                await handler.clearPaymentDueDate(after: 5)
+                continueWithFeatureFlow()
+            }
+        } else {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handlePaidCase(_ extractionResult: ExtractionResult,
+                                _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        presentDocumentMarkedAsPaidBottomSheet(extractionResult) {
+            continueWithFeatureFlow()
+        }
+    }
+
+    private func handleSavingPhotos(for extractionResult: ExtractionResult) {
+        guard let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController,
+        !extractionResult.extractions.isEmpty else {
+            return
+        }
+
+        analysisVC.saveDocumentPhotoToGalleryIfNeeded()
     }
 
     // MARK: - Deliver with Return Assistant
@@ -464,6 +649,68 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+}
+
+internal extension GiniBankNetworkingScreenApiCoordinator {
+
+    func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
+        let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .alreadyPaidHintEnabled ?? false
+        return globalAlreadyPaidHintEnabled && clientAlreadyPaidHintEnabled
+    }
+
+    func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
+        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    /// Returns the payment state of the document, if available
+    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
+        guard let paymentState = extractionResult.extractions
+            .first(where: { $0.name == "paymentState" })?
+            .value else {
+            return nil
+        }
+        return PaymentStatus(rawValue: paymentState.lowercased())
+    }
+
+    /// Returns the due date  of the document, if available
+    func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
+        /// Try to find the extraction with the key "paymentDueDate"
+        guard let dueDate = extractionResult.extractions
+                .first(where: { $0.name == "paymentDueDate" })?
+                .value,
+              !dueDate.isEmpty else {
+            // Return nil if key not found or value is empty
+            return nil
+        }
+        return Date.date(from: dueDate)
+    }
+
+    func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        giniBankConfiguration.returnAssistantEnabled &&
+        !(result.lineItems?.isEmpty ?? true)
+    }
+
+    func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        giniBankConfiguration.skontoEnabled &&
+        !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func presentTransactionDocsAlert(extractionResult: ExtractionResult,
+                                     delegate: GiniCaptureNetworkDelegate) {
+        let document = documentService.document
+        handleTransactionDocsAlert(on: screenAPINavigationController,
+                                   extractionResult: extractionResult,
+                                   documentId: document?.id,
+                                   deliveryFunction: { [weak self] result in
+            guard let self else { return }
+            self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+        }
+        )
     }
 }
 
@@ -647,6 +894,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
             deliveryFunction(extractionResult)
         })
+    }
+
+    private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
+                                                        onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     private func handleDocumentPage(for skontoViewModel: SkontoViewModel,

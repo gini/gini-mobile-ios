@@ -20,7 +20,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
                 secondLabel
             ]
         )
-        stack.spacing = 12
+        stack.spacing = Constants.verticalSpacingStackView
         stack.axis = .vertical
         stack.alignment = .center
         return stack
@@ -36,11 +36,10 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         stack.spacing = Constants.stackViewItemSpacing
         stack.axis = .vertical
         stack.alignment = .center
-
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stack.widthAnchor.constraint(equalToConstant: Constants.stackViewWidth),
+            stack.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.stackViewWidth),
             doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth),
             doneButton.heightAnchor.constraint(equalToConstant: Constants.doneButtonHeight)
         ])
@@ -55,11 +54,10 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         scrollView.addSubview(rightStackView)
 
         NSLayoutConstraint.activate([
-            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            rightStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            rightStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+            rightStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                                constant: Constants.topMarginStackView),
+            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
         ])
 
         return scrollView
@@ -91,6 +89,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
         firstLabel = .init()
         firstLabel.numberOfLines = 0
+        firstLabel.textAlignment = .center
 
         secondLabel = .init()
         secondLabel.numberOfLines = 0
@@ -108,6 +107,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         }
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
         topImageView.setupView()
 
         // title
@@ -129,6 +129,37 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
         doneButton.isHidden = shouldHideButton()
+
+        setupView()
+        setupConstraints()
+    }
+
+    private func setupView() {
+        backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+
+        addSubview(topImageView)
+        addSubview(rightStackViewContainerScrollable)
+        
+        updateTopImageViewVisibility()
+    }
+
+    private func setupConstraints() {
+        let safeArea = safeAreaLayoutGuide
+        topImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
+            topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
+            topImageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor,
+                                                  constant: Constants.paddingLarge),
+            topImageView.widthAnchor.constraint(equalToConstant: topImageViewLayoutWidth()),
+
+            // Constraints for the scroll view itself
+            rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
+            rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: scrollViewLeadingAnchor(),
+                                                                       constant: scrollViewLeadingConstant()),
+            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor)
+        ])
     }
 
     @available(*, unavailable)
@@ -136,32 +167,31 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
-
-        addSubview(topImageView)
-        addSubview(rightStackViewContainerScrollable)
-
-        topImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
-            topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
-            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                                  constant: Constants.paddingLarge),
-            topImageView.widthAnchor.constraint(equalToConstant: 220),
-
-            // Constraints for the scroll view itself
-            rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
-            rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
-                                                                       constant: Constants.horizontalSpacingBetweenImageViewAndText),
-            rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
-        ])
-    }
-
     @objc func doneAction(_ sender: UIButton!) {
         onDone()
+    }
+
+    // Returns the width for the top image view depending on the device
+    private func topImageViewLayoutWidth() -> CGFloat {
+        // Return 0 if non-notch small screen, else 220
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        return isSmallDevice ? 0 : Constants.topImageWidth
+    }
+
+    // Returns the leading anchor for the scroll view depending on the device.
+    private func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        return isSmallDevice ? safeAreaLayoutGuide.leadingAnchor : topImageView.trailingAnchor
+    }
+
+    // Returns the leading constant for the scroll view depending on the device.
+    private func scrollViewLeadingConstant() -> CGFloat {
+        return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.horizontalSpacingBetweenImageViewAndText
+    }
+    
+    // Updates the visibility of the topImageView depending on the device
+    private func updateTopImageViewVisibility() {
+        topImageView.isHidden = UIDevice.current.isNonNotchSmallScreen()
     }
 }
 
@@ -169,10 +199,14 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
         static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
-        static let stackViewWidth: CGFloat = 276
+        static let stackViewWidth: CGFloat = 400
         static let stackViewItemSpacing: CGFloat = 40
         static let doneButtonMinWidth: CGFloat = 170
         static let doneButtonHeight: CGFloat = 50
+        static let trailingPadding: CGFloat = 16
+        static let topMarginStackView: CGFloat = 60
+        static let topImageWidth: CGFloat = 220
+        static let verticalSpacingStackView: CGFloat = 12
     }
 
     func shouldHideButton() -> Bool {

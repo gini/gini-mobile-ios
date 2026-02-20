@@ -8,9 +8,8 @@
 import UIKit
 
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
-    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = Constants.inputContainerHeight
-        presentBottomSheet(viewController: bottomSheet)
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
+        present(bottomSheet, animated: true)
     }
 
     func createPaymentRequestAndOpenBankApp() {
@@ -21,7 +20,6 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = Constants.inputContainerHeight
         presentBottomSheet(viewController: bottomSheet)
     }
 
@@ -30,8 +28,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
                                                        paymentRequestId: paymentRequestId)
     }
 
-    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = Constants.inputContainerHeight
-        presentBottomSheet(viewController: bottomSheet)
+    func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {
+        present(bottomSheet, animated: true)
     }
 }

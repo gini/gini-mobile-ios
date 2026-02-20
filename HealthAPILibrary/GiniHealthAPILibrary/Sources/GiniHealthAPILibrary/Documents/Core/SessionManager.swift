@@ -109,7 +109,7 @@ public final class CancellationToken {
     public var isCancelled = false
     
     public init() {
-        
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
     }
     
     /// Cancels the current task

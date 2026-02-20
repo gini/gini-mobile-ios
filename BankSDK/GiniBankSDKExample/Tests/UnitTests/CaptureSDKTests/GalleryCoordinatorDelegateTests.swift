@@ -17,7 +17,8 @@ final class GalleryCoordinatorDelegateMock: GalleryCoordinatorDelegate {
         didCancelGallery = true
     }
 
-    func gallery(_ coordinator: GalleryCoordinator, didSelectImageDocuments imageDocuments: [GiniImageDocument]) {
+    func gallery(_ coordinator: GalleryCoordinator,
+                 didSelectImageDocuments imageDocuments: [GiniImageDocument]) {
         didOpenImages = true
         openedImageDocuments = imageDocuments
         coordinator.dismissGallery()

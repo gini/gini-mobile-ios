@@ -21,7 +21,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
     private var navigationBarHeightConstraint: NSLayoutConstraint!
-    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem() { [weak self] in
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem { [weak self] in
         self?.doneAction(nil)
     }
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
@@ -130,6 +130,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         }
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
         topImageView.setupView()
     }
 
@@ -175,7 +176,8 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                 view.addSubview(navigationBar)
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+                navigationBarHeightConstraint = navigationBar.heightAnchor
+                    .constraint(equalToConstant: getBottomBarHeight())
 
                 NSLayoutConstraint.activate([
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -206,6 +208,8 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
             navigationBarHeightConstraint.constant = getBottomBarHeight()
         }
+        updateAccessibilityElements()
+
         guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
@@ -216,6 +220,17 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                                                                                 multiplier: self.widthMultiplier)
             self.scrollViewWidthAnchor.isActive = true
         })
+    }
+
+    private func updateAccessibilityElements() {
+        let device = UIDevice.current
+
+        switch (device.isIphone, device.isLandscape) {
+        case (true, true):  // iPhone landscape
+            view.accessibilityElements = [horizontalItem]
+        case (true, false), (false, _):  // iPhone portrait or iPad
+            view.accessibilityElements = [topImageView, firstLabel, secondLabel, doneButton].compactMap { $0 }
+        }
     }
 
     @objc func doneAction(_ sender: UIButton!) {
@@ -245,7 +260,7 @@ extension DigitalInvoiceOnboardingViewController {
     }
 
     private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
-        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+        if GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil {
             return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
         } else {
             return view.bottomAnchor

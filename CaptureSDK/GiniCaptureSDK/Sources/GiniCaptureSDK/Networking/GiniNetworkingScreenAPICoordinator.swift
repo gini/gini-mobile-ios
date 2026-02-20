@@ -224,11 +224,13 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
 
         // In multipage mode the analysis can be triggered once the documents have been uploaded.
         // However, in single mode, the analysis can be triggered right after capturing the image.
-        // That is why the document upload shuld be done here and start the analysis afterwards
+        // That is why the document upload should be done here and start the analysis afterwards
         if giniConfiguration.multipageEnabled {
             self.startAnalysis(networkDelegate: networkDelegate)
         } else {
-            self.uploadAndStartAnalysis(document: documents[0], networkDelegate: networkDelegate, uploadDidFail: {
+            self.uploadAndStartAnalysis(document: documents[0],
+                                        networkDelegate: networkDelegate,
+                                        uploadDidFail: {
                 self.didReview(documents: documents, networkDelegate: networkDelegate)
             })
         }

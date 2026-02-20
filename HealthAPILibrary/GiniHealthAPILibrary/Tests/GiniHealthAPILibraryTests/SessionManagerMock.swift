@@ -28,8 +28,8 @@ final class SessionManagerMock: SessionManagerProtocol {
 
 
     init(keyStore: KeyStore = KeychainStore(),
-         urlSession: URLSession = URLSession()) {
-        
+         urlSession: URLSession = URLSession(configuration: .default)) {
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func initializeWithV3MockedDocuments() {
@@ -54,11 +54,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func logOut() {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     //swiftlint:disable all
@@ -113,7 +113,7 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .payment(_):
                 let payment: Payment = loadPayment()
                 completion(.success(payment as! T.ResponseType))
-            case .pdfWithQRCode(_):
+            case .pdfWithQRCode(_,_):
                 let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
                     completion(.success(pdfData as! T.ResponseType))
             default:

@@ -2,7 +2,7 @@
 //  CustomCameraBottomNavigationBarAdapter.swift
 //  GiniBankSDKExample
 //
-//  Created by Krzysztof Kryniecki on 10/11/2022.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -10,6 +10,7 @@ import GiniCaptureSDK
 
 final class CustomCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter {
     func showButtons(navigationBar: UIView, navigationButtons: [GiniCaptureSDK.CameraNavigationBarBottomButton]) {
+        // This method will remain empty; CustomCameraBottomNavigationBar provides its own buttons
     }
     
     func setHelpButtonClickedActionCallback(_ callback: @escaping () -> Void) {

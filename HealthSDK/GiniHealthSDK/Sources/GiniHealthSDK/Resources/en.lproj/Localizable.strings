@@ -10,21 +10,27 @@
 "gini.health.reviewscreen.amount.placeholder" = "Amount";
 "gini.health.reviewscreen.usage.placeholder" = "Reference number";
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
+"gini.health.reviewscreen.banking.app.button.hint" = "It opens the banking app to complete the payment.";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
 "gini.health.errors.default" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";
 "gini.health.errors.failed.iban.non.empty.check" = "IBAN is required.";
 "gini.health.errors.failed.iban.validation.check" = "IBAN is not valid.";
-"gini.health.errors.failed.amount.non.empty.check" = "Invalid.";
-"gini.health.errors.failed.purpose.non.empty.check" = "Purpose is required.";
+"gini.health.errors.failed.amount.non.empty.check" = "Amount is required.";
+"gini.health.errors.failed.purpose.non.empty.check" = "Reference is required.";
 "gini.health.errors.failed.default.textfield.validation.check" = "The field is not valid.";
 
 "gini.health.alert.ok.title" = "OK";
+"gini.health.close.button.accessibility.label" = "Close";
+"gini.health.bottomSheet.grabber.accessibility.label" = "Sheet grabber";
+"gini.health.bottomSheet.grabber.accessibility.hint" = "Double tap to dismiss";
 
 "gini.health.paymentcomponent.more.information.label" = "Transfer payment data to the banking app and pay there directly. More information.";
 "gini.health.paymentcomponent.more.information.underlined.part" = "More information.";
 "gini.health.paymentcomponent.select.bank.label" = "Select bank";
+"gini.health.paymentcomponent.select.bank.hint" = "Select your bank from the dropdown list. Use the arrow keys to navigate through the options and press Enter to choose your bank. This selection is required to proceed.";
 "gini.health.paymentcomponent.select.your.bank.label" = "Select your bank to pay";
 "gini.health.paymentcomponent.pay.invoice.label" = "Pay the invoice";
 "gini.health.paymentcomponent.to.banking.app.label" = "To the banking app";
@@ -33,6 +39,7 @@
 "gini.health.paymentcomponent.your.bank.label" = "Your bank";
 "gini.health.paymentcomponent.payment.providers.list.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
 "gini.health.paymentcomponent.payment.info.title.label" = "More information";
+"gini.health.paymentcomponent.payment.info.supported.banks.label" = "Supported banks %@";
 "gini.health.paymentcomponent.payment.info.pay.bills.title.label" = "Pay bills easily with the banking app.";
 "gini.health.paymentcomponent.payment.info.pay.bills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini[LINK].";
 "gini.health.paymentcomponent.payment.info.pay.bills.description.clickable.text" = "Gini[LINK]";
@@ -60,3 +67,6 @@
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Or take a screenshot and upload it directly in your [BANK] app using the Photo Payment functionality";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Share with [BANK] app";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "payment-information";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR code for initiating a SEPA bank transfer.";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App Store";
+"gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo" = "[BANK] logo";

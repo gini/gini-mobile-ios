@@ -31,6 +31,11 @@ public protocol GiniHealthDelegate: AnyObject {
      - parameter error: error which will be handled.
      */
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
+    
+    /**
+     Called when the Gini Health SDK has been dismissed.
+     */
+    func didDismissHealthSDK()
 }
 /**
  Errors thrown with Gini Health SDK.
@@ -177,43 +182,6 @@ public struct DataForReview {
      */
     public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         return paymentComponentsController.fetchBankLogos()
-    }
-    /**
-     Getting a list of the installed banking apps which support Gini Pay Connect functionality.
-     
-     - Parameters:
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
-     Result is a value that represents either a success or a failure, including an associated value in each case.
-     Completion block called on main thread.
-     In success case it includes array of payment providers, which are represebt the installed on the phone apps.
-     In case of failure error that there are no supported banking apps installed.
-     
-     */
-    private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
-        fetchBankingApps { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let providers):
-                    self.updateBankProviders(providers: providers)
-
-                    if self.bankProviders.count > 0 {
-                        completion(.success(self.bankProviders))
-                    } else {
-                        completion(.failure(.noInstalledApps))
-                    }
-                case let .failure(error):
-                    completion(.failure(GiniHealthError.apiError(error)))
-                }
-            }
-        }
-    }
-
-    private func updateBankProviders(providers: PaymentProviders) {
-        for provider in providers {
-            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
-                self.bankProviders.append(provider)
-            }
-        }
     }
 
     /**
@@ -668,7 +636,9 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
         paymentDelegate?.didFetchedPaymentProviders()
     }
     
-    
+    public func didDismissPaymentComponents() {
+        delegate?.didDismissHealthSDK()
+    }
 }
 
 extension GiniHealth {

@@ -116,7 +116,9 @@ class HealthNetworkingService: GiniCaptureNetworkService {
         }
     }
     
-    func cleanup() {}
+    func cleanup() {
+        // This method will remain empty; no implementation is needed.
+    }
     
     func analyse(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo],
                  metadata: GiniBankAPILibrary.Document.Metadata?,
@@ -174,10 +176,14 @@ class HealthNetworkingService: GiniCaptureNetworkService {
     }
     
     func log(errorEvent: ErrorEvent,
-             completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {}
+             completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
     
     func sendFeedback(document: GiniBankAPILibrary.Document,
                       updatedExtractions: [GiniBankAPILibrary.Extraction],
                       updatedCompoundExtractions: [String : [[GiniBankAPILibrary.Extraction]]]?,
-                      completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {}
+                      completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
 }

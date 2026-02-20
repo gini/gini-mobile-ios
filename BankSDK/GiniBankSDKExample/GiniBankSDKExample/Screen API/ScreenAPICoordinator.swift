@@ -50,7 +50,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var configuration: GiniBankConfiguration
     var manuallyCreatedDocument: Document?
 	private var extractedResults: [Extraction] = []
-	
+    private var enablePinningSDK: Bool = false
+
 	// {extraction name} : {entity name}
 	private let editableSpecificExtractions = ["paymentRecipient" : "companyname",
 											   "paymentReference" : "reference",
@@ -63,11 +64,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     private let apiEnvironment: APIEnvironment
 
     init(apiEnvironment: APIEnvironment,
+         enablePinningSDK: Bool,
          configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
          client: Client,
          documentMetadata: Document.Metadata?) {
         self.apiEnvironment = apiEnvironment
+        self.enablePinningSDK = enablePinningSDK
         self.configuration = configuration
         self.visionDocuments = documents
         self.client = client
@@ -76,16 +79,48 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     func start() {
-        
-// MARK: - Screen API with default networking
-    let viewController = GiniBank.viewController(withClient: client,
-                                                 importedDocuments: visionDocuments,
-                                                 configuration: configuration,
-                                                 resultsDelegate: self,
-                                                 documentMetadata: documentMetadata,
-                                                 api: apiEnvironment.api,
-                                                 userApi: apiEnvironment.userApi,
-                                                 trackingDelegate: trackingDelegate)
+        let viewController: UIViewController
+
+        if enablePinningSDK {
+            // Screen API with default networking with Pinning certificates
+            // In order to be able to test with pinning, please comment the initialization of `viewController` above
+            // and uncomment the following code snippet.
+
+            let yourPublicPinningConfig = [
+                "pay-api.gini.net": [
+                    // old *.gini.net public key
+                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                    // new *.gini.net public key, active from around June 2020
+                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+                ],
+                "user.gini.net": [
+                    // old *.gini.net public key
+                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                    // new *.gini.net public key, active from around June 2020
+                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+                ]
+            ]
+            viewController = GiniBank.viewController(withClient: client,
+                                                     importedDocuments: visionDocuments,
+                                                     configuration: configuration,
+                                                     resultsDelegate: self,
+                                                     pinningConfig: yourPublicPinningConfig,
+                                                     documentMetadata: documentMetadata,
+                                                     api: .default,
+                                                     trackingDelegate: trackingDelegate)
+        } else {
+            // Screen API with default networking
+            viewController = GiniBank.viewController(withClient: client,
+                                                     importedDocuments: visionDocuments,
+                                                     configuration: configuration,
+                                                     resultsDelegate: self,
+                                                     documentMetadata: documentMetadata,
+                                                     api: apiEnvironment.api,
+                                                     userApi: apiEnvironment.userApi,
+                                                     trackingDelegate: trackingDelegate)
+
+        }
+
 // MARK: - Screen API with custom networking
 //        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
 //                                                     configuration: configuration,

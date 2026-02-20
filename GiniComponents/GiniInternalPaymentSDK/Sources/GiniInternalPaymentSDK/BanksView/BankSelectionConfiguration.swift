@@ -54,9 +54,13 @@ public struct BankSelectionConfiguration {
 public struct BanksBottomStrings {
     let selectBankTitleText: String
     let descriptionText: String
+    let closeButtonAccessibilityLabel: String
 
-    public init(selectBankTitleText: String, descriptionText: String) {
+    public init(selectBankTitleText: String,
+                descriptionText: String,
+                closeButtonAccessibilityLabel: String) {
         self.selectBankTitleText = selectBankTitleText
         self.descriptionText = descriptionText
+        self.closeButtonAccessibilityLabel = closeButtonAccessibilityLabel
     }
 }

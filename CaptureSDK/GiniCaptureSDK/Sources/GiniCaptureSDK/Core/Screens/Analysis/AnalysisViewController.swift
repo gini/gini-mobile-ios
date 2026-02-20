@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -15,7 +16,7 @@ import UIKit
 
     /**
      Will display an error screen with predefined type.
-     
+
      - parameter message: The error type to be displayed.
      */
     func displayError(errorType: ErrorType, animated: Bool)
@@ -35,10 +36,23 @@ import UIKit
 @objcMembers public final class AnalysisViewController: UIViewController {
 
     var didShowAnalysis: (() -> Void)?
+    var shouldSaveToGallery: Bool = false
+
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
-
+    private let useCustomLoadingView: Bool = true
+    private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
+
+    private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
+    private var educationFlowController: EducationFlowController?
+    private var educationAnimationFinished: Bool = false
+    private var shouldShowOriginalFlow: Bool {
+        guard let state = educationFlowController?.nextState() else {
+            return false
+        }
+        return state == .showOriginalFlow
+    }
 
     // User interface
     private var imageView: UIImageView = {
@@ -64,20 +78,16 @@ import UIKit
         loadingText.isAccessibilityElement = true
         loadingText.numberOfLines = 0
 
-        if document.type == .pdf {
-            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                originalDocumentName = documentTitle
-                let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
-                                                                   comment: "Analysis screen loading text for PDF")
-
-                loadingText.text = String(format: titleString, documentTitle)
-            } else {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                    comment: "Analysis screen loading text for images")
-            }
+        if document.type == .pdf,
+           let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+            originalDocumentName = documentTitle
+            loadingText.text = String(format: Strings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                comment: "Analysis screen loading text for images")
+            if shouldSaveToGallery {
+                loadingText.text = Strings.analysisLoadingTextWithPhotoLibrary
+            } else {
+                loadingText.text = Strings.loadingBaseText
+            }
         }
 
         return loadingText
@@ -95,18 +105,53 @@ import UIKit
         return overlayView
     }()
 
+    // MARK: - Scrollable Hint View Setup
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.backgroundColor = .clear
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private lazy var contentStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = Constants.contentStackVerticalSpacing
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private lazy var hintView: PaymentDueHintView = {
+        let view = PaymentDueHintView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var dismissHintView: DismissMessageView = {
+        let view = DismissMessageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
+    var pages: [GiniCapturePage]?
+
     /**
      Designated intitializer for the `AnalysisViewController`.
-     
+
      - parameter document: Reviewed document ready for analysis.
      - parameter giniConfiguration: `GiniConfiguration` instance.
-     
+
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
-    public init(document: GiniCaptureDocument, giniConfiguration: GiniConfiguration) {
+    public init(document: GiniCaptureDocument,
+                giniConfiguration: GiniConfiguration) {
         self.document = document
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
@@ -114,18 +159,19 @@ import UIKit
 
     /**
      Convenience intitializer for the `AnalysisViewController`.
-     
+
      - parameter document: Reviewed document ready for analysis.
-     
+
      - returns: A view controller instance giving the user a nice user interface while waiting for the analysis results.
      */
     public convenience init(document: GiniCaptureDocument) {
-        self.init(document: document, giniConfiguration: GiniConfiguration.shared)
+        self.init(document: document,
+                  giniConfiguration: GiniConfiguration.shared)
     }
 
     /**
      Returns an object initialized from data in a given unarchiver.
-     
+
      - warning: Not implemented.
      */
     public required init?(coder aDecoder: NSCoder) {
@@ -137,12 +183,8 @@ import UIKit
 
         // Configure view hierachy
         setupView()
-    }
 
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if document is GiniImageDocument {
+        if document is GiniImageDocument && shouldShowOriginalFlow {
             showCaptureSuggestions(giniConfiguration: giniConfiguration)
         }
     }
@@ -198,7 +240,7 @@ import UIKit
         addImageView()
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        title = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle", comment: "Analysis screen title")
+        title = Strings.screenTitle
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
@@ -232,6 +274,22 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
+        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
+
+        let nextState = educationFlowController?.nextState()
+        switch nextState {
+        case .showMessage:
+            showEducationLoadingMessage()
+        case .showOriginalFlow:
+            showOriginalLoadingMessage()
+        case .none:
+            showOriginalLoadingMessage()
+        }
+    }
+
+    private func showOriginalLoadingMessage() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
@@ -245,6 +303,85 @@ import UIKit
             addLoadingText(below: loadingIndicatorView)
             loadingIndicatorView.startAnimating()
         }
+        // immediately mark animation complete
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+    }
+
+    private func showEducationLoadingMessage() {
+        let loadingItems = EducationFlowContent.captureInvoice.items
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
+        loadingViewModel = viewModel
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
+        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customLoadingView)
+
+        NSLayoutConstraint.activate([
+            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                       constant: Constants.educationLoadingViewPadding),
+            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                        constant: -Constants.educationLoadingViewPadding)
+        ])
+
+        Task {
+            await finalizeEducationAnimation(viewModel)
+
+            ///  remove QRCodeEducationLoadingView once animation finished
+            customLoadingView.removeFromSuperview()
+        }
+    }
+
+    /**
+     Handles the finalization of the education animation sequence:
+     - Starts the view model lifecycle.
+     - Resumes all pending animation completion continuations.
+     - Clears the continuation list to avoid memory leaks or duplicate calls.
+     - Flags the animation as finished to update UI state.
+     - Marks the educational message as shown to prevent it from appearing again.
+     */
+    private func finalizeEducationAnimation(_ viewModel: QRCodeEducationLoadingViewModel) async {
+        await viewModel.start()
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        educationAnimationFinished = true
+        educationFlowController?.markMessageAsShown()
+    }
+
+    /**
+     Suspends the current task until the animation inside the analysis screen has completed.
+
+     If the animation is already completed, this method returns immediately.
+     Otherwise, it suspends execution and resumes once the animation finishes.
+     */
+    public func waitUntilAnimationCompleted() async {
+        await withCheckedContinuation { continuation in
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
+
+            if educationAnimationFinished {
+                continuation.resume()
+            } else {
+                animationCompletionContinuations.append(continuation)
+            }
+        }
+    }
+
+    public func saveDocumentPhotoToGalleryIfNeeded() {
+        guard let pages, !pages.isEmpty, shouldSaveToGallery  else { return  }
+        let documentsToSave = pages.filter({ !$0.document.isImported }).compactMap({ $0.document.previewImage })
+
+        PHPhotoLibrary.shared().performChanges({
+            for documentToSave in documentsToSave {
+                PHAssetChangeRequest.creationRequestForAsset(from: documentToSave)
+            }
+        }, completionHandler: { _, _ in
+            // callback NOT guaranteed on the main thread
+            // we don't handle errors or any success message here for now
+        })
     }
 
     private func addLoadingText(below loadingIndicator: UIView) {
@@ -313,13 +450,162 @@ import UIKit
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
     }
+
+    // MARK: - Handling UI - Payment DueHint
+    private func setupScrollableStackView(dueDate: String) {
+
+        /// hide views before showing hint
+        loadingIndicatorText.isHidden = true
+        loadingIndicatorView.stopAnimating()
+
+        view.addSubview(scrollView)
+
+        scrollView.giniMakeConstraints {
+            $0.top.equalTo(view.safeTop)
+            $0.bottom.equalTo(view.safeBottom)
+            $0.leading.equalTo(view.safeLeading)
+            $0.trailing.equalTo(view.safeTrailing)
+        }
+
+        scrollView.addSubview(contentStack)
+
+        updateContentStackConstraints()
+
+        /// show due date hint view
+        addPaymentDueHintView(withDate: dueDate)
+        /// show hint dismiss view
+        addDismissMessageView()
+    }
+
+    private func updateContentStackConstraints() {
+
+        /// Skip if views are not in the hierarchy(not added as subview) yet to avoid Auto Layout crashes
+        guard contentStack.superview != nil,
+              scrollView.superview != nil else { return }
+
+        /// Remove previous constraints first
+        /// Deactivate all constraints affecting contentStack
+        if let superview = contentStack.superview {
+            let relatedConstraints = superview.constraints.filter {
+                $0.firstItem === contentStack || $0.secondItem === contentStack
+            }
+            NSLayoutConstraint.deactivate(relatedConstraints)
+        }
+
+        if UIDevice.current.isLandscape || UIDevice.current.isIpad {
+            /// Landscape: center both horizontally and vertically
+            contentStack.giniMakeConstraints {
+                $0.centerX.equalTo(scrollView)
+                $0.centerY.equalTo(scrollView)
+                $0.width.lessThanOrEqualTo(scrollView.frameLayoutGuide).constant(-Constants.horizontalPadding * 2)
+            }
+        } else {
+            /// Portrait: top-aligned with horizontal padding
+            contentStack.giniMakeConstraints {
+                $0.centerX.equalTo(scrollView)
+                $0.centerY.equalTo(scrollView)
+                $0.leading.equalTo(scrollView.contentLayoutGuide).constant(Constants.horizontalPadding)
+                $0.trailing.equalTo(scrollView.contentLayoutGuide).constant(-Constants.horizontalPadding)
+                $0.bottom.equalTo(scrollView.contentLayoutGuide).constant(-Constants.contentStackBottomPadding)
+
+                $0.width.equalTo(scrollView.frameLayoutGuide).constant(-Constants.horizontalPadding * 2)
+            }
+        }
+        view.layoutIfNeeded()
+    }
+
+    // MARK: - Add Hint View
+    private func addPaymentDueHintView(withDate dueDate: String) {
+        // configure hintView with due date if needed
+        hintView.configure(withDueDate: dueDate)
+        contentStack.addArrangedSubview(hintView)
+        hintView.giniMakeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+    }
+
+    // MARK: - Add Dismiss Message View
+    private func addDismissMessageView() {
+        contentStack.addArrangedSubview(dismissHintView)
+        dismissHintView.giniMakeConstraints {
+            $0.horizontal.equalToSuperview()
+            $0.height.greaterThanOrEqualTo(Constants.dismissButtonHeight)
+        }
+    }
+
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.updateContentStackConstraints()
+        })
+    }
+}
+
+extension AnalysisViewController: PaymentDueDateProtocol {
+    public func handlePaymentDueDate(_ dueDate: String) {
+        /// remove suggestion while handling due date
+        removeCaptureSuggestions()
+
+        /// show due hint view
+        setupScrollableStackView(dueDate: dueDate)
+    }
+
+    @MainActor
+    public func clearPaymentDueDate(after timeout: TimeInterval) async {
+        await withCheckedContinuation { continuation in
+            var didClear = false
+
+            // Helper to resume continuation only once
+            let callOnce: () -> Void = {
+                guard !didClear else { return }
+                didClear = true
+
+                // Clear the closure to prevent memory leaks
+                self.dismissHintView.onTap = nil
+
+                continuation.resume()
+            }
+
+            // action call when user tap on dismiss button
+            dismissHintView.onTap = {
+                callOnce()
+            }
+
+            // Timeout fallback
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                callOnce()
+            }
+        }
+    }
 }
 
 private extension AnalysisViewController {
     enum Constants {
         static let padding: CGFloat = 16
+        static let educationLoadingViewPadding: CGFloat = 28
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+        static let horizontalPadding: CGFloat = 16
+        static let dismissButtonHeight: CGFloat = 40
+        static let contentStackBottomPadding: CGFloat = 20
+        static let contentStackVerticalSpacing: CGFloat = 10
+    }
+
+    struct Strings {
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle",
+                                                                  comment: "Analysis screen title")
+        static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                                                                     comment: "Analysis screen loading text for PDF")
+
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                      comment: "Analysis screen loading base text")
+
+        static let analysisLoadingTextWithPhotoLibrary = NSLocalizedStringPreferredFormat(
+            "ginicapture.analysis.loadingTextPhotoLibrary",
+            comment: "loading base text with photo library"
+        )
     }
 }

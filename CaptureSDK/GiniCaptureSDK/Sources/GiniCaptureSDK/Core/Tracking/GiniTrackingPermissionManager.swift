@@ -14,7 +14,9 @@ class GiniTrackingPermissionManager {
     // The private empty initializer ensures that no other instances of this class can be created.
     // By making the initializer private and providing a static shared instance, we enforce a singleton pattern.
     // This means there is only one instance of GiniTrackingPermissionManager throughout the app's lifecycle.
-    private init() {}
+    private init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // This function checks whether tracking is authorized.
     // - If the iOS version is 14 or later, it uses ATTrackingManager to determine the authorization status.

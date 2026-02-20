@@ -29,6 +29,12 @@ public final class PaymentInfoViewModel {
     var shouldShowBrandedView: Bool {
         clientConfiguration?.ingredientBrandType == .fullVisible
     }
+    
+    var accessibilityBankListText: String {
+        let bankNames = paymentProviders.map { $0.name }.joined(separator: ", ")
+        
+        return String(format: strings.supportedBanksText, bankNames)
+    }
 
     public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
                 configuration: PaymentInfoConfiguration,
@@ -106,7 +112,8 @@ public final class PaymentInfoViewModel {
         PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
                                            titleFont: configuration.questionHeaderFont,
                                            titleColor: configuration.questionHeaderTitleColor,
-                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon)
+                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
+                                           iconTintColor: configuration.questionHeaderIconTintColor)
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {

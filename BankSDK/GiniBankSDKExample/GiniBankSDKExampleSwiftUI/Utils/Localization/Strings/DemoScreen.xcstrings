@@ -1,0 +1,108 @@
+{
+    "sourceLanguage" : "en",
+    "strings" : {
+        "alternative.text" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "oder nutzen Sie die"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "or use"
+                    }
+                }
+            }
+        },
+        "iban.textfield.placeholder" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Geben Sie Ihre IBAN ein"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Enter your IBAN code"
+                    }
+                }
+            }
+        },
+        "photo.payment.button.title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Fotoüberweisung"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Photopayment"
+                    }
+                }
+            }
+        },
+        "screen.description" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Beispiel für die Integration von Fotoüberweisung in der Banking-App"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Example of Photo Payment integration in the banking app"
+                    }
+                }
+            }
+        },
+        "transaction.list.button.title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Umsatzliste"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Transaction list"
+                    }
+                }
+            }
+        },
+        "welcome.title" : {
+            "extractionState" : "manual",
+            "localizations" : {
+                "de" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Willkommen bei Gini - SwiftUI"
+                    }
+                },
+                "en" : {
+                    "stringUnit" : {
+                        "state" : "translated",
+                        "value" : "Welcome to Gini - SwiftUI"
+                    }
+                }
+            }
+        }
+    },
+    "version" : "1.0"
+}

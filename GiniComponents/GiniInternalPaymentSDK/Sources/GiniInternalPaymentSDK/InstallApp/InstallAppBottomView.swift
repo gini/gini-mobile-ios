@@ -6,14 +6,43 @@
 //
 
 
+import Combine
 import UIKit
 import GiniUtilites
 
-public final class InstallAppBottomView: BottomSheetViewController {
+public final class InstallAppBottomView: GiniBottomSheetViewController {
+    
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        true
+    }
 
     var viewModel: InstallAppBottomViewModel
-    
+
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+
+    private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
+    
+    private lazy var closeButtonContainerView: EmptyView = {
+        let view = EmptyView()
+        return view
+    }()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
+                        for: .normal)
+        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
+        button.tintColor = viewModel.configuration.closeIconAccentColor
+        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
+        return button
+    }()
 
     private let titleView = EmptyView()
 
@@ -36,18 +65,19 @@ public final class InstallAppBottomView: BottomSheetViewController {
         imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         imageView.layer.borderWidth = Constants.bankIconBorderWidth
         imageView.layer.borderColor = viewModel.configuration.bankIconBorderColor.cgColor
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityLabel = viewModel.strings.accessibilityBankLogoText.replacingOccurrences(of: viewModel.bankToReplaceString,
+                                                                                                        with: viewModel.selectedPaymentProvider?.name ?? "")
         return imageView
     }()
     
     private let moreInformationView = EmptyView()
     
-    private lazy var moreInformationStackView: UIStackView = {
-        let stackView = EmptyStackView().orientation(.horizontal)
-        stackView.spacing = Constants.viewPaddingConstraint
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
+    private lazy var moreInformationStackView = EmptyStackView()
+        .orientation(.horizontal)
+        .spacing(Constants.viewPaddingConstraint)
+        .distribution(.fillProportionally)
+
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +94,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
         button.tintColor = viewModel.configuration.moreInformationAccentColor
         button.isUserInteractionEnabled = false
+        button.isAccessibilityElement = false
         return button
     }()
     
@@ -74,6 +105,9 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.customConfigure(text: viewModel.strings.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = viewModel.strings.continueLabelText
+        button.accessibilityTraits = .button
         return button
     }()
     
@@ -83,14 +117,14 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
+        button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
         return button
     }()
     
     private let buttonsView: UIView = EmptyView()
+    private var cancellables = Set<AnyCancellable>()
     
     private let bottomView = EmptyView()
-    
-    private let bottomStackView = EmptyStackView().orientation(.horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
@@ -99,6 +133,13 @@ public final class InstallAppBottomView: BottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupInitialLayout()
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        postAccessibilityFocus()
     }
 
     deinit {
@@ -107,40 +148,91 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     public init(viewModel: InstallAppBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(configuration: bottomSheetConfiguration)
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = bottomSheetConfiguration.backgroundColor
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func postAccessibilityFocus() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+        }
+    }
 
     private func setupView() {
+        configureBottomSheet()
         setupViewHierarchy()
+        bindToContentSizeUpdates()
         setupLayout()
         setupListeners()
         setButtonsState()
+        setupViewVisibility()
+        setupAccessibility()
     }
 
+    private func setupAccessibility() {
+        view.accessibilityElements = [
+            closeButton,
+            titleLabel,
+            bankIconImageView,
+            moreInformationLabel,
+            appStoreImageView,
+            continueButton
+        ]
+    }
+    
     private func setupViewHierarchy() {
+        addCloseButton()
         titleView.addSubview(titleLabel)
         contentStackView.addArrangedSubview(titleView)
         bankView.addSubview(bankIconImageView)
         contentStackView.addArrangedSubview(bankView)
-        moreInformationStackView.addArrangedSubview(moreInformationButton)
-        moreInformationStackView.addArrangedSubview(moreInformationLabel)
         moreInformationView.addSubview(moreInformationStackView)
         contentStackView.addArrangedSubview(moreInformationView)
         buttonsView.addSubview(continueButton)
         buttonsView.addSubview(appStoreImageView)
         contentStackView.addArrangedSubview(buttonsView)
-        contentStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(UIView())
-        if viewModel.shouldShowBrandedView {
-            bottomStackView.addArrangedSubview(poweredByGiniView)
-        }
-        bottomView.addSubview(bottomStackView)
+        bottomView.addSubview(poweredByGiniView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        contentView.addContentSubview(contentStackView)
+        setContent(contentView)
+    }
+    
+    private func setContent(_ content: UIView) {
+        view.addSubview(content)
+        
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            content.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            content.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func addCloseButton() {
+        closeButtonContainerView.addSubview(closeButton)
+        
+        NSLayoutConstraint.activate([
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
+            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
+                                                 constant: -Constants.viewPaddingConstraint),
+        ])
+        
+        contentStackView.addArrangedSubview(closeButtonContainerView)
+    }
+
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
 
     private func setupLayout() {
@@ -158,14 +250,101 @@ public final class InstallAppBottomView: BottomSheetViewController {
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
+
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        closeButtonContainerView.isHidden = true
+        deactivateAllConstraints()
+        updateMoreInformationStackView(for: .portrait)
+
+        portraitConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints() {
+        closeButtonContainerView.isHidden = false
+        deactivateAllConstraints()
+        updateMoreInformationStackView(for: .landscape)
+
+        landscapeConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.moreInformationTopPaddingLandscape),
+            poweredByGiniView.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
     
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
+    }
+
+    // Enum to Represent Layout Types
+    private enum LayoutType {
+        case portrait
+        case landscape
+    }
+
+    // Helper Method to Update More Information Stack View
+    private func updateMoreInformationStackView(for layout: LayoutType) {
+        moreInformationStackView.removeAllArrangedSubviews()
+
+        switch layout {
+        case .portrait:
+            configureStackView(alignment: .leading, textAlignment: .left, addPaddingViews: false)
+        case .landscape:
+            configureStackView(alignment: .center, textAlignment: .center, addPaddingViews: true)
+        }
+    }
+
+    private func configureStackView(alignment: UIStackView.Alignment, textAlignment: NSTextAlignment, addPaddingViews: Bool) {
+        titleLabel.textAlignment = textAlignment
+        moreInformationStackView.alignment = alignment
+        moreInformationLabel.textAlignment = textAlignment
+
+        if addPaddingViews {
+            moreInformationStackView.addArrangedSubview(UIView())
+        }
+
+        moreInformationStackView.addArrangedSubview(moreInformationButton)
+        moreInformationStackView.addArrangedSubview(moreInformationLabel)
+
+        if addPaddingViews {
+            moreInformationStackView.addArrangedSubview(UIView())
+        }
+    }
+
     @objc private func willEnterForeground() {
         setButtonsState()
+        postAccessibilityFocus()
+    }
+    
+    @objc private func tapOnCloseIcon() {
+        dismiss(animated: true)
     }
     
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
         moreInformationLabel.text = viewModel.moreInformationLabelText
         
         continueButton.didTapButton = { [weak self] in
@@ -175,9 +354,12 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                  constant: Constants.contentViewTopPadding),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.topBottomPaddingConstraint),
+            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint)
         ])
     }
@@ -196,7 +378,6 @@ public final class InstallAppBottomView: BottomSheetViewController {
         NSLayoutConstraint.activate([
             moreInformationStackView.leadingAnchor.constraint(equalTo: moreInformationView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             moreInformationStackView.trailingAnchor.constraint(equalTo: moreInformationView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
             moreInformationStackView.bottomAnchor.constraint(equalTo: moreInformationView.bottomAnchor, constant: Constants.moreInformationBottomAnchorConstraint),
             moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize)
         ])
@@ -225,12 +406,17 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            poweredByGiniView.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
+            bottomView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
+    }
+    
+    private func bindToContentSizeUpdates() {
+        contentView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedSize in
+                self?.updateBottomSheetHeight(updatedSize.height)
+            }.store(in: &cancellables)
     }
     
     @objc
@@ -252,11 +438,24 @@ public final class InstallAppBottomView: BottomSheetViewController {
             UIApplication.shared.open(url)
         }
     }
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
+            self?.postAccessibilityFocus()
+        }, completion: nil)
+    }
 }
 
 extension InstallAppBottomView {
     enum Constants {
         static let viewPaddingConstraint = 16.0
+        static let contentViewTopPadding = 48.0
         static let bankIconSize = 36.0
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0
@@ -269,6 +468,9 @@ extension InstallAppBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let moreInformationBottomAnchorConstraint = 8.0
         static let infoIconSize = 24.0
-        static let bottomViewHeight = 44.0
+        static let bottomViewHeight = 22.0
+        static let landscapePadding = 126.0
+        static let moreInformationTopPaddingLandscape = 32.0
+        static let closeIconSize = 24.0
     }
 }

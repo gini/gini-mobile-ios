@@ -57,7 +57,8 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
     fileprivate func getKey(_ key: String, from document: CGPDFDocument) -> String? {
         if let dict = document.info {
             var cfValue: CGPDFStringRef?
-            if (CGPDFDictionaryGetString(dict, key, &cfValue)), let value = CGPDFStringCopyTextString(cfValue!) {
+            if CGPDFDictionaryGetString(dict, key, &cfValue),
+               let value = CGPDFStringCopyTextString(cfValue!) {
                 return value as String
             }
         }

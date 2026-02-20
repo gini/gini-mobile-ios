@@ -47,11 +47,13 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titleAccentColor: GiniColor.standard2.uiColor(),
             titleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
             moreInformationFont: GiniHealthConfiguration.shared.font(for: .captions1),
-            moreInformationTextColor: GiniColor.standard3.uiColor(),
-            moreInformationAccentColor: GiniColor.standard3.uiColor(),
+            moreInformationTextColor: GiniColor.standard4.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationIcon: GiniHealthImage.info.preferredUIImage(),
             appStoreIcon: GiniHealthImage.appStore.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor()
+            bankIconBorderColor: GiniColor.standard5.uiColor(),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 
@@ -69,12 +71,14 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titleAccentColor: GiniColor.standard2.uiColor(),
             descriptionFont: GiniHealthConfiguration.shared.font(for: .captions1),
             descriptionTextColor: GiniColor.standard3.uiColor(),
-            descriptionAccentColor: GiniColor.standard3.uiColor(),
+            descriptionAccentColor: GiniColor.standard4.uiColor(),
             paymentInfoBorderColor: GiniColor.standard5.uiColor(),
             titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            subtitlePaymentInfoFont: GiniHealthConfiguration.shared.font(for: .body2)
+            subtitlePaymentInfoFont: GiniHealthConfiguration.shared.font(for: .body2),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 
@@ -97,7 +101,10 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             linksFont: GiniHealthConfiguration.shared.font(for: .linkBold),
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor()
+            backgroundColor: GiniColor.standard7.uiColor(),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconTintColor: GiniColor.standard2.uiColor(),
+            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
     }
 
@@ -132,13 +139,14 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     public var paymentReviewConfiguration: PaymentReviewConfiguration {
         PaymentReviewConfiguration(
             loadingIndicatorStyle: UIActivityIndicatorView.Style.large,
-            loadingIndicatorColor: GiniHealthColorPalette.accent1.preferredColor(),
+            loadingIndicatorColor: GiniColor.accent1.uiColor(),
             infoBarLabelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
-            infoBarBackgroundColor: GiniHealthColorPalette.success1.preferredColor(),
+            infoBarBackgroundColor: GiniColor.success1.uiColor(),
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
             paymentReviewClose: GiniHealthImage.paymentReviewClose.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
+            rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniHealthConfiguration.shared.font(for: .captions1),
             statusBarStyle: GiniHealthConfiguration.shared.paymentReviewStatusBarStyle,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
@@ -158,10 +166,10 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var moreInformationConfiguration: MoreInformationConfiguration {
         MoreInformationConfiguration(
-            moreInformationAccentColor: GiniColor.standard2.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationTextColor: GiniColor.standard4.uiColor(),
             moreInformationLinkFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            moreInformationIcon: GiniHealthImage.info.preferredUIImage()
+            moreInformationIcon: GiniHealthImage.info.preferredUIImage().withRenderingMode(.alwaysTemplate)
         )
     }
 

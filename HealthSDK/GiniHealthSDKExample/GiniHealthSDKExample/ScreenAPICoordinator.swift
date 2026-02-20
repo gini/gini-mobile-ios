@@ -66,8 +66,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     }
     
     func onPaymentReviewScreenEvent(event: GiniHealthSDK.TrackingEvent<GiniHealthSDK.PaymentReviewScreenEventType>) {
+        // This method will remain empty; no implementation is needed.
     }
-    
+
     // MARK: - GiniCaptureResultsDelegate
     
     func giniCaptureDidCancelAnalysis() {

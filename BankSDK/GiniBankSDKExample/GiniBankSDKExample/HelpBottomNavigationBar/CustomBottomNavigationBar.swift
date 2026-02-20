@@ -2,7 +2,7 @@
 //  CustomHelpBottomNavigationBar.swift
 //  GiniBankSDKExample
 //
-//  Created by Krzysztof Kryniecki on 07/10/2022.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit

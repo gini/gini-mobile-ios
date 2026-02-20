@@ -36,12 +36,15 @@ public struct PaymentComponentsStrings {
     let selectYourBankLabelText: String
     let placeholderBankNameText: String
     let ctaLabelText: String
+    let selectYourBankAccessibilityHint: String
 
     public init(selectYourBankLabelText: String,
                 placeholderBankNameText: String,
-                ctaLabelText: String) {
+                ctaLabelText: String,
+                selectYourBankAccessibilityHint: String) {
         self.selectYourBankLabelText = selectYourBankLabelText
         self.placeholderBankNameText = placeholderBankNameText
         self.ctaLabelText = ctaLabelText
+        self.selectYourBankAccessibilityHint = selectYourBankAccessibilityHint
     }
 }

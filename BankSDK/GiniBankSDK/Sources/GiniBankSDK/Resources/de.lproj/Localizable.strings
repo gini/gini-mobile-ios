@@ -131,6 +131,7 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
 "ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Versuch's nochmal";
+"ginibank.skonto.editableField.accessibility" = "Zum Bearbeiten Doppeltippen";
 
 // MARK: - Transaction Docs feature
 "ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";

@@ -12,6 +12,7 @@ public protocol PaymentComponentViewProtocol: AnyObject {
     func didTapOnMoreInformation(documentId: String?)
     func didTapOnBankPicker(documentId: String?)
     func didTapOnPayInvoice(documentId: String?)
+    func didDismissPaymentComponent()
 }
 
 /**

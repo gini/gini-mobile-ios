@@ -49,6 +49,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     }
     
     func onPaymentReviewScreenEvent(event: GiniMerchantSDK.TrackingEvent<GiniMerchantSDK.PaymentReviewScreenEventType>) {
+        // This method will remain empty; no implementation is needed.
     }
 }
 // MARK: - UINavigationControllerDelegate

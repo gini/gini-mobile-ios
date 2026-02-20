@@ -2,7 +2,7 @@
 //  CustomCameraBottomNavigationBar.swift
 //  GiniBankSDKExample
 //
-//  Created by Krzysztof Kryniecki on 10/11/2022.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit

@@ -19,7 +19,7 @@ final class GiniInputAccessoryView: UIView {
 
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         toolbar.barStyle = .default
-        toolbar.backgroundColor = .giniColorScheme().inputAccessoryView.background.uiColor()
+        toolbar.backgroundColor = .giniBankColorScheme().inputAccessoryView.background.uiColor()
 
         return toolbar
     }()
@@ -30,7 +30,7 @@ final class GiniInputAccessoryView: UIView {
                                      target: self,
                                      action: #selector(previousTapped))
 
-        button.tintColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
+        button.tintColor = .giniBankColorScheme().inputAccessoryView.tintColor.uiColor()
 
         return button
     }()
@@ -41,7 +41,7 @@ final class GiniInputAccessoryView: UIView {
                                      target: self,
                                      action: #selector(nextTapped))
 
-        button.tintColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
+        button.tintColor = .giniBankColorScheme().inputAccessoryView.tintColor.uiColor()
 
         return button
     }()
@@ -108,8 +108,8 @@ final class GiniInputAccessoryView: UIView {
     }
 
     private func updateButtonStates() {
-        let enabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
-        let disabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.disabledTintColor.uiColor()
+        let enabledTintColor: UIColor = .giniBankColorScheme().inputAccessoryView.tintColor.uiColor()
+        let disabledTintColor: UIColor = .giniBankColorScheme().inputAccessoryView.disabledTintColor.uiColor()
 
         previousButton.isEnabled = currentIndex > 0
         nextButton.isEnabled = currentIndex < textFields.count - 1

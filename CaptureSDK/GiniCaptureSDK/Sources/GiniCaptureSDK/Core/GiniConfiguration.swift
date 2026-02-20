@@ -2,12 +2,13 @@
 //  GiniConfiguration.swift
 //  GiniCapture
 //
-//  Created by Peter Pult on 15/06/16.
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 import GiniBankAPILibrary
+import GiniUtilites
+
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
@@ -74,7 +75,9 @@ import GiniBankAPILibrary
 
      - returns: Instance of `GiniConfiguration`.
      */
-    override init() {}
+    override init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // MARK: General options
 
@@ -162,7 +165,7 @@ import GiniBankAPILibrary
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = DefaultLogger()
+    public var logger: GiniLogger = DefaultLogger(prefix: "[GiniCapture SDK]")
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -249,44 +252,44 @@ import GiniBankAPILibrary
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * Enable/disable the bottom navigation bar.
+      * Bottom navigation bar is no longer supported. Setting this property has no effect.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    internal let bottomNavigationBarEnabled: Bool = false
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+      * Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+      * Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+      * Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+      * Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
+    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+      * Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
 
     /**
       * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
@@ -374,6 +377,14 @@ import GiniBankAPILibrary
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
     public var customMenuItems: [HelpMenuItem] = []
+
+    // MARK: - Save Photos Locally
+    /**
+     Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
+     photos captured during the payment flow will be automatically saved to the device's
+     local photo library.
+     */
+    public var savePhotosLocallyEnabled: Bool = true
 
     // MARK: - Transaction Docs feature
     /**
@@ -470,13 +481,13 @@ import GiniBankAPILibrary
     var documentService: DocumentServiceProtocol?
 
     // swiftlint:disable function_parameter_count
-     /// Function for clean up
-     /// - Parameters:
-     ///   - paymentRecipient: paymentRecipient description
-     ///   - paymentReference: paymentReference description
-     ///   - iban: iban description
-     ///   - bic: bic description
-     ///   - amountToPay: amountToPay description
+    /// Function for clean up
+    /// - Parameters:
+    ///   - paymentRecipient: paymentRecipient description
+    ///   - paymentReference: paymentReference description
+    ///   - iban: iban description
+    ///   - bic: bic description
+    ///   - amountToPay: amountToPay description
     // swiftlint:disable line_length
     @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
     // swiftlint:enable line_length

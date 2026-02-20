@@ -11,7 +11,15 @@ import GiniUtilites
 
 class BankSelectionTableViewCell: UITableViewCell, ReusableView {
     private let cellView = UIView()
-    private let bankNameLabel = UILabel()
+    
+    private let bankNameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
     private let bankImageView = UIImageView()
     private let selectionIndicatorImageView = UIImageView()
     
@@ -43,14 +51,16 @@ private extension BankSelectionTableViewCell {
         static let sectionIconSide = 24.0
         static let paddingHorizontal = 16.0
         static let paddingVertical = 4.0
+        static let contentPadding = 16.0
     }
 }
 
 private extension BankSelectionTableViewCell {
     func setupViews() {
-        addSubview(cellView)
+        contentView.addSubview(cellView)
         backgroundColor = .clear
         selectionStyle = .none
+        accessibilityTraits = .button
         
         cellView.addSubview(bankImageView)
         cellView.addSubview(bankNameLabel)
@@ -64,27 +74,33 @@ private extension BankSelectionTableViewCell {
     
     func setupConstraints() {
         cellView.translatesAutoresizingMaskIntoConstraints = false
-        bankNameLabel.translatesAutoresizingMaskIntoConstraints = false
         bankImageView.translatesAutoresizingMaskIntoConstraints = false
         selectionIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            cellView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingVertical),
-            cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            cellView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingVertical),
+            cellView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                          constant: Constants.paddingVertical),
+            cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                             constant: -Constants.paddingVertical),
 
-            bankImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            bankImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.paddingHorizontal),
+            bankImageView.centerYAnchor.constraint(equalTo: cellView.centerYAnchor),
+            bankImageView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,
+                                                   constant: Constants.paddingHorizontal),
             bankImageView.widthAnchor.constraint(equalToConstant: Constants.bankIconSide),
             bankImageView.heightAnchor.constraint(equalToConstant: Constants.bankIconSide),
-            
-            bankNameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor, constant: Constants.paddingHorizontal),
-            bankNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingHorizontal),
-            
-            selectionIndicatorImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            selectionIndicatorImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingHorizontal),
+            bankNameLabel.topAnchor.constraint(equalTo: cellView.topAnchor,
+                                               constant: Constants.contentPadding),
+            bankNameLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor,
+                                                  constant: -Constants.contentPadding),
+            bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor,
+                                                   constant: Constants.paddingHorizontal),
+            selectionIndicatorImageView.centerYAnchor.constraint(equalTo: cellView.centerYAnchor),
+            selectionIndicatorImageView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor,
+                                                                  constant: -Constants.paddingHorizontal),
+            selectionIndicatorImageView.leadingAnchor.constraint(equalTo: bankNameLabel.trailingAnchor,
+                                                                 constant: -Constants.paddingHorizontal),
             selectionIndicatorImageView.widthAnchor.constraint(equalToConstant: Constants.sectionIconSide),
             selectionIndicatorImageView.heightAnchor.constraint(equalToConstant: Constants.sectionIconSide)
         ])
@@ -95,6 +111,7 @@ private extension BankSelectionTableViewCell {
         
         let isSelected = cellViewModel.shouldShowSelectionIcon
 
+        accessibilityTraits = isSelected ? [.button, .selected] : .button
         bankImageView.image = cellViewModel.bankImageIcon
         bankImageView.layer.borderColor = cellViewModel.colors.bankIconBorderColor.cgColor
 

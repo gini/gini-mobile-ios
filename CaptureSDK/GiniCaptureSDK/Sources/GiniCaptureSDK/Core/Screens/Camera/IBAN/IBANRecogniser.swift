@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import GiniUtilites
 
 private func extractIBANMatches(from string: String) -> [NSTextCheckingResult] {
     let stringRange = NSRange(location: 0, length: string.count)

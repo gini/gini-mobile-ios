@@ -14,9 +14,7 @@ The delegate is separated into smaller protocols relating to different screens o
  
 - note: The delegate isn't retained by Gini Health SDK. It should be retained by the client code.
 */
-public protocol GiniHealthTrackingDelegate:
-    PaymentReviewScreenTrackingDelegate
-{}
+public protocol GiniHealthTrackingDelegate: PaymentReviewScreenTrackingDelegate {}
 
 /**
 Event types relating to the payment review screen.

@@ -18,6 +18,7 @@ import GiniUtilites
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine
     func didFetchedPaymentProviders()
+    func didDismissPaymentComponents()
 }
 
 protocol PaymentComponentsProtocol {
@@ -100,8 +101,6 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         }
     }
 
-    /// Previous presented view
-    var previousPresentedViews: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not

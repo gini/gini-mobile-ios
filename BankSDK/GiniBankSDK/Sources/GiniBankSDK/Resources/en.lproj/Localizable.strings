@@ -138,6 +138,7 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
 "ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Try again";
+"ginibank.skonto.editableField.accessibility" = "Double tap to edit";
 
 // MARK: - Transaction Docs feature
 "ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";

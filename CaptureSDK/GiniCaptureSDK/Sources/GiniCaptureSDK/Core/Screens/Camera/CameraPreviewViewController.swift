@@ -164,9 +164,10 @@ final class CameraPreviewViewController: UIViewController {
         if UIDevice.current.isIphone,
            let defaultImageView,
            let defaultImage,
-           let cgimage = defaultImage.cgImage
-        {
-            defaultImageView.image = UIImage(cgImage: cgimage, scale: 1, orientation: currentInterfaceOrientation.isLandscape ? .left : .up)
+           let cgimage = defaultImage.cgImage {
+            defaultImageView.image = UIImage(cgImage: cgimage,
+                                             scale: 1,
+                                             orientation: currentInterfaceOrientation.isLandscape ? .left : .up)
         }
     }
 
@@ -206,7 +207,8 @@ final class CameraPreviewViewController: UIViewController {
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.padding),
+                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor,
+                                                     constant: Constants.padding),
                 cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),
@@ -215,7 +217,8 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameViewHeightAnchorPortrait])
         } else {
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                     constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -462,7 +465,9 @@ extension CameraPreviewViewController {
             defaultImageView.removeFromSuperview()
             self.defaultImageView = nil
         }
-        let defaultImage = UIImage(cgImage: defaultImageCG, scale: 1, orientation: (UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape) ? .left : .up)
+        let iPhoneInLandscape = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
+        let defaultImage = UIImage(cgImage: defaultImageCG, scale: 1,
+                                   orientation: iPhoneInLandscape ? .left : .up)
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
         defaultImageView.alpha = 0.5

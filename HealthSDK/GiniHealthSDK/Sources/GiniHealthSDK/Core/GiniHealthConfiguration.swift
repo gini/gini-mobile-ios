@@ -95,7 +95,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniHealthColorPalette.accent1.preferredColor().withAlphaComponent(0.4),
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor().withAlphaComponent(0.4),
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
                                                                      titleFont: font(for: .button),
@@ -123,7 +123,7 @@ public final class GiniHealthConfiguration: NSObject {
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
     public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
-                                                                                 borderColor: GiniColor.standard5.uiColor(),
+                                                                                 borderColor: GiniColor.standard6.uiColor(),
                                                                                  textColor: GiniColor.standard1.uiColor(),
                                                                                  textFont: font(for: .captions2),
                                                                                  cornerRadius: 12.0,
