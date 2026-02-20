@@ -336,13 +336,9 @@ private extension SessionManager {
         case 406:
             completion(.failure(.notAcceptable(response: response, data: data)))
         case 429:
-            completion(
-                .failure(
-                    .tooManyRequests(response: response, data: data)))
+            completion(.failure(.tooManyRequests(response: response, data: data)))
         default:
-            completion(
-                .failure(
-                    .unknown(response: response, data: data)))
+            completion(.failure(.unknown(response: response, data: data)))
         }
     }
 
