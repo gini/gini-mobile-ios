@@ -45,10 +45,10 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         let expectedDocument = try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
 
         // When
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID,
                                     completion: $0)
-        }
+        })
 
         // Then
         switch result {
@@ -59,13 +59,13 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testPollDocument_returnsError_whenDocumentMissing() {
-        let result = waitForResult {
+    func testPollDocument_returnsError_whenDocumentMissing() throws {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.pollDocument(
                 docId: MockSessionManager.missingDocumentID,
                 completion: $0
             )
-        }
+        })
 
         switch result {
             case .success:
@@ -88,12 +88,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
             .first ?? []
 
         // When
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.setDocumentForReview(
                 documentId: MockSessionManager.extractionsWithPaymentDocumentID,
                 completion: $0
             )
-        }
+        })
 
         // Then
         switch result {
@@ -128,12 +128,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         )
 
         // When
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.fetchDataForReview(
                 documentId: MockSessionManager.extractionsWithPaymentDocumentID,
                 completion: $0
             )
-        }
+        })
 
         // Then
         switch result {
@@ -148,13 +148,13 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testFetchDataForReview_returnsError_whenDocumentMissing() {
-        let result = waitForResult {
+    func testFetchDataForReview_returnsError_whenDocumentMissing() throws {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.fetchDataForReview(
                 documentId: MockSessionManager.missingDocumentID,
                 completion: $0
             )
-        }
+        })
 
         switch result {
             case .success:
@@ -197,12 +197,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
 
     // MARK: - Delete Batch Documents
 
-    func testDeleteBatchDocuments_returnsSuccess_whenAllDocumentsValid() {
+    func testDeleteBatchDocuments_returnsSuccess_whenAllDocumentsValid() throws {
         let validIds = DeleteBatchDocumentType.success
 
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: validIds, completion: $0)
-        }
+        })
 
         switch result {
             case .success(let message):
@@ -212,12 +212,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenUnauthorized() {
+    func testDeleteBatchDocuments_returnsError_whenUnauthorized() throws {
         let unauthorizedIds = DeleteBatchDocumentType.unauthorizedDocuments
 
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: unauthorizedIds, completion: $0)
-        }
+        })
 
         switch result {
             case .success:
@@ -228,12 +228,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenDocumentsNotFound() {
+    func testDeleteBatchDocuments_returnsError_whenDocumentsNotFound() throws {
         let notFoundIds = DeleteBatchDocumentType.notFoundDocuments
 
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: notFoundIds, completion: $0)
-        }
+        })
 
         switch result {
             case .success:
@@ -245,12 +245,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenCompositeItemsMissing() {
+    func testDeleteBatchDocuments_returnsError_whenCompositeItemsMissing() throws {
         let compositeMissingIds = DeleteBatchDocumentType.missingCompositeItems
 
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: compositeMissingIds, completion: $0)
-        }
+        })
 
         switch result {
             case .success:
@@ -262,12 +262,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenMixedFailureOccurs() {
+    func testDeleteBatchDocuments_returnsError_whenMixedFailureOccurs() throws {
         let mixedIds = DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems
 
-        let result = waitForResult {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: mixedIds, completion: $0)
-        }
+        })
 
         switch result {
             case .success:
@@ -279,10 +279,10 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenEmptyIdsProvided() {
-        let result = waitForResult {
+    func testDeleteBatchDocuments_returnsError_whenEmptyIdsProvided() throws {
+        let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: [], completion: $0)
-        }
+        })
 
         switch result {
             case .success:
@@ -303,33 +303,33 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
     ///   - This method should only be used from within XCTest cases, as it relies on
     ///     XCTest's expectation mechanism.
     ///   - The enclosing test case's `timeout` is used to wait for the expectation; if the
-    ///     expectation is not fulfilled within that time, the test will fail and the returned
-    ///     result may be `nil`/undefined. Ensure your mocked services call the completion.
+    ///     expectation is not fulfilled within that time, the test will fail gracefully by
+    ///     returning `nil`. Use `XCTUnwrap` at call sites to ensure the result exists.
     ///
     /// - Parameter action: A closure that starts the asynchronous work. It receives a completion
     ///   closure to be called with a `Result<T, E>` when the work finishes.
     ///   Example:
     ///   ```swift
-    ///   let result = waitForResult { completion in
+    ///   let result = try XCTUnwrap(waitForResult { completion in
     ///       api.doSomething { outcome in
     ///           completion(outcome)
     ///       }
-    ///   }
+    ///   })
     ///   ```
     ///
-    /// - Returns: The `Result<T, E>` produced by the asynchronous operation.
-    ///   On success, it contains the expected value of type `T`; on failure, it contains an
-    ///   error of type `E`.
+    /// - Returns: The `Result<T, E>` produced by the asynchronous operation, or `nil` if the
+    ///   expectation times out. On success, it contains the expected value of type `T`; on
+    ///   failure, it contains an error of type `E`.
     ///
     /// - SeeAlso: `XCTestCase.expectation(description:)`, `XCTestCase.waitForExpectations(timeout:handler:)`
-    /// - Important: Always ensure that the asynchronous operation being tested calls the provided completion handler, otherwise the test will timeout and fail.
+    /// - Important: Always ensure that the asynchronous operation being tested calls the provided completion handler, otherwise the test will timeout and return nil.
     @discardableResult
     private func waitForResult<T, E: Error>(
         _ action: (@escaping (Result<T, E>) -> Void) -> Void
-    ) -> Result<T, E> {
+    ) -> Result<T, E>? {
 
         let expectation = expectation(description: "Awaiting async result")
-        var capturedResult: Result<T, E>!
+        var capturedResult: Result<T, E>?
 
         action {
             capturedResult = $0
