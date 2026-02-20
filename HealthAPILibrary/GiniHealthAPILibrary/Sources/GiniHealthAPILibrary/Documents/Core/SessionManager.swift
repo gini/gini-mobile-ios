@@ -348,13 +348,13 @@ private extension SessionManager {
                                               completion: @escaping CompletionResult<T.ResponseType>) {
         logIn { result in
             switch result {
-                case .success:
-                    self.load(resource: resource,
-                              taskType: taskType,
-                              cancellationToken: cancellationToken,
-                              completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success:
+                self.load(resource: resource,
+                          taskType: taskType,
+                          cancellationToken: cancellationToken,
+                          completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
