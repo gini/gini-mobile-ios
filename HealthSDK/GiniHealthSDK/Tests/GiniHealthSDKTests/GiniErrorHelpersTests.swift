@@ -301,5 +301,88 @@ final class GiniErrorHelpersTests: XCTestCase {
             XCTAssertTrue(description.contains("Items:"), "Missing items in \(fileName)")
         }
     }
+    
+    // MARK: - message Property Tests
+    
+    func testMessage_customError_returnsAPIMessage() {
+        // Given - Error with API message
+        let jsonData = """
+        {
+            "message": "Documents could not be deleted due to authorization issues",
+            "items": [
+                {
+                    "code": "2013",
+                    "object": ["doc-1", "doc-2"]
+                }
+            ],
+            "requestId": "test-request-123"
+        }
+        """.data(using: .utf8)!
+        
+        let apiError = GiniHealthAPILibrary.GiniError.customError(
+            response: nil,
+            data: jsonData
+        )
+        let error = GiniError.decorator(apiError)
+        
+        // When
+        let message = error.message
+        
+        // Then - Should return the actual API message, not localized description
+        XCTAssertEqual(message, "Documents could not be deleted due to authorization issues")
+    }
+    
+    func testMessage_customError_withDecodingFailure_fallsBackToLocalizedDescription() {
+        // Given - Invalid JSON that can't be decoded
+        let invalidJsonData = "not valid json".data(using: .utf8)!
+        
+        let apiError = GiniHealthAPILibrary.GiniError.customError(
+            response: nil,
+            data: invalidJsonData
+        )
+        let error = GiniError.decorator(apiError)
+        
+        // When
+        let message = error.message
+        
+        // Then - Should fall back to localizedDescription
+        XCTAssertNotNil(message)
+        XCTAssertNotEqual(message, "Documents could not be deleted due to authorization issues")
+        // Will be something like "The operation couldn't be completed..."
+    }
+    
+    func testMessage_customError_withRealTestFile_returnsMessage() {
+        // Given - Use actual test resource
+        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
+            XCTFail("Failed to load test resource")
+            return
+        }
+        
+        let apiError = GiniHealthAPILibrary.GiniError.customError(
+            response: nil,
+            data: jsonData
+        )
+        let error = GiniError.decorator(apiError)
+        
+        // When
+        let message = error.message
+        
+        // Then - Should return the message from the JSON file
+        XCTAssertNotNil(message)
+        XCTAssertFalse(message?.isEmpty ?? true)
+        // The actual message will depend on what's in the test file
+    }
+    
+    func testMessage_nonCustomError_returnsExpectedMessage() {
+        // Given
+        let noResponseError = GiniError.decorator(.noResponse)
+        let notFoundError = GiniError.decorator(.notFound(response: nil, data: nil))
+        let unauthorizedError = GiniError.decorator(.unauthorized(response: nil, data: nil))
+        
+        // Then
+        XCTAssertEqual(noResponseError.message, "No response")
+        XCTAssertEqual(notFoundError.message, "Not found")
+        XCTAssertEqual(unauthorizedError.message, "Unauthorized")
+    }
 }
 

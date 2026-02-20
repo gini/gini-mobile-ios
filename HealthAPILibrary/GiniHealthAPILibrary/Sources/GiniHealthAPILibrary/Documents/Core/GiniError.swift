@@ -140,7 +140,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         case .unknown:
             return "Unknown"
         case .customError:
-            return localizedDescription
+            return customError?.message ?? localizedDescription
         }
     }
 
