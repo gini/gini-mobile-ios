@@ -50,12 +50,12 @@ You can also specify a custom path segment, if your proxy url requires it:
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
+If you want to use _Certificate pinning_, then pass your public key pinning configuration as follows:
 
 ```swift
     let yourPublicPinningConfig = [
             kTSKPinnedDomains: [
-            "Bank-api.gini.net": [
+            "pay-api.gini.net": [
                 kTSKPublicKeyHashes: [
                 // old *.gini.net public key
                 "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
@@ -217,7 +217,7 @@ documentService
 
 Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us transfer summary for the extractions we are able to continuously improve the extraction quality.
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B3.9.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B4.0.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://gini.atlassian.net/wiki/spaces/PA1/pages/36733143/Submit+Transfer+Summary+on+Extractions#Test-example) for testing extraction feedback sending.
 
