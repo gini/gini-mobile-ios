@@ -43,7 +43,7 @@ public protocol GiniCustomErrorProtocol {
 /// Represents a single error item from the API error response.
 ///
 /// Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
-public struct ErrorItem: Codable, Equatable {
+public struct ErrorItem: Codable, Equatable, Sendable {
     /// The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
     public var code: String
     
@@ -130,7 +130,7 @@ struct GiniCustomError: Codable {
     }
 }
 
-public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
+public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case badRequest(response: HTTPURLResponse? = nil, data: Data? = nil)
     case notAcceptable(response: HTTPURLResponse? = nil, data: Data? = nil)
     case notFound(response: HTTPURLResponse? = nil, data: Data? = nil)
@@ -250,24 +250,6 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
             return nil
         }
         return customErrorDecoded
-    }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var unauthorizedItems: [String]? {
-        // API v5 doesn't return this field - customers must use `items` array
-        return nil
-    }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var notFoundItems: [String]? {
-        // API v5 doesn't return this field - customers must use `items` array
-        return nil
-    }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var missingCompositeItems: [String]? {
-        // API v5 doesn't return this field - customers must use `items` array
-        return nil
     }
 
     /// Helper Function to Get Custom Document / PaymentRequest Errors Message

@@ -63,29 +63,5 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
                 return giniError.requestId
         }
     }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var unauthorizedItems: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.unauthorizedItems
-        }
-    }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var notFoundItems: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.notFoundItems
-        }
-    }
-
-    @available(*, deprecated, message: "This property will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    public var missingCompositeItems: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.missingCompositeItems
-        }
-    }
 }
 
