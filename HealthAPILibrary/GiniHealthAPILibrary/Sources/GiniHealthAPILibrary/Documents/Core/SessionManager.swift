@@ -323,11 +323,8 @@ private extension SessionManager {
                     return
                 }
 
-                if let customError = try? JSONDecoder().decode(GiniCustomError.self, from: responseData) {
-                    completion(.failure(.customError(response: response,
-                                                     data: responseData)
-                        )
-                    )
+                if (try? JSONDecoder().decode(GiniCustomError.self, from: responseData)) != nil {
+                    completion(.failure(.customError(response: response, data: responseData)))
                     return
                 }
 

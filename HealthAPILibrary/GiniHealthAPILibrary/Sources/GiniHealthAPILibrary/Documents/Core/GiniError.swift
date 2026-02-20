@@ -139,8 +139,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "Unauthorized"
         case .unknown:
             return "Unknown"
-        default:
-            return getCustomErrorMessage() ?? localizedDescription
+        case .customError:
+            return localizedDescription
         }
     }
 
@@ -227,13 +227,6 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return nil
         }
         return customErrorDecoded
-    }
-
-    /// Helper Function to Get Custom Document / PaymentRequest Errors Message
-    @available(*, deprecated, message: "This method will not return values and will be removed in a future release. Use `items` for the specific errors instead")
-    private func getCustomErrorMessage() -> String? {
-        // Deprecated - returns nil since API v5 uses items array
-        return nil
     }
 }
 
