@@ -7,9 +7,47 @@ on:
     branches: [main]
 
 jobs:
-  analyze:
+  detect-changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      bank-sdk: ${{ steps.filter.outputs.bank-sdk }}
+      health-sdk: ${{ steps.filter.outputs.health-sdk }}
+      merchant-sdk: ${{ steps.filter.outputs.merchant-sdk }}
+      capture-sdk: ${{ steps.filter.outputs.capture-sdk }}
+      health-api-library: ${{ steps.filter.outputs.health-api-library }}
+      bank-api-library: ${{ steps.filter.outputs.bank-api-library }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check paths
+      uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          bank-sdk:
+            - 'BankSDK/**'
+            - 'CaptureSDK/**'
+            - 'BankAPILibrary/**'
+          health-sdk:
+            - 'HealthSDK/**'
+            - 'HealthAPILibrary/**'
+          merchant-sdk:
+            - 'MerchantSDK/**'
+          capture-sdk:
+            - 'CaptureSDK/**'
+            - 'BankAPILibrary/**'
+          health-api-library:
+            - 'HealthAPILibrary/**'
+          bank-api-library:
+            - 'BankAPILibrary/**'
+
+  analyze-non-swift:
     name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
@@ -24,16 +62,8 @@ jobs:
           build-mode: none
         - language: ruby
           build-mode: none
-        - language: swift
-          build-mode: manual
 
     steps:
-    - name: Setup Xcode
-      if: matrix.language == 'swift'
-      uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
-      with:
-        xcode-version: '16.4'
-
     - name: Checkout repository
       uses: actions/checkout@v4
 
@@ -43,12 +73,70 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
-    - name: Build GiniBankSDKExample
-      if: matrix.build-mode == 'manual'
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
+      with:
+        category: "/language:${{ matrix.language }}"
+
+  analyze-swift:
+    name: Analyze Swift (${{ matrix.scheme }})
+    needs: detect-changes
+    runs-on: macos-latest
+    if: >-
+      needs.detect-changes.outputs.bank-sdk == 'true' ||
+      needs.detect-changes.outputs.health-sdk == 'true' ||
+      needs.detect-changes.outputs.merchant-sdk == 'true' ||
+      needs.detect-changes.outputs.capture-sdk == 'true' ||
+      needs.detect-changes.outputs.health-api-library == 'true' ||
+      needs.detect-changes.outputs.bank-api-library == 'true'
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - scheme: GiniBankSDKExample
+          project: BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
+          change-key: bank-sdk
+        - scheme: GiniHealthSDKExample
+          project: HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
+          change-key: health-sdk
+        - scheme: GiniMerchantSDKExample
+          project: MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj
+          change-key: merchant-sdk
+
+    steps:
+    - name: Check if scheme should run
+      id: should-run
+      run: echo "run=${{ needs.detect-changes.outputs[matrix.change-key] }}" >> "$GITHUB_OUTPUT"
+
+    - name: Setup Xcode
+      if: steps.should-run.outputs.run == 'true'
+      uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+      with:
+        xcode-version: '16.4'
+
+    - name: Checkout repository
+      if: steps.should-run.outputs.run == 'true'
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      if: steps.should-run.outputs.run == 'true'
+      uses: github/codeql-action/init@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
+      with:
+        languages: swift
+        build-mode: manual
+
+    - name: Build ${{ matrix.scheme }}
+      if: steps.should-run.outputs.run == 'true'
       run: |
         xcodebuild build \
-          -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
-          -scheme GiniBankSDKExample \
+          -project ${{ matrix.project }} \
+          -scheme ${{ matrix.scheme }} \
           -destination 'platform=iOS Simulator,OS=18.5,name=iPhone 16' \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
@@ -56,6 +144,7 @@ jobs:
           ONLY_ACTIVE_ARCH=NO
 
     - name: Perform CodeQL Analysis
+      if: steps.should-run.outputs.run == 'true'
       uses: github/codeql-action/analyze@58d4c8134bcf8ae089f888d056501755e0da2b44 # v4
       with:
-        category: "/language:${{ matrix.language }}"
+        category: "/language:swift/${{ matrix.scheme }}"
