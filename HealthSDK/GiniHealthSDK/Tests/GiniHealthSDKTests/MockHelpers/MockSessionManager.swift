@@ -163,7 +163,7 @@ final class MockSessionManager: SessionManagerProtocol {
                     if bodyStringArray.isEmpty {
                         // Build a custom error matching: items: [], message: "No payment requests to delete"
                         let errorData = GiniCustomError(
-                            message: "No payment requests to delete",
+                            message: "No documents to delete",
                             items: [],
                             requestId: "b66a-2a15-8935-dbe4-f239-8457"
                         )
