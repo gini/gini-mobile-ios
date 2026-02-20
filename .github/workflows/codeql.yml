@@ -13,12 +13,12 @@ jobs:
     permissions:
       contents: read
     outputs:
-      bank-sdk: ${{ steps.filter.outputs.bank-sdk }}
-      health-sdk: ${{ steps.filter.outputs.health-sdk }}
-      merchant-sdk: ${{ steps.filter.outputs.merchant-sdk }}
-      capture-sdk: ${{ steps.filter.outputs.capture-sdk }}
-      health-api-library: ${{ steps.filter.outputs.health-api-library }}
-      bank-api-library: ${{ steps.filter.outputs.bank-api-library }}
+      bank-sdk: ${{ steps.filter.outputs['bank-sdk'] }}
+      health-sdk: ${{ steps.filter.outputs['health-sdk'] }}
+      merchant-sdk: ${{ steps.filter.outputs['merchant-sdk'] }}
+      capture-sdk: ${{ steps.filter.outputs['capture-sdk'] }}
+      health-api-library: ${{ steps.filter.outputs['health-api-library'] }}
+      bank-api-library: ${{ steps.filter.outputs['bank-api-library'] }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -37,9 +37,6 @@ jobs:
             - 'HealthAPILibrary/**'
           merchant-sdk:
             - 'MerchantSDK/**'
-          capture-sdk:
-            - 'CaptureSDK/**'
-            - 'BankAPILibrary/**'
           health-api-library:
             - 'HealthAPILibrary/**'
           bank-api-library:
@@ -83,12 +80,12 @@ jobs:
     needs: detect-changes
     runs-on: macos-latest
     if: >-
-      needs.detect-changes.outputs.bank-sdk == 'true' ||
-      needs.detect-changes.outputs.health-sdk == 'true' ||
-      needs.detect-changes.outputs.merchant-sdk == 'true' ||
-      needs.detect-changes.outputs.capture-sdk == 'true' ||
-      needs.detect-changes.outputs.health-api-library == 'true' ||
-      needs.detect-changes.outputs.bank-api-library == 'true'
+      needs.detect-changes.outputs['bank-sdk'] == 'true' ||
+      needs.detect-changes.outputs['health-sdk'] == 'true' ||
+      needs.detect-changes.outputs['merchant-sdk'] == 'true' ||
+      needs.detect-changes.outputs['capture-sdk'] == 'true' ||
+      needs.detect-changes.outputs['health-api-library'] == 'true' ||
+      needs.detect-changes.outputs['bank-api-library'] == 'true'
     permissions:
       security-events: write
       packages: read
@@ -112,7 +109,7 @@ jobs:
     steps:
     - name: Check if scheme should run
       id: should-run
-      run: echo "run=${{ needs.detect-changes.outputs[matrix.change-key] }}" >> "$GITHUB_OUTPUT"
+      run: echo "run=${{ needs.detect-changes.outputs[matrix['change-key']] }}" >> "$GITHUB_OUTPUT"
 
     - name: Setup Xcode
       if: steps.should-run.outputs.run == 'true'
