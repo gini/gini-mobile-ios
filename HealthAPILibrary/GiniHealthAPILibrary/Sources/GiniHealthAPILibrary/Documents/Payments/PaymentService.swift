@@ -300,7 +300,17 @@ extension PaymentService {
                             case let .success(imageData):
                                 // Only add provider if no error has occurred yet
                                 if firstError == nil {
-                                    let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
+                                    let provider = PaymentProvider(id: providerResponse.id,
+                                                                   name: providerResponse.name,
+                                                                   appSchemeIOS: providerResponse.appSchemeIOS,
+                                                                   minAppVersion: providerResponse.minAppVersion,
+                                                                   colors: providerResponse.colors,
+                                                                   iconData: imageData,
+                                                                   appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                                                   universalLinkIOS: providerResponse.universalLinkIOS,
+                                                                   index: providerResponse.index,
+                                                                   gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
+                                                                   openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
                                     providers.append(provider)
                                 }
                             case let .failure(error):
@@ -329,7 +339,8 @@ extension PaymentService {
         })
     }
 
-    func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProviderResponse>>,
+    func paymentProvider(id: String,
+                         resourceHandler: ResourceDataHandler<APIResource<PaymentProviderResponse>>,
                          completion: @escaping CompletionResult<PaymentProvider>) {
         let resource = APIResource<PaymentProviderResponse>(method: .paymentProvider(id: id), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
 
@@ -339,7 +350,17 @@ extension PaymentService {
                 self.file(urlString: providerResponse.iconLocation) { result in
                     switch result {
                     case let .success(imageData):
-                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
+                        let provider = PaymentProvider(id: providerResponse.id,
+                                                       name: providerResponse.name,
+                                                       appSchemeIOS: providerResponse.appSchemeIOS,
+                                                       minAppVersion: providerResponse.minAppVersion,
+                                                       colors: providerResponse.colors,
+                                                       iconData: imageData,
+                                                       appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                                       universalLinkIOS: providerResponse.universalLinkIOS,
+                                                       index: providerResponse.index,
+                                                       gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
+                                                       openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
                         completion(.success(provider))
                     case let .failure(error):
                         completion(.failure(error))

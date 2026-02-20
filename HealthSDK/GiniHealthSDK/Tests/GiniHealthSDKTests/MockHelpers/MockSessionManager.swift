@@ -21,11 +21,16 @@ final class MockSessionManager: SessionManagerProtocol {
     static let paymentRequestIdWithExpirationDate = MockTestData.PaymentRequests.withExpirationDate
     static let paymentRequestIdWithMissingExpirationDate = MockTestData.PaymentRequests.missingExpirationDate
 
-    func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func upload<T>(resource: T,
+                   data: Data,
+                   cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                   completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         //
     }
     
-    func download<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func download<T>(resource: T,
+                     cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                     completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
@@ -47,7 +52,9 @@ final class MockSessionManager: SessionManagerProtocol {
         //
     }
     
-    func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func data<T>(resource: T,
+                 cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                 completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .document(let id):
@@ -118,7 +125,12 @@ final class MockSessionManager: SessionManagerProtocol {
                 }
             case .paymentRequest(let paymentRequestId):
                 if resource.params.method == .delete {
-                    completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
+                    guard let response = MockSessionManager.paymentRequestId as? T.ResponseType else {
+                        let error = GiniError.unknown(response: nil, data: nil)
+                        completion(.failure(error))
+                        break
+                    }
+                    completion(.success(response))
                 } else {
                     processPaymentRequest(paymentRequestId, completion: completion)
                 }
@@ -236,7 +248,8 @@ final class MockSessionManager: SessionManagerProtocol {
         }
     }
 
-    private func processPaymentRequest<T>(_ paymentRequestId: String, completion: (Result<T, GiniError>) -> Void) {
+    private func processPaymentRequest<T>(_ paymentRequestId: String,
+                                          completion: (Result<T, GiniError>) -> Void) {
         let fileName: String
         switch paymentRequestId {
             case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
