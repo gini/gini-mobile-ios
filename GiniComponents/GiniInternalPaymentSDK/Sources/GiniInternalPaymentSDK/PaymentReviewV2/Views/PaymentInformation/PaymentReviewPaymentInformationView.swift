@@ -39,8 +39,6 @@ struct PaymentReviewPaymentInformationView: View {
     @Binding private var collapsedHeight: CGFloat
     @Binding private var showBanner: Bool
     
-    private let ibanValidator = IBANValidator()
-    
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
     }
@@ -357,7 +355,6 @@ struct PaymentReviewPaymentInformationView: View {
         static let emptyString = ""
         static let zero = 0.0
         static let bannerVerticalPadding = 16.0
-        static let bannerDismissDelay = 0.3
         static let bannerCornerRadius = 12.0
         static let bannerYOffset = -8.0
         static let textFieldsContainerSpacing = 8.0

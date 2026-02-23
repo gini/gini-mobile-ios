@@ -83,13 +83,6 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         return recipientValid && ibanValid && amountValid && purposeValid
     }
     
-    func clearValidationErrors() {
-        recipientError = nil
-        ibanError = nil
-        amountError = nil
-        paymentPurposeError = nil
-    }
-    
     func buildPaymentInfo(recipient: String, iban: String, amount: String, purpose: String) -> PaymentInfo {
         PaymentInfo(
             recipient: recipient,
