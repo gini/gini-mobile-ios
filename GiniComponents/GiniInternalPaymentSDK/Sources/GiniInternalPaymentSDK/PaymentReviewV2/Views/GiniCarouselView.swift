@@ -19,7 +19,7 @@ struct GiniCarouselView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing: 12) {
+            VStack(spacing: Constants.spacing) {
                 TabView(selection: $currentIndex) {
                     ForEach(Array(images.enumerated()), id: \.offset) { index, image in
                         GiniZoomableImageView(image: image, size: geometry.size)
@@ -30,5 +30,10 @@ struct GiniCarouselView: View {
                 .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
             }
         }
+    }
+    
+    private struct Constants {
+        
+        static let spacing: CGFloat = 12
     }
 }
