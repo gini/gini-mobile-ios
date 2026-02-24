@@ -9,17 +9,20 @@ import Foundation
 import GiniHealthAPILibrary
 
 public protocol GiniErrorProtocol {
-    var message: String { get }
+    var message: String? { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
+    var statusCode: Int? { get }
+    var items: [ErrorItem]? { get }
+    var requestId: String { get }
 }
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
-public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
-    
+public enum GiniError: Error, GiniErrorProtocol, Equatable {
+
     case decorator(GiniHealthAPILibrary.GiniError)
 
-    public var message: String {
+    public var message: String? {
         switch self {
         case .decorator(let giniError):
             return giniError.message
@@ -40,48 +43,25 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
-    public var unauthorizedItems: [String]? {
+    public var statusCode: Int? {
         switch self {
         case .decorator(let giniError):
-            return giniError.unauthorizedItems
+            return giniError.statusCode
         }
     }
 
-    public var notFoundItems: [String]? {
+    public var items: [ErrorItem]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.notFoundItems
+            return giniError.items
         }
     }
-    
-    public var missingCompositeItems: [String]? {
+
+    public var requestId: String {
         switch self {
-        case .decorator(let giniError):
-            return giniError.missingCompositeItems
-        }
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "unauthorizedItems")
-    public var unauthorizedDocuments: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.unauthorizedItems
-        }
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "notFoundItems")
-    public var notFoundDocuments: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.notFoundItems
-        }
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "missingCompositeItems")
-    public var missingCompositeDocuments: [String]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.missingCompositeItems
+            case .decorator(let giniError):
+                return giniError.requestId
         }
     }
 }
+

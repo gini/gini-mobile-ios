@@ -476,9 +476,18 @@ extension AppCoordinator: DebugMenuDelegate {
                 let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
                 GiniUtilites.Log(successMessage, event: .success)
                 self?.presentError(title: "Success", message: successMessage)
-            case .failure(let failure):
-                GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
-                self?.presentError(title: "Error", message: failure.message)
+            case .failure(let error):
+                // Use the convenience helper for detailed logging
+                GiniUtilites.Log(error.detailedDescription, event: .error)
+                
+                // Display user-friendly error message
+                self?.presentError(title: "Error", message: error.message)
+                
+                // Optional: Handle specific error codes if needed
+                let unauthorizedDocs = error.objectsWithCode("2013")
+                if !unauthorizedDocs.isEmpty {
+                    GiniUtilites.Log("⚠️ Unauthorized documents: \(unauthorizedDocs)", event: .warning)
+                }
             }
         }
     }
@@ -489,3 +498,4 @@ extension AppCoordinator {
         static let numberOfDocumentsToBeDeleted = 2
     }
 }
+

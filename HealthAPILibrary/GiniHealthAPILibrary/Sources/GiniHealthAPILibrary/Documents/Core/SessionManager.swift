@@ -318,12 +318,13 @@ private extension SessionManager {
             }
 
             if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                  errorInfo["error"] == "invalid_grant" {
+                errorInfo["error"] == "invalid_grant" {
                 completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
 
-            if (try? JSONSerialization.jsonObject(with: responseData) as? [String: Any]) != nil {
+            // Check if it's valid JSON (works for GiniCustomError and any other JSON structure)
+            if (try? JSONSerialization.jsonObject(with: responseData, options: [])) != nil {
                 completion(.failure(.customError(response: response, data: responseData)))
                 return
             }
@@ -348,13 +349,13 @@ private extension SessionManager {
                                               completion: @escaping CompletionResult<T.ResponseType>) {
         logIn { result in
             switch result {
-                case .success:
-                    self.load(resource: resource,
-                              taskType: taskType,
-                              cancellationToken: cancellationToken,
-                              completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success:
+                self.load(resource: resource,
+                          taskType: taskType,
+                          cancellationToken: cancellationToken,
+                          completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

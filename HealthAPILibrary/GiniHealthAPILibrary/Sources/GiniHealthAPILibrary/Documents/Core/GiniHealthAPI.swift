@@ -208,6 +208,6 @@ extension GiniHealthAPI {
 
 extension GiniHealthAPI {
     public enum Constants {
-        public static let defaultVersionAPI = 4
+        public static let defaultVersionAPI = 5
     }
 }
