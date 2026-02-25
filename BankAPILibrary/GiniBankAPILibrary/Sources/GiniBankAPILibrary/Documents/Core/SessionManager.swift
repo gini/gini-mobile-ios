@@ -125,18 +125,31 @@ extension SessionManager: SessionProtocol {
     }
 }
 
-/// Cancellation token needed during the analysis process
+/**
+ * Cancellation token needed during the analysis process.
+ *
+ * When using a custom `GiniHTTPClient`, calling `cancel()` sets the `isCancelled` flag
+ * so the SDK will discard any subsequent response, but it cannot abort the in-flight
+ * HTTP request itself — only the customer's HTTP client controls its own `URLSession`.
+ * The request may still complete in the background; its result will be ignored.
+ */
 public final class CancellationToken {
     internal weak var task: URLSessionTask?
-    
-    /// Indicates if the analysis has been cancelled
+
+    /** Indicates if the analysis has been cancelled */
     public var isCancelled = false
-    
+
     public init() {
         // This initializer is intentionally left empty because no custom setup is required at initialization.
     }
-    
-    /// Cancels the current task
+
+    /**
+     * Cancels the current task.
+     *
+     * For the default HTTP client this cancels the underlying `URLSessionTask`.
+     * For a custom `GiniHTTPClient` this only sets `isCancelled` to `true`;
+     * the in-flight request is not aborted (see class-level documentation).
+     */
     public func cancel() {
         isCancelled = true
         task?.cancel()
