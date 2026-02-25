@@ -32,6 +32,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         setupBindings()
     }
     
+    deinit {
+        cancellables.removeAll()
+    }
+    
     func validateRecipient(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
             recipientError = model.strings.emptyCheckErrorMessage
@@ -116,13 +120,15 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     private func setupBindings() {
         model.onExtractionFetched = { [weak self] () in
-            DispatchQueue.main.async {
-                self?.extractions = self?.model.extractions ?? []
+            Task { @MainActor in
+                guard let self else { return }
+                self.extractions = self.model.extractions ?? []
             }
         }
         
         /// Subscribe to payment provider changes
         model.$selectedPaymentProvider
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] newProvider in
                 self?.selectedPaymentProvider = newProvider
             }
@@ -133,30 +139,17 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         let recipient = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? ""
         let iban = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? ""
         let purpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? ""
+        let amountString = extractions.first(where: { $0.name == "amount_to_pay" })?.value ?? ""
         
-        var amountText = ""
-        
-        if let amountString = extractions.first(where: { $0.name == "amount_to_pay" })?.value,
-           let price = Price(extractionString: amountString),
-           let priceString = price.string {
-            amountText = priceString
-        }
-        
-        return (recipient, iban, amountText, purpose)
+        return (recipient, iban, amountString, purpose)
     }
     
     private func extractValuesFromPaymentInfo(_ paymentInfo: PaymentInfo) -> (String, String, String, String) {
         let recipient = paymentInfo.recipient
         let iban = paymentInfo.iban.uppercased()
         let purpose = paymentInfo.purpose
+        let amountString = paymentInfo.amount
         
-        var amountText = ""
-        
-        if let price = Price(extractionString: paymentInfo.amount),
-           let priceString = price.string {
-            amountText = priceString
-        }
-        
-        return (recipient, iban, amountText, purpose)
+        return (recipient, iban, amountString, purpose)
     }
 }
