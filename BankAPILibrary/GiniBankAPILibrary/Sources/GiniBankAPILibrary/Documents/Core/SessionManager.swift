@@ -55,10 +55,20 @@ final class SessionManager: NSObject {
     
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
-    private let session: URLSession
+    
+    /// URLSession for network requests. Nil when using custom HTTP client.
+    private let session: URLSession?
+    
     let userDomain: UserDomain
     var clientAccessToken: String?
     var userAccessToken: String?
+    
+    /// Custom HTTP client for executing network requests.
+    /// When nil, uses default URLSession-based implementation.
+    private let httpClient: GiniHTTPClient
+    
+    /// Flag indicating if custom network provider is being used.
+    private let isUsingCustomProvider: Bool
 
     enum TaskType {
         case data, download, upload(Data)
@@ -68,12 +78,26 @@ final class SessionManager: NSObject {
          alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default),
          userDomain: UserDomain = .default,
-         sessionDelegate: URLSessionDelegate? = nil) {
+         sessionDelegate: URLSessionDelegate? = nil,
+         customHTTPClient: GiniHTTPClient? = nil) {
         
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = URLSession.init(configuration: urlSession.configuration, delegate: sessionDelegate, delegateQueue: nil)
         self.userDomain = userDomain
+        
+        // Use custom client or create default
+        if let customClient = customHTTPClient {
+            self.httpClient = customClient
+            self.isUsingCustomProvider = true
+            self.session = nil  // No session needed - customer controls their own
+        } else {
+            let session = URLSession(configuration: urlSession.configuration,
+                                     delegate: sessionDelegate,
+                                     delegateQueue: nil)
+            self.httpClient = DefaultGiniHTTPClient(session: session)
+            self.isUsingCustomProvider = false
+            self.session = session
+        }
     }
 }
 
@@ -154,7 +178,7 @@ private extension SessionManager {
                          finalRequest: request,
                          type: taskType,
                          cancellationToken: cancellationToken,
-                         completion: completion).resume()
+                         completion: completion)
             } else {
                 Log("Stored token is no longer valid", event: .warning)
                 handleLoginFlow(resource: resource,
@@ -168,7 +192,7 @@ private extension SessionManager {
                      finalRequest: request,
                      type: taskType,
                      cancellationToken: cancellationToken,
-                     completion: completion).resume()
+                     completion: completion)
         }
     }
     
@@ -176,8 +200,63 @@ private extension SessionManager {
                                        finalRequest request: URLRequest,
                                        type: TaskType,
                                        cancellationToken: CancellationToken?,
-                                       completion: @escaping CompletionResult<T.ResponseType>)
-        -> URLSessionTask {
+                                       completion: @escaping CompletionResult<T.ResponseType>) {
+
+            // If using custom provider, route through custom client
+            if isUsingCustomProvider {
+                // Route through custom HTTP client
+                switch type {
+                case .data:
+                    httpClient.dataRequest(request) { [weak self] data, response, error in
+                        self?.handleCustomClientResponse(
+                            data: data,
+                            response: response,
+                            error: error,
+                            request: request,
+                            resource: resource,
+                            taskType: type,
+                            cancellationToken: cancellationToken,
+                            completion: completion
+                        )
+                    }
+
+                case .upload(let body):
+                    httpClient.uploadRequest(request, body: body) { [weak self] data, response, error in
+                        self?.handleCustomClientResponse(
+                            data: data,
+                            response: response,
+                            error: error,
+                            request: request,
+                            resource: resource,
+                            taskType: type,
+                            cancellationToken: cancellationToken,
+                            completion: completion
+                        )
+                    }
+
+                case .download:
+                    httpClient.downloadRequest(request) { [weak self] url, response, error in
+                        self?.handleCustomClientDownloadResponse(
+                            fileURL: url,
+                            response: response,
+                            error: error,
+                            request: request,
+                            resource: resource,
+                            taskType: type,
+                            cancellationToken: cancellationToken,
+                            completion: completion
+                        )
+                    }
+                }
+
+                return
+            }
+
+            // Default path: use URLSession directly
+            guard let session = session else {
+                preconditionFailure("URLSession is nil but custom provider is not being used. This should never happen.")
+            }
+
             let task: URLSessionTask
             switch type {
             case .data:
@@ -203,14 +282,13 @@ private extension SessionManager {
                                                                                    taskType: type,
                                                                                    cancellationToken: cancellationToken,
                                                                                    completion: completion))
-                
+
             }
-            
+
             cancellationToken?.task = task
-            return task
+            task.resume()
     }
     
-    // swiftlint:disable function_body_length
     private typealias DataResponseCompletion<T> = (Data?, URLResponse?, Error?) -> Void
 
     private func taskCompletionHandler<T: Resource>(for resource: T,
@@ -314,6 +392,51 @@ private extension SessionManager {
                                        completion: completion)(Data(url: url), response, error)
         }
     }
+    
+    // MARK: - Custom HTTP Client Response Handlers
+    
+    /// Handles data/upload responses from custom HTTP client.
+    private func handleCustomClientResponse<T: Resource>(
+        data: Data?,
+        response: URLResponse?,
+        error: Error?,
+        request: URLRequest,
+        resource: T,
+        taskType: TaskType,
+        cancellationToken: CancellationToken?,
+        completion: @escaping CompletionResult<T.ResponseType>) {
+        taskCompletionHandler(
+            for: resource,
+            request: request,
+            taskType: taskType,
+            cancellationToken: cancellationToken,
+            completion: completion
+        )(data, response, error)
+    }
+    
+    /// Handles download responses from custom HTTP client.
+    private func handleCustomClientDownloadResponse<T: Resource>(
+        fileURL: URL?,
+        response: URLResponse?,
+        error: Error?,
+        request: URLRequest,
+        resource: T,
+        taskType: TaskType,
+        cancellationToken: CancellationToken?,
+        completion: @escaping CompletionResult<T.ResponseType>) {
+        guard let url = fileURL else {
+            completion(.failure(.unknown(response: response as? HTTPURLResponse, data: nil)))
+            return
+        }
+
+        downloadTaskCompletionHandler(
+            for: resource,
+            request: request,
+            taskType: taskType,
+            cancellationToken: cancellationToken,
+            completion: completion
+        )(url, response, error)
+    }
 
     private func handleLoginFlow<T: Resource>(resource: T,
                                               taskType: TaskType,
@@ -332,3 +455,4 @@ private extension SessionManager {
         }
     }
 }
+
