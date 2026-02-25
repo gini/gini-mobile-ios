@@ -20,6 +20,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var bannerDismissTask: Task<Void, Never>?
     private var bannerDismissed: Bool = false
     
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
@@ -59,7 +61,9 @@ final class PaymentReviewObservableModel: ObservableObject {
                 
                 guard !Task.isCancelled else { return }
                 
-                withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
+                let animation = reduceMotion ? nil : Animation.easeInOut(duration: Constants.bannerDismissDelay)
+                
+                withAnimation(animation) {
                     showBanner = false
                     bannerDismissed = true
                 }
