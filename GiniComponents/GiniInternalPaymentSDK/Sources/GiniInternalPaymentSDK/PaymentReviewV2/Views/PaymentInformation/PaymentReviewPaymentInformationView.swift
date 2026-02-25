@@ -131,14 +131,7 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var recipientTextField: some View {
-        TextField(Constants.emptyString, text: $recipientInputState.text, onEditingChanged: { isBegin in
-            if isBegin {
-                recipientInputState.hasError = false
-            } else {
-                recipientInputState.hasError = !viewModel.validateRecipient(recipientInputState.text)
-                recipientInputState.errorMessage = viewModel.recipientError
-            }
-        })
+        TextField(Constants.emptyString, text: $recipientInputState.text)
         .focused($focusedField, equals: .recipient)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
                                            state: fieldState(for: .recipient, hasError: recipientInputState.hasError),
@@ -146,18 +139,16 @@ struct PaymentReviewPaymentInformationView: View {
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleRecipientFocusChange(isFocused: newFocus == .recipient)
+            }
+        }
     }
     
     @ViewBuilder
     private var ibanTextField: some View {
-        TextField(Constants.emptyString, text: $ibanInputState.text, onEditingChanged: { isBegin in
-            if isBegin {
-                ibanInputState.hasError = false
-            } else {
-                ibanInputState.hasError = !viewModel.validateIBAN(ibanInputState.text)
-                ibanInputState.errorMessage = viewModel.ibanError
-            }
-        })
+        TextField(Constants.emptyString, text: $ibanInputState.text)
         .focused($focusedField, equals: .iban)
         .textInputAutocapitalization(.characters)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
@@ -166,34 +157,24 @@ struct PaymentReviewPaymentInformationView: View {
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleIBANFocusChange(isFocused: newFocus == .iban)
+            }
+        }
     }
     
     @ViewBuilder
     private var amountTextField: some View {
-        TextField(Constants.emptyString, text: $amountInputState.text,
-                  onEditingChanged: { isBegin in
-            if isBegin {
-                amountInputState.text = amountToPay.stringWithoutSymbol ?? Constants.emptyString
-            } else {
-                if !amountInputState.text.isEmpty,
-                   let decimalAmount = amountInputState.text.decimal() {
-                    amountToPay.value = decimalAmount
-                    
-                    if decimalAmount > 0,
-                       let amountString = amountToPay.string {
-                        amountInputState.text = amountString
-                    } else {
-                        amountInputState.text = Constants.emptyString
-                    }
-                }
-                
-                amountInputState.hasError = !viewModel.validateAmount(amountInputState.text, amount: amountToPay.value)
-                amountInputState.errorMessage = viewModel.amountError
-            }
-        })
+        TextField(Constants.emptyString, text: $amountInputState.text)
         .focused($focusedField, equals: .amount)
         .onChange(of: amountInputState.text) { newValue in
             adjustAmountValue(updatedText: newValue)
+        }
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleAmountFocusChange(isFocused: newFocus == .amount)
+            }
         }
         .keyboardType(.decimalPad)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
@@ -206,14 +187,7 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var paymentPurposeTextField: some View {
-        TextField(Constants.emptyString, text: $paymentPurposeInputState.text, onEditingChanged: { isBegin in
-            if isBegin {
-                paymentPurposeInputState.hasError = false
-            } else {
-                paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(paymentPurposeInputState.text)
-                paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
-            }
-        })
+        TextField(Constants.emptyString, text: $paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
                                            state: fieldState(for: .paymentPurpose, hasError: paymentPurposeInputState.hasError),
@@ -221,6 +195,11 @@ struct PaymentReviewPaymentInformationView: View {
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handlePaymentPurposeFocusChange(isFocused: newFocus == .paymentPurpose)
+            }
+        }
     }
     
     @ViewBuilder
@@ -349,6 +328,56 @@ struct PaymentReviewPaymentInformationView: View {
         
         paymentPurposeInputState.hasError = viewModel.paymentPurposeError != nil
         paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+    }
+    
+    // MARK: - Focus Change Handlers
+
+    private func handleRecipientFocusChange(isFocused: Bool) {
+        if isFocused {
+            recipientInputState.hasError = false
+        } else if !recipientInputState.text.isEmpty {
+            recipientInputState.hasError = !viewModel.validateRecipient(recipientInputState.text)
+            recipientInputState.errorMessage = viewModel.recipientError
+        }
+    }
+
+    private func handleIBANFocusChange(isFocused: Bool) {
+        if isFocused {
+            ibanInputState.hasError = false
+        } else if !ibanInputState.text.isEmpty {
+            ibanInputState.hasError = !viewModel.validateIBAN(ibanInputState.text)
+            ibanInputState.errorMessage = viewModel.ibanError
+        }
+    }
+
+    private func handleAmountFocusChange(isFocused: Bool) {
+        if isFocused {
+            amountInputState.text = amountToPay.stringWithoutSymbol ?? Constants.emptyString
+        } else {
+            if !amountInputState.text.isEmpty,
+               let decimalAmount = amountInputState.text.decimal() {
+                amountToPay.value = decimalAmount
+                
+                if decimalAmount > 0,
+                   let amountString = amountToPay.string {
+                    amountInputState.text = amountString
+                } else {
+                    amountInputState.text = Constants.emptyString
+                }
+            }
+            
+            amountInputState.hasError = !viewModel.validateAmount(amountInputState.text, amount: amountToPay.value)
+            amountInputState.errorMessage = viewModel.amountError
+        }
+    }
+
+    private func handlePaymentPurposeFocusChange(isFocused: Bool) {
+        if isFocused {
+            paymentPurposeInputState.hasError = false
+        } else if !paymentPurposeInputState.text.isEmpty {
+            paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(paymentPurposeInputState.text)
+            paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+        }
     }
     
     private struct Constants {
