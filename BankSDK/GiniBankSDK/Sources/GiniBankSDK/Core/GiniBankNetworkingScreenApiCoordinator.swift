@@ -121,9 +121,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                      api: APIDomain,
                      userApi: UserDomain,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(client: client, api: api, userApi: userApi)
-            .build()
+        var builder = GiniBankAPI.Builder(client: client, api: api, userApi: userApi)
+
+        // Flow custom network provider if configured
+        if let networkProvider = configuration.customNetworkProvider {
+            builder = builder.setCustomNetworkProvider(networkProvider)
+        }
+
+        let lib = builder.build()
 
         self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
@@ -149,9 +154,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                      configuration: GiniBankConfiguration,
                      documentMetadata: Document.Metadata?,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(alternativeTokenSource: tokenSource)
-            .build()
+        var builder = GiniBankAPI.Builder(alternativeTokenSource: tokenSource)
+
+        // Flow custom network provider if configured
+        if let networkProvider = configuration.customNetworkProvider {
+            builder = builder.setCustomNetworkProvider(networkProvider)
+        }
+
+        let lib = builder.build()
 
         self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
@@ -182,9 +192,17 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                      api: APIDomain,
                      userApi: UserDomain,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(client: client, api: api, userApi: userApi, pinningConfig: pinningConfig)
-            .build()
+        var builder = GiniBankAPI.Builder(client: client,
+                                          api: api,
+                                          userApi: userApi,
+                                          pinningConfig: pinningConfig)
+
+        // Flow custom network provider if configured
+        if let networkProvider = configuration.customNetworkProvider {
+            builder = builder.setCustomNetworkProvider(networkProvider)
+        }
+
+        let lib = builder.build()
 
         self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
@@ -212,9 +230,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                      pinningConfig: [String: [String]],
                      documentMetadata: Document.Metadata?,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniBankAPI
-            .Builder(alternativeTokenSource: tokenSource, pinningConfig: pinningConfig)
-            .build()
+        var builder = GiniBankAPI.Builder(alternativeTokenSource: tokenSource, pinningConfig: pinningConfig)
+        
+        // Flow custom network provider if configured
+        if let networkProvider = configuration.customNetworkProvider {
+            builder = builder.setCustomNetworkProvider(networkProvider)
+        }
+        
+        let lib = builder.build()
 
         self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,

@@ -77,6 +77,23 @@ public final class GiniBankConfiguration: NSObject {
      `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
      */
     public var customResourceProvider: CustomResourceProvider?
+    
+    /**
+     Custom network provider for HTTP requests.
+     
+     Allows you to provide a custom HTTP client implementation for all network requests.
+     This gives you full control over transport, headers, logging, TLS configuration, and proxies.
+
+     **Example Usage:**
+     ```swift
+     let configuration = GiniBankConfiguration.shared
+     configuration.customNetworkProvider = MyNetworkProvider()
+     ```
+     
+     - Note: When nil (default), the SDK uses its secure default implementation with certificate pinning, if needed.
+     - Note: This configuration is passed through to `GiniConfiguration` and flows to the API layer.
+     */
+    public var customNetworkProvider: GiniNetworkProvider?
 
     // MARK: - Button configuration options
     /**
@@ -501,6 +518,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.entryPoint = self.entryPoint
         configuration.customResourceBundle = self.customResourceBundle
         configuration.customResourceProvider = self.customResourceProvider
+        configuration.customNetworkProvider = self.customNetworkProvider
 
         configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
 
@@ -563,6 +581,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
         giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
         giniBankConfiguration.customResourceProvider = configuration.customResourceProvider
+        giniBankConfiguration.customNetworkProvider = configuration.customNetworkProvider
     }
 
     // MARK: - Update to custom font
