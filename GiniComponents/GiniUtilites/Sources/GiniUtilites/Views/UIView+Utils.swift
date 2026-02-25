@@ -67,8 +67,8 @@ public extension View {
     /**
      Measures and reports the view's height through a binding.
      
-     Uses `GeometryReader` to measure the view's natural height and updates the binding
-     both on appearance and when the height changes. The view is configured with
+     Uses `GeometryReader` and `PreferenceKey` to measure the view's natural height
+     and updates the binding when the height changes. The view is configured with
      `.fixedSize(horizontal: false, vertical: true)` to calculate its natural vertical size.
      
      - Parameter height: A binding to receive the measured height value.
@@ -81,12 +81,13 @@ public extension View {
             .background {
                 GeometryReader { geometry in
                     Color.clear
-                        .onAppear {
-                            height.wrappedValue = geometry.size.height
-                        }
-                        .onChange(of: geometry.size.height) { newValue in
-                            height.wrappedValue = newValue
-                        }
+                        .preference(key: GiniHeightPreferenceKey.self,
+                                    value: geometry.size.height)
+                }
+            }
+            .onPreferenceChange(GiniHeightPreferenceKey.self) { newHeight in
+                DispatchQueue.main.async {
+                    height.wrappedValue = newHeight
                 }
             }
     }
