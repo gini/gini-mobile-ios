@@ -10,18 +10,14 @@ import SwiftUI
 
 final class PaymentReviewObservableModel: ObservableObject {
     
+    private let containerViewModel: PaymentReviewContainerViewModel
+    private let paymentInformationObservableModel: PaymentReviewPaymentInformationObservableModel
+    
     private var selectedPaymentProvider: PaymentProvider {
         containerViewModel.selectedPaymentProvider
     }
     
-    private lazy var containerViewModel: PaymentReviewContainerViewModel = {
-        model.paymentReviewContainerViewModel()
-    }()
-    
-    private lazy var paymentInformationObservableModel: PaymentReviewPaymentInformationObservableModel = {
-        PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
-    }()
-    
+    private var bannerDismissTask: Task<Void, Never>?
     private var bannerDismissed: Bool = false
     
     @Published private var showBanner: Bool
@@ -38,8 +34,14 @@ final class PaymentReviewObservableModel: ObservableObject {
     
     init(model: PaymentReviewModel) {
         self.model = model
+        self.containerViewModel = model.paymentReviewContainerViewModel()
+        self.paymentInformationObservableModel = PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
         self.showBanner = !model.configuration.isInfoBarHidden
         setupBindings()
+    }
+    
+    deinit {
+        bannerDismissTask?.cancel()
     }
     
     func fetchImages() async {
@@ -51,11 +53,18 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         let duration = model.paymentReviewContainerViewModel().configuration.popupAnimationDuration
         
-        Task { @MainActor in
-            try await Task.sleep(for: .seconds(duration))
-            withAnimation(.easeInOut(duration: 0.3)) {
-                showBanner = false
-                bannerDismissed = true
+        bannerDismissTask = Task { @MainActor in
+            do {
+                try await Task.sleep(for: .seconds(duration))
+                
+                guard !Task.isCancelled else { return }
+                
+                withAnimation(.easeInOut(duration: duration)) {
+                    showBanner = false
+                    bannerDismissed = true
+                }
+            } catch {
+                /// Task was cancelled - no action needed
             }
         }
     }
