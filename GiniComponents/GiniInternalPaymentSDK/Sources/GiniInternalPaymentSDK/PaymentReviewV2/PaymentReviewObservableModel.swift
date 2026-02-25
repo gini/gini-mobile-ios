@@ -59,7 +59,7 @@ final class PaymentReviewObservableModel: ObservableObject {
                 
                 guard !Task.isCancelled else { return }
                 
-                withAnimation(.easeInOut(duration: duration)) {
+                withAnimation(.easeInOut(duration: Constants.bannerDismissDelay)) {
                     showBanner = false
                     bannerDismissed = true
                 }
@@ -175,5 +175,10 @@ final class PaymentReviewObservableModel: ObservableObject {
                                   amountToPayExtraction]
         
         model.sendFeedback(updatedExtractions: updatedExtractions)
+    }
+    
+    private struct Constants {
+        
+        static let bannerDismissDelay = 0.3
     }
 }
