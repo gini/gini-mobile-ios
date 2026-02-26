@@ -39,7 +39,11 @@ class PaymentServiceTests: XCTestCase {
     func testResolvePaymentRequest() {
         let expect = expectation(description: "returns resolved payment request id")
 
-        paymentService.resolvePaymentRequest(id: "118edf41-102a-4b40-8753-df2f0634cb86", recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", amount: "1.00:EUR", purpose: "ReNr 12345") { result in
+        paymentService.resolvePaymentRequest(id: "118edf41-102a-4b40-8753-df2f0634cb86",
+                                             recipient: "Uno Flüchtlingshilfe",
+                                             iban: "DE78370501980020008850",
+                                             amount: "1.00:EUR",
+                                             purpose: "ReNr 12345") { result in
             switch result {
             case .success(let paymentRequest):
                 XCTAssertEqual(paymentRequest.requesterUri,
