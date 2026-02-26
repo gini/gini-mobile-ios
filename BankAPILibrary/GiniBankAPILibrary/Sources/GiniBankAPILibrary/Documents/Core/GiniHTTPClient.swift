@@ -81,8 +81,6 @@ extension URLSessionTask: CancellableTask {}
  *     // ... implement other methods
  * }
  * ```
- *
- * See `CustomNetworkProvider.md` for complete documentation and examples.
  */
 public protocol GiniHTTPClient {
 
