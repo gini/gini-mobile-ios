@@ -50,17 +50,49 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
     
-//    func testCreatePaymentRequest(){
-//        let expect = expectation(description: "it creates a payment request")
-//        
-//        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", bic: "CMCIDEDDXXX", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
-//            switch result {
-//                case .success:
-//                    expect.fulfill()
-//                case let .failure(error):
-//                    XCTFail(String(describing: error))
-//            }
-//        }
-//        wait(for: [expect], timeout: 10)
-//    }
+    func testCreatePaymentRequest(){
+        let expectProviders = expectation(description: "fetch payment providers")
+        let expectRequest = expectation(description: "create payment request")
+        
+        var paymentProviderId: String?
+        
+        // First fetch actual payment providers
+        paymentService.paymentProviders { result in
+            switch result {
+            case .success(let providers):
+                paymentProviderId = providers.first?.id
+                print("✅ Fetched \(providers.count) providers, using: \(paymentProviderId ?? "none")")
+            case .failure(let error):
+                XCTFail("Failed to fetch payment providers: \(error)")
+            }
+            expectProviders.fulfill()
+        }
+        
+        wait(for: [expectProviders], timeout: 30)
+        
+        guard let providerId = paymentProviderId else {
+            XCTFail("No payment provider available")
+            return
+        }
+        
+        // Now create payment request with real provider ID
+        paymentService.createPaymentRequest(
+            sourceDocumentLocation: "",
+            paymentProvider: providerId,
+            recipient: "Dr. med. Hackler",
+            iban: "DE02300209000106531065",
+            bic: "CMCIDEDDXXX",
+            amount: "335.50:EUR",
+            purpose: "ReNr AZ356789Z"
+        ) { result in
+            switch result {
+            case .success(let requestId):
+                print("✅ Created payment request: \(requestId)")
+                expectRequest.fulfill()
+            case let .failure(error):
+                XCTFail("Failed to create payment request: \(error.customError?.message ?? error.localizedDescription)")
+            }
+        }
+        wait(for: [expectRequest], timeout: 30)
+    }
 }

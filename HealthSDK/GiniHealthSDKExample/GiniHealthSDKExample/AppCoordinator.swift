@@ -481,8 +481,9 @@ extension AppCoordinator: DebugMenuDelegate {
                 GiniUtilites.Log(error.detailedDescription, event: .error)
                 
                 // Display user-friendly error message
-                self?.presentError(title: "Error", message: error.message)
-                
+                self?.presentError(title: "Error",
+                                   message: error.message ?? error.localizedDescription)
+
                 // Optional: Handle specific error codes if needed
                 let unauthorizedDocs = error.objectsWithCode("2013")
                 if !unauthorizedDocs.isEmpty {

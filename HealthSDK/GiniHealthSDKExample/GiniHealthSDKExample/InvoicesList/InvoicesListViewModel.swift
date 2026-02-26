@@ -166,13 +166,13 @@ final class InvoicesListViewModel {
                         case let .failure(error):
                             GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))",
                                              event: .error)
-                            self?.errors.append(error.message)
+                            self?.errors.append(error.message ?? "Unknown error")
                         }
                         self?.dispatchGroup.leave()
                     }
                 case .failure(let error):
                     GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
-                    self?.errors.append(error.message)
+                    self?.errors.append(error.message ?? "Unknown error")
                     self?.dispatchGroup.leave()
                 }
             }

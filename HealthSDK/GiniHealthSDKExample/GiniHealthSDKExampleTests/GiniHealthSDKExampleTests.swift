@@ -1,14 +1,13 @@
 //
 //  GiniHealthSDKExampleTests.swift
-//  GiniHealthSDKExampleTests
 //
-//  Copyright © 2024 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
+
 
 import XCTest
-import GiniHealthSDKExample
 
-class GiniHealthSDKExampleTests: XCTestCase {
+final class GiniHealthSDKExampleTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,11 +20,14 @@ class GiniHealthSDKExampleTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Any test you write for XCTest can be annotated as throws and async.
+        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
