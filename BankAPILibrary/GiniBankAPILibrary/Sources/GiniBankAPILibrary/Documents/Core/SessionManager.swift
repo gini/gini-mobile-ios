@@ -56,19 +56,12 @@ final class SessionManager: NSObject {
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
     
-    /// URLSession for network requests. Nil when using custom HTTP client.
-    private let session: URLSession?
-    
     let userDomain: UserDomain
     var clientAccessToken: String?
     var userAccessToken: String?
-    
-    /// Custom HTTP client for executing network requests.
-    /// When nil, uses default URLSession-based implementation.
+
+    /// HTTP client for executing network requests.
     private let httpClient: GiniHTTPClient
-    
-    /// Flag indicating if custom network provider is being used.
-    private let isUsingCustomProvider: Bool
 
     enum TaskType {
         case data, download, upload(Data)
@@ -80,23 +73,19 @@ final class SessionManager: NSObject {
          userDomain: UserDomain = .default,
          sessionDelegate: URLSessionDelegate? = nil,
          customHTTPClient: GiniHTTPClient? = nil) {
-        
+
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
         self.userDomain = userDomain
-        
+
         // Use custom client or create default
         if let customClient = customHTTPClient {
             self.httpClient = customClient
-            self.isUsingCustomProvider = true
-            self.session = nil  // No session needed - customer controls their own
         } else {
             let session = URLSession(configuration: urlSession.configuration,
                                      delegate: sessionDelegate,
                                      delegateQueue: nil)
             self.httpClient = DefaultGiniHTTPClient(session: session)
-            self.isUsingCustomProvider = false
-            self.session = session
         }
     }
 }
@@ -128,13 +117,12 @@ extension SessionManager: SessionProtocol {
 /**
  * Cancellation token needed during the analysis process.
  *
- * When using a custom `GiniHTTPClient`, calling `cancel()` sets the `isCancelled` flag
- * so the SDK will discard any subsequent response, but it cannot abort the in-flight
- * HTTP request itself — only the customer's HTTP client controls its own `URLSession`.
- * The request may still complete in the background; its result will be ignored.
+ * Calling `cancel()` sets the `isCancelled` flag so the SDK will discard any
+ * subsequent response, and also cancels the underlying network request via
+ * the `CancellableTask` returned by the `GiniHTTPClient`.
  */
 public final class CancellationToken {
-    internal weak var task: URLSessionTask?
+    internal var task: CancellableTask?
 
     /** Indicates if the analysis has been cancelled */
     public var isCancelled = false
@@ -146,9 +134,8 @@ public final class CancellationToken {
     /**
      * Cancels the current task.
      *
-     * For the default HTTP client this cancels the underlying `URLSessionTask`.
-     * For a custom `GiniHTTPClient` this only sets `isCancelled` to `true`;
-     * the in-flight request is not aborted (see class-level documentation).
+     * This cancels the underlying network request (both for the default and
+     * custom HTTP clients) and sets `isCancelled` to `true`.
      */
     public func cancel() {
         isCancelled = true
@@ -214,92 +201,31 @@ private extension SessionManager {
                                        type: TaskType,
                                        cancellationToken: CancellationToken?,
                                        completion: @escaping CompletionResult<T.ResponseType>) {
-
-            // If using custom provider, route through custom client
-            if isUsingCustomProvider {
-                // Route through custom HTTP client
-                switch type {
-                case .data:
-                    httpClient.dataRequest(request) { [weak self] data, response, error in
-                        self?.handleCustomClientResponse(
-                            data: data,
-                            response: response,
-                            error: error,
-                            request: request,
-                            resource: resource,
-                            taskType: type,
-                            cancellationToken: cancellationToken,
-                            completion: completion
-                        )
-                    }
-
-                case .upload(let body):
-                    httpClient.uploadRequest(request, body: body) { [weak self] data, response, error in
-                        self?.handleCustomClientResponse(
-                            data: data,
-                            response: response,
-                            error: error,
-                            request: request,
-                            resource: resource,
-                            taskType: type,
-                            cancellationToken: cancellationToken,
-                            completion: completion
-                        )
-                    }
-
-                case .download:
-                    httpClient.downloadRequest(request) { [weak self] url, response, error in
-                        self?.handleCustomClientDownloadResponse(
-                            fileURL: url,
-                            response: response,
-                            error: error,
-                            request: request,
-                            resource: resource,
-                            taskType: type,
-                            cancellationToken: cancellationToken,
-                            completion: completion
-                        )
-                    }
-                }
-
-                return
-            }
-
-            // Default path: use URLSession directly
-            guard let session = session else {
-                preconditionFailure("URLSession is nil but custom provider is not being used. This should never happen.")
-            }
-
-            let task: URLSessionTask
-            switch type {
-            case .data:
-                task = session.dataTask(with: request,
-                                        completionHandler: taskCompletionHandler(for: resource,
-                                                                                 request: request,
-                                                                                 taskType: type,
-                                                                                 cancellationToken: cancellationToken,
-                                                                                 completion: completion))
-            case .download:
-                task = session
-                    .downloadTask(with: request,
-                                  completionHandler: downloadTaskCompletionHandler(for: resource,
-                                                                                   request: request,
-                                                                                   taskType: type,
-                                                                                   cancellationToken: cancellationToken,
-                                                                                   completion: completion))
-            case .upload(let data):
-                task = session.uploadTask(with: request,
-                                          from: data,
-                                          completionHandler: taskCompletionHandler(for: resource,
-                                                                                   request: request,
-                                                                                   taskType: type,
-                                                                                   cancellationToken: cancellationToken,
-                                                                                   completion: completion))
-
-            }
-
-            cancellationToken?.task = task
-            task.resume()
+        let cancellableTask: CancellableTask
+        switch type {
+        case .data:
+            cancellableTask = httpClient.dataRequest(request,
+                                                     completion: taskCompletionHandler(for: resource,
+                                                                                       request: request,
+                                                                                       taskType: type,
+                                                                                       cancellationToken: cancellationToken,
+                                                                                       completion: completion))
+        case .upload(let body):
+            cancellableTask = httpClient.uploadRequest(request, body: body,
+                                                       completion: taskCompletionHandler(for: resource,
+                                                                                         request: request,
+                                                                                         taskType: type,
+                                                                                         cancellationToken: cancellationToken,
+                                                                                         completion: completion))
+        case .download:
+            cancellableTask = httpClient.downloadRequest(request,
+                                                         completion: downloadTaskCompletionHandler(for: resource,
+                                                                                                   request: request,
+                                                                                                   taskType: type,
+                                                                                                   cancellationToken: cancellationToken,
+                                                                                                   completion: completion))
+        }
+        cancellationToken?.task = cancellableTask
     }
     
     private typealias DataResponseCompletion<T> = (Data?, URLResponse?, Error?) -> Void
@@ -406,51 +332,6 @@ private extension SessionManager {
         }
     }
     
-    // MARK: - Custom HTTP Client Response Handlers
-    
-    /// Handles data/upload responses from custom HTTP client.
-    private func handleCustomClientResponse<T: Resource>(
-        data: Data?,
-        response: URLResponse?,
-        error: Error?,
-        request: URLRequest,
-        resource: T,
-        taskType: TaskType,
-        cancellationToken: CancellationToken?,
-        completion: @escaping CompletionResult<T.ResponseType>) {
-        taskCompletionHandler(
-            for: resource,
-            request: request,
-            taskType: taskType,
-            cancellationToken: cancellationToken,
-            completion: completion
-        )(data, response, error)
-    }
-    
-    /// Handles download responses from custom HTTP client.
-    private func handleCustomClientDownloadResponse<T: Resource>(
-        fileURL: URL?,
-        response: URLResponse?,
-        error: Error?,
-        request: URLRequest,
-        resource: T,
-        taskType: TaskType,
-        cancellationToken: CancellationToken?,
-        completion: @escaping CompletionResult<T.ResponseType>) {
-        guard let url = fileURL else {
-            completion(.failure(.unknown(response: response as? HTTPURLResponse, data: nil)))
-            return
-        }
-
-        downloadTaskCompletionHandler(
-            for: resource,
-            request: request,
-            taskType: taskType,
-            cancellationToken: cancellationToken,
-            completion: completion
-        )(url, response, error)
-    }
-
     private func handleLoginFlow<T: Resource>(resource: T,
                                               taskType: TaskType,
                                               cancellationToken: CancellationToken?,

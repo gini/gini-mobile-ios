@@ -7,6 +7,43 @@
 
 import Foundation
 
+// MARK: - CancellableTask
+
+/**
+ * A handle to an in-flight network request that can be cancelled.
+ *
+ * The SDK uses this to cancel requests regardless of the underlying
+ * networking library (URLSession, Alamofire, etc.).
+ */
+public protocol CancellableTask: AnyObject {
+    /// Cancels the in-flight request.
+    func cancel()
+}
+
+/**
+ * Type-erasing wrapper for `CancellableTask`.
+ *
+ * Use this when you need to create a `CancellableTask` from a cancel closure,
+ * for example when wrapping a third-party networking library.
+ *
+ * ```swift
+ * let task = AnyCancellableTask { myCustomRequest.abort() }
+ * ```
+ */
+public final class AnyCancellableTask: CancellableTask {
+    private let _cancel: () -> Void
+
+    public init(_ cancel: @escaping () -> Void) {
+        self._cancel = cancel
+    }
+
+    public func cancel() {
+        _cancel()
+    }
+}
+
+extension URLSessionTask: CancellableTask {}
+
 // MARK: - GiniHTTPClient Protocol
 
 /**
@@ -33,9 +70,12 @@ import Foundation
  *         self.session = URLSession(configuration: config)
  *     }
  *
+ *     @discardableResult
  *     func dataRequest(_ request: URLRequest,
- *                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
- *         session.dataTask(with: request, completionHandler: completion).resume()
+ *                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+ *         let task = session.dataTask(with: request, completionHandler: completion)
+ *         task.resume()
+ *         return task
  *     }
  *
  *     // ... implement other methods
@@ -52,9 +92,11 @@ public protocol GiniHTTPClient {
      * - Parameters:
      *   - request: The URLRequest to execute (includes OAuth token in Authorization header)
      *   - completion: Called when request completes with data, response, and error
+     * - Returns: A `CancellableTask` that can be used to cancel the in-flight request.
      */
+    @discardableResult
     func dataRequest(_ request: URLRequest,
-                     completion: @escaping (Data?, URLResponse?, Error?) -> Void)
+                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask
 
     /**
      * Executes an upload request with a body and returns the response via completion handler.
@@ -63,10 +105,12 @@ public protocol GiniHTTPClient {
      *   - request: The URLRequest to execute (includes OAuth token in Authorization header)
      *   - body: The data to upload in the request body
      *   - completion: Called when request completes with data, response, and error
+     * - Returns: A `CancellableTask` that can be used to cancel the in-flight request.
      */
+    @discardableResult
     func uploadRequest(_ request: URLRequest,
                        body: Data,
-                       completion: @escaping (Data?, URLResponse?, Error?) -> Void)
+                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask
 
     /**
      * Executes a download request and returns the file URL via completion handler.
@@ -74,9 +118,11 @@ public protocol GiniHTTPClient {
      * - Parameters:
      *   - request: The URLRequest to execute (includes OAuth token in Authorization header)
      *   - completion: Called when request completes with file URL, response, and error
+     * - Returns: A `CancellableTask` that can be used to cancel the in-flight request.
      */
+    @discardableResult
     func downloadRequest(_ request: URLRequest,
-                         completion: @escaping (URL?, URLResponse?, Error?) -> Void)
+                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) -> CancellableTask
 }
 
 // MARK: - GiniNetworkProvider Protocol
@@ -145,19 +191,28 @@ final class DefaultGiniHTTPClient: GiniHTTPClient {
         self.session = session
     }
 
+    @discardableResult
     func dataRequest(_ request: URLRequest,
-                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        session.dataTask(with: request, completionHandler: completion).resume()
+                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.dataTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
     }
 
+    @discardableResult
     func uploadRequest(_ request: URLRequest,
                        body: Data,
-                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        session.uploadTask(with: request, from: body, completionHandler: completion).resume()
+                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.uploadTask(with: request, from: body, completionHandler: completion)
+        task.resume()
+        return task
     }
 
+    @discardableResult
     func downloadRequest(_ request: URLRequest,
-                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) {
-        session.downloadTask(with: request, completionHandler: completion).resume()
+                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.downloadTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
     }
 }
