@@ -40,50 +40,59 @@ final class ExampleHTTPClient: GiniHTTPClient {
     
     // MARK: - GiniHTTPClient Implementation
 
+    @discardableResult
     func dataRequest(_ request: URLRequest,
-                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
         let request = addCustomHeaders(to: request)
         let requestId = nextRequestId()
         logRequestStart(request, type: "DATA", requestId: requestId)
         let startTime = Date()
 
-        session.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, error in
             let duration = Date().timeIntervalSince(startTime)
             self.logResponse(data: data, response: response, error: error, requestId: requestId, duration: duration)
             completion(data, response, error)
-        }.resume()
+        }
+        task.resume()
+        return task
     }
-    
+
+    @discardableResult
     func uploadRequest(_ request: URLRequest,
                        body: Data,
-                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
         let request = addCustomHeaders(to: request)
         let requestId = nextRequestId()
         logRequestStart(request, type: "UPLOAD", bodySize: body.count, requestId: requestId)
         let startTime = Date()
 
-        session.uploadTask(with: request, from: body) { data, response, error in
+        let task = session.uploadTask(with: request, from: body) { data, response, error in
             let duration = Date().timeIntervalSince(startTime)
             self.logResponse(data: data, response: response, error: error, requestId: requestId, duration: duration)
             completion(data, response, error)
-        }.resume()
+        }
+        task.resume()
+        return task
     }
-    
+
+    @discardableResult
     func downloadRequest(_ request: URLRequest,
-                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) {
+                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) -> CancellableTask {
         let request = addCustomHeaders(to: request)
         let requestId = nextRequestId()
         logRequestStart(request, type: "DOWNLOAD", requestId: requestId)
         let startTime = Date()
 
-        session.downloadTask(with: request) { url, response, error in
+        let task = session.downloadTask(with: request) { url, response, error in
             let duration = Date().timeIntervalSince(startTime)
             if let url = url {
                 print("📥 [\(requestId)] Download saved: \(url.lastPathComponent)")
             }
             self.logResponse(data: nil, response: response, error: error, requestId: requestId, duration: duration)
             completion(url, response, error)
-        }.resume()
+        }
+        task.resume()
+        return task
     }
     
     // MARK: - Custom Headers
