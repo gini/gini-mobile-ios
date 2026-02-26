@@ -1,5 +1,23 @@
-line_length: warning
-force_try: warning
+
+opt_in_rules:
+  - trailing_newline
+  - control_statement
+  - empty_count
+  - trailing_closure
+  - switch_case_on_newline
+  - colon
+  - comma
+  - unused_import
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - vertical_whitespace_closing_braces
+  - fatal_error_message
+  - explicit_init
+  - trailing_whitespace
+  - vertical_whitespace
+  - vertical_whitespace_between_cases
+  - closure_spacing
+  - operator_usage_whitespace
 
 disabled_rules:
   - class_delegate_protocol
@@ -9,19 +27,69 @@ disabled_rules:
   - multiple_closures_with_trailing_closure
   - todo
   - type_name
+  - switch_case_alignment
+
+trailing_whitespace:
+  ignores_empty_lines: true
 
 type_body_length:
   - 300 # warning
 
 cyclomatic_complexity:
+  warning: 10
+  error: 15
   ignores_case_statements: true
 
 line_length:
   ignores_comments: true
   ignores_urls: true
+  warning: 160
+  error: 200
 
 file_length:
   ignore_comment_only_lines: true
+  warning: 1000
+  error: 2000
+
+large_tuple:
+  warning: 4
+  error: 5
+
+nesting:
+  type_level:
+  warning: 2
+
+force_try: error
+force_unwrapping: error
+overrides:
+  - included: ".*Tests.*"
+    force_try: warning
+    force_unwrapping: warning
+
+identifier_name:
+  min_length: 2
+
+type_name:
+  max_length: 50
+
+identifier_name:
+  allowed_symbols:
+    - _
+  excluded:
+    - id
+    - to
+    - or
+    - ok
+    - in
+    - no
+    - km
+    - at
+    - sv
+    - x
+    - y
+
+# analyzer_rules: # Rules run by `swiftlint analyze`
+#   - explicit_self
 
 excluded:
   - "**/.build"
@@ -38,7 +106,6 @@ included:
   # CaptureSDK
   - CaptureSDK/GiniCaptureSDK/Sources
   - CaptureSDK/GiniCaptureSDK/Tests
-  - CaptureSDK/GiniCaptureSDKExample
 
   # HealthSDK
   - HealthSDK/GiniHealthSDK/Sources
@@ -52,12 +119,16 @@ included:
 
   # HealthAPILibrary
   - HealthAPILibrary/GiniHealthAPILibrary/Sources
+  - HealthAPILibrary/GiniHealthAPILibrary/Tests
   - HealthAPILibrary/GiniHealthAPILibraryExample
 
   # MerchantSDK
   - MerchantSDK/GiniMerchantSDK/Sources
+  - MerchantSDK/GiniMerchantSDK/Tests
   - MerchantSDK/GiniMerchantSDKExample
 
   # GiniComponents
   - GiniComponents/GiniInternalPaymentSDK/Sources
+  - GiniComponents/GiniInternalPaymentSDK/Tests
   - GiniComponents/GiniUtilites/Sources
+  - GiniComponents/GiniUtilites/Tests
