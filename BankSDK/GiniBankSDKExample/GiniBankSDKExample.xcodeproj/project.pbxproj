@@ -1313,7 +1313,7 @@
 				28FB83B52E673C8600DE88EE /* Sources */,
 				28FB83B62E673C8600DE88EE /* Frameworks */,
 				28FB83B72E673C8600DE88EE /* Resources */,
-				280427BF2E705FA1000D658A /* ShellScript */,
+				280427BF2E705FA1000D658A /* Craschlytics */,
 				289235732F48F3090052152A /* SwiftLint */,
 			);
 			buildRules = (
@@ -1401,6 +1401,7 @@
 				F4807C30263C20BA00F30FF3 /* Sources */,
 				F4807C31263C20BA00F30FF3 /* Frameworks */,
 				F4807C32263C20BA00F30FF3 /* Resources */,
+				28A53CAE2F51D5410004D557 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -1676,8 +1677,9 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		280427BF2E705FA1000D658A /* ShellScript */ = {
+		280427BF2E705FA1000D658A /* Craschlytics */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1691,6 +1693,7 @@
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
 				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
+			name = Craschlytics;
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -1724,6 +1727,25 @@
 		};
 		289235732F48F3090052152A /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\nif test -d \"$HOME/.mint/bin\"; then\n  PATH=\"$HOME/.mint/bin:${PATH}\"\nfi\nexport PATH\nif which swiftlint >/dev/null; then\n    swiftlint --config \"${SRCROOT}/../../.swiftlint.yml\"\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		28A53CAE2F51D5410004D557 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
