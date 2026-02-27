@@ -7,6 +7,7 @@
 import Combine
 import GiniHealthAPILibrary
 import SwiftUI
+import UIKit
 
 final class PaymentReviewObservableModel: ObservableObject {
     
@@ -19,8 +20,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     
     private var bannerDismissTask: Task<Void, Never>?
     private var bannerDismissed: Bool = false
-    
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
+    private var reduceMotionObserver: NSObjectProtocol?
     
     @Published private var showBanner: Bool
     
@@ -40,9 +41,16 @@ final class PaymentReviewObservableModel: ObservableObject {
         self.paymentInformationObservableModel = PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
         self.showBanner = !model.configuration.isInfoBarHidden
         setupBindings()
+        
+        reduceMotionObserver = NotificationCenter.default.addObserver(forName: UIAccessibility.reduceMotionStatusDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.reduceMotion = UIAccessibility.isReduceMotionEnabled
+        }
     }
     
     deinit {
+        if let reduceMotionObserver {
+            NotificationCenter.default.removeObserver(reduceMotionObserver)
+        }
         bannerDismissTask?.cancel()
     }
     
