@@ -69,7 +69,7 @@ final class SessionManager: NSObject {
 
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
-         urlSession: URLSession = .init(configuration: .default),
+         urlSessionConfiguration: URLSessionConfiguration = .default,
          userDomain: UserDomain = .default,
          sessionDelegate: URLSessionDelegate? = nil,
          customHTTPClient: GiniHTTPClient? = nil) {
@@ -82,7 +82,7 @@ final class SessionManager: NSObject {
         if let customClient = customHTTPClient {
             self.httpClient = customClient
         } else {
-            let session = URLSession(configuration: urlSession.configuration,
+            let session = URLSession(configuration: urlSessionConfiguration,
                                      delegate: sessionDelegate,
                                      delegateQueue: nil)
             self.httpClient = DefaultGiniHTTPClient(session: session)
