@@ -155,8 +155,9 @@ public protocol GiniNetworkProvider {
     /**
      * Returns the HTTP client to use for all Gini SDK network requests.
      *
-     * This method may be called multiple times. You can return the same instance
-     * or create a new one each time depending on your requirements.
+     * This method is called once during `GiniBankAPI.Builder.build()`.
+     * The returned client instance will be reused for all subsequent requests
+     * throughout the lifetime of the GiniBankAPI instance.
      *
      * - Returns: An instance conforming to `GiniHTTPClient` that will execute all HTTP requests.
      */
