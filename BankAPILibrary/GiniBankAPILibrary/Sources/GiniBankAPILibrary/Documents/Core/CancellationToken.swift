@@ -12,7 +12,7 @@
  * the `CancellableTask` returned by the `GiniHTTPClient`.
  */
 public final class CancellationToken {
-    internal var task: CancellableTask?
+    internal weak var task: CancellableTask?
 
     // Indicates if the analysis has been cancelled
     public var isCancelled = false

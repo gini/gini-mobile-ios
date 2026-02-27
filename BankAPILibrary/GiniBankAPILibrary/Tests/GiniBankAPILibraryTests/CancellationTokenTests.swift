@@ -47,4 +47,20 @@ struct CancellationTokenTests {
 
         #expect(token.isCancelled, "Expected isCancelled to be true even without a task")
     }
+    
+    @Test("Task reference is weak to prevent retain cycles")
+    func taskReferenceIsWeak() {
+        let token = CancellationToken()
+        
+        // Create task in a scope so it can be deallocated
+        do {
+            let task = AnyCancellableTask { /* noop */ }
+            token.task = task
+            #expect(token.task != nil, "Task should be set")
+        }
+        
+        // After task goes out of scope and is deallocated,
+        // the weak reference should become nil
+        #expect(token.task == nil, "Task reference should be nil after task is deallocated (proving weak reference)")
+    }
 }
