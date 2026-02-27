@@ -139,10 +139,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private func setupPortraitConstraints() {
         closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
+        let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+            heightConstraint
         ]
         NSLayoutConstraint.activate(portraitConstraints)
     }
@@ -152,10 +154,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
+        let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
-            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+            heightConstraint
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
     }
