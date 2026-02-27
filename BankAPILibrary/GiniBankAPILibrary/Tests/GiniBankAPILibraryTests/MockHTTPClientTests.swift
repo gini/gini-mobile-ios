@@ -14,42 +14,28 @@ struct GiniHTTPClientCancellableTaskTests {
 
     @Test("MockHTTPClient dataRequest returns cancellable task")
     func dataRequestReturnsCancellableTask() {
-        var cancelCalled = false
         let client = MockHTTPClient()
-        let task = AnyCancellableTask { cancelCalled = true }
-
         // Verify the protocol method is callable and returns CancellableTask
-        let _: CancellableTask = client.dataRequest(dummyRequest) { _, _, _ in }
+        let task: CancellableTask = client.dataRequest(dummyRequest) { _, _, _ in }
         #expect(client.dataRequestCalled, "Expected dataRequest to be called")
-
+        // Verify that the returned task is cancellable
         task.cancel()
-        #expect(cancelCalled, "Expected cancel closure to run")
     }
-
     @Test("MockHTTPClient uploadRequest returns cancellable task")
     func uploadRequestReturnsCancellableTask() {
-        var cancelCalled = false
         let client = MockHTTPClient()
-        let task = AnyCancellableTask { cancelCalled = true }
-
-        let _: CancellableTask = client.uploadRequest(dummyRequest, body: Data()) { _, _, _ in }
+        let task: CancellableTask = client.uploadRequest(dummyRequest, body: Data()) { _, _, _ in }
         #expect(client.uploadRequestCalled, "Expected uploadRequest to be called")
-
+        // Verify that the returned task is cancellable
         task.cancel()
-        #expect(cancelCalled, "Expected cancel closure to run")
     }
-
     @Test("MockHTTPClient downloadRequest returns cancellable task")
     func downloadRequestReturnsCancellableTask() {
-        var cancelCalled = false
         let client = MockHTTPClient()
-        let task = AnyCancellableTask { cancelCalled = true }
-
-        let _: CancellableTask = client.downloadRequest(dummyRequest) { _, _, _ in }
+        let task: CancellableTask = client.downloadRequest(dummyRequest) { _, _, _ in }
         #expect(client.downloadRequestCalled, "Expected downloadRequest to be called")
-
+        // Verify that the returned task is cancellable
         task.cancel()
-        #expect(cancelCalled, "Expected cancel closure to run")
     }
 
     @Test("Full flow: custom client → CancellationToken")
