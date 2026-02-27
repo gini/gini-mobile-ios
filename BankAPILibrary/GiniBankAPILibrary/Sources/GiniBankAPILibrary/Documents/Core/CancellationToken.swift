@@ -17,8 +17,11 @@ public final class CancellationToken {
     // Indicates if the analysis has been cancelled
     public var isCancelled = false
 
+    /**
+     * Creates a new cancellation token.
+     */
     public init() {
-        // This initializer is intentionally left empty because no custom setup is required at initialization.
+        // Explicit public initializer required for external module access
     }
 
     /**

@@ -171,8 +171,6 @@ extension GiniBankAPI {
          * Allows you to provide a custom HTTP client for all network requests made by the SDK.
          * Use this for corporate proxy configuration, custom TLS requirements, or specialized logging.
          *
-         * See `GiniHTTPClient` documentation for implementation details and examples.
-         *
          * - Parameter provider: The custom network provider, or nil to use default implementation
          * - Returns: Updated builder instance
          */
