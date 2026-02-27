@@ -77,7 +77,7 @@ public final class GiniBankConfiguration: NSObject {
      `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
      */
     public var customResourceProvider: CustomResourceProvider?
-    
+
     /**
      Custom network provider for HTTP requests.
      
@@ -90,7 +90,8 @@ public final class GiniBankConfiguration: NSObject {
      configuration.customNetworkProvider = MyNetworkProvider()
      ```
      
-     - Note: When nil (default), the SDK uses its secure default implementation with certificate pinning, if needed.
+     - Note: If this property is set to nil (default), the SDK will use its built-in secure networking implementation,
+     including certificate pinning where applicable.
      - Note: This configuration is passed through to `GiniConfiguration` and flows to the API layer.
      */
     public var customNetworkProvider: GiniNetworkProvider?

@@ -231,12 +231,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                      documentMetadata: Document.Metadata?,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
         var builder = GiniBankAPI.Builder(alternativeTokenSource: tokenSource, pinningConfig: pinningConfig)
-        
+
         // Flow custom network provider if configured
         if let networkProvider = configuration.customNetworkProvider {
             builder = builder.setCustomNetworkProvider(networkProvider)
         }
-        
+
         let lib = builder.build()
 
         self.init(resultsDelegate: resultsDelegate,
