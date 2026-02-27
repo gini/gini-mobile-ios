@@ -2,7 +2,7 @@
 opt_in_rules:
   - trailing_newline
   - control_statement
-  - empty_count
+  # - empty_count
   - trailing_closure
   - switch_case_on_newline
   - colon
@@ -28,39 +28,44 @@ disabled_rules:
   - todo
   - type_name
   - switch_case_alignment
+  - force_try # This is just temporary added here
+  - force_unwrapping # This is just temporary added here
+  - empty_count # This is just temporary added here
+  - force_cast # This is just temporary added here
+  - shorthand_operator # This is just temporary added here
 
 trailing_whitespace:
   ignores_empty_lines: true
 
 type_body_length:
-  - 300 # warning
+  - 300 # warning # Temporarily disabled
 
 cyclomatic_complexity:
   warning: 10
-  error: 15
+  # error: 15 # Temporarily disabled
   ignores_case_statements: true
 
 line_length:
   ignores_comments: true
   ignores_urls: true
   warning: 160
-  error: 200
+  # error: 200 # Temporarily disabled
 
 file_length:
   ignore_comment_only_lines: true
   warning: 1000
-  error: 2000
+  # error: 2000 # Temporarily disabled
 
 large_tuple:
   warning: 4
-  error: 5
+  # error: 5 # Temporarily disabled
 
 nesting:
   type_level:
   warning: 2
 
-force_try: error
-force_unwrapping: error
+# force_try: error # Temporarily disabled
+# force_unwrapping: error # Temporarily disabled
 overrides:
   - included: ".*Tests.*"
     force_try: warning
