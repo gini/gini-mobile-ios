@@ -80,8 +80,8 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     /// handling the Payment Component Controller delegate
     public weak var delegate: PaymentComponentsControllerProtocol?
 
-    let giniSDK: GiniHealth
-    private var trackingDelegate: GiniHealthTrackingDelegate?
+    unowned let giniSDK: GiniHealth
+    private weak var trackingDelegate: GiniHealthTrackingDelegate?
 
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders = []
 
