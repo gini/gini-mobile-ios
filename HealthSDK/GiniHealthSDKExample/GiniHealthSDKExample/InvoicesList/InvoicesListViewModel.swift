@@ -80,7 +80,9 @@ final class InvoicesListViewModel {
     }
     
     deinit {
+        #if DEBUG
         print("✅ InvoicesListViewModel deinitialized")
+        #endif
     }
     
     func refetchExtractions() {

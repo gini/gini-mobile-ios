@@ -43,11 +43,15 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     }
     
     func removeFromParent() {
+        #if DEBUG
         print("🔵 InvoicesListCoordinator.removeFromParent() called")
+        #endif
         parentCoordinator?.remove(childCoordinator: self)
     }
     
     deinit {
+        #if DEBUG
         print("✅ InvoicesListCoordinator deinitialized")
+        #endif
     }
 }

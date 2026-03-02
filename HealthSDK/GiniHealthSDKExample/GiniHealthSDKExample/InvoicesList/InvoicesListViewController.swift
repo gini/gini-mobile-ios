@@ -53,7 +53,9 @@ final class InvoicesListViewController: UIViewController {
     
     // MARK: - Lifecycle
     deinit {
+        #if DEBUG
         print("✅ InvoicesListViewController deinitialized")
+        #endif
         // Only clear delegates if tableView was already initialized
         if isViewLoaded {
             invoicesTableView.dataSource = nil
@@ -107,9 +109,13 @@ final class InvoicesListViewController: UIViewController {
     }
 
     @objc func dismissViewControllerTapped() {
+        #if DEBUG
         print("🔵 dismissViewControllerTapped called")
+        #endif
         self.dismiss(animated: true) { [weak self] in
+            #if DEBUG
             print("🔵 Dismiss completion handler called")
+            #endif
             self?.viewModel.coordinator?.removeFromParent()
         }
     }

@@ -24,6 +24,8 @@ final class RootNavigationController: UINavigationController {
     }
     
     deinit {
+        #if DEBUG
         print("✅ RootNavigationController deinitialized")
+        #endif
     }
 }
