@@ -17,11 +17,16 @@ protocol Coordinator: AnyObject {
 extension Coordinator {
     
     func add(childCoordinator: Coordinator) {
+        print("🟢 Adding child coordinator: \(type(of: childCoordinator))")
         self.childCoordinators.append(childCoordinator)
+        print("   Total child coordinators: \(self.childCoordinators.count)")
     }
     
     func remove(childCoordinator: Coordinator) {
+        print("🔴 Removing child coordinator: \(type(of: childCoordinator))")
+        print("   Before removal: \(self.childCoordinators.count) children")
         self.childCoordinators = self.childCoordinators.filter { $0 !== childCoordinator }
+        print("   After removal: \(self.childCoordinators.count) children")
     }
     
 }

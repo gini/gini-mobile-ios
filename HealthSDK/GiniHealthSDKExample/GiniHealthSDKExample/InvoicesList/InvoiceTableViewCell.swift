@@ -55,6 +55,8 @@ final class InvoiceTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        cellViewModel = nil
+        action = nil
         removeAllViews(from: rightStackView)
     }
 

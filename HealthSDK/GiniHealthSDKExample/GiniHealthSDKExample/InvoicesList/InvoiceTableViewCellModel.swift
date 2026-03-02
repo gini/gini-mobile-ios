@@ -12,10 +12,10 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var health: GiniHealth
+    private weak var health: GiniHealth?
 
     init(invoice: DocumentWithExtractions,
-         health: GiniHealth) {
+         health: GiniHealth?) {
         self.invoice = invoice
         self.health = health
     }
@@ -55,10 +55,10 @@ final class InvoiceTableViewCellModel {
     }
 
     var bankLogosToShow: [Data]? {
-        health.fetchBankLogos().logos
+        health?.fetchBankLogos().logos
     }
 
     var additionalBankNumberToShow: Int? {
-        health.fetchBankLogos().additionalBankCount
+        health?.fetchBankLogos().additionalBankCount
     }
 }

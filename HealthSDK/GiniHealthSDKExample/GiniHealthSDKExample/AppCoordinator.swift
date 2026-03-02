@@ -329,6 +329,7 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
+        invoicesListCoordinator.parentCoordinator = self
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: self.hardcodedInvoicesController,

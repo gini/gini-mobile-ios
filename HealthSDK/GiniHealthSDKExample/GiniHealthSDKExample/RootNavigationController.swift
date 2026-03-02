@@ -22,4 +22,8 @@ final class RootNavigationController: UINavigationController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return topViewController?.supportedInterfaceOrientations ?? .portrait
     }
+    
+    deinit {
+        print("✅ RootNavigationController deinitialized")
+    }
 }

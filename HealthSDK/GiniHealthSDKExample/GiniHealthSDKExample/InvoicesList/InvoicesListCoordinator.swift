@@ -16,21 +16,23 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     }
     
     var invoicesListNavigationController: UINavigationController!
-    var invoicesListViewController: InvoicesListViewController!
+    weak var invoicesListViewController: InvoicesListViewController?
+    weak var parentCoordinator: Coordinator?
     
     func start(documentService: DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
                health: GiniHealth,
                invoices: [DocumentWithExtractions]? = nil,
                shouldUseAlternativeNavigation: Bool) {
-        self.invoicesListViewController = InvoicesListViewController()
-        invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
-                                                                     invoices: invoices,
-                                                                     documentService: documentService,
-                                                                     hardcodedInvoicesController: hardcodedInvoicesController,
-                                                                     health: health,
-                                                                     shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
-        invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
+        let viewController = InvoicesListViewController()
+        viewController.viewModel = InvoicesListViewModel(coordinator: self,
+                                                         invoices: invoices,
+                                                         documentService: documentService,
+                                                         hardcodedInvoicesController: hardcodedInvoicesController,
+                                                         health: health,
+                                                         shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
+        self.invoicesListViewController = viewController
+        invoicesListNavigationController = RootNavigationController(rootViewController: viewController)
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(named: "background")
         invoicesListNavigationController.navigationBar.standardAppearance = appearance
@@ -38,5 +40,14 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
         invoicesListNavigationController.navigationBar.tintColor = .label
         invoicesListNavigationController.modalPresentationStyle = .fullScreen
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    func removeFromParent() {
+        print("🔵 InvoicesListCoordinator.removeFromParent() called")
+        parentCoordinator?.remove(childCoordinator: self)
+    }
+    
+    deinit {
+        print("✅ InvoicesListCoordinator deinitialized")
     }
 }

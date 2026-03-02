@@ -51,6 +51,16 @@ final class InvoicesListViewController: UIViewController {
     
     var viewModel: InvoicesListViewModel!
     
+    // MARK: - Lifecycle
+    deinit {
+        print("✅ InvoicesListViewController deinitialized")
+        // Only clear delegates if tableView was already initialized
+        if isViewLoaded {
+            invoicesTableView.dataSource = nil
+            invoicesTableView.delegate = nil
+        }
+    }
+    
     // MARK: - Functions
     override func loadView() {
         super.loadView()
@@ -97,7 +107,11 @@ final class InvoicesListViewController: UIViewController {
     }
 
     @objc func dismissViewControllerTapped() {
-        self.dismiss(animated: true)
+        print("🔵 dismissViewControllerTapped called")
+        self.dismiss(animated: true) { [weak self] in
+            print("🔵 Dismiss completion handler called")
+            self?.viewModel.coordinator?.removeFromParent()
+        }
     }
 }
 
@@ -110,11 +124,11 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                           health: viewModel.health) }[indexPath.row]
+        let invoice = viewModel.invoices[indexPath.row]
+        let invoiceTableViewCellModel = InvoiceTableViewCellModel(invoice: invoice, health: viewModel.health)
         cell.cellViewModel = invoiceTableViewCellModel
         cell.action = { [weak self] in
-            self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")
+            self?.tapOnAction(documentID: invoice.documentId)
         }
         return cell
     }
@@ -184,3 +198,4 @@ extension InvoicesListViewController {
         static let rowHeight: CGFloat = 40
     }
 }
+
