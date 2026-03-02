@@ -1,9 +1,9 @@
 Getting started
 =============================
 
-The Gini Bank API Library provides ways to interact with the Gini Bank API and therefore, adds the possiblity to scan documents and retrieve the extractions from them.
+The Gini Bank API Library provides ways to interact with the Gini Bank API and therefore, adds the possibility to scan documents and retrieve the extractions from them.
 
-In order to create an instance of the `GiniBankAPI` class, you need both your client id and your client secret. If you don’t have a client id and client secret yet, you need to contact us and we’ll provide you with credential.
+In order to create an instance of the `GiniBankAPI` class, you need both your client id and your client secret. If you don’t have a client id and client secret yet, you need to contact us and we’ll provide you with credentials.
 
 All requests to the Gini Bank API are made on behalf of a user. This means particularly that all created documents are bound to a specific user account. But since you are most likely only interested in the results of the semantic document analysis and not in a cloud document storage system, the Gini Bank API has the feature of anonymous users. This means that user accounts are created on the fly and the user account is unknown to your application’s user.
 
