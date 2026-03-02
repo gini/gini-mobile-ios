@@ -48,3 +48,29 @@ To initialize the library, you will need to use the snippet below:
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
+
+## New Feature: Custom Network Provider
+
+Version 4.1.0 introduces support for custom HTTP clients via the `setCustomNetworkProvider(_:)` method. This is particularly useful for:
+
+- Corporate proxy configurations
+- Custom TLS/SSL requirements
+- Advanced logging and monitoring
+
+**No action required** - This is a new opt-in feature. Your existing code will continue to work without changes.
+
+If you need custom networking, see the "Custom Network Provider" section in the Getting Started guide.
+
+### Example Usage
+
+```swift
+let customHTTPClient = MyHTTPClient()
+let networkProvider = MyNetworkProvider(client: customHTTPClient)
+
+let giniBankAPI = GiniBankAPI
+    .Builder(client: Client(id: "your-id",
+                            secret: "your-secret",
+                            domain: "your-domain"))
+    .setCustomNetworkProvider(networkProvider)
+    .build()
+```
