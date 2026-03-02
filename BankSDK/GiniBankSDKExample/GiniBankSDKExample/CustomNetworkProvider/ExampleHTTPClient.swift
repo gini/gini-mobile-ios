@@ -2,20 +2,22 @@
 //  ExampleHTTPClient.swift
 //  GiniBankSDKExample
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 import GiniBankAPILibrary
 
-/// Example implementation of custom HTTP client with detailed logging.
-///
-/// This demonstrates how to:
-/// - Wrap a URLSession in the GiniHTTPClient protocol
-/// - Configure secure session settings
-/// - Add request/response logging
-///
-/// For production use, adapt the logging and security configuration to your needs.
+/**
+ * Example implementation of custom HTTP client with detailed logging.
+ *
+ * This demonstrates how to:
+ * - Wrap a URLSession in the GiniHTTPClient protocol
+ * - Configure secure session settings
+ * - Add request/response logging
+ *
+ * For production use, adapt the logging and security configuration to your needs.
+ */
 final class ExampleHTTPClient: GiniHTTPClient {
     
     private let session: URLSession
