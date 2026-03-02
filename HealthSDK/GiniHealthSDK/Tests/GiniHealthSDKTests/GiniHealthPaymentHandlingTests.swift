@@ -40,12 +40,42 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     func testCreatePaymentRequestSuccess() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        let documentLink = "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657"
+        let fileName = "wish_receipt_extractions"
+        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+        let documentFileName = "wish_receipt"
+
+        guard let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName) else {
+            XCTFail("Cannot load file `\(documentFileName).json")
+            return
+        }
+        
+        let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
+
+        guard let expectedDocument else {
+            XCTFail("Error loading file: `\(documentFileName).json`")
+            return
+        }
+        let expectedDataForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
+        let expectedDocumentLink = expectedDocument.links.document.absoluteString
+        let extractions = expectedDataForReview.extractions
 
         // When
         let expectation = self.expectation(description: "Creating payment request")
         var receivedRequestId: String?
-        let paymentInfo = GiniHealthSDK.PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: PaymentInfo(paymentComponentsInfo: paymentInfo), completion: { result in
+        let paymentInfo = PaymentInfo(sourceDocumentLocation: expectedDocumentLink,
+            recipient: extractions.first(where: {$0.name == "payment_recipient"})?.value ?? "",
+                                                    iban: extractions.first(where: {$0.name == "iban"})?.value.uppercased() ?? "",
+                                                    amount: extractions.first(where: {$0.name == "amount_to_pay"})?.value ?? "",
+                                                    purpose: extractions.first(where: {$0.name == "payment_purpose"})?.value ?? "",
+                                                    paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                    paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
@@ -56,6 +86,39 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         })
         waitForExpectations(timeout: 1, handler: nil)
 
+        // Then
+        XCTAssertNotNil(expectedDocumentLink)
+        XCTAssertNotNil(receivedRequestId)
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        XCTAssertEqual(documentLink, expectedDocumentLink)
+    }
+    
+    func testCreatePaymentRequestSuccessWithDocument() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        
+        // When
+        let expectation = self.expectation(description: "Creating payment request")
+        var receivedRequestId: String?
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: "https://health-api.gini.net/documents/bb385cf9-21b7-4990-93f7-4cfcfa626436",
+                                                             recipient: "Uno Flüchtlingshilfe",
+                                                             iban: "DE78370501980020008850",
+                                                             bic: "COLSDE33",
+                                                             amount: "1.00:EUR",
+                                                             purpose: "ReNr 12345",
+                                                             paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                             paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
+        
         // Then
         XCTAssertNotNil(receivedRequestId)
         XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
