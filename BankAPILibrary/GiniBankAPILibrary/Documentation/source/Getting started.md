@@ -119,9 +119,106 @@ You can also extract the hash from a public key. The following example shows how
 $ cat gini.pub | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
 ```
 
-## Using the library
+## Custom Network Provider (Corporate Proxy Support)
 
-You can also extract the hash from a public key. The following example shows how to extract it from a public key named gini.pub:
+For advanced networking scenarios such as corporate proxy configurations, custom TLS requirements, or specialized logging, you can provide a custom HTTP client implementation.
+
+### Basic Setup
+
+```swift
+// 1. Implement the GiniHTTPClient protocol
+final class MyHTTPClient: GiniHTTPClient {
+    private let session: URLSession
+    
+    init() {
+        let config = URLSessionConfiguration.default
+        config.connectionProxyDictionary = [
+            kCFNetworkProxiesHTTPEnable: true,
+            kCFNetworkProxiesHTTPProxy: "proxy.company.com",
+            kCFNetworkProxiesHTTPPort: 8080
+        ]
+        self.session = URLSession(configuration: config)
+    }
+    
+    @discardableResult
+    func dataRequest(_ request: URLRequest,
+                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.dataTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
+    }
+    
+    @discardableResult
+    func uploadRequest(_ request: URLRequest,
+                       body: Data,
+                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.uploadTask(with: request, from: body, completionHandler: completion)
+        task.resume()
+        return task
+    }
+    
+    @discardableResult
+    func downloadRequest(_ request: URLRequest,
+                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.downloadTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
+    }
+}
+
+// 2. Create a network provider
+final class MyNetworkProvider: GiniNetworkProvider {
+    private let client: GiniHTTPClient
+    
+    init(client: GiniHTTPClient) {
+        self.client = client
+    }
+    
+    func httpClient() -> GiniHTTPClient {
+        return client
+    }
+}
+
+// 3. Configure the SDK with your custom provider
+let customHTTPClient = MyHTTPClient()
+let networkProvider = MyNetworkProvider(client: customHTTPClient)
+
+let giniBankAPI = GiniBankAPI
+    .Builder(client: Client(id: "your-id",
+                            secret: "your-secret",
+                            domain: "your-domain"))
+    .setCustomNetworkProvider(networkProvider)
+    .build()
+```
+
+### Important Security Notes
+
+> ⚠️  **Warning**
+> When you provide a custom HTTP client, the SDK's default security mechanisms—including SSL certificate pinning configured via `sessionDelegate`—are **bypassed entirely**. You are responsible for implementing proper TLS configuration and certificate validation in your `URLSession` setup.
+
+### Use Cases
+
+- **Corporate Proxy**: Route all SDK traffic through your company's proxy server
+- **Custom TLS**: Implement organization-specific TLS requirements or mutual TLS authentication
+- **Advanced Logging**: Add detailed request/response logging for debugging
+- **Third-party Libraries**: Integrate with networking libraries like Alamofire
+
+### Cancellation Support
+
+The `GiniHTTPClient` protocol requires all methods to return a `CancellableTask`, which allows the SDK to cancel in-flight requests. If you're using URLSession, `URLSessionTask` already conforms to this protocol. For custom implementations, use `AnyCancellableTask`:
+
+```swift
+@discardableResult
+func dataRequest(_ request: URLRequest,
+                 completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+    let customTask = myNetworkLibrary.execute(request) { data, response, error in
+        completion(data, response, error)
+    }
+    return AnyCancellableTask { customTask.abort() }
+}
+```
+
+## Using the library
 
 Now that the `GiniBankAPI` has been initialized, you can start using it. To do so, just get the _Document service_ from it. 
 
