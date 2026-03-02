@@ -54,11 +54,11 @@ final class InvoiceTableViewCellModel {
         invoice.isPayable ?? false
     }
 
-    var bankLogosToShow: [Data]? {
-        health?.fetchBankLogos().logos
+    var bankLogosToShow: [Data] {
+        health?.fetchBankLogos().logos ?? []
     }
 
     var additionalBankNumberToShow: Int? {
-        health?.fetchBankLogos().additionalBankCount
+        health?.fetchBankLogos().additionalBankCount ?? nil
     }
 }
