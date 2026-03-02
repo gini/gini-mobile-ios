@@ -112,11 +112,12 @@ final class InvoicesListViewController: UIViewController {
         #if DEBUG
         print("🔵 dismissViewControllerTapped called")
         #endif
+        let coordinator = viewModel.coordinator
         self.dismiss(animated: true) { [weak self] in
             #if DEBUG
             print("🔵 Dismiss completion handler called")
             #endif
-            self?.viewModel.coordinator?.removeFromParent()
+            coordinator?.removeFromParent()
         }
     }
 }
