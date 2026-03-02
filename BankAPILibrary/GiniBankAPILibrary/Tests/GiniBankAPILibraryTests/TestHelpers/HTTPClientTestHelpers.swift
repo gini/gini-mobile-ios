@@ -1,7 +1,7 @@
 //
 //  HTTPClientTestHelpers.swift
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 import Foundation
 @testable import GiniBankAPILibrary
@@ -56,7 +56,14 @@ final class StubURLProtocol: URLProtocol {
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
-        let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        guard let url = request.url,
+              let response = HTTPURLResponse(url: url,
+                                             statusCode: 200,
+                                             httpVersion: nil,
+                                             headerFields: nil) else {
+            client?.urlProtocol(self, didFailWithError: URLError(.badURL))
+            return
+        }
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         client?.urlProtocol(self, didLoad: Data())
         client?.urlProtocolDidFinishLoading(self)
