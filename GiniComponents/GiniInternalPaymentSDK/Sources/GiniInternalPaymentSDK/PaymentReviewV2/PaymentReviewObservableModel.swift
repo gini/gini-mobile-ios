@@ -63,17 +63,20 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         let duration = model.paymentReviewContainerViewModel().configuration.popupAnimationDuration
         
-        bannerDismissTask = Task { @MainActor in
+        bannerDismissTask = Task { [weak self] in
             do {
                 try await Task.sleep(for: .seconds(duration))
-                
+
                 guard !Task.isCancelled else { return }
-                
-                let animation = reduceMotion ? nil : Animation.easeInOut(duration: Constants.bannerDismissDelay)
-                
-                withAnimation(animation) {
-                    showBanner = false
-                    bannerDismissed = true
+                guard let self = self else { return }
+
+                let animation = self.reduceMotion ? nil : Animation.easeInOut(duration: Constants.bannerDismissDelay)
+
+                await MainActor.run {
+                    withAnimation(animation) {
+                        self.showBanner = false
+                        self.bannerDismissed = true
+                    }
                 }
             } catch {
                 /// Task was cancelled - no action needed
@@ -194,3 +197,4 @@ final class PaymentReviewObservableModel: ObservableObject {
         static let bannerDismissDelay = 0.3
     }
 }
+
