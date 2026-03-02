@@ -10,7 +10,12 @@ import Foundation
 @Suite("DefaultGiniHTTPClient Tests")
 struct DefaultGiniHTTPClientTests {
 
-    private let dummyRequest = URLRequest(url: URL(string: "https://api.gini.net/test")!)
+    private var dummyRequest: URLRequest {
+        guard let url = URL(string: "https://api.gini.net/test") else {
+            fatalError("Invalid test URL - this should never happen")
+        }
+        return URLRequest(url: url)
+    }
 
     @Test("dataRequest returns a CancellableTask that is a URLSessionTask")
     func dataRequestReturnsCancellableTask() async {

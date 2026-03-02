@@ -10,7 +10,12 @@ import Foundation
 @Suite("GiniHTTPClient CancellableTask Tests")
 struct GiniHTTPClientCancellableTaskTests {
 
-    private let dummyRequest = URLRequest(url: URL(string: "https://api.gini.net")!)
+    private var dummyRequest: URLRequest {
+        guard let url = URL(string: "https://api.gini.net") else {
+            fatalError("Invalid test URL - this should never happen")
+        }
+        return URLRequest(url: url)
+    }
 
     @Test("MockHTTPClient dataRequest returns cancellable task")
     func dataRequestReturnsCancellableTask() {
