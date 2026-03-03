@@ -231,7 +231,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
             case .success:
                 XCTFail("Expected error but got success")
             case .failure(let error):
-                receivedError = GiniHealthSDK.GiniError.decorator(error)
+                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
             }
             expectation.fulfill()
         }
@@ -258,7 +258,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
             case .success:
                 XCTFail("Expected error but got success")
             case .failure(let error):
-                receivedError = GiniHealthSDK.GiniError.decorator(error)
+                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
             }
             expectation.fulfill()
         }
@@ -284,7 +284,7 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
             case .success:
                 XCTFail("Expected error but got success")
             case .failure(let error):
-                receivedError = GiniHealthSDK.GiniError.decorator(error)
+                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
             }
             expectation.fulfill()
         }
