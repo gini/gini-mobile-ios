@@ -15,21 +15,62 @@ concurrency:
 jobs:
   sonarqube:
     name: SonarQube Analysis - ${{ matrix.module }}
-    runs-on: ubuntu-latest
-    
+    runs-on: macos-latest
+
     strategy:
       fail-fast: false
       matrix:
         include:
           - module: CaptureSDK
             name: Capture SDK
-    
+            target: GiniCaptureSDK
+            package_dir: CaptureSDK/GiniCaptureSDK
+            destination: 'platform=iOS Simulator,OS=18.5,name=iPhone 16'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: '16.4'
+
+      - name: Update Swift package
+        run: |
+          cd ${{ matrix.package_dir }}
+          swift package update
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Build and run tests for "${{ matrix.target }}"
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        with:
+          lane: 'run_unit_tests'
+          options: >
+            {
+              "target": "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}",
+              "result_bundle_path": "TestResults.xcresult"
+            }
+
+      - name: Install xcresultparser
+        run: brew install xcresultparser
+
+      - name: Convert coverage to SonarQube format
+        run: |
+          xcresultparser \
+            --output-format xml \
+            --coverage \
+            --project-root . \
+            TestResults.xcresult > ${{ matrix.module }}/coverage.xml
+
       - name: SonarQube Scan - ${{ matrix.name }}
         uses: sonarsource/sonarcloud-github-action@v3
         env:
@@ -38,7 +79,7 @@ jobs:
           projectBaseDir: ${{ matrix.module }}
           args: >
             -Dsonar.organization=gini
-      
+
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
         timeout-minutes: 5
