@@ -89,6 +89,10 @@ jobs:
         include:
           - module: CaptureSDK
             name: Capture SDK
+            sonar_key: gini-mobile-ios-capture-sdk
+          - module: BankSDK
+            name: Bank SDK
+            sonar_key: gini-mobile-ios-bank-sdk
 
     steps:
       - name: Checkout repository
@@ -106,13 +110,17 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
           projectBaseDir: ${{ matrix.module }}
           args: >
             -Dsonar.organization=gini
+            -Dsonar.projectKey=${{ matrix.sonar_key }}
+            -Dsonar.branch.name=${{ github.ref_name }}
 
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
+          SONAR_HOST_URL: https://sonarcloud.io
