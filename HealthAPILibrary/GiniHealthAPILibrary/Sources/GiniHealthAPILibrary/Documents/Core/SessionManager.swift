@@ -66,14 +66,18 @@ final class SessionManager: NSObject {
     
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
-         urlSession: URLSession = .init(configuration: .default),
+         configuration: URLSessionConfiguration = .default,
          userDomain: UserDomain = .default,
          sessionDelegate: URLSessionDelegate? = nil) {
 
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = URLSession.init(configuration: urlSession.configuration, delegate: sessionDelegate, delegateQueue: nil)
+        self.session = URLSession(configuration: configuration, delegate: sessionDelegate, delegateQueue: nil)
         self.userDomain = userDomain
+    }
+    
+    deinit {
+        session.invalidateAndCancel()
     }
 }
 
