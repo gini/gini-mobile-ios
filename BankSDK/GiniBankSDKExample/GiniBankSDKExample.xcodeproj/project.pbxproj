@@ -1313,7 +1313,7 @@
 				28FB83B52E673C8600DE88EE /* Sources */,
 				28FB83B62E673C8600DE88EE /* Frameworks */,
 				28FB83B72E673C8600DE88EE /* Resources */,
-				280427BF2E705FA1000D658A /* Craschlytics */,
+				280427BF2E705FA1000D658A /* Crashlytics */,
 				289235732F48F3090052152A /* SwiftLint */,
 			);
 			buildRules = (
@@ -1677,7 +1677,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		280427BF2E705FA1000D658A /* Craschlytics */ = {
+		280427BF2E705FA1000D658A /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -1693,7 +1693,7 @@
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
 				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
-			name = Craschlytics;
+			name = Crashlytics;
 			outputFileListPaths = (
 			);
 			outputPaths = (
