@@ -1,0 +1,137 @@
+
+opt_in_rules:
+  - trailing_newline
+  - control_statement
+  # - empty_count
+  - trailing_closure
+  - switch_case_on_newline
+  - colon
+  - comma
+  - unused_import
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - vertical_whitespace_closing_braces
+  - fatal_error_message
+  - explicit_init
+  - trailing_whitespace
+  - vertical_whitespace
+  - vertical_whitespace_between_cases
+  - closure_spacing
+  - operator_usage_whitespace
+
+disabled_rules:
+  - class_delegate_protocol
+  - notification_center_detachment
+  - identifier_name
+  - empty_enum_arguments
+  - multiple_closures_with_trailing_closure
+  - todo
+  - type_name
+  - switch_case_alignment
+  - force_try # This is just temporary added here
+  - force_unwrapping # This is just temporary added here
+  - empty_count # This is just temporary added here
+  - force_cast # This is just temporary added here
+  - shorthand_operator # This is just temporary added here
+
+trailing_whitespace:
+  ignores_empty_lines: true
+
+type_body_length:
+  - 300 # warning # Temporarily disabled
+
+cyclomatic_complexity:
+  warning: 10
+  # error: 15 # Temporarily disabled
+  ignores_case_statements: true
+
+line_length:
+  ignores_comments: true
+  ignores_urls: true
+  warning: 160
+  # error: 200 # Temporarily disabled
+
+file_length:
+  ignore_comment_only_lines: true
+  warning: 1000
+  # error: 2000 # Temporarily disabled
+
+large_tuple:
+  warning: 4
+  # error: 5 # Temporarily disabled
+
+nesting:
+  type_level:
+    warning: 2
+
+# force_try: error # Temporarily disabled
+# force_unwrapping: error # Temporarily disabled
+overrides:
+  - included: ".*Tests.*"
+    force_try: warning
+    force_unwrapping: warning
+
+type_name:
+  max_length: 50
+
+identifier_name:
+  min_length: 2
+  allowed_symbols:
+    - _
+  excluded:
+    - id
+    - to
+    - or
+    - ok
+    - in
+    - no
+    - km
+    - at
+    - sv
+    - x
+    - y
+
+# analyzer_rules: # Rules run by `swiftlint analyze`
+#   - explicit_self
+
+excluded:
+  - "**/.build"
+  - "**/.swiftpm"
+  - "**/Pods"
+  - "**/build"
+
+included:
+  # BankSDK
+  - BankSDK/GiniBankSDK/Sources
+  - BankSDK/GiniBankSDK/Tests
+  - BankSDK/GiniBankSDKExample
+
+  # CaptureSDK
+  - CaptureSDK/GiniCaptureSDK/Sources
+  - CaptureSDK/GiniCaptureSDK/Tests
+
+  # HealthSDK
+  - HealthSDK/GiniHealthSDK/Sources
+  - HealthSDK/GiniHealthSDK/Tests
+  - HealthSDK/GiniHealthSDKExample
+
+  # BankAPILibrary
+  - BankAPILibrary/GiniBankAPILibrary/Sources
+  - BankAPILibrary/GiniBankAPILibrary/Tests
+  - BankAPILibrary/GiniBankAPILibraryExample
+
+  # HealthAPILibrary
+  - HealthAPILibrary/GiniHealthAPILibrary/Sources
+  - HealthAPILibrary/GiniHealthAPILibrary/Tests
+  - HealthAPILibrary/GiniHealthAPILibraryExample
+
+  # MerchantSDK
+  - MerchantSDK/GiniMerchantSDK/Sources
+  - MerchantSDK/GiniMerchantSDK/Tests
+  - MerchantSDK/GiniMerchantSDKExample
+
+  # GiniComponents
+  - GiniComponents/GiniInternalPaymentSDK/Sources
+  - GiniComponents/GiniInternalPaymentSDK/Tests
+  - GiniComponents/GiniUtilites/Sources
+  - GiniComponents/GiniUtilites/Tests
