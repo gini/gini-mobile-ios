@@ -77,7 +77,6 @@ final class DemoViewController: UIViewController {
         
         metaInformationLabel.isHidden = true
         transactionListButton.isHidden = true
-        settingsButton.isHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
