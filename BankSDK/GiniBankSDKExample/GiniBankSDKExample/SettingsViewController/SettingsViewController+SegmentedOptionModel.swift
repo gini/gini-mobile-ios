@@ -42,3 +42,15 @@ struct APIEnvironmentSegmentedOptionModel: SegmentedOptionModelProtocol {
         return "API Environment"
     }
 }
+
+struct CredentialsSetSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["Default client", "Cross boarder client"]
+    }
+
+    var title: String {
+        return "Credentials Set"
+    }
+}

@@ -43,6 +43,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
         "paymentRecipientAddress":"Payment Recipient Address"
     ]
 
+    var isCrossBoarderPayment: Bool = false
     weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
     private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
@@ -106,10 +107,6 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
     private func setupNavigationButtons() {
         navigationItem.setHidesBackButton(true, animated: true)
-        let title = NSLocalizedStringPreferredFormat("results.sendfeedback.button.title",
-                                                     fallbackKey: "Send feedback and close",
-                                                     comment: "title for send feedback button",
-                                                     isCustomizable: true)
         navigationItem
             .rightBarButtonItem = UIBarButtonItem(title: "Done",
                                                   style: .plain,
@@ -141,63 +138,28 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Dequeue prototype cell
-               let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
-               // Fetch data
+            let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
-               // Access labels and image via tags
-               if let titleLabel = cell.viewWithTag(201) as? UILabel {
-                   titleLabel.textColor =  GiniColor(light: giniCaptureColor("Accent01"),
-                                                                 dark: giniCaptureColor("Accent01")).uiColor()
-                   titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
-                   
-               }
+            // Access labels and image via tags
+            if let titleLabel = cell.viewWithTag(201) as? UILabel {
+                titleLabel.textColor =  GiniColor(light: giniCaptureColor("Accent01"),
+                                                  dark: giniCaptureColor("Accent01")).uiColor()
+                titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
 
-               if let subtitleLabel = cell.viewWithTag(202) as? UILabel {
-                   subtitleLabel.text =  result[indexPath.row].value
-               }
+            }
 
-               if let iconImageView = cell.viewWithTag(203) as? UIImageView {
-                   let imageName = result[indexPath.row].name ?? ""
-                   iconImageView.image = UIImage(named: imageName) ?? UIImage(named: "unknown")
-                   iconImageView.isHidden = true
-               }
-        
-        return cell
+            if let subtitleLabel = cell.viewWithTag(202) as? UILabel {
+                subtitleLabel.text =  result[indexPath.row].value
+            }
 
-//        if indexPath.section == 0 {
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
-//                                                           for: indexPath) as? ExtractionResultTableViewCell else {
-//                return UITableViewCell()
-//            }
-//            cell.detailTextField.text = result[indexPath.row].value
-//            cell.detailTextField.placeholder = result[indexPath.row].name
-//            cell.detailTextField.tag = indexPath.row
-//            cell.titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
-//            cell.detailTextField.textColor = GiniColor(light: UIColor.black,
-//                                                       dark: UIColor.gray).uiColor()
-//
-//            if editableFields.keys.contains(result[indexPath.row].name ?? "") {
-//                cell.detailTextField.isEnabled = true
-//                cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
-//                cell.detailTextField.alpha = 1
-//
-//                if !enabledRows.contains(indexPath.row) {
-//                    enabledRows.append(indexPath.row)
-//                }
-//            } else {
-//                cell.detailTextField.isEnabled = false
-//                cell.detailTextField.alpha = 0.5
-//            }
-//
-//            return cell
-//        } else {
-//            let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
-//            cell.configure(delegate: self)
-//            return cell
-//        }
+            if let iconImageView = cell.viewWithTag(203) as? UIImageView {
+                let imageName = result[indexPath.row].name ?? ""
+                iconImageView.image = UIImage(named: imageName) ?? UIImage(named: "unknown")
+                iconImageView.isHidden = true
+            }
+
+            return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

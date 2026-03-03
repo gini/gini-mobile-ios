@@ -23,6 +23,9 @@ final class SettingsViewModel {
     private var documentValidationsState: DocumentValidationsState
     private(set) var contentData: [SettingsSection] = []
 
+    private var selectedCredentialsSetIndex: Int = 0
+    private var currentAPIEnvironment: APIEnvironment = .production
+
     weak var delegate: SettingsViewModelDelegate?
     
     private var flashToggleSettingEnabled: Bool = {
@@ -41,6 +44,12 @@ final class SettingsViewModel {
         self.giniConfiguration = giniConfiguration
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
+
+        self.selectedCredentialsSetIndex = UserDefaults.standard.selectedCredentialsSetIndex
+
+        let savedEnvironment = UserDefaults.standard.selectedAPIEnvironment
+        self.currentAPIEnvironment = APIEnvironment(rawValue: savedEnvironment) ?? apiEnvironment
+
         setupContentData(apiEnvironment: apiEnvironment, client: client)
     }
 
@@ -74,7 +83,16 @@ final class SettingsViewModel {
 
     private func setupCredentialsSection(apiEnvironment: APIEnvironment, client: Client? = nil) -> SettingsSection {
         var credentialsSection = SettingsSection(title: "Credentials", items: [])
-        credentialsSection.items.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
+
+        // Credentials Set selector
+        credentialsSection.items.append(.segmentedOption(data: CredentialsSetSegmentedOptionModel(selectedIndex: selectedCredentialsSetIndex)))
+
+        // Credentials input fields
+        let currentCredentials = CredentialsSet.credentials(for: selectedCredentialsSetIndex)
+        credentialsSection.items.append(.credentials(data: .init(clientId: currentCredentials.clientId,
+                                                                 secretId: currentCredentials.clientSecret)))
+
+        // API Environment selector
         var selectedAPISegmentIndex = 0
         switch apiEnvironment {
         case .production:
@@ -83,7 +101,26 @@ final class SettingsViewModel {
             selectedAPISegmentIndex = 1
         }
         credentialsSection.items.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
+
         return credentialsSection
+    }
+
+    func handleCredentialsSetSelection(credentialsIndex: Int) {
+        selectedCredentialsSetIndex = credentialsIndex
+
+        UserDefaults.standard.selectedCredentialsSetIndex = credentialsIndex
+
+        setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
+        delegate?.contentDataUpdated()
+    }
+
+    func handleAPIEnvironmentSelection(environment: APIEnvironment) {
+        currentAPIEnvironment = environment
+
+        UserDefaults.standard.selectedAPIEnvironment = environment.rawValue
+
+        setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
+        delegate?.contentDataUpdated()
     }
 
     private func setupFeatureTogglesSection() -> SettingsSection {

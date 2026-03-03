@@ -104,7 +104,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    fileprivate func showResultsScreen(results: [Extraction], document: Document?) {
+    fileprivate func showResultsScreen(results: [Extraction], document: Document?, isCrossBoarderPayment: Bool) {
         if let document = document {
             print("🧾 Showing results for Gini Bank API document id: \(document.id)")
         } else {
@@ -118,8 +118,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
         customResultsScreen.result = results
-        // This option is unavailable for cross-border transactions
-//		customResultsScreen.editableFields = editableSpecificExtractions
+        customResultsScreen.isCrossBoarderPayment = isCrossBoarderPayment
+        if !isCrossBoarderPayment {
+            customResultsScreen.editableFields = editableSpecificExtractions
+        }
 
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
@@ -235,39 +237,32 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-//		extractedResults = result.extractions.map { $0.value}
-        extractedResults = []
+        if let crossBorderPaymentExtractions = result.crossBorderPayment, !crossBorderPaymentExtractions.isEmpty {
+            extractedResults = []
 
-//		for extraction in editableSpecificExtractions {
-//			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
-//				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
-//			}
-//		}
-        
-//        // Add cross-border payment extractions
-//        if let crossBorderGroups = result.crossBorderPayment {
-//            for group in crossBorderGroups {
-//                for extraction in group {
-//                    // Only add if not already present
-//                    if extractedResults.first(where: { $0.name == extraction.name }) == nil {
-//                        extractedResults.append(extraction)
-//                    }
-//                }
-//            }
-//        }
-        
-        
-        
-        if let crossBorderGroups = result.crossBorderPayment {
-               for group in crossBorderGroups {
-                   for extraction in group {
-                       extractedResults.append(extraction)
-                   }
-               }
-           }
-        showResultsScreen(results: extractedResults, document: result.document)
+            if let crossBorderGroups = result.crossBorderPayment {
+                for group in crossBorderGroups {
+                    for extraction in group {
+                        extractedResults.append(extraction)
+                    }
+                }
+            }
+            showResultsScreen(results: extractedResults,
+                              document: result.document,
+                              isCrossBoarderPayment: true)
+        } else {
+            extractedResults = result.extractions.map { $0.value}
+            for extraction in editableSpecificExtractions {
+                if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
+                    extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
+                }
+            }
+            showResultsScreen(results: extractedResults,
+                              document: result.document,
+                              isCrossBoarderPayment: false)
+        }
     }
-    
+
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
