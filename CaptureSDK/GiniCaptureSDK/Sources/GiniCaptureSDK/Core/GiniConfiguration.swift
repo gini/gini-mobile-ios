@@ -101,6 +101,17 @@ import GiniUtilites
      */
     public var customResourceProvider: CustomResourceProvider?
 
+    /**
+     Custom network provider for HTTP requests.
+     
+     Allows you to provide a custom HTTP client implementation for all network requests.
+     This gives you full control over transport, headers, logging, TLS configuration, and proxies.
+     
+     - Note: If this property is set to nil (default), the SDK will use its built-in secure networking implementation,
+     including certificate pinning where applicable.
+     */
+    public var customNetworkProvider: GiniNetworkProvider?
+
     // MARK: Button configuration options
 
     public lazy var primaryButtonConfiguration: ButtonConfiguration =
