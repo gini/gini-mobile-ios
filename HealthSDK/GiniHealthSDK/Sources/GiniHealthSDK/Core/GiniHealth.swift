@@ -195,13 +195,17 @@ public struct DataForReview {
      */
     
     public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
-        paymentService.paymentProviders { result in
+        paymentService.paymentProviders { [weak self] result in
+            guard let self = self else {
+                completion(.failure(GiniError.toGiniHealthSDKError(error: .requestCancelled)))
+                return
+            }
             switch result {
             case let .success(providers):
                 self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         }
     }
@@ -229,7 +233,11 @@ public struct DataForReview {
 
     */
    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-       documentService.fetchDocument(with: docId) { result in
+       documentService.fetchDocument(with: docId) { [weak self] result in
+           guard let self = self else {
+               completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+               return
+           }
            switch result {
            case let .success(createdDocument):
                self.documentService.extractions(for: createdDocument,
@@ -264,7 +272,11 @@ public struct DataForReview {
 
     */
     public func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService.extractions(for: createdDocument,
@@ -323,7 +335,11 @@ public struct DataForReview {
      
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -361,7 +377,11 @@ public struct DataForReview {
 
      */
     public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -407,7 +427,7 @@ public struct DataForReview {
                 case let .success(requestId):
                     completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
@@ -431,7 +451,7 @@ public struct DataForReview {
                 case let .success(requestId):
                     completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
@@ -452,10 +472,10 @@ public struct DataForReview {
         paymentService.deletePaymentRequests(ids) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(deletedIds):
-                    completion(.success(deletedIds))
-                case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    case let .success(deletedIds):
+                        completion(.success(deletedIds))
+                    case let .failure(error):
+                        completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
@@ -493,7 +513,11 @@ public struct DataForReview {
      
      */
     public func setDocumentForReview(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: documentId) { result in
+        documentService.fetchDocument(with: documentId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case .success(let document):
                 self.getExtractions(docId: document.id) { result in
@@ -525,7 +549,11 @@ public struct DataForReview {
 
      */
     public func fetchDataForReview(documentId: String, completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: documentId) { result in
+        documentService.fetchDocument(with: documentId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(document):
                 self.documentService
@@ -572,7 +600,7 @@ public struct DataForReview {
                 case let .success(paymentRequest):
                     completion(.success(paymentRequest))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
@@ -621,7 +649,7 @@ public struct DataForReview {
                 case let .success(payment):
                     completion(.success(payment))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }

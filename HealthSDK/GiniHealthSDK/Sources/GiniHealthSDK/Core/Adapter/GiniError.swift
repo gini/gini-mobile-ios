@@ -18,50 +18,23 @@ public protocol GiniErrorProtocol {
 }
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
-public enum GiniError: Error, GiniErrorProtocol, Equatable {
-
-    case decorator(GiniHealthAPILibrary.GiniError)
-
-    public var message: String? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.message
-        }
-    }
-
-    public var response: HTTPURLResponse? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.response
-        }
-    }
-
-    public var data: Data? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.data
-        }
-    }
-
-    public var statusCode: Int? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.statusCode
-        }
-    }
-
-    public var items: [ErrorItem]? {
-        switch self {
-        case .decorator(let giniError):
-            return giniError.items
-        }
-    }
-
-    public var requestId: String {
-        switch self {
-            case .decorator(let giniError):
-                return giniError.requestId
-        }
+public struct GiniError: Error, GiniErrorProtocol, Equatable {
+    public var message: String?
+    public var response: HTTPURLResponse?
+    public var data: Data?
+    public var statusCode: Int?
+    public var items: [ErrorItem]?
+    public var requestId: String
+    
+    /// Converts a GiniHealthAPILibrary.GiniError to GiniHealthSDK.GiniError
+    static func toGiniHealthSDKError(error: GiniHealthAPILibrary.GiniError) -> GiniError {
+        let healthSDKError = GiniError(message: error.message,
+                                       response: error.response,
+                                       data: error.data,
+                                       statusCode: error.statusCode,
+                                       items: error.items,
+                                       requestId: error.requestId)
+        return healthSDKError
     }
 }
 

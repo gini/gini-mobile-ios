@@ -42,7 +42,7 @@ public final class DefaultDocumentService {
             case .success(let document):
                 completion(.success(Document(healthDocument: document)))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
 
@@ -61,7 +61,7 @@ public final class DefaultDocumentService {
             case .success(let item):
                 completion(.success(item))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -81,7 +81,7 @@ public final class DefaultDocumentService {
             case .success(let documents):
                 completion(.success(documents.compactMap { Document(healthDocument: $0) }))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -99,7 +99,7 @@ public final class DefaultDocumentService {
             case .success(let item):
                 completion(.success(Document(healthDocument: item)))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -121,7 +121,7 @@ public final class DefaultDocumentService {
             case .success(let healthExtractionResult):
                 completion(.success(ExtractionResult(healthExtractionResult: healthExtractionResult)))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -139,7 +139,7 @@ public final class DefaultDocumentService {
             case .success(let item):
                 completion(.success(Document.Layout(healthLayout: item)))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -157,7 +157,7 @@ public final class DefaultDocumentService {
            case .success(let pages):
                completion(.success(pages.compactMap { Document.Page(healthPage: $0) }))
            case .failure(let error):
-               completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
            }
        })
     }
@@ -184,7 +184,7 @@ public final class DefaultDocumentService {
                 case .success:
                     completion(.success(()))
                 case .failure(let error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         )
@@ -278,7 +278,7 @@ public final class DefaultDocumentService {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         })
     }
@@ -290,7 +290,7 @@ public final class DefaultDocumentService {
                 case .success(let data):
                     completion(.success(data))
                 case .failure(let error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             })
     }
@@ -301,7 +301,7 @@ public final class DefaultDocumentService {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         }
     }
