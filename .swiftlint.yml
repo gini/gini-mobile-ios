@@ -62,7 +62,7 @@ large_tuple:
 
 nesting:
   type_level:
-  warning: 2
+    warning: 2
 
 # force_try: error # Temporarily disabled
 # force_unwrapping: error # Temporarily disabled
@@ -71,13 +71,11 @@ overrides:
     force_try: warning
     force_unwrapping: warning
 
-identifier_name:
-  min_length: 2
-
 type_name:
   max_length: 50
 
 identifier_name:
+  min_length: 2
   allowed_symbols:
     - _
   excluded:
