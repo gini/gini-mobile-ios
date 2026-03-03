@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  sonarqube:
-    name: SonarQube Analysis - ${{ matrix.module }}
+  test:
+    name: Test & Coverage - ${{ matrix.name }}
     runs-on: macos-latest
 
     strategy:
@@ -71,10 +71,41 @@ jobs:
             --project-root . \
             TestResults.xcresult > ${{ matrix.module }}/coverage.xml
 
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.module }}
+          path: ${{ matrix.module }}/coverage.xml
+          retention-days: 1
+
+  sonarqube:
+    name: SonarQube Analysis - ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    needs: test
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: CaptureSDK
+            name: Capture SDK
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-${{ matrix.module }}
+          path: ${{ matrix.module }}
+
       - name: SonarQube Scan - ${{ matrix.name }}
         uses: sonarsource/sonarcloud-github-action@v3
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
         with:
           projectBaseDir: ${{ matrix.module }}
           args: >
@@ -84,4 +115,4 @@ jobs:
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
         timeout-minutes: 5
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
