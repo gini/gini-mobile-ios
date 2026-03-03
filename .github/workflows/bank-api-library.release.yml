@@ -49,7 +49,7 @@ jobs:
     
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@main
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
