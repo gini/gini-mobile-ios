@@ -11,7 +11,7 @@ import XCTest
 final class PaymentTests: XCTestCase {
     
     let baseAPIURLString = "https://health-api.gini.net"
-    let versionAPI = 4
+    let versionAPI = 5
     lazy var payService = PaymentService(sessionManager: SessionManagerMock(), apiDomain: .default, apiVersion: versionAPI)
     
     

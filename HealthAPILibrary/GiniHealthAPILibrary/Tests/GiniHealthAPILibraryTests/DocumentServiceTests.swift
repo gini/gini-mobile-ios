@@ -11,7 +11,7 @@ import UIKit
 final class DocumentServicesTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
-    let versionAPI = 4
+    let versionAPI = 5
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()
