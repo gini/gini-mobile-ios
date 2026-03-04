@@ -66,4 +66,4 @@ jobs:
     with:
       project_base_dir: HealthAPILibrary
     secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
