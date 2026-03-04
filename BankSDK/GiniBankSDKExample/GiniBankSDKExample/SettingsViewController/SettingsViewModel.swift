@@ -215,6 +215,8 @@ final class SettingsViewModel {
 
     private func setupDebugSection() -> SettingsSection {
         var debugSection = SettingsSection(title: "Debug and Development Options", items: [])
+        debugSection.items.append(.switchOption(data: .init(type: .customNetworkProvider,
+                                                                      isSwitchOn: giniConfiguration.customNetworkProvider != nil)))
         debugSection.items.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
                                                             isSwitchOn: giniConfiguration.giniErrorLoggerIsOn)))
         debugSection.items.append(.switchOption(data: .init(type: .customGiniErrorLogger,
@@ -254,6 +256,8 @@ final class SettingsViewModel {
             giniConfiguration.flashOnByDefault = data.isSwitchOn
         case .customResourceProvider:
             giniConfiguration.customResourceProvider = data.isSwitchOn ? GiniBankCustomResourceProvider() : nil
+        case .customNetworkProvider:
+            giniConfiguration.customNetworkProvider = data.isSwitchOn ? ExampleHTTPClientProvider() : nil
         case .onboardingShowAtLaunch:
             giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
         case .onboardingShowAtFirstLaunch:
