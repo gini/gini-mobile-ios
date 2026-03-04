@@ -7,13 +7,10 @@
 
 import Foundation
 import XCTest
-@testable import GiniCaptureSDK
 @testable import GiniBankAPILibrary
 @testable import GiniUtilites
 
 class BankAPILibraryIntegrationTests: BaseIntegrationTest {
-    // In cases tests are failing please check if the `paymentRequestID` is still valid
-    private let paymentRequestID = "77deedc2-16c2-4597-9199-83451f43a360"
     private let validator = IBANValidator()
     func testErrorLogging() {
         let expect = expectation(description: "it logs the error event")
@@ -39,7 +36,7 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
     func testFetchPaymentRequest() {
         let expect = expectation(description: "it fetches the payment request")
 
-        giniHelper.paymentService.paymentRequest(id: paymentRequestID) { [weak self] result in
+        giniHelper.paymentService.paymentRequest(id: giniHelper.paymentRequestID) { [weak self] result in
             switch result {
                 case .success(let request):
                     self?.assertValidIBAN(request.iban)
@@ -55,7 +52,7 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
         let message = "You can't resolve the previously resolved payment request"
         let expect = expectation(description: message)
 
-        giniHelper.paymentService.resolvePaymentRequest(id: paymentRequestID, 
+        giniHelper.paymentService.resolvePaymentRequest(id: giniHelper.paymentRequestID,
                                                         recipient: "Dr. med. Hackler",
                                                         iban: "DE13760700120500154000",
                                                         bic: "",
@@ -74,7 +71,7 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
     func testPayment() {
         let expect = expectation(description: "it gets the payment")
 
-        giniHelper.paymentService.payment(id: paymentRequestID) { [weak self] result in
+        giniHelper.paymentService.payment(id: giniHelper.paymentRequestID) { [weak self] result in
             switch result {
                 case .success(let payment):
                     self?.assertValidIBAN(payment.iban)
