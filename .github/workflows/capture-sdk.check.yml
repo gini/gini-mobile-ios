@@ -54,7 +54,7 @@ jobs:
             {
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
-              "resultBundlePath": "sonar-coverage.xcresult"
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
 
     - name: Convert coverage to SonarQube generic format
