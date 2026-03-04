@@ -22,17 +22,6 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
-    @State private var amountToPay: Price
-    
-    @State private var recipientInputState = GiniInputFieldState(text: Constants.emptyString,
-                                                                 hasError: false)
-    @State private var ibanInputState = GiniInputFieldState(text: Constants.emptyString,
-                                                            hasError: false)
-    @State private var amountInputState = GiniInputFieldState(text: Constants.emptyString,
-                                                              hasError: false)
-    @State private var paymentPurposeInputState = GiniInputFieldState(text: Constants.emptyString,
-                                                                      hasError: false)
-    
     @FocusState private var focusedField: Field?
     
     @Binding private var contentHeight: CGFloat
@@ -61,14 +50,12 @@ struct PaymentReviewPaymentInformationView: View {
          showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
-        let observableModel = viewModel
-        self.viewModel = observableModel
+        self.viewModel = viewModel
         self._contentHeight = contentHeight
         self._collapsedHeight = collapsedHeight
         self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
-        self.amountToPay = Price(value: 0, currencyCode: "€")
     }
     
     var body: some View {
@@ -131,11 +118,11 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var recipientTextField: some View {
-        TextField(Constants.emptyString, text: $recipientInputState.text)
+        TextField(Constants.emptyString, text: $viewModel.recipientInputState.text)
         .focused($focusedField, equals: .recipient)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
-                                           state: fieldState(for: .recipient, hasError: recipientInputState.hasError),
-                                           errorMessage: recipientInputState.errorMessage,
+                                           state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
+                                           errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -148,12 +135,12 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var ibanTextField: some View {
-        TextField(Constants.emptyString, text: $ibanInputState.text)
+        TextField(Constants.emptyString, text: $viewModel.ibanInputState.text)
         .focused($focusedField, equals: .iban)
         .textInputAutocapitalization(.characters)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
-                                           state: fieldState(for: .iban, hasError: ibanInputState.hasError),
-                                           errorMessage: ibanInputState.errorMessage,
+                                           state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
+                                           errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -166,9 +153,9 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var amountTextField: some View {
-        TextField(Constants.emptyString, text: $amountInputState.text)
+        TextField(Constants.emptyString, text: $viewModel.amountInputState.text)
         .focused($focusedField, equals: .amount)
-        .onChange(of: amountInputState.text) { newValue in
+        .onChange(of: viewModel.amountInputState.text) { newValue in
             adjustAmountValue(updatedText: newValue)
         }
         .onChange(of: focusedField) { newFocus in
@@ -178,8 +165,8 @@ struct PaymentReviewPaymentInformationView: View {
         }
         .keyboardType(.decimalPad)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
-                                           state: fieldState(for: .amount, hasError: amountInputState.hasError),
-                                           errorMessage: amountInputState.errorMessage,
+                                           state: fieldState(for: .amount, hasError: viewModel.amountInputState.hasError),
+                                           errorMessage: viewModel.amountInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -187,11 +174,11 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var paymentPurposeTextField: some View {
-        TextField(Constants.emptyString, text: $paymentPurposeInputState.text)
+        TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
         .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
-                                           state: fieldState(for: .paymentPurpose, hasError: paymentPurposeInputState.hasError),
-                                           errorMessage: paymentPurposeInputState.errorMessage,
+                                           state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
+                                           errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
@@ -265,32 +252,24 @@ struct PaymentReviewPaymentInformationView: View {
     // MARK: Private methods
     
     private func populateFields() {
-        let values = viewModel.getInitialFieldValues()
-        recipientInputState.text = values.recipient
-        ibanInputState.text = values.iban
-        paymentPurposeInputState.text = values.purpose
-        
-        if !values.amount.isEmpty, let price = Price(extractionString: values.amount) {
-            amountToPay = price
-            amountInputState.text = price.string ?? ""
-        }
+        viewModel.populateFieldsIfNeeded()
     }
     
     private func buildPaymentInfo() -> PaymentInfo {
-        let paymentInfo = viewModel.buildPaymentInfo(recipient: recipientInputState.text,
-                                                     iban: ibanInputState.text,
-                                                     amount: amountToPay.extractionString,
-                                                     purpose: paymentPurposeInputState.text)
+        let paymentInfo = viewModel.buildPaymentInfo(recipient: viewModel.recipientInputState.text,
+                                                     iban: viewModel.ibanInputState.text,
+                                                     amount: viewModel.amountToPay.extractionString,
+                                                     purpose: viewModel.paymentPurposeInputState.text)
         
         return paymentInfo
     }
     
     private func adjustAmountValue(updatedText: String) {
-        amountInputState.hasError = false
+        viewModel.amountInputState.hasError = false
         
         if let result = viewModel.adjustAmountValue(text: updatedText) {
-            amountInputState.text = result.adjustedText
-            amountToPay.value = result.newValue
+            viewModel.amountInputState.text = result.adjustedText
+            viewModel.amountToPay.value = result.newValue
         }
     }
     
@@ -305,78 +284,64 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     private func validateFields() -> Bool {
-        let isValid = viewModel.validateAllFields(recipient: recipientInputState.text,
-                                                  iban: ibanInputState.text,
-                                                  amount: amountInputState.text,
-                                                  amountValue: amountToPay.value,
-                                                  purpose: paymentPurposeInputState.text)
+        let isValid = viewModel.validateAllFields(recipient: viewModel.recipientInputState.text,
+                                                  iban: viewModel.ibanInputState.text,
+                                                  amount: viewModel.amountInputState.text,
+                                                  amountValue: viewModel.amountToPay.value,
+                                                  purpose: viewModel.paymentPurposeInputState.text)
         
-        updateFieldStates()
+        viewModel.updateFieldErrorStates()
         
         return isValid
-    }
-    
-    private func updateFieldStates() {
-        recipientInputState.hasError = viewModel.recipientError != nil
-        recipientInputState.errorMessage = viewModel.recipientError
-        
-        ibanInputState.hasError = viewModel.ibanError != nil
-        ibanInputState.errorMessage = viewModel.ibanError
-        
-        amountInputState.hasError = viewModel.amountError != nil
-        amountInputState.errorMessage = viewModel.amountError
-        
-        paymentPurposeInputState.hasError = viewModel.paymentPurposeError != nil
-        paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
     }
     
     // MARK: - Focus Change Handlers
 
     private func handleRecipientFocusChange(isFocused: Bool) {
         if isFocused {
-            recipientInputState.hasError = false
+            viewModel.recipientInputState.hasError = false
         } else {
-            recipientInputState.hasError = !viewModel.validateRecipient(recipientInputState.text)
-            recipientInputState.errorMessage = viewModel.recipientError
+            viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
+            viewModel.recipientInputState.errorMessage = viewModel.recipientError
         }
     }
 
     private func handleIBANFocusChange(isFocused: Bool) {
         if isFocused {
-            ibanInputState.hasError = false
+            viewModel.ibanInputState.hasError = false
         } else {
-            ibanInputState.hasError = !viewModel.validateIBAN(ibanInputState.text)
-            ibanInputState.errorMessage = viewModel.ibanError
+            viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
+            viewModel.ibanInputState.errorMessage = viewModel.ibanError
         }
     }
 
     private func handleAmountFocusChange(isFocused: Bool) {
         if isFocused {
-            amountInputState.text = amountToPay.stringWithoutSymbol ?? Constants.emptyString
+            viewModel.amountInputState.text = viewModel.amountToPay.stringWithoutSymbol ?? Constants.emptyString
         } else {
-            if !amountInputState.text.isEmpty,
-               let decimalAmount = amountInputState.text.decimal() {
-                amountToPay.value = decimalAmount
+            if !viewModel.amountInputState.text.isEmpty,
+               let decimalAmount = viewModel.amountInputState.text.decimal() {
+                viewModel.amountToPay.value = decimalAmount
                 
                 if decimalAmount > 0,
-                   let amountString = amountToPay.string {
-                    amountInputState.text = amountString
+                   let amountString = viewModel.amountToPay.string {
+                    viewModel.amountInputState.text = amountString
                 } else {
-                    amountInputState.text = Constants.emptyString
+                    viewModel.amountInputState.text = Constants.emptyString
                 }
             }
             
-            amountInputState.hasError = !viewModel.validateAmount(amountInputState.text, amount: amountToPay.value)
-            amountInputState.errorMessage = viewModel.amountError
+            viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
+            viewModel.amountInputState.errorMessage = viewModel.amountError
         }
     }
 
     private func handlePaymentPurposeFocusChange(isFocused: Bool) {
         if isFocused {
-            paymentPurposeInputState.hasError = false
+            viewModel.paymentPurposeInputState.hasError = false
         } else {
-            paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(paymentPurposeInputState.text)
-            paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+            viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
+            viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
         }
     }
     

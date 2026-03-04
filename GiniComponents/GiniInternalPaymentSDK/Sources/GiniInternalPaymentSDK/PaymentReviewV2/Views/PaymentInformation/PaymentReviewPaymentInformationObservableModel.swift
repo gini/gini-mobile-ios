@@ -22,6 +22,14 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     @Published var amountError: String?
     @Published var paymentPurposeError: String?
     
+    @Published var recipientInputState = GiniInputFieldState(text: "", hasError: false)
+    @Published var ibanInputState = GiniInputFieldState(text: "", hasError: false)
+    @Published var amountInputState = GiniInputFieldState(text: "", hasError: false)
+    @Published var paymentPurposeInputState = GiniInputFieldState(text: "", hasError: false)
+    @Published var amountToPay = Price(value: 0, currencyCode: "€")
+    
+    private(set) var hasPopulatedFields = false
+    
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {
@@ -108,7 +116,36 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         return (newAmount, newPrice.value)
     }
     
-    func getInitialFieldValues() -> (recipient: String, iban: String, amount: String, purpose: String) {
+    func populateFieldsIfNeeded() {
+        guard !hasPopulatedFields else { return }
+        hasPopulatedFields = true
+        
+        let values = getInitialFieldValues()
+        recipientInputState.text = values.recipient
+        ibanInputState.text = values.iban
+        paymentPurposeInputState.text = values.purpose
+        
+        if !values.amount.isEmpty, let price = Price(extractionString: values.amount) {
+            amountToPay = price
+            amountInputState.text = price.string ?? ""
+        }
+    }
+    
+    func updateFieldErrorStates() {
+        recipientInputState.hasError = recipientError != nil
+        recipientInputState.errorMessage = recipientError
+        
+        ibanInputState.hasError = ibanError != nil
+        ibanInputState.errorMessage = ibanError
+        
+        amountInputState.hasError = amountError != nil
+        amountInputState.errorMessage = amountError
+        
+        paymentPurposeInputState.hasError = paymentPurposeError != nil
+        paymentPurposeInputState.errorMessage = paymentPurposeError
+    }
+    
+    private func getInitialFieldValues() -> (recipient: String, iban: String, amount: String, purpose: String) {
         if !extractions.isEmpty {
             return extractValuesFromExtractions()
         } else if let paymentInfo = model.paymentInfo {
