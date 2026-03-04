@@ -54,6 +54,10 @@ final class AppCoordinator: Coordinator {
         // NOTE: if you use customResourceProvider please initialise it before adding custom implementation for the Gini buttons
 //        let customProvider = GiniBankCustomResourceProvider()
 //        configuration.customResourceProvider = customProvider
+        
+        // Custom Network Provider can be enabled in Settings > General UI Customization
+        // Or programmatically with: configuration.customNetworkProvider = ExampleHTTPClientProvider()
+        
         // 1. primaryButtonConfiguration
         // 2. secondaryButtonConfiguration
         // 3. transparentButtonConfiguration
