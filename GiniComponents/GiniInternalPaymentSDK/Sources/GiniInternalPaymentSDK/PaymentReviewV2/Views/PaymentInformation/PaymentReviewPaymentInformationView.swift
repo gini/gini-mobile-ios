@@ -335,7 +335,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func handleRecipientFocusChange(isFocused: Bool) {
         if isFocused {
             recipientInputState.hasError = false
-        } else if !recipientInputState.text.isEmpty {
+        } else {
             recipientInputState.hasError = !viewModel.validateRecipient(recipientInputState.text)
             recipientInputState.errorMessage = viewModel.recipientError
         }
@@ -344,7 +344,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func handleIBANFocusChange(isFocused: Bool) {
         if isFocused {
             ibanInputState.hasError = false
-        } else if !ibanInputState.text.isEmpty {
+        } else {
             ibanInputState.hasError = !viewModel.validateIBAN(ibanInputState.text)
             ibanInputState.errorMessage = viewModel.ibanError
         }
@@ -374,7 +374,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func handlePaymentPurposeFocusChange(isFocused: Bool) {
         if isFocused {
             paymentPurposeInputState.hasError = false
-        } else if !paymentPurposeInputState.text.isEmpty {
+        } else {
             paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(paymentPurposeInputState.text)
             paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
         }
