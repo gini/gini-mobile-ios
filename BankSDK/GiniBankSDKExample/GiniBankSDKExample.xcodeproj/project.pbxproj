@@ -65,6 +65,7 @@
 		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
 		28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */; };
 		28A46A8D2CD14BAA00800CA6 /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A46A8C2CD14BAA00800CA6 /* GiniSetupHelper.swift */; };
+		28A53CAC2F4F44BE0004D557 /* ExampleHTTPClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A53CAB2F4F44BC0004D557 /* ExampleHTTPClientProvider.swift */; };
 		28A570052D4131FF00A97EBC /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570042D4131F800A97EBC /* ImageAsset.swift */; };
 		28A570072D41326300A97EBC /* Optional+Required.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570062D41325D00A97EBC /* Optional+Required.swift */; };
 		28A570092D413D2000A97EBC /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570082D413D2000A97EBC /* AttachmentView.swift */; };
@@ -195,6 +196,7 @@
 		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
 		84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */; };
 		84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */; };
+		F3DF049429C7F670A0E09C6F /* ExampleHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
@@ -348,6 +350,7 @@
 		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
 		28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidationsState.swift"; sourceTree = "<group>"; };
 		28A46A8C2CD14BAA00800CA6 /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
+		28A53CAB2F4F44BC0004D557 /* ExampleHTTPClientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClientProvider.swift; sourceTree = "<group>"; };
 		28A570042D4131F800A97EBC /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		28A570062D41325D00A97EBC /* Optional+Required.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Required.swift"; sourceTree = "<group>"; };
 		28A570082D413D2000A97EBC /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
@@ -472,6 +475,7 @@
 		84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderFooterViewRegistration.swift"; sourceTree = "<group>"; };
+		88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
 		D7E50A5F2C32D0AD004C1CBF /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
@@ -707,6 +711,15 @@
 				28A570082D413D2000A97EBC /* AttachmentView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		28A53CAA2F4F449D0004D557 /* CustomNetworkProvider */ = {
+			isa = PBXGroup;
+			children = (
+				28A53CAB2F4F44BC0004D557 /* ExampleHTTPClientProvider.swift */,
+				88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */,
+			);
+			path = CustomNetworkProvider;
 			sourceTree = "<group>";
 		};
 		28A5700E2D42761B00A97EBC /* TransactionDetails */ = {
@@ -1251,6 +1264,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				28A53CAA2F4F449D0004D557 /* CustomNetworkProvider */,
 				28BB82022C91D4D9003C8389 /* TransactionSummary */,
 				5DCC9FA32C779BC000C1B76A /* Models */,
 				84CD074B2C7DB501004DF1DE /* DigitalInvoiceSkontoBottomNavigationBar */,
@@ -1839,6 +1853,7 @@
 				288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */,
 				288E78BE2D318856004ACB9B /* TransactionListTableViewHeader.swift in Sources */,
 				84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */,
+				28A53CAC2F4F44BE0004D557 /* ExampleHTTPClientProvider.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				28A570072D41326300A97EBC /* Optional+Required.swift in Sources */,
@@ -1909,6 +1924,7 @@
 				3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */,
 				5D53288A2C63F77E00DEA203 /* CredentialsModel.swift in Sources */,
 				28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */,
+				F3DF049429C7F670A0E09C6F /* ExampleHTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
