@@ -424,6 +424,7 @@ extension PaymentService {
                                completion: @escaping CompletionResult<[String]>) {
         guard let json = try? JSONEncoder().encode(ids) else {
             assertionFailure("The payment request ids provided cannot be encoded")
+            completion(.failure(.parseError(message: "Failed to encode payment request IDs")))
             return
         }
         
