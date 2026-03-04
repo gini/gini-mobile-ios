@@ -263,10 +263,11 @@ private final class PaymentRequestErrorSessionManagerMock: SessionManagerProtoco
                     }
                     
                     // Empty list case - success
+                    // For batch delete, the API returns empty string on success
+                    // The service layer converts this to the original ids array
                     if ids.isEmpty {
-                        if let result = "" as? T.ResponseType {
-                            completion(.success(result))
-                        }
+                        // T.ResponseType is String for deletePaymentRequests resource
+                        completion(.success("" as! T.ResponseType))
                         return
                     }
                     
