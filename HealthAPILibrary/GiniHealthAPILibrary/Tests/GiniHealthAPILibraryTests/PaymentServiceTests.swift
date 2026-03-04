@@ -12,7 +12,7 @@ class PaymentServiceTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
     var paymentService: PaymentService!
-    let versionAPI = 4
+    let versionAPI = 5
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()

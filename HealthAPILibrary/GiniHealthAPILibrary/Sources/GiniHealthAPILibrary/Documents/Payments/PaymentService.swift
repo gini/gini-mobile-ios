@@ -379,6 +379,7 @@ extension PaymentService {
         guard let jsonData = try? encoder.encode(paymentRequestBody)
         else {
             assertionFailure("The PaymentRequestBody cannot be encoded")
+            completion(.failure(.parseError(message: "Failed to encode PaymentRequestBody")))
             return
         }
         let resource = APIResource<String>(method: .createPaymentRequest,
