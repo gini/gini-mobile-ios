@@ -78,3 +78,12 @@ jobs:
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="$TEST_CLIENT_ID"
         CLIENT_SECRET="$TEST_CLIENT_SECRET"
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankSDK
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}

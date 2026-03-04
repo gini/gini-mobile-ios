@@ -58,15 +58,9 @@ jobs:
   
   sonarqube:
     name: SonarQube
-    runs-on: macos-latest
     needs: check
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        with:
-          projectBaseDir: CaptureSDK
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: CaptureSDK
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}

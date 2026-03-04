@@ -54,3 +54,12 @@ jobs:
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}"
             }
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankAPILibrary
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TEST }}
