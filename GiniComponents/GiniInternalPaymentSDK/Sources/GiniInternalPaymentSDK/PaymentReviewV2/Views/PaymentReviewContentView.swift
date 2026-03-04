@@ -80,16 +80,15 @@ public struct PaymentReviewContentView: View {
                     contentHeight: $bottomSheetHeight,
                     collapsedHeight: $collapsedHeight
                 )
-                .padding(.vertical, Constants.paymentInformationViewHorizontalPadding)
             }
             .frame(width: sheetWidth)
             
             ScrollView {
                 documentPreviewContent(carouselHeight: carouselHeight)
-                    .padding()
             }
             .frame(width: geometry.size.width - sheetWidth)
         }
+        .padding(.bottom, Constants.paymentInformationViewHorizontalPadding)
     }
     
     // MARK: - Private Views
