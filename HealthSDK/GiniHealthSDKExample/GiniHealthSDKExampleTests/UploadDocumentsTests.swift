@@ -29,7 +29,10 @@ class UploadDocumentsTests: XCTestCase {
     func testUploadLargeImageToGiniHealthAPI() {
         let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
 
-        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else { return }
+        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else {
+            XCTFail("Failed to load test fixture: invoice-12MB.png is missing from test bundle")
+            return
+        }
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
 
@@ -39,7 +42,10 @@ class UploadDocumentsTests: XCTestCase {
     func testFailUploadLargePDFToGiniHealthAPI() {
         let expect = expectation(description: "Upload of pdf above 10MB to HealthAPILibrary should fail. Local compression won't be done for this kind of file.")
 
-        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else { return }
+        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else {
+            XCTFail("Failed to load test fixture: invoice-13MB.pdf is missing from test bundle")
+            return
+        }
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 

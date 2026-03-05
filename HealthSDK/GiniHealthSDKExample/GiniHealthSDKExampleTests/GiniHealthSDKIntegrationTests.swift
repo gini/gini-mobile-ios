@@ -24,8 +24,16 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     private let extendedTimeout: TimeInterval = 60
     
     // When running from Xcode: update these environment variables in the scheme
-    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+    // These tests will be skipped if credentials are not provided
+    private var clientId: String? {
+        let value = ProcessInfo.processInfo.environment["CLIENT_ID"]
+        return value?.isEmpty == false ? value : nil
+    }
+    
+    private var clientSecret: String? {
+        let value = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
+        return value?.isEmpty == false ? value : nil
+    }
 
     var giniHealth: GiniHealth!
     var paymentService: PaymentService!
@@ -35,18 +43,30 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        
+        // Skip tests if credentials are not provided
+        guard let id = clientId, let secret = clientSecret else {
+            return // XCTSkip will be called in each test method
+        }
 
         let domain = "health-sdk-integration-tests"
 
         // Initialize GiniHealth SDK
-        giniHealth = GiniHealth(id: clientId,
-                                secret: clientSecret,
+        giniHealth = GiniHealth(id: id,
+                                secret: secret,
                                 domain: domain)
 
         paymentService = giniHealth.paymentService
         createdPaymentRequestIds = []
 
         print("✅ GiniHealth SDK initialized")
+    }
+    
+    /// Helper to skip tests when credentials are not available
+    private func skipIfCredentialsMissing() throws {
+        guard clientId != nil, clientSecret != nil else {
+            throw XCTSkip("Integration test skipped: CLIENT_ID and CLIENT_SECRET environment variables must be set. Configure them in the test scheme or test plan.")
+        }
     }
     
     override func tearDown() {
@@ -72,21 +92,24 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
 
     // MARK: - SDK Initialization Tests
 
-    func testSDKInitialization() {
+    func testSDKInitialization() throws {
+        try skipIfCredentialsMissing()
         XCTAssertNotNil(giniHealth)
         XCTAssertNotNil(paymentService)
         XCTAssertNotNil(giniHealth.documentService)
         print("✅ SDK services initialized")
     }
 
-    func testPaymentServiceDomain() {
+    func testPaymentServiceDomain() throws {
+        try skipIfCredentialsMissing()
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
         print("✅ Payment service domain: health-api.gini.net")
     }
 
     // MARK: - Payment Provider Tests
 
-    func testFetchPaymentProviders() {
+    func testFetchPaymentProviders() throws {
+        try skipIfCredentialsMissing()
         let expect = expectation(description: "fetch payment providers")
 
         paymentService.paymentProviders { result in
@@ -110,7 +133,8 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         wait(for: [expect], timeout: networkTimeout)
     }
 
-    func testFetchSinglePaymentProvider() {
+    func testFetchSinglePaymentProvider() throws {
+        try skipIfCredentialsMissing()
         let expectProviders = expectation(description: "fetch providers")
         let expectSingleProvider = expectation(description: "fetch single provider")
 
@@ -150,7 +174,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
 
     // MARK: - Payment Request Tests
 
-    func testCreatePaymentRequest() {
+    func testCreatePaymentRequest() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectRequest = expectation(description: "create payment request")
 
@@ -197,7 +223,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         wait(for: [expectRequest], timeout: networkTimeout)
     }
 
-    func testGetPaymentRequest() {
+    func testGetPaymentRequest() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
         let expectGet = expectation(description: "get payment request")
@@ -263,7 +291,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         wait(for: [expectGet], timeout: networkTimeout)
     }
 
-    func testPaymentRequestLifecycle() {
+    func testPaymentRequestLifecycle() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "1. fetch providers")
         let expectCreate = expectation(description: "2. create payment request")
         let expectGet = expectation(description: "3. get payment request")
@@ -342,7 +372,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     // MARK: - Document Upload and Processing Tests
 
     /// Test document creation with real data
-    func testUploadPDFDocument() {
+    func testUploadPDFDocument() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         //let testImageData = loadTestInvoiceImage()
         guard let pdfData = FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf") else {
@@ -373,7 +405,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test fetching document after upload
-    func testFetchDocument() {
+    func testFetchDocument() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectFetch = expectation(description: "fetch document")
 
@@ -423,7 +457,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test extracting payment data from document
-    func testGetExtractions() {
+    func testGetExtractions() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectExtractions = expectation(description: "get extractions")
 
@@ -484,7 +520,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test getting all extractions including medical information
-    func testGetAllExtractions() {
+    func testGetAllExtractions() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectExtractions = expectation(description: "get all extractions")
 
@@ -536,7 +574,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test checking if document is payable
-    func testCheckIfDocumentIsPayable() {
+    func testCheckIfDocumentIsPayable() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectCheck = expectation(description: "check payable")
 
@@ -585,7 +625,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test checking if document contains multiple invoices
-    func testCheckIfDocumentContainsMultipleInvoices() {
+    func testCheckIfDocumentContainsMultipleInvoices() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectCheck = expectation(description: "check multiple invoices")
 
@@ -634,7 +676,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test polling document until processing is complete
-    func testPollDocument() {
+    func testPollDocument() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload = expectation(description: "upload document")
         let expectPoll = expectation(description: "poll document")
 
@@ -682,7 +726,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test deleting a batch of documents
-    func testDeleteDocuments() {
+    func testDeleteDocuments() throws {
+        try skipIfCredentialsMissing()
+        
         let expectUpload1 = expectation(description: "upload document 1")
         let expectUpload2 = expectation(description: "upload document 2")
         let expectDelete = expectation(description: "delete documents")
@@ -740,7 +786,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     // MARK: - Banking App Methods Tests
 
     /// Test fetching banking apps (already exists, but ensuring it's here)
-    func testFetchBankingApps() {
+    func testFetchBankingApps() throws {
+        try skipIfCredentialsMissing()
+        
         let expect = expectation(description: "fetch banking apps")
 
         giniHealth.fetchBankingApps { result in
@@ -768,7 +816,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     // MARK: - Payment Request Methods Tests
 
     /// Test creating payment request using GiniHealth method
-    func testCreatePaymentRequestViaGiniHealth() {
+    func testCreatePaymentRequestViaGiniHealth() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
 
@@ -818,7 +868,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test getting payment request via GiniHealth
-    func testGetPaymentRequestViaGiniHealth() {
+    func testGetPaymentRequestViaGiniHealth() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
         let expectGet = expectation(description: "get payment request")
@@ -885,7 +937,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test deleting batch of payment requests
-    func testDeletePaymentRequests() {
+    func testDeletePaymentRequests() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate1 = expectation(description: "create payment request 1")
         let expectCreate2 = expectation(description: "create payment request 2")
@@ -964,7 +1018,9 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     }
 
     /// Test getting payment status
-    func testGetPayment() {
+    func testGetPayment() throws {
+        try skipIfCredentialsMissing()
+        
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
         let expectGetPayment = expectation(description: "get payment")

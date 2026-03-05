@@ -12,15 +12,33 @@ import XCTest
 
 class IntegrationTests: XCTestCase {
     
-    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+    private var clientId: String? {
+        let value = ProcessInfo.processInfo.environment["CLIENT_ID"]
+        return value?.isEmpty == false ? value : nil
+    }
+    
+    private var clientSecret: String? {
+        let value = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
+        return value?.isEmpty == false ? value : nil
+    }
     
     var giniHealthAPILib: GiniHealthAPI!
     var documentService: DefaultDocumentService!
     var paymentService: PaymentService!
     var createdDocuments: [Document] = []
     
+    /// Helper to skip tests when credentials are not available
+    private func skipIfCredentialsMissing() throws {
+        guard clientId != nil, clientSecret != nil else {
+            throw XCTSkip("Integration test skipped: CLIENT_ID and CLIENT_SECRET environment variables must be set. Configure them in the test scheme or test plan.")
+        }
+    }
+    
     override func setUp() {
+        guard let id = clientId, let secret = clientSecret else {
+            return // XCTSkip will be called in each test method
+        }
+        
         let pinningConfig = [
             "health-api.gini.net": [
                 "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
@@ -33,8 +51,8 @@ class IntegrationTests: XCTestCase {
         ]
         
         giniHealthAPILib = GiniHealthAPI
-                .Builder(client: Client(id: clientId,
-                                        secret: clientSecret,
+                .Builder(client: Client(id: id,
+                                        secret: secret,
                                         domain: "pay-api-lib-example"),
                          api: .default,
                          userApi: .default,
@@ -54,12 +72,14 @@ class IntegrationTests: XCTestCase {
         super.tearDown()
     }
     
-    func testBuildPaymentService() {
+    func testBuildPaymentService() throws {
+        try skipIfCredentialsMissing()
         let paymentService = giniHealthAPILib.paymentService()
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
     
-    func testFetchPaymentProviders() {
+    func testFetchPaymentProviders() throws {
+        try skipIfCredentialsMissing()
         let exp = expectation(description: "Fetch providers")
         paymentService.paymentProviders { result in
             switch result {
@@ -74,7 +94,8 @@ class IntegrationTests: XCTestCase {
         wait(for: [exp], timeout: 30)
     }
     
-    func testCreateDocument() {
+    func testCreateDocument() throws {
+        try skipIfCredentialsMissing()
         let exp = expectation(description: "Create document")
         let fileName = "test_pdf.pdf"
 
