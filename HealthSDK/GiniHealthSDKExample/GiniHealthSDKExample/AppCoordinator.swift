@@ -481,10 +481,11 @@ extension AppCoordinator: DebugMenuDelegate {
                 GiniUtilites.Log(error.detailedDescription, event: .error)
                 
                 // Display user-friendly error message
-                self?.presentError(title: "Error", message: error.message ?? "")
-                
+                self?.presentError(title: "Error",
+                                   message: error.detailedDescription)
+
                 // Optional: Handle specific error codes if needed
-                    if let errorItems = error.items, !errorItems.isEmpty {
+                if let errorItems = error.items, !errorItems.isEmpty {
                     GiniUtilites.Log("⚠️ Error items: \(errorItems)", event: .warning)
                 }
             }
