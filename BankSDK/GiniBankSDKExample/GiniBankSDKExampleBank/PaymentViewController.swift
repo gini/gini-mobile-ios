@@ -79,7 +79,7 @@ class PaymentViewController: UIViewController {
                 if isLoading {
                     self?.view.showLoading(style: .large, color: UIColor.white, scale: 1.0)
                 } else {
-                    self?.view.stopLoadingIndicator()
+                    self?.view.giniStopLoadingIndicator()
                 }
             }
         }
