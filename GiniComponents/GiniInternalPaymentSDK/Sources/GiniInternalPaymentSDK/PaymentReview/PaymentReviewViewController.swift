@@ -111,7 +111,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
                                                     color: self.model.configuration.loadingIndicatorColor,
                                                     scale: Constants.loadingIndicatorScale)
                 } else {
-                    self.collectionView.stopLoading()
+                    self.collectionView.stopLoadingIndicator()
                 }
             }
         }
@@ -125,7 +125,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
                                           color: self.model.configuration.loadingIndicatorColor,
                                           scale: Constants.loadingIndicatorScale)
                 } else {
-                    self.view.stopLoading()
+                    self.view.stopLoadingIndicator()
                 }
             }
         }
