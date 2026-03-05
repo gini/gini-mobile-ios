@@ -372,35 +372,6 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         wait(for: [expectUpload], timeout: extendedTimeout)
     }
 
-    //    func testUploadPNGDocument() {
-    //        let expectUpload = expectation(description: "upload document")
-    //        guard let testPNGData = FileLoader.loadFile(withName: "testMedDocPNG", ofType: "png") else {
-    //            XCTFail("Failed to load document data")
-    //            return
-    //        }
-    //        giniHealth.documentService.createDocument(fileName: "testMedDocPNG.png",
-    //                                                  docType: .invoice,
-    //                                                  type: .partial(testPNGData),
-    //                                                  metadata: nil) { result in
-    //            switch result {
-    //                case .success(let document):
-    //                    XCTAssertFalse(document.id.isEmpty, "Document ID should not be empty")
-    //                    XCTAssertEqual(document.sourceClassification, .scanned)
-    //                    print("✅ Document uploaded: \(document.id)")
-    //
-    //                    // Cleanup: Delete the document after test
-    //                    // self.giniHealth.deleteDocuments(documentIds: [document.id]) { _ in }
-    //
-    //                case .failure(let healthError as GiniHealthSDK.GiniError):
-    //                    print(healthError.detailedDescription)
-    //                    XCTFail("Failed to upload document: \(healthError)")
-    //            }
-    //            expectUpload.fulfill()
-    //        }
-    //
-    //        wait(for: [expectUpload], timeout: extendedTimeout)
-    //    }
-
     /// Test fetching document after upload
     func testFetchDocument() {
         let expectUpload = expectation(description: "upload document")
