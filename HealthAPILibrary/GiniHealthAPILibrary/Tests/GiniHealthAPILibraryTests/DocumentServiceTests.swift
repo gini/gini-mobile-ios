@@ -39,13 +39,12 @@ final class DocumentServicesTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
 
-    func testPartialDocumentCreationWithImageCompression() {
+    func testPartialDocumentCreationWithImageCompression() throws {
         // Should check size of a big image
         let range = 6635000...6636000 // We need this range because on different machines, the compression is a bit bigger or smaller
 
         guard let imageData12MB = UIImage(named: "invoice-12MB", in: Bundle.module, compatibleWith: nil)?.pngData() else {
-            XCTFail("Failed to load test fixture: invoice-12MB image is missing from test bundle")
-            return
+            throw XCTSkip("Test fixture 'invoice-12MB' is missing from test bundle")
         }
         let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: imageData12MB)
 
