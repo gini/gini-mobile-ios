@@ -80,12 +80,14 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     }
     
     // MARK: - Disabled Tests
-    // This test is disabled because SSL pinning with wrong certificates doesn't reliably
-    // fail in simulator environments. The test expects the request to fail but it succeeds.
-    // This is a known limitation of certificate pinning testing in iOS simulators.
-    // To properly test certificate pinning, run on a physical device with network monitoring.
     
-    func skip_testCreatePaymentRequest(){
+    func testCreatePaymentRequest() throws {
+        // This test is skipped because SSL pinning with wrong certificates doesn't reliably
+        // fail in simulator environments. The test expects the request to fail but it succeeds.
+        // This is a known limitation of certificate pinning testing in iOS simulators.
+        // To properly test certificate pinning, run on a physical device with network monitoring.
+        throw XCTSkip("SSL pinning with wrong certificates is unreliable in simulator - requires physical device testing")
+        
         let expect = expectation(description: "it creates a payment request")
 
         paymentService.createPaymentRequest(sourceDocumentLocation: nil, paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", bic: "CMCIDEDDXXX", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
