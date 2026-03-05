@@ -36,6 +36,11 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
         model.viewModelDelegate = self
         view.backgroundColor = .clear
     }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        model.viewDidDisappear()
+    }
 }
 
 
@@ -68,6 +73,16 @@ extension PaymentReviewV2ViewController: PaymentReviewViewModelDelegate {
         } else {
             dismissScreen()
         }
+    }
+    
+    func presentErrorAlert(message: String) {
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: model.strings.alertOkButtonTitle,
+                                     style: .default)
+        alertController.addAction(okAction)
+        giniTopMostViewController().present(alertController, animated: true)
     }
     
     private func dismissScreen() {

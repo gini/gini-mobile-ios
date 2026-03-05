@@ -35,4 +35,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func dismissPaymentReview() {
         dismiss(animated: true)
     }
+    
+    func presentErrorAlert(message: String) {
+        showError(message: message)
+    }
 }

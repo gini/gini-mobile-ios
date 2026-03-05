@@ -173,6 +173,20 @@ final class PaymentReviewObservableModel: ObservableObject {
             guard let self else { return }
             containerViewModel.selectedPaymentProvider = model.selectedPaymentProvider
         }
+        
+        model.onErrorHandling = { [weak self] _ in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.defaultErrorMessage)
+            }
+        }
+        
+        model.onCreatePaymentRequestErrorHandling = { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.createPaymentErrorMessage)
+            }
+        }
     }
     
     private func sendFeedback(paymentInfo: PaymentInfo) {

@@ -15,6 +15,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
     func dismissPaymentReview()
+    func presentErrorAlert(message: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
