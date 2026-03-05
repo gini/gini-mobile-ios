@@ -36,6 +36,9 @@ public struct PaymentReviewContentView: View {
         .overlay(alignment: .topTrailing) {
             closeButton
         }
+        .overlay {
+            loadingOverlay
+        }
         .onAppear {
             fetchImagesIfNeeded()
             viewModel.dismissBannerAfterDelay()
@@ -113,6 +116,17 @@ public struct PaymentReviewContentView: View {
     }
     
     @ViewBuilder
+    private var loadingOverlay: some View {
+        if viewModel.isLoading {
+            Color.black.opacity(Constants.loadingOverlayOpacity)
+                .ignoresSafeArea()
+            ProgressView()
+                .scaleEffect(Constants.loadingIndicatorScale)
+                .tint(.white)
+        }
+    }
+    
+    @ViewBuilder
     private func documentPreviewContent(carouselHeight: CGFloat) -> some View {
         VStack(spacing: Constants.documentPreviewStackSpacing) {
             if viewModel.isImagesLoading {
@@ -173,5 +187,7 @@ public struct PaymentReviewContentView: View {
         static let totalPaddings: CGFloat = 32.0
         static let pageIndicatorSpace: CGFloat = 30.0
         static let closeButtonSize: CGFloat = 48.0
+        static let loadingOverlayOpacity: CGFloat = 0.4
+        static let loadingIndicatorScale: CGFloat = 1.5
     }
 }

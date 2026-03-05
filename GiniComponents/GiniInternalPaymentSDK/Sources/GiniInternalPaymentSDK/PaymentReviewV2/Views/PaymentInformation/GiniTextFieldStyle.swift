@@ -92,6 +92,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
             if let lockedIcon {
                 lockedIcon
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: Constants.lockedIconSize.width,
                            height: Constants.lockedIconSize.height)
             }
@@ -119,7 +120,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
         static let textFieldHeight = 56.0
         static let titleSpacing = 0.0
         static let errorMessageHorizontalPadding = 8.0
-        static let lockedIconSize = CGSize(width: 16, height: 16)
+        static let lockedIconSize = CGSize(width: 12, height: 12)
         static let animationDuration = 0.25
     }
 }

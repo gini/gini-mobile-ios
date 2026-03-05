@@ -75,6 +75,10 @@ struct PaymentReviewPaymentInformationView: View {
                     payButton
                 }
                 .getHeight(for: $collapsedHeight)
+                
+                if viewModel.shouldShowBrandedView {
+                    poweredByGiniView
+                }
             }
             .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
             .padding(.top, Constants.textFieldsContainerTopPadding)
@@ -120,7 +124,9 @@ struct PaymentReviewPaymentInformationView: View {
     private var recipientTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.recipientInputState.text)
         .focused($focusedField, equals: .recipient)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
+        .disabled(viewModel.isFieldsLocked)
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.recipientFieldPlaceholder,
                                            state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
                                            errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -137,8 +143,10 @@ struct PaymentReviewPaymentInformationView: View {
     private var ibanTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.ibanInputState.text)
         .focused($focusedField, equals: .iban)
+        .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.ibanFieldPlaceholder,
                                            state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
                                            errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -176,7 +184,9 @@ struct PaymentReviewPaymentInformationView: View {
     private var paymentPurposeTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
+        .disabled(viewModel.isFieldsLocked)
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.usageFieldPlaceholder,
                                            state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
                                            errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -247,6 +257,15 @@ struct PaymentReviewPaymentInformationView: View {
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
         }
+    }
+    
+    @ViewBuilder
+    private var poweredByGiniView: some View {
+        HStack {
+            Spacer()
+            PoweredByGiniSwiftUIView(viewModel: viewModel.poweredByGiniViewModel)
+        }
+        .padding(.top, Constants.poweredByGiniTopPadding)
     }
     
     // MARK: Private methods
@@ -362,5 +381,6 @@ struct PaymentReviewPaymentInformationView: View {
         static let payButtonHeight = 56.0
         static let textFieldsContainerHorizontalPadding = 16.0
         static let textFieldsContainerTopPadding = 32.0
+        static let poweredByGiniTopPadding = 8.0
     }
 }

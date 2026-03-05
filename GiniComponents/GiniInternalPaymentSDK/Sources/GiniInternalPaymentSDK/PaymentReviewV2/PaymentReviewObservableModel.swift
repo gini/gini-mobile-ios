@@ -23,15 +23,15 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     
-    private var showCloseButton: Bool {
+    var showCloseButton: Bool {
         model.showPaymentReviewCloseButton
     }
     
-    private var closeButtonImage: UIImage {
+    var closeButtonImage: UIImage {
         model.configuration.paymentReviewClose
     }
     
-    private var closeButtonAccessibilityLabel: String {
+    var closeButtonAccessibilityLabel: String {
         model.strings.closeButtonAccessibilityLabel
     }
     
