@@ -236,6 +236,8 @@ struct PaymentReviewPaymentInformationView: View {
                 .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
                         lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
         )
+        .accessibilityLabel(viewModelStrings.selectBankAccessibilityText)
+        .accessibilityHint(viewModelStrings.selectBankAccessibilityHint)
     }
     
     @ViewBuilder
@@ -256,6 +258,7 @@ struct PaymentReviewPaymentInformationView: View {
             .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
+            .accessibilityHint(viewModelStrings.payInvoiceAccessibilityHint)
         }
     }
     

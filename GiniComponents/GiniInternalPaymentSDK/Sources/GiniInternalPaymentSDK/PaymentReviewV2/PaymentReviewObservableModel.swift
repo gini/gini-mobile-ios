@@ -35,6 +35,10 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.strings.closeButtonAccessibilityLabel
     }
     
+    var invoiceImageAccessibilityLabel: String {
+        model.strings.invoiceImageAccessibilityLabel
+    }
+    
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []

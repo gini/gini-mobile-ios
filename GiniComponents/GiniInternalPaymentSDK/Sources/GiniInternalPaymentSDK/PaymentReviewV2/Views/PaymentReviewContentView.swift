@@ -147,7 +147,8 @@ public struct PaymentReviewContentView: View {
     private func showPreviewImageCarousel(carouselHeight: CGFloat) -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
         
-        GiniCarouselView(images: images)
+        GiniCarouselView(images: images,
+                         imageAccessibilityLabel: viewModel.invoiceImageAccessibilityLabel)
             .frame(height: carouselHeight)
     }
     
