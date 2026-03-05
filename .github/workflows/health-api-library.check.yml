@@ -56,8 +56,22 @@ jobs:
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
               "clientId": "$TEST_CLIENT_ID",
-              "clientSecret": "$TEST_CLIENT_SECRET"
+              "clientSecret": "$TEST_CLIENT_SECRET",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
+
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniHealthAPILibrary' }}
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > HealthAPILibrary/coverage.xml
+
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniHealthAPILibrary' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-health-api-library
+        path: HealthAPILibrary/coverage.xml
+        retention-days: 1
 
   sonarqube:
     name: SonarQube
@@ -65,5 +79,6 @@ jobs:
     uses: ./.github/workflows/sonarqube.yml
     with:
       project_base_dir: HealthAPILibrary
+      coverage_artifact_name: sonar-coverage-health-api-library
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
