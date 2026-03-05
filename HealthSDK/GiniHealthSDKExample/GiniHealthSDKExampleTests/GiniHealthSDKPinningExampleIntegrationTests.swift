@@ -11,6 +11,11 @@ import GiniHealthSDK
 
 class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
     
+    // MARK: - Test Configuration
+    
+    /// Standard timeout for network operations
+    private let networkTimeout: TimeInterval = 30
+    
     // When running from Xcode: update these environment variables in the scheme.
     // Make sure not to commit the credentials if the scheme is shared!
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
@@ -68,7 +73,7 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
         
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
         
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -77,7 +82,7 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
         
         // Now create payment request with real provider ID
         paymentService.createPaymentRequest(
-            sourceDocumentLocation: "",
+            sourceDocumentLocation: nil,
             paymentProvider: providerId,
             recipient: "Dr. med. Hackler",
             iban: "DE02300209000106531065",
@@ -93,6 +98,6 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
                 XCTFail("Failed to create payment request: \(error.customError?.message ?? error.localizedDescription)")
             }
         }
-        wait(for: [expectRequest], timeout: 30)
+        wait(for: [expectRequest], timeout: networkTimeout)
     }
 }

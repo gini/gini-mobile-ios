@@ -15,12 +15,23 @@ import GiniHealthSDK
 /// Integration tests for Gini Health SDK - High-level SDK API tests
 final class GiniHealthSDKIntegrationTests: XCTestCase {
 
+    // MARK: - Test Configuration
+    
+    /// Standard timeout for network operations in integration tests
+    private let networkTimeout: TimeInterval = 30
+    
+    /// Extended timeout for long-running operations (document processing, etc.)
+    private let extendedTimeout: TimeInterval = 60
+    
     // When running from Xcode: update these environment variables in the scheme
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
 
     var giniHealth: GiniHealth!
     var paymentService: PaymentService!
+    
+    /// Track created payment request IDs for cleanup
+    var createdPaymentRequestIds: [String] = []
 
     override func setUp() {
         super.setUp()
@@ -33,8 +44,30 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
                                 domain: domain)
 
         paymentService = giniHealth.paymentService
+        createdPaymentRequestIds = []
 
         print("✅ GiniHealth SDK initialized")
+    }
+    
+    override func tearDown() {
+        // Clean up any created payment requests
+        let cleanupExpectation = expectation(description: "cleanup payment requests")
+        cleanupExpectation.expectedFulfillmentCount = max(1, createdPaymentRequestIds.count)
+        
+        if createdPaymentRequestIds.isEmpty {
+            cleanupExpectation.fulfill()
+        } else {
+            for requestId in createdPaymentRequestIds {
+                paymentService.deletePaymentRequest(id: requestId) { _ in
+                    print("🧹 Cleaned up payment request: \(requestId)")
+                    cleanupExpectation.fulfill()
+                }
+            }
+        }
+        
+        wait(for: [cleanupExpectation], timeout: networkTimeout)
+        
+        super.tearDown()
     }
 
     // MARK: - SDK Initialization Tests
@@ -74,7 +107,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expect.fulfill()
         }
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     func testFetchSinglePaymentProvider() {
@@ -92,7 +125,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let id = providerId else {
             XCTFail("No provider ID available")
@@ -112,7 +145,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectSingleProvider.fulfill()
         }
 
-        wait(for: [expectSingleProvider], timeout: 30)
+        wait(for: [expectSingleProvider], timeout: networkTimeout)
     }
 
     // MARK: - Payment Request Tests
@@ -135,7 +168,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -143,16 +176,17 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         }
 
         // Create payment request with real provider ID
-        paymentService.createPaymentRequest(sourceDocumentLocation: "",
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
                                             paymentProvider: providerId,
                                             recipient: "Dr. med. Test",
                                             iban: "DE89370400440532013000",
-                                            bic: "",
+                                            bic: nil,
                                             amount: "42.50:EUR",
                                             purpose: "Test Invoice #\(Int.random(in: 1000...9999))") { result in
             switch result {
                 case .success(let requestId):
                     XCTAssertFalse(requestId.isEmpty)
+                    self.createdPaymentRequestIds.append(requestId)  // Track for cleanup
                     print("✅ Created payment request: \(requestId)")
                 case .failure(let error):
                     XCTFail("Failed to create payment request: \(error)")
@@ -160,7 +194,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectRequest.fulfill()
         }
 
-        wait(for: [expectRequest], timeout: 30)
+        wait(for: [expectRequest], timeout: networkTimeout)
     }
 
     func testGetPaymentRequest() {
@@ -182,7 +216,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -190,21 +224,22 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         }
 
         // 2. Create payment request
-        paymentService.createPaymentRequest(sourceDocumentLocation: "",
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
                                             paymentProvider: providerId,
                                             recipient: testRecipient,
                                             iban: testIban,
-                                            bic: "",
+                                            bic: nil,
                                             amount: testAmount,
                                             purpose: "Test Get Payment Request") { result in
             if case .success(let id) = result {
                 requestId = id
+                self.createdPaymentRequestIds.append(id)  // Track for cleanup
                 print("✅ Created payment request: \(id)")
             }
             expectCreate.fulfill()
         }
 
-        wait(for: [expectCreate], timeout: 30)
+        wait(for: [expectCreate], timeout: networkTimeout)
 
         guard let id = requestId else {
             XCTFail("Payment request not created")
@@ -225,7 +260,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectGet.fulfill()
         }
 
-        wait(for: [expectGet], timeout: 30)
+        wait(for: [expectGet], timeout: networkTimeout)
     }
 
     func testPaymentRequestLifecycle() {
@@ -246,7 +281,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -254,11 +289,11 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         }
 
         // Step 2: Create payment request
-        paymentService.createPaymentRequest(sourceDocumentLocation: "",
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
                                             paymentProvider: providerId,
                                             recipient: "Dr. med. Lifecycle",
                                             iban: "DE89370400440532013000",
-                                            bic: "",
+                                            bic: nil,
                                             amount: "123.45:EUR",
                                             purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))") { result in
             if case .success(let id) = result {
@@ -268,7 +303,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCreate.fulfill()
         }
 
-        wait(for: [expectCreate], timeout: 30)
+        wait(for: [expectCreate], timeout: networkTimeout)
 
         guard let id = requestId else {
             XCTFail("Payment request not created")
@@ -288,7 +323,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectGet.fulfill()
         }
 
-        wait(for: [expectGet], timeout: 30)
+        wait(for: [expectGet], timeout: networkTimeout)
 
         // Step 4: Delete it
         giniHealth.deletePaymentRequest(id: id) { result in
@@ -301,7 +336,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectDelete.fulfill()
         }
 
-        wait(for: [expectDelete], timeout: 30)
+        wait(for: [expectDelete], timeout: networkTimeout)
     }
 
     // MARK: - Document Upload and Processing Tests
@@ -334,7 +369,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
     }
 
     //    func testUploadPNGDocument() {
@@ -363,7 +398,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
     //            expectUpload.fulfill()
     //        }
     //
-    //        wait(for: [expectUpload], timeout: 60)
+    //        wait(for: [expectUpload], timeout: extendedTimeout)
     //    }
 
     /// Test fetching document after upload
@@ -389,7 +424,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not created")
@@ -413,7 +448,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectFetch.fulfill()
         }
 
-        wait(for: [expectFetch], timeout: 30)
+        wait(for: [expectFetch], timeout: networkTimeout)
     }
 
     /// Test extracting payment data from document
@@ -440,7 +475,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not uploaded")
@@ -474,7 +509,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectExtractions.fulfill()
         }
 
-        wait(for: [expectExtractions], timeout: 60)
+        wait(for: [expectExtractions], timeout: extendedTimeout)
     }
 
     /// Test getting all extractions including medical information
@@ -502,7 +537,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not uploaded")
@@ -526,7 +561,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectExtractions.fulfill()
         }
 
-        wait(for: [expectExtractions], timeout: 60)
+        wait(for: [expectExtractions], timeout: extendedTimeout)
     }
 
     /// Test checking if document is payable
@@ -551,7 +586,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not uploaded")
@@ -575,7 +610,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCheck.fulfill()
         }
 
-        wait(for: [expectCheck], timeout: 60)
+        wait(for: [expectCheck], timeout: extendedTimeout)
     }
 
     /// Test checking if document contains multiple invoices
@@ -601,7 +636,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not uploaded")
@@ -624,7 +659,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCheck.fulfill()
         }
 
-        wait(for: [expectCheck], timeout: 60)
+        wait(for: [expectCheck], timeout: extendedTimeout)
     }
 
     /// Test polling document until processing is complete
@@ -648,7 +683,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload.fulfill()
         }
 
-        wait(for: [expectUpload], timeout: 60)
+        wait(for: [expectUpload], timeout: extendedTimeout)
 
         guard let docId = documentId else {
             XCTFail("Document not uploaded")
@@ -672,7 +707,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectPoll.fulfill()
         }
 
-        wait(for: [expectPoll], timeout: 60)
+        wait(for: [expectPoll], timeout: extendedTimeout)
     }
 
     /// Test deleting a batch of documents
@@ -710,7 +745,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectUpload2.fulfill()
         }
 
-        wait(for: [expectUpload1, expectUpload2], timeout: 60)
+        wait(for: [expectUpload1, expectUpload2], timeout: extendedTimeout)
 
         guard documentIds.count == 2 else {
             XCTFail("Not all documents uploaded")
@@ -728,7 +763,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectDelete.fulfill()
         }
 
-        wait(for: [expectDelete], timeout: 30)
+        wait(for: [expectDelete], timeout: networkTimeout)
     }
 
     // MARK: - Banking App Methods Tests
@@ -756,7 +791,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expect.fulfill()
         }
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     // MARK: - Payment Request Methods Tests
@@ -776,7 +811,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -786,7 +821,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         // Create payment info
         let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(recipient: "Dr. Test Integration",
                                                              iban: "DE89370400440532013000",
-                                                             bic: "",
+                                                             bic: nil,
                                                              amount: "55.50:EUR",
                                                              purpose: "Integration Test Payment",
                                                              paymentUniversalLink: "",
@@ -808,7 +843,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCreate.fulfill()
         }
 
-        wait(for: [expectCreate], timeout: 30)
+        wait(for: [expectCreate], timeout: networkTimeout)
     }
 
     /// Test getting payment request via GiniHealth
@@ -828,7 +863,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -838,7 +873,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         // Create payment request
         let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(recipient: "Dr. GetTest",
                                                              iban: "DE89370400440532013000",
-                                                             bic: "",
+                                                             bic: nil,
                                                              amount: "77.77:EUR",
                                                              purpose: "Get Payment Request Test",
                                                              paymentUniversalLink: "",
@@ -851,7 +886,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCreate.fulfill()
         }
 
-        wait(for: [expectCreate], timeout: 30)
+        wait(for: [expectCreate], timeout: networkTimeout)
 
         guard let id = requestId else {
             XCTFail("Payment request not created")
@@ -875,7 +910,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectGet.fulfill()
         }
 
-        wait(for: [expectGet], timeout: 30)
+        wait(for: [expectGet], timeout: networkTimeout)
     }
 
     /// Test deleting batch of payment requests
@@ -896,7 +931,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -906,7 +941,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         // Create first payment request
         let paymentInfo1 = GiniInternalPaymentSDK.PaymentInfo(recipient: "Dr. BatchDelete1",
                                                               iban: "DE89370400440532013000",
-                                                              bic: "",
+                                                              bic: nil,
                                                               amount: "11.11:EUR",
                                                               purpose: "Batch Delete Test 1",
                                                               paymentUniversalLink: "",
@@ -922,7 +957,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         // Create second payment request
         let paymentInfo2 = GiniInternalPaymentSDK.PaymentInfo(recipient: "Dr. BatchDelete2",
                                                               iban: "DE89370400440532013000",
-                                                              bic: "",
+                                                              bic: nil,
                                                               amount: "22.22:EUR",
                                                               purpose: "Batch Delete Test 2",
                                                               paymentUniversalLink: "",
@@ -935,7 +970,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCreate2.fulfill()
         }
 
-        wait(for: [expectCreate1, expectCreate2], timeout: 30)
+        wait(for: [expectCreate1, expectCreate2], timeout: networkTimeout)
 
         guard requestIds.count == 2 else {
             XCTFail("Not all payment requests created")
@@ -954,7 +989,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectDelete.fulfill()
         }
 
-        wait(for: [expectDelete], timeout: 30)
+        wait(for: [expectDelete], timeout: networkTimeout)
     }
 
     /// Test getting payment status
@@ -974,7 +1009,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectProviders.fulfill()
         }
 
-        wait(for: [expectProviders], timeout: 30)
+        wait(for: [expectProviders], timeout: networkTimeout)
 
         guard let providerId = paymentProviderId else {
             XCTFail("No payment provider available")
@@ -984,7 +1019,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
         // Create payment request
         let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(recipient: "Dr. PaymentStatus",
                                                              iban: "DE89370400440532013000",
-                                                             bic: "",
+                                                             bic: nil,
                                                              amount: "99.99:EUR",
                                                              purpose: "Payment Status Test",
                                                              paymentUniversalLink: "",
@@ -997,7 +1032,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectCreate.fulfill()
         }
 
-        wait(for: [expectCreate], timeout: 30)
+        wait(for: [expectCreate], timeout: networkTimeout)
 
         guard let id = requestId else {
             XCTFail("Payment request not created")
@@ -1019,7 +1054,7 @@ final class GiniHealthSDKIntegrationTests: XCTestCase {
             expectGetPayment.fulfill()
         }
 
-        wait(for: [expectGetPayment], timeout: 30)
+        wait(for: [expectGetPayment], timeout: networkTimeout)
     }
 
 }

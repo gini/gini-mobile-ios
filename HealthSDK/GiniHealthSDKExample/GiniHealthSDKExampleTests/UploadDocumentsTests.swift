@@ -11,6 +11,15 @@ import GiniHealthAPILibrary
 import GiniHealthSDK
 
 class UploadDocumentsTests: XCTestCase {
+    
+    // MARK: - Test Configuration
+    
+    /// Standard timeout for network operations in integration tests
+    private let networkTimeout: TimeInterval = 30
+    
+    /// Extended timeout for long-running operations (document processing, etc.)
+    private let extendedTimeout: TimeInterval = 60
+    
     lazy var giniHelper = GiniSetupHelper()
 
     override func setUp() {
@@ -24,7 +33,7 @@ class UploadDocumentsTests: XCTestCase {
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
 
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: extendedTimeout)
     }
 
     func testFailUploadLargePDFToGiniHealthAPI() {
@@ -34,7 +43,7 @@ class UploadDocumentsTests: XCTestCase {
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {
