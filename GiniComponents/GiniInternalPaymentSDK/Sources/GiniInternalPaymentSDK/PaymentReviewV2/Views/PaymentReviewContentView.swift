@@ -33,6 +33,9 @@ public struct PaymentReviewContentView: View {
                 portraitLayout(geometry: geometry)
             }
         }
+        .overlay(alignment: .topTrailing) {
+            closeButton
+        }
         .onAppear {
             fetchImagesIfNeeded()
             viewModel.dismissBannerAfterDelay()
@@ -94,6 +97,22 @@ public struct PaymentReviewContentView: View {
     // MARK: - Private Views
     
     @ViewBuilder
+    private var closeButton: some View {
+        if viewModel.showCloseButton {
+            Button(action: {
+                viewModel.didTapClose()
+            }) {
+                Image(uiImage: viewModel.closeButtonImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Constants.closeButtonSize,
+                           height: Constants.closeButtonSize)
+            }
+            .accessibilityLabel(viewModel.closeButtonAccessibilityLabel)
+        }
+    }
+    
+    @ViewBuilder
     private func documentPreviewContent(carouselHeight: CGFloat) -> some View {
         VStack(spacing: Constants.documentPreviewStackSpacing) {
             if viewModel.isImagesLoading {
@@ -153,5 +172,6 @@ public struct PaymentReviewContentView: View {
         static let documentPreviewStackSpacing: CGFloat = 16.0
         static let totalPaddings: CGFloat = 32.0
         static let pageIndicatorSpace: CGFloat = 30.0
+        static let closeButtonSize: CGFloat = 48.0
     }
 }

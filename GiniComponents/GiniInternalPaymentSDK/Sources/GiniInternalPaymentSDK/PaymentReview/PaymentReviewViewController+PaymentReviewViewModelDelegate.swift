@@ -31,4 +31,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {
         present(bottomSheet, animated: true)
     }
+    
+    func dismissPaymentReview() {
+        dismiss(animated: true)
+    }
 }

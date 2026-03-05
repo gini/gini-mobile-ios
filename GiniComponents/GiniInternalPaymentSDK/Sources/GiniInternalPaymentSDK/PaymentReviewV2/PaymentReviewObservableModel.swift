@@ -23,6 +23,18 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     
+    private var showCloseButton: Bool {
+        model.showPaymentReviewCloseButton
+    }
+    
+    private var closeButtonImage: UIImage {
+        model.configuration.paymentReviewClose
+    }
+    
+    private var closeButtonAccessibilityLabel: String {
+        model.strings.closeButtonAccessibilityLabel
+    }
+    
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
@@ -82,6 +94,10 @@ final class PaymentReviewObservableModel: ObservableObject {
                 /// Task was cancelled - no action needed
             }
         }
+    }
+    
+    func didTapClose() {
+        model.closePaymentReview()
     }
     
     func didTapPay(_ paymentInfo: PaymentInfo) {

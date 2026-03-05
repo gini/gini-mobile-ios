@@ -61,4 +61,22 @@ extension PaymentReviewV2ViewController: PaymentReviewViewModelDelegate {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {
         giniTopMostViewController().present(bottomSheet, animated: true)
     }
+    
+    func dismissPaymentReview() {
+        if navigationController != nil {
+            navigationController?.popViewController(animated: true)
+        } else {
+            dismissScreen()
+        }
+    }
+    
+    private func dismissScreen() {
+        if let presented = presentedViewController {
+            presented.dismiss(animated: true) { [weak self] in
+                self?.dismiss(animated: true)
+            }
+        } else {
+            dismiss(animated: true)
+        }
+    }
 }

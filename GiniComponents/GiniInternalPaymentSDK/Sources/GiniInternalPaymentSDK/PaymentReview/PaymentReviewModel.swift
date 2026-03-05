@@ -14,6 +14,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
+    func dismissPaymentReview()
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
@@ -224,6 +225,11 @@ public class PaymentReviewModel {
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
+    }
+    
+    func closePaymentReview() {
+        delegate?.trackOnPaymentReviewCloseButtonClicked()
+        viewModelDelegate?.dismissPaymentReview()
     }
 
     func fetchImages() {
