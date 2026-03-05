@@ -37,6 +37,7 @@ final class SettingsViewModel {
     }()
     
     init(apiEnvironment: APIEnvironment,
+         enablePinningSDK: Bool,
          client: Client? = nil,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
@@ -45,10 +46,8 @@ final class SettingsViewModel {
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
 
-        self.selectedCredentialsSetIndex = UserDefaults.standard.selectedCredentialsSetIndex
-
-        let savedEnvironment = UserDefaults.standard.selectedAPIEnvironment
-        self.currentAPIEnvironment = APIEnvironment(rawValue: savedEnvironment) ?? apiEnvironment
+        self.selectedCredentialsSetIndex = ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex
+        self.currentAPIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
 
         setupContentData(apiEnvironment: apiEnvironment, client: client)
     }
@@ -59,7 +58,6 @@ final class SettingsViewModel {
         sections.append(setupDefaultConfigSection())
         sections.append(setupCredentialsSection(apiEnvironment: apiEnvironment, client: client))
         sections.append(setupFeatureTogglesSection())
-        sections.append(setupBottomNavBarsSection())
         sections.append(setupOnboardingSection())
         
         if flashToggleSettingEnabled {
@@ -107,8 +105,7 @@ final class SettingsViewModel {
 
     func handleCredentialsSetSelection(credentialsIndex: Int) {
         selectedCredentialsSetIndex = credentialsIndex
-
-        UserDefaults.standard.selectedCredentialsSetIndex = credentialsIndex
+        ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex = credentialsIndex
 
         setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
         delegate?.contentDataUpdated()
@@ -116,11 +113,17 @@ final class SettingsViewModel {
 
     func handleAPIEnvironmentSelection(environment: APIEnvironment) {
         currentAPIEnvironment = environment
-
-        UserDefaults.standard.selectedAPIEnvironment = environment.rawValue
+        ExampleAppUserDefaultsStorage.currentAPIEnvironment = environment
 
         setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
         delegate?.contentDataUpdated()
+    }
+
+    private func setupSDKTypeSection(enablePinningSDK: Bool) -> SettingsSection {
+        var credentialsSection = SettingsSection(title: "SDK type", items: [])
+        let selectedSegmentIndex = enablePinningSDK ? 1 : 0
+        credentialsSection.items.append(.segmentedOption(data: SDKTypeSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+        return credentialsSection
     }
 
     private func setupFeatureTogglesSection() -> SettingsSection {
@@ -157,39 +160,6 @@ final class SettingsViewModel {
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentDueHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentDueHintEnabled)))
         return featureTogglesSection
-    }
-
-    private func setupBottomNavBarsSection() -> SettingsSection {
-        var bottomNavBarsSection = SettingsSection(title: "Bottom Navigation Bars", items: [])
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .bottomNavigationBar,
-                                                                    isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.cameraNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .errorNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.errorNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .noResultsNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.noResultsNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.reviewNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.imagePickerNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
-        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
-                                                                    isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
-        return bottomNavBarsSection
     }
 
     private func setupOnboardingSection() -> SettingsSection {
@@ -231,8 +201,6 @@ final class SettingsViewModel {
 
     private func setupReturnAssistantSection() -> SettingsSection {
         var returnAssistantSection = SettingsSection(title: "Return Assistant", items: [])
-        returnAssistantSection.items.append(.switchOption(data: .init(type: .enableReturnReasons,
-                                                                      isSwitchOn: giniConfiguration.enableReturnReasons)))
         returnAssistantSection.items.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
                                                                       isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
         return returnAssistantSection
@@ -275,6 +243,8 @@ final class SettingsViewModel {
 
     private func setupDebugSection() -> SettingsSection {
         var debugSection = SettingsSection(title: "Debug and Development Options", items: [])
+        debugSection.items.append(.switchOption(data: .init(type: .customNetworkProvider,
+                                                                      isSwitchOn: giniConfiguration.customNetworkProvider != nil)))
         debugSection.items.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
                                                             isSwitchOn: giniConfiguration.giniErrorLoggerIsOn)))
         debugSection.items.append(.switchOption(data: .init(type: .customGiniErrorLogger,
@@ -314,20 +284,8 @@ final class SettingsViewModel {
             giniConfiguration.flashOnByDefault = data.isSwitchOn
         case .customResourceProvider:
             giniConfiguration.customResourceProvider = data.isSwitchOn ? GiniBankCustomResourceProvider() : nil
-        case .bottomNavigationBar:
-            giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
-        case .helpNavigationBarBottomAdapter:
-            giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .cameraNavigationBarBottomAdapter:
-            giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? CustomCameraBottomNavigationBarAdapter() : nil
-        case .errorNavigationBarBottomAdapter:
-            giniConfiguration.errorNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .noResultsNavigationBarBottomAdapter:
-            giniConfiguration.noResultsNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .reviewNavigationBarBottomAdapter:
-            giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? CustomReviewScreenBottomNavigationBarAdapter() : nil
-        case .imagePickerNavigationBarBottomAdapter:
-            giniConfiguration.imagePickerNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
+        case .customNetworkProvider:
+            giniConfiguration.customNetworkProvider = data.isSwitchOn ? ExampleHTTPClientProvider() : nil
         case .onboardingShowAtLaunch:
             giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
         case .onboardingShowAtFirstLaunch:
@@ -347,8 +305,6 @@ final class SettingsViewModel {
         case .onboardingMultiPageIllustrationAdapter:
             giniConfiguration.onboardingMultiPageIllustrationAdapter = createCustomIllustrationAdapter(
                 isSwitchOn: data.isSwitchOn, animationName: "uploadAnimation", color: .green)
-        case .onboardingNavigationBarBottomAdapter:
-            giniConfiguration.onboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomOnboardingBottomNavigationBarAdapter() : nil
         case .onButtonLoadingIndicator:
             giniConfiguration.onButtonLoadingIndicator = data.isSwitchOn ? OnButtonLoading() : nil
         case .customLoadingIndicator:
@@ -363,8 +319,6 @@ final class SettingsViewModel {
             giniConfiguration.shouldShowDragAndDropTutorial = data.isSwitchOn
         case .returnAssistantEnabled:
             giniConfiguration.returnAssistantEnabled = data.isSwitchOn
-        case .enableReturnReasons:
-            giniConfiguration.enableReturnReasons = data.isSwitchOn
         case .skontoEnabled:
             giniConfiguration.skontoEnabled = data.isSwitchOn
         case .transactionDocsEnabled:
@@ -384,14 +338,6 @@ final class SettingsViewModel {
         case .digitalInvoiceOnboardingIllustrationAdapter:
             giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = createCustomIllustrationAdapter(
                 isSwitchOn: data.isSwitchOn, animationName: "magicAnimation", color: .blue)
-        case .digitalInvoiceHelpNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceBottomNavigationBarAdapter() : nil
-        case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceSkontoBottomNavigationBarAdapter() : nil
         case .primaryButtonConfiguration:
             updateButtonConfiguration(for: &giniConfiguration.primaryButtonConfiguration,
                                       state: &settingsButtonStates.primaryButtonState,
@@ -414,10 +360,6 @@ final class SettingsViewModel {
                                       isSwitchOn: data.isSwitchOn)
         case .customDocumentValidations:
             updateCustomDocumentValidations(isSwitchOn: data.isSwitchOn)
-        case .skontoNavigationBarBottomAdapter:
-            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomSkontoNavigationBarBottomAdapter() : nil
-        case .skontoHelpNavigationBarBottomAdapter:
-            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .closeSDK:
             Self.shouldCloseSDKAfterTenSeconds = data.isSwitchOn
         }

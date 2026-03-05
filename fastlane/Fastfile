@@ -105,13 +105,13 @@ platform :ios do
   end
 
   desc <<~DOC
-    Publish a documentation to gh-pages.
+    Publish documentation to gh-pages.
 
     Releases the documentation into a folder hierarchy constructed from the package_folder and project version:
     <gh_pages_url>/<package_folder>/<project_version>
     Example: <gh_pages_url>/GiniCaptureSDK/1.11.0
 
-    If the 'is_stable_release' option is set to 'true', then it updates the package root index.html 
+    If the 'is_stable_release' option is set to true, then it updates the package root index.html 
     (at <gh_pages_url>/<package_folder>/index.html) to automatically redirect to the released version.
     
     Parameters:
@@ -119,20 +119,32 @@ platform :ios do
       package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
       version_file_path     - the path to the file containing the package version
       git_tag               - the git tag name used to release the project
-      repo_user             - the username to use for authentication
-      repo_password         - the password to use for authentication
-      ci                    - set to "true" if running on a CI machine
+      ci                    - set to true if running on a CI machine
       documentation_title   - the title used on the root index page
-      is_stable_release     - set to "true" if it's a stable release that should be shown by default 
+      is_stable_release     - set to true if it's a stable release that should be shown by default 
       dry_run               - (optional) executes without permanent side effects
 
   DOC
   lane :publish_docs do |options|
     # Required options
-    (project_folder, package_folder, version_file_path, git_tag, repo_user, repo_password, ci, documentation_title, is_stable_release) = 
-      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_user, :repo_password, :ci, :documentation_title, :is_stable_release], UI)
+    (project_folder, package_folder, version_file_path, git_tag, ci, documentation_title, is_stable_release) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :ci, :documentation_title, :is_stable_release], UI)
       # Optional options
       dry_run = options[:dry_run]
+
+      # Coerce boolean strings to actual booleans
+      is_stable_release = is_stable_release.to_s.downcase == "true"
+      ci = ci.to_s.downcase == "true"
+      dry_run = dry_run.to_s.downcase == "true"
+
+      # Validate GH_TOKEN is present
+      if ENV['GH_TOKEN'].nil? || ENV['GH_TOKEN'].empty?
+        UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
+      end
+
+      if ci
+        configure_git_on_ci_machines("Team Mobile", "team-mobile@gini.net")
+      end
 
       build_docs(project_folder: project_folder, package_folder: package_folder)
 
@@ -160,58 +172,76 @@ platform :ios do
         * url                 : "https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html"
      MESSAGE
 
-      if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
-      end
-
       # Clear gh-pages directory 
       sh("rm -rf gh-pages")
 
-      # Clone
-      sh("git clone -b gh-pages https://#{repo_user}:#{repo_password}@github.com/gini/gini-mobile-ios.git gh-pages")
+      # Create a temporary credential helper script that uses GH_TOKEN
+      # This approach keeps the token out of command lines and process listings
+      credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
+      
+      begin
+        File.write(credential_helper, <<~SCRIPT)
+          #!/bin/bash
+          echo "username=x-access-token"
+          echo "password=${GH_TOKEN}"
+        SCRIPT
+        sh("chmod +x #{credential_helper}")
+        
+        # Configure git to use the credential helper and clone
+        sh("git config --global credential.helper '#{credential_helper}'")
+        sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
 
-      destination_path = "#{package_folder}/#{package_version}"
+        destination_path = "#{package_folder}/#{package_version}"
 
-      Dir.chdir("gh-pages") do
-        UI.message "Clear out the existing documentation"
-        sh("git rm -rf #{destination_path} --ignore-unmatch && git clean -fd")
+        Dir.chdir("gh-pages") do
+          UI.message "Clear out the existing documentation"
+          sh("git rm -rf #{destination_path} --ignore-unmatch && git clean -fd")
 
-        UI.message "Copy over the current documentation"
-        sh("mkdir -p #{destination_path} && cp -R ../../#{project_folder}/#{package_folder}/Documentation/Api/ #{destination_path}")
+          UI.message "Copy over the current documentation"
+          sh("mkdir -p #{destination_path} && cp -R ../../#{project_folder}/#{package_folder}/Documentation/Api/ #{destination_path}")
 
-        UI.message "Disable jekyll"
-        sh("touch .nojekyll")
+          UI.message "Disable jekyll"
+          sh("touch .nojekyll")
 
-        UI.message <<~MESSAGE
-          Update the package root index.html to redirect to this documentation version.
-        MESSAGE
-  
-        index_html = <<~INDEX_HTML
-        <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <title>#{documentation_title}</title>
-            <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
-          </head>
-          <body>
-            Redirecting to the latest stable version...
-          </body>
-        </html>
-        INDEX_HTML
-  
-        File.open("#{package_folder}/index.html", "w") { |f| 
-          f.write index_html
-        }
+          if is_stable_release
+            UI.message <<~MESSAGE
+              Update the package root index.html to redirect to this documentation version.
+            MESSAGE
+      
+            index_html = <<~INDEX_HTML
+            <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8">
+                <title>#{documentation_title}</title>
+                <meta http-equiv="refresh" content="0; URL=https://developer.gini.net/gini-mobile-ios/#{destination_path}/index.html" />
+              </head>
+              <body>
+                Redirecting to the latest stable version...
+              </body>
+            </html>
+            INDEX_HTML
+      
+            File.open("#{package_folder}/index.html", "w") { |f| 
+              f.write index_html
+            }
+          else
+            UI.message "Skipping root index.html update (not a stable release)"
+          end
 
-        if !dry_run 
-          UI.message "Commit and push the new documentation"
-          sh("git add --all")
-          sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
-          git_push_with_retry("gh-pages", UI)
-        else
-          UI.message "Skipping commit and push (dry run)"
+          if !dry_run 
+            UI.message "Commit and push the new documentation"
+            sh("git add --all")
+            sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
+            git_push_with_retry("gh-pages", UI)
+          else
+            UI.message "Skipping commit and push (dry run)"
+          end
         end
+      ensure
+        # Clean up credential helper and git config
+        sh("git config --global --unset credential.helper || true")
+        sh("rm -f #{credential_helper}")
       end
 
       UI.success <<~MESSAGE

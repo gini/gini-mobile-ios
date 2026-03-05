@@ -54,6 +54,10 @@ final class AppCoordinator: Coordinator {
         // NOTE: if you use customResourceProvider please initialise it before adding custom implementation for the Gini buttons
 //        let customProvider = GiniBankCustomResourceProvider()
 //        configuration.customResourceProvider = customProvider
+        
+        // Custom Network Provider can be enabled in Settings > General UI Customization
+        // Or programmatically with: configuration.customNetworkProvider = ExampleHTTPClientProvider()
+        
         // 1. primaryButtonConfiguration
         // 2. secondaryButtonConfiguration
         // 3. transparentButtonConfiguration
@@ -88,6 +92,7 @@ final class AppCoordinator: Coordinator {
 	private var settingsButtonStates: SettingsButtonStates?
 	private var documentValidationsState: DocumentValidationsState?
     private var apiEnvironment: APIEnvironment = .production
+    private var enablePinningSDK: Bool = ExampleAppUserDefaultsStorage.enablePinningSDK
 
     init(window: UIWindow) {
         self.window = window
@@ -221,6 +226,7 @@ final class AppCoordinator: Coordinator {
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
         let screenAPICoordinator = ScreenAPICoordinator(apiEnvironment: apiEnvironment,
+                                                        enablePinningSDK: enablePinningSDK,
                                                         configuration: configuration,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: client,
@@ -267,6 +273,7 @@ final class AppCoordinator: Coordinator {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
         let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
+                                                            enablePinningSDK: enablePinningSDK,
                                                             client: client,
                                                             giniConfiguration: configuration,
                                                             settingsButtonStates: settingsButtonStates,
@@ -360,6 +367,11 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
     func didSelectAPIEnvironment(apiEnvironment: APIEnvironment) {
         self.apiEnvironment = apiEnvironment
+    }
+
+    func didSelectPinningSDK(_ enablePinningSDK: Bool) {
+        self.enablePinningSDK = enablePinningSDK
+        ExampleAppUserDefaultsStorage.enablePinningSDK = enablePinningSDK
     }
 }
 

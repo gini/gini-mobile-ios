@@ -14,6 +14,7 @@ protocol SettingsViewControllerDelegate: AnyObject {
     func didTapCloseButton()
     func didTapSaveCredentialsButton(clientId: String, clientSecret: String)
     func didSelectAPIEnvironment(apiEnvironment: APIEnvironment)
+    func didSelectPinningSDK(_ enablePinningSDK: Bool)
 }
 
 final class SettingsViewController: UIViewController {
@@ -29,11 +30,13 @@ final class SettingsViewController: UIViewController {
 	// MARK: - Initializers
      
     init(apiEnvironment: APIEnvironment,
+         enablePinningSDK: Bool,
          client: Client? = nil,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
          documentValidationsState: DocumentValidationsState) {
         self.viewModel = SettingsViewModel(apiEnvironment: apiEnvironment,
+                                           enablePinningSDK: enablePinningSDK,
                                            client: client,
                                            giniConfiguration: giniConfiguration,
                                            settingsButtonStates: settingsButtonStates,
@@ -146,7 +149,8 @@ extension SettingsViewController: UITableViewDataSource {
         cell.indexPath = indexPath
         let model = SegmentedOptionCellModel(title: optionModel.title,
                                              items: optionModel.items,
-                                             selectedIndex: optionModel.selectedIndex)
+                                             selectedIndex: optionModel.selectedIndex,
+                                             description: optionModel.description)
         cell.set(data: model)
         cell.delegate = self
         return cell
@@ -212,6 +216,8 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             handleApiEnvironmentOption(environmentIndex: newData.selectedIndex)
         } else if newData is CredentialsSetSegmentedOptionModel {
             handleCredentialsSetSelection(credentialsIndex: newData.selectedIndex)
+        } else if newData is SDKTypeSegmentedOptionModel {
+            handleSDKTypeOption(index: newData.selectedIndex)
         }
     }
 
@@ -238,6 +244,17 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 
         present(alert, animated: true, completion: nil)
+    }
+    func handleSDKTypeOption(index: Int) {
+        switch index {
+        case 0:
+            delegate?.didSelectPinningSDK(false)
+        case 1:
+            delegate?.didSelectPinningSDK(true)
+        default:
+            return
+
+        }
     }
 }
 

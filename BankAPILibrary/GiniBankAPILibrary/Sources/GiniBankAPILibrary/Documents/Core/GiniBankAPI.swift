@@ -81,15 +81,17 @@ extension GiniBankAPI {
         var userApi: UserDomain = .default
         var logLevel: LogLevel
         public var sessionDelegate: URLSessionDelegate? = nil
+        var customNetworkProvider: GiniNetworkProvider? = nil
         
         /**
-         *  Creates a Gini Bank API Library.
+         *  Initializes a Gini Bank API Library instance.
          *
-         * - Parameter client:            The Gini Bank API client credentials
-         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
-         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
+         *   - sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
@@ -102,9 +104,15 @@ extension GiniBankAPI {
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
         }
-        
+
         /**
-         * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source.
+         *
+         * - Parameters:
+         *  - customApiDomain:          A custom api domain string.
+         *  - alternativeTokenSource:   A protocol for using custom api access token
+         *  - logLevel:                 The desired log level. Defaults to `LogLevel.none`.
+         *  - sessionDelegate:          The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
@@ -114,6 +122,62 @@ extension GiniBankAPI {
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
+        }
+
+        /**
+         *  Initializes a Gini Bank API Library instance configured with a certificate pinning configuration.
+         *
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - pinningConfig:     A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
+         */
+        public init(client: Client,
+                    api: APIDomain = .default,
+                    userApi: UserDomain = .default,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(client: client,
+                      api: api,
+                      userApi: userApi,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+
+        /**
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source and certificate pinning configuration.
+         *
+         * - Parameters:
+         *  - customApiDomain:        A custom api domain string.
+         *  - alternativeTokenSource: A protocol-conforming instance used to provide a custom API access token.
+         *  - pinningConfig:          A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *  - logLevel:               The desired log level. Defaults to `LogLevel.none`.
+         */
+        public init(customApiDomain: String = APIDomain.default.domainString,
+                    alternativeTokenSource: AlternativeTokenSource,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(customApiDomain: customApiDomain,
+                      alternativeTokenSource: alternativeTokenSource,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+        
+        /**
+         * Sets a custom network provider for all HTTP requests.
+         *
+         * Allows you to provide a custom HTTP client for all network requests made by the SDK.
+         * Use this for corporate proxy configuration, custom TLS requirements, or specialized logging.
+         *
+         * - Parameter provider: The custom network provider, or nil to use default implementation
+         * - Returns: Updated builder instance
+         */
+        public func setCustomNetworkProvider(_ provider: GiniNetworkProvider?) -> Builder {
+            var builder = self
+            builder.customNetworkProvider = provider
+            return builder
         }
 
         public func build() -> GiniBankAPI {
@@ -137,15 +201,24 @@ extension GiniBankAPI {
         }
         
         private func createSessionManager() -> SessionManager {
+            // Extract custom HTTP client if provider exists
+            let httpClient = customNetworkProvider?.httpClient()
+            
             switch api {
             case .default:
-                return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-            case .custom(_, _, let tokenSource):
-                if let tokenSource = tokenSource {
-                    return SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
-                } else {
-                    return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-                }
+                return SessionManager(userDomain: userApi,
+                                      sessionDelegate: sessionDelegate,
+                                      customHTTPClient: httpClient)
+                case .custom(_, _, let tokenSource):
+                    if let tokenSource = tokenSource {
+                        return SessionManager(alternativeTokenSource: tokenSource,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    } else {
+                        return SessionManager(userDomain: userApi,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    }
             }
         }
         

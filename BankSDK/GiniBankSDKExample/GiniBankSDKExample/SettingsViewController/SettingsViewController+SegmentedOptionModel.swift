@@ -11,6 +11,11 @@ protocol SegmentedOptionModelProtocol {
     var selectedIndex: Int { get set }
     var items: [String] { get }
     var title: String { get }
+    var description: String? { get }
+}
+
+extension SegmentedOptionModelProtocol {
+    var description: String? { nil }
 }
 
 struct FileImportSegmentedOptionModel: SegmentedOptionModelProtocol {
@@ -52,5 +57,21 @@ struct CredentialsSetSegmentedOptionModel: SegmentedOptionModelProtocol {
 
     var title: String {
         return "Credentials Set"
+    }
+}
+
+struct SDKTypeSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["Default", "Pinning"]
+    }
+
+    var title: String {
+        return "SDK type"
+    }
+
+    var description: String? {
+        return "Charles will not work with Pinning SDK!"
     }
 }
