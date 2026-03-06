@@ -10,205 +10,357 @@ import GiniUtilites
 
 struct PaymentReviewPaymentInformationView: View {
     
+    private enum Field {
+        case recipient
+        case iban
+        case amount
+        case paymentPurpose
+    }
+    
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
-    @State private var recipient: String = ""
-    @State private var iban: String = ""
-    @State private var amount: String = ""
-    @State private var paymentPurpose: String = ""
+    @FocusState private var focusedField: Field?
     
-    @State private var amountToPay: Price
-    @State private var showBanner: Bool = true
+    @Binding private var contentHeight: CGFloat
+    @Binding private var collapsedHeight: CGFloat
+    @Binding private var showBanner: Bool
     
-    init(viewModel: PaymentReviewContainerViewModel,
+    private var textFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.defaultStyleInputFieldConfiguration
+    }
+    
+    private var focusedTextFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.selectionStyleInputFieldConfiguration
+    }
+    
+    private var errorTextFieldConfiguration: TextFieldConfiguration {
+        viewModel.model.errorStyleInputFieldConfiguration
+    }
+    
+    private var viewModelStrings: PaymentReviewContainerStrings {
+        viewModel.model.strings
+    }
+    
+    init(viewModel: PaymentReviewPaymentInformationObservableModel,
+         contentHeight: Binding<CGFloat>,
+         collapsedHeight: Binding<CGFloat>,
+         showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
-        let observableModel = PaymentReviewPaymentInformationObservableModel(model: viewModel)
-        self.viewModel = observableModel
+        self.viewModel = viewModel
+        self._contentHeight = contentHeight
+        self._collapsedHeight = collapsedHeight
+        self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
-        self.amountToPay = Price(value: 0, currencyCode: "€")
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.zero) {
+            VStack(spacing: Constants.textFieldsContainerSpacing) {
+                recipientTextField
+                
+                HStack(spacing: Constants.textFieldsContainerSpacing) {
+                    ibanTextField
+                    amountTextField
+                }
+                
+                paymentPurposeTextField
+                
+                HStack(spacing: Constants.buttonsContainerSpacing) {
+                    paymentProviderSelectionPicker
+                    payButton
+                }
+                .getHeight(for: $collapsedHeight)
+            }
+            .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
+            .padding(.top, Constants.textFieldsContainerTopPadding)
+        }
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .top) {
             if showBanner {
-                HStack {
-                    Text(viewModel.model.strings.infoBarMessage)
-                        .foregroundColor(Color(viewModel.model.configuration.infoBarLabelTextColor))
-                        .multilineTextAlignment(.center)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(Color(viewModel.model.configuration.infoBarBackgroundColor))
-                .transition(.move(edge: .top).combined(with: .opacity))
+                infoBannerView
             }
-            
-            VStack(spacing: 8.0) {
-                let textFieldConfiguration = viewModel.model.defaultStyleInputFieldConfiguration
-                let viewModelStrings = viewModel.model.strings
-                
-                TextField("", text: $recipient)
-                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
-                                                       configuration: textFieldConfiguration))
-                
-                HStack(spacing: 8.0) {
-                    TextField("", text: $iban)
-                        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
-                                                           configuration: textFieldConfiguration))
-                    
-                    TextField("", text: $amount,
-                              onEditingChanged: { isBegin in
-                        if isBegin {
-                            amount = amountToPay.stringWithoutSymbol ?? ""
-                        } else {
-                            if !amount.isEmpty,
-                               let decimalAmount = amount.decimal() {
-                                amountToPay.value = decimalAmount
-                                
-                                if decimalAmount > 0,
-                                   let amountString = amountToPay.string {
-                                    amount = amountString
-                                } else {
-                                    amount = ""
-                                }
-                            }
-                        }
-                    })
-                    .onChange(of: amount) { newValue in
-                        adjustAmountValue(updatedText: newValue)
-                    }
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
-                                                       configuration: textFieldConfiguration))
-                }
-                
-                TextField("", text: $paymentPurpose)
-                    .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
-                                                       configuration: textFieldConfiguration))
-                
-                if #available(iOS 15.0, *) {
-                    HStack(spacing: 8.0) {
-                        Button(action: {
-                            onBankSelectionTapped()
-                        }) {
-                            HStack(spacing: 12.0) {
-                                if let uiImage = UIImage(data: viewModel.selectedPaymentProvider.iconData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 36, height: 36)
-                                        .cornerRadius(6.0)
-                                }
-                                
-                                if let chevronImage = viewModel.model.configuration.chevronDownIcon,
-                                   let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
-                                    Image(uiImage: chevronImage)
-                                        .resizable()
-                                        .renderingMode(.template)
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .tint(Color(chevronDownIconColor))
-                                }
-                            }
-                            .frame(width: 96.0, height: 36.0)
-                            .padding(.vertical, 10.0)
-                        }
-                        .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
-                        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
-                                .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
-                                        lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
-                        )
-                        
-                        if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
-                           let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
-                            Button(action: {
-                                onPayTapped(buildPaymentInfo())
-                            }) {
-                                Text(viewModel.model.strings.payInvoiceLabelText)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                            }
-                            .foregroundColor(Color(selectedPaymentProviderTextColor))
-                            .background(Color(selectedPaymentProviderBackgroundColor))
-                            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
-                            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
-                            .frame(height: 56.0)
-                        }
-                    }
-                } else {
-                    // Fallback on earlier versions
-                }
-            }
-            .padding(.horizontal, 16.0)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.model.configuration.popupAnimationDuration) {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    showBanner = false
+            populateFields()
+        }
+        .getHeight(for: $contentHeight)
+    }
+    
+    // MARK: Private views
+    
+    @ViewBuilder
+    private var infoBannerView: some View {
+        HStack {
+            Text(viewModel.model.strings.infoBarMessage)
+                .font(Font(viewModel.model.configuration.infoBarLabelFont))
+                .foregroundStyle(Color(viewModel.model.configuration.infoBarLabelTextColor))
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Constants.bannerVerticalPadding)
+        .background(Color(viewModel.model.configuration.infoBarBackgroundColor))
+        .clipShape(
+            .rect(
+                topLeadingRadius: Constants.bannerCornerRadius,
+                bottomLeadingRadius: Constants.zero,
+                bottomTrailingRadius: Constants.zero,
+                topTrailingRadius: Constants.bannerCornerRadius
+            )
+        )
+        .offset(y: Constants.bannerYOffset)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+    
+    @ViewBuilder
+    private var recipientTextField: some View {
+        TextField(Constants.emptyString, text: $viewModel.recipientInputState.text)
+        .focused($focusedField, equals: .recipient)
+        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
+                                           state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
+                                           errorMessage: viewModel.recipientInputState.errorMessage,
+                                           normalConfiguration: textFieldConfiguration,
+                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                           errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleRecipientFocusChange(isFocused: newFocus == .recipient)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var ibanTextField: some View {
+        TextField(Constants.emptyString, text: $viewModel.ibanInputState.text)
+        .focused($focusedField, equals: .iban)
+        .textInputAutocapitalization(.characters)
+        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
+                                           state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
+                                           errorMessage: viewModel.ibanInputState.errorMessage,
+                                           normalConfiguration: textFieldConfiguration,
+                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                           errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleIBANFocusChange(isFocused: newFocus == .iban)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var amountTextField: some View {
+        TextField(Constants.emptyString, text: $viewModel.amountInputState.text)
+        .focused($focusedField, equals: .amount)
+        .onChange(of: viewModel.amountInputState.text) { newValue in
+            adjustAmountValue(updatedText: newValue)
+        }
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handleAmountFocusChange(isFocused: newFocus == .amount)
+            }
+        }
+        .keyboardType(.decimalPad)
+        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
+                                           state: fieldState(for: .amount, hasError: viewModel.amountInputState.hasError),
+                                           errorMessage: viewModel.amountInputState.errorMessage,
+                                           normalConfiguration: textFieldConfiguration,
+                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                           errorConfiguration: errorTextFieldConfiguration))
+    }
+    
+    @ViewBuilder
+    private var paymentPurposeTextField: some View {
+        TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
+        .focused($focusedField, equals: .paymentPurpose)
+        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
+                                           state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
+                                           errorMessage: viewModel.paymentPurposeInputState.errorMessage,
+                                           normalConfiguration: textFieldConfiguration,
+                                           focusedConfiguration: focusedTextFieldConfiguration,
+                                           errorConfiguration: errorTextFieldConfiguration))
+        .onChange(of: focusedField) { newFocus in
+            Task { @MainActor in
+                handlePaymentPurposeFocusChange(isFocused: newFocus == .paymentPurpose)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var paymentProviderSelectionPicker: some View {
+        Button(action: {
+            onBankSelectionTapped()
+        }) {
+            HStack(spacing: Constants.paymentProviderPickerSpacing) {
+                if let uiImage = UIImage(data: viewModel.selectedPaymentProvider.iconData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: Constants.paymentProviderPickerIconSize.width,
+                               height: Constants.paymentProviderPickerSize.height)
+                        .cornerRadius(Constants.paymentProviderPickerCornerRadius)
+                }
+                
+                if let chevronImage = viewModel.model.configuration.chevronDownIcon,
+                   let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
+                    Image(uiImage: chevronImage)
+                        .resizable()
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: Constants.paymentProviderPickerChevronSize.width,
+                               height: Constants.paymentProviderPickerChevronSize.height)
+                        .tint(Color(chevronDownIconColor))
                 }
             }
-            
-            populateFields()
+            .frame(width: Constants.paymentProviderPickerSize.width,
+                   height: Constants.paymentProviderPickerSize.height)
+            .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
+        }
+        .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
+        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
+        .overlay(
+            RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
+                .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
+                        lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
+        )
+    }
+    
+    @ViewBuilder
+    private var payButton: some View {
+        if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
+           let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
+            Button(action: {
+                if validateFields() {
+                    onPayTapped(buildPaymentInfo())
+                }
+            }) {
+                Text(viewModel.model.strings.payInvoiceLabelText)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .foregroundStyle(Color(selectedPaymentProviderTextColor))
+            .background(Color(selectedPaymentProviderBackgroundColor))
+            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
+            .frame(height: Constants.payButtonHeight)
         }
     }
     
     // MARK: Private methods
     
     private func populateFields() {
-        if !viewModel.extractions.isEmpty {
-            populateFieldsWithExtractions(viewModel.extractions)
-        } else if let paymentInfo = viewModel.model.paymentInfo {
-            populateFieldsWithPaymentInfo(paymentInfo)
-        }
-    }
-    
-    private func populateFieldsWithExtractions(_ extractions: [Extraction]) {
-        recipient = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? ""
-        iban = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? ""
-        paymentPurpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? ""
-        
-        if let amountString = viewModel.extractions.first(where: { $0.name == "amount_to_pay" })?.value,
-           let amountToPay = Price(extractionString: amountString),
-           let amountToPayString = amountToPay.string {
-            self.amountToPay = amountToPay
-            amount = amountToPayString
-        }
-    }
-    
-    private func populateFieldsWithPaymentInfo(_ paymentInfo: PaymentInfo) {
-        recipient = paymentInfo.recipient
-        iban = paymentInfo.iban.uppercased()
-        paymentPurpose = paymentInfo.purpose
-        
-        if let amountToPay = Price(extractionString: paymentInfo.amount),
-           let amountToPayText = amountToPay.string {
-            self.amountToPay = amountToPay
-            amount = amountToPayText
-        }
+        viewModel.populateFieldsIfNeeded()
     }
     
     private func buildPaymentInfo() -> PaymentInfo {
-        let paymentInfo = PaymentInfo(recipient: recipient,
-                                      iban: iban,
-                                      bic: "",
-                                      amount: amountToPay.extractionString,
-                                      purpose: paymentPurpose,
-                                      paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
-                                      paymentProviderId: viewModel.selectedPaymentProvider.id)
+        let paymentInfo = viewModel.buildPaymentInfo(recipient: viewModel.recipientInputState.text,
+                                                     iban: viewModel.ibanInputState.text,
+                                                     amount: viewModel.amountToPay.extractionString,
+                                                     purpose: viewModel.paymentPurposeInputState.text)
+        
         return paymentInfo
     }
     
     private func adjustAmountValue(updatedText: String) {
-        if let newPrice = updatedText.toPrice(maxDigitsLength: 7),
-           let newAmount = newPrice.stringWithoutSymbol {
-            amount = newAmount
-            amountToPay.value = newPrice.value
+        viewModel.amountInputState.hasError = false
+        
+        if let result = viewModel.adjustAmountValue(text: updatedText) {
+            viewModel.amountInputState.text = result.adjustedText
+            viewModel.amountToPay.value = result.newValue
         }
+    }
+    
+    private func fieldState(for field: Field, hasError: Bool) -> GiniTextFieldState {
+        if hasError {
+            return .error
+        } else if focusedField == field {
+            return .focused
+        } else {
+            return .normal
+        }
+    }
+    
+    private func validateFields() -> Bool {
+        let isValid = viewModel.validateAllFields(recipient: viewModel.recipientInputState.text,
+                                                  iban: viewModel.ibanInputState.text,
+                                                  amount: viewModel.amountInputState.text,
+                                                  amountValue: viewModel.amountToPay.value,
+                                                  purpose: viewModel.paymentPurposeInputState.text)
+        
+        viewModel.updateFieldErrorStates()
+        
+        return isValid
+    }
+    
+    // MARK: - Focus Change Handlers
+
+    private func handleRecipientFocusChange(isFocused: Bool) {
+        if isFocused {
+            viewModel.recipientInputState.hasError = false
+        } else {
+            viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
+            viewModel.recipientInputState.errorMessage = viewModel.recipientError
+        }
+    }
+
+    private func handleIBANFocusChange(isFocused: Bool) {
+        if isFocused {
+            viewModel.ibanInputState.hasError = false
+        } else {
+            viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
+            viewModel.ibanInputState.errorMessage = viewModel.ibanError
+        }
+    }
+
+    private func handleAmountFocusChange(isFocused: Bool) {
+        if isFocused {
+            viewModel.amountInputState.text = viewModel.amountToPay.stringWithoutSymbol ?? Constants.emptyString
+        } else {
+            if !viewModel.amountInputState.text.isEmpty,
+               let decimalAmount = viewModel.amountInputState.text.decimal() {
+                viewModel.amountToPay.value = decimalAmount
+                
+                if decimalAmount > 0,
+                   let amountString = viewModel.amountToPay.string {
+                    viewModel.amountInputState.text = amountString
+                } else {
+                    viewModel.amountInputState.text = Constants.emptyString
+                }
+            }
+            
+            viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
+            viewModel.amountInputState.errorMessage = viewModel.amountError
+        }
+    }
+
+    private func handlePaymentPurposeFocusChange(isFocused: Bool) {
+        if isFocused {
+            viewModel.paymentPurposeInputState.hasError = false
+        } else {
+            viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
+            viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+        }
+    }
+    
+    private struct Constants {
+        static let emptyString = ""
+        static let zero = 0.0
+        static let bannerVerticalPadding = 16.0
+        static let bannerCornerRadius = 12.0
+        static let bannerYOffset = -8.0
+        static let textFieldsContainerSpacing = 8.0
+        static let buttonsContainerSpacing = 8.0
+        static let paymentProviderPickerSpacing = 12.0
+        static let paymentProviderPickerCornerRadius = 6.0
+        static let paymentProviderPickerVerticalPadding = 10.0
+        static let paymentProviderPickerIconSize = CGSize(width: 36.0, height: 36.0)
+        static let paymentProviderPickerChevronSize = CGSize(width: 24.0, height: 24.0)
+        static let paymentProviderPickerSize = CGSize(width: 96.0, height: 36.0)
+        static let payButtonHeight = 56.0
+        static let textFieldsContainerHorizontalPadding = 16.0
+        static let textFieldsContainerTopPadding = 32.0
     }
 }

@@ -7,15 +7,27 @@
 import Combine
 import GiniHealthAPILibrary
 import SwiftUI
+import UIKit
 
 final class PaymentReviewObservableModel: ObservableObject {
+    
+    private let containerViewModel: PaymentReviewContainerViewModel
+    private let paymentInformationObservableModel: PaymentReviewPaymentInformationObservableModel
+    
+    private var selectedPaymentProvider: PaymentProvider {
+        containerViewModel.selectedPaymentProvider
+    }
+    
+    private var bannerDismissTask: Task<Void, Never>?
+    private var bannerDismissed: Bool = false
+    private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
+    private var reduceMotionObserver: NSObjectProtocol?
+    
+    @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
     @Published var isImagesLoading: Bool = false
     @Published var isLoading: Bool = false
-    @Published var selectedPaymentProvider: PaymentProvider
-    
-    lazy var paymentReviewPaymentInformationView: PaymentReviewPaymentInformationView = buildPaymentInformationView()
     
     var document: Document? {
         model.document
@@ -25,12 +37,51 @@ final class PaymentReviewObservableModel: ObservableObject {
     
     init(model: PaymentReviewModel) {
         self.model = model
-        self.selectedPaymentProvider = model.selectedPaymentProvider
+        self.containerViewModel = model.paymentReviewContainerViewModel()
+        self.paymentInformationObservableModel = PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
+        self.showBanner = !model.configuration.isInfoBarHidden
         setupBindings()
+        
+        reduceMotionObserver = NotificationCenter.default.addObserver(forName: UIAccessibility.reduceMotionStatusDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.reduceMotion = UIAccessibility.isReduceMotionEnabled
+        }
+    }
+    
+    deinit {
+        if let reduceMotionObserver {
+            NotificationCenter.default.removeObserver(reduceMotionObserver)
+        }
+        bannerDismissTask?.cancel()
     }
     
     func fetchImages() async {
         await model.fetchImages()
+    }
+    
+    func dismissBannerAfterDelay() {
+        guard !bannerDismissed else { return }
+        
+        let duration = model.paymentReviewContainerViewModel().configuration.popupAnimationDuration
+        
+        bannerDismissTask = Task { [weak self] in
+            do {
+                try await Task.sleep(for: .seconds(duration))
+
+                guard !Task.isCancelled else { return }
+                guard let self = self else { return }
+
+                let animation = self.reduceMotion ? nil : Animation.easeInOut(duration: Constants.bannerDismissDelay)
+
+                await MainActor.run {
+                    withAnimation(animation) {
+                        self.showBanner = false
+                        self.bannerDismissed = true
+                    }
+                }
+            } catch {
+                /// Task was cancelled - no action needed
+            }
+        }
     }
     
     func didTapPay(_ paymentInfo: PaymentInfo) {
@@ -51,9 +102,13 @@ final class PaymentReviewObservableModel: ObservableObject {
             createPaymentRequestForOpenWith(paymentInfo: paymentInfo)
         }
     }
-    
-    private func buildPaymentInformationView() -> PaymentReviewPaymentInformationView {
-        PaymentReviewPaymentInformationView(viewModel: model.paymentReviewContainerViewModel(),
+
+    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>,
+                                             collapsedHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
+        PaymentReviewPaymentInformationView(viewModel: paymentInformationObservableModel,
+                                            contentHeight: contentHeight,
+                                            collapsedHeight: collapsedHeight,
+                                            showBanner: Binding( get: { self.showBanner }, set: { self.showBanner = $0 }),
                                             onBankSelectionTapped: { [weak self] in
             self?.model.openBankSelectionBottomSheet()
         },
@@ -100,7 +155,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         model.onNewPaymentProvider = { [weak self] in
             guard let self else { return }
-            selectedPaymentProvider = model.selectedPaymentProvider
+            containerViewModel.selectedPaymentProvider = model.selectedPaymentProvider
         }
     }
     
@@ -136,4 +191,10 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         model.sendFeedback(updatedExtractions: updatedExtractions)
     }
+    
+    private struct Constants {
+        
+        static let bannerDismissDelay = 0.3
+    }
 }
+

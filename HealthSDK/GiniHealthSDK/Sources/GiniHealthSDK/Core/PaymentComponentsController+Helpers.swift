@@ -267,10 +267,11 @@ extension PaymentComponentsController {
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
                                            previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            clientConfiguration: configurationProvider.clientConfiguration)
-
-        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
-
+        
+        /// TODO: This will be updated later to have the `PaymentReviewViewController` when the code cleanup is done.
+        let vc = PaymentReviewV2ViewController(viewModel: viewModel,
+                                               selectedPaymentProvider: healthSelectedPaymentProvider)
+        
         completion(vc, nil)
     }
 

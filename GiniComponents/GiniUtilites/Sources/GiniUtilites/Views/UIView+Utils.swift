@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 // MARK: - Adds round corners to any UIView, configurable with UIRectCorner, radius
 
@@ -59,5 +60,36 @@ public extension UIView {
             activityIndicator.stopAnimating()
             activityIndicator.removeFromSuperview()
         }
+    }
+}
+
+public extension View {
+    
+    /**
+     Measures and reports the view's height through a binding.
+     
+     Uses `GeometryReader` and `PreferenceKey` to measure the view's natural height
+     and updates the binding when the height changes. The view is configured with
+     `.fixedSize(horizontal: false, vertical: true)` to calculate its natural vertical size.
+     
+     - Parameter height: A binding to receive the measured height value.
+     - Returns: A view that reports its height through the provided binding.
+     */
+    @available(iOS 15.0, *)
+    func getHeight(for height: Binding<CGFloat>) -> some View {
+        self
+            .fixedSize(horizontal: false, vertical: true)
+            .background {
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: GiniHeightPreferenceKey.self,
+                                    value: geometry.size.height)
+                }
+            }
+            .onPreferenceChange(GiniHeightPreferenceKey.self) { newHeight in
+                DispatchQueue.main.async {
+                    height.wrappedValue = newHeight
+                }
+            }
     }
 }

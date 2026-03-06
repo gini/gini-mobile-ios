@@ -34,6 +34,7 @@ public class PaymentReviewV2ViewController: UIHostingController<PaymentReviewCon
         super.viewDidLoad()
         
         model.viewModelDelegate = self
+        view.backgroundColor = .clear
     }
 }
 
