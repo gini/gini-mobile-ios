@@ -33,6 +33,7 @@ struct GiniZoomableImageView: UIViewRepresentable {
     
     let image: UIImage
     let size: CGSize
+    var accessibilityLabel: String?
     
     func makeUIView(context: Context) -> GiniZoomableScrollView {
         let scrollView = GiniZoomableScrollView()
@@ -41,6 +42,9 @@ struct GiniZoomableImageView: UIViewRepresentable {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityTraits = .image
+        imageView.accessibilityLabel = accessibilityLabel
         
         scrollView.addSubview(imageView)
         scrollView.imageView = imageView

@@ -75,6 +75,10 @@ struct PaymentReviewPaymentInformationView: View {
                     payButton
                 }
                 .getHeight(for: $collapsedHeight)
+                
+                if viewModel.shouldShowBrandedView {
+                    poweredByGiniView
+                }
             }
             .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
             .padding(.top, Constants.textFieldsContainerTopPadding)
@@ -83,6 +87,10 @@ struct PaymentReviewPaymentInformationView: View {
         .overlay(alignment: .top) {
             if showBanner {
                 infoBannerView
+                    .onAppear {
+                        UIAccessibility.post(notification: .announcement,
+                                             argument: viewModel.model.strings.infoBarMessage)
+                    }
             }
         }
         .onAppear {
@@ -114,13 +122,18 @@ struct PaymentReviewPaymentInformationView: View {
         )
         .offset(y: Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityLabel(viewModel.model.strings.infoBarMessage)
     }
     
     @ViewBuilder
     private var recipientTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.recipientInputState.text)
         .focused($focusedField, equals: .recipient)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.recipientFieldPlaceholder,
+        .disabled(viewModel.isFieldsLocked)
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.recipientFieldPlaceholder,
                                            state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
                                            errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -137,8 +150,10 @@ struct PaymentReviewPaymentInformationView: View {
     private var ibanTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.ibanInputState.text)
         .focused($focusedField, equals: .iban)
+        .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.ibanFieldPlaceholder,
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.ibanFieldPlaceholder,
                                            state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
                                            errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -176,7 +191,9 @@ struct PaymentReviewPaymentInformationView: View {
     private var paymentPurposeTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.usageFieldPlaceholder,
+        .disabled(viewModel.isFieldsLocked)
+        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
+                                           title: viewModelStrings.usageFieldPlaceholder,
                                            state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
                                            errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -202,6 +219,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .frame(width: Constants.paymentProviderPickerIconSize.width,
                                height: Constants.paymentProviderPickerSize.height)
                         .cornerRadius(Constants.paymentProviderPickerCornerRadius)
+                        .accessibilityHidden(true)
                 }
                 
                 if let chevronImage = viewModel.model.configuration.chevronDownIcon,
@@ -213,6 +231,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .frame(width: Constants.paymentProviderPickerChevronSize.width,
                                height: Constants.paymentProviderPickerChevronSize.height)
                         .tint(Color(chevronDownIconColor))
+                        .accessibilityHidden(true)
                 }
             }
             .frame(width: Constants.paymentProviderPickerSize.width,
@@ -226,6 +245,8 @@ struct PaymentReviewPaymentInformationView: View {
                 .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
                         lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
         )
+        .accessibilityLabel(viewModelStrings.selectBankAccessibilityText)
+        .accessibilityHint(viewModelStrings.selectBankAccessibilityHint)
     }
     
     @ViewBuilder
@@ -246,7 +267,17 @@ struct PaymentReviewPaymentInformationView: View {
             .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
+            .accessibilityHint(viewModelStrings.payInvoiceAccessibilityHint)
         }
+    }
+    
+    @ViewBuilder
+    private var poweredByGiniView: some View {
+        HStack {
+            Spacer()
+            PoweredByGiniSwiftUIView(viewModel: viewModel.poweredByGiniViewModel)
+        }
+        .padding(.top, Constants.poweredByGiniTopPadding)
     }
     
     // MARK: Private methods
@@ -303,6 +334,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
             viewModel.recipientInputState.errorMessage = viewModel.recipientError
+            
+            // Announce error to VoiceOver
+            if viewModel.recipientInputState.hasError,
+                let errorMessage = viewModel.recipientError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -312,6 +349,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
             viewModel.ibanInputState.errorMessage = viewModel.ibanError
+            
+            // Announce error to VoiceOver
+            if viewModel.ibanInputState.hasError,
+                let errorMessage = viewModel.ibanError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -333,6 +376,12 @@ struct PaymentReviewPaymentInformationView: View {
             
             viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
             viewModel.amountInputState.errorMessage = viewModel.amountError
+            
+            // Announce error to VoiceOver
+            if viewModel.amountInputState.hasError,
+                let errorMessage = viewModel.amountError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -342,6 +391,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
             viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+            
+            // Announce error to VoiceOver
+            if viewModel.paymentPurposeInputState.hasError,
+                let errorMessage = viewModel.paymentPurposeError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
     
@@ -362,5 +417,6 @@ struct PaymentReviewPaymentInformationView: View {
         static let payButtonHeight = 56.0
         static let textFieldsContainerHorizontalPadding = 16.0
         static let textFieldsContainerTopPadding = 32.0
+        static let poweredByGiniTopPadding = 8.0
     }
 }

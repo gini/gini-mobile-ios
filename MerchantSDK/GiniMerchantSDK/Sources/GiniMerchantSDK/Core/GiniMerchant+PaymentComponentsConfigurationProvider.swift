@@ -38,7 +38,13 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             lockedFields: true,
             showBanksPicker: false,
             chevronDownIcon: nil,
-            chevronDownIconColor: nil
+            chevronDownIconColor: nil,
+            infoBarLabelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
+            infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+            infoBarBackgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
+            isInfoBarHidden: true,
+            popupAnimationDuration: 0,
+            infoContainerViewBackgroundColor: GiniColor.standard7.uiColor()
         )
     }
     
