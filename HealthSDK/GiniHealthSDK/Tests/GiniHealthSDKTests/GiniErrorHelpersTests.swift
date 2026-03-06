@@ -8,7 +8,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testItemsDescription_withNoItems_returnsDefaultMessage() {
         // Given
-        let error = GiniError.decorator(.noResponse)
+        let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
         // When
         let description = error.itemsDescription
@@ -28,7 +28,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.itemsDescription
@@ -50,7 +50,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.itemsDescription
@@ -71,7 +71,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.itemsDescription
@@ -98,7 +98,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.itemsDescription
@@ -111,7 +111,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withNoItems_returnsEmptyArray() {
         // Given
-        let error = GiniError.decorator(.noResponse)
+        let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -131,7 +131,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -153,7 +153,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let objects = error.objectsWithCode("2014")
@@ -173,7 +173,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When - Request code that doesn't exist in file
         let objects = error.objectsWithCode("9999")
@@ -208,7 +208,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -238,7 +238,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: response,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.detailedDescription
@@ -261,7 +261,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let description = error.detailedDescription
@@ -289,7 +289,7 @@ final class GiniErrorHelpersTests: XCTestCase {
                 response: nil,
                 data: jsonData
             )
-            let error = GiniError.decorator(apiError)
+            let error = GiniError.toGiniHealthSDKError(error: apiError)
             
             // When
             let description = error.detailedDescription
@@ -323,7 +323,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let message = error.message
@@ -340,7 +340,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: invalidJsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let message = error.message
@@ -362,7 +362,7 @@ final class GiniErrorHelpersTests: XCTestCase {
             response: nil,
             data: jsonData
         )
-        let error = GiniError.decorator(apiError)
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let message = error.message
@@ -375,9 +375,9 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testMessage_nonCustomError_returnsExpectedMessage() {
         // Given
-        let noResponseError = GiniError.decorator(.noResponse)
-        let notFoundError = GiniError.decorator(.notFound(response: nil, data: nil))
-        let unauthorizedError = GiniError.decorator(.unauthorized(response: nil, data: nil))
+        let noResponseError = GiniError.toGiniHealthSDKError(error: .noResponse)
+        let notFoundError = GiniError.toGiniHealthSDKError(error: .notFound(response: nil, data: nil))
+        let unauthorizedError = GiniError.toGiniHealthSDKError(error: .unauthorized(response: nil, data: nil))
         
         // Then
         XCTAssertEqual(noResponseError.message, "No response")

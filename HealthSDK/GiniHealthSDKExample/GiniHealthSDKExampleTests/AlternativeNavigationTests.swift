@@ -13,21 +13,36 @@ import GiniUtilites
 @MainActor
 struct AlternativeNavigationTests {
     
-    private var giniHelper: GiniSetupHelper
+    private var giniHelper: GiniSetupHelper?
     private var giniHealthDelegate: MockGiniHealthDelegate
     private var homeViewController: UIViewController
     private var homeNavigationController: MockNavigationController
 
     init() {
-        giniHelper = GiniSetupHelper()
-        giniHelper.setup()
+        // Check if credentials are available
+        let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]
+        let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
+        
+        if let id = clientId, !id.isEmpty, let secret = clientSecret, !secret.isEmpty {
+            let helper = GiniSetupHelper()
+            helper.setup()
+            self.giniHelper = helper
+        } else {
+            self.giniHelper = nil
+        }
+        
         giniHealthDelegate = MockGiniHealthDelegate()
         homeViewController = MockViewController()
         homeNavigationController = MockNavigationController(rootViewController: homeViewController)
-        giniHelper.giniHealth.delegate = giniHealthDelegate
+        
+        if let helper = giniHelper {
+            helper.giniHealth.delegate = giniHealthDelegate
+        }
     }
     
-    @Test func presentPaymentComponent() {
+    @Test func presentPaymentComponent() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
                                                paymentInfo: nil,
                                                navigationController: homeNavigationController,
@@ -37,7 +52,9 @@ struct AlternativeNavigationTests {
                 "Payment component should be presented in the navigation controller")
     }
     
-    @Test func presentPaymentReviewComponent() {
+    @Test func presentPaymentReviewComponent() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
         
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
@@ -49,7 +66,9 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the navigation controller")
     }
     
-    @Test func presentPaymentComponentInANewNavigation() {
+    @Test func presentPaymentComponentInANewNavigation() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         
         homeViewController.present(navigationController, animated: true)
@@ -66,7 +85,9 @@ struct AlternativeNavigationTests {
                 "paymentcomponent should be presented in the new navigation controller")
     }
     
-    @Test func presentPaymentReviewComponentInANewNavigation() {
+    @Test func presentPaymentReviewComponentInANewNavigation() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         
         homeViewController.present(navigationController, animated: true)
@@ -85,7 +106,9 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the new navigation controller")
     }
     
-    @Test func dismissSDKPaymentComponent() {
+    @Test func dismissSDKPaymentComponent() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -102,7 +125,9 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @Test func dismissSDKPaymentReviewComponent() {
+    @Test func dismissSDKPaymentReviewComponent() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -121,7 +146,9 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @Test func dismissSDKPaymentReviewComponentWithDocument() {
+    @Test func dismissSDKPaymentReviewComponentWithDocument() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -140,7 +167,9 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should not be called when dismissing payment review with document")
     }
     
-    @Test func dismissSDKPaymentComponentNavigationNotEmpty() {
+    @Test func dismissSDKPaymentComponentNavigationNotEmpty() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -160,7 +189,9 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should not be called when the navigation controller is not empty")
     }
     
-    @Test func dismissSDKAfterAlertControllerPresentation() {
+    @Test func dismissSDKAfterAlertControllerPresentation() throws {
+        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         

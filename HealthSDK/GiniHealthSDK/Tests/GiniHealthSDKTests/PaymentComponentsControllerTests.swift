@@ -68,7 +68,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
 
     func testCheckIfDocumentIsPayable_Failure() {
-        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.decorator(.noResponse)))
+        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse)))
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
         mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in

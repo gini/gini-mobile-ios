@@ -208,7 +208,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      - Returns: A Boolean value indicating whether the error should be handled internally.
      */
     public func shouldHandleErrorInternally(error: GiniHealthAPILibrary.GiniError) -> Bool {
-        let healthError = GiniHealthError.apiError(GiniError.decorator(error))
+        let healthError = GiniHealthError.apiError(GiniError.toGiniHealthSDKError(error: error))
         return giniSDK.delegate?.shouldHandleErrorInternally(error: healthError) == true
     }
 

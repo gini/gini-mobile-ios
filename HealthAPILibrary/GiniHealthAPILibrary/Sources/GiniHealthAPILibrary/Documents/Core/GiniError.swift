@@ -223,10 +223,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     }
 
     var customError: GiniCustomError? {
-        guard let data, let customErrorDecoded = try? JSONDecoder().decode(GiniCustomError.self, from: data) else {
-            return nil
-        }
-        return customErrorDecoded
+        guard let data else { return nil }
+        return try? JSONDecoder().decode(GiniCustomError.self, from: data)
     }
 }
 

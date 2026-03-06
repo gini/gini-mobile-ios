@@ -11,30 +11,45 @@ import GiniHealthAPILibrary
 import GiniHealthSDK
 
 class UploadDocumentsTests: XCTestCase {
+    
+    // MARK: - Test Configuration
+    
+    /// Standard timeout for network operations in integration tests
+    private let networkTimeout: TimeInterval = 30
+    
+    /// Extended timeout for long-running operations (document processing, etc.)
+    private let extendedTimeout: TimeInterval = 60
+    
     lazy var giniHelper = GiniSetupHelper()
 
     override func setUp() {
         giniHelper.setup()
     }
 
-//    func testUploadLargeImageToGiniHealthAPI() {
-//        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
-//
-//        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else { return }
-//
-//        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
-//
-//        wait(for: [expect], timeout: 60)
-//    }
+    func testUploadLargeImageToGiniHealthAPI() {
+        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
+
+        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else {
+            XCTFail("Failed to load test fixture: invoice-12MB.png is missing from test bundle")
+            return
+        }
+
+        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
+
+        wait(for: [expect], timeout: extendedTimeout)
+    }
 
     func testFailUploadLargePDFToGiniHealthAPI() {
         let expect = expectation(description: "Upload of pdf above 10MB to HealthAPILibrary should fail. Local compression won't be done for this kind of file.")
 
-        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else { return }
+        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else {
+            XCTFail("Failed to load test fixture: invoice-13MB.pdf is missing from test bundle")
+            return
+        }
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {
