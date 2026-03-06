@@ -52,5 +52,29 @@ jobs:
         options: >
             {
               "target": "${{ matrix.target }}",
-              "destination": "${{ matrix.destination }}"
+              "destination": "${{ matrix.destination }}",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
+
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniBankAPILibrary' }}
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > BankAPILibrary/coverage.xml
+
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniBankAPILibrary' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-bank-api-library
+        path: BankAPILibrary/coverage.xml
+        retention-days: 1
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankAPILibrary
+      coverage_artifact_name: sonar-coverage-bank-api-library
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

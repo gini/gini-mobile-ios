@@ -39,9 +39,33 @@ jobs:
     - name: Build "${{ matrix.target }}"
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
-        lane: 'build_scheme'
+        lane: 'run_unit_tests'
         options: >
             {
               "target": "${{ matrix.target }}",
-              "destination": "${{ matrix.destination }}"
+              "destination": "${{ matrix.destination }}",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
+
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniUtilites' }}
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > GiniComponents/coverage.xml
+
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniUtilites' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-gini-components
+        path: GiniComponents/coverage.xml
+        retention-days: 1
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: GiniComponents
+      coverage_artifact_name: sonar-coverage-gini-components
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
