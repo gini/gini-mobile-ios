@@ -18,8 +18,9 @@ public enum DisplayMode {
 public class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
     
     private let selectedPaymentProvider: PaymentProvider
-    private let model: PaymentReviewModel
     private var isInfoBarHidden = true
+    
+    public let model: PaymentReviewModel
     
     public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
         self.model = viewModel
