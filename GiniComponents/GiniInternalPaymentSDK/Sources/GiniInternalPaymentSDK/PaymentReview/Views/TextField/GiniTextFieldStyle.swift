@@ -35,6 +35,10 @@ struct GiniTextFieldStyle: TextFieldStyle {
         }
     }
     
+    private var shouldAnimate: Bool {
+        !UIAccessibility.isReduceMotionEnabled
+    }
+    
     init(lockedIcon: Image? = nil,
          title: String,
          state: GiniTextFieldState = .normal,
@@ -52,6 +56,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
+        let fieldAnimation = shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil
         VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
             VStack(spacing: Constants.titleSpacing) {
                 titleView
@@ -77,8 +82,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 errorMessageView(errorMessage)
             }
         }
-        .animation(.easeInOut(duration: Constants.animationDuration), value: state)
-        .animation(.easeInOut(duration: Constants.animationDuration), value: errorMessage)
+        .animation(fieldAnimation, value: state)
+        .animation(fieldAnimation, value: errorMessage)
     }
     
     // MARK: Private views

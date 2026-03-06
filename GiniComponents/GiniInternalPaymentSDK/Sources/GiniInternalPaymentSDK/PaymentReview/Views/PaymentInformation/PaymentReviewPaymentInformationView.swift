@@ -334,6 +334,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
             viewModel.recipientInputState.errorMessage = viewModel.recipientError
+            
+            // Announce error to VoiceOver
+            if viewModel.recipientInputState.hasError,
+                let errorMessage = viewModel.recipientError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -343,6 +349,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
             viewModel.ibanInputState.errorMessage = viewModel.ibanError
+            
+            // Announce error to VoiceOver
+            if viewModel.ibanInputState.hasError,
+                let errorMessage = viewModel.ibanError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -364,6 +376,12 @@ struct PaymentReviewPaymentInformationView: View {
             
             viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
             viewModel.amountInputState.errorMessage = viewModel.amountError
+            
+            // Announce error to VoiceOver
+            if viewModel.amountInputState.hasError,
+                let errorMessage = viewModel.amountError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
 
@@ -373,6 +391,12 @@ struct PaymentReviewPaymentInformationView: View {
         } else {
             viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
             viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
+            
+            // Announce error to VoiceOver
+            if viewModel.paymentPurposeInputState.hasError,
+                let errorMessage = viewModel.paymentPurposeError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
         }
     }
     
