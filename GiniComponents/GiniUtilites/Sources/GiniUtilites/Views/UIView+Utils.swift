@@ -48,7 +48,8 @@ public extension UIView {
         loading.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
 
-    func stopLoading() {
+    // TODO: Remove in next major HealthSDK release
+    func giniStopLoadingIndicator() {
         removeActivityIndicator()
     }
     
