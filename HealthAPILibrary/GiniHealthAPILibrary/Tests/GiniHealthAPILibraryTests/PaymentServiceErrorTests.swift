@@ -225,31 +225,16 @@ private final class PaymentRequestErrorSessionManagerMock: SessionManagerProtoco
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .createPaymentRequest:
-                let jsonData = """
-                {
-                  "items": [
-                    {
-                      "code": "2012",
-                      "message": "Provide a valid BIC number"
-                    },
-                    {
-                      "code": "2002",
-                      "message": "Value of payment purpose should be at least 4, at most 200 characters long"
-                    },
-                    {
-                      "code": "2007",
-                      "message": "Provide a valid IBAN number"
-                    }
-                  ],
-                  "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
-                }
-                """.data(using: .utf8)!
+                let jsonData = loadFile(withName: "createPaymentRequestMultiErrors", ofType: "json")
 
-                let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests")!
+                guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests") else {
+                    XCTFail("Invalid URL in request")
+                    return
+                }
                 let response = HTTPURLResponse(url: url,
                                                statusCode: 400,
                                                httpVersion: "HTTP/1.1",
-                                               headerFields: ["Content-Type": "application/vnd.gini.v5+json"])!
+                                               headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
                 completion(.failure(.customError(response: response, data: jsonData)))
                 
             case .paymentRequests:
@@ -273,53 +258,32 @@ private final class PaymentRequestErrorSessionManagerMock: SessionManagerProtoco
                     
                     // All forbidden case
                     if ids.allSatisfy({ $0.hasPrefix("forbidden") }) {
-                        let jsonData = """
-                        {
-                          "items": [
-                            {
-                              "code": "2901",
-                              "message": "The deletion operation on the payment request is not authorized",
-                              "object": \(String(data: try! JSONEncoder().encode(ids), encoding: .utf8)!)
-                            }
-                          ],
-                          "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
+                        let jsonData = loadFile(withName: "deletePaymentRequestForbiddenError", ofType: "json")
+
+                        guard let url = resource.request.url else {
+                            XCTFail("Invalid URL in request")
+                            return
                         }
-                        """.data(using: .utf8)!
-                        
-                        let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests")!
                         let response = HTTPURLResponse(url: url,
                                                        statusCode: 403,
                                                        httpVersion: "HTTP/1.1",
-                                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])!
+                                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
                         completion(.failure(.customError(response: response, data: jsonData)))
                         return
                     }
                     
                     // Partial failure case - mixed errors
                     if ids.count == 3 {
-                        let jsonData = """
-                        {
-                          "items": [
-                            {
-                              "code": "2013",
-                              "message": "Unauthorized access to payment request",
-                              "object": ["doc1"]
-                            },
-                            {
-                              "code": "2014",
-                              "message": "Payment request not found",
-                              "object": ["doc2", "doc3"]
-                            }
-                          ],
-                          "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
-                        }
-                        """.data(using: .utf8)!
+                        let jsonData = loadFile(withName: "deletePaymentRequestsMultiErrors", ofType: "json")
                         
-                        let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests")!
+                        guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests") else {
+                            XCTFail("Invalid URL in request")
+                            return
+                        }
                         let response = HTTPURLResponse(url: url,
                                                        statusCode: 400,
                                                        httpVersion: "HTTP/1.1",
-                                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])!
+                                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
                         completion(.failure(.customError(response: response, data: jsonData)))
                         return
                     }
@@ -329,33 +293,28 @@ private final class PaymentRequestErrorSessionManagerMock: SessionManagerProtoco
             case .paymentRequest(let id):
                 // Simulate delete responses based on the provided ID
                 if resource.params.method == .delete && id == "forbidden-id" {
-                    let jsonData = """
-                    {
-                      "items": [
-                        {
-                          "code": "2901",
-                          "message": "The deletion operation on the payment request is not authorized"
-                        }
-                      ],
-                      "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
+                    let jsonData = loadFile(withName: "deletePaymentRequestError", ofType: "json")
+                    guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)") else {
+                        XCTFail("Invalid URL in request")
+                        return
                     }
-                    """.data(using: .utf8)!
-
-                    let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)")!
                     let response = HTTPURLResponse(url: url,
                                                    statusCode: 403,
                                                    httpVersion: "HTTP/1.1",
-                                                   headerFields: ["Content-Type": "application/vnd.gini.v5+json"])!
+                                                   headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
                     completion(.failure(.customError(response: response, data: jsonData)))
                     return
                 }
 
                 if resource.params.method == .delete && id == "missing-id" {
-                    let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)")!
+                    guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)") else {
+                        XCTFail("Invalid URL in request")
+                        return
+                    }
                     let response = HTTPURLResponse(url: url,
                                                    statusCode: 404,
                                                    httpVersion: "HTTP/1.1",
-                                                   headerFields: ["Content-Type": "application/vnd.gini.v5+json"])!
+                                                   headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
                     completion(.failure(.notFound(response: response, data: nil)))
                     return
                 }

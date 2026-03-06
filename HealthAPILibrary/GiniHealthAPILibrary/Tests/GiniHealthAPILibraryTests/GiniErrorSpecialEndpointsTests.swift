@@ -7,23 +7,16 @@ final class GiniErrorSpecialEndpointsTests: XCTestCase {
     // and exposes the HTTP status code from the response.
     func testNotFoundError_decodesItemsAndRequestId() {
         // Given
-        let jsonData = """
-        {
-          "items": [
-            {
-              "code": "2501",
-              "message": "Document b4bd3e80-7bd1-11e4-95ab-000000000000 does not exist"
-            }
-          ],
-          "requestId": "req-123456"
-        }
-        """.data(using: .utf8)!
+        let errorData = loadFile(withName: "notFoundError", ofType: "json")
 
-        let url = URL(string: "https://api.gini.net/documents/b4bd3e80-7bd1-11e4-95ab-000000000000")!
+        guard let url = URL(string: "https://api.gini.net/documents/b4bd3e80-7bd1-11e4-95ab-000000000000") else {
+            XCTFail("Invalid URL")
+            return
+        }
         let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)
 
         // When
-        let error = GiniError.notFound(response: response, data: jsonData)
+        let error = GiniError.notFound(response: response, data: errorData)
 
         // Then
         XCTAssertEqual(error.statusCode, 404, "Status code should be 404 for notFound")
@@ -43,20 +36,10 @@ final class GiniErrorSpecialEndpointsTests: XCTestCase {
     // and statusCode is nil when no HTTPURLResponse is provided.
     func testNotFoundError_messageIsStaticAndStatusCodeOptional() {
         // Given
-        let jsonData = """
-        {
-          "items": [
-            {
-              "code": "2501",
-              "message": "Document b4bd3e80-7bd1-11e4-95ab-000000000000 does not exist"
-            }
-          ],
-          "requestId": "req-123456"
-        }
-        """.data(using: .utf8)!
+        let errorData = loadFile(withName: "notFoundError", ofType: "json")
 
         // When
-        let error = GiniError.notFound(response: nil, data: jsonData)
+        let error = GiniError.notFound(response: nil, data: errorData)
 
         // Then
         XCTAssertEqual(error.message, "Not found", "Message for notFound should be the static string")

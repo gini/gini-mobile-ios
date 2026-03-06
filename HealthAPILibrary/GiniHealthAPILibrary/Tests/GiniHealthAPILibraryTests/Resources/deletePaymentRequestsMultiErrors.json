@@ -1,0 +1,15 @@
+{
+    "items": [
+        {
+            "code": "2013",
+            "message": "Unauthorized access to payment request",
+            "object": ["doc1"]
+        },
+        {
+            "code": "2014",
+            "message": "Payment request not found",
+            "object": ["doc2", "doc3"]
+        }
+    ],
+    "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
+}
