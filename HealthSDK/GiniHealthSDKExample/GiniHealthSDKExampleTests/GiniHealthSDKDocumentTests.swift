@@ -27,12 +27,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
 
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             switch result {
             case .success(let document):
                 XCTAssertFalse(document.id.isEmpty, "Document ID should not be empty")
@@ -65,12 +63,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         }
 
         // First upload a document
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document created for fetch test")
@@ -120,12 +116,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
 
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document uploaded for extraction test")
@@ -184,12 +178,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
 
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document uploaded for all extractions test")
@@ -237,12 +229,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
 
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document uploaded for payable check")
@@ -342,12 +332,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
         
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document uploaded for polling test")
