@@ -87,6 +87,10 @@ struct PaymentReviewPaymentInformationView: View {
         .overlay(alignment: .top) {
             if showBanner {
                 infoBannerView
+                    .onAppear {
+                        UIAccessibility.post(notification: .announcement,
+                                             argument: viewModel.model.strings.infoBarMessage)
+                    }
             }
         }
         .onAppear {
@@ -118,6 +122,9 @@ struct PaymentReviewPaymentInformationView: View {
         )
         .offset(y: Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityLabel(viewModel.model.strings.infoBarMessage)
     }
     
     @ViewBuilder
@@ -212,6 +219,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .frame(width: Constants.paymentProviderPickerIconSize.width,
                                height: Constants.paymentProviderPickerSize.height)
                         .cornerRadius(Constants.paymentProviderPickerCornerRadius)
+                        .accessibilityHidden(true)
                 }
                 
                 if let chevronImage = viewModel.model.configuration.chevronDownIcon,
@@ -223,6 +231,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .frame(width: Constants.paymentProviderPickerChevronSize.width,
                                height: Constants.paymentProviderPickerChevronSize.height)
                         .tint(Color(chevronDownIconColor))
+                        .accessibilityHidden(true)
                 }
             }
             .frame(width: Constants.paymentProviderPickerSize.width,

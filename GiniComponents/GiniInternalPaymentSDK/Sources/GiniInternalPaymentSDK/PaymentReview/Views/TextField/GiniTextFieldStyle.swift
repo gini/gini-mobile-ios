@@ -95,6 +95,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: Constants.lockedIconSize.width,
                            height: Constants.lockedIconSize.height)
+                    .accessibilityHidden(true)
             }
             
             Spacer()
