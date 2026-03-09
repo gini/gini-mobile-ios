@@ -18,15 +18,11 @@ Type
 
 <type> must be one of the following:
 
-feat: New or modified features (including UI and public API changes)
+feat: New or modified features (including UI, public API changes, tests and documentation of the new feature)
 
 fix: Bug fixes
 
-refactor: Code changes without public breaking changes (no public API or UI modifications)
-
-chore: Maintenance changes (dependency updates, lint fixes, warnings, etc.)
-
-docs: Documentation-only changes
+refactor: Code changes without public breaking changes (no public API or UI modifications) or Maintenance changes (dependency updates, lint fixes, warnings, etc.)
 
 ci: CI/CD, build scripts, or automation config changes
 
@@ -38,15 +34,21 @@ Examples:
 
 GiniBankSDK
 
+GiniBankSDKExample
+
+GiniBankAPILibrary
+
 GiniCaptureSDK
 
 GiniHealthSDK
 
+GiniHealthSDKExample
+
 BankAPILibrary
 
-HealthSDK
+GiniUtilites
 
-MerchantSDK
+GiniInternalPaymentSDK
 
 Rules:
 
@@ -56,7 +58,7 @@ If only one module is affected → use parentheses:
 
 If multiple modules are affected or no specific module → omit parentheses:
 
-`chore: Update SwiftLint configuration`
+`feat: Update SwiftLint configuration`
 Subject
 
 The subject line must:
@@ -74,7 +76,7 @@ Good examples:
 ```
 feat(GiniBankSDK): Add photo selection button
 fix(GiniCaptureSDK): Prevent crash when document is nil
-chore: Fix SwiftLint warnings
+ci: `Check` flow updated
 ```
 
 
@@ -100,7 +102,7 @@ feat(GiniBankSDK): Allow customization of background colors on help screens
 - Add configuration option for help screen background colors
 - Ensure backward compatibility with existing integrations
 
-PIA-4102
+PP-4102
 ```
 
 Ticket ID
@@ -109,7 +111,7 @@ The last line of every commit message must contain the ticket ID.
 
 Example:
 
-`PIA-4102`
+`PP-4102`
 Configuration (Optional)
 
 To use a local commit template:
