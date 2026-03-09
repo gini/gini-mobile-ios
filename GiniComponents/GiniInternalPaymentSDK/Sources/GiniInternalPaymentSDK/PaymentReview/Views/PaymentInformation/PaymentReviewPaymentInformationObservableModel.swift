@@ -30,6 +30,22 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     private(set) var hasPopulatedFields = false
     
+    var isFieldsLocked: Bool {
+        model.configuration.lockedFields
+    }
+    
+    var lockIcon: Image? {
+        isFieldsLocked ? Image(uiImage: model.configuration.lockIcon) : nil
+    }
+    
+    var shouldShowBrandedView: Bool {
+        model.shouldShowBrandedView
+    }
+    
+    var poweredByGiniViewModel: PoweredByGiniViewModel {
+        model.poweredByGiniViewModel
+    }
+    
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {

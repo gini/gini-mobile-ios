@@ -280,8 +280,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                previousPaymentComponentScreenType: nil,
                                                                clientConfiguration: nil)
 
-                            let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                                             selectedPaymentProvider: healthSelectedPaymentProvider)
+                            let vc = PaymentReviewViewController(viewModel: viewModel,
+                                                                 selectedPaymentProvider: healthSelectedPaymentProvider)
                             completion(vc, nil)
                         case .failure(let error):
                             completion(nil, error)
@@ -321,8 +321,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            previousPaymentComponentScreenType: nil,
                                            clientConfiguration: nil)
 
-        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
+        let vc = PaymentReviewViewController(viewModel: viewModel,
+                                             selectedPaymentProvider: healthSelectedPaymentProvider)
         completion(vc, nil)
     }
 

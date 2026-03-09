@@ -207,9 +207,8 @@ private final class MockNavigationController: UINavigationController {
         presentedViewControllers.first as? PaymentComponentBottomView
     }
     
-    /// TODO: This will be updated later to have the `PaymentReviewViewController` when the code cleanup is done.
-    var paymentComponentReviewViewController: PaymentReviewV2ViewController? {
-        pushedViewControllers.last as? PaymentReviewV2ViewController
+    var paymentComponentReviewViewController: PaymentReviewViewController? {
+        pushedViewControllers.last as? PaymentReviewViewController
     }
     
     private var presentedViewControllers: [UIViewController] = []

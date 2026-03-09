@@ -189,8 +189,7 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController,
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        /// TODO: This will be updated later to have the `PaymentReviewViewController` when the code cleanup is done.
-        if fromVC is PaymentReviewV2ViewController {
+        if fromVC is PaymentReviewViewController {
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
         

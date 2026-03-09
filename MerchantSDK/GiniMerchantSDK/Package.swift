@@ -7,7 +7,7 @@ import Foundation
 let package = Package(
     name: "GiniMerchantSDK",
     defaultLocalization: "en",
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS("16")],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(

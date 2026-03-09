@@ -23,6 +23,22 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     
+    var showCloseButton: Bool {
+        model.showPaymentReviewCloseButton
+    }
+    
+    var closeButtonImage: UIImage {
+        model.configuration.paymentReviewClose
+    }
+    
+    var closeButtonAccessibilityLabel: String {
+        model.strings.closeButtonAccessibilityLabel
+    }
+    
+    var invoiceImageAccessibilityLabel: String {
+        model.strings.invoiceImageAccessibilityLabel
+    }
+    
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
@@ -82,6 +98,10 @@ final class PaymentReviewObservableModel: ObservableObject {
                 /// Task was cancelled - no action needed
             }
         }
+    }
+    
+    func didTapClose() {
+        model.closePaymentReview()
     }
     
     func didTapPay(_ paymentInfo: PaymentInfo) {
@@ -156,6 +176,20 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.onNewPaymentProvider = { [weak self] in
             guard let self else { return }
             containerViewModel.selectedPaymentProvider = model.selectedPaymentProvider
+        }
+        
+        model.onErrorHandling = { [weak self] _ in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.defaultErrorMessage)
+            }
+        }
+        
+        model.onCreatePaymentRequestErrorHandling = { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.createPaymentErrorMessage)
+            }
         }
     }
     

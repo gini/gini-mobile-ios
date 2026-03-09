@@ -33,6 +33,12 @@ public struct PaymentReviewContentView: View {
                 portraitLayout(geometry: geometry)
             }
         }
+        .overlay(alignment: .topTrailing) {
+            closeButton
+        }
+        .overlay {
+            loadingOverlay
+        }
         .onAppear {
             fetchImagesIfNeeded()
             viewModel.dismissBannerAfterDelay()
@@ -94,6 +100,33 @@ public struct PaymentReviewContentView: View {
     // MARK: - Private Views
     
     @ViewBuilder
+    private var closeButton: some View {
+        if viewModel.showCloseButton {
+            Button(action: {
+                viewModel.didTapClose()
+            }) {
+                Image(uiImage: viewModel.closeButtonImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Constants.closeButtonSize,
+                           height: Constants.closeButtonSize)
+            }
+            .accessibilityLabel(viewModel.closeButtonAccessibilityLabel)
+        }
+    }
+    
+    @ViewBuilder
+    private var loadingOverlay: some View {
+        if viewModel.isLoading {
+            Color.black.opacity(Constants.loadingOverlayOpacity)
+                .ignoresSafeArea()
+            ProgressView()
+                .scaleEffect(Constants.loadingIndicatorScale)
+                .tint(.white)
+        }
+    }
+    
+    @ViewBuilder
     private func documentPreviewContent(carouselHeight: CGFloat) -> some View {
         VStack(spacing: Constants.documentPreviewStackSpacing) {
             if viewModel.isImagesLoading {
@@ -114,7 +147,8 @@ public struct PaymentReviewContentView: View {
     private func showPreviewImageCarousel(carouselHeight: CGFloat) -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
         
-        GiniCarouselView(images: images)
+        GiniCarouselView(images: images,
+                         imageAccessibilityLabel: viewModel.invoiceImageAccessibilityLabel)
             .frame(height: carouselHeight)
     }
     
@@ -153,5 +187,8 @@ public struct PaymentReviewContentView: View {
         static let documentPreviewStackSpacing: CGFloat = 16.0
         static let totalPaddings: CGFloat = 32.0
         static let pageIndicatorSpace: CGFloat = 30.0
+        static let closeButtonSize: CGFloat = 48.0
+        static let loadingOverlayOpacity: CGFloat = 0.4
+        static let loadingIndicatorScale: CGFloat = 1.5
     }
 }

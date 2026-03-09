@@ -10,11 +10,13 @@ import SwiftUI
 struct GiniCarouselView: View {
     
     private let images: [UIImage]
+    private let imageAccessibilityLabel: String?
     
     @State private var currentIndex: Int = 0
     
-    init(images: [UIImage]) {
+    init(images: [UIImage], imageAccessibilityLabel: String? = nil) {
         self.images = images
+        self.imageAccessibilityLabel = imageAccessibilityLabel
     }
     
     var body: some View {
@@ -22,7 +24,9 @@ struct GiniCarouselView: View {
             VStack(spacing: Constants.spacing) {
                 TabView(selection: $currentIndex) {
                     ForEach(Array(images.enumerated()), id: \.offset) { index, image in
-                        GiniZoomableImageView(image: image, size: geometry.size)
+                        GiniZoomableImageView(image: image,
+                                              size: geometry.size,
+                                              accessibilityLabel: imageAccessibilityLabel)
                             .tag(index)
                     }
                 }
