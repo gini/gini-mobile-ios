@@ -589,24 +589,22 @@ final class CameraViewController: UIViewController {
         resetQRCodeTask?.cancel()
         detectedQRCodeDocument = document
 
-        hideQRCodeTask = DispatchWorkItem(block: {
-            self.resetQRCodeScanning(isValid: isValid)
+        if isValid {
+            hideQRCodeTask = DispatchWorkItem(block: {
+                self.resetQRCodeScanning(isValid: isValid)
 
-            if let QRDocument = self.detectedQRCodeDocument {
-                if isValid {
+                if let QRDocument = self.detectedQRCodeDocument {
                     self.didPick(QRDocument)
                 }
-            }
-        })
-
-        if isValid {
+            })
+            
             showValidQRCodeFeedback()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
         } else {
             if !isValidIBANDetected {
                 showInvalidQRCodeFeedback()
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
     }
 
     private func showValidQRCodeFeedback() {
@@ -637,18 +635,62 @@ final class CameraViewController: UIViewController {
         // Haptic feedback
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
-
-        qrCodeOverLay.isUserInteractionEnabled = isAccessibilityLargeTextEnabled()
-        UIView.animate(withDuration: 0.3) {
-            self.qrCodeOverLay.isHidden = false
-            self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
-        }
-
-        // Voiceover announcement
-        playVoiceOverMessage(success: false)
-
+        
+        // Pause QR scanning while showing alert
+        cameraPreviewViewController.camera.pauseQRDetection()
+        
+        // Send analytics
         sendGiniAnalyticsEventForInvalidQRCode()
-        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+        
+        // Create alert with localized title
+        let title = NSLocalizedStringPreferredFormat(
+            "ginicapture.QRscanning.incorrect.title",
+            comment: "Unknown QR"
+        )
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        
+        // Button 1: Scan another QR code
+        let scanAnotherTitle = NSLocalizedStringPreferredFormat(
+            "ginicapture.QRscanning.button.scanAnother",
+            comment: "Scan another QR code"
+        )
+        let scanAction = UIAlertAction(title: scanAnotherTitle, style: .default) { [weak self] _ in
+            self?.handleScanAnotherQRCode()
+        }
+        
+        // Button 2: Take photo of document
+        let takePhotoTitle = NSLocalizedStringPreferredFormat(
+            "ginicapture.QRscanning.button.takePhoto",
+            comment: "Take photo of document"
+        )
+        let photoAction = UIAlertAction(title: takePhotoTitle, style: .default) { [weak self] _ in
+            self?.handleTakePhotoOfDocument()
+        }
+        
+        alert.addAction(scanAction)
+        alert.addAction(photoAction)
+        
+        // Present alert
+        present(alert, animated: true)
+    }
+    
+    private func handleScanAnotherQRCode() {
+        // Resume QR scanning
+        cameraPreviewViewController.camera.resumeQRDetection()
+        
+        // Reset detected document
+        detectedQRCodeDocument = nil
+    }
+    
+    private func handleTakePhotoOfDocument() {
+        // Disable QR scanning completely
+        cameraPreviewViewController.camera.pauseQRDetection()
+        
+        // Hide QR frame, show document capture frame
+        cameraPreviewViewController.cameraFrameView.isHidden = false
+        
+        // Reset detected document
+        detectedQRCodeDocument = nil
     }
 
     private func isAccessibilityLargeTextEnabled() -> Bool {
