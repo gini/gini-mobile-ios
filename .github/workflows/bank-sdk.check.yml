@@ -60,8 +60,22 @@ jobs:
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}",
               "clientId": "$TEST_CLIENT_ID",
-              "clientSecret": "$TEST_CLIENT_SECRET"
+              "clientSecret": "$TEST_CLIENT_SECRET",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
+
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniBankSDK' }}
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > BankSDK/coverage.xml
+
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniBankSDK' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-bank-sdk
+        path: BankSDK/coverage.xml
+        retention-days: 1
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
       env:
@@ -78,3 +92,13 @@ jobs:
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="$TEST_CLIENT_ID"
         CLIENT_SECRET="$TEST_CLIENT_SECRET"
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankSDK
+      coverage_artifact_name: sonar-coverage-bank-sdk
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

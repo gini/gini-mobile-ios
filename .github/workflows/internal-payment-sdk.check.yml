@@ -5,7 +5,7 @@ on:
   pull_request:
    types: [opened, reopened, synchronize, ready_for_review]
    paths:
-      - 'GiniComponents/GiniInternalPaymentSDK/**'
+      - 'GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/**'
   workflow_call:
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ jobs:
 
     - name: Check package GiniInternalPaymentSDK
       run: |
-           cd GiniComponents/GiniInternalPaymentSDK
+           cd GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK
            swift package update
 
   # Build the GiniInternalPaymentSDK target to verify compilation
@@ -45,3 +45,12 @@ jobs:
               "target": "${{ matrix.target }}",
               "destination": "${{ matrix.destination }}"
             }
+     
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: GiniComponents/InternalPaymentSDK
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
