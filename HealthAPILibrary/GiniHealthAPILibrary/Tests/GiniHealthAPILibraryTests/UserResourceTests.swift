@@ -12,8 +12,8 @@ class UserResourceTests: XCTestCase {
     
     let baseUserCenterAPIURLString = "https://user.gini.net"
     let requestParameters = RequestParameters(method: .get,
-                                              headers: ["Accept": "application/vnd.gini.v4+json"])
-    
+                                              headers: ["Accept": "application/vnd.gini.v5+json"])
+
     func testTokenResourceWithClientCredentials() {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: .default,
