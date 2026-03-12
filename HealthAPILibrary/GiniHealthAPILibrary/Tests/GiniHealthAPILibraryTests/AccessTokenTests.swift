@@ -1,8 +1,7 @@
 //
 //  AccessTokenTests.swift
-//  GiniExampleTests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 1/20/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 

@@ -1,6 +1,6 @@
 //
 //  PaymentTests.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -16,14 +16,21 @@ class PaymentServiceTests: XCTestCase {
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()
-        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock,
+                                                        apiVersion: versionAPI)
         paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
     }
 
     func testPaymentRequestCreation() {
         let expect = expectation(description: "returns payment request id")
         
-        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57", recipient: "James Bond", iban: "DE02300209000106531065", bic: "", amount: "33.78:EUR", purpose: "save the world") { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: "",
+                                            paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+                                            recipient: "James Bond",
+                                            iban: "DE02300209000106531065",
+                                            bic: nil,
+                                            amount: "33.78:EUR",
+                                            purpose: "save the world") { result in
             switch result {
             case .success(let paymentRequestId):
                 XCTAssertEqual(paymentRequestId,
@@ -109,7 +116,7 @@ class PaymentServiceTests: XCTestCase {
 
     func testLoadPaymentRequest() {
         let expect = expectation(description: "returns an array of payment requests")
-        paymentService.paymentRequest(id:SessionManagerMock.paymentRequestId){ result in
+        paymentService.paymentRequest(id: SessionManagerMock.paymentRequestId){ result in
             switch result {
             case .success(let request):
                 let requestId = String(request.links?.linksSelf.split(separator: "/").last ?? "")

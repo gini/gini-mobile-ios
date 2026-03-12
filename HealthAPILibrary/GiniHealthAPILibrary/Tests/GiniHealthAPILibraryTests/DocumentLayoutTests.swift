@@ -1,8 +1,8 @@
 //
 //  DocumentLayoutTests.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/21/19.
+//  Copyright © 2019 Gini GmbH. All rights reserved.
 //
 
 import XCTest
@@ -10,10 +10,12 @@ import XCTest
 
 final class DocumentLayoutTests: XCTestCase {
 
-    lazy var documentLayoutJson = loadFile(withName: "documentLayout", ofType: "json")
-    
+    lazy var documentLayoutJson = loadFile(withName: "documentLayout",
+                                           ofType: "json")
+
     func testDocumentLayoutDecoding() {
-        XCTAssertNoThrow(try JSONDecoder().decode(Document.Layout.self, from: documentLayoutJson))
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.Layout.self,
+                                                  from: documentLayoutJson))
     }
 
 }

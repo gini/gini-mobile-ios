@@ -1,6 +1,6 @@
 //
 //  APIResource.swift
-//  GiniExampleTests
+//  GiniHealthAPILibraryTests
 //
 //  Copyright © 2018 Gini. All rights reserved.
 //

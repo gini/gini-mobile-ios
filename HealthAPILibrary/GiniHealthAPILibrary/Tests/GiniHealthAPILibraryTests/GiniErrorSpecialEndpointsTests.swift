@@ -1,3 +1,9 @@
+//
+//  GiniErrorSpecialEndpointsTests.swift
+//  GiniHealthAPILibraryTests
+//
+//  Copyright © 2026 Gini. All rights reserved.
+//
 import XCTest
 @testable import GiniHealthAPILibrary
 

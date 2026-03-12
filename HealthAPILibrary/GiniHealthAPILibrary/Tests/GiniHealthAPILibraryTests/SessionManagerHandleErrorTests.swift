@@ -1,3 +1,10 @@
+// 
+//  SessionManagerHandleErrorTests.swift
+//  GiniHealthAPILibraryTests
+//
+//  Copyright © 2026 Gini. All rights reserved.
+//
+
 import XCTest
 @testable import GiniHealthAPILibrary
 
@@ -64,7 +71,11 @@ final class SessionManagerHandleErrorTests: XCTestCase {
         super.tearDown()
     }
 
-    private func assertError(_ error: GiniError, is expected: ExpectedErrorCase, message: String = "", file: StaticString = #file, line: UInt = #line) {
+    private func assertError(_ error: GiniError,
+                             is expected: ExpectedErrorCase,
+                             message: String = "",
+                             file: StaticString = #file,
+                             line: UInt = #line) {
         switch (error, expected) {
         case (.badRequest, .badRequest):
             return
@@ -88,21 +99,25 @@ final class SessionManagerHandleErrorTests: XCTestCase {
     // MARK: - Tests
 
     func testUserServiceInvalidGrantMapsToUnauthorized() {
-        var resource = APIResource<String>(
-            method: .paymentProviders,
-            apiDomain: .default,
-            apiVersion: 5,
-            httpMethod: .get)
+        var resource = APIResource<String>(method: .paymentProviders,
+                                           apiDomain: .default,
+                                           apiVersion: 5,
+                                           httpMethod: .get)
         resource.authServiceType = .userService(.bearer)
-
-        let json = #"{"error":"invalid_grant"}"#.data(using: .utf8)!
+        let json = loadFile(withName: "invalidGrantError", ofType: "json")
 
         URLProtocolMock.handler = { request in
-            let response = HTTPURLResponse(
-                url: request.url ?? URL(string: "https://example.com")!,
-                statusCode: 400,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"])!
+            guard let url = request.url ?? URL(string: "https://example.com") else {
+                XCTFail("Invalid URL")
+                fatalError("Invalid URL in test")
+            }
+            guard let response = HTTPURLResponse(url: url,
+                                                 statusCode: 400,
+                                                 httpVersion: nil,
+                                                 headerFields: ["Content-Type": "application/json"]) else {
+                XCTFail("Failed to create HTTPURLResponse")
+                fatalError("Failed to create HTTPURLResponse")
+            }
             return (response, json)
         }
 
@@ -127,14 +142,21 @@ final class SessionManagerHandleErrorTests: XCTestCase {
             httpMethod: .get)
         resource.authServiceType = .userService(.bearer)
 
-        let json = #"{"error":"invalid_client"}"#.data(using: .utf8)!
+        let json = loadFile(withName: "invalidClientError", ofType: "json")
+
 
         URLProtocolMock.handler = { request in
-            let response = HTTPURLResponse(
-                url: request.url ?? URL(string: "https://example.com")!,
-                statusCode: 401,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"])!
+            guard let url = request.url ?? URL(string: "https://example.com") else {
+                XCTFail("Invalid URL")
+                fatalError("Invalid URL in test")
+            }
+            guard let response = HTTPURLResponse(url: url,
+                                                 statusCode: 401,
+                                                 httpVersion: nil,
+                                                 headerFields: ["Content-Type": "application/json"]) else {
+                XCTFail("Failed to create HTTPURLResponse")
+                fatalError("Failed to create HTTPURLResponse")
+            }
             return (response, json)
         }
 
@@ -159,14 +181,23 @@ final class SessionManagerHandleErrorTests: XCTestCase {
             httpMethod: .get)
         resource.authServiceType = .userService(.bearer)
 
-        let json = #"{"message":"x"}"#.data(using: .utf8)!
+        guard let json = #"{"message":"x"}"#.data(using: .utf8) else {
+            XCTFail("Failed to create JSON data")
+            return
+        }
 
         URLProtocolMock.handler = { request in
-            let response = HTTPURLResponse(
-                url: request.url ?? URL(string: "https://example.com")!,
-                statusCode: 422,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"])!
+            guard let url = request.url ?? URL(string: "https://example.com") else {
+                XCTFail("Invalid URL")
+                fatalError("Invalid URL in test")
+            }
+            guard let response = HTTPURLResponse(url: url,
+                                                 statusCode: 422,
+                                                 httpVersion: nil,
+                                                 headerFields: ["Content-Type": "application/json"]) else {
+                XCTFail("Failed to create HTTPURLResponse")
+                fatalError("Failed to create HTTPURLResponse")
+            }
             return (response, json)
         }
 
@@ -201,21 +232,29 @@ final class SessionManagerHandleErrorTests: XCTestCase {
         ]
 
         for testCase in testCases {
-            var resource = APIResource<String>(
-                method: .paymentProviders,
-                apiDomain: .default,
-                apiVersion: 5,
-                httpMethod: .get)
+            var resource = APIResource<String>(method: .paymentProviders,
+                                               apiDomain: .default,
+                                               apiVersion: 5,
+                                               httpMethod: .get)
             resource.authServiceType = .userService(.bearer)
 
-            let data = testCase.body.data(using: .utf8)!
+            guard let data = testCase.body.data(using: .utf8) else {
+                XCTFail("Failed to create data for '\(testCase.body)'")
+                continue
+            }
 
             URLProtocolMock.handler = { request in
-                let response = HTTPURLResponse(
-                    url: request.url ?? URL(string: "https://example.com")!,
-                    statusCode: testCase.status,
-                    httpVersion: nil,
-                    headerFields: ["Content-Type": "text/plain"])!
+                guard let url = request.url ?? URL(string: "https://example.com") else {
+                    XCTFail("Invalid URL")
+                    fatalError("Invalid URL in test")
+                }
+                guard let response = HTTPURLResponse(url: url,
+                                                     statusCode: testCase.status,
+                                                     httpVersion: nil,
+                                                     headerFields: ["Content-Type": "text/plain"]) else {
+                    XCTFail("Failed to create HTTPURLResponse")
+                    fatalError("Failed to create HTTPURLResponse")
+                }
                 return (response, data)
             }
 
@@ -235,21 +274,30 @@ final class SessionManagerHandleErrorTests: XCTestCase {
     }
 
     func testApiServiceSkipsOAuthSpecialCases() {
-        var resource = APIResource<String>(
-            method: .paymentProviders,
-            apiDomain: .default,
-            apiVersion: 5,
-            httpMethod: .get)
+        var resource = APIResource<String>(method: .paymentProviders,
+                                           apiDomain: .default,
+                                           apiVersion: 5,
+                                           httpMethod: .get)
         resource.authServiceType = .apiService
+        //invalidGrantError
 
-        let json = #"{"error":"invalid_grant"}"#.data(using: .utf8)!
+        guard let json = #"{"error":"invalid_grant"}"#.data(using: .utf8) else {
+            XCTFail("Failed to create JSON data")
+            return
+        }
 
         URLProtocolMock.handler = { request in
-            let response = HTTPURLResponse(
-                url: request.url ?? URL(string: "https://example.com")!,
-                statusCode: 400,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"])!
+            guard let url = request.url ?? URL(string: "https://example.com") else {
+                XCTFail("Invalid URL")
+                fatalError("Invalid URL in test")
+            }
+            guard let response = HTTPURLResponse(url: url,
+                                                 statusCode: 400,
+                                                 httpVersion: nil,
+                                                 headerFields: ["Content-Type": "application/json"]) else {
+                XCTFail("Failed to create HTTPURLResponse")
+                fatalError("Failed to create HTTPURLResponse")
+            }
             return (response, json)
         }
 

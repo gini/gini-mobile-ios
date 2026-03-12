@@ -1,8 +1,8 @@
 //
 //  ExtractionsContainerTest.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/20/19.
+//  Copyright © 2019 Gini. All rights reserved.
 //
 
 import XCTest
@@ -14,19 +14,22 @@ final class ExtractionsContainerTest: XCTestCase {
     lazy var extractionsWOCandidatesJson = loadFile(withName: "extractionsContainerWOCandidates", ofType: "json")
     
     func testExtractionsContainerDecodingDoesNotThrow() {
-        XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self, from: extractionsContainerJson),
+        XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self,
+                                                  from: extractionsContainerJson),
                          "extractions container should be decoded")
     }
     
     func testExtractionsContainerWOCandidatesDecodingDoesNotThrow() {
-        XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self, from: extractionsWOCandidatesJson),
+        XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self,
+                                                  from: extractionsWOCandidatesJson),
                          "extractions container without candidates should be decoded")
     }
     
     func testExtractionsContainerDecoding() throws {
         
-        let container = try JSONDecoder().decode(ExtractionsContainer.self, from: extractionsContainerJson)
-        
+        let container = try JSONDecoder().decode(ExtractionsContainer.self,
+                                                 from: extractionsContainerJson)
+
         XCTAssertEqual(container.extractions.count, 2)
         
         let extraction = Extraction(box: Extraction.Box(height: 9.0,

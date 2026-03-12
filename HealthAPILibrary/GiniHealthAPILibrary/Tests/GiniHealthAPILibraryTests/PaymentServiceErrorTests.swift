@@ -1,3 +1,5 @@
+//  Copyright © 2026 Gini. All rights reserved.
+
 import XCTest
 @testable import GiniHealthAPILibrary
 
@@ -6,7 +8,8 @@ final class PaymentServiceErrorTests: XCTestCase {
     func testCreatePaymentRequest_BadRequest_decodesItemsAndRequestId() {
         // Given
         let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
+        let service = PaymentService(sessionManager: mock,
+                                     apiVersion: 5)
         let expect = expectation(description: "create payment request failure")
         var capturedError: GiniError?
 
@@ -155,7 +158,8 @@ final class PaymentServiceErrorTests: XCTestCase {
     func testBatchDeletePaymentRequests_AllForbidden_returns403() {
         // Given
         let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
+        let service = PaymentService(sessionManager: mock,
+                                     apiVersion: 5)
         let expect = expectation(description: "batch delete all forbidden")
         var capturedError: GiniError?
         
@@ -189,7 +193,8 @@ final class PaymentServiceErrorTests: XCTestCase {
     func testBatchDeletePaymentRequests_EmptyList_handledGracefully() {
         // Given
         let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
+        let service = PaymentService(sessionManager: mock,
+                                     apiVersion: 5)
         let expect = expectation(description: "batch delete empty list")
         var capturedResult: Result<[String], GiniError>?
         
