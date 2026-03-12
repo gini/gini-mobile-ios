@@ -8,13 +8,16 @@ final class GiniHealthTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock,
+                                                     apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock,
+                                            apiVersion: versionAPI)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock,
+                                                                    apiVersion: versionAPI)
         GiniHealthConfiguration.shared.clientConfiguration = nil
         giniHealthAPI = GiniHealthAPI(documentService: documentService,
                                       paymentService: paymentService,
@@ -68,7 +71,10 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open == true, "testOpenLink - FAILED to open link")
         })
@@ -81,7 +87,10 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was not opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open == false, "testOpenLink - MANAGED to open link")
         })

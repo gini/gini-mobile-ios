@@ -16,14 +16,17 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock,
+                                                     apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock,
+                                            apiVersion: versionAPI)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock,
+                                                                    apiVersion: versionAPI)
         GiniHealthConfiguration.shared.clientConfiguration = nil
         giniHealthAPI = GiniHealthAPI(documentService: documentService,
                                       paymentService: paymentService,
@@ -61,7 +64,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
             XCTFail("Error loading file: `\(documentFileName).json`")
             return
         }
-        let expectedDataForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
+        let expectedDataForReview = DataForReview(document: expectedDocument,
+                                                  extractions: expectedExtractions)
         let expectedDocumentLink = expectedDocument.links.document.absoluteString
         let extractions = expectedDataForReview.extractions
 
@@ -75,7 +79,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
                                                     purpose: extractions.first(where: {$0.name == "payment_purpose"})?.value ?? "",
                                                     paymentUniversalLink: "ginipay-test://paymentRequester",
                                                     paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo,
+                                        completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
@@ -108,7 +113,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
                                                              purpose: "ReNr 12345",
                                                              paymentUniversalLink: "ginipay-test://paymentRequester",
                                                              paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo,
+                                        completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
@@ -132,7 +138,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         let expectation = self.expectation(description: "Deleting payment request")
         var receivedRequestId: String?
         
-        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID, completion: { result in
+        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID,
+                                        completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
