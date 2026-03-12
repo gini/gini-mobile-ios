@@ -405,6 +405,21 @@ import GiniUtilites
      */
     public var transactionDocsEnabled: Bool = true
 
+    // MARK: - Product Tag
+    /**
+     Set the product tag used for document extraction routing.
+
+     This determines which extraction pipeline processes uploaded documents:
+     - `sepaExtractions` (default): Standard SEPA payment extractions.
+     - `cxExtractions`: Cross-border (CX) payment extractions.
+     - `autoDetectExtractions`: Reserved for future use.
+     - `otherProductTag(String)`: Custom product tag value.
+
+     This configuration is set once at SDK initialization time and applies
+     to all documents uploaded during the session.
+     */
+    public var productTag: GiniProductTag? = .sepaExtractions
+
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
 
