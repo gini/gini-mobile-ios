@@ -216,6 +216,8 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             handleApiEnvironmentOption(environmentIndex: newData.selectedIndex)
         } else if newData is CredentialsSetSegmentedOptionModel {
             handleCredentialsSetSelection(credentialsIndex: newData.selectedIndex)
+        } else if newData is ProductTagSegmentedOptionModel {
+            viewModel.handleProductTagOption(selectedIndex: newData.selectedIndex)
         } else if newData is SDKTypeSegmentedOptionModel {
             handleSDKTypeOption(index: newData.selectedIndex)
         }

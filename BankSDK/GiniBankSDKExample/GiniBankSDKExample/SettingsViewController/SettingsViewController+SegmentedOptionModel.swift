@@ -60,6 +60,22 @@ struct CredentialsSetSegmentedOptionModel: SegmentedOptionModelProtocol {
     }
 }
 
+struct ProductTagSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["SEPA", "Cross-border", "Auto-detect"]
+    }
+
+    var title: String {
+        return "Product Tag"
+    }
+
+    var description: String? {
+        return "Determines which extraction pipeline processes uploaded documents."
+    }
+}
+
 struct SDKTypeSegmentedOptionModel: SegmentedOptionModelProtocol {
     var selectedIndex: Int = 0
 
