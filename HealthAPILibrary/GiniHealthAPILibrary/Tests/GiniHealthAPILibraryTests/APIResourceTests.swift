@@ -123,7 +123,7 @@ final class APIResourceTests: XCTestCase {
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
+        let contentType = resource.defaultHeaders["Content-Type"]
         XCTAssertEqual(contentType, "application/vnd.gini.v5+jpeg", "content type should match")
     }
     
@@ -135,7 +135,7 @@ final class APIResourceTests: XCTestCase {
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
+        let contentType = resource.defaultHeaders["Content-Type"]
         XCTAssertEqual(contentType, "application/vnd.gini.v5.partial+jpeg", "content type should match")
     }
     
@@ -148,7 +148,7 @@ final class APIResourceTests: XCTestCase {
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
+        let contentType = resource.defaultHeaders["Content-Type"]
         XCTAssertEqual(contentType, "application/vnd.gini.v5.composite+jpeg", "content type should match")
     }
     
