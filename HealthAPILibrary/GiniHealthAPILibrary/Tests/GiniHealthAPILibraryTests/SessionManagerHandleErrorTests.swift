@@ -135,11 +135,10 @@ final class SessionManagerHandleErrorTests: XCTestCase {
     }
 
     func testUserServiceInvalidClientMapsToUnauthorized() {
-        var resource = APIResource<String>(
-            method: .paymentProviders,
-            apiDomain: .default,
-            apiVersion: 5,
-            httpMethod: .get)
+        var resource = APIResource<String>(method: .paymentProviders,
+                                           apiDomain: .default,
+                                           apiVersion: 5,
+                                           httpMethod: .get)
         resource.authServiceType = .userService(.bearer)
 
         let json = loadFile(withName: "invalidClientError", ofType: "json")
@@ -174,11 +173,10 @@ final class SessionManagerHandleErrorTests: XCTestCase {
     }
 
     func testCustomErrorWhenJSONBodyOn4xx() {
-        var resource = APIResource<String>(
-            method: .paymentProviders,
-            apiDomain: .default,
-            apiVersion: 5,
-            httpMethod: .get)
+        var resource = APIResource<String>(method: .paymentProviders,
+                                           apiDomain: .default,
+                                           apiVersion: 5,
+                                           httpMethod: .get)
         resource.authServiceType = .userService(.bearer)
 
         guard let json = #"{"message":"x"}"#.data(using: .utf8) else {
