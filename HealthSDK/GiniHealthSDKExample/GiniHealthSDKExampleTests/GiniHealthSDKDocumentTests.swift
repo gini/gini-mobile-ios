@@ -34,7 +34,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             case .success(let document):
                 XCTAssertFalse(document.id.isEmpty, "Document ID should not be empty")
                 XCTAssertEqual(document.sourceClassification, .native)
-                print("✅ Document uploaded: \(document.id)")
 
                 // Cleanup: Delete the document after test
                 self.giniHealth.deleteDocuments(documentIds: [document.id]) { _ in }
@@ -67,7 +66,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document created for fetch test")
             }
             expectUpload.fulfill()
         }
@@ -85,7 +83,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             case .success(let document):
                 XCTAssertEqual(document.id, docId)
                 XCTAssertNotNil(document.creationDate)
-                print("✅ Document fetched successfully")
 
                 // Cleanup
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
@@ -119,7 +116,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document uploaded for extraction test")
             }
             expectUpload.fulfill()
         }
@@ -136,23 +132,18 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             switch result {
             case .success(let extractions):
                 XCTAssertFalse(extractions.isEmpty, "Should have extractions")
-                print("✅ Got \(extractions.count) extractions")
 
                 // Check for common payment fields
                 let hasIban = extractions.contains { $0.name == "iban" }
                 let hasAmount = extractions.contains { $0.name == "amountToPay" }
                 let hasRecipient = extractions.contains { $0.name == "payment_recipient" }
 
-                print("  - IBAN: \(hasIban ? "✓" : "✗")")
-                print("  - Amount: \(hasAmount ? "✓" : "✗")")
-                print("  - Recipient: \(hasRecipient ? "✓" : "✗")")
 
                 // Cleanup
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
 
             case .failure(let error):
                 // It's ok if no payment data is extracted from test image
-                print("⚠️ No payment extractions (expected for test data): \(error)")
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
             }
             expectExtractions.fulfill()
@@ -180,7 +171,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document uploaded for all extractions test")
             }
             expectUpload.fulfill()
         }
@@ -197,7 +187,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             switch result {
             case .success(let extractions):
                 XCTAssertFalse(extractions.isEmpty, "Should have extractions")
-                print("✅ Got \(extractions.count) total extractions")
 
                 // Cleanup
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
@@ -230,7 +219,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document uploaded for payable check")
             }
             expectUpload.fulfill()
         }
@@ -246,7 +234,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         giniHealth.checkIfDocumentIsPayable(docId: docId) { result in
             switch result {
             case .success(let isPayable):
-                print("✅ Payable status: \(isPayable)")
                 // Note: Test data may not have IBAN, so false is expected
 
                 // Cleanup
@@ -280,7 +267,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document uploaded for multiple invoices check")
             }
             expectUpload.fulfill()
         }
@@ -296,7 +282,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         giniHealth.checkIfDocumentContainsMultipleInvoices(docId: docId) { result in
             switch result {
             case .success(let hasMultiple):
-                print("✅ Multiple invoices: \(hasMultiple)")
 
                 // Cleanup
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
@@ -329,7 +314,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
-                print("✅ Document uploaded for polling test")
             }
             expectUpload.fulfill()
         }
@@ -346,7 +330,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             switch result {
             case .success(let document):
                 XCTAssertEqual(document.id, docId)
-                print("✅ Document polled successfully: \(document.progress)")
 
                 // Cleanup
                 self.giniHealth.deleteDocuments(documentIds: [docId]) { _ in }
@@ -381,7 +364,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentIds.append(document.id)
-                print("✅ Document 1 uploaded")
             }
             expectUpload1.fulfill()
         }
@@ -393,7 +375,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
                                                   metadata: nil) { result in
             if case .success(let document) = result {
                 documentIds.append(document.id)
-                print("✅ Document 2 uploaded")
             }
             expectUpload2.fulfill()
         }
@@ -408,8 +389,8 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         // Delete both documents in batch
         giniHealth.deleteDocuments(documentIds: documentIds) { result in
             switch result {
-            case .success(let message):
-                print("✅ Batch delete successful: \(message)")
+            case .success:
+                break
             case .failure(let error):
                 XCTFail("Failed to delete documents: \(error)")
             }

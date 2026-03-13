@@ -56,7 +56,6 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
         } else {
             for requestId in createdPaymentRequestIds {
                 paymentService.deletePaymentRequest(id: requestId) { _ in
-                    print("🧹 Cleaned up payment request: \(requestId)")
                     paymentCleanupExpectation.fulfill()
                 }
             }
@@ -70,7 +69,6 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
             documentCleanupExpectation.fulfill()
         } else {
             for documentId in createdDocumentIds {
-                print("ℹ️ Document cleanup skipped (would need Document object): \(documentId)")
                 documentCleanupExpectation.fulfill()
             }
         }

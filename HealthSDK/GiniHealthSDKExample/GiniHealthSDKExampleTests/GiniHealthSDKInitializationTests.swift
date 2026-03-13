@@ -19,11 +19,9 @@ final class GiniHealthSDKInitializationTests: GiniHealthSDKIntegrationTestsBase 
         XCTAssertNotNil(giniHealth)
         XCTAssertNotNil(paymentService)
         XCTAssertNotNil(giniHealth.documentService)
-        print("✅ SDK services initialized")
     }
 
     func testPaymentServiceDomain() throws {
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
-        print("✅ Payment service domain: health-api.gini.net")
     }
 }

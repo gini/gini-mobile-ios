@@ -22,13 +22,11 @@ final class GiniHealthSDKPaymentProviderTests: GiniHealthSDKIntegrationTestsBase
             switch result {
             case .success(let providers):
                 XCTAssertFalse(providers.isEmpty, "Should have payment providers")
-                print("✅ Fetched \(providers.count) payment providers")
 
                 // Verify provider structure
                 if let firstProvider = providers.first {
                     XCTAssertFalse(firstProvider.id.isEmpty, "Provider ID should not be empty")
                     XCTAssertFalse(firstProvider.name.isEmpty, "Provider name should not be empty")
-                    print("✅ Provider validated: '\(firstProvider.name)' (ID: \(firstProvider.id))")
                 }
             case .failure(let error):
                 XCTFail("Failed to fetch payment providers: \(error)")
@@ -49,7 +47,6 @@ final class GiniHealthSDKPaymentProviderTests: GiniHealthSDKIntegrationTestsBase
         paymentService.paymentProviders { result in
             if case .success(let providers) = result {
                 providerId = providers.first?.id
-                print("✅ Got test provider ID: \(providerId ?? "none")")
             }
             expectProviders.fulfill()
         }
@@ -67,7 +64,6 @@ final class GiniHealthSDKPaymentProviderTests: GiniHealthSDKIntegrationTestsBase
             case .success(let provider):
                 XCTAssertEqual(provider.id, id, "Provider ID should match")
                 XCTAssertFalse(provider.name.isEmpty, "Provider name should not be empty")
-                print("✅ Fetched provider by ID: \(provider.name)")
             case .failure(let error):
                 XCTFail("Failed to fetch provider: \(error)")
             }

@@ -29,7 +29,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             switch result {
             case .success(let providers):
                 paymentProviderId = providers.first?.id
-                print("✅ Selected provider for test")
             case .failure(let error):
                 XCTFail("Failed to fetch providers: \(error)")
             }
@@ -55,7 +54,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             case .success(let requestId):
                 XCTAssertFalse(requestId.isEmpty)
                 self.createdPaymentRequestIds.append(requestId)  // Track for cleanup
-                print("✅ Created payment request: \(requestId)")
             case .failure(let error):
                 XCTFail("Failed to create payment request: \(error)")
             }
@@ -103,7 +101,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             if case .success(let id) = result {
                 requestId = id
                 self.createdPaymentRequestIds.append(id)  // Track for cleanup
-                print("✅ Created payment request: \(id)")
             }
             expectCreate.fulfill()
         }
@@ -122,7 +119,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
                 XCTAssertEqual(request.recipient, testRecipient, "Recipient should match")
                 XCTAssertEqual(request.iban, testIban, "IBAN should match")
                 XCTAssertEqual(request.amount, testAmount, "Amount should match")
-                print("✅ Retrieved and validated payment request")
             case .failure(let error):
                 XCTFail("Failed to get payment request: \(error)")
             }
@@ -146,7 +142,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
         paymentService.paymentProviders { result in
             if case .success(let providers) = result {
                 paymentProviderId = providers.first?.id
-                print("✅ Step 1/4: Got provider ID")
             }
             expectProviders.fulfill()
         }
@@ -168,7 +163,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
                                             purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))") { result in
             if case .success(let id) = result {
                 requestId = id
-                print("✅ Step 2/4: Created payment request: \(id)")
             }
             expectCreate.fulfill()
         }
@@ -186,7 +180,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             case .success(let request):
                 XCTAssertEqual(request.recipient, "Dr. med. Lifecycle")
                 XCTAssertEqual(request.amount, "123.45:EUR")
-                print("✅ Step 3/4: Payment request exists and validated")
             case .failure(let error):
                 XCTFail("Failed to get payment request: \(error)")
             }
@@ -199,7 +192,7 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
         giniHealth.deletePaymentRequest(id: id) { result in
             switch result {
             case .success:
-                print("✅ Step 4/4: Payment request deleted successfully")
+                break
             case .failure(let error):
                 XCTFail("Failed to delete payment request: \(error)")
             }

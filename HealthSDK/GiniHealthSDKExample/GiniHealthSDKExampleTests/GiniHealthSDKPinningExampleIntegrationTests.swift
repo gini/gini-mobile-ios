@@ -62,7 +62,6 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
             switch result {
             case .success(let providers):
                 paymentProviderId = providers.first?.id
-                print("✅ Fetched \(providers.count) providers, using: \(paymentProviderId ?? "none")")
             case .failure(let error):
                 XCTFail("Failed to fetch payment providers: \(error)")
             }
@@ -86,7 +85,6 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
                                             purpose: "ReNr AZ356789Z") { result in
             switch result {
             case .success(let requestId):
-                print("✅ Created payment request: \(requestId)")
                 expectRequest.fulfill()
             case let .failure(error):
                 XCTFail("Failed to create payment request: \(error.customError?.message ?? error.localizedDescription)")
