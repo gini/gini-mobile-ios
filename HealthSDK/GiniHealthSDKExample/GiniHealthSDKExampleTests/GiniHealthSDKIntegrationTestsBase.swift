@@ -11,6 +11,7 @@ import UIKit
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
+@testable import GiniHealthSDKExample
 
 /// Base class for Gini Health SDK integration tests
 /// Provides common setup, teardown, and helper methods
@@ -23,18 +24,6 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
     
     /// Extended timeout for long-running operations (document processing, etc.)
     let extendedTimeout: TimeInterval = 60
-    
-    // When running from Xcode: update these environment variables in the scheme
-    // These tests will be skipped if credentials are not provided
-    var clientId: String? {
-        let value = ProcessInfo.processInfo.environment["CLIENT_ID"]
-        return value?.isEmpty == false ? value : nil
-    }
-    
-    var clientSecret: String? {
-        let value = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
-        return value?.isEmpty == false ? value : nil
-    }
 
     var giniHealth: GiniHealth!
     var paymentService: PaymentService!
@@ -47,31 +36,14 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        
-        // Skip tests if credentials are not provided
-        guard let id = clientId, let secret = clientSecret else {
-            return // XCTSkip will be called in each test method
-        }
 
-        let domain = "health-sdk-integration-tests"
-
-        // Initialize GiniHealth SDK
-        giniHealth = GiniHealth(id: id,
-                                secret: secret,
-                                domain: domain)
+        giniHealth = GiniHealth(id: testClientID,
+                                secret: testClientPassword,
+                                domain: testClientDomain)
 
         paymentService = giniHealth.paymentService
         createdPaymentRequestIds = []
         createdDocumentIds = []
-
-        print("✅ GiniHealth SDK initialized")
-    }
-    
-    /// Helper to skip tests when credentials are not available
-    func skipIfCredentialsMissing() throws {
-        guard clientId != nil, clientSecret != nil else {
-            throw XCTSkip("Integration test skipped: CLIENT_ID and CLIENT_SECRET environment variables must be set. Configure them in the test scheme or test plan.")
-        }
     }
     
     override func tearDown() {
@@ -97,8 +69,6 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
         if createdDocumentIds.isEmpty {
             documentCleanupExpectation.fulfill()
         } else {
-            // Note: Document cleanup would require keeping Document objects, not just IDs
-            // For now, just fulfill the expectation
             for documentId in createdDocumentIds {
                 print("ℹ️ Document cleanup skipped (would need Document object): \(documentId)")
                 documentCleanupExpectation.fulfill()
@@ -110,3 +80,4 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
         super.tearDown()
     }
 }
+

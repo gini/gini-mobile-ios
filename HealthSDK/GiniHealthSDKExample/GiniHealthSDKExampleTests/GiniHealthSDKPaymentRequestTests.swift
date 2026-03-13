@@ -18,7 +18,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
     // MARK: - Payment Request Tests
 
     func testCreatePaymentRequest() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectRequest = expectation(description: "create payment request")
@@ -45,15 +44,13 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
         }
 
         // Create payment request with real provider ID
-        paymentService.createPaymentRequest(
-            sourceDocumentLocation: nil,
-            paymentProvider: providerId,
-            recipient: "Dr. med. Test",
-            iban: "DE89370400440532013000",
-            bic: nil,
-            amount: "42.50:EUR",
-            purpose: "Test Invoice #\(Int.random(in: 1000...9999))"
-        ) { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
+                                            paymentProvider: providerId,
+                                            recipient: "Dr. med. Test",
+                                            iban: "DE89370400440532013000",
+                                            bic: nil,
+                                            amount: "42.50:EUR",
+                                            purpose: "Test Invoice #\(Int.random(in: 1000...9999))") { result in
             switch result {
             case .success(let requestId):
                 XCTAssertFalse(requestId.isEmpty)
@@ -69,7 +66,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
     }
 
     func testGetPaymentRequest() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
@@ -97,15 +93,13 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
         }
 
         // 2. Create payment request
-        paymentService.createPaymentRequest(
-            sourceDocumentLocation: nil,
-            paymentProvider: providerId,
-            recipient: testRecipient,
-            iban: testIban,
-            bic: nil,
-            amount: testAmount,
-            purpose: "Test Get Payment Request"
-        ) { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
+                                            paymentProvider: providerId,
+                                            recipient: testRecipient,
+                                            iban: testIban,
+                                            bic: nil,
+                                            amount: testAmount,
+                                            purpose: "Test Get Payment Request") { result in
             if case .success(let id) = result {
                 requestId = id
                 self.createdPaymentRequestIds.append(id)  // Track for cleanup
@@ -139,7 +133,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
     }
 
     func testPaymentRequestLifecycle() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "1. fetch providers")
         let expectCreate = expectation(description: "2. create payment request")
@@ -166,15 +159,13 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
         }
 
         // Step 2: Create payment request
-        paymentService.createPaymentRequest(
-            sourceDocumentLocation: nil,
-            paymentProvider: providerId,
-            recipient: "Dr. med. Lifecycle",
-            iban: "DE89370400440532013000",
-            bic: nil,
-            amount: "123.45:EUR",
-            purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))"
-        ) { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
+                                            paymentProvider: providerId,
+                                            recipient: "Dr. med. Lifecycle",
+                                            iban: "DE89370400440532013000",
+                                            bic: nil,
+                                            amount: "123.45:EUR",
+                                            purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))") { result in
             if case .success(let id) = result {
                 requestId = id
                 print("✅ Step 2/4: Created payment request: \(id)")

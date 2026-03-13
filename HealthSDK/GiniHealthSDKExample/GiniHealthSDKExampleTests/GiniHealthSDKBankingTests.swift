@@ -19,7 +19,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test fetching banking apps
     func testFetchBankingApps() throws {
-        try skipIfCredentialsMissing()
         
         let expect = expectation(description: "fetch banking apps")
 
@@ -49,7 +48,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test creating payment request using GiniHealth method
     func testCreatePaymentRequestViaGiniHealth() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
@@ -103,7 +101,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test getting payment request via GiniHealth
     func testGetPaymentRequestViaGiniHealth() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")
@@ -174,7 +171,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test deleting batch of payment requests
     func testDeletePaymentRequests() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate1 = expectation(description: "create payment request 1")
@@ -259,7 +255,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test getting payment status
     func testGetPayment() throws {
-        try skipIfCredentialsMissing()
         
         let expectProviders = expectation(description: "fetch providers")
         let expectCreate = expectation(description: "create payment request")

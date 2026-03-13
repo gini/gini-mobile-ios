@@ -9,39 +9,28 @@ import UIKit
 import GiniUtilites
 @testable import GiniHealthSDK
 @testable import GiniInternalPaymentSDK
+@testable import GiniHealthSDKExample
 
 @MainActor
 struct AlternativeNavigationTests {
     
-    private var giniHelper: GiniSetupHelper?
+    private var giniHelper: GiniSetupHelper
     private var giniHealthDelegate: MockGiniHealthDelegate
     private var homeViewController: UIViewController
     private var homeNavigationController: MockNavigationController
 
     init() {
-        // Check if credentials are available
-        let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]
-        let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
-        
-        if let id = clientId, !id.isEmpty, let secret = clientSecret, !secret.isEmpty {
-            let helper = GiniSetupHelper()
-            helper.setup()
-            self.giniHelper = helper
-        } else {
-            self.giniHelper = nil
-        }
+        let helper = GiniSetupHelper()
+        helper.setup()
+        self.giniHelper = helper
         
         giniHealthDelegate = MockGiniHealthDelegate()
         homeViewController = MockViewController()
         homeNavigationController = MockNavigationController(rootViewController: homeViewController)
-        
-        if let helper = giniHelper {
-            helper.giniHealth.delegate = giniHealthDelegate
-        }
+        helper.giniHealth.delegate = giniHealthDelegate
     }
     
-    @Test func presentPaymentComponent() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func presentPaymentComponent() {
         
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
                                                paymentInfo: nil,
@@ -52,8 +41,7 @@ struct AlternativeNavigationTests {
                 "Payment component should be presented in the navigation controller")
     }
     
-    @Test func presentPaymentReviewComponent() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func presentPaymentReviewComponent() {
         
         giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
         
@@ -66,8 +54,7 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the navigation controller")
     }
     
-    @Test func presentPaymentComponentInANewNavigation() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func presentPaymentComponentInANewNavigation() {
         
         let navigationController = MockNavigationController()
         
@@ -85,8 +72,7 @@ struct AlternativeNavigationTests {
                 "paymentcomponent should be presented in the new navigation controller")
     }
     
-    @Test func presentPaymentReviewComponentInANewNavigation() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func presentPaymentReviewComponentInANewNavigation() {
         
         let navigationController = MockNavigationController()
         
@@ -106,8 +92,7 @@ struct AlternativeNavigationTests {
                 "payment review component should be presented in the new navigation controller")
     }
     
-    @Test func dismissSDKPaymentComponent() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func dismissSDKPaymentComponent() {
         
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -125,8 +110,7 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @Test func dismissSDKPaymentReviewComponent() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func dismissSDKPaymentReviewComponent() {
         
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -146,8 +130,7 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should be called once")
     }
     
-    @Test func dismissSDKPaymentReviewComponentWithDocument() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func dismissSDKPaymentReviewComponentWithDocument() {
         
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -167,8 +150,7 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should not be called when dismissing payment review with document")
     }
     
-    @Test func dismissSDKPaymentComponentNavigationNotEmpty() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func dismissSDKPaymentComponentNavigationNotEmpty() {
         
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -189,8 +171,7 @@ struct AlternativeNavigationTests {
                 "didDismissHealthSDK should not be called when the navigation controller is not empty")
     }
     
-    @Test func dismissSDKAfterAlertControllerPresentation() throws {
-        let giniHelper = try #require(giniHelper, "Skipping test: CLIENT_ID and CLIENT_SECRET environment variables must be set")
+    @Test func dismissSDKAfterAlertControllerPresentation() {
         
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
@@ -221,8 +202,7 @@ struct AlternativeNavigationTests {
                         name: "test",
                         appSchemeIOS: "",
                         minAppVersion: nil,
-                        colors: ProviderColors(background: "",
-                                               text: ""),
+                        colors: ProviderColors(background: "", text: ""),
                         iconData: Data(),
                         appStoreUrlIOS: nil,
                         universalLinkIOS: "",

@@ -19,7 +19,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test document creation with real data
     func testUploadPDFDocument() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         guard let pdfData = FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf") else {
@@ -51,7 +50,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test fetching document after upload
     func testFetchDocument() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectFetch = expectation(description: "fetch document")
@@ -103,7 +101,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test extracting payment data from document
     func testGetExtractions() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectExtractions = expectation(description: "get extractions")
@@ -166,7 +163,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test getting all extractions including medical information
     func testGetAllExtractions() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectExtractions = expectation(description: "get all extractions")
@@ -218,7 +214,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test checking if document is payable
     func testCheckIfDocumentIsPayable() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectCheck = expectation(description: "check payable")
@@ -269,7 +264,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test checking if document contains multiple invoices
     func testCheckIfDocumentContainsMultipleInvoices() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectCheck = expectation(description: "check multiple invoices")
@@ -280,12 +274,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
             return
         }
         
-        giniHealth.documentService.createDocument(
-            fileName: "invoice-multiple-check.jpg",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "invoice-multiple-check.jpg",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentId = document.id
                 print("✅ Document uploaded for multiple invoices check")
@@ -321,7 +313,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test polling document until processing is complete
     func testPollDocument() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload = expectation(description: "upload document")
         let expectPoll = expectation(description: "poll document")
@@ -372,7 +363,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     /// Test deleting a batch of documents
     func testDeleteDocuments() throws {
-        try skipIfCredentialsMissing()
         
         let expectUpload1 = expectation(description: "upload document 1")
         let expectUpload2 = expectation(description: "upload document 2")
@@ -385,12 +375,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         }
         
         // Upload first document
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice1.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice1.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentIds.append(document.id)
                 print("✅ Document 1 uploaded")
@@ -399,12 +387,10 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         }
 
         // Upload second document
-        giniHealth.documentService.createDocument(
-            fileName: "testMedInvoice2.pdf",
-            docType: .invoice,
-            type: .partial(pdfData),
-            metadata: nil
-        ) { result in
+        giniHealth.documentService.createDocument(fileName: "testMedInvoice2.pdf",
+                                                  docType: .invoice,
+                                                  type: .partial(pdfData),
+                                                  metadata: nil) { result in
             if case .success(let document) = result {
                 documentIds.append(document.id)
                 print("✅ Document 2 uploaded")

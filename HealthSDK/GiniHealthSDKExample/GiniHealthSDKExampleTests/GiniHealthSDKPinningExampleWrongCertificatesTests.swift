@@ -8,6 +8,7 @@
 import XCTest
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
+@testable import GiniHealthSDKExample
 
 class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     
@@ -19,20 +20,7 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     /// Extended timeout for long-running operations (document processing, etc.)
     private let extendedTimeout: TimeInterval = 60
     
-    // When running from Xcode: update these environment variables in the scheme.
-    // Make sure not to commit the credentials if the scheme is shared!
-    // These tests will be skipped if credentials are not provided
-    private var clientId: String? {
-        let value = ProcessInfo.processInfo.environment["CLIENT_ID"]
-        return value?.isEmpty == false ? value : nil
-    }
-    
-    private var clientSecret: String? {
-        let value = ProcessInfo.processInfo.environment["CLIENT_SECRET"]
-        return value?.isEmpty == false ? value : nil
-    }
-    
-    let yourPublicPinningConfig = [
+    let wrongPublicPinningConfig = [
         "health-api.gini.net": [
             // Wrong hashes
             "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
@@ -48,57 +36,28 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     var giniHealthAPILib: GiniHealthAPI!
     var paymentService: PaymentService!
     var sdk: GiniHealth!
-    
-    /// Helper to skip tests when credentials are not available
-    private func skipIfCredentialsMissing() throws {
-        guard clientId != nil, clientSecret != nil else {
-            throw XCTSkip("Integration test skipped: CLIENT_ID and CLIENT_SECRET environment variables must be set. Configure them in the test scheme or test plan.")
-        }
-    }
-    
+
     override func setUp() {
-        guard let id = clientId, let secret = clientSecret else {
-            return // XCTSkip will be called in each test method
-        }
-        
-        let domain = "health-sdk-pinning-example"
-        let client = Client(id: id,
-                            secret: secret,
-                            domain: domain)
-        giniHealthAPILib = GiniHealthAPI
-               .Builder(client: client, pinningConfig: yourPublicPinningConfig)
-               .build()
-        sdk = GiniHealth.init(id: id, secret: secret, domain: domain)
+        super.setUp()
+        let client = Client(id: testClientID,
+                            secret: testClientPassword,
+                            domain: testClientDomain)
+        giniHealthAPILib = GiniHealthAPI.Builder(client: client,
+                                                 pinningConfig: wrongPublicPinningConfig).build()
+        sdk = GiniHealth(giniApiLib: giniHealthAPILib)
         paymentService = sdk.paymentService
     }
     
     
-    func testBuildPaymentService() throws {
-        try skipIfCredentialsMissing()
-        
+    func testBuildPaymentService() {
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
     
     // MARK: - Disabled Tests
     
     func testCreatePaymentRequest() throws {
-        // This test is skipped because SSL pinning with wrong certificates doesn't reliably
-        // fail in simulator environments. The test expects the request to fail but it succeeds.
-        // This is a known limitation of certificate pinning testing in iOS simulators.
+        // SSL pinning with wrong certificates doesn't reliably fail in simulator environments.
         // To properly test certificate pinning, run on a physical device with network monitoring.
         throw XCTSkip("SSL pinning with wrong certificates is unreliable in simulator - requires physical device testing")
-        
-        let expect = expectation(description: "it creates a payment request")
-
-        paymentService.createPaymentRequest(sourceDocumentLocation: nil, paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", bic: "CMCIDEDDXXX", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
-            switch result {
-            case .success:
-                XCTFail("creating a payment request should have failed due to wrong pinning certificates")
-            case let .failure(error):
-                XCTAssertEqual(error, GiniError.noResponse)
-                expect.fulfill()
-            }
-        }
-        wait(for: [expect], timeout: networkTimeout)
     }
 }

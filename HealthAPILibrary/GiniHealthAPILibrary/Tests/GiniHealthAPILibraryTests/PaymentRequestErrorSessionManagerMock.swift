@@ -36,6 +36,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
         let jsonData = loadFile(withName: "createPaymentRequestMultiErrors", ofType: "json")
         guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests") else {
             XCTFail("Invalid URL in request")
+            completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
         let response = HTTPURLResponse(url: url,
@@ -70,6 +71,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
             let jsonData = loadFile(withName: "deletePaymentRequestForbiddenError", ofType: "json")
             guard let url = resource.request.url else {
                 XCTFail("Invalid URL in request")
+                completion(.failure(.unknown(response: nil, data: nil)))
                 return
             }
             let response = HTTPURLResponse(url: url,
@@ -84,6 +86,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
             let jsonData = loadFile(withName: "deletePaymentRequestsMultiErrors", ofType: "json")
             guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests") else {
                 XCTFail("Invalid URL in request")
+                completion(.failure(.unknown(response: nil, data: nil)))
                 return
             }
             let response = HTTPURLResponse(url: url,
@@ -121,6 +124,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
         let jsonData = loadFile(withName: "deletePaymentRequestError", ofType: "json")
         guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)") else {
             XCTFail("Invalid URL in request")
+            completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
         let response = HTTPURLResponse(url: url,
@@ -135,6 +139,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
                                                                   completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         guard let url = resource.request.url ?? URL(string: "https://health-api.gini.net/paymentRequests/\(id)") else {
             XCTFail("Invalid URL in request")
+            completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
         let response = HTTPURLResponse(url: url,

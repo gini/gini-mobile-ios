@@ -16,7 +16,6 @@ final class GiniHealthSDKPaymentProviderTests: GiniHealthSDKIntegrationTestsBase
     // MARK: - Payment Provider Tests
 
     func testFetchPaymentProviders() throws {
-        try skipIfCredentialsMissing()
         let expect = expectation(description: "fetch payment providers")
 
         paymentService.paymentProviders { result in
@@ -41,7 +40,6 @@ final class GiniHealthSDKPaymentProviderTests: GiniHealthSDKIntegrationTestsBase
     }
 
     func testFetchSinglePaymentProvider() throws {
-        try skipIfCredentialsMissing()
         let expectProviders = expectation(description: "fetch providers")
         let expectSingleProvider = expectation(description: "fetch single provider")
 

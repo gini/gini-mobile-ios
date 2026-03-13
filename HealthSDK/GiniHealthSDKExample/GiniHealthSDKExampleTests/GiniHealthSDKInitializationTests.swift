@@ -16,7 +16,6 @@ final class GiniHealthSDKInitializationTests: GiniHealthSDKIntegrationTestsBase 
     // MARK: - SDK Initialization Tests
 
     func testSDKInitialization() throws {
-        try skipIfCredentialsMissing()
         XCTAssertNotNil(giniHealth)
         XCTAssertNotNil(paymentService)
         XCTAssertNotNil(giniHealth.documentService)
@@ -24,7 +23,6 @@ final class GiniHealthSDKInitializationTests: GiniHealthSDKIntegrationTestsBase 
     }
 
     func testPaymentServiceDomain() throws {
-        try skipIfCredentialsMissing()
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
         print("✅ Payment service domain: health-api.gini.net")
     }
