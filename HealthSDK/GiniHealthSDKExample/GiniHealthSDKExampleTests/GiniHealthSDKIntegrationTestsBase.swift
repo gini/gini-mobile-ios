@@ -63,12 +63,11 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
         
         // Clean up documents
         let documentCleanupExpectation = expectation(description: "cleanup documents")
-        documentCleanupExpectation.expectedFulfillmentCount = max(1, createdDocumentIds.count)
-        
+
         if createdDocumentIds.isEmpty {
             documentCleanupExpectation.fulfill()
         } else {
-            for documentId in createdDocumentIds {
+            giniHealth.deleteDocuments(documentIds: createdDocumentIds) { _ in
                 documentCleanupExpectation.fulfill()
             }
         }
