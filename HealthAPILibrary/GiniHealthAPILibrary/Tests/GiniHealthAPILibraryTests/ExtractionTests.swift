@@ -12,24 +12,16 @@ class ExtractionTests: XCTestCase {
 
     lazy var validExtraction: Extraction = {
         let jsonData: Data = loadFile(withName: "extraction", ofType: "json")
-        let giniExtraction = try? JSONDecoder().decode(Extraction.self, from: jsonData)
-        return giniExtraction!
+        guard let giniExtraction = try? JSONDecoder().decode(Extraction.self, from: jsonData) else {
+            fatalError("Failed to decode extraction.json — check the fixture file")
+        }
+        return giniExtraction
     }()
     
-    let requiredParametersJSON: Data = """
-            {
-              "entity": "amount",
-              "value": "24.99:EUR",
-              "name": "amountToPay"
-            }
-    """.data(using: .utf8)!
-    
-    let invalidJSON: Data = """
-            {
-              "entity": "amount"
-            }
-    """.data(using: .utf8)!
-    
+    let requiredParametersJSON: Data = loadFile(withName: "extractionRequiredParams", ofType: "json")
+
+    let invalidJSON: Data = loadFile(withName: "extractionInvalid", ofType: "json")
+
     func testEntity() {
         XCTAssertEqual(validExtraction.entity, "amount")
     }

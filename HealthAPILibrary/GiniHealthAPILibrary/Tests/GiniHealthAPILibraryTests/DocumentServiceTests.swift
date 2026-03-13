@@ -120,86 +120,95 @@ final class DocumentServicesTests: XCTestCase {
 
     func loadDocument(fileName: String, type: String) -> Document {
         let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode(Document.self, from: jsonData))!
+        guard let document = try? JSONDecoder().decode(Document.self, from: jsonData) else {
+            fatalError("Unable to decode document from JSON data")
+        }
+        return document
     }
 
     func loadExtractionResults(fileName: String, type: String) -> ExtractionsContainer {
         let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData))!
+        guard let extractionsContainer = try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData) else {
+            fatalError("Unable to decode extraction results from JSON data")
+        }
+        return extractionsContainer
     }
-    
+
     func loadPages(fileName: String, type: String) -> [Document.Page] {
         let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode([Document.Page].self, from: jsonData))!
+        guard let pages = try? JSONDecoder().decode([Document.Page].self, from: jsonData) else {
+            fatalError("Unable to decode pages from JSON data")
+        }
+        return pages
     }
 
-    func testSubmitFeedback() {
+    func testSubmitFeedback(){
         let expect = expectation(description: "feedback will be successfully sent")
         let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
         let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
-        var amountToPayFromLoadedFeedbackValue = ""
-        let feedbackData =
-            loadFile(withName: "feedbackToSend", ofType: "json")
-        if let json = try? JSONSerialization.jsonObject(with: feedbackData, options: .mutableContainers) {
-            if let dictionary = json as? [String: [Extraction]] {
-                if let extractions = dictionary["extractions"] {
-                    let amountToPayFromLoadedFeedback = extractions.first {
-                        $0.name == "amountToPay"
-                    }
-                    amountToPayFromLoadedFeedbackValue = amountToPayFromLoadedFeedback?.value ?? ""
-                }
-            }
-            let amountToPayExtraction = extractionResult.extractions.first {
-                $0.name == "amountToPay"
-            }
-            let amountToPay = amountToPayExtraction?.value ?? ""
+        let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
-            if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
-                    let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
-
-                    let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
-
-                    defaultDocumentService.submitFeedback(for: document, with: extractionResult.extractions.filter { extraction in
-                        pay4Keys.contains(extraction.name ?? "")
-                    },
-                    and: filteredCompoundExtractions) { result in
-                        switch result {
-                        case .success:
-                            DispatchQueue.main.async {
-                                if let jsonFromFeedbackHttpBody = try? JSONSerialization.jsonObject(with: self.sessionManagerMock.extractionFeedbackBody!, options: .mutableContainers) {
-                                    if let dictionary = jsonFromFeedbackHttpBody as? [String: [Extraction]] {
-                                        if let extractions = dictionary["extractions"] {
-                                            let amountToPayFromHttpBodyExtraction = extractions.first {
-                                                $0.name == "amountToPay"
-                                            }
-
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromHttpBodyExtraction?.value ?? "",
-                                                           "amout to pay values should match")
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromLoadedFeedbackValue,
-                                                           "amout to pay values should match")
-                                        }
-                                    } else {
-                                        print("json data malformed")
-                                    }
-                                }
-                                expect.fulfill()
-                            }
-                        case .failure:
-                            break
-                        }
-                        self.wait(for: [expect], timeout: 1)
-                    }
-                }
-            }
+        struct ExtractionValue: Decodable {
+            let value: String
         }
-    }
-    
+        struct FeedbackPayload: Decodable {
+            let extractions: [String: ExtractionValue]
+        }
+
+        let feedbackPayload: FeedbackPayload
+        do {
+            feedbackPayload = try JSONDecoder().decode(FeedbackPayload.self, from: feedbackData)
+        } catch {
+            XCTFail("Failed to parse feedbackToSend.json: \(error)")
+            return
+        }
+
+        let amountToPayFromLoadedFeedbackValue = feedbackPayload.extractions["amountToPay"]?.value ?? ""
+        let amountToPay = extractionResult.extractions.first { $0.name == "amountToPay" }?.value ?? ""
+
+        guard let compoundExtractions = extractionResult.compoundExtractions,
+              let lineItems = compoundExtractions["lineItems"],
+              let firstLineItem = lineItems.first else {
+                  XCTFail("No lineItems found in extraction results")
+                  return
+              }
+
+        let filteredCompoundExtractions = ["lineItems": [firstLineItem]]
+        let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
+
+        defaultDocumentService.submitFeedback(for: document,
+                                              with: extractionResult.extractions.filter { pay4Keys.contains($0.name ?? "") },
+                                              and: filteredCompoundExtractions) { result in
+            switch result {
+            case .success:
+            guard let body = self.sessionManagerMock.extractionFeedbackBody else {
+                XCTFail("extractionFeedbackBody is nil")
+                expect.fulfill()
+                return
+            }
+
+            let bodyPayload: FeedbackPayload
+            do {
+                bodyPayload = try JSONDecoder().decode(FeedbackPayload.self, from: body)
+            } catch {
+                XCTFail("Failed to parse HTTP body extractions: \(error)")
+                expect.fulfill()
+                return
+            }
+
+            let amountToPayFromHttpBody = bodyPayload.extractions["amountToPay"]?.value ?? ""
+            XCTAssertEqual(amountToPay, amountToPayFromHttpBody, "amount to pay values should match")
+            XCTAssertEqual(amountToPay, amountToPayFromLoadedFeedbackValue, "amount to pay values should match")
+
+            case .failure(let error):
+            XCTFail("submitFeedback failed with error: \(error)")
+            }
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 5)
+}
+
     func testUrlStringForHighestResolutionPreview() {
         let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
         sessionManagerMock.initializeWithV2MockedDocuments()
