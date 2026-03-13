@@ -7,10 +7,8 @@
 //
 
 import XCTest
-import UIKit
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniInternalPaymentSDK
 
 /// Integration tests for Payment Request operations
 final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase {
@@ -18,101 +16,27 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
     // MARK: - Payment Request Tests
 
     func testCreatePaymentRequest() throws {
-        
-        let expectProviders = expectation(description: "fetch providers")
-        let expectRequest = expectation(description: "create payment request")
-
-        var paymentProviderId: String?
-
-        // First fetch a payment provider
-        paymentService.paymentProviders { result in
-            switch result {
-            case .success(let providers):
-                paymentProviderId = providers.first?.id
-            case .failure(let error):
-                XCTFail("Failed to fetch providers: \(error)")
-            }
-            expectProviders.fulfill()
-        }
-
-        wait(for: [expectProviders], timeout: networkTimeout)
-
-        guard let providerId = paymentProviderId else {
-            XCTFail("No payment provider available")
-            return
-        }
-
-        // Create payment request with real provider ID
-        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
-                                            paymentProvider: providerId,
-                                            recipient: "Dr. med. Test",
-                                            iban: "DE89370400440532013000",
-                                            bic: nil,
-                                            amount: "42.50:EUR",
-                                            purpose: "Test Invoice #\(Int.random(in: 1000...9999))") { result in
-            switch result {
-            case .success(let requestId):
-                XCTAssertFalse(requestId.isEmpty)
-                self.createdPaymentRequestIds.append(requestId)  // Track for cleanup
-            case .failure(let error):
-                XCTFail("Failed to create payment request: \(error)")
-            }
-            expectRequest.fulfill()
-        }
-
-        wait(for: [expectRequest], timeout: networkTimeout)
+        let providerId = try fetchFirstProviderId()
+        let requestId = try createAndTrackPaymentRequest(recipient: "Dr. med. Test",
+                                                         amount: "42.50:EUR",
+                                                         purpose: "Test Invoice #\(Int.random(in: 1000...9999))",
+                                                         providerId: providerId)
+        XCTAssertFalse(requestId.isEmpty)
     }
 
     func testGetPaymentRequest() throws {
-        
-        let expectProviders = expectation(description: "fetch providers")
-        let expectCreate = expectation(description: "create payment request")
-        let expectGet = expectation(description: "get payment request")
-
-        var paymentProviderId: String?
-        var requestId: String?
         let testRecipient = "Dr. med. GetTest"
         let testAmount = "99.99:EUR"
         let testIban = "DE89370400440532013000"
 
-        // 1. Fetch payment provider
-        paymentService.paymentProviders { result in
-            if case .success(let providers) = result {
-                paymentProviderId = providers.first?.id
-            }
-            expectProviders.fulfill()
-        }
+        let providerId = try fetchFirstProviderId()
+        let id = try createAndTrackPaymentRequest(recipient: testRecipient,
+                                                   iban: testIban,
+                                                   amount: testAmount,
+                                                   purpose: "Test Get Payment Request",
+                                                   providerId: providerId)
 
-        wait(for: [expectProviders], timeout: networkTimeout)
-
-        guard let providerId = paymentProviderId else {
-            XCTFail("No payment provider available")
-            return
-        }
-
-        // 2. Create payment request
-        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
-                                            paymentProvider: providerId,
-                                            recipient: testRecipient,
-                                            iban: testIban,
-                                            bic: nil,
-                                            amount: testAmount,
-                                            purpose: "Test Get Payment Request") { result in
-            if case .success(let id) = result {
-                requestId = id
-                self.createdPaymentRequestIds.append(id)  // Track for cleanup
-            }
-            expectCreate.fulfill()
-        }
-
-        wait(for: [expectCreate], timeout: networkTimeout)
-
-        guard let id = requestId else {
-            XCTFail("Payment request not created")
-            return
-        }
-
-        // 3. Get payment request by ID and verify content
+        let expect = expectation(description: "get payment request")
         paymentService.paymentRequest(id: id) { result in
             switch result {
             case .success(let request):
@@ -122,59 +46,19 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             case .failure(let error):
                 XCTFail("Failed to get payment request: \(error)")
             }
-            expectGet.fulfill()
+            expect.fulfill()
         }
-
-        wait(for: [expectGet], timeout: networkTimeout)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     func testPaymentRequestLifecycle() throws {
-        
-        let expectProviders = expectation(description: "1. fetch providers")
-        let expectCreate = expectation(description: "2. create payment request")
-        let expectGet = expectation(description: "3. get payment request")
-        let expectDelete = expectation(description: "4. delete payment request")
+        let providerId = try fetchFirstProviderId()
+        let id = try createAndTrackPaymentRequest(recipient: "Dr. med. Lifecycle",
+                                                   amount: "123.45:EUR",
+                                                   purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))",
+                                                   providerId: providerId)
 
-        var paymentProviderId: String?
-        var requestId: String?
-
-        // Step 1: Fetch payment provider
-        paymentService.paymentProviders { result in
-            if case .success(let providers) = result {
-                paymentProviderId = providers.first?.id
-            }
-            expectProviders.fulfill()
-        }
-
-        wait(for: [expectProviders], timeout: networkTimeout)
-
-        guard let providerId = paymentProviderId else {
-            XCTFail("No payment provider available")
-            return
-        }
-
-        // Step 2: Create payment request
-        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
-                                            paymentProvider: providerId,
-                                            recipient: "Dr. med. Lifecycle",
-                                            iban: "DE89370400440532013000",
-                                            bic: nil,
-                                            amount: "123.45:EUR",
-                                            purpose: "Lifecycle Test #\(Int.random(in: 1000...9999))") { result in
-            if case .success(let id) = result {
-                requestId = id
-            }
-            expectCreate.fulfill()
-        }
-
-        wait(for: [expectCreate], timeout: networkTimeout)
-
-        guard let id = requestId else {
-            XCTFail("Payment request not created")
-            return
-        }
-
-        // Step 3: Verify it exists
+        let expectGet = expectation(description: "get payment request")
         paymentService.paymentRequest(id: id) { result in
             switch result {
             case .success(let request):
@@ -185,10 +69,9 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             }
             expectGet.fulfill()
         }
-
         wait(for: [expectGet], timeout: networkTimeout)
 
-        // Step 4: Delete it
+        let expectDelete = expectation(description: "delete payment request")
         giniHealth.deletePaymentRequest(id: id) { result in
             switch result {
             case .success:
@@ -198,7 +81,47 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
             }
             expectDelete.fulfill()
         }
-
         wait(for: [expectDelete], timeout: networkTimeout)
+    }
+
+    // MARK: - Helpers
+
+    private func fetchFirstProviderId() throws -> String {
+        var providerId: String?
+        let expect = expectation(description: "fetch providers")
+        paymentService.paymentProviders { result in
+            if case .success(let providers) = result {
+                providerId = providers.first?.id
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: networkTimeout)
+        return try XCTUnwrap(providerId, "No payment provider available")
+    }
+
+    /// Creates a payment request and registers its ID for automatic cleanup in tearDown.
+    private func createAndTrackPaymentRequest(recipient: String,
+                                              iban: String = "DE89370400440532013000",
+                                              amount: String,
+                                              purpose: String,
+                                              providerId: String) throws -> String {
+        var requestId: String?
+        let expect = expectation(description: "create payment request")
+        paymentService.createPaymentRequest(sourceDocumentLocation: nil,
+                                            paymentProvider: providerId,
+                                            recipient: recipient,
+                                            iban: iban,
+                                            bic: nil,
+                                            amount: amount,
+                                            purpose: purpose) { result in
+            if case .success(let id) = result {
+                requestId = id
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: networkTimeout)
+        let id = try XCTUnwrap(requestId, "Payment request not created")
+        createdPaymentRequestIds.append(id)
+        return id
     }
 }
