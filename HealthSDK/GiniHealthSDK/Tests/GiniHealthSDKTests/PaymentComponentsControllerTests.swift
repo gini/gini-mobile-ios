@@ -16,14 +16,18 @@ final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealth: GiniHealth!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     override func setUp() {
         super.setUp()
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService, clientConfigurationService: nil)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock,
+                                                     apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock,
+                                            apiVersion: versionAPI)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService,
+                                      paymentService: paymentService,
+                                      clientConfigurationService: nil)
         giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealth: giniHealth)
     }
@@ -68,7 +72,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
 
     func testCheckIfDocumentIsPayable_Failure() {
-        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.decorator(.noResponse)))
+        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse)))
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
         mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in
@@ -128,7 +132,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil, previousPaymentComponentScreenType: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil,
+                                                                   previousPaymentComponentScreenType: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

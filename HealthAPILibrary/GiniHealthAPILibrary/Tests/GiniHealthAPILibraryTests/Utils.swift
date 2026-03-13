@@ -1,8 +1,7 @@
 //
 //  Utils.swift
-//  GiniExampleTests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
@@ -10,33 +9,40 @@ import UIKit
 @testable import GiniHealthAPILibrary
 
 func loadFile(withName name: String, ofType type: String) -> Data {
-    let fileURLPath: String? = Bundle.module
-        .path(forResource: name, ofType: type)
-    let data = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-
-    return data!
+    
+    guard let fileURLPath = Bundle.module.path(forResource: name, ofType: type),
+          let data = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath)) else {
+        fatalError("Could not load \(name).\(type) in tests")
+    }
+    return data
 }
 
 func load<T: Decodable>(fromFile named: String, type: String) -> T {
     let jsonData = loadFile(withName: named, ofType: type)
-
-    return (try? JSONDecoder().decode(T.self, from: jsonData))!
+    do {
+        let decoded = try JSONDecoder().decode(T.self, from: jsonData)
+        return decoded
+    } catch {
+        fatalError("Could not decode \(named).\(type) in tests: \(error)")
+    }
 }
 
 func loadProvidersResponse() -> [PaymentProviderResponse] {
-    let fileURLPath: String? = Bundle.module
-        .path(forResource: "providers", ofType: "json")
-    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-
-    return (try? JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!))!
+    guard let fileURLPath = Bundle.module.path(forResource: "providers", ofType: "json"),
+          let jsonData = try? Data(contentsOf: URL(fileURLWithPath: fileURLPath)),
+          let providerResponse = try? JSONDecoder().decode(PaymentProviderResponse.self, from: jsonData) else {
+        fatalError("Could not load providers.json in tests")
+    }
+    return [providerResponse]
 }
 
 func loadPaymentRequests() -> PaymentRequests {
-    let fileURLPath: String? = Bundle.module
-        .path(forResource: "paymentRequests", ofType: "json")
-    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-
-    return (try? JSONDecoder().decode(PaymentRequests.self, from: jsonData!))!
+    guard let fileURLPath = Bundle.module.path(forResource: "paymentRequests", ofType: "json"),
+          let jsonData = try? Data(contentsOf: URL(fileURLWithPath: fileURLPath)),
+          let provider = try? JSONDecoder().decode(PaymentRequests.self, from: jsonData) else {
+        fatalError("Could not load paymentRequests.json in tests")
+    }
+    return provider
 }
 
 func loadProvider() -> PaymentProvider {
@@ -71,19 +77,17 @@ func loadProviders() -> PaymentProviders {
                                 in: Bundle.module,
                                 compatibleWith: nil)?.pngData() ?? Data()
 
-        let provider = PaymentProvider(
-            id: providerResponse.id,
-            name: providerResponse.name,
-            appSchemeIOS: providerResponse.appSchemeIOS,
-            minAppVersion: providerResponse.minAppVersion,
-            colors: providerResponse.colors,
-            iconData: imageData,
-            appStoreUrlIOS: providerResponse.appStoreUrlIOS,
-            universalLinkIOS: providerResponse.universalLinkIOS,
-            index: providerResponse.index,
-            gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
-            openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms
-        )
+        let provider = PaymentProvider(id: providerResponse.id,
+                                       name: providerResponse.name,
+                                       appSchemeIOS: providerResponse.appSchemeIOS,
+                                       minAppVersion: providerResponse.minAppVersion,
+                                       colors: providerResponse.colors,
+                                       iconData: imageData,
+                                       appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                       universalLinkIOS: providerResponse.universalLinkIOS,
+                                       index: providerResponse.index,
+                                       gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
+                                       openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
 
         providers.append(provider)
     }

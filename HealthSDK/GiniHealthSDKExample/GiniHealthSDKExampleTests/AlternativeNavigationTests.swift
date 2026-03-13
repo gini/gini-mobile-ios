@@ -9,6 +9,7 @@ import UIKit
 import GiniUtilites
 @testable import GiniHealthSDK
 @testable import GiniInternalPaymentSDK
+@testable import GiniHealthSDKExample
 
 @MainActor
 struct AlternativeNavigationTests {
@@ -19,15 +20,18 @@ struct AlternativeNavigationTests {
     private var homeNavigationController: MockNavigationController
 
     init() {
-        giniHelper = GiniSetupHelper()
-        giniHelper.setup()
+        let helper = GiniSetupHelper()
+        helper.setup()
+        self.giniHelper = helper
+        
         giniHealthDelegate = MockGiniHealthDelegate()
         homeViewController = MockViewController()
         homeNavigationController = MockNavigationController(rootViewController: homeViewController)
-        giniHelper.giniHealth.delegate = giniHealthDelegate
+        helper.giniHealth.delegate = giniHealthDelegate
     }
     
     @Test func presentPaymentComponent() {
+        
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
                                                paymentInfo: nil,
                                                navigationController: homeNavigationController,
@@ -38,6 +42,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func presentPaymentReviewComponent() {
+        
         giniHelper.giniHealth.paymentComponentsController.selectedPaymentProvider = giniPaymentProvider()
         
         giniHelper.giniHealth.startPaymentFlow(documentId: "test",
@@ -50,6 +55,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func presentPaymentComponentInANewNavigation() {
+        
         let navigationController = MockNavigationController()
         
         homeViewController.present(navigationController, animated: true)
@@ -67,6 +73,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func presentPaymentReviewComponentInANewNavigation() {
+        
         let navigationController = MockNavigationController()
         
         homeViewController.present(navigationController, animated: true)
@@ -86,6 +93,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func dismissSDKPaymentComponent() {
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -103,6 +111,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func dismissSDKPaymentReviewComponent() {
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -122,6 +131,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func dismissSDKPaymentReviewComponentWithDocument() {
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -141,6 +151,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func dismissSDKPaymentComponentNavigationNotEmpty() {
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -161,6 +172,7 @@ struct AlternativeNavigationTests {
     }
     
     @Test func dismissSDKAfterAlertControllerPresentation() {
+        
         let navigationController = MockNavigationController()
         navigationController.giniHealthDelegate = giniHealthDelegate
         
@@ -190,8 +202,7 @@ struct AlternativeNavigationTests {
                         name: "test",
                         appSchemeIOS: "",
                         minAppVersion: nil,
-                        colors: ProviderColors(background: "",
-                                               text: ""),
+                        colors: ProviderColors(background: "", text: ""),
                         iconData: Data(),
                         appStoreUrlIOS: nil,
                         universalLinkIOS: "",
