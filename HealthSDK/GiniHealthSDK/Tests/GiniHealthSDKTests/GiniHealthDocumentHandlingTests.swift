@@ -52,26 +52,23 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
 
         // Then
         switch result {
-            case .success(let document):
-                XCTAssertEqual(document, expectedDocument)
-            case .failure(let error):
-                XCTFail("Expected success but received error: \(error)")
+        case .success(let document):
+            XCTAssertEqual(document, expectedDocument)
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
     }
 
     func testPollDocument_returnsError_whenDocumentMissing() throws {
         let result = try XCTUnwrap(waitForResult {
-            giniHealth.pollDocument(
-                docId: MockSessionManager.missingDocumentID,
-                completion: $0
-            )
+            giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID,
+                                    completion: $0)
         })
-
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error)
         }
     }
 
@@ -82,25 +79,22 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         let container: GiniHealthSDK.ExtractionsContainer =
         try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "extractionsWithPayment"))
 
-        let expectedExtractions =
-        ExtractionResult(extractionsContainer: container)
+        let expectedExtractions = ExtractionResult(extractionsContainer: container)
             .payment?
             .first ?? []
 
         // When
         let result = try XCTUnwrap(waitForResult {
-            giniHealth.setDocumentForReview(
-                documentId: MockSessionManager.extractionsWithPaymentDocumentID,
-                completion: $0
-            )
+            giniHealth.setDocumentForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                            completion: $0)
         })
 
         // Then
         switch result {
-            case .success(let extractions):
-                XCTAssertEqual(extractions.count, expectedExtractions.count)
-            case .failure(let error):
-                XCTFail("Expected success but received error: \(error)")
+        case .success(let extractions):
+            XCTAssertEqual(extractions.count, expectedExtractions.count)
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
     }
 
@@ -122,45 +116,36 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         let expectedDocument =
         try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
 
-        let expectedData = DataForReview(
-            document: expectedDocument,
-            extractions: expectedExtractions
-        )
+        let expectedData = DataForReview(document: expectedDocument,
+                                         extractions: expectedExtractions)
 
         // When
         let result = try XCTUnwrap(waitForResult {
-            giniHealth.fetchDataForReview(
-                documentId: MockSessionManager.extractionsWithPaymentDocumentID,
-                completion: $0
-            )
+            giniHealth.fetchDataForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                          completion: $0)
         })
 
         // Then
         switch result {
-            case .success(let data):
-                XCTAssertEqual(data.document, expectedData.document)
-                XCTAssertEqual(
-                    data.extractions.count,
-                    expectedData.extractions.count
-                )
-            case .failure(let error):
-                XCTFail("Expected success but received error: \(error)")
+        case .success(let data):
+            XCTAssertEqual(data.document, expectedData.document)
+            XCTAssertEqual(data.extractions.count,expectedData.extractions.count)
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
     }
 
     func testFetchDataForReview_returnsError_whenDocumentMissing() throws {
         let result = try XCTUnwrap(waitForResult {
-            giniHealth.fetchDataForReview(
-                documentId: MockSessionManager.missingDocumentID,
-                completion: $0
-            )
+            giniHealth.fetchDataForReview(documentId: MockSessionManager.missingDocumentID,
+                                          completion: $0)
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error)
         }
     }
 
@@ -205,10 +190,10 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success(let message):
-                XCTAssertEqual(message, "")
-            case .failure(let error):
-                XCTFail("Expected success but received error: \(error)")
+        case .success(let message):
+            XCTAssertEqual(message, "")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
     }
 
@@ -220,11 +205,11 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error.items)
-                XCTAssertFalse(error.items?.isEmpty ?? true)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error.items)
+            XCTAssertFalse(error.items?.isEmpty ?? true)
         }
     }
 
@@ -236,12 +221,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error.items)
-                let errorObject = error.items?[0].object
-                XCTAssertEqual(errorObject?.count, notFoundIds.count)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error.items)
+            let errorObject = error.items?[0].object
+            XCTAssertEqual(errorObject?.count, notFoundIds.count)
         }
     }
 
@@ -253,12 +238,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error.items)
-                let errorObject = error.items?[0].object
-                XCTAssertEqual(errorObject?.count, compositeMissingIds.count)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error.items)
+            let errorObject = error.items?[0].object
+            XCTAssertEqual(errorObject?.count, compositeMissingIds.count)
         }
     }
 
@@ -270,12 +255,12 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure but received success")
-            case .failure(let error):
-                XCTAssertNotNil(error.items)
-                let errorObject = error.items?[0].object
-                XCTAssertEqual(errorObject?.count, mixedIds.count)
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error.items)
+            let errorObject = error.items?[0].object
+            XCTAssertEqual(errorObject?.count, mixedIds.count)
         }
     }
 
@@ -285,10 +270,10 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
         })
 
         switch result {
-            case .success:
-                XCTFail("Expected failure when empty document IDs provided")
-            case .failure(let error):
-                XCTAssertNotNil(error)
+        case .success:
+            XCTFail("Expected failure when empty document IDs provided")
+        case .failure(let error):
+            XCTAssertNotNil(error)
         }
     }
 
@@ -324,10 +309,7 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
     /// - SeeAlso: `XCTestCase.expectation(description:)`, `XCTestCase.waitForExpectations(timeout:handler:)`
     /// - Important: Always ensure that the asynchronous operation being tested calls the provided completion handler, otherwise the test will timeout and return nil.
     @discardableResult
-    private func waitForResult<T, E: Error>(
-        _ action: (@escaping (Result<T, E>) -> Void) -> Void
-    ) -> Result<T, E>? {
-
+    private func waitForResult<T, E: Error>(_ action: (@escaping (Result<T, E>) -> Void) -> Void) -> Result<T, E>? {
         let expectation = expectation(description: "Awaiting async result")
         var capturedResult: Result<T, E>?
 
