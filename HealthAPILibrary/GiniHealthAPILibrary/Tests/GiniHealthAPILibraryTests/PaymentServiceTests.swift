@@ -1,5 +1,5 @@
 //
-//  PaymentTests.swift
+//  PaymentServiceTests.swift
 //  GiniHealthAPILibraryTests
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
