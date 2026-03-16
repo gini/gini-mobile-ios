@@ -4,37 +4,9 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-final class GiniHealthDocumentHandlingTests: XCTestCase {
+final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
-    // MARK: - Properties
-
-    var giniHealthAPI: GiniHealthAPI!
-    var giniHealth: GiniHealth!
-    private let versionAPI = 5
-    private let timeout: TimeInterval = 2
-
-    // MARK: - Setup / Teardown
-
-    override func setUp() {
-        let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock,
-                                                     apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock,
-                                            apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock,
-                                                                    apiVersion: versionAPI)
-        GiniHealthConfiguration.shared.clientConfiguration = nil
-        giniHealthAPI = GiniHealthAPI(documentService: documentService,
-                                      paymentService: paymentService,
-                                      clientConfigurationService: clientConfigurationService)
-        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
-    }
-
-    override func tearDown() {
-        giniHealthAPI = nil
-        giniHealth = nil
-        super.tearDown()
-    }
+    // MARK: - Setup / Teardown is inherited from GiniHealthTestCase
 
     // MARK: - Poll Document
 
@@ -276,51 +248,6 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
             XCTAssertNotNil(error)
         }
     }
-
-    /// Waits synchronously for an asynchronous operation to complete and returns its Result.
-    ///
-    /// This helper is intended for use in unit tests to bridge callback-based APIs into a
-    /// synchronous flow. It creates an XCTest expectation, invokes the provided `action` with
-    /// a completion handler, and blocks the test until the completion is called or the test's
-    /// timeout is reached. The captured `Result` is then returned to the caller.
-    ///
-    /// - Note:
-    ///   - This method should only be used from within XCTest cases, as it relies on
-    ///     XCTest's expectation mechanism.
-    ///   - The enclosing test case's `timeout` is used to wait for the expectation; if the
-    ///     expectation is not fulfilled within that time, the test will fail gracefully by
-    ///     returning `nil`. Use `XCTUnwrap` at call sites to ensure the result exists.
-    ///
-    /// - Parameter action: A closure that starts the asynchronous work. It receives a completion
-    ///   closure to be called with a `Result<T, E>` when the work finishes.
-    ///   Example:
-    ///   ```swift
-    ///   let result = try XCTUnwrap(waitForResult { completion in
-    ///       api.doSomething { outcome in
-    ///           completion(outcome)
-    ///       }
-    ///   })
-    ///   ```
-    ///
-    /// - Returns: The `Result<T, E>` produced by the asynchronous operation, or `nil` if the
-    ///   expectation times out. On success, it contains the expected value of type `T`; on
-    ///   failure, it contains an error of type `E`.
-    ///
-    /// - SeeAlso: `XCTestCase.expectation(description:)`, `XCTestCase.waitForExpectations(timeout:handler:)`
-    /// - Important: Always ensure that the asynchronous operation being tested calls the provided completion handler, otherwise the test will timeout and return nil.
-    @discardableResult
-    private func waitForResult<T, E: Error>(_ action: (@escaping (Result<T, E>) -> Void) -> Void) -> Result<T, E>? {
-        let expectation = expectation(description: "Awaiting async result")
-        var capturedResult: Result<T, E>?
-
-        action {
-            capturedResult = $0
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: timeout)
-
-        return capturedResult
-    }
 }
+
 
