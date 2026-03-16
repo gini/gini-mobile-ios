@@ -6,7 +6,7 @@ name: Centralized Configuration
 # Usage in other workflows:
 #   jobs:
 #     get-config:
-#       uses: ./.github/workflows/_config.yml
+#       uses: ./.github/workflows/shared-config.yml
 #     
 #     your-job:
 #       needs: get-config
