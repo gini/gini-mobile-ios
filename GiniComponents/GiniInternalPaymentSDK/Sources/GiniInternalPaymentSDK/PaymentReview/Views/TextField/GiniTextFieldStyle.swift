@@ -35,6 +35,10 @@ struct GiniTextFieldStyle: TextFieldStyle {
         }
     }
     
+    private var shouldAnimate: Bool {
+        !UIAccessibility.isReduceMotionEnabled
+    }
+    
     init(lockedIcon: Image? = nil,
          title: String,
          state: GiniTextFieldState = .normal,
@@ -52,6 +56,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
+        let fieldAnimation = shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil
         VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
             VStack(spacing: Constants.titleSpacing) {
                 titleView
@@ -77,8 +82,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 errorMessageView(errorMessage)
             }
         }
-        .animation(.easeInOut(duration: Constants.animationDuration), value: state)
-        .animation(.easeInOut(duration: Constants.animationDuration), value: errorMessage)
+        .animation(fieldAnimation, value: state)
+        .animation(fieldAnimation, value: errorMessage)
     }
     
     // MARK: Private views
@@ -92,8 +97,10 @@ struct GiniTextFieldStyle: TextFieldStyle {
             if let lockedIcon {
                 lockedIcon
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: Constants.lockedIconSize.width,
                            height: Constants.lockedIconSize.height)
+                    .accessibilityHidden(true)
             }
             
             Spacer()
@@ -119,7 +126,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
         static let textFieldHeight = 56.0
         static let titleSpacing = 0.0
         static let errorMessageHorizontalPadding = 8.0
-        static let lockedIconSize = CGSize(width: 16, height: 16)
+        static let lockedIconSize = CGSize(width: 12, height: 12)
         static let animationDuration = 0.25
     }
 }

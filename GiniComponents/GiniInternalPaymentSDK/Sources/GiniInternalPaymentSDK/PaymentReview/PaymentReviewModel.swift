@@ -14,6 +14,8 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
+    func dismissPaymentReview()
+    func presentErrorAlert(message: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
@@ -225,36 +227,10 @@ public class PaymentReviewModel {
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
-
-    func fetchImages() {
-        self.isImagesLoading = true
-        let dispatchGroup = DispatchGroup()
-        let dispatchQueue = DispatchQueue(label: "imagesQueue")
-        let dispatchSemaphore = DispatchSemaphore(value: 0)
-        guard let document, let documentId else { return }
-        var vms = [PageCollectionCellViewModel]()
-        dispatchQueue.async {
-            for page in 1 ... document.pageCount {
-                dispatchGroup.enter()
-
-                self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
-                    if let cellModel = self?.processPreview(result) {
-                        vms.append(cellModel)
-                    }
-                    dispatchSemaphore.signal()
-                    dispatchGroup.leave()
-                })
-                dispatchSemaphore.wait()
-            }
-
-            dispatchGroup.notify(queue: dispatchQueue) {
-                DispatchQueue.main.async {
-                    self.isImagesLoading = false
-                    self.cellViewModels.append(contentsOf: vms)
-                    self.onPreviewImagesFetched?()
-                }
-            }
-        }
+    
+    func closePaymentReview() {
+        delegate?.trackOnPaymentReviewCloseButtonClicked()
+        viewModelDelegate?.dismissPaymentReview()
     }
     
     /**
@@ -320,20 +296,6 @@ public class PaymentReviewModel {
         guard let image = UIImage(data: data) else { return nil }
         
         return createCellViewModel(previewImage: image)
-    }
-    
-    private func processPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
-        switch result {
-        case let .success(dataImage):
-            if let image = UIImage(data: dataImage) {
-                return createCellViewModel(previewImage: image)
-            }
-        case let .failure(error):
-            if delegate?.shouldHandleErrorInternally(error: error) == true {
-                onErrorHandling?(error)
-            }
-        }
-        return nil
     }
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {

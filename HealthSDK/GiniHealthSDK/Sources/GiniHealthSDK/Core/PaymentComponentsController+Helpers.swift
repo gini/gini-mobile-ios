@@ -268,8 +268,7 @@ extension PaymentComponentsController {
                                            previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            clientConfiguration: configurationProvider.clientConfiguration)
         
-        /// TODO: This will be updated later to have the `PaymentReviewViewController` when the code cleanup is done.
-        let vc = PaymentReviewV2ViewController(viewModel: viewModel,
+        let vc = PaymentReviewViewController(viewModel: viewModel,
                                                selectedPaymentProvider: healthSelectedPaymentProvider)
         
         completion(vc, nil)
