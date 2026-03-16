@@ -172,44 +172,49 @@ final class SessionManagerHandleErrorTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    func testCustomErrorWhenJSONBodyOn4xx() {
-        var resource = APIResource<String>(method: .paymentProviders,
-                                           apiDomain: .default,
-                                           apiVersion: 5,
-                                           httpMethod: .get)
-        resource.authServiceType = .userService(.bearer)
+    func testCustomErrorWhenJSONBodyOnAnyStatusCode() {
+        let jsonStatusCodes = [400, 401, 403, 404, 422, 500]
 
-        guard let json = #"{"message":"x"}"#.data(using: .utf8) else {
-            XCTFail("Failed to create JSON data")
-            return
-        }
+        for statusCode in jsonStatusCodes {
+            var resource = APIResource<String>(method: .paymentProviders,
+                                               apiDomain: .default,
+                                               apiVersion: 5,
+                                               httpMethod: .get)
+            resource.authServiceType = .apiService
 
-        URLProtocolMock.handler = { request in
-            guard let url = request.url ?? URL(string: "https://example.com") else {
-                XCTFail("Invalid URL")
-                fatalError("Invalid URL in test")
+            guard let json = #"{"message":"x"}"#.data(using: .utf8) else {
+                XCTFail("Failed to create JSON data")
+                return
             }
-            guard let response = HTTPURLResponse(url: url,
-                                                 statusCode: 422,
-                                                 httpVersion: nil,
-                                                 headerFields: ["Content-Type": "application/json"]) else {
-                XCTFail("Failed to create HTTPURLResponse")
-                fatalError("Failed to create HTTPURLResponse")
-            }
-            return (response, json)
-        }
 
-        let exp = expectation(description: "Wait for completion")
-        sessionManager.data(resource: resource, cancellationToken: nil) { result in
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                self.assertError(error, is: .customError)
+            URLProtocolMock.handler = { request in
+                guard let url = request.url ?? URL(string: "https://example.com") else {
+                    XCTFail("Invalid URL")
+                    fatalError("Invalid URL in test")
+                }
+                guard let response = HTTPURLResponse(url: url,
+                                                     statusCode: statusCode,
+                                                     httpVersion: nil,
+                                                     headerFields: ["Content-Type": "application/json"]) else {
+                    XCTFail("Failed to create HTTPURLResponse")
+                    fatalError("Failed to create HTTPURLResponse")
+                }
+                return (response, json)
             }
-            exp.fulfill()
+
+            let exp = expectation(description: "Status \(statusCode) + JSON → .customError")
+            sessionManager.data(resource: resource, cancellationToken: nil) { result in
+                switch result {
+                case .success:
+                    XCTFail("Expected failure but got success for status \(statusCode)")
+                case .failure(let error):
+                    self.assertError(error, is: .customError,
+                                     message: "status \(statusCode) with JSON body should be .customError")
+                }
+                exp.fulfill()
+            }
+            wait(for: [exp], timeout: 1.0)
         }
-        wait(for: [exp], timeout: 1.0)
     }
 
     func testFallbackMappingsNonJSONBodies() {

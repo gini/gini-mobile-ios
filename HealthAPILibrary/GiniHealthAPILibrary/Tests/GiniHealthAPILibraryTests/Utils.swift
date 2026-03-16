@@ -30,10 +30,10 @@ func load<T: Decodable>(fromFile named: String, type: String) -> T {
 func loadProvidersResponse() -> [PaymentProviderResponse] {
     guard let fileURLPath = Bundle.module.path(forResource: "providers", ofType: "json"),
           let jsonData = try? Data(contentsOf: URL(fileURLWithPath: fileURLPath)),
-          let providerResponse = try? JSONDecoder().decode(PaymentProviderResponse.self, from: jsonData) else {
+          let providers = try? JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData) else {
         fatalError("Could not load providers.json in tests")
     }
-    return [providerResponse]
+    return providers
 }
 
 func loadPaymentRequests() -> PaymentRequests {

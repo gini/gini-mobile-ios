@@ -319,27 +319,28 @@ private extension SessionManager {
                 return
             }
 
-            // 401 invalid_client -> unauthorized
-            if statusCode == 401, let responseData = data,
-               let dict = try? JSONDecoder().decode([String: String].self, from: responseData),
-               dict["error"] == "invalid_client" {
+            // All 401s from the user service -> unauthorized (covers invalid_client and any other OAuth 401)
+            if statusCode == 401 {
                 completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
         }
 
-        // If body is valid JSON, surface it as a custom error for any 4xx-5xx code
+        // Primary rule: any response with a valid JSON body surfaces as .customError so
+        // call-sites can inspect structured error fields (items, requestId, etc.).
         if let responseData = data,
            (try? JSONSerialization.jsonObject(with: responseData, options: [])) != nil {
             completion(.failure(.customError(response: response, data: responseData)))
             return
         }
 
-        // Fallback to status-code based mapping when there's no JSON payload
+        // Fallback: no JSON body — use the semantic error type for the status code.
         switch statusCode {
         case 400:
             completion(.failure(.badRequest(response: response, data: data)))
-        case 401, 403:
+        case 401:
+            completion(.failure(.unauthorized(response: response, data: data)))
+        case 403:
             completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
             completion(.failure(.notFound(response: response, data: data)))
