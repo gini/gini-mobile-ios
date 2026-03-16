@@ -8,35 +8,19 @@
 @testable import GiniHealthAPILibrary
 import XCTest
 import UIKit
-final class DocumentServicesTests: XCTestCase {
-    var sessionManagerMock: SessionManagerMock!
-    var defaultDocumentService: DefaultDocumentService!
-    let versionAPI = 5
-
-    override func setUp() {
-        sessionManagerMock = SessionManagerMock()
-        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-    }
+final class DocumentServicesTests: DocumentServiceTestBase {
 
     func testPartialDocumentCreation() {
-        let expect = expectation(description: "it returns a partial document")
-
-        defaultDocumentService.createDocument(fileName: "",
-                                              docType: nil,
-                                              type: .partial(Data(count: 1)),
-                                              metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.partialDocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it returns a partial document") { done in
+            self.defaultDocumentService.createDocument(fileName: "",
+                                                       docType: nil,
+                                                       type: .partial(Data(count: 1)),
+                                                       metadata: nil) { result in done(result) }
+        } validate: { document in
+            XCTAssertEqual(document.id,
+                           SessionManagerMock.partialDocumentId,
+                           "document ids should match")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
     func testPartialDocumentCreationWithImageCompression() throws {
@@ -61,91 +45,45 @@ final class DocumentServicesTests: XCTestCase {
     }
 
     func testCompositeDocumentCreation() {
-        let expect = expectation(description: "it returns a composite document")
-
-        defaultDocumentService.createDocument(fileName: "",
-                                              docType: nil,
-                                              type: .composite(CompositeDocumentInfo(partialDocuments: [])),
-                                              metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.compositeDocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it returns a composite document") { done in
+            self.defaultDocumentService.createDocument(fileName: "",
+                                                       docType: nil,
+                                                       type: .composite(CompositeDocumentInfo(partialDocuments: [])),
+                                                       metadata: nil) { result in done(result) }
+        } validate: { document in
+            XCTAssertEqual(document.id,
+                           SessionManagerMock.compositeDocumentId,
+                           "document ids should match")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
     func testPartialDocumentDeletion() {
-        let expect = expectation(description: "it deletes the partial document")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadDocument(fileName: "partialDocument", type: "json")
+        let document: Document = load(fromFile: "partialDocument", type: "json")
 
-        defaultDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it deletes the partial document") { done in
+            self.defaultDocumentService.delete(document) { result in done(result) }
+        } validate: { _ in
+            XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
     func testCompositeDocumentDeletion() {
-        let expect = expectation(description: "it deletes the composite document")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
+        let document: Document = load(fromFile: "compositeDocument", type: "json")
 
-        defaultDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
-                               "there should be one aprtial document left")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it deletes the composite document") { done in
+            self.defaultDocumentService.delete(document) { result in done(result) }
+        } validate: { _ in
+            XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
+                           "there should be one aprtial document left")
         }
-
-        wait(for: [expect], timeout: 1)
-    }
-
-    func loadDocument(fileName: String, type: String) -> Document {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-        guard let document = try? JSONDecoder().decode(Document.self, from: jsonData) else {
-            fatalError("Unable to decode document from JSON data")
-        }
-        return document
-    }
-
-    func loadExtractionResults(fileName: String, type: String) -> ExtractionsContainer {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-        guard let extractionsContainer = try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData) else {
-            fatalError("Unable to decode extraction results from JSON data")
-        }
-        return extractionsContainer
-    }
-
-    func loadPages(fileName: String, type: String) -> [Document.Page] {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-        guard let pages = try? JSONDecoder().decode([Document.Page].self, from: jsonData) else {
-            fatalError("Unable to decode pages from JSON data")
-        }
-        return pages
     }
 
     func testSubmitFeedback(){
         let expect = expectation(description: "feedback will be successfully sent")
-        let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
-        let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
+        let document: Document = load(fromFile: "compositeDocument", type: "json")
+        let extractionResult: ExtractionsContainer = load(fromFile: "feedbackExtractions", type: "json")
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
         struct ExtractionValue: Decodable {
@@ -212,7 +150,7 @@ final class DocumentServicesTests: XCTestCase {
     func testUrlStringForHighestResolutionPreview() {
         let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let pages: [Document.Page] = loadPages(fileName: "pages", type: "json")
+        let pages: [Document.Page] = load(fromFile: "pages", type: "json")
         if let page = pages.first {
             let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
             print(urlStringForHighestResolutionPreview)

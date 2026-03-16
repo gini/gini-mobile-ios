@@ -8,38 +8,15 @@
 import XCTest
 @testable import GiniHealthAPILibrary
 
-class PaymentServiceTests: XCTestCase {
-    var sessionManagerMock: SessionManagerMock!
-    var defaultDocumentService: DefaultDocumentService!
+class PaymentServiceTests: DocumentServiceTestBase {
     var paymentService: PaymentService!
-    let versionAPI = 5
 
     override func setUp() {
-        sessionManagerMock = SessionManagerMock()
-        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock,
-                                                        apiVersion: versionAPI)
-        paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        super.setUp()
+        paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: 5)
     }
 
     // MARK: - Helper
-
-    /// Runs an async payment service call and asserts success, failing explicitly on `.failure`.
-    private func awaitSuccess<T>(description: String,
-                                 timeout: TimeInterval = 1,
-                                 _ action: (@escaping (Result<T, GiniError>) -> Void) -> Void,
-                                 validate: @escaping (T) -> Void) {
-        let exp = expectation(description: description)
-        action { result in
-            switch result {
-            case .success(let value):
-                validate(value)
-            case .failure(let error):
-                XCTFail("Unexpected failure: \(error)")
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: timeout)
-    }
 
     func testPaymentRequestCreation() {
         awaitSuccess(description: "returns payment request id") {
@@ -67,7 +44,7 @@ class PaymentServiceTests: XCTestCase {
     func testPaymentProviders() {
         let expect = expectation(description: "returns array of payment providers")
         sessionManagerMock.initializeWithPaymentProvidersResponse()
-        let paymentProvidersResponse = loadProvidersResponse()
+        let paymentProvidersResponse: [PaymentProviderResponse] = load(fromFile: "providers", type: "json")
         paymentService.paymentProviders { result in
             switch result {
             case .success(let providersResponse):
@@ -75,8 +52,8 @@ class PaymentServiceTests: XCTestCase {
                                paymentProvidersResponse.count,
                                "providers count should match")
                 expect.fulfill()
-            case .failure:
-                break
+            case .failure(let error):
+                XCTFail("Unexpected failure: \(error)")
             }
         }
         wait(for: [expect], timeout: 10)
@@ -101,7 +78,7 @@ class PaymentServiceTests: XCTestCase {
     }
 
     func testPaymentProvider() {
-        let paymentProvider = loadProviderResponse()
+        let paymentProvider: PaymentProviderResponse = load(fromFile: "provider", type: "json")
         awaitSuccess(description: "returns a payment provider via id") {
             self.paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId, completion: $0)
         } validate: { provider in
