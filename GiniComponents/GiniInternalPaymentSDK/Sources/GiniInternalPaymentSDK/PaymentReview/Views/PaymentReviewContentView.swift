@@ -33,9 +33,6 @@ public struct PaymentReviewContentView: View {
                 portraitLayout(geometry: geometry)
             }
         }
-        .overlay(alignment: .topTrailing) {
-            closeButton
-        }
         .overlay {
             loadingOverlay
         }
@@ -60,7 +57,7 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            
+            viewModel.didTapClose()
         } content: {
             viewModel.paymentReviewPaymentInformationView(
                 contentHeight: $bottomSheetHeight,
@@ -68,7 +65,8 @@ public struct PaymentReviewContentView: View {
             )
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
-                collapsedHeight: collapsedHeight
+                collapsedHeight: collapsedHeight,
+                allowsDismiss: viewModel.isBottomSheetMode
             ))
         }
     }
@@ -98,22 +96,6 @@ public struct PaymentReviewContentView: View {
     }
     
     // MARK: - Private Views
-    
-    @ViewBuilder
-    private var closeButton: some View {
-        if viewModel.showCloseButton {
-            Button(action: {
-                viewModel.didTapClose()
-            }) {
-                Image(uiImage: viewModel.closeButtonImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: Constants.closeButtonSize,
-                           height: Constants.closeButtonSize)
-            }
-            .accessibilityLabel(viewModel.closeButtonAccessibilityLabel)
-        }
-    }
     
     @ViewBuilder
     private var loadingOverlay: some View {
@@ -187,7 +169,6 @@ public struct PaymentReviewContentView: View {
         static let documentPreviewStackSpacing: CGFloat = 16.0
         static let totalPaddings: CGFloat = 32.0
         static let pageIndicatorSpace: CGFloat = 30.0
-        static let closeButtonSize: CGFloat = 48.0
         static let loadingOverlayOpacity: CGFloat = 0.4
         static let loadingIndicatorScale: CGFloat = 1.5
     }

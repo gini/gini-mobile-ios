@@ -95,6 +95,9 @@ struct PaymentReviewPaymentInformationView: View {
         }
         .onAppear {
             populateFields()
+            // Notify VoiceOver that a new screen (the sheet) appeared,
+            // so it moves focus into the sheet content.
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
         }
         .getHeight(for: $contentHeight)
     }

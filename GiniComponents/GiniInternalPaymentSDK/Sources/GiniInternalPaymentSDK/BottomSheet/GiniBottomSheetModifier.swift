@@ -10,6 +10,7 @@ struct GiniBottomSheetModifier: ViewModifier {
     
     private let contentHeight: CGFloat
     private let collapsedHeight: CGFloat
+    private let allowsDismiss: Bool
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
@@ -17,9 +18,12 @@ struct GiniBottomSheetModifier: ViewModifier {
             verticalSizeClass == .compact
         }
     
-    init(contentHeight: CGFloat, collapsedHeight: CGFloat) {
+    init(contentHeight: CGFloat,
+         collapsedHeight: CGFloat,
+         allowsDismiss: Bool = false) {
         self.contentHeight = max(contentHeight, Constants.minimumHeight)
         self.collapsedHeight = collapsedHeight
+        self.allowsDismiss = allowsDismiss
     }
     
     func body(content: Content) -> some View {
@@ -27,15 +31,15 @@ struct GiniBottomSheetModifier: ViewModifier {
             content
                 .presentationDetents(detentsForOrientation())
                 .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(true)
-                .presentationBackgroundInteraction(.enabled(upThrough: .height(contentHeight)))
+                .interactiveDismissDisabled(!allowsDismiss)
+                .presentationBackgroundInteraction(allowsDismiss ? .automatic : .enabled(upThrough: .height(contentHeight)))
                 .presentationCompactAdaptation(.sheet)
                 .presentationContentInteraction(.resizes)
         } else {
             content
                 .presentationDetents(detentsForOrientation())
                 .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(true)
+                .interactiveDismissDisabled(!allowsDismiss)
         }
     }
     

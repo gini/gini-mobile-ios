@@ -41,6 +41,26 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         
         model.viewModelDelegate = self
         view.backgroundColor = .clear
+        
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        guard model.showPaymentReviewCloseButton,
+              model.displayMode == .documentCollection else { return }
+        
+        let closeImage = model.configuration.paymentReviewClose
+        let closeButton = UIBarButtonItem(image: closeImage,
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(closeButtonTapped))
+        
+        closeButton.accessibilityLabel = model.strings.closeButtonAccessibilityLabel
+        navigationItem.rightBarButtonItem = closeButton
+    }
+    
+    @objc private func closeButtonTapped() {
+        model.closePaymentReview()
     }
     
     public override func viewDidDisappear(_ animated: Bool) {

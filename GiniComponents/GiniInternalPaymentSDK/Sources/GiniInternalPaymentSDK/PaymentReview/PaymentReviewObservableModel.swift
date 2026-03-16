@@ -23,16 +23,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     
-    var showCloseButton: Bool {
-        model.showPaymentReviewCloseButton
-    }
-    
-    var closeButtonImage: UIImage {
-        model.configuration.paymentReviewClose
-    }
-    
-    var closeButtonAccessibilityLabel: String {
-        model.strings.closeButtonAccessibilityLabel
+    var isBottomSheetMode: Bool {
+        model.displayMode == .bottomSheet
     }
     
     var invoiceImageAccessibilityLabel: String {
