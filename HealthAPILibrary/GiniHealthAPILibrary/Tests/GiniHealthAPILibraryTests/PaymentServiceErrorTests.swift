@@ -25,44 +25,50 @@ final class PaymentServiceErrorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testCreatePaymentRequest_BadRequest_decodesItemsAndRequestId() {
-        // Given
-        let expect = expectation(description: "create payment request failure")
-        var capturedError: GiniError?
+    // MARK: - Helper
 
-        // When
-        service.createPaymentRequest(sourceDocumentLocation: "",
-                                     paymentProvider: "provider-id",
-                                     recipient: "John Doe",
-                                     iban: "INVALID-IBAN",
-                                     bic: "INVALID-BIC",
-                                     amount: "1.00:EUR",
-                                     purpose: "abc") { result in
+    @discardableResult
+    private func awaitExpectedFailure<T>(
+        description: String,
+        timeout: TimeInterval = 1.0,
+        action: (@escaping (Result<T, GiniError>) -> Void) -> Void
+    ) -> GiniError {
+        let exp = expectation(description: description)
+        var capturedError: GiniError?
+        action { result in
             switch result {
             case .success:
                 XCTFail("Expected failure but got success")
             case .failure(let error):
                 capturedError = error
             }
-            expect.fulfill()
+            exp.fulfill()
         }
-
-        wait(for: [expect], timeout: 1.0)
-
-        // Then
+        wait(for: [exp], timeout: timeout)
         guard let error = capturedError else {
-            return XCTFail("No error captured")
+            XCTFail("No error captured for: \(description)")
+            return .unknown(response: nil, data: nil)
         }
-        XCTAssertEqual(error.statusCode, 400, "Status code should be 400 for bad request")
-        XCTAssertEqual(error.requestId, "7cc7-229b-4b88-dd94-3aad-f072", "Request ID should be decoded from error body")
+        return error
+    }
 
+    func testCreatePaymentRequest_BadRequest_decodesItemsAndRequestId() {
+        let error = awaitExpectedFailure(description: "create payment request failure") { completion in
+            self.service.createPaymentRequest(sourceDocumentLocation: "",
+                                             paymentProvider: "provider-id",
+                                             recipient: "John Doe",
+                                             iban: "INVALID-IBAN",
+                                             bic: "INVALID-BIC",
+                                             amount: "1.00:EUR",
+                                             purpose: "abc",
+                                             completion: completion)
+        }
+        XCTAssertEqual(error.statusCode, 400)
+        XCTAssertEqual(error.requestId, "7cc7-229b-4b88-dd94-3aad-f072")
         let items = error.items ?? []
-        XCTAssertEqual(items.count, 3, "There should be exactly three error items")
-
+        XCTAssertEqual(items.count, 3)
         let codes = Set(items.map { $0.code })
         XCTAssertEqual(codes, Set(["2012", "2002", "2007"]))
-
-        // Optional: verify messages for completeness
         let messages = items.compactMap { $0.message }
         XCTAssertTrue(messages.contains("Provide a valid BIC number"))
         XCTAssertTrue(messages.contains("Value of payment purpose should be at least 4, at most 200 characters long"))
@@ -70,30 +76,11 @@ final class PaymentServiceErrorTests: XCTestCase {
     }
 
     func testDeletePaymentRequest_Forbidden_decodesItemsAndRequestId() {
-        // Given
-        let expect = expectation(description: "delete payment request forbidden")
-        var capturedError: GiniError?
-
-        // When
-        service.deletePaymentRequest(id: "forbidden-id") { result in
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                capturedError = error
-            }
-            expect.fulfill()
+        let error = awaitExpectedFailure(description: "delete payment request forbidden") { completion in
+            self.service.deletePaymentRequest(id: "forbidden-id", completion: completion)
         }
-
-        wait(for: [expect], timeout: 1.0)
-
-        // Then
-        guard let error = capturedError else {
-            return XCTFail("No error captured")
-        }
-        XCTAssertEqual(error.statusCode, 403, "Status code should be 403 for forbidden delete")
+        XCTAssertEqual(error.statusCode, 403)
         XCTAssertEqual(error.requestId, "7cc7-229b-4b88-dd94-3aad-f072")
-
         let items = error.items ?? []
         XCTAssertEqual(items.count, 1)
         XCTAssertEqual(items.first?.code, "2901")
@@ -101,101 +88,36 @@ final class PaymentServiceErrorTests: XCTestCase {
     }
 
     func testDeletePaymentRequest_NotFound_statusCode404() {
-        // Given
-        let expect = expectation(description: "delete payment request not found")
-        var capturedError: GiniError?
-
-        // When
-        service.deletePaymentRequest(id: "missing-id") { result in
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                capturedError = error
-            }
-            expect.fulfill()
+        let error = awaitExpectedFailure(description: "delete payment request not found") { completion in
+            self.service.deletePaymentRequest(id: "missing-id", completion: completion)
         }
-
-        wait(for: [expect], timeout: 1.0)
-
-        // Then
-        guard let error = capturedError else {
-            return XCTFail("No error captured")
-        }
-        XCTAssertEqual(error.statusCode, 404, "Status code should be 404 when payment request does not exist")
+        XCTAssertEqual(error.statusCode, 404)
         XCTAssertEqual(error.message, "Not found")
-        XCTAssertNil(error.items, "Items should be nil when no JSON body is provided")
+        XCTAssertNil(error.items)
     }
     
     func testBatchDeletePaymentRequests_PartialFailure_decodesMultipleErrors() {
-        // Given
-        let expect = expectation(description: "batch delete payment requests partial failure")
-        var capturedError: GiniError?
-        
-        // When
-        service.deletePaymentRequests(["doc1", "doc2", "doc3"]) { result in
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                capturedError = error
-            }
-            expect.fulfill()
+        let error = awaitExpectedFailure(description: "batch delete payment requests partial failure") { completion in
+            self.service.deletePaymentRequests(["doc1", "doc2", "doc3"], completion: completion)
         }
-        
-        wait(for: [expect], timeout: 1.0)
-        
-        // Then
-        guard let error = capturedError else {
-            return XCTFail("No error captured")
-        }
-        XCTAssertEqual(error.statusCode, 400, "Status code should be 400 for batch operation with errors")
-        
+        XCTAssertEqual(error.statusCode, 400)
         let items = error.items ?? []
-        XCTAssertEqual(items.count, 2, "There should be exactly two error items")
-        
-        // Verify error codes
+        XCTAssertEqual(items.count, 2)
         let codes = Set(items.map { $0.code })
         XCTAssertEqual(codes, Set(["2014", "2013"]))
-        
-        // Verify affected objects
-        let notFoundDocs = error.objectsWithCode("2014")
-        XCTAssertEqual(Set(notFoundDocs), Set(["doc2", "doc3"]), "doc2 and doc3 should be not found")
-        
-        let unauthorizedDocs = error.objectsWithCode("2013")
-        XCTAssertEqual(unauthorizedDocs, ["doc1"], "doc1 should be unauthorized")
+        XCTAssertEqual(Set(error.objectsWithCode("2014")), Set(["doc2", "doc3"]))
+        XCTAssertEqual(error.objectsWithCode("2013"), ["doc1"])
     }
     
     func testBatchDeletePaymentRequests_AllForbidden_returns403() {
-        // Given
-        let expect = expectation(description: "batch delete all forbidden")
-        var capturedError: GiniError?
-        
-        // When
-        service.deletePaymentRequests(["forbidden1", "forbidden2"]) { result in
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                capturedError = error
-            }
-            expect.fulfill()
-        }
-        
-        wait(for: [expect], timeout: 1.0)
-        
-        // Then
-        guard let error = capturedError else {
-            return XCTFail("No error captured")
+        let error = awaitExpectedFailure(description: "batch delete all forbidden") { completion in
+            self.service.deletePaymentRequests(["forbidden1", "forbidden2"], completion: completion)
         }
         XCTAssertEqual(error.statusCode, 403)
-        
         let items = error.items ?? []
         XCTAssertEqual(items.count, 1)
         XCTAssertEqual(items.first?.code, "2901")
-        
-        let forbiddenDocs = error.objectsWithCode("2901")
-        XCTAssertEqual(Set(forbiddenDocs), Set(["forbidden1", "forbidden2"]))
+        XCTAssertEqual(Set(error.objectsWithCode("2901")), Set(["forbidden1", "forbidden2"]))
     }
     
     func testBatchDeletePaymentRequests_EmptyList_handledGracefully() {

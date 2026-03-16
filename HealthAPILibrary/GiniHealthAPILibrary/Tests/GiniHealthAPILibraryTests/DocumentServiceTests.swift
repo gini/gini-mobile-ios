@@ -59,7 +59,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
 
     func testPartialDocumentDeletion() {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = load(fromFile: "partialDocument", type: "json")
+        let document: Document = loadJSON(fromFile: "partialDocument", type: "json")
 
         awaitSuccess(description: "it deletes the partial document") { done in
             self.defaultDocumentService.delete(document) { result in done(result) }
@@ -70,7 +70,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
 
     func testCompositeDocumentDeletion() {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = load(fromFile: "compositeDocument", type: "json")
+        let document: Document = loadJSON(fromFile: "compositeDocument", type: "json")
 
         awaitSuccess(description: "it deletes the composite document") { done in
             self.defaultDocumentService.delete(document) { result in done(result) }
@@ -82,8 +82,8 @@ final class DocumentServicesTests: DocumentServiceTestBase {
 
     func testSubmitFeedback(){
         let expect = expectation(description: "feedback will be successfully sent")
-        let document: Document = load(fromFile: "compositeDocument", type: "json")
-        let extractionResult: ExtractionsContainer = load(fromFile: "feedbackExtractions", type: "json")
+        let document: Document = loadJSON(fromFile: "compositeDocument", type: "json")
+        let extractionResult: ExtractionsContainer = loadJSON(fromFile: "feedbackExtractions", type: "json")
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
         struct ExtractionValue: Decodable {
@@ -150,7 +150,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
     func testUrlStringForHighestResolutionPreview() {
         let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let pages: [Document.Page] = load(fromFile: "pages", type: "json")
+        let pages: [Document.Page] = loadJSON(fromFile: "pages", type: "json")
         if let page = pages.first {
             let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
             print(urlStringForHighestResolutionPreview)

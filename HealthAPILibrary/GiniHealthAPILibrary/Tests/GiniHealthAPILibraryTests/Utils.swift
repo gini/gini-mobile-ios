@@ -5,6 +5,7 @@
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
+import Foundation
 @testable import GiniHealthAPILibrary
 
 func loadFile(withName name: String, ofType type: String) -> Data {

@@ -44,7 +44,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
     func testPaymentProviders() {
         let expect = expectation(description: "returns array of payment providers")
         sessionManagerMock.initializeWithPaymentProvidersResponse()
-        let paymentProvidersResponse: [PaymentProviderResponse] = load(fromFile: "providers", type: "json")
+        let paymentProvidersResponse: [PaymentProviderResponse] = loadJSON(fromFile: "providers", type: "json")
         paymentService.paymentProviders { result in
             switch result {
             case .success(let providersResponse):
@@ -78,7 +78,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
     }
 
     func testPaymentProvider() {
-        let paymentProvider: PaymentProviderResponse = load(fromFile: "provider", type: "json")
+        let paymentProvider: PaymentProviderResponse = loadJSON(fromFile: "provider", type: "json")
         awaitSuccess(description: "returns a payment provider via id") {
             self.paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId, completion: $0)
         } validate: { provider in

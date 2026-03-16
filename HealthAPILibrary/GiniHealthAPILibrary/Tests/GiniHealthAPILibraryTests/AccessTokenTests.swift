@@ -9,88 +9,68 @@ import XCTest
 @testable import GiniHealthAPILibrary
 
 final class AccessTokenTests: XCTestCase {
-    
+
+    private var validToken: Token!
+
+    override func setUp() {
+        super.setUp()
+        let data = loadFile(withName: "accessTokenResponse", ofType: "json")
+        validToken = token(from: data)
+        XCTAssertNotNil(validToken, "Failed to load validToken in setUp")
+    }
+
+    override func tearDown() {
+        validToken = nil
+        super.tearDown()
+    }
+
+    private func loadToken(fromFixture name: String) throws -> Token {
+        let data = loadFile(withName: name, ofType: "json")
+        return try XCTUnwrap(token(from: data), "Failed to decode Token from \(name)")
+    }
+
     func testAccessToken() {
-        let jsonResponse = loadFile(withName: "accessTokenResponse", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNotNil(token.accessToken, "Expected a `accessToken`, but found nil.")
-        XCTAssertEqual(token.accessToken, "1eb7ca49-d99f-40cb-b86d-8dd689ca2345")
+        XCTAssertNotNil(validToken.accessToken)
+        XCTAssertEqual(validToken.accessToken, "1eb7ca49-d99f-40cb-b86d-8dd689ca2345")
     }
 
     func testType() {
-        let jsonResponse = loadFile(withName: "accessTokenResponse", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertEqual(token.type, "bearer")
+        XCTAssertEqual(validToken.type, "bearer")
     }
 
-    func testTypeOptional() {
-        let jsonResponse = loadFile(withName: "accessTokenResponseWithoutType", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNil(token.type, "Expected nil, but found \(String(describing: token.type)).")
+    func testTypeOptional() throws {
+        let t = try loadToken(fromFixture: "accessTokenResponseWithoutType")
+        XCTAssertNil(t.type)
     }
-
 
     func testExpirationDate() {
-        let jsonResponse = loadFile(withName: "accessTokenResponse", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNotNil(token.expiration, "Expected a `expires_in`, but found nil.")
-        XCTAssertTrue(token.expiration < Date(timeInterval: 43199, since: Date()))
-        XCTAssertTrue(token.expiration > Date())
+        XCTAssertNotNil(validToken.expiration)
+        XCTAssertTrue(validToken.expiration < Date(timeInterval: 43199, since: Date()))
+        XCTAssertTrue(validToken.expiration > Date())
     }
 
     func testScope() {
-        let jsonResponse = loadFile(withName: "accessTokenResponse", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertEqual(token.scope, "read")
+        XCTAssertEqual(validToken.scope, "read")
     }
 
-    func testScopeOptionl() {
-        let jsonResponse = loadFile(withName: "accessTokenResponseWithoutScope", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNil(token.scope, "Expected nil, but found \(String(describing: token.scope)).")
+    func testScopeOptionl() throws {
+        let t = try loadToken(fromFixture: "accessTokenResponseWithoutScope")
+        XCTAssertNil(t.scope)
     }
 
     func testTokenCorrectDecoding() {
-        let jsonResponse = loadFile(withName: "accessTokenResponse", ofType: "json")
-        guard let token = token(from: jsonResponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNotNil(token, "Expected a `token`, but found nil.")
+        XCTAssertNotNil(validToken)
     }
 
-    func testTokenMissingOptionalFieldsDecoding() {
-        let jsonReponse = loadFile(withName: "accessTokenResponseOnlyRequiredParams", ofType: "json")
-
-        guard let token = token(from: jsonReponse) else {
-            XCTFail("Failed to decode Token response data")
-            return
-        }
-        XCTAssertNotNil(token, "Expected a `token`, but found nil.")
+    func testTokenMissingOptionalFieldsDecoding() throws {
+        let t = try loadToken(fromFixture: "accessTokenResponseOnlyRequiredParams")
+        XCTAssertNotNil(t)
     }
 
     func testTokenMissingRequiredFieldsDecoding() {
-        let jsonResponse = loadFile(withName: "accessTokenResponseMissingExpire", ofType: "json")
-        let token = token(from: jsonResponse)
-        XCTAssertNil(token, "Expected decoding to fail due to missing expire_in required field, but it succeeded")
+        let data = loadFile(withName: "accessTokenResponseMissingExpire", ofType: "json")
+        let t = token(from: data)
+        XCTAssertNil(t, "Expected decoding to fail due to missing expire_in required field, but it succeeded")
     }
 
     private func token(from mockRespose: Data) -> Token? {

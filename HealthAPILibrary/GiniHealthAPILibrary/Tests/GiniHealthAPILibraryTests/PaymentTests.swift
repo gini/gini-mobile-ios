@@ -119,8 +119,8 @@ final class PaymentTests: XCTestCase {
             switch result {
             case .success:
                 XCTAssertEqual(sessionManagerMock.providersResponse.count, 11, "providers should not be empty")
-            case .failure:
-                break
+            case .failure(let error):
+                XCTFail("Expected success but got failure: \(error)")
             }
         }
     }
@@ -133,8 +133,8 @@ final class PaymentTests: XCTestCase {
             switch result {
             case .success:
                 XCTAssertEqual(sessionManagerMock.paymentRequests.count, 2, "payment requests should not be empty")
-            case .failure:
-                break
+            case .failure(let error):
+                XCTFail("Expected success but got failure: \(error)")
             }
         }
     }

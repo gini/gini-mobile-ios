@@ -107,6 +107,8 @@ final class SessionManagerMock: SessionManagerProtocol {
                     let paymentRequest: PaymentRequest = load(fromFile: "paymentRequest", type: "json")
                     completion(.success(paymentRequest as! T.ResponseType))
                 }
+            case .paymentRequests(_, _):
+                completion(.success(paymentRequests as! T.ResponseType))
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
