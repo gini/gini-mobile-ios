@@ -21,13 +21,13 @@ class ErrorScreen {
         
         switch locale {
         case "en":
-            cancelButton = app.buttons["Cancel"]
+            cancelButton = app.buttons["Camera Back"]
             enterManuallyButton = app.buttons["Enter manually"]
             backToCameraButton = app.buttons["Back to camera"]
             errorTitle = app.staticTexts["Error"]
             okButton = app.buttons["OK"]
         case "de":
-            cancelButton = app.buttons["Abbrechen"]
+            cancelButton = app.buttons["Kamera Zurück"]
             enterManuallyButton = app.buttons["Manuell ausfüllen"]
             backToCameraButton = app.buttons["Neues Foto"]
             errorTitle = app.staticTexts["Error"]
