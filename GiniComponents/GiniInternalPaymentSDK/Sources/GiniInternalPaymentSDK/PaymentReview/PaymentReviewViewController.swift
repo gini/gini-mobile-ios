@@ -49,7 +49,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         guard model.showPaymentReviewCloseButton,
               model.displayMode == .documentCollection else { return }
         
-        let closeImage = model.configuration.paymentReviewClose
+        let closeImage = model.configuration.paymentReviewClose.withRenderingMode(.alwaysOriginal)
         let closeButton = UIBarButtonItem(image: closeImage,
                                           style: .plain,
                                           target: self,
