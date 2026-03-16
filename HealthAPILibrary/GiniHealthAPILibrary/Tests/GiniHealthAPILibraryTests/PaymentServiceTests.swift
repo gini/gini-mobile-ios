@@ -21,44 +21,47 @@ class PaymentServiceTests: XCTestCase {
         paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
     }
 
-    func testPaymentRequestCreation() {
-        let expect = expectation(description: "returns payment request id")
-        
-        paymentService.createPaymentRequest(sourceDocumentLocation: "",
-                                            paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
-                                            recipient: "James Bond",
-                                            iban: "DE02300209000106531065",
-                                            bic: nil,
-                                            amount: "33.78:EUR",
-                                            purpose: "save the world") { result in
+    // MARK: - Helper
+
+    /// Runs an async payment service call and asserts success, failing explicitly on `.failure`.
+    private func awaitSuccess<T>(description: String,
+                                 timeout: TimeInterval = 1,
+                                 _ action: (@escaping (Result<T, GiniError>) -> Void) -> Void,
+                                 validate: @escaping (T) -> Void) {
+        let exp = expectation(description: description)
+        action { result in
             switch result {
-            case .success(let paymentRequestId):
-                XCTAssertEqual(paymentRequestId,
-                               SessionManagerMock.paymentRequestId,
-                               "payment request ids should match")
-                expect.fulfill()
-            case .failure:
-                break
+            case .success(let value):
+                validate(value)
+            case .failure(let error):
+                XCTFail("Unexpected failure: \(error)")
             }
+            exp.fulfill()
         }
-        wait(for: [expect], timeout: 1)
+        wait(for: [exp], timeout: timeout)
     }
-    
-    func testPaymentRequestDeletion() {
-        let expect = expectation(description: "returns payment request id")
-        
-        paymentService.deletePaymentRequest(id: SessionManagerMock.paymentRequestId) { result in
-            switch result {
-            case .success(let paymentRequestId):
-                XCTAssertEqual(paymentRequestId,
-                               SessionManagerMock.paymentRequestId,
-                               "payment request ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+
+    func testPaymentRequestCreation() {
+        awaitSuccess(description: "returns payment request id") {
+            self.paymentService.createPaymentRequest(sourceDocumentLocation: "",
+                                                     paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+                                                     recipient: "James Bond",
+                                                     iban: "DE02300209000106531065",
+                                                     bic: nil,
+                                                     amount: "33.78:EUR",
+                                                     purpose: "save the world",
+                                                     completion: $0)
+        } validate: { paymentRequestId in
+            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
         }
-        wait(for: [expect], timeout: 1)
+    }
+
+    func testPaymentRequestDeletion() {
+        awaitSuccess(description: "returns payment request id") {
+            self.paymentService.deletePaymentRequest(id: SessionManagerMock.paymentRequestId, completion: $0)
+        } validate: { paymentRequestId in
+            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
+        }
     }
     
     func testPaymentProviders() {
@@ -98,67 +101,37 @@ class PaymentServiceTests: XCTestCase {
     }
 
     func testPaymentProvider() {
-        let expect = expectation(description: "returns a payment provider via id")
         let paymentProvider = loadProviderResponse()
-        paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId){ result in
-            switch result {
-            case .success(let provider):
-                XCTAssertEqual(provider.id,
-                               paymentProvider.id,
-                               "provider ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "returns a payment provider via id") {
+            self.paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId, completion: $0)
+        } validate: { provider in
+            XCTAssertEqual(provider.id, paymentProvider.id, "provider ids should match")
         }
-        wait(for: [expect], timeout: 1)
     }
 
     func testLoadPaymentRequest() {
-        let expect = expectation(description: "returns an array of payment requests")
-        paymentService.paymentRequest(id: SessionManagerMock.paymentRequestId){ result in
-            switch result {
-            case .success(let request):
-                let requestId = String(request.links?.linksSelf.split(separator: "/").last ?? "")
-                XCTAssertEqual(requestId,
-                               SessionManagerMock.paymentRequestId,
-                               "payment request ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "returns an array of payment requests") {
+            self.paymentService.paymentRequest(id: SessionManagerMock.paymentRequestId, completion: $0)
+        } validate: { request in
+            let requestId = String(request.links?.linksSelf.split(separator: "/").last ?? "")
+            XCTAssertEqual(requestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
         }
-        wait(for: [expect], timeout: 1)
     }
 
     func testLoadPDFForPaymentRequest() {
-        let expect = expectation(description: "returns PDF")
-        paymentService.pdfWithQRCode(paymentRequestId: SessionManagerMock.paymentRequestId) { result in
-            switch result {
-            case .success(let data):
-                XCTAssertNotNil(data)
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "returns PDF") {
+            self.paymentService.pdfWithQRCode(paymentRequestId: SessionManagerMock.paymentRequestId, completion: $0)
+        } validate: { data in
+            XCTAssertNotNil(data)
         }
-        wait(for: [expect], timeout: 1)
     }
 
     func testPayment() {
-        let expect = expectation(description: "returns an array of payment requests")
-        paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86"){ result in
-            switch result {
-            case .success(let payment):
-                let requestId = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
-                XCTAssertEqual(requestId,
-                               SessionManagerMock.paymentID,
-                               "payment request ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-      }
-        wait(for: [expect], timeout: 1)
+        awaitSuccess(description: "returns an array of payment requests") {
+            self.paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86", completion: $0)
+        } validate: { payment in
+            let requestId = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
+            XCTAssertEqual(requestId, SessionManagerMock.paymentID, "payment request ids should match")
+        }
     }
 }

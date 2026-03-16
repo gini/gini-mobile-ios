@@ -6,6 +6,16 @@ import XCTest
 
 final class GiniHealthTests: GiniHealthTestCase {
 
+    // MARK: - Helper
+
+    private func assertClientConfiguration(_ config: ClientConfiguration,
+                                           communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
+                                           brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        XCTAssertNotNil(config)
+        XCTAssertEqual(config.communicationTone, communicationTone)
+        XCTAssertEqual(config.ingredientBrandType, brandType)
+    }
+
     func testSetConfiguration() throws {
         // Given
         let configuration = GiniHealthConfiguration()
@@ -99,53 +109,29 @@ final class GiniHealthTests: GiniHealthTestCase {
     }
 
     func testLoadDefaultClientConfiguration() {
-        // Given
         let clientConfiguration = ClientConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
     }
-    
+
     func testFormalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration()
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.customLocalization = .de
         configuration.clientConfiguration = clientConfiguration
         giniHealth.setConfiguration(configuration)
-        
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
-    
+
     func testInformalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration(communicationTone: .informal)
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.clientConfiguration = clientConfiguration
         configuration.customLocalization = .de
         giniHealth.setConfiguration(configuration)
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
 }

@@ -198,82 +198,49 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
     }
     
     // MARK: - Bulk Payment Request Deletion Tests
-    
-    func testDeletePaymentRequests_Unauthorized() {
-        // Given
-        let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
-        
-        // When
-        let expectation = self.expectation(description: "Deleting payment requests with unauthorized error")
+
+    @discardableResult
+    private func deletePaymentRequestsExpectingError(ids: [String],
+                                                     description: String) -> GiniHealthSDK.GiniError? {
+        let exp = expectation(description: description)
         var receivedError: GiniHealthSDK.GiniError?
-        
-        giniHealth.paymentService.deletePaymentRequests(unauthorizedIds) { result in
+
+        giniHealth.paymentService.deletePaymentRequests(ids) { result in
             switch result {
             case .success:
                 XCTFail("Expected error but got success")
             case .failure(let error):
                 receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
             }
-            expectation.fulfill()
+            exp.fulfill()
         }
-        
-        waitForExpectations(timeout: 1, handler: nil)
-        
-        // Then
+
+        waitForExpectations(timeout: timeout, handler: nil)
         XCTAssertNotNil(receivedError)
+        return receivedError
+    }
+
+    func testDeletePaymentRequests_Unauthorized() {
+        let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
+        let receivedError = deletePaymentRequestsExpectingError(ids: unauthorizedIds,
+                                                               description: "Deleting payment requests with unauthorized error")
         XCTAssertEqual(receivedError?.items?.first?.code, "2016")
         XCTAssertEqual(receivedError?.items?.first?.object, unauthorizedIds)
         XCTAssertEqual(receivedError?.requestId, "b608-02bb-c7g1-dd28-54e4-87b9")
     }
     
     func testDeletePaymentRequests_NotFound() {
-        // Given
         let notFoundIds = MockTestData.BulkDeletePaymentRequests.notFound
-        
-        // When
-        let expectation = self.expectation(description: "Deleting payment requests with not found error")
-        var receivedError: GiniHealthSDK.GiniError?
-        
-        giniHealth.paymentService.deletePaymentRequests(notFoundIds) { result in
-            switch result {
-            case .success:
-                XCTFail("Expected error but got success")
-            case .failure(let error):
-                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
-            }
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1, handler: nil)
-        
-        // Then
-        XCTAssertNotNil(receivedError)
+        let receivedError = deletePaymentRequestsExpectingError(ids: notFoundIds,
+                                                               description: "Deleting payment requests with not found error")
         XCTAssertEqual(receivedError?.items?.first?.code, "2017")
         XCTAssertEqual(receivedError?.items?.first?.object, notFoundIds)
     }
     
     func testDeletePaymentRequests_Mixed() {
-        // Given
         let mixedIds = MockTestData.BulkDeletePaymentRequests.mixed
-        
-        // When
-        let expectation = self.expectation(description: "Deleting payment requests with mixed errors")
-        var receivedError: GiniHealthSDK.GiniError?
-        
-        giniHealth.paymentService.deletePaymentRequests(mixedIds) { result in
-            switch result {
-            case .success:
-                XCTFail("Expected error but got success")
-            case .failure(let error):
-                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
-            }
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1, handler: nil)
-        
-        // Then
-        XCTAssertNotNil(receivedError)
+        let receivedError = deletePaymentRequestsExpectingError(ids: mixedIds,
+                                                               description: "Deleting payment requests with mixed errors")
         XCTAssertEqual(receivedError?.items?.count, 2)
         
         // Verify both error codes are present

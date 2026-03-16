@@ -6,42 +6,31 @@ import XCTest
 
 final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
 
-    func testDocumentIsPayable() {
-        // When
-        let fileName = "extractionResultWithIBAN"
-        let extractions: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let extractions else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    // MARK: - Helper
+
+    private func loadExtractionsContainer(fromFile fileName: String) throws -> GiniHealthSDK.ExtractionsContainer {
+        try XCTUnwrap(GiniHealthSDKTests.load(fromFile: fileName) as GiniHealthSDK.ExtractionsContainer?,
+                      "Error loading file: `\(fileName).json`")
+    }
+
+    func testDocumentIsPayable() throws {
+        let extractions = try loadExtractionsContainer(fromFile: "extractionResultWithIBAN")
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
         let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, true)
     }
     
-    func testDocumentIsNotPayableSuccess() {
-        // When
-        let fileName = "extractionResultWithoutIBAN"
-        let extractions: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let extractions else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    func testDocumentIsNotPayableSuccess() throws {
+        let extractions = try loadExtractionsContainer(fromFile: "extractionResultWithoutIBAN")
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
         let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, false)
     }
 
-    func testCheckIfDocumentIsPayableSuccess() {
-        // Given
-        let fileName = "extractionResultWithIBAN"
-        let expectedExtractions: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractions else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    func testCheckIfDocumentIsPayableSuccess() throws {
+        let expectedExtractions = try loadExtractionsContainer(fromFile: "extractionResultWithIBAN")
         let expectedExtractionsResult = GiniHealthSDK.ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isNotEmpty
 
@@ -63,14 +52,8 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertEqual(expectedIsPayable, isDocumentPayable)
     }
 
-    func testCheckIfDocumentIsNotPayableSuccess() {
-        // Given
-        let fileName = "extractionResultWithIBAN"
-        let expectedExtractions: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractions else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    func testCheckIfDocumentIsNotPayableSuccess() throws {
+        let expectedExtractions = try loadExtractionsContainer(fromFile: "extractionResultWithIBAN")
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isEmpty
 
@@ -168,14 +151,8 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNil(hasMultipleInvoices)
     }
     
-    func testGetExtractionsSuccess() {
-        // Given
-        let fileName = "extractionsWithPayment"
-        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractionContainer else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    func testGetExtractionsSuccess() throws {
+        let expectedExtractionContainer = try loadExtractionsContainer(fromFile: "extractionsWithPayment")
         let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
 
         // When
@@ -216,14 +193,8 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNil(receivedExtractions)
     }
 
-    func testGetAllExtractionsSuccess() {
-        // Given
-        let fileName = "test_doctorsname"
-        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractionContainer else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
+    func testGetAllExtractionsSuccess() throws {
+        let expectedExtractionContainer = try loadExtractionsContainer(fromFile: "test_doctorsname")
         let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
 
         // When
