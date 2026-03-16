@@ -16,14 +16,12 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     // MARK: - Document Upload and Processing Tests
 
     func testUploadPDFDocument() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
         XCTAssertFalse(docId.isEmpty, "Document ID should not be empty")
     }
 
     func testFetchDocument() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
 
         let expect = expectation(description: "fetch document")
         giniHealth.documentService.fetchDocument(with: docId) { result in
@@ -40,8 +38,7 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     }
 
     func testGetExtractions() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
 
         let expect = expectation(description: "get extractions")
         giniHealth.getExtractions(docId: docId) { result in
@@ -58,8 +55,7 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     }
 
     func testGetAllExtractions() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
 
         let expect = expectation(description: "get all extractions")
         giniHealth.getAllExtractions(docId: docId) { result in
@@ -75,8 +71,7 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     }
 
     func testCheckIfDocumentIsPayable() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
 
         let expect = expectation(description: "check payable")
         giniHealth.checkIfDocumentIsPayable(docId: docId) { result in
@@ -110,8 +105,7 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     }
 
     func testPollDocument() throws {
-        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
-        let docId = try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+        let docId = try uploadMedInvoice()
 
         let expect = expectation(description: "poll document")
         giniHealth.pollDocument(docId: docId) { result in
@@ -130,7 +124,6 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
         let pdfData = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
         let id1 = try uploadAndTrackDocument(fileName: "testMedInvoice1.pdf", data: pdfData)
         let id2 = try uploadAndTrackDocument(fileName: "testMedInvoice2.pdf", data: pdfData)
-
         let expect = expectation(description: "delete documents")
         giniHealth.deleteDocuments(documentIds: [id1, id2]) { result in
             switch result {
@@ -145,6 +138,12 @@ final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
     }
 
     // MARK: - Helpers
+
+    /// Loads `testMedInvoice.pdf` from the bundle, uploads it, and registers the ID for tearDown cleanup.
+    private func uploadMedInvoice() throws -> String {
+        let data = try XCTUnwrap(FileLoader.loadFile(withName: "testMedInvoice", ofType: "pdf"))
+        return try uploadAndTrackDocument(fileName: "testMedInvoice.pdf", data: data)
+    }
 
     /// Uploads a document and registers its ID for automatic cleanup in tearDown.
     private func uploadAndTrackDocument(fileName: String, data: Data) throws -> String {

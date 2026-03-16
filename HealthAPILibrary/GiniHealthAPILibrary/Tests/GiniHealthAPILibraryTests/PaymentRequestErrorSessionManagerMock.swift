@@ -31,6 +31,13 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
         }
     }
 
+    private func makeResponse(url: URL, statusCode: Int) -> HTTPURLResponse? {
+        HTTPURLResponse(url: url,
+                        statusCode: statusCode,
+                        httpVersion: "HTTP/1.1",
+                        headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
+    }
+
     private func handleCreatePaymentRequest<T: Resource>(resource: T,
                                                          completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         let jsonData = loadFile(withName: "createPaymentRequestMultiErrors", ofType: "json")
@@ -39,11 +46,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
             completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
-        let response = HTTPURLResponse(url: url,
-                                       statusCode: 400,
-                                       httpVersion: "HTTP/1.1",
-                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
-        completion(.failure(.customError(response: response, data: jsonData)))
+        completion(.failure(.customError(response: makeResponse(url: url, statusCode: 400), data: jsonData)))
     }
 
     private func handleBatchDeletePaymentRequests<T: Resource>(resource: T,
@@ -74,10 +77,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
                 completion(.failure(.unknown(response: nil, data: nil)))
                 return
             }
-            let response = HTTPURLResponse(url: url,
-                                           statusCode: 403,
-                                           httpVersion: "HTTP/1.1",
-                                           headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
+            let response = makeResponse(url: url, statusCode: 403)
             completion(.failure(.customError(response: response, data: jsonData)))
             return
         }
@@ -89,10 +89,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
                 completion(.failure(.unknown(response: nil, data: nil)))
                 return
             }
-            let response = HTTPURLResponse(url: url,
-                                           statusCode: 400,
-                                           httpVersion: "HTTP/1.1",
-                                           headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
+            let response = makeResponse(url: url, statusCode: 400)
             completion(.failure(.customError(response: response, data: jsonData)))
             return
         }
@@ -127,11 +124,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
             completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
-        let response = HTTPURLResponse(url: url,
-                                       statusCode: 403,
-                                       httpVersion: "HTTP/1.1",
-                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
-        completion(.failure(.customError(response: response, data: jsonData)))
+        completion(.failure(.customError(response: makeResponse(url: url, statusCode: 403), data: jsonData)))
     }
 
     private func handleNotFoundDeletePaymentRequest<T: Resource>(id: String,
@@ -142,11 +135,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
             completion(.failure(.unknown(response: nil, data: nil)))
             return
         }
-        let response = HTTPURLResponse(url: url,
-                                       statusCode: 404,
-                                       httpVersion: "HTTP/1.1",
-                                       headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
-        completion(.failure(.notFound(response: response, data: nil)))
+        completion(.failure(.notFound(response: makeResponse(url: url, statusCode: 404), data: nil)))
     }
 
     func download<T: Resource>(resource: T,

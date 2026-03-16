@@ -10,11 +10,23 @@ import XCTest
 
 final class PaymentServiceErrorTests: XCTestCase {
 
+    var mock: PaymentRequestErrorSessionManagerMock!
+    var service: PaymentService!
+
+    override func setUp() {
+        super.setUp()
+        mock = PaymentRequestErrorSessionManagerMock()
+        service = PaymentService(sessionManager: mock, apiVersion: 5)
+    }
+
+    override func tearDown() {
+        service = nil
+        mock = nil
+        super.tearDown()
+    }
+
     func testCreatePaymentRequest_BadRequest_decodesItemsAndRequestId() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock,
-                                     apiVersion: 5)
         let expect = expectation(description: "create payment request failure")
         var capturedError: GiniError?
 
@@ -59,8 +71,6 @@ final class PaymentServiceErrorTests: XCTestCase {
 
     func testDeletePaymentRequest_Forbidden_decodesItemsAndRequestId() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
         let expect = expectation(description: "delete payment request forbidden")
         var capturedError: GiniError?
 
@@ -92,8 +102,6 @@ final class PaymentServiceErrorTests: XCTestCase {
 
     func testDeletePaymentRequest_NotFound_statusCode404() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
         let expect = expectation(description: "delete payment request not found")
         var capturedError: GiniError?
 
@@ -121,8 +129,6 @@ final class PaymentServiceErrorTests: XCTestCase {
     
     func testBatchDeletePaymentRequests_PartialFailure_decodesMultipleErrors() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock, apiVersion: 5)
         let expect = expectation(description: "batch delete payment requests partial failure")
         var capturedError: GiniError?
         
@@ -162,9 +168,6 @@ final class PaymentServiceErrorTests: XCTestCase {
     
     func testBatchDeletePaymentRequests_AllForbidden_returns403() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock,
-                                     apiVersion: 5)
         let expect = expectation(description: "batch delete all forbidden")
         var capturedError: GiniError?
         
@@ -197,9 +200,6 @@ final class PaymentServiceErrorTests: XCTestCase {
     
     func testBatchDeletePaymentRequests_EmptyList_handledGracefully() {
         // Given
-        let mock = PaymentRequestErrorSessionManagerMock()
-        let service = PaymentService(sessionManager: mock,
-                                     apiVersion: 5)
         let expect = expectation(description: "batch delete empty list")
         var capturedResult: Result<[String], GiniError>?
         
