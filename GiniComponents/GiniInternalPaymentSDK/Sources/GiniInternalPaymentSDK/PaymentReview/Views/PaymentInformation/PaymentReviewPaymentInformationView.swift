@@ -221,7 +221,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: Constants.paymentProviderPickerIconSize.width,
                                height: Constants.paymentProviderPickerSize.height)
-                        .cornerRadius(Constants.paymentProviderPickerCornerRadius)
+                        .clipShape(.rect(cornerRadius: Constants.paymentProviderPickerCornerRadius))
                         .accessibilityHidden(true)
                 }
                 
@@ -242,7 +242,7 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
         .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
-        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
+        .clipShape(.rect(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
                 .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
@@ -267,7 +267,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
             .foregroundStyle(Color(selectedPaymentProviderTextColor))
             .background(Color(selectedPaymentProviderBackgroundColor))
-            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+            .clipShape(.rect(cornerRadius: viewModel.model.primaryButtonConfiguration.cornerRadius))
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
             .accessibilityHint(viewModelStrings.payInvoiceAccessibilityHint)
