@@ -28,6 +28,12 @@ struct PaymentReviewPaymentInformationView: View {
     @Binding private var contentHeight: CGFloat
     @Binding private var showBanner: Bool
     
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+    
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
     }
@@ -129,7 +135,7 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: Constants.bannerYOffset)
+        .offset(y: isLandscape ? Constants.zero : Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
