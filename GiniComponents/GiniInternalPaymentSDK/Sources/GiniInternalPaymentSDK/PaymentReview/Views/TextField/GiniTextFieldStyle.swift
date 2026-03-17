@@ -64,10 +64,11 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 configuration
                     .foregroundStyle(Color(currentConfiguration.textColor))
                     .font(Font(currentConfiguration.textFont))
+                    .frame(height: Constants.textFieldHeight)
                     .accessibilityLabel(title)
             }
             .padding(.horizontal, Constants.horizontalPadding)
-            .frame(height: Constants.textFieldHeight)
+            .padding(.top, Constants.verticalPadding)
             .background(Color(currentConfiguration.backgroundColor))
             .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius))
             .overlay {
@@ -122,7 +123,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
         
         static let verticalSpacing = 4.0
         static let horizontalPadding = 8.0
-        static let textFieldHeight = 56.0
+        static let verticalPadding = 8.0
+        static let textFieldHeight = 30.0
         static let titleSpacing = 0.0
         static let errorMessageHorizontalPadding = 8.0
         static let lockedIconSize = CGSize(width: 12, height: 12)
