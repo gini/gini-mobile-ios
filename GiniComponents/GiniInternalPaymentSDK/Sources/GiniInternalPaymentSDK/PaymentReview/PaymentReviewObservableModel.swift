@@ -123,6 +123,9 @@ final class PaymentReviewObservableModel: ObservableObject {
         },
                                             onPayTapped: { [weak self] paymentInfo in
             self?.didTapPay(paymentInfo)
+        },
+                                            onKeyboardDismissed: { [weak self] in
+            self?.model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
         })
     }
     

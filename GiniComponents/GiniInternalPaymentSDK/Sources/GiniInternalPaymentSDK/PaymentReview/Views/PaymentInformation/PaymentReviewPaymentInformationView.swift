@@ -19,6 +19,7 @@ struct PaymentReviewPaymentInformationView: View {
     
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
+    let onKeyboardDismissed: () -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
@@ -47,12 +48,14 @@ struct PaymentReviewPaymentInformationView: View {
          contentHeight: Binding<CGFloat>,
          showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
-         onPayTapped: @escaping (PaymentInfo) -> Void) {
+         onPayTapped: @escaping (PaymentInfo) -> Void,
+         onKeyboardDismissed: @escaping () -> Void) {
         self.viewModel = viewModel
         self._contentHeight = contentHeight
         self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
+        self.onKeyboardDismissed = onKeyboardDismissed
     }
     
     var body: some View {
@@ -94,6 +97,13 @@ struct PaymentReviewPaymentInformationView: View {
             // Notify VoiceOver that a new screen (the sheet) appeared,
             // so it moves focus into the sheet content.
             UIAccessibility.post(notification: .screenChanged, argument: nil)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if focusedField == .amount {
+                    amountToolbarView
+                }
+            }
         }
         .getHeight(for: $contentHeight)
     }
@@ -184,6 +194,15 @@ struct PaymentReviewPaymentInformationView: View {
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
                                            errorConfiguration: errorTextFieldConfiguration))
+    }
+    
+    @ViewBuilder
+    private var amountToolbarView: some View {
+        Spacer()
+        Button(viewModelStrings.keyboardDoneButtonTitle) {
+            onKeyboardDismissed()
+            focusedField = nil
+        }
     }
     
     @ViewBuilder
