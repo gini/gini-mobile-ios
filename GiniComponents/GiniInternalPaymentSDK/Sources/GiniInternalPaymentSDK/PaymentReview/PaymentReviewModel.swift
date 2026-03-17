@@ -300,6 +300,7 @@ public class PaymentReviewModel {
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
+                                        document: document,
                                         paymentInfo: paymentInfo,
                                         selectedPaymentProvider: selectedPaymentProvider,
                                         configuration: containerConfiguration,
