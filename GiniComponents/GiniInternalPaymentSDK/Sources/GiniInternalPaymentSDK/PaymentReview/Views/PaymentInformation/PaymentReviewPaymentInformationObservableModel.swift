@@ -112,15 +112,13 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
     
     func buildPaymentInfo(recipient: String, iban: String, amount: String, purpose: String) -> PaymentInfo {
-        PaymentInfo(
-            recipient: recipient,
-            iban: iban,
-            bic: "",
-            amount: amount,
-            purpose: purpose,
-            paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
-            paymentProviderId: selectedPaymentProvider.id
-        )
+        PaymentInfo(sourceDocumentLocation: model.document?.links.document.absoluteString,
+                    recipient: recipient,
+                    iban: iban,
+                    amount: amount,
+                    purpose: purpose,
+                    paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
+                    paymentProviderId: selectedPaymentProvider.id)
     }
     
     func adjustAmountValue(text: String) -> (adjustedText: String, newValue: Decimal)? {

@@ -19,14 +19,20 @@ struct PaymentReviewPaymentInformationView: View {
     
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
+    let onKeyboardDismissed: () -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
     @FocusState private var focusedField: Field?
     
     @Binding private var contentHeight: CGFloat
-    @Binding private var collapsedHeight: CGFloat
     @Binding private var showBanner: Bool
+    
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
     
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
@@ -46,16 +52,16 @@ struct PaymentReviewPaymentInformationView: View {
     
     init(viewModel: PaymentReviewPaymentInformationObservableModel,
          contentHeight: Binding<CGFloat>,
-         collapsedHeight: Binding<CGFloat>,
          showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
-         onPayTapped: @escaping (PaymentInfo) -> Void) {
+         onPayTapped: @escaping (PaymentInfo) -> Void,
+         onKeyboardDismissed: @escaping () -> Void) {
         self.viewModel = viewModel
         self._contentHeight = contentHeight
-        self._collapsedHeight = collapsedHeight
         self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
+        self.onKeyboardDismissed = onKeyboardDismissed
     }
     
     var body: some View {
@@ -74,7 +80,6 @@ struct PaymentReviewPaymentInformationView: View {
                     paymentProviderSelectionPicker
                     payButton
                 }
-                .getHeight(for: $collapsedHeight)
                 
                 if viewModel.shouldShowBrandedView {
                     poweredByGiniView
@@ -95,6 +100,16 @@ struct PaymentReviewPaymentInformationView: View {
         }
         .onAppear {
             populateFields()
+            // Notify VoiceOver that a new screen (the sheet) appeared,
+            // so it moves focus into the sheet content.
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if focusedField == .amount {
+                    amountToolbarView
+                }
+            }
         }
         .getHeight(for: $contentHeight)
     }
@@ -120,7 +135,7 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: Constants.bannerYOffset)
+        .offset(y: isLandscape ? Constants.zero : Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
@@ -188,6 +203,15 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     @ViewBuilder
+    private var amountToolbarView: some View {
+        Spacer()
+        Button(viewModelStrings.keyboardDoneButtonTitle) {
+            onKeyboardDismissed()
+            focusedField = nil
+        }
+    }
+    
+    @ViewBuilder
     private var paymentPurposeTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
@@ -218,7 +242,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: Constants.paymentProviderPickerIconSize.width,
                                height: Constants.paymentProviderPickerSize.height)
-                        .cornerRadius(Constants.paymentProviderPickerCornerRadius)
+                        .clipShape(.rect(cornerRadius: Constants.paymentProviderPickerCornerRadius))
                         .accessibilityHidden(true)
                 }
                 
@@ -239,7 +263,7 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
         .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
-        .cornerRadius(viewModel.model.secondaryButtonConfiguration.cornerRadius)
+        .clipShape(.rect(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
                 .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
@@ -264,7 +288,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
             .foregroundStyle(Color(selectedPaymentProviderTextColor))
             .background(Color(selectedPaymentProviderBackgroundColor))
-            .cornerRadius(viewModel.model.primaryButtonConfiguration.cornerRadius)
+            .clipShape(.rect(cornerRadius: viewModel.model.primaryButtonConfiguration.cornerRadius))
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
             .accessibilityHint(viewModelStrings.payInvoiceAccessibilityHint)

@@ -9,46 +9,53 @@ import SwiftUI
 struct GiniBottomSheetModifier: ViewModifier {
     
     private let contentHeight: CGFloat
-    private let collapsedHeight: CGFloat
+    private let allowsDismiss: Bool
+    private let accessibilityAction: (() -> Void)?
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
     private var isLandscape: Bool {
-            verticalSizeClass == .compact
-        }
+        verticalSizeClass == .compact
+    }
     
-    init(contentHeight: CGFloat, collapsedHeight: CGFloat) {
+    init(contentHeight: CGFloat,
+         allowsDismiss: Bool = false,
+         accessibilityAction: (() -> Void)?) {
         self.contentHeight = max(contentHeight, Constants.minimumHeight)
-        self.collapsedHeight = collapsedHeight
+        self.allowsDismiss = allowsDismiss
+        self.accessibilityAction = accessibilityAction
     }
     
     func body(content: Content) -> some View {
+        let base = content
+            .presentationDetents(detentsForOrientation())
+            .presentationDragIndicator(reduceMotion ? .hidden : .visible)
+            .interactiveDismissDisabled(!allowsDismiss && !isVoiceOverEnabled)
+            .accessibilityAction(.escape) {
+                accessibilityAction?()
+            }
+        
         if #available(iOS 16.4, *) {
-            content
-                .presentationDetents(detentsForOrientation())
-                .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(true)
-                .presentationBackgroundInteraction(.enabled(upThrough: .height(contentHeight)))
-                .presentationCompactAdaptation(.sheet)
+            let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
+            
+            base
+                .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
+                .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
                 .presentationContentInteraction(.resizes)
         } else {
-            content
-                .presentationDetents(detentsForOrientation())
-                .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(true)
+            base
         }
     }
     
     private func detentsForOrientation() -> Set<PresentationDetent> {
-            if isLandscape {
-                return [
-                    .height(collapsedHeight),
-                    .height(contentHeight)
-                ]
-            } else {
-                return [.height(contentHeight)]
-            }
+        if isLandscape {
+            return [.large]
+        } else {
+            return [.height(contentHeight)]
         }
+    }
     
     private struct Constants {
         

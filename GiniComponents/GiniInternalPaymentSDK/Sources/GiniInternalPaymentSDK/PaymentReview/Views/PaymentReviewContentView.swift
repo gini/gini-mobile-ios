@@ -12,7 +12,6 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
-    @State private var collapsedHeight = Constants.collapsedDefaultHeight
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     private var isLandscape: Bool {
@@ -27,20 +26,21 @@ public struct PaymentReviewContentView: View {
     
     public var body: some View {
         GeometryReader { geometry in
-            if isLandscape {
+            if isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
             } else {
                 portraitLayout(geometry: geometry)
             }
         }
-        .overlay(alignment: .topTrailing) {
-            closeButton
-        }
         .overlay {
             loadingOverlay
         }
+        .task {
+            guard !hasAppeared else { return }
+            hasAppeared = true
+            await viewModel.fetchImages()
+        }
         .onAppear {
-            fetchImagesIfNeeded()
             viewModel.dismissBannerAfterDelay()
         }
     }
@@ -60,15 +60,15 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            
+            viewModel.didTapClose()
         } content: {
             viewModel.paymentReviewPaymentInformationView(
-                contentHeight: $bottomSheetHeight,
-                collapsedHeight: $collapsedHeight
+                contentHeight: $bottomSheetHeight
             )
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
-                collapsedHeight: collapsedHeight
+                allowsDismiss: viewModel.isBottomSheetMode,
+                accessibilityAction: viewModel.didTapClose
             ))
         }
     }
@@ -83,8 +83,7 @@ public struct PaymentReviewContentView: View {
         HStack(spacing: Constants.zero) {
             ScrollView {
                 viewModel.paymentReviewPaymentInformationView(
-                    contentHeight: $bottomSheetHeight,
-                    collapsedHeight: $collapsedHeight
+                    contentHeight: $bottomSheetHeight
                 )
             }
             .frame(width: sheetWidth)
@@ -98,22 +97,6 @@ public struct PaymentReviewContentView: View {
     }
     
     // MARK: - Private Views
-    
-    @ViewBuilder
-    private var closeButton: some View {
-        if viewModel.showCloseButton {
-            Button(action: {
-                viewModel.didTapClose()
-            }) {
-                Image(uiImage: viewModel.closeButtonImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: Constants.closeButtonSize,
-                           height: Constants.closeButtonSize)
-            }
-            .accessibilityLabel(viewModel.closeButtonAccessibilityLabel)
-        }
-    }
     
     @ViewBuilder
     private var loadingOverlay: some View {
@@ -154,15 +137,6 @@ public struct PaymentReviewContentView: View {
     
     // MARK: - Private Methods
     
-    private func fetchImagesIfNeeded() {
-        guard !hasAppeared else { return }
-        hasAppeared = true
-        
-        Task {
-            await viewModel.fetchImages()
-        }
-    }
-    
     private func computedCarouselHeight(for geometry: GeometryProxy, isLandscape: Bool) -> CGFloat {
         let effectiveBottomSheetHeight = bottomSheetHeight > 0 ? bottomSheetHeight : Constants.bottomSheetDefaultHeight
         
@@ -179,7 +153,6 @@ public struct PaymentReviewContentView: View {
     private struct Constants {
         static let zero: CGFloat = 0.0
         static let bottomSheetDefaultHeight: CGFloat = 300
-        static let collapsedDefaultHeight: CGFloat = 90
         static let bottomSheetOverlap: CGFloat = 20.0
         static let carouselDefaultHeight: CGFloat = 300.0
         static let screenPercentage: CGFloat = 0.55
@@ -187,7 +160,6 @@ public struct PaymentReviewContentView: View {
         static let documentPreviewStackSpacing: CGFloat = 16.0
         static let totalPaddings: CGFloat = 32.0
         static let pageIndicatorSpace: CGFloat = 30.0
-        static let closeButtonSize: CGFloat = 48.0
         static let loadingOverlayOpacity: CGFloat = 0.4
         static let loadingIndicatorScale: CGFloat = 1.5
     }

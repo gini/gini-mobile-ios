@@ -7,7 +7,6 @@
 import Combine
 import GiniHealthAPILibrary
 import SwiftUI
-import UIKit
 
 final class PaymentReviewObservableModel: ObservableObject {
     
@@ -23,16 +22,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     
-    var showCloseButton: Bool {
-        model.showPaymentReviewCloseButton
-    }
-    
-    var closeButtonImage: UIImage {
-        model.configuration.paymentReviewClose
-    }
-    
-    var closeButtonAccessibilityLabel: String {
-        model.strings.closeButtonAccessibilityLabel
+    var isBottomSheetMode: Bool {
+        model.displayMode == .bottomSheet
     }
     
     var invoiceImageAccessibilityLabel: String {
@@ -123,17 +114,18 @@ final class PaymentReviewObservableModel: ObservableObject {
         }
     }
 
-    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>,
-                                             collapsedHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
+    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
         PaymentReviewPaymentInformationView(viewModel: paymentInformationObservableModel,
                                             contentHeight: contentHeight,
-                                            collapsedHeight: collapsedHeight,
                                             showBanner: Binding( get: { self.showBanner }, set: { self.showBanner = $0 }),
                                             onBankSelectionTapped: { [weak self] in
             self?.model.openBankSelectionBottomSheet()
         },
                                             onPayTapped: { [weak self] paymentInfo in
             self?.didTapPay(paymentInfo)
+        },
+                                            onKeyboardDismissed: { [weak self] in
+            self?.model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
         })
     }
     
@@ -156,19 +148,19 @@ final class PaymentReviewObservableModel: ObservableObject {
     private func setupBindings() {
         // Observe changes from the original model
         model.onPreviewImagesFetched = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.cellViewModels = self?.model.cellViewModels ?? []
             }
         }
         
         model.updateImagesLoadingStatus = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.isImagesLoading = self?.model.isImagesLoading == true
             }
         }
         
         model.updateLoadingStatus = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.isLoading = self?.model.isLoading == true
             }
         }
@@ -179,16 +171,16 @@ final class PaymentReviewObservableModel: ObservableObject {
         }
         
         model.onErrorHandling = { [weak self] _ in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.defaultErrorMessage)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                model.viewModelDelegate?.presentErrorAlert(message: model.strings.defaultErrorMessage)
             }
         }
         
         model.onCreatePaymentRequestErrorHandling = { [weak self] in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.createPaymentErrorMessage)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                model.viewModelDelegate?.presentErrorAlert(message: model.strings.createPaymentErrorMessage)
             }
         }
     }
