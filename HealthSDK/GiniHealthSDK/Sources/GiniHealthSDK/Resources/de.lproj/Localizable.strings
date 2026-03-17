@@ -62,6 +62,7 @@
 "gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
+"gini.health.reviewscreen.keyboard.done.button.title" = "Fertig";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
@@ -128,6 +129,7 @@
 "gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder.informal" = "IBAN";
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
+"gini.health.reviewscreen.keyboard.done.button.title.informal" = "Fertig";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
 "gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
