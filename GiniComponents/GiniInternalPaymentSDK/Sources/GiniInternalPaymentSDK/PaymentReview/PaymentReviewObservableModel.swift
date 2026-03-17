@@ -114,11 +114,9 @@ final class PaymentReviewObservableModel: ObservableObject {
         }
     }
 
-    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>,
-                                             collapsedHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
+    func paymentReviewPaymentInformationView(contentHeight: Binding<CGFloat>) -> PaymentReviewPaymentInformationView {
         PaymentReviewPaymentInformationView(viewModel: paymentInformationObservableModel,
                                             contentHeight: contentHeight,
-                                            collapsedHeight: collapsedHeight,
                                             showBanner: Binding( get: { self.showBanner }, set: { self.showBanner = $0 }),
                                             onBankSelectionTapped: { [weak self] in
             self?.model.openBankSelectionBottomSheet()

@@ -12,7 +12,6 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
-    @State private var collapsedHeight = Constants.collapsedDefaultHeight
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     private var isLandscape: Bool {
@@ -27,7 +26,7 @@ public struct PaymentReviewContentView: View {
     
     public var body: some View {
         GeometryReader { geometry in
-            if isLandscape {
+            if isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
             } else {
                 portraitLayout(geometry: geometry)
@@ -64,12 +63,10 @@ public struct PaymentReviewContentView: View {
             viewModel.didTapClose()
         } content: {
             viewModel.paymentReviewPaymentInformationView(
-                contentHeight: $bottomSheetHeight,
-                collapsedHeight: $collapsedHeight
+                contentHeight: $bottomSheetHeight
             )
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
-                collapsedHeight: collapsedHeight,
                 allowsDismiss: viewModel.isBottomSheetMode,
                 accessibilityAction: viewModel.didTapClose
             ))
@@ -86,8 +83,7 @@ public struct PaymentReviewContentView: View {
         HStack(spacing: Constants.zero) {
             ScrollView {
                 viewModel.paymentReviewPaymentInformationView(
-                    contentHeight: $bottomSheetHeight,
-                    collapsedHeight: $collapsedHeight
+                    contentHeight: $bottomSheetHeight
                 )
             }
             .frame(width: sheetWidth)
@@ -157,7 +153,6 @@ public struct PaymentReviewContentView: View {
     private struct Constants {
         static let zero: CGFloat = 0.0
         static let bottomSheetDefaultHeight: CGFloat = 300
-        static let collapsedDefaultHeight: CGFloat = 90
         static let bottomSheetOverlap: CGFloat = 20.0
         static let carouselDefaultHeight: CGFloat = 300.0
         static let screenPercentage: CGFloat = 0.55

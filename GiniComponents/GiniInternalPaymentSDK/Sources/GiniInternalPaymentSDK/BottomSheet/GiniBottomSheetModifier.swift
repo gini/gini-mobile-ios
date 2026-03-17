@@ -9,7 +9,6 @@ import SwiftUI
 struct GiniBottomSheetModifier: ViewModifier {
     
     private let contentHeight: CGFloat
-    private let collapsedHeight: CGFloat
     private let allowsDismiss: Bool
     private let accessibilityAction: (() -> Void)?
     
@@ -22,11 +21,9 @@ struct GiniBottomSheetModifier: ViewModifier {
     }
     
     init(contentHeight: CGFloat,
-         collapsedHeight: CGFloat,
          allowsDismiss: Bool = false,
          accessibilityAction: (() -> Void)?) {
         self.contentHeight = max(contentHeight, Constants.minimumHeight)
-        self.collapsedHeight = collapsedHeight
         self.allowsDismiss = allowsDismiss
         self.accessibilityAction = accessibilityAction
     }
@@ -45,7 +42,7 @@ struct GiniBottomSheetModifier: ViewModifier {
             
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
-                .presentationCompactAdaptation(.sheet)
+                .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
                 .presentationContentInteraction(.resizes)
         } else {
             base
@@ -53,15 +50,12 @@ struct GiniBottomSheetModifier: ViewModifier {
     }
     
     private func detentsForOrientation() -> Set<PresentationDetent> {
-            if isLandscape {
-                return [
-                    .height(collapsedHeight),
-                    .height(contentHeight)
-                ]
-            } else {
-                return [.height(contentHeight)]
-            }
+        if isLandscape {
+            return [.large]
+        } else {
+            return [.height(contentHeight)]
         }
+    }
     
     private struct Constants {
         

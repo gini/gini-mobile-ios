@@ -25,7 +25,6 @@ struct PaymentReviewPaymentInformationView: View {
     @FocusState private var focusedField: Field?
     
     @Binding private var contentHeight: CGFloat
-    @Binding private var collapsedHeight: CGFloat
     @Binding private var showBanner: Bool
     
     private var textFieldConfiguration: TextFieldConfiguration {
@@ -46,13 +45,11 @@ struct PaymentReviewPaymentInformationView: View {
     
     init(viewModel: PaymentReviewPaymentInformationObservableModel,
          contentHeight: Binding<CGFloat>,
-         collapsedHeight: Binding<CGFloat>,
          showBanner: Binding<Bool>,
          onBankSelectionTapped: @escaping () -> Void,
          onPayTapped: @escaping (PaymentInfo) -> Void) {
         self.viewModel = viewModel
         self._contentHeight = contentHeight
-        self._collapsedHeight = collapsedHeight
         self._showBanner = showBanner
         self.onBankSelectionTapped = onBankSelectionTapped
         self.onPayTapped = onPayTapped
@@ -74,7 +71,6 @@ struct PaymentReviewPaymentInformationView: View {
                     paymentProviderSelectionPicker
                     payButton
                 }
-                .getHeight(for: $collapsedHeight)
                 
                 if viewModel.shouldShowBrandedView {
                     poweredByGiniView
@@ -236,10 +232,6 @@ struct PaymentReviewPaymentInformationView: View {
                         .tint(Color(chevronDownIconColor))
                         .accessibilityHidden(true)
                 }
-                
-                Text(viewModelStrings.selectBankAccessibilityText)
-                    .hidden()
-                    
             }
             .frame(width: Constants.paymentProviderPickerSize.width,
                    height: Constants.paymentProviderPickerSize.height)
