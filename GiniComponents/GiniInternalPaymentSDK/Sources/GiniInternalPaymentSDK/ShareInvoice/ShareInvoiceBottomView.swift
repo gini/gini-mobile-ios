@@ -147,6 +147,12 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         setupAccessibility()
     }
     
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Clear the modal flag so VoiceOver can reach the presenting view again.
+        view.accessibilityViewIsModal = false
+    }
+    
     public init(viewModel: ShareInvoiceBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -157,13 +163,17 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
-    /// VoiceOver has already finished processing the UI changes.
+    /// Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
+    ///
+    /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`).  The previous
+    /// code set it on `self` (the `UIViewController`), which UIKit does not honour for
+    /// sibling-view hiding on iOS 18.x, causing VoiceOver to escape into the dimmed
+    /// background and find no readable elements in portrait.
     private func notifyLayoutChanged() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             guard let self = self else { return }
-            self.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .layoutChanged, argument: closeButton)
+            self.view.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .screenChanged, argument: self.closeButton)
         }
     }
     
