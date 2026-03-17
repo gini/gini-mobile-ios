@@ -141,6 +141,13 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         
         postAccessibilityFocus()
     }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Clear the modal flag so that VoiceOver can navigate the presenting
+        // view hierarchy again after this sheet is dismissed.
+        view.accessibilityViewIsModal = false
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -156,13 +163,21 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
-    /// VoiceOver has already finished processing the UI changes.
+    /// Traps VoiceOver focus inside this sheet and moves the cursor to the scroll view.
+    ///
+    /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
+    /// accessibility engine correctly hides sibling views from VoiceOver.  Setting it on the
+    /// `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
+    /// leaving VoiceOver free to wander into the dimmed background behind the sheet.
+    ///
+    /// The 0.5 s delay gives the sheet presentation controller time to finish its sizing
+    /// pass before VoiceOver reads the element tree.  We previously used 1.0 s but that
+    /// caused a noticeable lag in VoiceOver announcements.
     private func postAccessibilityFocus() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
-            self.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+            self.view.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .screenChanged, argument: self.titleLabel)
         }
     }
 
@@ -447,8 +462,13 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.updateLayoutForCurrentOrientation()
             self?.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            // Post the accessibility focus notification only AFTER the transition
+            // animation has fully completed and the layout is stable.  Calling it
+            // inside alongsideTransition fired the notification while the view was
+            // still animating, so VoiceOver read elements at incorrect positions.
             self?.postAccessibilityFocus()
-        }, completion: nil)
+        })
     }
 }
 
