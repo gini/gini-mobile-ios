@@ -10,6 +10,7 @@
 "gini.merchant.reviewscreen.amount.placeholder" = "Betrag";
 "gini.merchant.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "gini.merchant.reviewscreen.infobar.message" = "Bitte prüfen Sie die vorausgefüllten Daten.";
+"gini.merchant.reviewscreen.keyboard.done.button.title" = "Fertig";
 "gini.merchant.reviewscreen.banking.app.button.label" = "Zur Banking App";
 "gini.merchant.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "gini.merchant.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
