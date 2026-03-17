@@ -66,7 +66,8 @@ public struct PaymentReviewContentView: View {
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
                 collapsedHeight: collapsedHeight,
-                allowsDismiss: viewModel.isBottomSheetMode
+                allowsDismiss: viewModel.isBottomSheetMode,
+                accessibilityAction: viewModel.didTapClose
             ))
         }
     }

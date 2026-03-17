@@ -11,35 +11,44 @@ struct GiniBottomSheetModifier: ViewModifier {
     private let contentHeight: CGFloat
     private let collapsedHeight: CGFloat
     private let allowsDismiss: Bool
+    private let accessibilityAction: (() -> Void)?
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
     private var isLandscape: Bool {
-            verticalSizeClass == .compact
-        }
+        verticalSizeClass == .compact
+    }
     
     init(contentHeight: CGFloat,
          collapsedHeight: CGFloat,
-         allowsDismiss: Bool = false) {
+         allowsDismiss: Bool = false,
+         accessibilityAction: (() -> Void)?) {
         self.contentHeight = max(contentHeight, Constants.minimumHeight)
         self.collapsedHeight = collapsedHeight
         self.allowsDismiss = allowsDismiss
+        self.accessibilityAction = accessibilityAction
     }
     
     func body(content: Content) -> some View {
+        let base = content
+            .presentationDetents(detentsForOrientation())
+            .presentationDragIndicator(reduceMotion ? .hidden : .visible)
+            .interactiveDismissDisabled(!allowsDismiss && !isVoiceOverEnabled)
+            .accessibilityAction(.escape) {
+                accessibilityAction?()
+            }
+        
         if #available(iOS 16.4, *) {
-            content
-                .presentationDetents(detentsForOrientation())
-                .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(!allowsDismiss)
-                .presentationBackgroundInteraction(allowsDismiss ? .automatic : .enabled(upThrough: .height(contentHeight)))
+            let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
+            
+            base
+                .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
                 .presentationCompactAdaptation(.sheet)
                 .presentationContentInteraction(.resizes)
         } else {
-            content
-                .presentationDetents(detentsForOrientation())
-                .presentationDragIndicator(.visible)
-                .interactiveDismissDisabled(!allowsDismiss)
+            base
         }
     }
     
