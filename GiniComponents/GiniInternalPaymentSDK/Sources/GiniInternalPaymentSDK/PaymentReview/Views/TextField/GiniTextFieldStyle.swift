@@ -69,11 +69,9 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .padding(.horizontal, Constants.horizontalPadding)
             .frame(height: Constants.textFieldHeight)
             .background(Color(currentConfiguration.backgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius,
-                                        style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius))
             .overlay {
-                RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius,
-                                 style: .continuous)
+                RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius)
                 .stroke(Color(currentConfiguration.borderColor),
                         lineWidth: currentConfiguration.borderWidth)
             }

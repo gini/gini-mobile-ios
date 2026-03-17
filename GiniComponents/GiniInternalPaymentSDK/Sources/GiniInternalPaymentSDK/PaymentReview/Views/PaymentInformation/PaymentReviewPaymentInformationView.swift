@@ -236,6 +236,10 @@ struct PaymentReviewPaymentInformationView: View {
                         .tint(Color(chevronDownIconColor))
                         .accessibilityHidden(true)
                 }
+                
+                Text(viewModelStrings.selectBankAccessibilityText)
+                    .hidden()
+                    
             }
             .frame(width: Constants.paymentProviderPickerSize.width,
                    height: Constants.paymentProviderPickerSize.height)

@@ -7,7 +7,6 @@
 import Combine
 import GiniHealthAPILibrary
 import SwiftUI
-import UIKit
 
 final class PaymentReviewObservableModel: ObservableObject {
     
@@ -148,19 +147,19 @@ final class PaymentReviewObservableModel: ObservableObject {
     private func setupBindings() {
         // Observe changes from the original model
         model.onPreviewImagesFetched = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.cellViewModels = self?.model.cellViewModels ?? []
             }
         }
         
         model.updateImagesLoadingStatus = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.isImagesLoading = self?.model.isImagesLoading == true
             }
         }
         
         model.updateLoadingStatus = { [weak self] in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.isLoading = self?.model.isLoading == true
             }
         }
@@ -171,16 +170,16 @@ final class PaymentReviewObservableModel: ObservableObject {
         }
         
         model.onErrorHandling = { [weak self] _ in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.defaultErrorMessage)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                model.viewModelDelegate?.presentErrorAlert(message: model.strings.defaultErrorMessage)
             }
         }
         
         model.onCreatePaymentRequestErrorHandling = { [weak self] in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.model.viewModelDelegate?.presentErrorAlert(message: self.model.strings.createPaymentErrorMessage)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                model.viewModelDelegate?.presentErrorAlert(message: model.strings.createPaymentErrorMessage)
             }
         }
     }

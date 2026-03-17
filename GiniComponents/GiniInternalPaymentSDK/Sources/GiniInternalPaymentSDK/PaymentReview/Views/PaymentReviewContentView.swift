@@ -36,8 +36,12 @@ public struct PaymentReviewContentView: View {
         .overlay {
             loadingOverlay
         }
+        .task {
+            guard !hasAppeared else { return }
+            hasAppeared = true
+            await viewModel.fetchImages()
+        }
         .onAppear {
-            fetchImagesIfNeeded()
             viewModel.dismissBannerAfterDelay()
         }
     }
@@ -136,15 +140,6 @@ public struct PaymentReviewContentView: View {
     }
     
     // MARK: - Private Methods
-    
-    private func fetchImagesIfNeeded() {
-        guard !hasAppeared else { return }
-        hasAppeared = true
-        
-        Task {
-            await viewModel.fetchImages()
-        }
-    }
     
     private func computedCarouselHeight(for geometry: GeometryProxy, isLandscape: Bool) -> CGFloat {
         let effectiveBottomSheetHeight = bottomSheetHeight > 0 ? bottomSheetHeight : Constants.bottomSheetDefaultHeight
