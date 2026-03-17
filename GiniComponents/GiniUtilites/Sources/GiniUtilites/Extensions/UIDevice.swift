@@ -9,12 +9,35 @@ import UIKit
 public extension UIDevice {
     
     static func isPortrait() -> Bool {
-        // iOS 16 and higher - the most reliable and up-to-date way
+        // iOS 16 and higher - prefer the window scene's interface orientation.
         if #available(iOS 16.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            // Prefer the foreground-active scene so we always read the live orientation
+            // even during orientation transitions.
+            let activeScene = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }
+            
+            let windowScene = activeScene
+                ?? UIApplication.shared.connectedScenes.first as? UIWindowScene
+            
+            guard let windowScene else {
                 return UIDevice.current.orientation.isPortrait
             }
-            return windowScene.interfaceOrientation.isPortrait
+            
+            let interfaceOrientation = windowScene.interfaceOrientation
+            
+            // `.unknown` is returned when the scene has not yet finished its first
+            // activation or when the orientation is queried mid-transition.
+            // In that case fall back to the physical device orientation so that
+            // portrait is never misidentified as landscape.
+            guard interfaceOrientation != .unknown else {
+                let deviceOrientation = UIDevice.current.orientation
+                // isLandscape is false for unknown/flat orientations, so the
+                // double-negation correctly defaults to portrait when uncertain.
+                return !deviceOrientation.isLandscape
+            }
+            
+            return interfaceOrientation.isPortrait
         } else {
             // 1. Check first the window orientation (more reliable than statusBarOrientation)
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
