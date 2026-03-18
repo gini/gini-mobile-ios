@@ -166,16 +166,18 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     
     private var accessibilityFocusWorkItem: DispatchWorkItem?
 
-    /// Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
-    ///
-    /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
-    /// accessibility engine correctly hides sibling views from VoiceOver.  Setting it on the
-    /// `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
-    /// leaving VoiceOver free to wander into the dimmed background behind the sheet.
-    ///
-    /// The 0.5 s delay gives the sheet presentation controller time to finish its sizing
-    /// pass before VoiceOver reads the element tree.  We previously used 1.0 s but that
-    /// caused a noticeable lag in VoiceOver announcements.
+    /**
+     Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
+
+     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
+     accessibility engine correctly hides sibling views from VoiceOver. Setting it on the
+     `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
+     leaving VoiceOver free to wander into the dimmed background behind the sheet.
+
+     The 0.5 s delay gives the sheet presentation controller time to finish its sizing
+     pass before VoiceOver reads the element tree. We previously used 1.0 s but that
+     caused a noticeable lag in VoiceOver announcements.
+     */
     private func postAccessibilityFocus() {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in

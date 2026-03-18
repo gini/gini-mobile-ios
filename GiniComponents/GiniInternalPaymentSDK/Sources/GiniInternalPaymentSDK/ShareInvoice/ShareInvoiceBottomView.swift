@@ -167,12 +167,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     
     private var accessibilityFocusWorkItem: DispatchWorkItem?
 
-    /// Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
-    ///
-    /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`).  The previous
-    /// code set it on `self` (the `UIViewController`), which UIKit does not honour for
-    /// sibling-view hiding on iOS 18.x, causing VoiceOver to escape into the dimmed
-    /// background and find no readable elements in portrait.
+    /**
+     Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
+
+     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`). The previous
+     code set it on `self` (the `UIViewController`), which UIKit does not honour for
+     sibling-view hiding on iOS 18.x, causing VoiceOver to escape into the dimmed
+     background and find no readable elements in portrait.
+     */
     private func notifyLayoutChanged() {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in
