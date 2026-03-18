@@ -16,6 +16,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
     
     private lazy var closeButtonContainerView: EmptyView = {
         let view = EmptyView()
@@ -165,8 +166,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var accessibilityFocusWorkItem: DispatchWorkItem?
-
     /**
      Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
 

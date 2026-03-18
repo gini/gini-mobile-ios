@@ -24,6 +24,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
 
     private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
@@ -164,8 +165,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var accessibilityFocusWorkItem: DispatchWorkItem?
-
     /**
      Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
 
