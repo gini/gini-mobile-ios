@@ -41,10 +41,10 @@ class PaymentServiceTests: DocumentServiceTestBase {
         }
     }
     
-    func testPaymentProviders() {
+    func testPaymentProviders() throws {
         let expect = expectation(description: "returns array of payment providers")
         sessionManagerMock.initializeWithPaymentProvidersResponse()
-        let paymentProvidersResponse: [PaymentProviderResponse] = loadJSON(fromFile: "providers", type: "json")
+        let paymentProvidersResponse: [PaymentProviderResponse] = try loadJSON(fromFile: "providers", type: "json")
         paymentService.paymentProviders { result in
             switch result {
             case .success(let providersResponse):
@@ -77,8 +77,8 @@ class PaymentServiceTests: DocumentServiceTestBase {
         XCTAssertEqual(results.count, 1, "Completion should only be called once")
     }
 
-    func testPaymentProvider() {
-        let paymentProvider: PaymentProviderResponse = loadJSON(fromFile: "provider", type: "json")
+    func testPaymentProvider() throws {
+        let paymentProvider: PaymentProviderResponse = try loadJSON(fromFile: "provider", type: "json")
         awaitSuccess(description: "returns a payment provider via id") {
             self.paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId, completion: $0)
         } validate: { provider in

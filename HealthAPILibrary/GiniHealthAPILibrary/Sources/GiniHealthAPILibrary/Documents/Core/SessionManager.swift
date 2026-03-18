@@ -335,21 +335,26 @@ private extension SessionManager {
         }
 
         // Fallback: no JSON body — use the semantic error type for the status code.
+        let mappedError = mapStatusCodeToError(statusCode, response: response, data: data)
+        completion(.failure(mappedError))
+    }
+
+    private func mapStatusCodeToError(_ statusCode: Int, response: HTTPURLResponse?, data: Data?) -> GiniError {
         switch statusCode {
         case 400:
-            completion(.failure(.badRequest(response: response, data: data)))
+            return .badRequest(response: response, data: data)
         case 401:
-            completion(.failure(.unauthorized(response: response, data: data)))
+            return .unauthorized(response: response, data: data)
         case 403:
-            completion(.failure(.unauthorized(response: response, data: data)))
+            return .unauthorized(response: response, data: data)
         case 404:
-            completion(.failure(.notFound(response: response, data: data)))
+            return .notFound(response: response, data: data)
         case 406:
-            completion(.failure(.notAcceptable(response: response, data: data)))
+            return .notAcceptable(response: response, data: data)
         case 429:
-            completion(.failure(.tooManyRequests(response: response, data: data)))
+            return .tooManyRequests(response: response, data: data)
         default:
-            completion(.failure(.unknown(response: response, data: data)))
+            return .unknown(response: response, data: data)
         }
     }
 

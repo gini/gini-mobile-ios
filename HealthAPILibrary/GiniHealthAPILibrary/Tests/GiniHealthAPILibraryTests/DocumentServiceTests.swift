@@ -57,9 +57,9 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         }
     }
 
-    func testPartialDocumentDeletion() {
+    func testPartialDocumentDeletion() throws {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadJSON(fromFile: "partialDocument", type: "json")
+        let document: Document = try loadJSON(fromFile: "partialDocument", type: "json")
 
         awaitSuccess(description: "it deletes the partial document") { done in
             self.defaultDocumentService.delete(document) { result in done(result) }
@@ -68,22 +68,22 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         }
     }
 
-    func testCompositeDocumentDeletion() {
+    func testCompositeDocumentDeletion() throws {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadJSON(fromFile: "compositeDocument", type: "json")
+        let document: Document = try loadJSON(fromFile: "compositeDocument", type: "json")
 
         awaitSuccess(description: "it deletes the composite document") { done in
             self.defaultDocumentService.delete(document) { result in done(result) }
         } validate: { _ in
             XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
-                           "there should be one aprtial document left")
+                           "there should be one partial document left")
         }
     }
 
-    func testSubmitFeedback(){
+    func testSubmitFeedback() throws {
         let expect = expectation(description: "feedback will be successfully sent")
-        let document: Document = loadJSON(fromFile: "compositeDocument", type: "json")
-        let extractionResult: ExtractionsContainer = loadJSON(fromFile: "feedbackExtractions", type: "json")
+        let document: Document = try loadJSON(fromFile: "compositeDocument", type: "json")
+        let extractionResult: ExtractionsContainer = try loadJSON(fromFile: "feedbackExtractions", type: "json")
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
         struct ExtractionValue: Decodable {
@@ -147,10 +147,10 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         wait(for: [expect], timeout: 5)
 }
 
-    func testUrlStringForHighestResolutionPreview() {
+    func testUrlStringForHighestResolutionPreview() throws {
         let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let pages: [Document.Page] = loadJSON(fromFile: "pages", type: "json")
+        let pages: [Document.Page] = try loadJSON(fromFile: "pages", type: "json")
         if let page = pages.first {
             let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
             print(urlStringForHighestResolutionPreview)

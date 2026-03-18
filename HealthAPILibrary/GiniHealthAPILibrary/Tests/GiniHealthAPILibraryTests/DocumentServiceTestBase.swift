@@ -44,12 +44,7 @@ class DocumentServiceTestBase: XCTestCase {
 
     /// Decodes a JSON fixture from the test bundle. Named `loadJSON` to avoid
     /// shadowing `NSObject.load()` inside XCTestCase subclasses.
-    func loadJSON<T: Decodable>(fromFile named: String, type fileType: String = "json") -> T {
-        let data = loadFile(withName: named, ofType: fileType)
-        do {
-            return try JSONDecoder().decode(T.self, from: data)
-        } catch {
-            fatalError("Could not decode \(named).\(fileType) in tests: \(error)")
-        }
+    func loadJSON<T: Decodable>(fromFile named: String, type fileType: String = "json") throws -> T {
+        try JSONDecoder().decode(T.self, from: loadFile(withName: named, ofType: fileType))
     }
 }
