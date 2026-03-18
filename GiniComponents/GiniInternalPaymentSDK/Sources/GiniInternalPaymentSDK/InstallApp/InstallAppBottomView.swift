@@ -166,7 +166,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     
     private var accessibilityFocusWorkItem: DispatchWorkItem?
 
-    /// Traps VoiceOver focus inside this sheet and moves the cursor to the scroll view.
+    /// Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
     ///
     /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
     /// accessibility engine correctly hides sibling views from VoiceOver.  Setting it on the

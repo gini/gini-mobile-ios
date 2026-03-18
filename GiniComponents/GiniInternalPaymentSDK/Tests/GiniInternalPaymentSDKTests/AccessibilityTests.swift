@@ -11,6 +11,7 @@
 //    3. InstallAppBottomView and ShareInvoiceBottomView clear accessibilityViewIsModal
 //       on viewWillDisappear so VoiceOver can navigate back to the presenter.
 //    4. PaymentComponentBottomView does not set accessibilityViewIsModal on the VC itself.
+//  The UIDevice.isPortrait() orientation-fallback fix is covered by UIDeviceOrientationTests.
 
 import Testing
 import UIKit
@@ -162,7 +163,7 @@ private func makeShareInvoiceBottomView() -> ShareInvoiceBottomView {
 
 // MARK: - Tests
 
-/// Regression tests for the five VoiceOver portrait-orientation bugs.
+/// Regression tests for the four VoiceOver portrait-orientation bugs covered here.
 ///
 /// All tests use `@MainActor` because they create and mutate `UIView`/`UIViewController`
 /// objects, which must be accessed on the main thread.

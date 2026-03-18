@@ -88,14 +88,10 @@ struct UIDeviceOrientationTests {
     /// return a Bool and must not crash regardless of the environment.
     @Test("UIDevice.isPortrait() returns a value without crashing in test environment")
     @MainActor func isPortraitReturnsBoolInTestEnvironment() {
-        // Should not throw, trap, or crash.
-        let result = UIDevice.isPortrait()
-        // In the test host the device orientation is .unknown, so isLandscape = false,
-        // and the fallback returns true (portrait).  We don't assert a specific value
-        // because CI simulators may report varying orientations; the crash-freedom
-        // and Bool contract are what we need to pin here.
-        _ = result  // suppress unused-result warning
-        #expect(Bool.self == type(of: result))
+        // Crash-freedom is verified by reaching this line — if isPortrait() traps
+        // or throws the test fails.  No value assertion is made because CI simulators
+        // may report varying orientations.
+        _ = UIDevice.isPortrait()
     }
 
     /// Verifies the double-negation logic used in the fallback:
