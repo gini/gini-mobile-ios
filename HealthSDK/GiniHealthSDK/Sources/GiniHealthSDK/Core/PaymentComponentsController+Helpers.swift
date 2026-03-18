@@ -701,7 +701,9 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
     }
     
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                               paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                                               completion: @escaping (UIViewController) -> Void) {
         self.paymentInfo = paymentInfo
         giniSDK.paymentService.qrCodeImage(paymentRequestId: paymentRequestId) { [weak self] result in
             switch result {
@@ -709,7 +711,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
                 DispatchQueue.main.async {
                     let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image, paymentRequestId: paymentRequestId)
                     guard let shareInvoiceBottomSheet else { return }
-                    self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
+                    completion(shareInvoiceBottomSheet)
                 }
             case .failure(let error):
                 self?.handleError(error)
