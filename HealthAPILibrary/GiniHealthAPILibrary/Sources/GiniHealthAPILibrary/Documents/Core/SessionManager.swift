@@ -245,7 +245,7 @@ private extension SessionManager {
                     } else {
                         completion(.failure(.unknown(response: response, data: nil)))
                     }
-                case 400..<500:
+                case 400..<600:
                     Log("""
                         Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
                         Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
@@ -286,13 +286,12 @@ private extension SessionManager {
         }
     }
     
-    private func downloadTaskCompletionHandler<T: Resource>(
-        for resource: T,
-        request: URLRequest,
-        taskType: TaskType,
-        cancellationToken: CancellationToken?,
-        completion: @escaping CompletionResult<T.ResponseType>) -> ((URL?, URLResponse?, Error?) -> Void) {
-        return {[weak self] url, response, error in
+    private func downloadTaskCompletionHandler<T: Resource>(for resource: T,
+                                                            request: URLRequest,
+                                                            taskType: TaskType,
+                                                            cancellationToken: CancellationToken?,
+                                                            completion: @escaping CompletionResult<T.ResponseType>) -> ((URL?, URLResponse?, Error?) -> Void) {
+        return { [weak self] url, response, error in
             guard let self = self else { return }
             
             self.taskCompletionHandler(for: resource,
@@ -310,36 +309,52 @@ private extension SessionManager {
                                           taskType: TaskType,
                                           cancellationToken: CancellationToken?,
                                           completion: @escaping CompletionResult<T.ResponseType>) {
-        switch statusCode {
-        case 400:
-            guard let responseData = data else {
-                completion(.failure(.badRequest(response: response, data: nil)))
-                return
-            }
-
-            if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                errorInfo["error"] == "invalid_grant" {
+        // Apply OAuth-specific special handling only for User API `user.gini.net` (.userService)
+        if let authType = resource.authServiceType, case .userService = authType {
+            // 400 invalid_grant -> unauthorized
+            if statusCode == 400, let responseData = data,
+               let dict = try? JSONDecoder().decode([String: String].self, from: responseData),
+               dict["error"] == "invalid_grant" {
                 completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
 
-            // Check if it's valid JSON (works for GiniCustomError and any other JSON structure)
-            if (try? JSONSerialization.jsonObject(with: responseData, options: [])) != nil {
-                completion(.failure(.customError(response: response, data: responseData)))
+            // All 401s from the user service -> unauthorized (covers invalid_client and any other OAuth 401)
+            if statusCode == 401 {
+                completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
+        }
 
-            completion(.failure(.badRequest(response: response, data: data)))
+        // Primary rule: any response with a valid JSON body surfaces as .customError so
+        // call-sites can inspect structured error fields (items, requestId, etc.).
+        if let responseData = data,
+           (try? JSONSerialization.jsonObject(with: responseData, options: [])) != nil {
+            completion(.failure(.customError(response: response, data: responseData)))
+            return
+        }
+
+        // Fallback: no JSON body — use the semantic error type for the status code.
+        let mappedError = mapStatusCodeToError(statusCode, response: response, data: data)
+        completion(.failure(mappedError))
+    }
+
+    private func mapStatusCodeToError(_ statusCode: Int, response: HTTPURLResponse?, data: Data?) -> GiniError {
+        switch statusCode {
+        case 400:
+            return .badRequest(response: response, data: data)
         case 401:
-            completion(.failure(.unauthorized(response: response, data: data)))
+            return .unauthorized(response: response, data: data)
+        case 403:
+            return .unauthorized(response: response, data: data)
         case 404:
-            completion(.failure(.notFound(response: response, data: data)))
+            return .notFound(response: response, data: data)
         case 406:
-            completion(.failure(.notAcceptable(response: response, data: data)))
+            return .notAcceptable(response: response, data: data)
         case 429:
-            completion(.failure(.tooManyRequests(response: response, data: data)))
+            return .tooManyRequests(response: response, data: data)
         default:
-            completion(.failure(.unknown(response: response, data: data)))
+            return .unknown(response: response, data: data)
         }
     }
 
@@ -360,3 +375,4 @@ private extension SessionManager {
         }
     }
 }
+

@@ -1,49 +1,35 @@
 //
 //  DocumentServicesTests.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/26/19.
+//  Copyright © 2019 Gini GmbH. All rights reserved.
 //
 
 @testable import GiniHealthAPILibrary
 import XCTest
 import UIKit
-final class DocumentServicesTests: XCTestCase {
-    var sessionManagerMock: SessionManagerMock!
-    var defaultDocumentService: DefaultDocumentService!
-    let versionAPI = 4
-
-    override func setUp() {
-        sessionManagerMock = SessionManagerMock()
-        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-    }
+final class DocumentServicesTests: DocumentServiceTestBase {
 
     func testPartialDocumentCreation() {
-        let expect = expectation(description: "it returns a partial document")
-
-        defaultDocumentService.createDocument(fileName: "",
-                                              docType: nil,
-                                              type: .partial(Data(count: 1)),
-                                              metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.partialDocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it returns a partial document") { done in
+            self.defaultDocumentService.createDocument(fileName: "",
+                                                       docType: nil,
+                                                       type: .partial(Data(count: 1)),
+                                                       metadata: nil) { result in done(result) }
+        } validate: { document in
+            XCTAssertEqual(document.id,
+                           SessionManagerMock.partialDocumentId,
+                           "document ids should match")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
-    func testPartialDocumentCreationWithImageCompression() {
+    func testPartialDocumentCreationWithImageCompression() throws {
         // Should check size of a big image
         let range = 6635000...6636000 // We need this range because on different machines, the compression is a bit bigger or smaller
 
-        guard let imageData12MB = UIImage(named: "invoice-12MB", in: Bundle.module, compatibleWith: nil)?.pngData() else { return }
+        guard let imageData12MB = UIImage(named: "invoice-12MB", in: Bundle.module, compatibleWith: nil)?.pngData() else {
+            throw XCTSkip("Test fixture 'invoice-12MB' is missing from test bundle")
+        }
         let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: imageData12MB)
 
         XCTAssertTrue(range.contains(imageDataProcessed?.count ?? 0))
@@ -59,149 +45,112 @@ final class DocumentServicesTests: XCTestCase {
     }
 
     func testCompositeDocumentCreation() {
-        let expect = expectation(description: "it returns a composite document")
-
-        defaultDocumentService.createDocument(fileName: "",
-                                              docType: nil,
-                                              type: .composite(CompositeDocumentInfo(partialDocuments: [])),
-                                              metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.compositeDocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it returns a composite document") { done in
+            self.defaultDocumentService.createDocument(fileName: "",
+                                                       docType: nil,
+                                                       type: .composite(CompositeDocumentInfo(partialDocuments: [])),
+                                                       metadata: nil) { result in done(result) }
+        } validate: { document in
+            XCTAssertEqual(document.id,
+                           SessionManagerMock.compositeDocumentId,
+                           "document ids should match")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
-    func testPartialDocumentDeletion() {
-        let expect = expectation(description: "it deletes the partial document")
+    func testPartialDocumentDeletion() throws {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadDocument(fileName: "partialDocument", type: "json")
+        let document: Document = try loadJSON(fromFile: "partialDocument", type: "json")
 
-        defaultDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it deletes the partial document") { done in
+            self.defaultDocumentService.delete(document) { result in done(result) }
+        } validate: { _ in
+            XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
-    func testCompositeDocumentDeletion() {
-        let expect = expectation(description: "it deletes the composite document")
+    func testCompositeDocumentDeletion() throws {
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
+        let document: Document = try loadJSON(fromFile: "compositeDocument", type: "json")
 
-        defaultDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
-                               "there should be one aprtial document left")
-                expect.fulfill()
-            case .failure:
-                break
-            }
+        awaitSuccess(description: "it deletes the composite document") { done in
+            self.defaultDocumentService.delete(document) { result in done(result) }
+        } validate: { _ in
+            XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
+                           "there should be one partial document left")
         }
-
-        wait(for: [expect], timeout: 1)
     }
 
-    func loadDocument(fileName: String, type: String) -> Document {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode(Document.self, from: jsonData))!
-    }
-
-    func loadExtractionResults(fileName: String, type: String) -> ExtractionsContainer {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData))!
-    }
-    
-    func loadPages(fileName: String, type: String) -> [Document.Page] {
-        let jsonData = loadFile(withName: fileName, ofType: type)
-
-        return (try? JSONDecoder().decode([Document.Page].self, from: jsonData))!
-    }
-
-    func testSubmitFeedback() {
+    func testSubmitFeedback() throws {
         let expect = expectation(description: "feedback will be successfully sent")
-        let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
-        let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
-        var amountToPayFromLoadedFeedbackValue = ""
-        let feedbackData =
-            loadFile(withName: "feedbackToSend", ofType: "json")
-        if let json = try? JSONSerialization.jsonObject(with: feedbackData, options: .mutableContainers) {
-            if let dictionary = json as? [String: [Extraction]] {
-                if let extractions = dictionary["extractions"] {
-                    let amountToPayFromLoadedFeedback = extractions.first {
-                        $0.name == "amountToPay"
-                    }
-                    amountToPayFromLoadedFeedbackValue = amountToPayFromLoadedFeedback?.value ?? ""
-                }
-            }
-            let amountToPayExtraction = extractionResult.extractions.first {
-                $0.name == "amountToPay"
-            }
-            let amountToPay = amountToPayExtraction?.value ?? ""
+        let document: Document = try loadJSON(fromFile: "compositeDocument", type: "json")
+        let extractionResult: ExtractionsContainer = try loadJSON(fromFile: "feedbackExtractions", type: "json")
+        let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
-            if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
-                    let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
-
-                    let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
-
-                    defaultDocumentService.submitFeedback(for: document, with: extractionResult.extractions.filter { extraction in
-                        pay4Keys.contains(extraction.name ?? "")
-                    },
-                    and: filteredCompoundExtractions) { result in
-                        switch result {
-                        case .success:
-                            DispatchQueue.main.async {
-                                if let jsonFromFeedbackHttpBody = try? JSONSerialization.jsonObject(with: self.sessionManagerMock.extractionFeedbackBody!, options: .mutableContainers) {
-                                    if let dictionary = jsonFromFeedbackHttpBody as? [String: [Extraction]] {
-                                        if let extractions = dictionary["extractions"] {
-                                            let amountToPayFromHttpBodyExtraction = extractions.first {
-                                                $0.name == "amountToPay"
-                                            }
-
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromHttpBodyExtraction?.value ?? "",
-                                                           "amout to pay values should match")
-                                            XCTAssertEqual(amountToPay,
-                                                           amountToPayFromLoadedFeedbackValue,
-                                                           "amout to pay values should match")
-                                        }
-                                    } else {
-                                        print("json data malformed")
-                                    }
-                                }
-                                expect.fulfill()
-                            }
-                        case .failure:
-                            break
-                        }
-                        self.wait(for: [expect], timeout: 1)
-                    }
-                }
-            }
+        struct ExtractionValue: Decodable {
+            let value: String
         }
-    }
-    
-    func testUrlStringForHighestResolutionPreview() {
+        struct FeedbackPayload: Decodable {
+            let extractions: [String: ExtractionValue]
+        }
+
+        let feedbackPayload: FeedbackPayload
+        do {
+            feedbackPayload = try JSONDecoder().decode(FeedbackPayload.self, from: feedbackData)
+        } catch {
+            XCTFail("Failed to parse feedbackToSend.json: \(error)")
+            return
+        }
+
+        let amountToPayFromLoadedFeedbackValue = feedbackPayload.extractions["amountToPay"]?.value ?? ""
+        let amountToPay = extractionResult.extractions.first { $0.name == "amountToPay" }?.value ?? ""
+
+        guard let compoundExtractions = extractionResult.compoundExtractions,
+              let lineItems = compoundExtractions["lineItems"],
+              let firstLineItem = lineItems.first else {
+                  XCTFail("No lineItems found in extraction results")
+                  return
+              }
+
+        let filteredCompoundExtractions = ["lineItems": [firstLineItem]]
+        let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
+
+        defaultDocumentService.submitFeedback(for: document,
+                                              with: extractionResult.extractions.filter { pay4Keys.contains($0.name ?? "") },
+                                              and: filteredCompoundExtractions) { result in
+            switch result {
+            case .success:
+            guard let body = self.sessionManagerMock.extractionFeedbackBody else {
+                XCTFail("extractionFeedbackBody is nil")
+                expect.fulfill()
+                return
+            }
+
+            let bodyPayload: FeedbackPayload
+            do {
+                bodyPayload = try JSONDecoder().decode(FeedbackPayload.self, from: body)
+            } catch {
+                XCTFail("Failed to parse HTTP body extractions: \(error)")
+                expect.fulfill()
+                return
+            }
+
+            let amountToPayFromHttpBody = bodyPayload.extractions["amountToPay"]?.value ?? ""
+            XCTAssertEqual(amountToPay, amountToPayFromHttpBody, "amount to pay values should match")
+            XCTAssertEqual(amountToPay, amountToPayFromLoadedFeedbackValue, "amount to pay values should match")
+
+            case .failure(let error):
+            XCTFail("submitFeedback failed with error: \(error)")
+            }
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 5)
+}
+
+    func testUrlStringForHighestResolutionPreview() throws {
         let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
         sessionManagerMock.initializeWithV2MockedDocuments()
-        let pages: [Document.Page] = loadPages(fileName: "pages", type: "json")
+        let pages: [Document.Page] = try loadJSON(fromFile: "pages", type: "json")
         if let page = pages.first {
             let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
             print(urlStringForHighestResolutionPreview)

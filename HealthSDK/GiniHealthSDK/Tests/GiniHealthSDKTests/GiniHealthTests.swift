@@ -4,30 +4,18 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-final class GiniHealthTests: XCTestCase {
-    
-    var giniHealthAPI: GiniHealthAPI!
-    var giniHealth: GiniHealth!
-    private let versionAPI = 4
+final class GiniHealthTests: GiniHealthTestCase {
 
-    override func setUp() {
-        let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        GiniHealthConfiguration.shared.clientConfiguration = nil
-        giniHealthAPI = GiniHealthAPI(documentService: documentService,
-                                      paymentService: paymentService,
-                                      clientConfigurationService: clientConfigurationService)
-        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
+    // MARK: - Helper
+
+    private func assertClientConfiguration(_ config: ClientConfiguration,
+                                           communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
+                                           brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        XCTAssertNotNil(config)
+        XCTAssertEqual(config.communicationTone, communicationTone)
+        XCTAssertEqual(config.ingredientBrandType, brandType)
     }
 
-    override func tearDown() {
-        giniHealthAPI = nil
-        giniHealth = nil
-        super.tearDown()
-    }
-    
     func testSetConfiguration() throws {
         // Given
         let configuration = GiniHealthConfiguration()
@@ -68,7 +56,10 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open == true, "testOpenLink - FAILED to open link")
         })
@@ -81,7 +72,10 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was not opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open == false, "testOpenLink - MANAGED to open link")
         })
@@ -115,53 +109,29 @@ final class GiniHealthTests: XCTestCase {
     }
 
     func testLoadDefaultClientConfiguration() {
-        // Given
         let clientConfiguration = ClientConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
     }
-    
+
     func testFormalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration()
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.customLocalization = .de
         configuration.clientConfiguration = clientConfiguration
         giniHealth.setConfiguration(configuration)
-        
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
-    
+
     func testInformalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration(communicationTone: .informal)
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.clientConfiguration = clientConfiguration
         configuration.customLocalization = .de
         giniHealth.setConfiguration(configuration)
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
 }

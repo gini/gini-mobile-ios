@@ -15,10 +15,12 @@
   "defaultOptions" : {
     "environmentVariableEntries" : [
       {
+        "enabled" : true,
         "key" : "CLIENT_ID",
         "value" : "$(CLIENT_ID)"
       },
       {
+        "enabled" : true,
         "key" : "CLIENT_SECRET",
         "value" : "$(CLIENT_SECRET)"
       }
@@ -26,9 +28,18 @@
   },
   "testTargets" : [
     {
+      "enabled" : true,
+      "parallelizable" : false,
+      "selectedTests" : [
+        "GiniHealthSDKIntegrationTests",
+        "GiniHealthSDKPinningExampleIntegrationTests",
+        "UploadDocumentsTests",
+        "AlternativeNavigationTests",
+        "GiniHealthSDKPinningExampleWrongCertificatesTests"
+      ],
       "target" : {
         "containerPath" : "container:GiniHealthSDKExample.xcodeproj",
-        "identifier" : "F4EC38D3273C21E6007045DC",
+        "identifier" : "F484E8F32F4F555300547A9B",
         "name" : "GiniHealthSDKExampleTests"
       }
     }

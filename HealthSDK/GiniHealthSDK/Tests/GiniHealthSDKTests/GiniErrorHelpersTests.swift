@@ -3,12 +3,25 @@ import XCTest
 import GiniHealthAPILibrary
 
 final class GiniErrorHelpersTests: XCTestCase {
+
+    // MARK: - Helper
+
+    /// Loads a JSON test fixture, wraps it in `.customError`, and converts it to a `GiniHealthSDK.GiniError`.
+    private func makeSDKError(fromFile fileName: String,
+                              response: HTTPURLResponse? = nil) -> GiniHealthSDK.GiniError {
+        guard let jsonData = FileLoader.loadFile(withName: fileName, ofType: "json") else {
+            XCTFail("Failed to load test resource: \(fileName).json")
+            return GiniError.toGiniHealthSDKError(error: .noResponse)
+        }
+        let apiError = GiniHealthAPILibrary.GiniError.customError(response: response, data: jsonData)
+        return GiniError.toGiniHealthSDKError(error: apiError)
+    }
     
     // MARK: - itemsDescription Tests
     
     func testItemsDescription_withNoItems_returnsDefaultMessage() {
         // Given
-        let error = GiniError.decorator(.noResponse)
+        let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
         // When
         let description = error.itemsDescription
@@ -18,17 +31,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testItemsDescription_withRealTestFile_unauthorized() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
         let description = error.itemsDescription
@@ -40,17 +43,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testItemsDescription_withRealTestFile_notFound() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
         let description = error.itemsDescription
@@ -61,17 +54,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testItemsDescription_withRealTestFile_compositeMissing() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorCompositeMissing", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorCompositeMissing")
         
         // When
         let description = error.itemsDescription
@@ -82,23 +65,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testItemsDescription_withNoObjects_showsNoObjects() {
-        // Given
-        let jsonData = """
-        {
-            "items": [
-                {
-                    "code": "2013"
-                }
-            ],
-            "requestId": "test-id"
-        }
-        """.data(using: .utf8)!
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "itemsWithErrorCodeAndWithoutObject")
         
         // When
         let description = error.itemsDescription
@@ -111,7 +78,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testObjectsWithCode_withNoItems_returnsEmptyArray() {
         // Given
-        let error = GiniError.decorator(.noResponse)
+        let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -121,17 +88,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testObjectsWithCode_withRealTestFile_unauthorized() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -143,17 +100,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testObjectsWithCode_withRealTestFile_notFound() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
         let objects = error.objectsWithCode("2014")
@@ -163,17 +110,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testObjectsWithCode_withNonMatchingCode_returnsEmptyArray() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When - Request code that doesn't exist in file
         let objects = error.objectsWithCode("9999")
@@ -183,32 +120,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testObjectsWithCode_withMultipleItemsSameCode_mergesAllObjects() {
-        // Given - Create test data with multiple items having same code
-        let jsonData = """
-        {
-            "items": [
-                {
-                    "code": "2013",
-                    "object": ["doc-1", "doc-2"]
-                },
-                {
-                    "code": "2014",
-                    "object": ["doc-3"]
-                },
-                {
-                    "code": "2013",
-                    "object": ["doc-4", "doc-5"]
-                }
-            ],
-            "requestId": "test-id"
-        }
-        """.data(using: .utf8)!
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "multipleItemsSameErrorCode")
         
         // When
         let objects = error.objectsWithCode("2013")
@@ -221,24 +133,15 @@ final class GiniErrorHelpersTests: XCTestCase {
     // MARK: - detailedDescription Tests
     
     func testDetailedDescription_withRealTestFile_includesAllFields() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
-            XCTFail("Failed to load test resource")
+        guard let url = URL(string: "https://pay-api.gini.net"),
+              let response = HTTPURLResponse(url: url,
+                                             statusCode: 400,
+                                             httpVersion: nil,
+                                             headerFields: nil) else {
+            XCTFail("Failed to create HTTPURLResponse")
             return
         }
-        
-        let response = HTTPURLResponse(
-            url: URL(string: "https://api.gini.net")!,
-            statusCode: 400,
-            httpVersion: nil,
-            headerFields: nil
-        )
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: response,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized", response: response)
         
         // When
         let description = error.detailedDescription
@@ -251,17 +154,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testDetailedDescription_withNoStatusCode_showsZero() {
-        // Given - Use actual test resource without response
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotFound", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
         let description = error.detailedDescription
@@ -280,16 +173,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         ]
         
         for fileName in fileNames {
-            guard let jsonData = FileLoader.loadFile(withName: fileName, ofType: "json") else {
-                XCTFail("Failed to load test resource: \(fileName)")
-                continue
-            }
-            
-            let apiError = GiniHealthAPILibrary.GiniError.customError(
-                response: nil,
-                data: jsonData
-            )
-            let error = GiniError.decorator(apiError)
+            let error = makeSDKError(fromFile: fileName)
             
             // When
             let description = error.detailedDescription
@@ -305,25 +189,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     // MARK: - message Property Tests
     
     func testMessage_customError_returnsAPIMessage() {
-        // Given - Error with API message
-        let jsonData = """
-        {
-            "message": "Documents could not be deleted due to authorization issues",
-            "items": [
-                {
-                    "code": "2013",
-                    "object": ["doc-1", "doc-2"]
-                }
-            ],
-            "requestId": "test-request-123"
-        }
-        """.data(using: .utf8)!
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "itemWithErrorCodeAndAPIMessage")
         
         // When
         let message = error.message
@@ -334,13 +200,15 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testMessage_customError_withDecodingFailure_fallsBackToLocalizedDescription() {
         // Given - Invalid JSON that can't be decoded
-        let invalidJsonData = "not valid json".data(using: .utf8)!
+        guard let invalidJsonData = "not valid json".data(using: .utf8) else {
+            XCTFail("Failed to create invalid JSON data")
+            return
+        }
         
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: invalidJsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let apiError = GiniHealthAPILibrary.GiniError.customError(response: nil,
+                                                                  data: invalidJsonData)
+
+        let error = GiniError.toGiniHealthSDKError(error: apiError)
         
         // When
         let message = error.message
@@ -352,17 +220,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     }
     
     func testMessage_customError_withRealTestFile_returnsMessage() {
-        // Given - Use actual test resource
-        guard let jsonData = FileLoader.loadFile(withName: "bulkDocsDeletionErrorNotAuthorized", ofType: "json") else {
-            XCTFail("Failed to load test resource")
-            return
-        }
-        
-        let apiError = GiniHealthAPILibrary.GiniError.customError(
-            response: nil,
-            data: jsonData
-        )
-        let error = GiniError.decorator(apiError)
+        let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
         let message = error.message
@@ -375,14 +233,15 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     func testMessage_nonCustomError_returnsExpectedMessage() {
         // Given
-        let noResponseError = GiniError.decorator(.noResponse)
-        let notFoundError = GiniError.decorator(.notFound(response: nil, data: nil))
-        let unauthorizedError = GiniError.decorator(.unauthorized(response: nil, data: nil))
-        
+        let noResponseError = GiniError.toGiniHealthSDKError(error: .noResponse)
+        let notFoundError = GiniError.toGiniHealthSDKError(error: .notFound(response: nil,
+                                                                            data: nil))
+        let unauthorizedError = GiniError.toGiniHealthSDKError(error: .unauthorized(response: nil,
+                                                                                    data: nil))
+
         // Then
         XCTAssertEqual(noResponseError.message, "No response")
         XCTAssertEqual(notFoundError.message, "Not found")
         XCTAssertEqual(unauthorizedError.message, "Unauthorized")
     }
 }
-

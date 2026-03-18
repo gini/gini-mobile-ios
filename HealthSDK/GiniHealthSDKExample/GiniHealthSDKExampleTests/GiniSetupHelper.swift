@@ -8,23 +8,24 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniHealthSDK
+@testable import GiniHealthSDKExample
 
 final class GiniSetupHelper {
-    private var giniHealthAPILib: GiniHealthAPI!
-    var giniHealthAPIDocumentService: GiniHealthAPILibrary.DefaultDocumentService!
-    var giniHealth: GiniHealth!
+    private let giniHealthAPILib: GiniHealthAPI
+    let giniHealthAPIDocumentService: GiniHealthSDK.DefaultDocumentService
+    let giniHealth: GiniHealth
+
+    init() {
+        let client: GiniHealthAPILibrary.Client = Client(id: testClientID,
+                                                        secret: testClientPassword,
+                                                        domain: testClientDomain)
+        giniHealthAPILib = GiniHealthAPI.Builder(client: client).build()
+        giniHealth = GiniHealth(giniApiLib: giniHealthAPILib)
+        giniHealthAPIDocumentService = giniHealth.documentService
+    }
 
     func setup() {
-        let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-        let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
-        let clientDomain = "client_domain"
-
-        let client: GiniHealthAPILibrary.Client = Client(id: clientId, secret: clientSecret, domain: "gini.net")
-        giniHealthAPILib = GiniHealthAPI
-            .Builder(client: client)
-            .build()
-
-        giniHealthAPIDocumentService = giniHealthAPILib.documentService()
-        giniHealth = GiniHealth(id: clientId, secret: clientSecret, domain: clientDomain)
+        // Setup is now performed in init(); this method is kept for compatibility.
     }
 }
+

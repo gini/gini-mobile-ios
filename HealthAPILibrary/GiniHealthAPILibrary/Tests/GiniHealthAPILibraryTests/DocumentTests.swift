@@ -1,7 +1,6 @@
 //
 //  GiniDocumentTests.swift
-//
-//
+//  GiniHealthAPILibraryTests
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -19,8 +18,10 @@ final class GiniDocumentTests: XCTestCase {
     lazy var validDocument: Document = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        let giniDocument = try? decoder.decode(Document.self, from: documentJson)
-        return giniDocument!
+        guard let giniDocument = try? decoder.decode(Document.self, from: documentJson) else {
+            fatalError("Failed to decode valid document JSON")
+        }
+        return giniDocument
     }()
     
     func testDocumentDecoding() {
@@ -57,8 +58,9 @@ final class GiniDocumentTests: XCTestCase {
         lazy var documentWithoutExpirationDate: Document = {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
-            let giniDocument = try? decoder.decode(Document.self, from: documentWithoutExpirationDateJson)
-            return giniDocument!
+            guard let giniDocument = try? decoder.decode(Document.self, from: documentWithoutExpirationDateJson) else {
+                fatalError("Failed to decode document JSON without expiration date")}
+            return giniDocument
         }()
         XCTAssertNil(documentWithoutExpirationDate.expirationDate,
                      "document expirationDate should be nil")
@@ -114,7 +116,7 @@ final class GiniDocumentTests: XCTestCase {
     }
     
     func testInvalidJSONDecoding() {
-        let invalidJSON: Data = "invalid json".data(using: .utf8)!
+        let invalidJSON = Data("invalid json".utf8)
         XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: invalidJSON),
                              "document should be nil since it is not a valid JSON")
     }
