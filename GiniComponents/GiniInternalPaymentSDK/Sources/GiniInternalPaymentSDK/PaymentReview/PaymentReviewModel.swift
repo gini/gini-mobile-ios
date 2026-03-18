@@ -14,6 +14,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
+    func presentShareInvoiceBottomSheet(bottomSheet: UIViewController)
     func dismissPaymentReview()
     func presentErrorAlert(message: String)
 }
@@ -55,8 +56,10 @@ public protocol PaymentReviewSupportedFormatsProtocol {
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
-    func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
     func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?)
+    func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                        paymentInfo: PaymentInfo,
+                                        completion: @escaping (UIViewController) -> Void)
 }
 
 /**
@@ -215,7 +218,10 @@ public class PaymentReviewModel {
     }
 
     func openOnboardingShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo) {
-        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId, paymentInfo: paymentInfo)
+        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId,
+                                                 paymentInfo: paymentInfo) { [weak self] viewController in
+            self?.viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: viewController)
+        }
     }
 
     func openBankSelectionBottomSheet() {

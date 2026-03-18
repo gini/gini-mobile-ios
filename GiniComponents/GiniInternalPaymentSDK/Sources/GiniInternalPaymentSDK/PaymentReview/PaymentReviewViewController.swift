@@ -80,8 +80,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         self.presentedViewController?.dismiss(animated: true)
     }
 
-    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
-        presentBottomSheet(viewController: bottomSheet)
+    func presentShareInvoiceBottomSheet(bottomSheet: UIViewController) {
+        giniTopMostViewController().present(bottomSheet, animated: true)
     }
 
     func obtainPDFFromPaymentRequest(paymentRequestId: String) {
