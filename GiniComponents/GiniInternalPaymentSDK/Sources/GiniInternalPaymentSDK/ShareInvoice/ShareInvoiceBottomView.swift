@@ -149,7 +149,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Clear the modal flag so VoiceOver can reach the presenting view again.
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
         view.accessibilityViewIsModal = false
     }
     
@@ -163,6 +165,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
+
     /// Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
     ///
     /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`).  The previous
@@ -170,11 +174,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     /// sibling-view hiding on iOS 18.x, causing VoiceOver to escape into the dimmed
     /// background and find no readable elements in portrait.
     private func notifyLayoutChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            guard let self = self else { return }
-            self.view.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .screenChanged, argument: self.closeButton)
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            view.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .screenChanged, argument: closeButton)
         }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: work)
     }
     
     private func setupView() {

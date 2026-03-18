@@ -21,7 +21,10 @@ public extension UIDevice {
                 ?? UIApplication.shared.connectedScenes.first as? UIWindowScene
             
             guard let windowScene else {
-                return UIDevice.current.orientation.isPortrait
+                // No window scene available — fall back to physical orientation.
+                // Use !isLandscape (not .isPortrait) so that .unknown/.faceUp/.faceDown
+                // all default to portrait, matching the guard below.
+                return !UIDevice.current.orientation.isLandscape
             }
             
             let interfaceOrientation = windowScene.interfaceOrientation

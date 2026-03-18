@@ -144,8 +144,9 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Clear the modal flag so that VoiceOver can navigate the presenting
-        // view hierarchy again after this sheet is dismissed.
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
         view.accessibilityViewIsModal = false
     }
 
@@ -163,6 +164,8 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
+
     /// Traps VoiceOver focus inside this sheet and moves the cursor to the scroll view.
     ///
     /// `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
@@ -174,11 +177,14 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     /// pass before VoiceOver reads the element tree.  We previously used 1.0 s but that
     /// caused a noticeable lag in VoiceOver announcements.
     private func postAccessibilityFocus() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
-            self.view.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .screenChanged, argument: self.titleLabel)
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            view.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work)
     }
 
     private func setupView() {
