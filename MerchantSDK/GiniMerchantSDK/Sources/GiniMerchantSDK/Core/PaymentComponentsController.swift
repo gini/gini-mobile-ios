@@ -828,7 +828,9 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         viewDelegate?.didTapOnMoreInformation()
     }
     
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                               paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                                               completion: (UIViewController) -> Void) {
         // This method will remain empty; no implementation is needed for now.
     }
     
