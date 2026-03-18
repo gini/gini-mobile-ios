@@ -22,37 +22,31 @@ import UIKit
 /// Minimal `BottomSheetConfiguration` suitable for unit tests.
 private extension BottomSheetConfiguration {
     static var test: BottomSheetConfiguration {
-        BottomSheetConfiguration(
-            backgroundColor: .white,
-            rectangleColor: .systemGray4,
-            dimmingBackgroundColor: UIColor.black.withAlphaComponent(0.5)
-        )
+        BottomSheetConfiguration(backgroundColor: .white,
+                                 rectangleColor: .systemGray4,
+                                 dimmingBackgroundColor: UIColor.black.withAlphaComponent(0.5))
     }
 }
 
 private extension ButtonConfiguration {
     static var test: ButtonConfiguration {
-        ButtonConfiguration(
-            backgroundColor: .systemBlue,
-            borderColor: .clear,
-            titleColor: .white,
-            titleFont: .systemFont(ofSize: 16, weight: .semibold),
-            shadowColor: .clear,
-            cornerRadius: 8,
-            borderWidth: 0,
-            shadowRadius: 0,
-            withBlurEffect: false
-        )
+        ButtonConfiguration(backgroundColor: .systemBlue,
+                            borderColor: .clear,
+                            titleColor: .white,
+                            titleFont: .systemFont(ofSize: 16, weight: .semibold),
+                            shadowColor: .clear,
+                            cornerRadius: 8,
+                            borderWidth: 0,
+                            shadowRadius: 0,
+                            withBlurEffect: false)
     }
 }
 
 private extension PoweredByGiniConfiguration {
     static var test: PoweredByGiniConfiguration {
-        PoweredByGiniConfiguration(
-            poweredByGiniLabelFont: .systemFont(ofSize: 12),
-            poweredByGiniLabelAccentColor: .label,
-            giniIcon: UIImage()
-        )
+        PoweredByGiniConfiguration(poweredByGiniLabelFont: .systemFont(ofSize: 12),
+                                   poweredByGiniLabelAccentColor: .label,
+                                   giniIcon: UIImage())
     }
 }
 
@@ -64,105 +58,89 @@ private extension PoweredByGiniStrings {
 
 private extension InstallAppConfiguration {
     static var test: InstallAppConfiguration {
-        InstallAppConfiguration(
-            titleAccentColor: .label,
-            titleFont: .systemFont(ofSize: 18, weight: .bold),
-            moreInformationFont: .systemFont(ofSize: 14),
-            moreInformationTextColor: .label,
-            moreInformationAccentColor: .systemBlue,
-            moreInformationIcon: UIImage(),
-            appStoreIcon: UIImage(),
-            bankIconBorderColor: .systemGray4,
-            closeIcon: UIImage(),
-            closeIconAccentColor: .label
-        )
+        InstallAppConfiguration(titleAccentColor: .label,
+                                titleFont: .systemFont(ofSize: 18, weight: .bold),
+                                moreInformationFont: .systemFont(ofSize: 14),
+                                moreInformationTextColor: .label,
+                                moreInformationAccentColor: .systemBlue,
+                                moreInformationIcon: UIImage(),
+                                appStoreIcon: UIImage(),
+                                bankIconBorderColor: .systemGray4,
+                                closeIcon: UIImage(),
+                                closeIconAccentColor: .label)
     }
 }
 
 private extension InstallAppStrings {
     static var test: InstallAppStrings {
-        InstallAppStrings(
-            titlePattern: "Install [BANK]",
-            moreInformationTipPattern: "Tip: open [BANK]",
-            moreInformationNotePattern: "Note: install [BANK]",
-            continueLabelText: "Continue",
-            accessibilityAppStoreText: "App Store",
-            accessibilityBankLogoText: "Bank logo",
-            accessibilityCloseIconText: "Close"
-        )
+        InstallAppStrings(titlePattern: "Install [BANK]",
+                          moreInformationTipPattern: "Tip: open [BANK]",
+                          moreInformationNotePattern: "Note: install [BANK]",
+                          continueLabelText: "Continue",
+                          accessibilityAppStoreText: "App Store",
+                          accessibilityBankLogoText: "Bank logo",
+                          accessibilityCloseIconText: "Close")
     }
 }
 
 private extension ShareInvoiceConfiguration {
     static var test: ShareInvoiceConfiguration {
-        ShareInvoiceConfiguration(
-            titleFont: .systemFont(ofSize: 18, weight: .bold),
-            titleAccentColor: .label,
-            descriptionFont: .systemFont(ofSize: 14),
-            descriptionTextColor: .label,
-            descriptionAccentColor: .systemBlue,
-            paymentInfoBorderColor: .systemGray4,
-            titlePaymentInfoTextColor: .label,
-            subtitlePaymentInfoTextColor: .secondaryLabel,
-            titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
-            subtitlePaymentInfoFont: .systemFont(ofSize: 12),
-            closeIcon: UIImage(),
-            closeIconAccentColor: .label
-        )
+        ShareInvoiceConfiguration(titleFont: .systemFont(ofSize: 18, weight: .bold),
+                                  titleAccentColor: .label,
+                                  descriptionFont: .systemFont(ofSize: 14),
+                                  descriptionTextColor: .label,
+                                  descriptionAccentColor: .systemBlue,
+                                  paymentInfoBorderColor: .systemGray4,
+                                  titlePaymentInfoTextColor: .label,
+                                  subtitlePaymentInfoTextColor: .secondaryLabel,
+                                  titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
+                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12),
+                                  closeIcon: UIImage(),
+                                  closeIconAccentColor: .label)
     }
 }
 
 private extension ShareInvoiceStrings {
     static var test: ShareInvoiceStrings {
-        ShareInvoiceStrings(
-            continueLabelText: "Continue",
-            titleTextPattern: "Share invoice with [BANK]",
-            descriptionTextPattern: "Description for [BANK]",
-            recipientLabelText: "Recipient",
-            amountLabelText: "Amount",
-            ibanLabelText: "IBAN",
-            purposeLabelText: "Purpose",
-            accessibilityQRCodeImageText: "QR code",
-            accessibilityCloseIconText: "Close"
-        )
+        ShareInvoiceStrings(continueLabelText: "Continue",
+                            titleTextPattern: "Share invoice with [BANK]",
+                            descriptionTextPattern: "Description for [BANK]",
+                            recipientLabelText: "Recipient",
+                            amountLabelText: "Amount",
+                            ibanLabelText: "IBAN",
+                            purposeLabelText: "Purpose",
+                            accessibilityQRCodeImageText: "QR code",
+                            accessibilityCloseIconText: "Close")
     }
 }
 
 // MARK: - View controller factories
 
 private func makeInstallAppBottomView() -> InstallAppBottomView {
-    let viewModel = InstallAppBottomViewModel(
-        selectedPaymentProvider: nil,
-        installAppConfiguration: .test,
-        strings: .test,
-        primaryButtonConfiguration: .test,
-        poweredByGiniConfiguration: .test,
-        poweredByGiniStrings: .test,
-        clientConfiguration: nil
-    )
-    return InstallAppBottomView(
-        viewModel: viewModel,
-        bottomSheetConfiguration: .test
-    )
+    let viewModel = InstallAppBottomViewModel(selectedPaymentProvider: nil,
+                                              installAppConfiguration: .test,
+                                              strings: .test,
+                                              primaryButtonConfiguration: .test,
+                                              poweredByGiniConfiguration: .test,
+                                              poweredByGiniStrings: .test,
+                                              clientConfiguration: nil)
+    return InstallAppBottomView(viewModel: viewModel,
+                                bottomSheetConfiguration: .test)
 }
 
 private func makeShareInvoiceBottomView() -> ShareInvoiceBottomView {
-    let viewModel = ShareInvoiceBottomViewModel(
-        selectedPaymentProvider: nil,
-        configuration: .test,
-        strings: .test,
-        primaryButtonConfiguration: .test,
-        poweredByGiniConfiguration: .test,
-        poweredByGiniStrings: .test,
-        qrCodeData: Data(),
-        paymentInfo: nil,
-        paymentRequestId: "test-request-id",
-        clientConfiguration: nil
-    )
-    return ShareInvoiceBottomView(
-        viewModel: viewModel,
-        bottomSheetConfiguration: .test
-    )
+    let viewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: nil,
+                                                configuration: .test,
+                                                strings: .test,
+                                                primaryButtonConfiguration: .test,
+                                                poweredByGiniConfiguration: .test,
+                                                poweredByGiniStrings: .test,
+                                                qrCodeData: Data(),
+                                                paymentInfo: nil,
+                                                paymentRequestId: "test-request-id",
+                                                clientConfiguration: nil)
+    return ShareInvoiceBottomView(viewModel: viewModel,
+                                  bottomSheetConfiguration: .test)
 }
 
 // MARK: - BottomViewType
@@ -177,8 +155,10 @@ enum BottomViewType: CaseIterable, CustomTestStringConvertible {
 
     var testDescription: String {
         switch self {
-        case .installApp:   "InstallAppBottomView"
-        case .shareInvoice: "ShareInvoiceBottomView"
+        case .installApp:
+            "InstallAppBottomView"
+        case .shareInvoice:
+            "ShareInvoiceBottomView"
         }
     }
 }
@@ -208,10 +188,14 @@ struct AccessibilityTests {
             vc.view.subviews.first,
             "BottomSheetViewController must have at least one subview (the dimmed overlay)"
         )
-        #expect(overlay.isAccessibilityElement == false,
-                "dimmedView must not be an accessibility element")
-        #expect(overlay.accessibilityElementsHidden == true,
-                "dimmedView must hide its subtree — sibling views must remain reachable")
+        #expect(
+            overlay.isAccessibilityElement == false,
+            "dimmedView must not be an accessibility element"
+        )
+        #expect(
+            overlay.accessibilityElementsHidden == true,
+            "dimmedView must hide its subtree — sibling views must remain reachable"
+        )
     }
 
     /// Verifies the dismiss-animation direction fix: `dimmedView` starts at alpha 0
@@ -223,8 +207,10 @@ struct AccessibilityTests {
         vc.loadViewIfNeeded()
 
         let overlay = try #require(vc.view.subviews.first)
-        #expect(overlay.alpha == 0,
-                "dimmedView alpha must be 0 before animatePresent() runs — dismiss must fade to 0, not to maxDimmedAlpha")
+        #expect(
+            overlay.alpha == 0,
+            "dimmedView alpha must be 0 before animatePresent() runs — dismiss must fade to 0, not to maxDimmedAlpha"
+        )
     }
 
     // MARK: BottomSheet views — viewWillDisappear teardown
@@ -239,8 +225,10 @@ struct AccessibilityTests {
     )
     func modalFlagClearedOnDisappear(viewType: BottomViewType) {
         let vc: UIViewController = switch viewType {
-        case .installApp:   makeInstallAppBottomView()
-        case .shareInvoice: makeShareInvoiceBottomView()
+        case .installApp:
+            makeInstallAppBottomView()
+        case .shareInvoice:
+            makeShareInvoiceBottomView()
         }
 
         vc.loadViewIfNeeded()
@@ -272,3 +260,4 @@ struct AccessibilityTests {
 }
 
 // MARK: - Test support
+
