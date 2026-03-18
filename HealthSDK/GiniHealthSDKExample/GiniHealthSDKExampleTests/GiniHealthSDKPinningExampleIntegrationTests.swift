@@ -8,16 +8,10 @@
 import XCTest
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthSDKExample
 
-class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
-    
-    // MARK: - Test Configuration
-    
-    /// Standard timeout for network operations
-    private let networkTimeout: TimeInterval = 30
-    
-    let yourPublicPinningConfig = [
+class GiniHealthSDKPinningExampleIntegrationTests: GiniHealthSDKIntegrationTestsBase {
+
+    let yourPublicPinningConfig: [String: [String]] = [
         "health-api.gini.net": [
             // old *.gini.net public key
             "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
@@ -31,19 +25,13 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
             "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
         ],
     ]
-    var giniHealthAPILib: GiniHealthAPI!
-    var paymentService: PaymentService!
-    var sdk: GiniHealth!
-    
+
     override func setUp() {
         super.setUp()
-        let client = Client(id: testClientID,
-                            secret: testClientPassword,
-                            domain: testClientDomain)
-        giniHealthAPILib = GiniHealthAPI.Builder(client: client,
-                                                 pinningConfig: yourPublicPinningConfig).build()
-        sdk = GiniHealth(giniApiLib: giniHealthAPILib)
-        paymentService = sdk.paymentService
+        let giniHealthAPILib = GiniHealthAPI.Builder(client: makeClient(),
+                                                     pinningConfig: yourPublicPinningConfig).build()
+        giniHealth = GiniHealth(giniApiLib: giniHealthAPILib)
+        paymentService = giniHealth.paymentService
     }
     
     
@@ -85,6 +73,7 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
                                             purpose: "ReNr AZ356789Z") { result in
             switch result {
             case .success(let requestId):
+                self.createdPaymentRequestIds.append(requestId)
                 expectRequest.fulfill()
             case let .failure(error):
                 XCTFail("Failed to create payment request: \(error.customError?.message ?? error.localizedDescription)")

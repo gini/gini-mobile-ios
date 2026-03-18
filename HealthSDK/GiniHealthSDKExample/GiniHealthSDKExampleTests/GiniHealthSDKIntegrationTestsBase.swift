@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import UIKit
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -34,13 +33,18 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
     /// Track created document IDs for cleanup
     var createdDocumentIds: [String] = []
 
+    /// Returns a `Client` built from the resolved test credentials.
+    /// Subclasses can call this instead of reading `testClientID` / `testClientPassword` directly.
+    func makeClient() -> Client {
+        Client(id: testClientID, secret: testClientPassword, domain: testClientDomain)
+    }
+
     override func setUp() {
         super.setUp()
-
-        giniHealth = GiniHealth(id: testClientID,
-                                secret: testClientPassword,
-                                domain: testClientDomain)
-
+        let client = makeClient()
+        giniHealth = GiniHealth(id: client.id,
+                                secret: client.secret,
+                                domain: client.domain)
         paymentService = giniHealth.paymentService
         createdPaymentRequestIds = []
         createdDocumentIds = []

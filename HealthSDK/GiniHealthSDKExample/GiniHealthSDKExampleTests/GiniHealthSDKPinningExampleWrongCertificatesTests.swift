@@ -8,19 +8,10 @@
 import XCTest
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthSDKExample
 
-class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
-    
-    // MARK: - Test Configuration
-    
-    /// Standard timeout for network operations in integration tests
-    private let networkTimeout: TimeInterval = 30
-    
-    /// Extended timeout for long-running operations (document processing, etc.)
-    private let extendedTimeout: TimeInterval = 60
-    
-    let wrongPublicPinningConfig = [
+class GiniHealthSDKPinningExampleWrongCertificatesTests: GiniHealthSDKIntegrationTestsBase {
+
+    let wrongPublicPinningConfig: [String: [String]] = [
         "health-api.gini.net": [
             // Wrong hashes
             "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
@@ -33,19 +24,12 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
         ],
     ]
 
-    var giniHealthAPILib: GiniHealthAPI!
-    var paymentService: PaymentService!
-    var sdk: GiniHealth!
-
     override func setUp() {
         super.setUp()
-        let client = Client(id: testClientID,
-                            secret: testClientPassword,
-                            domain: testClientDomain)
-        giniHealthAPILib = GiniHealthAPI.Builder(client: client,
-                                                 pinningConfig: wrongPublicPinningConfig).build()
-        sdk = GiniHealth(giniApiLib: giniHealthAPILib)
-        paymentService = sdk.paymentService
+        let giniHealthAPILib = GiniHealthAPI.Builder(client: makeClient(),
+                                                     pinningConfig: wrongPublicPinningConfig).build()
+        giniHealth = GiniHealth(giniApiLib: giniHealthAPILib)
+        paymentService = giniHealth.paymentService
     }
     
     
