@@ -63,7 +63,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 
                 configuration
                     .foregroundStyle(Color(currentConfiguration.textColor))
-                    .font(Font(currentConfiguration.textFont))
+                    .font(Font(giniFont: currentConfiguration.textFont))
                     .frame(height: Constants.textFieldHeight)
                     .accessibilityLabel(title)
             }

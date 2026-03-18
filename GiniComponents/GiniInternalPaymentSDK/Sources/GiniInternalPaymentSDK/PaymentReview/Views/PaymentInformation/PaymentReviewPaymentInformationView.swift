@@ -66,27 +66,29 @@ struct PaymentReviewPaymentInformationView: View {
     
     var body: some View {
         VStack(spacing: Constants.zero) {
-            VStack(spacing: Constants.textFieldsContainerSpacing) {
-                recipientTextField
-                
-                HStack(spacing: Constants.textFieldsContainerSpacing) {
-                    ibanTextField
-                    amountTextField
+            ScrollView {
+                VStack(spacing: Constants.textFieldsContainerSpacing) {
+                    recipientTextField
+                    
+                    HStack(spacing: Constants.textFieldsContainerSpacing) {
+                        ibanTextField
+                        amountTextField
+                    }
+                    
+                    paymentPurposeTextField
+                    
+                    HStack(spacing: Constants.buttonsContainerSpacing) {
+                        paymentProviderSelectionPicker
+                        payButton
+                    }
+                    
+                    if viewModel.shouldShowBrandedView {
+                        poweredByGiniView
+                    }
                 }
-                
-                paymentPurposeTextField
-                
-                HStack(spacing: Constants.buttonsContainerSpacing) {
-                    paymentProviderSelectionPicker
-                    payButton
-                }
-                
-                if viewModel.shouldShowBrandedView {
-                    poweredByGiniView
-                }
+                .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
+                .padding(.top, Constants.textFieldsContainerTopPadding)
             }
-            .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
-            .padding(.top, Constants.textFieldsContainerTopPadding)
         }
         .frame(maxWidth: .infinity)
         .overlay(alignment: .top) {
