@@ -140,8 +140,10 @@ private func makeInstallAppBottomView() -> InstallAppBottomView {
         poweredByGiniStrings: .test,
         clientConfiguration: nil
     )
-    return InstallAppBottomView(viewModel: viewModel,
-                                bottomSheetConfiguration: .test)
+    return InstallAppBottomView(
+        viewModel: viewModel,
+        bottomSheetConfiguration: .test
+    )
 }
 
 private func makeShareInvoiceBottomView() -> ShareInvoiceBottomView {
@@ -157,8 +159,28 @@ private func makeShareInvoiceBottomView() -> ShareInvoiceBottomView {
         paymentRequestId: "test-request-id",
         clientConfiguration: nil
     )
-    return ShareInvoiceBottomView(viewModel: viewModel,
-                                  bottomSheetConfiguration: .test)
+    return ShareInvoiceBottomView(
+        viewModel: viewModel,
+        bottomSheetConfiguration: .test
+    )
+}
+
+// MARK: - BottomViewType
+
+/// Compile-time–safe enumeration of the two bottom-sheet view controllers whose
+/// `viewWillDisappear` teardown is under test.  Using an enum instead of raw strings
+/// means Swift exhaustiveness checking replaces the previous unreachable `default: throw`
+/// branch, and a typo in a case name is a compiler error rather than a silent test skip.
+enum BottomViewType: CaseIterable, CustomTestStringConvertible {
+    case installApp
+    case shareInvoice
+
+    var testDescription: String {
+        switch self {
+        case .installApp:   "InstallAppBottomView"
+        case .shareInvoice: "ShareInvoiceBottomView"
+        }
+    }
 }
 
 // MARK: - Tests
@@ -205,59 +227,20 @@ struct AccessibilityTests {
                 "dimmedView alpha must be 0 before animatePresent() runs — dismiss must fade to 0, not to maxDimmedAlpha")
     }
 
-    // MARK: InstallAppBottomView — viewWillDisappear teardown
-
-    /// `postAccessibilityFocus()` sets `view.accessibilityViewIsModal = true` after
-    /// presentation.  If this flag is never cleared, VoiceOver cannot navigate back
-    /// to the presenting view after the sheet is dismissed.
-    @Test("InstallAppBottomView clears accessibilityViewIsModal on viewWillDisappear")
-    func installAppBottomViewClearsModalOnDisappear() {
-        let vc = makeInstallAppBottomView()
-        vc.loadViewIfNeeded()
-
-        // Simulate the state after postAccessibilityFocus has fired.
-        vc.view.accessibilityViewIsModal = true
-        #expect(vc.view.accessibilityViewIsModal == true)
-
-        vc.viewWillDisappear(false)
-
-        #expect(
-            vc.view.accessibilityViewIsModal == false,
-            "accessibilityViewIsModal must be false after viewWillDisappear so VoiceOver can reach the presenter"
-        )
-    }
-
-    // MARK: ShareInvoiceBottomView — viewWillDisappear teardown
-
-    @Test("ShareInvoiceBottomView clears accessibilityViewIsModal on viewWillDisappear")
-    func shareInvoiceBottomViewClearsModalOnDisappear() {
-        let vc = makeShareInvoiceBottomView()
-        vc.loadViewIfNeeded()
-
-        vc.view.accessibilityViewIsModal = true
-        #expect(vc.view.accessibilityViewIsModal == true)
-
-        vc.viewWillDisappear(false)
-
-        #expect(
-            vc.view.accessibilityViewIsModal == false,
-            "accessibilityViewIsModal must be false after viewWillDisappear so VoiceOver can reach the presenter"
-        )
-    }
-
-    // MARK: Parameterized — both sheet types clear the modal flag
+    // MARK: BottomSheet views — viewWillDisappear teardown
 
     /// Parameterized to guard both `InstallAppBottomView` and `ShareInvoiceBottomView`
-    /// against regressions in a single test definition.
+    /// against regressions in a single test definition.  `BottomViewType` is a compile-time
+    /// safe enum, so Swift exhaustiveness checking replaces the previous `default: throw`
+    /// error path that could never be reached.
     @Test(
         "accessibilityViewIsModal is cleared on viewWillDisappear",
-        arguments: ["InstallApp", "ShareInvoice"]
+        arguments: BottomViewType.allCases
     )
-    func modalFlagClearedOnDisappear(viewType: String) throws {
+    func modalFlagClearedOnDisappear(viewType: BottomViewType) {
         let vc: UIViewController = switch viewType {
-        case "InstallApp":   makeInstallAppBottomView()
-        case "ShareInvoice": makeShareInvoiceBottomView()
-        default: throw TestError.unexpectedViewType(viewType)
+        case .installApp:   makeInstallAppBottomView()
+        case .shareInvoice: makeShareInvoiceBottomView()
         }
 
         vc.loadViewIfNeeded()
@@ -266,7 +249,7 @@ struct AccessibilityTests {
 
         #expect(
             vc.view.accessibilityViewIsModal == false,
-            "[\(viewType)] accessibilityViewIsModal must be cleared in viewWillDisappear"
+            "[\(viewType.testDescription)] accessibilityViewIsModal must be cleared in viewWillDisappear"
         )
     }
 
@@ -276,8 +259,10 @@ struct AccessibilityTests {
     /// `accessibilityViewIsModal` set on its view before presentation.
     @Test("PaymentComponentBottomView view.accessibilityViewIsModal starts as false")
     func paymentComponentBottomViewModalStartsFalse() {
-        let vc = PaymentComponentBottomView(paymentView: UIView(),
-                                            bottomSheetConfiguration: .test)
+        let vc = PaymentComponentBottomView(
+            paymentView: UIView(),
+            bottomSheetConfiguration: .test
+        )
         vc.loadViewIfNeeded()
         #expect(
             vc.view.accessibilityViewIsModal == false,
@@ -287,7 +272,3 @@ struct AccessibilityTests {
 }
 
 // MARK: - Test support
-
-private enum TestError: Error {
-    case unexpectedViewType(String)
-}

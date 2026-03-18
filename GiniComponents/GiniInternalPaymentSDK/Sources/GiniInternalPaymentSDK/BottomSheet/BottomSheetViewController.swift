@@ -46,11 +46,8 @@ open class BottomSheetViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.alpha = 0
-        // The dimmed overlay is a purely decorative backdrop; it must never
-        // receive VoiceOver focus.  Without this, VoiceOver navigating in
-        // portrait would land on the full-screen dim layer (the first subview
-        // in the hierarchy) and find no readable content, causing it to fall
-        // silent.
+        // Decorative backdrop — hidden from VoiceOver to prevent the dim layer
+        // from capturing focus and leaving VoiceOver silent.
         view.isAccessibilityElement = false
         view.accessibilityElementsHidden = true
         return view
