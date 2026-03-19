@@ -139,6 +139,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        if isCrossBoarderPayment{
             let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
             if let titleLabel = cell.viewWithTag(201) as? UILabel {
@@ -153,6 +154,40 @@ final class TransactionSummaryTableViewController: UITableViewController  {
             }
 
             return cell
+        } else {
+            if indexPath.section == 0 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
+                                                               for: indexPath) as? ExtractionResultTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.detailTextField.text = result[indexPath.row].value
+                cell.detailTextField.placeholder = result[indexPath.row].name
+                cell.detailTextField.tag = indexPath.row
+                cell.titleLabel.text = result[indexPath.row].name
+                cell.detailTextField.textColor = GiniColor(light: giniCaptureColor("Accent01"),
+                                                           dark: giniCaptureColor("Accent01")).uiColor()
+                
+                if editableFields.keys.contains(result[indexPath.row].name ?? "") {
+                    cell.detailTextField.isEnabled = true
+                    cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
+                    cell.detailTextField.alpha = 1
+                    
+                    if !enabledRows.contains(indexPath.row) {
+                        enabledRows.append(indexPath.row)
+                    }
+                } else {
+                    cell.detailTextField.isEnabled = false
+                    cell.detailTextField.alpha = 0.5
+                }
+                
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
+                cell.configure(delegate: self)
+                return cell
+            }
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
