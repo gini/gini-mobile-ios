@@ -94,25 +94,6 @@ private final class GiniPassthroughViewController: UIViewController, UIAdaptiveP
         view.backgroundColor = .clear
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if presentedViewController?.isBeingDismissed == true {
-            onDismiss()
-        }
-    }
-
-    // Handles close button: when the presented VC calls dismiss(animated:),
-    // UIKit forwards it to the presenting VC (this VC).
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.dismiss(animated: flag) { [weak self] in
-            completion?()
-            if self?.presentedViewController == nil {
-                self?.onDismiss()
-            }
-        }
-    }
-    
     // Handles interactive swipe-down dismissal.
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         onDismiss()
