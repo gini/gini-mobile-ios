@@ -146,8 +146,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
             print("❓ Showing results for unknown Gini Bank API document")
         }
         
-        let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
+        let customResultsScreen = TransactionSummaryTableViewController()
 
         customResultsScreen.delegate = self
 
