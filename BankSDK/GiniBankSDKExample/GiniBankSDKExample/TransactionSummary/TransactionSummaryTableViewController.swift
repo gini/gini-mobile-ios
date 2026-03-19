@@ -52,7 +52,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
+        numberOfSections = isCrossBorderPayment ? 1 : currentTransactionDocs.isEmpty ? 1 : 2
     }
 
     override func viewDidLoad() {
@@ -100,7 +100,6 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     }
 
         @objc private func footerButtonTapped() {
-            print("Footer button tapped!")
             tapToScanAgain()
         }
     
