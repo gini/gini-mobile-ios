@@ -8,7 +8,7 @@
 import Testing
 @testable import GiniCaptureSDK
 
-@Suite("GiniGiniProductTag")
+@Suite("GiniProductTag")
 struct GiniProductTagTests {
 
     // MARK: - Raw Value
@@ -54,13 +54,13 @@ struct GiniProductTagTests {
 
     // MARK: - Default Configuration Value
 
-    @Test("GiniBankConfiguration defaults GiniProductTag to sepaExtractions")
+    @Test("GiniConfiguration defaults GiniProductTag to sepaExtractions")
     func defaultGiniProductTag() {
         let configuration = GiniConfiguration()
         #expect(configuration.productTag == .sepaExtractions)
     }
 
-    @Test("GiniBankConfiguration GiniProductTag can be changed")
+    @Test("GiniConfiguration GiniProductTag can be changed")
     func setGiniProductTag() {
         let configuration = GiniConfiguration()
 
