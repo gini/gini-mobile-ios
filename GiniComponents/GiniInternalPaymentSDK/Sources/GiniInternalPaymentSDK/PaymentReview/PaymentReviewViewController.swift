@@ -19,6 +19,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
     
     private let selectedPaymentProvider: PaymentProvider
     private var isInfoBarHidden = true
+    private let overlayPresenter = GiniOverlayWindowPresenter()
     
     public let model: PaymentReviewModel
     
@@ -65,6 +66,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        overlayPresenter.dismiss(animated: false)
         model.viewDidDisappear()
     }
 }
@@ -81,7 +83,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: UIViewController) {
-        giniTopMostViewController().present(bottomSheet, animated: true)
+        overlayPresenter.present(bottomSheet, from: self)
     }
 
     func obtainPDFFromPaymentRequest(paymentRequestId: String) {
@@ -112,6 +114,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
     
     private func dismissScreen() {
+        overlayPresenter.dismiss(animated: false)
         if let presented = presentedViewController {
             presented.dismiss(animated: true) { [weak self] in
                 self?.dismiss(animated: true)
