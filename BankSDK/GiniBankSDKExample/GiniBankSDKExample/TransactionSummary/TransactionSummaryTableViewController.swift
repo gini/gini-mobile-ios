@@ -25,7 +25,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
 
     var result: [Extraction] = [] {
         didSet {
-            result.sort(by: { $0.name! < $1.name! })
+            result.sort { ($0.name ?? "") < ($1.name ?? "") }
         }
     }
     var editableFields: [String: String] = [:]
