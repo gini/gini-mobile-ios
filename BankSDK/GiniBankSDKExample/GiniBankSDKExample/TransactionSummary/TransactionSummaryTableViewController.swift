@@ -43,7 +43,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
         "paymentRecipientAddress":"Payment Recipient Address"
     ]
 
-    var isCrossBoarderPayment: Bool = false
+    var isCrossBorderPayment: Bool = false
     weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
     private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
@@ -139,7 +139,7 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if isCrossBoarderPayment{
+        if isCrossBorderPayment{
             let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
             if let titleLabel = cell.viewWithTag(201) as? UILabel {

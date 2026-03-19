@@ -139,7 +139,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    fileprivate func showResultsScreen(results: [Extraction], document: Document?, isCrossBoarderPayment: Bool) {
+    fileprivate func showResultsScreen(results: [Extraction], document: Document?, isCrossBorderPayment: Bool) {
         if let document = document {
             print("🧾 Showing results for Gini Bank API document id: \(document.id)")
         } else {
@@ -153,8 +153,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
         customResultsScreen.result = results
-        customResultsScreen.isCrossBoarderPayment = isCrossBoarderPayment
-        if !isCrossBoarderPayment {
+        customResultsScreen.isCrossBorderPayment = isCrossBorderPayment
+        if !isCrossBorderPayment {
             customResultsScreen.editableFields = editableSpecificExtractions
         }
 
@@ -284,7 +284,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
             }
             showResultsScreen(results: extractedResults,
                               document: result.document,
-                              isCrossBoarderPayment: true)
+                              isCrossBorderPayment: true)
         } else {
             extractedResults = result.extractions.map { $0.value}
             for extraction in editableSpecificExtractions {
@@ -294,7 +294,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
             }
             showResultsScreen(results: extractedResults,
                               document: result.document,
-                              isCrossBoarderPayment: false)
+                              isCrossBorderPayment: false)
         }
     }
 
