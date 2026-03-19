@@ -64,25 +64,25 @@ final class TransactionSummaryTableViewController: UITableViewController  {
     }
     
     private func setupTableFooterButton() {
-            // Create a container view for the footer
-            let footerView = UIView()
-            footerView.backgroundColor = .clear
+        // Create a container view for the footer
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
 
-            // Create the button
+        // Create the button
         let button = GiniButton(type: .custom)
         button.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
-                                                      dark: giniCaptureColor("Accent01")).uiColor()
+                                           dark: giniCaptureColor("Accent01")).uiColor()
         button.setTitle("Test a new document", for: .normal)
         button.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
-                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
-            button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
-        
+                                       dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
+
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
 
-            // Add button to footer view
-            footerView.addSubview(button)
-            button.translatesAutoresizingMaskIntoConstraints = false
+        // Add button to footer view
+        footerView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
@@ -92,12 +92,12 @@ final class TransactionSummaryTableViewController: UITableViewController  {
             button.heightAnchor.constraint(equalToConstant: 50) // optional if you want fixed height
         ])
 
-            // Important: set frame height for footerView so it has space
-            footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
+        // Important: set frame height for footerView so it has space
+        footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
 
-            // Assign to tableFooterView
-            tableView.tableFooterView = footerView
-        }
+        // Assign to tableFooterView
+        tableView.tableFooterView = footerView
+    }
 
         @objc private func footerButtonTapped() {
             print("Footer button tapped!")
@@ -141,7 +141,6 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
 
-            // Access labels and image via tags
             if let titleLabel = cell.viewWithTag(201) as? UILabel {
                 titleLabel.textColor =  GiniColor(light: giniCaptureColor("Accent01"),
                                                   dark: giniCaptureColor("Accent01")).uiColor()
@@ -151,12 +150,6 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
             if let subtitleLabel = cell.viewWithTag(202) as? UILabel {
                 subtitleLabel.text =  result[indexPath.row].value
-            }
-
-            if let iconImageView = cell.viewWithTag(203) as? UIImageView {
-                let imageName = result[indexPath.row].name ?? ""
-                iconImageView.image = UIImage(named: imageName) ?? UIImage(named: "unknown")
-                iconImageView.isHidden = true
             }
 
             return cell
