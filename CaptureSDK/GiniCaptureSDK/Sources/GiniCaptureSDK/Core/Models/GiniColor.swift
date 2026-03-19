@@ -23,12 +23,12 @@ public class GiniColor: NSObject {
     }
 
     public func uiColor() -> UIColor {
-        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-            if UITraitCollection.userInterfaceStyle == .dark {
-                /// Return the color for Dark Mode
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .dark {
+                // Return the color for Dark Mode
                 return self.dark
             } else {
-                /// Return the color for Light Mode
+                // Return the color for Light Mode
                 return self.light
             }
         }
