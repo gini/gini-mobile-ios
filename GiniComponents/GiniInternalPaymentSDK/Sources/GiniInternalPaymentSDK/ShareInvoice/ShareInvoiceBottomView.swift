@@ -321,7 +321,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
         let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
         
-        let constraints = [
+        let sharedConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                       constant: contentPadding),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
@@ -341,10 +341,12 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         ]
 
         if isPortrait {
-            portraitConstraints = constraints
+            portraitConstraints = sharedConstraints
             NSLayoutConstraint.activate(portraitConstraints)
         } else {
-            landscapeConstraints = constraints
+            landscapeConstraints = sharedConstraints + [
+                topStackView.widthAnchor.constraint(equalToConstant: qrCodeSize)
+            ]
             NSLayoutConstraint.activate(landscapeConstraints)
         }
     }
