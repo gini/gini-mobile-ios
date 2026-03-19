@@ -1,6 +1,6 @@
 //
 //  GiniProductTagTests.swift
-//  GiniBankSDK
+//  GiniCaptureSDK
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
