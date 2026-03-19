@@ -81,6 +81,7 @@ struct PaymentReviewPaymentInformationView: View {
                         paymentProviderSelectionPicker
                         payButton
                     }
+                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
                     
                     if viewModel.shouldShowBrandedView {
                         poweredByGiniView
@@ -90,7 +91,6 @@ struct PaymentReviewPaymentInformationView: View {
                 .padding(.top, Constants.textFieldsContainerTopPadding)
             }
         }
-        .frame(maxWidth: .infinity)
         .overlay(alignment: .top) {
             if showBanner {
                 infoBannerView
@@ -114,6 +114,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .getHeight(for: $contentHeight)
+        .background(Color(.systemBackground))
     }
     
     // MARK: Private views
@@ -441,8 +442,9 @@ struct PaymentReviewPaymentInformationView: View {
         static let paymentProviderPickerChevronSize = CGSize(width: 24.0, height: 24.0)
         static let paymentProviderPickerSize = CGSize(width: 96.0, height: 36.0)
         static let payButtonHeight = 56.0
+        static let buttonsContainerBottomPadding = 16.0
         static let textFieldsContainerHorizontalPadding = 16.0
-        static let textFieldsContainerTopPadding = 32.0
+        static let textFieldsContainerTopPadding = 24.0
         static let poweredByGiniTopPadding = 8.0
     }
 }

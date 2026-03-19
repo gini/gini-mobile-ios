@@ -102,20 +102,25 @@ public struct PaymentReviewContentView: View {
         let carouselHeight = computedCarouselHeight(for: geometry, isLandscape: true)
         let sheetWidth = geometry.size.width * Constants.screenPercentage
         
-        HStack(spacing: Constants.zero) {
-            ScrollView {
-                viewModel.paymentReviewPaymentInformationView(
-                    contentHeight: $bottomSheetHeight
+        HStack(alignment: .center, spacing: Constants.landscapeContainerSpacing) {
+            viewModel.paymentReviewPaymentInformationView(
+                contentHeight: $bottomSheetHeight
+            )
+            .clipShape(
+                .rect(
+                    topLeadingRadius: Constants.paymentInformationContainerTopCornerRadius,
+                    bottomLeadingRadius: Constants.paymentInformationContainerBottomCornerRadius,
+                    bottomTrailingRadius: Constants.paymentInformationContainerBottomCornerRadius,
+                    topTrailingRadius: Constants.paymentInformationContainerTopCornerRadius
                 )
-            }
+            )
             .frame(width: sheetWidth)
+            .padding(.top, Constants.paymentInformationViewHorizontalPadding)
             
-            ScrollView {
-                documentPreviewContent(carouselHeight: carouselHeight)
-            }
-            .frame(width: geometry.size.width - sheetWidth)
+            documentPreviewContent(carouselHeight: carouselHeight)
+                .frame(width: geometry.size.width - sheetWidth)
+                .padding(.top, Constants.paymentInformationViewHorizontalPadding)
         }
-        .padding(.bottom, Constants.paymentInformationViewHorizontalPadding)
     }
     
     // MARK: - Private Views
@@ -185,5 +190,8 @@ public struct PaymentReviewContentView: View {
         static let loadingOverlayOpacity: CGFloat = 0.4
         static let loadingIndicatorScale: CGFloat = 1.5
         static let layoutTransitionDuration: CGFloat = 0.35
+        static let landscapeContainerSpacing: CGFloat = 8.0
+        static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
+        static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
     }
 }
