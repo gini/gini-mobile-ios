@@ -36,9 +36,7 @@ final class SettingsViewModel {
         #endif
     }()
     
-    init(apiEnvironment: APIEnvironment,
-         enablePinningSDK: Bool,
-         client: Client? = nil,
+    init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
          documentValidationsState: DocumentValidationsState) {
@@ -49,14 +47,14 @@ final class SettingsViewModel {
         self.selectedCredentialsSetIndex = ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex
         self.currentAPIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
 
-        setupContentData(apiEnvironment: apiEnvironment, client: client)
+        setupContentData()
     }
 
-    private func setupContentData(apiEnvironment: APIEnvironment, client: Client? = nil) {
+    private func setupContentData() {
         var sections: [SettingsSection] = []
         
         sections.append(setupDefaultConfigSection())
-        sections.append(setupCredentialsSection(apiEnvironment: apiEnvironment, client: client))
+        sections.append(setupCredentialsSection())
         sections.append(setupFeatureTogglesSection())
         sections.append(setupOnboardingSection())
         
@@ -79,7 +77,7 @@ final class SettingsViewModel {
         return defaultConfigSection
     }
 
-    private func setupCredentialsSection(apiEnvironment: APIEnvironment, client: Client? = nil) -> SettingsSection {
+    private func setupCredentialsSection() -> SettingsSection {
         var credentialsSection = SettingsSection(title: "Credentials", items: [])
 
         // Credentials Set selector
@@ -92,7 +90,7 @@ final class SettingsViewModel {
 
         // API Environment selector
         var selectedAPISegmentIndex = 0
-        switch apiEnvironment {
+        switch currentAPIEnvironment {
         case .production:
             selectedAPISegmentIndex = 0
         case .stage:
@@ -107,7 +105,7 @@ final class SettingsViewModel {
         selectedCredentialsSetIndex = credentialsIndex
         ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex = credentialsIndex
 
-        setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
+        setupContentData()
         delegate?.contentDataUpdated()
     }
 
@@ -115,7 +113,7 @@ final class SettingsViewModel {
         currentAPIEnvironment = environment
         ExampleAppUserDefaultsStorage.currentAPIEnvironment = environment
 
-        setupContentData(apiEnvironment: currentAPIEnvironment, client: nil)
+        setupContentData()
         delegate?.contentDataUpdated()
     }
 

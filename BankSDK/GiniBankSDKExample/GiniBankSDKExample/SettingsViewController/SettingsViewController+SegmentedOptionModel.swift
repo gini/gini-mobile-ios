@@ -52,7 +52,7 @@ struct CredentialsSetSegmentedOptionModel: SegmentedOptionModelProtocol {
     var selectedIndex: Int = 0
 
     var items: [String] {
-        return ["Default client", "Cross boarder client"]
+        return ["Default client", "Cross border client"]
     }
 
     var title: String {
