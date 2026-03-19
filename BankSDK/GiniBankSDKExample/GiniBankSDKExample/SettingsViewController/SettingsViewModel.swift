@@ -25,7 +25,7 @@ final class SettingsViewModel {
 
     private var selectedCredentialsSetIndex: Int = 0
     private var currentAPIEnvironment: APIEnvironment = .production
-
+    private let enablePinningSDK: Bool
     weak var delegate: SettingsViewModelDelegate?
     
     private var flashToggleSettingEnabled: Bool = {
@@ -35,7 +35,7 @@ final class SettingsViewModel {
             return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)?.hasFlash ?? false
         #endif
     }()
-    
+
     init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
@@ -43,7 +43,7 @@ final class SettingsViewModel {
         self.giniConfiguration = giniConfiguration
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
-
+        self.enablePinningSDK = enablePinningSDK
         self.selectedCredentialsSetIndex = ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex
         self.currentAPIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
 
@@ -54,6 +54,7 @@ final class SettingsViewModel {
         var sections: [SettingsSection] = []
         
         sections.append(setupDefaultConfigSection())
+        sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
         sections.append(setupCredentialsSection())
         sections.append(setupFeatureTogglesSection())
         sections.append(setupOnboardingSection())
