@@ -117,6 +117,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
         button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
         return button
