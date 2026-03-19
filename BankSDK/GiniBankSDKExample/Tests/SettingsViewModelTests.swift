@@ -88,8 +88,7 @@ final class SettingsViewModelTests: XCTestCase {
     
 	override func setUp() {
 		super.setUp()
-        viewModel = SettingsViewModel(apiEnvironment: .production,
-                                      giniConfiguration: configuration,
+        viewModel = SettingsViewModel(giniConfiguration: configuration,
                                       settingsButtonStates: settingsButtonStates,
                                       documentValidationsState: documentValidationsState)
 	}

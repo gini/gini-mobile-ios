@@ -29,15 +29,11 @@ final class SettingsViewController: UIViewController {
 	
 	// MARK: - Initializers
      
-    init(apiEnvironment: APIEnvironment,
-         enablePinningSDK: Bool,
-         client: Client? = nil,
+    init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
          documentValidationsState: DocumentValidationsState) {
-        self.viewModel = SettingsViewModel(apiEnvironment: apiEnvironment,
-                                           enablePinningSDK: enablePinningSDK,
-                                           client: client,
+        self.viewModel = SettingsViewModel(enablePinningSDK: enablePinningSDK,
                                            giniConfiguration: giniConfiguration,
                                            settingsButtonStates: settingsButtonStates,
                                            documentValidationsState: documentValidationsState)

@@ -13,184 +13,191 @@ protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
     func didTapCloseAndSendTransferSummary()
     func didTapToScanAgain()
 }
+
 /**
- Presents a dictionary of results from the analysis process in a table view.
- Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
+ Presents a list of extraction results in a table view.
+ In the SEPA flow, fields listed in `editableFields` are rendered as editable text fields.
+ In the cross-border flow all fields are read-only and labels use the `displayNameMapping`.
  */
-final class TransactionSummaryTableViewController: UITableViewController  {
-    /**
-     The result collection from the analysis process.
-     */
+final class TransactionSummaryTableViewController: UITableViewController, CodeLoadableView {
+
+    // MARK: - Public
+
     var result: [Extraction] = [] {
         didSet {
             result.sort(by: { $0.name! < $1.name! })
         }
     }
-    var editableFields: [String : String] = [:]
-    var lineItems: [[Extraction]]? = nil
-    var enabledRows: [Int] = []
-    let displayNameMapping: [String: String] = [
+    var editableFields: [String: String] = [:]
+    var isCrossBorderPayment: Bool = false
+
+    weak var delegate: TransactionSummaryTableViewControllerDelegate?
+
+    // MARK: - Private
+
+    private let displayNameMapping: [String: String] = [
         "bankName": "Recipient Bank Name",
         "bankAccountNumber": "Account Number",
         "amountToPay": "Amount",
         "iban": "IBAN",
         "currency": "Currency",
         "bankAddress": "Recipient's Bank Address",
-        "countryRegionCode":"Country/Region",
-        "abaRoutingNumber":"ABA Routing Number",
-        "bic":"SWIFT/BIC Code",
-        "paymentRecipient":"Payment Recipient",
-        "paymentRecipientAddress":"Payment Recipient Address"
+        "countryRegionCode": "Country/Region",
+        "abaRoutingNumber": "ABA Routing Number",
+        "bic": "SWIFT/BIC Code",
+        "paymentRecipient": "Payment Recipient",
+        "paymentRecipientAddress": "Payment Recipient Address"
     ]
-
-    var isCrossBoarderPayment: Bool = false
-    weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
     private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
     private var numberOfSections = 1
+    private var enabledRows: [Int] = []
+
+    // MARK: - Lifecycle
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
+        numberOfSections = (!isCrossBorderPayment && !currentTransactionDocs.isEmpty) ? 2 : 1
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 75
+        tableView.backgroundColor = GiniColor(light: .systemGray5, dark: .systemGray5).uiColor()
+        tableView.separatorStyle = .none
+        tableView.register(ExtractionResultCell.self)
         tableView.register(AttachmentsTableViewCell.self)
         setupNavigationButtons()
         setupTableFooterButton()
     }
-    
-    private func setupTableFooterButton() {
-            // Create a container view for the footer
-            let footerView = UIView()
-            footerView.backgroundColor = .clear
 
-            // Create the button
+    // MARK: - Setup
+
+    private func setupTableFooterButton() {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+
         let button = GiniButton(type: .custom)
         button.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
-                                                      dark: giniCaptureColor("Accent01")).uiColor()
+                                           dark: giniCaptureColor("Accent01")).uiColor()
         button.setTitle("Test a new document", for: .normal)
         button.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
-                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
-            button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
-        
+                                       dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
 
-            // Add button to footer view
-            footerView.addSubview(button)
-            button.translatesAutoresizingMaskIntoConstraints = false
-
+        footerView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
             button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -10),
-            button.topAnchor.constraint(equalTo: footerView.topAnchor,constant: 10),
+            button.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 10),
             button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10),
-            button.heightAnchor.constraint(equalToConstant: 50) // optional if you want fixed height
+            button.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-            // Important: set frame height for footerView so it has space
-            footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
-
-            // Assign to tableFooterView
-            tableView.tableFooterView = footerView
-        }
-
-        @objc private func footerButtonTapped() {
-            print("Footer button tapped!")
-            tapToScanAgain()
-        }
-    
+        footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
+        tableView.tableFooterView = footerView
+    }
 
     private func setupNavigationButtons() {
         navigationItem.setHidesBackButton(true, animated: true)
-        navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: "Done",
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(tapCloseSreenAPIAndSendTransferSummary))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Done",
+            style: .plain,
+            target: self,
+            action: #selector(tapCloseSreenAPIAndSendTransferSummary)
+        )
     }
-    
-    
-    
+
     // MARK: - Actions
-    @objc func tapCloseSreenAPIAndSendTransferSummary() {
-        delegate?.didTapCloseAndSendTransferSummary()
-    }
-    
-    func tapToScanAgain() {
+
+    @objc private func footerButtonTapped() {
         delegate?.didTapToScanAgain()
     }
 
-    // MARK: - TableViewDataSource and TableViewDelegate
+    @objc func tapCloseSreenAPIAndSendTransferSummary() {
+        delegate?.didTapCloseAndSendTransferSummary()
+    }
+
+    // MARK: - UITableViewDataSource
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return numberOfSections
+        numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if numberOfSections == 1 {
-            return result.count
-        }
-        return section == 0 ? result.count : 1
+        section == 0 ? result.count : 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
-
-            // Access labels and image via tags
-            if let titleLabel = cell.viewWithTag(201) as? UILabel {
-                titleLabel.textColor =  GiniColor(light: giniCaptureColor("Accent01"),
-                                                  dark: giniCaptureColor("Accent01")).uiColor()
-                titleLabel.text = displayNameMapping[result[indexPath.row].name ?? ""] ?? result[indexPath.row].name ?? ""
-
-            }
-
-            if let subtitleLabel = cell.viewWithTag(202) as? UILabel {
-                subtitleLabel.text =  result[indexPath.row].value
-            }
-
-            if let iconImageView = cell.viewWithTag(203) as? UIImageView {
-                let imageName = result[indexPath.row].name ?? ""
-                iconImageView.image = UIImage(named: imageName) ?? UIImage(named: "unknown")
-                iconImageView.isHidden = true
-            }
-
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
+            cell.configure(delegate: self)
             return cell
+        }
+
+        let cell = tableView.dequeueReusableCell() as ExtractionResultCell
+        let extraction = result[indexPath.row]
+        let name = extraction.name ?? ""
+
+        let title = isCrossBorderPayment ? (displayNameMapping[name] ?? name) : name
+        let isEditable = !isCrossBorderPayment && editableFields.keys.contains(name)
+
+        if isEditable && !enabledRows.contains(indexPath.row) {
+            enabledRows.append(indexPath.row)
+        }
+
+        let returnKeyType: UIReturnKeyType = (indexPath.row == result.count - 1) ? .done : .next
+        cell.configure(title: title,
+                       value: extraction.value,
+                       isEditable: isEditable,
+                       returnKeyType: isEditable ? returnKeyType : .done)
+        cell.valueTextField.tag = indexPath.row
+        cell.valueTextField.delegate = self
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
-
 }
+
+// MARK: - UITextFieldDelegate
+
 extension TransactionSummaryTableViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         if let text = textField.text as NSString? {
             result[textField.tag].value = text.replacingCharacters(in: range, with: string)
         }
-        
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField.returnKeyType == .done {
             textField.resignFirstResponder()
             return true
         }
-        
-        guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1,
-              let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ExtractionResultTableViewCell else {
+
+        guard let rowIndex = enabledRows.firstIndex(of: textField.tag),
+              enabledRows.count > rowIndex + 1,
+              let nextCell = tableView.cellForRow(
+                  at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)
+              ) as? ExtractionResultCell else {
             return true
         }
-        
-        visibleCell.detailTextField.becomeFirstResponder()
+
+        nextCell.valueTextField.becomeFirstResponder()
         return true
     }
 }
+
+// MARK: - TransactionDocsViewDelegate
 
 extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {

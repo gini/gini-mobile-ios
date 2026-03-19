@@ -272,9 +272,7 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
-                                                            enablePinningSDK: enablePinningSDK,
-                                                            client: client,
+        let settingsViewController = SettingsViewController(enablePinningSDK: enablePinningSDK,
                                                             giniConfiguration: configuration,
                                                             settingsButtonStates: settingsButtonStates,
                                                             documentValidationsState: documentValidationsState)

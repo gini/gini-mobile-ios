@@ -150,7 +150,6 @@
 		28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28F62FA42AB21C2E00D47866 /* DemoScreen.strings */; };
 		28F62FA72AB2236500D47866 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA62AB2236500D47866 /* Device.swift */; };
 		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
-		3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */; };
 		5D5328862C63F59C00DEA203 /* CredentialsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D5328852C63F59C00DEA203 /* CredentialsTableViewCell.xib */; };
@@ -197,6 +196,7 @@
 		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
 		84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */; };
 		84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */; };
+		AA0000012C00000000000001 /* ExtractionResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000002C00000000000001 /* ExtractionResultCell.swift */; };
 		F3DF049429C7F670A0E09C6F /* ExampleHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
@@ -204,7 +204,6 @@
 		F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21A27355C310010D77D /* GiniBankSDK */; };
 		F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21C27355C3A0010D77D /* GiniCaptureSDK */; };
 		F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21E27355C430010D77D /* GiniBankAPILibrary */; };
-		F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F441DCA725E55D5800AAB09A /* Main.storyboard */; };
 		F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB225E568C400AAB09A /* LaunchScreen.strings */; };
 		F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F441DCBC25E5694600AAB09A /* Settings.bundle */; };
 		F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441DCC525E56BF800AAB09A /* LaunchScreen.xib */; };
@@ -432,7 +431,6 @@
 		28FB83B92E673C8600DE88EE /* GiniBankSDKExampleSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
 		502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
@@ -478,13 +476,13 @@
 		84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderFooterViewRegistration.swift"; sourceTree = "<group>"; };
 		88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
+		AA0000002C00000000000001 /* ExtractionResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultCell.swift; sourceTree = "<group>"; };
 		D7E50A5F2C32D0AD004C1CBF /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
 		F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
-		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F441DCB325E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		F441DCBC25E5694600AAB09A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		F441DCC425E56BF800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -785,7 +783,7 @@
 			children = (
 				F4AD00DB25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift */,
 				84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */,
-				3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */,
+				AA0000002C00000000000001 /* ExtractionResultCell.swift */,
 			);
 			path = TransactionSummary;
 			sourceTree = "<group>";
@@ -1283,7 +1281,6 @@
 				28B5873A2A37270F008CB210 /* Utils */,
 				28B5873F2A37288D008CB210 /* Views */,
 				F490C7E425DE873900D8CA6F /* AppDelegate.swift */,
-				F441DCA725E55D5800AAB09A /* Main.storyboard */,
 				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F459606E2A813CB1004B0112 /* SettingsViewController */,
@@ -1648,7 +1645,6 @@
 				28B587472A373A72008CB210 /* SwitchOptionTableViewCell.xib in Resources */,
 				28D77C4E2CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,
-				F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */,
 				F45D7F182800583500C73C63 /* testPDF.pdf in Resources */,
 				287068422CB950D400D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json in Resources */,
 				4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */,
@@ -1925,7 +1921,7 @@
 				28A570172D428DC100A97EBC /* Date+ToString.swift in Sources */,
 				288E78BC2D317C34004ACB9B /* TransactionListViewController.swift in Sources */,
 				289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */,
-				3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */,
+				AA0000012C00000000000001 /* ExtractionResultCell.swift in Sources */,
 				5D53288A2C63F77E00DEA203 /* CredentialsModel.swift in Sources */,
 				28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */,
 				F3DF049429C7F670A0E09C6F /* ExampleHTTPClient.swift in Sources */,
@@ -2030,14 +2026,6 @@
 				F4083EDA2735B0CD004DDD3B /* de */,
 			);
 			name = LocalizableCustomName.strings;
-			sourceTree = "<group>";
-		};
-		F441DCA725E55D5800AAB09A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F441DCA625E55D5800AAB09A /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		F441DCB225E568C400AAB09A /* LaunchScreen.strings */ = {

@@ -8,7 +8,10 @@ import Foundation
 
 struct CredentialsSet {
     static let setB = (clientId: "...", clientSecret: "...")
-    static let setA = (clientId: "...", clientSecret: "...")
+    static var setA: (clientId: String, clientSecret: String) {
+        let client = CredentialsManager.fetchClientFromBundle()
+        return (clientId: client.id, clientSecret: client.secret)
+    }
 
     static func credentials(for index: Int) -> (clientId: String, clientSecret: String) {
         return index == 0 ? setA : setB
