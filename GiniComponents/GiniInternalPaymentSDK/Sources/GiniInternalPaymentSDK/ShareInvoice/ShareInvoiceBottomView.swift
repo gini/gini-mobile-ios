@@ -217,9 +217,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         
         qrCodeView.addSubview(qrImageView)
 
-        brandStackView.addArrangedSubview(UIView())
         brandStackView.addArrangedSubview(poweredByGiniView)
-        brandStackView.addArrangedSubview(UIView())
         brandView.addSubview(brandStackView)
 
         continueView.addSubview(continueButton)
@@ -417,13 +415,10 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor),
-            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor),
+            brandStackView.centerXAnchor.constraint(equalTo: qrImageView.centerXAnchor),
             brandStackView.topAnchor.constraint(equalTo: brandView.topAnchor),
             brandStackView.bottomAnchor.constraint(equalTo: brandView.bottomAnchor),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight),
-            poweredByGiniView.centerXAnchor.constraint(equalTo: qrImageView.centerXAnchor),
-            brandView.widthAnchor.constraint(equalTo: qrImageView.widthAnchor)
+            poweredByGiniView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight)
         ])
     }
     
