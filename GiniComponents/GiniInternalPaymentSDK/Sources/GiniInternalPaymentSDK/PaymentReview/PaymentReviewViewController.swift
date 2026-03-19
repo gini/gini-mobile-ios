@@ -10,7 +10,9 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
-/// Modes for displaying PaymentReview content in the UI.
+/**
+ Modes for displaying PaymentReview content in the UI.
+ */
 public enum DisplayMode: Int {
     case bottomSheet
     case documentCollection
@@ -21,7 +23,9 @@ enum PaymentInfoState {
     case collapsed // Only buttons visible
 }
 
-/// A view controller for reviewing payment details
+/**
+ A view controller for reviewing payment details
+ */
 public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
     private lazy var closeButton = buildCloseButton()
@@ -41,7 +45,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var keyboardWillShowCalled = false
     private var isViewRotating = false
 
-    /// The model instance containing data and methods for handling the payment review process.
+    /** The model instance containing data and methods for handling the payment review process. */
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
     private var cancellables = Set<AnyCancellable>()

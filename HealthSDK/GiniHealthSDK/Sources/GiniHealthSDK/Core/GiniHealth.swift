@@ -41,11 +41,11 @@ public protocol GiniHealthDelegate: AnyObject {
  Errors thrown with Gini Health SDK.
  */
 public enum GiniHealthError: Error {
-     /// Error thrown when there are no apps which supports Gini Pay Connect installed.
+     /** Error thrown when there are no apps which supports Gini Pay Connect installed. */
     case noInstalledApps
-     /// Error thrown when api returns failure.
+     /** Error thrown when api returns failure. */
     case apiError(GiniError)
-    /// Error thrown when api didn't returns payment extractions.
+    /** Error thrown when api didn't returns payment extractions. */
     case noPaymentDataExtracted
 }
 
@@ -65,22 +65,22 @@ public struct DataForReview {
  Core class for Gini Health SDK.
  */
 @objc public final class GiniHealth: NSObject {
-    /// reponsible for interaction with Gini Health backend .
+    /** reponsible for interaction with Gini Health backend . */
     public var giniApiLib: GiniHealthAPI
-    /// reponsible for the whole document processing.
+    /** reponsible for the whole document processing. */
     public var documentService: DefaultDocumentService
-    /// reponsible for the payment processing.
+    /** reponsible for the payment processing. */
     public var paymentService: PaymentService
-    /// responsible for the client configuration processing
+    /** responsible for the client configuration processing */
     public var clientConfigurationService: ClientConfigurationServiceProtocol?
-    /// delegate to inform about the current status of the Gini Health SDK.
+    /** delegate to inform about the current status of the Gini Health SDK. */
     public weak var delegate: GiniHealthDelegate?
-    /// delegate to inform about the changes into PaymentComponentsController
+    /** delegate to inform about the changes into PaymentComponentsController */
     public weak var paymentDelegate: PaymentComponentsControllerProtocol?
 
     private var bankProviders: [PaymentProvider] = []
 
-    /// Configuration for the payment component, controlling its branding and display options.
+    /** Configuration for the payment component, controlling its branding and display options. */
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
     public var clientConfiguration: ClientConfiguration? = GiniHealthConfiguration.shared.clientConfiguration
@@ -655,7 +655,7 @@ public struct DataForReview {
         }
     }
 
-    /// A static string representing the current version of the Gini Health SDK.
+    /** A static string representing the current version of the Gini Health SDK. */
     public static var versionString: String {
         return GiniHealthSDKVersion
     }

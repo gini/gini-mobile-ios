@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Represents a completion result callback
+/** Represents a completion result callback */
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
 
 protocol SessionAuthenticationProtocol: AnyObject {
@@ -101,18 +101,18 @@ extension SessionManager: SessionProtocol {
     }
 }
 
-/// Cancellation token needed during the analysis process
+/** Cancellation token needed during the analysis process */
 public final class CancellationToken {
     internal weak var task: URLSessionTask?
     
-    /// Indicates if the analysis has been cancelled
+    /** Indicates if the analysis has been cancelled */
     public var isCancelled = false
     
     public init() {
         // This initializer is intentionally left empty because no custom setup is required at initialization.
     }
     
-    /// Cancels the current task
+    /** Cancels the current task */
     public func cancel() {
         isCancelled = true
         task?.cancel()

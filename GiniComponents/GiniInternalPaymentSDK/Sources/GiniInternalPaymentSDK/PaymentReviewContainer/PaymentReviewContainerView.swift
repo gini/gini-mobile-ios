@@ -21,7 +21,9 @@ public enum TextFieldType: Int {
     case usageFieldTag
 }
 
-/// The container for oayment review textfields
+/**
+ The container for oayment review textfields
+ */
 public final class PaymentReviewContainerView: UIView {
     private let ibanValidator = IBANValidator()
 
@@ -91,9 +93,9 @@ public final class PaymentReviewContainerView: UIView {
     private var firstCoupledErrorsLabels: [UILabel] = []
     private var secondCoupleErrorsLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
-    /// A closure that is called when the pay button is clicked.
+    /** A closure that is called when the pay button is clicked. */
     public var onPayButtonClicked: (() -> Void)?
-    /// A closure that is called when the banks selection button is clicked.
+    /** A closure that is called when the banks selection button is clicked. */
     public var onBankSelectionButtonClicked: (() -> Void)?
 
     private var portraitConstraints: [NSLayoutConstraint] = []

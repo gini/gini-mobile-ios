@@ -7,7 +7,9 @@
 
 import Foundation
 
-/// The Gini Health API Library
+/**
+ The Gini Health API Library
+ */
 public final class GiniHealthAPI {
     
     private var docService: DocumentService!
@@ -24,8 +26,8 @@ public final class GiniHealthAPI {
     }
     
     /**
-     * The instance of a `DocumentService` that is used by the Gini Health API Library. The `DocumentService` allows the interaction with
-     * the Gini Health API.
+     The instance of a `DocumentService` that is used by the Gini Health API Library. The `DocumentService` allows the interaction with
+     the Gini Health API.
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
@@ -37,22 +39,22 @@ public final class GiniHealthAPI {
     }
     
     /**
-     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
-     *
+     The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
+
      */
     public func paymentService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> PaymentService {
         return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
     }
     
     /**
-     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
-     *
+     The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
+
      */
     public func clientConfigurationService() -> ClientConfigurationServiceProtocol? {
         return configurationService
     }
     
-    /// Removes the user stored credentials. Recommended when logging a different user in your app.
+    /** Removes the user stored credentials. Recommended when logging a different user in your app. */
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
         try keychainStore.remove(service: .auth, key: .userAccessToken)
@@ -64,7 +66,7 @@ public final class GiniHealthAPI {
 // MARK: - Builder
 
 extension GiniHealthAPI {
-    /// Builds a Gini Health API Library
+    /** Builds a Gini Health API Library */
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
@@ -74,13 +76,13 @@ extension GiniHealthAPI {
         public var sessionDelegate: URLSessionDelegate? = nil
         
         /**
-         *  Creates a Gini Health API Library
-         *
-         * - Parameter client:            The Gini Health API client credentials
-         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
-         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Health API Library with `Pinning`.
+         Creates a Gini Health API Library
+
+         - Parameter client:            The Gini Health API client credentials
+         - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
+         - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Health API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
@@ -96,7 +98,7 @@ extension GiniHealthAPI {
         }
         
         /**
-         * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source.
+         Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source.
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,
@@ -111,13 +113,13 @@ extension GiniHealthAPI {
         }
 
         /**
-         *  Creates a Gini Health API Library with certificate pinning configuration.
-         *
-         * - Parameter client:            The Gini Health API client credentials
-         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         Creates a Gini Health API Library with certificate pinning configuration.
+
+         - Parameter client:            The Gini Health API client credentials
+         - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
+         - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         - Parameter logLevel:          The log level. `LogLevel.none` by default.
          */
         public init(client: Client,
                     api: APIDomain = .default,
@@ -132,12 +134,12 @@ extension GiniHealthAPI {
         }
         
         /**
-         * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source and certificate pinning configuration.
-         *
-         * - Parameter customApiDomain:        A custom api domain string.
-         * - Parameter alternativeTokenSource: A protocol for using custom api access token
-         * - Parameter pinningConfig:          Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-         * - Parameter logLevel:               The log level. `LogLevel.none` by default.
+         Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source and certificate pinning configuration.
+
+         - Parameter customApiDomain:        A custom api domain string.
+         - Parameter alternativeTokenSource: A protocol for using custom api access token
+         - Parameter pinningConfig:          Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         - Parameter logLevel:               The log level. `LogLevel.none` by default.
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,

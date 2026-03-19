@@ -35,7 +35,9 @@ protocol PaymentComponentsProtocol {
     func paymentViewBottomSheet() -> UIViewController
 }
 
-/// A protocol that provides configuration settings for various payment components.
+/**
+ A protocol that provides configuration settings for various payment components.
+ */
 public protocol PaymentComponentsConfigurationProvider {
     var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration { get }
     var installAppConfiguration: InstallAppConfiguration { get }
@@ -60,7 +62,9 @@ public protocol PaymentComponentsConfigurationProvider {
     var paymentComponentButtonsHeight: CGFloat { get }
 }
 
-/// A protocol that provides localized string resources for various payment components.
+/**
+ A protocol that provides localized string resources for various payment components.
+ */
 public protocol PaymentComponentsStringsProvider {
     var paymentReviewContainerStrings: PaymentReviewContainerStrings { get }
     var paymentComponentsStrings: PaymentComponentsStrings { get }
@@ -77,7 +81,7 @@ public protocol PaymentComponentsStringsProvider {
  The `PaymentComponentsController` class allows control over the payment components.
  */
 public final class PaymentComponentsController: BottomSheetsProviderProtocol, GiniHealthTrackingDelegate {
-    /// handling the Payment Component Controller delegate
+    /** handling the Payment Component Controller delegate */
     public weak var delegate: PaymentComponentsControllerProtocol?
 
     let giniSDK: GiniHealth
@@ -88,7 +92,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     var configurationProvider: PaymentComponentsConfigurationProvider
     let stringsProvider: PaymentComponentsStringsProvider
 
-    /// storing the current selected payment provider
+    /** storing the current selected payment provider */
     public var selectedPaymentProvider: PaymentProvider?
     var healthSelectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider? {
         selectedPaymentProvider?.toHealthPaymentProvider()

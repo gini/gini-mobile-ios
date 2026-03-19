@@ -17,7 +17,9 @@ public protocol GiniErrorProtocol {
     var requestId: String { get }
 }
 
-/// An enumeration representing errors that can occur when interacting with the Gini API.
+/**
+ An enumeration representing errors that can occur when interacting with the Gini API.
+ */
 public struct GiniError: Error, GiniErrorProtocol, Equatable {
     public var message: String?
     public var response: HTTPURLResponse?
