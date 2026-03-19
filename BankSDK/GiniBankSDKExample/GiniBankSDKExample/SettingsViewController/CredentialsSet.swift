@@ -7,7 +7,7 @@
 import Foundation
 
 struct CredentialsSet {
-    static let setA = (clientId: "...", clientSecret: "...")
+    static let setB = (clientId: "...", clientSecret: "...")
     static var setA: (clientId: String, clientSecret: String) {
         let client = CredentialsManager.fetchClientFromBundle()
         return (clientId: client.id, clientSecret: client.secret)
