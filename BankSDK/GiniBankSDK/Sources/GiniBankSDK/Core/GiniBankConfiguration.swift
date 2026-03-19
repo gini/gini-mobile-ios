@@ -432,7 +432,6 @@ public final class GiniBankConfiguration: NSObject {
      This determines which extraction pipeline processes uploaded documents:
      - `sepaExtractions` (default): Standard SEPA payment extractions.
      - `cxExtractions`: Cross-border (CX) payment extractions.
-     - `autoDetectExtractions`: Reserved for future use.
      - `otherProductTag(String)`: Custom product tag value.
 
      This configuration is set once at SDK initialization time and applies
