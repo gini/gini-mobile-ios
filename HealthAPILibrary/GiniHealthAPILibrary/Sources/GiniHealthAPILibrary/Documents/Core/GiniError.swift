@@ -30,13 +30,19 @@ public protocol GiniErrorProtocol {
 ///
 /// Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
 public struct ErrorItem: Codable, Equatable, Sendable {
-    /// The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
+        /**
+     The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
+     */
     public var code: String
-    
-    /// Optional human-readable error message describing the error.
+
+    /**
+     Optional human-readable error message describing the error.
+     */
     public var message: String?
-    
-    /// Optional array of object identifiers (e.g., document IDs) that are affected by this error.
+
+    /**
+     Optional array of object identifiers (e.g., document IDs) that are affected by this error.
+     */
     public var object: [String]?
 
     enum CodingKeys: String, CodingKey {
@@ -45,11 +51,14 @@ public struct ErrorItem: Codable, Equatable, Sendable {
         case object
     }
 
-    /// Creates a new error item.
-    /// - Parameters:
-    ///   - code: The error code identifying the type of error
-    ///   - message: Optional human-readable error message
-    ///   - object: Optional array of affected object identifiers
+    /**
+     Creates a new error item.
+
+     - Parameters:
+       - code: The error code identifying the type of error
+       - message: Optional human-readable error message
+       - object: Optional array of affected object identifiers
+     */
     public init(code: String = "", message: String? = nil, object: [String]? = nil) {
         self.code = code
         self.message = message
@@ -176,10 +185,13 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         }
     }
 
-    /// HTTP status code from the error response, if available.
-    ///
-    /// Returns the status code from the HTTP response, or `nil` if no response is available.
-    /// - Returns: The HTTP status code (e.g., 400, 401, 404) or `nil`
+    /**
+     HTTP status code from the error response, if available.
+
+     Returns the status code from the HTTP response, or `nil` if no response is available.
+
+     - Returns: The HTTP status code (e.g., 400, 401, 404) or `nil`
+     */
     public var statusCode: Int? {
         switch self {
             case .badRequest(let response, _),
@@ -196,28 +208,34 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         }
     }
 
-    /// Array of error items containing specific error details from the API.
-    ///
-    /// Each item includes an error code, optional message, and optional list of affected objects.
-    /// Use this property to identify which specific documents or objects failed and why.
-    ///
-    /// Example:
-    /// ```swift
-    /// if let items = error.items {
-    ///     for item in items {
-    ///         print("Error \(item.code): \(item.object?.joined(separator: ", ") ?? "no objects")")
-    ///     }
-    /// }
-    /// ```
-    /// - Returns: Array of `ErrorItem` objects, or `nil` if no items are available
+    /**
+     Array of error items containing specific error details from the API.
+
+     Each item includes an error code, optional message, and optional list of affected objects.
+     Use this property to identify which specific documents or objects failed and why.
+
+     Example:
+     ```swift
+     if let items = error.items {
+         for item in items {
+             print("Error \(item.code): \(item.object?.joined(separator: ", ") ?? "no objects")")
+         }
+     }
+     ```
+
+     - Returns: Array of `ErrorItem` objects, or `nil` if no items are available
+     */
     public var items: [ErrorItem]? {
         return customError?.items
     }
 
-    /// The request ID from the API response, useful for debugging and support.
-    ///
-    /// This identifier can be used to trace the request in server logs.
-    /// - Returns: The request ID string, or a default message if not available
+    /**
+     The request ID from the API response, useful for debugging and support.
+
+     This identifier can be used to trace the request in server logs.
+
+     - Returns: The request ID string, or a default message if not available
+     */
     public var requestId: String {
         return customError?.requestId ?? "no requestId is available"
     }
