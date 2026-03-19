@@ -181,7 +181,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in
             guard let self, view.window != nil, !isBeingDismissed else { return }
-            view.accessibilityViewIsModal = true
             UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
         accessibilityFocusWorkItem = work
@@ -200,6 +199,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
 
     private func setupAccessibility() {
+        view.accessibilityViewIsModal = true
         view.accessibilityElements = [
             closeButton,
             titleLabel,
