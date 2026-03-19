@@ -178,7 +178,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in
             guard let self, view.window != nil, !isBeingDismissed else { return }
-            view.accessibilityViewIsModal = true
             UIAccessibility.post(notification: .screenChanged, argument: closeButton)
         }
         accessibilityFocusWorkItem = work
@@ -191,9 +190,11 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         setupLayout()
         setButtonsState()
         setupViewVisibility()
+        setupAccessibility()
     }
     
     private func setupAccessibility() {
+        view.accessibilityViewIsModal = true
         view.accessibilityElements = [
             closeButton,
             titleLabel,
@@ -460,6 +461,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
     
     private func generatePaymentInfoViews(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+        dynamicInfoLabels.removeAll()
         let stackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
             generateRecipientIbanStackView(orientation: orientation),
@@ -538,8 +540,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         // Perform layout updates with animation
-        coordinator.animate(alongsideTransition: { context in
-            self.updateViews()
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateViews()
         }, completion: { [weak self] _ in
             self?.notifyLayoutChanged()
         })
