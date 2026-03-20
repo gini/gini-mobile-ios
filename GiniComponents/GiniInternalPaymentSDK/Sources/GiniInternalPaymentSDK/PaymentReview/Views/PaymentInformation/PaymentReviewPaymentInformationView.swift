@@ -156,7 +156,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .recipient }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handleRecipientFocusChange(isFocused: newFocus == .recipient)
@@ -176,7 +177,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .iban }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handleIBANFocusChange(isFocused: newFocus == .iban)
@@ -202,7 +204,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.amountInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .amount }))
     }
     
     @ViewBuilder
@@ -225,7 +228,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .paymentPurpose }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handlePaymentPurposeFocusChange(isFocused: newFocus == .paymentPurpose)

@@ -19,6 +19,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private let title: String
     private let state: GiniTextFieldState
     private let errorMessage: String?
+    private let onTap: (() -> Void)?
     
     private let normalConfiguration: TextFieldConfiguration
     private let focusedConfiguration: TextFieldConfiguration
@@ -45,7 +46,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
          errorMessage: String? = nil,
          normalConfiguration: TextFieldConfiguration,
          focusedConfiguration: TextFieldConfiguration,
-         errorConfiguration: TextFieldConfiguration) {
+         errorConfiguration: TextFieldConfiguration,
+         onTap: (() -> Void)? = nil) {
         self.lockedIcon = lockedIcon
         self.title = title
         self.state = state
@@ -53,6 +55,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
         self.normalConfiguration = normalConfiguration
         self.focusedConfiguration = focusedConfiguration
         self.errorConfiguration = errorConfiguration
+        self.onTap = onTap
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -70,6 +73,10 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .padding(.horizontal, Constants.horizontalPadding)
             .padding(.top, Constants.verticalPadding)
             .background(Color(currentConfiguration.backgroundColor))
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onTap?()
+            }
             .clipShape(RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius))
             .overlay {
                 RoundedRectangle(cornerRadius: currentConfiguration.cornerRadius)
