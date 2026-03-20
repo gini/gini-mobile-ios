@@ -54,7 +54,7 @@ import Photos
         return state == .showOriginalFlow
     }
 
-    private var shouldDisplayEducationFlow: Bool {
+   internal var shouldDisplayEducationFlow: Bool {
         giniConfiguration.productTag != .cxExtractions
             && !document.isImported
             && giniConfiguration.fileImportSupportedTypes != .none
