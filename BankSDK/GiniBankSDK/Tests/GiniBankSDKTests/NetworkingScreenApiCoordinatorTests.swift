@@ -25,6 +25,11 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         trackingDelegate = MockTrackingDelegate()
     }
 
+    override func tearDown() {
+        GiniBankUserDefaultsStorage.clientConfiguration = nil
+        super.tearDown()
+    }
+
     func testCloseSDK() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true) // so the sdk would start
 
