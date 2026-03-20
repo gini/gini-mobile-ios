@@ -128,14 +128,18 @@ final class SettingsViewModel {
     private func setupProductTagSection() -> SettingsSection {
         var productTagSection = SettingsSection(title: "Product Tag", items: [])
         let selectedIndex: Int
-        switch giniConfiguration.productTag {
-        case .sepaExtractions:
-            selectedIndex = 0
-        case .cxExtractions:
-            selectedIndex = 1
-        case .autoDetectExtractions:
-            selectedIndex = 2
-        default:
+        if let productTag = giniConfiguration.productTag {
+            switch productTag {
+            case .sepaExtractions:
+                selectedIndex = 0
+            case .cxExtractions:
+                selectedIndex = 1
+            case .autoDetectExtractions:
+                selectedIndex = 2
+            default:
+                selectedIndex = 0
+            }
+        } else {
             selectedIndex = 0
         }
         productTagSection.items.append(.segmentedOption(data: ProductTagSegmentedOptionModel(selectedIndex: selectedIndex)))
