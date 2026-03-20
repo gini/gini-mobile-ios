@@ -68,6 +68,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        applyProductTagOverrides()
     }
 
     /**
@@ -94,12 +96,15 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
         super.init(withDelegate: nil,
                    giniConfiguration: captureConfiguration)
+
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        applyProductTagOverrides()
     }
 
     /**
@@ -735,6 +740,17 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         giniBankConfiguration.productTag == .cxExtractions
     }
 
+    /// Applies product-tag-driven overrides to both configuration objects after full SDK initialization.
+    /// Must be called last in every coordinator init, after `GiniBank.setConfiguration` has run,
+    /// to prevent `captureConfiguration()` from overwriting these values.
+    private func applyProductTagOverrides() {
+        guard isCrossBorderPayment() else { return }
+        giniBankConfiguration.qrCodeScanningEnabled = false
+        giniBankConfiguration.onlyQRCodeScanningEnabled = false
+        GiniConfiguration.shared.qrCodeScanningEnabled = false
+        GiniConfiguration.shared.onlyQRCodeScanningEnabled = false
+    }
+
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
                                      delegate: GiniCaptureNetworkDelegate) {
         let document = documentService.document
@@ -744,8 +760,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                    deliveryFunction: { [weak self] result in
             guard let self else { return }
             self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-        }
-        )
+        })
     }
 }
 
