@@ -606,8 +606,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 let documentService = self.documentService
 
                 let result = AnalysisResult(extractions: extractions,
-                                            lineItems: result.lineItems,
-                                            skontoDiscounts: result.skontoDiscounts,
+                                            lineItems: isCrossBorderPayment() ? nil : result.lineItems,
+                                            skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
                                             crossBorderPayment: result.crossBorderPayment,
                                             images: images,
                                             document: documentService.document,
@@ -615,10 +615,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 sendAnalyticsEventSDKClose()
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                self.giniBankConfiguration.lineItems = result.lineItems
-                if let skontoDiscounts = result.skontoDiscounts {
-                    self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                    self.sendSkontoTransferSummary(extractions: extractions)
+                if !isCrossBorderPayment() {
+                    self.giniBankConfiguration.lineItems = result.lineItems
+                    if let skontoDiscounts = result.skontoDiscounts {
+                        self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                        self.sendSkontoTransferSummary(extractions: extractions)
+                    }
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -686,6 +688,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        guard !isCrossBorderPayment() else { return false }
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
@@ -715,13 +718,21 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        !isCrossBorderPayment() &&
         giniBankConfiguration.returnAssistantEnabled &&
         !(result.lineItems?.isEmpty ?? true)
     }
 
     func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        !isCrossBorderPayment() &&
         giniBankConfiguration.skontoEnabled &&
         !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    /// Returns true when the active product tag indicates a cross-border payment flow.
+    /// Used to suppress SEPA-specific features (Return Assistant, Skonto, payment hints, etc).
+    func isCrossBorderPayment() -> Bool {
+        giniBankConfiguration.productTag == .cxExtractions
     }
 
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
