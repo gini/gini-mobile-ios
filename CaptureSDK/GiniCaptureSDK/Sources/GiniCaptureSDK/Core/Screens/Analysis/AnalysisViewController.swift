@@ -54,6 +54,12 @@ import Photos
         return state == .showOriginalFlow
     }
 
+    private var shouldDisplayEducationFlow: Bool {
+        giniConfiguration.productTag != .cxExtractions
+            && !document.isImported
+            && giniConfiguration.fileImportSupportedTypes != .none
+    }
+
     // User interface
     private var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -239,7 +245,8 @@ import Photos
     private func setupView() {
         addImageView()
         edgesForExtendedLayout = []
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                         dark: .GiniCapture.dark2).uiColor()
         title = Strings.screenTitle
 
         if let document = document as? GiniPDFDocument {
@@ -274,9 +281,9 @@ import Photos
     }
 
     private func configureLoadingIndicator() {
-        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        // For cross border Extractions we don't want to show the education flow, so we can skip directly to showing the original loading message
         educationFlowController = EducationFlowController
-            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
+            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
 
         let nextState = educationFlowController?.nextState()
         switch nextState {
@@ -290,7 +297,8 @@ import Photos
     }
 
     private func showOriginalLoadingMessage() {
-        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1,
+                                               dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
         addLoadingContainer()
