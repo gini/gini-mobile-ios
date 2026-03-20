@@ -22,17 +22,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         let view = EmptyView()
         return view
     }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.closeButtonAccessibilityLabel
-        return button
-    }()
 
     private lazy var titleView: UIView = {
         let view = EmptyView()
@@ -111,7 +100,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
     
     public var shouldShowInFullScreenInLandscapeMode: Bool {
-        true
+        false
     }
     
     public override func viewDidLoad() {
@@ -169,14 +158,14 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet(shouldIncludeLargeDetent: true)
+        configureBottomSheet()
+        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
     }
 
     private func setupViewHierarchy() {
-        addCloseButton()
         titleView.addSubview(titleLabel)
         titleView.addSubview(closeTitleIconImageView)
         contentStackView.addArrangedSubview(titleView)
@@ -207,21 +196,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
-    }
-    
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                 constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
     }
     
     private func setupContentViewConstraints() {
@@ -325,6 +299,7 @@ extension BanksBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
+        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
     }
 }
 
