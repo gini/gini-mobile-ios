@@ -17,7 +17,7 @@ extension NetworkingScreenApiCoordinatorTests {
                           scope: "the_scope",
                           type: "the_type",
                           accessToken: "some_totally_random_gibberish")
-       return MockTokenSource(token: token)
+        return MockTokenSource(token: token)
     }
 
     func makeCoordinatorAndService(fromViewController: Bool = false) throws -> (GiniBankNetworkingScreenApiCoordinator,
