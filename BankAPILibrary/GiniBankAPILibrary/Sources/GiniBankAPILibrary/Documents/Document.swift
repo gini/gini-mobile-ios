@@ -377,7 +377,7 @@ extension Document {
          Header name: `X-Document-Metadata-ProductTag`.
          Allowed values: `sepaExtractions`, `cxExtractions`, `autoDetectExtractions`.
          - Parameters:
-           - rawValue: The string value for the product tag, for example `"sepaExtractions"`.
+           - rawValue: The raw string value for the product tag.
          */
         public mutating func addProductTag(_ rawValue: String) {
             headers[Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey] = rawValue
