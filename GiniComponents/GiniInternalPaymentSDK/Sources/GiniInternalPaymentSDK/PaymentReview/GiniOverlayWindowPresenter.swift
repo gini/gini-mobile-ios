@@ -4,11 +4,16 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import UIKit
 
 /// Manages a secondary UIWindow for presenting view controllers that must
 /// survive the main VC hierarchy's lifecycle changes (e.g., SwiftUI .sheet teardowns).
 final class GiniOverlayWindowPresenter {
+    
+    struct NotificationName {
+        static let dismissOverlay = Notification.Name("GiniOverlayWindowPresenter.dismissOverlay")
+    }
 
     private var overlayWindow: UIWindow?
 
@@ -79,10 +84,13 @@ final class GiniOverlayWindowPresenter {
 private final class GiniPassthroughViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
 
     private let onDismiss: () -> Void
+    
+    private var cancellables: Set<AnyCancellable> = []
 
     init(onDismiss: @escaping () -> Void) {
         self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
+        registerToNotifications()
     }
 
     required init?(coder: NSCoder) {
@@ -105,5 +113,15 @@ private final class GiniPassthroughViewController: UIViewController, UIAdaptiveP
 
     override var childForStatusBarHidden: UIViewController? {
         presentedViewController
+    }
+    
+    // Private methods
+    
+    private func registerToNotifications() {
+        NotificationCenter.default.publisher(for: GiniOverlayWindowPresenter.NotificationName.dismissOverlay)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.onDismiss()
+            }.store(in: &cancellables)
     }
 }

@@ -329,6 +329,9 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     /// BanksBottomView event when a bank is selected from the list
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: GiniOverlayWindowPresenter.NotificationName.dismissOverlay,
+                                            object: nil)
+        }
     }
 }
