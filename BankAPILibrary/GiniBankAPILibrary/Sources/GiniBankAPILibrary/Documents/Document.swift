@@ -308,20 +308,20 @@ extension Document {
         static let headerKeyPrefix = "X-Document-Metadata-"
         static let branchIdHeaderKey = "BranchId"
         static let uploadHeaderKey = "Upload"
+        static let productTagHeaderKey = "product-tag"
 
         /**
-         * The document metadata initializer with the branch ID (i.e: the BLZ of a Bank in Germany) and additional
-         * headers.
-         *
-         * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
-         * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
+         Initializes document metadata with an optional branch ID, upload metadata, SDK version, and additional headers.
+         - Parameters:
+           - branchId: The branch ID, such as the BLZ of a bank in Germany.
+           - uploadMetadata: Optional upload metadata to include.
+           - bankSDKVersion: The GiniBank SDK version string to embed in the upload metadata.
+           - additionalHeaders: Additional custom headers. For example: `["customerId": "123456"]`.
          */
-        public init(
-            branchId: String? = nil,
+        public init(branchId: String? = nil,
             uploadMetadata: UploadMetadata? = nil,
             bankSDKVersion: String? = nil,
-            additionalHeaders: [String: String]? = nil
-        ) {
+            additionalHeaders: [String: String]? = nil) {
             if let branchId = branchId {
                 headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
@@ -363,9 +363,24 @@ extension Document {
             headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = comment
         }
 
-        /// Checks if upload metadata is present
+        /**
+         Indicates whether upload metadata is present in the headers.
+         - Returns: `true` if the upload metadata header key exists; otherwise, `false`.
+         */
         public func hasUploadMetadata() -> Bool {
             headers.keys.contains(Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey)
+        }
+
+        /**
+         Sets the product tag header, which tells the Gini backend which extraction pipeline
+         to route the document through.
+         Header name: `X-Document-Metadata-ProductTag`.
+         Allowed values: `sepaExtractions`, `cxExtractions`, `autoDetectExtractions`.
+         - Parameters:
+           - rawValue: The string value for the product tag, for example `"sepaExtractions"`.
+         */
+        public mutating func addProductTag(_ rawValue: String) {
+            headers[Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey] = rawValue
         }
     }
 }
