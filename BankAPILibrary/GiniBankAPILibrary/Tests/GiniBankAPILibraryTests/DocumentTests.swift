@@ -178,7 +178,7 @@ final class GiniDocumentTests: XCTestCase {
 
     func testProductTagHeaderKeyConstant() {
         let fullKey = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
-        XCTAssertEqual(fullKey, "X-Document-Metadata-ProductTag",
+        XCTAssertEqual(fullKey, "X-Document-Metadata-product-tag",
                        "Full product tag header key must match the backend contract")
     }
 
