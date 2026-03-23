@@ -14,8 +14,9 @@ public class GiniColor: NSObject {
     /**
      Creates a GiniColor with the colors for the light and dark modes.
 
-     - parameter light: color for the light mode
-     - parameter dark: color for the dark mode
+     - Parameters:
+        - light: color for the light mode
+        - dark: color for the dark mode
      */
     public init(light: UIColor, dark: UIColor) {
         self.light = light
