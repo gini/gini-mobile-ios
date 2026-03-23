@@ -21,8 +21,6 @@ protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
  */
 final class TransactionSummaryTableViewController: UITableViewController, CodeLoadableView {
 
-    // MARK: - Public
-
     var result: [Extraction] = [] {
         didSet {
             result.sort { ($0.name ?? "") < ($1.name ?? "") }
@@ -63,7 +61,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 75
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
         tableView.backgroundColor = GiniColor(light: .systemGray5, dark: .systemGray5).uiColor()
         tableView.separatorStyle = .none
         tableView.register(ExtractionResultCell.self)
@@ -81,35 +79,37 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         let button = GiniButton(type: .custom)
         button.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
                                            dark: giniCaptureColor("Accent01")).uiColor()
-        button.setTitle("Test a new document", for: .normal)
+        button.setTitle(Strings.footerButtonTitle, for: .normal)
         button.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
                                        dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
         button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = Constants.buttonCornerRadius
         button.clipsToBounds = true
 
         footerView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
-            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -10),
-            button.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 10),
-            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10),
-            button.heightAnchor.constraint(equalToConstant: 50)
+            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
+                                            constant: Constants.buttonHorizontalPadding),
+            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
+                                             constant: -Constants.buttonHorizontalPadding),
+            button.topAnchor.constraint(equalTo: footerView.topAnchor,
+                                        constant: Constants.buttonVerticalPadding),
+            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
+                                           constant: -Constants.buttonVerticalPadding),
+            button.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
         ])
 
-        footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 70)
+        footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: Constants.footerHeight)
         tableView.tableFooterView = footerView
     }
 
     private func setupNavigationButtons() {
         navigationItem.setHidesBackButton(true, animated: true)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Done",
-            style: .plain,
-            target: self,
-            action: #selector(tapCloseSreenAPIAndSendTransferSummary)
-        )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.doneButtonTitle,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(tapCloseSreenAPIAndSendTransferSummary))
     }
 
     // MARK: - Actions
@@ -204,5 +204,21 @@ extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
         let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
         numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
         tableView.reloadData()
+    }
+}
+
+extension TransactionSummaryTableViewController {
+    struct Constants {
+        static let estimatedRowHeight: CGFloat = 75
+        static let buttonCornerRadius: CGFloat = 4
+        static let buttonHorizontalPadding: CGFloat = 10
+        static let buttonVerticalPadding: CGFloat = 10
+        static let buttonHeight: CGFloat = 50
+        static let footerHeight: CGFloat = 70
+    }
+
+    struct Strings {
+        static let footerButtonTitle = "Test a new document"
+        static let doneButtonTitle = "Done"
     }
 }
