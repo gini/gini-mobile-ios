@@ -56,6 +56,7 @@ final class SettingsViewModel {
         sections.append(setupDefaultConfigSection())
         sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
         sections.append(setupCredentialsSection())
+        sections.append(setupProductTagSection())
         sections.append(setupFeatureTogglesSection())
         sections.append(setupOnboardingSection())
         
@@ -123,6 +124,40 @@ final class SettingsViewModel {
         let selectedSegmentIndex = enablePinningSDK ? 1 : 0
         credentialsSection.items.append(.segmentedOption(data: SDKTypeSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
         return credentialsSection
+    }
+
+    private func setupProductTagSection() -> SettingsSection {
+        var productTagSection = SettingsSection(title: "Product Tag", items: [])
+        let selectedIndex: Int
+        if let productTag = giniConfiguration.productTag {
+            switch productTag {
+            case .sepaExtractions:
+                selectedIndex = 0
+            case .cxExtractions:
+                selectedIndex = 1
+            case .autoDetectExtractions:
+                selectedIndex = 2
+            default:
+                selectedIndex = 0
+            }
+        } else {
+            selectedIndex = 0
+        }
+        productTagSection.items.append(.segmentedOption(data: ProductTagSegmentedOptionModel(selectedIndex: selectedIndex)))
+        return productTagSection
+    }
+
+    func handleProductTagOption(selectedIndex: Int) {
+        switch selectedIndex {
+        case 0:
+            giniConfiguration.productTag = .sepaExtractions
+        case 1:
+            giniConfiguration.productTag = .cxExtractions
+        case 2:
+            giniConfiguration.productTag = .autoDetectExtractions
+        default:
+            giniConfiguration.productTag = .sepaExtractions
+        }
     }
 
     private func setupFeatureTogglesSection() -> SettingsSection {
