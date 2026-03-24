@@ -178,4 +178,51 @@ extension NetworkingScreenApiCoordinatorTests {
         XCTAssertFalse(coordinator.isCrossBorderPayment(),
                        "isCrossBorderPayment() must return false when productTag is .autoDetectExtractions")
     }
+
+    // MARK: shouldShowNoResultsForCX
+
+    func testShouldShowNoResultsForCXWhenCXTagAndCrossBorderPaymentIsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: nil)
+
+        XCTAssertTrue(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                      "Must show no-results when CX tag is set and crossBorderPayment is nil")
+    }
+
+    func testShouldShowNoResultsForCXWhenCXTagAndCrossBorderPaymentIsEmpty() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: [])
+
+        XCTAssertTrue(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                      "Must show no-results when CX tag is set and crossBorderPayment is an empty array")
+    }
+
+    func testShouldNotShowNoResultsForCXWhenCXTagAndCrossBorderPaymentIsPresent() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: createMockCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                       "Must NOT show no-results when CX tag is set and crossBorderPayment has data")
+    }
+
+    func testShouldNotShowNoResultsForCXWhenSepaTagEvenIfCrossBorderPaymentIsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        let result = createExtractionResult(crossBorderPayment: nil)
+
+        XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                       "Must NOT show CX no-results when productTag is SEPA")
+    }
+
+    func testShouldNotShowNoResultsForCXWhenTagIsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = nil
+        let result = createExtractionResult(crossBorderPayment: nil)
+
+        XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                       "Must NOT show CX no-results when productTag is nil")
+    }
 }

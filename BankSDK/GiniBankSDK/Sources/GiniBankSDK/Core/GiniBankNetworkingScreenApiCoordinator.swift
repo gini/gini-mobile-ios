@@ -512,7 +512,15 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        // Cross border flow: if no crossBorderPayment extractions were returned, show
+        // the no-results screen instead of delivering anything to the bank.
+        if shouldShowNoResultsForCrossBorder(for: extractionResult) {
+            delegate.tryDisplayNoResultsScreen()
+            documentService.resetToInitialState()
+            return
+        }
+
+        // Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
         let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
 
@@ -530,17 +538,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
-        /// Step:  Check document status for multiple states
+        // Step:  Check document status for multiple states
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
         case .paid:
-            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            // show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
             handlePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .toBePaid:
             handleSavingPhotos(for: extractionResult)
-            /// Show payment due date hint if available
+            // Show payment due date hint if available
             handleToBePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .none:
@@ -740,6 +748,17 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      */
     func isCrossBorderPayment() -> Bool {
         giniBankConfiguration.productTag == .cxExtractions
+    }
+
+    /**
+     Returns `true` when the active product tag is `cxExtractions` and the backend returned
+     no cross-border payment extractions (nil or empty).  In this case the SDK
+     must show the no-results screen and must **not** forward any extractions to
+     the host app.
+     */
+    func shouldShowNoResultsForCrossBorder(for result: ExtractionResult) -> Bool {
+        guard isCrossBorderPayment() else { return false }
+        return result.crossBorderPayment == nil || result.crossBorderPayment?.isEmpty == true
     }
 
     /**
