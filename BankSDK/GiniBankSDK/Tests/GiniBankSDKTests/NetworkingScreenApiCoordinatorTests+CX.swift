@@ -263,4 +263,44 @@ extension NetworkingScreenApiCoordinatorTests {
         XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
                        "Must NOT show CX no-results when productTag is nil")
     }
+
+    // MARK: Partial CX response
+
+    func testPartialCXResponseDoesNotTriggerNoResultsScreen() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: createPartialCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                       "A partial crossBorderPayment (some fields absent) is a valid result — no-results screen must not be shown")
+    }
+
+    func testPartialCXResponseContainsOnlyReturnedFields() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let partial = createPartialCrossBorderPayment()
+        let result = createExtractionResult(crossBorderPayment: partial)
+
+        let group = try XCTUnwrap(result.crossBorderPayment?.first,
+                                  "crossBorderPayment must contain at least one group")
+        XCTAssertEqual(group.count, 1,
+                       "Partial response group must contain exactly the one field the backend returned")
+        XCTAssertEqual(group.first?.name, "iban",
+                       "The only returned field must be 'iban'")
+    }
+
+    func testPartialCXResponseSuppressesReturnAssistantAndSkonto() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: createPartialCrossBorderPayment(),
+                                            lineItems: createMockLineItems(),
+                                            skontoDiscounts: createMockSkontoDiscounts())
+
+        XCTAssertFalse(coordinator.shouldShowReturnAssistant(for: result),
+                       "Return Assistant must be suppressed even for a partial CX response")
+        XCTAssertFalse(coordinator.shouldShowSkonto(for: result),
+                       "Skonto must be suppressed even for a partial CX response")
+    }
 }
