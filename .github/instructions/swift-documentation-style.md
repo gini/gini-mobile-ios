@@ -65,10 +65,10 @@ Use this shape:
 
 ### Inline comment inside executable code
 Use this shape:
+// → used for inline comments inside method bodies ✅
 
-```swift
-/// Explains the behavior of the next line or block.
-```
+/// → used for documentation comments on declarations (functions, classes, properties) ❌ for inline use
+
 
 ## Style guidance
 
