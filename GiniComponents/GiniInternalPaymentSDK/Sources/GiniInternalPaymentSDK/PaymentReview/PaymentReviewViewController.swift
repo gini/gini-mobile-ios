@@ -41,7 +41,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         super.viewDidLoad()
         
         model.viewModelDelegate = self
-        view.backgroundColor = model.configuration.mainViewBackgroundColor
+        view.backgroundColor = model.displayMode == .bottomSheet ? .clear : model.configuration.mainViewBackgroundColor
         
         setupNavigationBar()
     }
