@@ -270,14 +270,13 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        if let crossBorderPaymentExtractions = result.crossBorderPayment, !crossBorderPaymentExtractions.isEmpty {
+        if let crossBorderPaymentExtractions = result.crossBorderPayment,
+            !crossBorderPaymentExtractions.isEmpty {
             extractedResults = []
 
-            if let crossBorderGroups = result.crossBorderPayment {
-                for group in crossBorderGroups {
-                    for extraction in group {
-                        extractedResults.append(extraction)
-                    }
+            for group in crossBorderPaymentExtractions {
+                for extraction in group {
+                    extractedResults.append(extraction)
                 }
             }
             showResultsScreen(results: extractedResults,
@@ -287,7 +286,11 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
             extractedResults = result.extractions.map { $0.value}
             for extraction in editableSpecificExtractions {
                 if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
-                    extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
+                    extractedResults.append(Extraction(box: nil,
+                                                       candidates: nil,
+                                                       entity: extraction.value,
+                                                       value: "",
+                                                       name: extraction.key))
                 }
             }
             showResultsScreen(results: extractedResults,
