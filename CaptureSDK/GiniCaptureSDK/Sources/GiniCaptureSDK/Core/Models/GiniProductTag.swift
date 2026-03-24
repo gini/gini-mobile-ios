@@ -5,8 +5,6 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
-import Foundation
-
 /**
  Defines the product type for document extraction routing.
 
@@ -31,7 +29,8 @@ public enum GiniProductTag: Equatable {
 
     /**
      Custom product tag for future or custom extraction pipelines.
-     - Parameter value: The custom string identifier for the pipeline.
+     - Parameters:
+        - value: The custom string identifier for the pipeline.
      */
     case otherProductTag(String)
 
