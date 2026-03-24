@@ -12,6 +12,8 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
+    
+    @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     private var isLandscape: Bool {
@@ -80,7 +82,7 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            if viewModel.isBottomSheetMode {
+            if viewModel.isBottomSheetMode || isVoiceOverEnabled {
                 viewModel.didTapClose()
             }
         } content: {
