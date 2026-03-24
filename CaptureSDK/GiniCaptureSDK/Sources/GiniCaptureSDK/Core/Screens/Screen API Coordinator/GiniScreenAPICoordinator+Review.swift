@@ -9,9 +9,8 @@ import UIKit
 // MARK: - Review screen
 
 extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
-    public func review(
-        _ controller: ReviewViewController,
-        didDelete page: GiniCapturePage) {
+    public func review(_ controller: ReviewViewController,
+                       didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
 
@@ -20,9 +19,8 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         }
     }
 
-    public func review(
-        _ viewController: ReviewViewController,
-        didTapRetryUploadFor page: GiniCapturePage) {
+    public func review(_ viewController: ReviewViewController,
+                       didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
         visionDelegate?.didCapture(document: page.document, networkDelegate: self)
     }
@@ -31,21 +29,20 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         backToCamera()
     }
 
-    func createReviewScreenContainer(with pages: [GiniCapturePage])
-        -> ReviewViewController {
-            let vc = ReviewViewController(pages: pages,
-                                          giniConfiguration: giniConfiguration)
-            vc.delegate = self
+    func createReviewScreenContainer(with pages: [GiniCapturePage]) -> ReviewViewController {
+        let reviewViewController = ReviewViewController(pages: pages,
+                                                        giniConfiguration: giniConfiguration)
+        reviewViewController.delegate = self
 
-            let cancelButton = GiniBarButton(ofType: .cancel)
-            cancelButton.addAction(self, #selector(closeScreen))
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(closeScreen))
 
-            if giniConfiguration.bottomNavigationBarEnabled {
-                vc.navigationItem.rightBarButtonItem = cancelButton.barButton
-            } else {
-                vc.navigationItem.leftBarButtonItem = cancelButton.barButton
-            }
-            return vc
+        if giniConfiguration.bottomNavigationBarEnabled {
+            reviewViewController.navigationItem.rightBarButtonItem = cancelButton.barButton
+        } else {
+            reviewViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
+        }
+        return reviewViewController
     }
 
     @objc fileprivate func closeScreen() {
