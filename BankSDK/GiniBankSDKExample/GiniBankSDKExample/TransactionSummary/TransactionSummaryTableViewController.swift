@@ -55,22 +55,30 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = (!isCrossBorderPayment && !currentTransactionDocs.isEmpty) ? 2 : 1
+        updateNumberOfSections()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        tableView.backgroundColor = GiniColor(light: .systemGray5, dark: .systemGray5).uiColor()
-        tableView.separatorStyle = .none
-        tableView.register(ExtractionResultCell.self)
-        tableView.register(AttachmentsTableViewCell.self)
+        setupTableView()
         setupNavigationButtons()
         setupTableFooterButton()
     }
 
     // MARK: - Setup
+
+    private func updateNumberOfSections() {
+        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        numberOfSections = (!isCrossBorderPayment && !currentTransactionDocs.isEmpty) ? 2 : 1
+    }
+
+    private func setupTableView() {
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.backgroundColor = GiniColor(light: .systemGray5, dark: .systemGray5).uiColor()
+        tableView.separatorStyle = .none
+        tableView.register(ExtractionResultCell.self)
+        tableView.register(AttachmentsTableViewCell.self)
+    }
 
     private func setupTableFooterButton() {
         let footerView = UIView()
@@ -109,7 +117,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.doneButtonTitle,
                                                             style: .plain,
                                                             target: self,
-                                                            action: #selector(tapCloseSreenAPIAndSendTransferSummary))
+                                                            action: #selector(tapCloseScreenAPIAndSendTransferSummary))
     }
 
     // MARK: - Actions
@@ -118,7 +126,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         delegate?.didTapToScanAgain()
     }
 
-    @objc func tapCloseSreenAPIAndSendTransferSummary() {
+    @objc func tapCloseScreenAPIAndSendTransferSummary() {
         delegate?.didTapCloseAndSendTransferSummary()
     }
 
@@ -201,8 +209,7 @@ extension TransactionSummaryTableViewController: UITextFieldDelegate {
 
 extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
+        updateNumberOfSections()
         tableView.reloadData()
     }
 }
