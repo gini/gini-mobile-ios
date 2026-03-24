@@ -115,6 +115,44 @@ extension NetworkingScreenApiCoordinatorTests {
                       "Payment due hint must remain active for SEPA when globally enabled")
     }
 
+    // MARK: determineIfAlreadyPaidHintEnabled
+
+    func testAlreadyPaidHintDisabledForCX() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult()
+
+        XCTAssertFalse(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                       "Already-paid hint must be suppressed for CX")
+    }
+
+    func testAlreadyPaidHintDisabledForCXWithCrossBorderPaymentData() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult(crossBorderPayment: createMockCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                       "Already-paid hint must be suppressed for CX even when crossBorderPayment data is present")
+    }
+
+    func testAlreadyPaidHintEnabledForSepaWhenConditionsMet() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult()
+
+        XCTAssertTrue(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                      "Already-paid hint must remain active for SEPA when globally enabled")
+    }
+
     // MARK: autoDetectExtractions — non-CX behaviour
 
     func testShouldShowReturnAssistantForAutoDetectWhenLineItemsPresent() throws {
