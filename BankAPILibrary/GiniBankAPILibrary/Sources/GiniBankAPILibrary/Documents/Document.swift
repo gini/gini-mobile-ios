@@ -374,7 +374,7 @@ extension Document {
         /**
          Sets the product tag header, which tells the Gini backend which extraction pipeline
          to route the document through.
-         Header name: `X-Document-Metadata-ProductTag`.
+         Header name: `X-Document-Metadata-product-tag`.
          Allowed values: `sepaExtractions`, `cxExtractions`, `autoDetectExtractions`.
          - Parameters:
            - rawValue: The raw string value for the product tag.
