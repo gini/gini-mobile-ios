@@ -16,7 +16,7 @@ protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
 /**
  Presents a list of extraction results in a table view.
  In the SEPA flow, fields listed in `editableFields` are rendered as editable text fields.
- In the cross-border flow all fields are read-only and labels use the `displayNameMapping`.
+ In the cross-border flow all fields are all editable and labels use the `displayNameMapping`.
  */
 final class TransactionSummaryTableViewController: UITableViewController, CodeLoadableView {
 
