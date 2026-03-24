@@ -45,7 +45,7 @@ final class DefaultTransactionSummaryViewModel: TransactionSummaryViewModel {
         self.items = sortedExtractions.map { extraction in
             let name = extraction.name ?? ""
             let title = isCrossBorderPayment ? (displayNameMapping[name] ?? name) : name
-            let isEditable = !isCrossBorderPayment && editableFields[name] != nil
+            let isEditable = isCrossBorderPayment || editableFields[name] != nil
             return ExtractionViewData(title: title,
                                       value: extraction.value,
                                       isEditable: isEditable,

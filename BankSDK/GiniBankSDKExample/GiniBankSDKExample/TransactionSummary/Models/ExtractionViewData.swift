@@ -22,7 +22,8 @@ struct ExtractionViewData {
     var value: String
 
     /**
-     Indicates whether the field is editable by the user (SEPA flow only).
+     Indicates whether the field is editable by the user.
+     All fields are editable for cross-border payments; for SEPA, only fields present in the editable fields map are editable.
      */
     let isEditable: Bool
 
