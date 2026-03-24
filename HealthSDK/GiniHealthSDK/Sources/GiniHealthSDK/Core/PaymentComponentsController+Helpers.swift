@@ -401,6 +401,7 @@ extension PaymentComponentsController {
     
     private func loadPDFData(paymentRequestId: String, viewController: UIViewController) {
         self.loadPDF(paymentRequestId: paymentRequestId, completion: { [weak self] pdfData in
+            guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
             let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestId)
 
             guard let pdfPath else {
@@ -408,7 +409,10 @@ extension PaymentComponentsController {
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
+            self?.sharePDF(pdfURL: pdfPath,
+                           paymentRequestId: paymentRequestId,
+                           viewController:
+                            shareInvoiceBottomSheet) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
                     self?.shareInvoiceBottomSheet?.updateViews()
                 }
