@@ -729,8 +729,10 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         !(result.skontoDiscounts?.isEmpty ?? true)
     }
 
-    /// Returns true when the active product tag indicates a cross-border payment flow.
-    /// Used to suppress SEPA-specific features (Return Assistant, Skonto, payment hints, etc).
+    /**
+     Returns true when the active product tag indicates a cross-border payment flow.
+     Used to suppress SEPA-specific features (Return Assistant, Skonto, payment hints, etc).
+     */
     func isCrossBorderPayment() -> Bool {
         giniBankConfiguration.productTag == .cxExtractions
     }
