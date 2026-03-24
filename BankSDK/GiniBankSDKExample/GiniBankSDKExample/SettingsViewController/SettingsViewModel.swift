@@ -25,7 +25,7 @@ final class SettingsViewModel {
 
     private var selectedCredentialsSetIndex: Int = 0
     private var currentAPIEnvironment: APIEnvironment = .production
-
+    private let enablePinningSDK: Bool
     weak var delegate: SettingsViewModelDelegate?
     
     private var flashToggleSettingEnabled: Bool = {
@@ -35,7 +35,7 @@ final class SettingsViewModel {
             return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)?.hasFlash ?? false
         #endif
     }()
-    
+
     init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
@@ -43,7 +43,7 @@ final class SettingsViewModel {
         self.giniConfiguration = giniConfiguration
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
-
+        self.enablePinningSDK = enablePinningSDK
         self.selectedCredentialsSetIndex = ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex
         self.currentAPIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
 
@@ -54,6 +54,7 @@ final class SettingsViewModel {
         var sections: [SettingsSection] = []
         
         sections.append(setupDefaultConfigSection())
+        sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
         sections.append(setupCredentialsSection())
         sections.append(setupProductTagSection())
         sections.append(setupFeatureTogglesSection())
@@ -128,14 +129,18 @@ final class SettingsViewModel {
     private func setupProductTagSection() -> SettingsSection {
         var productTagSection = SettingsSection(title: "Product Tag", items: [])
         let selectedIndex: Int
-        switch giniConfiguration.productTag {
-        case .sepaExtractions:
-            selectedIndex = 0
-        case .cxExtractions:
-            selectedIndex = 1
-        case .autoDetectExtractions:
-            selectedIndex = 2
-        default:
+        if let productTag = giniConfiguration.productTag {
+            switch productTag {
+            case .sepaExtractions:
+                selectedIndex = 0
+            case .cxExtractions:
+                selectedIndex = 1
+            case .autoDetectExtractions:
+                selectedIndex = 2
+            default:
+                selectedIndex = 0
+            }
+        } else {
             selectedIndex = 0
         }
         productTagSection.items.append(.segmentedOption(data: ProductTagSegmentedOptionModel(selectedIndex: selectedIndex)))

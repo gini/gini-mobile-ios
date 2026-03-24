@@ -1,7 +1,7 @@
 //
 //  NetworkingScreenApiCoordinatorTests+CX.swift
 //
-//  Copyright © 2024 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 @testable import GiniBankAPILibrary

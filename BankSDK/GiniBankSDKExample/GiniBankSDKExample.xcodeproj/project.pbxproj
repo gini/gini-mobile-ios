@@ -42,6 +42,8 @@
 		284938B82E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284938B52E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift */; };
 		284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */; };
 		284F520A2BD959F300CF70AD /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52092BD959F300CF70AD /* UIColor.swift */; };
+		285FFC002F72EC39002C964A /* TransactionSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FFBFE2F72EC39002C964A /* TransactionSummaryViewModel.swift */; };
+		285FFC012F72EC39002C964A /* ExtractionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FFBFD2F72EC39002C964A /* ExtractionViewData.swift */; };
 		2870683C2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */; };
 		287068422CB950D400D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */; };
 		287068432CB950D700D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */; };
@@ -329,6 +331,8 @@
 		284938B52E842A4D00EA8709 /* GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleSwiftUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankCustomResourceProvider.swift; sourceTree = "<group>"; };
 		284F52092BD959F300CF70AD /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		285FFBFD2F72EC39002C964A /* ExtractionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionViewData.swift; sourceTree = "<group>"; };
+		285FFBFE2F72EC39002C964A /* TransactionSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryViewModel.swift; sourceTree = "<group>"; };
 		2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceWithSkontoIntegrationTests.swift; sourceTree = "<group>"; };
 		2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_RA_Skonto.pdf; sourceTree = "<group>"; };
 		287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_RA_Skonto.json; sourceTree = "<group>"; };
@@ -673,6 +677,15 @@
 			path = GiniBankSDKExampleSwiftUIUITests;
 			sourceTree = "<group>";
 		};
+		285FFBFF2F72EC39002C964A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				285FFBFD2F72EC39002C964A /* ExtractionViewData.swift */,
+				285FFBFE2F72EC39002C964A /* TransactionSummaryViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		2870683D2CB94EE800D5F2C9 /* DigitalInvoiceWithSkonto */ = {
 			isa = PBXGroup;
 			children = (
@@ -781,6 +794,7 @@
 		28BB82022C91D4D9003C8389 /* TransactionSummary */ = {
 			isa = PBXGroup;
 			children = (
+				285FFBFF2F72EC39002C964A /* Models */,
 				F4AD00DB25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift */,
 				84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */,
 				AA0000002C00000000000001 /* ExtractionResultCell.swift */,
@@ -1861,6 +1875,8 @@
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
 				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
+				285FFC002F72EC39002C964A /* TransactionSummaryViewModel.swift in Sources */,
+				285FFC012F72EC39002C964A /* ExtractionViewData.swift in Sources */,
 				288E78B32D316219004ACB9B /* Transaction.swift in Sources */,
 				28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
