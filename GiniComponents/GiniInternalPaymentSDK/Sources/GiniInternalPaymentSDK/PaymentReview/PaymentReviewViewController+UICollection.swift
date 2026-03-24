@@ -50,8 +50,9 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     @objc func pageControlTapHandler() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
             guard let self else { return }
-            
-            collectionView.scrollToItem(at: IndexPath(row: 0, section: pageControl.currentPage),
+            let page = pageControl.currentPage
+            guard page < model.numberOfCells else { return }
+            collectionView.scrollToItem(at: IndexPath(row: 0, section: page),
                                         at: .centeredHorizontally, animated: true)
         })
     }
