@@ -15,9 +15,11 @@ protocol Coordinator: AnyObject {
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
-    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
-    /// It does not affect how payment states are parsed.
-   internal enum PaymentStatus: String {
+    /**
+     Represents the payment state of a document.
+     Used internally to distinguish between already-paid and pending-payment states.
+     */
+    internal enum PaymentStatus: String {
         case paid
         case toBePaid = "tobepaid"
     }
@@ -285,10 +287,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     This method first attempts to fetch configuration settings using the `configurationService`.
-     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
-     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
-     SDK with the provided documents.
+     Starts the SDK, optionally with pre-loaded documents.
+     Fetches remote configuration and initialises analytics before presenting the capture flow.
+     - Parameters:
+       - documents: Optional documents to pre-load into the capture flow.
+       - animated: Specifies whether the initial screen transition is animated.
+     - Returns: The root `UIViewController` of the SDK capture flow.
      */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         Self.currentCoordinator = self
@@ -429,10 +433,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func setupAnalytics(withDocuments documents: [GiniCaptureDocument]?) {
         // Clean the GiniAnalyticsManager properties and events queue between SDK sessions.
-        /// The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
-        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
-        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
-        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        // The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
+        // are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        // the `openWith` flow after it has already been opened for the first time. Without this reset,
+        // residual properties and events from the previous session could lead to incorrect analytics data.
         GiniAnalyticsManager.cleanManager()
 
         // Set new sessionId every time the SDK is initialized
@@ -520,7 +524,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        // Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        // Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transaction docs).
         let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
 
@@ -707,7 +711,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
 
-    /// Returns the payment state of the document, if available
+    /**
+     Returns the payment state of the document, if available.
+     - Parameters:
+       - extractionResult: The extraction result to inspect.
+     - Returns: The `PaymentStatus` parsed from the `paymentState` extraction, or `nil` if absent.
+     */
     func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
         guard let paymentState = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
@@ -717,9 +726,14 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
-    /// Returns the due date  of the document, if available
+    /**
+     Returns the payment due date of the document, if available.
+     - Parameters:
+       - extractionResult: The extraction result to inspect.
+     - Returns: The due date parsed from the `paymentDueDate` extraction, or `nil` if absent or unparseable.
+     */
     func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
-        /// Try to find the extraction with the key "paymentDueDate"
+        // Searches for the extraction keyed `paymentDueDate` and parses its value as a `Date`.
         guard let dueDate = extractionResult.extractions
                 .first(where: { $0.name == "paymentDueDate" })?
                 .value,
