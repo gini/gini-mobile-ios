@@ -5,146 +5,204 @@
 //
 
 import UIKit
-import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniBankSDK
 
 protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
     func didTapCloseAndSendTransferSummary()
+    func didTapToScanAgain()
 }
+
 /**
- Presents a dictionary of results from the analysis process in a table view.
- Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
+ Presents a list of extraction results in a table view.
+ In the SEPA flow, fields listed in `editableFields` are rendered as editable text fields.
+ In the cross-border flow all fields are all editable and labels use the `displayNameMapping`.
  */
-final class TransactionSummaryTableViewController: UITableViewController  {
-    /**
-     The result collection from the analysis process.
-     */
-    var result: [Extraction] = [] {
-        didSet {
-            result.sort(by: { $0.name! < $1.name! })
-        }
-    }
-    var editableFields: [String : String] = [:]
-    var lineItems: [[Extraction]]? = nil
-    var enabledRows: [Int] = []
+final class TransactionSummaryTableViewController: UITableViewController, CodeLoadableView {
+
+    var viewModel: TransactionSummaryViewModel?
 
     weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
+    // MARK: - Private
+
     private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
     private var numberOfSections = 1
+    private var enabledRows: [Int] = []
+
+    // MARK: - Lifecycle
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
+        updateNumberOfSections()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 75
-        tableView.register(AttachmentsTableViewCell.self)
+        setupTableView()
         setupNavigationButtons()
+        setupTableFooterButton()
+    }
+
+    // MARK: - Setup
+
+    private func updateNumberOfSections() {
+        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        let isCrossBorderPayment = viewModel?.isCrossBorderPayment ?? false
+        numberOfSections = (!isCrossBorderPayment && !currentTransactionDocs.isEmpty) ? 2 : 1
+    }
+
+    private func setupTableView() {
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.backgroundColor = GiniColor(light: .systemGray5, dark: .systemGray5).uiColor()
+        tableView.separatorStyle = .none
+        tableView.register(ExtractionResultCell.self)
+        tableView.register(AttachmentsTableViewCell.self)
+    }
+
+    private func setupTableFooterButton() {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+
+        let button = GiniButton(type: .custom)
+        button.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
+                                           dark: giniCaptureColor("Accent01")).uiColor()
+        button.setTitle(Strings.footerButtonTitle, for: .normal)
+        button.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
+                                       dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
+        button.layer.cornerRadius = Constants.buttonCornerRadius
+        button.clipsToBounds = true
+
+        footerView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
+                                            constant: Constants.buttonHorizontalPadding),
+            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
+                                             constant: -Constants.buttonHorizontalPadding),
+            button.topAnchor.constraint(equalTo: footerView.topAnchor,
+                                        constant: Constants.buttonVerticalPadding),
+            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
+                                           constant: -Constants.buttonVerticalPadding),
+            button.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+        ])
+
+        footerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: Constants.footerHeight)
+        tableView.tableFooterView = footerView
     }
 
     private func setupNavigationButtons() {
         navigationItem.setHidesBackButton(true, animated: true)
-        let title = NSLocalizedStringPreferredFormat("results.sendfeedback.button.title",
-                                                     fallbackKey: "Send feedback and close",
-                                                     comment: "title for send feedback button",
-                                                     isCustomizable: true)
-        navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: title,
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(tapCloseSreenAPIAndSendTransferSummary))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.doneButtonTitle,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(tapCloseScreenAPIAndSendTransferSummary))
     }
-    
+
     // MARK: - Actions
-    @objc func tapCloseSreenAPIAndSendTransferSummary() {
+
+    @objc private func footerButtonTapped() {
+        delegate?.didTapToScanAgain()
+    }
+
+    @objc func tapCloseScreenAPIAndSendTransferSummary() {
         delegate?.didTapCloseAndSendTransferSummary()
     }
 
-    // MARK: - TableViewDataSource and TableViewDelegate
+    // MARK: - UITableViewDataSource
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return numberOfSections
+        numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if numberOfSections == 1 {
-            return result.count
-        }
-        return section == 0 ? result.count : 1
+        section == 0 ? (viewModel?.items.count ?? 0) : 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
-                                                           for: indexPath) as? ExtractionResultTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.detailTextField.text = result[indexPath.row].value
-            cell.detailTextField.placeholder = result[indexPath.row].name
-            cell.detailTextField.tag = indexPath.row
-            cell.titleLabel.text = result[indexPath.row].name
-            cell.detailTextField.textColor = GiniColor(light: UIColor.black,
-                                                       dark: UIColor.gray).uiColor()
-
-            if editableFields.keys.contains(result[indexPath.row].name ?? "") {
-                cell.detailTextField.isEnabled = true
-                cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
-                cell.detailTextField.alpha = 1
-
-                if !enabledRows.contains(indexPath.row) {
-                    enabledRows.append(indexPath.row)
-                }
-            } else {
-                cell.detailTextField.isEnabled = false
-                cell.detailTextField.alpha = 0.5
-            }
-
-            return cell
-        } else {
+        if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
             cell.configure(delegate: self)
             return cell
         }
+
+        let cell = tableView.dequeueReusableCell() as ExtractionResultCell
+        guard let item = viewModel?.items[indexPath.row] else { return cell }
+
+        if item.isEditable && !enabledRows.contains(indexPath.row) {
+            enabledRows.append(indexPath.row)
+        }
+
+        let returnKeyType: UIReturnKeyType = (indexPath.row == (viewModel?.items.count ?? 0) - 1) ? .done : .next
+        cell.configure(title: item.title,
+                       value: item.value,
+                       isEditable: item.isEditable,
+                       returnKeyType: item.isEditable ? returnKeyType : .done)
+        cell.valueTextField.tag = indexPath.row
+        cell.valueTextField.delegate = self
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
-
 }
+
+// MARK: - UITextFieldDelegate
+
 extension TransactionSummaryTableViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         if let text = textField.text as NSString? {
-            result[textField.tag].value = text.replacingCharacters(in: range, with: string)
+            let newValue = text.replacingCharacters(in: range, with: string)
+            viewModel?.updateValue(at: textField.tag, value: newValue)
         }
-        
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField.returnKeyType == .done {
             textField.resignFirstResponder()
             return true
         }
-        
-        guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1,
-              let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ExtractionResultTableViewCell else {
+
+        guard let rowIndex = enabledRows.firstIndex(of: textField.tag),
+              enabledRows.count > rowIndex + 1,
+              let nextCell = tableView.cellForRow(
+                  at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)
+              ) as? ExtractionResultCell else {
             return true
         }
-        
-        visibleCell.detailTextField.becomeFirstResponder()
+
+        nextCell.valueTextField.becomeFirstResponder()
         return true
     }
 }
 
+// MARK: - TransactionDocsViewDelegate
+
 extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
-        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
+        updateNumberOfSections()
         tableView.reloadData()
+    }
+}
+
+extension TransactionSummaryTableViewController {
+    struct Constants {
+        static let estimatedRowHeight: CGFloat = 75
+        static let buttonCornerRadius: CGFloat = 4
+        static let buttonHorizontalPadding: CGFloat = 10
+        static let buttonVerticalPadding: CGFloat = 10
+        static let buttonHeight: CGFloat = 50
+        static let footerHeight: CGFloat = 70
+    }
+
+    struct Strings {
+        static let footerButtonTitle = "Test a new document"
+        static let doneButtonTitle = "Done"
     }
 }

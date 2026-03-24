@@ -425,6 +425,20 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var entryPoint = GiniConfiguration.GiniEntryPoint.button
 
+    // MARK: - Product Tag
+    /**
+     Set the product tag used for document extraction routing.
+
+     This determines which extraction pipeline processes uploaded documents:
+     - `sepaExtractions` (default): Standard SEPA payment extractions.
+     - `cxExtractions`: Cross-border (CX) payment extractions.
+     - `otherProductTag(String)`: Custom product tag value.
+
+     This configuration is set once at SDK initialization time and applies
+     to all documents uploaded during the session.
+     */
+    public var productTag: GiniProductTag? = .sepaExtractions
+
     // MARK: - Error Logger
     /**
      Sets if the default error logging implementation is on.
@@ -497,6 +511,8 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.customMenuItems = self.customMenuItems
         configuration.transactionDocsEnabled = self.transactionDocsEnabled
+
+        configuration.productTag = self.productTag
 
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
@@ -583,6 +599,8 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
         giniBankConfiguration.customResourceProvider = configuration.customResourceProvider
         giniBankConfiguration.customNetworkProvider = configuration.customNetworkProvider
+
+        giniBankConfiguration.productTag = configuration.productTag
     }
 
     // MARK: - Update to custom font

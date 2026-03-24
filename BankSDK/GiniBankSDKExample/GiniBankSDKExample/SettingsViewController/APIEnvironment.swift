@@ -6,7 +6,7 @@
 
 import GiniBankAPILibrary
 
-enum APIEnvironment: String {
+enum APIEnvironment: String, Codable {
     case production = "Prod"
     case stage = "Stage"
 

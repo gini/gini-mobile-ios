@@ -608,6 +608,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             skontoDiscounts: result.skontoDiscounts,
+                                            crossBorderPayment: result.crossBorderPayment,
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)

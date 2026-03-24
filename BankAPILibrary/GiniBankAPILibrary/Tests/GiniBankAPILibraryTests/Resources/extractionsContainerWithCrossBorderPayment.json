@@ -1,0 +1,67 @@
+{
+  "extractions": {
+    "amountToPay": {
+      "entity": "amount",
+      "value": "1200.00:EUR",
+      "candidates": "amounts",
+      "box": {
+        "page": 1,
+        "left": 400.0,
+        "top": 300.0,
+        "width": 60.0,
+        "height": 9.0
+      }
+    }
+  },
+  "compoundExtractions": {
+    "crossBorderPayment": [
+      {
+        "iban": {
+          "entity": "iban",
+          "value": "GB29NWBK60161331926819",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 100.0,
+            "width": 140.0,
+            "height": 9.0
+          }
+        },
+        "bic": {
+          "entity": "bic",
+          "value": "NWBKGB2L",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 115.0,
+            "width": 60.0,
+            "height": 9.0
+          }
+        },
+        "bankName": {
+          "entity": "text",
+          "value": "NatWest Bank",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 130.0,
+            "width": 80.0,
+            "height": 9.0
+          }
+        },
+        "paymentRecipient": {
+          "entity": "companyname",
+          "value": "Acme Ltd",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 145.0,
+            "width": 55.0,
+            "height": 9.0
+          }
+        }
+      }
+    ]
+  },
+  "candidates": {}
+}

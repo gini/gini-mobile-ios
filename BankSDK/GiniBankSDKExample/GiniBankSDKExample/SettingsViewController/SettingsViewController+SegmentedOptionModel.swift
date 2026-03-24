@@ -48,6 +48,34 @@ struct APIEnvironmentSegmentedOptionModel: SegmentedOptionModelProtocol {
     }
 }
 
+struct CredentialsSetSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["Default client", "Cross border client"]
+    }
+
+    var title: String {
+        return "Credentials Set"
+    }
+}
+
+struct ProductTagSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["SEPA", "Cross-border", "Auto-detect"]
+    }
+
+    var title: String {
+        return "Product Tag"
+    }
+
+    var description: String? {
+        return "Determines which extraction pipeline processes uploaded documents."
+    }
+}
+
 struct SDKTypeSegmentedOptionModel: SegmentedOptionModelProtocol {
     var selectedIndex: Int = 0
 
