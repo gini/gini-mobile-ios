@@ -11,24 +11,34 @@ import Foundation
 @objcMembers
 final public class ExtractionResult: NSObject {
 
-    /// The specific extractions.
+    /**
+     The specific extractions.
+     */
     public let extractions: [Extraction]
 
-    /// The line item compound extractions.
+    /**
+     The line item compound extractions.
+     */
     public var lineItems: [[Extraction]]?
 
-    // Return reasons from which users can pick one when deselecting line items.
+    /**
+     Return reasons from which users can pick one when deselecting line items.
+     */
     public var returnReasons: [ReturnReason]?
 
-    // The Skonto information extractions.
+    /**
+     The Skonto information extractions.
+     */
     public var skontoDiscounts: [[Extraction]]?
-    
-    
-    // The cross-border payment compound extractions.
+
+    /**
+     The cross-border payment compound extractions.
+     */
     public var crossBorderPayment: [[Extraction]]?
 
-
-    /// The extraction candidates.
+    /**
+     The extraction candidates.
+     */
     public let candidates: [String: [Extraction.Candidate]]
 
     public init(extractions: [Extraction],
@@ -41,7 +51,7 @@ final public class ExtractionResult: NSObject {
         self.lineItems = lineItems
         self.returnReasons = returnReasons
         self.skontoDiscounts = skontoDiscounts
-        self.crossBorderPayment = crossBorderPayment 
+        self.crossBorderPayment = crossBorderPayment
         self.candidates = candidates
 
         super.init()
