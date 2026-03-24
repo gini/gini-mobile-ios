@@ -7,7 +7,10 @@ Rewrite Swift documentation and comments to match this exact house style. Do not
 
 ## Rules to enforce
 
-1. Use `///` only for inline explanatory comments inside function or method bodies.
+1. // → used for inline comments inside method bodies ✅
+
+  /// → used for documentation comments on declarations (functions, classes, properties) ❌ for inline use
+
 2. Use `/** ... */` for declaration documentation on functions, methods, classes, structs, enums, protocols, properties, initializers, and extensions.
 3. Do not use `///` as the documentation format for declarations.
 4. Do not use other documentation styles unless the user explicitly overrides the rule.
