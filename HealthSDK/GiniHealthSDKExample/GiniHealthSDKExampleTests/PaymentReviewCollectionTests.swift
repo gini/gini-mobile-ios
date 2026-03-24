@@ -30,8 +30,8 @@ struct PaymentReviewCollectionTests {
 
     // MARK: - Helpers
 
-    private func makePaymentProvider() -> PaymentProvider {
-        PaymentProvider(id: "test_id",
+    private func makePaymentProvider() -> GiniHealthAPILibrary.PaymentProvider {
+        GiniHealthAPILibrary.PaymentProvider(id: "test_id",
                         name: "test",
                         appSchemeIOS: "",
                         minAppVersion: nil,
@@ -230,12 +230,12 @@ private final class MockPaymentReviewDelegate: PaymentReviewProtocol {
 
     // MARK: PaymentReviewAPIProtocol
 
-    func createPaymentRequest(paymentInfo: PaymentInfo,
-                              completion: @escaping (Result<String, GiniError>) -> Void) {
+    func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                              completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
         completion(.failure(.noResponse))
     }
 
-    func shouldHandleErrorInternally(error: GiniError) -> Bool {
+    func shouldHandleErrorInternally(error: GiniHealthAPILibrary.GiniError) -> Bool {
         false
     }
 
@@ -273,10 +273,10 @@ private final class MockPaymentReviewDelegate: PaymentReviewProtocol {
 
     // MARK: PaymentReviewActionProtocol
 
-    func updatedPaymentProvider(_ paymentProvider: PaymentProvider) {}
+    func updatedPaymentProvider(_ paymentProvider: GiniHealthAPILibrary.PaymentProvider) {}
     func openMoreInformationViewController() {}
     func presentShareInvoiceBottomSheet(paymentRequestId: String,
-                                        paymentInfo: PaymentInfo) {}
+                                        paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
     func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {}
 }
 
