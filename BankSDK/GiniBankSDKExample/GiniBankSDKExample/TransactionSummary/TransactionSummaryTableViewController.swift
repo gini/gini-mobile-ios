@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniBankSDK
 
@@ -21,31 +20,11 @@ protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
  */
 final class TransactionSummaryTableViewController: UITableViewController, CodeLoadableView {
 
-    var result: [Extraction] = [] {
-        didSet {
-            result.sort { ($0.name ?? "") < ($1.name ?? "") }
-        }
-    }
-    var editableFields: [String: String] = [:]
-    var isCrossBorderPayment: Bool = false
+    var viewModel: TransactionSummaryViewModel?
 
     weak var delegate: TransactionSummaryTableViewControllerDelegate?
 
     // MARK: - Private
-
-    private let displayNameMapping: [String: String] = [
-        "bankName": "Recipient Bank Name",
-        "bankAccountNumber": "Account Number",
-        "amountToPay": "Amount",
-        "iban": "IBAN",
-        "currency": "Currency",
-        "bankAddress": "Recipient's Bank Address",
-        "countryRegionCode": "Country/Region",
-        "abaRoutingNumber": "ABA Routing Number",
-        "bic": "SWIFT/BIC Code",
-        "paymentRecipient": "Payment Recipient",
-        "paymentRecipientAddress": "Payment Recipient Address"
-    ]
 
     private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
     private var numberOfSections = 1
@@ -69,6 +48,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
 
     private func updateNumberOfSections() {
         let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        let isCrossBorderPayment = viewModel?.isCrossBorderPayment ?? false
         numberOfSections = (!isCrossBorderPayment && !currentTransactionDocs.isEmpty) ? 2 : 1
     }
 
@@ -137,7 +117,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? result.count : 1
+        section == 0 ? (viewModel?.items.count ?? 0) : 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -148,21 +128,17 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         }
 
         let cell = tableView.dequeueReusableCell() as ExtractionResultCell
-        let extraction = result[indexPath.row]
-        let name = extraction.name ?? ""
+        guard let item = viewModel?.items[indexPath.row] else { return cell }
 
-        let title = isCrossBorderPayment ? (displayNameMapping[name] ?? name) : name
-        let isEditable = !isCrossBorderPayment && editableFields.keys.contains(name)
-
-        if isEditable && !enabledRows.contains(indexPath.row) {
+        if item.isEditable && !enabledRows.contains(indexPath.row) {
             enabledRows.append(indexPath.row)
         }
 
-        let returnKeyType: UIReturnKeyType = (indexPath.row == result.count - 1) ? .done : .next
-        cell.configure(title: title,
-                       value: extraction.value,
-                       isEditable: isEditable,
-                       returnKeyType: isEditable ? returnKeyType : .done)
+        let returnKeyType: UIReturnKeyType = (indexPath.row == (viewModel?.items.count ?? 0) - 1) ? .done : .next
+        cell.configure(title: item.title,
+                       value: item.value,
+                       isEditable: item.isEditable,
+                       returnKeyType: item.isEditable ? returnKeyType : .done)
         cell.valueTextField.tag = indexPath.row
         cell.valueTextField.delegate = self
 
@@ -181,7 +157,8 @@ extension TransactionSummaryTableViewController: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         if let text = textField.text as NSString? {
-            result[textField.tag].value = text.replacingCharacters(in: range, with: string)
+            let newValue = text.replacingCharacters(in: range, with: string)
+            viewModel?.updateValue(at: textField.tag, value: newValue)
         }
         return true
     }

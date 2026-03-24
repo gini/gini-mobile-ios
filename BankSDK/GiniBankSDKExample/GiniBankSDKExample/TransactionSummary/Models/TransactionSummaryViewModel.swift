@@ -1,0 +1,63 @@
+//
+//  TransactionSummaryViewModel.swift
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+import GiniBankAPILibrary
+
+protocol TransactionSummaryViewModel {
+    var items: [ExtractionViewData] { get }
+    var isCrossBorderPayment: Bool { get }
+    func updateValue(at index: Int, value: String)
+}
+
+final class DefaultTransactionSummaryViewModel: TransactionSummaryViewModel {
+
+    private(set) var items: [ExtractionViewData] = []
+    let isCrossBorderPayment: Bool
+
+    /**
+     Sorted references to the underlying `Extraction` objects.
+     Mutating `.value` here propagates back to the coordinator's array via class reference.
+     */
+    private let sortedExtractions: [Extraction]
+
+    private let displayNameMapping: [String: String] = [
+        "bankName": "Recipient Bank Name",
+        "bankAccountNumber": "Account Number",
+        "amountToPay": "Amount",
+        "iban": "IBAN",
+        "currency": "Currency",
+        "bankAddress": "Recipient's Bank Address",
+        "countryRegionCode": "Country/Region",
+        "abaRoutingNumber": "ABA Routing Number",
+        "bic": "SWIFT/BIC Code",
+        "paymentRecipient": "Payment Recipient",
+        "paymentRecipientAddress": "Payment Recipient Address"
+    ]
+
+    init(extractions: [Extraction],
+         editableFields: [String: String],
+         isCrossBorderPayment: Bool) {
+        self.isCrossBorderPayment = isCrossBorderPayment
+        self.sortedExtractions = extractions.sorted { ($0.name ?? "") < ($1.name ?? "") }
+        self.items = sortedExtractions.map { extraction in
+            let name = extraction.name ?? ""
+            let title = isCrossBorderPayment ? (displayNameMapping[name] ?? name) : name
+            let isEditable = !isCrossBorderPayment && editableFields[name] != nil
+            return ExtractionViewData(title: title,
+                                      value: extraction.value,
+                                      isEditable: isEditable,
+                                      name: extraction.name)
+        }
+    }
+
+    func updateValue(at index: Int, value: String) {
+        guard items.indices.contains(index) else { return }
+        items[index].value = value
+        /// Mutate the underlying `Extraction` class so the coordinator's extractedResults
+        /// array reflects the user's edit without requiring any additional callback.
+        sortedExtractions[index].value = value
+    }
+}

@@ -151,11 +151,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         customResultsScreen.delegate = self
 
         configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
-        customResultsScreen.result = results
-        customResultsScreen.isCrossBorderPayment = isCrossBorderPayment
-        if !isCrossBorderPayment {
-            customResultsScreen.editableFields = editableSpecificExtractions
-        }
+        let editableFields = isCrossBorderPayment ? [:] : editableSpecificExtractions
+        customResultsScreen.viewModel = DefaultTransactionSummaryViewModel(extractions: results,
+                                                                           editableFields: editableFields,
+                                                                           isCrossBorderPayment: isCrossBorderPayment)
 
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
