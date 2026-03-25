@@ -68,12 +68,16 @@ final class GiniOverlayWindowPresenter {
     }
 
     private func tearDown() {
+        // Capture the current window and clear the reference synchronously
+        // to avoid tearing down a new window from a previously scheduled block.
+        let window = overlayWindow
+        overlayWindow = nil
+
         // Defer to the next run loop to avoid EXC_BAD_ACCESS when UIKit
         // is still in the middle of a dismissal transition.
-        DispatchQueue.main.async { [weak self] in
-            self?.overlayWindow?.isHidden = true
-            self?.overlayWindow?.rootViewController = nil
-            self?.overlayWindow = nil
+        DispatchQueue.main.async {
+            window?.isHidden = true
+            window?.rootViewController = nil
         }
     }
 }
