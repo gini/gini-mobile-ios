@@ -42,7 +42,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Multipage feature can be enabled and disabled")
     func multipageEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.multipageEnabled = true
         #expect(configuration.multipageEnabled, "Expected multipageEnabled to be true after enabling")
@@ -55,7 +55,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("QR code scanning can be enabled and disabled")
     func qrCodeScanningEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
         
         configuration.qrCodeScanningEnabled = true
         #expect(configuration.qrCodeScanningEnabled, "Expected qrCodeScanningEnabled to be true after enabling")
@@ -66,7 +66,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Only QR code scanning can be enabled and disabled")
     func onlyQRCodeScanningEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.onlyQRCodeScanningEnabled = true
         #expect(configuration.onlyQRCodeScanningEnabled, "Expected onlyQRCodeScanningEnabled to be true after enabling")
@@ -77,7 +77,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Both QR code scanning flags can be enabled together")
     func qrCodeScanningFlagsBothEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.qrCodeScanningEnabled = true
         configuration.onlyQRCodeScanningEnabled = true
@@ -90,7 +90,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Flash toggle can be enabled and disabled")
     func flashToggleEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.flashToggleEnabled = true
         #expect(configuration.flashToggleEnabled, "Expected flashToggleEnabled to be true after enabling")
@@ -101,7 +101,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Flash on by default can be enabled and disabled")
     func flashOnByDefault() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.flashOnByDefault = true
         #expect(configuration.flashOnByDefault, "Expected flashOnByDefault to be true after enabling")
@@ -114,7 +114,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Onboarding show at launch can be enabled and disabled")
     func onboardingShowAtLaunch() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.onboardingShowAtLaunch = true
         #expect(configuration.onboardingShowAtLaunch, "Expected onboardingShowAtLaunch to be true after enabling")
@@ -125,7 +125,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Onboarding show at first launch can be enabled and disabled")
     func onboardingShowAtFirstLaunch() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.onboardingShowAtFirstLaunch = false
         #expect(!configuration.onboardingShowAtFirstLaunch, "Expected onboardingShowAtFirstLaunch to be false after disabling")
@@ -138,7 +138,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Open with feature can be enabled and disabled")
     func openWithEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
         
         configuration.openWithEnabled = true
         #expect(configuration.openWithEnabled, "Expected openWithEnabled to be true after enabling")
@@ -151,7 +151,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Return assistant can be enabled and disabled")
     func returnAssistantEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
         
         configuration.returnAssistantEnabled = false
         #expect(!configuration.returnAssistantEnabled, "Expected returnAssistantEnabled to be false after disabling")
@@ -164,7 +164,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Skonto feature can be enabled and disabled")
     func skontoEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.skontoEnabled = false
         #expect(!configuration.skontoEnabled, "Expected skontoEnabled to be false after disabling")
@@ -177,7 +177,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Transaction docs can be enabled and disabled")
     func transactionDocsEnabled() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.transactionDocsEnabled = false
         #expect(!configuration.transactionDocsEnabled, "Expected transactionDocsEnabled to be false after disabling")
@@ -190,8 +190,8 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Payment hints can be enabled and disabled")
     func alreadyPaidHintEnabled() {
-        var configuration = GiniBankConfiguration()
-        
+        let configuration = GiniBankConfiguration()
+
         configuration.alreadyPaidHintEnabled = false
         #expect(!configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false after disabling")
         
@@ -203,8 +203,8 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Save photos locally can be enabled and disabled")
     func savePhotosLocallyEnabled() {
-        var configuration = GiniBankConfiguration()
-        
+        let configuration = GiniBankConfiguration()
+
         configuration.savePhotosLocallyEnabled = false
         #expect(!configuration.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false after disabling")
 
@@ -216,7 +216,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Supported formats screen visibility can be toggled")
     func shouldShowSupportedFormatsScreen() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.shouldShowSupportedFormatsScreen = false
         #expect(!configuration.shouldShowSupportedFormatsScreen, "Expected shouldShowSupportedFormatsScreen to be false after disabling")
@@ -227,7 +227,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Drag and drop tutorial visibility can be toggled")
     func shouldShowDragAndDropTutorial() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.shouldShowDragAndDropTutorial = false
         #expect(!configuration.shouldShowDragAndDropTutorial, "Expected shouldShowDragAndDropTutorial to be false after disabling")
@@ -240,7 +240,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Error logger can be enabled and disabled")
     func giniErrorLoggerIsOn() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.giniErrorLoggerIsOn = false
         #expect(!configuration.giniErrorLoggerIsOn, "Expected giniErrorLoggerIsOn to be false after disabling")
@@ -253,7 +253,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Debug mode can be enabled and disabled")
     func debugModeOn() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.debugModeOn = true
         #expect(configuration.debugModeOn, "Expected debugModeOn to be true after enabling")
@@ -266,7 +266,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
 
     @Test("Capture configuration transfers all flags correctly")
     func captureConfigurationTransfersAllFlags() {
-        var configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration()
 
         configuration.multipageEnabled = true
         configuration.qrCodeScanningEnabled = true

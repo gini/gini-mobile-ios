@@ -8,6 +8,8 @@ Monorepo containing Gini's iOS SDKs for document capture, bank integration, heal
 
 ## Build & Test Commands
 
+Run this after every change is done.
+
 **Open workspace:**
 ```bash
 open GiniMobile.xcworkspace
@@ -115,3 +117,88 @@ PP-4102
 - **Simulator:** iPhone 16, iOS 18.5
 - **Runner:** macOS latest
 - **Minimum deployment target:** iOS 13+ (HealthAPILibrary: iOS 12+)
+
+
+# MyApp Standards
+
+## Architecture
+
+ - MUST follow MVVM + Coordinator. Every feature gets its own *Coordinator. The SDK entry point is always a single static factory returning a UIViewController.
+
+## Dependency Injection
+
+ - MUST use constructor injection. Delegate back-references are the only acceptable post-init injection. The GiniBankAPI.Builder (value-type fluent builder) is the required pattern for SDK entry points.
+
+## View & ViewController Patterns
+
+ - ViewModels MUST NOT import UIKit. Binding is closure-based (addStateChangeHandler). ViewModel→Coordinator is via a weak delegate protocol. VCs only lay out UI and forward events — no business logic.
+
+## Design System
+
+ - Colors MUST be accessed via UIColor.GiniBank.* / UIColor.GiniCapture.* namespace. Dark mode required via GiniColor(light:dark:). Fonts via textStyleFonts[textStyle] with Dynamic Type. Spacing in local enum Constants (no magic numbers).
+
+## Testing
+
+ - New tests MUST use Swift Testing (@Suite, @Test, #expect). Mocks are manual protocol conformances (no third-party framework). Test data comes from JSON fixtures in Tests/Resources/. All ViewModels and Services must have unit tests. Current coverage is weakest on ViewControllers and Coordinators.
+
+## Localization
+
+ - Keys follow <sdk>.<feature>.<screen>.<element> convention. All strings go through the 3-level lookup chain (host app → custom bundle → SDK bundle). Use typed LocalizableStringResource enums, never raw NSLocalizedString.
+
+
+## Code Style
+
+# Multi-Parameter Initializers & Functions
+
+When a method or initializer has multiple parameters, it MUST use one-parameter-per-line formatting.
+
+The first parameter MUST remain on the same line as the opening parenthesis.
+
+All following parameters MUST be placed on new lines and vertically aligned.
+
+The closing parenthesis and opening brace remain on the same line.
+
+Example:
+
+Writing
+```
+init(compositeDocuments: [CompositeDocument]?,
+     creationDate: Date,
+     id: String,
+     name: String,
+     origin: Origin,
+     pageCount: Int,
+     pages: [Page]?,
+     links: Links,
+     partialDocuments: [PartialDocumentInfo]?,
+     progress: Progress,
+     sourceClassification: SourceClassification) {
+    self.compositeDocuments = compositeDocuments
+    self.creationDate = creationDate
+    self.id = id
+    self.name = name
+    self.origin = origin
+    self.pageCount = pageCount
+    self.pages = pages
+    self.links = links
+    self.partialDocuments = partialDocuments
+    self.progress = progress
+    self.sourceClassification = sourceClassification
+}
+```
+# Rules
+
+❌ Do NOT move the first parameter to a new line
+
+❌ Do NOT group multiple parameters on the same line
+
+❌ Do NOT use mixed formatting styles
+
+✅ ALWAYS align subsequent parameters vertically
+
+✅ Apply this consistently across:
+
+  - Initializers
+  - Public methods
+  - Private helpers
+  - Builders and factory methods
