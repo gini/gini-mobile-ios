@@ -164,13 +164,14 @@ public final class DefaultDocumentService {
        })
     }
 
-    /// Private helper function to handle feedback submission.
-    ///
-    /// - Parameters:
-    ///   - documentId:             The ID of the document for which feedback should be sent.
-    ///   - extractions:            The document's updated extractions.
-    ///   - compoundExtractions:    The document's updated compound extractions, if any.
-    ///   - completion:             A completion callback.
+    /**
+     Handles feedback submission for a document using its ID.
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions, if any.
+       - completion: A completion callback.
+     */
     private func submitFeedback(documentId: String,
                                 extractions: [Extraction],
                                 compoundExtractions: [String: [[Extraction]]]? = nil,
@@ -285,6 +286,12 @@ public final class DefaultDocumentService {
         })
     }
 
+    /**
+     Downloads a file from the given URL string.
+     - Parameters:
+       - urlString: The URL string of the file to download.
+       - completion: A completion callback returning the file data on success, or an error on failure.
+     */
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
         docService.file(urlString: urlString,
                         completion: { result in
@@ -297,6 +304,12 @@ public final class DefaultDocumentService {
             })
     }
 
+    /**
+     Deletes a batch of documents by their IDs.
+     - Parameters:
+       - documentIds: An array of document IDs to delete.
+       - completion: A completion callback returning a success message on success, or an error on failure.
+     */
     public func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>) {
         docService.deleteDocuments(documentIds) { result in
             switch result {

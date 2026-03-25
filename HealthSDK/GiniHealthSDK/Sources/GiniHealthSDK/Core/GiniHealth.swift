@@ -18,17 +18,15 @@ import GiniInternalPaymentSDK
 public protocol GiniHealthDelegate: AnyObject {
     
     /**
-     Called when the payment request was successfully created
-     
-     - parameter paymentRequestId: Id of created payment request.
+     Called when the payment request was successfully created.
+     - Parameter paymentRequestId: Id of the created payment request.
      */
     func didCreatePaymentRequest(paymentRequestId: String)
     
     /**
-     Error handling. If delegate is set and error is going to  be handled internally the method should return true.
-     If error hadling is planned to be custom return false for specific error case.
-     
-     - parameter error: error which will be handled.
+     Error handling. If delegate is set and error is going to be handled internally the method should return `true`.
+     If error handling is planned to be custom, return `false` for specific error cases.
+     - Parameter error: The error which will be handled.
      */
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
     
@@ -54,8 +52,16 @@ extension GiniHealthError: Equatable {}
  Data structure for Payment Review Screen initialization.
  */
 public struct DataForReview {
+    /** The document to be reviewed. */
     public let document: Document
+    /** The extractions associated with the document. */
     public let extractions: [Extraction]
+    /**
+     Creates a new data structure for the Payment Review screen.
+     - Parameters:
+       - document: The document to be reviewed.
+       - extractions: The extractions associated with the document.
+     */
     public init(document: Document, extractions: [Extraction]) {
         self.document = document
         self.extractions = extractions
@@ -83,8 +89,9 @@ public struct DataForReview {
     /** Configuration for the payment component, controlling its branding and display options. */
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    /** The client configuration used for customizing SDK behavior. */
     public var clientConfiguration: ClientConfiguration? = GiniHealthConfiguration.shared.clientConfiguration
-    
+    /** The controller responsible for managing payment component presentation and lifecycle. */
     public var paymentComponentsController: PaymentComponentsController!
 
     /**
@@ -159,17 +166,12 @@ public struct DataForReview {
     }
     
     /**
-         Initiates the payment flow for a specified document and payment information.
-
-         - Parameters:
-           - documentId: An optional identifier for the document associated id with the payment flow.
-           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
-           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
-           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
-         
-         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
-         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
-         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     Initiates the payment flow for a specified document and payment information.
+     - Parameters:
+       - documentId: An optional identifier for the document associated with the payment flow.
+       - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+       - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+       - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on the Payment Review screen.
      */
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
@@ -325,14 +327,10 @@ public struct DataForReview {
     }
     
     /**
-     Get extractions for the document.
-     
-     - parameter docId: Id of the uploaded document.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-     Completion block called on main thread.
-     In success case it includes array of extractions.
-     In case of failure in case of failure error from the server side.
-     
+     Retrieves extractions for the given document.
+     - Parameters:
+       - docId: Id of the uploaded document.
+       - completion: A completion callback called on the main thread. Returns an array of extractions on success, or an error on failure.
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: docId) { [weak self] result in
@@ -367,14 +365,10 @@ public struct DataForReview {
     }
 
     /**
-     Get all extractions for the document. Medical information included.
-
-     - parameter docId: Id of the uploaded document.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-     Completion block called on main thread.
-     In success case it includes array of extractions.
-     In case of failure in case of failure error from the server side.
-
+     Retrieves all extractions for the given document, including medical information.
+     - Parameters:
+       - docId: Id of the uploaded document.
+       - completion: A completion callback called on the main thread. Returns an array of all extractions on success, or an error on failure.
      */
     public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: docId) { [weak self] result in
@@ -582,16 +576,11 @@ public struct DataForReview {
     }
     
     /**
-        Retrieves a payment request by ID.
-         
-    - Parameters:
+     Retrieves a payment request by ID.
+     - Parameters:
        - id: The ID of the payment request to retrieve.
-       - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
-       Completion block called on main thread.
-       In success, it includes the retrieved payment request.
-       In case of failure, error from the server side.
-     
-    */
+       - completion: A completion callback called on the main thread. Returns the retrieved payment request on success, or an error on failure.
+     */
     public func getPaymentRequest(by id: String,
                                   completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
         paymentService.paymentRequest(id: id) { result in
@@ -676,7 +665,9 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
 }
 
 extension GiniHealth {
+    /** Constants used by the Gini Health SDK. */
     public enum Constants {
+        /** The default API version used when no version is specified. */
         public static let defaultVersionAPI = 5
         static let hasMultipleDocuments = "true"
     }

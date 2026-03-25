@@ -117,12 +117,8 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     // Store Share Bottom Sheet for dismissed native share modal
     var shareInvoiceBottomSheet: ShareInvoiceBottomView?
     /**
-     Initializer of the Payment Component Controller class.
-
-     - Parameters:
-        - giniHealth: An instance of GiniHealth initialized with GiniHealthAPI.
-     - Returns:
-        - instance of the payment component controller class
+     Creates a new Payment Components Controller.
+     - Parameter giniHealth: An instance of `GiniHealth` that also conforms to `PaymentComponentsConfigurationProvider` and `PaymentComponentsStringsProvider`.
      */
     public init(giniHealth: GiniHealth & PaymentComponentsConfigurationProvider & PaymentComponentsStringsProvider) {
         self.giniSDK = giniHealth
@@ -133,16 +129,12 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     }
     
     /**
-         Initiates the payment flow for a specified document and payment information.
-
-         - Parameters:
-           - documentId: An optional identifier for the document associated id with the payment flow.
-           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
-           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
-         
-         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
-         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
-         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     Initiates the payment flow for a specified document and payment information.
+     - Parameters:
+       - documentId: An optional identifier for the document associated with the payment flow.
+       - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+       - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+       - trackingDelegate: The `GiniHealthTrackingDelegate` that receives event information from the Payment Review screen.
      */
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         self.navigationControllerProvided = navigationController
@@ -247,13 +239,9 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     /**
-         Notifies the tracking delegate of an event occurring on the payment review screen.
-
-         - Parameter event: A `TrackingEvent` of type `PaymentReviewScreenEventType` that describes the specific event
-           that occurred on the payment review screen.
-         
-         This method forwards the event to the `trackingDelegate`, which can handle it based on the event type and any associated data.
-    */
+     Notifies the tracking delegate of an event occurring on the payment review screen.
+     - Parameter event: A `TrackingEvent` of type `PaymentReviewScreenEventType` describing the event that occurred.
+     */
     public func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
     }
