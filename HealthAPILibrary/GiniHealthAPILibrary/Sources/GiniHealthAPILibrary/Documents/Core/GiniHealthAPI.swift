@@ -16,6 +16,7 @@ public final class GiniHealthAPI {
     private var payService: PaymentService?
     private var configurationService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
+    /** The session delegate used for custom URL session handling, such as certificate pinning. */
     public var sessionDelegate: URLSessionDelegate? = nil
 
     init<T: DocumentService>(documentService: T, paymentService: PaymentService?, clientConfigurationService: ClientConfigurationServiceProtocol?)
@@ -73,6 +74,7 @@ extension GiniHealthAPI {
         let apiVersion: Int
         var userApi: UserDomain = .default
         var logLevel: LogLevel
+        /** The session delegate used for custom URL session handling, such as certificate pinning. */
         public var sessionDelegate: URLSessionDelegate? = nil
         
         /**
@@ -153,6 +155,10 @@ extension GiniHealthAPI {
                       sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
         }
 
+        /**
+         Builds and returns a configured `GiniHealthAPI` instance.
+         - Returns: A fully initialized `GiniHealthAPI` ready for use.
+         */
         public func build() -> GiniHealthAPI {
             // Save client information
             save(client)
@@ -209,7 +215,9 @@ extension GiniHealthAPI {
 }
 
 extension GiniHealthAPI {
+    /** Constants used by the Gini Health API Library. */
     public enum Constants {
+        /** The default API version used when no version is specified. */
         public static let defaultVersionAPI = 5
     }
 }

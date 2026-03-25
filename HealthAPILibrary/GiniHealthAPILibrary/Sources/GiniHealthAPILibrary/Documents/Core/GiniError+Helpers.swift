@@ -40,7 +40,7 @@ public extension GiniError {
      Use this method to extract document IDs or other object identifiers for a specific error code.
      If multiple error items share the same code, all their objects are merged into a single array.
 
-     - parameter code: The error code to filter by (e.g., "2013" for unauthorized, "2014" for not found)
+     - Parameter code: The error code to filter by (e.g., "2013" for unauthorized, "2014" for not found)
      - Returns: Array of object IDs associated with that error code, or empty array if none found
 
      Example:

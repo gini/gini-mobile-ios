@@ -26,9 +26,10 @@ public protocol GiniErrorProtocol {
 }
 
 
-/// Represents a single error item from the API error response.
-///
-/// Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
+/**
+ Represents a single error item from the API error response.
+ Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
+ */
 public struct ErrorItem: Codable, Equatable, Sendable {
         /**
      The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
@@ -65,6 +66,10 @@ public struct ErrorItem: Codable, Equatable, Sendable {
         self.object = object
     }
 
+    /**
+     Creates an error item by decoding from the given decoder.
+     - Parameter decoder: The decoder to read data from.
+     */
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.code = try container.decodeIfPresent(String.self, forKey: .code) ?? ""
@@ -72,6 +77,10 @@ public struct ErrorItem: Codable, Equatable, Sendable {
         self.object = try container.decodeIfPresent([String].self, forKey: .object)
     }
 
+    /**
+     Encodes this error item into the given encoder.
+     - Parameter encoder: The encoder to write data to.
+     */
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(code, forKey: .code)
@@ -116,18 +125,34 @@ struct GiniCustomError: Codable {
     }
 }
 
+/**
+ Errors returned by the Gini Health API.
+ */
 public enum GiniError: Error, GiniErrorProtocol, Equatable {
+    /** The request was malformed or contained invalid parameters. */
     case badRequest(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The server cannot produce a response matching the accepted content type. */
     case notAcceptable(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The requested resource could not be found. */
     case notFound(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** No response was received from the server. */
     case noResponse
+    /** The response could not be parsed. Includes a descriptive message. */
     case parseError(message: String, response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The request was cancelled before completion. */
     case requestCancelled
+    /** The rate limit was exceeded. */
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The request was not authorized. */
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** A structured API error was returned with a JSON body. Inspect `items` and `requestId` for details. */
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** An unexpected error occurred. */
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
+    /**
+     A descriptive message explaining the error.
+     */
     public var message: String? {
         switch self {
         case .badRequest:
@@ -153,6 +178,9 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         }
     }
 
+    /**
+     The HTTP response associated with the error, if available.
+     */
     public var response: HTTPURLResponse? {
         switch self {
         case .badRequest(let response, _),
@@ -169,6 +197,9 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         }
     }
 
+    /**
+     The raw response data received from the server, if any.
+     */
     public var data: Data? {
         switch self {
         case .badRequest(_, let data),
@@ -187,10 +218,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
 
     /**
      HTTP status code from the error response, if available.
-
-     Returns the status code from the HTTP response, or `nil` if no response is available.
-
-     - Returns: The HTTP status code (e.g., 400, 401, 404) or `nil`
+     Returns `nil` if no response is available.
      */
     public var statusCode: Int? {
         switch self {
@@ -210,20 +238,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
 
     /**
      Array of error items containing specific error details from the API.
-
      Each item includes an error code, optional message, and optional list of affected objects.
-     Use this property to identify which specific documents or objects failed and why.
-
-     Example:
-     ```swift
-     if let items = error.items {
-         for item in items {
-             print("Error \(item.code): \(item.object?.joined(separator: ", ") ?? "no objects")")
-         }
-     }
-     ```
-
-     - Returns: Array of `ErrorItem` objects, or `nil` if no items are available
      */
     public var items: [ErrorItem]? {
         return customError?.items
@@ -231,10 +246,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
 
     /**
      The request ID from the API response, useful for debugging and support.
-
      This identifier can be used to trace the request in server logs.
-
-     - Returns: The request ID string, or a default message if not available
      */
     public var requestId: String {
         return customError?.requestId ?? "no requestId is available"

@@ -127,7 +127,9 @@ public final class PaymentService: PaymentServiceProtocol {
 
     let sessionManager: SessionManagerProtocol
 
+    /** The API domain this service communicates with. */
     public var apiDomain: APIDomain
+    /** The API version used for requests. */
     public var apiVersion: Int
 
     init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default, apiVersion: Int) {
@@ -173,36 +175,32 @@ public final class PaymentService: PaymentServiceProtocol {
 protocol PaymentServiceProtocol: AnyObject {
 
     /**
-     *  Returns a list of payment providers.
-     *
-     * - Parameter completion:    A completion callback, returning the payment list on success
+     Returns a list of payment providers.
+     - Parameter completion: A completion callback, returning the payment list on success
      */
-    
     func paymentProviders(completion: @escaping CompletionResult<PaymentProviders>)
     
     /**
-     *  Returns a payment providers.
-     *
-     * - Parameter id:            The id of the payment provider
-     * - Parameter completion:    A completion callback, returning the payment provider on success
+     Returns a payment provider.
+     - Parameters:
+       - id: The id of the payment provider
+       - completion: A completion callback, returning the payment provider on success
      */
-
     func paymentProvider(id: String, completion: @escaping CompletionResult<PaymentProvider>)
     
     
     /**
-     *  Creates a payment request.
-     *
-     * - Parameter sourceDocumentLocation:  The URI of the source document whenever the payment details were                                                                                                  extracted by the Gini system beforehand (optional)
-     * - Parameter paymentProvider:         The id of the target payment provider - see payment providers
-     * - Parameter recipient:               The recipient of the payment
-     * - Parameter iban:                    The iban (international bank account number) of the payment recipient
-     * - Parameter bic:                     The bic (bank identifier code) for the payment
-     * - Parameter amount:                  The amount of the paymentt
-     * - Parameter purpose:                 The purpose of the payment, eg. the invoice or the customer identifier
-     * - Parameter completion:              A completion callback, returning the payment request on success
+     Creates a payment request.
+     - Parameters:
+       - sourceDocumentLocation: The URI of the source document when payment details were extracted by Gini beforehand (optional)
+       - paymentProvider: The id of the target payment provider
+       - recipient: The recipient of the payment
+       - iban: The IBAN of the payment recipient
+       - bic: The BIC for the payment
+       - amount: The amount of the payment
+       - purpose: The purpose of the payment, e.g. the invoice or customer identifier
+       - completion: A completion callback, returning the payment request on success
      */
-
     func createPaymentRequest(sourceDocumentLocation: String?,
                               paymentProvider: String,
                               recipient: String,
@@ -213,65 +211,58 @@ protocol PaymentServiceProtocol: AnyObject {
                               completion: @escaping CompletionResult<String>)
     
     /**
-     *  Deletes a payment request.
-     *
-     * - Parameter id:                 The the payment request's unique identifier
-     * - Parameter completion:         A completion callback, returning the payment's'request unique identifier on success
+     Deletes a payment request.
+     - Parameters:
+       - id: The payment request's unique identifier
+       - completion: A completion callback, returning the payment request's unique identifier on success
      */
-    
     func deletePaymentRequest(id: String,
                               completion: @escaping CompletionResult<String>)
     
     /**
-    *  Deletes a batch of payment request
-    *
-    * - Parameter ids:                                    An array of payment request ids to be deleted
-    * - Parameter completion:                       An action for deleting a batch of payment request. Result is a value that represents either a success or a failure, including an associated value in each case.
-                                       In success it includes an array of deleted ids
-                                       In case of failure error from the server side.
-    */
-   func deletePaymentRequests(_ ids: [String],
+     Deletes a batch of payment requests.
+     - Parameters:
+       - ids: An array of payment request ids to be deleted
+       - completion: A completion callback returning the deleted ids on success, or an error on failure
+     */
+    func deletePaymentRequests(_ ids: [String],
                               completion: @escaping CompletionResult<[String]>)
     
     /**
-     *  Returns a payment request.
-     *
-     * - Parameter id:            The id of the payment request
-     * - Parameter completion:    A completion callback, returning the payment request on success
+     Returns a payment request.
+     - Parameters:
+       - id: The payment request's unique identifier
+       - completion: A completion callback, returning the payment request on success
      */
-    
     func paymentRequest(id: String,
                         completion: @escaping CompletionResult<PaymentRequest>)
     
     /**
-     *  Returns a list of payment requests.
-     *
-     * - Parameter limit:          The maximum number of payment requests to return (default 20), (optional)
-     * - Parameter offset:         A starting offset (default 0), (optional)
-     * - Parameter completion:     A completion callback, returning the request list on success
+     Returns a list of payment requests.
+     - Parameters:
+       - limit: The maximum number of payment requests to return (default 20)
+       - offset: A starting offset (default 0)
+       - completion: A completion callback, returning the request list on success
      */
-    
     func paymentRequests(limit: Int?,
                          offset: Int?,
                          completion: @escaping CompletionResult<PaymentRequests>)
     
     /**
-     *  Returns a payment.
-     *
-     * - Parameter id:            The the payment request's unique identifier
-     * - Parameter completion:    A completion callback, returning the payment on success
+     Returns a payment.
+     - Parameters:
+       - id: The payment request's unique identifier
+       - completion: A completion callback, returning the payment on success
      */
-
     func payment(id: String,
                  completion: @escaping CompletionResult<Payment>)
 
     /**
-     *  Returns a pdf data with a payment request in QR code.
-     *
-     * - Parameter paymentRequestId: The the payment request's unique identifie
-     * - Parameter completion:       A completion callback, returning the pdf document with the payment details in QR Code on success
+     Returns pdf data containing a payment request in QR code format.
+     - Parameters:
+       - paymentRequestId: The payment request's unique identifier
+       - completion: A completion callback, returning the pdf document with the payment details in QR code on success
      */
-
     func pdfWithQRCode(paymentRequestId: String,
                        completion: @escaping CompletionResult<Data>)
 }
