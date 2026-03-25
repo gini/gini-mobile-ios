@@ -37,15 +37,20 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func upload(document: GiniCaptureDocument,
                        completion: UploadDocumentCompletion?) {
-        let documentMetadata: Document.Metadata? = {
+        let documentMetadata: Document.Metadata = {
             guard let uploadMetadata = document.uploadMetadata else {
-                return metadata
+                var meta = metadata ?? Document.Metadata()
+                meta.addProductTag(productTagValue)
+                return meta
             }
-            guard var metadata else {
-                return Document.Metadata(uploadMetadata: uploadMetadata)
+            guard var meta = metadata else {
+                var newMeta = Document.Metadata(uploadMetadata: uploadMetadata)
+                newMeta.addProductTag(productTagValue)
+                return newMeta
             }
-            metadata.addUploadMetadata(uploadMetadata)
-            return metadata
+            meta.addUploadMetadata(uploadMetadata)
+            meta.addProductTag(productTagValue)
+            return meta
         }()
 
         captureNetworkService.upload(document: document, metadata: documentMetadata) { result in
@@ -63,6 +68,15 @@ public final class DocumentService: DocumentServiceProtocol {
                 }
             }
         }
+    }
+
+    /**
+     The string value of the active product tag, used as the
+     `X-Document-Metadata-product-tag` header on every document submission.
+     Falls back to `sepaExtractions` when no product tag is configured.
+     */
+    private var productTagValue: String {
+        (GiniConfiguration.shared.productTag ?? .sepaExtractions).rawValue
     }
 
     private func updatePartialDocuments(for document: GiniCaptureDocument, with createdDocument: Document) {
@@ -85,8 +99,13 @@ public final class DocumentService: DocumentServiceProtocol {
             .sorted()
             .map { $0.info }
         self.analysisCancellationToken = CancellationToken()
+        let analysisMetadata: Document.Metadata = {
+            var meta = metadata ?? Document.Metadata()
+            meta.addProductTag(productTagValue)
+            return meta
+        }()
         captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted,
-                                      metadata: metadata,
+                                      metadata: analysisMetadata,
                                       cancellationToken: analysisCancellationToken!) { [weak self] result in
             guard let self = self else { return }
             switch result {
