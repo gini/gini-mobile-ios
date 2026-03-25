@@ -115,6 +115,44 @@ extension NetworkingScreenApiCoordinatorTests {
                       "Payment due hint must remain active for SEPA when globally enabled")
     }
 
+    // MARK: determineIfAlreadyPaidHintEnabled
+
+    func testAlreadyPaidHintDisabledForCX() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult()
+
+        XCTAssertFalse(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                       "Already-paid hint must be suppressed for CX")
+    }
+
+    func testAlreadyPaidHintDisabledForCXWithCrossBorderPaymentData() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult(crossBorderPayment: createMockCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                       "Already-paid hint must be suppressed for CX even when crossBorderPayment data is present")
+    }
+
+    func testAlreadyPaidHintEnabledForSepaWhenConditionsMet() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.alreadyPaidHintEnabled = true
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: true,
+                                                                              paymentDueHintEnabled: false)
+        let result = createExtractionResult()
+
+        XCTAssertTrue(coordinator.determineIfAlreadyPaidHintEnabled(for: result),
+                      "Already-paid hint must remain active for SEPA when globally enabled")
+    }
+
     // MARK: autoDetectExtractions — non-CX behaviour
 
     func testShouldShowReturnAssistantForAutoDetectWhenLineItemsPresent() throws {
@@ -224,5 +262,45 @@ extension NetworkingScreenApiCoordinatorTests {
 
         XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
                        "Must NOT show CX no-results when productTag is nil")
+    }
+
+    // MARK: Partial CX response
+
+    func testPartialCXResponseDoesNotTriggerNoResultsScreen() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(crossBorderPayment: createPartialCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.shouldShowNoResultsForCrossBorder(for: result),
+                       "A partial crossBorderPayment (some fields absent) is a valid result — no-results screen must not be shown")
+    }
+
+    func testPartialCXResponseContainsOnlyReturnedFields() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let partial = createPartialCrossBorderPayment()
+        let result = createExtractionResult(crossBorderPayment: partial)
+
+        let group = try XCTUnwrap(result.crossBorderPayment?.first,
+                                  "crossBorderPayment must contain at least one group")
+        XCTAssertEqual(group.count, 1,
+                       "Partial response group must contain exactly the one field the backend returned")
+        XCTAssertEqual(group.first?.name, "iban",
+                       "The only returned field must be 'iban'")
+    }
+
+    func testPartialCXResponseSuppressesReturnAssistantAndSkonto() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        coordinator.giniBankConfiguration.productTag = .cxExtractions
+        let result = createExtractionResult(lineItems: createMockLineItems(),
+                                            skontoDiscounts: createMockSkontoDiscounts(),
+                                            crossBorderPayment: createPartialCrossBorderPayment())
+
+        XCTAssertFalse(coordinator.shouldShowReturnAssistant(for: result),
+                       "Return Assistant must be suppressed even for a partial CX response")
+        XCTAssertFalse(coordinator.shouldShowSkonto(for: result),
+                       "Skonto must be suppressed even for a partial CX response")
     }
 }
