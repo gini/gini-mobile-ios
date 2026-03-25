@@ -146,9 +146,15 @@ public final class PaymentComponentBottomView: GiniBottomSheetViewController {
                 self?.setupLandscapeConstraints()
             }
             
-            self?.notifyLayoutChanged()
             self?.view.layoutIfNeeded()
-        }, completion: nil)
+        }, completion: { [weak self] _ in
+            // Notify VoiceOver only after the transition animation has finished and
+            // the layout engine has produced stable frames.  The previous code called
+            // notifyLayoutChanged() inside alongsideTransition, which fired the 0.1 s
+            // delayed notification while the view was still animating, causing
+            // VoiceOver to read elements at mid-animation (often zero-sized) frames.
+            self?.notifyLayoutChanged()
+        })
     }
     
     private func bindToSizeUpdate() {

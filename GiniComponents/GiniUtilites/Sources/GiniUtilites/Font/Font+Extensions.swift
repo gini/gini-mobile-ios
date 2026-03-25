@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-extension Font {
+public extension Font {
     
     /**
      Creates a SwiftUI `Font` from the given `UIFont`.

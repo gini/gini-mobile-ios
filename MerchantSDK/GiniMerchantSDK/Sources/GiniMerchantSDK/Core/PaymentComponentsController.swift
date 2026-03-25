@@ -280,8 +280,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                previousPaymentComponentScreenType: nil,
                                                                clientConfiguration: nil)
 
-                            let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                                             selectedPaymentProvider: healthSelectedPaymentProvider)
+                            let vc = PaymentReviewViewController(viewModel: viewModel,
+                                                                 selectedPaymentProvider: healthSelectedPaymentProvider)
                             completion(vc, nil)
                         case .failure(let error):
                             completion(nil, error)
@@ -321,8 +321,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            previousPaymentComponentScreenType: nil,
                                            clientConfiguration: nil)
 
-        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
+        let vc = PaymentReviewViewController(viewModel: viewModel,
+                                             selectedPaymentProvider: healthSelectedPaymentProvider)
         completion(vc, nil)
     }
 
@@ -828,7 +828,9 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         viewDelegate?.didTapOnMoreInformation()
     }
     
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                               paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                                               completion: (UIViewController) -> Void) {
         // This method will remain empty; no implementation is needed for now.
     }
     

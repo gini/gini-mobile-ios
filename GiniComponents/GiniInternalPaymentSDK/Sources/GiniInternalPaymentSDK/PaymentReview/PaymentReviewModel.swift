@@ -14,6 +14,9 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
+    func presentShareInvoiceBottomSheet(bottomSheet: UIViewController)
+    func dismissPaymentReview()
+    func presentErrorAlert(message: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
@@ -53,8 +56,10 @@ public protocol PaymentReviewSupportedFormatsProtocol {
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
-    func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
     func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?)
+    func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                        paymentInfo: PaymentInfo,
+                                        completion: @escaping (UIViewController) -> Void)
 }
 
 /**
@@ -213,7 +218,10 @@ public class PaymentReviewModel {
     }
 
     func openOnboardingShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo) {
-        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId, paymentInfo: paymentInfo)
+        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId,
+                                                 paymentInfo: paymentInfo) { [weak self] viewController in
+            self?.viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: viewController)
+        }
     }
 
     func openBankSelectionBottomSheet() {
@@ -225,36 +233,10 @@ public class PaymentReviewModel {
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
-
-    func fetchImages() {
-        self.isImagesLoading = true
-        let dispatchGroup = DispatchGroup()
-        let dispatchQueue = DispatchQueue(label: "imagesQueue")
-        let dispatchSemaphore = DispatchSemaphore(value: 0)
-        guard let document, let documentId else { return }
-        var vms = [PageCollectionCellViewModel]()
-        dispatchQueue.async {
-            for page in 1 ... document.pageCount {
-                dispatchGroup.enter()
-
-                self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
-                    if let cellModel = self?.processPreview(result) {
-                        vms.append(cellModel)
-                    }
-                    dispatchSemaphore.signal()
-                    dispatchGroup.leave()
-                })
-                dispatchSemaphore.wait()
-            }
-
-            dispatchGroup.notify(queue: dispatchQueue) {
-                DispatchQueue.main.async {
-                    self.isImagesLoading = false
-                    self.cellViewModels.append(contentsOf: vms)
-                    self.onPreviewImagesFetched?()
-                }
-            }
-        }
+    
+    func closePaymentReview() {
+        delegate?.trackOnPaymentReviewCloseButtonClicked()
+        viewModelDelegate?.dismissPaymentReview()
     }
     
     /**
@@ -321,23 +303,10 @@ public class PaymentReviewModel {
         
         return createCellViewModel(previewImage: image)
     }
-    
-    private func processPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
-        switch result {
-        case let .success(dataImage):
-            if let image = UIImage(data: dataImage) {
-                return createCellViewModel(previewImage: image)
-            }
-        case let .failure(error):
-            if delegate?.shouldHandleErrorInternally(error: error) == true {
-                onErrorHandling?(error)
-            }
-        }
-        return nil
-    }
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
+                                        document: document,
                                         paymentInfo: paymentInfo,
                                         selectedPaymentProvider: selectedPaymentProvider,
                                         configuration: containerConfiguration,
