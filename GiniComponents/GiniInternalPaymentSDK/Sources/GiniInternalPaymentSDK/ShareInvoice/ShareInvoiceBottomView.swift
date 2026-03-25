@@ -17,11 +17,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
     private var accessibilityFocusWorkItem: DispatchWorkItem?
-    
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
 
     private lazy var scrollView: EmptyScrollView = {
         let scrollView = EmptyScrollView()
@@ -415,12 +410,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func tapOnAppStoreButton() {
         openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
-    
-    @objc
-    private func didTapOnCloseButton() {
-        dismiss(animated: true)
-    }
-        
     
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
         guard let urlString = urlString else {
