@@ -41,7 +41,7 @@ final class MockCaptureNetworkService: GiniCaptureNetworkService {
                 completion: @escaping UploadDocumentCompletion) {
         capturedUploadMetadata = metadata
         // Return a stub document so DocumentService can record it in partialDocuments.
-        let url = URL(string: "https://pay-api.gini.net/documents/stub-id")!
+        guard let url = URL(string: "https://pay-api.gini.net/documents/stub-id") else { return }
         let links = Document.Links(giniAPIDocumentURL: url)
         let stubDoc = Document(creationDate: Date(),
                                id: "stub-id",
