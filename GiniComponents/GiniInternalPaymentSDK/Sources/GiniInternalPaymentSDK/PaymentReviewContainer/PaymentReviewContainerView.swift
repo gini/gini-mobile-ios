@@ -963,8 +963,10 @@ extension PaymentReviewContainerView {
     }
 }
 
-/// Private class for showing error messages in a bottom sheet when the user is in landscape mode.
-/// Making it private since it is a temporary solution for the landscape mode error handling only on this screen.
+/**
+ Shows error messages in a bottom sheet when the user is in landscape mode.
+ This is a temporary solution for landscape mode error handling on this screen only.
+ */
 private class ErrorBottomSheet: GiniBottomSheetViewController {
     
     private let scrollView: EmptyScrollView = {
