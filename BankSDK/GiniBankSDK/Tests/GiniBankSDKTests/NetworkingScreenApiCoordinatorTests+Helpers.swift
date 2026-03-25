@@ -157,4 +157,17 @@ extension NetworkingScreenApiCoordinatorTests {
                                           name: "abaRoutingNumber")
         return [[iban, bic, currency, bankAddress, countryRegionCode, abaRoutingNumber]]
     }
+
+    /**
+     Returns a single-field `crossBorderPayment` group (IBAN only).
+     Used to simulate a partial backend response where optional CX fields are absent.
+     */
+    func createPartialCrossBorderPayment() -> [[Extraction]] {
+        let iban = Extraction(box: nil,
+                              candidates: nil,
+                              entity: "iban",
+                              value: "GB29NWBK60161331926819",
+                              name: "iban")
+        return [[iban]]
+    }
 }

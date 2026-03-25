@@ -698,6 +698,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
     func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        guard !isCrossBorderPayment() else { return false }
         let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
         let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
             .alreadyPaidHintEnabled ?? false
