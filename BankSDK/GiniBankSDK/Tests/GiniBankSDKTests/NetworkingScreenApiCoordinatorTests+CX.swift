@@ -294,9 +294,9 @@ extension NetworkingScreenApiCoordinatorTests {
         coordinator.giniBankConfiguration.returnAssistantEnabled = true
         coordinator.giniBankConfiguration.skontoEnabled = true
         coordinator.giniBankConfiguration.productTag = .cxExtractions
-        let result = createExtractionResult(crossBorderPayment: createPartialCrossBorderPayment(),
-                                            lineItems: createMockLineItems(),
-                                            skontoDiscounts: createMockSkontoDiscounts())
+        let result = createExtractionResult(lineItems: createMockLineItems(),
+                                            skontoDiscounts: createMockSkontoDiscounts(),
+                                            crossBorderPayment: createPartialCrossBorderPayment())
 
         XCTAssertFalse(coordinator.shouldShowReturnAssistant(for: result),
                        "Return Assistant must be suppressed even for a partial CX response")
