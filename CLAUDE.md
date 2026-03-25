@@ -202,3 +202,9 @@ init(compositeDocuments: [CompositeDocument]?,
   - Public methods
   - Private helpers
   - Builders and factory methods
+
+
+# Pull Request Description Generation
+Refer to AGENTS.md for PR description generation and repository conventions.
+
+Always follow AGENTS.md instructions when generating pull request descriptions.
