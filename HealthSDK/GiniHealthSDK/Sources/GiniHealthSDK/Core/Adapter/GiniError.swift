@@ -27,9 +27,6 @@ public protocol GiniErrorProtocol {
 }
 
 /**
- An enumeration representing errors that can occur when interacting with the Gini API.
- */
-/**
  A concrete error type representing errors that can occur when interacting with the Gini Health SDK.
  */
 public struct GiniError: Error, GiniErrorProtocol, Equatable {
@@ -48,6 +45,7 @@ public struct GiniError: Error, GiniErrorProtocol, Equatable {
     
     /**
      Converts a `GiniHealthAPILibrary.GiniError` to a `GiniHealthSDK.GiniError`.
+
      - Parameter error: The `GiniHealthAPILibrary.GiniError` to convert.
      - Returns: A `GiniHealthSDK.GiniError` with equivalent error information.
      */

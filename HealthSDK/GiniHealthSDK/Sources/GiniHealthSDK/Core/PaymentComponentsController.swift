@@ -118,6 +118,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     var shareInvoiceBottomSheet: ShareInvoiceBottomView?
     /**
      Creates a new Payment Components Controller.
+
      - Parameter giniHealth: An instance of `GiniHealth` that also conforms to `PaymentComponentsConfigurationProvider` and `PaymentComponentsStringsProvider`.
      */
     public init(giniHealth: GiniHealth & PaymentComponentsConfigurationProvider & PaymentComponentsStringsProvider) {
@@ -130,6 +131,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     
     /**
      Initiates the payment flow for a specified document and payment information.
+
      - Parameters:
        - documentId: An optional identifier for the document associated with the payment flow.
        - paymentInfo: An optional `PaymentInfo` object containing the payment details.
@@ -164,11 +166,10 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
 
     /**
      Checks if the document is payable by extracting the IBAN.
+
      - Parameters:
-         - docId: The ID of the uploaded document.
-         - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
-         In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
-         In case of failure, it returns an error from the server side.
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning `true` if the IBAN was extracted successfully, or an error on failure. Called on the main thread.
      */
     public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         giniSDK.checkIfDocumentIsPayable(docId: docId, completion: completion)
@@ -240,6 +241,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     
     /**
      Notifies the tracking delegate of an event occurring on the payment review screen.
+
      - Parameter event: A `TrackingEvent` of type `PaymentReviewScreenEventType` describing the event that occurred.
      */
     public func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {

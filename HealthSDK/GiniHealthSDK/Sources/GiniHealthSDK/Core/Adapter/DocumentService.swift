@@ -24,11 +24,12 @@ public final class DefaultDocumentService {
     /**
      Creates a partial document from a given image `Data` or a composite document for given partial documents.
 
-     - Parameter fileName:            The document's filename
-     - Parameter docType:             The document's docType
-     - Parameter type:                The V2 document's type. It could be either partial or composite type.
-     - Parameter metadata:            The document's metadata
-     - Parameter completion:          A completion callback, returning the created document on success
+     - Parameters:
+       - fileName: The document's filename.
+       - docType: The document's doc type.
+       - type: The V2 document type. Either partial or composite.
+       - metadata: The document's metadata.
+       - completion: A completion callback, returning the created document on success.
      */
     public func createDocument(fileName: String?,
                                docType: Document.DocType?,
@@ -51,10 +52,11 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Deletes a document
+     Deletes a document.
 
-     - Parameter document:            Document to be deleted
-     - Parameter completion:          A completion callback
+     - Parameters:
+       - document: The document to be deleted.
+       - completion: A completion callback.
      */
     public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
         docService.delete(document.toHealthDocument(),
@@ -69,11 +71,12 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Fetches the user documents, with the possibility to retrieve them paginated
+     Fetches the user documents, with the possibility to retrieve them paginated.
 
-     - Parameter limit:               Limit of documents to retrieve
-     - Parameter offset:              Document's offset
-     - Parameter completion:          A completion callback, returning the document list on success
+     - Parameters:
+       - limit: Maximum number of documents to retrieve.
+       - offset: The document offset for pagination.
+       - completion: A completion callback, returning the document list on success.
      */
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
         docService.documents(limit: limit,
@@ -89,10 +92,11 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Retrieves a document for a given document id
+     Retrieves a document for a given document id.
 
-     - Parameter id:                  The document's unique identifier
-     - Parameter completion:          A completion callback, returning the requested document on success
+     - Parameters:
+       - id: The document's unique identifier.
+       - completion: A completion callback, returning the requested document on success.
      */
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
         docService.fetchDocument(with: id,
@@ -109,9 +113,10 @@ public final class DefaultDocumentService {
     /**
      Retrieves the extractions for a given document.
 
-     - Parameter document:            Document to get the extractions for
-     - Parameter cancellationToken:   Token use to stopped the analysis when a user cancels it
-     - Parameter completion:          A completion callback, returning the extraction list on success
+     - Parameters:
+       - document: The document to get extractions for.
+       - cancellationToken: Token used to cancel the analysis when the user cancels.
+       - completion: A completion callback, returning the extraction list on success.
      */
     public func extractions(for document: Document,
                             cancellationToken: CancellationToken,
@@ -129,10 +134,11 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Retrieves the layout of a given document
+     Retrieves the layout of a given document.
 
-     - Parameter id:                  The document's unique identifier
-     - Parameter completion:          A completion callback, returning the requested document layout on success
+     - Parameters:
+       - document: The document to retrieve the layout for.
+       - completion: A completion callback, returning the document layout on success.
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
         docService.layout(for: document.toHealthDocument(),
@@ -147,10 +153,11 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Retrieves the pages of a given document
+     Retrieves the pages of a given document.
 
-     - Parameter id:                  The document's unique identifier
-     - Parameter completion:          A completion callback, returning the requested document layout on success
+     - Parameters:
+       - document: The document to retrieve pages for.
+       - completion: A completion callback, returning the document pages on success.
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
         docService.pages(in: document.toHealthDocument(),
@@ -166,6 +173,7 @@ public final class DefaultDocumentService {
 
     /**
      Handles feedback submission for a document using its ID.
+
      - Parameters:
        - documentId: The ID of the document for which feedback should be sent.
        - extractions: The document's updated extractions.
@@ -196,9 +204,10 @@ public final class DefaultDocumentService {
     /**
      Submits the analysis feedback for a given document.
 
-     - Parameter document:        The document for which feedback should be sent.
-     - Parameter extractions:     The document's updated extractions.
-     - Parameter completion:      A completion callback.
+     - Parameters:
+       - document: The document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - completion: A completion callback.
      */
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
@@ -211,10 +220,11 @@ public final class DefaultDocumentService {
     /**
      Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
 
-     - Parameter document:            The document for which feedback should be sent.
-     - Parameter extractions:         The document's updated extractions.
-     - Parameter compoundExtractions: The document's updated compound extractions.
-     - Parameter completion:          A completion callback.
+     - Parameters:
+       - document: The document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions.
+       - completion: A completion callback.
      */
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
@@ -229,9 +239,10 @@ public final class DefaultDocumentService {
     /**
      Submits the analysis feedback for a document using only its ID.
 
-     - Parameter documentId:      The ID of the document for which feedback should be sent.
-     - Parameter extractions:     The document's updated extractions.
-     - Parameter completion:      A completion callback.
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - completion: A completion callback.
      */
     public func submitFeedback(for documentId: String,
                                with extractions: [Extraction],
@@ -244,10 +255,11 @@ public final class DefaultDocumentService {
     /**
      Submits the analysis feedback with compound extractions for a document using only its ID.
 
-     - Parameter documentId:          The ID of the document for which feedback should be sent.
-     - Parameter extractions:         The document's updated extractions.
-     - Parameter compoundExtractions: The document's updated compound extractions.
-     - Parameter completion:          A completion callback.
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions.
+       - completion: A completion callback.
      */
     public func submitFeedback(for documentId: String,
                                with extractions: [Extraction],
@@ -265,11 +277,12 @@ public final class DefaultDocumentService {
     }
 
     /**
-     Retrieves the page preview of a document for a given page
+     Retrieves the page preview of a document for a given page.
 
-     - Parameter documentId:          Document id to get the preview for
-     - Parameter pageNumber:          The document's page number starting from 1
-     - Parameter completion:          A completion callback, returning the requested page preview as Data on success
+     - Parameters:
+       - documentId: The document id to get the preview for.
+       - pageNumber: The document's page number, starting from 1.
+       - completion: A completion callback, returning the requested page preview as `Data` on success.
      */
     public func preview(for documentId: String,
                             pageNumber: Int,
@@ -288,6 +301,7 @@ public final class DefaultDocumentService {
 
     /**
      Downloads a file from the given URL string.
+
      - Parameters:
        - urlString: The URL string of the file to download.
        - completion: A completion callback returning the file data on success, or an error on failure.
@@ -306,6 +320,7 @@ public final class DefaultDocumentService {
 
     /**
      Deletes a batch of documents by their IDs.
+
      - Parameters:
        - documentIds: An array of document IDs to delete.
        - completion: A completion callback returning a success message on success, or an error on failure.
