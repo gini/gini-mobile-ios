@@ -66,16 +66,21 @@ final class MockCaptureNetworkService: GiniCaptureNetworkService {
     func cleanup() {
         // This method will remain empty; no implementation is needed.
     }
+
     func sendFeedback(document: Document,
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void) {
         // This method will remain empty; no implementation is needed.
     }
+
     func sendFeedback(documentId: String,
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
-                      completion: @escaping (Result<Void, GiniError>) -> Void) {}
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
+
     func log(errorEvent: ErrorEvent, completion: @escaping (Result<Void, GiniError>) -> Void) {
         // This method will remain empty; no implementation is needed.
     }
