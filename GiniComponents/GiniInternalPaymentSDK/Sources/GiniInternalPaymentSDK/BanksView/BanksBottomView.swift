@@ -40,16 +40,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
-
-    private lazy var closeTitleIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = viewModel.configuration.closeIconAccentColor
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
-        imageView.isHidden = true
-        return imageView
-    }()
     
     private let descriptionView = EmptyView()
 
@@ -167,7 +157,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private func setupViewHierarchy() {
         titleView.addSubview(titleLabel)
-        titleView.addSubview(closeTitleIconImageView)
         contentStackView.addArrangedSubview(titleView)
         descriptionView.addSubview(descriptionLabel)
         contentStackView.addArrangedSubview(descriptionView)
@@ -218,15 +207,13 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor,
+                                                constant: Constants.viewPaddingConstraint),
+            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor,
+                                                constant: -Constants.viewPaddingConstraint),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
-            closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            closeTitleIconImageView.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeTitleIconImageView.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeTitleIconImageView.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            closeTitleIconImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: Constants.titleViewTitleIconSpacing)
         ])
     }
 
