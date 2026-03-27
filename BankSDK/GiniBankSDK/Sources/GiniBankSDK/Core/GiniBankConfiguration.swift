@@ -743,7 +743,6 @@ public final class GiniBankConfiguration: NSObject {
      - Parameters:
         - extractions: Confirmed field names and their values for the active `productTag`.
          Field names must match the extraction names returned by the backend.
-        Defaults to empty.
 
     - Note: When providing `amountToPay`, use the `"value:currency"` format (e.g. `"950.00:EUR"`).
 
@@ -758,9 +757,9 @@ public final class GiniBankConfiguration: NSObject {
         }
 
         if productTag == .cxExtractions {
-            let compundExtractions = ["crossBorderPayment": [extractionList]]
+            let compoundExtractions = ["crossBorderPayment": [extractionList]]
             documentService?.sendFeedback(with: [],
-                                          updatedCompoundExtractions: compundExtractions)
+                                          updatedCompoundExtractions: compoundExtractions)
         } else {
             documentService?.sendFeedback(with: extractionList,
                                           updatedCompoundExtractions: addLineItems(to: [:]))
