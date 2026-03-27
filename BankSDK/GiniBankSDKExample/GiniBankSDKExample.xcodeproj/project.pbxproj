@@ -78,6 +78,10 @@
 		28A570172D428DC100A97EBC /* Date+ToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570162D428DB500A97EBC /* Date+ToString.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
+		28B3B0422F76F1CB00A5740A /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
+		28B3B0432F76F1CB00A5740A /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
+		28B3B0442F76F1CB00A5740A /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
+		28B3B0452F76F1CB00A5740A /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
 		28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
@@ -90,11 +94,6 @@
 		28C1114F2F101158007C255F /* ExampleAppUserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1114E2F101154007C255F /* ExampleAppUserDefaultsStorage.swift */; };
 		28C79E812F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */; };
 		28C79E832F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */; };
-		28C79E882F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
-		28C79E892F7465C700B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
-		28C79E8B2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
-		28C79E8C2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
-		28C79E8E2F76E5AE00B92760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E8D2F76E5AE00B92760 /* SceneDelegate.swift */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */; };
 		28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */; };
@@ -231,7 +230,6 @@
 		F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */; };
 		F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */; };
 		F46B1657273BE52000229E69 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F46B1656273BE52000229E69 /* GiniBankSDK */; };
-		6929BF108343435AB03E1332 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DDCA31EA4A41C7971327E7 /* SceneDelegate.swift */; };
 		F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C36263C20BA00F30FF3 /* AppDelegate.swift */; };
 		F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */; };
 		F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3C263C20BA00F30FF3 /* Main.storyboard */; };
@@ -517,7 +515,6 @@
 		F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		F45D7F0B2800566900C73C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		47DDCA31EA4A41C7971327E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F4807C36263C20BA00F30FF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		F4807C3D263C20BA00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1667,11 +1664,9 @@
 				28F62F992AB1C2CA00D47866 /* DemoViewController.xib in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				28D77C502CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference.json in Resources */,
-				28C79E8B2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
 				28D77C4C2CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */,
-				28C79E892F7465C700B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				28D77C522CBE99FC00F815DB /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
 				8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
@@ -1679,6 +1674,8 @@
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
 				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
 				28B587472A373A72008CB210 /* SwitchOptionTableViewCell.xib in Resources */,
+				28B3B0422F76F1CB00A5740A /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
+				28B3B0432F76F1CB00A5740A /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				28D77C4E2CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,
 				F45D7F182800583500C73C63 /* testPDF.pdf in Resources */,
@@ -1694,9 +1691,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D77C532CBE99FC00F815DB /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
-				28C79E882F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				28D77C4B2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */,
-				28C79E8C2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
 				28D77C552CBE99FC00F815DB /* result_Gini_invoice_example_line_items_with_discount.json in Resources */,
 				F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */,
@@ -1711,6 +1706,8 @@
 				28D77C4D2CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */,
 				287068472CB9519200D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */,
+				28B3B0442F76F1CB00A5740A /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
+				28B3B0452F76F1CB00A5740A /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				F45D7F122800566900C73C63 /* Gini_invoice_example.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1886,7 +1883,6 @@
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
-				28C79E8E2F76E5AE00B92760 /* SceneDelegate.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */,
 				288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */,
