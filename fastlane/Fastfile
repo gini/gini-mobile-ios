@@ -544,6 +544,7 @@ lane :run_unit_tests do |options|
   destination = options[:destination]
   clientId = options[:clientId]
   clientSecret = options[:clientSecret]
+  result_bundle_path = options[:result_bundle_path]
 
   unless target && destination
     UI.user_error!("Missing 'target' or 'destination' parameter. Pass both to run the tests.")
@@ -577,7 +578,9 @@ lane :run_unit_tests do |options|
     output_types: "",                 # prevent report generation
     output_directory: "./tmp_test_output",
     fail_build: true,
-    code_coverage: true
+    code_coverage: true,
+    result_bundle: !result_bundle_path.nil?,
+    result_bundle_path: result_bundle_path
   )
   
   # Clean up the report files that were generated
