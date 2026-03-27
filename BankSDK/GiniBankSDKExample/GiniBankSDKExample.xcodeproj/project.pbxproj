@@ -78,8 +78,6 @@
 		28A570172D428DC100A97EBC /* Date+ToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570162D428DB500A97EBC /* Date+ToString.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
-		28B3B03A2F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */; };
-		28B3B03D2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */; };
 		28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
@@ -90,6 +88,13 @@
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
 		28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B898CF2CA324CD00C79231 /* CodeLoading.swift */; };
 		28C1114F2F101158007C255F /* ExampleAppUserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1114E2F101154007C255F /* ExampleAppUserDefaultsStorage.swift */; };
+		28C79E812F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */; };
+		28C79E832F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */; };
+		28C79E882F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
+		28C79E892F7465C700B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */; };
+		28C79E8B2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
+		28C79E8C2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */; };
+		28C79E8E2F76E5AE00B92760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E8D2F76E5AE00B92760 /* SceneDelegate.swift */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */; };
 		28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */; };
@@ -226,6 +231,7 @@
 		F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */; };
 		F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */; };
 		F46B1657273BE52000229E69 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F46B1656273BE52000229E69 /* GiniBankSDK */; };
+		6929BF108343435AB03E1332 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DDCA31EA4A41C7971327E7 /* SceneDelegate.swift */; };
 		F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C36263C20BA00F30FF3 /* AppDelegate.swift */; };
 		F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */; };
 		F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3C263C20BA00F30FF3 /* Main.storyboard */; };
@@ -367,8 +373,6 @@
 		28A570162D428DB500A97EBC /* Date+ToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ToString.swift"; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B203FC2BB2E6EE00C78740 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
-		28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXTransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
-		28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseIntegrationTest+CXTransferSummary.swift"; sourceTree = "<group>"; };
 		28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDefaultsCell.swift; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -379,6 +383,11 @@
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28B898CF2CA324CD00C79231 /* CodeLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLoading.swift; sourceTree = "<group>"; };
 		28C1114E2F101154007C255F /* ExampleAppUserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppUserDefaultsStorage.swift; sourceTree = "<group>"; };
+		28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXTransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
+		28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseIntegrationTest+CXTransferSummary.swift"; sourceTree = "<group>"; };
+		28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_cxpayment_reference.json; sourceTree = "<group>"; };
+		28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_cxpayment_reference.pdf; sourceTree = "<group>"; };
+		28C79E8D2F76E5AE00B92760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkontoIntegrationTests.swift; sourceTree = "<group>"; };
 		28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCreationTests.swift; sourceTree = "<group>"; };
@@ -508,6 +517,7 @@
 		F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		F45D7F0B2800566900C73C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DDCA31EA4A41C7971327E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F4807C36263C20BA00F30FF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		F4807C3D263C20BA00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -847,6 +857,8 @@
 		28D77C442CBE99FC00F815DB /* TransferSummary */ = {
 			isa = PBXGroup;
 			children = (
+				28C79E872F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json */,
+				28C79E8A2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf */,
 				28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */,
 				28D77C422CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference_after_feedback.json */,
 				281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */,
@@ -909,8 +921,8 @@
 		28D77C602CBEC05D00F815DB /* TransferSummary */ = {
 			isa = PBXGroup;
 			children = (
-				28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */,
-				28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */,
+				28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */,
+				28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */,
 				28D77C592CBEA8B100F815DB /* BaseIntegrationTest+TransferSummary.swift */,
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				84DB5EA12D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift */,
@@ -1226,6 +1238,7 @@
 			isa = PBXGroup;
 			children = (
 				F4807C36263C20BA00F30FF3 /* AppDelegate.swift */,
+				47DDCA31EA4A41C7971327E7 /* SceneDelegate.swift */,
 				F4E0218727BD349A0042D000 /* Amount.swift */,
 				F4807F332640177500F30FF3 /* PaymentViewModel.swift */,
 				F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */,
@@ -1301,6 +1314,7 @@
 				28B5873A2A37270F008CB210 /* Utils */,
 				28B5873F2A37288D008CB210 /* Views */,
 				F490C7E425DE873900D8CA6F /* AppDelegate.swift */,
+				28C79E8D2F76E5AE00B92760 /* SceneDelegate.swift */,
 				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F459606E2A813CB1004B0112 /* SettingsViewController */,
@@ -1653,9 +1667,11 @@
 				28F62F992AB1C2CA00D47866 /* DemoViewController.xib in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				28D77C502CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference.json in Resources */,
+				28C79E8B2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
 				28D77C4C2CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */,
+				28C79E892F7465C700B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				28D77C522CBE99FC00F815DB /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
 				8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
@@ -1678,7 +1694,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D77C532CBE99FC00F815DB /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
+				28C79E882F7464ED00B92760 /* result_Gini_invoice_example_cxpayment_reference.json in Resources */,
 				28D77C4B2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */,
+				28C79E8C2F7466F900B92760 /* Gini_invoice_example_cxpayment_reference.pdf in Resources */,
 				28D77C552CBE99FC00F815DB /* result_Gini_invoice_example_line_items_with_discount.json in Resources */,
 				F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */,
@@ -1853,6 +1871,7 @@
 				F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */,
 				F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */,
 				F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */,
+				6929BF108343435AB03E1332 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1867,6 +1886,7 @@
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
+				28C79E8E2F76E5AE00B92760 /* SceneDelegate.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */,
 				288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */,
@@ -1973,14 +1993,14 @@
 				28D9E40F2D92D20400DC66BD /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */,
 				28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */,
 				28D1B4622D2ED5F9002EE0DA /* BankAPILibraryIntegrationTests.swift in Sources */,
-				28B3B03A2F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift in Sources */,
+				28C79E812F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				28D1B4502D2E9172002EE0DA /* GalleryCoordinatorTests.swift in Sources */,
 				28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
 				84364E982DA51E2600098A13 /* MockFailingConfigurationService.swift in Sources */,
 				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
-				28B3B03D2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift in Sources */,
+				28C79E832F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift in Sources */,
 				28D9E4082D92B7A300DC66BD /* TransferSummaryIntegrationPinningTests.swift in Sources */,
 				28D1B44A2D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 			);
