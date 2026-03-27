@@ -827,7 +827,6 @@ public final class GiniBankConfiguration: NSObject {
     }
     // swiftlint:enable function_parameter_count
 
-
     func sendTransferSummaryWithSkonto(amountToPayExtraction: Extraction, amountToPayString: String) {
         // The following guard ensures that a Skonto discount is actually applied before proceeding.
         guard let skontoDiscounts = skontoDiscounts?.first, skontoDiscounts.contains(where: {
