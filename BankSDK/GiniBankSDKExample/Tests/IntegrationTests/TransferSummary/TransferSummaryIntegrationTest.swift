@@ -80,21 +80,12 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         private func sentTransferSummery(result: AnalysisResult, verifyInstantPayment: Bool?) {
-            var instantPaymentString = ""
-            var instantPayment: Bool?
-            if let instantPaymentExtractionResult = result.extractions["instantPayment"] {
-                instantPaymentString = instantPaymentExtractionResult.value
-                instantPayment = verifyInstantPayment == true ? (instantPaymentString.lowercased() == "true") : nil
+            var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
+                dict[pair.key] = pair.value.value
             }
-
-            GiniBankConfiguration.shared.sendTransferSummary(
-                paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
-                paymentReference: result.extractions["paymentReference"]?.value ?? "",
-                paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
-                iban: result.extractions["iban"]?.value ?? "",
-                bic: result.extractions["bic"]?.value ?? "",
-                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
-                instantPayment: instantPayment)
+            /// Override `amountToPay` with the confirmed test value to guarantee the "value:currency" format.
+            extractions["amountToPay"] = ExtractionAmount(value: 950.00, currency: .EUR).formattedString()
+            GiniBankConfiguration.shared.sendTransferSummary(extractions: extractions)
         }
         func giniCaptureDidCancelAnalysis() {
             // nothing to test here
