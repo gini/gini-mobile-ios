@@ -1311,7 +1311,6 @@
 				28B5873A2A37270F008CB210 /* Utils */,
 				28B5873F2A37288D008CB210 /* Views */,
 				F490C7E425DE873900D8CA6F /* AppDelegate.swift */,
-				28C79E8D2F76E5AE00B92760 /* SceneDelegate.swift */,
 				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F459606E2A813CB1004B0112 /* SettingsViewController */,
