@@ -170,12 +170,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     private func closeSreenAPIAndSendTransferSummary() {
-        let extractionsDict = Dictionary(uniqueKeysWithValues:
+        let extractionsDict = Dictionary(
             extractedResults.compactMap { extraction -> (String, String)? in
                 guard let name = extraction.name else { return nil }
                 return (name, extraction.value)
-            }
-        )
+            },
+            uniquingKeysWith: { _, last in last })
+        
         configuration.sendTransferSummary(extractions: extractionsDict)
 
         // GiniBankSDK requires both `documentId` and `originalFileName`

@@ -60,7 +60,7 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            sentTransferSummery(result: result, verifyInstantPayment: verifyInstantPayment)
+            sentTransferSummary(result: result)
             let mockedInvoice = mockedInvoiceResultName
             // Use the helper method to load the fixture extractions container
             guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoice) else {
@@ -79,7 +79,7 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                                                     verifyInstantPayment: verifyInstantPayment)
         }
 
-        private func sentTransferSummery(result: AnalysisResult, verifyInstantPayment: Bool?) {
+        private func sentTransferSummary(result: AnalysisResult) {
             var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
                 dict[pair.key] = pair.value.value
             }
