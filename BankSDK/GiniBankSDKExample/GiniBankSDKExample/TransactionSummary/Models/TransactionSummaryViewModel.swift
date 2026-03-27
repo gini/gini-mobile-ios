@@ -23,20 +23,6 @@ final class DefaultTransactionSummaryViewModel: TransactionSummaryViewModel {
      */
     private let sortedExtractions: [Extraction]
 
-    private let displayNameMapping: [String: String] = [
-        "bankName": "Recipient Bank Name",
-        "bankAccountNumber": "Account Number",
-        "amountToPay": "Amount",
-        "iban": "IBAN",
-        "currency": "Currency",
-        "bankAddress": "Recipient's Bank Address",
-        "countryRegionCode": "Country/Region",
-        "abaRoutingNumber": "ABA Routing Number",
-        "bic": "SWIFT/BIC Code",
-        "paymentRecipient": "Payment Recipient",
-        "paymentRecipientAddress": "Payment Recipient Address"
-    ]
-
     init(extractions: [Extraction],
          editableFields: [String: String],
          isCrossBorderPayment: Bool) {
@@ -44,7 +30,7 @@ final class DefaultTransactionSummaryViewModel: TransactionSummaryViewModel {
         self.sortedExtractions = extractions.sorted { ($0.name ?? "") < ($1.name ?? "") }
         self.items = sortedExtractions.map { extraction in
             let name = extraction.name ?? ""
-            let title = isCrossBorderPayment ? (displayNameMapping[name] ?? name) : name
+            let title = name
             let isEditable = isCrossBorderPayment || editableFields[name] != nil
             return ExtractionViewData(title: title,
                                       value: extraction.value,
