@@ -78,6 +78,8 @@
 		28A570172D428DC100A97EBC /* Date+ToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A570162D428DB500A97EBC /* Date+ToString.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
+		28B3B03A2F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */; };
+		28B3B03D2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */; };
 		28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
@@ -365,6 +367,8 @@
 		28A570162D428DB500A97EBC /* Date+ToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ToString.swift"; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B203FC2BB2E6EE00C78740 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
+		28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXTransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
+		28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseIntegrationTest+CXTransferSummary.swift"; sourceTree = "<group>"; };
 		28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDefaultsCell.swift; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -905,6 +909,8 @@
 		28D77C602CBEC05D00F815DB /* TransferSummary */ = {
 			isa = PBXGroup;
 			children = (
+				28B3B03B2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift */,
+				28B3B0382F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift */,
 				28D77C592CBEA8B100F815DB /* BaseIntegrationTest+TransferSummary.swift */,
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				84DB5EA12D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift */,
@@ -1967,12 +1973,14 @@
 				28D9E40F2D92D20400DC66BD /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */,
 				28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */,
 				28D1B4622D2ED5F9002EE0DA /* BankAPILibraryIntegrationTests.swift in Sources */,
+				28B3B03A2F76EBE800A5740A /* CXTransferSummaryIntegrationTest.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				28D1B4502D2E9172002EE0DA /* GalleryCoordinatorTests.swift in Sources */,
 				28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
 				84364E982DA51E2600098A13 /* MockFailingConfigurationService.swift in Sources */,
 				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
+				28B3B03D2F76EBF300A5740A /* BaseIntegrationTest+CXTransferSummary.swift in Sources */,
 				28D9E4082D92B7A300DC66BD /* TransferSummaryIntegrationPinningTests.swift in Sources */,
 				28D1B44A2D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 			);

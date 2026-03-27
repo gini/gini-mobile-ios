@@ -44,6 +44,7 @@ class CXTransferSummaryIntegrationTest: BaseIntegrationTest {
      */
     override func handleUploadSuccess(captureDocument: GiniCaptureDocument,
                                       delegate: GiniCaptureResultsDelegate) {
+        GiniConfiguration.shared.productTag = .cxExtractions
         super.handleUploadSuccess(captureDocument: captureDocument, delegate: delegate)
     }
 
