@@ -69,8 +69,9 @@ func makeDocumentServiceWithPartialDoc(metadata: Document.Metadata? = nil) -> Do
  */
 func makeImageDocument() -> GiniImageDocument {
     let builder = GiniCaptureDocumentBuilder(documentSource: .external)
-    return (builder.build(with: makeInvoiceData(), fileName: "test.jpg") as? GiniImageDocument)
-        ?? GiniImageDocument(data: makeInvoiceData(),
+    let data = makeInvoiceData()
+    return (builder.build(with: data, fileName: "test.jpg") as? GiniImageDocument)
+        ?? GiniImageDocument(data: data,
                              imageSource: .external,
                              imageImportMethod: .openWith,
                              deviceOrientation: nil)
