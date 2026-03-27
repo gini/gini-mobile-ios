@@ -36,7 +36,7 @@ jobs:
           { 
             "project_folder": "GiniComponents",
             "package_folder": "GiniInternalPaymentSDK",
-            "version_file_path": "GiniComponents/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift",
+            "version_file_path": "GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/internal-payment-sdk-ios.git",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",

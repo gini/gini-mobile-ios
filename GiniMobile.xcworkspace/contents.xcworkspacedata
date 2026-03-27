@@ -2,14 +2,28 @@
 <Workspace
    version = "1.0">
    <Group
-      location = "container:"
+      location = "group:GiniComponents"
       name = "GiniComponents">
-      <FileRef
-         location = "group:GiniComponents/GiniInternalPaymentSDK">
-      </FileRef>
-      <FileRef
-         location = "group:GiniComponents/GiniUtilites">
-      </FileRef>
+      <Group
+         location = "group:Utilities"
+         name = "Utilities">
+         <FileRef
+            location = "group:sonar-project.properties">
+         </FileRef>
+         <FileRef
+            location = "group:GiniUtilites">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:InternalPaymentSDK"
+         name = "InternalPaymentSDK">
+         <FileRef
+            location = "group:GiniInternalPaymentSDK">
+         </FileRef>
+         <FileRef
+            location = "group:sonar-project.properties">
+         </FileRef>
+      </Group>
    </Group>
    <Group
       location = "container:"
