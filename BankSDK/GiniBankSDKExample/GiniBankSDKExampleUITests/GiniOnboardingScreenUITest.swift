@@ -10,9 +10,12 @@ import GiniBankSDK
 
 
 class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
+    
+    /*
+     Preconditions update required
+     */
 
     func testOnboardingGetStartedButton() throws {
-    
     //Preconditions
         //Open settings screen
         mainScreen.configurationButton.tap()
