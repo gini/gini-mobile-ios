@@ -1,0 +1,136 @@
+name: Upload iOS App to TestFlight (Reusable)
+
+# Reusable workflow — call this from any SDK's publish workflow.
+# Example caller:
+#
+#   jobs:
+#     upload:
+#       uses: ./.github/workflows/publish.example.app.testflight.yml
+#       with:
+#         xcode_version: '16.3'
+#         project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
+#         scheme: 'GiniBankSDKExample'
+#         bundle_identifier: 'net.gini.banksdk.example'
+#         bundle_identifier_extension: 'net.gini.banksdk.example.ShareExtension'
+#         ipa_name: 'GiniBankSDKExample'
+#       secrets: inherit
+
+on:
+  workflow_call:
+    inputs:
+      xcode_version:
+        description: 'Xcode version to use'
+        required: false
+        default: '16.3'
+        type: string
+      project_path:
+        description: 'Relative path to the .xcodeproj file'
+        required: true
+        type: string
+      scheme:
+        description: 'Xcode scheme to build'
+        required: true
+        type: string
+      bundle_identifier:
+        description: 'Main app bundle identifier'
+        required: true
+        type: string
+      bundle_identifier_extension:
+        description: 'Share extension bundle identifier (optional)'
+        required: false
+        default: ''
+        type: string
+      ipa_name:
+        description: 'Output IPA filename without extension'
+        required: true
+        type: string
+      team_id:
+        description: 'Apple Developer Team ID'
+        required: false
+        default: 'JA825X8F7Z'
+        type: string
+    secrets:
+      MATCH_GIT_URL:
+        required: true
+      MATCH_PASSWORD:
+        required: true
+      KEYCHAIN_PASSWORD:
+        required: true
+      APP_STORE_CONNECT_API_KEY:
+        required: true
+      APP_STORE_API_KEY_ID:
+        required: true
+      APP_STORE_API_ISSUER_ID:
+        required: true
+
+jobs:
+  upload-testflight:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+          xcode-version: ${{ inputs.xcode_version }}
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Download Signing Certificates & Profiles (Match)
+        env:
+          APP_IDENTIFIER: >-
+            ${{ inputs.bundle_identifier }}${{
+              inputs.bundle_identifier_extension != '' &&
+              format(',{0}', inputs.bundle_identifier_extension) || ''
+            }}
+          DISTRIBUTION_TYPE: appstore
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: bundle exec fastlane download_profiles
+
+      - name: Archive Xcode Project
+        run: |
+          xcodebuild clean archive \
+            -project ${{ inputs.project_path }} \
+            -scheme "${{ inputs.scheme }}" \
+            -archivePath ./${{ inputs.ipa_name }}.xcarchive \
+            -configuration Release \
+            -destination generic/platform=iOS \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM=${{ inputs.team_id }} \
+            ONLY_ACTIVE_ARCH=NO
+
+      - name: Export .ipa File
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath ${{ inputs.ipa_name }}.xcarchive \
+            -exportPath . \
+            -exportOptionsPlist ExportOptionsAppStore${{ inputs.ipa_name }}.plist
+
+      - name: Verify .ipa File
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "${{ inputs.ipa_name }}.ipa"
+          fail: true
+
+      - name: Decode App Store Connect API Key
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+        run: |
+          mkdir -p build_artifacts
+          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > build_artifacts/AppStoreConnectAPIKey.p8
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_PATH: build_artifacts/AppStoreConnectAPIKey.p8
+        run: bundle exec fastlane publish_to_testflight ipa_path:"${{ inputs.ipa_name }}.ipa"
