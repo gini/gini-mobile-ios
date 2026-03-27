@@ -20,7 +20,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniBankAPILibrary", path: "../../BankAPILibrary/GiniBankAPILibrary"),
-        .package(name: "GiniUtilites", path: "../../GiniComponents/GiniUtilites")
+        .package(name: "GiniUtilites", path: "../../GiniComponents/Utilities/GiniUtilites")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
