@@ -19,6 +19,7 @@ class SettingScreen {
     let onboardingAtFirstLaunchSwitch: String
     let bottomNavBar: String
     let onboardingCustomBottomNavBar: String
+    let productTagSegmentedControl: XCUIElement
     
     init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -31,10 +32,24 @@ class SettingScreen {
         onboardingAtFirstLaunchSwitch = "Onboarding screens at first launch"
         bottomNavBar = "Bottom navigation bar"
         onboardingCustomBottomNavBar = "Onboarding custom bottom navigation bar"
+        productTagSegmentedControl = app.segmentedControls[SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue]
     }
     
     public func tapFlashToggleSwitch(){
         flashToggleSwitch.tap()
         closeButton.tap()
-      }
+    }
+
+    /**
+     Selects a segment of the Product Tag control and closes Settings.
+     - Parameters:
+       - index: 0 = SEPA, 1 = Cross-border, 2 = Auto-detect
+     */
+    public func selectProductTag(index: Int) {
+        let segment = productTagSegmentedControl.buttons.element(boundBy: index)
+        if segment.isHittable {
+            segment.tap()
+        }
+        closeButton.tap()
+    }
 }

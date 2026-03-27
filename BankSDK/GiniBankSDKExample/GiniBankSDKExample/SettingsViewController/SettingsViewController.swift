@@ -143,10 +143,14 @@ extension SettingsViewController: UITableViewDataSource {
     private func cell(for optionModel: SegmentedOptionModelProtocol, at indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
         cell.indexPath = indexPath
+        let identifier: String? = optionModel is ProductTagSegmentedOptionModel
+            ? SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue
+            : nil
         let model = SegmentedOptionCellModel(title: optionModel.title,
                                              items: optionModel.items,
                                              selectedIndex: optionModel.selectedIndex,
-                                             description: optionModel.description)
+                                             description: optionModel.description,
+                                             accessibilityIdentifier: identifier)
         cell.set(data: model)
         cell.delegate = self
         return cell
