@@ -259,7 +259,6 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
 
     // MARK: - Private helper methods
 
-
     private func startExtraction(for document: Document,
                                  cancellationToken: CancellationToken,
                                  completion: @escaping (Result<(document: Document, 
