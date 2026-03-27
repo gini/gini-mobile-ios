@@ -68,12 +68,40 @@ func makeDocumentServiceWithPartialDoc(metadata: Document.Metadata? = nil) -> Do
  Falls back to constructing one directly if the bundle resource lookup fails.
  */
 func makeImageDocument() -> GiniImageDocument {
-    let imageData = GiniCaptureTestsHelper.fileData(named: "invoice", fileExtension: "jpg")
-        ?? Data()
     let builder = GiniCaptureDocumentBuilder(documentSource: .external)
-    return (builder.build(with: imageData, fileName: "test.jpg") as? GiniImageDocument)
-        ?? GiniImageDocument(data: imageData,
+    return (builder.build(with: makeInvoiceData(), fileName: "test.jpg") as? GiniImageDocument)
+        ?? GiniImageDocument(data: makeInvoiceData(),
                              imageSource: .external,
                              imageImportMethod: .openWith,
                              deviceOrientation: nil)
+}
+
+/**
+ Builds a `GiniImageDocument` whose `uploadMetadata` is `nil`.
+ Uses the external source path, which skips camera metadata population.
+ */
+func makeDocumentWithoutUploadMetadata() -> GiniImageDocument {
+    makeImageDocument()
+}
+
+/**
+ Builds a `GiniImageDocument` with a populated `Document.UploadMetadata`,
+ simulating a document captured from the camera.
+ */
+func makeDocumentWithUploadMetadata() -> GiniImageDocument {
+    let uploadMetadata = Document.UploadMetadata(
+        interfaceOrientation: .portrait,
+        documentSource: .camera,
+        importMethod: nil
+    )
+    return GiniImageDocument(data: makeInvoiceData(),
+                             imageSource: .camera,
+                             deviceOrientation: .portrait,
+                             uploadMetadata: uploadMetadata)
+}
+
+// MARK: - Private
+
+private func makeInvoiceData() -> Data {
+    GiniCaptureTestsHelper.fileData(named: "invoice", fileExtension: "jpg") ?? Data()
 }
