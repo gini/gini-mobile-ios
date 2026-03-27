@@ -4,6 +4,11 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import Testing
+import Foundation
+@testable import GiniCaptureSDK
+@testable import GiniBankAPILibrary
+
 // MARK: - Document.Metadata.build — branch coverage
 
 /**
