@@ -622,7 +622,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
-                let result = AnalysisResult(extractions: extractions,
+                let result = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
                                             lineItems: isCrossBorderPayment() ? nil : result.lineItems,
                                             skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
                                             crossBorderPayment: result.crossBorderPayment,
