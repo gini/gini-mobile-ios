@@ -85,7 +85,6 @@ class IntegrationTests: XCTestCase {
             switch result {
             case .success(let providers):
                 XCTAssertFalse(providers.isEmpty)
-                print("✅ Fetched \(providers.count) providers")
             case .failure(let error):
                 XCTFail("Failed: \(error)")
             }
@@ -112,7 +111,6 @@ class IntegrationTests: XCTestCase {
                 case .success(let doc):
                     self.createdDocuments.append(doc)
                     XCTAssertFalse(doc.id.isEmpty)
-                    print("✅ Created document: \(doc.id)")
                 case .failure(let error):
                     XCTFail("Failed: \(error)")
                 }
