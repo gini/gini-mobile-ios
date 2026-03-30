@@ -5,7 +5,7 @@
 #   ./scripts/download_profiles.sh
 #
 # Required env var:
-#   MATCH_PASSWORD — encryption password for the certificates repo (ask your team lead)
+#   MATCH_PASSWORD — encryption password for the certificates repo
 #
 # Optional env var:
 #   MATCH_GIT_URL  — override the certificates repo URL
@@ -16,7 +16,7 @@ set -euo pipefail
 GIT_URL="${MATCH_GIT_URL:-https://github.com/gini/ios-certificates}"
 
 if [[ -z "${MATCH_PASSWORD:-}" ]]; then
-  echo "❌ MATCH_PASSWORD is not set. Ask your team lead."
+  echo "❌ MATCH_PASSWORD is not set."
   exit 1
 fi
 
