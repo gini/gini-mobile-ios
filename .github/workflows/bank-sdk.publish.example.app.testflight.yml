@@ -1,17 +1,16 @@
 name: Upload GiniBankSDKExample to TestFlight
 
+permissions:
+  contents: read 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
-    paths:
-      - 'BankSDK/**'
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
+  # schedule:
+    # - cron: '0 0 1 1,4,7,10 *'  # 1st of Jan, Apr, Jul, Oct at midnight UTC
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-publish
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 
 jobs:
   upload-testflight:
