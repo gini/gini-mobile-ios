@@ -30,8 +30,6 @@ platform :ios do
     )
   end
 
-
-
   desc <<~DOC
     Create a temporary keychain for CI builds and expose its credentials to the environment.
 
