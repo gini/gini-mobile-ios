@@ -275,6 +275,6 @@ extension SettingsViewController: UpdateUserDefaultsCellDelegate {
 
 extension SettingsViewController: SettingsViewModelDelegate {
     func contentDataUpdated() {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 }
