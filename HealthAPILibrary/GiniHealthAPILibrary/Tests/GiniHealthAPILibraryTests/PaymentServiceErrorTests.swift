@@ -28,11 +28,9 @@ final class PaymentServiceErrorTests: XCTestCase {
     // MARK: - Helper
 
     @discardableResult
-    private func awaitExpectedFailure<T>(
-        description: String,
-        timeout: TimeInterval = 1.0,
-        action: (@escaping (Result<T, GiniError>) -> Void) -> Void
-    ) -> GiniError {
+    private func awaitExpectedFailure<T>(description: String,
+                                         timeout: TimeInterval = 1.0,
+                                         action: (@escaping (Result<T, GiniError>) -> Void) -> Void) -> GiniError {
         let exp = expectation(description: description)
         var capturedError: GiniError?
         action { result in
@@ -52,7 +50,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         return error
     }
 
-    func testCreatePaymentRequest_BadRequest_decodesItemsAndRequestId() {
+    func testCreatePaymentRequestBadRequestDecodesItemsAndRequestId() {
         let error = awaitExpectedFailure(description: "create payment request failure") { completion in
             self.service.createPaymentRequest(sourceDocumentLocation: "",
                                              paymentProvider: "provider-id",
@@ -75,7 +73,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertTrue(messages.contains("Provide a valid IBAN number"), "IBAN validation message should be present")
     }
 
-    func testDeletePaymentRequest_Forbidden_decodesItemsAndRequestId() {
+    func testDeletePaymentRequestForbiddenDecodesItemsAndRequestId() {
         let error = awaitExpectedFailure(description: "delete payment request forbidden") { completion in
             self.service.deletePaymentRequest(id: "forbidden-id", completion: completion)
         }
@@ -87,7 +85,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertEqual(items.first?.message, "The deletion operation on the payment request is not authorized", "Error message should match")
     }
 
-    func testDeletePaymentRequest_NotFound_statusCode404() {
+    func testDeletePaymentRequestNotFoundStatusCode404() {
         let error = awaitExpectedFailure(description: "delete payment request not found") { completion in
             self.service.deletePaymentRequest(id: "missing-id", completion: completion)
         }
@@ -96,7 +94,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertNil(error.items, "Items should be nil for a simple not-found error")
     }
     
-    func testBatchDeletePaymentRequests_PartialFailure_decodesMultipleErrors() {
+    func testBatchDeletePaymentRequestsPartialFailureDecodesMultipleErrors() {
         let error = awaitExpectedFailure(description: "batch delete payment requests partial failure") { completion in
             self.service.deletePaymentRequests(["doc1", "doc2", "doc3"], completion: completion)
         }
@@ -109,7 +107,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertEqual(error.objectsWithCode("2013"), ["doc1"], "Objects for code 2013 should match")
     }
     
-    func testBatchDeletePaymentRequests_AllForbidden_returns403() {
+    func testBatchDeletePaymentRequestsAllForbiddenReturns403() {
         let error = awaitExpectedFailure(description: "batch delete all forbidden") { completion in
             self.service.deletePaymentRequests(["forbidden1", "forbidden2"], completion: completion)
         }
@@ -120,7 +118,7 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertEqual(Set(error.objectsWithCode("2901")), Set(["forbidden1", "forbidden2"]), "Forbidden objects should match")
     }
     
-    func testBatchDeletePaymentRequests_EmptyList_handledGracefully() {
+    func testBatchDeletePaymentRequestsEmptyListHandledGracefully() {
         // Given
         let expect = expectation(description: "batch delete empty list")
         var capturedResult: Result<[String], GiniError>?

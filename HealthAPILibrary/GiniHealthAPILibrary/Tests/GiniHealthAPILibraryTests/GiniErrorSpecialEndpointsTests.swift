@@ -11,7 +11,7 @@ final class GiniErrorSpecialEndpointsTests: XCTestCase {
 
     // Verifies that a notFound error with custom JSON body decodes items and requestId,
     // and exposes the HTTP status code from the response.
-    func testNotFoundError_decodesItemsAndRequestId() {
+    func testNotFoundErrorDecodesItemsAndRequestId() {
         // Given
         let errorData = loadFile(withName: "notFoundError", ofType: "json")
 
@@ -40,7 +40,7 @@ final class GiniErrorSpecialEndpointsTests: XCTestCase {
 
     // Verifies that the message remains the static "Not found" for the .notFound case,
     // and statusCode is nil when no HTTPURLResponse is provided.
-    func testNotFoundError_messageIsStaticAndStatusCodeOptional() {
+    func testNotFoundErrorMessageIsStaticAndStatusCodeOptional() {
         // Given
         let errorData = loadFile(withName: "notFoundError", ofType: "json")
 
