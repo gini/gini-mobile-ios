@@ -39,8 +39,8 @@ final class AccessTokenTests: XCTestCase {
     }
 
     func testTypeOptional() throws {
-        let t = try loadToken(fromFixture: "accessTokenResponseWithoutType")
-        XCTAssertNil(t.type, "Token type should be nil when not provided")
+        let token = try loadToken(fromFixture: "accessTokenResponseWithoutType")
+        XCTAssertNil(token.type, "Token type should be nil when not provided")
     }
 
     func testExpirationDate() {
@@ -54,8 +54,8 @@ final class AccessTokenTests: XCTestCase {
     }
 
     func testScopeOptionl() throws {
-        let t = try loadToken(fromFixture: "accessTokenResponseWithoutScope")
-        XCTAssertNil(t.scope, "Scope should be nil when not provided")
+        let token = try loadToken(fromFixture: "accessTokenResponseWithoutScope")
+        XCTAssertNil(token.scope, "Scope should be nil when not provided")
     }
 
     func testTokenCorrectDecoding() {
@@ -63,14 +63,14 @@ final class AccessTokenTests: XCTestCase {
     }
 
     func testTokenMissingOptionalFieldsDecoding() throws {
-        let t = try loadToken(fromFixture: "accessTokenResponseOnlyRequiredParams")
-        XCTAssertNotNil(t, "Token should not be nil when only required fields are present")
+        let token = try loadToken(fromFixture: "accessTokenResponseOnlyRequiredParams")
+        XCTAssertNotNil(token, "Token should not be nil when only required fields are present")
     }
 
     func testTokenMissingRequiredFieldsDecoding() {
         let data = loadFile(withName: "accessTokenResponseMissingExpire", ofType: "json")
-        let t = token(from: data)
-        XCTAssertNil(t, "Expected decoding to fail due to missing expire_in required field, but it succeeded")
+        let token = token(from: data)
+        XCTAssertNil(token, "Expected decoding to fail due to missing expire_in required field, but it succeeded")
     }
 
     private func token(from mockRespose: Data) -> Token? {
