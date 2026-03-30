@@ -1,5 +1,6 @@
 name: Upload iOS App to TestFlight (Reusable)
-
+permissions:
+  contents: read 
 # Reusable workflow — call this from any SDK's publish workflow.
 # Example caller:
 #
