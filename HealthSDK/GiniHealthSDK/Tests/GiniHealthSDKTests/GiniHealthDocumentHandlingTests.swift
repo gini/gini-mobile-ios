@@ -25,7 +25,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         // Then
         switch result {
         case .success(let document):
-            XCTAssertEqual(document, expectedDocument)
+            XCTAssertEqual(document, expectedDocument, "Returned document should match the expected document")
         case .failure(let error):
             XCTFail("Expected success but received error: \(error)")
         }
@@ -40,7 +40,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         case .success:
             XCTFail("Expected failure but received success")
         case .failure(let error):
-            XCTAssertNotNil(error)
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
         }
     }
 
@@ -64,7 +64,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         // Then
         switch result {
         case .success(let extractions):
-            XCTAssertEqual(extractions.count, expectedExtractions.count)
+            XCTAssertEqual(extractions.count, expectedExtractions.count, "Returned extractions count should match expected count")
         case .failure(let error):
             XCTFail("Expected success but received error: \(error)")
         }
@@ -100,8 +100,8 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         // Then
         switch result {
         case .success(let data):
-            XCTAssertEqual(data.document, expectedData.document)
-            XCTAssertEqual(data.extractions.count,expectedData.extractions.count)
+            XCTAssertEqual(data.document, expectedData.document, "Returned document should match expected document")
+            XCTAssertEqual(data.extractions.count, expectedData.extractions.count, "Returned extractions count should match expected count")
         case .failure(let error):
             XCTFail("Expected success but received error: \(error)")
         }
@@ -117,7 +117,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         case .success:
             XCTFail("Expected failure but received success")
         case .failure(let error):
-            XCTAssertNotNil(error)
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
         }
     }
 
@@ -175,7 +175,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         })
         switch result {
         case .success(let message):
-            XCTAssertEqual(message, "")
+            XCTAssertEqual(message, "", "Success message should be empty when all documents are deleted")
         case .failure(let error):
             XCTFail("Expected success but received error: \(error)")
         }
@@ -183,35 +183,35 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
     func testDeleteBatchDocuments_returnsError_whenUnauthorized() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.unauthorizedDocuments) { error in
-            XCTAssertNotNil(error.items)
-            XCTAssertFalse(error.items?.isEmpty ?? true)
+            XCTAssertNotNil(error.items, "Error items should not be nil for unauthorized deletion")
+            XCTAssertFalse(error.items?.isEmpty ?? true, "Error items should not be empty for unauthorized deletion")
         }
     }
 
     func testDeleteBatchDocuments_returnsError_whenDocumentsNotFound() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.notFoundDocuments) { error in
-            XCTAssertNotNil(error.items)
-            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.notFoundDocuments.count)
+            XCTAssertNotNil(error.items, "Error items should not be nil for not-found documents")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.notFoundDocuments.count, "Object count should match not-found documents count")
         }
     }
 
     func testDeleteBatchDocuments_returnsError_whenCompositeItemsMissing() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.missingCompositeItems) { error in
-            XCTAssertNotNil(error.items)
-            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.missingCompositeItems.count)
+            XCTAssertNotNil(error.items, "Error items should not be nil for missing composite items")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.missingCompositeItems.count, "Object count should match missing composite items count")
         }
     }
 
     func testDeleteBatchDocuments_returnsError_whenMixedFailureOccurs() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems) { error in
-            XCTAssertNotNil(error.items)
-            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems.count)
+            XCTAssertNotNil(error.items, "Error items should not be nil for mixed failure")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems.count, "Object count should match mixed-failure documents count")
         }
     }
 
     func testDeleteBatchDocuments_returnsError_whenEmptyIdsProvided() throws {
         try assertDeleteDocumentsFails(documentIds: []) { error in
-            XCTAssertNotNil(error)
+            XCTAssertNotNil(error, "Error should not be nil when no document IDs are provided")
         }
     }
 }

@@ -16,13 +16,13 @@ final class ExtractionsContainerTest: XCTestCase {
     func testExtractionsContainerDecodingDoesNotThrow() {
         XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self,
                                                   from: extractionsContainerJson),
-                         "extractions container should be decoded")
+                         "Extractions container should be decoded")
     }
     
     func testExtractionsContainerWOCandidatesDecodingDoesNotThrow() {
         XCTAssertNoThrow(try JSONDecoder().decode(ExtractionsContainer.self,
                                                   from: extractionsWOCandidatesJson),
-                         "extractions container without candidates should be decoded")
+                         "Extractions container without candidates should be decoded")
     }
     
     func testExtractionsContainerDecoding() throws {
@@ -30,7 +30,7 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try JSONDecoder().decode(ExtractionsContainer.self,
                                                  from: extractionsContainerJson)
 
-        XCTAssertEqual(container.extractions.count, 2)
+        XCTAssertEqual(container.extractions.count, 2, "Extractions count should be 2")
         
         let extraction = Extraction(box: Extraction.Box(height: 9.0,
                                                         left: 521.48,
@@ -42,7 +42,7 @@ final class ExtractionsContainerTest: XCTestCase {
                                     value: "123.93:EUR",
                                     name: "amountToPay")
         
-        XCTAssertTrue(container.extractions.contains(extraction))
+        XCTAssertTrue(container.extractions.contains(extraction), "Extractions should contain the expected extraction")
         
         let lineItemExtraction = Extraction(box: Extraction.Box(height: 9.0,
                                                                 left: 72.0,
@@ -54,10 +54,10 @@ final class ExtractionsContainerTest: XCTestCase {
                                             value: "1",
                                             name: "quantity")
         
-        XCTAssertEqual(container.compoundExtractions!.count, 1)
-        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.count, 3)
-        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.first!.count, 4)
-        XCTAssertTrue(container.compoundExtractions!["lineItems"]!.first!.contains(lineItemExtraction))
+        XCTAssertEqual(container.compoundExtractions!.count, 1, "Compound extractions count should be 1")
+        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.count, 3, "LineItems count should be 3")
+        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.first!.count, 4, "First lineItem extraction count should be 4")
+        XCTAssertTrue(container.compoundExtractions!["lineItems"]!.first!.contains(lineItemExtraction), "LineItems should contain the expected extraction")
         
         let candidate = Extraction.Candidate(box: Extraction.Box(height: 9.0,
                                                                  left: 521.48,
@@ -67,7 +67,7 @@ final class ExtractionsContainerTest: XCTestCase {
                                              entity: "amount",
                                              value: "123.93:EUR")
         
-        XCTAssertEqual(container.candidates.count, 2)
-        XCTAssertTrue(container.candidates.contains(candidate))
+        XCTAssertEqual(container.candidates.count, 2, "Candidates count should be 2")
+        XCTAssertTrue(container.candidates.contains(candidate), "Candidates should contain the expected candidate")
     }
 }

@@ -34,7 +34,7 @@ final class GiniErrorSpecialEndpointsTests: XCTestCase {
 
         let first = items?.first
         XCTAssertEqual(first?.code, "2501", "Error code should match the payload")
-        XCTAssertEqual(first?.message, "Document b4bd3e80-7bd1-11e4-95ab-000000000000 does not exist")
+        XCTAssertEqual(first?.message, "Document b4bd3e80-7bd1-11e4-95ab-000000000000 does not exist", "Error message should match the payload")
         XCTAssertNil(first?.object, "Object should be nil when not provided in payload")
     }
 

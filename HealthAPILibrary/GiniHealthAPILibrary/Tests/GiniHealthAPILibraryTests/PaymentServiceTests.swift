@@ -29,7 +29,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
                                                      purpose: "save the world",
                                                      completion: $0)
         } validate: { paymentRequestId in
-            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
+            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "Payment request ids should match")
         }
     }
 
@@ -37,7 +37,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
         awaitSuccess(description: "returns payment request id") {
             self.paymentService.deletePaymentRequest(id: SessionManagerMock.paymentRequestId, completion: $0)
         } validate: { paymentRequestId in
-            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
+            XCTAssertEqual(paymentRequestId, SessionManagerMock.paymentRequestId, "Payment request ids should match")
         }
     }
     
@@ -50,7 +50,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
             case .success(let providersResponse):
                 XCTAssertEqual(providersResponse.count,
                                paymentProvidersResponse.count,
-                               "providers count should match")
+                               "Providers count should match")
                 expect.fulfill()
             case .failure(let error):
                 XCTFail("Unexpected failure: \(error)")
@@ -82,7 +82,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
         awaitSuccess(description: "returns a payment provider via id") {
             self.paymentService.paymentProvider(id: SessionManagerMock.paymentProviderId, completion: $0)
         } validate: { provider in
-            XCTAssertEqual(provider.id, paymentProvider.id, "provider ids should match")
+            XCTAssertEqual(provider.id, paymentProvider.id, "Provider ids should match")
         }
     }
 
@@ -91,7 +91,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
             self.paymentService.paymentRequest(id: SessionManagerMock.paymentRequestId, completion: $0)
         } validate: { request in
             let requestId = String(request.links?.linksSelf.split(separator: "/").last ?? "")
-            XCTAssertEqual(requestId, SessionManagerMock.paymentRequestId, "payment request ids should match")
+            XCTAssertEqual(requestId, SessionManagerMock.paymentRequestId, "Payment request ids should match")
         }
     }
 
@@ -99,7 +99,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
         awaitSuccess(description: "returns PDF") {
             self.paymentService.pdfWithQRCode(paymentRequestId: SessionManagerMock.paymentRequestId, completion: $0)
         } validate: { data in
-            XCTAssertNotNil(data)
+            XCTAssertNotNil(data, "PDF data should not be nil")
         }
     }
 
@@ -108,7 +108,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
             self.paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86", completion: $0)
         } validate: { payment in
             let requestId = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
-            XCTAssertEqual(requestId, SessionManagerMock.paymentID, "payment request ids should match")
+            XCTAssertEqual(requestId, SessionManagerMock.paymentID, "Payment request ids should match")
         }
     }
 }

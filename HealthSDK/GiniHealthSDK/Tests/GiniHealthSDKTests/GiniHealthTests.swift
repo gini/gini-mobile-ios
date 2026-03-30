@@ -11,9 +11,9 @@ final class GiniHealthTests: GiniHealthTestCase {
     private func assertClientConfiguration(_ config: ClientConfiguration,
                                            communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
                                            brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
-        XCTAssertNotNil(config)
-        XCTAssertEqual(config.communicationTone, communicationTone)
-        XCTAssertEqual(config.ingredientBrandType, brandType)
+        XCTAssertNotNil(config, "Client configuration should not be nil")
+        XCTAssertEqual(config.communicationTone, communicationTone, "Communication tone should match")
+        XCTAssertEqual(config.ingredientBrandType, brandType, "Ingredient brand type should match")
     }
 
     func testSetConfiguration() throws {
@@ -24,7 +24,7 @@ final class GiniHealthTests: GiniHealthTestCase {
         giniHealth.setConfiguration(configuration)
         
         // Then
-        XCTAssertEqual(GiniHealthConfiguration.shared, configuration)
+        XCTAssertEqual(GiniHealthConfiguration.shared, configuration, "Shared configuration should match the set configuration")
     }
     
     func testFetchBankingAppsSuccess() {
@@ -46,9 +46,9 @@ final class GiniHealthTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
         
         // Then
-        XCTAssertNotNil(receivedProviders)
-        XCTAssertEqual(receivedProviders?.count, expectedProviders?.count)
-        XCTAssertEqual(receivedProviders, expectedProviders)
+        XCTAssertNotNil(receivedProviders, "Received providers should not be nil")
+        XCTAssertEqual(receivedProviders?.count, expectedProviders?.count, "Providers count should match")
+        XCTAssertEqual(receivedProviders, expectedProviders, "Received providers should match expected providers")
     }
     
     func testOpenLinkSuccess() {
@@ -61,7 +61,7 @@ final class GiniHealthTests: GiniHealthTestCase {
                                           urlOpener: urlOpener,
                                           completion: { open in
             waitForWebsiteOpen.fulfill()
-            XCTAssert(open == true, "testOpenLink - FAILED to open link")
+            XCTAssert(open == true, "TestOpenLink - FAILED to open link")
         })
 
         waitForExpectations(timeout: 0.1, handler: nil)
@@ -77,7 +77,7 @@ final class GiniHealthTests: GiniHealthTestCase {
                                           urlOpener: urlOpener,
                                           completion: { open in
             waitForWebsiteOpen.fulfill()
-            XCTAssert(open == false, "testOpenLink - MANAGED to open link")
+            XCTAssert(open == false, "TestOpenLink - MANAGED to open link")
         })
 
         waitForExpectations(timeout: 0.1, handler: nil)
@@ -103,9 +103,9 @@ final class GiniHealthTests: GiniHealthTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedClientConfiguration)
-        XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType)
-        XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType)
+        XCTAssertNotNil(receivedClientConfiguration, "Client configuration should not be nil")
+        XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType, "Communication tone should match")
+        XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType, "Ingredient brand type should match")
     }
 
     func testLoadDefaultClientConfiguration() {
@@ -121,7 +121,7 @@ final class GiniHealthTests: GiniHealthTestCase {
         giniHealth.setConfiguration(configuration)
 
         assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
-        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Formal German tip pattern should match")
     }
 
     func testInformalDE() {
@@ -132,6 +132,6 @@ final class GiniHealthTests: GiniHealthTestCase {
         giniHealth.setConfiguration(configuration)
 
         assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
-        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Informal German tip pattern should match")
     }
 }

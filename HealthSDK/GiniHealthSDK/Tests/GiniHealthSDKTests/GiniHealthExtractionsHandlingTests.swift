@@ -18,7 +18,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
         let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
-        XCTAssertEqual(isPayable, true)
+        XCTAssertEqual(isPayable, true, "Document should be payable when IBAN is present")
     }
     
     func testDocumentIsNotPayableSuccess() throws {
@@ -26,7 +26,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
         let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
-        XCTAssertEqual(isPayable, false)
+        XCTAssertEqual(isPayable, false, "Document should not be payable when IBAN is absent")
     }
 
     func testCheckIfDocumentIsPayableSuccess() throws {
@@ -49,7 +49,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertEqual(expectedIsPayable, isDocumentPayable)
+        XCTAssertEqual(expectedIsPayable, isDocumentPayable, "Payable status should match the expected value based on IBAN presence")
     }
 
     func testCheckIfDocumentIsNotPayableSuccess() throws {
@@ -72,7 +72,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertEqual(expectedIsPayable, isDocumentPayable)
+        XCTAssertEqual(expectedIsPayable, isDocumentPayable, "Payable status should match the expected value when IBAN is absent")
     }
 
     func testCheckIfDocumentIsPayableFailure() {
@@ -91,7 +91,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNil(isDocumentPayable)
+        XCTAssertNil(isDocumentPayable, "Payable status should be nil when the request fails")
     }
 
     func testCheckIfDocumentContainMultipleInvoicesSuccess() {
@@ -110,7 +110,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 5, handler: nil)
 
         // Then
-        XCTAssertEqual(true, hasMultipleInvoices)
+        XCTAssertEqual(true, hasMultipleInvoices, "Document should contain multiple invoices")
     }
 
     func testCheckIfDocumentDontContainMultipleInvoicesSuccess() {
@@ -129,7 +129,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertEqual(false, hasMultipleInvoices)
+        XCTAssertEqual(false, hasMultipleInvoices, "Document should not contain multiple invoices")
     }
 
     func testCheckIfDocumentContainMultipleInvoicesFailure() {
@@ -148,7 +148,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNil(hasMultipleInvoices)
+        XCTAssertNil(hasMultipleInvoices, "Multiple invoices check should be nil when the request fails")
     }
     
     func testGetExtractionsSuccess() throws {
@@ -170,8 +170,8 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedExtractions)
-        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
+        XCTAssertNotNil(receivedExtractions, "Received extractions should not be nil")
+        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count, "Received extractions count should match expected count")
     }
     
     func testGetExtractionsFailure() {
@@ -190,7 +190,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNil(receivedExtractions)
+        XCTAssertNil(receivedExtractions, "Extractions should be nil when the request fails")
     }
 
     func testGetAllExtractionsSuccess() throws {
@@ -212,8 +212,8 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedExtractions)
-        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
+        XCTAssertNotNil(receivedExtractions, "Received extractions should not be nil")
+        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count, "Received extractions count should match expected count")
     }
 
     func testGetAllExtractionsFailure() {
@@ -232,7 +232,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNil(receivedExtractions)
+        XCTAssertNil(receivedExtractions, "Extractions should be nil when the request fails")
     }
 
     func testGetDoctorsNameExtractionsSuccess() {
@@ -254,7 +254,7 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedDoctorExtraction)
-        XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName)
+        XCTAssertNotNil(receivedDoctorExtraction, "Doctor name extraction should not be nil")
+        XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName, "Doctor name extraction value should match expected name")
     }
 }

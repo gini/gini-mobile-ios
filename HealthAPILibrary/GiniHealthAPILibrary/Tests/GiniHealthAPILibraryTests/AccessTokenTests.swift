@@ -30,41 +30,41 @@ final class AccessTokenTests: XCTestCase {
     }
 
     func testAccessToken() {
-        XCTAssertNotNil(validToken.accessToken)
-        XCTAssertEqual(validToken.accessToken, "1eb7ca49-d99f-40cb-b86d-8dd689ca2345")
+        XCTAssertNotNil(validToken.accessToken, "AccessToken should not be nil")
+        XCTAssertEqual(validToken.accessToken, "1eb7ca49-d99f-40cb-b86d-8dd689ca2345", "AccessToken value should match")
     }
 
     func testType() {
-        XCTAssertEqual(validToken.type, "bearer")
+        XCTAssertEqual(validToken.type, "bearer", "Token type should be bearer")
     }
 
     func testTypeOptional() throws {
         let t = try loadToken(fromFixture: "accessTokenResponseWithoutType")
-        XCTAssertNil(t.type)
+        XCTAssertNil(t.type, "Token type should be nil when not provided")
     }
 
     func testExpirationDate() {
-        XCTAssertNotNil(validToken.expiration)
-        XCTAssertTrue(validToken.expiration < Date(timeInterval: 43199, since: Date()))
-        XCTAssertTrue(validToken.expiration > Date())
+        XCTAssertNotNil(validToken.expiration, "Expiration date should not be nil")
+        XCTAssertTrue(validToken.expiration < Date(timeInterval: 43199, since: Date()), "Expiration should be within the expected time interval")
+        XCTAssertTrue(validToken.expiration > Date(), "Expiration should be after the current date")
     }
 
     func testScope() {
-        XCTAssertEqual(validToken.scope, "read")
+        XCTAssertEqual(validToken.scope, "read", "Scope should be read")
     }
 
     func testScopeOptionl() throws {
         let t = try loadToken(fromFixture: "accessTokenResponseWithoutScope")
-        XCTAssertNil(t.scope)
+        XCTAssertNil(t.scope, "Scope should be nil when not provided")
     }
 
     func testTokenCorrectDecoding() {
-        XCTAssertNotNil(validToken)
+        XCTAssertNotNil(validToken, "Token should not be nil after successful decoding")
     }
 
     func testTokenMissingOptionalFieldsDecoding() throws {
         let t = try loadToken(fromFixture: "accessTokenResponseOnlyRequiredParams")
-        XCTAssertNotNil(t)
+        XCTAssertNotNil(t, "Token should not be nil when only required fields are present")
     }
 
     func testTokenMissingRequiredFieldsDecoding() {

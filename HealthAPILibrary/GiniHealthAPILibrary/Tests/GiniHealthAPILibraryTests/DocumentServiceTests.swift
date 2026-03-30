@@ -19,7 +19,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         } validate: { document in
             XCTAssertEqual(document.id,
                            SessionManagerMock.partialDocumentId,
-                           "document ids should match")
+                           "Document ids should match")
         }
     }
 
@@ -32,7 +32,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         }
         let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: imageData12MB)
 
-        XCTAssertTrue(range.contains(imageDataProcessed?.count ?? 0))
+        XCTAssertTrue(range.contains(imageDataProcessed?.count ?? 0), "Processed image size should be within expected range")
     }
 
     func testDocumentCreationWithBigPDF() {
@@ -41,7 +41,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         let expectedSize = pdfData13MB.count
         let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: pdfData13MB)
 
-        XCTAssertEqual(imageDataProcessed?.count ?? 0, expectedSize)
+        XCTAssertEqual(imageDataProcessed?.count ?? 0, expectedSize, "Processed PDF size should remain unchanged")
     }
 
     func testCompositeDocumentCreation() {
@@ -53,7 +53,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         } validate: { document in
             XCTAssertEqual(document.id,
                            SessionManagerMock.compositeDocumentId,
-                           "document ids should match")
+                           "Document ids should match")
         }
     }
 
@@ -64,7 +64,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
         awaitSuccess(description: "it deletes the partial document") { done in
             self.defaultDocumentService.delete(document) { result in done(result) }
         } validate: { _ in
-            XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
+            XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "Documents should be empty")
         }
     }
 
@@ -76,7 +76,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
             self.defaultDocumentService.delete(document) { result in done(result) }
         } validate: { _ in
             XCTAssertEqual(self.sessionManagerMock.documents.count, 1,
-                           "there should be one partial document left")
+                           "There should be one partial document left")
         }
     }
 
@@ -135,8 +135,8 @@ final class DocumentServicesTests: DocumentServiceTestBase {
             }
 
             let amountToPayFromHttpBody = bodyPayload.extractions["amountToPay"]?.value ?? ""
-            XCTAssertEqual(amountToPay, amountToPayFromHttpBody, "amount to pay values should match")
-            XCTAssertEqual(amountToPay, amountToPayFromLoadedFeedbackValue, "amount to pay values should match")
+            XCTAssertEqual(amountToPay, amountToPayFromHttpBody, "Amount to pay values should match")
+            XCTAssertEqual(amountToPay, amountToPayFromLoadedFeedbackValue, "Amount to pay values should match")
 
             case .failure(let error):
             XCTFail("submitFeedback failed with error: \(error)")
@@ -155,7 +155,7 @@ final class DocumentServicesTests: DocumentServiceTestBase {
             let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
             print(urlStringForHighestResolutionPreview)
             XCTAssertEqual(urlStringForHighestResolutionPreview, "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/1280x1810",
-                           "there url strings should be equal")
+                           "There url strings should be equal")
             expect.fulfill()
         }
         

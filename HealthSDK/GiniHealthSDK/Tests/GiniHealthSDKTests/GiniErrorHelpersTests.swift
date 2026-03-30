@@ -27,7 +27,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.itemsDescription
         
         // Then
-        XCTAssertEqual(description, "No specific error details")
+        XCTAssertEqual(description, "No specific error details", "Description should be the default message when no items are present")
     }
     
     func testItemsDescription_withRealTestFile_unauthorized() {
@@ -37,9 +37,9 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.itemsDescription
         
         // Then
-        XCTAssertTrue(description.contains("2013"))
-        XCTAssertTrue(description.contains("3db07630-8f16-11ec-bd63-31f9d04e200e"))
-        XCTAssertTrue(description.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"))
+        XCTAssertTrue(description.contains("2013"), "Description should contain error code 2013")
+        XCTAssertTrue(description.contains("3db07630-8f16-11ec-bd63-31f9d04e200e"), "Description should contain the first unauthorized document ID")
+        XCTAssertTrue(description.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"), "Description should contain the second unauthorized document ID")
     }
     
     func testItemsDescription_withRealTestFile_notFound() {
@@ -49,8 +49,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.itemsDescription
         
         // Then
-        XCTAssertTrue(description.contains("2014"))
-        XCTAssertFalse(description.isEmpty)
+        XCTAssertTrue(description.contains("2014"), "Description should contain error code 2014")
+        XCTAssertFalse(description.isEmpty, "Description should not be empty for notFound error")
     }
     
     func testItemsDescription_withRealTestFile_compositeMissing() {
@@ -60,8 +60,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.itemsDescription
         
         // Then
-        XCTAssertTrue(description.contains("2015"))
-        XCTAssertFalse(description.isEmpty)
+        XCTAssertTrue(description.contains("2015"), "Description should contain error code 2015")
+        XCTAssertFalse(description.isEmpty, "Description should not be empty for compositeMissing error")
     }
     
     func testItemsDescription_withNoObjects_showsNoObjects() {
@@ -71,7 +71,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.itemsDescription
         
         // Then
-        XCTAssertEqual(description, "2013: [no objects]")
+        XCTAssertEqual(description, "2013: [no objects]", "Description should indicate no objects for the given error code")
     }
     
     // MARK: - objectsWithCode Tests
@@ -84,7 +84,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let objects = error.objectsWithCode("2013")
         
         // Then
-        XCTAssertTrue(objects.isEmpty)
+        XCTAssertTrue(objects.isEmpty, "Objects should be empty when no items are present")
     }
     
     func testObjectsWithCode_withRealTestFile_unauthorized() {
@@ -94,9 +94,9 @@ final class GiniErrorHelpersTests: XCTestCase {
         let objects = error.objectsWithCode("2013")
         
         // Then
-        XCTAssertEqual(objects.count, 2)
-        XCTAssertTrue(objects.contains("3db07630-8f16-11ec-bd63-31f9d04e200e"))
-        XCTAssertTrue(objects.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"))
+        XCTAssertEqual(objects.count, 2, "There should be 2 objects for code 2013")
+        XCTAssertTrue(objects.contains("3db07630-8f16-11ec-bd63-31f9d04e200e"), "Objects should contain the first unauthorized document ID")
+        XCTAssertTrue(objects.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"), "Objects should contain the second unauthorized document ID")
     }
     
     func testObjectsWithCode_withRealTestFile_notFound() {
@@ -106,7 +106,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let objects = error.objectsWithCode("2014")
         
         // Then
-        XCTAssertEqual(objects.count, 2)
+        XCTAssertEqual(objects.count, 2, "There should be 2 objects for code 2014")
     }
     
     func testObjectsWithCode_withNonMatchingCode_returnsEmptyArray() {
@@ -116,7 +116,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let objects = error.objectsWithCode("9999")
         
         // Then
-        XCTAssertTrue(objects.isEmpty)
+        XCTAssertTrue(objects.isEmpty, "Objects should be empty for a non-matching error code")
     }
     
     func testObjectsWithCode_withMultipleItemsSameCode_mergesAllObjects() {
@@ -126,8 +126,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let objects = error.objectsWithCode("2013")
         
         // Then - Should merge all objects from both "2013" items
-        XCTAssertEqual(objects.count, 4)
-        XCTAssertEqual(objects, ["doc-1", "doc-2", "doc-4", "doc-5"])
+        XCTAssertEqual(objects.count, 4, "Objects should be merged from all items with the same error code")
+        XCTAssertEqual(objects, ["doc-1", "doc-2", "doc-4", "doc-5"], "Merged objects should match in order")
     }
     
     // MARK: - detailedDescription Tests
@@ -147,10 +147,10 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.detailedDescription
         
         // Then
-        XCTAssertTrue(description.contains("Status: 400"))
-        XCTAssertTrue(description.contains("Request ID: a497-01aa-b6f0-cc17-43d3-76a8"))
-        XCTAssertTrue(description.contains("Message:"))
-        XCTAssertTrue(description.contains("Items: 2013:"))
+        XCTAssertTrue(description.contains("Status: 400"), "Description should contain the HTTP status code")
+        XCTAssertTrue(description.contains("Request ID: a497-01aa-b6f0-cc17-43d3-76a8"), "Description should contain the request ID")
+        XCTAssertTrue(description.contains("Message:"), "Description should contain the Message field")
+        XCTAssertTrue(description.contains("Items: 2013:"), "Description should contain the error items")
     }
     
     func testDetailedDescription_withNoStatusCode_showsZero() {
@@ -160,8 +160,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let description = error.detailedDescription
         
         // Then
-        XCTAssertTrue(description.contains("Status: 0"))
-        XCTAssertTrue(description.contains("Request ID: a497-01aa-b6f0-cc17-43d3-76a8"))
+        XCTAssertTrue(description.contains("Status: 0"), "Description should show status 0 when no HTTP response is provided")
+        XCTAssertTrue(description.contains("Request ID: a497-01aa-b6f0-cc17-43d3-76a8"), "Description should contain the request ID")
     }
     
     func testDetailedDescription_withMultipleRealFiles_formatsCorrectly() {
@@ -195,7 +195,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         let message = error.message
         
         // Then - Should return the actual API message, not localized description
-        XCTAssertEqual(message, "Documents could not be deleted due to authorization issues")
+        XCTAssertEqual(message, "Documents could not be deleted due to authorization issues", "Message should match the API error message")
     }
     
     func testMessage_customError_withDecodingFailure_fallsBackToLocalizedDescription() {
@@ -214,8 +214,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let message = error.message
         
         // Then - Should fall back to localizedDescription
-        XCTAssertNotNil(message)
-        XCTAssertNotEqual(message, "Documents could not be deleted due to authorization issues")
+        XCTAssertNotNil(message, "Message should not be nil even when JSON is invalid")
+        XCTAssertNotEqual(message, "Documents could not be deleted due to authorization issues", "Message should not be the API error message when JSON decoding fails")
         // Will be something like "The operation couldn't be completed..."
     }
     
@@ -226,8 +226,8 @@ final class GiniErrorHelpersTests: XCTestCase {
         let message = error.message
         
         // Then - Should return the message from the JSON file
-        XCTAssertNotNil(message)
-        XCTAssertFalse(message?.isEmpty ?? true)
+        XCTAssertNotNil(message, "Message should not be nil for a custom error with valid JSON")
+        XCTAssertFalse(message?.isEmpty ?? true, "Message should not be empty")
         // The actual message will depend on what's in the test file
     }
     
@@ -240,8 +240,8 @@ final class GiniErrorHelpersTests: XCTestCase {
                                                                                     data: nil))
 
         // Then
-        XCTAssertEqual(noResponseError.message, "No response")
-        XCTAssertEqual(notFoundError.message, "Not found")
-        XCTAssertEqual(unauthorizedError.message, "Unauthorized")
+        XCTAssertEqual(noResponseError.message, "No response", "NoResponse error message should be 'No response'")
+        XCTAssertEqual(notFoundError.message, "Not found", "NotFound error message should be 'Not found'")
+        XCTAssertEqual(unauthorizedError.message, "Unauthorized", "Unauthorized error message should be 'Unauthorized'")
     }
 }

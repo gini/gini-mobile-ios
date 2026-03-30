@@ -66,10 +66,10 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(expectedDocumentLink)
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
-        XCTAssertEqual(documentLink, expectedDocumentLink)
+        XCTAssertNotNil(expectedDocumentLink, "Expected document link should not be nil")
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
+        XCTAssertEqual(documentLink, expectedDocumentLink, "Document link should match the expected document link")
     }
     
     func testCreatePaymentRequestSuccessWithDocument() {
@@ -100,8 +100,8 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
         
         // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
     }
     
     func testDeletePaymentRequestSuccess() {
@@ -126,8 +126,8 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
     }
     
     func testFetchPaymentRequestWithExpirationDate() {
@@ -149,8 +149,8 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertEqual(receivedPaymentRequest?.expirationDate, expectedExpirationDate)
+        XCTAssertNotNil(receivedPaymentRequest, "Payment request should not be nil")
+        XCTAssertEqual(receivedPaymentRequest?.expirationDate, expectedExpirationDate, "Expiration date should match")
     }
 
     func testFetchPaymentRequestWithMissingExpirationDate() {
@@ -169,8 +169,8 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertNil(receivedPaymentRequest?.expirationDate)
+        XCTAssertNotNil(receivedPaymentRequest, "Payment request should not be nil")
+        XCTAssertNil(receivedPaymentRequest?.expirationDate, "Expiration date should be nil when not provided")
     }
     
     func testGettingPaymentSuccess() {
@@ -193,8 +193,8 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPayment)
-        XCTAssertEqual(receivedPayment?.iban, expectedIBAN)
+        XCTAssertNotNil(receivedPayment, "Received payment should not be nil")
+        XCTAssertEqual(receivedPayment?.iban, expectedIBAN, "Payment IBAN should match")
     }
     
     // MARK: - Bulk Payment Request Deletion Tests
@@ -216,7 +216,7 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
-        XCTAssertNotNil(receivedError)
+        XCTAssertNotNil(receivedError, "Error should not be nil when deletion fails")
         return receivedError
     }
 
@@ -224,34 +224,34 @@ final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
         let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
         let receivedError = deletePaymentRequestsExpectingError(ids: unauthorizedIds,
                                                                description: "Deleting payment requests with unauthorized error")
-        XCTAssertEqual(receivedError?.items?.first?.code, "2016")
-        XCTAssertEqual(receivedError?.items?.first?.object, unauthorizedIds)
-        XCTAssertEqual(receivedError?.requestId, "b608-02bb-c7g1-dd28-54e4-87b9")
+        XCTAssertEqual(receivedError?.items?.first?.code, "2016", "Error code should be 2016 for unauthorized")
+        XCTAssertEqual(receivedError?.items?.first?.object, unauthorizedIds, "Error objects should match unauthorized IDs")
+        XCTAssertEqual(receivedError?.requestId, "b608-02bb-c7g1-dd28-54e4-87b9", "Request ID should match")
     }
     
     func testDeletePaymentRequests_NotFound() {
         let notFoundIds = MockTestData.BulkDeletePaymentRequests.notFound
         let receivedError = deletePaymentRequestsExpectingError(ids: notFoundIds,
                                                                description: "Deleting payment requests with not found error")
-        XCTAssertEqual(receivedError?.items?.first?.code, "2017")
-        XCTAssertEqual(receivedError?.items?.first?.object, notFoundIds)
+        XCTAssertEqual(receivedError?.items?.first?.code, "2017", "Error code should be 2017 for not found")
+        XCTAssertEqual(receivedError?.items?.first?.object, notFoundIds, "Error objects should match not-found IDs")
     }
     
     func testDeletePaymentRequests_Mixed() {
         let mixedIds = MockTestData.BulkDeletePaymentRequests.mixed
         let receivedError = deletePaymentRequestsExpectingError(ids: mixedIds,
                                                                description: "Deleting payment requests with mixed errors")
-        XCTAssertEqual(receivedError?.items?.count, 2)
+        XCTAssertEqual(receivedError?.items?.count, 2, "There should be 2 error items for mixed errors")
         
         // Verify both error codes are present
         let errorCodes = receivedError?.items?.map { $0.code } ?? []
-        XCTAssertTrue(errorCodes.contains("2016"))
-        XCTAssertTrue(errorCodes.contains("2017"))
+        XCTAssertTrue(errorCodes.contains("2016"), "Error codes should contain 2016 for unauthorized")
+        XCTAssertTrue(errorCodes.contains("2017"), "Error codes should contain 2017 for not found")
         
         // Verify objects are correctly assigned to each error code
         let unauthorizedObjects = receivedError?.objectsWithCode("2016") ?? []
         let notFoundObjects = receivedError?.objectsWithCode("2017") ?? []
-        XCTAssertEqual(unauthorizedObjects, ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca"])
-        XCTAssertEqual(notFoundObjects, ["bfb74b1b-567e-471e-ac5d-9e4494d0d049"])
+        XCTAssertEqual(unauthorizedObjects, ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca"], "Unauthorized objects should match")
+        XCTAssertEqual(notFoundObjects, ["bfb74b1b-567e-471e-ac5d-9e4494d0d049"], "Not-found objects should match")
     }
 }

@@ -45,7 +45,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         mockPaymentComponentsController.checkIfDocumentIsPayable(docId: docId) { result in
             receivedResult = result
         }
-        XCTAssertEqual(receivedResult, expected)
+        XCTAssertEqual(receivedResult, expected, "Payable result should match expected value")
     }
 
     private func assertAndCast<T>(_ value: Any?,
@@ -61,8 +61,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
         mockPaymentComponentsController.loadPaymentProviders()
 
         // Then
-        XCTAssertFalse(mockPaymentComponentsController.isLoading)
-        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
+        XCTAssertFalse(mockPaymentComponentsController.isLoading, "Loading state should be false after providers are loaded")
+        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider, "Selected payment provider should be nil initially")
     }
 
     func testCheckIfDocumentIsPayable_Success() {
@@ -88,7 +88,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     func testBankSelectionBottomSheet_ReturnsViewController() throws {
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
         let bottomSheet = try assertAndCast(viewController, as: BanksBottomView.self)
-        XCTAssertNotNil(bottomSheet.viewModel)
+        XCTAssertNotNil(bottomSheet.viewModel, "Bottom sheet view model should not be nil")
     }
     
     func testLoadPaymentReviewScreenFor_Success() {
@@ -105,15 +105,15 @@ final class PaymentComponentsControllerTests: XCTestCase {
         }
 
         // Then
-        XCTAssertNil(receivedError)
-        XCTAssertNotNil(receivedViewController)
+        XCTAssertNil(receivedError, "Error should be nil for a successful payment review screen load")
+        XCTAssertNotNil(receivedViewController, "View controller should not be nil for a successful load")
     }
     
     func testPaymentInfoViewController_ReturnsCorrectViewController() throws {
         let viewController = mockPaymentComponentsController.paymentInfoViewController()
         let paymentInfoVC = try assertAndCast(viewController, as: PaymentInfoViewController.self)
-        XCTAssertNotNil(paymentInfoVC.viewModel)
-        XCTAssertEqual(paymentInfoVC.viewModel.paymentProviders, [])
+        XCTAssertNotNil(paymentInfoVC.viewModel, "Payment info view model should not be nil")
+        XCTAssertEqual(paymentInfoVC.viewModel.paymentProviders, [], "Payment providers should be empty initially")
     }
     
     func testPaymentProvidersSorting() {
@@ -139,7 +139,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    clientConfiguration: giniHealth.clientConfiguration)
 
 
-        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
-        XCTAssertEqual(bottomViewModel.paymentProviders.map { PaymentProvider(healthPaymentProvider: $0.paymentProvider) }, expectedPaymentProviders)
+        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11, "Providers count should be 11")
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { PaymentProvider(healthPaymentProvider: $0.paymentProvider) }, expectedPaymentProviders, "Providers should be sorted as expected")
     }
 }

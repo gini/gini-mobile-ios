@@ -15,7 +15,8 @@ final class DocumentLayoutTests: XCTestCase {
 
     func testDocumentLayoutDecoding() {
         XCTAssertNoThrow(try JSONDecoder().decode(Document.Layout.self,
-                                                  from: documentLayoutJson))
+                                                  from: documentLayoutJson),
+                         "Document layout should be decoded without error")
     }
 
 }
