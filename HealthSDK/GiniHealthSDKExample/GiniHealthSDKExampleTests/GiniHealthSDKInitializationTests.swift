@@ -10,7 +10,9 @@ import XCTest
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 
-/// Tests for SDK initialization and basic configuration
+/**
+ Tests for SDK initialization and basic configuration
+ */
 final class GiniHealthSDKInitializationTests: GiniHealthSDKIntegrationTestsBase {
 
     // MARK: - SDK Initialization Tests

@@ -12,8 +12,10 @@ import GiniHealthSDK
 @testable import GiniInternalPaymentSDK
 @testable import GiniHealthSDKExample
 
-/// Base class for Gini Health SDK integration tests
-/// Provides common setup, teardown, and helper methods
+/**
+ Base class for Gini Health SDK integration tests.
+ Provides common setup, teardown, and helper methods
+ */
 class GiniHealthSDKIntegrationTestsBase: XCTestCase {
 
     // MARK: - Test Configuration
@@ -33,8 +35,10 @@ class GiniHealthSDKIntegrationTestsBase: XCTestCase {
     /// Track created document IDs for cleanup
     var createdDocumentIds: [String] = []
 
-    /// Returns a `Client` built from the resolved test credentials.
-    /// Subclasses can call this instead of reading `testClientID` / `testClientPassword` directly.
+    /**
+    Returns a `Client` built from the resolved test credentials.
+    Subclasses can call this instead of reading `testClientID` / `testClientPassword` directly.
+    */
     func makeClient() -> Client {
         Client(id: testClientID, secret: testClientPassword, domain: testClientDomain)
     }

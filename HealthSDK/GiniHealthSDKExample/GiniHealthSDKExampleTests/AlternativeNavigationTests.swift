@@ -21,7 +21,6 @@ struct AlternativeNavigationTests {
 
     init() {
         let helper = GiniSetupHelper()
-        helper.setup()
         self.giniHelper = helper
         
         giniHealthDelegate = MockGiniHealthDelegate()

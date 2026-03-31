@@ -10,7 +10,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
     // MARK: - Poll Document
 
-    func testPollDocument_returnsDocument_whenSuccessful() throws {
+    func testPollDocumentReturnsDocumentWhenSuccessful() throws {
         // Given
         let apiDocument: GiniHealthAPILibrary.Document = try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document1"))
 
@@ -31,7 +31,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         }
     }
 
-    func testPollDocument_returnsError_whenDocumentMissing() throws {
+    func testPollDocumentReturnsErrorWhenDocumentMissing() throws {
         let result = try XCTUnwrap(waitForResult {
             giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID,
                                     completion: $0)
@@ -46,7 +46,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
     // MARK: - Set Document For Review
 
-    func testSetDocumentForReview_returnsExtractions_whenSuccessful() throws {
+    func testSetDocumentForReviewReturnsExtractionsWhenSuccessful() throws {
         // Given
         let container: GiniHealthSDK.ExtractionsContainer =
         try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "extractionsWithPayment"))
@@ -72,7 +72,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
     // MARK: - Fetch Data For Review
 
-    func testFetchDataForReview_returnsDocumentAndExtractions_whenSuccessful() throws {
+    func testFetchDataForReviewReturnsDocumentAndExtractionsWhenSuccessful() throws {
         // Given
         let container: GiniHealthSDK.ExtractionsContainer =
         try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "extractionsWithPayment"))
@@ -107,7 +107,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         }
     }
 
-    func testFetchDataForReview_returnsError_whenDocumentMissing() throws {
+    func testFetchDataForReviewReturnsErrorWhenDocumentMissing() throws {
         let result = try XCTUnwrap(waitForResult {
             giniHealth.fetchDataForReview(documentId: MockSessionManager.missingDocumentID,
                                           completion: $0)
@@ -169,7 +169,7 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsSuccess_whenAllDocumentsValid() throws {
+    func testDeleteBatchDocumentsReturnsSuccessWhenAllDocumentsValid() throws {
         let result = try XCTUnwrap(waitForResult {
             giniHealth.deleteDocuments(documentIds: DeleteBatchDocumentType.success, completion: $0)
         })
@@ -181,35 +181,35 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenUnauthorized() throws {
+    func testDeleteBatchDocumentsReturnsErrorWhenUnauthorized() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.unauthorizedDocuments) { error in
             XCTAssertNotNil(error.items, "Error items should not be nil for unauthorized deletion")
             XCTAssertFalse(error.items?.isEmpty ?? true, "Error items should not be empty for unauthorized deletion")
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenDocumentsNotFound() throws {
+    func testDeleteBatchDocumentsReturnsErrorWhenDocumentsNotFound() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.notFoundDocuments) { error in
             XCTAssertNotNil(error.items, "Error items should not be nil for not-found documents")
             XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.notFoundDocuments.count, "Object count should match not-found documents count")
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenCompositeItemsMissing() throws {
+    func testDeleteBatchDocumentsReturnsErrorWhenCompositeItemsMissing() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.missingCompositeItems) { error in
             XCTAssertNotNil(error.items, "Error items should not be nil for missing composite items")
             XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.missingCompositeItems.count, "Object count should match missing composite items count")
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenMixedFailureOccurs() throws {
+    func testDeleteBatchDocumentsReturnsErrorWhenMixedFailureOccurs() throws {
         try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems) { error in
             XCTAssertNotNil(error.items, "Error items should not be nil for mixed failure")
             XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems.count, "Object count should match mixed-failure documents count")
         }
     }
 
-    func testDeleteBatchDocuments_returnsError_whenEmptyIdsProvided() throws {
+    func testDeleteBatchDocumentsReturnsErrorWhenEmptyIdsProvided() throws {
         try assertDeleteDocumentsFails(documentIds: []) { error in
             XCTAssertNotNil(error, "Error should not be nil when no document IDs are provided")
         }

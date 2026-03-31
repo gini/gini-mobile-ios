@@ -23,9 +23,5 @@ final class GiniSetupHelper {
         giniHealth = GiniHealth(giniApiLib: giniHealthAPILib)
         giniHealthAPIDocumentService = giniHealth.documentService
     }
-
-    func setup() {
-        // Setup is now performed in init(); this method is kept for compatibility.
-    }
 }
 
