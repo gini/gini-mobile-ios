@@ -35,7 +35,7 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
         HTTPURLResponse(url: url,
                         statusCode: statusCode,
                         httpVersion: "HTTP/1.1",
-                        headerFields: ["Content-Type": "application/vnd.gini.v5+json"])
+                        headerFields: ["Content-Type": TestsConfig.contentType])
     }
 
     private func handleCreatePaymentRequest<T: Resource>(resource: T,
@@ -151,3 +151,4 @@ final class PaymentRequestErrorSessionManagerMock: SessionManagerProtocol {
         completion(.failure(.unknown(response: nil, data: nil)))
     }
 }
+

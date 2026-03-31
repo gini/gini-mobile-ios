@@ -13,7 +13,7 @@ class PaymentServiceTests: DocumentServiceTestBase {
 
     override func setUp() {
         super.setUp()
-        paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: 5)
+        paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: TestsConfig.apiVersion)
     }
 
     // MARK: - Helper
@@ -112,3 +112,4 @@ class PaymentServiceTests: DocumentServiceTestBase {
         }
     }
 }
+

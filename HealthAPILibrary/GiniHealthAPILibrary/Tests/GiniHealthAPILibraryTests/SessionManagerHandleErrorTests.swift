@@ -172,7 +172,7 @@ final class SessionManagerHandleErrorTests: XCTestCase {
                                            apiVersion: 5,
                                            httpMethod: .get)
         resource.authServiceType = .apiService
-        stubResponse(statusCode: 400, body: #"{"error":"invalid_grant"}"#.data(using: .utf8)!)
+        stubResponse(statusCode: 400, body: #"{"error":"invalid_grant"}"#.data(using: .utf8))
         assertDataCallFails(resource: resource, description: "Wait for completion", expectingError: .customError)
     }
 }
