@@ -17,22 +17,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
     private var accessibilityFocusWorkItem: DispatchWorkItem?
-    
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(didTapOnCloseButton), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
-        return button
-    }()
 
     private lazy var scrollView: EmptyScrollView = {
         let scrollView = EmptyScrollView()
@@ -178,7 +162,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in
             guard let self, view.window != nil, !isBeingDismissed else { return }
-            UIAccessibility.post(notification: .screenChanged, argument: closeButton)
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
         accessibilityFocusWorkItem = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: work)
@@ -196,7 +180,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func setupAccessibility() {
         view.accessibilityViewIsModal = true
         view.accessibilityElements = [
-            closeButton,
             titleLabel,
             qrImageView,
             continueButton,
@@ -253,21 +236,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
-    
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                  constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
-    }
 
     fileprivate func setupSplitStackViewHierarchy() {
         splitStacKView.removeAllArrangedSubviews()
@@ -275,7 +243,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         
         splitStacKView.addArrangedSubview(topStackView)
         splitStacKView.addArrangedSubview(bottomStackView)
-        addCloseButton()
         contentStackView.addArrangedSubview(titleView)
         contentStackView.addArrangedSubview(splitStacKView)
     }
@@ -443,12 +410,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func tapOnAppStoreButton() {
         openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
-    
-    @objc
-    private func didTapOnCloseButton() {
-        dismiss(animated: true)
-    }
-        
     
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
         guard let urlString = urlString else {

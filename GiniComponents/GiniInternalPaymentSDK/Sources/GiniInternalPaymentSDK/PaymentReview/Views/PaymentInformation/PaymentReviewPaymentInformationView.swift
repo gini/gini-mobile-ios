@@ -81,6 +81,7 @@ struct PaymentReviewPaymentInformationView: View {
                         paymentProviderSelectionPicker
                         payButton
                     }
+                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
                     
                     if viewModel.shouldShowBrandedView {
                         poweredByGiniView
@@ -90,7 +91,6 @@ struct PaymentReviewPaymentInformationView: View {
                 .padding(.top, Constants.textFieldsContainerTopPadding)
             }
         }
-        .frame(maxWidth: .infinity)
         .overlay(alignment: .top) {
             if showBanner {
                 infoBannerView
@@ -114,6 +114,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .getHeight(for: $contentHeight)
+        .background(Color(.systemBackground))
     }
     
     // MARK: Private views
@@ -155,7 +156,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .recipient }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handleRecipientFocusChange(isFocused: newFocus == .recipient)
@@ -175,7 +177,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .iban }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handleIBANFocusChange(isFocused: newFocus == .iban)
@@ -201,7 +204,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.amountInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .amount }))
     }
     
     @ViewBuilder
@@ -224,7 +228,8 @@ struct PaymentReviewPaymentInformationView: View {
                                            errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
                                            focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration))
+                                           errorConfiguration: errorTextFieldConfiguration,
+                                           onTap: { focusedField = .paymentPurpose }))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 handlePaymentPurposeFocusChange(isFocused: newFocus == .paymentPurpose)
@@ -441,8 +446,9 @@ struct PaymentReviewPaymentInformationView: View {
         static let paymentProviderPickerChevronSize = CGSize(width: 24.0, height: 24.0)
         static let paymentProviderPickerSize = CGSize(width: 96.0, height: 36.0)
         static let payButtonHeight = 56.0
+        static let buttonsContainerBottomPadding = 16.0
         static let textFieldsContainerHorizontalPadding = 16.0
-        static let textFieldsContainerTopPadding = 32.0
+        static let textFieldsContainerTopPadding = 24.0
         static let poweredByGiniTopPadding = 8.0
     }
 }

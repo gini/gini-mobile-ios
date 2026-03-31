@@ -12,6 +12,8 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
+    
+    @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     private var isLandscape: Bool {
@@ -28,8 +30,19 @@ public struct PaymentReviewContentView: View {
         GeometryReader { geometry in
             if isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
+                    .transition(.opacity)
             } else {
                 portraitLayout(geometry: geometry)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: isLandscape)
+        .onChange(of: isLandscape) { landscape in
+            // When rotating to landscape in documentCollection mode, dismiss the
+            // sheet immediately (without animation) so the crossfade transition
+            // isn't disrupted by the sheet's own dismissal animation.
+            if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
+                showBottomSheet = false
             }
         }
         .overlay {
@@ -59,8 +72,24 @@ public struct PaymentReviewContentView: View {
                     .frame(width: geometry.size.width)
             }
         }
+        .onAppear {
+            // On iOS 16/17, rotating to landscape destroys portraitLayout which
+            // dismisses the sheet and sets showBottomSheet to false. Restore it
+            // when portraitLayout reappears in documentCollection mode.
+            // Delay so the layout crossfade finishes before the sheet slides in.
+            if !viewModel.isBottomSheetMode && !showBottomSheet {
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
+                    // Re-check conditions in case the mode changed during the delay.
+                    if !viewModel.isBottomSheetMode && !showBottomSheet {
+                        showBottomSheet = true
+                    }
+                }
+            }
+        }
         .sheet(isPresented: $showBottomSheet) {
-            viewModel.didTapClose()
+            if viewModel.isBottomSheetMode || isVoiceOverEnabled {
+                viewModel.didTapClose()
+            }
         } content: {
             viewModel.paymentReviewPaymentInformationView(
                 contentHeight: $bottomSheetHeight
@@ -80,20 +109,25 @@ public struct PaymentReviewContentView: View {
         let carouselHeight = computedCarouselHeight(for: geometry, isLandscape: true)
         let sheetWidth = geometry.size.width * Constants.screenPercentage
         
-        HStack(spacing: Constants.zero) {
-            ScrollView {
-                viewModel.paymentReviewPaymentInformationView(
-                    contentHeight: $bottomSheetHeight
+        HStack(alignment: .center, spacing: Constants.landscapeContainerSpacing) {
+            viewModel.paymentReviewPaymentInformationView(
+                contentHeight: $bottomSheetHeight
+            )
+            .clipShape(
+                .rect(
+                    topLeadingRadius: Constants.paymentInformationContainerTopCornerRadius,
+                    bottomLeadingRadius: Constants.paymentInformationContainerBottomCornerRadius,
+                    bottomTrailingRadius: Constants.paymentInformationContainerBottomCornerRadius,
+                    topTrailingRadius: Constants.paymentInformationContainerTopCornerRadius
                 )
-            }
+            )
             .frame(width: sheetWidth)
+            .padding(.top, Constants.paymentInformationViewHorizontalPadding)
             
-            ScrollView {
-                documentPreviewContent(carouselHeight: carouselHeight)
-            }
-            .frame(width: geometry.size.width - sheetWidth)
+            documentPreviewContent(carouselHeight: carouselHeight)
+                .frame(width: geometry.size.width - sheetWidth)
+                .padding(.top, Constants.paymentInformationViewHorizontalPadding)
         }
-        .padding(.bottom, Constants.paymentInformationViewHorizontalPadding)
     }
     
     // MARK: - Private Views
@@ -162,5 +196,9 @@ public struct PaymentReviewContentView: View {
         static let pageIndicatorSpace: CGFloat = 30.0
         static let loadingOverlayOpacity: CGFloat = 0.4
         static let loadingIndicatorScale: CGFloat = 1.5
+        static let layoutTransitionDuration: CGFloat = 0.35
+        static let landscapeContainerSpacing: CGFloat = 8.0
+        static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
+        static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
     }
 }

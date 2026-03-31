@@ -19,6 +19,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
     
     private let selectedPaymentProvider: PaymentProvider
     private var isInfoBarHidden = true
+    private let overlayPresenter = GiniOverlayWindowPresenter()
     
     public let model: PaymentReviewModel
     
@@ -40,7 +41,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         super.viewDidLoad()
         
         model.viewModelDelegate = self
-        view.backgroundColor = .clear
+        view.backgroundColor = model.displayMode == .bottomSheet ? .clear : model.configuration.mainViewBackgroundColor
         
         setupNavigationBar()
     }
@@ -65,6 +66,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        overlayPresenter.dismiss(animated: false)
         model.viewDidDisappear()
     }
 }
@@ -73,7 +75,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
 // MARK: - PaymentReviewViewModelDelegate methods
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
-        giniTopMostViewController().present(bottomSheet, animated: true)
+        overlayPresenter.present(bottomSheet, from: self)
     }
 
     func createPaymentRequestAndOpenBankApp() {
@@ -81,7 +83,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: UIViewController) {
-        giniTopMostViewController().present(bottomSheet, animated: true)
+        overlayPresenter.present(bottomSheet, from: self)
     }
 
     func obtainPDFFromPaymentRequest(paymentRequestId: String) {
@@ -90,7 +92,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {
-        giniTopMostViewController().present(bottomSheet, animated: true)
+        overlayPresenter.present(bottomSheet, from: self)
     }
     
     func dismissPaymentReview() {
@@ -112,6 +114,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
     
     private func dismissScreen() {
+        overlayPresenter.dismiss(animated: false)
         if let presented = presentedViewController {
             presented.dismiss(animated: true) { [weak self] in
                 self?.dismiss(animated: true)
