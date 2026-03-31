@@ -57,7 +57,13 @@ final class GiniOverlayWindowPresenter {
         }
     }
     
-    /// Programmatically dismisses the overlay content and tears down the window.
+    /**
+     Programmatically dismisses the overlay content and tears down the window.
+     
+     - Parameters:
+     - animated: Whether to animate the dismissal.
+     - completion: Called after the window has been torn down.
+     */
     func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let rootVC = overlayWindow?.rootViewController,
               let presented = rootVC.presentedViewController else {
