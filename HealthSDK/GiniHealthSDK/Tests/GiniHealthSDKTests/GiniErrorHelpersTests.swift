@@ -19,7 +19,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     // MARK: - itemsDescription Tests
     
-    func testItemsDescription_withNoItems_returnsDefaultMessage() {
+    func testItemsDescriptionWithNoItemsReturnsDefaultMessage() {
         // Given
         let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
@@ -30,7 +30,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertEqual(description, "No specific error details", "Description should be the default message when no items are present")
     }
     
-    func testItemsDescription_withRealTestFile_unauthorized() {
+    func testItemsDescriptionWithRealTestFileUnauthorized() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
@@ -42,7 +42,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(description.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"), "Description should contain the second unauthorized document ID")
     }
     
-    func testItemsDescription_withRealTestFile_notFound() {
+    func testItemsDescriptionWithRealTestFileNotFound() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
@@ -53,7 +53,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertFalse(description.isEmpty, "Description should not be empty for notFound error")
     }
     
-    func testItemsDescription_withRealTestFile_compositeMissing() {
+    func testItemsDescriptionWithRealTestFileCompositeMissing() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorCompositeMissing")
         
         // When
@@ -64,7 +64,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertFalse(description.isEmpty, "Description should not be empty for compositeMissing error")
     }
     
-    func testItemsDescription_withNoObjects_showsNoObjects() {
+    func testItemsDescriptionWithNoObjectsShowsNoObjects() {
         let error = makeSDKError(fromFile: "itemsWithErrorCodeAndWithoutObject")
         
         // When
@@ -76,7 +76,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     // MARK: - objectsWithCode Tests
     
-    func testObjectsWithCode_withNoItems_returnsEmptyArray() {
+    func testObjectsWithCodeWithNoItemsReturnsEmptyArray() {
         // Given
         let error = GiniError.toGiniHealthSDKError(error: .noResponse)
         
@@ -87,7 +87,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(objects.isEmpty, "Objects should be empty when no items are present")
     }
     
-    func testObjectsWithCode_withRealTestFile_unauthorized() {
+    func testObjectsWithCodeWithRealTestFileUnauthorized() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
@@ -99,7 +99,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(objects.contains("0db26fec-4a7f-4376-b5d5-5155adf8adca"), "Objects should contain the second unauthorized document ID")
     }
     
-    func testObjectsWithCode_withRealTestFile_notFound() {
+    func testObjectsWithCodeWithRealTestFileNotFound() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
@@ -109,7 +109,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertEqual(objects.count, 2, "There should be 2 objects for code 2014")
     }
     
-    func testObjectsWithCode_withNonMatchingCode_returnsEmptyArray() {
+    func testObjectsWithCodeWithNonMatchingCodeReturnsEmptyArray() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When - Request code that doesn't exist in file
@@ -119,7 +119,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(objects.isEmpty, "Objects should be empty for a non-matching error code")
     }
     
-    func testObjectsWithCode_withMultipleItemsSameCode_mergesAllObjects() {
+    func testObjectsWithCodeWithMultipleItemsSameCodeMergesAllObjects() {
         let error = makeSDKError(fromFile: "multipleItemsSameErrorCode")
         
         // When
@@ -132,7 +132,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     // MARK: - detailedDescription Tests
     
-    func testDetailedDescription_withRealTestFile_includesAllFields() {
+    func testDetailedDescriptionWithRealTestFileIncludesAllFields() {
         guard let url = URL(string: "https://pay-api.gini.net"),
               let response = HTTPURLResponse(url: url,
                                              statusCode: 400,
@@ -153,7 +153,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(description.contains("Items: 2013:"), "Description should contain the error items")
     }
     
-    func testDetailedDescription_withNoStatusCode_showsZero() {
+    func testDetailedDescriptionWithNoStatusCodeShowsZero() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotFound")
         
         // When
@@ -164,7 +164,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertTrue(description.contains("Request ID: a497-01aa-b6f0-cc17-43d3-76a8"), "Description should contain the request ID")
     }
     
-    func testDetailedDescription_withMultipleRealFiles_formatsCorrectly() {
+    func testDetailedDescriptionWithMultipleRealFilesFormatsCorrectly() {
         // Given - Test all three error types
         let fileNames = [
             "bulkDocsDeletionErrorNotAuthorized",
@@ -188,7 +188,7 @@ final class GiniErrorHelpersTests: XCTestCase {
     
     // MARK: - message Property Tests
     
-    func testMessage_customError_returnsAPIMessage() {
+    func testMessageCustomErrorReturnsAPIMessage() {
         let error = makeSDKError(fromFile: "itemWithErrorCodeAndAPIMessage")
         
         // When
@@ -198,7 +198,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         XCTAssertEqual(message, "Documents could not be deleted due to authorization issues", "Message should match the API error message")
     }
     
-    func testMessage_customError_withDecodingFailure_fallsBackToLocalizedDescription() {
+    func testMessageCustomErrorWithDecodingFailureFallsBackToLocalizedDescription() {
         // Given - Invalid JSON that can't be decoded
         guard let invalidJsonData = "not valid json".data(using: .utf8) else {
             XCTFail("Failed to create invalid JSON data")
@@ -219,7 +219,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         // Will be something like "The operation couldn't be completed..."
     }
     
-    func testMessage_customError_withRealTestFile_returnsMessage() {
+    func testMessageCustomErrorWithRealTestFileReturnsMessage() {
         let error = makeSDKError(fromFile: "bulkDocsDeletionErrorNotAuthorized")
         
         // When
@@ -231,7 +231,7 @@ final class GiniErrorHelpersTests: XCTestCase {
         // The actual message will depend on what's in the test file
     }
     
-    func testMessage_nonCustomError_returnsExpectedMessage() {
+    func testMessageNonCustomErrorReturnsExpectedMessage() {
         // Given
         let noResponseError = GiniError.toGiniHealthSDKError(error: .noResponse)
         let notFoundError = GiniError.toGiniHealthSDKError(error: .notFound(response: nil,

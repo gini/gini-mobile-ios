@@ -11,11 +11,13 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-/// Base class for GiniHealth unit tests.
-///
-/// Provides shared `giniHealth` / `giniHealthAPI` instances wired to a
-/// `MockSessionManager`, and a `waitForResult` helper that bridges
-/// callback-based APIs into a synchronous test flow.
+/**
+ Base class for GiniHealth unit tests.
+
+ Provides shared `giniHealth` / `giniHealthAPI` instances wired to a
+ `MockSessionManager`, and a `waitForResult` helper that bridges
+ callback-based APIs into a synchronous test flow.
+ */
 class GiniHealthTestCase: XCTestCase {
 
     var giniHealthAPI: GiniHealthAPI!
@@ -46,16 +48,21 @@ class GiniHealthTestCase: XCTestCase {
         super.tearDown()
     }
 
-    /// Waits synchronously for an asynchronous operation and returns its `Result`.
-    ///
-    /// Creates an expectation, invokes `action` with a completion handler, and blocks
-    /// until the completion fires or `timeout` is reached. Use `XCTUnwrap` at call
-    /// sites when the result is required:
-    /// ```swift
-    /// let result = try XCTUnwrap(waitForResult {
-    ///     giniHealth.pollDocument(docId: id, completion: $0)
-    /// })
-    /// ```
+    /**
+     Waits synchronously for an asynchronous operation and returns its `Result`.
+
+     Creates an expectation, invokes `action` with a completion handler, and blocks
+     until the completion fires or `timeout` is reached. Use `XCTUnwrap` at call
+     sites when the result is required:
+
+    ```swift
+     let result = try XCTUnwrap(waitForResult {
+     giniHealth.pollDocument(docId: id, completion: $0)
+     })
+     ```
+     - Parameters:
+        - action: A closure that takes a completion handler and performs an async operation.
+    */
     @discardableResult
     func waitForResult<T, E: Error>(_ action: (@escaping (Result<T, E>) -> Void) -> Void) -> Result<T, E>? {
         let expectation = expectation(description: "Awaiting async result")

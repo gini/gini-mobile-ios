@@ -444,10 +444,10 @@ public struct DataForReview {
         paymentService.deletePaymentRequests(ids) { result in
             DispatchQueue.main.async {
                 switch result {
-                    case let .success(deletedIds):
-                        completion(.success(deletedIds))
-                    case let .failure(error):
-                        completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+                case let .success(deletedIds):
+                    completion(.success(deletedIds))
+                case let .failure(error):
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }

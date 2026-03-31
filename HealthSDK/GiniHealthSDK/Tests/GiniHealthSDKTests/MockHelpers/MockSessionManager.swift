@@ -45,11 +45,11 @@ final class MockSessionManager: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<GiniHealthAPILibrary.Token, GiniHealthAPILibrary.GiniError>) -> Void) {
-        //
+        // This method will remain empty; no implementation is needed.
     }
     
     func logOut() {
-        //
+        // This method will remain empty; no implementation is needed.
     }
     
     func data<T>(resource: T,
@@ -146,11 +146,9 @@ final class MockSessionManager: SessionManagerProtocol {
                     // 1) Array size validation fails (empty array) -> 400 with message
                     if bodyStringArray.isEmpty {
                         // Build a custom error matching: items: [], message: "No documents to delete"
-                        let errorData = GiniCustomError(
-                            message: "No documents to delete",
-                            items: [],
-                            requestId: "b66a-2a15-8935-dbe4-f239-8457"
-                        )
+                        let errorData = GiniCustomError(message: "No documents to delete",
+                                                        items: [],
+                                                        requestId: "b66a-2a15-8935-dbe4-f239-8457")
                         let jsonData = try? JSONEncoder().encode(errorData)
                         let customError = GiniError.customError(
                             response: nil,
@@ -195,11 +193,9 @@ final class MockSessionManager: SessionManagerProtocol {
                 
                 // Check for empty array
                 if bodyStringArray.isEmpty {
-                    let errorData = GiniCustomError(
-                        message: "No payment requests to delete",
-                        items: [],
-                        requestId: "c77b-3b26-9046-ecf5-g350-9568"
-                    )
+                    let errorData = GiniCustomError(message: "No payment requests to delete",
+                                                    items: [],
+                                                    requestId: "c77b-3b26-9046-ecf5-g350-9568")
                     if let jsonData = try? JSONEncoder().encode(errorData) {
                         let error = GiniError.customError(response: nil, data: jsonData)
                         completion(.failure(error))

@@ -12,12 +12,14 @@ import Foundation
 /// Generates mock error response data for testing
 enum MockErrorGenerator {
     
-    /// Create a custom error response with error items
-    /// - Parameters:
-    ///   - items: Array of error items
-    ///   - message: Optional error message
-    ///   - requestId: Optional request ID
-    /// - Returns: Encoded error data
+    /**
+     Create a custom error response with error items, message, and request ID. This can be used to simulate API error responses in tests.
+     - Parameters:
+        - items: Array of error items
+        - message: Optional error message
+        - requestId: Optional request ID
+     - Returns: Encoded error data
+     */
     static func createErrorData(items: [ErrorItem],
                                 message: String = "Bad request",
                                 requestId: String = "test-request-id") -> Data {

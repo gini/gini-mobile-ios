@@ -56,7 +56,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         return try XCTUnwrap(value as? T, "Error finding correct view.", file: file, line: line)
     }
     
-    func testLoadPaymentProviders_Success() {
+    func testLoadPaymentProvidersSuccess() {
         // When
         mockPaymentComponentsController.loadPaymentProviders()
 
@@ -65,33 +65,33 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider, "Selected payment provider should be nil initially")
     }
 
-    func testCheckIfDocumentIsPayable_Success() {
+    func testCheckIfDocumentIsPayableSuccess() {
         assertPayableResult(docId: MockSessionManager.payableDocumentID, expected: .success(true))
     }
 
-    func testCheckIfDocumentIsPayable_NotPayable() {
+    func testCheckIfDocumentIsPayableNotPayable() {
         assertPayableResult(docId: MockSessionManager.notPayableDocumentID, expected: .success(false))
     }
 
-    func testCheckIfDocumentIsPayable_Failure() {
+    func testCheckIfDocumentIsPayableFailure() {
         assertPayableResult(
             docId: MockSessionManager.missingDocumentID,
             expected: .failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse)))
         )
     }
 
-    func testPaymentView_ReturnsView() throws {
+    func testPaymentViewReturnsView() throws {
         let view = mockPaymentComponentsController.paymentView()
         let _ = try assertAndCast(view, as: PaymentComponentView.self)
     }
 
-    func testBankSelectionBottomSheet_ReturnsViewController() throws {
+    func testBankSelectionBottomSheetReturnsViewController() throws {
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
         let bottomSheet = try assertAndCast(viewController, as: BanksBottomView.self)
         XCTAssertNotNil(bottomSheet.viewModel, "Bottom sheet view model should not be nil")
     }
     
-    func testLoadPaymentReviewScreenFor_Success() {
+    func testLoadPaymentReviewScreenForSuccess() {
         // Given
         let documentId = MockSessionManager.payableDocumentID
 
@@ -109,7 +109,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertNotNil(receivedViewController, "View controller should not be nil for a successful load")
     }
     
-    func testPaymentInfoViewController_ReturnsCorrectViewController() throws {
+    func testPaymentInfoViewControllerReturnsCorrectViewController() throws {
         let viewController = mockPaymentComponentsController.paymentInfoViewController()
         let paymentInfoVC = try assertAndCast(viewController, as: PaymentInfoViewController.self)
         XCTAssertNotNil(paymentInfoVC.viewModel, "Payment info view model should not be nil")

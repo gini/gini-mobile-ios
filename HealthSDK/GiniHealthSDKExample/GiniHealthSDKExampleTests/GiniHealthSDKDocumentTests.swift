@@ -10,7 +10,9 @@ import XCTest
 import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 
-/// Integration tests for Document operations
+/**
+ Integration tests for Document operations
+ */
 final class GiniHealthSDKDocumentTests: GiniHealthSDKIntegrationTestsBase {
 
     // MARK: - Document Upload and Processing Tests

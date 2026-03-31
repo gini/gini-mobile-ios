@@ -9,7 +9,9 @@
 import Foundation
 @testable import GiniHealthAPILibrary
 
-/// Validates bulk delete operations and generates error items
+/**
+ Validates bulk delete operations and generates error items
+ */
 struct MockBulkDeleteValidator {
     
     enum ValidationResult {
@@ -18,10 +20,13 @@ struct MockBulkDeleteValidator {
     }
     
     // MARK: - Document Validation
-    
-    /// Validate document IDs for bulk deletion
-    /// - Parameter documentIDs: Array of document IDs to validate
-    /// - Returns: Validation result with error items if validation fails
+
+    /** Validate document IDs for bulk deletion
+
+    - Parameters:
+       - documentIDs: Array of document IDs to validate
+    - Returns: Validation result with error items if validation fails
+     */
     func validateDocuments(_ documentIDs: [String]) -> ValidationResult {
         var errorItems: [ErrorItem] = []
         
@@ -63,9 +68,13 @@ struct MockBulkDeleteValidator {
     
     // MARK: - Payment Request Validation
     
-    /// Validate payment request IDs for bulk deletion
-    /// - Parameter paymentRequestIDs: Array of payment request IDs to validate
-    /// - Returns: Validation result with error items if validation fails
+    /**
+     Validate payment request IDs for bulk deletion
+
+    - Parameters:
+       - paymentRequestIDs: Array of payment request IDs to validate
+    - Returns: Validation result with error items if validation fails
+     */
     func validatePaymentRequests(_ paymentRequestIDs: [String]) -> ValidationResult {
         var errorItems: [ErrorItem] = []
         
