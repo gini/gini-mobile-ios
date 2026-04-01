@@ -32,19 +32,25 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     
     public var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration {
         PaymentReviewContainerConfiguration(
-            errorLabelTextColor: GiniColor.feedback1.uiColor(),
-            errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniMerchantImage.lock.preferredUIImage(),
-            lockedFields: true,
-            showBanksPicker: false,
-            chevronDownIcon: nil,
-            chevronDownIconColor: nil,
-            infoBarLabelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
-            infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
-            infoBarBackgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
-            isInfoBarHidden: true,
-            popupAnimationDuration: 0,
-            infoContainerViewBackgroundColor: GiniColor.standard7.uiColor()
+            errorLabel: .init(
+                textColor: GiniColor.feedback1.uiColor(),
+                font: GiniMerchantConfiguration.shared.font(for: .captions2)
+            ),
+            banksPicker: .init(
+                lockIcon: GiniMerchantImage.lock.preferredUIImage(),
+                lockedFields: true,
+                showBanksPicker: false,
+                chevronDownIcon: nil,
+                chevronDownIconColor: nil
+            ),
+            infoBar: .init(
+                labelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
+                labelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+                backgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
+                isHidden: true,
+                containerBackgroundColor: GiniColor.standard7.uiColor()
+            ),
+            popupAnimationDuration: 0
         )
     }
     
