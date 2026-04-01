@@ -291,26 +291,21 @@ extension PaymentService {
                 let dispatchGroup = DispatchGroup()
                 for providerResponse in providersResponse {
                     self.fetchProviderIcon(providerResponse, serialQueue: serialQueue, dispatchGroup: dispatchGroup) { fileResult in
-                        switch fileResult {
-                        case let .success(imageData):
-                            if firstError == nil {
-                                let provider = PaymentProvider(id: providerResponse.id,
-                                                               name: providerResponse.name,
-                                                               appSchemeIOS: providerResponse.appSchemeIOS,
-                                                               minAppVersion: providerResponse.minAppVersion,
-                                                               colors: providerResponse.colors,
-                                                               iconData: imageData,
-                                                               appStoreUrlIOS: providerResponse.appStoreUrlIOS,
-                                                               universalLinkIOS: providerResponse.universalLinkIOS,
-                                                               index: providerResponse.index,
-                                                               gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
-                                                               openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
-                                providers.append(provider)
-                            }
-                        case let .failure(error):
-                            if firstError == nil {
-                                firstError = error
-                            }
+                        if case let .success(imageData) = fileResult, firstError == nil {
+                            let provider = PaymentProvider(id: providerResponse.id,
+                                                           name: providerResponse.name,
+                                                           appSchemeIOS: providerResponse.appSchemeIOS,
+                                                           minAppVersion: providerResponse.minAppVersion,
+                                                           colors: providerResponse.colors,
+                                                           iconData: imageData,
+                                                           appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                                           universalLinkIOS: providerResponse.universalLinkIOS,
+                                                           index: providerResponse.index,
+                                                           gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
+                                                           openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
+                            providers.append(provider)
+                        } else if case let .failure(error) = fileResult, firstError == nil {
+                            firstError = error
                         }
                     }
                 }
