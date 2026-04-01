@@ -6,6 +6,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 /**
  Configuration for the error label shown in payment review fields.
@@ -146,6 +147,37 @@ public struct PaymentReviewBankSelectionAccessibility {
         self.payInvoiceHint = payInvoiceHint
         self.selectBankText = selectBankText
         self.selectBankHint = selectBankHint
+    }
+}
+
+/**
+ Configuration for the primary and secondary buttons in the payment review container.
+ */
+public struct PaymentReviewContainerButtonsConfiguration {
+    let primaryButton: ButtonConfiguration
+    let secondaryButton: ButtonConfiguration
+
+    public init(primaryButton: ButtonConfiguration,
+                secondaryButton: ButtonConfiguration) {
+        self.primaryButton = primaryButton
+        self.secondaryButton = secondaryButton
+    }
+}
+
+/**
+ Configuration for the input fields (default, error, and selection styles) in the payment review container.
+ */
+public struct PaymentReviewContainerInputFieldsConfiguration {
+    let defaultStyle: TextFieldConfiguration
+    let errorStyle: TextFieldConfiguration
+    let selectionStyle: TextFieldConfiguration
+
+    public init(defaultStyle: TextFieldConfiguration,
+                errorStyle: TextFieldConfiguration,
+                selectionStyle: TextFieldConfiguration) {
+        self.defaultStyle = defaultStyle
+        self.errorStyle = errorStyle
+        self.selectionStyle = selectionStyle
     }
 }
 

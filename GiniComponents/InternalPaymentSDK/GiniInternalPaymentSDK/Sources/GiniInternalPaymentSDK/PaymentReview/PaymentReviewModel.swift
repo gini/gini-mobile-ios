@@ -305,21 +305,29 @@ public class PaymentReviewModel {
     }
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
-        PaymentReviewContainerViewModel(extractions: extractions,
-                                        document: document,
-                                        paymentInfo: paymentInfo,
-                                        selectedPaymentProvider: selectedPaymentProvider,
-                                        configuration: containerConfiguration,
-                                        strings: containerStrings,
-                                        primaryButtonConfiguration: primaryButtonConfiguration,
-                                        secondaryButtonConfiguration: secondaryButtonConfiguration,
-                                        defaultStyleInputFieldConfiguration: defaultStyleInputFieldConfiguration,
-                                        errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
-                                        selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
-                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                        poweredByGiniStrings: poweredByGiniStrings,
-                                        displayMode: displayMode,
-                                        clientConfiguration: clientConfiguration)
+        let paymentData = PaymentReviewContainerPaymentData(extractions: extractions,
+                                                            document: document,
+                                                            paymentInfo: paymentInfo,
+                                                            selectedPaymentProvider: selectedPaymentProvider,
+                                                            displayMode: displayMode)
+        
+        let buttonsConfiguration = PaymentReviewContainerButtonsConfiguration(primaryButton: primaryButtonConfiguration,
+                                                                               secondaryButton: secondaryButtonConfiguration)
+        
+        let inputFieldsConfiguration = PaymentReviewContainerInputFieldsConfiguration(defaultStyle: defaultStyleInputFieldConfiguration,
+                                                                                       errorStyle: errorStyleInputFieldConfiguration,
+                                                                                       selectionStyle: selectionStyleInputFieldConfiguration)
+        
+        let poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration,
+                                                            strings: poweredByGiniStrings)
+        
+        return PaymentReviewContainerViewModel(paymentData: paymentData,
+                                               configuration: containerConfiguration,
+                                               strings: containerStrings,
+                                               buttonsConfiguration: buttonsConfiguration,
+                                               inputFieldsConfiguration: inputFieldsConfiguration,
+                                               poweredByGiniViewModel: poweredByGiniViewModel,
+                                               clientConfiguration: clientConfiguration)
     }
 }
 
