@@ -31,11 +31,11 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     private(set) var hasPopulatedFields = false
     
     var isFieldsLocked: Bool {
-        model.configuration.lockedFields
+        model.configuration.banksPicker.lockedFields
     }
     
     var lockIcon: Image? {
-        isFieldsLocked ? Image(uiImage: model.configuration.lockIcon) : nil
+        isFieldsLocked ? Image(uiImage: model.configuration.banksPicker.lockIcon) : nil
     }
     
     var shouldShowBrandedView: Bool {
@@ -62,7 +62,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validateRecipient(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            recipientError = model.strings.emptyCheckErrorMessage
+            recipientError = model.strings.fieldErrors.emptyCheck
             return false
         }
         recipientError = nil
@@ -71,12 +71,12 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validateIBAN(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            ibanError = model.strings.ibanErrorMessage
+            ibanError = model.strings.fieldErrors.iban
             return false
         }
         
         guard ibanValidator.isValid(iban: text) else {
-            ibanError = model.strings.ibanCheckErrorMessage
+            ibanError = model.strings.fieldErrors.ibanCheck
             return false
         }
         
@@ -86,7 +86,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validateAmount(_ text: String, amount: Decimal) -> Bool {
         if text.trimmingCharacters(in: .whitespaces).isEmpty || amount <= 0 {
-            amountError = model.strings.emptyCheckErrorMessage
+            amountError = model.strings.fieldErrors.emptyCheck
             return false
         }
         amountError = nil
@@ -95,7 +95,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validatePaymentPurpose(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            paymentPurposeError = model.strings.emptyCheckErrorMessage
+            paymentPurposeError = model.strings.fieldErrors.emptyCheck
             return false
         }
         paymentPurposeError = nil

@@ -7,117 +7,169 @@
 
 import UIKit
 
-/// Configuration settings for the Payment Review container view.
-public struct PaymentReviewContainerConfiguration {
-    let errorLabelTextColor: UIColor
-    let errorLabelFont: UIFont
+/**
+ Configuration for the error label shown in payment review fields.
+ */
+public struct PaymentReviewErrorLabelConfiguration {
+    let textColor: UIColor
+    let font: UIFont
+    
+    public init(textColor: UIColor, font: UIFont) {
+        self.textColor = textColor
+        self.font = font
+    }
+}
+
+/**
+ Configuration for the bank picker and locked input fields in the payment review container.
+ */
+public struct PaymentReviewBanksPickerConfiguration {
     let lockIcon: UIImage
     let lockedFields: Bool
     let showBanksPicker: Bool
     let chevronDownIcon: UIImage?
     let chevronDownIconColor: UIColor?
-    let infoBarLabelTextColor: UIColor
-    let infoBarLabelFont: UIFont
-    let infoBarBackgroundColor: UIColor
-    let isInfoBarHidden: Bool
-    let popupAnimationDuration: TimeInterval
-    let infoContainerViewBackgroundColor: UIColor
-
-    /**
-     Initializes a new configuration for the Payment Review container view.
-     
-     - Parameters:
-     - errorLabelTextColor: The color of the error label text.
-     - errorLabelFont: The font used for the error label.
-     - lockIcon: The icon displayed to indicate locked fields.
-     - lockedFields: A flag indicating whether specific fields are locked for editing.
-     - showBanksPicker: A flag indicating whether the bank picker should be shown.
-     - chevronDownIcon: The icon for the chevron pointing downward, used in the UI.
-     - chevronDownIconColor: The color of the chevron down icon.
-     - infoBarLabelTextColor: The text color for the information bar label.
-     - infoBarLabelFont: The font used for the information bar label.
-     - infoBarBackgroundColor: The background color of the information bar.
-     - isInfoBarHidden: A flag indicating whether the information bar is hidden.
-     - popupAnimationDuration: The duration of the popup animation.
-     - infoContainerViewBackgroundColor: The background color of the information container view.
-     */
-    public init(errorLabelTextColor: UIColor,
-                errorLabelFont: UIFont,
-                lockIcon: UIImage,
+    
+    public init(lockIcon: UIImage,
                 lockedFields: Bool,
                 showBanksPicker: Bool,
                 chevronDownIcon: UIImage?,
-                chevronDownIconColor: UIColor?,
-                infoBarLabelTextColor: UIColor,
-                infoBarLabelFont: UIFont,
-                infoBarBackgroundColor: UIColor,
-                isInfoBarHidden: Bool,
-                popupAnimationDuration: TimeInterval,
-                infoContainerViewBackgroundColor: UIColor) {
-        self.errorLabelTextColor = errorLabelTextColor
-        self.errorLabelFont = errorLabelFont
+                chevronDownIconColor: UIColor?) {
         self.lockIcon = lockIcon
         self.lockedFields = lockedFields
         self.showBanksPicker = showBanksPicker
         self.chevronDownIcon = chevronDownIcon
         self.chevronDownIconColor = chevronDownIconColor
-        self.infoBarLabelTextColor = infoBarLabelTextColor
-        self.infoBarLabelFont = infoBarLabelFont
-        self.infoBarBackgroundColor = infoBarBackgroundColor
-        self.isInfoBarHidden = isInfoBarHidden
-        self.popupAnimationDuration = popupAnimationDuration
-        self.infoContainerViewBackgroundColor = infoContainerViewBackgroundColor
     }
 }
 
+/**
+ Configuration for the info bar shown in the payment review container.
+ */
+public struct PaymentReviewInfoBarConfiguration {
+    let labelTextColor: UIColor
+    let labelFont: UIFont
+    let backgroundColor: UIColor
+    let isHidden: Bool
+    let containerBackgroundColor: UIColor
+    
+    public init(labelTextColor: UIColor,
+                labelFont: UIFont,
+                backgroundColor: UIColor,
+                isHidden: Bool,
+                containerBackgroundColor: UIColor) {
+        self.labelTextColor = labelTextColor
+        self.labelFont = labelFont
+        self.backgroundColor = backgroundColor
+        self.isHidden = isHidden
+        self.containerBackgroundColor = containerBackgroundColor
+    }
+}
+
+/**
+ Configuration settings for the Payment Review container view.
+ */
+public struct PaymentReviewContainerConfiguration {
+    let errorLabel: PaymentReviewErrorLabelConfiguration
+    let banksPicker: PaymentReviewBanksPickerConfiguration
+    let infoBar: PaymentReviewInfoBarConfiguration
+    let popupAnimationDuration: TimeInterval
+    
+    public init(errorLabel: PaymentReviewErrorLabelConfiguration,
+                banksPicker: PaymentReviewBanksPickerConfiguration,
+                infoBar: PaymentReviewInfoBarConfiguration,
+                popupAnimationDuration: TimeInterval) {
+        self.errorLabel = errorLabel
+        self.banksPicker = banksPicker
+        self.infoBar = infoBar
+        self.popupAnimationDuration = popupAnimationDuration
+    }
+}
+
+/**
+ Error messages used for field validation in the payment review screen.
+ */
+public struct PaymentReviewFieldErrors {
+    let emptyCheck: String
+    let ibanCheck: String
+    let recipient: String
+    let iban: String
+    let amount: String
+    let purpose: String
+    
+    public init(emptyCheck: String,
+                ibanCheck: String,
+                recipient: String,
+                iban: String,
+                amount: String,
+                purpose: String) {
+        self.emptyCheck = emptyCheck
+        self.ibanCheck = ibanCheck
+        self.recipient = recipient
+        self.iban = iban
+        self.amount = amount
+        self.purpose = purpose
+    }
+}
+
+/**
+ Placeholder strings for input fields in the payment review screen.
+ */
+public struct PaymentReviewFieldPlaceholders {
+    let recipient: String
+    let iban: String
+    let amount: String
+    let usage: String
+    
+    public init(recipient: String,
+                iban: String,
+                amount: String,
+                usage: String) {
+        self.recipient = recipient
+        self.iban = iban
+        self.amount = amount
+        self.usage = usage
+    }
+}
+
+/**
+ Accessibility strings for the bank selection and pay invoice button.
+ */
+public struct PaymentReviewBankSelectionAccessibility {
+    let payInvoiceHint: String
+    let selectBankText: String
+    let selectBankHint: String
+    
+    public init(payInvoiceHint: String,
+                selectBankText: String,
+                selectBankHint: String) {
+        self.payInvoiceHint = payInvoiceHint
+        self.selectBankText = selectBankText
+        self.selectBankHint = selectBankHint
+    }
+}
+
+/**
+ String resources for the Payment Review container view.
+ */
 public struct PaymentReviewContainerStrings {
-    let emptyCheckErrorMessage: String
-    let ibanCheckErrorMessage: String
-    let recipientFieldPlaceholder: String
-    let ibanFieldPlaceholder: String
-    let amountFieldPlaceholder: String
-    let usageFieldPlaceholder: String
-    let recipientErrorMessage: String
-    let ibanErrorMessage: String
-    let amountErrorMessage: String
-    let purposeErrorMessage: String
+    let fieldPlaceholders: PaymentReviewFieldPlaceholders
+    let fieldErrors: PaymentReviewFieldErrors
+    let bankSelectionAccessibility: PaymentReviewBankSelectionAccessibility
     let payInvoiceLabelText: String
-    let payInvoiceAccessibilityHint: String
-    let selectBankAccessibilityText: String
-    let selectBankAccessibilityHint: String
     let infoBarMessage: String
     let keyboardDoneButtonTitle: String
-
-    public init(emptyCheckErrorMessage: String,
-                ibanCheckErrorMessage: String,
-                recipientFieldPlaceholder: String,
-                ibanFieldPlaceholder: String,
-                amountFieldPlaceholder: String,
-                usageFieldPlaceholder: String,
-                recipientErrorMessage: String,
-                ibanErrorMessage: String,
-                amountErrorMessage: String,
-                purposeErrorMessage: String,
+    
+    public init(fieldPlaceholders: PaymentReviewFieldPlaceholders,
+                fieldErrors: PaymentReviewFieldErrors,
+                bankSelectionAccessibility: PaymentReviewBankSelectionAccessibility,
                 payInvoiceLabelText: String,
-                payInvoiceAccessibilityHint: String,
-                selectBankAccessibilityText: String,
-                selectBankAccessibilityHint: String,
                 infoBarMessage: String,
                 keyboardDoneButtonTitle: String) {
-        self.emptyCheckErrorMessage = emptyCheckErrorMessage
-        self.ibanCheckErrorMessage = ibanCheckErrorMessage
-        self.recipientFieldPlaceholder = recipientFieldPlaceholder
-        self.ibanFieldPlaceholder = ibanFieldPlaceholder
-        self.amountFieldPlaceholder = amountFieldPlaceholder
-        self.usageFieldPlaceholder = usageFieldPlaceholder
-        self.recipientErrorMessage = recipientErrorMessage
-        self.ibanErrorMessage = ibanErrorMessage
-        self.amountErrorMessage = amountErrorMessage
-        self.purposeErrorMessage = purposeErrorMessage
+        self.fieldPlaceholders = fieldPlaceholders
+        self.fieldErrors = fieldErrors
+        self.bankSelectionAccessibility = bankSelectionAccessibility
         self.payInvoiceLabelText = payInvoiceLabelText
-        self.payInvoiceAccessibilityHint = payInvoiceAccessibilityHint
-        self.selectBankAccessibilityText = selectBankAccessibilityText
-        self.selectBankAccessibilityHint = selectBankAccessibilityHint
         self.infoBarMessage = infoBarMessage
         self.keyboardDoneButtonTitle = keyboardDoneButtonTitle
     }
