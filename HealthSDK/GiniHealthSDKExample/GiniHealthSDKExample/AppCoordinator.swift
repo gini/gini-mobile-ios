@@ -412,6 +412,18 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 extension AppCoordinator: GiniHealthDelegate {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        if !handleErrorsInternally {
+            let message: String
+            switch error {
+            case .noInstalledApps:
+                message = "No supported banking app is installed to complete the payment."
+            case .noPaymentDataExtracted:
+                message = "The document does not contain valid payment data."
+            case .apiError(let apiError):
+                message = apiError.detailedDescription
+            }
+            presentError(title: "Error", message: message)
+        }
         return handleErrorsInternally
     }
     

@@ -88,6 +88,30 @@ struct HandleErrorsInternallyTests {
         let result = coordinator.shouldHandleErrorInternally(error: .noInstalledApps)
         #expect(result == true, "shouldHandleErrorInternally should return true after toggling back on")
     }
+
+    @Test func doesNotPresentErrorWhenHandledInternally() {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        let coordinator = AppCoordinator(window: window)
+        window.rootViewController = coordinator.rootViewController
+        window.makeKeyAndVisible()
+        /// Default is true — presentError should NOT be called.
+        _ = coordinator.shouldHandleErrorInternally(error: .noInstalledApps)
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        #expect(coordinator.rootViewController.presentedViewController == nil,
+                "No error alert should be presented when errors are handled internally")
+    }
+
+    @Test func presentsErrorAlertWhenNotHandledInternally() {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        let coordinator = AppCoordinator(window: window)
+        window.rootViewController = coordinator.rootViewController
+        window.makeKeyAndVisible()
+        coordinator.didChangeSwitchValue(type: .handleErrorsInternally, isOn: false)
+        _ = coordinator.shouldHandleErrorInternally(error: .noInstalledApps)
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        #expect(coordinator.rootViewController.presentedViewController is UIAlertController,
+                "An alert controller should be presented when errors are not handled internally")
+    }
 }
 
 // MARK: - Helpers
