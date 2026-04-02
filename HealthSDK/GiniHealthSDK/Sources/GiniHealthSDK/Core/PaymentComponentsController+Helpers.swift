@@ -569,7 +569,7 @@ extension PaymentComponentsController {
             case .success(let paymentRequest):
                 completion(.success(paymentRequest))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response,
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         }
