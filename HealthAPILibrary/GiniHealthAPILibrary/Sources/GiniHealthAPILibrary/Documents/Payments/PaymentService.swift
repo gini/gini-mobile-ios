@@ -290,41 +290,26 @@ extension PaymentService {
             case let .success(providersResponse):
                 let dispatchGroup = DispatchGroup()
                 for providerResponse in providersResponse {
-                    dispatchGroup.enter()
-
-                    self.file(urlString: providerResponse.iconLocation) { result in
-                        // Serialize all access to shared state through serialQueue
-                        serialQueue.async {
-                            switch result {
-                            case let .success(imageData):
-                                // Only add provider if no error has occurred yet
-                                if firstError == nil {
-                                    let provider = PaymentProvider(id: providerResponse.id,
-                                                                   name: providerResponse.name,
-                                                                   appSchemeIOS: providerResponse.appSchemeIOS,
-                                                                   minAppVersion: providerResponse.minAppVersion,
-                                                                   colors: providerResponse.colors,
-                                                                   iconData: imageData,
-                                                                   appStoreUrlIOS: providerResponse.appStoreUrlIOS,
-                                                                   universalLinkIOS: providerResponse.universalLinkIOS,
-                                                                   index: providerResponse.index,
-                                                                   gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
-                                                                   openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
-                                    providers.append(provider)
-                                }
-                            case let .failure(error):
-                                // Store first error only
-                                if firstError == nil {
-                                    firstError = error
-                                }
-                            }
-                            dispatchGroup.leave()
+                    self.fetchProviderIcon(providerResponse, serialQueue: serialQueue, dispatchGroup: dispatchGroup) { fileResult in
+                        if case let .success(imageData) = fileResult, firstError == nil {
+                            let provider = PaymentProvider(id: providerResponse.id,
+                                                           name: providerResponse.name,
+                                                           appSchemeIOS: providerResponse.appSchemeIOS,
+                                                           minAppVersion: providerResponse.minAppVersion,
+                                                           colors: providerResponse.colors,
+                                                           iconData: imageData,
+                                                           appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                                           universalLinkIOS: providerResponse.universalLinkIOS,
+                                                           index: providerResponse.index,
+                                                           gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms,
+                                                           openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
+                            providers.append(provider)
+                        } else if case let .failure(error) = fileResult, firstError == nil {
+                            firstError = error
                         }
                     }
-                    
                 }
                 dispatchGroup.notify(queue: serialQueue) {
-                    // Call completion only once based on whether an error occurred
                     if let error = firstError {
                         completion(.failure(error))
                     } else {
@@ -336,6 +321,19 @@ extension PaymentService {
                 completion(.failure(error))
             }
         })
+    }
+
+    private func fetchProviderIcon(_ providerResponse: PaymentProviderResponse,
+                                   serialQueue: DispatchQueue,
+                                   dispatchGroup: DispatchGroup,
+                                   onResult: @escaping (Result<Data, GiniError>) -> Void) {
+        dispatchGroup.enter()
+        file(urlString: providerResponse.iconLocation) { result in
+            serialQueue.async {
+                onResult(result)
+                dispatchGroup.leave()
+            }
+        }
     }
 
     func paymentProvider(id: String,

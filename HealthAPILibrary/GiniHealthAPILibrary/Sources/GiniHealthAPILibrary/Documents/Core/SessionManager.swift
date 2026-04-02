@@ -246,18 +246,10 @@ private extension SessionManager {
                         completion(.failure(.unknown(response: response, data: nil)))
                     }
                 case 400..<600:
-                    Log("""
-                        Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
-                        Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
-                        """,
-                        event: .error)
-                    self.handleError(resource: resource,
-                                     statusCode: response.statusCode,
-                                     response: response,
-                                     data: data,
-                                     taskType: taskType,
-                                     cancellationToken: cancellationToken,
-                                     completion: completion)
+                    self.logAndHandleClientError(resource: resource, request: request,
+                                                 response: response, data: data,
+                                                 taskType: taskType, cancellationToken: cancellationToken,
+                                                 completion: completion)
                 default:
                     if let data = data {
                         Log("""
@@ -302,6 +294,25 @@ private extension SessionManager {
         }
     }
     
+    private func logAndHandleClientError<T: Resource>(resource: T,
+                                                       request: URLRequest,
+                                                       response: HTTPURLResponse,
+                                                       data: Data?,
+                                                       taskType: TaskType,
+                                                       cancellationToken: CancellationToken?,
+                                                       completion: @escaping CompletionResult<T.ResponseType>) {
+        let dataContent = String(describing: String(data: data ?? Data(count: 0), encoding: .utf8))
+        Log("Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)\nData content: \(dataContent)",
+            event: .error)
+        handleError(resource: resource,
+                    statusCode: response.statusCode,
+                    response: response,
+                    data: data,
+                    taskType: taskType,
+                    cancellationToken: cancellationToken,
+                    completion: completion)
+    }
+
     private func handleError<T: Resource>(resource: T,
                                           statusCode: Int,
                                           response: HTTPURLResponse?,

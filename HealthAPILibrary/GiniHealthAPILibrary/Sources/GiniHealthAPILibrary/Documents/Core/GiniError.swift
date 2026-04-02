@@ -31,7 +31,7 @@ public protocol GiniErrorProtocol {
  Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
  */
 public struct ErrorItem: Codable, Equatable, Sendable {
-        /**
+    /**
      The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
      */
     public var code: String
@@ -183,14 +183,11 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
      */
     public var response: HTTPURLResponse? {
         switch self {
-        case .badRequest(let response, _),
-             .notAcceptable(let response, _),
-             .notFound(let response, _),
-             .parseError(_, let response, _),
-             .tooManyRequests(let response, _),
-             .unauthorized(let response, _),
-             .customError(let response, _),
-             .unknown(let response, _):
+        case .badRequest(let response, _), .notAcceptable(let response, _),
+             .notFound(let response, _), .parseError(_, let response, _):
+            return response
+        case .tooManyRequests(let response, _), .unauthorized(let response, _),
+             .customError(let response, _), .unknown(let response, _):
             return response
         default:
             return nil
@@ -202,14 +199,11 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
      */
     public var data: Data? {
         switch self {
-        case .badRequest(_, let data),
-             .notAcceptable(_, let data),
-             .notFound(_, let data),
-             .parseError(_, _, let data),
-             .tooManyRequests(_, let data),
-             .unauthorized(_, let data),
-             .customError(_, let data),
-             .unknown(_, let data):
+        case .badRequest(_, let data), .notAcceptable(_, let data),
+             .notFound(_, let data), .parseError(_, _, let data):
+            return data
+        case .tooManyRequests(_, let data), .unauthorized(_, let data),
+             .customError(_, let data), .unknown(_, let data):
             return data
         default:
             return nil
@@ -222,17 +216,14 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
      */
     public var statusCode: Int? {
         switch self {
-            case .badRequest(let response, _),
-                    .notAcceptable(let response, _),
-                    .notFound(let response, _),
-                    .parseError(_, let response, _),
-                    .tooManyRequests(let response, _),
-                    .unauthorized(let response, _),
-                    .customError(let response, _),
-                    .unknown(let response, _):
-                return response?.statusCode
-            default:
-                return nil
+        case .badRequest(let response, _), .notAcceptable(let response, _),
+             .notFound(let response, _), .parseError(_, let response, _):
+            return response?.statusCode
+        case .tooManyRequests(let response, _), .unauthorized(let response, _),
+             .customError(let response, _), .unknown(let response, _):
+            return response?.statusCode
+        default:
+            return nil
         }
     }
 
