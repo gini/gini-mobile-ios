@@ -47,7 +47,6 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
                 labelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
                 labelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
                 backgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
-                isHidden: true,
                 containerBackgroundColor: GiniColor.standard7.uiColor()
             ),
             popupAnimationDuration: 0
