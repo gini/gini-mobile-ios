@@ -22,6 +22,14 @@ final class AppCoordinator: Coordinator {
      * Default value is `false`.
      */
     private var shouldUseAlternativeNavigation = false
+
+    /**
+     * Determines whether `GiniHealthError` instances should be handled internally by the SDK (`true`)
+     * or forwarded to the consumer app for custom handling (`false`).
+     *
+     * Default value is `true`.
+     */
+    private var handleErrorsInternally = true
     
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
@@ -404,7 +412,7 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 extension AppCoordinator: GiniHealthDelegate {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
-        return true
+        return handleErrorsInternally
     }
     
     func didCreatePaymentRequest(paymentRequestId: String) {
@@ -427,7 +435,8 @@ extension AppCoordinator: DebugMenuPresenter {
                                                               paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
                                                               popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
-                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
+                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
+                                                              handleErrorsInternally: handleErrorsInternally)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -447,6 +456,8 @@ extension AppCoordinator: DebugMenuDelegate {
             giniHealthConfiguration.showPaymentReviewCloseButton = isOn
         case .useAlternativeNavigation:
             shouldUseAlternativeNavigation = isOn
+        case .handleErrorsInternally:
+            handleErrorsInternally = isOn
         }
     }
 

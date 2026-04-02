@@ -15,6 +15,7 @@ enum SwitchType {
     case useBottomPaymentComponent
     case showPaymentCloseButton
     case useAlternativeNavigation
+    case handleErrorsInternally
 }
 
 protocol DebugMenuDelegate: AnyObject {
@@ -73,6 +74,12 @@ class DebugMenuViewController: UIViewController {
     private lazy var useAlternativeNavigationRow = stackView(axis: .horizontal,
                                                              subviews: [useAlternativeNavigationLabel,
                                                                         useAlternativeNavigationSwitch])
+
+    private lazy var handleErrorsInternallyLabel = rowTitle("Handle errors internally")
+    private var handleErrorsInternallySwitch: UISwitch!
+    private lazy var handleErrorsInternallyRow = stackView(axis: .horizontal,
+                                                           subviews: [handleErrorsInternallyLabel,
+                                                                      handleErrorsInternallySwitch])
     
     private lazy var popupDurationTitleLabel: UILabel = rowTitle("Popup Duration Time")
     
@@ -113,12 +120,14 @@ class DebugMenuViewController: UIViewController {
          paymentComponentConfiguration: PaymentComponentConfiguration,
          showPaymentCloseButton: Bool,
          popupDuration: TimeInterval,
-         shouldUseAlternativeNavigation: Bool) {
+         shouldUseAlternativeNavigation: Bool,
+         handleErrorsInternally: Bool) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
         self.closeButtonSwitch = self.switchView(isOn: showPaymentCloseButton)
         self.useAlternativeNavigationSwitch = self.switchView(isOn: shouldUseAlternativeNavigation)
+        self.handleErrorsInternallySwitch = self.switchView(isOn: handleErrorsInternally)
         self.popupDurationSlider.value = Float(popupDuration)
     }
 
@@ -180,6 +189,7 @@ class DebugMenuViewController: UIViewController {
         let views = [
             titleLabel,
             useAlternativeNavigationRow,
+            handleErrorsInternallyRow,
             localizationRow,
             reviewScreenRow,
             bottomPaymentComponentEditableRow,
@@ -203,6 +213,7 @@ class DebugMenuViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -spacing),
 
             useAlternativeNavigationRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            handleErrorsInternallyRow.heightAnchor.constraint(equalToConstant: rowHeight),
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
@@ -346,6 +357,8 @@ private extension DebugMenuViewController {
             delegate?.didChangeSwitchValue(type: .showPaymentCloseButton, isOn: sender.isOn)
         case useAlternativeNavigationSwitch:
             delegate?.didChangeSwitchValue(type: .useAlternativeNavigation, isOn: sender.isOn)
+        case handleErrorsInternallySwitch:
+            delegate?.didChangeSwitchValue(type: .handleErrorsInternally, isOn: sender.isOn)
         default:
             break
         }
