@@ -35,6 +35,7 @@
         "GiniHealthSDKPinningExampleIntegrationTests",
         "UploadDocumentsTests",
         "AlternativeNavigationTests",
+        "HandleErrorsInternallyTests",
         "GiniHealthSDKPinningExampleWrongCertificatesTests"
       ],
       "target" : {
