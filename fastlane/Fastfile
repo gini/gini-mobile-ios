@@ -730,19 +730,30 @@ end
     UI.user_error!("IPA not found at: #{resolved_ipa_path}")     unless File.exist?(resolved_ipa_path)
 
     # xcrun altool reads .p8 keys from ~/.appstoreconnect/private_keys/AuthKey_<ID>.p8
-    private_keys_dir  = File.expand_path("~/.appstoreconnect/private_keys")
-    expected_key_path = "#{private_keys_dir}/AuthKey_#{key_id}.p8"
+    private_keys_dir      = File.expand_path("~/.appstoreconnect/private_keys")
+    expected_key_path     = "#{private_keys_dir}/AuthKey_#{key_id}.p8"
+    created_temporary_key = false
     sh("mkdir -p '#{private_keys_dir}'")
-    sh("cp '#{resolved_key_path}' '#{expected_key_path}'") unless resolved_key_path == expected_key_path
+    unless resolved_key_path == expected_key_path
+      sh("cp '#{resolved_key_path}' '#{expected_key_path}'")
+      created_temporary_key = true
+    end
+    # Ensure restrictive permissions on the API key file
+    sh("chmod 600 '#{expected_key_path}'") if File.exist?(expected_key_path)
 
-    UI.message "🚀 Uploading #{resolved_ipa_path} to TestFlight..."
-    sh(
-      "xcrun altool --upload-app" \
-      " --file '#{resolved_ipa_path}'" \
-      " --type ios" \
-      " --apiKey '#{key_id}'" \
-      " --apiIssuer '#{issuer_id}'"
-    )
+    begin
+      UI.message "🚀 Uploading #{resolved_ipa_path} to TestFlight..."
+      sh(
+        "xcrun altool --upload-app" \
+        " --file '#{resolved_ipa_path}'" \
+        " --type ios" \
+        " --apiKey '#{key_id}'" \
+        " --apiIssuer '#{issuer_id}'"
+      )
+    ensure
+      # Remove the temporary key copy to avoid leaving credentials on disk
+      sh("rm -f '#{expected_key_path}'") if created_temporary_key
+    end
   end
 
 end
