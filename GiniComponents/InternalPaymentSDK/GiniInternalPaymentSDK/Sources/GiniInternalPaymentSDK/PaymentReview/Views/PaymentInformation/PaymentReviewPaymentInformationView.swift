@@ -123,13 +123,13 @@ struct PaymentReviewPaymentInformationView: View {
     private var infoBannerView: some View {
         HStack {
             Text(viewModel.model.strings.infoBarMessage)
-                .font(Font(viewModel.model.configuration.infoBarLabelFont))
-                .foregroundStyle(Color(viewModel.model.configuration.infoBarLabelTextColor))
+                .font(Font(viewModel.model.configuration.infoBar.labelFont))
+                .foregroundStyle(Color(viewModel.model.configuration.infoBar.labelTextColor))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Constants.bannerVerticalPadding)
-        .background(Color(viewModel.model.configuration.infoBarBackgroundColor))
+        .background(Color(viewModel.model.configuration.infoBar.backgroundColor))
         .clipShape(
             .rect(
                 topLeadingRadius: Constants.bannerCornerRadius,
@@ -151,7 +151,7 @@ struct PaymentReviewPaymentInformationView: View {
         .focused($focusedField, equals: .recipient)
         .disabled(viewModel.isFieldsLocked)
         .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.recipientFieldPlaceholder,
+                                           title: viewModelStrings.fieldPlaceholders.recipient,
                                            state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
                                            errorMessage: viewModel.recipientInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -172,7 +172,7 @@ struct PaymentReviewPaymentInformationView: View {
         .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
         .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.ibanFieldPlaceholder,
+                                           title: viewModelStrings.fieldPlaceholders.iban,
                                            state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
                                            errorMessage: viewModel.ibanInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -199,7 +199,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .keyboardType(.decimalPad)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.amountFieldPlaceholder,
+        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.fieldPlaceholders.amount,
                                            state: fieldState(for: .amount, hasError: viewModel.amountInputState.hasError),
                                            errorMessage: viewModel.amountInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -223,7 +223,7 @@ struct PaymentReviewPaymentInformationView: View {
         .focused($focusedField, equals: .paymentPurpose)
         .disabled(viewModel.isFieldsLocked)
         .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.usageFieldPlaceholder,
+                                           title: viewModelStrings.fieldPlaceholders.usage,
                                            state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
                                            errorMessage: viewModel.paymentPurposeInputState.errorMessage,
                                            normalConfiguration: textFieldConfiguration,
@@ -253,8 +253,8 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
                 
-                if let chevronImage = viewModel.model.configuration.chevronDownIcon,
-                   let chevronDownIconColor = viewModel.model.configuration.chevronDownIconColor {
+                if let chevronImage = viewModel.model.configuration.banksPicker.chevronDownIcon,
+                   let chevronDownIconColor = viewModel.model.configuration.banksPicker.chevronDownIconColor {
                     Image(uiImage: chevronImage)
                         .resizable()
                         .renderingMode(.template)
@@ -276,8 +276,8 @@ struct PaymentReviewPaymentInformationView: View {
                 .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
                         lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
         )
-        .accessibilityLabel(viewModelStrings.selectBankAccessibilityText)
-        .accessibilityHint(viewModelStrings.selectBankAccessibilityHint)
+        .accessibilityLabel(viewModelStrings.bankSelectionAccessibility.selectBankText)
+        .accessibilityHint(viewModelStrings.bankSelectionAccessibility.selectBankHint)
     }
     
     @ViewBuilder
@@ -298,7 +298,7 @@ struct PaymentReviewPaymentInformationView: View {
             .clipShape(.rect(cornerRadius: viewModel.model.primaryButtonConfiguration.cornerRadius))
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
             .frame(height: Constants.payButtonHeight)
-            .accessibilityHint(viewModelStrings.payInvoiceAccessibilityHint)
+            .accessibilityHint(viewModelStrings.bankSelectionAccessibility.payInvoiceHint)
         }
     }
     

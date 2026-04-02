@@ -11,7 +11,32 @@ import GiniHealthAPILibrary
 import GiniUtilites
 import UIKit
 
-/// The view model for the Payment Review container view.
+/**
+Payment-related data passed to `PaymentReviewContainerViewModel`.
+ */
+public struct PaymentReviewContainerPaymentData {
+    let extractions: [Extraction]?
+    let document: Document?
+    let paymentInfo: PaymentInfo?
+    let selectedPaymentProvider: PaymentProvider
+    let displayMode: DisplayMode
+
+    public init(extractions: [Extraction]?,
+                document: Document? = nil,
+                paymentInfo: PaymentInfo?,
+                selectedPaymentProvider: PaymentProvider,
+                displayMode: DisplayMode) {
+        self.extractions = extractions
+        self.document = document
+        self.paymentInfo = paymentInfo
+        self.selectedPaymentProvider = selectedPaymentProvider
+        self.displayMode = displayMode
+    }
+}
+
+/**
+ The view model for the Payment Review container view.
+ */
 public final class PaymentReviewContainerViewModel {
     
     let document: Document?
@@ -53,51 +78,35 @@ public final class PaymentReviewContainerViewModel {
      Initializes a new instance of `PaymentReviewContainerViewModel`.
 
      - Parameters:
-       - extractions: An optional array of `Extraction` objects representing fetched data.
-       - document: An optional `Document` object associated with the payment review process.
-       - paymentInfo: An optional `PaymentInfo` object containing details about the payment.
-       - selectedPaymentProvider: The selected payment provider from the Gini Health API.
+       - paymentData: Groups the payment-related data (extractions, document, paymentInfo, selectedPaymentProvider, displayMode).
        - configuration: The configuration settings for the payment review container.
        - strings: The string resources for localizing the payment review UI.
-       - primaryButtonConfiguration: Configuration for the primary button in the UI.
-       - secondaryButtonConfiguration: Configuration for the secondary button in the UI.
-       - defaultStyleInputFieldConfiguration: Configuration for default-styled input fields.
-       - errorStyleInputFieldConfiguration: Configuration for input fields that display errors.
-       - selectionStyleInputFieldConfiguration: Configuration for input fields with selection styles.
-       - poweredByGiniConfiguration: Configuration settings for the "Powered by Gini" branding.
-       - poweredByGiniStrings: The string resources for localizing "Powered by Gini" UI elements.
-       - displayMode: The display mode indicating how the payment review interface should be presented.
+       - buttonsConfiguration: Configuration for the primary and secondary buttons in the UI.
+       - inputFieldsConfiguration: Configuration for the default, error, and selection styled input fields.
+       - poweredByGiniViewModel: The view model for the "Powered by Gini" branding section.
        - clientConfiguration: The client's configuration used to display view details.
      */
-    public init(extractions: [Extraction]?,
-                document: Document? = nil,
-                paymentInfo: PaymentInfo?,
-                selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider,
+    public init(paymentData: PaymentReviewContainerPaymentData,
                 configuration: PaymentReviewContainerConfiguration,
                 strings: PaymentReviewContainerStrings,
-                primaryButtonConfiguration: ButtonConfiguration,
-                secondaryButtonConfiguration: ButtonConfiguration,
-                defaultStyleInputFieldConfiguration: TextFieldConfiguration,
-                errorStyleInputFieldConfiguration: TextFieldConfiguration,
-                selectionStyleInputFieldConfiguration: TextFieldConfiguration,
-                poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings,
-                displayMode: DisplayMode,
+                buttonsConfiguration: PaymentReviewContainerButtonsConfiguration,
+                inputFieldsConfiguration: PaymentReviewContainerInputFieldsConfiguration,
+                poweredByGiniViewModel: PoweredByGiniViewModel,
                 clientConfiguration: ClientConfiguration?) {
-        self.extractions = extractions
-        self.paymentInfo = paymentInfo
-        self.document = document
-        self.selectedPaymentProvider = selectedPaymentProvider
+        self.extractions = paymentData.extractions
+        self.paymentInfo = paymentData.paymentInfo
+        self.document = paymentData.document
+        self.selectedPaymentProvider = paymentData.selectedPaymentProvider
         self.configuration = configuration
         self.strings = strings
-        self.primaryButtonConfiguration = primaryButtonConfiguration
-        self.secondaryButtonConfiguration = secondaryButtonConfiguration
-        self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
-        self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
-        self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
-        self.dispayMode = displayMode
-        self.bankImageIcon = selectedPaymentProvider.iconData.toImage
+        self.primaryButtonConfiguration = buttonsConfiguration.primaryButton
+        self.secondaryButtonConfiguration = buttonsConfiguration.secondaryButton
+        self.defaultStyleInputFieldConfiguration = inputFieldsConfiguration.defaultStyle
+        self.errorStyleInputFieldConfiguration = inputFieldsConfiguration.errorStyle
+        self.selectionStyleInputFieldConfiguration = inputFieldsConfiguration.selectionStyle
+        self.poweredByGiniViewModel = poweredByGiniViewModel
+        self.dispayMode = paymentData.displayMode
+        self.bankImageIcon = paymentData.selectedPaymentProvider.iconData.toImage
         self.clientConfiguration = clientConfiguration
     }
 }
