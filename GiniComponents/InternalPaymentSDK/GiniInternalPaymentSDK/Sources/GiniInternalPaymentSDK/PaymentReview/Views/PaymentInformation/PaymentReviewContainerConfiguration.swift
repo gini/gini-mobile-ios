@@ -51,18 +51,15 @@ public struct PaymentReviewInfoBarConfiguration {
     let labelTextColor: UIColor
     let labelFont: UIFont
     let backgroundColor: UIColor
-    let isHidden: Bool
     let containerBackgroundColor: UIColor
     
     public init(labelTextColor: UIColor,
                 labelFont: UIFont,
                 backgroundColor: UIColor,
-                isHidden: Bool,
                 containerBackgroundColor: UIColor) {
         self.labelTextColor = labelTextColor
         self.labelFont = labelFont
         self.backgroundColor = backgroundColor
-        self.isHidden = isHidden
         self.containerBackgroundColor = containerBackgroundColor
     }
 }
