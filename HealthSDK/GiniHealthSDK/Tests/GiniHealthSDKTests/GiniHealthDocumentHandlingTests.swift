@@ -4,243 +4,216 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-final class GiniHealthDocumentHandlingTests: XCTestCase {
+final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
 
-    var giniHealthAPI: GiniHealthAPI!
-    var giniHealth: GiniHealth!
-    private let versionAPI = 4
+    // MARK: - Setup / Teardown is inherited from GiniHealthTestCase
 
-    override func setUp() {
-        let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        GiniHealthConfiguration.shared.clientConfiguration = nil
-        giniHealthAPI = GiniHealthAPI(documentService: documentService,
-                                      paymentService: paymentService,
-                                      clientConfigurationService: clientConfigurationService)
-        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
-    }
+    // MARK: - Poll Document
 
-    override func tearDown() {
-        giniHealthAPI = nil
-        giniHealth = nil
-        super.tearDown()
-    }
-
-    func testPollDocumentSuccess() {
+    func testPollDocumentReturnsDocumentWhenSuccessful() throws {
         // Given
-        let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: "document1")!
-        let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
+        let apiDocument: GiniHealthAPILibrary.Document = try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document1"))
+
+        let expectedDocument = try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
 
         // When
-        let expectation = self.expectation(description: "Polling document")
-        var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID) { result in
-            switch result {
-            case .success(let document):
-                receivedDocument = document
-            case .failure(_):
-                receivedDocument = nil
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID,
+                                    completion: $0)
+        })
 
         // Then
-        XCTAssertNotNil(receivedDocument)
-        XCTAssertEqual(receivedDocument, expectedDocument)
-    }
-    
-    func testPollDocumentFailure() {
-        // When
-        let expectation = self.expectation(description: "Polling failure document")
-        var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID) { result in
-            switch result {
-            case .success(let document):
-                receivedDocument = document
-            case .failure(_):
-                receivedDocument = nil
-            }
-            expectation.fulfill()
+        switch result {
+        case .success(let document):
+            XCTAssertEqual(document, expectedDocument, "Returned document should match the expected document")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
-        waitForExpectations(timeout: 1, handler: nil)
-
-        // Then
-        XCTAssertNil(receivedDocument)
     }
 
-    func testSetDocumentForReviewSuccess() {
+    func testPollDocumentReturnsErrorWhenDocumentMissing() throws {
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID,
+                                    completion: $0)
+        })
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
+        }
+    }
+
+    // MARK: - Set Document For Review
+
+    func testSetDocumentForReviewReturnsExtractionsWhenSuccessful() throws {
         // Given
-        let fileName = "extractionsWithPayment"
-        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractionContainer else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
-        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+        let container: GiniHealthSDK.ExtractionsContainer =
+        try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "extractionsWithPayment"))
+
+        let expectedExtractions = ExtractionResult(extractionsContainer: container)
+            .payment?
+            .first ?? []
 
         // When
-        let expectation = self.expectation(description: "Setting document for review")
-        var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.setDocumentForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
-            switch result {
-            case .success(let extractions):
-                receivedExtractions = extractions
-            case .failure(_):
-                receivedExtractions = nil
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.setDocumentForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                            completion: $0)
+        })
 
         // Then
-        XCTAssertNotNil(receivedExtractions)
-        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
+        switch result {
+        case .success(let extractions):
+            XCTAssertEqual(extractions.count, expectedExtractions.count, "Returned extractions count should match expected count")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
+        }
     }
-    
-    func testFetchDataForReviewSuccess() {
+
+    // MARK: - Fetch Data For Review
+
+    func testFetchDataForReviewReturnsDocumentAndExtractionsWhenSuccessful() throws {
         // Given
-        let fileName = "extractionsWithPayment"
-        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
-        guard let expectedExtractionContainer else {
-            XCTFail("Error loading file: `\(fileName).json`")
-            return
-        }
-        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
-        let documentFileName = "document4"
+        let container: GiniHealthSDK.ExtractionsContainer =
+        try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "extractionsWithPayment"))
 
-        let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName)!
-        let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
+        let expectedExtractions =
+        ExtractionResult(extractionsContainer: container)
+            .payment?
+            .first ?? []
 
-        guard let expectedDocument else {
-            XCTFail("Error loading file: `\(documentFileName).json`")
-            return
-        }
-        let expectedDatForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
+        let apiDocument: GiniHealthAPILibrary.Document =
+        try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document4"))
+
+        let expectedDocument =
+        try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
+
+        let expectedData = DataForReview(document: expectedDocument,
+                                         extractions: expectedExtractions)
 
         // When
-        let expectation = self.expectation(description: "Fetching data for review")
-        var receivedDataForReview: DataForReview?
-        giniHealth.fetchDataForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
-            switch result {
-            case .success(let dataForReview):
-                receivedDataForReview = dataForReview
-            case .failure(_):
-                receivedDataForReview = nil
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.fetchDataForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                          completion: $0)
+        })
 
         // Then
-        XCTAssertNotNil(receivedDataForReview)
-        XCTAssertEqual(receivedDataForReview?.document, expectedDatForReview.document)
-        XCTAssertEqual(receivedDataForReview?.extractions.count, expectedDatForReview.extractions.count)
-    }
-    
-    func testFetchDataForReviewFailure() {
-        // When
-        let expectation = self.expectation(description: "Failure fetching data for review")
-        var receivedError: GiniHealthError?
-        giniHealth.fetchDataForReview(documentId: MockSessionManager.missingDocumentID) { result in
-            switch result {
-            case .success(_):
-                receivedError = nil
-            case .failure(let error):
-                receivedError = error
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-
-        // Then
-        XCTAssertNotNil(receivedError)
-    }
-
-    // MARK: - Delete Batch Of Documents Tests
-    /// Enum for Delete  Batch Document Types
-    private enum DeleteBatchDocumentType: String {
-        case unauthorizedDocuments
-        case notFoundDocuments
-        case missingCompositeDocuments
-        case success = ""
-        case failure
-
-        /// Expected failure response if applicable
-        var expectedFailure: [String]? {
-            switch self {
-            case .unauthorizedDocuments, .notFoundDocuments, .missingCompositeDocuments:
-                return [self.rawValue]
-            default:
-                return nil
-            }
-        }
-
-        /// Expected success response if applicable
-        var expectedSuccess: String? {
-            self == .success ? "" : nil
+        switch result {
+        case .success(let data):
+            XCTAssertEqual(data.document, expectedData.document, "Returned document should match expected document")
+            XCTAssertEqual(data.extractions.count, expectedData.extractions.count, "Returned extractions count should match expected count")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
         }
     }
 
-    func testDeleteBatchDocumentsSuccess() {
-        performDeleteBatchDocumentsTest(
-            documentType: .success,
-            description: "Deleting Batch Of Documents with Success"
-        )
-    }
+    func testFetchDataForReviewReturnsErrorWhenDocumentMissing() throws {
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.fetchDataForReview(documentId: MockSessionManager.missingDocumentID,
+                                          completion: $0)
+        })
 
-    func testDeleteBatchDocumentsFailure() {
-        performDeleteBatchDocumentsTest(
-            documentType: .failure,
-            description: "Deleting Batch Of Documents with Failure"
-        )
-    }
-
-    func testDeleteBatchDocumentsErrorUnauthorizedDocuments() {
-        performDeleteBatchDocumentsTest(
-            documentType: .unauthorizedDocuments,
-            description: "Deleting Batch Of Documents with Error of unauthorized documents"
-        )
-    }
-
-    func testDeleteBatchDocumentsErrorNotFoundDocuments() {
-        performDeleteBatchDocumentsTest(
-            documentType: .notFoundDocuments,
-            description: "Deleting Batch Of Documents with Error of not found documents"
-        )
-    }
-
-    func testDeleteBatchDocumentsErrorMissingCompositeDocuments() {
-        performDeleteBatchDocumentsTest(
-            documentType: .missingCompositeDocuments,
-            description: "Deleting Batch Of Documents with Error of missing composite documents"
-        )
-    }
-
-    /// Helper Function for Delete Batch Documents Tests
-    private func performDeleteBatchDocumentsTest(
-        documentType: DeleteBatchDocumentType,
-        description: String
-    ) {
-        let expectation = self.expectation(description: description)
-        
-        let documentIds = documentType == .failure ? [] : [documentType.rawValue]
-        giniHealth.deleteDocuments(documentIds: documentIds) { result in
-            switch result {
-            case .success(let responseMessage):
-                XCTAssertEqual(responseMessage, documentType.expectedSuccess)
-            case .failure(let error):
-                let deprecatedError = error.unauthorizedDocuments ?? error.notFoundDocuments ?? error.missingCompositeDocuments
-                let itemsError = error.unauthorizedItems ?? error.notFoundItems ?? error.missingCompositeItems
-                
-                let receivedError = deprecatedError ?? itemsError
-                XCTAssertEqual(receivedError, documentType.expectedFailure)
-            }
-            expectation.fulfill()
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
         }
+    }
 
-        waitForExpectations(timeout: 1, handler: nil)
+
+    // MARK: - Delete Batch Documents
+
+    private enum DeleteBatchDocumentType {
+        static let notFoundDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let unauthorizedDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let missingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndNotUnAuthorizedDocuments: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndMissingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let mixedNotFoundAndUnAuthorizedAndMissingCompositeItems: [String] = [
+            "3db07630-8f16-11ec-bd63-31f9d04e200e",
+            "0db26fec-4a7f-4376-b5d5-5155adf8adca"
+        ]
+        static let success: [String] = [""]
+    }
+
+    // MARK: - Delete Batch Documents
+
+    private func assertDeleteDocumentsFails(
+        documentIds: [String],
+        validate: (GiniHealthSDK.GiniError) -> Void
+    ) throws {
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.deleteDocuments(documentIds: documentIds, completion: $0)
+        })
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            validate(error)
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsSuccessWhenAllDocumentsValid() throws {
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.deleteDocuments(documentIds: DeleteBatchDocumentType.success, completion: $0)
+        })
+        switch result {
+        case .success(let message):
+            XCTAssertEqual(message, "", "Success message should be empty when all documents are deleted")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsErrorWhenUnauthorized() throws {
+        try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.unauthorizedDocuments) { error in
+            XCTAssertNotNil(error.items, "Error items should not be nil for unauthorized deletion")
+            XCTAssertFalse(error.items?.isEmpty ?? true, "Error items should not be empty for unauthorized deletion")
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsErrorWhenDocumentsNotFound() throws {
+        try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.notFoundDocuments) { error in
+            XCTAssertNotNil(error.items, "Error items should not be nil for not-found documents")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.notFoundDocuments.count, "Object count should match not-found documents count")
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsErrorWhenCompositeItemsMissing() throws {
+        try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.missingCompositeItems) { error in
+            XCTAssertNotNil(error.items, "Error items should not be nil for missing composite items")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.missingCompositeItems.count, "Object count should match missing composite items count")
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsErrorWhenMixedFailureOccurs() throws {
+        try assertDeleteDocumentsFails(documentIds: DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems) { error in
+            XCTAssertNotNil(error.items, "Error items should not be nil for mixed failure")
+            XCTAssertEqual(error.items?[0].object?.count, DeleteBatchDocumentType.mixedNotFoundAndMissingCompositeItems.count, "Object count should match mixed-failure documents count")
+        }
+    }
+
+    func testDeleteBatchDocumentsReturnsErrorWhenEmptyIdsProvided() throws {
+        try assertDeleteDocumentsFails(documentIds: []) { error in
+            XCTAssertNotNil(error, "Error should not be nil when no document IDs are provided")
+        }
     }
 }
+
+

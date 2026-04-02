@@ -18,17 +18,17 @@ import GiniInternalPaymentSDK
 public protocol GiniHealthDelegate: AnyObject {
     
     /**
-     Called when the payment request was successfully created
-     
-     - parameter paymentRequestId: Id of created payment request.
+     Called when the payment request was successfully created.
+
+     - Parameter paymentRequestId: The ID of the created payment request.
      */
     func didCreatePaymentRequest(paymentRequestId: String)
-    
+
     /**
-     Error handling. If delegate is set and error is going to  be handled internally the method should return true.
-     If error hadling is planned to be custom return false for specific error case.
-     
-     - parameter error: error which will be handled.
+     Called to determine whether an error should be handled internally by the SDK.
+     Return `true` to handle the error internally, or `false` to handle it in the host app.
+
+     - Parameter error: The error to evaluate.
      */
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
     
@@ -41,11 +41,11 @@ public protocol GiniHealthDelegate: AnyObject {
  Errors thrown with Gini Health SDK.
  */
 public enum GiniHealthError: Error {
-     /// Error thrown when there are no apps which supports Gini Pay Connect installed.
+     /** Error thrown when there are no apps which supports Gini Pay Connect installed. */
     case noInstalledApps
-     /// Error thrown when api returns failure.
+     /** Error thrown when api returns failure. */
     case apiError(GiniError)
-    /// Error thrown when api didn't returns payment extractions.
+    /** Error thrown when api didn't returns payment extractions. */
     case noPaymentDataExtracted
 }
 
@@ -54,8 +54,17 @@ extension GiniHealthError: Equatable {}
  Data structure for Payment Review Screen initialization.
  */
 public struct DataForReview {
+    /** The document to be reviewed. */
     public let document: Document
+    /** The extractions associated with the document. */
     public let extractions: [Extraction]
+    /**
+     Creates a new data structure for the Payment Review screen.
+
+     - Parameters:
+       - document: The document to be reviewed.
+       - extractions: The extractions associated with the document.
+     */
     public init(document: Document, extractions: [Extraction]) {
         self.document = document
         self.extractions = extractions
@@ -65,26 +74,27 @@ public struct DataForReview {
  Core class for Gini Health SDK.
  */
 @objc public final class GiniHealth: NSObject {
-    /// reponsible for interaction with Gini Health backend .
+    /** reponsible for interaction with Gini Health backend . */
     public var giniApiLib: GiniHealthAPI
-    /// reponsible for the whole document processing.
+    /** reponsible for the whole document processing. */
     public var documentService: DefaultDocumentService
-    /// reponsible for the payment processing.
+    /** reponsible for the payment processing. */
     public var paymentService: PaymentService
-    /// responsible for the client configuration processing
+    /** responsible for the client configuration processing */
     public var clientConfigurationService: ClientConfigurationServiceProtocol?
-    /// delegate to inform about the current status of the Gini Health SDK.
+    /** delegate to inform about the current status of the Gini Health SDK. */
     public weak var delegate: GiniHealthDelegate?
-    /// delegate to inform about the changes into PaymentComponentsController
+    /** delegate to inform about the changes into PaymentComponentsController */
     public weak var paymentDelegate: PaymentComponentsControllerProtocol?
 
     private var bankProviders: [PaymentProvider] = []
 
-    /// Configuration for the payment component, controlling its branding and display options.
+    /** Configuration for the payment component, controlling its branding and display options. */
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    /** The client configuration used for customizing SDK behavior. */
     public var clientConfiguration: ClientConfiguration? = GiniHealthConfiguration.shared.clientConfiguration
-    
+    /** The controller responsible for managing payment component presentation and lifecycle. */
     public var paymentComponentsController: PaymentComponentsController!
 
     /**
@@ -93,10 +103,11 @@ public struct DataForReview {
      This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
 
      - Parameters:
-     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
-     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
-     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
-     - logLevel: The log level. `LogLevel.none` by default.
+       - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+       - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+       - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+       - apiVersion: The API version to use.
+       - logLevel: The log level. `LogLevel.none` by default.
      */
     public init(id: String,
                 secret: String,
@@ -119,11 +130,12 @@ public struct DataForReview {
      This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
      
      - Parameters:
-     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
-     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
-     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
-     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-     - logLevel: The log level. `LogLevel.none` by default.
+       - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+       - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+       - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+       - apiVersion: The API version to use.
+       - pinningConfig: Configuration for certificate pinning. Format `["PinnedDomains": ["PublicKeyHashes"]]`.
+       - logLevel: The log level. `LogLevel.none` by default.
      */
     public init(id: String,
                 secret: String,
@@ -159,17 +171,13 @@ public struct DataForReview {
     }
     
     /**
-         Initiates the payment flow for a specified document and payment information.
+     Initiates the payment flow for a specified document and payment information.
 
-         - Parameters:
-           - documentId: An optional identifier for the document associated id with the payment flow.
-           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
-           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
-           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
-         
-         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
-         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
-         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     - Parameters:
+       - documentId: An optional identifier for the document associated with the payment flow.
+       - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+       - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+       - trackingDelegate: The `GiniHealthTrackingDelegate` that receives event information from the Payment Review screen.
      */
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
@@ -185,51 +193,48 @@ public struct DataForReview {
     }
 
     /**
-     Getting a list of the banking apps supported by SDK
-     
-     - Parameters:
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
-     Result is a value that represents either a success or a failure, including an associated value in each case.
-     In success case it includes array of payment providers supported by SDK.
-     In case of failure error provided by API.
+     Returns a list of the banking apps supported by the SDK.
+
+     - Parameter completion: A completion callback returning an array of payment providers on success, or an error on failure.
      */
-    
     public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
-        paymentService.paymentProviders { result in
+        paymentService.paymentProviders { [weak self] result in
+            guard let self = self else {
+                completion(.failure(GiniError.toGiniHealthSDKError(error: .requestCancelled)))
+                return
+            }
             switch result {
             case let .success(providers):
                 self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(GiniError.decorator(error)))
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
             }
         }
     }
     
     /**
-     Sets a configuration which is used to customize the look of the Gini Health SDK,
-     for example to change texts and colors displayed to the user.
-     
-     - Parameters:
-        - configuration: The configuration to set.
-     
+     Sets a configuration used to customize the look of the Gini Health SDK, for example to change texts and colors displayed to the user.
+
+     - Parameter configuration: The configuration to set.
      */
     public func setConfiguration(_ configuration: GiniHealthConfiguration) {
         GiniHealthConfiguration.shared = configuration
     }
 
     /**
-    Checks if the document is payable, looks for iban extraction.
+     Checks if the document is payable by looking for an IBAN extraction.
 
-    - Parameters:
-       - docId: Id of uploaded document.
-       - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-       In success case it includes a boolean value and returns true if paymentState is payable.
-       In case of failure in case of failure error from the server side.
-
-    */
-   public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-       documentService.fetchDocument(with: docId) { result in
+     - Parameters:
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning `true` if the document is payable, or an error on failure. Called on the main thread.
+     */
+    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+       documentService.fetchDocument(with: docId) { [weak self] result in
+           guard let self = self else {
+               completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+               return
+           }
            switch result {
            case let .success(createdDocument):
                self.documentService.extractions(for: createdDocument,
@@ -254,17 +259,18 @@ public struct DataForReview {
    }
 
     /**
-    Checks if the document contains multiple invoices.
+     Checks if the document contains multiple invoices.
 
-    - Parameters:
-       - docId: Id of uploaded document.
-       - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-       In success case it includes a boolean value and returns true if contains multiple documents is true or false
-       In case of failure in case of failure error from the server side.
-
-    */
+     - Parameters:
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning `true` if the document contains multiple invoices, or an error on failure. Called on the main thread.
+     */
     public func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService.extractions(for: createdDocument,
@@ -289,15 +295,11 @@ public struct DataForReview {
     }
 
     /**
-     Polls the document via document id.
-     
-     - Parameters:
-        - docId: Id of uploaded document.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success returns the polled document.
-        In case of failure error from the server side.
+     Fetches a document by its ID.
 
+     - Parameters:
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning the document on success, or an error on failure. Called on the main thread.
      */
     public func pollDocument(docId: String, completion: @escaping (Result<Document, GiniHealthError>) -> Void){
         documentService.fetchDocument(with: docId) { result in
@@ -313,17 +315,18 @@ public struct DataForReview {
     }
     
     /**
-     Get extractions for the document.
-     
-     - parameter docId: Id of the uploaded document.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-     Completion block called on main thread.
-     In success case it includes array of extractions.
-     In case of failure in case of failure error from the server side.
-     
+     Retrieves payment extractions for the given document.
+
+     - Parameters:
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning payment extractions on success, or an error on failure. Called on the main thread.
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -351,17 +354,18 @@ public struct DataForReview {
     }
 
     /**
-     Get all extractions for the document. Medical information included.
+     Retrieves all extractions for the given document, including medical information.
 
-     - parameter docId: Id of the uploaded document.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-     Completion block called on main thread.
-     In success case it includes array of extractions.
-     In case of failure in case of failure error from the server side.
-
+     - Parameters:
+       - docId: The ID of the uploaded document.
+       - completion: A completion callback returning all extractions on success, or an error on failure. Called on the main thread.
      */
     public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+        documentService.fetchDocument(with: docId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -385,15 +389,11 @@ public struct DataForReview {
     }
 
     /**
-     Creates a payment request
-     
+     Creates a payment request.
+
      - Parameters:
-        - paymentInfo: Model object for payment information.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success it includes the id of created payment request.
-        In case of failure error from the server side.
-     
+       - paymentInfo: The payment information used to create the request.
+       - completion: A completion callback returning the created payment request ID on success, or an error on failure. Called on the main thread.
      */
     public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: paymentInfo.sourceDocumentLocation,
@@ -407,22 +407,18 @@ public struct DataForReview {
                 case let .success(requestId):
                     completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
     }
     
     /**
-     Deletes a payment request
-     
+     Deletes a payment request.
+
      - Parameters:
-        - id: Id of the payment request to delete.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success it includes the id of deleted payment request.
-        In case of failure error from the server side.
-     
+       - id: The ID of the payment request to delete.
+       - completion: A completion callback returning the deleted payment request ID on success, or an error on failure. Called on the main thread.
      */
     public func deletePaymentRequest(id: String, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.deletePaymentRequest(id: id) { result in
@@ -431,22 +427,18 @@ public struct DataForReview {
                 case let .success(requestId):
                     completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
     }
     
     /**
-     Deletes a batch of payment request
-     
+     Deletes a batch of payment requests.
+
      - Parameters:
-        - ids: An array of paymen request ids to be deleted
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success it includes an array of deleted ids
-        In case of failure error from the server side.
-     
+       - ids: An array of payment request IDs to delete.
+       - completion: A completion callback returning an array of deleted IDs on success, or an error on failure. Called on the main thread.
      */
     public func deletePaymentRequests(ids: [String], completion: @escaping (Result<[String], GiniError>) -> Void) {
         paymentService.deletePaymentRequests(ids) { result in
@@ -455,19 +447,20 @@ public struct DataForReview {
                 case let .success(deletedIds):
                     completion(.success(deletedIds))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
     }
     
     /**
-     Opens an app of selected payment provider.
-        openUrl called on main thread.
-     
+     Opens the selected payment provider app using the given payment request ID and universal link.
+
      - Parameters:
-        - requestId: Id of the created payment request.
-        - universalLink: Universal link for the selected payment provider
+       - requestID: The ID of the created payment request.
+       - universalLink: The universal link for the selected payment provider.
+       - urlOpener: The URL opener used to open the link. Defaults to `URLOpener(UIApplication.shared)`.
+       - completion: An optional callback invoked after the URL open attempt completes.
      */
     public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: GiniOpenLinkCompletionBlock? = nil) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
@@ -481,19 +474,18 @@ public struct DataForReview {
     }
     
     /**
-     Sets a data for payment review screen
-     
+     Fetches payment extractions for a given document, for use on the payment review screen.
+
      - Parameters:
-        - documentId: Id of uploaded document.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
-        Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success it includes array of extractions.
-        In case of failure error from the server side.
-     
+       - documentId: The ID of the uploaded document.
+       - completion: A completion callback returning an array of payment extractions on success, or an error on failure. Called on the main thread.
      */
     public func setDocumentForReview(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: documentId) { result in
+        documentService.fetchDocument(with: documentId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case .success(let document):
                 self.getExtractions(docId: document.id) { result in
@@ -513,19 +505,18 @@ public struct DataForReview {
     }
     
     /**
-     Fetches document and extractions for payment review screen
-     
-     - Parameters:
-        - documentId: Id of uploaded document.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
-        Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success returns DataForReview structure. It includes document and array of extractions.
-        In case of failure error from the server side and nil instead of document .
+     Fetches document and payment extractions for the payment review screen.
 
+     - Parameters:
+       - documentId: The ID of the uploaded document.
+       - completion: A completion callback returning a `DataForReview` value containing the document and extractions on success, or an error on failure. Called on the main thread.
      */
     public func fetchDataForReview(documentId: String, completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: documentId) { result in
+        documentService.fetchDocument(with: documentId) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .requestCancelled))))
+                return
+            }
             switch result {
             case let .success(document):
                 self.documentService
@@ -554,16 +545,12 @@ public struct DataForReview {
     }
     
     /**
-        Retrieves a payment request by ID.
-         
-    - Parameters:
+     Retrieves a payment request by ID.
+
+     - Parameters:
        - id: The ID of the payment request to retrieve.
-       - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
-       Completion block called on main thread.
-       In success, it includes the retrieved payment request.
-       In case of failure, error from the server side.
-     
-    */
+       - completion: A completion callback returning the retrieved payment request on success, or an error on failure. Called on the main thread.
+     */
     public func getPaymentRequest(by id: String,
                                   completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
         paymentService.paymentRequest(id: id) { result in
@@ -572,23 +559,21 @@ public struct DataForReview {
                 case let .success(paymentRequest):
                     completion(.success(paymentRequest))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
     }
 
     /**
-     Delete a batch of documents
+     Deletes a batch of documents.
 
      - Parameters:
-        - documentIds: An array of document ids to be deleted
-        - completion: An action for deleting a batch of documents. Result is a value that represents either a success or a failure, including an associated value in each case.
-        In success it includes a success message
-        In case of failure error from the server side.
-
+       - documentIds: An array of document IDs to delete.
+       - completion: A completion callback returning a success message on success, or an error on failure. Called on the main thread.
      */
-    public func deleteDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
+    public func deleteDocuments(documentIds: [String],
+                                completion: @escaping (Result<String, GiniError>) -> Void) {
         documentService.deleteDocuments(documentIds) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -602,16 +587,12 @@ public struct DataForReview {
     }
     
     /**
-     Retrieve a `Payment` of the specified `PaymentRequest`
+     Retrieves the payment associated with the specified payment request.
 
      - Parameters:
-        - id: The `id` of the payment request to retrieve the payment.
-        - completion: An action for retrieving the payment. Result is a value that represents either a success or a failure, including an associated value in each case.
-        Completion block called on main thread.
-        In success, it includes the retrieved payment.
-        In case of failure, error from the server side.
+       - id: The ID of the payment request.
+       - completion: A completion callback returning the retrieved payment on success, or an error on failure. Called on the main thread.
      */
-
     public func getPayment(id: String,
                            completion: @escaping (Result<Payment, GiniError>) -> Void) {
         paymentService.payment(id: id) { result in
@@ -620,13 +601,13 @@ public struct DataForReview {
                 case let .success(payment):
                     completion(.success(payment))
                 case let .failure(error):
-                    completion(.failure(GiniError.decorator(error)))
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
                 }
             }
         }
     }
 
-    /// A static string representing the current version of the Gini Health SDK.
+    /** A static string representing the current version of the Gini Health SDK. */
     public static var versionString: String {
         return GiniHealthSDKVersion
     }
@@ -647,8 +628,11 @@ extension GiniHealth: PaymentComponentsControllerProtocol {
 }
 
 extension GiniHealth {
+    /** Constants used by the Gini Health SDK. */
     public enum Constants {
-        public static let defaultVersionAPI = 4
+        /** The default API version used when no version is specified. */
+        public static let defaultVersionAPI = 5
         static let hasMultipleDocuments = "true"
     }
 }
+
