@@ -9,21 +9,28 @@ import UIKit
 @testable import GiniHealthAPILibrary
 
 final class MockSessionManager: SessionManagerProtocol {
-    static let payableDocumentID = "626626a0-749f-11e2-bfd6-000000000001"
-    static let notPayableDocumentID = "626626a0-749f-11e2-bfd6-000000000002"
-    static let failurePayableDocumentID = "626626a0-749f-11e2-bfd6-000000000003"
-    static let missingDocumentID = "626626a0-749f-11e2-bfd6-000000000000"
-    static let extractionsWithPaymentDocumentID = "626626a0-749f-11e2-bfd6-000000000004"
-    static let paymentRequestId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
-    static let doctorsNameDocumentID = "626626a0-749f-11e2-bfd6-000000000005"
-    static let paymentRequestIdWithExpirationDate = "1"
-    static let paymentRequestIdWithMissingExpirationDate = "2"
+    // MARK: - Public Test Constants (keep for backward compatibility)
+    
+    static let payableDocumentID = MockTestData.Documents.payable
+    static let notPayableDocumentID = MockTestData.Documents.notPayable
+    static let failurePayableDocumentID = MockTestData.Documents.failurePayable
+    static let missingDocumentID = MockTestData.Documents.missing
+    static let extractionsWithPaymentDocumentID = MockTestData.Documents.extractionsWithPayment
+    static let paymentRequestId = MockTestData.PaymentRequests.standard
+    static let doctorsNameDocumentID = MockTestData.Documents.doctorsName
+    static let paymentRequestIdWithExpirationDate = MockTestData.PaymentRequests.withExpirationDate
+    static let paymentRequestIdWithMissingExpirationDate = MockTestData.PaymentRequests.missingExpirationDate
 
-    func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func upload<T>(resource: T,
+                   data: Data,
+                   cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                   completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         //
     }
     
-    func download<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func download<T>(resource: T,
+                     cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                     completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
@@ -38,14 +45,16 @@ final class MockSessionManager: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<GiniHealthAPILibrary.Token, GiniHealthAPILibrary.GiniError>) -> Void) {
-        //
+        // This method will remain empty; no implementation is needed.
     }
     
     func logOut() {
-        //
+        // This method will remain empty; no implementation is needed.
     }
     
-    func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
+    func data<T>(resource: T,
+                 cancellationToken: GiniHealthAPILibrary.CancellationToken?,
+                 completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .document(let id):
@@ -116,13 +125,113 @@ final class MockSessionManager: SessionManagerProtocol {
                 }
             case .paymentRequest(let paymentRequestId):
                 if resource.params.method == .delete {
-                    completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
+                    guard let response = MockSessionManager.paymentRequestId as? T.ResponseType else {
+                        let error = GiniError.unknown(response: nil, data: nil)
+                        completion(.failure(error))
+                        break
+                    }
+                    completion(.success(response))
                 } else {
                     processPaymentRequest(paymentRequestId, completion: completion)
                 }
-            case .documents(_, _):
-                guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
-                handleBodyStringArray(bodyStringArray, completion: completion)
+                case .documents(_, _):
+                    // Decode the body as an array of IDs
+                    guard let bodyStringArray = decodeBody(from: resource.params.body) else {
+                        let error = GiniError.unknown(response: nil, data: nil)
+                        completion(.failure(error))
+                        break
+                    }
+
+                    // Simulate validation rules:
+                    // 1) Array size validation fails (empty array) -> 400 with message
+                    if bodyStringArray.isEmpty {
+                        // Build a custom error matching: items: [], message: "No documents to delete"
+                        let errorData = GiniCustomError(message: "No documents to delete",
+                                                        items: [],
+                                                        requestId: "b66a-2a15-8935-dbe4-f239-8457")
+                        let jsonData = try? JSONEncoder().encode(errorData)
+                        let customError = GiniError.customError(
+                            response: nil,
+                            data: jsonData
+                        )
+                        // Return as a custom error
+                        completion(.failure(customError))
+                        break
+                    }
+
+                    // Special-case: a single empty string [""] should be treated as success
+                    if bodyStringArray == [""] {
+                        if let emptyResponse = "" as? T.ResponseType {
+                            completion(.success(emptyResponse))
+                            break
+                        }
+                    }
+                    
+                    // Validate document IDs using new validator
+                    let validator = MockBulkDeleteValidator()
+                    let validationResult = validator.validateDocuments(bodyStringArray)
+                    
+                    switch validationResult {
+                    case .success:
+                        // All documents valid - success response
+                        if let emptyResponse = "" as? T.ResponseType {
+                            completion(.success(emptyResponse))
+                        }
+                    case .failure(let errorItems):
+                        // Validation failed - return custom error
+                        let errorData = MockErrorGenerator.createErrorData(items: errorItems)
+                        completion(.failure(.customError(response: nil, data: errorData)))
+                    }
+                    break
+            case .paymentRequests(_, _):
+                // Handle bulk payment request deletion
+                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
+                    let error = GiniError.unknown(response: nil, data: nil)
+                    completion(.failure(error))
+                    break
+                }
+                
+                // Check for empty array
+                if bodyStringArray.isEmpty {
+                    let errorData = GiniCustomError(message: "No payment requests to delete",
+                                                    items: [],
+                                                    requestId: "c77b-3b26-9046-ecf5-g350-9568")
+                    if let jsonData = try? JSONEncoder().encode(errorData) {
+                        let error = GiniError.customError(response: nil, data: jsonData)
+                        completion(.failure(error))
+                    }
+                    break
+                }
+                
+                // Check for specific test IDs that should trigger errors
+                if bodyStringArray == [""] {
+                    if let emptyResponse = "" as? T.ResponseType {
+                        completion(.success(emptyResponse))
+                        break
+                    }
+                }
+                
+                // Validate payment request IDs using new validator
+                let validator = MockBulkDeleteValidator()
+                let validationResult = validator.validatePaymentRequests(bodyStringArray)
+                
+                switch validationResult {
+                case .success:
+                    // All payment requests valid - success response
+                    if let emptyResponse = "" as? T.ResponseType {
+                        completion(.success(emptyResponse))
+                    }
+                case .failure(let errorItems):
+                    // Validation failed - return custom error with appropriate requestId
+                    let requestId = errorItems.count > 1 
+                        ? "a497-01aa-b6f0-cc17-43d3-76a8"  // Mixed errors
+                        : "b608-02bb-c7g1-dd28-54e4-87b9"  // Single error type
+                    let errorData = MockErrorGenerator.createErrorData(
+                        items: errorItems,
+                        requestId: requestId
+                    )
+                    completion(.failure(.customError(response: nil, data: errorData)))
+                }
             case .payment(_):
                 let paymentResponse: Payment? = load(fromFile: "payment")
                 if let paymentResponse = paymentResponse as? T.ResponseType {
@@ -135,7 +244,8 @@ final class MockSessionManager: SessionManagerProtocol {
         }
     }
 
-    private func processPaymentRequest<T>(_ paymentRequestId: String, completion: (Result<T, GiniError>) -> Void) {
+    private func processPaymentRequest<T>(_ paymentRequestId: String,
+                                          completion: (Result<T, GiniError>) -> Void) {
         let fileName: String
         switch paymentRequestId {
             case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
@@ -158,46 +268,9 @@ final class MockSessionManager: SessionManagerProtocol {
         return try? JSONDecoder().decode([String].self, from: body)
     }
 
-    /// Helper function to handle the body array types
-    private func handleBodyStringArray<ResponseType>(
-        _ bodyStringArray: [String],
-        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
-    ) {
-        switch bodyStringArray {
-        case [""]:
-            if let emptyResponse = "" as? ResponseType {
-                completion(.success(emptyResponse))
-            }
-        case ["unauthorizedDocuments"]:
-            handleDeleteDocumentsError(fromFile: "unauthorizedDocumentsError", completion: completion)
-        case ["notFoundDocuments"]:
-            handleDeleteDocumentsError(fromFile: "notFoundDocumentsError", completion: completion)
-        case ["missingCompositeDocuments"]:
-            handleDeleteDocumentsError(fromFile: "missingCompositeDocumentsError", completion: completion)
-        default:
-            completion(.failure(GiniError.unknown(response: nil, data: nil)))
-        }
-    }
-
-    /// Helper function to load and encode errors
-    private func handleDeleteDocumentsError<ResponseType>(
-        fromFile fileName: String,
-        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
-    ) {
-        guard let extractionResults: GiniCustomError = load(fromFile: fileName),
-              let jsonData = try? JSONEncoder().encode(extractionResults) else {
-            return
-        }
-
-        let error = GiniError.customError(response: nil, data: jsonData)
-        completion(.failure(error))
-    }
-
     /// Helper function to handle extraction results
-    private func handleExtractionResults<ResponseType>(
-        fromFile fileName: String,
-        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
-    ) {
+    private func handleExtractionResults<ResponseType>(fromFile fileName: String,
+                                                       completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>) {
         let extractionResults: ExtractionsContainer? = load(fromFile: fileName)
         if let extractionResults = extractionResults as? ResponseType {
             completion(.success(extractionResults))

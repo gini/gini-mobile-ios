@@ -46,6 +46,10 @@
 		F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F4E9532D2F4DF8AB00DABCD8 /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F46DE0452705FC21002F7420 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -119,6 +123,7 @@
 		F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				F4E9532D2F4DF8AB00DABCD8 /* Resources */,
 				F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */,
 				F4FD4877270F204A007F1EFA /* IntegrationTests.swift */,
 			);
@@ -160,6 +165,9 @@
 			);
 			dependencies = (
 				F4FD4873270F1F7D007F1EFA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F4E9532D2F4DF8AB00DABCD8 /* Resources */,
 			);
 			name = GiniHealthAPILibraryExampleTests;
 			productName = HealthAPILibraryExampleTests;

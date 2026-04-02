@@ -9,9 +9,13 @@ import GiniHealthAPILibrary
 import UIKit
 import SwiftUI
 
-/// Modes for displaying PaymentReview content in the UI.
-public enum DisplayMode {
+/**
+ Modes for displaying PaymentReview content in the UI.
+ */
+public enum DisplayMode: Int {
+    /** Displays the payment review content in a bottom sheet. */
     case bottomSheet
+    /** Displays the payment review content as a scrollable document collection. */
     case documentCollection
 }
 

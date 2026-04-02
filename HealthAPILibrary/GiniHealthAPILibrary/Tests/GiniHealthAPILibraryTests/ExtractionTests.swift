@@ -1,8 +1,7 @@
 //
 //  ExtractionTests.swift
-//  GiniExampleTests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
@@ -13,59 +12,51 @@ class ExtractionTests: XCTestCase {
 
     lazy var validExtraction: Extraction = {
         let jsonData: Data = loadFile(withName: "extraction", ofType: "json")
-        let giniExtraction = try? JSONDecoder().decode(Extraction.self, from: jsonData)
-        return giniExtraction!
+        guard let giniExtraction = try? JSONDecoder().decode(Extraction.self, from: jsonData) else {
+            fatalError("Failed to decode extraction.json — check the fixture file")
+        }
+        return giniExtraction
     }()
     
-    let requiredParametersJSON: Data = """
-            {
-              "entity": "amount",
-              "value": "24.99:EUR",
-              "name": "amountToPay"
-            }
-    """.data(using: .utf8)!
-    
-    let invalidJSON: Data = """
-            {
-              "entity": "amount"
-            }
-    """.data(using: .utf8)!
-    
+    let requiredParametersJSON: Data = loadFile(withName: "extractionRequiredParams", ofType: "json")
+
+    let invalidJSON: Data = loadFile(withName: "extractionInvalid", ofType: "json")
+
     func testEntity() {
-        XCTAssertEqual(validExtraction.entity, "amount")
+        XCTAssertEqual(validExtraction.entity, "amount", "Extraction entity should match")
     }
     
     func testValue() {
-        XCTAssertEqual(validExtraction.value, "24.99:EUR")
+        XCTAssertEqual(validExtraction.value, "24.99:EUR", "Extraction value should match")
     }
     
     func testName() {
-        XCTAssertEqual(validExtraction.name, "amountToPay")
+        XCTAssertEqual(validExtraction.name, "amountToPay", "Extraction name should match")
     }
     
     func testBox() {
-        XCTAssertNotNil(validExtraction.box, "extraction bound box should not be nil")
-        XCTAssertEqual(validExtraction.box?.height, 9.0, "extraction bounding box height should match")
-        XCTAssertEqual(validExtraction.box?.left, 516.0, "extraction bounding box left should match")
-        XCTAssertEqual(validExtraction.box?.page, 1, "extraction bounding box page should match")
-        XCTAssertEqual(validExtraction.box?.top, 588.0, "extraction bounding box top should match")
-        XCTAssertEqual(validExtraction.box?.width, 42.0, "extraction bounding box width should match")
+        XCTAssertNotNil(validExtraction.box, "Extraction bound box should not be nil")
+        XCTAssertEqual(validExtraction.box?.height, 9.0, "Extraction bounding box height should match")
+        XCTAssertEqual(validExtraction.box?.left, 516.0, "Extraction bounding box left should match")
+        XCTAssertEqual(validExtraction.box?.page, 1, "Extraction bounding box page should match")
+        XCTAssertEqual(validExtraction.box?.top, 588.0, "Extraction bounding box top should match")
+        XCTAssertEqual(validExtraction.box?.width, 42.0, "Extraction bounding box width should match")
     }
     
     func testCandidatesReference() {
-        XCTAssertEqual(validExtraction.candidates, "amounts")
+        XCTAssertEqual(validExtraction.candidates, "amounts", "Extraction candidates reference should match")
     }
     
     func testRequiredParametersExtractionDecoding() {
         let extraction = try? JSONDecoder().decode(Extraction.self, from: requiredParametersJSON)
 
-        XCTAssertNotNil(extraction, "extraction should not be nil")
+        XCTAssertNotNil(extraction, "Extraction should not be nil")
     }
     
     func testInvalidExtractionDecoding() {
         let extraction = try? JSONDecoder().decode(Extraction.self, from: invalidJSON)
         
-        XCTAssertNil(extraction, "extraction should be nil")
+        XCTAssertNil(extraction, "Extraction should be nil")
     }
     
 }

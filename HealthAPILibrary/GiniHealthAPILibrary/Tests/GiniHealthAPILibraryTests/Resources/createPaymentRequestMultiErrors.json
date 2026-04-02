@@ -1,0 +1,17 @@
+{
+    "items": [
+        {
+            "code": "2012",
+            "message": "Provide a valid BIC number"
+        },
+        {
+            "code": "2002",
+            "message": "Value of payment purpose should be at least 4, at most 200 characters long"
+        },
+        {
+            "code": "2007",
+            "message": "Provide a valid IBAN number"
+        }
+    ],
+    "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
+}

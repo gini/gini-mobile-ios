@@ -11,9 +11,11 @@ import XCTest
 final class PaymentTests: XCTestCase {
     
     let baseAPIURLString = "https://health-api.gini.net"
-    let versionAPI = 4
-    lazy var payService = PaymentService(sessionManager: SessionManagerMock(), apiDomain: .default, apiVersion: versionAPI)
-    
+    let versionAPI = 5
+    lazy var payService = PaymentService(sessionManager: SessionManagerMock(),
+                                         apiDomain: .default,
+                                         apiVersion: versionAPI)
+
     
     func testPaymentProvidersURL() {
         let resource = APIResource<[PaymentProvider]>(method: .paymentProviders,
@@ -53,12 +55,19 @@ final class PaymentTests: XCTestCase {
     }
     
     func testCreatePaymentRequestURL() {
-        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "", paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57", recipient: "James Bond", iban: "DE89370400440532013000", bic: "INGDDEFF123", amount: "33.78:EUR", purpose: "Save the world")
-        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody)
-        else {
+        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "",
+                                                    paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+                                                    recipient: "James Bond",
+                                                    iban: "DE89370400440532013000",
+                                                    bic: "INGDDEFF123",
+                                                    amount: "33.78:EUR",
+                                                    purpose: "Save the world")
+
+        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody) else {
             assertionFailure("The PaymentRequestBody cannot be encoded")
             return
         }
+        
         let resource = APIResource<String>(method: .createPaymentRequest,
                                            apiDomain: .default,
                                            apiVersion: versionAPI,
@@ -81,10 +90,14 @@ final class PaymentTests: XCTestCase {
     }
     
     func testDeletePaymentRequestsURL() {
-        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "", paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57", recipient: "James Bond", iban: "DE89370400440532013000", bic: "INGDDEFF123", amount: "33.78:EUR", purpose: "Save the world")
-        
-        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody)
-        else {
+        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "",
+                                                    paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+                                                    recipient: "James Bond",
+                                                    iban: "DE89370400440532013000",
+                                                    bic: "INGDDEFF123",
+                                                    amount: "33.78:EUR",
+                                                    purpose: "Save the world")
+        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody) else {
             assertionFailure("The PaymentRequestBody cannot be encoded")
             return
         }
@@ -106,8 +119,8 @@ final class PaymentTests: XCTestCase {
             switch result {
             case .success:
                 XCTAssertEqual(sessionManagerMock.providersResponse.count, 11, "providers should not be empty")
-            case .failure:
-                break
+            case .failure(let error):
+                XCTFail("Expected success but got failure: \(error)")
             }
         }
     }
@@ -120,8 +133,8 @@ final class PaymentTests: XCTestCase {
             switch result {
             case .success:
                 XCTAssertEqual(sessionManagerMock.paymentRequests.count, 2, "payment requests should not be empty")
-            case .failure:
-                break
+            case .failure(let error):
+                XCTFail("Expected success but got failure: \(error)")
             }
         }
     }

@@ -17,97 +17,143 @@ import Foundation
  */
 
 public protocol GiniErrorProtocol {
-    var message: String { get }
+    var message: String? { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
+    var statusCode: Int? { get }
+    var items: [ErrorItem]? { get }
+    var requestId: String { get }
 }
+
 
 /**
- A protocol representing custom errors that may occur when interacting with the Gini Health API.
-
- This protocol defines three properties:
- - `unauthorizedItems`: An array of items that could not be deleted due to insufficient permissions.
- - `notFoundItems`: An array of items that were not found during a bulk deletion attempt.
- - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
+ Represents a single error item from the API error response.
+ Each error item contains an error code, optional message, and optional list of affected objects (e.g., document IDs).
  */
+public struct ErrorItem: Codable, Equatable, Sendable {
+    /**
+     The error code identifying the type of error (e.g., "2013" for unauthorized, "2014" for not found).
+     */
+    public var code: String
 
-public protocol GiniCustomErrorProtocol {
-    var unauthorizedItems: [String]? { get }
-    var notFoundItems: [String]? { get }
-    var missingCompositeItems: [String]? { get }
+    /**
+     Optional human-readable error message describing the error.
+     */
+    public var message: String?
+
+    /**
+     Optional array of object identifiers (e.g., document IDs) that are affected by this error.
+     */
+    public var object: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case code
+        case message
+        case object
+    }
+
+    /**
+     Creates a new error item.
+
+     - Parameters:
+       - code: The error code identifying the type of error
+       - message: Optional human-readable error message
+       - object: Optional array of affected object identifiers
+     */
+    public init(code: String = "", message: String? = nil, object: [String]? = nil) {
+        self.code = code
+        self.message = message
+        self.object = object
+    }
+
+    /**
+     Creates an error item by decoding from the given decoder.
+     - Parameter decoder: The decoder to read data from.
+     */
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.code = try container.decodeIfPresent(String.self, forKey: .code) ?? ""
+        self.message = try container.decodeIfPresent(String.self, forKey: .message)
+        self.object = try container.decodeIfPresent([String].self, forKey: .object)
+    }
+
+    /**
+     Encodes this error item into the given encoder.
+     - Parameter encoder: The encoder to write data to.
+     */
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(code, forKey: .code)
+        try container.encode(message, forKey: .message)
+        try container.encode(object, forKey: .object)
+    }
 }
 
-struct GiniCustomError: GiniCustomErrorProtocol, Codable {
+struct GiniCustomError: Codable {
     var message: String?
-    var unauthorizedItems: [String]?
-    var notFoundItems: [String]?
-    var missingCompositeItems: [String]?
+    var items: [ErrorItem]?
+    var requestId: String
     
     enum CodingKeys: CodingKey {
         case message
-        case unauthorizedItems
-        case notFoundItems
-        case missingCompositeItems
-        
-        //backend values
-        case unauthorizedPaymentRequests
-        case notFoundPaymentRequests
-        case unauthorizedDocuments
-        case notFoundDocuments
-        case missingCompositeDocuments
+        case items
+        case requestId
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        message = try? container.decodeIfPresent(String.self, forKey: .message)
-        
-        if let items = try? container.decodeIfPresent([String].self, forKey: .missingCompositeDocuments) {
-            missingCompositeItems = items
-        } else {
-            missingCompositeItems = try? container.decodeIfPresent([String].self, forKey: .missingCompositeItems)
-        }
-        
-        if let items = try? container.decodeIfPresent([String].self, forKey: .unauthorizedPaymentRequests) {
-            unauthorizedItems = items
-        } else if let items = try? container.decodeIfPresent([String].self, forKey: .unauthorizedDocuments) {
-            unauthorizedItems = items
-        } else {
-            unauthorizedItems = try? container.decodeIfPresent([String].self, forKey: .unauthorizedItems)
-        }
-        
-        if let items = try? container.decodeIfPresent([String].self, forKey: .notFoundPaymentRequests) {
-            notFoundItems = items
-        } else if let items = try? container.decodeIfPresent([String].self, forKey: .notFoundDocuments) {
-            notFoundItems = items
-        } else {
-            notFoundItems = try? container.decodeIfPresent([String].self, forKey: .notFoundItems)
-        }
+        message = try container.decodeIfPresent(String.self, forKey: .message)
+
+        items = try container.decodeIfPresent([ErrorItem].self, forKey: .items)
+
+        requestId = try container.decodeIfPresent(String.self, forKey: .requestId) ?? "No requestId available"
+    }
+    
+    init(message: String, items: [ErrorItem]? = nil, requestId: String) {
+        self.message = message
+        self.items = items
+        self.requestId = requestId
     }
     
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encodeIfPresent(message, forKey: .message)
-        try container.encodeIfPresent(missingCompositeItems, forKey: .missingCompositeItems)
-        try container.encodeIfPresent(unauthorizedItems, forKey: .unauthorizedItems)
-        try container.encodeIfPresent(notFoundItems, forKey: .notFoundItems)
+        try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(requestId, forKey: .requestId)
     }
 }
 
-public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
+/**
+ Errors returned by the Gini Health API.
+ */
+public enum GiniError: Error, GiniErrorProtocol, Equatable {
+    /** The request was malformed or contained invalid parameters. */
     case badRequest(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The server cannot produce a response matching the accepted content type. */
     case notAcceptable(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The requested resource could not be found. */
     case notFound(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** No response was received from the server. */
     case noResponse
+    /** The response could not be parsed. Includes a descriptive message. */
     case parseError(message: String, response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The request was cancelled before completion. */
     case requestCancelled
+    /** The rate limit was exceeded. */
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** The request was not authorized. */
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** A structured API error was returned with a JSON body. Inspect `items` and `requestId` for details. */
     case customError(response: HTTPURLResponse? = nil, data: Data? = nil)
+    /** An unexpected error occurred. */
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
-    public var message: String {
+    /**
+     A descriptive message explaining the error.
+     */
+    public var message: String? {
         switch self {
         case .badRequest:
             return "Bad request"
@@ -127,90 +173,79 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
             return "Unauthorized"
         case .unknown:
             return "Unknown"
-        case .customError(_, _):
-            if let message = customError?.message {
-                return message
-            }
-            return getCustomErrorMessage() ?? localizedDescription
+        case .customError:
+            return customError?.message ?? localizedDescription
         }
     }
 
+    /**
+     The HTTP response associated with the error, if available.
+     */
     public var response: HTTPURLResponse? {
         switch self {
-        case .badRequest(let response, _),
-             .notAcceptable(let response, _),
-             .notFound(let response, _),
-             .parseError(_, let response, _),
-             .tooManyRequests(let response, _),
-             .unauthorized(let response, _),
-             .unknown(let response, _),
-             .customError(let response, _):
+        case .badRequest(let response, _), .notAcceptable(let response, _),
+             .notFound(let response, _), .parseError(_, let response, _):
+            return response
+        case .tooManyRequests(let response, _), .unauthorized(let response, _),
+             .customError(let response, _), .unknown(let response, _):
             return response
         default:
             return nil
         }
     }
 
+    /**
+     The raw response data received from the server, if any.
+     */
     public var data: Data? {
         switch self {
-        case .badRequest(_, let data),
-             .notAcceptable(_, let data),
-             .notFound(_, let data),
-             .parseError(_, _, let data),
-             .tooManyRequests(_, let data),
-             .unauthorized(_, let data),
-             .unknown(_, let data),
-             .customError(_, let data):
+        case .badRequest(_, let data), .notAcceptable(_, let data),
+             .notFound(_, let data), .parseError(_, _, let data):
+            return data
+        case .tooManyRequests(_, let data), .unauthorized(_, let data),
+             .customError(_, let data), .unknown(_, let data):
             return data
         default:
             return nil
         }
     }
 
-    var customError: GiniCustomError? {
-        guard let data, let customErrorDecoded = try? JSONDecoder().decode(GiniCustomError.self, from: data) else {
+    /**
+     HTTP status code from the error response, if available.
+     Returns `nil` if no response is available.
+     */
+    public var statusCode: Int? {
+        switch self {
+        case .badRequest(let response, _), .notAcceptable(let response, _),
+             .notFound(let response, _), .parseError(_, let response, _):
+            return response?.statusCode
+        case .tooManyRequests(let response, _), .unauthorized(let response, _),
+             .customError(let response, _), .unknown(let response, _):
+            return response?.statusCode
+        default:
             return nil
         }
-        return customErrorDecoded
     }
 
-    public var unauthorizedItems: [String]? {
-        return customError?.unauthorizedItems
+    /**
+     Array of error items containing specific error details from the API.
+     Each item includes an error code, optional message, and optional list of affected objects.
+     */
+    public var items: [ErrorItem]? {
+        return customError?.items
     }
 
-    public var notFoundItems: [String]? {
-        return customError?.notFoundItems
-    }
-    
-    public var missingCompositeItems: [String]? {
-        return customError?.missingCompositeItems
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "unauthorizedItems")
-    public var unauthorizedDocuments: [String]? {
-        return customError?.unauthorizedItems
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "notFoundItems")
-    public var notFoundDocuments: [String]? {
-        return customError?.notFoundItems
-    }
-    
-    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "missingCompositeItems")
-    public var missingCompositeDocuments: [String]? {
-        return customError?.missingCompositeItems
+    /**
+     The request ID from the API response, useful for debugging and support.
+     This identifier can be used to trace the request in server logs.
+     */
+    public var requestId: String {
+        return customError?.requestId ?? "no requestId is available"
     }
 
-    /// Helper Function to Get Custom Document / PaymentRequest Errors Message
-    private func getCustomErrorMessage() -> String? {
-        if let unauthorizedItems = customError?.unauthorizedItems {
-            return "Unauthorized items: \(unauthorizedItems.joined(separator: ", "))"
-        } else if let notFoundItems = customError?.notFoundItems {
-            return "Not found items: \(notFoundItems.joined(separator: ", "))"
-        } else if let missingCompositeDocuments = customError?.missingCompositeItems {
-            return "Missing composite items: \(missingCompositeDocuments.joined(separator: ", "))"
-        }
-        
-        return nil
+    var customError: GiniCustomError? {
+        guard let data else { return nil }
+        return try? JSONDecoder().decode(GiniCustomError.self, from: data)
     }
 }
+
