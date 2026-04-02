@@ -65,7 +65,9 @@ jobs:
     - name: Convert coverage to SonarQube generic format
       if: ${{ matrix.target == 'GiniHealthSDK' }}
       run: |
-        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > HealthSDK/coverage.xml
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
+          | sed 's|path="[^"]*HealthSDK/|path="|g' \
+          > HealthSDK/coverage.xml
 
     - name: Upload coverage report
       if: ${{ matrix.target == 'GiniHealthSDK' }}
