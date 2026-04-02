@@ -9,7 +9,7 @@ import GiniCaptureSDK
 import GiniBankSDK
 
 protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
-    func didTapCloseAndSendTransferSummary()
+    func didTapDone()
     func didTapToScanAgain()
 }
 
@@ -97,7 +97,7 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.doneButtonTitle,
                                                             style: .plain,
                                                             target: self,
-                                                            action: #selector(tapCloseScreenAPIAndSendTransferSummary))
+                                                            action: #selector(submitTransferAndClose))
     }
 
     // MARK: - Actions
@@ -106,8 +106,8 @@ final class TransactionSummaryTableViewController: UITableViewController, CodeLo
         delegate?.didTapToScanAgain()
     }
 
-    @objc func tapCloseScreenAPIAndSendTransferSummary() {
-        delegate?.didTapCloseAndSendTransferSummary()
+    @objc func submitTransferAndClose() {
+        delegate?.didTapDone()
     }
 
     // MARK: - UITableViewDataSource

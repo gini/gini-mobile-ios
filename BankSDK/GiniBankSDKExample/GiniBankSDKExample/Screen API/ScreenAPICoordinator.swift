@@ -170,35 +170,14 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     private func closeSreenAPIAndSendTransferSummary() {
-        var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
-        var extractionAmountString = ""
-        if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
-            if amountValue.split(separator: ":").count > 0 {
-                let value = Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0
-                extractionAmount = ExtractionAmount(value: value,
-                                                    currency: .EUR)
-                extractionAmountString = "\(amountValue.split(separator: ":")[0]) EUR"
-            }
-        }
-
-        let paymentRecipient = extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? ""
-        let paymentReference = extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? ""
-        let paymentPurpose = extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? ""
-        let iban = extractedResults.first(where: { $0.name == "iban"})?.value ?? ""
-        let bic = extractedResults.first(where: { $0.name == "bic"})?.value ?? ""
-
-        // `instantPayment` is currently a String, but it should be a Bool.
-        // In GiniSDK, this parameter must be a Boolean to restrict the possible values
-        // and ensure the correct data type is sent in the transfer summary to the backend.
-        let instantPaymentString = extractedResults.first(where: { $0.name == "instantPayment"})?.value ?? ""
-        let amoutToPay = extractionAmount
-        configuration.sendTransferSummary(paymentRecipient: paymentRecipient,
-                                          paymentReference: paymentReference,
-                                          paymentPurpose: paymentPurpose,
-                                          iban: iban,
-                                          bic: bic,
-                                          amountToPay: amoutToPay,
-                                          instantPayment: instantPaymentString.lowercased() == "true")
+        let extractionsDict = Dictionary(
+            extractedResults.compactMap { extraction -> (String, String)? in
+                guard let name = extraction.name else { return nil }
+                return (name, extraction.value)
+            },
+            uniquingKeysWith: { _, last in last })
+        
+        configuration.sendTransferSummary(extractions: extractionsDict)
 
         // GiniBankSDK requires both `documentId` and `originalFileName`
         // to properly display attachment information in the transaction details screen.
@@ -215,12 +194,18 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                               type: $0.isFile ? .document : .image)
         }
 
+        let paidAmountString: String = {
+            guard let raw = extractionsDict["amountToPay"],
+                  let valuePart = raw.split(separator: ":").first else { return "" }
+            return "\(valuePart) \(raw.split(separator: ":").last ?? "")"
+        }()
+
         let transaction = Transaction(date: Date(),
-                                      paidAmount: extractionAmountString,
-                                      paymentPurpose: paymentPurpose,
-                                      paymentRecipient: paymentRecipient,
-                                      iban: iban,
-                                      paymentReference: paymentReference,
+                                      paidAmount: paidAmountString,
+                                      paymentPurpose: extractionsDict["paymentPurpose"] ?? "",
+                                      paymentRecipient: extractionsDict["paymentRecipient"] ?? "",
+                                      iban: extractionsDict["iban"] ?? "",
+                                      paymentReference: extractionsDict["paymentReference"] ?? "",
                                       attachments: attachments)
         updateJSONFileWithTransaction(transaction)
 
@@ -257,7 +242,7 @@ extension ScreenAPICoordinator: TransactionSummaryTableViewControllerDelegate {
         delegate?.didRequestRescan(coordinator: self)
     }
     
-    func didTapCloseAndSendTransferSummary() {
+    func didTapDone() {
         closeSreenAPIAndSendTransferSummary()
     }
 }
