@@ -47,7 +47,6 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
                 labelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
                 labelFont: GiniHealthConfiguration.shared.font(for: .captions1),
                 backgroundColor: GiniColor.success1.uiColor(),
-                isHidden: GiniHealthConfiguration.shared.useInvoiceWithoutDocument,
                 containerBackgroundColor: GiniColor.standard7.uiColor()
             ),
             popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
