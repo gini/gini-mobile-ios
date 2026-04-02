@@ -61,11 +61,8 @@ jobs:
       if: ${{ matrix.target == 'GiniCaptureSDK' }}
       run: |
         bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
-          | sed "s|$(pwd)/||g" > CaptureSDK/coverage.xml
-
-    - name: Inspect coverage paths (debug)
-      if: ${{ matrix.target == 'GiniCaptureSDK' }}
-      run: head -30 CaptureSDK/coverage.xml
+          | sed 's|path="[^"]*CaptureSDK/|path="|g' \
+          > CaptureSDK/coverage.xml
 
     - name: Upload coverage report
       if: ${{ matrix.target == 'GiniCaptureSDK' }}
