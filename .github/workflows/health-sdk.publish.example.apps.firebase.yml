@@ -15,7 +15,11 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   upload-version:
+    needs: get-config
     environment: firebase-manual-deploy
     runs-on: macos-latest 
     steps:
@@ -26,12 +30,12 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
-          xcode-version: '16.4'
+          xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
       - name: Setup Manual Signing for Xcode project
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
-          ruby-version: '3.2.0'
+          ruby-version: ${{ needs.get-config.outputs.ruby-version }}
           bundler-cache: true
       - uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         with:
