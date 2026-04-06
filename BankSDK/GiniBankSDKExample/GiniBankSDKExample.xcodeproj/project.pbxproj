@@ -107,6 +107,8 @@
 		28D35CA92F83D81B000339B4 /* BrowserStackTestHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */; };
 		28D35CAD2F83D835000339B4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAB2F83D835000339B4 /* README.md */; };
 		28D35CAE2F83D835000339B4 /* bs_build_and_upload.sh in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */; };
+		28D35CB42F83D933000339B4 /* Swift_AccNo_routing_DOLL.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */; };
+		28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */; };
 		28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */; };
@@ -410,6 +412,8 @@
 		28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = BrowserStackTestHelper.xcframework; sourceTree = "<group>"; };
 		28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = bs_build_and_upload.sh; sourceTree = "<group>"; };
 		28D35CAB2F83D835000339B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photopayment_Invoice1.png; sourceTree = "<group>"; };
+		28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swift_AccNo_routing_DOLL.png; sourceTree = "<group>"; };
 		28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_skonto.pdf; sourceTree = "<group>"; };
 		28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto.json; sourceTree = "<group>"; };
 		28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
@@ -896,6 +900,23 @@
 			path = BSScripts;
 			sourceTree = "<group>";
 		};
+		28D35CB22F83D933000339B4 /* TestSamplesForBS */ = {
+			isa = PBXGroup;
+			children = (
+				28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */,
+				28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */,
+			);
+			path = TestSamplesForBS;
+			sourceTree = "<group>";
+		};
+		28D35CB32F83D933000339B4 /* TestSamples */ = {
+			isa = PBXGroup;
+			children = (
+				28D35CB22F83D933000339B4 /* TestSamplesForBS */,
+			);
+			path = TestSamples;
+			sourceTree = "<group>";
+		};
 		28D77C402CBE99FC00F815DB /* Skonto */ = {
 			isa = PBXGroup;
 			children = (
@@ -1190,6 +1211,7 @@
 				28DAF48C2CD293140035A1FF /* Screens */,
 				28D35CAC2F83D835000339B4 /* BSScripts */,
 				28D35CA82F83D81B000339B4 /* Frameworks */,
+				28D35CB32F83D933000339B4 /* TestSamples */,
 			);
 			path = GiniBankSDKExampleUITests;
 			sourceTree = "<group>";
@@ -1679,6 +1701,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D35CB42F83D933000339B4 /* Swift_AccNo_routing_DOLL.png in Resources */,
+				28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */,
 				28D35CAD2F83D835000339B4 /* README.md in Resources */,
 				28D35CAE2F83D835000339B4 /* bs_build_and_upload.sh in Resources */,
 			);
