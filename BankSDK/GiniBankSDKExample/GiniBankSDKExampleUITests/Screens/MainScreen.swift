@@ -136,7 +136,7 @@ class MainScreen {
         let cell = app.cells.containing(.staticText, identifier: text).element
         XCTAssertTrue(cell.exists, "Cell containing text '\(text)' does not exist")
         // Locate the switch within the found cell
-        var switchElement = cell.switches.element
+        let switchElement = cell.switches.element
         XCTAssertTrue(switchElement.exists, "Switch next to text '\(text)' does not exist")
         // Scroll to switch
         switchElement.tap()
