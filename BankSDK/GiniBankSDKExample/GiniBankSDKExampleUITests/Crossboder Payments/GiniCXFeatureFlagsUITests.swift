@@ -25,7 +25,6 @@ class GiniCXFeatureFlagsUITests: GiniBankSDKExampleUITests {
      Please upload to device:
          "cx_invoice" — a CX-compatible test invoice
      */
-    let cxInvoiceFileName = "cx_invoice"
 
     // MARK: - C1
 
@@ -46,7 +45,7 @@ class GiniCXFeatureFlagsUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap CX invoice document
-        mainScreen.tapFileWithName(fileName: cxInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Skonto "Got it" button does NOT appear — Skonto is disabled for CX
@@ -80,7 +79,7 @@ class GiniCXFeatureFlagsUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap CX invoice document
-        mainScreen.tapFileWithName(fileName: cxInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Return Assistant "Get started" button does NOT appear

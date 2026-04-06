@@ -29,8 +29,6 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
          "cx_invoice_page1" — first page of a multi-page CX invoice
          "cx_invoice_page2" — second page of the same CX invoice
      */
-    let cxPage1FileName = "cx_invoice_multi_page"
-    let cxPage2FileName = "cx_invoice_page2"
 
     // MARK: - G1
 
@@ -49,7 +47,7 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
         //Upload first page
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: cxPage1FileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxMultiPageInvoice)
         captureScreen.openGalleryButton.tap()
         //Assert either Transfer Summary or No-Results screen is shown (no crash expected)
         let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 30)

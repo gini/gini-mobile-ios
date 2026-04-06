@@ -27,8 +27,6 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
          "cx_invoice"   — CX invoice with crossBorderPayment extractions
          "sepa_invoice" — standard SEPA invoice
      */
-    let cxInvoiceFileName = "cx_invoice"
-    let sepaInvoiceFileName = "sepa_invoice"
 
     // MARK: - D1
 
@@ -43,7 +41,7 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: cxInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
         //Assert Transfer Summary appears and shows at least one extraction
         transactionSummaryScreen.assertExtractionsAreDisplayed()
@@ -65,7 +63,7 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: cxInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
         //Assert at least one extraction cell is visible
         XCTAssertTrue(transactionSummaryScreen.firstExtractionCell.waitForExistence(timeout: 20))
@@ -91,7 +89,7 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: cxInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
         //Wait for Transfer Summary
         XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 30))
@@ -115,7 +113,7 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: sepaInvoiceFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.sepaInvoice)
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))

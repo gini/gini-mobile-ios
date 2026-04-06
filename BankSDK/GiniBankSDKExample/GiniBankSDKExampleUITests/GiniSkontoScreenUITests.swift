@@ -18,8 +18,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         "skonto_past" file with expired skonto
         "skonto_valid" file with valid skonto
      */
-    let skontoPastFileName = "skonto_past"
-    let skontoValidFileName = "skonto_valid"
     
     func testSkonto() {
         //Tap Photopayment button
@@ -33,7 +31,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoPastFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
@@ -64,7 +62,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoPastFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
@@ -89,7 +87,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoPastFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
@@ -126,7 +124,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoValidFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
@@ -147,7 +145,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoPastFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
@@ -168,7 +166,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoPastFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
