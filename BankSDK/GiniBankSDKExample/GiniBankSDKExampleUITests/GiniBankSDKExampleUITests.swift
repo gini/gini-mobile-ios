@@ -36,6 +36,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-testing"]
+        app.launchArguments = ["-StartFromCleanState", "YES"]
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -62,5 +63,69 @@ class GiniBankSDKExampleUITests: XCTestCase {
             add(attachment)
             app.terminate()
         }
+    }
+
+    var galleryTitle: String {
+        switch Locale.current.languageCode ?? "en" {
+        case "de": return "Alben"
+        default:   return "Albums"
+        }
+    }
+
+    var analysisScreenTitle: String {
+        switch Locale.current.languageCode ?? "en" {
+        case "de": return "Auswertung"
+        default:   return "Analysis"
+        }
+    }
+
+    var analysisLoadingText: String {
+        switch Locale.current.languageCode ?? "en" {
+        case "de": return "Dokument wird analysiert"
+        default:   return "Analyzing documents"
+        }
+    }
+
+    var galleryDoneButtonTitle: String {
+        switch Locale.current.languageCode ?? "en" {
+        case "de": return "Fertig"
+        default:   return "\u{0010}Done"
+        }
+    }
+
+    func tapDoneInAnyKnownContext() {
+        switch Locale.current.languageCode ?? "en" {
+        case "de": app.buttons["Fertig"].firstMatch.tap()
+        default:   app.buttons["\u{0010}Done"].firstMatch.tap()
+        }
+    }
+
+    func waitForAnalysisIfNeeded() {
+        let analysisIndicators = [
+            app.navigationBars[analysisScreenTitle],
+            app.staticTexts[analysisLoadingText],
+            app.staticTexts[analysisScreenTitle]
+        ]
+        if !analysisIndicators.contains(where: { $0.waitForExistence(timeout: 2) }) { return }
+        for indicator in analysisIndicators where indicator.exists {
+            let gonePredicate = NSPredicate(format: "exists == false")
+            let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: indicator)
+            let result = XCTWaiter().wait(for: [expectation], timeout: 30)
+            if result != .completed { XCTFail("Analysis screen did not disappear within timeout") }
+        }
+    }
+
+    func uploadLatestPhotoFromGallery() {
+        XCTAssertTrue(app.navigationBars[galleryTitle].waitForExistence(timeout: 10))
+        app.tables.cells.firstMatch.tap()
+        let imageCells = app.collectionViews.cells
+        XCTAssertTrue(imageCells.firstMatch.waitForExistence(timeout: 10))
+        guard let latestVisibleImage = imageCells.allElementsBoundByIndex.last else {
+            XCTFail("No gallery image was found to upload.")
+            return
+        }
+        latestVisibleImage.tap()
+        XCTAssertTrue(app.buttons[galleryDoneButtonTitle].firstMatch.waitForExistence(timeout: 10))
+        tapDoneInAnyKnownContext()
     }
 }

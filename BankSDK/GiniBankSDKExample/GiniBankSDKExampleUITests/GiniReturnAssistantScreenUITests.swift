@@ -15,10 +15,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     /*
      To launch these tests and closely mimic real user behavior
      Please upload to device: 
-        "Return Assistant Testrechnung" PDF file
+        "ReturnAssistantTestrechnung" PDF file
+        a return assistant sample image to the Photos library for the gallery flow test
      */
-    let returnAssistantFileName = "Return Assistant Testrechnung"
-    
+    let returnAssistantFileName = "ReturnAssistantTestrechnung"
+
     func testReturnAssistant() {
         
         //Tap Photopayment button
@@ -37,6 +38,43 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
+        //Tap Get Started button
+        returnAssistantScreen.getStartedButton.tap()
+        //Tap Proceed button
+        returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
+        mainScreen.sendFeedbackButton.tap()
+        //Assert Photopayment button is displayed
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+    }
+    
+    func testReturnAssistantGalleryUpload() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button
+        captureScreen.filesButton.tap()
+        //Tap Upload photo button
+        captureScreen.uploadPhotoButton.tap()
+        //Handle Photos access pop up
+        mainScreen.handlePhotoPermission(answer: true)
+        //Select and upload a photo from the gallery
+        uploadLatestPhotoFromGallery()
+        //Wait for review screen and tap Process
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
+        //Wait for analysis screen to go away if it appears
+        waitForAnalysisIfNeeded()
+        //Assert Get started button is displayed
+        XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 30))
         //Tap Get Started button
         returnAssistantScreen.getStartedButton.tap()
         //Tap Proceed button
