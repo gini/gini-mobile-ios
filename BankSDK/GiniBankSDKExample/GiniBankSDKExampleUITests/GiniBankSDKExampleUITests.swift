@@ -26,6 +26,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionDocsScreen: TransactionDocsScreen!
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
+    var cxExtractionScreen: CXExtractionScreen!
     var isSimulator = false
     
     override func setUpWithError() throws {
@@ -53,6 +54,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         transactionDocsScreen = TransactionDocsScreen(app: app, locale: currentLocale)
         transactionSummaryScreen = TransactionSummaryScreen(app: app, locale: currentLocale)
         noResultsScreen = NoResultsScreen(app: app, locale: currentLocale)
+        cxExtractionScreen = CXExtractionScreen(app: app)
     }
     
     override func tearDownWithError() throws  {
