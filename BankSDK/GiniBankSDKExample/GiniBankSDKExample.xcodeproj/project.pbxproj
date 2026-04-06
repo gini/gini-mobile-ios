@@ -112,6 +112,7 @@
 		28D35CB82F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */; };
 		28D35CBA2F83F685000339B4 /* GiniCXCaptureFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CB92F83F685000339B4 /* GiniCXCaptureFlowTests.swift */; };
 		28D35CBC2F83F6F4000339B4 /* CXExtractionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CBB2F83F6F4000339B4 /* CXExtractionScreen.swift */; };
+		28D35CC02F8416E1000339B4 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CBF2F8416D0000339B4 /* TestFixtures.swift */; };
 		28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */; };
@@ -420,6 +421,7 @@
 		28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureFlowUITestsUsingBS.swift; sourceTree = "<group>"; };
 		28D35CB92F83F685000339B4 /* GiniCXCaptureFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCXCaptureFlowTests.swift; sourceTree = "<group>"; };
 		28D35CBB2F83F6F4000339B4 /* CXExtractionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXExtractionScreen.swift; sourceTree = "<group>"; };
+		28D35CBF2F8416D0000339B4 /* TestFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
 		28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_skonto.pdf; sourceTree = "<group>"; };
 		28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto.json; sourceTree = "<group>"; };
 		28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
@@ -1217,6 +1219,7 @@
 				28DAF4992CD293140035A1FF /* GiniReviewScreenUITests.swift */,
 				28DAF48E2CD293140035A1FF /* GiniSkontoScreenUITests.swift */,
 				28DAF4972CD293140035A1FF /* GiniTransactionDocsScreenUITests.swift */,
+				28D35CBF2F8416D0000339B4 /* TestFixtures.swift */,
 				28DAF48C2CD293140035A1FF /* Screens */,
 				28D35CAC2F83D835000339B4 /* BSScripts */,
 				28D35CA82F83D81B000339B4 /* Frameworks */,
@@ -1926,6 +1929,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28DAF4D12CD3A8FC0035A1FF /* MainScreen.swift in Sources */,
+				28D35CC02F8416E1000339B4 /* TestFixtures.swift in Sources */,
 				28DAF4B12CD293140035A1FF /* GiniReviewScreenUITests.swift in Sources */,
 				28DAF4AE2CD293140035A1FF /* GiniMainScreenUITests.swift in Sources */,
 				28DAF4D52CD3A9060035A1FF /* SkontoScreen.swift in Sources */,
