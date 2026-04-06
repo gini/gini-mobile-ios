@@ -17,8 +17,6 @@ class SettingScreen {
     let flashToggleSwitch: XCUIElement
     let onboardingEveryLaunchSwitch: String
     let onboardingAtFirstLaunchSwitch: String
-    let bottomNavBar: String
-    let onboardingCustomBottomNavBar: String
     let productTagSegmentedControl: XCUIElement
     
     init(app: XCUIApplication, locale: String) {
@@ -30,8 +28,6 @@ class SettingScreen {
         flashToggleSwitch = app.switches[SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue]
         onboardingEveryLaunchSwitch = "Onboarding screens at every launch"
         onboardingAtFirstLaunchSwitch = "Onboarding screens at first launch"
-        bottomNavBar = "Bottom navigation bar"
-        onboardingCustomBottomNavBar = "Onboarding custom bottom navigation bar"
         productTagSegmentedControl = app.segmentedControls[SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue]
     }
     

@@ -14,7 +14,6 @@ class OnboardingScreen {
     let nextButton: XCUIElement
     let skipButton: XCUIElement
     let getStartedButton: XCUIElement
-    let nextButtonCustom: XCUIElement
     
     init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -31,8 +30,6 @@ class OnboardingScreen {
         default:
             fatalError("Locale \(locale) is not supported")
         }
-        
-        nextButtonCustom = app.buttons[">"]
     }
     
     func skipOnboardingScreens() {
