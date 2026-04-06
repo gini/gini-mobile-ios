@@ -109,6 +109,7 @@
 		28D35CAE2F83D835000339B4 /* bs_build_and_upload.sh in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */; };
 		28D35CB42F83D933000339B4 /* Swift_AccNo_routing_DOLL.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */; };
 		28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */; };
+		28D35CB82F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */; };
 		28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */; };
@@ -414,6 +415,7 @@
 		28D35CAB2F83D835000339B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photopayment_Invoice1.png; sourceTree = "<group>"; };
 		28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swift_AccNo_routing_DOLL.png; sourceTree = "<group>"; };
+		28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureFlowUITestsUsingBS.swift; sourceTree = "<group>"; };
 		28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_skonto.pdf; sourceTree = "<group>"; };
 		28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto.json; sourceTree = "<group>"; };
 		28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
@@ -1198,6 +1200,7 @@
 				28B3B0492F77223300A5740A /* Crossboder Payments */,
 				28DAF4932CD293140035A1FF /* AccessibilityIdentifiers */,
 				28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */,
+				28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */,
 				28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */,
 				28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */,
 				28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */,
@@ -1945,6 +1948,7 @@
 				CX000001000000030000001A /* GiniProductTagSettingsUITests.swift in Sources */,
 				CX000001000000040000001A /* GiniCXCameraUITests.swift in Sources */,
 				CX000001000000050000001A /* GiniCXFeatureFlagsUITests.swift in Sources */,
+				28D35CB82F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift in Sources */,
 				CX000001000000060000001A /* GiniCXTransactionSummaryUITests.swift in Sources */,
 				CX000001000000070000001A /* GiniCXNoResultsUITests.swift in Sources */,
 				CX000001000000080000001A /* GiniCXErrorScreenUITests.swift in Sources */,
