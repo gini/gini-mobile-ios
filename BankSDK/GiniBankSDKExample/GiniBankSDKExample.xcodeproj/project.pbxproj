@@ -113,6 +113,8 @@
 		28D35CBA2F83F685000339B4 /* GiniCXCaptureFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CB92F83F685000339B4 /* GiniCXCaptureFlowTests.swift */; };
 		28D35CBC2F83F6F4000339B4 /* CXExtractionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CBB2F83F6F4000339B4 /* CXExtractionScreen.swift */; };
 		28D35CC02F8416E1000339B4 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CBF2F8416D0000339B4 /* TestFixtures.swift */; };
+		28D35CC32F84E7EE000339B4 /* BrowserStackTestHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */; };
+		28D35CC42F84E7EE000339B4 /* BrowserStackTestHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */; };
@@ -315,6 +317,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		28D35CC52F84E7EE000339B4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				28D35CC42F84E7EE000339B4 /* BrowserStackTestHelper.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4C723B828F8354400BDDEA7 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -615,7 +628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28DAF47F2CD292DD0035A1FF /* GiniCaptureSDK in Frameworks */,
-				28D35CA92F83D81B000339B4 /* BrowserStackTestHelper.xcframework in Frameworks */,
+				28D35CC32F84E7EE000339B4 /* BrowserStackTestHelper.xcframework in Frameworks */,
 				F4FAF7E12C64D1CB005E1587 /* GiniBankSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1515,6 +1528,7 @@
 				D7E50A5B2C32D0AD004C1CBF /* Sources */,
 				D7E50A5C2C32D0AD004C1CBF /* Frameworks */,
 				D7E50A5D2C32D0AD004C1CBF /* Resources */,
+				28D35CC52F84E7EE000339B4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
