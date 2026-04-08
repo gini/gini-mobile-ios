@@ -50,7 +50,7 @@ public final class PaymentReviewContainerViewModel {
     let poweredByGiniViewModel: PoweredByGiniViewModel
     
     var onExtractionFetched: (() -> Void)?
-    var dispayMode: DisplayMode = .bottomSheet
+    var displayMode: DisplayMode = .bottomSheet
     var bankImageIcon: UIImage?
     
     @Published var selectedPaymentProvider: PaymentProvider
@@ -105,7 +105,7 @@ public final class PaymentReviewContainerViewModel {
         self.errorStyleInputFieldConfiguration = inputFieldsConfiguration.errorStyle
         self.selectionStyleInputFieldConfiguration = inputFieldsConfiguration.selectionStyle
         self.poweredByGiniViewModel = poweredByGiniViewModel
-        self.dispayMode = paymentData.displayMode
+        self.displayMode = paymentData.displayMode
         self.bankImageIcon = paymentData.selectedPaymentProvider.iconData.toImage
         self.clientConfiguration = clientConfiguration
     }
