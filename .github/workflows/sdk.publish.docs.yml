@@ -32,13 +32,17 @@ on:
       MOBILE_CI_APP_PRIVATE_KEY:
         required: true
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   release-documentation:
+    needs: get-config
     runs-on: macos-latest
 
     steps:
       - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd
         with:
-          xcode-version: '16.4'
+          xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -62,7 +66,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
-          ruby-version: '3.2.0'
+          ruby-version: ${{ needs.get-config.outputs.ruby-version }}
           bundler-cache: true
 
       - name: Generate a token

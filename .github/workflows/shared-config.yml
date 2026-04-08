@@ -1,0 +1,44 @@
+name: Centralized Configuration
+
+# This workflow provides centralized configuration values for all other workflows.
+# To update build tool versions, edit the outputs in the 'config' job below.
+#
+# Usage in other workflows:
+#   jobs:
+#     get-config:
+#       uses: ./.github/workflows/shared-config.yml
+#     
+#     your-job:
+#       needs: get-config
+#       steps:
+#         - uses: maxim-lobanov/setup-xcode@v1
+#           with:
+#             xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+
+on:
+  workflow_call:
+    outputs:
+      xcode-version:
+        description: "Xcode version to use for builds and tests"
+        value: ${{ jobs.config.outputs.xcode-version }}
+      ruby-version:
+        description: "Ruby version to use for Fastlane and other Ruby tools"
+        value: ${{ jobs.config.outputs.ruby-version }}
+      ios-simulator-destination:
+        description: "iOS Simulator destination for running tests"
+        value: ${{ jobs.config.outputs.ios-simulator-destination }}
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      xcode-version: ${{ steps.set-config.outputs.xcode-version }}
+      ruby-version: ${{ steps.set-config.outputs.ruby-version }}
+      ios-simulator-destination: ${{ steps.set-config.outputs.ios-simulator-destination }}
+    steps:
+      - name: Set configuration values
+        id: set-config
+        run: |
+          echo "xcode-version=16.4" >> $GITHUB_OUTPUT
+          echo "ruby-version=3.2.0" >> $GITHUB_OUTPUT
+          echo "ios-simulator-destination=platform=iOS Simulator,name=iPhone 16,OS=18.5" >> $GITHUB_OUTPUT

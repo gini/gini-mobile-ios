@@ -8,7 +8,11 @@ on:
 permissions:
   contents: read
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   generate-sbom:
+    needs: get-config
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -22,7 +26,7 @@ jobs:
       - name: setup ruby
         uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
-          ruby-version: '3.2.0'
+          ruby-version: ${{ needs.get-config.outputs.ruby-version }}
           bundler-cache: true
 
       - name: generate a cyclonedx sbom for each project

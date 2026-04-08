@@ -18,17 +18,21 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     runs-on: macos-latest
     strategy:
       matrix:
         target: [GiniHealthSDK, GiniHealthSDKExampleTests]
-        destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
+        destination: ['${{ needs.get-config.outputs.ios-simulator-destination }}']
 
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
-        xcode-version: '16.4'
+        xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -43,7 +47,7 @@ jobs:
     - name: Setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
-        ruby-version: '3.2.0'
+        ruby-version: ${{ needs.get-config.outputs.ruby-version }}
         bundler-cache: true
 
     - name: Build and run tests for "${{ matrix.target }}"
