@@ -7,7 +7,7 @@ import Foundation
 let package = Package(
     name: "GiniMerchantSDK",
     defaultLocalization: "en",
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS("16")],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -19,8 +19,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniHealthAPILibrary", path: "../../HealthAPILibrary/GiniHealthAPILibrary"),
-        .package(name: "GiniInternalPaymentSDK", path: "../../GiniComponents/GiniInternalPaymentSDK"),
-        .package(name: "GiniUtilites", path: "../../GiniComponents/GiniUtilites")
+        .package(name: "GiniInternalPaymentSDK", path: "../../GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK"),
+        .package(name: "GiniUtilites", path: "../../GiniComponents/Utilities/GiniUtilites")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

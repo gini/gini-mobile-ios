@@ -14,6 +14,9 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
+    func presentShareInvoiceBottomSheet(bottomSheet: UIViewController)
+    func dismissPaymentReview()
+    func presentErrorAlert(message: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
@@ -53,14 +56,16 @@ public protocol PaymentReviewSupportedFormatsProtocol {
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
-    func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
     func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?)
+    func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                        paymentInfo: PaymentInfo,
+                                        completion: @escaping (UIViewController) -> Void)
 }
 
 /**
  View model class for review screen
  */
-public class PaymentReviewModel: NSObject {
+public class PaymentReviewModel {
 
     var onPreviewImagesFetched: (() -> Void)?
     var reloadCollectionViewClosure: (() -> Void)?
@@ -88,7 +93,7 @@ public class PaymentReviewModel: NSObject {
     public var documentId: String?
     var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
-    private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
+    var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
             self.reloadCollectionViewClosure?()
         }
@@ -213,7 +218,10 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openOnboardingShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo) {
-        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId, paymentInfo: paymentInfo)
+        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId,
+                                                 paymentInfo: paymentInfo) { [weak self] viewController in
+            self?.viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: viewController)
+        }
     }
 
     func openBankSelectionBottomSheet() {
@@ -225,67 +233,101 @@ public class PaymentReviewModel: NSObject {
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
-
-    func fetchImages() {
-        self.isImagesLoading = true
-        let dispatchGroup = DispatchGroup()
-        let dispatchQueue = DispatchQueue(label: "imagesQueue")
-        let dispatchSemaphore = DispatchSemaphore(value: 0)
+    
+    func closePaymentReview() {
+        delegate?.trackOnPaymentReviewCloseButtonClicked()
+        viewModelDelegate?.dismissPaymentReview()
+    }
+    
+    /**
+    Async/await variant of ``fetchImages()`` tailored for SwiftUI and other async contexts.
+    Use this version from SwiftUI (e.g. inside a `Task` or `.task` modifier) or when you are
+    already in an async context and want structured concurrency instead of completion handlers.
+    The synchronous ``fetchImages()`` completion-handler-based version should be used
+    from legacy, non-async code.
+     
+    This method:
+     - Loads all page previews concurrently using a task group.
+     - Updates ``isImagesLoading`` and `cellViewModels`
+     - Invokes ``onPreviewImagesFetched`` once all previews have been processed.
+    */
+    func fetchImages() async {
         guard let document, let documentId else { return }
-        var vms = [PageCollectionCellViewModel]()
-        dispatchQueue.async {
+        
+        isImagesLoading = true
+        
+        let viewModels = await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
             for page in 1 ... document.pageCount {
-                dispatchGroup.enter()
-
-                self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
-                    if let cellModel = self?.proccessPreview(result) {
-                        vms.append(cellModel)
-                    }
-                    dispatchSemaphore.signal()
-                    dispatchGroup.leave()
-                })
-                dispatchSemaphore.wait()
+                group.addTask {
+                    await self.buildCellViewModel(documentId: documentId, pageNumber: page)
+                }
             }
-
-            dispatchGroup.notify(queue: dispatchQueue) {
-                DispatchQueue.main.async {
-                    self.isImagesLoading = false
-                    self.cellViewModels.append(contentsOf: vms)
-                    self.onPreviewImagesFetched?()
+            
+            // Collect all the non nil results.
+            return await group.reduce(into: [PageCollectionCellViewModel]()) { result, cellViewModel in
+                guard let cellViewModel else { return }
+                result.append(cellViewModel)
+            }
+        }
+        
+        isImagesLoading = false
+        cellViewModels.append(contentsOf: viewModels)
+        onPreviewImagesFetched?()
+    }
+    
+    private func buildCellViewModel(documentId: String, pageNumber: Int) async -> PageCollectionCellViewModel? {
+        do {
+            let data = try await fetchPreview(for: documentId, pageNumber: pageNumber)
+            
+            return processPreview(data)
+        } catch {
+            return nil
+        }
+    }
+    
+    private func fetchPreview(for documentId: String, pageNumber: Int) async throws -> Data {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.delegate?.preview(for: documentId, pageNumber: pageNumber) { result in
+                switch result {
+                case .success(let data):
+                    continuation.resume(returning: data)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
                 }
             }
         }
     }
 
-    private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
-        switch result {
-        case let .success(dataImage):
-            if let image = UIImage(data: dataImage) {
-                return createCellViewModel(previewImage: image)
-            }
-        case let .failure(error):
-            if delegate?.shouldHandleErrorInternally(error: error) == true {
-                onErrorHandling?(error)
-            }
-        }
-        return nil
+    private func processPreview(_ data: Data) -> PageCollectionCellViewModel? {
+        guard let image = UIImage(data: data) else { return nil }
+        
+        return createCellViewModel(previewImage: image)
     }
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
-        PaymentReviewContainerViewModel(extractions: extractions,
-                                        paymentInfo: paymentInfo,
-                                        selectedPaymentProvider: selectedPaymentProvider,
-                                        configuration: containerConfiguration,
-                                        strings: containerStrings,
-                                        primaryButtonConfiguration: primaryButtonConfiguration,
-                                        secondaryButtonConfiguration: secondaryButtonConfiguration,
-                                        defaultStyleInputFieldConfiguration: defaultStyleInputFieldConfiguration,
-                                        errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
-                                        selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
-                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                        poweredByGiniStrings: poweredByGiniStrings,
-                                        displayMode: displayMode,
-                                        clientConfiguration: clientConfiguration)
+        let paymentData = PaymentReviewContainerPaymentData(extractions: extractions,
+                                                            document: document,
+                                                            paymentInfo: paymentInfo,
+                                                            selectedPaymentProvider: selectedPaymentProvider,
+                                                            displayMode: displayMode)
+        
+        let buttonsConfiguration = PaymentReviewContainerButtonsConfiguration(primaryButton: primaryButtonConfiguration,
+                                                                               secondaryButton: secondaryButtonConfiguration)
+        
+        let inputFieldsConfiguration = PaymentReviewContainerInputFieldsConfiguration(defaultStyle: defaultStyleInputFieldConfiguration,
+                                                                                       errorStyle: errorStyleInputFieldConfiguration,
+                                                                                       selectionStyle: selectionStyleInputFieldConfiguration)
+        
+        let poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration,
+                                                            strings: poweredByGiniStrings)
+        
+        return PaymentReviewContainerViewModel(paymentData: paymentData,
+                                               configuration: containerConfiguration,
+                                               strings: containerStrings,
+                                               buttonsConfiguration: buttonsConfiguration,
+                                               inputFieldsConfiguration: inputFieldsConfiguration,
+                                               poweredByGiniViewModel: poweredByGiniViewModel,
+                                               clientConfiguration: clientConfiguration)
     }
 }
 

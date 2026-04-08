@@ -27,13 +27,13 @@ To inject your API credentials into the Health and Bank example apps you need to
 
 ## Requirements
 
-- iOS 13+
-- Xcode 15+
+- iOS 16+
+- Xcode 26+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 13 or higher.
+* iPhones with iOS 16 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author

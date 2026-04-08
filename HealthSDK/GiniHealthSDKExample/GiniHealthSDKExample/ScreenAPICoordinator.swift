@@ -192,6 +192,7 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
         if fromVC is PaymentReviewViewController {
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
+        
         return nil
     }
 }

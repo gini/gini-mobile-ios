@@ -22,17 +22,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         let view = EmptyView()
         return view
     }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.closeButtonAccessibilityLabel
-        return button
-    }()
 
     private lazy var titleView: UIView = {
         let view = EmptyView()
@@ -50,16 +39,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
-    }()
-
-    private lazy var closeTitleIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = viewModel.configuration.closeIconAccentColor
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
-        imageView.isHidden = true
-        return imageView
     }()
     
     private let descriptionView = EmptyView()
@@ -111,7 +90,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
     
     public var shouldShowInFullScreenInLandscapeMode: Bool {
-        true
+        false
     }
     
     public override func viewDidLoad() {
@@ -139,10 +118,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private func setupPortraitConstraints() {
         closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
+        let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+            heightConstraint
         ]
         NSLayoutConstraint.activate(portraitConstraints)
     }
@@ -152,10 +133,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
+        let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
-            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
+            heightConstraint
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
     }
@@ -165,16 +148,15 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet(shouldIncludeLargeDetent: true)
+        configureBottomSheet()
+        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
     }
 
     private func setupViewHierarchy() {
-        addCloseButton()
         titleView.addSubview(titleLabel)
-        titleView.addSubview(closeTitleIconImageView)
         contentStackView.addArrangedSubview(titleView)
         descriptionView.addSubview(descriptionLabel)
         contentStackView.addArrangedSubview(descriptionView)
@@ -205,21 +187,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupPoweredByGiniConstraints()
     }
     
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                 constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
-    }
-    
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -240,15 +207,13 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor,
+                                                constant: Constants.viewPaddingConstraint),
+            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor,
+                                                constant: -Constants.viewPaddingConstraint),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
-            closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            closeTitleIconImageView.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeTitleIconImageView.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeTitleIconImageView.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            closeTitleIconImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: Constants.titleViewTitleIconSpacing)
         ])
     }
 
@@ -321,6 +286,7 @@ extension BanksBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
+        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
     }
 }
 
@@ -350,6 +316,9 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     /// BanksBottomView event when a bank is selected from the list
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: GiniOverlayWindowPresenter.NotificationName.dismissOverlay,
+                                            object: nil)
+        }
     }
 }

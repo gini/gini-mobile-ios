@@ -20,7 +20,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     public var message: String {
         switch self {
         case .decorator(let giniError):
-            return giniError.message
+            return giniError.message ?? localizedDescription
         }
     }
     

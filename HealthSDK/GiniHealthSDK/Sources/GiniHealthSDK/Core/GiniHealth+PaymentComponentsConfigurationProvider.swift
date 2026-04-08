@@ -32,13 +32,24 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration {
         PaymentReviewContainerConfiguration(
-            errorLabelTextColor: GiniColor.feedback1.uiColor(),
-            errorLabelFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniHealthImage.lock.preferredUIImage(),
-            lockedFields: GiniHealthConfiguration.shared.useInvoiceWithoutDocument ? true : false,
-            showBanksPicker: true,
-            chevronDownIcon: GiniHealthImage.chevronDown.preferredUIImage(),
-            chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
+            errorLabel: .init(
+                textColor: GiniColor.feedback1.uiColor(),
+                font: GiniHealthConfiguration.shared.font(for: .captions2)
+            ),
+            banksPicker: .init(
+                lockIcon: GiniHealthImage.lock.preferredUIImage(),
+                lockedFields: GiniHealthConfiguration.shared.useInvoiceWithoutDocument ? true : false,
+                showBanksPicker: true,
+                chevronDownIcon: GiniHealthImage.chevronDown.preferredUIImage(),
+                chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
+            ),
+            infoBar: .init(
+                labelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
+                labelFont: GiniHealthConfiguration.shared.font(for: .captions1),
+                backgroundColor: GiniColor.success1.uiColor(),
+                containerBackgroundColor: GiniColor.standard7.uiColor()
+            ),
+            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
         )
     }
 

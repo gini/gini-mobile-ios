@@ -27,8 +27,7 @@ final class SessionManagerHandleErrorTests: XCTestCase {
         super.setUp()
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
-        let session = URLSession(configuration: config)
-        sessionManager = SessionManager(urlSession: session)
+        sessionManager = SessionManager(configuration: config)
         // Set tokens to bypass login flow
         sessionManager.clientAccessToken = "dummyClientToken"
         sessionManager.userAccessToken = "dummyUserToken"

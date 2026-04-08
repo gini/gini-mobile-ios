@@ -10,7 +10,8 @@ import UIKit
 import GiniUtilites
 import Combine
 
-public final class PaymentInfoViewController: UIViewController {
+public final class PaymentInfoViewController: GiniBottomSheetViewController {
+    
     let viewModel: PaymentInfoViewModel
 
     private var portraitConstraints: [NSLayoutConstraint] = []
@@ -125,6 +126,14 @@ public final class PaymentInfoViewController: UIViewController {
         questionsTableView.heightAnchor.constraint(equalToConstant: Constants.questionTitleHeight)
     }()
     
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+    
     private var cancellables = Set<AnyCancellable>()
     
     public init(viewModel: PaymentInfoViewModel) {
@@ -144,26 +153,13 @@ public final class PaymentInfoViewController: UIViewController {
     }
 
     private func setupView() {
-        addCloseButton()
+        configureBottomSheet()
+        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
         setupInitialLayout()
         setupViewVisibility()
-    }
-    
-    private func addCloseButton() {
-        let closeIconTintColor = viewModel.configuration.closeIconTintColor
-        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate)
-
-        let closeButton = UIBarButtonItem(image: closeButtonIcon,
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(didTapCloseButton))
-
-        closeButton.tintColor = closeIconTintColor
-        closeButton.accessibilityLabel = viewModel.strings.accessibilityCloseText
-        navigationItem.leftBarButtonItem = closeButton
     }
     
     private func setupViewHierarchy() {
@@ -442,5 +438,7 @@ extension PaymentInfoViewController {
         static let estimatedAnswerHeight = 250.0
 
         static let viewPaddingLandscape = 126.0
+        
+        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
     }
 }

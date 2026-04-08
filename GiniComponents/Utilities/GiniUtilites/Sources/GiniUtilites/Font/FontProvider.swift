@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 public final class FontProvider {
     private var textStyleFonts = FontProvider.defaultFonts
@@ -31,6 +32,17 @@ public final class FontProvider {
      */
     public func font(for textStyle: UIFont.TextStyle) -> UIFont {
         return textStyleFonts[textStyle] ?? UIFont.systemFont(ofSize: 17)
+    }
+    
+    /**
+     Retrieves the SwiftUI `Font` associated with a specific text style.
+     - parameter textStyle: The text style for which to retrieve the SwiftUI font.
+     - returns: A `SwiftUI.Font` created from the associated `UIFont`.
+     */
+    public func font(for textStyle: UIFont.TextStyle) -> Font {
+        let giniFont: UIFont = font(for: textStyle)
+        
+        return Font(giniFont: giniFont)
     }
 }
 

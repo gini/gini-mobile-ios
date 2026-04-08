@@ -36,11 +36,11 @@ struct DocumentWithExtractions: Codable {
 
 final class InvoicesListViewModel {
     
-    private let coordinator: InvoicesListCoordinator
+    weak var coordinator: InvoicesListCoordinator?
     private var documentService: GiniHealthSDK.DefaultDocumentService
 
     private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
-    var health: GiniHealth
+    weak var health: GiniHealth?
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     var invoices: [DocumentWithExtractions]
@@ -76,14 +76,20 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.health = health
         self.shouldUseAlternativeNavigation = shouldUseAlternativeNavigation
-        self.health.paymentDelegate = self
+        health.paymentDelegate = self
+    }
+    
+    deinit {
+        #if DEBUG
+        print("✅ InvoicesListViewModel deinitialized")
+        #endif
     }
     
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
         guard let documentIdToRefetch else { return }
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController?.showActivityIndicator()
+        DispatchQueue.main.async { [weak self] in
+            self?.coordinator?.invoicesListViewController?.showActivityIndicator()
         }
         self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
@@ -96,8 +102,8 @@ final class InvoicesListViewModel {
                         self?.hardcodedInvoicesController.updateDocumentExtractions(documentId: document.id, extractions: extractions)
                         self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
                         DispatchQueue.main.async {
-                            self?.coordinator.invoicesListViewController?.hideActivityIndicator()
-                            self?.coordinator.invoicesListViewController?.reloadTableView()
+                            self?.coordinator?.invoicesListViewController?.hideActivityIndicator()
+                            self?.coordinator?.invoicesListViewController?.reloadTableView()
                         }
                     case .failure(let error):
                         self?.errors.append(error.localizedDescription)
@@ -112,12 +118,13 @@ final class InvoicesListViewModel {
     }
 
     private func setDispatchGroupNotifier() {
-        dispatchGroup.notify(queue: .main) {
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
             self.showErrorsIfAny()
             if !self.invoices.isEmpty {
                 self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
-                self.coordinator.invoicesListViewController?.hideActivityIndicator()
-                self.coordinator.invoicesListViewController?.reloadTableView()
+                self.coordinator?.invoicesListViewController?.hideActivityIndicator()
+                self.coordinator?.invoicesListViewController?.reloadTableView()
             }
         }
     }
@@ -125,9 +132,9 @@ final class InvoicesListViewModel {
     private func showErrorsIfAny() {
         if !errors.isEmpty {
             let uniqueErrorMessages = Array(Set(errors))
-            DispatchQueue.main.async {
-                self.coordinator.invoicesListViewController.hideActivityIndicator()
-                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            DispatchQueue.main.async { [weak self] in
+                self?.coordinator?.invoicesListViewController?.hideActivityIndicator()
+                self?.coordinator?.invoicesListViewController?.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
             }
             errors = []
         }
@@ -135,12 +142,12 @@ final class InvoicesListViewModel {
 
     @objc
     func uploadInvoices() {
-        coordinator.invoicesListViewController?.showActivityIndicator()
+        coordinator?.invoicesListViewController?.showActivityIndicator()
         hardcodedInvoicesController.obtainInvoicePhotosHardcoded { [weak self] invoicesData in
             if !invoicesData.isEmpty {
                 self?.uploadDocuments(dataDocuments: invoicesData)
             } else {
-                self?.coordinator.invoicesListViewController.hideActivityIndicator()
+                self?.coordinator?.invoicesListViewController?.hideActivityIndicator()
             }
         }
         setDispatchGroupNotifier()
@@ -219,6 +226,7 @@ extension InvoicesListViewModel {
     }
     
     private func startPaymentFlow(documentId: String?) {
+        guard let coordinator = coordinator else { return }
         let navigationController: UINavigationController
         
         if shouldUseAlternativeNavigation {
@@ -230,7 +238,7 @@ extension InvoicesListViewModel {
             navigationController = coordinator.invoicesListNavigationController
         }
         
-        health.startPaymentFlow(documentId: documentId,
+        health?.startPaymentFlow(documentId: documentId,
                                 paymentInfo: obtainPaymentInfo(for: documentId),
                                 navigationController: navigationController,
                                 trackingDelegate: self)
@@ -245,31 +253,31 @@ extension InvoicesListViewModel {
                            bic: "",
                            amount: invoices[index].amountToPay ?? "",
                            purpose: invoices[index].purpose ?? "",
-                           paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
-                           paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
+                           paymentUniversalLink: health?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: health?.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 }
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     func didFetchedPaymentProviders() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.reloadTableView()
+        DispatchQueue.main.async { [weak self] in
+            self?.coordinator?.invoicesListViewController?.reloadTableView()
         }
     }
 
     func isLoadingStateChanged(isLoading: Bool) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             if isLoading {
-                self.coordinator.invoicesListViewController.showActivityIndicator()
+                self?.coordinator?.invoicesListViewController?.showActivityIndicator()
             } else {
-                self.coordinator.invoicesListViewController.hideActivityIndicator()
+                self?.coordinator?.invoicesListViewController?.hideActivityIndicator()
             }
         }
     }
     
     func didDismissPaymentComponents() {
         if shouldUseAlternativeNavigation {
-            coordinator.invoicesListNavigationController?.presentedViewController?.dismiss(animated: true)
+            coordinator?.invoicesListNavigationController?.presentedViewController?.dismiss(animated: true)
         }
     }
 }

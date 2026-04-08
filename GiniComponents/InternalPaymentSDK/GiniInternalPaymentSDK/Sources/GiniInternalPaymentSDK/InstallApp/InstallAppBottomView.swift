@@ -24,6 +24,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
 
     private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
@@ -141,6 +142,14 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         
         postAccessibilityFocus()
     }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
+        view.accessibilityViewIsModal = false
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -156,13 +165,26 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
-    /// VoiceOver has already finished processing the UI changes.
+    /**
+     Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
+
+     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
+     accessibility engine correctly hides sibling views from VoiceOver. Setting it on the
+     `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
+     leaving VoiceOver free to wander into the dimmed background behind the sheet.
+
+     The 0.5 s delay gives the sheet presentation controller time to finish its sizing
+     pass before VoiceOver reads the element tree. We previously used 1.0 s but that
+     caused a noticeable lag in VoiceOver announcements.
+     */
     private func postAccessibilityFocus() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work)
     }
 
     private func setupView() {
@@ -447,8 +469,13 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.updateLayoutForCurrentOrientation()
             self?.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            // Post the accessibility focus notification only AFTER the transition
+            // animation has fully completed and the layout is stable.  Calling it
+            // inside alongsideTransition fired the notification while the view was
+            // still animating, so VoiceOver read elements at incorrect positions.
             self?.postAccessibilityFocus()
-        }, completion: nil)
+        })
     }
 }
 

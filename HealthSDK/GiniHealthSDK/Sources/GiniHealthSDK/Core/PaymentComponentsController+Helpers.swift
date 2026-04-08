@@ -267,10 +267,10 @@ extension PaymentComponentsController {
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
                                            previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            clientConfiguration: configurationProvider.clientConfiguration)
-
-        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
-
+        
+        let vc = PaymentReviewViewController(viewModel: viewModel,
+                                               selectedPaymentProvider: healthSelectedPaymentProvider)
+        
         completion(vc, nil)
     }
 
@@ -401,6 +401,7 @@ extension PaymentComponentsController {
     
     private func loadPDFData(paymentRequestId: String, viewController: UIViewController) {
         self.loadPDF(paymentRequestId: paymentRequestId, completion: { [weak self] pdfData in
+            guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
             let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestId)
 
             guard let pdfPath else {
@@ -408,7 +409,10 @@ extension PaymentComponentsController {
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
+            self?.sharePDF(pdfURL: pdfPath,
+                           paymentRequestId: paymentRequestId,
+                           viewController:
+                            shareInvoiceBottomSheet) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
                     self?.shareInvoiceBottomSheet?.updateViews()
                 }
@@ -701,7 +705,9 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
     }
     
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                               paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                                               completion: @escaping (UIViewController) -> Void) {
         self.paymentInfo = paymentInfo
         giniSDK.paymentService.qrCodeImage(paymentRequestId: paymentRequestId) { [weak self] result in
             switch result {
@@ -709,7 +715,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
                 DispatchQueue.main.async {
                     let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image, paymentRequestId: paymentRequestId)
                     guard let shareInvoiceBottomSheet else { return }
-                    self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
+                    completion(shareInvoiceBottomSheet)
                 }
             case .failure(let error):
                 self?.handleError(error)
