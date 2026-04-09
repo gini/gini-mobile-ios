@@ -587,15 +587,15 @@ lane :run_unit_tests do |options|
   sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
 end
 
-<<~DOC
-Builds targets using the `gym` action (a wrapper around xcodebuild).
+desc <<~DOC
+  Builds targets using the `gym` action (a wrapper around xcodebuild).
 
-This lane builds the specified target without code signing or archiving, useful for 
-CI/CD pipelines where you only need to verify the build succeeds.
+  This lane builds the specified target without code signing or archiving, useful for
+  CI/CD pipelines where you only need to verify the build succeeds.
 
-Parameters:
-- `scheme`: The name of the scheme to build. Example: `GinBankSDK`.
-- `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+  Parameters:
+  - `scheme`: The name of the scheme to build. Example: `GiniBankSDK`.
+  - `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
 DOC
 lane :build_scheme do |options|
   gym(
@@ -629,4 +629,131 @@ DOC
 lane :register_new_devices do 
     register_devices(devices_file: "./devices.txt")
 end
+
+
+  desc <<~DOC
+    Generic lane: archive and export any iOS app as an .ipa for App Store / TestFlight distribution.
+
+    Uses manual signing — provisioning profiles must already be installed on the machine
+    (or set up by setup_manual_signing in CI).
+
+    Parameters:
+      project            - Path to the .xcodeproj (relative to repo root)
+      scheme             - Xcode scheme to build
+      output_name        - IPA filename without extension (default: scheme name)
+      output_directory   - Directory to write the IPA into (default: ".")
+      team_id            - Apple Developer Team ID (default: "JA825X8F7Z")
+      provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+      configuration      - Build configuration (default: "Release")
+  DOC
+  lane :archive_ios_app do |options|
+    project     = options[:project]     || UI.user_error!("Missing required option: project")
+    scheme      = options[:scheme]      || UI.user_error!("Missing required option: scheme")
+    profiles    = options[:provisioning_profiles] || UI.user_error!("Missing required option: provisioning_profiles")
+    # When called from the CLI, options arrive as strings — parse JSON if needed
+    profiles    = JSON.parse(profiles) if profiles.is_a?(String)
+    output_name = options[:output_name]      || scheme
+    output_dir  = options[:output_directory] || "."
+    team_id     = options[:team_id]          || "JA825X8F7Z"
+    config      = options[:configuration]    || "Release"
+
+    gym(
+      project: project,
+      scheme: scheme,
+      configuration: config,
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: profiles,
+        signingStyle: "manual",
+        signingCertificate: "Apple Distribution",
+        teamID: team_id,
+        stripSwiftSymbols: true,
+        thinning: "<none>"
+      },
+      destination: "generic/platform=iOS",
+      output_directory: output_dir,
+      output_name: output_name
+    )
+  end
+
+  desc <<~DOC
+    Build any iOS app IPA and upload it to TestFlight in one step.
+
+    Parameters:
+      project               - Path to the .xcodeproj (relative to repo root)
+      scheme                - Xcode scheme to build
+      ipa_name              - IPA filename without extension (default: scheme name)
+      output_directory      - Directory to write the IPA into (default: ".")
+      team_id               - Apple Developer Team ID (default: "JA825X8F7Z")
+      provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+      configuration         - Build configuration (default: "Release")
+
+    Environment Variables:
+      APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+      APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+  DOC
+  lane :build_and_upload_to_testflight do |options|
+    ipa_name       = options[:ipa_name] || options[:scheme] || UI.user_error!("Missing required option: ipa_name or scheme")
+    output_dir     = options[:output_directory] || "."
+
+    archive_ios_app(options.merge(output_name: ipa_name, output_directory: output_dir))
+    publish_to_testflight(ipa_path: "#{output_dir}/#{ipa_name}.ipa")
+  end
+
+  desc <<~DOC
+    Upload an .ipa to TestFlight via xcrun altool.
+
+    Parameters:
+      ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
+
+    Environment Variables:
+      APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+      APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+                                          (default: build_artifacts/AppStoreConnectAPIKey.p8)
+  DOC
+  lane :publish_to_testflight do |options|
+    ipa_path  = options[:ipa_path] || "./GiniBankSDKExample.ipa"
+    key_id    = ENV['APP_STORE_CONNECT_API_KEY_ID']
+    issuer_id = ENV['APP_STORE_CONNECT_API_ISSUER_ID']
+    key_path  = ENV['APP_STORE_CONNECT_API_KEY_PATH'] || "build_artifacts/AppStoreConnectAPIKey.p8"
+
+    repo_root         = File.expand_path("..", __dir__)
+    resolved_key_path = File.expand_path(key_path, repo_root)
+    resolved_ipa_path = File.expand_path(ipa_path, repo_root)
+
+    UI.user_error!("APP_STORE_CONNECT_API_KEY_ID is not set")    if key_id.nil? || key_id.empty?
+    UI.user_error!("APP_STORE_CONNECT_API_ISSUER_ID is not set") if issuer_id.nil? || issuer_id.empty?
+    UI.user_error!("API key not found at: #{resolved_key_path}") unless File.exist?(resolved_key_path)
+    UI.user_error!("IPA not found at: #{resolved_ipa_path}")     unless File.exist?(resolved_ipa_path)
+
+    # xcrun altool reads .p8 keys from ~/.appstoreconnect/private_keys/AuthKey_<ID>.p8
+    private_keys_dir      = File.expand_path("~/.appstoreconnect/private_keys")
+    expected_key_path     = "#{private_keys_dir}/AuthKey_#{key_id}.p8"
+    created_temporary_key = false
+    sh("mkdir -p '#{private_keys_dir}'")
+    unless resolved_key_path == expected_key_path
+      sh("cp '#{resolved_key_path}' '#{expected_key_path}'")
+      created_temporary_key = true
+    end
+    # Ensure restrictive permissions on the API key file
+    sh("chmod 600 '#{expected_key_path}'") if File.exist?(expected_key_path)
+
+    begin
+      UI.message "🚀 Uploading #{resolved_ipa_path} to TestFlight..."
+      sh(
+        "xcrun altool --upload-app" \
+        " --file '#{resolved_ipa_path}'" \
+        " --type ios" \
+        " --apiKey '#{key_id}'" \
+        " --apiIssuer '#{issuer_id}'"
+      )
+    ensure
+      # Remove the temporary key copy to avoid leaving credentials on disk
+      sh("rm -f '#{expected_key_path}'") if created_temporary_key
+    end
+  end
+
 end

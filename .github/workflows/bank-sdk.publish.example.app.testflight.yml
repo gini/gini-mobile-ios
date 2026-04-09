@@ -1,0 +1,31 @@
+name: Upload GiniBankSDKExample to TestFlight
+
+permissions:
+  contents: read 
+on:
+  # schedule:
+    # - cron: '0 0 1 1,4,7,10 *'  # 1st of Jan, Apr, Jul, Oct at midnight UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
+
+jobs:
+  upload-testflight:
+    uses: ./.github/workflows/publish.example.app.testflight.yml
+    with:
+      xcode_version: '16.3'
+      project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
+      scheme: 'GiniBankSDKExample'
+      bundle_identifier: 'net.gini.banksdk.example'
+      bundle_identifier_extension: 'net.gini.banksdk.example.ShareExtension'
+      ipa_name: 'GiniBankSDKExample'
+    secrets:
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64}}
+      APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      APP_STORE_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
