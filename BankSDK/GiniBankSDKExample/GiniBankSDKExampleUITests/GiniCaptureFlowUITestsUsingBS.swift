@@ -144,7 +144,6 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5), "Should return to main screen after tapping Done")
     }
     
-    
     // MARK: - Upload photo from gallery Flow Test for CX payment using Browserstack
 
     func testCXflowGalleryUpload() {

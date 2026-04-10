@@ -18,6 +18,38 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         "return_asistant" PDF file
         a return assistant sample image to the Photos library for the gallery flow test
      */
+    
+    // MARK: - Return Assistant PDF upload via BrowserStack Custom_Files folder
+
+    func testReturnAssistantBS() {
+        // Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        // Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        // Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        // Tap Files button
+        captureScreen.filesButton.tap()
+        // Tap Upload files button
+        captureScreen.uploadFilesButton.tap()
+        // Navigate to BrowserStack Custom_Files folder and tap the RA document
+        mainScreen.tapFileWithNameFromBSCustomFiles(fileName: TestFixtures.Files.returnAssistant)
+        // Tap Open button
+        captureScreen.openGalleryButton.tap()
+        // Assert Get started button is displayed
+        XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10), "Return Assistant Get Started button should appear")
+        // Tap Get Started button
+        returnAssistantScreen.getStartedButton.tap()
+        // Tap Proceed button
+        returnAssistantScreen.proceedButton.tap()
+        // Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
+        // Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5), "Done/Send feedback button should appear")
+        mainScreen.sendFeedbackButton.tap()
+        // Assert main screen is shown again
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable, "Photopayment button should be hittable after completing the flow")
+    }
 
     func testReturnAssistant() {
         

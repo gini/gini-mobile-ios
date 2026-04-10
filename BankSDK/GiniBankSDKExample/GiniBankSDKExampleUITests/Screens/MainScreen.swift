@@ -207,6 +207,30 @@ class MainScreen {
         fileElement.tap()
     }
     
+    /// Navigates the document picker to the BrowserStack-supplied `Custom_Files` folder and taps the file.
+    ///
+    /// BrowserStack places non-media files directly at:
+    /// **Browse → Custom_Files → <file>**
+    ///
+    /// - Parameter fileName: File name without extension (matched with CONTAINS[c]).
+    func tapFileWithNameFromBSCustomFiles(fileName: String) {
+        // The document picker may open at Recents. Tap Browse to reveal the location list.
+        let browseButton = app.buttons["Browse"].firstMatch
+        if browseButton.waitForExistence(timeout: 3) {
+            browseButton.tap()
+        }
+
+        // Tap the Custom_Files folder created by BrowserStack
+        let customFilesFolder = app.staticTexts["Custom_Files"].firstMatch
+        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5), "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test")
+        customFilesFolder.tap()
+
+        // Tap the target file
+        let fileElement = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 5), "File '\(fileName)' not found in Custom_Files folder")
+        fileElement.tap()
+    }
+
     func assertTextIsDisplayedInAnyStaticText(expectedText: String) {
         
         // Get all static text elements

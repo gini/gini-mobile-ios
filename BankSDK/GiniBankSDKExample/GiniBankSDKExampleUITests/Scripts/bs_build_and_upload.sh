@@ -43,9 +43,10 @@ CX_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Swift_AccNo_r
 PP_UPLOAD_MEDIA_FILE_PDF="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/return_asistant.pdf"
 
 DEVICE_1="iPhone 15-17"
+DEVICE_2="iPad Air 6-17"
 # Runs all three tests in GiniCaptureFlowUITestsUsingBS
 # TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow"
-TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistant"
+TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantBS"
 
 # ── Validate media files ─────────────────────────────────────────────────────────
 if [ ! -f "$MEDIA_FILE_PNG" ]; then
@@ -196,7 +197,7 @@ echo "  curl -u \"$BS_USER:$BS_KEY\" \\"
 echo "    -X POST \"https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build\" \\"
 echo "    -H \"Content-Type: application/json\" \\"
 echo "    -d '{"
-echo "      \"devices\": [\"$DEVICE_1\"],"
+echo "      \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],"
 echo "      \"app\": \"$APP_URL\","
 echo "      \"testSuite\": \"$TEST_URL\","
 echo "      \"only-testing\": [\"$TEST_IDENTIFIER\"],"
@@ -210,7 +211,7 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\"],
+    \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": [\"$TEST_IDENTIFIER\"],
