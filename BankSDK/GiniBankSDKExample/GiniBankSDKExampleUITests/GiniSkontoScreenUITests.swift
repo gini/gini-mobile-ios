@@ -201,7 +201,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
     }
     
-    func testSkontoHelpButtonbo() {
+    func testSkontoHelpButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
