@@ -50,6 +50,56 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
+    
+    /**
+     Simulator-compatible variant of `testSkonto`.
+     Uses the photo gallery instead of the Files app, so no file needs to be
+     copied to the Files app on the simulator.
+
+     Pre-condition: add the `skonto_past` image (PNG or JPG) to the simulator's
+     photo library before running this test. The method picks the **last** photo
+     in the library, so make sure the skonto image is the most recently added one.
+     */
+    func testSkontoUsingGallery() {
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button to open the upload menu
+        captureScreen.filesButton.tap()
+        //Tap Upload photo button to open the photo library picker
+        captureScreen.uploadPhotoButton.tap()
+        //Handle photo library permission alert if it appears
+        mainScreen.handlePhotoPermission(answer: true)
+        //Select the latest photo from the gallery (skonto_past image)
+        uploadLatestPhotoFromGallery()
+        //Wait for ReviewViewController and tap Process to trigger analysis
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+        reviewScreen.processButton.tap()
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
+        //Tap Got it button if the edge-case alert is displayed (only shown for expired/today/cash skonto)
+        if skontoScreen.gotItButton.waitForExistence(timeout: 10) {
+            skontoScreen.gotItButton.tap()
+        }
+        //Assert Skonto confirm button is visible and tap it
+        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 5))
+        skontoScreen.proceedButton.tap()
+        //Tap Only for this transaction if TransactionDocs bottom sheet appears (skipped if preference already saved)
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 5) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
+        //Tap Done / Send feedback
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
+        mainScreen.sendFeedbackButton.tap()
+        //Assert Photopayment button is displayed
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+    }
+
+    
     func testSkontoBackButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
