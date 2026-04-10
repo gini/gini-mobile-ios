@@ -52,9 +52,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
     
     /**
-     Simulator-compatible variant of `testSkonto`.
-     Uses the photo gallery instead of the Files app, so no file needs to be
-     copied to the Files app on the simulator.
 
      Pre-condition: add the `skonto_past` image (PNG or JPG) to the simulator's
      photo library before running this test. The method picks the **last** photo
