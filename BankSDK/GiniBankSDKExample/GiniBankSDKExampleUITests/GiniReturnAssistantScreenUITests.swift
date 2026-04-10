@@ -15,7 +15,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     /*
      To launch these tests and closely mimic real user behavior
      Please upload to device: 
-        "ReturnAssistantTestrechnung" PDF file
+        "return_asistant" PDF file
         a return assistant sample image to the Photos library for the gallery flow test
      */
 

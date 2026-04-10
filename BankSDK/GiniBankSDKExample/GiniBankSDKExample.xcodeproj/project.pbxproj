@@ -104,9 +104,6 @@
 		28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4482D2E9172002EE0DA /* GalleryManagerTests.swift */; };
 		28D1B45F2D2ECC9B002EE0DA /* BankAPILibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B45E2D2ECC9B002EE0DA /* BankAPILibraryTests.swift */; };
 		28D1B4622D2ED5F9002EE0DA /* BankAPILibraryIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4612D2ED5F9002EE0DA /* BankAPILibraryIntegrationTests.swift */; };
-		28D35CA92F83D81B000339B4 /* BrowserStackTestHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */; };
-		28D35CAD2F83D835000339B4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAB2F83D835000339B4 /* README.md */; };
-		28D35CAE2F83D835000339B4 /* bs_build_and_upload.sh in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */; };
 		28D35CB42F83D933000339B4 /* Swift_AccNo_routing_DOLL.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */; };
 		28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */; };
 		28D35CB82F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */; };
@@ -427,8 +424,6 @@
 		28D1B45E2D2ECC9B002EE0DA /* BankAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankAPILibraryTests.swift; sourceTree = "<group>"; };
 		28D1B4612D2ED5F9002EE0DA /* BankAPILibraryIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAPILibraryIntegrationTests.swift; sourceTree = "<group>"; };
 		28D35CA72F83D81B000339B4 /* BrowserStackTestHelper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = BrowserStackTestHelper.xcframework; sourceTree = "<group>"; };
-		28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = bs_build_and_upload.sh; sourceTree = "<group>"; };
-		28D35CAB2F83D835000339B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photopayment_Invoice1.png; sourceTree = "<group>"; };
 		28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Swift_AccNo_routing_DOLL.png; sourceTree = "<group>"; };
 		28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureFlowUITestsUsingBS.swift; sourceTree = "<group>"; };
@@ -912,15 +907,6 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
-		28D35CAC2F83D835000339B4 /* BSScripts */ = {
-			isa = PBXGroup;
-			children = (
-				28D35CAA2F83D835000339B4 /* bs_build_and_upload.sh */,
-				28D35CAB2F83D835000339B4 /* README.md */,
-			);
-			path = BSScripts;
-			sourceTree = "<group>";
-		};
 		28D35CB22F83D933000339B4 /* TestSamplesForBS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1234,7 +1220,6 @@
 				28DAF4972CD293140035A1FF /* GiniTransactionDocsScreenUITests.swift */,
 				28D35CBF2F8416D0000339B4 /* TestFixtures.swift */,
 				28DAF48C2CD293140035A1FF /* Screens */,
-				28D35CAC2F83D835000339B4 /* BSScripts */,
 				28D35CA82F83D81B000339B4 /* Frameworks */,
 				28D35CB32F83D933000339B4 /* TestSamples */,
 			);
@@ -1729,8 +1714,6 @@
 			files = (
 				28D35CB42F83D933000339B4 /* Swift_AccNo_routing_DOLL.png in Resources */,
 				28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */,
-				28D35CAD2F83D835000339B4 /* README.md in Resources */,
-				28D35CAE2F83D835000339B4 /* bs_build_and_upload.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

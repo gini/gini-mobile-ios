@@ -44,7 +44,7 @@ PP_UPLOAD_MEDIA_FILE_PDF="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/return_asi
 
 DEVICE_1="iPhone 15-17"
 # Runs all three tests in GiniCaptureFlowUITestsUsingBS
-<!-- TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow"--->
+# TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow"
 TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistant"
 
 # ── Validate media files ─────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ if [ ! -f "$CX_CAPTURE_MEDIA_FILE" ]; then
 fi
 echo "Using CX capture injection file:      $CX_CAPTURE_MEDIA_FILE"
 
-<!-- PDF Upload-->
+# <!-- PDF Upload-->
 
 if [ ! -f "$PP_UPLOAD_MEDIA_FILE_PDF" ]; then
   echo "ERROR: PDF upload file not found: $PP_UPLOAD_MEDIA_FILE_PDF"
@@ -152,7 +152,7 @@ echo "  CX capture injection response: $CX_RESPONSE"
 CX_INJECTION_URL=$(echo "$CX_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
 if [ -z "$CX_INJECTION_URL" ]; then echo "ERROR: Failed to get CX injection media_url — check response above"; exit 1; fi
 
-<!--PDF upload-->
+# <!--PDF upload-->
 echo "  Uploading PDF file (return_assistant.pdf)..."
 UPLOAD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
@@ -162,7 +162,7 @@ echo "  Upload PDF response: $UPLOAD_RESPONSE"
 UPLOAD_URL=$(echo "$UPLOAD_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
 if [ -z "$UPLOAD_URL" ]; then echo "ERROR: Failed to get PDF media_url — check response above"; exit 1; fi
 
-<!--end pdf upload-->
+# <!--end pdf upload-->
 
 echo "  Uploading app IPA..."
 APP_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
