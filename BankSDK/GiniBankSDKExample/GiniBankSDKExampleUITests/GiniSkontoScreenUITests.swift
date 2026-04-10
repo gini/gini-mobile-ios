@@ -174,9 +174,9 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Got it button is displayed
-        XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
-        //Assert that Switch is disabled
+        //Assert Skonto screen is shown (Got it button does NOT appear for valid/future skonto)
+        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+        //Assert that Switch is enabled for valid skonto
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
     }
     
@@ -195,9 +195,9 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Got it button is displayed
+        //Assert that Got it button is displayed for expired skonto
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
-        //Assert that Switch is disabled
+        //Assert that Switch is disabled for expired skonto
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
     }
     
