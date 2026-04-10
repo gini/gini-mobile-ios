@@ -159,7 +159,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     }
     
     
-    func testSkontoInFuture() {
+    func testSkontoSwitchEnabledForValidDiscount() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -180,7 +180,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
     }
     
-    func testSkontoInPast() {
+    func testSkontoSwitchDisabledForExpiredDiscount() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
