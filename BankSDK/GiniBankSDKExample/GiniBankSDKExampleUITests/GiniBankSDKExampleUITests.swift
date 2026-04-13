@@ -27,7 +27,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = false
+    var isSimulator = true
     
     override func setUpWithError() throws {
         
