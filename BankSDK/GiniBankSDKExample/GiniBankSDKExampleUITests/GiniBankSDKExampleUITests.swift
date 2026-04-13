@@ -30,8 +30,8 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var isSimulator = false
     
     override func setUpWithError() throws {
-        let isCI = ProcessInfo.processInfo.environment["CI"] != nil
-        if isSimulator || isCI {
+        
+        if isSimulator {
             throw XCTSkip("Skipping test")
         }
         continueAfterFailure = false
