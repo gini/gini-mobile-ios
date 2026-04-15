@@ -17,6 +17,8 @@ import XCTest
  */
 class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
 
+    override var additionalLaunchArguments: [String] { ["-ResetCaptureOnboarding"] }
+
     // MARK: - H1
 
     func testCXOnboardingSkipButtonIsPresent() {
@@ -58,23 +60,30 @@ class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
     // MARK: - H3
 
     func testCXOnboardingAppearsAfterSwitchingFromSEPA() {
-        //First: launch capture in SEPA mode (default) and skip onboarding
+        //First: launch capture in SEPA mode (default) and dismiss standard onboarding
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 0)
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
+        //Standard onboarding appears on first launch — dismiss it before reaching camera
+        onboadingScreen.skipOnboardingScreens()
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10),
                       "Camera screen should be reachable in SEPA mode.")
         captureScreen.cancelButtonNavigation.tap()
 
-        //Second: switch to Cross-border and verify onboarding is still accessible
+        //Restart the app so -ResetCaptureOnboarding clears onboardingShowed again,
+        //ensuring CX onboarding can appear as if it were a fresh launch.
+        app.terminate()
+        app.launch()
+
+        //Second: switch to Cross-border and verify CX onboarding appears
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
-        //Skip button should be present regardless of whether onboarding was previously shown
+        //Skip button should be present regardless of whether onboarding was previously shown in SEPA
         onboadingScreen.skipOnboardingScreens()
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10),
                       "Camera capture screen should appear after switching to CX mode and skipping onboarding.")
