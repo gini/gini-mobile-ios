@@ -7,17 +7,10 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
-// Please remove the prefix if you want to test locally on a simulator
+// Pre-condition: run scripts/copy_test_fixtures.sh once after booting the simulator
+// to copy the required PDFs into the app's Documents folder.
 
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
-
-    /*
-     To launch these tests and closely mimic real user behavior
-     Please upload to device:
-        "skonto_past" file with expired skonto
-        "skonto_valid" file with valid skonto
-     */
     
     /**
      Verifies the complete Skonto flow is reachable when a document is uploaded via the Files app.
@@ -36,10 +29,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
-        //Tap valid skonto document
+        //Tap valid skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert Skonto screen appeared — proves Files upload was processed successfully
         XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
     }
@@ -90,10 +88,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
-        //tap Skonto document
+        //tap Skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -115,10 +118,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
-        //tap Skonto document
+        //tap Skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -152,10 +160,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
-        //tap Skonto document
+        //tap Skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert Skonto screen is shown (Got it button does NOT appear for valid/future skonto)
         XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
         //Assert that Switch is enabled for valid skonto
@@ -173,10 +186,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
-        //tap Skonto document
+        //tap Skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert that Got it button is displayed for expired skonto
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Assert that Switch is disabled for expired skonto
@@ -194,10 +212,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
-        //tap Skonto document
+        //tap Skonto document (Open button is handled inside tapFileWithName)
         mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        //Handle review screen if it appears (PDFs uploaded via Files may show a review step)
+        if reviewScreen.processButton.waitForExistence(timeout: 5) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+            reviewScreen.processButton.tap()
+        }
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button

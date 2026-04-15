@@ -30,11 +30,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var isSimulator = true
     
     override func setUpWithError() throws {
-        
         if isSimulator {
             throw XCTSkip("Skipping test")
         }
         continueAfterFailure = false
+        copyFixturesToSimulator()
         app = XCUIApplication()
         app.launchArguments = ["-testing"]
         app.launchArguments = ["-StartFromCleanState", "YES"]
@@ -114,6 +114,51 @@ class GiniBankSDKExampleUITests: XCTestCase {
             let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: indicator)
             let result = XCTWaiter().wait(for: [expectation], timeout: 30)
             if result != .completed { XCTFail("Analysis screen did not disappear within timeout") }
+        }
+    }
+
+    /// Copies all PDFs from TestFixturePDFs/ into every booted simulator's app Documents folder.
+    /// The UI test runner executes on the Mac host (not inside the simulator sandbox), so it has
+    /// full access to ~/Library/Developer/CoreSimulator/. We scan all booted simulators rather
+    /// than relying on SIMULATOR_UDID, which is not injected by Xcode into the test process.
+    /// Copies all PDFs from TestFixturePDFs/ into the tested app's Documents folder.
+    /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
+    ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
+    /// Going one level up reaches the shared Application/ directory where all app containers
+    /// for this test device live — including the tested app's container.
+    private func copyFixturesToSimulator() {
+        let fileManager = FileManager.default
+
+        let applicationDir = URL(fileURLWithPath: NSHomeDirectory())
+            .deletingLastPathComponent()
+            .path
+
+        guard let appFolders = try? fileManager.contentsOfDirectory(atPath: applicationDir) else { return }
+
+        let fixturesURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()  // GiniBankSDKExampleUITests/
+            .deletingLastPathComponent()  // GiniBankSDKExample/
+            .appendingPathComponent("TestFixturePDFs")
+
+        let pdfFiles = ((try? fileManager.contentsOfDirectory(at: fixturesURL,
+                                                              includingPropertiesForKeys: nil,
+                                                              options: .skipsHiddenFiles)) ?? [])
+            .filter { $0.pathExtension == "pdf" }
+        guard !pdfFiles.isEmpty else { return }
+
+        for folder in appFolders {
+            let metadataPath = "\(applicationDir)/\(folder)/.com.apple.mobile_container_manager.metadata.plist"
+            guard let metadata = NSDictionary(contentsOfFile: metadataPath),
+                  let bundleID = metadata["MCMMetadataIdentifier"] as? String,
+                  bundleID == "net.gini.banksdk.example" else { continue }
+
+            let docsURL = URL(fileURLWithPath: "\(applicationDir)/\(folder)/Documents")
+            try? fileManager.createDirectory(at: docsURL, withIntermediateDirectories: true)
+            for pdf in pdfFiles {
+                let dest = docsURL.appendingPathComponent(pdf.lastPathComponent)
+                try? fileManager.copyItem(at: pdf, to: dest)
+            }
+            return
         }
     }
 
