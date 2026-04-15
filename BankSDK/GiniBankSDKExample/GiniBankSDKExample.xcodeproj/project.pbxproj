@@ -212,6 +212,7 @@
 		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
 		84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */; };
 		84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */; };
+		A1B5BA952F8FAD540060D899 /* GiniCXOnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */; };
 		AA0000012C00000000000001 /* ExtractionResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000002C00000000000001 /* ExtractionResultCell.swift */; };
 		CX000001000000010000001A /* TransactionSummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CX000000000000010000001A /* TransactionSummaryScreen.swift */; };
 		CX000001000000020000001A /* NoResultsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CX000000000000020000001A /* NoResultsScreen.swift */; };
@@ -525,6 +526,7 @@
 		84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderFooterViewRegistration.swift"; sourceTree = "<group>"; };
 		88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
+		A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCXOnboardingUITests.swift; sourceTree = "<group>"; };
 		AA0000002C00000000000001 /* ExtractionResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultCell.swift; sourceTree = "<group>"; };
 		CX000000000000010000001A /* TransactionSummaryScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionSummaryScreen.swift; sourceTree = "<group>"; };
 		CX000000000000020000001A /* NoResultsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsScreen.swift; sourceTree = "<group>"; };
@@ -810,6 +812,7 @@
 		28B3B0492F77223300A5740A /* Crossboder Payments */ = {
 			isa = PBXGroup;
 			children = (
+				A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */,
 				CX000000000000040000001A /* GiniCXCameraUITests.swift */,
 				CX000000000000030000001A /* GiniProductTagSettingsUITests.swift */,
 				CX000000000000050000001A /* GiniCXFeatureFlagsUITests.swift */,
@@ -1949,6 +1952,7 @@
 				28DAF4D02CD3A8F90035A1FF /* HelpScreen.swift in Sources */,
 				28DAF4A72CD293140035A1FF /* GiniSkontoScreenUITests.swift in Sources */,
 				28DAF4AD2CD293140035A1FF /* GiniOnboardingScreenUITest.swift in Sources */,
+				A1B5BA952F8FAD540060D899 /* GiniCXOnboardingUITests.swift in Sources */,
 				28D35CBC2F83F6F4000339B4 /* CXExtractionScreen.swift in Sources */,
 				28DAF4D32CD3A9020035A1FF /* ReviewScreen.swift in Sources */,
 				CX000001000000010000001A /* TransactionSummaryScreen.swift in Sources */,
