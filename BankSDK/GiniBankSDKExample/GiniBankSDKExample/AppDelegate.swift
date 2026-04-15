@@ -23,6 +23,11 @@ import Firebase
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
             return true
         }
+        /// Reset persisted onboarding state so UI tests that pass -ResetCaptureOnboarding
+        /// always see the onboarding screen, regardless of previous runs.
+        if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
+            UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
+        }
 #endif
         FirebaseApp.configure()
 
