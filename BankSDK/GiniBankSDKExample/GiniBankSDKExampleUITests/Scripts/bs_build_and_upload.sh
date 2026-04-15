@@ -42,11 +42,14 @@ PP_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Photopayment_
 CX_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Swift_AccNo_routing_DOLL.png"
 PP_UPLOAD_MEDIA_FILE_PDF="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/return_asistant.pdf"
 
-DEVICE_1="iPhone 15-17"
-DEVICE_2="iPad Air 6-17"
+DEVICE_1="iPhone 16-18"
+DEVICE_2="iPhone 13 Pro Max-18"
 # Runs all three tests in GiniCaptureFlowUITestsUsingBS
 # TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow"
-TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantBS"
+# Runs testReturnAssistantBS — requires camera injection media uploaded above
+# TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantBS"
+# Runs all CX onboarding tests — no media/camera injection required
+TEST_IDENTIFIER="GiniBankSDKExampleUITests/GiniCXOnboardingUITests"
 
 # ── Validate media files ─────────────────────────────────────────────────────────
 if [ ! -f "$MEDIA_FILE_PNG" ]; then
