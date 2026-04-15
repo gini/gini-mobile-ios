@@ -28,7 +28,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
     var isSimulator = false
-    
+
+    /**
+     Override in a subclass to inject extra launch arguments before the app launches.
+     The base argument `-StartFromCleanState YES` is always included.
+     */
+    var additionalLaunchArguments: [String] { [] }
+
     override func setUpWithError() throws {
         
         if isSimulator {
@@ -36,8 +42,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-testing"]
-        app.launchArguments = ["-StartFromCleanState", "YES"]
+        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
