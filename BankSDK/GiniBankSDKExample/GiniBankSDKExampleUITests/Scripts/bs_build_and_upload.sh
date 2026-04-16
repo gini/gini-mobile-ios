@@ -57,7 +57,9 @@ DEVICE_2="iPhone 13 Pro Max-18"
 ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
   "GiniBankSDKExampleUITests/GiniProductTagSettingsUITests",
-  "GiniBankSDKExampleUITests/GiniCXOnboardingUITests"
+  "GiniBankSDKExampleUITests/GiniCXOnboardingUITests",
+  "GiniBankSDKExampleUITests/GiniCXFeatureFlagsUITests",
+  "GiniBankSDKExampleUITests/GiniCXCameraUITests"
 ]'
 
 # ── Validate media files ─────────────────────────────────────────────────────────
