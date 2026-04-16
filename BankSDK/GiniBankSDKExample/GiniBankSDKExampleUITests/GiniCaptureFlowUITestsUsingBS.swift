@@ -91,6 +91,31 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5), "Should return to main screen after tapping Done")
     }
 
+    // MARK: - File upload Flow Test for CX payment using Browserstack
+
+    func testCXCaptureFlowFileUpload() throws {
+        mainScreen.configurationButton.tap()
+        let crossBorderButton = app.buttons["Cross-border"]
+        XCTAssertTrue(crossBorderButton.waitForExistence(timeout: 5), "Cross-border option should exist in Product Tag section")
+        crossBorderButton.tap()
+
+        settingScreen.closeButton.tap()
+        mainScreen.photoPaymentButton.tap()
+        mainScreen.handleCameraPermission(answer: true)
+        onboadingScreen.skipOnboardingScreens()
+        captureScreen.filesButton.tap()
+        captureScreen.uploadFilesButton.tap()
+        mainScreen.tapFileWithNameFromBSCustomFiles(fileName: TestFixtures.Files.cxInvoice)
+        captureScreen.openGalleryButton.tap()
+
+        XCTAssertTrue(transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 30), "Transaction docs option should appear")
+        transactionDocsScreen.onlyForThisTransaction.tap()
+
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5), "Done/Send feedback button should appear")
+        mainScreen.sendFeedbackButton.tap()
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable, "Should return to main screen")
+    }
+
     // MARK: - Upload photo from gallery Flow Test for CX payment using Browserstack
 
     func testCXflowGalleryUpload() {
