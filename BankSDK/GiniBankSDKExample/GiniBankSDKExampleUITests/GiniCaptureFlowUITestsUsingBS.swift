@@ -9,7 +9,9 @@ import XCTest
 import BrowserStackTestHelper
 
 class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
-    
+
+    override var additionalLaunchArguments: [String] { ["-DisableReturnAssistant"] }
+
     // MARK: - Capture Flow Test for Photopayment flow using Browserstack
 
     func testPPCaptureFlow() throws {
