@@ -2,10 +2,7 @@
 set -e
 
 # ── Usage ────────────────────────────────────────────────────────────────────────
-# ./bs_build_and_upload.sh [MEDIA_FILENAME]
-#
-# MEDIA_FILENAME  File inside TestSamples/TestSamplesForBS/ used for uploadMedia.
-#                 Defaults to Photopayment_Invoice1.png if not provided.
+# ./bs_build_and_upload.sh
 #
 # BrowserStack credentials can be overridden via environment variables:
 #   export BS_USER="your_username"
@@ -14,9 +11,7 @@ set -e
 #
 # Examples:
 #   ./bs_build_and_upload.sh
-#   ./bs_build_and_upload.sh Photopayment_Invoice1.png
 #   BS_USER="myuser" BS_KEY="mykey" ./bs_build_and_upload.sh
-#   BS_USER="myuser" BS_KEY="mykey" ./bs_build_and_upload.sh Photopayment_Invoice2.png
 
 # ── Configuration ────────────────────────────────────────────────────────────────
 BS_USER="${BS_USER:-<your_browserstack_user_name>}"
@@ -33,9 +28,6 @@ SIGNING_CONFIG="$DERIVED_DATA/BrowserStackSigning.xcconfig"
 
 IPA_OUTPUT="$SCRIPT_DIR/GiniBankSDKExample.ipa"
 TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
-
-MEDIA_FILENAME="${1:-Photopayment_Invoice1.png}"
-MEDIA_FILE_PNG="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/$MEDIA_FILENAME"
 
 # Both files are always uploaded — each test picks its injection file by name via injectImage(imageName:)
 PP_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Photopayment_Invoice1.png"
@@ -63,13 +55,6 @@ ONLY_TESTING='[
 ]'
 
 # ── Validate media files ─────────────────────────────────────────────────────────
-if [ ! -f "$MEDIA_FILE_PNG" ]; then
-  echo "Upload media file not found: $MEDIA_FILE_PNG"
-  echo "   Place the file inside TestSamples/TestSamplesForBS/ or pass a different filename as the first argument."
-  exit 1
-fi
-echo "Using upload media file:              $MEDIA_FILE_PNG"
-
 if [ ! -f "$PP_CAPTURE_MEDIA_FILE" ]; then
   echo "Camera injection file not found: $PP_CAPTURE_MEDIA_FILE"
   exit 1
@@ -144,15 +129,6 @@ echo "Test suite saved: $TEST_SUITE_OUTPUT"
 # ── Step 4: Upload to BrowserStack ─────────────────────────────────────────────
 echo "[4/5] Uploading to BrowserStack..."
 
-echo "  Uploading upload media (gallery upload file)..."
-MEDIA_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@$MEDIA_FILE_PNG" \
-  -F "custom_id=UploadMedia")
-echo "  Upload media response: $MEDIA_RESPONSE"
-MEDIA_PNG_URL=$(echo "$MEDIA_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
-if [ -z "$MEDIA_PNG_URL" ]; then echo "ERROR: Failed to get media_url — check response above"; exit 1; fi
-
 echo "  Uploading PP capture injection media (Photopayment_Invoice1.png)..."
 PP_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
@@ -211,7 +187,6 @@ if [ -z "$TEST_URL" ]; then echo "ERROR: Failed to get test_suite_url — check 
 echo "All files uploaded"
 echo "  app_url:                       $APP_URL"
 echo "  test_suite_url:                $TEST_URL"
-echo "  media_url (gallery upload):    $MEDIA_PNG_URL"
 echo "  media_url (PP injection):      $PP_INJECTION_URL"
 echo "  media_url (CX injection):      $CX_INJECTION_URL"
 echo "  media_url (CX gallery, last):  $CX_GALLERY_URL"
@@ -229,7 +204,7 @@ echo "      \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],"
 echo "      \"app\": \"$APP_URL\","
 echo "      \"testSuite\": \"$TEST_URL\","
 echo "      \"only-testing\": $ONLY_TESTING,"
-echo "      \"uploadMedia\": [\"$MEDIA_PNG_URL\", \"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],"
+echo "      \"uploadMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],"
 echo "      \"resignApp\": \"true\","
 echo "      \"enableCameraImageInjection\": \"true\","
 echo "      \"cameraInjectionMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\"]"
@@ -243,7 +218,7 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"uploadMedia\": [\"$MEDIA_PNG_URL\", \"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],
+    \"uploadMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],
     \"resignApp\": \"true\",
     \"enableCameraImageInjection\": \"true\",
     \"cameraInjectionMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\"]
