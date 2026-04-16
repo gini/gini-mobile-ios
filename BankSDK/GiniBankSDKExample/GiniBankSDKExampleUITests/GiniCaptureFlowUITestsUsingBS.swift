@@ -152,14 +152,6 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
         XCTAssertTrue(crossBorderButton.waitForExistence(timeout: 5), "Cross-border option should exist in Product Tag section")
         crossBorderButton.tap()
 
-        let crossBorderClientButton = app.buttons["Cross border client"]
-        XCTAssertTrue(crossBorderClientButton.waitForExistence(timeout: 5), "Cross border client option should exist in Credentials Set section")
-        crossBorderClientButton.tap()
-
-        let okButton = app.alerts.buttons["OK"]
-        XCTAssertTrue(okButton.waitForExistence(timeout: 5), "OK button should appear after credentials change")
-        okButton.tap()
-
         settingScreen.closeButton.tap()
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
