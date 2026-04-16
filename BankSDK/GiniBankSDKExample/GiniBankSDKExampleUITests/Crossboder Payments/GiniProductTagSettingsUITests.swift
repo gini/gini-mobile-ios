@@ -41,9 +41,9 @@ class GiniProductTagSettingsUITests: GiniBankSDKExampleUITests {
         //Scroll to Product Tag segmented control
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         //Select Cross-border (index 1)
-        settingScreen.productTagSegmentedControl.buttons.element(boundBy: 1).tap()
-        //Assert Cross-border is selected
         let crossBorderSegment = settingScreen.productTagSegmentedControl.buttons.element(boundBy: 1)
+        crossBorderSegment.tap()
+        //Assert Cross-border is selected
         XCTAssertTrue(crossBorderSegment.isSelected, "Cross-border segment should be selected.")
         //Close and reopen Settings to verify persistence
         settingScreen.closeButton.tap()
@@ -63,9 +63,9 @@ class GiniProductTagSettingsUITests: GiniBankSDKExampleUITests {
         //Scroll to Product Tag segmented control
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         //Select Auto-detect (index 2)
-        settingScreen.productTagSegmentedControl.buttons.element(boundBy: 2).tap()
-        //Assert Auto-detect is selected
         let autoDetectSegment = settingScreen.productTagSegmentedControl.buttons.element(boundBy: 2)
+        autoDetectSegment.tap()
+        //Assert Auto-detect is selected
         XCTAssertTrue(autoDetectSegment.isSelected, "Auto-detect segment should be selected.")
         //Close and reopen Settings to verify persistence
         settingScreen.closeButton.tap()
@@ -87,9 +87,9 @@ class GiniProductTagSettingsUITests: GiniBankSDKExampleUITests {
         //Select Cross-border first
         settingScreen.productTagSegmentedControl.buttons.element(boundBy: 1).tap()
         //Switch back to SEPA (index 0)
-        settingScreen.productTagSegmentedControl.buttons.element(boundBy: 0).tap()
-        //Assert SEPA is now selected
         let sepaSegment = settingScreen.productTagSegmentedControl.buttons.element(boundBy: 0)
+        sepaSegment.tap()
+        //Assert SEPA is now selected
         XCTAssertTrue(sepaSegment.isSelected,
                       "SEPA segment should be selected after switching back from Cross-border.")
         settingScreen.closeButton.tap()
