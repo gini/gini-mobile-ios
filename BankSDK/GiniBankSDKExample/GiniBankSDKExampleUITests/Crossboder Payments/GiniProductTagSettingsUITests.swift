@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-
 /**
  Group A — Tests that verify the Product Tag segmented control in the Settings screen.
 
