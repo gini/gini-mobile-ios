@@ -28,6 +28,9 @@ import Firebase
         if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
             UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
         }
+        if CommandLine.arguments.contains("-DisableReturnAssistant") {
+            GiniBankConfiguration.shared.returnAssistantEnabled = false
+        }
 #endif
         FirebaseApp.configure()
 
