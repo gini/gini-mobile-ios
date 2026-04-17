@@ -498,12 +498,11 @@ extension PaymentComponentsController {
                 completion(.success(paymentRequestId))
                 self.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
-                completion(.failure(healthError))
+                completion(.failure(error))
             }
         })
     }
-    
+
     /**
      Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
 
@@ -520,12 +519,11 @@ extension PaymentComponentsController {
             case .success(let result):
                 completion?(.success(result))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
-                completion?(.failure(healthError))
+                completion?(.failure(error))
             }
         }
     }
-    
+
     /**
      Retrieves a preview for the specified document and page number.
 
@@ -540,8 +538,7 @@ extension PaymentComponentsController {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
-                completion(.failure(healthError))
+                completion(.failure(error))
             }
         }
     }
@@ -569,8 +566,7 @@ extension PaymentComponentsController {
             case .success(let paymentRequest):
                 completion(.success(paymentRequest))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
-                completion(.failure(healthError))
+                completion(.failure(error))
             }
         }
     }
