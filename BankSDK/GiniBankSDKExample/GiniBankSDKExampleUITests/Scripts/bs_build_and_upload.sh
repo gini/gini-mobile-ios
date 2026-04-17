@@ -40,7 +40,7 @@ MEDIA_FILE_PNG="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/$MEDIA_FILENAME"
 # Both files are always uploaded — each test picks its injection file by name via injectImage(imageName:)
 PP_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Photopayment_Invoice1.png"
 CX_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Swift_AccNo_routing_DOLL.png"
-PP_UPLOAD_MEDIA_FILE_PDF="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/return_asistant.pdf"
+
 # cx_invoice.png is uploaded LAST so it is the most-recent photo in the gallery.
 # testCXflowGalleryUpload relies on uploadLatestPhotoFromGallery which picks the last item.
 CX_GALLERY_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/cx_invoice.png"
