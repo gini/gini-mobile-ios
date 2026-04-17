@@ -165,6 +165,50 @@ extension YourCoordinator: GiniHealthDelegate {
 healthSDK.delegate = self
 ```
 
+## Submitting extraction feedback before the payment flow
+
+When using `startPaymentFlow` with a document ID, the SDK **automatically** submits feedback after the user reviews and confirms payment data on the Payment Review screen — you do not need to call anything extra.
+
+If you build a **custom payment flow** (i.e. you present your own review UI), submit feedback manually before starting the payment flow. This improves extraction quality over time.
+
+> ⚠️  **Important:**
+> Feedback is sent using the **specific extractions** returned by `getAllExtractions(docId:)`. The payment-relevant fields (`recipient`, `iban`, `amountToPay`, `purpose`) are updated with the user's input, while any other extractions present in the array (e.g. `medical_service_provider`) are preserved and sent as-is.
+
+```swift
+// 1. Fetch all specific extractions
+healthSDK.getAllExtractions(docId: documentId) { [weak self] result in
+    guard let self else { return }
+    switch result {
+    case .success(let extractions):
+        // 2. Apply user corrections to the relevant fields, then submit feedback
+        var updatedExtractions = extractions
+        // … update updatedExtractions with user's reviewed values …
+
+        self.healthSDK.submitFeedback(docId: documentId,
+                                      updatedExtractions: updatedExtractions) { feedbackResult in
+            switch feedbackResult {
+            case .success:
+                // 3. Now start the payment flow
+                self.healthSDK.startPaymentFlow(documentId: documentId,
+                                                paymentInfo: nil,
+                                                navigationController: self.navigationController,
+                                                trackingDelegate: self)
+            case .failure(let error):
+                // Handle feedback error — you may still proceed to start the payment flow
+                print("Feedback submission failed: \(error)")
+            }
+        }
+    case .failure(let error):
+        print("Failed to fetch extractions: \(error)")
+    }
+}
+```
+
+The `submitFeedback(docId:updatedExtractions:completion:)` method:
+- Dispatches its completion block on the **main thread**.
+- Returns `.success(())` when the API accepted the feedback.
+- Returns `.failure(.apiError(_))` on any API error; inspect the wrapped `GiniError` for details.
+
 ## Starting the Payment flow
 
 We provide a custom payment flow for the users to pay the invoice/document/digital payment.

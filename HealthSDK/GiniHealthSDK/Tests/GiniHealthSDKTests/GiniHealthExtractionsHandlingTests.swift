@@ -235,6 +235,49 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNil(receivedExtractions, "Extractions should be nil when the request fails")
     }
 
+    func testSubmitFeedbackSuccess() throws {
+        let extractions = try loadExtractionsContainer(fromFile: "extractionsWithPayment")
+        let paymentExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: extractions).payment?.first ?? []
+
+        // When
+        let expectation = self.expectation(description: "Submitting feedback succeeds")
+        var submissionError: GiniHealthError?
+        giniHealth.submitFeedback(docId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                  updatedExtractions: paymentExtractions) { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                submissionError = error
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(submissionError, "Feedback submission should succeed without error")
+    }
+
+    func testSubmitFeedbackFailure() {
+        // When
+        let expectation = self.expectation(description: "Submitting feedback fails")
+        var submissionError: GiniHealthError?
+        giniHealth.submitFeedback(docId: MockSessionManager.failurePayableDocumentID,
+                                  updatedExtractions: []) { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                submissionError = error
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(submissionError, "Feedback submission should fail for an invalid document ID")
+    }
+
     func testGetDoctorsNameExtractionsSuccess() {
         // Given
         let expectedDoctorName = "DR. SOMMER TEAM"
