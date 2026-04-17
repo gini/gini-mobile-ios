@@ -204,8 +204,10 @@ public class PaymentReviewModel {
             case let .success(requestId):
                 completion?(requestId)
             case let .failure(error):
-                if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
-                    self?.onCreatePaymentRequestErrorHandling?()
+                DispatchQueue.main.async { [weak self] in
+                    if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
+                        self?.onCreatePaymentRequestErrorHandling?()
+                    }
                 }
             }
         })
