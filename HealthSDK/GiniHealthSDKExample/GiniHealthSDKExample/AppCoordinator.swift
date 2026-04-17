@@ -22,6 +22,14 @@ final class AppCoordinator: Coordinator {
      * Default value is `false`.
      */
     private var shouldUseAlternativeNavigation = false
+
+    /**
+     * Determines whether `GiniHealthError` instances should be handled internally by the SDK (`true`)
+     * or forwarded to the consumer app for custom handling (`false`).
+     *
+     * Default value is `true`.
+     */
+    private var handleErrorsInternally = true
     
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
@@ -403,9 +411,27 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 // MARK: GiniHealthDelegate
 
+@MainActor
 extension AppCoordinator: GiniHealthDelegate {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
-        return true
+        let handleInternally = handleErrorsInternally
+        if !handleInternally {
+            presentHealthError(error)
+        }
+        return handleInternally
+    }
+
+    private func presentHealthError(_ error: GiniHealthError) {
+        let message: String
+        switch error {
+        case .noInstalledApps:
+            message = "No supported banking app is installed to complete the payment."
+        case .noPaymentDataExtracted:
+            message = "The document does not contain valid payment data."
+        case .apiError(let apiError):
+            message = apiError.detailedDescription
+        }
+        presentError(title: "Error", message: message)
     }
     
     func didCreatePaymentRequest(paymentRequestId: String) {
@@ -428,7 +454,8 @@ extension AppCoordinator: DebugMenuPresenter {
                                                               paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
                                                               popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
-                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
+                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
+                                                              handleErrorsInternally: handleErrorsInternally)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -448,6 +475,8 @@ extension AppCoordinator: DebugMenuDelegate {
             giniHealthConfiguration.showPaymentReviewCloseButton = isOn
         case .useAlternativeNavigation:
             shouldUseAlternativeNavigation = isOn
+        case .handleErrorsInternally:
+            handleErrorsInternally = isOn
         }
     }
 

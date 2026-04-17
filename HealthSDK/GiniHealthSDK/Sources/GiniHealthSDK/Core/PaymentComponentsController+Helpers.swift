@@ -502,7 +502,7 @@ extension PaymentComponentsController {
                 completion(.success(paymentRequestId))
                 self.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         })
@@ -524,7 +524,7 @@ extension PaymentComponentsController {
             case .success(let result):
                 completion?(.success(result))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion?(.failure(healthError))
             }
         }
@@ -544,7 +544,7 @@ extension PaymentComponentsController {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         }
@@ -573,7 +573,7 @@ extension PaymentComponentsController {
             case .success(let paymentRequest):
                 completion(.success(paymentRequest))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         }

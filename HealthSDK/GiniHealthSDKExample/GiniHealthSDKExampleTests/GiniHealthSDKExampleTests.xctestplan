@@ -30,13 +30,6 @@
     {
       "enabled" : true,
       "parallelizable" : false,
-      "selectedTests" : [
-        "GiniHealthSDKIntegrationTests",
-        "GiniHealthSDKPinningExampleIntegrationTests",
-        "UploadDocumentsTests",
-        "AlternativeNavigationTests",
-        "GiniHealthSDKPinningExampleWrongCertificatesTests"
-      ],
       "target" : {
         "containerPath" : "container:GiniHealthSDKExample.xcodeproj",
         "identifier" : "F484E8F32F4F555300547A9B",
