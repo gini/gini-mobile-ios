@@ -410,8 +410,8 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 // MARK: GiniHealthDelegate
 
-extension AppCoordinator: GiniHealthDelegate {
-    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+extension AppCoordinator: @MainActor GiniHealthDelegate {
+    @MainActor func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
         let handleInternally = handleErrorsInternally
         if !handleInternally {
             presentHealthError(error)
@@ -419,6 +419,7 @@ extension AppCoordinator: GiniHealthDelegate {
         return handleInternally
     }
 
+    @MainActor
     private func presentHealthError(_ error: GiniHealthError) {
         let message: String
         switch error {
@@ -429,9 +430,7 @@ extension AppCoordinator: GiniHealthDelegate {
         case .apiError(let apiError):
             message = apiError.detailedDescription
         }
-        DispatchQueue.main.async { [weak self] in
-            self?.presentError(title: "Error", message: message)
-        }
+        presentError(title: "Error", message: message)
     }
     
     func didCreatePaymentRequest(paymentRequestId: String) {
