@@ -8,7 +8,6 @@ import Testing
 import UIKit
 import GiniHealthSDK
 import GiniInternalPaymentSDK
-import GiniUtilites
 @testable import GiniHealthSDKExample
 
 @MainActor
