@@ -69,11 +69,6 @@ jobs:
         run: |
             plutil -replace API_KEY -string "$FIREBASE_API_KEY" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
 
-      - name: Set build number
-        run: |
-          cd BankSDK/GiniBankSDKExample
-          xcrun agvtool new-version -all ${{ github.run_number }}
-
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
