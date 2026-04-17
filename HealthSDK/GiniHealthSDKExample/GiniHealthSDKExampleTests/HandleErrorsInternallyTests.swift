@@ -8,6 +8,7 @@ import Testing
 import UIKit
 import GiniHealthSDK
 import GiniInternalPaymentSDK
+import GiniUtilites
 @testable import GiniHealthSDKExample
 
 @MainActor
@@ -73,14 +74,14 @@ struct HandleErrorsInternallyTests {
         #expect(result == true, "shouldHandleErrorInternally should return true by default")
     }
 
-    @Test func shouldHandleErrorInternallyReturnsFalseAfterTogglingOff() {
+    @Test func shouldHandleErrorInternallyReturnsFalseAfterDisabling() {
         let coordinator = AppCoordinator(window: UIWindow())
         coordinator.didChangeSwitchValue(type: .handleErrorsInternally, isOn: false)
         let result = coordinator.shouldHandleErrorInternally(error: .noInstalledApps)
         #expect(result == false, "shouldHandleErrorInternally should return false after toggling off")
     }
 
-    @Test func shouldHandleErrorInternallyReturnsTrueAfterRetoggling() {
+    @Test func shouldHandleErrorInternallyReturnsTrueAfterReEnabling() {
         let coordinator = AppCoordinator(window: UIWindow())
         coordinator.didChangeSwitchValue(type: .handleErrorsInternally, isOn: false)
         coordinator.didChangeSwitchValue(type: .handleErrorsInternally, isOn: true)
