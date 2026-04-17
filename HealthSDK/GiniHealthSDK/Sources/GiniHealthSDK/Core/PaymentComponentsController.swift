@@ -192,7 +192,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             case .success(let result):
                 completion?(.success(result))
             case .failure(let error):
-                completion?(.failure(error))
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
+                completion?(.failure(healthError))
             }
         }
     }
