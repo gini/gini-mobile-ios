@@ -410,8 +410,9 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 // MARK: GiniHealthDelegate
 
-extension AppCoordinator: @MainActor GiniHealthDelegate {
-    @MainActor func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+@MainActor
+extension AppCoordinator: GiniHealthDelegate {
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
         let handleInternally = handleErrorsInternally
         if !handleInternally {
             presentHealthError(error)
@@ -419,7 +420,6 @@ extension AppCoordinator: @MainActor GiniHealthDelegate {
         return handleInternally
     }
 
-    @MainActor
     private func presentHealthError(_ error: GiniHealthError) {
         let message: String
         switch error {
