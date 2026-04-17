@@ -19,10 +19,6 @@ import Firebase
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
-        /// This is to not initialize what we don't need in the tests.
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
-            return true
-        }
         /// Reset persisted onboarding state so UI tests that pass -ResetCaptureOnboarding
         /// always see the onboarding screen, regardless of previous runs.
         if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
@@ -30,6 +26,10 @@ import Firebase
         }
         if CommandLine.arguments.contains("-DisableReturnAssistant") {
             GiniBankConfiguration.shared.returnAssistantEnabled = false
+        }
+        /// Skip full initialization when running as unit test host.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return true
         }
 #endif
         FirebaseApp.configure()
