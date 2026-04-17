@@ -251,3 +251,9 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
 echo "Build response: $BUILD_RESPONSE"
 echo ""
 echo "Done! Check BrowserStack App Automate dashboard for results."
+
+# ── Cleanup ──────────────────────────────────────────────────────────────────────
+echo "Cleaning up build artifacts..."
+rm -f "$IPA_OUTPUT" "$TEST_SUITE_OUTPUT"
+echo "Removed: $IPA_OUTPUT"
+echo "Removed: $TEST_SUITE_OUTPUT"
