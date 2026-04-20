@@ -208,3 +208,22 @@ init(compositeDocuments: [CompositeDocument]?,
 Refer to AGENTS.md for PR description generation and repository conventions.
 
 Always follow AGENTS.md instructions when generating pull request descriptions.
+
+
+
+# Skills
+
+Skills are reusable prompt files that extend Claude's capabilities for specific team workflows.
+They live in `.claude/skills/` and are invoked by name in any Claude conversation.
+
+---
+
+## Available Skills
+
+### `/generate-xray-tests`
+
+Generates manual test cases from a Jira ticket, local spec file, or pasted text, and writes them as a CSV ready to import into Xray Cloud.
+
+- **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
+- **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
+- **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
