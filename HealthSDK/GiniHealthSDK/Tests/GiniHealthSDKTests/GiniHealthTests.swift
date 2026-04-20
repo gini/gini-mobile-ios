@@ -4,6 +4,43 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
+// MARK: - Mock Delegates
+
+private final class MockGiniHealthDelegate: GiniHealthDelegate {
+    var didDismissHealthSDKCalled = false
+    var shouldHandleErrorInternallyReturnValue = false
+
+    func didCreatePaymentRequest(paymentRequestId: String) {}
+
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        shouldHandleErrorInternallyReturnValue
+    }
+
+    func didDismissHealthSDK() {
+        didDismissHealthSDKCalled = true
+    }
+}
+
+private final class MockPaymentComponentsDelegate: PaymentComponentsControllerProtocol {
+    var isLoadingStateChangedCalled = false
+    var lastLoadingState: Bool?
+    var didFetchedPaymentProvidersCalled = false
+    var didDismissPaymentComponentsCalled = false
+
+    func isLoadingStateChanged(isLoading: Bool) {
+        isLoadingStateChangedCalled = true
+        lastLoadingState = isLoading
+    }
+
+    func didFetchedPaymentProviders() {
+        didFetchedPaymentProvidersCalled = true
+    }
+
+    func didDismissPaymentComponents() {
+        didDismissPaymentComponentsCalled = true
+    }
+}
+
 final class GiniHealthTests: GiniHealthTestCase {
 
     // MARK: - Helper
@@ -133,5 +170,126 @@ final class GiniHealthTests: GiniHealthTestCase {
 
         assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Informal German tip pattern should match")
+    }
+
+    // MARK: - Start Payment Flow
+
+    func testStartPaymentFlowDoesNotCrash() {
+        // Given
+        let navigationController = UINavigationController()
+
+        // When / Then — just verifies no crash on the public entry point
+        giniHealth.startPaymentFlow(documentId: nil,
+                                    paymentInfo: nil,
+                                    navigationController: navigationController,
+                                    trackingDelegate: nil)
+    }
+
+    // MARK: - Initializers
+
+    func testInitWithCredentialsCreatesValidInstance() {
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain")
+
+        // Then
+        XCTAssertNotNil(instance, "GiniHealth should be created with credential initializer")
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up")
+    }
+
+    func testInitWithPinningConfigCreatesValidInstance() {
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain",
+                                  pinningConfig: ["test.domain": ["sha256/abc123"]])
+
+        // Then
+        XCTAssertNotNil(instance, "GiniHealth should be created with pinning-config initializer")
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up")
+    }
+
+    // MARK: - Version String
+
+    func testVersionString() {
+        XCTAssertFalse(GiniHealth.versionString.isEmpty, "Version string should not be empty")
+    }
+
+    // MARK: - Fetch Bank Logos
+
+    func testFetchBankLogos() {
+        let result = giniHealth.fetchBankLogos()
+        // Without loaded providers the logos tuple is valid (nil or empty logos is acceptable)
+        XCTAssertTrue(result.logos == nil || result.logos?.isEmpty == true, "Logos should be nil or empty before providers are loaded")
+    }
+
+    // MARK: - DataForReview init
+
+    func testDataForReviewInitStoresValues() throws {
+        // Given
+        let apiDocument: GiniHealthAPILibrary.Document = try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document1"))
+        let document = try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
+        let extractions: [GiniHealthSDK.Extraction] = []
+
+        // When
+        let dataForReview = DataForReview(document: document,
+                                          extractions: extractions)
+
+        // Then
+        XCTAssertEqual(dataForReview.document, document, "DataForReview should store the document")
+        XCTAssertEqual(dataForReview.extractions.count, extractions.count, "DataForReview should store the extractions")
+    }
+
+    // MARK: - Delegate Forwarding
+
+    func testIsLoadingStateChangedForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: true)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, true, "Loading state value should be forwarded")
+    }
+
+    func testIsLoadingStateChangedFalseForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: false)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, false, "Loading state false should be forwarded")
+    }
+
+    func testDidFetchedPaymentProvidersForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.didFetchedPaymentProviders()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didFetchedPaymentProvidersCalled, "didFetchedPaymentProviders should be forwarded to paymentDelegate")
+    }
+
+    func testDidDismissPaymentComponentsForwardsToHealthDelegate() {
+        // Given
+        let mockDelegate = MockGiniHealthDelegate()
+        giniHealth.delegate = mockDelegate
+
+        // When
+        giniHealth.didDismissPaymentComponents()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didDismissHealthSDKCalled, "didDismissPaymentComponents should call didDismissHealthSDK on the health delegate")
     }
 }
