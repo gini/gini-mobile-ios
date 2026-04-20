@@ -26,4 +26,29 @@ final class GiniHealthSDKInitializationTests: GiniHealthSDKIntegrationTestsBase 
     func testPaymentServiceDomain() throws {
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
+
+    // MARK: - Initializer Coverage
+
+    func testInitWithCredentialsSetsUpPaymentComponentsController() {
+        // When
+        let instance = GiniHealth(id: testClientID,
+                                  secret: testClientPassword,
+                                  domain: testClientDomain)
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController,
+                        "paymentComponentsController should be initialised by the credential init")
+    }
+
+    func testInitWithPinningConfigSetsUpPaymentComponentsController() {
+        // When
+        let instance = GiniHealth(id: testClientID,
+                                  secret: testClientPassword,
+                                  domain: testClientDomain,
+                                  pinningConfig: [:])
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController,
+                        "paymentComponentsController should be initialised by the pinning-config init")
+    }
 }
