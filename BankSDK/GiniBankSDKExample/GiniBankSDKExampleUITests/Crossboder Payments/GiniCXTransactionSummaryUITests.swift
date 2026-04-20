@@ -40,9 +40,12 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
         //Assert Transfer Summary appears and shows at least one extraction
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         //Close SDK
@@ -62,9 +65,12 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
         //Assert at least one extraction cell is visible
         XCTAssertTrue(transactionSummaryScreen.firstExtractionCell.waitForExistence(timeout: 20))
         //Assert that the first text field in the extraction cell is editable
@@ -88,9 +94,12 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
         //Wait for Transfer Summary
         XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 30))
         //Tap Done — submits transfer summary and closes the SDK
