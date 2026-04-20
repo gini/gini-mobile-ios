@@ -172,6 +172,52 @@ final class GiniHealthTests: GiniHealthTestCase {
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Informal German tip pattern should match")
     }
 
+    // MARK: - Initializers
+
+    func testInitWithCredentialsCreatesValidInstance() throws {
+        // Probe Keychain before invoking the credential init.
+        // The SPM test runner lacks Keychain entitlements; skip instead of crashing.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain")
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by credential initializer")
+    }
+
+    func testInitWithPinningConfigCreatesValidInstance() throws {
+        // Probe Keychain before invoking the pinning-config init.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain",
+                                  pinningConfig: ["test.domain": ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="]])
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by pinning-config initializer")
+    }
+
     // MARK: - Start Payment Flow
 
     func testStartPaymentFlowDoesNotCrash() {
@@ -185,31 +231,6 @@ final class GiniHealthTests: GiniHealthTestCase {
                                     trackingDelegate: nil)
     }
 
-    // MARK: - Initializers
-
-    func testInitWithCredentialsCreatesValidInstance() {
-        // When
-        let instance = GiniHealth(id: "test-id",
-                                  secret: "test-secret",
-                                  domain: "test.domain")
-
-        // Then
-        XCTAssertNotNil(instance, "GiniHealth should be created with credential initializer")
-        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up")
-    }
-
-    func testInitWithPinningConfigCreatesValidInstance() {
-        // When
-        let instance = GiniHealth(id: "test-id",
-                                  secret: "test-secret",
-                                  domain: "test.domain",
-                                  pinningConfig: ["test.domain": ["sha256/abc123"]])
-
-        // Then
-        XCTAssertNotNil(instance, "GiniHealth should be created with pinning-config initializer")
-        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up")
-    }
-
     // MARK: - Version String
 
     func testVersionString() {
@@ -219,9 +240,9 @@ final class GiniHealthTests: GiniHealthTestCase {
     // MARK: - Fetch Bank Logos
 
     func testFetchBankLogos() {
+        // Providers are loaded synchronously by the mock in setUp, so logos is non-nil
         let result = giniHealth.fetchBankLogos()
-        // Without loaded providers the logos tuple is valid (nil or empty logos is acceptable)
-        XCTAssertTrue(result.logos == nil || result.logos?.isEmpty == true, "Logos should be nil or empty before providers are loaded")
+        XCTAssertNotNil(result.logos, "fetchBankLogos should return a logos value")
     }
 
     // MARK: - DataForReview init
