@@ -130,6 +130,21 @@ struct SwitchOptionModel {
             }
 		}
 		
+		var accessibilityIdentifier: String? {
+			switch self {
+			case .qrCodeScanning:
+				return SettingScreenAccessibilityIdentifiers.qrCodeScanSwitch.rawValue
+			case .qrCodeScanningOnly:
+				return SettingScreenAccessibilityIdentifiers.qrCodeScanOnlySwitch.rawValue
+			case .multipage:
+				return SettingScreenAccessibilityIdentifiers.multiPageSwitch.rawValue
+			case .flashToggle:
+				return SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue
+			default:
+				return nil
+			}
+		}
+
 		var message: String? {
 			switch self {
 			case .qrCodeScanningOnly:

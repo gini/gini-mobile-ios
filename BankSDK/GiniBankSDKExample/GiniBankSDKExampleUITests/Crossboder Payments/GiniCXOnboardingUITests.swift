@@ -26,6 +26,8 @@ class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
@@ -44,6 +46,8 @@ class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
@@ -64,6 +68,8 @@ class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 0)
+        //Close settings
+        settingScreen.closeButton.tap()
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         //Standard onboarding appears on first launch — dismiss it before reaching camera
@@ -81,6 +87,8 @@ class GiniCXOnboardingUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         //Skip button should be present regardless of whether onboarding was previously shown in SEPA

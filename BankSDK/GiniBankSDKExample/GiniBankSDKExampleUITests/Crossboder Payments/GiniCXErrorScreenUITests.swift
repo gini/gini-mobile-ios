@@ -26,6 +26,8 @@ class GiniCXErrorScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Tap Photo Payment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -51,6 +53,8 @@ class GiniCXErrorScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Tap Photo Payment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up

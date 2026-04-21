@@ -15,6 +15,7 @@ struct SwitchOptionModelCell {
 	let title: String
 	let active: Bool
 	let message: String?
+    let accessibilityIdentifier: String?
 }
 
 final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
@@ -51,6 +52,7 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	func set(data: SwitchOptionModelCell) {
 		titleLabel.text = data.title
 		optionSwitch.isOn = data.active
+        optionSwitch.accessibilityIdentifier = data.accessibilityIdentifier
 		if let message = data.message {
 			messageLabel.isHidden = false
 			messageLabel.text = message
