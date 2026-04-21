@@ -812,6 +812,7 @@
 		28B3B0492F77223300A5740A /* Crossboder Payments */ = {
 			isa = PBXGroup;
 			children = (
+				28D35CB92F83F685000339B4 /* GiniCXCaptureFlowTests.swift */,
 				A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */,
 				CX000000000000040000001A /* GiniCXCameraUITests.swift */,
 				CX000000000000030000001A /* GiniProductTagSettingsUITests.swift */,
@@ -1210,7 +1211,6 @@
 				28DAF4932CD293140035A1FF /* AccessibilityIdentifiers */,
 				28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */,
 				28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */,
-				28D35CB92F83F685000339B4 /* GiniCXCaptureFlowTests.swift */,
 				28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */,
 				28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */,
 				28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */,
