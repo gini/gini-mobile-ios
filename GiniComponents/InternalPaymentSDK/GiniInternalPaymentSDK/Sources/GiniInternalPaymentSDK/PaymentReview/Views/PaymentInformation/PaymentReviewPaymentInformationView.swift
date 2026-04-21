@@ -29,6 +29,7 @@ struct PaymentReviewPaymentInformationView: View {
     @Binding private var showBanner: Bool
     
     @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     private var isLandscape: Bool {
         verticalSizeClass == .compact
@@ -65,31 +66,45 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        VStack(spacing: Constants.zero) {
-            ScrollView {
-                VStack(spacing: Constants.textFieldsContainerSpacing) {
-                    recipientTextField
-                    
+        ScrollView {
+            VStack(spacing: Constants.textFieldsContainerSpacing) {
+                recipientTextField
+
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(spacing: Constants.textFieldsContainerSpacing) {
+                        ibanTextField
+                        amountTextField
+                    }
+                } else {
                     HStack(spacing: Constants.textFieldsContainerSpacing) {
                         ibanTextField
                         amountTextField
                     }
-                    
-                    paymentPurposeTextField
-                    
+                }
+
+                paymentPurposeTextField
+
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(spacing: Constants.buttonsContainerSpacing) {
+                        paymentProviderSelectionPicker
+                        payButton
+                    }
+                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
+                } else {
                     HStack(spacing: Constants.buttonsContainerSpacing) {
                         paymentProviderSelectionPicker
                         payButton
                     }
                     .padding(.bottom, Constants.buttonsContainerBottomPadding)
-                    
-                    if viewModel.shouldShowBrandedView {
-                        poweredByGiniView
-                    }
                 }
-                .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
-                .padding(.top, Constants.textFieldsContainerTopPadding)
+
+                if viewModel.shouldShowBrandedView {
+                    poweredByGiniView
+                }
             }
+            .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
+            .padding(.top, Constants.textFieldsContainerTopPadding)
+            .getHeight(for: $contentHeight)
         }
         .overlay(alignment: .top) {
             if showBanner {
@@ -113,7 +128,6 @@ struct PaymentReviewPaymentInformationView: View {
                 }
             }
         }
-        .getHeight(for: $contentHeight)
         .background(Color(.systemBackground))
     }
     
@@ -297,7 +311,8 @@ struct PaymentReviewPaymentInformationView: View {
             .background(Color(selectedPaymentProviderBackgroundColor))
             .clipShape(.rect(cornerRadius: viewModel.model.primaryButtonConfiguration.cornerRadius))
             .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
-            .frame(height: Constants.payButtonHeight)
+            .frame(minHeight: Constants.payButtonHeight)
+            .accessibilityLabel(viewModel.model.strings.payInvoiceLabelText)
             .accessibilityHint(viewModelStrings.bankSelectionAccessibility.payInvoiceHint)
         }
     }

@@ -43,7 +43,7 @@ struct GiniBottomSheetModifier: ViewModifier {
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
                 .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
-                .presentationContentInteraction(.resizes)
+                .presentationContentInteraction(.scrolls)
         } else {
             base
         }
@@ -53,7 +53,7 @@ struct GiniBottomSheetModifier: ViewModifier {
         if isLandscape {
             return [.large]
         } else {
-            return [.height(contentHeight)]
+            return [.height(contentHeight), .large]
         }
     }
     

@@ -67,7 +67,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 configuration
                     .foregroundStyle(Color(currentConfiguration.textColor))
                     .font(Font(giniFont: currentConfiguration.textFont))
-                    .frame(height: Constants.textFieldHeight)
+                    .frame(minHeight: Constants.textFieldHeight)
                     .accessibilityLabel(title)
             }
             .padding(.horizontal, Constants.horizontalPadding)
@@ -99,8 +99,9 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private var titleView: some View {
         HStack {
             Text(title)
+                .font(Font(giniFont: currentConfiguration.textFont))
                 .foregroundStyle(Color(currentConfiguration.placeholderForegroundColor))
-            
+
             if let lockedIcon {
                 lockedIcon
                     .resizable()
@@ -109,10 +110,11 @@ struct GiniTextFieldStyle: TextFieldStyle {
                            height: Constants.lockedIconSize.height)
                     .accessibilityHidden(true)
             }
-            
+
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityHidden(true)
     }
     
     @ViewBuilder

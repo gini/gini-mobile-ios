@@ -21,8 +21,9 @@ public final class PaymentPrimaryButton: UIButton {
     private lazy var buttonTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         return label
     }()
