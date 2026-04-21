@@ -36,6 +36,7 @@ public struct PaymentReviewContentView: View {
                     .transition(.opacity)
             }
         }
+        .ignoresSafeArea(.keyboard)
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: isLandscape)
         .onChange(of: isLandscape) { landscape in
             // When rotating to landscape in documentCollection mode, dismiss the

@@ -30,7 +30,9 @@ struct PaymentReviewPaymentInformationView: View {
     
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    
+
+    @State private var keyboardHeight: CGFloat = 0
+
     private var isLandscape: Bool {
         verticalSizeClass == .compact
     }
@@ -66,6 +68,58 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
+        scrollView
+            .overlay(alignment: .top) {
+                if showBanner {
+                    infoBannerView
+                        .onAppear {
+                            UIAccessibility.post(notification: .announcement,
+                                                 argument: viewModel.model.strings.infoBarMessage)
+                        }
+                }
+            }
+            .onAppear {
+                populateFields()
+                // Notify VoiceOver that a new screen (the sheet) appeared,
+                // so it moves focus into the sheet content.
+                UIAccessibility.post(notification: .screenChanged, argument: nil)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .amount {
+                        amountToolbarView
+                    }
+                }
+            }
+            .background(Color(.systemBackground))
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                guard isLandscape,
+                      let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                keyboardHeight = frame.height
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                keyboardHeight = 0
+            }
+    }
+
+    // MARK: Private views
+
+    @ViewBuilder
+    private var scrollView: some View {
+        if #available(iOS 15.0, *) {
+            baseScrollView
+                .safeAreaInset(edge: .bottom) {
+                    // In landscape the parent ignores the keyboard safe area to prevent layout
+                    // shrinking; re-inject it here so the ScrollView scrolls the focused field
+                    // above the keyboard.
+                    Color.clear.frame(height: isLandscape ? keyboardHeight : 0)
+                }
+        } else {
+            baseScrollView
+        }
+    }
+
+    private var baseScrollView: some View {
         ScrollView {
             VStack(spacing: Constants.textFieldsContainerSpacing) {
                 recipientTextField
@@ -106,33 +160,10 @@ struct PaymentReviewPaymentInformationView: View {
             .padding(.top, Constants.textFieldsContainerTopPadding)
             .getHeight(for: $contentHeight)
         }
-        .overlay(alignment: .top) {
-            if showBanner {
-                infoBannerView
-                    .onAppear {
-                        UIAccessibility.post(notification: .announcement,
-                                             argument: viewModel.model.strings.infoBarMessage)
-                    }
-            }
-        }
-        .onAppear {
-            populateFields()
-            // Notify VoiceOver that a new screen (the sheet) appeared,
-            // so it moves focus into the sheet content.
-            UIAccessibility.post(notification: .screenChanged, argument: nil)
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if focusedField == .amount {
-                    amountToolbarView
-                }
-            }
-        }
-        .background(Color(.systemBackground))
     }
-    
+
     // MARK: Private views
-    
+
     @ViewBuilder
     private var infoBannerView: some View {
         HStack {
@@ -230,7 +261,7 @@ struct PaymentReviewPaymentInformationView: View {
             focusedField = nil
         }
     }
-    
+
     @ViewBuilder
     private var paymentPurposeTextField: some View {
         TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
