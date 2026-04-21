@@ -101,10 +101,34 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onAppear {
+            viewModel.isViewVisible = true
             populateFields()
             // Notify VoiceOver that a new screen (the sheet) appeared,
             // so it moves focus into the sheet content.
             UIAccessibility.post(notification: .screenChanged, argument: nil)
+            // After a rotation the view is recreated; restore keyboard if it was open.
+            restoreFocusIfNeeded()
+        }
+        .onDisappear {
+            viewModel.isViewVisible = false
+        }
+        // Track which field is active so it can be restored after orientation changes.
+        .onChange(of: focusedField) { newField in
+            if let field = newField {
+                viewModel.activeField = mapToActiveField(field)
+            } else {
+                // Don't clear activeField immediately: the same nil event fires during rotation
+                // (view is destroyed) AND when the user manually dismisses the keyboard.
+                // After a short delay, check if the view is still on screen:
+                //   - Still visible  → user dismissed keyboard → clear activeField
+                //   - Gone (rotation) → keep activeField so the new layout can restore it
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
+                    if viewModel.isViewVisible {
+                        viewModel.activeField = nil
+                    }
+                }
+            }
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -357,6 +381,40 @@ struct PaymentReviewPaymentInformationView: View {
         return isValid
     }
     
+    // MARK: - Orientation Helpers
+
+    /// Maps the private `Field` enum to the model-level `ActivePaymentField`
+    /// so the focused field can survive view recreation on orientation change.
+    private func mapToActiveField(_ field: Field) -> ActivePaymentField {
+        switch field {
+        case .recipient: return .recipient
+        case .iban: return .iban
+        case .amount: return .amount
+        case .paymentPurpose: return .paymentPurpose
+        }
+    }
+
+    /// Inverse mapping: `ActivePaymentField` → `Field`.
+    private func mapToFocusField(_ activeField: ActivePaymentField) -> Field {
+        switch activeField {
+        case .recipient: return .recipient
+        case .iban: return .iban
+        case .amount: return .amount
+        case .paymentPurpose: return .paymentPurpose
+        }
+    }
+
+    /// Re-applies keyboard focus after the view is recreated by an orientation change.
+    /// The delay lets the rotation animation and any pending keyboard dismissal finish
+    /// before requesting focus again.
+    private func restoreFocusIfNeeded() {
+        guard let field = viewModel.activeField else { return }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 400_000_000) // 0.4 s
+            focusedField = mapToFocusField(field)
+        }
+    }
+
     // MARK: - Focus Change Handlers
 
     private func handleRecipientFocusChange(isFocused: Bool) {

@@ -9,9 +9,27 @@ import GiniHealthAPILibrary
 import SwiftUI
 import GiniUtilites
 
+/// Identifies which payment form field is currently focused.
+/// Stored in the observable model so focus can be restored after orientation changes
+/// recreate the view.
+enum ActivePaymentField {
+    case recipient
+    case iban
+    case amount
+    case paymentPurpose
+}
+
 final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     private let ibanValidator = IBANValidator()
+    
+    /// Tracks which field was focused before the view was recreated (e.g. after rotation),
+    /// so the keyboard can be restored in the new layout.
+    var activeField: ActivePaymentField? = nil
+
+    /// Set to `true` while the view is on screen. Used to distinguish a rotation (view
+    /// disappears quickly) from the user explicitly dismissing the keyboard (view stays visible).
+    var isViewVisible: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
     
