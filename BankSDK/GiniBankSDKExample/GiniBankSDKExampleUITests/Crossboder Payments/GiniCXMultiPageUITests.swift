@@ -46,10 +46,13 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
         //Upload first page
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxMultiPageInvoicePDF)
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxMultiPageInvoicePDF)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert either Transfer Summary or No-Results screen is shown (no crash expected)
-        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 30)
+        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 15)
         let noResultsAppeared = noResultsScreen.waitForExistence(timeout: 5)
         XCTAssertTrue(transferSummaryAppeared || noResultsAppeared,
                       "Either Transfer Summary or No-Results screen should appear after multi-page CX analysis.")
@@ -102,7 +105,7 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
         }
 
         //Assert either Transfer Summary or No-Results screen appears (no crash expected)
-        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 30)
+        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 15)
         let noResultsAppeared = noResultsScreen.waitForExistence(timeout: 5)
         XCTAssertTrue(transferSummaryAppeared || noResultsAppeared,
                       "Either Transfer Summary or No-Results screen should appear after two-page CX analysis.")
