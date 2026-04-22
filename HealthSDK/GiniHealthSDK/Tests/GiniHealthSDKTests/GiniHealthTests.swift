@@ -4,42 +4,6 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-// MARK: - Mock Delegates
-
-private final class MockGiniHealthDelegate: GiniHealthDelegate {
-    var didDismissHealthSDKCalled = false
-    var shouldHandleErrorInternallyReturnValue = false
-
-    func didCreatePaymentRequest(paymentRequestId: String) {}
-
-    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
-        shouldHandleErrorInternallyReturnValue
-    }
-
-    func didDismissHealthSDK() {
-        didDismissHealthSDKCalled = true
-    }
-}
-
-private final class MockPaymentComponentsDelegate: PaymentComponentsControllerProtocol {
-    var isLoadingStateChangedCalled = false
-    var lastLoadingState: Bool?
-    var didFetchedPaymentProvidersCalled = false
-    var didDismissPaymentComponentsCalled = false
-
-    func isLoadingStateChanged(isLoading: Bool) {
-        isLoadingStateChangedCalled = true
-        lastLoadingState = isLoading
-    }
-
-    func didFetchedPaymentProviders() {
-        didFetchedPaymentProvidersCalled = true
-    }
-
-    func didDismissPaymentComponents() {
-        didDismissPaymentComponentsCalled = true
-    }
-}
 
 final class GiniHealthTests: GiniHealthTestCase {
 
