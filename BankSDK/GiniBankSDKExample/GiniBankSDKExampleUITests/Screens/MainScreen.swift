@@ -222,7 +222,8 @@ class MainScreen {
 
         // Tap the Custom_Files folder created by BrowserStack
         let customFilesFolder = app.staticTexts["Custom_Files"].firstMatch
-        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5), "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test")
+        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5),
+                      "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test")
         customFilesFolder.tap()
 
         // Tap the target file

@@ -1,24 +1,21 @@
 #!/bin/bash
 set -e
 
-# ── Usage ────────────────────────────────────────────────────────────────────────
-# ./bs_build_and_upload.sh [MEDIA_FILENAME]
+# ── Usage ────────────────────────────────────────────────────────────────────
+# ./bs_build_and_upload_clean.sh
 #
-# MEDIA_FILENAME  File inside TestSamples/TestSamplesForBS/ used for uploadMedia.
-#                 Defaults to Photopayment_Invoice1.png if not provided.
+# Cleaned-up version of bs_build_and_upload.sh (original kept as reference).
+# For new runs prefer the focused scripts in this directory:
+#   bs_run_cx_normal.sh      — CX results (camera, gallery, PDF, multi-page)
+#   bs_run_cx_no_results.sh  — CX no-results + Skonto (past) + RA
+#   bs_run_ra.sh             — Return Assistant standalone
+#   bs_run_skonto.sh         — Skonto standalone (past + valid invoices)
 #
 # BrowserStack credentials can be overridden via environment variables:
 #   export BS_USER="your_username"
 #   export BS_KEY="your_access_key"
-# If not set, the script falls back to the default credentials.
-#
-# Examples:
-#   ./bs_build_and_upload.sh
-#   ./bs_build_and_upload.sh Photopayment_Invoice1.png
-#   BS_USER="myuser" BS_KEY="mykey" ./bs_build_and_upload.sh
-#   BS_USER="myuser" BS_KEY="mykey" ./bs_build_and_upload.sh Photopayment_Invoice2.png
 
-# ── Configuration ────────────────────────────────────────────────────────────────
+# ── Configuration ────────────────────────────────────────────────────────────
 BS_USER="${BS_USER:-<your_browserstack_user_name>}"
 BS_KEY="${BS_KEY:-<your_browserstack_access_key>}"
 
@@ -34,59 +31,29 @@ SIGNING_CONFIG="$DERIVED_DATA/BrowserStackSigning.xcconfig"
 IPA_OUTPUT="$SCRIPT_DIR/GiniBankSDKExample.ipa"
 TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
 
-MEDIA_FILENAME="${1:-Photopayment_Invoice1.png}"
-MEDIA_FILE_PNG="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/$MEDIA_FILENAME"
-
-# Both files are always uploaded — each test picks its injection file by name via injectImage(imageName:)
-PP_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Photopayment_Invoice1.png"
-CX_CAPTURE_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/Swift_AccNo_routing_DOLL.png"
-
-# cx_invoice.png is uploaded LAST so it is the most-recent photo in the gallery.
-# testCXflowGalleryUpload relies on uploadLatestPhotoFromGallery which picks the last item.
+# cx_invoice.png is searched by name in the gallery via uploadLatestPhotoFromGallery(photoName:).
 CX_GALLERY_MEDIA_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/cx_invoice.png"
-# cx_invoice.pdf is uploaded as a Custom_Files document for the Files-picker based CX test.
+# cx_invoice.pdf appears in Custom_Files for the Files-picker based CX test.
 CX_PDF_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/cx_invoice.pdf"
+# G2 test (testCXMultiPageInvoiceFlowTwoSeparatePNGPages):
+# - Page 1: uploaded to Photos library — uploadLatestPhotoFromGallery() picks it.
+# - Page 2: uploaded to BrowserStack — PNG files land in Custom_Files, searchable by name.
+CX_MULTI_PAGE1_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/multi_page_invoice_CX_page1.pdf"
+CX_MULTI_PAGE2_FILE="$SCRIPT_DIR/../TestSamples/TestSamplesForBS/multi_page_invoice_CX_page2.png"
 
 DEVICE_1="iPhone 16-18"
-DEVICE_2="iPhone 13 Pro Max-18"
+# DEVICE_2="iPhone 13 Pro Max-18"
 
-# ── CX Test Suites ───────────────────────────────────────────────────────────────
-# All CX-related test suites to run on BrowserStack.
-# To run a single test, replace the suite identifier with the full test path, e.g.:
-#   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow"
 ONLY_TESTING='[
-  "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
-  "GiniBankSDKExampleUITests/GiniProductTagSettingsUITests",
-  "GiniBankSDKExampleUITests/GiniCXOnboardingUITests",
-  "GiniBankSDKExampleUITests/GiniCXFeatureFlagsUITests",
-  "GiniBankSDKExampleUITests/GiniCXCameraUITests"
+  "GiniBankSDKExampleUITests/GiniCXMultiPageUITests/testCXMultiPageInvoiceFlowTwoSeparatePNGPages"
 ]'
 
-# ── Validate media files ─────────────────────────────────────────────────────────
-if [ ! -f "$MEDIA_FILE_PNG" ]; then
-  echo "Upload media file not found: $MEDIA_FILE_PNG"
-  echo "   Place the file inside TestSamples/TestSamplesForBS/ or pass a different filename as the first argument."
-  exit 1
-fi
-echo "Using upload media file:              $MEDIA_FILE_PNG"
-
-if [ ! -f "$PP_CAPTURE_MEDIA_FILE" ]; then
-  echo "Camera injection file not found: $PP_CAPTURE_MEDIA_FILE"
-  exit 1
-fi
-echo "Using PP capture injection file:      $PP_CAPTURE_MEDIA_FILE"
-
-if [ ! -f "$CX_CAPTURE_MEDIA_FILE" ]; then
-  echo "ERROR: Camera injection file not found: $CX_CAPTURE_MEDIA_FILE"
-  exit 1
-fi
-echo "Using CX capture injection file:      $CX_CAPTURE_MEDIA_FILE"
-
+# ── Validate media files ─────────────────────────────────────────────────────
 if [ ! -f "$CX_GALLERY_MEDIA_FILE" ]; then
   echo "ERROR: CX gallery image not found: $CX_GALLERY_MEDIA_FILE"
   exit 1
 fi
-echo "Using CX gallery image (last):        $CX_GALLERY_MEDIA_FILE"
+echo "Using CX gallery image:               $CX_GALLERY_MEDIA_FILE"
 
 if [ ! -f "$CX_PDF_FILE" ]; then
   echo "ERROR: CX PDF file not found: $CX_PDF_FILE"
@@ -94,6 +61,17 @@ if [ ! -f "$CX_PDF_FILE" ]; then
 fi
 echo "Using CX PDF file:                    $CX_PDF_FILE"
 
+if [ ! -f "$CX_MULTI_PAGE1_FILE" ]; then
+  echo "ERROR: CX multipage page 1 not found: $CX_MULTI_PAGE1_FILE"
+  exit 1
+fi
+echo "Using CX multipage page 1:            $CX_MULTI_PAGE1_FILE"
+
+if [ ! -f "$CX_MULTI_PAGE2_FILE" ]; then
+  echo "ERROR: CX multipage page 2 not found: $CX_MULTI_PAGE2_FILE"
+  exit 1
+fi
+echo "Using CX multipage page 2:            $CX_MULTI_PAGE2_FILE"
 
 # ── Create signing override xcconfig (applies to all targets incl. extensions) ──
 mkdir -p "$DERIVED_DATA"
@@ -105,7 +83,7 @@ PROVISIONING_PROFILE_SPECIFIER =
 PROVISIONING_PROFILE =
 XCCONFIG
 
-# ── Step 1: Build for testing ───────────────────────────────────────────────────
+# ── Step 1: Build for testing ────────────────────────────────────────────────
 echo "[1/5] Building for testing..."
 xcodebuild build-for-testing \
   -workspace "$WORKSPACE" \
@@ -117,7 +95,7 @@ xcodebuild build-for-testing \
   -allowProvisioningUpdates
 echo "Build complete"
 
-# ── Step 2: Package app as IPA ──────────────────────────────────────────────────
+# ── Step 2: Package app as IPA ───────────────────────────────────────────────
 echo "[2/5] Packaging app as IPA..."
 PAYLOAD_DIR="$DERIVED_DATA/Payload"
 rm -rf "$PAYLOAD_DIR"
@@ -128,7 +106,7 @@ zip -r "$IPA_OUTPUT" Payload -q
 rm -rf "$PAYLOAD_DIR"
 echo "IPA saved: $IPA_OUTPUT"
 
-# ── Step 3: Zip test runner ─────────────────────────────────────────────────────
+# ── Step 3: Zip test runner ──────────────────────────────────────────────────
 echo "[3/5] Zipping test runner..."
 RUNNER_APP=$(find "$DERIVED_DATA/Build/Products" -name "GiniBankSDKExampleUITests-Runner.app" \
   ! -path "*simulator*" | head -1)
@@ -141,40 +119,10 @@ zip -r "$TEST_SUITE_OUTPUT" "GiniBankSDKExampleUITests-Runner.app" -q
 popd > /dev/null
 echo "Test suite saved: $TEST_SUITE_OUTPUT"
 
-# ── Step 4: Upload to BrowserStack ─────────────────────────────────────────────
+# ── Step 4: Upload to BrowserStack ──────────────────────────────────────────
 echo "[4/5] Uploading to BrowserStack..."
 
-echo "  Uploading upload media (gallery upload file)..."
-MEDIA_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@$MEDIA_FILE_PNG" \
-  -F "custom_id=UploadMedia")
-echo "  Upload media response: $MEDIA_RESPONSE"
-MEDIA_PNG_URL=$(echo "$MEDIA_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
-if [ -z "$MEDIA_PNG_URL" ]; then echo "ERROR: Failed to get media_url — check response above"; exit 1; fi
-
-echo "  Uploading PP capture injection media (Photopayment_Invoice1.png)..."
-PP_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@$PP_CAPTURE_MEDIA_FILE" \
-  -F "custom_id=PPCaptureInjection")
-echo "  PP capture injection response: $PP_RESPONSE"
-PP_INJECTION_URL=$(echo "$PP_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
-if [ -z "$PP_INJECTION_URL" ]; then echo "ERROR: Failed to get PP injection media_url — check response above"; exit 1; fi
-
-echo "  Uploading CX capture injection media (Swift_AccNo_routing_DOLL.jpg)..."
-CX_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@$CX_CAPTURE_MEDIA_FILE" \
-  -F "custom_id=CXCaptureInjection")
-echo "  CX capture injection response: $CX_RESPONSE"
-CX_INJECTION_URL=$(echo "$CX_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
-if [ -z "$CX_INJECTION_URL" ]; then echo "ERROR: Failed to get CX injection media_url — check response above"; exit 1; fi
-
-# cx_invoice.png is uploaded last so it becomes the most-recent photo in the device gallery.
-# uploadLatestPhotoFromGallery() picks the last item — this ensures testCXflowGalleryUpload
-# uses the correct CX invoice image.
-echo "  Uploading CX gallery image (cx_invoice.png — last so it is latest in gallery)..."
+echo "  Uploading CX gallery image (cx_invoice.png)..."
 CX_GALLERY_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
   -F "file=@$CX_GALLERY_MEDIA_FILE" \
@@ -183,7 +131,7 @@ echo "  CX gallery image response: $CX_GALLERY_RESPONSE"
 CX_GALLERY_URL=$(echo "$CX_GALLERY_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
 if [ -z "$CX_GALLERY_URL" ]; then echo "ERROR: Failed to get CX gallery media_url — check response above"; exit 1; fi
 
-echo "  Uploading CX PDF file (cx_invoice.pdf — appears in Custom_Files for Files-picker test)..."
+echo "  Uploading CX PDF file (cx_invoice.pdf)..."
 CX_PDF_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
   -F "file=@$CX_PDF_FILE" \
@@ -191,6 +139,24 @@ CX_PDF_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
 echo "  CX PDF response: $CX_PDF_RESPONSE"
 CX_PDF_URL=$(echo "$CX_PDF_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
 if [ -z "$CX_PDF_URL" ]; then echo "ERROR: Failed to get CX PDF media_url — check response above"; exit 1; fi
+
+echo "  Uploading CX multipage page 1 (multi_page_invoice_CX_page1.png)..."
+CX_MULTI_PAGE1_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
+  -F "file=@$CX_MULTI_PAGE1_FILE" \
+  -F "custom_id=CXMultiPageInvoicePage1")
+echo "  CX multipage page 1 response: $CX_MULTI_PAGE1_RESPONSE"
+CX_MULTI_PAGE1_URL=$(echo "$CX_MULTI_PAGE1_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
+if [ -z "$CX_MULTI_PAGE1_URL" ]; then echo "ERROR: Failed to get CX multipage page 1 media_url — check response above"; exit 1; fi
+
+echo "  Uploading CX multipage page 2 (multi_page_invoice_CX_page2.png)..."
+CX_MULTI_PAGE2_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
+  -F "file=@$CX_MULTI_PAGE2_FILE" \
+  -F "custom_id=CXMultiPageInvoicePage2")
+echo "  CX multipage page 2 response: $CX_MULTI_PAGE2_RESPONSE"
+CX_MULTI_PAGE2_URL=$(echo "$CX_MULTI_PAGE2_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['media_url'])" 2>/dev/null || true)
+if [ -z "$CX_MULTI_PAGE2_URL" ]; then echo "ERROR: Failed to get CX multipage page 2 media_url — check response above"; exit 1; fi
 
 echo "  Uploading app IPA..."
 APP_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
@@ -211,48 +177,30 @@ if [ -z "$TEST_URL" ]; then echo "ERROR: Failed to get test_suite_url — check 
 echo "All files uploaded"
 echo "  app_url:                       $APP_URL"
 echo "  test_suite_url:                $TEST_URL"
-echo "  media_url (gallery upload):    $MEDIA_PNG_URL"
-echo "  media_url (PP injection):      $PP_INJECTION_URL"
-echo "  media_url (CX injection):      $CX_INJECTION_URL"
-echo "  media_url (CX gallery, last):  $CX_GALLERY_URL"
+echo "  media_url (CX gallery):        $CX_GALLERY_URL"
 echo "  media_url (CX PDF):            $CX_PDF_URL"
+echo "  media_url (CX multi-page 1):   $CX_MULTI_PAGE1_URL"
+echo "  media_url (CX multi-page 2):   $CX_MULTI_PAGE2_URL"
 
-# ── Step 5: Trigger test run ────────────────────────────────────────────────────
+# ── Step 5: Trigger test run ─────────────────────────────────────────────────
 echo "[5/5] Triggering test build on BrowserStack..."
-echo ""
-echo "  Running command:"
-echo "  curl -u \"$BS_USER:$BS_KEY\" \\"
-echo "    -X POST \"https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build\" \\"
-echo "    -H \"Content-Type: application/json\" \\"
-echo "    -d '{"
-echo "      \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],"
-echo "      \"app\": \"$APP_URL\","
-echo "      \"testSuite\": \"$TEST_URL\","
-echo "      \"only-testing\": $ONLY_TESTING,"
-echo "      \"uploadMedia\": [\"$MEDIA_PNG_URL\", \"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],"
-echo "      \"resignApp\": \"true\","
-echo "      \"enableCameraImageInjection\": \"true\","
-echo "      \"cameraInjectionMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\"]"
-echo "    }'"
-echo ""
+#\"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],
 BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],
+    \"devices\": [\"$DEVICE_1\"],
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"uploadMedia\": [\"$MEDIA_PNG_URL\", \"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\", \"$CX_GALLERY_URL\", \"$CX_PDF_URL\"],
-    \"resignApp\": \"true\",
-    \"enableCameraImageInjection\": \"true\",
-    \"cameraInjectionMedia\": [\"$PP_INJECTION_URL\", \"$CX_INJECTION_URL\"]
+    \"uploadMedia\": [\"$CX_GALLERY_URL\", \"$CX_PDF_URL\", \"$CX_MULTI_PAGE1_URL\", \"$CX_MULTI_PAGE2_URL\"],
+    \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"
 echo ""
 echo "Done! Check BrowserStack App Automate dashboard for results."
 
-# ── Cleanup ──────────────────────────────────────────────────────────────────────
+# ── Cleanup ──────────────────────────────────────────────────────────────────
 echo "Cleaning up build artifacts..."
 rm -f "$IPA_OUTPUT" "$TEST_SUITE_OUTPUT"
 echo "Removed: $IPA_OUTPUT"
