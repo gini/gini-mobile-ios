@@ -199,13 +199,16 @@ public class PaymentReviewModel {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestId: String) -> ())? = nil) {
         isLoading = true
         delegate?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case let .success(requestId):
-                completion?(requestId)
-            case let .failure(error):
-                if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
-                    self?.onCreatePaymentRequestErrorHandling?()
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                isLoading = false
+                switch result {
+                case let .success(requestId):
+                    completion?(requestId)
+                case let .failure(error):
+                    if delegate?.shouldHandleErrorInternally(error: error) == true {
+                        onCreatePaymentRequestErrorHandling?()
+                    }
                 }
             }
         })
