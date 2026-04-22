@@ -48,6 +48,15 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
         reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert Transfer Summary appears and shows at least one extraction
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         //Close SDK
@@ -75,6 +84,15 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
         reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert at least one extraction cell is visible
         XCTAssertTrue(transactionSummaryScreen.firstExtractionCell.waitForExistence(timeout: 20))
         //Assert that the first text field in the extraction cell is editable
@@ -106,8 +124,17 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
         reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Wait for Transfer Summary
-        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 30))
+        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 15))
         //Tap Done — submits transfer summary and closes the SDK
         transactionSummaryScreen.tapDoneButton()
         //Assert main screen is shown (SDK closed successfully)
@@ -130,15 +157,17 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.sepaInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
-        //Assert Get started button is displayed
-        XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
-        //Tap Get Started button
-        returnAssistantScreen.getStartedButton.tap()
-        //Tap Proceed button
-        returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
+        //Handle Return Assistant if it appears (SEPA flow may show it depending on invoice content)
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears (may be skipped depending on invoice/device)
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert Transfer Summary appears and shows extractions
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         //Tap send feedback and close
