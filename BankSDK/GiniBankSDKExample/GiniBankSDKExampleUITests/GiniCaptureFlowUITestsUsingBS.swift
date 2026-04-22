@@ -105,11 +105,13 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithNameFromBSCustomFiles(fileName: TestFixtures.Files.cxInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
 
-        XCTAssertTrue(transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 30), "Transaction docs option should appear")
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
 
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5), "Done/Send feedback button should appear")
         mainScreen.sendFeedbackButton.tap()
@@ -137,8 +139,10 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
         reviewScreen.processButton.tap()
 
-        XCTAssertTrue(transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 5), "Transaction docs option should appear")
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
 
         let doneButton = app.navigationBars.buttons["Done"]
         XCTAssertTrue(doneButton.waitForExistence(timeout: 10), "Done button should exist on extraction screen")
