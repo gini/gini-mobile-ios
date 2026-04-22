@@ -42,7 +42,7 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
         captureScreen.openGalleryButton.tap()
         //Assert the No-Results screen (retry button) appears instead of Transfer Summary
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30),
@@ -67,7 +67,7 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
         captureScreen.openGalleryButton.tap()
         //Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
