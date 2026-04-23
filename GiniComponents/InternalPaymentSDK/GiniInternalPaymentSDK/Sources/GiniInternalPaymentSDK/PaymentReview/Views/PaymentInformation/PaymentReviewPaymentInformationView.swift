@@ -78,28 +78,28 @@ struct PaymentReviewPaymentInformationView: View {
                 viewModel.isViewVisible = true
 
                 populateFields()
-                /// Notify VoiceOver that a new screen (the sheet) appeared,
-                /// so it moves focus into the sheet content.
+                // Notify VoiceOver that a new screen (the sheet) appeared,
+                // so it moves focus into the sheet content.
                 UIAccessibility.post(notification: .screenChanged, argument: nil)
-                /// After a rotation the view is recreated; restore keyboard if it was open.
+                // After a rotation the view is recreated; restore keyboard if it was open.
                 restoreFocusIfNeeded()
             }
             .onDisappear {
                 viewModel.isViewVisible = false
             }
-        /// Track which field is active so it can be restored after orientation changes.
+        // Track which field is active so it can be restored after orientation changes.
             .onChange(of: focusedField) { newField in
                 if let field = newField {
                     viewModel.activeField = mapToActiveField(field)
                     viewModel.isAmountFieldFocused = (field == .amount)
                 } else {
-                    /// Clear amount-focus immediately so the Done toolbar hides right away.
+                    // Clear amount-focus immediately so the Done toolbar hides right away.
                     viewModel.isAmountFieldFocused = false
-                    /// Don't clear activeField immediately: the same nil event fires during rotation
-                    /// (view is destroyed) AND when the user manually dismisses the keyboard.
-                    /// After a short delay, check if the view is still on screen:
-                    ///   - Still visible  → user dismissed keyboard → clear activeField
-                    ///   - Gone (rotation) → keep activeField so the new layout can restore it
+                    // Don't clear activeField immediately: the same nil event fires during rotation
+                    // (view is destroyed) AND when the user manually dismisses the keyboard.
+                    // After a short delay, check if the view is still on screen:
+                    //   - Still visible  → user dismissed keyboard → clear activeField
+                    //   - Gone (rotation) → keep activeField so the new layout can restore it
                     Task { @MainActor in
                         try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
                         if viewModel.isViewVisible {
@@ -123,20 +123,20 @@ struct PaymentReviewPaymentInformationView: View {
     @ViewBuilder
     private var scrollView: some View {
         baseScrollView
-            /// Keyboard safe area is suppressed so neither portrait nor landscape creates
-            /// an automatic gap. Keyboard space is re-injected explicitly via safeAreaInset.
+            // Keyboard safe area is suppressed so neither portrait nor landscape creates
+            // an automatic gap. Keyboard space is re-injected explicitly via safeAreaInset.
             .ignoresSafeArea(.keyboard)
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 0) {
-                    /// Done button shown here only in portrait (bottom-sheet mode). In landscape
-                    /// the outer PaymentReviewContentView renders a full-width Done toolbar above
-                    /// the keyboard, so the narrow per-panel bar is suppressed.
+                    // Done button shown here only in portrait (bottom-sheet mode). In landscape
+                    // the outer PaymentReviewContentView renders a full-width Done toolbar above
+                    // the keyboard, so the narrow per-panel bar is suppressed.
                     if !isLandscape && focusedField == .amount && keyboardHeight > 0 {
                         doneButtonBar
                     }
-                    /// In landscape the keyboard sits below the inline view; re-inject its
-                    /// height so the ScrollView scrolls content above it. In portrait the
-                    /// sheet already repositions above the keyboard — no extra space needed.
+                    // In landscape the keyboard sits below the inline view; re-inject its
+                    // height so the ScrollView scrolls content above it. In portrait the
+                    // sheet already repositions above the keyboard — no extra space needed.
                     Color.clear.frame(height: isLandscape ? keyboardHeight : 0)
                 }
             }
@@ -480,7 +480,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
             viewModel.recipientInputState.errorMessage = viewModel.recipientError
             
-            /// Announce error to VoiceOver
+            // Announce error to VoiceOver
             if viewModel.recipientInputState.hasError,
                 let errorMessage = viewModel.recipientError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)
@@ -495,7 +495,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
             viewModel.ibanInputState.errorMessage = viewModel.ibanError
             
-            /// Announce error to VoiceOver
+            // Announce error to VoiceOver
             if viewModel.ibanInputState.hasError,
                 let errorMessage = viewModel.ibanError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)
@@ -522,7 +522,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
             viewModel.amountInputState.errorMessage = viewModel.amountError
             
-            /// Announce error to VoiceOver
+            // Announce error to VoiceOver
             if viewModel.amountInputState.hasError,
                 let errorMessage = viewModel.amountError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)
@@ -537,7 +537,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
             viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
             
-            /// Announce error to VoiceOver
+            // Announce error to VoiceOver
             if viewModel.paymentPurposeInputState.hasError,
                 let errorMessage = viewModel.paymentPurposeError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)

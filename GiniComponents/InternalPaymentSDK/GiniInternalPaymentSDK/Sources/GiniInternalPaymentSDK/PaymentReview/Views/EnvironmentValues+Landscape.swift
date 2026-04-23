@@ -8,9 +8,10 @@ import SwiftUI
 
 extension EnvironmentValues {
     /**
-     `true` when the device is in landscape orientation.
-     On iPhone this maps to `verticalSizeClass == .compact`; iPads always return `.regular`
-     for both orientations so landscape there is handled separately via the portrait/sheet flow.
+     `true` when the current environment uses a compact vertical size class.
+     On iPhone this commonly maps to landscape orientation. On iPad, size classes can vary
+     depending on multitasking and window size, so iPad landscape handling in this flow is
+     managed separately via the portrait/sheet flow.
      */
     var isLandscape: Bool {
         verticalSizeClass == .compact
