@@ -14,14 +14,12 @@ public struct PaymentReviewContentView: View {
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.isLandscape) private var isLandscape
     
-    private var isLandscape: Bool {
-        verticalSizeClass == .compact
-    }
-    
-    /// The init method is internal to prevent users from creating instances of this view directly
-    /// outside of GiniInternalPaymentSDK.
+    /**
+     The init method is internal to prevent users from creating instances of this view directly
+     outside of GiniInternalPaymentSDK.
+     */
     init(viewModel: PaymentReviewObservableModel) {
         self.viewModel = viewModel
     }
@@ -39,9 +37,9 @@ public struct PaymentReviewContentView: View {
         .ignoresSafeArea(.keyboard)
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: isLandscape)
         .onChange(of: isLandscape) { landscape in
-            // When rotating to landscape in documentCollection mode, dismiss the
-            // sheet immediately (without animation) so the crossfade transition
-            // isn't disrupted by the sheet's own dismissal animation.
+            /// When rotating to landscape in documentCollection mode, dismiss the
+            /// sheet immediately (without animation) so the crossfade transition
+            /// isn't disrupted by the sheet's own dismissal animation.
             if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
                 showBottomSheet = false
             }
@@ -56,6 +54,27 @@ public struct PaymentReviewContentView: View {
         }
         .onAppear {
             viewModel.dismissBannerAfterDelay()
+        }
+        /// Full-width Done toolbar rendered above the keyboard in landscape (documentCollection)
+        /// mode. `ToolbarItemGroup(placement: .keyboard)` is the correct way to place content
+        /// above the keyboard — `safeAreaInset` on the HStack would place it behind the keyboard
+        /// because the outer container suppresses the keyboard safe area with `ignoresSafeArea`.
+        /// The inner form view's narrow Done bar is suppressed in landscape so only this
+        /// full-width version appears.
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
+                    Spacer()
+                    Button(viewModel.keyboardDoneButtonTitle) {
+                        viewModel.trackKeyboardDismissed()
+                        UIApplication.shared.sendAction(
+                            #selector(UIResponder.resignFirstResponder),
+                            to: nil, from: nil, for: nil
+                        )
+                    }
+                    .padding(.trailing, Constants.doneButtonHorizontalPadding)
+                }
+            }
         }
     }
     
@@ -74,13 +93,13 @@ public struct PaymentReviewContentView: View {
             }
         }
         .onAppear {
-            // On iOS 16/17, rotating to landscape destroys portraitLayout which
-            // dismisses the sheet and sets showBottomSheet to false. Restore it
-            // when portraitLayout reappears in documentCollection mode.
-            // Delay so the layout crossfade finishes before the sheet slides in.
+            /// On iOS 16/17, rotating to landscape destroys portraitLayout which
+            /// dismisses the sheet and sets showBottomSheet to false. Restore it
+            /// when portraitLayout reappears in documentCollection mode.
+            /// Delay so the layout crossfade finishes before the sheet slides in.
             if !viewModel.isBottomSheetMode && !showBottomSheet {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
-                    // Re-check conditions in case the mode changed during the delay.
+                    /// Re-check conditions in case the mode changed during the delay.
                     if !viewModel.isBottomSheetMode && !showBottomSheet {
                         showBottomSheet = true
                     }
@@ -201,5 +220,6 @@ public struct PaymentReviewContentView: View {
         static let landscapeContainerSpacing: CGFloat = 8.0
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
+        static let doneButtonHorizontalPadding: CGFloat = 16.0
     }
 }
