@@ -4,7 +4,6 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-
 final class GiniHealthTests: GiniHealthTestCase {
 
     // MARK: - Helper
