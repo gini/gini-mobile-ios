@@ -22,12 +22,13 @@ source "$SCRIPT_DIR/bs_shared.sh"
 
 # ── Media files ────────────────────────────────────────────────────────────────
 # Upload order matters: page1 first, page2 second (most recent = picked first by gallery)
+CX_MULTI_PAGE_PDF_FILE="$SAMPLES_DIR/cx_invoice_multi_page.pdf"    # → Custom_Files  (testCXMultiPageInvoiceFlow)
 CX_MULTI_PAGE1_FILE="$SAMPLES_DIR/multi_page_invoice_CX_page1.png" # → Photos library (uploaded first)
 CX_MULTI_PAGE2_FILE="$SAMPLES_DIR/multi_page_invoice_CX_page2.png" # → Photos library (uploaded last = most recent)
 
 # ── Test suites ────────────────────────────────────────────────────────────────
 ONLY_TESTING='[
-  "GiniBankSDKExampleUITests/GiniCXMultiPageUITests/testCXMultiPageInvoiceFlowTwoSeparatePNGPages"
+  "GiniBankSDKExampleUITests/GiniCXMultiPageUITests"
 ]'
 
 # ── Build & package ────────────────────────────────────────────────────────────
@@ -35,9 +36,10 @@ bs_build
 
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
+upload_media CX_MULTI_PAGE_PDF_URL "$CX_MULTI_PAGE_PDF_FILE" "CXMultiPageInvoicePDF"   "cx_invoice_multi_page.pdf (Custom_Files — PDF test)"
 # page1 must be uploaded BEFORE page2 so page2 is the most recent photo in the gallery
-upload_media CX_PAGE1_URL "$CX_MULTI_PAGE1_FILE" "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.png (uploaded first)"
-upload_media CX_PAGE2_URL "$CX_MULTI_PAGE2_FILE" "CXMultiPageInvoicePage2" "multi_page_invoice_CX_page2.png (uploaded last = most recent)"
+upload_media CX_PAGE1_URL          "$CX_MULTI_PAGE1_FILE"    "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.png (uploaded first)"
+upload_media CX_PAGE2_URL          "$CX_MULTI_PAGE2_FILE"    "CXMultiPageInvoicePage2" "multi_page_invoice_CX_page2.png (uploaded last = most recent)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -47,6 +49,7 @@ echo ""
 echo "Uploaded URLs:"
 echo "  app_url:               $APP_URL"
 echo "  test_suite_url:        $TEST_URL"
+echo "  CX multi-page PDF:     $CX_MULTI_PAGE_PDF_URL"
 echo "  CX multi-page page 1:  $CX_PAGE1_URL"
 echo "  CX multi-page page 2:  $CX_PAGE2_URL"
 
@@ -61,7 +64,9 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"uploadMedia\": [\"$CX_PAGE1_URL\", \"$CX_PAGE2_URL\"],
+    \"project\": \"GiniBankSDKExample\",
+    \"buildName\": \"bs_run_cx_multipage\",
+    \"uploadMedia\": [\"$CX_MULTI_PAGE_PDF_URL\", \"$CX_PAGE1_URL\", \"$CX_PAGE2_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"
