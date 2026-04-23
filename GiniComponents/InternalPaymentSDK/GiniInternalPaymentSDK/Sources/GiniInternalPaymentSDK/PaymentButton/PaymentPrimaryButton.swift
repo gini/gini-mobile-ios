@@ -66,7 +66,8 @@ public final class PaymentPrimaryButton: UIButton {
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor)
+            buttonTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.titlePadding),
+            buttonTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.titlePadding)
         ])
         
         titleLeadingConstraint?.isActive = true

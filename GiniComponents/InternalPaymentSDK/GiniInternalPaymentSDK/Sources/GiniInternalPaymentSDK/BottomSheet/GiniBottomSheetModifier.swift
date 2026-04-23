@@ -53,9 +53,9 @@ struct GiniBottomSheetModifier: ViewModifier {
         if isLandscape {
             return [.large]
         } else {
-            /// Only one detent in portrait: the sheet stays at its content height and the
-            /// inner ScrollView scrolls to show the focused field. A .large detent causes
-            /// iOS to auto-snap to full screen when the keyboard appears.
+            // Only one detent in portrait: the sheet stays at its content height and the
+            // inner ScrollView scrolls to show the focused field. A .large detent causes
+            // iOS to auto-snap to full screen when the keyboard appears.
             return [.height(contentHeight)]
         }
     }

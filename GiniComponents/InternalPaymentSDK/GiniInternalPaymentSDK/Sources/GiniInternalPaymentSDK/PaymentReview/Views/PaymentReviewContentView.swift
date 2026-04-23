@@ -99,7 +99,7 @@ public struct PaymentReviewContentView: View {
             // Delay so the layout crossfade finishes before the sheet slides in.
             if !viewModel.isBottomSheetMode && !showBottomSheet {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
-                    /// Re-check conditions in case the mode changed during the delay.
+                    // Re-check conditions in case the mode changed during the delay.
                     if !viewModel.isBottomSheetMode && !showBottomSheet {
                         showBottomSheet = true
                     }

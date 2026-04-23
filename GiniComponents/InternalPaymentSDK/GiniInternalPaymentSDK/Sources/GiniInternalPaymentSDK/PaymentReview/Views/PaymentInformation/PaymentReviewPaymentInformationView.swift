@@ -97,12 +97,15 @@ struct PaymentReviewPaymentInformationView: View {
                     viewModel.isAmountFieldFocused = false
                     // Don't clear activeField immediately: the same nil event fires during rotation
                     // (view is destroyed) AND when the user manually dismisses the keyboard.
-                    // After a short delay, check if the view is still on screen:
-                    //   - Still visible  → user dismissed keyboard → clear activeField
-                    //   - Gone (rotation) → keep activeField so the new layout can restore it
+                    // Capture the current field so the task can verify nothing changed during the delay:
+                    //   - Still visible + focus still nil + same field → user dismissed → clear activeField
+                    //   - Gone (rotation) or focus moved to another field → keep activeField for restoration
+                    let fieldToClear = viewModel.activeField
                     Task { @MainActor in
                         try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
-                        if viewModel.isViewVisible {
+                        if viewModel.isViewVisible,
+                           focusedField == nil,
+                           viewModel.activeField == fieldToClear {
                             viewModel.activeField = nil
                         }
                     }
