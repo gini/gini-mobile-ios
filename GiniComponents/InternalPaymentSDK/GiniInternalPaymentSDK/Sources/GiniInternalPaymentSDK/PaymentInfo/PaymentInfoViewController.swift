@@ -69,6 +69,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         paragraphStyle.lineHeightMultiple = Constants.payBillsTitleLineHeight
         label.attributedText = NSMutableAttributedString(string: viewModel.strings.payBillsTitleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -98,6 +99,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
         label.attributedText = NSMutableAttributedString(string: viewModel.strings.questionsTitleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
