@@ -241,17 +241,22 @@ class MainScreen {
        - fileName: File name without extension (matched with CONTAINS[c]).
      */
     func tapFileFromBestAvailableSource(fileName: String) {
-        let browseButton = app.buttons["Browse"].firstMatch
-        if browseButton.waitForExistence(timeout: 3) {
-            browseButton.tap()
-            sleep(3) // Give the Files app time to render the Browse location list
-        }
-
         let customFilesAny = app.descendants(matching: .any)
             .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
-        if customFilesAny.waitForExistence(timeout: 8) {
-            // BrowserStack: Browse already tapped above, Custom_Files is visible.
-            // tapFileWithNameFromBSCustomFiles skips the Browse tap since it's gone.
+
+        // Check if Custom_Files is already visible before tapping Browse.
+        // When the Files picker opens on the Browse locations screen (not Recents), Custom_Files
+        // is already in the list — tapping Browse again navigates to a different level and breaks detection.
+        if !customFilesAny.waitForExistence(timeout: 3) {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+                sleep(5) // Give the Files app time to render the Browse location list (BrowserStack can be slow)
+            }
+        }
+
+        if customFilesAny.waitForExistence(timeout: 15) {
+            // BrowserStack: Custom_Files is visible — navigate into it and pick the file.
             tapFileWithNameFromBSCustomFiles(fileName: fileName)
         } else {
             // Local: fall back to Recents-based lookup.
