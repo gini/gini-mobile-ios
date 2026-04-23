@@ -43,7 +43,14 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        captureScreen.openGalleryButton.tap()
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert the No-Results screen (retry button) appears instead of Transfer Summary
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30),
                       "No-Results screen should be displayed when CX backend returns no extractions.")
@@ -68,7 +75,14 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        captureScreen.openGalleryButton.tap()
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
         //Tap Back to camera button
