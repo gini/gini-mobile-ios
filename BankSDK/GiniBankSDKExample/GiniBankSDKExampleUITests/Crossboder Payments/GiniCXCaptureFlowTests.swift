@@ -47,7 +47,7 @@ class GiniCXCaptureFlowTests: GiniBankSDKExampleUITests {
         let fileName = (imageName as NSString).deletingPathExtension
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: fileName)
+        mainScreen.tapFileFromBestAvailableSource(fileName: fileName)
         captureScreen.openGalleryButton.tap()
     }
 
