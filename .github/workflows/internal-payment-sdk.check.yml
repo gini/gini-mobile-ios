@@ -50,7 +50,7 @@ jobs:
     - name: Convert coverage to SonarQube generic format
       run: |
         bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
-          | sed 's|path="[^"]*GiniInternalPaymentSDK/|path="|g' \
+          | sed 's|path="[^"]*/GiniComponents/InternalPaymentSDK/|path="|g' \
           > GiniComponents/InternalPaymentSDK/coverage.xml
 
     - name: Upload coverage report
