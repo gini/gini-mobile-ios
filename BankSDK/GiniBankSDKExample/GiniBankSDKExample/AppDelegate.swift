@@ -19,6 +19,19 @@ import Firebase
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
+        /// Wipe all persisted app state so every UI test starts from a known clean slate.
+        /// Clears UserDefaults and the Documents directory (transaction_list.json, etc.).
+        if CommandLine.arguments.contains("-StartFromCleanState") {
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                UserDefaults.standard.synchronize()
+            }
+            if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+               let contents = try? FileManager.default.contentsOfDirectory(at: docs,
+                                                                           includingPropertiesForKeys: nil) {
+                contents.forEach { try? FileManager.default.removeItem(at: $0) }
+            }
+        }
         /// Reset persisted onboarding state so UI tests that pass -ResetCaptureOnboarding
         /// always see the onboarding screen, regardless of previous runs.
         if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
