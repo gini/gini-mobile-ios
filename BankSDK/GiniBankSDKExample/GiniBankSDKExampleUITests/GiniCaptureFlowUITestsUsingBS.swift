@@ -25,7 +25,7 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
             print(response.toDictionary())
             injected.fulfill()
         }
-        wait(for: [injected], timeout: 10)
+        wait(for: [injected], timeout: 30)
 
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10), "Capture button should appear")
         captureScreen.captureButton.tap()
@@ -70,7 +70,7 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
             print(response.toDictionary())
             injected.fulfill()
         }
-        wait(for: [injected], timeout: 10)
+        wait(for: [injected], timeout: 30)
 
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10), "Capture button should appear")
         captureScreen.captureButton.tap()

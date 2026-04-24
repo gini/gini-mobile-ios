@@ -64,7 +64,7 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"project\": \"GiniBankSDKExample\",
+    \"project\": \"$BS_PROJECT\",
     \"buildName\": \"bs_run_cx_multipage\",
     \"uploadMedia\": [\"$CX_MULTI_PAGE_PDF_URL\", \"$CX_PAGE1_URL\", \"$CX_PAGE2_URL\"],
     \"resignApp\": \"true\"

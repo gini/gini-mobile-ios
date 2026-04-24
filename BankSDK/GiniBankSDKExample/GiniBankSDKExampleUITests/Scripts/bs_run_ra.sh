@@ -19,10 +19,11 @@ source "$SCRIPT_DIR/bs_shared.sh"
 
 # ── Media files ────────────────────────────────────────────────────────────────
 RA_FILE="$SAMPLES_DIR/return_asistant.pdf"  # → Custom_Files
+RA_GALLERY_FILE="$SAMPLES_DIR/return_asistant.png"  # → Photos library (must be last in uploadMedia so it is the most recent photo picked by testReturnAssistantGalleryUpload)
 
 # ── Test suites ────────────────────────────────────────────────────────────────
 ONLY_TESTING='[
-  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantBS"
+  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests"
 ]'
 
 # ── Build & package ────────────────────────────────────────────────────────────
@@ -30,7 +31,8 @@ bs_build
 
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
-upload_media RA_URL "$RA_FILE" "ReturnAssistantInvoice" "return_asistant.pdf"
+upload_media RA_URL         "$RA_FILE"         "ReturnAssistantInvoice" "return_asistant.pdf"
+upload_media RA_GALLERY_URL "$RA_GALLERY_FILE" "ReturnAssistantGallery" "return_asistant.png (gallery — must be last)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -41,6 +43,7 @@ echo "Uploaded URLs:"
 echo "  app_url:                  $APP_URL"
 echo "  test_suite_url:           $TEST_URL"
 echo "  Return Assistant invoice: $RA_URL"
+echo "  Return Assistant gallery: $RA_GALLERY_URL"
 
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
@@ -53,7 +56,9 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"uploadMedia\": [\"$RA_URL\"],
+    \"project\": \"$BS_PROJECT\",
+    \"buildName\": \"bs_run_ra\",
+    \"uploadMedia\": [\"$RA_URL\", \"$RA_GALLERY_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"

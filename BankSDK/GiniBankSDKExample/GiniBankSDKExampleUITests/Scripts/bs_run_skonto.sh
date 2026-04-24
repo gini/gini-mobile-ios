@@ -8,15 +8,9 @@ set -e
 #
 #   skonto_past.pdf  — invoice with an expired Skonto discount date
 #                      (switch starts disabled, tests: testSkonto, testSkontoBackButton,
-#                       testSkontoSwitch, testSkontoInPast, testSkontoHelpButtonbo)
-#   skonot_valid.pdf — invoice with a future/valid Skonto discount date
+#                       testSkontoSwitch, testSkontoInPast, testSkontoHelpButton)
+#   skonto_valid.pdf — invoice with a future/valid Skonto discount date
 #                      (switch starts enabled, test: testSkontoInFuture)
-#
-# ⚠️  BS ADAPTATION NEEDED:
-#   All GiniSkontoScreenUITests use tapFileWithName() which looks in the device
-#   Downloads folder. On BrowserStack, uploaded PDFs appear in the Custom_Files
-#   folder. Replace tapFileWithName() calls in GiniSkontoScreenUITests with
-#   tapFileWithNameFromBSCustomFiles() before running this script.
 #
 # BrowserStack credentials can be overridden via environment variables:
 #   export BS_USER="your_username"
@@ -28,7 +22,7 @@ source "$SCRIPT_DIR/bs_shared.sh"
 
 # ── Media files ────────────────────────────────────────────────────────────────
 SKONTO_PAST_FILE="$SAMPLES_DIR/skonto_past.pdf"   # → Custom_Files
-SKONTO_VALID_FILE="$SAMPLES_DIR/skonot_valid.pdf" # → Custom_Files
+SKONTO_VALID_FILE="$SAMPLES_DIR/skonto_valid.pdf" # → Custom_Files
 
 # ── Test suites ────────────────────────────────────────────────────────────────
 # NOTE: These tests require tapFileWithNameFromBSCustomFiles adaptation (see ⚠️ above).
@@ -42,7 +36,7 @@ bs_build
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
 upload_media SKONTO_PAST_URL  "$SKONTO_PAST_FILE"  "SkontoPastInvoice"  "skonto_past.pdf (expired discount)"
-upload_media SKONTO_VALID_URL "$SKONTO_VALID_FILE" "SkontoValidInvoice" "skonot_valid.pdf (future/valid discount)"
+upload_media SKONTO_VALID_URL "$SKONTO_VALID_FILE" "SkontoValidInvoice" "skonto_valid.pdf (future/valid discount)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -66,6 +60,8 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
+    \"project\": \"$BS_PROJECT\",
+    \"buildName\": \"bs_run_skonto\",
     \"uploadMedia\": [\"$SKONTO_PAST_URL\", \"$SKONTO_VALID_URL\"],
     \"resignApp\": \"true\"
   }")

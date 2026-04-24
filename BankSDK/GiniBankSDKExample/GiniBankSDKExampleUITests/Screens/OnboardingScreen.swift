@@ -21,11 +21,11 @@ class OnboardingScreen {
         switch locale {
         case "en":
             nextButton = app.staticTexts["Next"]
-            skipButton = app.buttons["Skip"]
+            skipButton = app.navigationBars.buttons["Skip"]
             getStartedButton = app.buttons["Get Started"]
         case "de":
             nextButton = app.staticTexts["Weiter"]
-            skipButton = app.buttons["Überspringen"]
+            skipButton = app.navigationBars.buttons["Überspringen"]
             getStartedButton = app.buttons["Los geht’s"]
         default:
             fatalError("Locale \(locale) is not supported")

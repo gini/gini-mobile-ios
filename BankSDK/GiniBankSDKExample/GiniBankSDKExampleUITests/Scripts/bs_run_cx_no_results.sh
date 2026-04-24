@@ -35,9 +35,7 @@ RA_FILE="$SAMPLES_DIR/return_asistant.pdf"                   # → Custom_Files
 # NOTE: GiniCXNoResultsUITests and GiniSkontoScreenUITests require tapFileWithNameFromBSCustomFiles
 # adaptation before they will pass on BrowserStack (see ⚠️ above).
 ONLY_TESTING='[
-  "GiniBankSDKExampleUITests/GiniCXNoResultsUITests",
-  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantBS",
-  "GiniBankSDKExampleUITests/GiniSkontoScreenUITests"
+  "GiniBankSDKExampleUITests/GiniCXNoResultsUITests"
 ]'
 
 # ── Build & package ────────────────────────────────────────────────────────────
@@ -72,6 +70,8 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
+    \"project\": \"$BS_PROJECT\",
+    \"buildName\": \"bs_run_cx_no_results\",
     \"uploadMedia\": [\"$CX_NO_RESULTS_URL\", \"$SKONTO_PAST_URL\", \"$RA_URL\"],
     \"resignApp\": \"true\"
   }")

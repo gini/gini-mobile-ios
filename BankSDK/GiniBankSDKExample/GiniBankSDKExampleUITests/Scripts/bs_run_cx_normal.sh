@@ -37,13 +37,17 @@ PP_CAMERA_FILE="$SAMPLES_DIR/Photopayment_Invoice1.png"
 # Gallery / Custom_Files uploads
 CX_GALLERY_FILE="$SAMPLES_DIR/cx_invoice.png"          # → Photos library (gallery tests)
 CX_PDF_FILE="$SAMPLES_DIR/cx_invoice.pdf"              # → Custom_Files  (Files-picker test)
-CX_MULTI_PAGE1_FILE="$SAMPLES_DIR/multi_page_invoice_CX_page1.pdf" # → Custom_Files  (G2 page 1)
-CX_MULTI_PAGE2_FILE="$SAMPLES_DIR/multi_page_invoice_CX_page2.png" # → Custom_Files  (G2 page 2)
+SKONTO_PAST_FILE="$SAMPLES_DIR/skonto_past.pdf"        # → Custom_Files  (C1 feature flag test)
+RA_FILE="$SAMPLES_DIR/return_asistant.pdf"             # → Custom_Files  (C2 feature flag test)
 
 # ── Test suites ────────────────────────────────────────────────────────────────
 ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
-  "GiniBankSDKExampleUITests/GiniCXFeatureFlagsUITests"
+  "GiniBankSDKExampleUITests/GiniCXFeatureFlagsUITests",
+  "GiniBankSDKExampleUITests/GiniProductTagSettingsUITests",
+  "GiniBankSDKExampleUITests/GiniCXOnboardingUITests",
+  "GiniBankSDKExampleUITests/GiniCXCameraUITests",
+  "GiniBankSDKExampleUITests/GiniCXTransactionSummaryUITests"
 ]'
 
 # ── Build & package ────────────────────────────────────────────────────────────
@@ -55,8 +59,8 @@ upload_media CX_CAMERA_URL   "$CX_CAMERA_FILE"      "CXCameraInjection"       "S
 upload_media PP_CAMERA_URL   "$PP_CAMERA_FILE"      "PPCameraInjection"       "Photopayment_Invoice1.png (PP camera injection)"
 upload_media CX_GALLERY_URL  "$CX_GALLERY_FILE"     "CXGalleryImage"          "cx_invoice.png (gallery)"
 upload_media CX_PDF_URL      "$CX_PDF_FILE"         "CXInvoicePDF"            "cx_invoice.pdf (Files picker)"
-upload_media CX_PAGE1_URL    "$CX_MULTI_PAGE1_FILE" "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.pdf (G2 page 1)"
-upload_media CX_PAGE2_URL    "$CX_MULTI_PAGE2_FILE" "CXMultiPageInvoicePage2" "multi_page_invoice_CX_page2.png (G2 page 2)"
+upload_media SKONTO_PAST_URL "$SKONTO_PAST_FILE"    "SkontoPastInvoice"       "skonto_past.pdf (C1 feature flag)"
+upload_media RA_URL          "$RA_FILE"             "ReturnAssistantInvoice"  "return_asistant.pdf (C2 feature flag)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -70,8 +74,8 @@ echo "  CX camera injection:    $CX_CAMERA_URL"
 echo "  PP camera injection:    $PP_CAMERA_URL"
 echo "  CX gallery:             $CX_GALLERY_URL"
 echo "  CX PDF:                 $CX_PDF_URL"
-echo "  CX multi-page page 1:   $CX_PAGE1_URL"
-echo "  CX multi-page page 2:   $CX_PAGE2_URL"
+echo "  Skonto past invoice:    $SKONTO_PAST_URL"
+echo "  Return Assistant:       $RA_URL"
 
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
@@ -84,7 +88,9 @@ BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
-    \"uploadMedia\": [\"$CX_GALLERY_URL\", \"$CX_PDF_URL\", \"$CX_PAGE1_URL\", \"$CX_PAGE2_URL\"],
+    \"project\": \"$BS_PROJECT\",
+    \"buildName\": \"bs_run_cx_normal\",
+    \"uploadMedia\": [\"$CX_GALLERY_URL\", \"$CX_PDF_URL\", \"$SKONTO_PAST_URL\", \"$RA_URL\"],
     \"enableCameraImageInjection\": \"true\",
     \"cameraInjectionMedia\": [\"$CX_CAMERA_URL\", \"$PP_CAMERA_URL\"],
     \"resignApp\": \"true\"

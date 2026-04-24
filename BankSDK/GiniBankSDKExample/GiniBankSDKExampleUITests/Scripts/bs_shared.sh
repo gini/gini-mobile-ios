@@ -8,7 +8,7 @@
 #     source "$SCRIPT_DIR/bs_shared.sh"
 #
 # Provides:
-#   Variables : BS_USER, BS_KEY, REPO_ROOT, WORKSPACE, SCHEME, DERIVED_DATA,
+#   Variables : BS_USER, BS_KEY, BS_PROJECT, REPO_ROOT, WORKSPACE, SCHEME, DERIVED_DATA,
 #               BUILD_PRODUCTS, SIGNING_CONFIG, SAMPLES_DIR, IPA_OUTPUT,
 #               TEST_SUITE_OUTPUT, DEVICE_1, DEVICE_2
 #   Functions : upload_media, bs_build, bs_upload_app_and_suite, bs_cleanup
@@ -35,6 +35,9 @@ TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
 # ── Devices ───────────────────────────────────────────────────────────────────
 DEVICE_1="iPhone 16-18"
 DEVICE_2="iPhone 13 Pro Max-18"
+
+# ── BrowserStack project ──────────────────────────────────────────────────────
+BS_PROJECT="GiniBankSDK-CX-Payment-4.2.0"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
