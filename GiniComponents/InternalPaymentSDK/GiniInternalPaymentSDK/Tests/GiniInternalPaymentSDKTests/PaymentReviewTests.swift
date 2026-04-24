@@ -641,3 +641,178 @@ struct PaymentReviewObservableModelTests {
         sut.dismissBannerAfterDelay()
     }
 }
+
+// MARK: - PaymentReviewPaymentInformationObservableModel — handleFocusChange
+
+@Suite("PaymentReviewPaymentInformationObservableModel — handleFocusChange")
+@MainActor
+struct PaymentReviewPaymentInformationObservableModelHandleFocusChangeTests {
+
+    @Test("focus gained clears hasError")
+    func focusGainedClearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.recipientInputState.hasError = true
+
+        sut.handleFocusChange(isFocused: true,
+                              inputState: \.recipientInputState,
+                              validate: sut.validateRecipient,
+                              error: \.recipientError)
+
+        #expect(sut.recipientInputState.hasError == false)
+    }
+
+    @Test("focus lost with valid text sets no error")
+    func focusLostValidTextNoError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.recipientInputState.text = "Gini GmbH"
+
+        sut.handleFocusChange(isFocused: false,
+                              inputState: \.recipientInputState,
+                              validate: sut.validateRecipient,
+                              error: \.recipientError)
+
+        #expect(sut.recipientInputState.hasError == false)
+    }
+
+    @Test("focus lost with empty text sets hasError and errorMessage")
+    func focusLostEmptyTextSetsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.recipientInputState.text = ""
+
+        sut.handleFocusChange(isFocused: false,
+                              inputState: \.recipientInputState,
+                              validate: sut.validateRecipient,
+                              error: \.recipientError)
+
+        #expect(sut.recipientInputState.hasError == true)
+        #expect(sut.recipientInputState.errorMessage != nil)
+    }
+
+    @Test("focus lost with invalid IBAN sets hasError")
+    func focusLostInvalidIBANSetsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.ibanInputState.text = "NOTANIBAN"
+
+        sut.handleFocusChange(isFocused: false,
+                              inputState: \.ibanInputState,
+                              validate: sut.validateIBAN,
+                              error: \.ibanError)
+
+        #expect(sut.ibanInputState.hasError == true)
+    }
+}
+
+// MARK: - PaymentReviewPaymentInformationObservableModel — handleAmountFocusChange
+
+@Suite("PaymentReviewPaymentInformationObservableModel — handleAmountFocusChange")
+@MainActor
+struct PaymentReviewPaymentInformationObservableModelHandleAmountFocusTests {
+
+    @Test("focus gained sets text to raw numeric value")
+    func focusGainedSetsRawText() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+
+        sut.handleAmountFocusChange(isFocused: true)
+
+        #expect(sut.amountInputState.text == (sut.amountToPay.stringWithoutSymbol ?? ""))
+    }
+
+    @Test("focus lost with empty text sets hasError")
+    func focusLostEmptyTextSetsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.text = ""
+        sut.amountToPay = Price(value: 0, currencyCode: "EUR")
+
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.hasError == true)
+    }
+
+    @Test("focus lost with valid positive amount clears error")
+    func focusLostValidAmountClearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.text = "12,50"
+
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.hasError == false)
+    }
+
+    @Test("focus lost with zero parsed amount sets hasError")
+    func focusLostZeroAmountSetsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.text = "0"
+
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.hasError == true)
+    }
+}
+
+// MARK: - PaymentReviewPaymentInformationObservableModel — handleAmountTextChange
+
+@Suite("PaymentReviewPaymentInformationObservableModel — handleAmountTextChange")
+@MainActor
+struct PaymentReviewPaymentInformationObservableModelHandleAmountTextChangeTests {
+
+    @Test("valid amount text clears error and updates amountToPay")
+    func validTextClearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.hasError = true
+
+        sut.handleAmountTextChange(updatedText: "12,50")
+
+        #expect(sut.amountInputState.hasError == false)
+        #expect(sut.amountToPay.value > 0)
+    }
+
+    @Test("non-parsable text still clears hasError without crashing")
+    func nonParsableTextClearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.hasError = true
+
+        sut.handleAmountTextChange(updatedText: "abc")
+
+        #expect(sut.amountInputState.hasError == false)
+    }
+}
+
+// MARK: - PaymentReviewPaymentInformationObservableModel — fieldState
+
+@Suite("PaymentReviewPaymentInformationObservableModel — fieldState")
+@MainActor
+struct PaymentReviewPaymentInformationObservableModelFieldStateTests {
+
+    @Test("hasError true returns .error regardless of active field")
+    func errorStateReturnedWhenHasError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.activeField = .recipient
+
+        #expect(sut.fieldState(for: .recipient, hasError: true) == .error)
+    }
+
+    @Test("active field with no error returns .focused")
+    func activeFieldReturnsFocused() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.activeField = .iban
+
+        #expect(sut.fieldState(for: .iban, hasError: false) == .focused)
+    }
+
+    @Test("non-active field with no error returns .normal")
+    func nonActiveFieldReturnsNormal() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.activeField = .recipient
+
+        #expect(sut.fieldState(for: .iban, hasError: false) == .normal)
+    }
+
+    @Test("nil active field returns .normal")
+    func nilActiveFieldReturnsNormal() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.activeField = nil
+
+        #expect(sut.fieldState(for: .amount, hasError: false) == .normal)
+    }
+}

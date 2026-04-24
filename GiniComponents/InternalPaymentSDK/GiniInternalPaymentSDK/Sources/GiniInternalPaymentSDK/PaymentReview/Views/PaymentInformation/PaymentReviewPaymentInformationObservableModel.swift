@@ -172,6 +172,77 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         }
     }
     
+    // MARK: - Focus / field-state helpers (moved here for testability)
+
+    /**
+     Handles a focus-change event for a generic text field.
+     When the field gains focus its error state is cleared; when it loses focus the field is
+     re-validated and, if invalid, the error message is announced to VoiceOver.
+     */
+    func handleFocusChange(isFocused: Bool,
+                           inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>,
+                           validate: (String) -> Bool,
+                           error: KeyPath<PaymentReviewPaymentInformationObservableModel, String?>) {
+        if isFocused {
+            self[keyPath: inputState].hasError = false
+        } else {
+            let text = self[keyPath: inputState].text
+            self[keyPath: inputState].hasError = !validate(text)
+            self[keyPath: inputState].errorMessage = self[keyPath: error]
+            if self[keyPath: inputState].hasError, let msg = self[keyPath: error] {
+                UIAccessibility.post(notification: .announcement, argument: msg)
+            }
+        }
+    }
+
+    /**
+     Handles a focus-change event specific to the amount field.
+     On focus-gained the raw numeric value is shown; on focus-lost the value is re-formatted,
+     validated, and any error is announced to VoiceOver.
+     */
+    func handleAmountFocusChange(isFocused: Bool) {
+        if isFocused {
+            amountInputState.text = amountToPay.stringWithoutSymbol ?? ""
+        } else {
+            if !amountInputState.text.isEmpty,
+               let decimalAmount = amountInputState.text.decimal() {
+                amountToPay.value = decimalAmount
+                if decimalAmount > 0, let amountString = amountToPay.string {
+                    amountInputState.text = amountString
+                } else {
+                    amountInputState.text = ""
+                }
+            }
+            amountInputState.hasError = !validateAmount(amountInputState.text, amount: amountToPay.value)
+            amountInputState.errorMessage = amountError
+            if amountInputState.hasError, let errorMessage = amountError {
+                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            }
+        }
+    }
+
+    /**
+     Handles a text change in the amount field: clears the error flag and updates
+     both the displayed text and the `amountToPay` value if the input is parsable.
+     */
+    func handleAmountTextChange(updatedText: String) {
+        amountInputState.hasError = false
+        if let result = adjustAmountValue(text: updatedText) {
+            amountInputState.text = result.adjustedText
+            amountToPay.value = result.newValue
+        }
+    }
+
+    /**
+     Returns the visual state for a text field: `.error` when `hasError` is set,
+     `.focused` when this field is the currently-active field, otherwise `.normal`.
+     */
+    func fieldState(for field: ActivePaymentField, hasError: Bool) -> GiniTextFieldState {
+        if hasError { return .error }
+        if activeField == field { return .focused }
+        return .normal
+    }
+
     func updateFieldErrorStates() {
         recipientInputState.hasError = recipientError != nil
         recipientInputState.errorMessage = recipientError

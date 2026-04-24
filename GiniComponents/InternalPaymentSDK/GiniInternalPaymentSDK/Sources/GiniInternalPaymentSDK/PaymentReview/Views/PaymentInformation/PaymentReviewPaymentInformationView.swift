@@ -201,7 +201,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleFocusChange(isFocused: newFocus == .recipient,
+                viewModel.handleFocusChange(isFocused: newFocus == .recipient,
                                   inputState: \.recipientInputState,
                                   validate: viewModel.validateRecipient,
                                   error: \.recipientError)
@@ -221,7 +221,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleFocusChange(isFocused: newFocus == .iban,
+                viewModel.handleFocusChange(isFocused: newFocus == .iban,
                                   inputState: \.ibanInputState,
                                   validate: viewModel.validateIBAN,
                                   error: \.ibanError)
@@ -234,11 +234,11 @@ struct PaymentReviewPaymentInformationView: View {
         TextField("", text: $viewModel.amountInputState.text)
         .focused($focusedField, equals: .amount)
         .onChange(of: viewModel.amountInputState.text) { newValue in
-            adjustAmountValue(updatedText: newValue)
+            viewModel.handleAmountTextChange(updatedText: newValue)
         }
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleAmountFocusChange(isFocused: newFocus == .amount)
+                viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
             }
         }
         .keyboardType(.decimalPad)
@@ -258,7 +258,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleFocusChange(isFocused: newFocus == .paymentPurpose,
+                viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
                                   inputState: \.paymentPurposeInputState,
                                   validate: viewModel.validatePaymentPurpose,
                                   error: \.paymentPurposeError)
@@ -352,34 +352,13 @@ struct PaymentReviewPaymentInformationView: View {
     
     // MARK: Private methods
 
-    private func adjustAmountValue(updatedText: String) {
-        viewModel.amountInputState.hasError = false
-        
-        if let result = viewModel.adjustAmountValue(text: updatedText) {
-            viewModel.amountInputState.text = result.adjustedText
-            viewModel.amountToPay.value = result.newValue
-        }
-    }
-    
-    private func fieldState(for field: ActivePaymentField, hasError: Bool) -> GiniTextFieldState {
-        if hasError {
-            return .error
-        } else if focusedField == field {
-            return .focused
-        } else {
-            return .normal
-        }
-    }
-
-    private func makeTextFieldStyle(
-        title: String,
-        field: ActivePaymentField,
-        inputState: GiniInputFieldState,
-        lockedIcon: Image? = nil
-    ) -> GiniTextFieldStyle {
+    private func makeTextFieldStyle(title: String,
+                                    field: ActivePaymentField,
+                                    inputState: GiniInputFieldState,
+                                    lockedIcon: Image? = nil) -> GiniTextFieldStyle {
         GiniTextFieldStyle(lockedIcon: lockedIcon,
                            title: title,
-                           state: fieldState(for: field, hasError: inputState.hasError),
+                           state: viewModel.fieldState(for: field, hasError: inputState.hasError),
                            errorMessage: inputState.errorMessage,
                            normalConfiguration: textFieldConfiguration,
                            focusedConfiguration: focusedTextFieldConfiguration,
@@ -429,53 +408,6 @@ struct PaymentReviewPaymentInformationView: View {
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 400_000_000) // 0.4 s
             focusedField = field
-        }
-    }
-
-    // MARK: - Focus Change Handlers
-
-    private func handleFocusChange(
-        isFocused: Bool,
-        inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>,
-        validate: (String) -> Bool,
-        error: KeyPath<PaymentReviewPaymentInformationObservableModel, String?>
-    ) {
-        if isFocused {
-            viewModel[keyPath: inputState].hasError = false
-        } else {
-            let text = viewModel[keyPath: inputState].text
-            viewModel[keyPath: inputState].hasError = !validate(text)
-            viewModel[keyPath: inputState].errorMessage = viewModel[keyPath: error]
-            if viewModel[keyPath: inputState].hasError, let msg = viewModel[keyPath: error] {
-                UIAccessibility.post(notification: .announcement, argument: msg)
-            }
-        }
-    }
-
-    private func handleAmountFocusChange(isFocused: Bool) {
-        if isFocused {
-            viewModel.amountInputState.text = viewModel.amountToPay.stringWithoutSymbol ?? ""
-        } else {
-            if !viewModel.amountInputState.text.isEmpty,
-               let decimalAmount = viewModel.amountInputState.text.decimal() {
-                viewModel.amountToPay.value = decimalAmount
-                
-                if decimalAmount > 0,
-                   let amountString = viewModel.amountToPay.string {
-                    viewModel.amountInputState.text = amountString
-                } else {
-                    viewModel.amountInputState.text = ""
-                }
-            }
-            
-            viewModel.amountInputState.hasError = !viewModel.validateAmount(viewModel.amountInputState.text, amount: viewModel.amountToPay.value)
-            viewModel.amountInputState.errorMessage = viewModel.amountError
-            
-            // Announce error to VoiceOver
-            if viewModel.amountInputState.hasError,
-                let errorMessage = viewModel.amountError {
-                UIAccessibility.post(notification: .announcement, argument: errorMessage)
-            }
         }
     }
 
