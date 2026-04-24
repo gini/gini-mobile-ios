@@ -21,6 +21,7 @@ import XCTest
  */
 class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
 
+    // TODO: please enable these tests after the bug ticket is fixed. These tests are failing due to Extractor issues as of now.
     /*
      To launch this test and closely mimic real user behaviour
      Please upload to device:
@@ -29,7 +30,7 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
          "multi_page_invoice_CX_page2" — second page of the same CX invoice
      */
 
-    func testCXMultiPageInvoiceFlow() {
+    func manualTestCXMultiPageInvoiceFlow() {
         //Enable Multipage in Settings
         mainScreen.configurationButton.tap()
         //Scroll to Product Tag and select Cross-border
@@ -51,21 +52,15 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
         }
-        //Assert either Transfer Summary or No-Results screen is shown (no crash expected)
-        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 15)
-        let noResultsAppeared = noResultsScreen.waitForExistence(timeout: 5)
-        XCTAssertTrue(transferSummaryAppeared || noResultsAppeared,
-                      "Either Transfer Summary or No-Results screen should appear after multi-page CX analysis.")
+        //Assert either Transfer Summary screen is shown (no crash expected)
+        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 15),
+                      "Either Transfer Summary should appear after multi-page CX analysis.")
         //Close SDK gracefully
-        if transferSummaryAppeared {
-            transactionSummaryScreen.tapDoneButton()
-        } else {
-            noResultsScreen.backToCameraButton.tap()
-        }
+        transactionSummaryScreen.tapDoneButton()
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 10))
     }
 
-    func testCXMultiPageInvoiceFlowTwoSeparatePNGPages() {
+    func manualTestCXMultiPageInvoiceFlowTwoSeparatePNGPages() {
         //Open Settings: select Cross-border product tag
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
@@ -104,17 +99,11 @@ class GiniCXMultiPageUITests: GiniBankSDKExampleUITests {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
 
-        //Assert either Transfer Summary or No-Results screen appears (no crash expected)
-        let transferSummaryAppeared = transactionSummaryScreen.doneButton.waitForExistence(timeout: 15)
-        let noResultsAppeared = noResultsScreen.waitForExistence(timeout: 5)
-        XCTAssertTrue(transferSummaryAppeared || noResultsAppeared,
-                      "Either Transfer Summary or No-Results screen should appear after two-page CX analysis.")
+        //Assert either Transfer Summary screen appears (no crash expected)
+        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 15),
+                      "Either Transfer Summary screen should appear after two-page CX analysis.")
         //Close SDK gracefully
-        if transferSummaryAppeared {
-            transactionSummaryScreen.tapDoneButton()
-        } else {
-            noResultsScreen.backToCameraButton.tap()
-        }
+        transactionSummaryScreen.tapDoneButton()
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 10),
                       "Should return to main screen after completing the two-page CX flow.")
     }
