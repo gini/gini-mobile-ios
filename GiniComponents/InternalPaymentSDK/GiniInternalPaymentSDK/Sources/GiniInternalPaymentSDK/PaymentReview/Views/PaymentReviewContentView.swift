@@ -14,21 +14,19 @@ public struct PaymentReviewContentView: View {
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.giniLayout) private var giniLayout
     
-    private var isLandscape: Bool {
-        verticalSizeClass == .compact
-    }
-    
-    /// The init method is internal to prevent users from creating instances of this view directly
-    /// outside of GiniInternalPaymentSDK.
+    /**
+     The init method is internal to prevent users from creating instances of this view directly
+     outside of GiniInternalPaymentSDK.
+     */
     init(viewModel: PaymentReviewObservableModel) {
         self.viewModel = viewModel
     }
     
     public var body: some View {
         GeometryReader { geometry in
-            if isLandscape && !viewModel.isBottomSheetMode {
+            if giniLayout.isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
                     .transition(.opacity)
             } else {
@@ -36,8 +34,9 @@ public struct PaymentReviewContentView: View {
                     .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: isLandscape)
-        .onChange(of: isLandscape) { landscape in
+        .ignoresSafeArea(.keyboard)
+        .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
+        .onChange(of: giniLayout.isLandscape) { landscape in
             // When rotating to landscape in documentCollection mode, dismiss the
             // sheet immediately (without animation) so the crossfade transition
             // isn't disrupted by the sheet's own dismissal animation.
@@ -55,6 +54,27 @@ public struct PaymentReviewContentView: View {
         }
         .onAppear {
             viewModel.dismissBannerAfterDelay()
+        }
+        // Full-width Done toolbar rendered above the keyboard in landscape (documentCollection)
+        // mode. `ToolbarItemGroup(placement: .keyboard)` is the correct way to place content
+        // above the keyboard — `safeAreaInset` on the HStack would place it behind the keyboard
+        // because the outer container suppresses the keyboard safe area with `ignoresSafeArea`.
+        // The inner form view's narrow Done bar is suppressed in landscape so only this
+        // full-width version appears.
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
+                    Spacer()
+                    Button(viewModel.keyboardDoneButtonTitle) {
+                        viewModel.trackKeyboardDismissed()
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                        to: nil,
+                                                        from: nil,
+                                                        for: nil)
+                    }
+                    .padding(.trailing, Constants.doneButtonHorizontalPadding)
+                }
+            }
         }
     }
     
@@ -200,5 +220,6 @@ public struct PaymentReviewContentView: View {
         static let landscapeContainerSpacing: CGFloat = 8.0
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
+        static let doneButtonHorizontalPadding: CGFloat = 16.0
     }
 }

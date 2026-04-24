@@ -21,13 +21,45 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var bannerDismissed: Bool = false
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
-    
+    private var cancellables = Set<AnyCancellable>()
+
     var isBottomSheetMode: Bool {
         model.displayMode == .bottomSheet
     }
-    
+
     var invoiceImageAccessibilityLabel: String {
         model.strings.invoiceImageAccessibilityLabel
+    }
+
+    /**
+     Reflects whether the amount field inside the payment information form is currently focused.
+     Changes trigger a re-render of `PaymentReviewContentView` so the landscape Done toolbar
+     can appear or disappear in sync with keyboard focus.
+     */
+    var isAmountFieldFocused: Bool {
+        paymentInformationObservableModel.isAmountFieldFocused
+    }
+
+    /**
+     The localized title for the keyboard Done button.
+     */
+    var keyboardDoneButtonTitle: String {
+        containerViewModel.strings.keyboardDoneButtonTitle
+    }
+
+    /**
+     Tracks the keyboard-dismissed analytics event and clears the stored active field so that
+     a subsequent device rotation does not restore focus (and reopen the keyboard).
+     Call this when the user explicitly taps the Done button.
+     */
+    func trackKeyboardDismissed() {
+        // Clear immediately — the 0.1 s delay in `onChange(of: focusedField)` is designed to
+        // distinguish rotation from a manual dismiss, but if the user rotates right after tapping
+        // Done the view is already gone and the check sees `isViewVisible == false`, keeping
+        // `activeField` set and reopening the keyboard in the new layout. Clearing here first
+        // wins the race.
+        paymentInformationObservableModel.activeField = nil
+        model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
     }
     
     @Published private var showBanner: Bool
@@ -86,7 +118,7 @@ final class PaymentReviewObservableModel: ObservableObject {
                     }
                 }
             } catch {
-                /// Task was cancelled - no action needed
+                // Task was cancelled - no action needed
             }
         }
     }
@@ -125,7 +157,10 @@ final class PaymentReviewObservableModel: ObservableObject {
             self?.didTapPay(paymentInfo)
         },
                                             onKeyboardDismissed: { [weak self] in
-            self?.model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
+            // Route through `trackKeyboardDismissed()` so `activeField` is cleared immediately.
+            // Calling the delegate directly would skip that and leave the field set, causing
+            // the keyboard to reopen if the user rotates right after tapping Done.
+            self?.trackKeyboardDismissed()
         })
     }
     
@@ -146,6 +181,12 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
     
     private func setupBindings() {
+        // Forward `isAmountFieldFocused` changes from the inner observable model so that
+        // `PaymentReviewContentView` re-renders when the amount field gains or loses focus.
+        paymentInformationObservableModel.$isAmountFieldFocused
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
+
         // Observe changes from the original model
         model.onPreviewImagesFetched = { [weak self] in
             Task { @MainActor [weak self] in

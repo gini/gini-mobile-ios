@@ -14,11 +14,7 @@ struct GiniBottomSheetModifier: ViewModifier {
     
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
-    
-    private var isLandscape: Bool {
-        verticalSizeClass == .compact
-    }
+    @Environment(\.giniLayout) private var giniLayout
     
     init(contentHeight: CGFloat,
          allowsDismiss: Bool = false,
@@ -43,16 +39,19 @@ struct GiniBottomSheetModifier: ViewModifier {
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
                 .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
-                .presentationContentInteraction(.resizes)
+                .presentationContentInteraction(.scrolls)
         } else {
             base
         }
     }
     
     private func detentsForOrientation() -> Set<PresentationDetent> {
-        if isLandscape {
+        if giniLayout.isLandscape {
             return [.large]
         } else {
+            // Only one detent in portrait: the sheet stays at its content height and the
+            // inner ScrollView scrolls to show the focused field. A .large detent causes
+            // iOS to auto-snap to full screen when the keyboard appears.
             return [.height(contentHeight)]
         }
     }
