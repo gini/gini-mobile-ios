@@ -279,6 +279,5 @@ class MainScreen {
         // If the text was not found in any static text element
         XCTFail("The text '\(expectedText)' was not found in any static text element.")
     }
-
 }
 
