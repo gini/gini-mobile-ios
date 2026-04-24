@@ -134,4 +134,146 @@ final class GiniHealthTests: GiniHealthTestCase {
         assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
         XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Informal German tip pattern should match")
     }
+
+    // MARK: - Initializers
+
+    func testInitWithCredentialsCreatesValidInstance() throws {
+        // Probe Keychain before invoking the credential init.
+        // The SPM test runner lacks Keychain entitlements; skip instead of crashing.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain")
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by credential initializer")
+    }
+
+    func testInitWithPinningConfigCreatesValidInstance() throws {
+        // Probe Keychain before invoking the pinning-config init.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain",
+                                  pinningConfig: ["test.domain": ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="]])
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by pinning-config initializer")
+    }
+
+    // MARK: - Start Payment Flow
+
+    func testStartPaymentFlowDoesNotCrash() {
+        // Given
+        let navigationController = UINavigationController()
+
+        // When / Then — just verifies no crash on the public entry point
+        giniHealth.startPaymentFlow(documentId: nil,
+                                    paymentInfo: nil,
+                                    navigationController: navigationController,
+                                    trackingDelegate: nil)
+    }
+
+    // MARK: - Version String
+
+    func testVersionString() {
+        XCTAssertFalse(GiniHealth.versionString.isEmpty, "Version string should not be empty")
+    }
+
+    // MARK: - Fetch Bank Logos
+
+    func testFetchBankLogos() {
+        // Providers are loaded synchronously by the mock in setUp, so logos is non-nil
+        let result = giniHealth.fetchBankLogos()
+        XCTAssertNotNil(result.logos, "fetchBankLogos should return a logos value")
+    }
+
+    // MARK: - DataForReview init
+
+    func testDataForReviewInitStoresValues() throws {
+        // Given
+        let apiDocument: GiniHealthAPILibrary.Document = try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document1"))
+        let document = try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
+        let extractions: [GiniHealthSDK.Extraction] = []
+
+        // When
+        let dataForReview = DataForReview(document: document,
+                                          extractions: extractions)
+
+        // Then
+        XCTAssertEqual(dataForReview.document, document, "DataForReview should store the document")
+        XCTAssertEqual(dataForReview.extractions.count, extractions.count, "DataForReview should store the extractions")
+    }
+
+    // MARK: - Delegate Forwarding
+
+    func testIsLoadingStateChangedForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: true)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, true, "Loading state value should be forwarded")
+    }
+
+    func testIsLoadingStateChangedFalseForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: false)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, false, "Loading state false should be forwarded")
+    }
+
+    func testDidFetchedPaymentProvidersForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.didFetchedPaymentProviders()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didFetchedPaymentProvidersCalled, "didFetchedPaymentProviders should be forwarded to paymentDelegate")
+    }
+
+    func testDidDismissPaymentComponentsForwardsToHealthDelegate() {
+        // Given
+        let mockDelegate = MockGiniHealthDelegate()
+        giniHealth.delegate = mockDelegate
+
+        // When
+        giniHealth.didDismissPaymentComponents()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didDismissHealthSDKCalled, "didDismissPaymentComponents should call didDismissHealthSDK on the health delegate")
+    }
 }

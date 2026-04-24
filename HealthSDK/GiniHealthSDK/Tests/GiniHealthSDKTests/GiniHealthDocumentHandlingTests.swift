@@ -214,6 +214,22 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
             XCTAssertNotNil(error, "Error should not be nil when no document IDs are provided")
         }
     }
+
+    // MARK: - Set Document For Review (failure path)
+
+    func testSetDocumentForReviewReturnsErrorWhenDocumentMissing() throws {
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.setDocumentForReview(documentId: MockSessionManager.missingDocumentID,
+                                            completion: $0)
+        })
+
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
+        }
+    }
 }
 
 

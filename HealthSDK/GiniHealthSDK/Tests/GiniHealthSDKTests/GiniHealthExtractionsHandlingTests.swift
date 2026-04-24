@@ -235,6 +235,121 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNil(receivedExtractions, "Extractions should be nil when the request fails")
     }
 
+    func testSubmitFeedbackSuccess() throws {
+        let extractions = try loadExtractionsContainer(fromFile: "extractionsWithPayment")
+        let updatedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: extractions).extractions
+
+        // When
+        let expectation = self.expectation(description: "Submitting feedback succeeds")
+        var submissionError: GiniHealthError?
+        giniHealth.submitFeedback(docId: MockSessionManager.extractionsWithPaymentDocumentID,
+                                  updatedExtractions: updatedExtractions) { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                submissionError = error
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(submissionError, "Feedback submission should succeed without error")
+    }
+
+    func testSubmitFeedbackFailure() {
+        // When
+        let expectation = self.expectation(description: "Submitting feedback fails")
+        var submissionError: GiniHealthError?
+        giniHealth.submitFeedback(docId: MockSessionManager.failurePayableDocumentID,
+                                  updatedExtractions: []) { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                submissionError = error
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(submissionError, "Feedback submission should fail when the request receives no response")
+    }
+
+    func testGetExtractionsReturnsErrorWhenDocumentMissing() {
+        // When — missingDocumentID causes fetchDocument to fail, covering the fetchDocument failure branch
+        let result = waitForResult {
+            giniHealth.getExtractions(docId: MockSessionManager.missingDocumentID,
+                                      completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
+    func testGetAllExtractionsReturnsErrorWhenDocumentMissing() {
+        // When — missingDocumentID causes fetchDocument to fail, covering the fetchDocument failure branch
+        let result = waitForResult {
+            giniHealth.getAllExtractions(docId: MockSessionManager.missingDocumentID,
+                                         completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when document is missing")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
+    func testGetExtractionsReturnsNoPaymentDataExtracted() {
+        // When (payableDocumentID returns extractionResultWithIBAN which has no `payment` key)
+        let result = waitForResult {
+            giniHealth.getExtractions(docId: MockSessionManager.payableDocumentID,
+                                      completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success:
+            XCTFail("Expected .noPaymentDataExtracted failure but received success")
+        case .failure(let error):
+            XCTAssertEqual(error, .noPaymentDataExtracted, "Error should be .noPaymentDataExtracted when payment extractions are absent")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
+    func testFetchDataForReviewReturnsNoPaymentDataExtracted() {
+        // When (payableDocumentID returns extractionResultWithIBAN which has no `payment` key)
+        let result = waitForResult {
+            giniHealth.fetchDataForReview(documentId: MockSessionManager.payableDocumentID,
+                                          completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success:
+            XCTFail("Expected .noPaymentDataExtracted failure but received success")
+        case .failure(let error):
+            XCTAssertEqual(error, .noPaymentDataExtracted, "Error should be .noPaymentDataExtracted when payment extractions are absent")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
     func testGetDoctorsNameExtractionsSuccess() {
         // Given
         let expectedDoctorName = "DR. SOMMER TEAM"

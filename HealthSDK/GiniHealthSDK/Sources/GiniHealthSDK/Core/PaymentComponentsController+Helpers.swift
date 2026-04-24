@@ -519,7 +519,8 @@ extension PaymentComponentsController {
     public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
         let newDocument = Document(healthDocument: document)
         let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
-        giniSDK.documentService.submitFeedback(for: newDocument, with: [], and: ["payment": [extractions]]) { result in
+        giniSDK.documentService.submitFeedback(for: newDocument,
+                                               with: extractions) { result in
             switch result {
             case .success(let result):
                 completion?(.success(result))
