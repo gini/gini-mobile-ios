@@ -14,7 +14,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniInternalPaymentSDK]
+        target: [GiniInternalPaymentSDKTests]
         destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
@@ -29,28 +29,43 @@ jobs:
            cd GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK
            swift package update
 
-  # Build the GiniInternalPaymentSDK target to verify compilation
+  # Run unit tests and collect coverage for GiniInternalPaymentSDKTests
     - name: Setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
         ruby-version: '3.2.0'
         bundler-cache: true
 
-    - name: Build "${{ matrix.target }}"
+    - name: Build and run tests for "${{ matrix.target }}"
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
-        lane: 'build_scheme'
+        lane: 'run_unit_tests'
         options: >
             {
               "target": "${{ matrix.target }}",
-              "destination": "${{ matrix.destination }}"
+              "destination": "${{ matrix.destination }}",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
-     
+
+    - name: Convert coverage to SonarQube generic format
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
+          | sed 's|path="[^"]*GiniInternalPaymentSDK/|path="|g' \
+          > GiniComponents/InternalPaymentSDK/coverage.xml
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-internal-payment-sdk
+        path: GiniComponents/InternalPaymentSDK/coverage.xml
+        retention-days: 1
+
   sonarqube:
     name: SonarQube
     needs: check
     uses: ./.github/workflows/sonarqube.yml
     with:
       project_base_dir: GiniComponents/InternalPaymentSDK
+      coverage_artifact_name: sonar-coverage-internal-payment-sdk
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
