@@ -4,12 +4,6 @@
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
-//  Covers:
-//    - GiniLayoutEnvironment.isLandscape  (3 new lines in PR)
-//    - PaymentReviewPaymentInformationObservableModel validation,
-//      population, adjustment, validateAllFields, buildPaymentInfo
-//    - PaymentReviewObservableModel: isBottomSheetMode, keyboardDoneButtonTitle,
-//      isAmountFieldFocused default, trackKeyboardDismissed delegate forwarding
 
 import Testing
 import UIKit

@@ -202,9 +202,9 @@ struct PaymentReviewPaymentInformationView: View {
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .recipient,
-                                  inputState: \.recipientInputState,
-                                  validate: viewModel.validateRecipient,
-                                  error: \.recipientError)
+                                            inputState: \.recipientInputState,
+                                            validate: viewModel.validateRecipient,
+                                            error: \.recipientError)
             }
         }
     }
@@ -222,9 +222,9 @@ struct PaymentReviewPaymentInformationView: View {
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .iban,
-                                  inputState: \.ibanInputState,
-                                  validate: viewModel.validateIBAN,
-                                  error: \.ibanError)
+                                            inputState: \.ibanInputState,
+                                            validate: viewModel.validateIBAN,
+                                            error: \.ibanError)
             }
         }
     }
@@ -259,9 +259,9 @@ struct PaymentReviewPaymentInformationView: View {
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
-                                  inputState: \.paymentPurposeInputState,
-                                  validate: viewModel.validatePaymentPurpose,
-                                  error: \.paymentPurposeError)
+                                            inputState: \.paymentPurposeInputState,
+                                            validate: viewModel.validatePaymentPurpose,
+                                            error: \.paymentPurposeError)
             }
         }
     }
