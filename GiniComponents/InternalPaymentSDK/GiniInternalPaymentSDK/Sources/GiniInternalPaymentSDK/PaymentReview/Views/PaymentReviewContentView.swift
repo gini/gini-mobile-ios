@@ -14,7 +14,7 @@ public struct PaymentReviewContentView: View {
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.isLandscape) private var isLandscape
+    @Environment(\.giniLayout) private var giniLayout
     
     /**
      The init method is internal to prevent users from creating instances of this view directly
@@ -26,7 +26,7 @@ public struct PaymentReviewContentView: View {
     
     public var body: some View {
         GeometryReader { geometry in
-            if isLandscape && !viewModel.isBottomSheetMode {
+            if giniLayout.isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
                     .transition(.opacity)
             } else {
@@ -35,8 +35,8 @@ public struct PaymentReviewContentView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: isLandscape)
-        .onChange(of: isLandscape) { landscape in
+        .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
+        .onChange(of: giniLayout.isLandscape) { landscape in
             // When rotating to landscape in documentCollection mode, dismiss the
             // sheet immediately (without animation) so the crossfade transition
             // isn't disrupted by the sheet's own dismissal animation.
@@ -63,14 +63,14 @@ public struct PaymentReviewContentView: View {
         // full-width version appears.
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
-                if isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
+                if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
                     Spacer()
                     Button(viewModel.keyboardDoneButtonTitle) {
                         viewModel.trackKeyboardDismissed()
-                        UIApplication.shared.sendAction(
-                            #selector(UIResponder.resignFirstResponder),
-                            to: nil, from: nil, for: nil
-                        )
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                        to: nil,
+                                                        from: nil,
+                                                        for: nil)
                     }
                     .padding(.trailing, Constants.doneButtonHorizontalPadding)
                 }
