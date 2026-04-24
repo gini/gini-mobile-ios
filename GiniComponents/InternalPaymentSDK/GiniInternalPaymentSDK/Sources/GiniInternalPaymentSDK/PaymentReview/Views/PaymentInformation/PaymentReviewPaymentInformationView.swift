@@ -316,7 +316,11 @@ struct PaymentReviewPaymentInformationView: View {
         if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
            let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
             Button(action: {
-                if viewModel.validateAllFields() { viewModel.updateFieldErrorStates(); onPayTapped(viewModel.buildPaymentInfo()) }
+                let isValid = viewModel.validateAllFields()
+                viewModel.updateFieldErrorStates()
+                if isValid {
+                    onPayTapped(viewModel.buildPaymentInfo())
+                }
             }) {
                 Text(viewModel.model.strings.payInvoiceLabelText)
                     .frame(maxWidth: .infinity)

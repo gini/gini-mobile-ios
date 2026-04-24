@@ -422,6 +422,19 @@ struct PaymentReviewPaymentInformationObservableModelValidateAllTests {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         #expect(sut.validateAllFields() == false)
     }
+
+    @Test("validateAllFields then updateFieldErrorStates shows errors in input states")
+    func validateThenUpdateShowsErrors() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        // Simulate Pay tapped without ever focusing a field (all fields empty)
+        _ = sut.validateAllFields()
+        sut.updateFieldErrorStates()
+
+        #expect(sut.recipientInputState.hasError == true)
+        #expect(sut.ibanInputState.hasError == true)
+        #expect(sut.amountInputState.hasError == true)
+        #expect(sut.paymentPurposeInputState.hasError == true)
+    }
 }
 
 @Suite("PaymentReviewPaymentInformationObservableModel — buildPaymentInfo")
