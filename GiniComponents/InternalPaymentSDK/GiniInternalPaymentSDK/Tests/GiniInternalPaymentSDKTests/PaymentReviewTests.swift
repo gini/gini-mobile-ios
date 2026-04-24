@@ -732,7 +732,10 @@ struct PaymentReviewPaymentInformationObservableModelHandleAmountFocusTests {
     @Test("focus lost with valid positive amount clears error")
     func focusLostValidAmountClearsError() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        sut.amountInputState.text = "12,50"
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+        // Use stringWithoutSymbol so the text uses the same locale-specific decimal
+        // separator that decimal() will parse correctly on any CI machine.
+        sut.amountInputState.text = sut.amountToPay.stringWithoutSymbol ?? "12.50"
 
         sut.handleAmountFocusChange(isFocused: false)
 
