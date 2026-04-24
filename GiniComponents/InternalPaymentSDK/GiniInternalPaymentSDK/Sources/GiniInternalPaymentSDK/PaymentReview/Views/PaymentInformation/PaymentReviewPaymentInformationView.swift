@@ -10,20 +10,13 @@ import GiniUtilites
 
 struct PaymentReviewPaymentInformationView: View {
     
-    private enum Field {
-        case recipient
-        case iban
-        case amount
-        case paymentPurpose
-    }
-    
     let onBankSelectionTapped: () -> Void
     let onPayTapped: (PaymentInfo) -> Void
     let onKeyboardDismissed: () -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
-    @FocusState private var focusedField: Field?
+    @FocusState private var focusedField: ActivePaymentField?
     
     @Binding private var contentHeight: CGFloat
     @Binding private var showBanner: Bool
@@ -77,7 +70,7 @@ struct PaymentReviewPaymentInformationView: View {
             .onAppear {
                 viewModel.isViewVisible = true
 
-                populateFields()
+                viewModel.populateFieldsIfNeeded()
                 // Notify VoiceOver that a new screen (the sheet) appeared,
                 // so it moves focus into the sheet content.
                 UIAccessibility.post(notification: .screenChanged, argument: nil)
@@ -145,33 +138,18 @@ struct PaymentReviewPaymentInformationView: View {
             VStack(spacing: Constants.textFieldsContainerSpacing) {
                 recipientTextField
 
-                if dynamicTypeSize.isAccessibilitySize {
-                    VStack(spacing: Constants.textFieldsContainerSpacing) {
-                        ibanTextField
-                        amountTextField
-                    }
-                } else {
-                    HStack(spacing: Constants.textFieldsContainerSpacing) {
-                        ibanTextField
-                        amountTextField
-                    }
+                adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
+                    ibanTextField
+                    amountTextField
                 }
 
                 paymentPurposeTextField
 
-                if dynamicTypeSize.isAccessibilitySize {
-                    VStack(spacing: Constants.buttonsContainerSpacing) {
-                        paymentProviderSelectionPicker
-                        payButton
-                    }
-                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
-                } else {
-                    HStack(spacing: Constants.buttonsContainerSpacing) {
-                        paymentProviderSelectionPicker
-                        payButton
-                    }
-                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
+                adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
+                    paymentProviderSelectionPicker
+                    payButton
                 }
+                .padding(.bottom, Constants.buttonsContainerBottomPadding)
 
                 if viewModel.shouldShowBrandedView {
                     poweredByGiniView
@@ -187,24 +165,25 @@ struct PaymentReviewPaymentInformationView: View {
 
     @ViewBuilder
     private var infoBannerView: some View {
+        let infoBar = viewModel.model.configuration.infoBar
         HStack {
             Text(viewModel.model.strings.infoBarMessage)
-                .font(Font(viewModel.model.configuration.infoBar.labelFont))
-                .foregroundStyle(Color(viewModel.model.configuration.infoBar.labelTextColor))
+                .font(Font(infoBar.labelFont))
+                .foregroundStyle(Color(infoBar.labelTextColor))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, Constants.bannerVerticalPadding)
-        .background(Color(viewModel.model.configuration.infoBar.backgroundColor))
+        .background(Color(infoBar.backgroundColor))
         .clipShape(
             .rect(
                 topLeadingRadius: Constants.bannerCornerRadius,
-                bottomLeadingRadius: Constants.zero,
-                bottomTrailingRadius: Constants.zero,
+                bottomLeadingRadius: 0.0,
+                bottomTrailingRadius: 0.0,
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: giniLayout.isLandscape ? Constants.zero : Constants.bannerYOffset)
+        .offset(y: giniLayout.isLandscape ? 0.0 : Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
@@ -213,48 +192,46 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private var recipientTextField: some View {
-        TextField(Constants.emptyString, text: $viewModel.recipientInputState.text)
+        TextField("", text: $viewModel.recipientInputState.text)
         .focused($focusedField, equals: .recipient)
         .disabled(viewModel.isFieldsLocked)
-        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.fieldPlaceholders.recipient,
-                                           state: fieldState(for: .recipient, hasError: viewModel.recipientInputState.hasError),
-                                           errorMessage: viewModel.recipientInputState.errorMessage,
-                                           normalConfiguration: textFieldConfiguration,
-                                           focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration,
-                                           onTap: { focusedField = .recipient }))
+        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.recipient,
+                                           field: .recipient,
+                                           inputState: viewModel.recipientInputState,
+                                           lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleRecipientFocusChange(isFocused: newFocus == .recipient)
+                handleFocusChange(isFocused: newFocus == .recipient,
+                                  inputState: \.recipientInputState,
+                                  validate: viewModel.validateRecipient,
+                                  error: \.recipientError)
             }
         }
     }
     
     @ViewBuilder
     private var ibanTextField: some View {
-        TextField(Constants.emptyString, text: $viewModel.ibanInputState.text)
+        TextField("", text: $viewModel.ibanInputState.text)
         .focused($focusedField, equals: .iban)
         .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
-        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.fieldPlaceholders.iban,
-                                           state: fieldState(for: .iban, hasError: viewModel.ibanInputState.hasError),
-                                           errorMessage: viewModel.ibanInputState.errorMessage,
-                                           normalConfiguration: textFieldConfiguration,
-                                           focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration,
-                                           onTap: { focusedField = .iban }))
+        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.iban,
+                                           field: .iban,
+                                           inputState: viewModel.ibanInputState,
+                                           lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handleIBANFocusChange(isFocused: newFocus == .iban)
+                handleFocusChange(isFocused: newFocus == .iban,
+                                  inputState: \.ibanInputState,
+                                  validate: viewModel.validateIBAN,
+                                  error: \.ibanError)
             }
         }
     }
     
     @ViewBuilder
     private var amountTextField: some View {
-        TextField(Constants.emptyString, text: $viewModel.amountInputState.text)
+        TextField("", text: $viewModel.amountInputState.text)
         .focused($focusedField, equals: .amount)
         .onChange(of: viewModel.amountInputState.text) { newValue in
             adjustAmountValue(updatedText: newValue)
@@ -265,37 +242,34 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .keyboardType(.decimalPad)
-        .textFieldStyle(GiniTextFieldStyle(title: viewModelStrings.fieldPlaceholders.amount,
-                                           state: fieldState(for: .amount, hasError: viewModel.amountInputState.hasError),
-                                           errorMessage: viewModel.amountInputState.errorMessage,
-                                           normalConfiguration: textFieldConfiguration,
-                                           focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration,
-                                           onTap: { focusedField = .amount }))
+        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.amount,
+                                           field: .amount,
+                                           inputState: viewModel.amountInputState))
     }
     
     @ViewBuilder
     private var paymentPurposeTextField: some View {
-        TextField(Constants.emptyString, text: $viewModel.paymentPurposeInputState.text)
+        TextField("", text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
         .disabled(viewModel.isFieldsLocked)
-        .textFieldStyle(GiniTextFieldStyle(lockedIcon: viewModel.lockIcon,
-                                           title: viewModelStrings.fieldPlaceholders.usage,
-                                           state: fieldState(for: .paymentPurpose, hasError: viewModel.paymentPurposeInputState.hasError),
-                                           errorMessage: viewModel.paymentPurposeInputState.errorMessage,
-                                           normalConfiguration: textFieldConfiguration,
-                                           focusedConfiguration: focusedTextFieldConfiguration,
-                                           errorConfiguration: errorTextFieldConfiguration,
-                                           onTap: { focusedField = .paymentPurpose }))
+        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.usage,
+                                           field: .paymentPurpose,
+                                           inputState: viewModel.paymentPurposeInputState,
+                                           lockedIcon: viewModel.lockIcon))
         .onChange(of: focusedField) { newFocus in
             Task { @MainActor in
-                handlePaymentPurposeFocusChange(isFocused: newFocus == .paymentPurpose)
+                handleFocusChange(isFocused: newFocus == .paymentPurpose,
+                                  inputState: \.paymentPurposeInputState,
+                                  validate: viewModel.validatePaymentPurpose,
+                                  error: \.paymentPurposeError)
             }
         }
     }
     
     @ViewBuilder
     private var paymentProviderSelectionPicker: some View {
+        let banksPicker = viewModel.model.configuration.banksPicker
+        let secondaryButton = viewModel.model.secondaryButtonConfiguration
         Button(action: {
             onBankSelectionTapped()
         }) {
@@ -310,8 +284,8 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
                 
-                if let chevronImage = viewModel.model.configuration.banksPicker.chevronDownIcon,
-                   let chevronDownIconColor = viewModel.model.configuration.banksPicker.chevronDownIconColor {
+                if let chevronImage = banksPicker.chevronDownIcon,
+                   let chevronDownIconColor = banksPicker.chevronDownIconColor {
                     Image(uiImage: chevronImage)
                         .resizable()
                         .renderingMode(.template)
@@ -326,12 +300,12 @@ struct PaymentReviewPaymentInformationView: View {
                    height: Constants.paymentProviderPickerSize.height)
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
-        .background(Color(viewModel.model.secondaryButtonConfiguration.backgroundColor))
-        .clipShape(.rect(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius))
+        .background(Color(secondaryButton.backgroundColor))
+        .clipShape(.rect(cornerRadius: secondaryButton.cornerRadius))
         .overlay(
-            RoundedRectangle(cornerRadius: viewModel.model.secondaryButtonConfiguration.cornerRadius)
-                .stroke(Color(viewModel.model.secondaryButtonConfiguration.borderColor),
-                        lineWidth: viewModel.model.secondaryButtonConfiguration.borderWidth)
+            RoundedRectangle(cornerRadius: secondaryButton.cornerRadius)
+                .stroke(Color(secondaryButton.borderColor),
+                        lineWidth: secondaryButton.borderWidth)
         )
         .accessibilityLabel(viewModelStrings.bankSelectionAccessibility.selectBankText)
         .accessibilityHint(viewModelStrings.bankSelectionAccessibility.selectBankHint)
@@ -342,9 +316,7 @@ struct PaymentReviewPaymentInformationView: View {
         if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
            let selectedPaymentProviderTextColor = viewModel.selectedPaymentProvider.colors.text.toColor() {
             Button(action: {
-                if validateFields() {
-                    onPayTapped(buildPaymentInfo())
-                }
+                if viewModel.validateAllFields() { viewModel.updateFieldErrorStates(); onPayTapped(viewModel.buildPaymentInfo()) }
             }) {
                 Text(viewModel.model.strings.payInvoiceLabelText)
                     .frame(maxWidth: .infinity)
@@ -361,6 +333,15 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     @ViewBuilder
+    private func adaptiveStack<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(spacing: spacing) { content() }
+        } else {
+            HStack(spacing: spacing) { content() }
+        }
+    }
+
+    @ViewBuilder
     private var poweredByGiniView: some View {
         HStack {
             Spacer()
@@ -371,19 +352,6 @@ struct PaymentReviewPaymentInformationView: View {
     
     // MARK: Private methods
 
-    private func populateFields() {
-        viewModel.populateFieldsIfNeeded()
-    }
-    
-    private func buildPaymentInfo() -> PaymentInfo {
-        let paymentInfo = viewModel.buildPaymentInfo(recipient: viewModel.recipientInputState.text,
-                                                     iban: viewModel.ibanInputState.text,
-                                                     amount: viewModel.amountToPay.extractionString,
-                                                     purpose: viewModel.paymentPurposeInputState.text)
-        
-        return paymentInfo
-    }
-    
     private func adjustAmountValue(updatedText: String) {
         viewModel.amountInputState.hasError = false
         
@@ -393,7 +361,7 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
     
-    private func fieldState(for field: Field, hasError: Bool) -> GiniTextFieldState {
+    private func fieldState(for field: ActivePaymentField, hasError: Bool) -> GiniTextFieldState {
         if hasError {
             return .error
         } else if focusedField == field {
@@ -402,44 +370,24 @@ struct PaymentReviewPaymentInformationView: View {
             return .normal
         }
     }
+
+    private func makeTextFieldStyle(
+        title: String,
+        field: ActivePaymentField,
+        inputState: GiniInputFieldState,
+        lockedIcon: Image? = nil
+    ) -> GiniTextFieldStyle {
+        GiniTextFieldStyle(lockedIcon: lockedIcon,
+                           title: title,
+                           state: fieldState(for: field, hasError: inputState.hasError),
+                           errorMessage: inputState.errorMessage,
+                           normalConfiguration: textFieldConfiguration,
+                           focusedConfiguration: focusedTextFieldConfiguration,
+                           errorConfiguration: errorTextFieldConfiguration,
+                           onTap: { focusedField = field })
+    }
     
-    private func validateFields() -> Bool {
-        let isValid = viewModel.validateAllFields(recipient: viewModel.recipientInputState.text,
-                                                  iban: viewModel.ibanInputState.text,
-                                                  amount: viewModel.amountInputState.text,
-                                                  amountValue: viewModel.amountToPay.value,
-                                                  purpose: viewModel.paymentPurposeInputState.text)
-        
-        viewModel.updateFieldErrorStates()
-        
-        return isValid
-    }
     // MARK: - Orientation Helpers
-
-    /**
-     Maps the private `Field` enum to the model-level `ActivePaymentField`
-     so the focused field can survive view recreation on orientation change.
-     */
-    private func mapToActiveField(_ field: Field) -> ActivePaymentField {
-        switch field {
-            case .recipient: return .recipient
-            case .iban: return .iban
-            case .amount: return .amount
-            case .paymentPurpose: return .paymentPurpose
-        }
-    }
-
-    /**
-     Inverse mapping: `ActivePaymentField` → `Field`.
-     */
-    private func mapToFocusField(_ activeField: ActivePaymentField) -> Field {
-        switch activeField {
-            case .recipient: return .recipient
-            case .iban: return .iban
-            case .amount: return .amount
-            case .paymentPurpose: return .paymentPurpose
-        }
-    }
 
     /**
      Handles focus changes on the active field.
@@ -447,9 +395,9 @@ struct PaymentReviewPaymentInformationView: View {
      When focus is cleared, amount-focus is cleared immediately and `activeField` is cleared
      after a short delay — distinguishing a user keyboard dismissal from a rotation-triggered view recreation.
      */
-    private func handleFocusedFieldChange(_ newField: Field?) {
+    private func handleFocusedFieldChange(_ newField: ActivePaymentField?) {
         if let field = newField {
-            viewModel.activeField = mapToActiveField(field)
+            viewModel.activeField = field
             viewModel.isAmountFieldFocused = (field == .amount)
         } else {
             // Clear amount-focus immediately so the Done toolbar hides right away.
@@ -480,45 +428,33 @@ struct PaymentReviewPaymentInformationView: View {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 400_000_000) // 0.4 s
-            focusedField = mapToFocusField(field)
+            focusedField = field
         }
     }
 
     // MARK: - Focus Change Handlers
 
-    private func handleRecipientFocusChange(isFocused: Bool) {
+    private func handleFocusChange(
+        isFocused: Bool,
+        inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>,
+        validate: (String) -> Bool,
+        error: KeyPath<PaymentReviewPaymentInformationObservableModel, String?>
+    ) {
         if isFocused {
-            viewModel.recipientInputState.hasError = false
+            viewModel[keyPath: inputState].hasError = false
         } else {
-            viewModel.recipientInputState.hasError = !viewModel.validateRecipient(viewModel.recipientInputState.text)
-            viewModel.recipientInputState.errorMessage = viewModel.recipientError
-            
-            // Announce error to VoiceOver
-            if viewModel.recipientInputState.hasError,
-                let errorMessage = viewModel.recipientError {
-                UIAccessibility.post(notification: .announcement, argument: errorMessage)
-            }
-        }
-    }
-
-    private func handleIBANFocusChange(isFocused: Bool) {
-        if isFocused {
-            viewModel.ibanInputState.hasError = false
-        } else {
-            viewModel.ibanInputState.hasError = !viewModel.validateIBAN(viewModel.ibanInputState.text)
-            viewModel.ibanInputState.errorMessage = viewModel.ibanError
-            
-            // Announce error to VoiceOver
-            if viewModel.ibanInputState.hasError,
-                let errorMessage = viewModel.ibanError {
-                UIAccessibility.post(notification: .announcement, argument: errorMessage)
+            let text = viewModel[keyPath: inputState].text
+            viewModel[keyPath: inputState].hasError = !validate(text)
+            viewModel[keyPath: inputState].errorMessage = viewModel[keyPath: error]
+            if viewModel[keyPath: inputState].hasError, let msg = viewModel[keyPath: error] {
+                UIAccessibility.post(notification: .announcement, argument: msg)
             }
         }
     }
 
     private func handleAmountFocusChange(isFocused: Bool) {
         if isFocused {
-            viewModel.amountInputState.text = viewModel.amountToPay.stringWithoutSymbol ?? Constants.emptyString
+            viewModel.amountInputState.text = viewModel.amountToPay.stringWithoutSymbol ?? ""
         } else {
             if !viewModel.amountInputState.text.isEmpty,
                let decimalAmount = viewModel.amountInputState.text.decimal() {
@@ -528,7 +464,7 @@ struct PaymentReviewPaymentInformationView: View {
                    let amountString = viewModel.amountToPay.string {
                     viewModel.amountInputState.text = amountString
                 } else {
-                    viewModel.amountInputState.text = Constants.emptyString
+                    viewModel.amountInputState.text = ""
                 }
             }
             
@@ -543,24 +479,7 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    private func handlePaymentPurposeFocusChange(isFocused: Bool) {
-        if isFocused {
-            viewModel.paymentPurposeInputState.hasError = false
-        } else {
-            viewModel.paymentPurposeInputState.hasError = !viewModel.validatePaymentPurpose(viewModel.paymentPurposeInputState.text)
-            viewModel.paymentPurposeInputState.errorMessage = viewModel.paymentPurposeError
-            
-            // Announce error to VoiceOver
-            if viewModel.paymentPurposeInputState.hasError,
-                let errorMessage = viewModel.paymentPurposeError {
-                UIAccessibility.post(notification: .announcement, argument: errorMessage)
-            }
-        }
-    }
-    
     private struct Constants {
-        static let emptyString = ""
-        static let zero = 0.0
         static let bannerVerticalPadding = 16.0
         static let bannerCornerRadius = 12.0
         static let bannerYOffset = -8.0

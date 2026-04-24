@@ -130,21 +130,20 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         return true
     }
     
-    func validateAllFields(recipient: String, iban: String, amount: String, amountValue: Decimal, purpose: String) -> Bool {
-        let recipientValid = validateRecipient(recipient)
-        let ibanValid = validateIBAN(iban)
-        let amountValid = validateAmount(amount, amount: amountValue)
-        let purposeValid = validatePaymentPurpose(purpose)
-        
+    func validateAllFields() -> Bool {
+        let recipientValid = validateRecipient(recipientInputState.text)
+        let ibanValid = validateIBAN(ibanInputState.text)
+        let amountValid = validateAmount(amountInputState.text, amount: amountToPay.value)
+        let purposeValid = validatePaymentPurpose(paymentPurposeInputState.text)
         return recipientValid && ibanValid && amountValid && purposeValid
     }
-    
-    func buildPaymentInfo(recipient: String, iban: String, amount: String, purpose: String) -> PaymentInfo {
+
+    func buildPaymentInfo() -> PaymentInfo {
         PaymentInfo(sourceDocumentLocation: model.document?.links.document.absoluteString,
-                    recipient: recipient,
-                    iban: iban,
-                    amount: amount,
-                    purpose: purpose,
+                    recipient: recipientInputState.text,
+                    iban: ibanInputState.text,
+                    amount: amountToPay.extractionString,
+                    purpose: paymentPurposeInputState.text,
                     paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
                     paymentProviderId: selectedPaymentProvider.id)
     }
