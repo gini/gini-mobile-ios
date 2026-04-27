@@ -386,7 +386,7 @@ extension InstallAppStrings {
 }
 
 extension ClientConfiguration {
-    static func test(ingredientBrandType: IngredientBrandTypeEnum = .invisible) -> ClientConfiguration {
+    static func test(ingredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible) -> ClientConfiguration {
         ClientConfiguration(ingredientBrandType: ingredientBrandType)
     }
 }

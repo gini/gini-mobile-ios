@@ -131,10 +131,10 @@ struct PaymentComponentViewModelTests {
 
     @Test("shouldShowBrandedView is true for paymentComponent and fullVisible, false for invisible",
           arguments: zip(
-            [IngredientBrandTypeEnum.paymentComponent, .fullVisible, .invisible],
+            [GiniHealthAPILibrary.IngredientBrandTypeEnum.paymentComponent, .fullVisible, .invisible],
             [true, true, false]
           ))
-    func shouldShowBrandedView(brandType: IngredientBrandTypeEnum, expected: Bool) {
+    func shouldShowBrandedView(brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum, expected: Bool) {
         let sut = makeSUT(clientConfiguration: .test(ingredientBrandType: brandType))
 
         #expect(sut.shouldShowBrandedView == expected,
