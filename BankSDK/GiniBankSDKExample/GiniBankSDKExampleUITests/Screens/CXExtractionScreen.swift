@@ -122,13 +122,6 @@ class CXExtractionScreen {
         let found = results.filter { $0.value != "not found" }.keys.sorted()
         let notFound = results.filter { $0.value == "not found" }.keys.sorted()
 
-        print("=== CX Extraction Screen Field Report ===")
-        print("Found (\(found.count)):")
-        found.forEach { print("  [FOUND] \($0): \(results[$0]!)") }
-        print("Not Found (\(notFound.count)):")
-        notFound.forEach { print("  [NOT FOUND] \($0)") }
-        print("==========================================")
-
         return (found: Array(found), notFound: Array(notFound))
     }
 
@@ -141,7 +134,6 @@ class CXExtractionScreen {
     func verifyKeyFieldsHaveValues() -> Bool {
         var anyHasValue = false
 
-        print("=== Key Payment Fields Verification ===")
         for field in Self.keyFieldIdentifiers {
             let textField = app.textFields[field]
             let staticText = app.staticTexts[field]
@@ -155,13 +147,9 @@ class CXExtractionScreen {
 
             let isPopulated = value.map { !$0.isEmpty && $0 != "not found" && $0 != "present (empty)" && $0 != "present (no value)" } ?? false
             if isPopulated {
-                print("  [VALUE] \(field): \(value!)")
                 anyHasValue = true
-            } else {
-                print("  [EMPTY] \(field): not available or empty")
             }
         }
-        print("=======================================")
 
         return anyHasValue
     }
