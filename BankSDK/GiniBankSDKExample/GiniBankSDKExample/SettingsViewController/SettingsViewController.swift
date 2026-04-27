@@ -65,6 +65,7 @@ final class SettingsViewController: UIViewController {
                                           target: nil,
                                           action: #selector(didSelectCloseButton))
         closeButton.target = self
+        closeButton.accessibilityIdentifier = SettingScreenAccessibilityIdentifiers.closeButton.rawValue
         navigationBarItem.leftBarButtonItem = closeButton
     }
 
@@ -134,7 +135,8 @@ extension SettingsViewController: UITableViewDataSource {
         cell.indexPath = indexPath
         let model = SwitchOptionModelCell(title: optionModel.type.title,
                                           active: optionModel.isSwitchOn,
-                                          message: optionModel.type.message)
+                                          message: optionModel.type.message,
+                                          accessibilityIdentifier: optionModel.type.accessibilityIdentifier)
         cell.set(data: model)
         cell.delegate = self
         return cell
@@ -143,10 +145,14 @@ extension SettingsViewController: UITableViewDataSource {
     private func cell(for optionModel: SegmentedOptionModelProtocol, at indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
         cell.indexPath = indexPath
+        let identifier: String? = optionModel is ProductTagSegmentedOptionModel
+            ? SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue
+            : nil
         let model = SegmentedOptionCellModel(title: optionModel.title,
                                              items: optionModel.items,
                                              selectedIndex: optionModel.selectedIndex,
-                                             description: optionModel.description)
+                                             description: optionModel.description,
+                                             accessibilityIdentifier: identifier)
         cell.set(data: model)
         cell.delegate = self
         return cell
