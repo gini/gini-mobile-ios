@@ -19,43 +19,6 @@ import UIKit
 
 // MARK: - Test factories
 
-/// Minimal `BottomSheetConfiguration` suitable for unit tests.
-private extension BottomSheetConfiguration {
-    static var test: BottomSheetConfiguration {
-        BottomSheetConfiguration(backgroundColor: .white,
-                                 rectangleColor: .systemGray4,
-                                 dimmingBackgroundColor: UIColor.black.withAlphaComponent(0.5))
-    }
-}
-
-private extension ButtonConfiguration {
-    static var test: ButtonConfiguration {
-        ButtonConfiguration(backgroundColor: .systemBlue,
-                            borderColor: .clear,
-                            titleColor: .white,
-                            titleFont: .systemFont(ofSize: 16, weight: .semibold),
-                            shadowColor: .clear,
-                            cornerRadius: 8,
-                            borderWidth: 0,
-                            shadowRadius: 0,
-                            withBlurEffect: false)
-    }
-}
-
-private extension PoweredByGiniConfiguration {
-    static var test: PoweredByGiniConfiguration {
-        PoweredByGiniConfiguration(poweredByGiniLabelFont: .systemFont(ofSize: 12),
-                                   poweredByGiniLabelAccentColor: .label,
-                                   giniIcon: UIImage())
-    }
-}
-
-private extension PoweredByGiniStrings {
-    static var test: PoweredByGiniStrings {
-        PoweredByGiniStrings(poweredByGiniText: "Powered by Gini")
-    }
-}
-
 private extension InstallAppConfiguration {
     static var test: InstallAppConfiguration {
         InstallAppConfiguration(titleAccentColor: .label,
