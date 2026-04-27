@@ -55,10 +55,14 @@ jobs:
         env:
           TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
           TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          CX_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+          CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
         run: |
             plutil -replace client_id -string "$TEST_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "$TEST_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            
+            plutil -replace cx_client_id -string "$CX_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace cx_client_password -string "$CX_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+
       - name: Setup Firebase API Key
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
