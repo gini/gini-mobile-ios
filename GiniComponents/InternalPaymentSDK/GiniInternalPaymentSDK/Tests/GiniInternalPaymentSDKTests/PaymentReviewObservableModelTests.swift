@@ -19,7 +19,7 @@ struct PaymentReviewObservableModelTests {
         let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
         let sut = PaymentReviewObservableModel(model: model)
 
-        #expect(sut.isBottomSheetMode == true)
+        #expect(sut.isBottomSheetMode == true, "isBottomSheetMode must be true when document is nil")
     }
 
     @Test("keyboardDoneButtonTitle returns the configured string")
@@ -32,7 +32,7 @@ struct PaymentReviewObservableModelTests {
         let sut = PaymentReviewObservableModel(model: model)
 
         // The default .test(keyboardDoneButtonTitle:) uses "Done"
-        #expect(sut.keyboardDoneButtonTitle == "Done")
+        #expect(sut.keyboardDoneButtonTitle == "Done", "keyboardDoneButtonTitle must return the default configured string")
     }
 
     @Test("keyboardDoneButtonTitle reflects custom configured value")
@@ -62,7 +62,7 @@ struct PaymentReviewObservableModelTests {
                                        clientConfiguration: nil)
         let sut = PaymentReviewObservableModel(model: model)
 
-        #expect(sut.keyboardDoneButtonTitle == "Fertig")
+        #expect(sut.keyboardDoneButtonTitle == "Fertig", "keyboardDoneButtonTitle must reflect the custom configured value")
     }
 
     @Test("isAmountFieldFocused defaults to false")
@@ -72,7 +72,7 @@ struct PaymentReviewObservableModelTests {
         let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
         let sut = PaymentReviewObservableModel(model: model)
 
-        #expect(sut.isAmountFieldFocused == false)
+        #expect(sut.isAmountFieldFocused == false, "isAmountFieldFocused must default to false on model initialisation")
     }
 
     @Test("trackKeyboardDismissed notifies the delegate")
@@ -84,7 +84,7 @@ struct PaymentReviewObservableModelTests {
 
         sut.trackKeyboardDismissed()
 
-        #expect(delegate.closeKeyboardClickedCalled == true)
+        #expect(delegate.closeKeyboardClickedCalled == true, "trackKeyboardDismissed must notify the delegate by calling closeKeyboardClicked")
     }
 
     @Test("dismissBannerAfterDelay does not throw and is safe to call twice")

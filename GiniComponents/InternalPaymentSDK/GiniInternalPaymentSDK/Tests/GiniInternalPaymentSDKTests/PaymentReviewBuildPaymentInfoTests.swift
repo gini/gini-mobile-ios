@@ -25,10 +25,10 @@ struct PaymentReviewBuildPaymentInfoTests {
 
         let info = sut.buildPaymentInfo()
 
-        #expect(info.recipient == "Gini GmbH")
-        #expect(info.iban == "DE89370400440532013000")
-        #expect(info.purpose == "Invoice 2026")
-        #expect(info.paymentProviderId == provider.id)
-        #expect(info.paymentUniversalLink == provider.universalLinkIOS)
+        #expect(info.recipient == "Gini GmbH", "buildPaymentInfo must map recipient field state to PaymentInfo.recipient")
+        #expect(info.iban == "DE89370400440532013000", "buildPaymentInfo must map IBAN field state to PaymentInfo.iban")
+        #expect(info.purpose == "Invoice 2026", "buildPaymentInfo must map purpose field state to PaymentInfo.purpose")
+        #expect(info.paymentProviderId == provider.id, "buildPaymentInfo must set paymentProviderId from the selected provider")
+        #expect(info.paymentUniversalLink == provider.universalLinkIOS, "buildPaymentInfo must set paymentUniversalLink from the selected provider")
     }
 }

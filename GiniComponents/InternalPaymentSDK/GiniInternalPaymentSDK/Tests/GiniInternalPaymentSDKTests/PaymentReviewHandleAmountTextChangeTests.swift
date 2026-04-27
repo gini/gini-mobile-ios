@@ -19,8 +19,8 @@ struct PaymentReviewHandleAmountTextChangeTests {
 
         sut.handleAmountTextChange(updatedText: "12,50")
 
-        #expect(sut.amountInputState.hasError == false)
-        #expect(sut.amountToPay.value > 0)
+        #expect(sut.amountInputState.hasError == false, "handleAmountTextChange with valid text must clear hasError")
+        #expect(sut.amountToPay.value > 0, "handleAmountTextChange with valid text must update amountToPay to a positive value")
     }
 
     @Test("non-parsable text still clears hasError without crashing")
@@ -30,6 +30,6 @@ struct PaymentReviewHandleAmountTextChangeTests {
 
         sut.handleAmountTextChange(updatedText: "abc")
 
-        #expect(sut.amountInputState.hasError == false)
+        #expect(sut.amountInputState.hasError == false, "handleAmountTextChange with non-parsable text must still clear hasError without crashing")
     }
 }

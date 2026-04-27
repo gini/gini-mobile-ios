@@ -22,7 +22,7 @@ struct PaymentReviewHandleFocusChangeTests {
                               validate: sut.validateRecipient,
                               error: \.recipientError)
 
-        #expect(sut.recipientInputState.hasError == false)
+        #expect(sut.recipientInputState.hasError == false, "focus gained must clear hasError on the input state")
     }
 
     @Test("focus lost with valid text sets no error")
@@ -35,7 +35,7 @@ struct PaymentReviewHandleFocusChangeTests {
                               validate: sut.validateRecipient,
                               error: \.recipientError)
 
-        #expect(sut.recipientInputState.hasError == false)
+        #expect(sut.recipientInputState.hasError == false, "focus lost with valid text must not set hasError")
     }
 
     @Test("focus lost with empty text sets hasError and errorMessage")
@@ -48,8 +48,8 @@ struct PaymentReviewHandleFocusChangeTests {
                               validate: sut.validateRecipient,
                               error: \.recipientError)
 
-        #expect(sut.recipientInputState.hasError == true)
-        #expect(sut.recipientInputState.errorMessage != nil)
+        #expect(sut.recipientInputState.hasError == true, "focus lost with empty text must set hasError on the input state")
+        #expect(sut.recipientInputState.errorMessage != nil, "focus lost with empty text must set a non-nil errorMessage")
     }
 
     @Test("focus lost with invalid IBAN sets hasError")
@@ -62,6 +62,6 @@ struct PaymentReviewHandleFocusChangeTests {
                               validate: sut.validateIBAN,
                               error: \.ibanError)
 
-        #expect(sut.ibanInputState.hasError == true)
+        #expect(sut.ibanInputState.hasError == true, "focus lost with invalid IBAN must set hasError on the IBAN input state")
     }
 }

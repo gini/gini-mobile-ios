@@ -26,9 +26,9 @@ struct PaymentReviewPopulateFieldsTests {
 
         sut.populateFieldsIfNeeded()
 
-        #expect(sut.recipientInputState.text == "Gini GmbH")
-        #expect(sut.ibanInputState.text == "DE89370400440532013000")
-        #expect(sut.paymentPurposeInputState.text == "Invoice 2026")
+        #expect(sut.recipientInputState.text == "Gini GmbH", "populateFieldsIfNeeded must set recipient from PaymentInfo")
+        #expect(sut.ibanInputState.text == "DE89370400440532013000", "populateFieldsIfNeeded must set IBAN from PaymentInfo")
+        #expect(sut.paymentPurposeInputState.text == "Invoice 2026", "populateFieldsIfNeeded must set purpose from PaymentInfo")
     }
 
     @Test("populates fields from extractions on first call")
@@ -43,9 +43,9 @@ struct PaymentReviewPopulateFieldsTests {
 
         sut.populateFieldsIfNeeded()
 
-        #expect(sut.recipientInputState.text == "Gini GmbH")
-        #expect(sut.ibanInputState.text == "DE89370400440532013000")
-        #expect(sut.paymentPurposeInputState.text == "Invoice 2026")
+        #expect(sut.recipientInputState.text == "Gini GmbH", "populateFieldsIfNeeded must set recipient from extractions")
+        #expect(sut.ibanInputState.text == "DE89370400440532013000", "populateFieldsIfNeeded must set IBAN from extractions")
+        #expect(sut.paymentPurposeInputState.text == "Invoice 2026", "populateFieldsIfNeeded must set purpose from extractions")
     }
 
     @Test("second call is a no-op (idempotent)")

@@ -17,7 +17,7 @@ struct PaymentReviewFieldStateTests {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         sut.activeField = .recipient
 
-        #expect(sut.fieldState(for: .recipient, hasError: true) == .error)
+        #expect(sut.fieldState(for: .recipient, hasError: true) == .error, "fieldState must return .error when hasError is true")
     }
 
     @Test("active field with no error returns .focused")
@@ -25,7 +25,7 @@ struct PaymentReviewFieldStateTests {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         sut.activeField = .iban
 
-        #expect(sut.fieldState(for: .iban, hasError: false) == .focused)
+        #expect(sut.fieldState(for: .iban, hasError: false) == .focused, "fieldState must return .focused for the active field when hasError is false")
     }
 
     @Test("non-active field with no error returns .normal")
@@ -33,7 +33,7 @@ struct PaymentReviewFieldStateTests {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         sut.activeField = .recipient
 
-        #expect(sut.fieldState(for: .iban, hasError: false) == .normal)
+        #expect(sut.fieldState(for: .iban, hasError: false) == .normal, "fieldState must return .normal for a non-active field when hasError is false")
     }
 
     @Test("nil active field returns .normal")
@@ -41,6 +41,6 @@ struct PaymentReviewFieldStateTests {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         sut.activeField = nil
 
-        #expect(sut.fieldState(for: .amount, hasError: false) == .normal)
+        #expect(sut.fieldState(for: .amount, hasError: false) == .normal, "fieldState must return .normal when active field is nil")
     }
 }

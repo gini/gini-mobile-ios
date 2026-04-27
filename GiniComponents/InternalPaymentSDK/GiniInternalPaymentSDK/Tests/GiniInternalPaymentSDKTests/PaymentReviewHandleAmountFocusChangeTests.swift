@@ -21,7 +21,7 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         sut.handleAmountFocusChange(isFocused: true)
 
-        #expect(sut.amountInputState.text == (sut.amountToPay.stringWithoutSymbol ?? ""))
+        #expect(sut.amountInputState.text == (sut.amountToPay.stringWithoutSymbol ?? ""), "focus gained must set amount text to the raw numeric value of amountToPay")
     }
 
     @Test("focus lost with empty text sets hasError")
@@ -32,7 +32,7 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         sut.handleAmountFocusChange(isFocused: false)
 
-        #expect(sut.amountInputState.hasError == true)
+        #expect(sut.amountInputState.hasError == true, "focus lost with empty amount text must set hasError on amountInputState")
     }
 
     @Test("focus lost with valid positive amount clears error")
@@ -45,7 +45,7 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         sut.handleAmountFocusChange(isFocused: false)
 
-        #expect(sut.amountInputState.hasError == false)
+        #expect(sut.amountInputState.hasError == false, "focus lost with a valid positive amount must clear hasError on amountInputState")
     }
 
     @Test("focus lost with zero parsed amount sets hasError")
@@ -55,6 +55,6 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         sut.handleAmountFocusChange(isFocused: false)
 
-        #expect(sut.amountInputState.hasError == true)
+        #expect(sut.amountInputState.hasError == true, "focus lost with a zero parsed amount must set hasError on amountInputState")
     }
 }

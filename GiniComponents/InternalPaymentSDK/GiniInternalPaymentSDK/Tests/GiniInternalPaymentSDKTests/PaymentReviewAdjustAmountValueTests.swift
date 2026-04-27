@@ -16,19 +16,19 @@ struct PaymentReviewAdjustAmountValueTests {
     func validAmountReturnsAdjustedPair() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         let result = sut.adjustAmountValue(text: "12,50")
-        #expect(result != nil)
-        #expect(result?.newValue ?? 0 > 0)
+        #expect(result != nil, "adjustAmountValue must return a non-nil result for a valid amount string")
+        #expect(result?.newValue ?? 0 > 0, "adjustAmountValue must return a positive newValue for a valid amount string")
     }
 
     @Test("empty string returns nil")
     func emptyStringReturnsNil() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        #expect(sut.adjustAmountValue(text: "") == nil)
+        #expect(sut.adjustAmountValue(text: "") == nil, "adjustAmountValue must return nil for an empty string")
     }
 
     @Test("non-numeric string returns nil")
     func nonNumericReturnsNil() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        #expect(sut.adjustAmountValue(text: "abcdef") == nil)
+        #expect(sut.adjustAmountValue(text: "abcdef") == nil, "adjustAmountValue must return nil for a non-numeric string")
     }
 }
