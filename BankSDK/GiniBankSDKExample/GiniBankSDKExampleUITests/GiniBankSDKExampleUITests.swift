@@ -27,13 +27,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = true
-    
+
     override func setUpWithError() throws {
-        
-        if isSimulator {
-            throw XCTSkip("Skipping test")
-        }
+        #if targetEnvironment(simulator)
+        throw XCTSkip("Skipping test on simulator")
+        #endif
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-testing"]
@@ -58,13 +56,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
+        #if !targetEnvironment(simulator)
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
-        if !isSimulator {
-            attachment.lifetime = .deleteOnSuccess
-            add(attachment)
-            app.terminate()
-        }
+        attachment.lifetime = .deleteOnSuccess
+        add(attachment)
+        app.terminate()
+        #endif
     }
 
     var galleryTitle: String {
