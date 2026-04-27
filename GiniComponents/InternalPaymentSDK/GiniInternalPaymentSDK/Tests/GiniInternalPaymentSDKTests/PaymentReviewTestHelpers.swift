@@ -18,31 +18,53 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
     var closeKeyboardClickedCalled = false
 
     // PaymentReviewAPIProtocol
-    func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {}
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
     func shouldHandleErrorInternally(error: GiniError) -> Bool { true }
-    func openPaymentProviderApp(requestId: String, universalLink: String) {}
+    func openPaymentProviderApp(requestId: String, universalLink: String) {
+        // This method will remain empty; no implementation is needed.
+    }
     func submitFeedback(for document: Document,
                         updatedExtractions: [Extraction],
-                        completion: ((Result<Void, GiniError>) -> Void)?) {}
-    func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniError>) -> Void) {}
-    func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {}
+                        completion: ((Result<Void, GiniError>) -> Void)?) {
+        // This method will remain empty; no implementation is needed.
+    }
+    func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniError>) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
+    func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {
+        // This method will remain empty; no implementation is needed.
+    }
 
     // PaymentReviewTrackingProtocol
     func trackOnPaymentReviewCloseKeyboardClicked() { closeKeyboardClickedCalled = true }
-    func trackOnPaymentReviewCloseButtonClicked() {}
-    func trackOnPaymentReviewBankButtonClicked(providerName: String) {}
+    func trackOnPaymentReviewCloseButtonClicked() {
+        // This method will remain empty; no implementation is needed.
+    }
+    func trackOnPaymentReviewBankButtonClicked(providerName: String) {
+        // This method will remain empty; no implementation is needed.
+    }
 
     // PaymentReviewSupportedFormatsProtocol
     func supportsGPC() -> Bool { false }
     func supportsOpenWith() -> Bool { false }
 
     // PaymentReviewActionProtocol
-    func updatedPaymentProvider(_ paymentProvider: PaymentProvider) {}
-    func openMoreInformationViewController() {}
-    func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {}
+    func updatedPaymentProvider(_ paymentProvider: PaymentProvider) {
+        // This method will remain empty; no implementation is needed.
+    }
+    func openMoreInformationViewController() {
+        // This method will remain empty; no implementation is needed.
+    }
+    func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
+        // This method will remain empty; no implementation is needed.
+    }
     func presentShareInvoiceBottomSheet(paymentRequestId: String,
                                         paymentInfo: PaymentInfo,
-                                        completion: @escaping (UIViewController) -> Void) {}
+                                        completion: @escaping (UIViewController) -> Void) {
+        // This method will remain empty; no implementation is needed.
+    }
 }
 
 final class MockBottomSheetsProvider: BottomSheetsProviderProtocol {
