@@ -66,7 +66,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     }
 
     func testOnboardingSwipeAction() throws {
-        
+
     //Preconditions
         //Open settings screen
         mainScreen.configurationButton.tap()
@@ -89,6 +89,58 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Tap Get Started butto
         onboadingScreen.getStartedButton.tap()
         //Assert Take pickrute button is displayed
+        XCTAssertTrue(captureScreen.captureButton.isHittable)
+    }
+
+    func testOnboardingSwipeActionBottomNavBar() throws {
+        //Preconditions
+        //Open settings screen
+        mainScreen.configurationButton.tap()
+        //Enable Onboarding at every launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
+        //Disable Onboarding at first launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
+        settingScreen.closeButton.tap()
+        //Test Case
+        //Tap Photopaymen button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Tap Next button
+        onboadingScreen.nextButton.tap()
+        //Tap Next button
+        onboadingScreen.nextButton.tap()
+        //Swipe Left
+        app.swipeLeft()
+        //Tap Get Started button
+        onboadingScreen.getStartedButton.tap()
+        //Assert Take picture button is displayed
+        XCTAssertTrue(captureScreen.captureButton.isHittable)
+    }
+
+    func testOnboardingSwipeActionCustomBottomNavBar() throws {
+        //Preconditions
+        //Open settings screen
+        mainScreen.configurationButton.tap()
+        //Enable Onboarding at every launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
+        //Disable Onboarding at first launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
+        settingScreen.closeButton.tap()
+        //Test Case
+        //Tap Photopaymen button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Tap Next button
+        onboadingScreen.nextButton.tap()
+        //Tap Next button
+        onboadingScreen.nextButton.tap()
+        //Swipe Left
+        app.swipeLeft()
+        //Tap Get Started button
+        onboadingScreen.getStartedButton.tap()
+        //Assert Take picture button is displayed
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
 }
