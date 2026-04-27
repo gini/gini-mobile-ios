@@ -10,6 +10,8 @@ import BrowserStackTestHelper
 
 class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
 
+    // Disables the Return Assistant feature so tests follow a predictable flow on simulator.
+    // Without this, the Return Assistant screen may appear unexpectedly after processing, causing tests to fail.
     override var additionalLaunchArguments: [String] { ["-DisableReturnAssistant"] }
 
     // MARK: - Capture Flow Test for Photopayment flow using Browserstack
