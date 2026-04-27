@@ -23,8 +23,7 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
 
         let injector: InjectorProtocol = InjectorFactory.createInstance()
         let injected = expectation(description: "camera injection complete")
-        injector.injectImage(imageName: "Photopayment_Invoice1.png") { response in
-            print(response.toDictionary())
+        injector.injectImage(imageName: "Photopayment_Invoice1.png") { _ in
             injected.fulfill()
         }
         wait(for: [injected], timeout: 30)
@@ -68,8 +67,7 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
 
         let injector: InjectorProtocol = InjectorFactory.createInstance()
         let injected = expectation(description: "camera injection complete")
-        injector.injectImage(imageName: "Swift_AccNo_routing_DOLL.png") { response in
-            print(response.toDictionary())
+        injector.injectImage(imageName: "Swift_AccNo_routing_DOLL.png") { _ in
             injected.fulfill()
         }
         wait(for: [injected], timeout: 30)
@@ -183,28 +181,16 @@ class GiniCaptureFlowUITestsUsingBS: GiniBankSDKExampleUITests {
             }
         }
         let found = extractionResults.filter { $0.value != "not found" }.keys.sorted()
-        let notFound = extractionResults.filter { $0.value == "not found" }.keys.sorted()
-        print("=== Extraction Screen Field Report ===")
-        print("Found (\(found.count)):")
-        found.forEach { print("  [FOUND] \($0): \(extractionResults[$0]!)") }
-        print("Not Found (\(notFound.count)):")
-        notFound.forEach { print("  [NOT FOUND] \($0)") }
-        print("======================================")
         XCTAssertFalse(found.isEmpty, "None of the expected CX extraction fields were found on the extraction screen")
 
         let keyFields = ["creditorIBAN", "creditorAccountNumber", "creditorName", "creditorAgentBIC"]
-        print("=== Key Payment Fields Verification ===")
         var anyKeyFieldHasValue = false
         for field in keyFields {
             let value = extractionResults[field]
             if let value = value, !value.isEmpty, value != "not found", value != "present (empty)", value != "present (no value)" {
-                print("  [VALUE] \(field): \(value)")
                 anyKeyFieldHasValue = true
-            } else {
-                print("  [EMPTY] \(field): not available or empty")
             }
         }
         XCTAssertTrue(anyKeyFieldHasValue, "All key payment fields (creditorIBAN, creditorAccountNumber, creditorName, creditorAgentBIC) are empty or not found")
-        print("=======================================")
     }
 }
