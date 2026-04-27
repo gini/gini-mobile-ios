@@ -118,6 +118,15 @@ final class MockSessionManager: SessionManagerProtocol {
                 default:
                     fatalError("Document id not found in tests")
                 }
+            case .feedback(let documentId):
+                switch documentId {
+                case MockSessionManager.failurePayableDocumentID:
+                    completion(.failure(.noResponse))
+                default:
+                    if let stringResponse = "" as? T.ResponseType {
+                        completion(.success(stringResponse))
+                    }
+                }
             case .configurations:
                 let clientConfiguration: ClientConfiguration? = load(fromFile: "clientConfiguration")
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {

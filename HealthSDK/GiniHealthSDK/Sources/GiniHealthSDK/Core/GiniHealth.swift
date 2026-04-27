@@ -389,6 +389,33 @@ public struct DataForReview {
     }
 
     /**
+     Submits extraction feedback for the specified document.
+
+     Call this method after the user has reviewed and possibly corrected the extracted data,
+     but **before** calling `startPaymentFlow`. Pass the specific extractions returned by
+     `getAllExtractions(docId:)` — do **not** wrap them in a compound `payment` key.
+
+     - Parameters:
+       - docId: The ID of the document for which feedback is being submitted.
+       - updatedExtractions: The corrected specific extractions, as returned by `getAllExtractions(docId:)`.
+       - completion: A completion callback returning `.success(())` on success, or a `.failure(GiniHealthError)` on failure. Called on the main thread.
+     */
+    public func submitFeedback(docId: String,
+                               updatedExtractions: [Extraction],
+                               completion: @escaping (Result<Void, GiniHealthError>) -> Void) {
+        documentService.submitFeedback(for: docId, with: updatedExtractions) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
+
+    /**
      Creates a payment request.
 
      - Parameters:

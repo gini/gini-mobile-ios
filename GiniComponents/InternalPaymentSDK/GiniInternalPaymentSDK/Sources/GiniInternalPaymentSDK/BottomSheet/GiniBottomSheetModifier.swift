@@ -14,11 +14,7 @@ struct GiniBottomSheetModifier: ViewModifier {
     
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
-    
-    private var isLandscape: Bool {
-        verticalSizeClass == .compact
-    }
+    @Environment(\.giniLayout) private var giniLayout
     
     init(contentHeight: CGFloat,
          allowsDismiss: Bool = false,
@@ -50,7 +46,7 @@ struct GiniBottomSheetModifier: ViewModifier {
     }
     
     private func detentsForOrientation() -> Set<PresentationDetent> {
-        if isLandscape {
+        if giniLayout.isLandscape {
             return [.large]
         } else {
             // Only one detent in portrait: the sheet stays at its content height and the

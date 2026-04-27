@@ -28,7 +28,7 @@ struct PaymentReviewPaymentInformationView: View {
     @Binding private var contentHeight: CGFloat
     @Binding private var showBanner: Bool
     
-    @Environment(\.isLandscape) private var isLandscape
+    @Environment(\.giniLayout) private var giniLayout
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var keyboardHeight: CGFloat = 0
@@ -89,27 +89,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         // Track which field is active so it can be restored after orientation changes.
             .onChange(of: focusedField) { newField in
-                if let field = newField {
-                    viewModel.activeField = mapToActiveField(field)
-                    viewModel.isAmountFieldFocused = (field == .amount)
-                } else {
-                    // Clear amount-focus immediately so the Done toolbar hides right away.
-                    viewModel.isAmountFieldFocused = false
-                    // Don't clear activeField immediately: the same nil event fires during rotation
-                    // (view is destroyed) AND when the user manually dismisses the keyboard.
-                    // Capture the current field so the task can verify nothing changed during the delay:
-                    //   - Still visible + focus still nil + same field → user dismissed → clear activeField
-                    //   - Gone (rotation) or focus moved to another field → keep activeField for restoration
-                    let fieldToClear = viewModel.activeField
-                    Task { @MainActor in
-                        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
-                        if viewModel.isViewVisible,
-                           focusedField == nil,
-                           viewModel.activeField == fieldToClear {
-                            viewModel.activeField = nil
-                        }
-                    }
-                }
+                handleFocusedFieldChange(newField)
             }
             .background(Color(.systemBackground))
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
@@ -134,13 +114,13 @@ struct PaymentReviewPaymentInformationView: View {
                     // Done button shown here only in portrait (bottom-sheet mode). In landscape
                     // the outer PaymentReviewContentView renders a full-width Done toolbar above
                     // the keyboard, so the narrow per-panel bar is suppressed.
-                    if !isLandscape && focusedField == .amount && keyboardHeight > 0 {
+                    if !giniLayout.isLandscape && focusedField == .amount && keyboardHeight > 0 {
                         doneButtonBar
                     }
                     // In landscape the keyboard sits below the inline view; re-inject its
                     // height so the ScrollView scrolls content above it. In portrait the
                     // sheet already repositions above the keyboard — no extra space needed.
-                    Color.clear.frame(height: isLandscape ? keyboardHeight : 0)
+                    Color.clear.frame(height: giniLayout.isLandscape ? keyboardHeight : 0)
                 }
             }
     }
@@ -224,7 +204,7 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: isLandscape ? Constants.zero : Constants.bannerYOffset)
+        .offset(y: giniLayout.isLandscape ? Constants.zero : Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
@@ -458,6 +438,36 @@ struct PaymentReviewPaymentInformationView: View {
             case .iban: return .iban
             case .amount: return .amount
             case .paymentPurpose: return .paymentPurpose
+        }
+    }
+
+    /**
+     Handles focus changes on the active field.
+     When focus moves to a field, the model's `activeField` and `isAmountFieldFocused` are updated.
+     When focus is cleared, amount-focus is cleared immediately and `activeField` is cleared
+     after a short delay — distinguishing a user keyboard dismissal from a rotation-triggered view recreation.
+     */
+    private func handleFocusedFieldChange(_ newField: Field?) {
+        if let field = newField {
+            viewModel.activeField = mapToActiveField(field)
+            viewModel.isAmountFieldFocused = (field == .amount)
+        } else {
+            // Clear amount-focus immediately so the Done toolbar hides right away.
+            viewModel.isAmountFieldFocused = false
+            // Don't clear activeField immediately: the same nil event fires during rotation
+            // (view is destroyed) AND when the user manually dismisses the keyboard.
+            // Capture the current field so the task can verify nothing changed during the delay:
+            //   - Still visible + focus still nil + same field → user dismissed → clear activeField
+            //   - Gone (rotation) or focus moved to another field → keep activeField for restoration
+            let fieldToClear = viewModel.activeField
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
+                if viewModel.isViewVisible,
+                   focusedField == nil,
+                   viewModel.activeField == fieldToClear {
+                    viewModel.activeField = nil
+                }
+            }
         }
     }
 

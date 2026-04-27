@@ -165,6 +165,163 @@ extension YourCoordinator: GiniHealthDelegate {
 healthSDK.delegate = self
 ```
 
+## Submitting extraction feedback before the payment flow
+
+When using `startPaymentFlow` with a document ID, the SDK **automatically** submits feedback after the user reviews and confirms payment data on the Payment Review screen — you do not need to call anything extra.
+
+If you build a **custom payment flow** (i.e. you present your own review UI), submit feedback manually before starting the payment flow. This improves extraction quality over time.
+
+> ⚠️  **Important:**
+> Feedback is sent using the **specific extractions** returned by `getAllExtractions(docId:)`. The payment-relevant fields (`recipient`, `iban`, `amountToPay`, `purpose`) are updated with the user's input, while any other extractions present in the array (e.g. `medical_service_provider`) are preserved and sent as-is.
+
+```swift
+// 1. Fetch all specific extractions
+healthSDK.getAllExtractions(docId: documentId) { [weak self] result in
+    guard let self else { return }
+    switch result {
+    case .success(let extractions):
+        // 2. Apply user corrections to the relevant fields, then submit feedback
+        var updatedExtractions = extractions
+        // … update updatedExtractions with user's reviewed values …
+
+        self.healthSDK.submitFeedback(docId: documentId,
+                                      updatedExtractions: updatedExtractions) { feedbackResult in
+            switch feedbackResult {
+            case .success:
+                // 3. Now start the payment flow
+                self.healthSDK.startPaymentFlow(documentId: documentId,
+                                                paymentInfo: nil,
+                                                navigationController: self.navigationController,
+                                                trackingDelegate: self)
+            case .failure(let error):
+                // Handle feedback error — you may still proceed to start the payment flow
+                print("Feedback submission failed: \(error)")
+            }
+        }
+    case .failure(let error):
+        print("Failed to fetch extractions: \(error)")
+    }
+}
+```
+
+The `submitFeedback(docId:updatedExtractions:completion:)` method:
+- Dispatches its completion block on the **main thread**.
+- Returns `.success(())` when the API accepted the feedback.
+- Returns `.failure(.apiError(_))` on any API error; inspect the wrapped `GiniError` for details.
+
+
+## Error handling
+
+### Error types
+
+The SDK surfaces errors through two types.
+
+**`GiniHealthError`** — the top-level error thrown by `GiniHealth` operations:
+
+| Case | Description |
+|------|-------------|
+| `.noInstalledApps` | No payment-provider app that supports Gini Pay Connect is installed on the device. |
+| `.apiError(GiniError)` | The Gini Health API returned a failure. The associated `GiniError` carries HTTP status details and structured error items. |
+| `.noPaymentDataExtracted` | The API response did not contain the expected payment extractions. |
+
+**`GiniError`** — structured API error wrapped inside `.apiError(...)`:
+
+```swift
+public struct GiniError: Error {
+    var message: String?           // Human-readable error message
+    var statusCode: Int?           // HTTP status code (e.g. 400, 401, 404)
+    var requestId: String          // Trace ID — include this when contacting Gini support
+    var items: [ErrorItem]?        // Structured error items from the API response body
+    var response: HTTPURLResponse?
+    var data: Data?
+}
+```
+
+Each `ErrorItem` in `items` identifies a specific sub-error:
+
+```swift
+public struct ErrorItem: Codable {
+    var code: String       // Error code, e.g. "2013" (unauthorized), "2014" (not found)
+    var message: String?   // Optional description of the sub-error
+    var object: [String]?  // IDs of affected objects (e.g. document IDs)
+}
+```
+
+### Controlling error presentation with `shouldHandleErrorInternally`
+
+`GiniHealthDelegate.shouldHandleErrorInternally(error:)` lets you decide — per error — whether the SDK shows its built-in error UI or hands the error back to your app.
+
+| Return value | Behaviour |
+|---|---|
+| `true` | The SDK displays its own error alert / screen. |
+| `false` | The SDK suppresses its UI entirely. You must react **before** returning `false` — no further callback is issued. |
+
+The simplest integration uses a single flag, matching the approach in the example app:
+
+```swift
+extension YourCoordinator: GiniHealthDelegate {
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        return handleErrorsInternally  // true by default; toggled by the user/debug menu
+    }
+}
+```
+
+For finer control, switch on the error type:
+
+```swift
+extension YourCoordinator: GiniHealthDelegate {
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        switch error {
+        case .noInstalledApps:
+            // Let the SDK show its "no banking app found" screen
+            return true
+        case .apiError(let giniError) where giniError.statusCode == 401:
+            // Handle 401 yourself — act here, then return false
+            showSessionExpiredAlert()
+            return false
+        case .apiError:
+            return true
+        case .noPaymentDataExtracted:
+            return true
+        }
+    }
+}
+```
+
+> ⚠️ **Important:** When you return `false` the SDK does nothing further. Any recovery UI or logging must happen inside `shouldHandleErrorInternally` before it returns.
+
+### Inspecting structured API errors
+
+When you receive a `.apiError` and need to inspect which documents failed and why, use the convenience helpers on `GiniError`:
+
+```swift
+case .apiError(let giniError):
+    // Full summary for logs or crash reporters
+    print(giniError.detailedDescription)
+    // Output:
+    // Status: 400 | Request ID: a497-01aa-b6f0-cc17-43d3-76a8
+    // Message: Bad request
+    // Items: 2013: [doc-id-1, doc-id-2]
+
+    // Compact list of all sub-errors
+    print(giniError.itemsDescription)
+    // Output: "2013: [doc-id-1, doc-id-2]; 2014: [doc-id-3]"
+
+    // Extract the IDs of documents that failed with a specific error code
+    let unauthorizedDocIds = giniError.objectsWithCode("2013")
+    let notFoundDocIds = giniError.objectsWithCode("2014")
+```
+
+### Common `ErrorItem` codes
+
+| Code | Meaning |
+|------|---------|
+| `"2013"` | Document access denied / not authorized |
+| `"2014"` | Document not found |
+| `"2015"` | Composite document missing |
+
+> When contacting Gini support about an API error, always include `GiniError.requestId`.
+
 ## Starting the Payment flow
 
 We provide a custom payment flow for the users to pay the invoice/document/digital payment.
@@ -196,14 +353,13 @@ healthSDK.startPaymentFlow(documentId: documentId,
                            paymentInfo: nil,
                            navigationController: navigationController,
                            trackingDelegate: self)
-Initiates the payment flow for a specified document and payment information.
-
-         - Parameters:
-           - documentId: An optional identifier for the document associated with the payment flow when you use a payment with document/invoice.
-           - paymentInfo: An optional `PaymentInfo` object containing the payment details when you have a payment without a document or previously fetched extraction.
-           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
-           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
 ```
+
+Parameters:
+- `documentId`: An optional document ID for flows that involve an invoice or document.
+- `paymentInfo`: An optional `PaymentInfo` object containing payment details, used when there is no document.
+- `navigationController`: The `UINavigationController` used to present subsequent view controllers.
+- `trackingDelegate`: A `GiniHealthTrackingDelegate` that receives events from the Payment Review screen.
 
 If you don't have any document/invoice you need to pass `GiniHealthSDK.PaymentInfo` into the method below:
 
