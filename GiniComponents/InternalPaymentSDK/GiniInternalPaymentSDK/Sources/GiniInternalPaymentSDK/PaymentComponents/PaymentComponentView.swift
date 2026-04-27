@@ -184,7 +184,7 @@ public final class PaymentComponentView: UIView {
             buttonsStackView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.buttonsTopBottomSpacing),
             buttonsStackView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.buttonsTopBottomSpacing),
-            payInvoiceButton.heightAnchor.constraint(equalToConstant: viewModel.minimumButtonsHeight)
+            payInvoiceButton.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.minimumButtonsHeight)
         ])
     }
     
