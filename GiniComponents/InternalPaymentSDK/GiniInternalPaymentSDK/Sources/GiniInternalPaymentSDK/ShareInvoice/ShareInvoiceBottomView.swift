@@ -377,7 +377,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         NSLayoutConstraint.activate([
             continueButton.leadingAnchor.constraint(equalTo: continueView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             continueButton.trailingAnchor.constraint(equalTo: continueView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            continueButton.heightAnchor.constraint(equalToConstant: Constants.continueButtonViewHeight),
+            continueButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.continueButtonViewHeight),
             continueButton.topAnchor.constraint(equalTo: continueView.topAnchor, constant: Constants.topBottomPaddingConstraint),
             continueButton.bottomAnchor.constraint(equalTo: continueView.bottomAnchor)
         ])
