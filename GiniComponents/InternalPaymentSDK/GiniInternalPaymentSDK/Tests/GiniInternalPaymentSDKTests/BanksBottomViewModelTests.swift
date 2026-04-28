@@ -152,13 +152,11 @@ struct BanksBottomViewModelTests {
     // MARK: - paymentProvidersViewModel
 
     @Test("paymentProvidersViewModel exposes the payment provider name")
-    func paymentProvidersViewModelBankName() {
+    func paymentProvidersViewModelBankName() throws {
         let provider = PaymentProvider.fixture(name: "My Bank")
         let sut = makeSUT(providers: [provider])
-        guard let entry = sut.paymentProviders.first else {
-            Issue.record("paymentProviders must not be empty")
-            return
-        }
+        let entry = try #require(sut.paymentProviders.first,
+                                 "paymentProviders must not be empty")
         let cellModel = sut.paymentProvidersViewModel(paymentProvider: entry)
 
         #expect(cellModel.bankName == "My Bank",

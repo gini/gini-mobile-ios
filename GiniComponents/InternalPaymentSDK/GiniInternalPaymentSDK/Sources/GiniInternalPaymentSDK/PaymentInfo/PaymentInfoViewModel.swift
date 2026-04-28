@@ -55,12 +55,11 @@ public final class PaymentInfoViewModel {
     }
     
     private func setupQuestions() {
-        for index in strings.questions.indices {
-            let answerAttributedString = answerWithAttributes(answer: strings.answers[index])
-            let questionSection = FAQSection(title: strings.questions[index],
-                                             description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
-                                             isExtended: false)
-            questions.append(questionSection)
+        questions = zip(strings.questions, strings.answers).map { question, answer in
+            let answerAttributedString = answerWithAttributes(answer: answer)
+            return FAQSection(title: question,
+                              description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
+                              isExtended: false)
         }
     }
     
