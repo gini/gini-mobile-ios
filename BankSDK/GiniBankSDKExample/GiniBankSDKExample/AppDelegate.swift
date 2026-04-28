@@ -19,7 +19,7 @@ import Firebase
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
-        setupDebugEnvironment()
+        applyUITestCleanStateLaunchArguments()
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil { return true }
 #endif
         FirebaseApp.configure()
@@ -30,7 +30,7 @@ import Firebase
         return true
     }
 
-    private func setupDebugEnvironment() {
+    private func applyUITestCleanStateLaunchArguments() {
         if CommandLine.arguments.contains("-StartFromCleanState") {
             if let bundleID = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: bundleID)
