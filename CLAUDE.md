@@ -227,3 +227,15 @@ Generates manual test cases from a Jira ticket, local spec file, or pasted text,
 - **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
 - **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
 - **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
+
+### `/generate-feature-docs`
+
+Generates a plain Markdown feature documentation page for Confluence from GiniBankSDK code changes on the current branch. Output is written to `docs/[feature-slug]/` in this repository.
+
+- **Skill prompt:** `.claude/skills/generate-feature-docs/SKILL.md`
+- **Usage:** `/generate-feature-docs --feature-slug <slug> [--note "..."]`
+
+Example:
+```
+/generate-feature-docs --feature-slug cross-border-payments
+```
