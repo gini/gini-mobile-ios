@@ -16,7 +16,7 @@ struct PaymentComponentViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(provider: PaymentProvider? = .make(),
+    private func makeSUT(provider: PaymentProvider? = .stub(),
                          paymentComponentConfiguration: PaymentComponentConfiguration? = nil,
                          clientConfiguration: ClientConfiguration? = nil) -> PaymentComponentViewModel {
         PaymentComponentViewModel(paymentProvider: provider,
@@ -55,7 +55,7 @@ struct PaymentComponentViewModelTests {
 
     @Test("bankName reflects the payment provider name")
     func bankNameReflectsProviderName() {
-        let sut = makeSUT(provider: .make(name: "Sparkasse"))
+        let sut = makeSUT(provider: .stub(name: "Sparkasse"))
 
         #expect(sut.bankName == "Sparkasse",
                 "bankName must equal the payment provider's name")
@@ -74,7 +74,7 @@ struct PaymentComponentViewModelTests {
     @Test("selectBankButtonText shows placeholder when showPaymentComponentInOneRow is true")
     func selectBankButtonTextOneRow() {
         let config = PaymentComponentConfiguration(showPaymentComponentInOneRow: true)
-        let sut = makeSUT(provider: .make(name: "ING"), paymentComponentConfiguration: config)
+        let sut = makeSUT(provider: .stub(name: "ING"), paymentComponentConfiguration: config)
 
         #expect(sut.selectBankButtonText == "Select bank",
                 "selectBankButtonText must return the placeholder when showPaymentComponentInOneRow is true")
@@ -83,7 +83,7 @@ struct PaymentComponentViewModelTests {
     @Test("selectBankButtonText shows bank name when showPaymentComponentInOneRow is false and bank is selected")
     func selectBankButtonTextTwoRowWithBank() {
         let config = PaymentComponentConfiguration(showPaymentComponentInOneRow: false)
-        let sut = makeSUT(provider: .make(name: "ING"), paymentComponentConfiguration: config)
+        let sut = makeSUT(provider: .stub(name: "ING"), paymentComponentConfiguration: config)
 
         #expect(sut.selectBankButtonText == "ING",
                 "selectBankButtonText must return the bank name when in two-row mode and a bank is selected")

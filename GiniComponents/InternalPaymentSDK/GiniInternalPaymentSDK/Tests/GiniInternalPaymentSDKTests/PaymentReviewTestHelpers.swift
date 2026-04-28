@@ -28,7 +28,7 @@ extension PaymentProvider {
                         openWithSupportedPlatforms: [])
     }
 
-    static func make(id: String = "provider-id",
+    static func stub(id: String = "provider-id",
                      name: String = "Test Bank",
                      appSchemeIOS: String = "testbank://",
                      index: Int? = nil,

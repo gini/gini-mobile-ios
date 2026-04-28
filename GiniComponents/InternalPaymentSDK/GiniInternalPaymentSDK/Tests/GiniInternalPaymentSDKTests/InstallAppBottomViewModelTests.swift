@@ -31,7 +31,7 @@ struct InstallAppBottomViewModelTests {
 
     @Test("titleText substitutes [BANK] with the provider name")
     func titleTextSubstitutesBankName() {
-        let sut = makeSUT(provider: .make(name: "N26"))
+        let sut = makeSUT(provider: .stub(name: "N26"))
 
         #expect(sut.titleText == "Install N26",
                 "titleText must replace [BANK] with the selected payment provider's name")
@@ -51,7 +51,7 @@ struct InstallAppBottomViewModelTests {
     /// The note pattern is therefore always selected in tests.
     @Test("moreInformationLabelText uses notePattern because bank is not installed in test environment")
     func moreInformationLabelTextUsesNotePattern() {
-        let sut = makeSUT(provider: .make(name: "DKB"))
+        let sut = makeSUT(provider: .stub(name: "DKB"))
 
         #expect(sut.moreInformationLabelText == "Note: install DKB",
                 "moreInformationLabelText must use moreInformationNotePattern when bank is not installed")
@@ -69,7 +69,7 @@ struct InstallAppBottomViewModelTests {
 
     @Test("bankImageIcon falls back to an empty UIImage when provider has no icon data")
     func bankImageIconIsImageWithEmptyData() {
-        let sut = makeSUT(provider: .make())
+        let sut = makeSUT(provider: .stub())
 
         // UIImage(data: Data()) returns nil, so iconData.toImage ?? UIImage() resolves to UIImage()
         #expect(sut.bankImageIcon.size == .zero,
