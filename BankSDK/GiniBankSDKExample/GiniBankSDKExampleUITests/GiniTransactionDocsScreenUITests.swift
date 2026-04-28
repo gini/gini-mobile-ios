@@ -15,7 +15,6 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
      Please upload to device:
         "test_image" image file with invoice
      */
-    let testImageFileName = "test_image"
     
     func testDontAttach() {
         
@@ -33,7 +32,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -64,7 +63,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -95,7 +94,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -121,7 +120,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -150,7 +149,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -187,7 +186,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -222,7 +221,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -261,7 +260,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -301,7 +300,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -343,7 +342,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed

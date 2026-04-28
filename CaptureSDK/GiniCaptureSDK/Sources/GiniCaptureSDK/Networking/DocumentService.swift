@@ -34,19 +34,20 @@ public final class DocumentService: DocumentServiceProtocol {
         self.metadata = metadata
         self.captureNetworkService = giniCaptureNetworkService
     }
-    
+
+    /**
+     Returns the raw string value of the currently configured product tag.
+     Falls back to `sepaExtractions` when no product tag is set in `GiniConfiguration`.
+     */
+    private var productTagValue: String {
+        (GiniConfiguration.shared.productTag ?? .sepaExtractions).rawValue
+    }
+
     public func upload(document: GiniCaptureDocument,
                        completion: UploadDocumentCompletion?) {
-        let documentMetadata: Document.Metadata? = {
-            guard let uploadMetadata = document.uploadMetadata else {
-                return metadata
-            }
-            guard var metadata else {
-                return Document.Metadata(uploadMetadata: uploadMetadata)
-            }
-            metadata.addUploadMetadata(uploadMetadata)
-            return metadata
-        }()
+        let documentMetadata = Document.Metadata.build(merging: metadata,
+                                                       for: document,
+                                                       productTagValue: productTagValue)
 
         captureNetworkService.upload(document: document, metadata: documentMetadata) { result in
             switch result {
@@ -64,6 +65,7 @@ public final class DocumentService: DocumentServiceProtocol {
             }
         }
     }
+
 
     private func updatePartialDocuments(for document: GiniCaptureDocument, with createdDocument: Document) {
         // Scanning a QR code takes priority, even if the user has already taken some pictures.
@@ -85,8 +87,13 @@ public final class DocumentService: DocumentServiceProtocol {
             .sorted()
             .map { $0.info }
         self.analysisCancellationToken = CancellationToken()
+        let analysisMetadata: Document.Metadata = {
+            var meta = metadata ?? Document.Metadata()
+            meta.addProductTag(productTagValue)
+            return meta
+        }()
         captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted,
-                                      metadata: metadata,
+                                      metadata: analysisMetadata,
                                       cancellationToken: analysisCancellationToken!) { [weak self] result in
             guard let self = self else { return }
             switch result {

@@ -55,16 +55,14 @@ class CaptureScreen {
             fatalError("Locale \(locale) is not supported")
         }
     }
-    
-    func assertFlashButton(){
-        XCTAssertFalse(flashONButton.exists, "Does not exists")
-    }
 
-    func tapCancelButton(){
-        cancelButtonNavigation.tap()
-    }
-    
-    func tapHelpButton(){
-        helpButton.tap()
+    /**
+     Asserts that the camera hint info label shows the expected text.
+     - Parameters:
+       - expectedText: The exact label string to wait for.
+     */
+    func assertCameraInfoLabel(expectedText: String) {
+        XCTAssertTrue(app.staticTexts[expectedText].waitForExistence(timeout: 5),
+                      "Expected camera info label '\(expectedText)' not found.")
     }
 }
