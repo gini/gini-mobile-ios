@@ -194,4 +194,30 @@ struct PaymentComponentViewModelTests {
                     "tapOnPayInvoiceView must call didTapOnPayInvoice on the delegate")
         }
     }
+
+    // MARK: - Delegate forwarding — tapOnMoreInformation / tapOnBankPicker
+
+    @Test("tapOnMoreInformation notifies delegate")
+    func tapOnMoreInformationNotifiesDelegate() {
+        let sut = makeSUT()
+        let delegate = MockPaymentComponentDelegate()
+        sut.delegate = delegate
+
+        sut.tapOnMoreInformation()
+
+        #expect(delegate.didTapMoreInfoCalled == true,
+                "tapOnMoreInformation must call didTapOnMoreInformation on the delegate")
+    }
+
+    @Test("tapOnBankPicker notifies delegate")
+    func tapOnBankPickerNotifiesDelegate() {
+        let sut = makeSUT()
+        let delegate = MockPaymentComponentDelegate()
+        sut.delegate = delegate
+
+        sut.tapOnBankPicker()
+
+        #expect(delegate.didTapBankPickerCalled == true,
+                "tapOnBankPicker must call didTapOnBankPicker on the delegate")
+    }
 }
