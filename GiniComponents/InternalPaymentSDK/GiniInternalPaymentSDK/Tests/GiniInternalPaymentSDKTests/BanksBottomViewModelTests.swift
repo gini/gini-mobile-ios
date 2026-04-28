@@ -40,8 +40,8 @@ struct BanksBottomViewModelTests {
     @Test("Filters out android-only providers with no iOS platform support")
     func androidOnlyProviderIsExcluded() {
         let androidOnly = PaymentProvider.fixture(id: "android-only",
-                                               gpcSupportedPlatforms: [.android],
-                                               openWithSupportedPlatforms: [])
+                                                  gpcSupportedPlatforms: [.android],
+                                                  openWithSupportedPlatforms: [])
         let sut = makeSUT(providers: [androidOnly])
 
         #expect(sut.paymentProviders.isEmpty,
@@ -60,7 +60,7 @@ struct BanksBottomViewModelTests {
     @Test("Includes provider with iOS in openWithSupportedPlatforms")
     func openWithIosProviderIsIncluded() {
         let provider = PaymentProvider.fixture(gpcSupportedPlatforms: [],
-                                            openWithSupportedPlatforms: [.ios])
+                                               openWithSupportedPlatforms: [.ios])
         let sut = makeSUT(providers: [provider])
 
         #expect(sut.paymentProviders.count == 1,
