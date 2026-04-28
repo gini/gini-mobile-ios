@@ -67,13 +67,15 @@ struct InstallAppBottomViewModelTests {
 
     // MARK: - bankImageIcon
 
-    @Test("bankImageIcon is a UIImage (empty) when provider has no icon data")
+    @Test("bankImageIcon falls back to an empty UIImage when provider has no icon data")
     func bankImageIconIsImageWithEmptyData() {
         let sut = makeSUT(provider: .make())
 
         // UIImage(data: Data()) returns nil, so iconData.toImage ?? UIImage() resolves to UIImage()
-        #expect(sut.bankImageIcon != nil,
-                "bankImageIcon must not be nil even when the provider has no icon data")
+        #expect(sut.bankImageIcon.size == .zero,
+                "bankImageIcon must fall back to an empty UIImage with zero size when the provider has no icon data")
+        #expect(sut.bankImageIcon.cgImage == nil,
+                "bankImageIcon fallback image must not have backing CGImage data when the provider has no icon data")
     }
 
     // MARK: - shouldShowBrandedView
