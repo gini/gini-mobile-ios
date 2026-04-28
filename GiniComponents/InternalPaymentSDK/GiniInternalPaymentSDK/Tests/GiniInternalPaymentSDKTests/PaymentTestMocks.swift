@@ -73,7 +73,7 @@ final class MockBottomSheetsProvider: BottomSheetsProviderProtocol {
 
 // MARK: - URL opener mock
 
-final class MockURLOpenerProtocol: URLOpenerProtocol {
+final class MockURLOpener: URLOpenerProtocol {
     private let installedSchemes: Set<String>
 
     init(installedSchemes: Set<String> = []) {

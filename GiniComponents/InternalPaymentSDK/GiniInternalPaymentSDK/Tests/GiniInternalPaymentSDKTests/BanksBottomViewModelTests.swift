@@ -19,7 +19,7 @@ struct BanksBottomViewModelTests {
 
     private func makeSUT(providers: [PaymentProvider] = [.make()],
                          selectedProvider: PaymentProvider? = nil,
-                         urlOpener: MockURLOpenerProtocol = MockURLOpenerProtocol(),
+                         urlOpener: MockURLOpener = MockURLOpener(),
                          clientConfiguration: ClientConfiguration? = nil) -> BanksBottomViewModel {
         BanksBottomViewModel(paymentProviders: providers,
                              selectedPaymentProvider: selectedProvider,
@@ -89,7 +89,7 @@ struct BanksBottomViewModelTests {
         let notInstalled = PaymentProvider.make(id: "not-installed",
                                                 name: "Not Installed",
                                                 appSchemeIOS: "notinstalled://")
-        let mockOpener = MockURLOpenerProtocol(installedScheme: "installedbank")
+        let mockOpener = MockURLOpener(installedScheme: "installedbank")
         let sut = makeSUT(providers: [notInstalled, installed], urlOpener: mockOpener)
 
         #expect(sut.paymentProviders.first?.paymentProvider.id == "installed",
