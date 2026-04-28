@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-//
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings.
 // 2. Upload to device: "cx_no_results_invoice" — a document that produces no CX extractions

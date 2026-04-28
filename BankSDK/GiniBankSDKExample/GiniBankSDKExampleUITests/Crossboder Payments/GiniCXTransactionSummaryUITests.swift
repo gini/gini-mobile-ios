@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-//
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings (for D1–D3).
 // 2. Upload to device:
