@@ -7,71 +7,9 @@
 
 import Testing
 import UIKit
-import SwiftUI
 import GiniHealthAPILibrary
 import GiniUtilites
 @testable import GiniInternalPaymentSDK
-
-// MARK: - Mock implementations
-
-final class MockPaymentReviewDelegate: PaymentReviewProtocol {
-    var closeKeyboardClickedCalled = false
-
-    // PaymentReviewAPIProtocol
-    func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func shouldHandleErrorInternally(error: GiniError) -> Bool { true }
-    func openPaymentProviderApp(requestId: String, universalLink: String) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func submitFeedback(for document: Document,
-                        updatedExtractions: [Extraction],
-                        completion: ((Result<Void, GiniError>) -> Void)?) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniError>) -> Void) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {
-        // This method will remain empty; no implementation is needed.
-    }
-
-    // PaymentReviewTrackingProtocol
-    func trackOnPaymentReviewCloseKeyboardClicked() { closeKeyboardClickedCalled = true }
-    func trackOnPaymentReviewCloseButtonClicked() {
-        // This method will remain empty; no implementation is needed.
-    }
-    func trackOnPaymentReviewBankButtonClicked(providerName: String) {
-        // This method will remain empty; no implementation is needed.
-    }
-
-    // PaymentReviewSupportedFormatsProtocol
-    func supportsGPC() -> Bool { false }
-    func supportsOpenWith() -> Bool { false }
-
-    // PaymentReviewActionProtocol
-    func updatedPaymentProvider(_ paymentProvider: PaymentProvider) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func openMoreInformationViewController() {
-        // This method will remain empty; no implementation is needed.
-    }
-    func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
-        // This method will remain empty; no implementation is needed.
-    }
-    func presentShareInvoiceBottomSheet(paymentRequestId: String,
-                                        paymentInfo: PaymentInfo,
-                                        completion: @escaping (UIViewController) -> Void) {
-        // This method will remain empty; no implementation is needed.
-    }
-}
-
-final class MockBottomSheetsProvider: BottomSheetsProviderProtocol {
-    func installAppBottomSheet() -> UIViewController { UIViewController() }
-    func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController { UIViewController() }
-    func bankSelectionBottomSheet() -> UIViewController { UIViewController() }
-}
 
 // MARK: - Test factories
 
@@ -88,6 +26,25 @@ extension PaymentProvider {
                         index: 0,
                         gpcSupportedPlatforms: [],
                         openWithSupportedPlatforms: [])
+    }
+
+    static func fixture(id: String = "provider-id",
+                     name: String = "Test Bank",
+                     appSchemeIOS: String = "testbank://",
+                     index: Int? = nil,
+                     gpcSupportedPlatforms: [PlatformSupported] = [.ios],
+                     openWithSupportedPlatforms: [PlatformSupported] = []) -> PaymentProvider {
+        PaymentProvider(id: id,
+                        name: name,
+                        appSchemeIOS: appSchemeIOS,
+                        minAppVersion: nil,
+                        colors: ProviderColors(background: "#FFFFFF", text: "#000000"),
+                        iconData: Data(),
+                        appStoreUrlIOS: nil,
+                        universalLinkIOS: "https://testbank.example",
+                        index: index,
+                        gpcSupportedPlatforms: gpcSupportedPlatforms,
+                        openWithSupportedPlatforms: openWithSupportedPlatforms)
     }
 }
 
@@ -265,4 +222,171 @@ func makePaymentReviewModel(delegate: MockPaymentReviewDelegate,
                        showPaymentReviewCloseButton: true,
                        previousPaymentComponentScreenType: nil,
                        clientConfiguration: nil)
+}
+
+// MARK: - Configuration and string test factories
+
+extension BankSelectionConfiguration {
+    static var test: BankSelectionConfiguration {
+        BankSelectionConfiguration(descriptionAccentColor: .label,
+                                   descriptionFont: .systemFont(ofSize: 14),
+                                   selectBankAccentColor: .label,
+                                   selectBankFont: .systemFont(ofSize: 16, weight: .semibold),
+                                   closeTitleIcon: UIImage(),
+                                   closeIconAccentColor: .label,
+                                   bankCellBackgroundColor: .systemBackground,
+                                   bankCellIconBorderColor: .systemGray4,
+                                   bankCellNameFont: .systemFont(ofSize: 14),
+                                   bankCellNameAccentColor: .label,
+                                   bankCellSelectedBorderColor: .systemBlue,
+                                   bankCellNotSelectedBorderColor: .systemGray4,
+                                   bankCellSelectionIndicatorImage: UIImage())
+    }
+}
+
+extension BanksBottomStrings {
+    static var test: BanksBottomStrings {
+        BanksBottomStrings(selectBankTitleText: "Select your bank",
+                           descriptionText: "Description",
+                           closeButtonAccessibilityLabel: "Close")
+    }
+}
+
+extension MoreInformationConfiguration {
+    static var test: MoreInformationConfiguration {
+        MoreInformationConfiguration(moreInformationAccentColor: .systemBlue,
+                                     moreInformationTextColor: .label,
+                                     moreInformationLinkFont: .systemFont(ofSize: 12),
+                                     moreInformationIcon: UIImage())
+    }
+}
+
+extension MoreInformationStrings {
+    static var test: MoreInformationStrings {
+        MoreInformationStrings(moreInformationActionablePartText: "More information")
+    }
+}
+
+extension PaymentInfoConfiguration {
+    static var test: PaymentInfoConfiguration {
+        PaymentInfoConfiguration(giniFont: .systemFont(ofSize: 14),
+                                 answersFont: .systemFont(ofSize: 12),
+                                 answerCellTextColor: .label,
+                                 answerCellLinkColor: .systemBlue,
+                                 questionsTitleFont: .systemFont(ofSize: 16, weight: .semibold),
+                                 questionsTitleColor: .label,
+                                 questionHeaderFont: .systemFont(ofSize: 14, weight: .medium),
+                                 questionHeaderTitleColor: .label,
+                                 questionHeaderMinusIcon: UIImage(),
+                                 questionHeaderPlusIcon: UIImage(),
+                                 bankCellBorderColor: .systemGray4,
+                                 payBillsTitleFont: .systemFont(ofSize: 18, weight: .bold),
+                                 payBillsTitleColor: .label,
+                                 payBillsDescriptionFont: .systemFont(ofSize: 14),
+                                 linksFont: .systemFont(ofSize: 12),
+                                 linksColor: .systemBlue,
+                                 separatorColor: .systemGray5,
+                                 backgroundColor: .systemBackground,
+                                 questionHeaderIconTintColor: .label)
+    }
+}
+
+extension PaymentInfoStrings {
+    static var test: PaymentInfoStrings {
+        PaymentInfoStrings(accessibilityCloseText: "Close",
+                           giniWebsiteText: "Gini website",
+                           giniURLText: "https://gini.net",
+                           supportedBanksText: "Supported banks",
+                           questionsTitleText: "Questions",
+                           answerPrivacyPolicyText: "Privacy policy",
+                           privacyPolicyURLText: "https://gini.net/privacy",
+                           titleText: "Payment information",
+                           payBillsTitleText: "Pay bills",
+                           payBillsDescriptionText: "Description",
+                           answers: [],
+                           questions: [])
+    }
+}
+
+extension PaymentComponentsConfiguration {
+    static var test: PaymentComponentsConfiguration {
+        PaymentComponentsConfiguration(selectYourBankLabelFont: .systemFont(ofSize: 14),
+                                       selectYourBankAccentColor: .label,
+                                       chevronDownIcon: UIImage(),
+                                       chevronDownIconColor: .label,
+                                       notInstalledBankTextColor: .secondaryLabel)
+    }
+}
+
+extension PaymentComponentsStrings {
+    static var test: PaymentComponentsStrings {
+        PaymentComponentsStrings(selectYourBankLabelText: "Select your bank",
+                                 placeholderBankNameText: "Select bank",
+                                 ctaLabelText: "Continue",
+                                 selectYourBankAccessibilityHint: "Tap to select")
+    }
+}
+
+extension ShareInvoiceConfiguration {
+    static var test: ShareInvoiceConfiguration {
+        ShareInvoiceConfiguration(titleFont: .systemFont(ofSize: 18, weight: .bold),
+                                  titleAccentColor: .label,
+                                  descriptionFont: .systemFont(ofSize: 14),
+                                  descriptionTextColor: .label,
+                                  descriptionAccentColor: .systemBlue,
+                                  paymentInfoBorderColor: .systemGray4,
+                                  titlePaymentInfoTextColor: .label,
+                                  subtitlePaymentInfoTextColor: .secondaryLabel,
+                                  titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
+                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12),
+                                  closeIcon: UIImage(),
+                                  closeIconAccentColor: .label)
+    }
+}
+
+extension ShareInvoiceStrings {
+    static var test: ShareInvoiceStrings {
+        ShareInvoiceStrings(continueLabelText: "Continue with [BANK]",
+                            titleTextPattern: "Share with [BANK]",
+                            descriptionTextPattern: "Open [BANK] to pay",
+                            recipientLabelText: "Recipient",
+                            amountLabelText: "Amount",
+                            ibanLabelText: "IBAN",
+                            purposeLabelText: "Purpose",
+                            accessibilityQRCodeImageText: "QR code",
+                            accessibilityCloseIconText: "Close")
+    }
+}
+
+extension InstallAppConfiguration {
+    static var test: InstallAppConfiguration {
+        InstallAppConfiguration(titleAccentColor: .label,
+                                titleFont: .systemFont(ofSize: 18, weight: .bold),
+                                moreInformationFont: .systemFont(ofSize: 14),
+                                moreInformationTextColor: .label,
+                                moreInformationAccentColor: .systemBlue,
+                                moreInformationIcon: UIImage(),
+                                appStoreIcon: UIImage(),
+                                bankIconBorderColor: .systemGray4,
+                                closeIcon: UIImage(),
+                                closeIconAccentColor: .label)
+    }
+}
+
+extension InstallAppStrings {
+    static var test: InstallAppStrings {
+        InstallAppStrings(titlePattern: "Install [BANK]",
+                          moreInformationTipPattern: "Tip: open [BANK]",
+                          moreInformationNotePattern: "Note: install [BANK]",
+                          continueLabelText: "Continue",
+                          accessibilityAppStoreText: "App Store",
+                          accessibilityBankLogoText: "Bank logo",
+                          accessibilityCloseIconText: "Close")
+    }
+}
+
+extension ClientConfiguration {
+    static func test(ingredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible) -> ClientConfiguration {
+        ClientConfiguration(ingredientBrandType: ingredientBrandType)
+    }
 }
