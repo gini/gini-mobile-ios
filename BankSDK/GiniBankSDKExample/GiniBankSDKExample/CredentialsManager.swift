@@ -33,7 +33,6 @@ final class CredentialsManager {
                           domain: client_email_domain)
         }
 
-        print("⚠️ No credentials were fetched from the Credentials.plist file for keys: \(idKey), \(passwordKey)")
         return Client(id: "",
                       secret: "",
                       domain: "")
