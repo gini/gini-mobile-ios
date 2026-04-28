@@ -17,7 +17,7 @@ struct BanksBottomViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(providers: [PaymentProvider] = [.stub()],
+    private func makeSUT(providers: [PaymentProvider] = [.fixture()],
                          selectedProvider: PaymentProvider? = nil,
                          urlOpener: MockURLOpener = MockURLOpener(),
                          clientConfiguration: ClientConfiguration? = nil) -> BanksBottomViewModel {
@@ -39,7 +39,7 @@ struct BanksBottomViewModelTests {
 
     @Test("Filters out android-only providers with no iOS platform support")
     func androidOnlyProviderIsExcluded() {
-        let androidOnly = PaymentProvider.stub(id: "android-only",
+        let androidOnly = PaymentProvider.fixture(id: "android-only",
                                                gpcSupportedPlatforms: [.android],
                                                openWithSupportedPlatforms: [])
         let sut = makeSUT(providers: [androidOnly])
@@ -50,7 +50,7 @@ struct BanksBottomViewModelTests {
 
     @Test("Includes provider with iOS in gpcSupportedPlatforms")
     func gpcIosProviderIsIncluded() {
-        let provider = PaymentProvider.stub(gpcSupportedPlatforms: [.ios])
+        let provider = PaymentProvider.fixture(gpcSupportedPlatforms: [.ios])
         let sut = makeSUT(providers: [provider])
 
         #expect(sut.paymentProviders.count == 1,
@@ -59,7 +59,7 @@ struct BanksBottomViewModelTests {
 
     @Test("Includes provider with iOS in openWithSupportedPlatforms")
     func openWithIosProviderIsIncluded() {
-        let provider = PaymentProvider.stub(gpcSupportedPlatforms: [],
+        let provider = PaymentProvider.fixture(gpcSupportedPlatforms: [],
                                             openWithSupportedPlatforms: [.ios])
         let sut = makeSUT(providers: [provider])
 
@@ -71,8 +71,8 @@ struct BanksBottomViewModelTests {
 
     @Test("Duplicate provider ids produce a single entry")
     func duplicateIdsAreDeduped() {
-        let p1 = PaymentProvider.stub(id: "same-id", name: "Bank A")
-        let p2 = PaymentProvider.stub(id: "same-id", name: "Bank B")
+        let p1 = PaymentProvider.fixture(id: "same-id", name: "Bank A")
+        let p2 = PaymentProvider.fixture(id: "same-id", name: "Bank B")
         let sut = makeSUT(providers: [p1, p2])
 
         #expect(sut.paymentProviders.count == 1,
@@ -83,10 +83,10 @@ struct BanksBottomViewModelTests {
 
     @Test("Installed provider appears before uninstalled provider")
     func installedProviderSortsFirst() {
-        let installed = PaymentProvider.stub(id: "installed",
+        let installed = PaymentProvider.fixture(id: "installed",
                                              name: "Installed Bank",
                                              appSchemeIOS: "installedbank://")
-        let notInstalled = PaymentProvider.stub(id: "not-installed",
+        let notInstalled = PaymentProvider.fixture(id: "not-installed",
                                                 name: "Not Installed",
                                                 appSchemeIOS: "notinstalled://")
         let mockOpener = MockURLOpener(installedScheme: "installedbank")
@@ -98,8 +98,8 @@ struct BanksBottomViewModelTests {
 
     @Test("Among uninstalled providers, lower index sorts first")
     func lowerIndexSortsFirst() {
-        let high = PaymentProvider.stub(id: "high", index: 5)
-        let low = PaymentProvider.stub(id: "low", index: 1)
+        let high = PaymentProvider.fixture(id: "high", index: 5)
+        let low = PaymentProvider.fixture(id: "low", index: 1)
         let sut = makeSUT(providers: [high, low])
 
         #expect(sut.paymentProviders.first?.paymentProvider.id == "low",
@@ -110,7 +110,7 @@ struct BanksBottomViewModelTests {
 
     @Test("Provider matching selectedPaymentProvider is marked isSelected")
     func selectedProviderIsMarked() {
-        let selected = PaymentProvider.stub(id: "selected-id")
+        let selected = PaymentProvider.fixture(id: "selected-id")
         let sut = makeSUT(providers: [selected], selectedProvider: selected)
 
         #expect(sut.paymentProviders.first?.isSelected == true,
@@ -119,8 +119,8 @@ struct BanksBottomViewModelTests {
 
     @Test("Provider not matching selectedPaymentProvider has isSelected = false")
     func nonSelectedProviderIsNotMarked() {
-        let provider = PaymentProvider.stub(id: "other-id")
-        let selected = PaymentProvider.stub(id: "selected-id")
+        let provider = PaymentProvider.fixture(id: "other-id")
+        let selected = PaymentProvider.fixture(id: "selected-id")
         let sut = makeSUT(providers: [provider], selectedProvider: selected)
 
         #expect(sut.paymentProviders.first?.isSelected == false,
@@ -153,7 +153,7 @@ struct BanksBottomViewModelTests {
 
     @Test("paymentProvidersViewModel exposes the payment provider name")
     func paymentProvidersViewModelBankName() {
-        let provider = PaymentProvider.stub(name: "My Bank")
+        let provider = PaymentProvider.fixture(name: "My Bank")
         let sut = makeSUT(providers: [provider])
         guard let entry = sut.paymentProviders.first else {
             Issue.record("paymentProviders must not be empty")

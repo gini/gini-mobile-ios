@@ -16,7 +16,7 @@ struct ShareInvoiceBottomViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(provider: PaymentProvider? = .stub(name: "Test Bank"),
+    private func makeSUT(provider: PaymentProvider? = .fixture(name: "Test Bank"),
                          paymentRequestId: String = "request-123",
                          clientConfiguration: ClientConfiguration? = nil) -> ShareInvoiceBottomViewModel {
         ShareInvoiceBottomViewModel(selectedPaymentProvider: provider,
@@ -35,7 +35,7 @@ struct ShareInvoiceBottomViewModelTests {
 
     @Test("titleText substitutes [BANK] with the provider name")
     func titleTextSubstitutesBankName() {
-        let sut = makeSUT(provider: .stub(name: "Sparkasse"))
+        let sut = makeSUT(provider: .fixture(name: "Sparkasse"))
 
         #expect(sut.titleText == "Share with Sparkasse",
                 "titleText must replace [BANK] with the selected payment provider's name")
@@ -51,7 +51,7 @@ struct ShareInvoiceBottomViewModelTests {
 
     @Test("descriptionLabelText substitutes [BANK] with the provider name")
     func descriptionLabelTextSubstitutesBankName() {
-        let sut = makeSUT(provider: .stub(name: "ING"))
+        let sut = makeSUT(provider: .fixture(name: "ING"))
 
         #expect(sut.descriptionLabelText == "Open ING to pay",
                 "descriptionLabelText must replace [BANK] with the selected payment provider's name")
@@ -59,7 +59,7 @@ struct ShareInvoiceBottomViewModelTests {
 
     @Test("continueButtonText substitutes [BANK] with the provider name")
     func continueButtonTextSubstitutesBankName() {
-        let sut = makeSUT(provider: .stub(name: "DKB"))
+        let sut = makeSUT(provider: .fixture(name: "DKB"))
 
         #expect(sut.continueButtonText == "Continue with DKB",
                 "continueButtonText must replace [BANK] with the selected payment provider's name")
