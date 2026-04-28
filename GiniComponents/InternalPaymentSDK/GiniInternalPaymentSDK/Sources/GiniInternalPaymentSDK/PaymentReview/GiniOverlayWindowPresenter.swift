@@ -93,6 +93,20 @@ final class GiniOverlayWindowPresenter {
 }
 
 /**
+ A UIView subclass that passes touches through when nothing meaningful is hit.
+
+ When no presented sheet is covering the screen, `hitTest` returns `nil` so that
+ touch events fall through to the underlying main window instead of being silently
+ consumed by the transparent overlay window.
+ */
+final class GiniPassthroughView: UIView {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hitView = super.hitTest(point, with: event)
+        return hitView === self ? nil : hitView
+    }
+}
+
+/**
  A transparent VC that serves as the rootViewController of the overlay window.
  Detects when the presented VC is dismissed (by close button or swipe) and
  calls the onDismiss callback to tear down the overlay window.
@@ -111,6 +125,10 @@ private final class GiniPassthroughViewController: UIViewController, UIAdaptiveP
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        view = GiniPassthroughView()
     }
     
     override func viewDidLoad() {

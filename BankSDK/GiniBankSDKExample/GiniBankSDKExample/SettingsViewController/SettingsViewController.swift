@@ -29,15 +29,11 @@ final class SettingsViewController: UIViewController {
 	
 	// MARK: - Initializers
      
-    init(apiEnvironment: APIEnvironment,
-         enablePinningSDK: Bool,
-         client: Client? = nil,
+    init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
          documentValidationsState: DocumentValidationsState) {
-        self.viewModel = SettingsViewModel(apiEnvironment: apiEnvironment,
-                                           enablePinningSDK: enablePinningSDK,
-                                           client: client,
+        self.viewModel = SettingsViewModel(enablePinningSDK: enablePinningSDK,
                                            giniConfiguration: giniConfiguration,
                                            settingsButtonStates: settingsButtonStates,
                                            documentValidationsState: documentValidationsState)
@@ -69,6 +65,7 @@ final class SettingsViewController: UIViewController {
                                           target: nil,
                                           action: #selector(didSelectCloseButton))
         closeButton.target = self
+        closeButton.accessibilityIdentifier = SettingScreenAccessibilityIdentifiers.closeButton.rawValue
         navigationBarItem.leftBarButtonItem = closeButton
     }
 
@@ -138,7 +135,8 @@ extension SettingsViewController: UITableViewDataSource {
         cell.indexPath = indexPath
         let model = SwitchOptionModelCell(title: optionModel.type.title,
                                           active: optionModel.isSwitchOn,
-                                          message: optionModel.type.message)
+                                          message: optionModel.type.message,
+                                          accessibilityIdentifier: optionModel.type.accessibilityIdentifier)
         cell.set(data: model)
         cell.delegate = self
         return cell
@@ -147,10 +145,14 @@ extension SettingsViewController: UITableViewDataSource {
     private func cell(for optionModel: SegmentedOptionModelProtocol, at indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
         cell.indexPath = indexPath
+        let identifier: String? = optionModel is ProductTagSegmentedOptionModel
+            ? SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue
+            : nil
         let model = SegmentedOptionCellModel(title: optionModel.title,
                                              items: optionModel.items,
                                              selectedIndex: optionModel.selectedIndex,
-                                             description: optionModel.description)
+                                             description: optionModel.description,
+                                             accessibilityIdentifier: identifier)
         cell.set(data: model)
         cell.delegate = self
         return cell
@@ -209,27 +211,44 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
         guard case .segmentedOption(let data) = item else { return }
         var newData = data
         newData.selectedIndex = cell.selectedSegmentIndex
+
         if newData is FileImportSegmentedOptionModel {
             viewModel.handleFileImportOption(fileImportIndex: newData.selectedIndex)
         } else if newData is APIEnvironmentSegmentedOptionModel {
             handleApiEnvironmentOption(environmentIndex: newData.selectedIndex)
+        } else if newData is CredentialsSetSegmentedOptionModel {
+            handleCredentialsSetSelection(credentialsIndex: newData.selectedIndex)
+        } else if newData is ProductTagSegmentedOptionModel {
+            viewModel.handleProductTagOption(selectedIndex: newData.selectedIndex)
         } else if newData is SDKTypeSegmentedOptionModel {
             handleSDKTypeOption(index: newData.selectedIndex)
         }
-	}
-
-    func handleApiEnvironmentOption(environmentIndex: Int) {
-        switch environmentIndex {
-        case 0:
-            delegate?.didSelectAPIEnvironment(apiEnvironment: .production)
-        case 1:
-            delegate?.didSelectAPIEnvironment(apiEnvironment: .stage)
-        default:
-            return
-
-        }
     }
 
+    func handleApiEnvironmentOption(environmentIndex: Int) {
+        let environment: APIEnvironment = environmentIndex == 0 ? .production : .stage
+        viewModel.handleAPIEnvironmentSelection(environment: environment)
+        delegate?.didSelectAPIEnvironment(apiEnvironment: environment)
+    }
+
+    func handleCredentialsSetSelection(credentialsIndex: Int) {
+        viewModel.handleCredentialsSetSelection(credentialsIndex: credentialsIndex)
+        let credentials = CredentialsSet.credentials(for: credentialsIndex)
+        delegate?.didTapSaveCredentialsButton(clientId: credentials.clientId,
+                                              clientSecret: credentials.clientSecret)
+        showCredentialsSavedAlert(setName: "client_id \(credentials.clientId)")
+    }
+
+    private func showCredentialsSavedAlert(setName: String) {
+        let message = "Credentials \(setName) have been successfully saved and applied."
+        let alert = UIAlertController(title: "Success",
+                                      message: message,
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+        present(alert, animated: true, completion: nil)
+    }
     func handleSDKTypeOption(index: Int) {
         switch index {
         case 0:

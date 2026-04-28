@@ -16,6 +16,19 @@ struct SegmentedOptionCellModel {
 	let items: [String]
 	let selectedIndex: Int
     let description: String?
+    let accessibilityIdentifier: String?
+
+    init(title: String,
+         items: [String],
+         selectedIndex: Int,
+         description: String? = nil,
+         accessibilityIdentifier: String? = nil) {
+        self.title = title
+        self.items = items
+        self.selectedIndex = selectedIndex
+        self.description = description
+        self.accessibilityIdentifier = accessibilityIdentifier
+    }
 }
 
 final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
@@ -69,6 +82,7 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 		segmentedControl.selectedSegmentIndex = data.selectedIndex
 
         descriptionLabel.text = data.description
+        segmentedControl.accessibilityIdentifier = data.accessibilityIdentifier
 	}
 	
 	// MARK: - Actions

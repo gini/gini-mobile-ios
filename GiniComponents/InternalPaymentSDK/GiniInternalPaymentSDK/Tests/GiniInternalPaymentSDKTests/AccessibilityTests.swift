@@ -17,66 +17,6 @@ import Testing
 import UIKit
 @testable import GiniInternalPaymentSDK
 
-// MARK: - Test factories
-
-private extension InstallAppConfiguration {
-    static var test: InstallAppConfiguration {
-        InstallAppConfiguration(titleAccentColor: .label,
-                                titleFont: .systemFont(ofSize: 18, weight: .bold),
-                                moreInformationFont: .systemFont(ofSize: 14),
-                                moreInformationTextColor: .label,
-                                moreInformationAccentColor: .systemBlue,
-                                moreInformationIcon: UIImage(),
-                                appStoreIcon: UIImage(),
-                                bankIconBorderColor: .systemGray4,
-                                closeIcon: UIImage(),
-                                closeIconAccentColor: .label)
-    }
-}
-
-private extension InstallAppStrings {
-    static var test: InstallAppStrings {
-        InstallAppStrings(titlePattern: "Install [BANK]",
-                          moreInformationTipPattern: "Tip: open [BANK]",
-                          moreInformationNotePattern: "Note: install [BANK]",
-                          continueLabelText: "Continue",
-                          accessibilityAppStoreText: "App Store",
-                          accessibilityBankLogoText: "Bank logo",
-                          accessibilityCloseIconText: "Close")
-    }
-}
-
-private extension ShareInvoiceConfiguration {
-    static var test: ShareInvoiceConfiguration {
-        ShareInvoiceConfiguration(titleFont: .systemFont(ofSize: 18, weight: .bold),
-                                  titleAccentColor: .label,
-                                  descriptionFont: .systemFont(ofSize: 14),
-                                  descriptionTextColor: .label,
-                                  descriptionAccentColor: .systemBlue,
-                                  paymentInfoBorderColor: .systemGray4,
-                                  titlePaymentInfoTextColor: .label,
-                                  subtitlePaymentInfoTextColor: .secondaryLabel,
-                                  titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
-                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12),
-                                  closeIcon: UIImage(),
-                                  closeIconAccentColor: .label)
-    }
-}
-
-private extension ShareInvoiceStrings {
-    static var test: ShareInvoiceStrings {
-        ShareInvoiceStrings(continueLabelText: "Continue",
-                            titleTextPattern: "Share invoice with [BANK]",
-                            descriptionTextPattern: "Description for [BANK]",
-                            recipientLabelText: "Recipient",
-                            amountLabelText: "Amount",
-                            ibanLabelText: "IBAN",
-                            purposeLabelText: "Purpose",
-                            accessibilityQRCodeImageText: "QR code",
-                            accessibilityCloseIconText: "Close")
-    }
-}
-
 // MARK: - View controller factories
 
 private func makeInstallAppBottomView() -> InstallAppBottomView {

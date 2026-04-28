@@ -14,6 +14,8 @@ on:
         required: true
       GINI_MOBILE_CI_USERNAME:
         required: true
+      SONAR_TOKEN:
+        required: false
   workflow_dispatch:
 
 concurrency:

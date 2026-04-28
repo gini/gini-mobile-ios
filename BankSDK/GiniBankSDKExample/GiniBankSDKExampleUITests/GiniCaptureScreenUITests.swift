@@ -58,7 +58,8 @@ class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload photo button
         captureScreen.uploadPhotoButton.tap()
-    //Assert is commented for now because of Photo Permission pop up
+        //Handle photo permission so it doesn't pollute subsequent tests
+        mainScreen.handlePhotoPermission(answer: true)
         //Assert Capture button isn't displayed
         //XCTAssertFalse(captureScreen.captureButton.isHittable)
     }

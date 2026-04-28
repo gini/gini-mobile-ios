@@ -69,7 +69,9 @@ final class StubURLProtocol: URLProtocol {
         client?.urlProtocolDidFinishLoading(self)
     }
 
-    override func stopLoading() {}
+    override func stopLoading() {
+        // This method will remain empty; no implementation is needed.
+    }
 }
 
 /// Creates a URLSession that uses `StubURLProtocol` so no real network calls are made.

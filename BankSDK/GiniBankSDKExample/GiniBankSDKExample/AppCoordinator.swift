@@ -272,9 +272,7 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
-                                                            enablePinningSDK: enablePinningSDK,
-                                                            client: client,
+        let settingsViewController = SettingsViewController(enablePinningSDK: enablePinningSDK,
                                                             giniConfiguration: configuration,
                                                             settingsButtonStates: settingsButtonStates,
                                                             documentValidationsState: documentValidationsState)
@@ -378,6 +376,12 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func didRequestRescan(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: false)
+        self.remove(childCoordinator: coordinator as Coordinator)
+        showScreenAPI()
+    }
+    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()

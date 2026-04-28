@@ -11,6 +11,8 @@ on:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
+      SONAR_TOKEN:
+        required: false
   workflow_dispatch:
 
 concurrency:
