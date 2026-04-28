@@ -151,43 +151,47 @@ struct PaymentComponentViewModelTests {
 
     // MARK: - isPaymentComponentUsed / tapOnPayInvoiceView
 
-    @Test("isPaymentComponentUsed is false when the key has not been set")
-    func isPaymentComponentUsedFalseInitially() {
+    /// Removes the payment-component-used flag before the body runs and restores
+    /// a clean state afterwards, so each test starts and ends with no persisted value.
+    private func withCleanPaymentComponentKey(_ body: () -> Void) {
         let key = "kPaymentComponentViewUsed"
         UserDefaults.standard.removeObject(forKey: key)
         defer { UserDefaults.standard.removeObject(forKey: key) }
+        body()
+    }
 
-        let sut = makeSUT()
+    @Test("isPaymentComponentUsed is false when the key has not been set")
+    func isPaymentComponentUsedFalseInitially() {
+        withCleanPaymentComponentKey {
+            let sut = makeSUT()
 
-        #expect(sut.isPaymentComponentUsed() == false,
-                "isPaymentComponentUsed must return false before tapOnPayInvoiceView is called")
+            #expect(sut.isPaymentComponentUsed() == false,
+                    "isPaymentComponentUsed must return false before tapOnPayInvoiceView is called")
+        }
     }
 
     @Test("tapOnPayInvoiceView marks the component as used in UserDefaults")
     func tapOnPayInvoiceViewMarksAsUsed() {
-        let key = "kPaymentComponentViewUsed"
-        UserDefaults.standard.removeObject(forKey: key)
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        withCleanPaymentComponentKey {
+            let sut = makeSUT()
+            sut.tapOnPayInvoiceView()
 
-        let sut = makeSUT()
-        sut.tapOnPayInvoiceView()
-
-        #expect(sut.isPaymentComponentUsed() == true,
-                "tapOnPayInvoiceView must set the UserDefaults usage flag to true")
+            #expect(sut.isPaymentComponentUsed() == true,
+                    "tapOnPayInvoiceView must set the UserDefaults usage flag to true")
+        }
     }
 
     @Test("tapOnPayInvoiceView notifies delegate")
     func tapOnPayInvoiceViewNotifiesDelegate() {
-        let key = "kPaymentComponentViewUsed"
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        withCleanPaymentComponentKey {
+            let sut = makeSUT()
+            let delegate = MockPaymentComponentDelegate()
+            sut.delegate = delegate
 
-        let sut = makeSUT()
-        let delegate = MockPaymentComponentDelegate()
-        sut.delegate = delegate
+            sut.tapOnPayInvoiceView()
 
-        sut.tapOnPayInvoiceView()
-
-        #expect(delegate.didTapPayInvoiceCalled == true,
-                "tapOnPayInvoiceView must call didTapOnPayInvoice on the delegate")
+            #expect(delegate.didTapPayInvoiceCalled == true,
+                    "tapOnPayInvoiceView must call didTapOnPayInvoice on the delegate")
+        }
     }
 }
