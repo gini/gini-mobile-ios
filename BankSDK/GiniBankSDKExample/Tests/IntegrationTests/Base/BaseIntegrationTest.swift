@@ -94,6 +94,7 @@ class BaseIntegrationTest: XCTestCase {
         let analysisResult = AnalysisResult(extractions: extractions,
                                             lineItems: extractionResult.lineItems,
                                             skontoDiscounts: extractionResult.skontoDiscounts,
+                                            crossBorderPayment: extractionResult.crossBorderPayment,
                                             images: [],
                                             document: self.giniHelper.giniCaptureSDKDocumentService?.document,
                                             candidates: [:])

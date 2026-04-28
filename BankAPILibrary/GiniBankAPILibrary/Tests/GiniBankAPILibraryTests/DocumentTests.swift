@@ -174,6 +174,58 @@ final class GiniDocumentTests: XCTestCase {
         )
     }
 
+    // MARK: - Product Tag Header Tests
+
+    func testProductTagHeaderKeyConstant() {
+        let fullKey = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(fullKey, "X-Document-Metadata-product-tag",
+                       "Full product tag header key must match the backend contract")
+    }
+
+    func testAddProductTagSetsSepaHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("sepaExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "sepaExtractions",
+                       "Product tag header must be sepaExtractions")
+    }
+
+    func testAddProductTagSetsCXHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("cxExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "cxExtractions",
+                       "Product tag header must be cxExtractions")
+    }
+
+    func testAddProductTagSetsAutoDetectHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("autoDetectExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "autoDetectExtractions",
+                       "Product tag header must be autoDetectExtractions")
+    }
+
+    func testAddProductTagDoesNotAffectOtherHeaders() {
+        var metadata = Document.Metadata(branchId: "my-branch",
+                                         additionalHeaders: ["customKey": "customValue"])
+        metadata.addProductTag("sepaExtractions")
+        let branchKey = Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey
+        XCTAssertEqual(metadata.headers[branchKey], "my-branch",
+                       "Existing branchId header must not be affected by addProductTag")
+        XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)customKey"], "customValue",
+                       "Existing additional header must not be affected by addProductTag")
+    }
+
+    func testAddProductTagOverwritesPreviousValue() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("sepaExtractions")
+        metadata.addProductTag("cxExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "cxExtractions",
+                       "Second call to addProductTag must overwrite the first value")
+    }
+
     func testUploadMetadataUserCommentCreationTest() {
         let data = [
             ("k1", "v1"),

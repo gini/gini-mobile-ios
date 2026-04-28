@@ -10,11 +10,11 @@
 import XCTest
 
 final class NetworkingScreenApiCoordinatorTests: XCTestCase {
-    private var tokenSource: MockTokenSource!
-    private var resultsDelegate: MockCaptureResultsDelegate!
-    private var configuration: GiniBankConfiguration!
-    private var metadata: Document.Metadata!
-    private var trackingDelegate: MockTrackingDelegate!
+    var tokenSource: MockTokenSource!
+    var resultsDelegate: MockCaptureResultsDelegate!
+    var configuration: GiniBankConfiguration!
+    var metadata: Document.Metadata!
+    var trackingDelegate: MockTrackingDelegate!
 
     override func setUp() {
         _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
@@ -25,10 +25,16 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         trackingDelegate = MockTrackingDelegate()
     }
 
+    override func tearDown() {
+        GiniBankUserDefaultsStorage.clientConfiguration = nil
+        super.tearDown()
+    }
+
     func testCloseSDK() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true) // so the sdk would start
 
-        XCTAssertEqual(GiniBankNetworkingScreenApiCoordinator.currentCoordinator, coordinator, "The coordinator should be the same")
+        XCTAssertEqual(GiniBankNetworkingScreenApiCoordinator.currentCoordinator,
+                       coordinator, "The coordinator should be the same")
 
         GiniBank.closeCurrentSDK()
         XCTAssertNil(GiniBankNetworkingScreenApiCoordinator.currentCoordinator)
@@ -39,7 +45,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         let (coordinator, service) = try makeCoordinatorAndService()
 
         // check domain
-        XCTAssertEqual(service.apiDomain.domainString, "pay-api.gini.net", "Service api domain should match our default")
+        XCTAssertEqual(service.apiDomain.domainString,
+                       "pay-api.gini.net", "Service api domain should match our default")
 
         // check token
         let receivedToken = try XCTUnwrap(
@@ -53,7 +60,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
             coordinator.resultsDelegate as? MockCaptureResultsDelegate,
             "Coordinator should have correct results delegate instance"
         )
-        XCTAssertEqual(coordinator.giniBankConfiguration, configuration, "Coordinator should have correct configuration instance")
+        XCTAssertEqual(coordinator.giniBankConfiguration, configuration,
+                       "Coordinator should have correct configuration instance")
         XCTAssertNotNil(
             coordinator.trackingDelegate as? MockTrackingDelegate,
             "Coordinator should have correct tracking delegate instance"
@@ -208,6 +216,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testDetermineIfPaymentDueHintEnabledReturnsTrueWhenEnabled() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true
 
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
@@ -225,6 +234,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testDetermineIfPaymentDueHintEnabledReturnsFalseWhenDisabled() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
@@ -242,6 +252,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testDetermineIfPaymentDueHintGlobalDisabledReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
@@ -261,6 +272,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowReturnAssistantEnabledWithLineItemsReturnsTrue() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.returnAssistantEnabled = true
         let lineItems = createMockLineItems()
         let extractionResult = createExtractionResult(lineItems: lineItems)
@@ -273,6 +285,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowReturnAssistantDisabledWithLineItemsReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.returnAssistantEnabled = false
         let lineItems = createMockLineItems()
         let extractionResult = createExtractionResult(lineItems: lineItems)
@@ -285,6 +298,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowReturnAssistantEnabledWithoutLineItemsReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.returnAssistantEnabled = true
         let extractionResult = createExtractionResult(lineItems: [])
 
@@ -298,6 +312,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowSkontoEnabledWithDiscountsReturnsTrue() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.skontoEnabled = true
         let skontoDiscounts = createMockSkontoDiscounts()
         let extractionResult = createExtractionResult(skontoDiscounts: skontoDiscounts)
@@ -310,6 +325,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowSkontoDisabledWithDiscountsReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.skontoEnabled = false
         let skontoDiscounts = createMockSkontoDiscounts()
         let extractionResult = createExtractionResult(skontoDiscounts: skontoDiscounts)
@@ -322,128 +338,13 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testShouldShowSkontoEnabledWithoutDiscountsReturnsFalse() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.skontoEnabled = true
         let extractionResult = createExtractionResult(skontoDiscounts: nil)
 
         let result = coordinator.shouldShowSkonto(for: extractionResult)
 
         XCTAssertFalse(result)
-    }
-}
-
-// MARK: - Helper Methods
-
-private extension NetworkingScreenApiCoordinatorTests {
-    func makeTokenSource() -> MockTokenSource {
-        MockTokenSource(
-            token:
-                Token(expiration: .init(),
-                      scope: "the_scope",
-                      type: "the_type",
-                      accessToken: "some_totally_random_gibberish")
-        )
-    }
-
-    func makeCoordinatorAndService(fromViewController: Bool = false) throws -> (GiniBankNetworkingScreenApiCoordinator,
-                                                                                DefaultDocumentService) {
-        let coordinator: GiniBankNetworkingScreenApiCoordinator
-        if fromViewController {
-            let viewController = try XCTUnwrap(
-                GiniBank.viewController(withAlternativeTokenSource: tokenSource,
-                                        configuration: configuration,
-                                        resultsDelegate: resultsDelegate,
-                                        documentMetadata: metadata,
-                                        trackingDelegate: trackingDelegate) as? ContainerNavigationController,
-                "There should be an instance of `ContainerNavigationController`"
-            )
-            coordinator = try XCTUnwrap(
-                viewController.coordinator as? GiniBankNetworkingScreenApiCoordinator,
-                "The instance of `ContainerNavigationController` should have a coordinator of type `GiniBankNetworkingScreenApiCoordinator"
-            )
-        } else {
-            coordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: tokenSource,
-                                                                 resultsDelegate: resultsDelegate,
-                                                                 configuration: configuration,
-                                                                 documentMetadata: metadata,
-                                                                 trackingDelegate: trackingDelegate)
-        }
-        let documentService = try XCTUnwrap(
-            coordinator.documentService as? GiniCaptureSDK.DocumentService,
-            "The coordinator should have a document service of type `GiniCaptureSDK.DocumentService"
-        )
-        let captureNetworkService = try XCTUnwrap(
-            documentService.captureNetworkService as? DefaultCaptureNetworkService,
-            "The document service should have a capture network service of type `DefaultCaptureNetworkService"
-        )
-
-        return (coordinator, captureNetworkService.documentService)
-    }
-
-    func login(service: DefaultDocumentService) throws -> Token? {
-        let logInExpectation = self.expectation(description: "login")
-        var receivedToken: Token?
-        service.sessionManager.logIn { result in
-            switch result {
-            case .success(let token):
-                receivedToken = token
-                logInExpectation.fulfill()
-            case .failure(let error):
-                XCTFail("Failure: \(error.localizedDescription)")
-            }
-        }
-        wait(for: [logInExpectation], timeout: 1)
-        return receivedToken
-    }
-
-    // MARK: - Test Data Creation
-
-    func createExtractionResult(paymentState: String? = nil,
-                                paymentDueDate: String? = nil,
-                                lineItems: [[Extraction]]? = nil,
-                                skontoDiscounts: [[Extraction]]? = nil) -> ExtractionResult {
-        var extractions: [Extraction] = []
-        
-        if let paymentState = paymentState {
-            let extraction = Extraction(box: nil,
-                                        candidates: nil,
-                                        entity: "paymentState",
-                                        value: paymentState,
-                                        name: "paymentState")
-            extractions.append(extraction)
-        }
-        
-        if let paymentDueDate = paymentDueDate {
-            let dueDateExtraction = Extraction(box: nil,
-                                               candidates: nil,
-                                               entity: "paymentDueDate",
-                                               value: paymentDueDate,
-                                               name: "paymentDueDate")
-            extractions.append(dueDateExtraction)
-        }
-        
-        return ExtractionResult(extractions: extractions,
-                                lineItems: lineItems,
-                                returnReasons: [],
-                                skontoDiscounts: skontoDiscounts,
-                                candidates: [:])
-    }
-
-    func createMockLineItems() -> [[Extraction]] {
-        let extraction = Extraction(box: nil,
-                                    candidates: nil,
-                                    entity: "lineItem",
-                                    value: "Test Item",
-                                    name: "lineItem")
-        return [[extraction]]
-    }
-
-    func createMockSkontoDiscounts() -> [[Extraction]] {
-        let extraction = Extraction(box: nil,
-                                    candidates: nil,
-                                    entity: "skontoDiscount",
-                                    value: "2.0",
-                                    name: "skontoDiscount")
-        return [[extraction]]
     }
 }
 

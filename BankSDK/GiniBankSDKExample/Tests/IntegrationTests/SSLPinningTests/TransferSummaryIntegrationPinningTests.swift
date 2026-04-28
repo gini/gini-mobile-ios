@@ -45,14 +45,12 @@ class TransferSummaryIntegrationPinningTests: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            GiniBankConfiguration.shared.sendTransferSummary(
-                paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
-                paymentReference: result.extractions["paymentReference"]?.value ?? "",
-                paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
-                iban: result.extractions["iban"]?.value ?? "",
-                bic: result.extractions["bic"]?.value ?? "",
-                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR)
-            )
+            var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
+                dict[pair.key] = pair.value.value
+            }
+            /// Override `amountToPay` with the confirmed test value to guarantee the "value:currency" format.
+            extractions["amountToPay"] = ExtractionAmount(value: 950.00, currency: .EUR).formattedString()
+            GiniBankConfiguration.shared.sendTransferSummary(extractions: extractions)
 
             let mockedInvoice = mockedInvoiceResultName
             // Use the helper method to load the fixture extractions container
