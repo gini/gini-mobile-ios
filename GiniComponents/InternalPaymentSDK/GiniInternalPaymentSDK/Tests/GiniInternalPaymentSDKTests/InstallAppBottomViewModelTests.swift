@@ -16,7 +16,7 @@ struct InstallAppBottomViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(provider: PaymentProvider? = .make(name: "Test Bank"),
+    private func makeSUT(provider: PaymentProvider? = nil,
                          clientConfiguration: ClientConfiguration? = nil) -> InstallAppBottomViewModel {
         InstallAppBottomViewModel(selectedPaymentProvider: provider,
                                   installAppConfiguration: .test,
