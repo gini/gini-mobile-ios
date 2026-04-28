@@ -37,7 +37,7 @@ struct PaymentComponentViewModelTests {
 
     @Test("hasBankSelected is true when a payment provider is given")
     func hasBankSelectedTrueWithProvider() {
-        let sut = makeSUT(provider: .make())
+        let sut = makeSUT()
 
         #expect(sut.hasBankSelected == true,
                 "hasBankSelected must be true when a non-nil payment provider is supplied")
