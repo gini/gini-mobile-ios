@@ -9,7 +9,7 @@ on:
   workflow_call:
    secrets:
       SONAR_TOKEN:
-        required: false   
+        required: false
   workflow_dispatch:
 
 jobs:
