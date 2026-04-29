@@ -10,7 +10,9 @@ on:
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/utilites.check.yml@main
-
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
   release:
     needs: check
     runs-on: macos-latest   

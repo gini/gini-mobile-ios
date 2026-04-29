@@ -10,6 +10,8 @@ on:
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/internal-payment-sdk.check.yml@main
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
     needs: check
