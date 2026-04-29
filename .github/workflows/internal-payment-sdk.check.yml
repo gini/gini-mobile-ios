@@ -7,6 +7,9 @@ on:
    paths:
       - 'GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/**'
   workflow_call:
+   secrets:
+      SONAR_TOKEN:
+        required: false   
   workflow_dispatch:
 
 jobs:
