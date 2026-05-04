@@ -78,6 +78,8 @@ public class PaymentReviewModel {
 
     var onNewPaymentProvider: (() -> Void)?
 
+    var onResumePaymentAfterBankInstall: (() -> Void)?
+
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
     weak var delegate: PaymentReviewProtocol?
     weak var bottomSheetsProvider: BottomSheetsProviderProtocol?

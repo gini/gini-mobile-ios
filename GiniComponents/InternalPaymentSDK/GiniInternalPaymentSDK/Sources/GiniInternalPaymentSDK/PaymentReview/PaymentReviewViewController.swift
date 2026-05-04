@@ -83,7 +83,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func createPaymentRequestAndOpenBankApp() {
-        self.presentedViewController?.dismiss(animated: true)
+        overlayPresenter.dismiss(animated: true)
+        model.onResumePaymentAfterBankInstall?()
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: UIViewController) {

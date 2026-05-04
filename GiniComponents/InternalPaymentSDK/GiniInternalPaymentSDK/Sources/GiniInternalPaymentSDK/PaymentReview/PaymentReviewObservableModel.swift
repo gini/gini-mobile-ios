@@ -22,6 +22,7 @@ final class PaymentReviewObservableModel: ObservableObject {
     private var reduceMotion: Bool = UIAccessibility.isReduceMotionEnabled
     private var reduceMotionObserver: NSObjectProtocol?
     private var cancellables = Set<AnyCancellable>()
+    private var pendingPaymentInfo: PaymentInfo?
 
     var isBottomSheetMode: Bool {
         model.displayMode == .bottomSheet
@@ -136,6 +137,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         
         if delegate.supportsGPC() {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
+                pendingPaymentInfo = paymentInfo
                 model.openInstallAppBottomSheet()
                 return
             }
@@ -164,8 +166,13 @@ final class PaymentReviewObservableModel: ObservableObject {
         })
     }
     
-    private func createPaymentRequestForGPC(paymentInfo: PaymentInfo) {
-        model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
+    private func resumePaymentAfterBankInstall() {
+        guard let paymentInfo = pendingPaymentInfo else { return }
+        pendingPaymentInfo = nil
+        createPaymentRequestForGPC(paymentInfo: paymentInfo)
+    }
+
+    private func createPaymentRequestForGPC(paymentInfo: PaymentInfo) {        model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
             self?.model.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
         })
         
@@ -209,6 +216,10 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.onNewPaymentProvider = { [weak self] in
             guard let self else { return }
             containerViewModel.selectedPaymentProvider = model.selectedPaymentProvider
+        }
+
+        model.onResumePaymentAfterBankInstall = { [weak self] in
+            self?.resumePaymentAfterBankInstall()
         }
         
         model.onErrorHandling = { [weak self] _ in

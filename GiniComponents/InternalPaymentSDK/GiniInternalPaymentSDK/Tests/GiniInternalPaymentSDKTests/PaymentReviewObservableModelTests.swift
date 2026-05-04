@@ -97,4 +97,100 @@ struct PaymentReviewObservableModelTests {
         sut.dismissBannerAfterDelay()
         sut.dismissBannerAfterDelay()
     }
+
+    // MARK: - Install-app / pending payment flow (HEAL-352)
+
+    @Test("didTapPay stores paymentInfo when GPC bank is not installed")
+    func didTapPayStoresPendingPaymentInfoWhenBankNotInstalled() {
+        let delegate = MockPaymentReviewDelegate()
+        delegate.supportsGPCOverride = true
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        let paymentInfo = PaymentInfo(recipient: "Test GmbH",
+                                      iban: "DE89370400440532013000",
+                                      bic: "",
+                                      amount: "99.99:EUR",
+                                      purpose: "Invoice 123",
+                                      paymentUniversalLink: "",
+                                      paymentProviderId: "test-provider-id")
+
+        /// In the test environment `canOpenURLString()` always returns false (no real app scheme
+        /// registered), so the install-sheet path is always taken for GPC providers.
+        sut.didTapPay(paymentInfo)
+
+        /// Verify via the resume path: triggering `onResumePaymentAfterBankInstall` must
+        /// call `createPaymentRequest` with the stored paymentInfo.
+        model.onResumePaymentAfterBankInstall?()
+
+        #expect(delegate.createPaymentRequestCalled == true,
+                "createPaymentRequest must be called after resuming payment following bank install")
+        #expect(delegate.lastPaymentInfo?.recipient == "Test GmbH",
+                "createPaymentRequest must be called with the paymentInfo that was stored before opening the install sheet")
+    }
+
+    @Test("onResumePaymentAfterBankInstall clears pendingPaymentInfo after first resume")
+    func resumePaymentClearsPendingInfoAfterFirstCall() {
+        let delegate = MockPaymentReviewDelegate()
+        delegate.supportsGPCOverride = true
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        let paymentInfo = PaymentInfo(recipient: "Test GmbH",
+                                      iban: "DE89370400440532013000",
+                                      bic: "",
+                                      amount: "99.99:EUR",
+                                      purpose: "Invoice 123",
+                                      paymentUniversalLink: "",
+                                      paymentProviderId: "test-provider-id")
+
+        sut.didTapPay(paymentInfo)
+        model.onResumePaymentAfterBankInstall?()
+        /// Reset tracking and call resume again — the pending info was already consumed.
+        delegate.createPaymentRequestCalled = false
+        model.onResumePaymentAfterBankInstall?()
+
+        #expect(delegate.createPaymentRequestCalled == false,
+                "A second resume call must be a no-op once pendingPaymentInfo has been consumed")
+    }
+
+    @Test("onResumePaymentAfterBankInstall is a no-op when no payment is pending")
+    func resumePaymentIsNoOpWithoutPendingInfo() {
+        let delegate = MockPaymentReviewDelegate()
+        delegate.supportsGPCOverride = true
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        _ = PaymentReviewObservableModel(model: model)
+
+        model.onResumePaymentAfterBankInstall?()
+
+        #expect(delegate.createPaymentRequestCalled == false,
+                "onResumePaymentAfterBankInstall must not call createPaymentRequest when no payment is pending")
+    }
+
+    @Test("didTapPay does not store pendingPaymentInfo for openWith providers")
+    func didTapPayDoesNotStorePendingInfoForOpenWith() {
+        let delegate = MockPaymentReviewDelegate()
+        delegate.supportsGPCOverride = false
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        let paymentInfo = PaymentInfo(recipient: "Test GmbH",
+                                      iban: "DE89370400440532013000",
+                                      bic: "",
+                                      amount: "99.99:EUR",
+                                      purpose: "Invoice 123",
+                                      paymentUniversalLink: "",
+                                      paymentProviderId: "test-provider-id")
+
+        sut.didTapPay(paymentInfo)
+        /// Resume must be a no-op since only GPC providers use the install-sheet path.
+        model.onResumePaymentAfterBankInstall?()
+
+        #expect(delegate.createPaymentRequestCalled == false,
+                "pendingPaymentInfo must not be set for openWith providers — they do not use the install-sheet path")
+    }
 }

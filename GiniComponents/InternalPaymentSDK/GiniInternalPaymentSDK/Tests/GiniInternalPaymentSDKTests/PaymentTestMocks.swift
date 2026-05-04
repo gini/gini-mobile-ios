@@ -14,14 +14,20 @@ import GiniUtilites
 
 final class MockPaymentReviewDelegate: PaymentReviewProtocol {
     var closeKeyboardClickedCalled = false
+    var createPaymentRequestCalled = false
+    var lastPaymentInfo: PaymentInfo?
+    var openPaymentProviderAppCalled = false
+    var supportsGPCOverride = false
 
     // PaymentReviewAPIProtocol
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
-        // This method will remain empty; no implementation is needed.
+        createPaymentRequestCalled = true
+        lastPaymentInfo = paymentInfo
+        completion(.success("mock-request-id"))
     }
     func shouldHandleErrorInternally(error: GiniError) -> Bool { true }
     func openPaymentProviderApp(requestId: String, universalLink: String) {
-        // This method will remain empty; no implementation is needed.
+        openPaymentProviderAppCalled = true
     }
     func submitFeedback(for document: Document,
                         updatedExtractions: [Extraction],
@@ -45,7 +51,7 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
     }
 
     // PaymentReviewSupportedFormatsProtocol
-    func supportsGPC() -> Bool { false }
+    func supportsGPC() -> Bool { supportsGPCOverride }
     func supportsOpenWith() -> Bool { false }
 
     // PaymentReviewActionProtocol
