@@ -3,53 +3,42 @@
 //  GiniInternalPaymentSDKTests
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
-//
-//  WCAG 2.1 color-contrast regression guard for fix/HEAL-330_color_contrast.
-//
-//  Coverage (HEAL-CLR tickets):
-//   CLR-01 • Primary button light       (#FFFFFF on #006ECF — fixed from 0.4α)
-//   CLR-01 • Primary button dark        (#FFFFFF on #007FEE)
-//          • Secondary button text      (#000000 on #F2F2F2)
-//   CLR-02 • Placeholder light          (#3A3A3C on #F2F2F2 — Standard4, 10.14:1 ✅ already passes)
-//   CLR-02 • Placeholder dark           (#ADADAD on #353535 — Standard4, 5.47:1 ✅ already passes)
-//          • Text field input light     (#000000 on #F2F2F2 — 18.75:1)
-//          • Text field input dark      (#F2F2F2 on #353535 — 10.94:1)
-//   CLR-03 • Powered by Gini light      (#3A3A3C on #FAFAFA — Standard4 on Standard7, 10.87:1 ✅)
-//   CLR-03 • Powered by Gini dark       (#ADADAD on #161616 — Standard4 on Standard7 dark, 8.07:1 ✅)
-//   CLR-04 • More info text light       (#3A3A3C on #FAFAFA — Standard4 on Standard7, 10.87:1 ✅)
-//   CLR-04 • More info text dark        (#ADADAD on #161616 — Standard4 on Standard7 dark, 8.07:1 ✅)
-//          • Info banner text light     (#FAFAFA on #13822F Success01Dark — 4.72:1)
-//          • Info banner text dark      (#FAFAFA on #213019 Success01Light — 13.38:1)
-//          • Error message text light   (#C0000A on #FAFAFA — Feedback01 darkened from #FA1C1C → 3.83:1 FAIL)
-//
-//  Thresholds (WCAG 2.1 §1.4.3 / §1.4.11):
-//   • AA  normal text   : ≥ 4.5 : 1  (< 18 pt regular or < 14 pt bold)
-//   • AA  large text    : ≥ 3.0 : 1  (≥ 18 pt regular or ≥ 14 pt bold)
-//   • AAA normal text   : ≥ 7.0 : 1
-//
-//  Font sizes used in the SDK (FontProvider defaults):
-//   .button    → 16 pt bold    → large text
-//   .input     → 16 pt medium  → large text
-//   .captions1 → 13 pt regular → normal text
-//   .captions2 → 12 pt regular → normal text
 
 import Testing
 import UIKit
 
 // MARK: - WCAG luminance helpers
 
-/// Linearises a single 8-bit sRGB channel per IEC 61966-2-1.
+/**
+ Linearises a single 8-bit sRGB channel per IEC 61966-2-1.
+ - Parameters:
+   - channel: The 8-bit sRGB channel value (0…255).
+ - Returns: The linearised channel value.
+ */
 private func linearise(_ channel: CGFloat) -> CGFloat {
     let c = channel / 255
     return c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
 }
 
-/// Relative luminance (0…1) of a colour, per WCAG 2.1 §1.4.3.
+/**
+ Relative luminance (0…1) of a colour, per WCAG 2.1 §1.4.3.
+ - Parameters:
+   - r: The red channel value (0…255).
+   - g: The green channel value (0…255).
+   - b: The blue channel value (0…255).
+ - Returns: The relative luminance of the colour.
+ */
 private func relativeLuminance(r: CGFloat, g: CGFloat, b: CGFloat) -> CGFloat {
     0.2126 * linearise(r) + 0.7152 * linearise(g) + 0.0722 * linearise(b)
 }
 
-/// WCAG 2.1 contrast ratio between two fully-opaque colours.
+/**
+ WCAG 2.1 contrast ratio between two fully-opaque colours.
+ - Parameters:
+   - foreground: The foreground colour.
+   - background: The background colour.
+ - Returns: The contrast ratio as a value ≥ 1.0.
+ */
 private func contrastRatio(foreground: UIColor, background: UIColor) -> Double {
     var fR: CGFloat = 0, fG: CGFloat = 0, fB: CGFloat = 0, fA: CGFloat = 0
     var bR: CGFloat = 0, bG: CGFloat = 0, bB: CGFloat = 0, bA: CGFloat = 0
@@ -65,7 +54,14 @@ private func contrastRatio(foreground: UIColor, background: UIColor) -> Double {
 // MARK: - sRGB factory
 
 private extension UIColor {
-    /// Convenience initialiser from 8-bit sRGB integer components.
+    /**
+     Convenience initialiser from 8-bit sRGB integer components.
+     - Parameters:
+       - r: Red component (0…255).
+       - g: Green component (0…255).
+       - b: Blue component (0…255).
+     - Returns: A fully-opaque `UIColor` in the sRGB colour space.
+     */
     static func sRGB(r: Int, g: Int, b: Int) -> UIColor {
         UIColor(
             red:   CGFloat(r) / 255,
@@ -78,13 +74,15 @@ private extension UIColor {
 
 // MARK: - WCAG level
 
-/// WCAG 2.1 minimum contrast ratio thresholds.
+/**
+ WCAG 2.1 minimum contrast ratio thresholds.
+ */
 enum WCAGLevel: Double, CustomTestStringConvertible {
-    /// Normal text (< 18 pt regular / < 14 pt bold): minimum 4.5 : 1.
+    /** Normal text (< 18 pt regular / < 14 pt bold): minimum 4.5 : 1. */
     case aaNormal = 4.5
-    /// Large text (≥ 18 pt regular or ≥ 14 pt bold): minimum 3.0 : 1.
+    /** Large text (≥ 18 pt regular or ≥ 14 pt bold): minimum 3.0 : 1. */
     case aaLarge  = 3.0
-    /// Enhanced / AAA: minimum 7.0 : 1.
+    /** Enhanced / AAA: minimum 7.0 : 1. */
     case aaa      = 7.0
 
     var testDescription: String {
@@ -98,7 +96,9 @@ enum WCAGLevel: Double, CustomTestStringConvertible {
 
 // MARK: - Test case model
 
-/// A foreground/background pair together with its required WCAG level.
+/**
+ A foreground/background pair together with its required WCAG level.
+ */
 struct ColorContrastCase: CustomTestStringConvertible {
     let name: String
     let foreground: UIColor
@@ -141,13 +141,15 @@ struct ColorContrastTests {
 
     // MARK: - Passing pairs
 
-    /// Every pair listed here must satisfy its declared WCAG threshold.
-    ///
-    /// Font mapping (FontProvider defaults):
-    ///   `.button`    → 16 pt bold    → large text  (≥ 14 pt bold threshold)
-    ///   `.input`     → 16 pt medium  → large text
-    ///   `.captions1` → 13 pt regular → normal text (< 18 pt threshold)
-    ///   `.captions2` → 12 pt regular → normal text
+    /**
+     Every pair listed here must satisfy its declared WCAG threshold.
+
+     Font mapping (FontProvider defaults):
+       - `.button`    → 16 pt bold    → large text  (≥ 14 pt bold threshold)
+       - `.input`     → 16 pt medium  → large text
+       - `.captions1` → 13 pt regular → normal text (< 18 pt threshold)
+       - `.captions2` → 12 pt regular → normal text
+     */
     private static let passingPairs: [ColorContrastCase] = [
 
         // ── Primary button ──────────────────────────────────────────────────
@@ -282,8 +284,10 @@ struct ColorContrastTests {
 
     // MARK: - Parameterised: all passing pairs
 
-    /// Each entry in `passingPairs` runs as its own independent test case so a single
-    /// failing pair produces a targeted diagnostic rather than stopping the whole suite.
+    /**
+     Each entry in `passingPairs` runs as its own independent test case so a single
+     failing pair produces a targeted diagnostic rather than stopping the whole suite.
+     */
     @Test("Color pair meets required WCAG contrast ratio", arguments: passingPairs)
     func colorPairMeetsWCAGRatio(_ pair: ColorContrastCase) {
         let ratio = contrastRatio(foreground: pair.foreground, background: pair.background)
@@ -295,13 +299,15 @@ struct ColorContrastTests {
 
     // MARK: - Regression guard: HEAL-330 alpha removal
 
-    /// Confirms the primary-button background is NOT using a semi-transparent blend.
-    ///
-    /// Before HEAL-330 the config was:
-    ///   `GiniColor.accent1.uiColor().withAlphaComponent(0.4)`
-    ///
-    /// Blended over white this becomes #99C5EC → contrast with white text: **1.82:1**
-    /// (fails every WCAG level).  After the fix the full-opacity accent gives **5.08:1**.
+    /**
+     Confirms the primary-button background is NOT using a semi-transparent blend.
+
+     Before HEAL-330 the config was:
+     `GiniColor.accent1.uiColor().withAlphaComponent(0.4)`
+
+     Blended over white this becomes #99C5EC → contrast with white text: **1.82:1**
+     (fails every WCAG level). After the fix the full-opacity accent gives **5.08:1**.
+     */
     @Test("Primary button light: contrast ≥ 4.5 (HEAL-330 alpha regression guard)")
     func primaryButtonAlphaRegressionGuard() {
         let ratio = contrastRatio(foreground: Self.white, background: Self.accent01Dark)
@@ -313,8 +319,10 @@ struct ColorContrastTests {
 
     // MARK: - Dark06 colorset integrity
 
-    /// Guards that Dark06 stayed at #F2F2F2 (corrected in HEAL-330) and was not accidentally
-    /// reverted to the previous value of #F3F3F3.
+    /**
+     Guards that Dark06 stayed at #F2F2F2 (corrected in HEAL-330) and was not accidentally
+     reverted to the previous value of #F3F3F3.
+     */
     @Test("Dark06 colorset value is exactly #F2F2F2 (HEAL-330 fix)")
     func dark06ColorsetIsF2F2F2() {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
@@ -330,8 +338,10 @@ struct ColorContrastTests {
 
     // MARK: - Feedback01 colorset integrity
 
-    /// Guards that Feedback01 stayed at #C0000A (the HEAL-330 fix) and was not accidentally
-    /// reverted to the previous failing value of #FA1C1C (which gave only 3.83:1).
+    /**
+     Guards that Feedback01 stayed at #C0000A (the HEAL-330 fix) and was not accidentally
+     reverted to the previous failing value of #FA1C1C (which gave only 3.83:1).
+     */
     @Test("Feedback01 colorset value is #C0000A after HEAL-330 fix (was #FA1C1C, 3.83:1 — FAIL)")
     func feedback01ColorsetIsC0000A() {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
