@@ -18,6 +18,7 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
     var lastPaymentInfo: PaymentInfo?
     var openPaymentProviderAppCalled = false
     var supportsGPCOverride = false
+    var supportsOpenWithOverride = false
 
     // PaymentReviewAPIProtocol
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
@@ -52,7 +53,7 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
 
     // PaymentReviewSupportedFormatsProtocol
     func supportsGPC() -> Bool { supportsGPCOverride }
-    func supportsOpenWith() -> Bool { false }
+    func supportsOpenWith() -> Bool { supportsOpenWithOverride }
 
     // PaymentReviewActionProtocol
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider) {
@@ -143,4 +144,16 @@ final class MockInstallAppDelegate: InstallAppBottomViewProtocol {
     var didTapContinueCalled = false
 
     func didTapOnContinue() { didTapContinueCalled = true }
+}
+
+final class MockPaymentReviewViewModelDelegate: PaymentReviewViewModelDelegate {
+    var createPaymentRequestAndOpenBankAppCalled = false
+
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {}
+    func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {}
+    func createPaymentRequestAndOpenBankApp() { createPaymentRequestAndOpenBankAppCalled = true }
+    func obtainPDFFromPaymentRequest(paymentRequestId: String) {}
+    func presentShareInvoiceBottomSheet(bottomSheet: UIViewController) {}
+    func dismissPaymentReview() {}
+    func presentErrorAlert(message: String) {}
 }

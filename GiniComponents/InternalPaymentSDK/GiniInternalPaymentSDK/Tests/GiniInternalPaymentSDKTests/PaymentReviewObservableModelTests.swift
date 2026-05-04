@@ -173,7 +173,7 @@ struct PaymentReviewObservableModelTests {
     @Test("didTapPay does not store pendingPaymentInfo for openWith providers")
     func didTapPayDoesNotStorePendingInfoForOpenWith() {
         let delegate = MockPaymentReviewDelegate()
-        delegate.supportsGPCOverride = false
+        delegate.supportsOpenWithOverride = true
         let provider = MockBottomSheetsProvider()
         let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
         let sut = PaymentReviewObservableModel(model: model)
@@ -187,10 +187,54 @@ struct PaymentReviewObservableModelTests {
                                       paymentProviderId: "test-provider-id")
 
         sut.didTapPay(paymentInfo)
-        /// Resume must be a no-op since only GPC providers use the install-sheet path.
+        /// Resume must be a no-op: the openWith path does not use the install-sheet flow
+        /// and therefore never stores pendingPaymentInfo.
         model.onResumePaymentAfterBankInstall?()
 
         #expect(delegate.createPaymentRequestCalled == false,
                 "pendingPaymentInfo must not be set for openWith providers — they do not use the install-sheet path")
+    }
+
+    @Test("resumePaymentAfterBankInstall opens the payment provider app after request is created")
+    func resumePaymentOpensProviderApp() async {
+        let delegate = MockPaymentReviewDelegate()
+        delegate.supportsGPCOverride = true
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        let paymentInfo = PaymentInfo(recipient: "Test GmbH",
+                                      iban: "DE89370400440532013000",
+                                      bic: "",
+                                      amount: "99.99:EUR",
+                                      purpose: "Invoice 123",
+                                      paymentUniversalLink: "https://testbank.example/pay",
+                                      paymentProviderId: "test-provider-id")
+
+        sut.didTapPay(paymentInfo)
+        model.onResumePaymentAfterBankInstall?()
+
+        /// `PaymentReviewModel.createPaymentRequest` dispatches its completion via
+        /// `DispatchQueue.main.async`. Yielding twice lets the main actor executor
+        /// drain that work before we assert.
+        await Task.yield()
+        await Task.yield()
+
+        #expect(delegate.openPaymentProviderAppCalled == true,
+                "resumePaymentAfterBankInstall must open the payment provider app once the request is created")
+    }
+
+    @Test("PaymentReviewModel.didTapOnContinue triggers createPaymentRequestAndOpenBankApp on its delegate")
+    func didTapOnContinueNotifiesViewModelDelegate() {
+        let delegate = MockPaymentReviewDelegate()
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let vmDelegate = MockPaymentReviewViewModelDelegate()
+        model.viewModelDelegate = vmDelegate
+
+        model.didTapOnContinue()
+
+        #expect(vmDelegate.createPaymentRequestAndOpenBankAppCalled == true,
+                "didTapOnContinue must forward to createPaymentRequestAndOpenBankApp on the viewModelDelegate")
     }
 }

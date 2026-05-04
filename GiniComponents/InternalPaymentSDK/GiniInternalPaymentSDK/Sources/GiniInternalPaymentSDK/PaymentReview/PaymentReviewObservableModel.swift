@@ -172,7 +172,8 @@ final class PaymentReviewObservableModel: ObservableObject {
         createPaymentRequestForGPC(paymentInfo: paymentInfo)
     }
 
-    private func createPaymentRequestForGPC(paymentInfo: PaymentInfo) {        model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
+    private func createPaymentRequestForGPC(paymentInfo: PaymentInfo) {
+        model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
             self?.model.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
         })
         
