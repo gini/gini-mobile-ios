@@ -3,7 +3,6 @@
 //  GiniInternalPaymentSDKTests
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
-
 import Testing
 import UIKit
 
@@ -116,14 +115,12 @@ struct ColorContrastTests {
     // MARK: - Colour palette
 
     // Light-mode assets (Dark-prefixed in the xcassets)
-    private static let dark01  = UIColor.sRGB(r: 0x00, g: 0x00, b: 0x00) // #000000  standard1/2.light
-    private static let dark04  = UIColor.sRGB(r: 0x3A, g: 0x3A, b: 0x3C) // #3A3A3C  standard4.light  placeholder / powered-by / more-info
+    private static let dark01  = UIColor.sRGB(r: 0x00, g: 0x00, b: 0x00) // #000000  standard1.light & standard2.light (placeholder after CLR-02)
     private static let dark06  = UIColor.sRGB(r: 0xF2, g: 0xF2, b: 0xF2) // #F2F2F2  standard6.light  field bg (post-HEAL-330 fix)
     private static let dark07  = UIColor.sRGB(r: 0xFA, g: 0xFA, b: 0xFA) // #FAFAFA  standard7.light  screen/sheet bg
 
     // Dark-mode assets (Light-prefixed in the xcassets)
-    private static let light01 = UIColor.sRGB(r: 0xF2, g: 0xF2, b: 0xF2) // #F2F2F2  standard1/2.dark
-    private static let light04 = UIColor.sRGB(r: 0xAD, g: 0xAD, b: 0xAD) // #ADADAD  standard4.dark   placeholder / powered-by / more-info
+    private static let light01 = UIColor.sRGB(r: 0xF2, g: 0xF2, b: 0xF2) // #F2F2F2  standard1.dark & standard2.dark (placeholder after CLR-02)
     private static let light06 = UIColor.sRGB(r: 0x35, g: 0x35, b: 0x35) // #353535  standard6.dark   field bg
     private static let light07 = UIColor.sRGB(r: 0x16, g: 0x16, b: 0x16) // #161616  standard7.dark   screen/sheet bg
 
@@ -199,20 +196,20 @@ struct ColorContrastTests {
 
         // ── Placeholder label ───────────────────────────────────────────────
 
-        // Standard4 light = #3A3A3C; ratio 10.14:1 — already passes, no change needed (CLR-02 minimal approach).
+        // Standard2 light = #000000; ratio 18.75:1 (CLR-02 fix: was Standard4 #3A3A3C).
         ColorContrastCase(
-            name: "Placeholder light — #3A3A3C on #F2F2F2 (Standard4, .captions2 12pt regular)",
-            foreground: dark04,
+            name: "Placeholder light — #000000 on #F2F2F2 (Standard2, .captions2 12pt regular)",
+            foreground: dark01,
             background: dark06,
-            requiredLevel: .aaNormal   // 10.14:1 expected
+            requiredLevel: .aaNormal   // 18.75:1 expected
         ),
 
-        // Standard4 dark = #ADADAD; ratio 5.47:1 — already passes.
+        // Standard2 dark = #F2F2F2; ratio 10.94:1 (CLR-02 fix: was Standard4 #ADADAD).
         ColorContrastCase(
-            name: "Placeholder dark — #ADADAD on #353535 (Standard4, .captions2 12pt regular)",
-            foreground: light04,
+            name: "Placeholder dark — #F2F2F2 on #353535 (Standard2, .captions2 12pt regular)",
+            foreground: light01,
             background: light06,
-            requiredLevel: .aaNormal   // 5.47:1 expected
+            requiredLevel: .aaNormal   // 10.94:1 expected
         ),
 
         // ── Info banner (new in this branch) ────────────────────────────────
@@ -237,38 +234,38 @@ struct ColorContrastTests {
 
         // ── Powered By Gini label ───────────────────────────────────────────
 
-        // Standard4 light = #3A3A3C on Standard7 light = #FAFAFA → 10.87:1 — passes, no change needed (CLR-03 minimal approach).
+        // Standard2 light = #000000 on Standard7 light = #FAFAFA → 21.0:1 (CLR-03 fix: was Standard4).
         ColorContrastCase(
-            name: "Powered by Gini light — #3A3A3C on #FAFAFA (Standard4 on Standard7, .captions2 12pt regular)",
-            foreground: dark04,
+            name: "Powered by Gini light — #000000 on #FAFAFA (Standard2 on Standard7, .captions2 12pt regular)",
+            foreground: dark01,
             background: dark07,
-            requiredLevel: .aaNormal   // 10.87:1 expected
+            requiredLevel: .aaNormal   // 21.0:1 expected
         ),
 
-        // Standard4 dark = #ADADAD on Standard7 dark = #161616 → 8.07:1 — passes.
+        // Standard2 dark = #F2F2F2 on Standard7 dark = #161616 → 10.94:1 (CLR-03 fix: was Standard4).
         ColorContrastCase(
-            name: "Powered by Gini dark — #ADADAD on #161616 (Standard4 on Standard7 dark, .captions2 12pt regular)",
-            foreground: light04,
+            name: "Powered by Gini dark — #F2F2F2 on #161616 (Standard2 on Standard7 dark, .captions2 12pt regular)",
+            foreground: light01,
             background: light07,
-            requiredLevel: .aaNormal   // 8.07:1 expected
+            requiredLevel: .aaNormal   // 10.94:1 expected
         ),
 
         // ── More information text ────────────────────────────────────────────
 
-        // Standard4 light = #3A3A3C on Standard7 light = #FAFAFA → 10.87:1 — passes, no change needed (CLR-04 minimal approach).
+        // Standard2 light = #000000 on Standard7 light = #FAFAFA → 21.0:1 (CLR-04 fix: was Standard4).
         ColorContrastCase(
-            name: "More info text light — #3A3A3C on #FAFAFA (Standard4 on Standard7, .captions2 12pt regular)",
-            foreground: dark04,
+            name: "More info text light — #000000 on #FAFAFA (Standard2 on Standard7, .captions2 12pt regular)",
+            foreground: dark01,
             background: dark07,
-            requiredLevel: .aaNormal   // 10.87:1 expected
+            requiredLevel: .aaNormal   // 21.0:1 expected
         ),
 
-        // Standard4 dark = #ADADAD on Standard7 dark = #161616 → 8.07:1 — passes.
+        // Standard2 dark = #F2F2F2 on Standard7 dark = #161616 → 10.94:1 (CLR-04 fix: was Standard4).
         ColorContrastCase(
-            name: "More info text dark — #ADADAD on #161616 (Standard4 on Standard7 dark, .captions2 12pt regular)",
-            foreground: light04,
+            name: "More info text dark — #F2F2F2 on #161616 (Standard2 on Standard7 dark, .captions2 12pt regular)",
+            foreground: light01,
             background: light07,
-            requiredLevel: .aaNormal   // 8.07:1 expected
+            requiredLevel: .aaNormal   // 10.94:1 expected
         ),
 
         // ── Error message text (HEAL-330 fix: #FA1C1C → #C0000A) ────────
