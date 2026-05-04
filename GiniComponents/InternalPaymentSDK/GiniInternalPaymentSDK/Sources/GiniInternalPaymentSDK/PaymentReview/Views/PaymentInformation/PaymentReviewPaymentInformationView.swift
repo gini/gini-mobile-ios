@@ -320,6 +320,19 @@ struct PaymentReviewPaymentInformationView: View {
                 viewModel.updateFieldErrorStates()
                 if isValid {
                     onPayTapped(viewModel.buildPaymentInfo())
+                } else {
+                    let firstError = [viewModel.recipientError,
+                                      viewModel.ibanError,
+                                      viewModel.amountError,
+                                      viewModel.paymentPurposeError]
+                        .compactMap { $0 }.first
+                    if let firstError {
+                        /// Delay allows VoiceOver to finish announcing the button activation
+                        /// before the error announcement is posted, preventing it from being dropped.
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            UIAccessibility.post(notification: .announcement, argument: firstError)
+                        }
+                    }
                 }
             }) {
                 Text(viewModel.model.strings.payInvoiceLabelText)
