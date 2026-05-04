@@ -297,10 +297,6 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
                 self?.tableViewQuestionHeightConstraint.constant = value.height
             }.store(in: &cancellables)
     }
-    
-    @objc private func didTapCloseButton() {
-        dismiss(animated: true)
-    }
 
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
