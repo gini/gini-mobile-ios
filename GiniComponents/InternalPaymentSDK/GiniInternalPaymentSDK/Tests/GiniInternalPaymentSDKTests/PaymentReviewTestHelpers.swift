@@ -317,7 +317,9 @@ extension PaymentInfoStrings {
                            payBillsTitleText: "Pay bills",
                            payBillsDescriptionText: "Description",
                            answers: [],
-                           questions: [])
+                           questions: [],
+                           accessibilityExpandedText: "Expanded",
+                           accessibilityCollapsedText: "Collapsed")
     }
 }
 

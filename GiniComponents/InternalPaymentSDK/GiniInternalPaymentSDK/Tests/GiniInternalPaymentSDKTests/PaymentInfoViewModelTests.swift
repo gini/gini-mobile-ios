@@ -42,7 +42,9 @@ struct PaymentInfoViewModelTests {
                            payBillsTitleText: "Bills",
                            payBillsDescriptionText: "Description",
                            answers: answers,
-                           questions: questions)
+                           questions: questions,
+                           accessibilityExpandedText: "Expanded",
+                           accessibilityCollapsedText: "Collapsed")
     }
 
     // MARK: - shouldShowBrandedView

@@ -108,11 +108,14 @@ public final class PaymentInfoViewModel {
     }
 
     func infoQuestionHeaderViewModel(at index: Int) -> PaymentInfoQuestionHeaderViewModel {
-        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
+        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title,
                                            titleFont: configuration.questionHeaderFont,
                                            titleColor: configuration.questionHeaderTitleColor,
                                            extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
-                                           iconTintColor: configuration.questionHeaderIconTintColor)
+                                           iconTintColor: configuration.questionHeaderIconTintColor,
+                                           isExpanded: questions[index].isExtended,
+                                           expandedAccessibilityText: strings.accessibilityExpandedText,
+                                           collapsedAccessibilityText: strings.accessibilityCollapsedText)
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
