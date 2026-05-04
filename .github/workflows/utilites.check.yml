@@ -7,6 +7,9 @@ on:
    paths:
       - 'GiniComponents/Utilities/GiniUtilites/**'
   workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: false   
   workflow_dispatch:
 
 jobs:
