@@ -45,6 +45,9 @@
 "gini.health.paymentcomponent.payment.info.questions.question.4" = "Wer oder Was ist Gini?";
 "gini.health.paymentcomponent.payment.info.questions.question.5" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6" = "Wie erkenne ich, welche Banken unterstützt werden?";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.expanded" = "Erweitert";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed" = "Reduziert";
+
 "gini.health.paymentcomponent.payment.info.title.label" = "Mehr Informationen";
 "gini.health.paymentcomponent.payment.providers.list.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "gini.health.paymentcomponent.powered.by.gini.label" = "Powered by";
@@ -111,6 +114,10 @@
 "gini.health.paymentcomponent.payment.info.questions.question.4.informal" = "Wer oder Was ist Gini?";
 "gini.health.paymentcomponent.payment.info.questions.question.5.informal" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6.informal" = "Wie erkenne ich, welche Banken unterstützt werden?";
+
+"gini.health.paymentcomponent.payment.info.questions.accessibility.expanded.informal" = "Erweitert";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed.informal" = "Reduziert";
+
 "gini.health.paymentcomponent.payment.info.title.label.informal" = "Mehr Informationen";
 "gini.health.paymentcomponent.payment.info.supported.banks.label.informal" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.payment.providers.list.description.informal" = "Du kannst die Rechnung nur bezahlen, wenn du ein Konto bei einer der unten aufgeführten Banken hast.";
