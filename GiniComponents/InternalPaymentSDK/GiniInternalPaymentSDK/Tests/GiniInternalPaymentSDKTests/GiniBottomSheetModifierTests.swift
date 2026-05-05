@@ -10,18 +10,19 @@ import SwiftUI
 import UIKit
 @testable import GiniInternalPaymentSDK
 
-@Suite("SheetBackgroundInteractionHelper (HEAL-355)")
+@Suite("SheetBackgroundInteractionView (HEAL-355)")
 @MainActor
 struct GiniBottomSheetModifierTests {
 
-    // MARK: - makeUIViewController
+    // MARK: - makeUIView
 
     /**
      Hosting `SheetBackgroundInteractionHelper` inside a `UIHostingController`
-     causes SwiftUI to call `makeUIViewController`, exercising the factory path.
+     causes SwiftUI to call `makeUIView`, exercising the factory path for both
+     enabled and disabled states.
      */
-    @Test("makeUIViewController produces a view controller when isEnabled is true")
-    func makeUIViewControllerProducesControllerWhenEnabled() {
+    @Test("makeUIView produces a view when isEnabled is true")
+    func makeUIViewProducesViewWhenEnabled() {
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         let hostingVC = UIHostingController(rootView: SheetBackgroundInteractionHelper(isEnabled: true))
         window.rootViewController = hostingVC
@@ -31,8 +32,8 @@ struct GiniBottomSheetModifierTests {
                 "UIHostingController must have a view after being made key and visible")
     }
 
-    @Test("makeUIViewController produces a view controller when isEnabled is false")
-    func makeUIViewControllerProducesControllerWhenDisabled() {
+    @Test("makeUIView produces a view when isEnabled is false")
+    func makeUIViewProducesViewWhenDisabled() {
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         let hostingVC = UIHostingController(rootView: SheetBackgroundInteractionHelper(isEnabled: false))
         window.rootViewController = hostingVC
@@ -42,58 +43,66 @@ struct GiniBottomSheetModifierTests {
                 "UIHostingController must have a view after being made key and visible")
     }
 
-    // MARK: - viewWillAppear — isEnabled: true
+    // MARK: - didMoveToWindow — isEnabled: true
 
-    @Test("viewWillAppear does not crash when isEnabled and parent has no sheet")
-    func viewWillAppearEnabledWithoutParentSheet() {
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: true)
-        // parent is nil → optional chain silently does nothing
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
+    @Test("didMoveToWindow does not crash when isEnabled and view has no window")
+    func didMoveToWindowEnabledNoWindow() {
+        let view = SheetBackgroundInteractionView(isEnabled: true)
+        // Manually trigger removal (window becomes nil) — must not crash.
+        view.didMoveToWindow()
     }
 
-    @Test("viewWillAppear does not crash when isEnabled and parent VC has no sheet presentation controller")
-    func viewWillAppearEnabledWithParentNoSheet() {
+    @Test("didMoveToWindow does not crash when isEnabled and responder chain has no sheet")
+    func didMoveToWindowEnabledNoSheet() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let parentVC = UIViewController()
         window.rootViewController = parentVC
         window.makeKeyAndVisible()
 
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: true)
-        parentVC.addChild(controller)
-        controller.didMove(toParent: parentVC)
+        let view = SheetBackgroundInteractionView(isEnabled: true)
+        parentVC.view.addSubview(view)
 
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
+        // parentVC has no sheetPresentationController — responder-chain walk
+        // exhausts without finding one and must return silently.
+        view.didMoveToWindow()
 
-        #expect(controller.parent === parentVC)
+        #expect(view.superview === parentVC.view)
     }
 
-    // MARK: - viewWillAppear — isEnabled: false (VoiceOver path)
+    // MARK: - didMoveToWindow — isEnabled: false (VoiceOver path)
 
-    @Test("viewWillAppear does not crash when disabled and parent has no sheet")
-    func viewWillAppearDisabledWithoutParentSheet() {
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: false)
-        // guard isEnabled else { return } exits early — must not crash
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
+    @Test("didMoveToWindow does not crash when disabled and view has no window")
+    func didMoveToWindowDisabledNoWindow() {
+        let view = SheetBackgroundInteractionView(isEnabled: false)
+        // guard isEnabled else { return } — must exit early without crash.
+        view.didMoveToWindow()
     }
 
-    @Test("viewWillAppear does not crash when disabled and parent VC is present")
-    func viewWillAppearDisabledWithParent() {
+    @Test("didMoveToWindow does not crash when disabled and view is in a hierarchy")
+    func didMoveToWindowDisabledInHierarchy() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let parentVC = UIViewController()
         window.rootViewController = parentVC
         window.makeKeyAndVisible()
 
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: false)
-        parentVC.addChild(controller)
-        controller.didMove(toParent: parentVC)
+        let view = SheetBackgroundInteractionView(isEnabled: false)
+        parentVC.view.addSubview(view)
 
-        // guard exits early — sheetPresentationController must NOT be configured
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
+        // guard exits early — sheetPresentationController must NOT be touched.
+        view.didMoveToWindow()
 
-        #expect(controller.parent === parentVC)
+        #expect(view.superview === parentVC.view)
+    }
+
+    // MARK: - View properties
+
+    @Test("SheetBackgroundInteractionView has clear background and no interaction")
+    func viewProperties() {
+        let view = SheetBackgroundInteractionView(isEnabled: true)
+
+        #expect(view.backgroundColor == .clear,
+                "View must be invisible so it does not affect layout or appearance")
+        #expect(view.isUserInteractionEnabled == false,
+                "View must not intercept touches itself")
     }
 }

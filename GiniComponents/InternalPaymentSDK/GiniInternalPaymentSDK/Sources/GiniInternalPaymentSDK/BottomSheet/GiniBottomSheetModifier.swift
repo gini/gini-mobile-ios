@@ -77,34 +77,57 @@ struct GiniBottomSheetModifier: ViewModifier {
  is active and the sheet is non-dismissible), mirroring the `.disabled` value used
  on iOS 16.4+.
  */
-struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
+struct SheetBackgroundInteractionHelper: UIViewRepresentable {
     let isEnabled: Bool
 
-    func makeUIViewController(context _: Context) -> SheetBackgroundInteractionHelperController {
-        SheetBackgroundInteractionHelperController(isEnabled: isEnabled)
+    func makeUIView(context _: Context) -> SheetBackgroundInteractionView {
+        SheetBackgroundInteractionView(isEnabled: isEnabled)
     }
 
-    func updateUIViewController(_: SheetBackgroundInteractionHelperController,
-                                context _: Context) {
-        // No updates needed — configuration is applied once in viewWillAppear.
+    func updateUIView(_: SheetBackgroundInteractionView,
+                      context _: Context) {
+        // No updates needed — configuration is applied once in didMoveToWindow.
     }
 }
 
-final class SheetBackgroundInteractionHelperController: UIViewController {
+/**
+ A zero-size, invisible UIView that walks the responder chain on `didMoveToWindow`
+ to find the enclosing `UISheetPresentationController` and set
+ `largestUndimmedDetentIdentifier = .large`, keeping the background fully
+ interactive behind the sheet on iOS 16.0–16.3.
+
+ Using `UIViewRepresentable` (rather than `UIViewControllerRepresentable`) is
+ intentional: SwiftUI adds the UIView directly into the view hierarchy via
+ `addSubview`, so the responder chain is always populated when `didMoveToWindow`
+ fires. A `UIViewControllerRepresentable`'s managed VC does not go through the
+ standard `addChild` path, leaving `parent` nil at the point where configuration
+ would need to happen.
+ */
+final class SheetBackgroundInteractionView: UIView {
     private let isEnabled: Bool
 
     init(isEnabled: Bool) {
         self.isEnabled = isEnabled
-        super.init(nibName: nil, bundle: nil)
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        isUserInteractionEnabled = false
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        guard isEnabled else { return }
-        parent?.sheetPresentationController?.largestUndimmedDetentIdentifier = .large
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        guard isEnabled, window != nil else { return }
+        var responder: UIResponder? = self
+        while let current = responder {
+            if let vc = current as? UIViewController,
+               let sheet = vc.sheetPresentationController {
+                sheet.largestUndimmedDetentIdentifier = .large
+                return
+            }
+            responder = current.next
+        }
     }
 }
