@@ -16,8 +16,10 @@ struct GiniBottomSheetModifierTests {
 
     // MARK: - makeUIViewController
 
-    /// Hosting `SheetBackgroundInteractionHelper` inside a `UIHostingController`
-    /// causes SwiftUI to call `makeUIViewController`, exercising the factory path.
+    /**
+     Hosting `SheetBackgroundInteractionHelper` inside a `UIHostingController`
+     causes SwiftUI to call `makeUIViewController`, exercising the factory path.
+     */
     @Test("makeUIViewController produces a view controller when isEnabled is true")
     func makeUIViewControllerProducesControllerWhenEnabled() {
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -38,24 +40,6 @@ struct GiniBottomSheetModifierTests {
 
         #expect(hostingVC.view != nil,
                 "UIHostingController must have a view after being made key and visible")
-    }
-
-    // MARK: - SheetBackgroundInteractionHelperController init
-
-    @Test("init stores isEnabled true")
-    func initStoresIsEnabledTrue() {
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: true)
-        // viewWillAppear executes without crash, confirming isEnabled was stored
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
-    }
-
-    @Test("init stores isEnabled false")
-    func initStoresIsEnabledFalse() {
-        let controller = SheetBackgroundInteractionHelperController(isEnabled: false)
-        // viewWillAppear must early-return without crash when isEnabled is false
-        controller.beginAppearanceTransition(true, animated: false)
-        controller.endAppearanceTransition()
     }
 
     // MARK: - viewWillAppear — isEnabled: true
