@@ -71,16 +71,18 @@ struct GiniBottomSheetModifier: ViewModifier {
 /// Enables background interaction on iOS 16.0–16.3 by configuring the underlying
 /// `UISheetPresentationController` to leave the background undimmed and interactive.
 /// On iOS 16.4+, `presentationBackgroundInteraction` is used instead.
-private struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> SheetBackgroundInteractionHelperController {
+struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
+    func makeUIViewController(context _: Context) -> SheetBackgroundInteractionHelperController {
         SheetBackgroundInteractionHelperController()
     }
 
     func updateUIViewController(_ controller: SheetBackgroundInteractionHelperController,
-                                context: Context) {}
+                                context _: Context) {
+        // No updates needed — configuration is applied once in viewWillAppear.
+    }
 }
 
-private final class SheetBackgroundInteractionHelperController: UIViewController {
+final class SheetBackgroundInteractionHelperController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         parent?.sheetPresentationController?.largestUndimmedDetentIdentifier = .large
