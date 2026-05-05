@@ -78,7 +78,7 @@ struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
         SheetBackgroundInteractionHelperController()
     }
 
-    func updateUIViewController(_ controller: SheetBackgroundInteractionHelperController,
+    func updateUIViewController(_: SheetBackgroundInteractionHelperController,
                                 context _: Context) {
         // No updates needed — configuration is applied once in viewWillAppear.
     }
