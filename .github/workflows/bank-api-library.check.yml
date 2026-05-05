@@ -62,7 +62,7 @@ jobs:
       if: ${{ matrix.target == 'GiniBankAPILibrary' }}
       run: |
         bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
-          | sed 's|path="[^"]*BankAPILibrary/|path="|g' \
+          | sed 's|path="[^"]*/BankAPILibrary/|path="|g' \
           > BankAPILibrary/coverage.xml
 
     - name: Upload coverage report
