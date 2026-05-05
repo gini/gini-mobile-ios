@@ -5,6 +5,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct GiniBottomSheetModifier: ViewModifier {
     
@@ -35,13 +36,18 @@ struct GiniBottomSheetModifier: ViewModifier {
         
         if #available(iOS 16.4, *) {
             let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
-            
+
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
                 .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
                 .presentationContentInteraction(.scrolls)
         } else {
+            // On iOS 16.0–16.3 `presentationBackgroundInteraction` is unavailable.
+            // Without it the sheet dims the presenting view and blocks the navigation-bar
+            // close and back buttons. The helper sets `largestUndimmedDetentIdentifier`
+            // via UIKit to restore background interactivity.
             base
+                .background(SheetBackgroundInteractionHelper())
         }
     }
     
@@ -57,7 +63,26 @@ struct GiniBottomSheetModifier: ViewModifier {
     }
     
     private struct Constants {
-        
+
         static let minimumHeight: CGFloat = 300
+    }
+}
+
+/// Enables background interaction on iOS 16.0–16.3 by configuring the underlying
+/// `UISheetPresentationController` to leave the background undimmed and interactive.
+/// On iOS 16.4+, `presentationBackgroundInteraction` is used instead.
+private struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> SheetBackgroundInteractionHelperController {
+        SheetBackgroundInteractionHelperController()
+    }
+
+    func updateUIViewController(_ controller: SheetBackgroundInteractionHelperController,
+                                context: Context) {}
+}
+
+private final class SheetBackgroundInteractionHelperController: UIViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        parent?.sheetPresentationController?.largestUndimmedDetentIdentifier = .large
     }
 }
