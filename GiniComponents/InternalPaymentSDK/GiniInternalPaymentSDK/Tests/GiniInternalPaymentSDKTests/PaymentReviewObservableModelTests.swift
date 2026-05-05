@@ -171,7 +171,7 @@ struct PaymentReviewObservableModelTests {
     }
 
     @Test("didTapPay does not store pendingPaymentInfo for openWith providers")
-    func didTapPayDoesNotStorePendingInfoForOpenWith() {
+    func didTapPayDoesNotStorePendingInfoForOpenWith() async {
         let delegate = MockPaymentReviewDelegate()
         delegate.supportsOpenWithOverride = true
         let provider = MockBottomSheetsProvider()
@@ -187,12 +187,18 @@ struct PaymentReviewObservableModelTests {
                                       paymentProviderId: "test-provider-id")
 
         sut.didTapPay(paymentInfo)
-        /// Resume must be a no-op: the openWith path does not use the install-sheet flow
-        /// and therefore never stores pendingPaymentInfo.
+        /// The openWith path calls createPaymentRequest directly (no install-sheet).
+        #expect(delegate.createPaymentRequestCalled == true,
+                "openWith path must call createPaymentRequest immediately")
+
+        /// Reset and verify that resume is a no-op — pendingPaymentInfo was never stored.
+        delegate.createPaymentRequestCalled = false
         model.onResumePaymentAfterBankInstall?()
+        await Task.yield()
+        await Task.yield()
 
         #expect(delegate.createPaymentRequestCalled == false,
-                "pendingPaymentInfo must not be set for openWith providers — they do not use the install-sheet path")
+                "onResumePaymentAfterBankInstall must be a no-op for openWith providers — pendingPaymentInfo is never stored on that path")
     }
 
     @Test("resumePaymentAfterBankInstall opens the payment provider app after request is created")
