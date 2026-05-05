@@ -44,10 +44,10 @@ struct GiniBottomSheetModifier: ViewModifier {
         } else {
             // On iOS 16.0–16.3 `presentationBackgroundInteraction` is unavailable.
             // Without it the sheet dims the presenting view and blocks the navigation-bar
-            // close and back buttons. The helper sets `largestUndimmedDetentIdentifier`
-            // via UIKit to restore background interactivity.
+            // close and back buttons. Mirror the iOS 16.4+ logic: enable background
+            // interaction unless VoiceOver is active and the sheet is non-dismissible.
             base
-                .background(SheetBackgroundInteractionHelper())
+                .background(SheetBackgroundInteractionHelper(isEnabled: allowsDismiss || !isVoiceOverEnabled))
         }
     }
     
@@ -72,10 +72,16 @@ struct GiniBottomSheetModifier: ViewModifier {
  Enables background interaction on iOS 16.0–16.3 by configuring the underlying
  `UISheetPresentationController` to leave the background undimmed and interactive.
  On iOS 16.4+, `presentationBackgroundInteraction` is used instead.
+
+ Set `isEnabled` to `false` to suppress background interaction (e.g. when VoiceOver
+ is active and the sheet is non-dismissible), mirroring the `.disabled` value used
+ on iOS 16.4+.
  */
 struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
+    let isEnabled: Bool
+
     func makeUIViewController(context _: Context) -> SheetBackgroundInteractionHelperController {
-        SheetBackgroundInteractionHelperController()
+        SheetBackgroundInteractionHelperController(isEnabled: isEnabled)
     }
 
     func updateUIViewController(_: SheetBackgroundInteractionHelperController,
@@ -85,8 +91,20 @@ struct SheetBackgroundInteractionHelper: UIViewControllerRepresentable {
 }
 
 final class SheetBackgroundInteractionHelperController: UIViewController {
+    private let isEnabled: Bool
+
+    init(isEnabled: Bool) {
+        self.isEnabled = isEnabled
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard isEnabled else { return }
         parent?.sheetPresentationController?.largestUndimmedDetentIdentifier = .large
     }
 }
