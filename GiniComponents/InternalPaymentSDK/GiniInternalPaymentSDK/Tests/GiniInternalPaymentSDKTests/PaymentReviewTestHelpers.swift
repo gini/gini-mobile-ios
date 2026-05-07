@@ -381,9 +381,7 @@ extension InstallAppConfiguration {
                                 moreInformationAccentColor: .systemBlue,
                                 moreInformationIcon: UIImage(),
                                 appStoreIcon: UIImage(),
-                                bankIconBorderColor: .systemGray4,
-                                closeIcon: UIImage(),
-                                closeIconAccentColor: .label)
+                                bankIconBorderColor: .systemGray4)
     }
 }
 
@@ -394,8 +392,7 @@ extension InstallAppStrings {
                           moreInformationNotePattern: "Note: install [BANK]",
                           continueLabelText: "Continue",
                           accessibilityAppStoreText: "App Store",
-                          accessibilityBankLogoText: "Bank logo",
-                          accessibilityCloseIconText: "Close")
+                          accessibilityBankLogoText: "Bank logo")
     }
 }
 
