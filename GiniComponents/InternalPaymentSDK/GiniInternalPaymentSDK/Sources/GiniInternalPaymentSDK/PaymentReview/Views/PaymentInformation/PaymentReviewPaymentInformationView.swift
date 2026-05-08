@@ -57,41 +57,41 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        scrollView
-            .overlay(alignment: .top) {
-                if showBanner {
-                    infoBannerView
-                        .onAppear {
-                            UIAccessibility.post(notification: .announcement,
-                                                 argument: viewModel.model.strings.infoBarMessage)
-                        }
-                }
+        ZStack(alignment: .top) {
+            scrollView
+            if showBanner {
+                infoBannerView
+                    .onAppear {
+                        UIAccessibility.post(notification: .announcement,
+                                             argument: viewModel.model.strings.infoBarMessage)
+                    }
             }
-            .onAppear {
-                viewModel.isViewVisible = true
-
-                viewModel.populateFieldsIfNeeded()
-                // Notify VoiceOver that a new screen (the sheet) appeared,
-                // so it moves focus into the sheet content.
-                UIAccessibility.post(notification: .screenChanged, argument: nil)
-                // After a rotation the view is recreated; restore keyboard if it was open.
-                restoreFocusIfNeeded()
-            }
-            .onDisappear {
-                viewModel.isViewVisible = false
-            }
+        }
+        .clipped()
+        .onAppear {
+            viewModel.isViewVisible = true
+            viewModel.populateFieldsIfNeeded()
+            // Notify VoiceOver that a new screen (the sheet) appeared,
+            // so it moves focus into the sheet content.
+            UIAccessibility.post(notification: .screenChanged, argument: nil)
+            // After a rotation the view is recreated; restore keyboard if it was open.
+            restoreFocusIfNeeded()
+        }
+        .onDisappear {
+            viewModel.isViewVisible = false
+        }
         // Track which field is active so it can be restored after orientation changes.
-            .onChange(of: focusedField) { newField in
-                handleFocusedFieldChange(newField)
-            }
-            .background(Color(.systemBackground))
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                keyboardHeight = frame.height
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                keyboardHeight = 0
-            }
+        .onChange(of: focusedField) { newField in
+            handleFocusedFieldChange(newField)
+        }
+        .background(Color(.systemBackground))
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+            guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+            keyboardHeight = frame.height
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+            keyboardHeight = 0
+        }
     }
 
     // MARK: Private views
@@ -183,7 +183,6 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: giniLayout.isLandscape ? 0.0 : Constants.bannerYOffset)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
@@ -418,7 +417,6 @@ struct PaymentReviewPaymentInformationView: View {
     private struct Constants {
         static let bannerVerticalPadding = 16.0
         static let bannerCornerRadius = 12.0
-        static let bannerYOffset = -8.0
         static let textFieldsContainerSpacing = 8.0
         static let buttonsContainerSpacing = 8.0
         static let paymentProviderPickerSpacing = 12.0
