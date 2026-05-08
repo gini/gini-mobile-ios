@@ -114,8 +114,8 @@ public final class PaymentInfoViewModel {
                                            extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
                                            iconTintColor: configuration.questionHeaderIconTintColor,
                                            isExpanded: questions[index].isExtended,
-                                           expandedAccessibilityText: strings.accessibilityExpandedText,
-                                           collapsedAccessibilityText: strings.accessibilityCollapsedText)
+                                           toggleAccessibilityStrings: .init(expanded: strings.accessibilityExpandedText,
+                                                                             collapsed: strings.accessibilityCollapsedText))
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {

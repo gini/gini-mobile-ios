@@ -69,7 +69,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         extendedImageView.image = viewModel.extendedIcon
         extendedImageView.tintColor = viewModel.iconTintColor
         accessibilityLabel = viewModel.titleText
-        accessibilityValue = viewModel.isExpanded ? viewModel.expandedAccessibilityText : viewModel.collapsedAccessibilityText
+        accessibilityValue = viewModel.isExpanded ? viewModel.toggleAccessibilityStrings.expanded : viewModel.toggleAccessibilityStrings.collapsed
     }
     
     private func setupConstraints() {
@@ -95,14 +95,19 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
 }
 
 struct PaymentInfoQuestionHeaderViewModel {
+
+    struct ToggleAccessibilityStrings {
+        let expanded: String
+        let collapsed: String
+    }
+
     let titleText: String
     let titleFont: UIFont
     let titleColor: UIColor
     let extendedIcon: UIImage
     let iconTintColor: UIColor
     let isExpanded: Bool
-    let expandedAccessibilityText: String
-    let collapsedAccessibilityText: String
+    let toggleAccessibilityStrings: ToggleAccessibilityStrings
 
     init(titleText: String,
          titleFont: UIFont,
@@ -110,16 +115,14 @@ struct PaymentInfoQuestionHeaderViewModel {
          extendedIcon: UIImage,
          iconTintColor: UIColor,
          isExpanded: Bool,
-         expandedAccessibilityText: String,
-         collapsedAccessibilityText: String) {
+         toggleAccessibilityStrings: ToggleAccessibilityStrings) {
         self.titleText = titleText
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.extendedIcon = extendedIcon.withRenderingMode(.alwaysTemplate)
         self.iconTintColor = iconTintColor
         self.isExpanded = isExpanded
-        self.expandedAccessibilityText = expandedAccessibilityText
-        self.collapsedAccessibilityText = collapsedAccessibilityText
+        self.toggleAccessibilityStrings = toggleAccessibilityStrings
     }
 }
 
