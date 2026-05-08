@@ -232,8 +232,6 @@ extension BankSelectionConfiguration {
                                    descriptionFont: .systemFont(ofSize: 14),
                                    selectBankAccentColor: .label,
                                    selectBankFont: .systemFont(ofSize: 16, weight: .semibold),
-                                   closeTitleIcon: UIImage(),
-                                   closeIconAccentColor: .label,
                                    bankCellBackgroundColor: .systemBackground,
                                    bankCellIconBorderColor: .systemGray4,
                                    bankCellNameFont: .systemFont(ofSize: 14),
@@ -247,8 +245,7 @@ extension BankSelectionConfiguration {
 extension BanksBottomStrings {
     static var test: BanksBottomStrings {
         BanksBottomStrings(selectBankTitleText: "Select your bank",
-                           descriptionText: "Description",
-                           closeButtonAccessibilityLabel: "Close")
+                           descriptionText: "Description")
     }
 }
 
@@ -338,9 +335,7 @@ extension ShareInvoiceConfiguration {
                                   titlePaymentInfoTextColor: .label,
                                   subtitlePaymentInfoTextColor: .secondaryLabel,
                                   titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
-                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12),
-                                  closeIcon: UIImage(),
-                                  closeIconAccentColor: .label)
+                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12))
     }
 }
 
@@ -353,8 +348,7 @@ extension ShareInvoiceStrings {
                             amountLabelText: "Amount",
                             ibanLabelText: "IBAN",
                             purposeLabelText: "Purpose",
-                            accessibilityQRCodeImageText: "QR code",
-                            accessibilityCloseIconText: "Close")
+                            accessibilityQRCodeImageText: "QR code")
     }
 }
 
