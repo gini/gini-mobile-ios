@@ -31,8 +31,7 @@ struct PaymentInfoViewModelTests {
     private func makeStrings(questions: [String] = [],
                              answers: [String] = [],
                              supportedBanksFormat: String = "Banks") -> PaymentInfoStrings {
-        PaymentInfoStrings(accessibilityCloseText: "Close",
-                           giniWebsiteText: "Gini",
+        PaymentInfoStrings(giniWebsiteText: "Gini",
                            giniURLText: "https://gini.net",
                            supportedBanksText: supportedBanksFormat,
                            questionsTitleText: "Questions",

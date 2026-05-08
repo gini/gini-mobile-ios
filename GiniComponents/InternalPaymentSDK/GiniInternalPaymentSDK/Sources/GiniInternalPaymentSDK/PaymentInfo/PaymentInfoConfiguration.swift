@@ -69,7 +69,6 @@ public struct PaymentInfoConfiguration {
 }
 
 public struct PaymentInfoStrings {
-    let accessibilityCloseText: String
     let giniWebsiteText: String
     let giniURLText: String
     let supportedBanksText: String
@@ -83,8 +82,7 @@ public struct PaymentInfoStrings {
     let answers: [String]
     let questions: [String]
 
-    public init(accessibilityCloseText: String,
-                giniWebsiteText: String,
+    public init(giniWebsiteText: String,
                 giniURLText: String,
                 supportedBanksText: String,
                 questionsTitleText: String,
@@ -95,7 +93,6 @@ public struct PaymentInfoStrings {
                 payBillsDescriptionText: String,
                 answers: [String],
                 questions: [String]) {
-        self.accessibilityCloseText = accessibilityCloseText
         self.answers = answers
         self.questions = questions
         self.giniURLText = giniURLText

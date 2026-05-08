@@ -290,8 +290,7 @@ extension PaymentInfoConfiguration {
 
 extension PaymentInfoStrings {
     static var test: PaymentInfoStrings {
-        PaymentInfoStrings(accessibilityCloseText: "Close",
-                           giniWebsiteText: "Gini website",
+        PaymentInfoStrings(giniWebsiteText: "Gini website",
                            giniURLText: "https://gini.net",
                            supportedBanksText: "Supported banks",
                            questionsTitleText: "Questions",
