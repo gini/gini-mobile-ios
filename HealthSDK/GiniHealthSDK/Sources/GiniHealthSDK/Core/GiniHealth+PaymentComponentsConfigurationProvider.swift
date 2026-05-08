@@ -113,8 +113,6 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
             backgroundColor: GiniColor.standard7.uiColor(),
-            closeIcon: GiniHealthImage.close.preferredUIImage(),
-            closeIconTintColor: GiniColor.standard2.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
     }
