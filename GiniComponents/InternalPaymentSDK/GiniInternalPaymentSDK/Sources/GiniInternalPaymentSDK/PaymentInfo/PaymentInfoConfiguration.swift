@@ -25,8 +25,6 @@ public struct PaymentInfoConfiguration {
     let linksColor: UIColor
     let separatorColor: UIColor
     let backgroundColor: UIColor
-    let closeIcon: UIImage?
-    let closeIconTintColor: UIColor?
     let questionHeaderIconTintColor: UIColor
 
     public init(giniFont: UIFont,
@@ -47,8 +45,6 @@ public struct PaymentInfoConfiguration {
                 linksColor: UIColor,
                 separatorColor: UIColor,
                 backgroundColor: UIColor,
-                closeIcon: UIImage? = nil,
-                closeIconTintColor: UIColor? = nil,
                 questionHeaderIconTintColor: UIColor) {
         self.giniFont = giniFont
         self.answersFont = answersFont
@@ -68,8 +64,6 @@ public struct PaymentInfoConfiguration {
         self.linksColor = linksColor
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
-        self.closeIcon = closeIcon
-        self.closeIconTintColor = closeIconTintColor
         self.questionHeaderIconTintColor = questionHeaderIconTintColor
     }
 }
