@@ -88,8 +88,6 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniHealthConfiguration.shared.font(for: .captions2),
             subtitlePaymentInfoFont: GiniHealthConfiguration.shared.font(for: .body2),
-            closeIcon: GiniHealthImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 
@@ -123,8 +121,6 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             descriptionFont: GiniHealthConfiguration.shared.font(for: .captions1),
             selectBankAccentColor: GiniColor.standard2.uiColor(),
             selectBankFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
-            closeTitleIcon: GiniHealthImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor(),
             bankCellBackgroundColor: GiniColor.standard7.uiColor(),
             bankCellIconBorderColor: GiniColor.standard5.uiColor(),
             bankCellNameFont: GiniHealthConfiguration.shared.font(for: .body1),

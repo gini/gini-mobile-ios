@@ -103,9 +103,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.usage.placeholder",
                                                                comment: "placeholder text for usage input field"),
             accessibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.qr.code.image",
-                                                                           comment: "accessibility label for qr code image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                         comment: "close button accessibility label text")
+                                                                           comment: "accessibility label for qr code image")
         )
     }
 
@@ -163,9 +161,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             selectBankTitleText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.label",
                                                                   comment: "Select bank text from the top label on payment providers bottom sheet"),
             descriptionText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.providers.list.description",
-                                                              comment: "Top description text on payment providers bottom sheet"),
-            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                            comment: "Close button accessibility label text")
+                                                              comment: "Top description text on payment providers bottom sheet")
         )
     }
 
