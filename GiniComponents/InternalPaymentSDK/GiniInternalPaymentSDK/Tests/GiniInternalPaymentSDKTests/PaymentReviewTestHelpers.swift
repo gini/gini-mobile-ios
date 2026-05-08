@@ -102,8 +102,7 @@ extension PaymentReviewContainerStrings {
                                                           iban: "IBAN",
                                                           amount: "Amount",
                                                           usage: "Usage")
-        let errors = PaymentReviewFieldErrors(emptyCheck: "Field is empty",
-                                              ibanCheck: "Invalid IBAN",
+        let errors = PaymentReviewFieldErrors(ibanCheck: "Invalid IBAN",
                                               recipient: "Invalid recipient",
                                               iban: "IBAN required",
                                               amount: "Amount required",

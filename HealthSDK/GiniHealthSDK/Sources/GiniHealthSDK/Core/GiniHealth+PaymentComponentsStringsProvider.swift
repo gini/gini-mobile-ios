@@ -21,8 +21,6 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                         comment: "placeholder text for usage input field")
             ),
             fieldErrors: .init(
-                emptyCheck: NSLocalizedStringPreferredFormat("gini.health.errors.failed.default.textfield.validation.check",
-                                                             comment: "the field failed non empty check"),
                 ibanCheck: NSLocalizedStringPreferredFormat("gini.health.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check"),
                 recipient: NSLocalizedStringPreferredFormat("gini.health.errors.failed.recipient.non.empty.check",
