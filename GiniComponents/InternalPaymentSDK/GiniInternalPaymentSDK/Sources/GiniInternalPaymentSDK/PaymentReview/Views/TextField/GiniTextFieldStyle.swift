@@ -69,7 +69,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                     .font(Font(giniFont: currentConfiguration.textFont))
                     .frame(minHeight: Constants.textFieldHeight)
                     .accessibilityLabel(title)
-                    .accessibilityValue(state == .error ? (errorMessage ?? "") : "") // — VoiceOver reads error alongside field label
+                    .accessibilityHintIfPresent(state == .error ? errorMessage : nil)
             }
             .padding(.horizontal, Constants.horizontalPadding)
             .padding(.top, Constants.verticalPadding)
