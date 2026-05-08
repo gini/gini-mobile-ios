@@ -80,9 +80,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             accessibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.appstore",
                                                                         comment: "Accessibility label for the App Store button"),
             accessibilityBankLogoText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo",
-                                                                        comment: "Accessibility label for the bank logo image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                         comment: "close button accessibility label text")
+                                                                        comment: "Accessibility label for the bank logo image")
         )
     }
 
