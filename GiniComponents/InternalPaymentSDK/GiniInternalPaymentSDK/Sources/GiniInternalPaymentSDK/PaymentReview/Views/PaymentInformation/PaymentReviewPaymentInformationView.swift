@@ -196,7 +196,10 @@ struct PaymentReviewPaymentInformationView: View {
         .focused($focusedField, equals: .recipient)
         .disabled(viewModel.isFieldsLocked)
         .submitLabel(.done)
-        .onSubmit { focusedField = nil }
+        .onSubmit {
+            focusedField = nil
+            viewModel.activeField = nil
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.recipient,
                                            field: .recipient,
                                            inputState: viewModel.recipientInputState,
@@ -218,7 +221,10 @@ struct PaymentReviewPaymentInformationView: View {
         .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
         .submitLabel(.done)
-        .onSubmit { focusedField = nil }
+        .onSubmit {
+            focusedField = nil
+            viewModel.activeField = nil
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.iban,
                                            field: .iban,
                                            inputState: viewModel.ibanInputState,
@@ -257,7 +263,10 @@ struct PaymentReviewPaymentInformationView: View {
         .focused($focusedField, equals: .paymentPurpose)
         .disabled(viewModel.isFieldsLocked)
         .submitLabel(.done)
-        .onSubmit { focusedField = nil }
+        .onSubmit {
+            focusedField = nil
+            viewModel.activeField = nil
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.usage,
                                            field: .paymentPurpose,
                                            inputState: viewModel.paymentPurposeInputState,
