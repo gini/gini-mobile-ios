@@ -15,18 +15,20 @@ struct PaymentReviewValidationTests {
 
     // MARK: validateRecipient
 
-    @Test("empty recipient is invalid and sets error")
+    @Test("empty recipient is invalid and sets field-specific error")
     func emptyRecipientIsInvalid() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        let model = PaymentReviewContainerViewModel.test()
+        let sut = PaymentReviewPaymentInformationObservableModel(model: model)
         #expect(sut.validateRecipient("") == false, "validateRecipient must return false for an empty string")
-        #expect(sut.recipientError != nil, "validateRecipient must set recipientError for an empty string")
+        #expect(sut.recipientError == model.strings.fieldErrors.recipient, "validateRecipient must set the field-specific recipient error")
     }
 
-    @Test("whitespace-only recipient is invalid")
+    @Test("whitespace-only recipient is invalid and sets field-specific error")
     func whitespaceRecipientIsInvalid() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        let model = PaymentReviewContainerViewModel.test()
+        let sut = PaymentReviewPaymentInformationObservableModel(model: model)
         #expect(sut.validateRecipient("   ") == false, "validateRecipient must return false for a whitespace-only string")
-        #expect(sut.recipientError != nil, "validateRecipient must set recipientError for a whitespace-only string")
+        #expect(sut.recipientError == model.strings.fieldErrors.recipient, "validateRecipient must set the field-specific recipient error for a whitespace-only string")
     }
 
     @Test("non-empty recipient is valid and clears error")
@@ -63,18 +65,20 @@ struct PaymentReviewValidationTests {
 
     // MARK: validateAmount
 
-    @Test("empty amount string is invalid")
+    @Test("empty amount string is invalid and sets field-specific error")
     func emptyAmountIsInvalid() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        let model = PaymentReviewContainerViewModel.test()
+        let sut = PaymentReviewPaymentInformationObservableModel(model: model)
         #expect(sut.validateAmount("", amount: 0) == false, "validateAmount must return false for an empty amount string")
-        #expect(sut.amountError != nil, "validateAmount must set amountError for an empty amount string")
+        #expect(sut.amountError == model.strings.fieldErrors.amount, "validateAmount must set the field-specific amount error, using the field-specific error")
     }
 
-    @Test("zero decimal amount is invalid")
+    @Test("zero decimal amount is invalid and sets field-specific error")
     func zeroAmountIsInvalid() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        let model = PaymentReviewContainerViewModel.test()
+        let sut = PaymentReviewPaymentInformationObservableModel(model: model)
         #expect(sut.validateAmount("0.00", amount: 0) == false, "validateAmount must return false for a zero amount")
-        #expect(sut.amountError != nil, "validateAmount must set amountError for a zero amount")
+        #expect(sut.amountError == model.strings.fieldErrors.amount, "validateAmount must set the field-specific amount error, using the field-specific error")
     }
 
     @Test("positive amount is valid and clears error")
@@ -87,11 +91,12 @@ struct PaymentReviewValidationTests {
 
     // MARK: validatePaymentPurpose
 
-    @Test("empty purpose is invalid")
+    @Test("empty purpose is invalid and sets field-specific error")
     func emptyPurposeIsInvalid() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        let model = PaymentReviewContainerViewModel.test()
+        let sut = PaymentReviewPaymentInformationObservableModel(model: model)
         #expect(sut.validatePaymentPurpose("") == false, "validatePaymentPurpose must return false for an empty string")
-        #expect(sut.paymentPurposeError != nil, "validatePaymentPurpose must set paymentPurposeError for an empty string")
+        #expect(sut.paymentPurposeError == model.strings.fieldErrors.purpose, "validatePaymentPurpose must set the field-specific purpose error, using the field-specific error")
     }
 
     @Test("non-empty purpose is valid and clears error")

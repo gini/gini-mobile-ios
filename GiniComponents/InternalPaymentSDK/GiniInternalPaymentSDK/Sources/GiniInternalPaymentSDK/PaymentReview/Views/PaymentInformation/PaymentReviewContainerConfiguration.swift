@@ -88,20 +88,17 @@ public struct PaymentReviewContainerConfiguration {
  Error messages used for field validation in the payment review screen.
  */
 public struct PaymentReviewFieldErrors {
-    let emptyCheck: String
     let ibanCheck: String
     let recipient: String
     let iban: String
     let amount: String
     let purpose: String
-    
-    public init(emptyCheck: String,
-                ibanCheck: String,
+
+    public init(ibanCheck: String,
                 recipient: String,
                 iban: String,
                 amount: String,
                 purpose: String) {
-        self.emptyCheck = emptyCheck
         self.ibanCheck = ibanCheck
         self.recipient = recipient
         self.iban = iban

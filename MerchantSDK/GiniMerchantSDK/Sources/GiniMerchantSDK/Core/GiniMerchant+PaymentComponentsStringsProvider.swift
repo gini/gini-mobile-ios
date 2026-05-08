@@ -21,8 +21,6 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                         comment: "placeholder text for usage input field")
             ),
             fieldErrors: .init(
-                emptyCheck: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
-                                                             comment: "the field failed non empty check"),
                 ibanCheck: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check"),
                 recipient: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
