@@ -109,8 +109,6 @@ extension GiniHealth: PaymentComponentsStringsProvider {
 
     public var paymentInfoStrings: PaymentInfoStrings {
         PaymentInfoStrings(
-            accessibilityCloseText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                     comment: "close button accessibility label text"),
             giniWebsiteText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.pay.bills.description.clickable.text",
                                                               comment: "Word range that's clickable in pay bills description"),
             giniURLText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.gini.link",
