@@ -136,14 +136,21 @@ struct PaymentReviewPaymentInformationView: View {
     private var baseScrollView: some View {
         ScrollView {
             VStack(spacing: Constants.textFieldsContainerSpacing) {
+                // Reverse z-ordering so each field's error message (which expands the field's
+                // height during animation) always renders above the fields that follow it in
+                // the layout. Without this, a field's error label can temporarily appear behind
+                // the next field while the layout animation catches up (HEAL-368).
                 recipientTextField
+                    .zIndex(3)
 
                 adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
                     ibanTextField
                     amountTextField
                 }
+                .zIndex(2)
 
                 paymentPurposeTextField
+                    .zIndex(1)
 
                 adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
                     paymentProviderSelectionPicker
