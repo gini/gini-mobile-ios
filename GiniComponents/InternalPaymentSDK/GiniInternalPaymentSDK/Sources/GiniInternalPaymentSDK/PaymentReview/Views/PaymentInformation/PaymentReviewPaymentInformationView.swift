@@ -327,8 +327,8 @@ struct PaymentReviewPaymentInformationView: View {
                                       viewModel.paymentPurposeError]
                         .compactMap { $0 }.first
                     if let firstError {
-                        /// Delay allows VoiceOver to finish announcing the button activation
-                        /// before the error announcement is posted, preventing it from being dropped.
+                        // Delay allows VoiceOver to finish announcing the button activation
+                        // before the error announcement is posted, preventing it from being dropped.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             UIAccessibility.post(notification: .announcement, argument: firstError)
                         }
