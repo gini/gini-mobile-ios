@@ -27,7 +27,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      Tracks which field was focused before the view was recreated (e.g. after rotation),
      so the keyboard can be restored in the new layout.
      */
-    var activeField: ActivePaymentField? = nil
+    @Published var activeField: ActivePaymentField? = nil
 
     /**
      Set to `true` while the view is on screen. Used to distinguish a rotation (view
