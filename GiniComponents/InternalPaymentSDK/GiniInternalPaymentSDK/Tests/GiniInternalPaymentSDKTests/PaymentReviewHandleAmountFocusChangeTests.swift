@@ -58,7 +58,7 @@ struct PaymentReviewHandleAmountFocusChangeTests {
         #expect(sut.amountInputState.hasError == true, "focus lost with a zero parsed amount must set hasError on amountInputState")
     }
 
-    @Test("focus lost with empty amount sets errorMessage on amountInputState")
+    @Test("focus lost with empty amount sets the expected errorMessage on amountInputState")
     func focusLostEmptyTextSetsErrorMessage() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
         sut.amountInputState.text = ""
@@ -66,7 +66,8 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         sut.handleAmountFocusChange(isFocused: false)
 
-        #expect(sut.amountInputState.errorMessage != nil, "focus lost with empty amount must populate errorMessage on amountInputState")
+        #expect(sut.amountInputState.errorMessage == sut.model.strings.fieldErrors.amount,
+                "focus lost with empty amount must set errorMessage to the localized amount error string")
     }
 
     // MARK: - Done button regression guard (HEAL-368)
