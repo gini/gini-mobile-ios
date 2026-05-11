@@ -122,33 +122,47 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
-                                                                                 borderColor: GiniColor.standard6.uiColor(),
-                                                                                 textColor: GiniColor.standard1.uiColor(),
-                                                                                 textFont: font(for: .captions2),
-                                                                                 cornerRadius: 12.0,
-                                                                                 borderWidth: 1.0,
-                                                                                 placeholderForegroundColor: GiniColor.standard4.uiColor())
+    public var defaultStyleInputFieldConfiguration: TextFieldConfiguration {
+        var config = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                            borderColor: GiniColor.standard6.uiColor(),
+                                            textColor: GiniColor.standard1.uiColor(),
+                                            textFont: font(for: .captions2),
+                                            cornerRadius: 12.0,
+                                            borderWidth: 1.0,
+                                            placeholderForegroundColor: GiniColor.standard4.uiColor())
+        config.dynamicTextFont = { GiniHealthConfiguration.shared.font(for: .captions2) }
+        return config
+    }
+
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
-                                                                               borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
-                                                                               textColor: GiniColor.standard1.uiColor(),
-                                                                               textFont: font(for: .captions2),
-                                                                               cornerRadius: 12.0,
-                                                                               borderWidth: 1.0,
-                                                                               placeholderForegroundColor: GiniColor.standard4.uiColor())
+    public var errorStyleInputFieldConfiguration: TextFieldConfiguration {
+        var config = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                            borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
+                                            textColor: GiniColor.standard1.uiColor(),
+                                            textFont: font(for: .captions2),
+                                            cornerRadius: 12.0,
+                                            borderWidth: 1.0,
+                                            placeholderForegroundColor: GiniColor.standard4.uiColor())
+        config.dynamicTextFont = { GiniHealthConfiguration.shared.font(for: .captions2) }
+        return config
+    }
+
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
-                                                                                   borderColor: GiniColor.accent1.uiColor(),
-                                                                                   textColor: GiniColor.standard1.uiColor(),
-                                                                                   textFont: font(for: .captions2),
-                                                                                   cornerRadius: 12.0,
-                                                                                   borderWidth: 1.0,
-                                                                                   placeholderForegroundColor: GiniColor.standard4.uiColor())
+    public var selectionStyleInputFieldConfiguration: TextFieldConfiguration {
+        var config = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                            borderColor: GiniColor.accent1.uiColor(),
+                                            textColor: GiniColor.standard1.uiColor(),
+                                            textFont: font(for: .captions2),
+                                            cornerRadius: 12.0,
+                                            borderWidth: 1.0,
+                                            placeholderForegroundColor: GiniColor.standard4.uiColor())
+        config.dynamicTextFont = { GiniHealthConfiguration.shared.font(for: .captions2) }
+        return config
+    }
 
     // MARK: - Update to custom font
     /**

@@ -55,33 +55,70 @@ public final class PaymentInfoViewModel {
     }
     
     private func setupQuestions() {
+        setupQuestions(answersFont: nil, linksFont: nil)
+    }
+
+    private func setupQuestions(answersFont: UIFont?, linksFont: UIFont?) {
+        let resolvedAnswersFont = answersFont ?? configuration.answersFont
+        let resolvedLinksFont = linksFont ?? configuration.linksFont
         questions = zip(strings.questions, strings.answers).map { question, answer in
-            let answerAttributedString = answerWithAttributes(answer: answer)
+            let answerAttributedString = answerWithAttributes(answer: answer, font: resolvedAnswersFont)
             return FAQSection(title: question,
-                              description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
+                              description: textWithLinks(linkFont: resolvedLinksFont, attributedString: answerAttributedString),
                               isExtended: false)
         }
     }
-    
+
     private func configurePayBillsGiniLink() {
+        configurePayBillsGiniLink(descriptionFont: nil, giniFont: nil)
+    }
+
+    private func configurePayBillsGiniLink(descriptionFont: UIFont?, giniFont: UIFont?) {
+        let resolvedDescriptionFont = descriptionFont ?? configuration.payBillsDescriptionFont
+        let resolvedGiniFont = giniFont ?? configuration.giniFont
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
         payBillsDescriptionAttributedText = NSMutableAttributedString(string: strings.payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
-                                                                                   .font: configuration.payBillsDescriptionFont,
+                                                                                   .font: resolvedDescriptionFont,
                                                                                    .foregroundColor: configuration.payBillsTitleColor])
-        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.giniFont,
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: resolvedGiniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
-    
-    private func answerWithAttributes(answer: String) -> NSMutableAttributedString {
+
+    private func answerWithAttributes(answer: String, font: UIFont) -> NSMutableAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.answersLineHeight
         paragraphStyle.paragraphSpacing = Constants.answersParagraphSpacing
         let answerAttributedText = NSMutableAttributedString(string: answer,
-                                                             attributes: [.font: configuration.answersFont, .paragraphStyle: paragraphStyle])
+                                                             attributes: [.font: font, .paragraphStyle: paragraphStyle])
         return answerAttributedText
+    }
+
+    private func answerWithAttributes(answer: String) -> NSMutableAttributedString {
+        answerWithAttributes(answer: answer, font: configuration.answersFont)
+    }
+
+    /**
+     Rebuilds all attributed strings using freshly-scaled fonts for the current Dynamic Type size.
+
+     Call this when the user's preferred content size category changes at runtime so that
+     `payBillsDescriptionAttributedText` and all FAQ answer descriptions reflect the new font size.
+     */
+    func refreshAttributedContent() {
+        let dynamicFont = configuration.dynamicFont
+        let descriptionFont = dynamicFont?(.body2)
+        let freshGiniFont = dynamicFont?(.button)
+        let answersFont = dynamicFont?(.body2)
+        let linksFont = dynamicFont?(.linkBold)
+        payBillsDescriptionLinkAttributes = [.font: linksFont ?? configuration.linksFont]
+        configurePayBillsGiniLink(descriptionFont: descriptionFont, giniFont: freshGiniFont)
+        let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }
+        setupQuestions(answersFont: answersFont, linksFont: linksFont)
+        for index in openExtendedSections where index < questions.count {
+            questions[index].isExtended = true
+        }
     }
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {

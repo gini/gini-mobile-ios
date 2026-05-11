@@ -66,7 +66,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 
                 configuration
                     .foregroundStyle(Color(currentConfiguration.textColor))
-                    .font(Font(giniFont: currentConfiguration.textFont))
+                    .font(Font(giniFont: currentConfiguration.resolvedTextFont))
                     .frame(minHeight: Constants.textFieldHeight)
                     .accessibilityLabel(title)
             }
@@ -99,7 +99,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private var titleView: some View {
         HStack {
             Text(title)
-                .font(Font(giniFont: currentConfiguration.textFont))
+                .font(Font(giniFont: currentConfiguration.resolvedTextFont))
                 .foregroundStyle(Color(currentConfiguration.placeholderForegroundColor))
 
             if let lockedIcon {
@@ -121,7 +121,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private func errorMessageView(_ errorMessage: String) -> some View {
         Text(errorMessage)
             .foregroundStyle(Color(errorConfiguration.borderColor))
-            .font(Font(errorConfiguration.textFont))
+            .font(Font(giniFont: errorConfiguration.resolvedTextFont))
             .padding(.horizontal, Constants.errorMessageHorizontalPadding)
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),

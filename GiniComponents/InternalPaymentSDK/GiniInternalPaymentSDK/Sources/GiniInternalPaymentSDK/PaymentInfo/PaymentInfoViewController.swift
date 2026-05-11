@@ -152,6 +152,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         self.title = viewModel.strings.titleText
         self.setupView()
         bindToTableViewSizeUpdates()
+        observeContentSizeCategory()
     }
 
     private func setupView() {
@@ -261,7 +262,6 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
             payBillsTitleLabel.topAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.payBillsTitleTopPadding),
             payBillsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             payBillsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
-            payBillsTitleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxPayBillsTitleHeight),
             payBillsDescriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             payBillsDescriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
             payBillsDescriptionTextView.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
@@ -296,6 +296,21 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
             .sink { [weak self] value in
                 self?.tableViewQuestionHeightConstraint.constant = value.height
             }.store(in: &cancellables)
+    }
+
+    private func observeContentSizeCategory() {
+        NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleContentSizeCategoryChange()
+            }.store(in: &cancellables)
+    }
+
+    private func handleContentSizeCategoryChange() {
+        viewModel.refreshAttributedContent()
+        payBillsDescriptionTextView.attributedText = viewModel.payBillsDescriptionAttributedText
+        payBillsDescriptionTextView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
+        questionsTableView.reloadData()
     }
     
     @objc private func didTapCloseButton() {
@@ -426,7 +441,6 @@ extension PaymentInfoViewController {
         
         static let payBillsTitleTopPadding = 16.0
         static let payBillsTitleLineHeight = 1.26
-        static let maxPayBillsTitleHeight = 100.0
         static let payBillsDescriptionTopPadding = 8.0
         static let payBillsDescriptionRightPadding = 31.0
         static let minPayBillsDescriptionHeight = 100.0

@@ -94,7 +94,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     }
 
     public var paymentInfoConfiguration: PaymentInfoConfiguration {
-        PaymentInfoConfiguration(
+        var config = PaymentInfoConfiguration(
             giniFont: GiniHealthConfiguration.shared.font(for: .button),
             answersFont: GiniHealthConfiguration.shared.font(for: .body2),
             answerCellTextColor: GiniColor.standard1.uiColor(),
@@ -117,6 +117,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             closeIconTintColor: GiniColor.standard2.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
+        config.dynamicFont = { GiniHealthConfiguration.shared.font(for: $0) }
+        return config
     }
 
     public var bankSelectionConfiguration: BankSelectionConfiguration {
