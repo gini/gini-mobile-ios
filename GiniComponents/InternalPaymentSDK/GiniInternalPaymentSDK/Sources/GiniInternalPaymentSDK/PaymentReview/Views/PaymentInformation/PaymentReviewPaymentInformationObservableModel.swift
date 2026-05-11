@@ -90,7 +90,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validateRecipient(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            recipientError = model.strings.fieldErrors.emptyCheck
+            recipientError = model.strings.fieldErrors.recipient
             return false
         }
         recipientError = nil
@@ -114,7 +114,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validateAmount(_ text: String, amount: Decimal) -> Bool {
         if text.trimmingCharacters(in: .whitespaces).isEmpty || amount <= 0 {
-            amountError = model.strings.fieldErrors.emptyCheck
+            amountError = model.strings.fieldErrors.amount
             return false
         }
         amountError = nil
@@ -123,7 +123,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     
     func validatePaymentPurpose(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            paymentPurposeError = model.strings.fieldErrors.emptyCheck
+            paymentPurposeError = model.strings.fieldErrors.purpose
             return false
         }
         paymentPurposeError = nil

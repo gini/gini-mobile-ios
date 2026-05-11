@@ -102,8 +102,7 @@ extension PaymentReviewContainerStrings {
                                                           iban: "IBAN",
                                                           amount: "Amount",
                                                           usage: "Usage")
-        let errors = PaymentReviewFieldErrors(emptyCheck: "Field is empty",
-                                              ibanCheck: "Invalid IBAN",
+        let errors = PaymentReviewFieldErrors(ibanCheck: "Invalid IBAN",
                                               recipient: "Invalid recipient",
                                               iban: "IBAN required",
                                               amount: "Amount required",
@@ -401,9 +400,7 @@ extension InstallAppConfiguration {
                                 moreInformationAccentColor: .systemBlue,
                                 moreInformationIcon: UIImage(),
                                 appStoreIcon: UIImage(),
-                                bankIconBorderColor: .systemGray4,
-                                closeIcon: UIImage(),
-                                closeIconAccentColor: .label)
+                                bankIconBorderColor: .systemGray4)
     }
 }
 
@@ -414,8 +411,7 @@ extension InstallAppStrings {
                           moreInformationNotePattern: "Note: install [BANK]",
                           continueLabelText: "Continue",
                           accessibilityAppStoreText: "App Store",
-                          accessibilityBankLogoText: "Bank logo",
-                          accessibilityCloseIconText: "Close")
+                          accessibilityBankLogoText: "Bank logo")
     }
 }
 
@@ -423,4 +419,31 @@ extension ClientConfiguration {
     static func test(ingredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible) -> ClientConfiguration {
         ClientConfiguration(ingredientBrandType: ingredientBrandType)
     }
+}
+
+func makePaymentReviewModelWithDocument(delegate: MockPaymentReviewDelegate,
+                                        bottomSheetsProvider: MockBottomSheetsProvider,
+                                        document: Document = .testDocument(),
+                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil) -> PaymentReviewModel {
+    PaymentReviewModel(delegate: delegate,
+                       bottomSheetsProvider: bottomSheetsProvider,
+                       document: document,
+                       extractions: nil,
+                       paymentInfo: nil,
+                       selectedPaymentProvider: .test,
+                       configuration: .test,
+                       strings: .test,
+                       containerConfiguration: .test,
+                       containerStrings: .test(),
+                       defaultStyleInputFieldConfiguration: .test,
+                       errorStyleInputFieldConfiguration: .test,
+                       selectionStyleInputFieldConfiguration: .test,
+                       primaryButtonConfiguration: .test,
+                       secondaryButtonConfiguration: .test,
+                       poweredByGiniConfiguration: .test,
+                       poweredByGiniStrings: .test,
+                       bottomSheetConfiguration: .test,
+                       showPaymentReviewCloseButton: true,
+                       previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                       clientConfiguration: nil)
 }

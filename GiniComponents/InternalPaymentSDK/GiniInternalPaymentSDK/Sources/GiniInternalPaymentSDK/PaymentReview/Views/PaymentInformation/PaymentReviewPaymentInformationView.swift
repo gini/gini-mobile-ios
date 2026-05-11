@@ -341,7 +341,7 @@ struct PaymentReviewPaymentInformationView: View {
         if dynamicTypeSize.isAccessibilitySize {
             VStack(spacing: spacing) { content() }
         } else {
-            HStack(spacing: spacing) { content() }
+            HStack(alignment: .top, spacing: spacing) { content() }
         }
     }
 

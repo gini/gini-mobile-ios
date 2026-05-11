@@ -95,7 +95,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor().withAlphaComponent(0.4),
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor(),
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
                                                                      titleFont: font(for: .button),
