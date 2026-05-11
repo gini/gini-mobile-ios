@@ -163,17 +163,4 @@ struct BanksBottomViewModelTests {
                 "Cell model must expose the payment provider's name")
     }
 
-    // MARK: - Delegate forwarding
-
-    @Test("didTapOnClose forwards the tap to viewDelegate")
-    func didTapOnCloseNotifiesDelegate() {
-        let sut = makeSUT()
-        let delegate = MockBanksSelectionDelegate()
-        sut.viewDelegate = delegate
-
-        sut.didTapOnClose()
-
-        #expect(delegate.didTapCloseCalled == true,
-                "didTapOnClose must call didTapOnClose on viewDelegate")
-    }
 }

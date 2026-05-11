@@ -149,15 +149,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    /**
-     Traps VoiceOver focus inside this sheet and moves the cursor to the close button.
 
-     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`). The previous
-     code set it on `self` (the `UIViewController`), which UIKit does not honour for
-     sibling-view hiding on iOS 18.x, causing VoiceOver to escape into the dimmed
-     background and find no readable elements in portrait.
-     */
     private func notifyLayoutChanged() {
         accessibilityFocusWorkItem?.cancel()
         let work = DispatchWorkItem { [weak self] in
@@ -535,6 +527,5 @@ extension ShareInvoiceBottomView {
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
         static let landscapePaddingRatio = 0.15
-        static let closeIconSize = 24.0
     }
 }

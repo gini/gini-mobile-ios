@@ -384,6 +384,22 @@ struct PaymentReviewModelTests {
         #expect(vmDelegate.lastObtainedPDFRequestId == "req-99")
     }
 
+    // MARK: - InstallAppBottomViewProtocol conformance
+
+    @Test("PaymentReviewModel.didTapOnContinue triggers createPaymentRequestAndOpenBankApp on its delegate")
+    func didTapOnContinueNotifiesViewModelDelegate() {
+        let delegate = MockPaymentReviewDelegate()
+        let model = makePaymentReviewModel(delegate: delegate,
+                                          bottomSheetsProvider: MockBottomSheetsProvider())
+        let vmDelegate = MockPaymentReviewViewModelDelegate()
+        model.viewModelDelegate = vmDelegate
+
+        model.didTapOnContinue()
+
+        #expect(vmDelegate.createPaymentRequestAndOpenBankAppCalled == true,
+                "didTapOnContinue must forward to createPaymentRequestAndOpenBankApp on the viewModelDelegate")
+    }
+
     // MARK: - fetchImages
 
     @Test("fetchImages returns immediately when document is nil")

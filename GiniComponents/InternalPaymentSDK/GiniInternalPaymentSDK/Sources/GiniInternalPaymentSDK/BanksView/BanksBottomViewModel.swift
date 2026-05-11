@@ -16,7 +16,6 @@ import GiniHealthAPILibrary
 public protocol BanksSelectionProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider)
     func didTapOnMoreInformation()
-    func didTapOnClose()
     func didTapOnContinueOnShareBottomSheet()
     func didTapForwardOnInstallBottomSheet()
     func didTapOnPayButton()
@@ -132,10 +131,6 @@ public final class BanksBottomViewModel {
             colors: bankSelectionTableViewCellModelColors,
             selectionIndicatorImage: configuration.bankCellSelectionIndicatorImage
         )
-    }
-    
-    func didTapOnClose() {
-        viewDelegate?.didTapOnClose()
     }
 
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {

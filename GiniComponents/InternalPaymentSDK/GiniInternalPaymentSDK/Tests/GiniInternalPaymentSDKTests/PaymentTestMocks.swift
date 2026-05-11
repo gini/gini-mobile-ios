@@ -146,14 +146,12 @@ final class MockURLOpener: URLOpenerProtocol {
 final class MockBanksSelectionDelegate: BanksSelectionProtocol {
     var selectedProvider: PaymentProvider?
     var didTapMoreInfoCalled = false
-    var didTapCloseCalled = false
     var didTapContinueShareCalled = false
     var didTapForwardInstallCalled = false
     var didTapPayButtonCalled = false
 
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) { selectedProvider = paymentProvider }
     func didTapOnMoreInformation() { didTapMoreInfoCalled = true }
-    func didTapOnClose() { didTapCloseCalled = true }
     func didTapOnContinueOnShareBottomSheet() { didTapContinueShareCalled = true }
     func didTapForwardOnInstallBottomSheet() { didTapForwardInstallCalled = true }
     func didTapOnPayButton() { didTapPayButtonCalled = true }

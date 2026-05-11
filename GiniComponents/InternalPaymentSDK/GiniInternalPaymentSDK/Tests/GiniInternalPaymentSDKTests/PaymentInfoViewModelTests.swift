@@ -31,20 +31,19 @@ struct PaymentInfoViewModelTests {
     private func makeStrings(questions: [String] = [],
                              answers: [String] = [],
                              supportedBanksFormat: String = "Banks") -> PaymentInfoStrings {
-        PaymentInfoStrings(accessibilityCloseText: "Close",
-                           giniWebsiteText: "Gini",
-                           giniURLText: "https://gini.net",
+        PaymentInfoStrings(giniLink: .init(websiteText: "Gini",
+                                           urlText: "https://gini.net"),
                            supportedBanksText: supportedBanksFormat,
-                           questionsTitleText: "Questions",
-                           answerPrivacyPolicyText: "Policy",
-                           privacyPolicyURLText: "https://gini.net/privacy",
                            titleText: "Info",
                            payBillsTitleText: "Bills",
                            payBillsDescriptionText: "Description",
-                           answers: answers,
-                           questions: questions,
-                           accessibilityExpandedText: "Expanded",
-                           accessibilityCollapsedText: "Collapsed")
+                           privacyPolicy: .init(text: "Policy",
+                                                urlText: "https://gini.net/privacy"),
+                           faq: .init(titleText: "Questions",
+                                      questions: questions,
+                                      answers: answers,
+                                      accessibilityExpandedText: "Expanded",
+                                      accessibilityCollapsedText: "Collapsed"))
     }
 
     // MARK: - shouldShowBrandedView
