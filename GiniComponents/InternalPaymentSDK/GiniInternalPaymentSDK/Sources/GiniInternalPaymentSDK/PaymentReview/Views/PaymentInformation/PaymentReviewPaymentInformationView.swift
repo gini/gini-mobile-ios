@@ -124,6 +124,7 @@ struct PaymentReviewPaymentInformationView: View {
             Spacer()
             Button(viewModelStrings.keyboardDoneButtonTitle) {
                 onKeyboardDismissed()
+                viewModel.handleAmountFocusChange(isFocused: false)
                 focusedField = nil
             }
             .padding(.horizontal, Constants.doneButtonHorizontalPadding)
