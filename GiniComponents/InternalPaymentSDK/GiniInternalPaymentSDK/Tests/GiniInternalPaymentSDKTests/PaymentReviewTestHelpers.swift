@@ -198,6 +198,20 @@ extension PaymentReviewConfiguration {
     }
 }
 
+extension Document {
+    static func testDocument(id: String = "test-doc-id",
+                             pageCount: Int = 1) -> Document {
+        let links = Document.Links(giniAPIDocumentURL: URL(string: "https://api.example.com/documents/\(id)")!)
+        return Document(creationDate: Date(),
+                        id: id,
+                        name: "test.pdf",
+                        links: links,
+                        pageCount: pageCount,
+                        sourceClassification: .native,
+                        expirationDate: nil)
+    }
+}
+
 func makePaymentReviewModel(delegate: MockPaymentReviewDelegate,
                             bottomSheetsProvider: MockBottomSheetsProvider,
                             displayMode: DisplayMode = .bottomSheet) -> PaymentReviewModel {
@@ -221,6 +235,33 @@ func makePaymentReviewModel(delegate: MockPaymentReviewDelegate,
                        bottomSheetConfiguration: .test,
                        showPaymentReviewCloseButton: true,
                        previousPaymentComponentScreenType: nil,
+                       clientConfiguration: nil)
+}
+
+func makePaymentReviewModelWithDocument(delegate: MockPaymentReviewDelegate,
+                                        bottomSheetsProvider: MockBottomSheetsProvider,
+                                        document: Document = .testDocument(),
+                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil) -> PaymentReviewModel {
+    PaymentReviewModel(delegate: delegate,
+                       bottomSheetsProvider: bottomSheetsProvider,
+                       document: document,
+                       extractions: nil,
+                       paymentInfo: nil,
+                       selectedPaymentProvider: .test,
+                       configuration: .test,
+                       strings: .test,
+                       containerConfiguration: .test,
+                       containerStrings: .test(),
+                       defaultStyleInputFieldConfiguration: .test,
+                       errorStyleInputFieldConfiguration: .test,
+                       selectionStyleInputFieldConfiguration: .test,
+                       primaryButtonConfiguration: .test,
+                       secondaryButtonConfiguration: .test,
+                       poweredByGiniConfiguration: .test,
+                       poweredByGiniStrings: .test,
+                       bottomSheetConfiguration: .test,
+                       showPaymentReviewCloseButton: true,
+                       previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                        clientConfiguration: nil)
 }
 
