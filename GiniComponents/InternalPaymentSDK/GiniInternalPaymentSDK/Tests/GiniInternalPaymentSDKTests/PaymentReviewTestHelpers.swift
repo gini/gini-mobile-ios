@@ -330,17 +330,17 @@ extension PaymentInfoConfiguration {
 
 extension PaymentInfoStrings {
     static var test: PaymentInfoStrings {
-        PaymentInfoStrings(giniWebsiteText: "Gini website",
-                           giniURLText: "https://gini.net",
+        PaymentInfoStrings(giniLink: .init(websiteText: "Gini website",
+                                           urlText: "https://gini.net"),
                            supportedBanksText: "Supported banks",
-                           questionsTitleText: "Questions",
-                           answerPrivacyPolicyText: "Privacy policy",
-                           privacyPolicyURLText: "https://gini.net/privacy",
                            titleText: "Payment information",
                            payBillsTitleText: "Pay bills",
                            payBillsDescriptionText: "Description",
-                           answers: [],
-                           questions: [])
+                           privacyPolicy: .init(text: "Privacy policy",
+                                                urlText: "https://gini.net/privacy"),
+                           faq: .init(titleText: "Questions",
+                                      questions: [],
+                                      answers: []))
     }
 }
 

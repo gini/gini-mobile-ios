@@ -97,7 +97,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         label.textAlignment = .left
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
-        label.attributedText = NSMutableAttributedString(string: viewModel.strings.questionsTitleText,
+        label.attributedText = NSMutableAttributedString(string: viewModel.strings.faq.titleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         label.adjustsFontForContentSizeCategory = true
         return label
