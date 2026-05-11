@@ -69,6 +69,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                     .font(Font(giniFont: currentConfiguration.textFont))
                     .frame(minHeight: Constants.textFieldHeight)
                     .accessibilityLabel(title)
+                    .accessibilityHintIfPresent(state == .error ? errorMessage : nil)
             }
             .padding(.horizontal, Constants.horizontalPadding)
             .padding(.top, Constants.verticalPadding)
@@ -129,6 +130,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
                                     removal: .opacity))
+            .accessibilityHidden(true) // prevents double-reading; error is already in field's accessibilityValue
             .animation(shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil,
                        value: errorMessage)
     }

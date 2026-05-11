@@ -446,7 +446,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let placeholderLabel = createLabel(text: title, isTitle: true)
         let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
         valueLabel.adjustsFontSizeToFitWidth = true
-        
+
+        placeholderLabel.isAccessibilityElement = false
+        if let subtitle = subtitle, !subtitle.isEmpty {
+            valueLabel.accessibilityLabel = "\(title), \(subtitle)"
+        } else {
+            valueLabel.accessibilityLabel = title
+        }
+
         stackView.addArrangedSubview(placeholderLabel)
         stackView.addArrangedSubview(valueLabel)
         

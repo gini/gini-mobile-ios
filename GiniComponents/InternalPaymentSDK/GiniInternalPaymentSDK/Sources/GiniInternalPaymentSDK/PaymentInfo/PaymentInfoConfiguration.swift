@@ -85,6 +85,8 @@ public struct PaymentInfoStrings {
     let titleText: String
     let payBillsTitleText: String
     let payBillsDescriptionText: String
+    let accessibilityExpandedText: String
+    let accessibilityCollapsedText: String
 
     let answers: [String]
     let questions: [String]
@@ -100,7 +102,9 @@ public struct PaymentInfoStrings {
                 payBillsTitleText: String,
                 payBillsDescriptionText: String,
                 answers: [String],
-                questions: [String]) {
+                questions: [String],
+                accessibilityExpandedText: String,
+                accessibilityCollapsedText: String) {
         self.accessibilityCloseText = accessibilityCloseText
         self.answers = answers
         self.questions = questions
@@ -113,5 +117,7 @@ public struct PaymentInfoStrings {
         self.answerPrivacyPolicyText = answerPrivacyPolicyText
         self.privacyPolicyURLText = privacyPolicyURLText
         self.questionsTitleText = questionsTitleText
+        self.accessibilityExpandedText = accessibilityExpandedText
+        self.accessibilityCollapsedText = accessibilityCollapsedText
     }
 }
