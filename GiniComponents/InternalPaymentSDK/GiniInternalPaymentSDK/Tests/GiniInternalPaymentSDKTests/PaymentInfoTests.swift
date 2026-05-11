@@ -111,15 +111,15 @@ struct PaymentInfoTests {
         #expect(info.bic == nil)
     }
 
-    @Test("bic is stored when provided")
+    @Test("bic is stored when set as a property")
     func bicStoredWhenProvided() {
-        let info = PaymentInfo(recipient: "R",
+        var info = PaymentInfo(recipient: "R",
                                iban: "DE89370400440532013000",
-                               bic: "TESTDE01",
                                amount: "1.00:EUR",
                                purpose: "P",
                                paymentUniversalLink: "",
                                paymentProviderId: "p")
+        info.bic = "TESTDE01"
         #expect(info.bic == "TESTDE01")
     }
 }

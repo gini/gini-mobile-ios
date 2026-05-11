@@ -112,7 +112,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -142,7 +141,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -182,7 +180,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -213,7 +210,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "https://testbank.example/pay",

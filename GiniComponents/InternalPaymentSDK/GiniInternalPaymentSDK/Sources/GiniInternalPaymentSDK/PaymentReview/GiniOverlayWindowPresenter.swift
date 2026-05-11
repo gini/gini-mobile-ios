@@ -144,9 +144,9 @@ private final class GiniPassthroughViewController: UIViewController, UIAdaptiveP
     override var childForStatusBarStyle: UIViewController? {
         presentedViewController
     }
-    
+
     override var childForStatusBarHidden: UIViewController? {
-        presentedViewController
+        childForStatusBarStyle
     }
     
     // MARK: - Private methods

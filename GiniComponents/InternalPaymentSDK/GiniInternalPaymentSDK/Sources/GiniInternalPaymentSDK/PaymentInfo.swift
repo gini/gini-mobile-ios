@@ -31,11 +31,11 @@ public struct PaymentInfo {
 
     /**
      Creates a new payment info object.
+     The `bic` field defaults to `nil` and can be set as a property after initialisation if needed.
      - Parameters:
        - sourceDocumentLocation: The URI of the source document, if available.
        - recipient: The recipient of the payment.
        - iban: The IBAN of the payment recipient.
-       - bic: The BIC for the payment, if available.
        - amount: The payment amount as a formatted string.
        - purpose: The purpose of the payment.
        - paymentUniversalLink: The universal link used to open the payment provider app.
@@ -44,7 +44,6 @@ public struct PaymentInfo {
     public init(sourceDocumentLocation: String? = nil,
                 recipient: String,
                 iban: String,
-                bic: String? = nil,
                 amount: String,
                 purpose: String,
                 paymentUniversalLink: String,
@@ -52,7 +51,7 @@ public struct PaymentInfo {
         self.sourceDocumentLocation = sourceDocumentLocation
         self.recipient = recipient
         self.iban = iban.uppercased()
-        self.bic = bic
+        self.bic = nil
         self.amount = amount
         self.purpose = purpose
         self.paymentUniversalLink = paymentUniversalLink
