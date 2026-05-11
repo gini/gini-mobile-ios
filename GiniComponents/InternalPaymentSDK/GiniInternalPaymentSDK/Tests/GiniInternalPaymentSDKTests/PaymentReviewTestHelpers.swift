@@ -420,30 +420,3 @@ extension ClientConfiguration {
         ClientConfiguration(ingredientBrandType: ingredientBrandType)
     }
 }
-
-func makePaymentReviewModelWithDocument(delegate: MockPaymentReviewDelegate,
-                                        bottomSheetsProvider: MockBottomSheetsProvider,
-                                        document: Document = .testDocument(),
-                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil) -> PaymentReviewModel {
-    PaymentReviewModel(delegate: delegate,
-                       bottomSheetsProvider: bottomSheetsProvider,
-                       document: document,
-                       extractions: nil,
-                       paymentInfo: nil,
-                       selectedPaymentProvider: .test,
-                       configuration: .test,
-                       strings: .test,
-                       containerConfiguration: .test,
-                       containerStrings: .test(),
-                       defaultStyleInputFieldConfiguration: .test,
-                       errorStyleInputFieldConfiguration: .test,
-                       selectionStyleInputFieldConfiguration: .test,
-                       primaryButtonConfiguration: .test,
-                       secondaryButtonConfiguration: .test,
-                       poweredByGiniConfiguration: .test,
-                       poweredByGiniStrings: .test,
-                       bottomSheetConfiguration: .test,
-                       showPaymentReviewCloseButton: true,
-                       previousPaymentComponentScreenType: previousPaymentComponentScreenType,
-                       clientConfiguration: nil)
-}
