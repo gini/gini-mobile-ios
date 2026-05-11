@@ -74,6 +74,11 @@ struct PaymentReviewHandleAmountFocusChangeTests {
     // The doneButtonBar calls handleAmountFocusChange(isFocused: false) directly, then
     // sets focusedField = nil which triggers a second call via onChange. Both calls must
     // leave the model in the same final state — no flipping of error flags.
+    // The VoiceOver announcement is only posted on the first call (when the error is newly
+    // introduced); the guard `!wasAlreadyInError` prevents a double-announcement on the
+    // second call. UIAccessibility.post cannot be unit-tested directly, but the guard's
+    // effect is verified indirectly: if hasError was already true on entry to the second
+    // call, the announcement branch is skipped.
     @Test("calling handleAmountFocusChange(isFocused: false) twice with valid amount stays error-free")
     func doubleCallWithValidAmountIsIdempotent() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())

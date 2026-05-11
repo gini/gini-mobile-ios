@@ -213,9 +213,13 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
                     amountInputState.text = ""
                 }
             }
+            let wasAlreadyInError = amountInputState.hasError
             amountInputState.hasError = !validateAmount(amountInputState.text, amount: amountToPay.value)
             amountInputState.errorMessage = amountError
-            if amountInputState.hasError, let errorMessage = amountError {
+            // Only announce when the error is newly introduced — not on a repeat call
+            // (e.g. the Done button triggers handleAmountFocusChange directly and then
+            // focusedField = nil triggers a second call via onChange).
+            if amountInputState.hasError, !wasAlreadyInError, let errorMessage = amountError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)
             }
         }
