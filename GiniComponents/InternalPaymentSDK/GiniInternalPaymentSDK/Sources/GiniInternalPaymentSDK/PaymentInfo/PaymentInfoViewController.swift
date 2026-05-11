@@ -97,7 +97,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         label.textAlignment = .left
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
-        label.attributedText = NSMutableAttributedString(string: viewModel.strings.questionsTitleText,
+        label.attributedText = NSMutableAttributedString(string: viewModel.strings.faq.titleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -287,6 +287,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
+        UIAccessibility.post(notification: .layoutChanged, argument: questionsTableView.headerView(forSection: section))
     }
     
     private func bindToTableViewSizeUpdates() {
@@ -311,10 +312,6 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         payBillsDescriptionTextView.attributedText = viewModel.payBillsDescriptionAttributedText
         payBillsDescriptionTextView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
         questionsTableView.reloadData()
-    }
-    
-    @objc private func didTapCloseButton() {
-        dismiss(animated: true)
     }
 
     // Handle orientation change
