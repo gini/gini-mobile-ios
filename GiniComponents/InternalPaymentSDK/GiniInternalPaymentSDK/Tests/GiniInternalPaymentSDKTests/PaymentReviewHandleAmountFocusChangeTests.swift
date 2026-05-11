@@ -57,4 +57,44 @@ struct PaymentReviewHandleAmountFocusChangeTests {
 
         #expect(sut.amountInputState.hasError == true, "focus lost with a zero parsed amount must set hasError on amountInputState")
     }
+
+    @Test("focus lost with empty amount sets errorMessage on amountInputState")
+    func focusLostEmptyTextSetsErrorMessage() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.text = ""
+        sut.amountToPay = Price(value: 0, currencyCode: "EUR")
+
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.errorMessage != nil, "focus lost with empty amount must populate errorMessage on amountInputState")
+    }
+
+    // MARK: - Done button regression guard (HEAL-368)
+
+    // The doneButtonBar calls handleAmountFocusChange(isFocused: false) directly, then
+    // sets focusedField = nil which triggers a second call via onChange. Both calls must
+    // leave the model in the same final state — no flipping of error flags.
+    @Test("calling handleAmountFocusChange(isFocused: false) twice with valid amount stays error-free")
+    func doubleCallWithValidAmountIsIdempotent() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+        sut.amountInputState.text = sut.amountToPay.stringWithoutSymbol ?? "12.50"
+
+        sut.handleAmountFocusChange(isFocused: false)
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.hasError == false, "double call with valid amount must not flip hasError — the Done button triggers this path")
+    }
+
+    @Test("calling handleAmountFocusChange(isFocused: false) twice with empty amount stays in error")
+    func doubleCallWithEmptyAmountIsIdempotent() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.text = ""
+        sut.amountToPay = Price(value: 0, currencyCode: "EUR")
+
+        sut.handleAmountFocusChange(isFocused: false)
+        sut.handleAmountFocusChange(isFocused: false)
+
+        #expect(sut.amountInputState.hasError == true, "double call with empty amount must keep hasError set — the Done button triggers this path")
+    }
 }
