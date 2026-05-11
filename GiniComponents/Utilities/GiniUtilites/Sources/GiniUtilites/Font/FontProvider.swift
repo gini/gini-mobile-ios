@@ -39,8 +39,10 @@ public final class FontProvider {
     /**
      Retrieves the font associated with a specific text style.
 
-     The returned `UIFont` is computed fresh on every call using `UIFontMetrics`, so it always
-     reflects the user's **current** Dynamic Type size — including changes made while the app is running.
+     For built-in Gini text styles the returned `UIFont` is computed fresh on every call using
+     `UIFontMetrics`, so it always reflects the user's **current** Dynamic Type size.
+     Custom fonts registered via `updateFont(_:for:)` are returned as-is; the caller is
+     responsible for pre-scaling them (e.g. via `UIFont.scaledFont(_:textStyle:)`).
 
      - parameter textStyle: The text style for which to retrieve the font.
      - returns: The font associated with the given text style.

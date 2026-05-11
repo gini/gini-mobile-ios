@@ -7,8 +7,10 @@
 import UIKit
 
 public struct PaymentInfoConfiguration {
-    /// Returns a freshly-scaled `UIFont` for the given text style at the current Dynamic Type size.
-    /// Set by the SDK internally; nil for externally-created configurations.
+    /**
+     Returns a freshly-scaled `UIFont` for the given text style at the current Dynamic Type size.
+     Set by the SDK internally; nil for externally-created configurations.
+     */
     public var dynamicFont: ((UIFont.TextStyle) -> UIFont)?
 
     let giniFont: UIFont
