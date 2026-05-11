@@ -116,41 +116,70 @@ public struct PaymentInfoConfiguration {
     }
 }
 
+public struct PaymentInfoGiniLinkStrings {
+    let websiteText: String
+    let urlText: String
+
+    public init(websiteText: String,
+                urlText: String) {
+        self.websiteText = websiteText
+        self.urlText = urlText
+    }
+}
+
+public struct PaymentInfoPrivacyPolicyStrings {
+    let text: String
+    let urlText: String
+
+    public init(text: String,
+                urlText: String) {
+        self.text = text
+        self.urlText = urlText
+    }
+}
+
+public struct PaymentInfoFAQStrings {
+    let titleText: String
+    let questions: [String]
+    let answers: [String]
+    let accessibilityExpandedText: String
+    let accessibilityCollapsedText: String
+
+    public init(titleText: String,
+                questions: [String],
+                answers: [String],
+                accessibilityExpandedText: String,
+                accessibilityCollapsedText: String) {
+        self.titleText = titleText
+        self.questions = questions
+        self.answers = answers
+        self.accessibilityExpandedText = accessibilityExpandedText
+        self.accessibilityCollapsedText = accessibilityCollapsedText
+    }
+}
+
 public struct PaymentInfoStrings {
-    let giniWebsiteText: String
-    let giniURLText: String
+    let giniLink: PaymentInfoGiniLinkStrings
     let supportedBanksText: String
-    let questionsTitleText: String
-    let answerPrivacyPolicyText: String
-    let privacyPolicyURLText: String
     let titleText: String
     let payBillsTitleText: String
     let payBillsDescriptionText: String
+    let privacyPolicy: PaymentInfoPrivacyPolicyStrings
+    let faq: PaymentInfoFAQStrings
 
-    let answers: [String]
-    let questions: [String]
-
-    public init(giniWebsiteText: String,
-                giniURLText: String,
+    public init(giniLink: PaymentInfoGiniLinkStrings,
                 supportedBanksText: String,
-                questionsTitleText: String,
-                answerPrivacyPolicyText: String,
-                privacyPolicyURLText: String,
                 titleText: String,
                 payBillsTitleText: String,
                 payBillsDescriptionText: String,
-                answers: [String],
-                questions: [String]) {
-        self.answers = answers
-        self.questions = questions
-        self.giniURLText = giniURLText
-        self.giniWebsiteText = giniWebsiteText
+                privacyPolicy: PaymentInfoPrivacyPolicyStrings,
+                faq: PaymentInfoFAQStrings) {
+        self.giniLink = giniLink
         self.supportedBanksText = supportedBanksText
         self.titleText = titleText
         self.payBillsTitleText = payBillsTitleText
         self.payBillsDescriptionText = payBillsDescriptionText
-        self.answerPrivacyPolicyText = answerPrivacyPolicyText
-        self.privacyPolicyURLText = privacyPolicyURLText
-        self.questionsTitleText = questionsTitleText
+        self.privacyPolicy = privacyPolicy
+        self.faq = faq
     }
 }

@@ -55,7 +55,7 @@ public final class PaymentInfoViewModel {
     }
     
     private func setupQuestions() {
-        questions = zip(strings.questions, strings.answers).map { question, answer in
+        questions = zip(strings.faq.questions, strings.faq.answers).map { question, answer in
             let answerAttributedString = answerWithAttributes(answer: answer)
             return FAQSection(title: question,
                               description: textWithLinks(linkFont: configuration.links.font, attributedString: answerAttributedString),
@@ -86,14 +86,14 @@ public final class PaymentInfoViewModel {
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
         let attributedString = attributedString
-        let giniRange = (attributedString.string as NSString).range(of: strings.giniWebsiteText)
-        attributedString.addLinkToRange(link: strings.giniURLText,
+        let giniRange = (attributedString.string as NSString).range(of: strings.giniLink.websiteText)
+        attributedString.addLinkToRange(link: strings.giniLink.urlText,
                                         color: configuration.links.color,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
-        let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.answerPrivacyPolicyText)
-        attributedString.addLinkToRange(link: strings.privacyPolicyURLText,
+        let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.privacyPolicy.text)
+        attributedString.addLinkToRange(link: strings.privacyPolicy.urlText,
                                         color: configuration.links.color,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
@@ -108,11 +108,14 @@ public final class PaymentInfoViewModel {
     }
 
     func infoQuestionHeaderViewModel(at index: Int) -> PaymentInfoQuestionHeaderViewModel {
-        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
+        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title,
                                            titleFont: configuration.questionHeader.font,
                                            titleColor: configuration.questionHeader.titleColor,
                                            extendedIcon: questions[index].isExtended ? configuration.questionHeader.minusIcon : configuration.questionHeader.plusIcon,
-                                           iconTintColor: configuration.questionHeader.iconTintColor)
+                                           iconTintColor: configuration.questionHeader.iconTintColor,
+                                           isExpanded: questions[index].isExtended,
+                                           toggleAccessibilityStrings: .init(expanded: strings.faq.accessibilityExpandedText,
+                                                                             collapsed: strings.faq.accessibilityCollapsedText))
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
