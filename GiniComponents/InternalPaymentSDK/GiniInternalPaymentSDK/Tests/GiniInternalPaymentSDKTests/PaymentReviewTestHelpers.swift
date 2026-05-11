@@ -102,8 +102,7 @@ extension PaymentReviewContainerStrings {
                                                           iban: "IBAN",
                                                           amount: "Amount",
                                                           usage: "Usage")
-        let errors = PaymentReviewFieldErrors(emptyCheck: "Field is empty",
-                                              ibanCheck: "Invalid IBAN",
+        let errors = PaymentReviewFieldErrors(ibanCheck: "Invalid IBAN",
                                               recipient: "Invalid recipient",
                                               iban: "IBAN required",
                                               amount: "Amount required",
@@ -381,9 +380,7 @@ extension InstallAppConfiguration {
                                 moreInformationAccentColor: .systemBlue,
                                 moreInformationIcon: UIImage(),
                                 appStoreIcon: UIImage(),
-                                bankIconBorderColor: .systemGray4,
-                                closeIcon: UIImage(),
-                                closeIconAccentColor: .label)
+                                bankIconBorderColor: .systemGray4)
     }
 }
 
@@ -394,8 +391,7 @@ extension InstallAppStrings {
                           moreInformationNotePattern: "Note: install [BANK]",
                           continueLabelText: "Continue",
                           accessibilityAppStoreText: "App Store",
-                          accessibilityBankLogoText: "Bank logo",
-                          accessibilityCloseIconText: "Close")
+                          accessibilityBankLogoText: "Bank logo")
     }
 }
 

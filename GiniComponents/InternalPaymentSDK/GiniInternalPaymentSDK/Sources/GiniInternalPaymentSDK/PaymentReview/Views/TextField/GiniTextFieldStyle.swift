@@ -89,8 +89,11 @@ struct GiniTextFieldStyle: TextFieldStyle {
                 errorMessageView(errorMessage)
             }
         }
+        // Only animate border/background transitions (state changes).
+        // Height animation is intentionally excluded: animating the container height
+        // propagates to parent stacks and causes sibling fields to overlap the error
+        // label during the transition (HEAL-368). The label animates itself below.
         .animation(fieldAnimation, value: state)
-        .animation(fieldAnimation, value: errorMessage)
     }
     
     // MARK: Private views
@@ -126,6 +129,8 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
                                     removal: .opacity))
+            .animation(shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil,
+                       value: errorMessage)
     }
     
     private struct Constants {

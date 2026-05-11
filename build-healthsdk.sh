@@ -16,6 +16,8 @@ iphonesimulatorBuildDir="build-health-iphonesimulator"
 iphoneosArchivePath="iphoneosHealth.xcarchive"
 iphoneosBuildDir="build-health-iphoneos"
 
+frameworks=("GiniHealthAPILibrary" "GiniUtilites" "GiniInternalPaymentSDK" "GiniHealthSDK")
+
 # Function to cleanup simulator and iOS archives
 cleanup-artefacts() {
     # check if cleanup is disabled in arguments
@@ -37,10 +39,7 @@ cleanup-artefacts() {
 
 cleanup-frameworks() {
     # cleaning up xcframeworks
-    rm -rf "GiniHealthSDK.xcframework"
-    rm -rf "GiniHealthAPILibrary.xcframework"
-    rm -rf "GiniUtilites.xcframework"
-    rm -rf "GiniInternalPaymentSDK.xcframework"
+    rm -rf *.xcframework
 }
 
 # Function to copy .swiftmodule files manually
@@ -51,8 +50,9 @@ cp-modules() {
 
     echo "Copying modules for $frName from $srcPath to $dstPath"
     mkdir -p "$dstPath/$frName.framework/Modules"
-    cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule"
+    cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule" 2>/dev/null || true
 }
+
 
 # Function to archive a target
 archive() {
@@ -64,7 +64,7 @@ archive() {
 
     local resultFrameworksPath="$outputPath/Products/usr/local/lib"
     local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/BuildProductsPath/Release-$sdk"
-
+    
     echo "Archiving for $platform ($sdk)"
     xcodebuild archive -workspace "$srcPath" \
         -scheme GiniHealthSDK \
@@ -77,18 +77,18 @@ archive() {
         CODE_SIGNING_ALLOWED=YES \
         CODE_SIGNING_REQUIRED=NO
 
-    cp-modules "GiniHealthSDK" "$modulesPath" "$resultFrameworksPath"
-    cp-modules "GiniHealthAPILibrary" "$modulesPath" "$resultFrameworksPath"
-    cp-modules "GiniInternalPaymentSDK" "$modulesPath" "$resultFrameworksPath"
-    cp-modules "GiniUtilites" "$modulesPath" "$resultFrameworksPath"
+    for framework in "${frameworks[@]}"; do
+        cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
+    done
 
     # Copy bundle resources
     local bundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniHealthSDK_GiniHealthSDK.bundle"
     if [ -d "$bundlePath" ]; then
         cp -a "$bundlePath" "$resultFrameworksPath/GiniHealthSDK.framework/GiniHealthSDK_GiniHealthSDK.bundle"
     else
-        echo "Resource bundle not found: $bundlePath"
+        echo "Resource bundle not found at expected path, skipping: $bundlePath"
     fi
+
 }
 
 # Function to create an XCFramework
@@ -99,6 +99,9 @@ make-xcframework() {
 
     local frameworkPath="$srcPath/Products/usr/local/lib/$frName.framework"
     local frameworkPathSim="$srcPathSim/Products/usr/local/lib/$frName.framework"
+
+    echo "Framework Path (iPhone): $frameworkPath"
+    echo "Framework Path (Simulator): $frameworkPathSim"
 
     echo "Creating XCFramework for $frName"
     xcodebuild -create-xcframework \
@@ -127,21 +130,9 @@ archive "HealthSDK/GiniHealthSDK" \
     $iphonesimulatorBuildDir \
     $iphonesimulatorArchivePath
 
-make-xcframework "GiniHealthSDK" \
-    $iphoneosArchivePath \
-    $iphonesimulatorArchivePath
-
-make-xcframework "GiniHealthAPILibrary" \
-    $iphoneosArchivePath \
-    $iphonesimulatorArchivePath
-
-make-xcframework "GiniInternalPaymentSDK" \
-    $iphoneosArchivePath \
-    $iphonesimulatorArchivePath
-
-make-xcframework "GiniUtilites" \
-    $iphoneosArchivePath \
-    $iphonesimulatorArchivePath
+for framework in "${frameworks[@]}"; do
+    make-xcframework "$framework" "$iphoneosArchivePath" "$iphonesimulatorArchivePath"
+done
 
 # swift package checks for "1" so making it empty is enough to clean it
 export GINI_FORCE_DYNAMIC_LIBRARY=""

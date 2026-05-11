@@ -12,6 +12,7 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
+    @State private var isDismissingForRotation = false
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
     @Environment(\.giniLayout) private var giniLayout
@@ -41,6 +42,7 @@ public struct PaymentReviewContentView: View {
             // sheet immediately (without animation) so the crossfade transition
             // isn't disrupted by the sheet's own dismissal animation.
             if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
+                isDismissingForRotation = true
                 showBottomSheet = false
             }
         }
@@ -107,7 +109,8 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            if viewModel.isBottomSheetMode || isVoiceOverEnabled {
+            defer { isDismissingForRotation = false }
+            if !isDismissingForRotation && (viewModel.isBottomSheetMode || isVoiceOverEnabled) {
                 viewModel.didTapClose()
             }
         } content: {

@@ -17,7 +17,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
     
     public var shouldShowInFullScreenInLandscapeMode: Bool {
-        true
+        false
     }
 
     var viewModel: InstallAppBottomViewModel
@@ -29,22 +29,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
     
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
-        return button
-    }()
-
     private let titleView = EmptyView()
 
     private lazy var titleLabel: UILabel = {
@@ -201,7 +185,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     private func setupAccessibility() {
         view.accessibilityViewIsModal = true
         view.accessibilityElements = [
-            closeButton,
             titleLabel,
             bankIconImageView,
             moreInformationLabel,
@@ -211,7 +194,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
     
     private func setupViewHierarchy() {
-        addCloseButton()
         titleView.addSubview(titleLabel)
         contentStackView.addArrangedSubview(titleView)
         bankView.addSubview(bankIconImageView)
@@ -238,21 +220,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         ])
     }
     
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                 constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
-    }
-
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
@@ -287,7 +254,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
         updateMoreInformationStackView(for: .portrait)
 
@@ -302,7 +268,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         updateMoreInformationStackView(for: .landscape)
 
@@ -357,10 +322,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     @objc private func willEnterForeground() {
         setButtonsState()
         postAccessibilityFocus()
-    }
-    
-    @objc private func tapOnCloseIcon() {
-        dismiss(animated: true)
     }
     
     private func setButtonsState() {
@@ -498,6 +459,5 @@ extension InstallAppBottomView {
         static let bottomViewHeight = 22.0
         static let landscapePadding = 126.0
         static let moreInformationTopPaddingLandscape = 32.0
-        static let closeIconSize = 24.0
     }
 }

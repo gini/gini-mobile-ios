@@ -21,8 +21,6 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                         comment: "placeholder text for usage input field")
             ),
             fieldErrors: .init(
-                emptyCheck: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
-                                                             comment: "the field failed non empty check"),
                 ibanCheck: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check"),
                 recipient: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
@@ -80,12 +78,10 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             accessibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore",
                                                                         comment: "Accessibility label for the App Store button"),
             accessibilityBankLogoText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo",
-                                                                        comment: "Accessibility label for the bank logo image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                         comment: "close button accessibility label text")
+                                                                        comment: "Accessibility label for the bank logo image")
         )
     }
-    
+
     public var shareInvoiceStrings: ShareInvoiceStrings {
         ShareInvoiceStrings(
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.continue.button.text",
