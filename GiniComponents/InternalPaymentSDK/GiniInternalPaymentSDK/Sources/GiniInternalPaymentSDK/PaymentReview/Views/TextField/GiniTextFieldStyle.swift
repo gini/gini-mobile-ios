@@ -40,14 +40,6 @@ struct GiniTextFieldStyle: TextFieldStyle {
         !UIAccessibility.isReduceMotionEnabled
     }
 
-    // Surfaces the error message as an accessibility hint on the field so VoiceOver
-    // announces it when the field is focused, without requiring the user to navigate
-    // to the separate error label below.
-    private var accessibilityErrorHint: String {
-        guard state == .error, let msg = errorMessage, !msg.isEmpty else { return "" }
-        return msg
-    }
-    
     init(lockedIcon: Image? = nil,
          title: String,
          state: GiniTextFieldState = .normal,
@@ -77,7 +69,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
                     .font(Font(giniFont: currentConfiguration.textFont))
                     .frame(minHeight: Constants.textFieldHeight)
                     .accessibilityLabel(title)
-                    .accessibilityHint(accessibilityErrorHint)
+                    .accessibilityHintIfPresent(state == .error ? errorMessage : nil)
             }
             .padding(.horizontal, Constants.horizontalPadding)
             .padding(.top, Constants.verticalPadding)
@@ -138,6 +130,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
                                     removal: .opacity))
+            .accessibilityHidden(true) // prevents double-reading; error is already in field's accessibilityValue
             .animation(shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil,
                        value: errorMessage)
             // Error is already surfaced via accessibilityHint on the field above.

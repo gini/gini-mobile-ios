@@ -86,11 +86,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .captions2),
             subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2),
-            closeIcon: GiniMerchantImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
-    
+
     public var paymentInfoConfiguration: PaymentInfoConfiguration {
         PaymentInfoConfiguration(
             giniFont: GiniMerchantConfiguration.shared.font(for: .button),
@@ -121,8 +119,6 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             selectBankAccentColor: GiniColor.standard2.uiColor(),
             selectBankFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
-            closeTitleIcon: GiniMerchantImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor(),
             bankCellBackgroundColor: GiniColor.standard7.uiColor(),
             bankCellIconBorderColor: GiniColor.standard5.uiColor(),
             bankCellNameFont: GiniMerchantConfiguration.shared.font(for: .body1),

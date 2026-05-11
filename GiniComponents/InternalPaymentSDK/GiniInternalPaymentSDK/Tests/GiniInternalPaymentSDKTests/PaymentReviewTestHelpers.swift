@@ -237,6 +237,33 @@ func makePaymentReviewModel(delegate: MockPaymentReviewDelegate,
                        clientConfiguration: nil)
 }
 
+func makePaymentReviewModelWithDocument(delegate: MockPaymentReviewDelegate,
+                                        bottomSheetsProvider: MockBottomSheetsProvider,
+                                        document: Document = .testDocument(),
+                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil) -> PaymentReviewModel {
+    PaymentReviewModel(delegate: delegate,
+                       bottomSheetsProvider: bottomSheetsProvider,
+                       document: document,
+                       extractions: nil,
+                       paymentInfo: nil,
+                       selectedPaymentProvider: .test,
+                       configuration: .test,
+                       strings: .test,
+                       containerConfiguration: .test,
+                       containerStrings: .test(),
+                       defaultStyleInputFieldConfiguration: .test,
+                       errorStyleInputFieldConfiguration: .test,
+                       selectionStyleInputFieldConfiguration: .test,
+                       primaryButtonConfiguration: .test,
+                       secondaryButtonConfiguration: .test,
+                       poweredByGiniConfiguration: .test,
+                       poweredByGiniStrings: .test,
+                       bottomSheetConfiguration: .test,
+                       showPaymentReviewCloseButton: true,
+                       previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                       clientConfiguration: nil)
+}
+
 // MARK: - Configuration and string test factories
 
 extension BankSelectionConfiguration {
@@ -245,8 +272,6 @@ extension BankSelectionConfiguration {
                                    descriptionFont: .systemFont(ofSize: 14),
                                    selectBankAccentColor: .label,
                                    selectBankFont: .systemFont(ofSize: 16, weight: .semibold),
-                                   closeTitleIcon: UIImage(),
-                                   closeIconAccentColor: .label,
                                    bankCellBackgroundColor: .systemBackground,
                                    bankCellIconBorderColor: .systemGray4,
                                    bankCellNameFont: .systemFont(ofSize: 14),
@@ -260,8 +285,7 @@ extension BankSelectionConfiguration {
 extension BanksBottomStrings {
     static var test: BanksBottomStrings {
         BanksBottomStrings(selectBankTitleText: "Select your bank",
-                           descriptionText: "Description",
-                           closeButtonAccessibilityLabel: "Close")
+                           descriptionText: "Description")
     }
 }
 
@@ -306,18 +330,19 @@ extension PaymentInfoConfiguration {
 
 extension PaymentInfoStrings {
     static var test: PaymentInfoStrings {
-        PaymentInfoStrings(accessibilityCloseText: "Close",
-                           giniWebsiteText: "Gini website",
-                           giniURLText: "https://gini.net",
+        PaymentInfoStrings(giniLink: .init(websiteText: "Gini website",
+                                           urlText: "https://gini.net"),
                            supportedBanksText: "Supported banks",
-                           questionsTitleText: "Questions",
-                           answerPrivacyPolicyText: "Privacy policy",
-                           privacyPolicyURLText: "https://gini.net/privacy",
                            titleText: "Payment information",
                            payBillsTitleText: "Pay bills",
                            payBillsDescriptionText: "Description",
-                           answers: [],
-                           questions: [])
+                           privacyPolicy: .init(text: "Privacy policy",
+                                                urlText: "https://gini.net/privacy"),
+                           faq: .init(titleText: "Questions",
+                                      questions: [],
+                                      answers: [],
+                                      accessibilityExpandedText: "Expanded",
+                                      accessibilityCollapsedText: "Collapsed"))
     }
 }
 
@@ -351,9 +376,7 @@ extension ShareInvoiceConfiguration {
                                   titlePaymentInfoTextColor: .label,
                                   subtitlePaymentInfoTextColor: .secondaryLabel,
                                   titlepaymentInfoFont: .systemFont(ofSize: 14, weight: .semibold),
-                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12),
-                                  closeIcon: UIImage(),
-                                  closeIconAccentColor: .label)
+                                  subtitlePaymentInfoFont: .systemFont(ofSize: 12))
     }
 }
 
@@ -366,8 +389,7 @@ extension ShareInvoiceStrings {
                             amountLabelText: "Amount",
                             ibanLabelText: "IBAN",
                             purposeLabelText: "Purpose",
-                            accessibilityQRCodeImageText: "QR code",
-                            accessibilityCloseIconText: "Close")
+                            accessibilityQRCodeImageText: "QR code")
     }
 }
 
@@ -399,31 +421,4 @@ extension ClientConfiguration {
     static func test(ingredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible) -> ClientConfiguration {
         ClientConfiguration(ingredientBrandType: ingredientBrandType)
     }
-}
-
-func makePaymentReviewModelWithDocument(delegate: MockPaymentReviewDelegate,
-                                        bottomSheetsProvider: MockBottomSheetsProvider,
-                                        document: Document = .testDocument(),
-                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil) -> PaymentReviewModel {
-    PaymentReviewModel(delegate: delegate,
-                       bottomSheetsProvider: bottomSheetsProvider,
-                       document: document,
-                       extractions: nil,
-                       paymentInfo: nil,
-                       selectedPaymentProvider: .test,
-                       configuration: .test,
-                       strings: .test,
-                       containerConfiguration: .test,
-                       containerStrings: .test(),
-                       defaultStyleInputFieldConfiguration: .test,
-                       errorStyleInputFieldConfiguration: .test,
-                       selectionStyleInputFieldConfiguration: .test,
-                       primaryButtonConfiguration: .test,
-                       secondaryButtonConfiguration: .test,
-                       poweredByGiniConfiguration: .test,
-                       poweredByGiniStrings: .test,
-                       bottomSheetConfiguration: .test,
-                       showPaymentReviewCloseButton: true,
-                       previousPaymentComponentScreenType: previousPaymentComponentScreenType,
-                       clientConfiguration: nil)
 }

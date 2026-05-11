@@ -31,18 +31,19 @@ struct PaymentInfoViewModelTests {
     private func makeStrings(questions: [String] = [],
                              answers: [String] = [],
                              supportedBanksFormat: String = "Banks") -> PaymentInfoStrings {
-        PaymentInfoStrings(accessibilityCloseText: "Close",
-                           giniWebsiteText: "Gini",
-                           giniURLText: "https://gini.net",
+        PaymentInfoStrings(giniLink: .init(websiteText: "Gini",
+                                           urlText: "https://gini.net"),
                            supportedBanksText: supportedBanksFormat,
-                           questionsTitleText: "Questions",
-                           answerPrivacyPolicyText: "Policy",
-                           privacyPolicyURLText: "https://gini.net/privacy",
                            titleText: "Info",
                            payBillsTitleText: "Bills",
                            payBillsDescriptionText: "Description",
-                           answers: answers,
-                           questions: questions)
+                           privacyPolicy: .init(text: "Policy",
+                                                urlText: "https://gini.net/privacy"),
+                           faq: .init(titleText: "Questions",
+                                      questions: questions,
+                                      answers: answers,
+                                      accessibilityExpandedText: "Expanded",
+                                      accessibilityCollapsedText: "Collapsed"))
     }
 
     // MARK: - shouldShowBrandedView
@@ -141,6 +142,74 @@ struct PaymentInfoViewModelTests {
 
         #expect(answerVM.answerTextColor == .label,
                 "infoAnswerCellModel must use the answerCellTextColor from the configuration")
+    }
+
+    // MARK: - infoQuestionHeaderViewModel — toggle accessibility strings
+
+    @Test("infoQuestionHeaderViewModel exposes the configured expanded accessibility text")
+    func infoQuestionHeaderViewModelExpandedText() {
+        let strings = makeStrings(questions: ["Q"], answers: ["A"])
+        let sut = makeSUT(strings: strings)
+
+        let header = sut.infoQuestionHeaderViewModel(at: 0)
+
+        #expect(header.toggleAccessibilityStrings.expanded == "Expanded",
+                "toggleAccessibilityStrings.expanded must match the strings fixture value")
+    }
+
+    @Test("infoQuestionHeaderViewModel exposes the configured collapsed accessibility text")
+    func infoQuestionHeaderViewModelCollapsedText() {
+        let strings = makeStrings(questions: ["Q"], answers: ["A"])
+        let sut = makeSUT(strings: strings)
+
+        let header = sut.infoQuestionHeaderViewModel(at: 0)
+
+        #expect(header.toggleAccessibilityStrings.collapsed == "Collapsed",
+                "toggleAccessibilityStrings.collapsed must match the strings fixture value")
+    }
+
+    @Test("infoQuestionHeaderViewModel returns isExpanded false when question is not extended")
+    func infoQuestionHeaderViewModelIsNotExpandedByDefault() {
+        let strings = makeStrings(questions: ["Q"], answers: ["A"])
+        let sut = makeSUT(strings: strings)
+
+        let header = sut.infoQuestionHeaderViewModel(at: 0)
+
+        #expect(header.isExpanded == false,
+                "isExpanded must be false when the question has not been toggled open")
+    }
+
+    @Test("infoQuestionHeaderViewModel returns isExpanded true after question is extended")
+    func infoQuestionHeaderViewModelIsExpandedAfterToggle() {
+        let strings = makeStrings(questions: ["Q"], answers: ["A"])
+        let sut = makeSUT(strings: strings)
+        sut.questions[0].isExtended = true
+
+        let header = sut.infoQuestionHeaderViewModel(at: 0)
+
+        #expect(header.isExpanded == true,
+                "isExpanded must be true when the question has been marked as extended")
+    }
+
+    @Test("infoQuestionHeaderViewModel reflects title at the given index")
+    func infoQuestionHeaderViewModelTitleAtIndex() {
+        let strings = makeStrings(questions: ["First", "Second"], answers: ["A1", "A2"])
+        let sut = makeSUT(strings: strings)
+
+        #expect(sut.infoQuestionHeaderViewModel(at: 0).titleText == "First")
+        #expect(sut.infoQuestionHeaderViewModel(at: 1).titleText == "Second")
+    }
+
+    @Test("infoQuestionHeaderViewModel for multiple questions each reports its own isExpanded state")
+    func infoQuestionHeaderViewModelPerQuestionExpansion() {
+        let strings = makeStrings(questions: ["Q1", "Q2"], answers: ["A1", "A2"])
+        let sut = makeSUT(strings: strings)
+        sut.questions[1].isExtended = true
+
+        #expect(sut.infoQuestionHeaderViewModel(at: 0).isExpanded == false,
+                "question 0 must remain collapsed")
+        #expect(sut.infoQuestionHeaderViewModel(at: 1).isExpanded == true,
+                "question 1 must be expanded after setting isExtended")
     }
 
     // MARK: - infoBankCellModel

@@ -17,11 +17,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private let contentView = EmptyView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
-    
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
 
     private lazy var titleView: UIView = {
         let view = EmptyView()
@@ -116,7 +111,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
         let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
         heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
@@ -130,7 +124,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints(screenWidth: CGFloat) {
-        closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
         let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
@@ -244,12 +237,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
-    
-    @objc
-    private func tapOnCloseIcon() {
-        viewModel.didTapOnClose()
-        dismiss(animated: true)
-    }
 
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -281,7 +268,6 @@ extension BanksBottomView {
         static let descriptionTopPadding = 4.0
         static let viewPaddingConstraint = 16.0
         static let topAnchorTitleView = 32.0
-        static let closeIconSize = 24.0
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
