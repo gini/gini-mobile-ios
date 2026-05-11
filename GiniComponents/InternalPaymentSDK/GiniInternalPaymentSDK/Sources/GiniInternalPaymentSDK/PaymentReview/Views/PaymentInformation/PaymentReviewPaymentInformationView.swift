@@ -311,8 +311,11 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
             }
-            .frame(width: Constants.paymentProviderPickerSize.width,
-                   height: Constants.paymentProviderPickerSize.height)
+            // At accessibility text sizes the adaptiveStack places the picker above the
+            // pay button in a VStack. Expand to full width so both controls align,
+            // instead of leaving a narrow 96-pt button floating above a full-width button.
+            .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : Constants.paymentProviderPickerSize.width,
+                   minHeight: Constants.paymentProviderPickerSize.height)
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
         .background(Color(secondaryButton.backgroundColor))
@@ -353,7 +356,9 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private func adaptiveStack<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
-        if dynamicTypeSize.isAccessibilitySize {
+        // Switch to VStack at xxxLarge and above so that wide content like IBAN numbers
+        // and the bank picker have full width; isAccessibilitySize covers AX1–AX5 (~190%+).
+        if dynamicTypeSize >= .xxxLarge {
             VStack(spacing: spacing) { content() }
         } else {
             HStack(alignment: .top, spacing: spacing) { content() }
