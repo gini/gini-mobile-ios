@@ -53,96 +53,6 @@ cp-modules() {
     cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule" 2>/dev/null || true
 }
 
-# Function to copy resource bundles
-copy-resources() {
-    local schemeName=$1
-    local dstPath=$2
-    local derivedDataPath=$4
-
-    echo "Copying resources for $schemeName from DerivedDataPath to $dstPath"
-
-    local frameworkDir="$dstPath/$schemeName.framework"
-    mkdir -p "$frameworkDir"
-
-    # Look for Assets.car in various locations
-    local assetCarPath=""
-    local possibleCarPaths=(
-        "$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/IntermediateBuildFilesPath/${schemeName}.build/Release-iphoneos/${schemeName}.build/assetcatalog_output/thinned/Assets.car"
-        "$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/IntermediateBuildFilesPath/${schemeName}.build/Release-iphoneos/${schemeName}_${schemeName}.build/assetcatalog_output/thinned/Assets.car"
-        "$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/BuildProductsPath/Release-iphoneos/${schemeName}.framework/Assets.car"
-    )
-
-    for path in "${possibleCarPaths[@]}"; do
-        if [[ -f "$path" ]]; then
-            assetCarPath="$path"
-            echo "Found Assets.car at: $path"
-            break
-        fi
-    done
-
-    # If not found, search recursively
-    if [[ -z "$assetCarPath" ]]; then
-        assetCarPath=$(find "$derivedDataPath" -name "Assets.car" -type f | grep -v ".xcarchive" | head -1)
-        if [[ -n "$assetCarPath" ]]; then
-            echo "Found Assets.car at: $assetCarPath"
-        fi
-    fi
-
-    # Copy Assets.car if found
-    if [[ -n "$assetCarPath" ]]; then
-        cp "$assetCarPath" "$frameworkDir/"
-        echo "Copied Assets.car to $frameworkDir/"
-    fi
-
-    # Look for bundle
-    local bundlePath=""
-    local possibleBundlePaths=(
-        "$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/IntermediateBuildFilesPath/UninstalledProducts/iphoneos/${schemeName}_${schemeName}.bundle"
-        "$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/BuildProductsPath/Release-iphoneos/${schemeName}_${schemeName}.bundle"
-    )
-
-    for path in "${possibleBundlePaths[@]}"; do
-        if [[ -d "$path" ]]; then
-            bundlePath="$path"
-            echo "Found bundle at: $path"
-            break
-        fi
-    done
-
-    # If not found, search recursively
-    if [[ -z "$bundlePath" ]]; then
-        bundlePath=$(find "$derivedDataPath" -name "*${schemeName}*.bundle" -type d | grep -v ".xcarchive" | head -1)
-        if [[ -n "$bundlePath" ]]; then
-            echo "Found bundle at: $bundlePath"
-        fi
-    fi
-
-    # Copy bundle if found
-    if [[ -n "$bundlePath" ]]; then
-        cp -r "$bundlePath" "$frameworkDir/"
-        echo "Copied bundle to $frameworkDir/"
-    fi
-}
-
-# Function to completely strip code signatures from framework
-strip-code-signatures() {
-    local frameworkPath=$1
-
-    echo "Stripping code signatures from $(basename "$frameworkPath")..."
-
-    # Remove signature from framework binary
-    codesign --remove-signature "$frameworkPath" 2>/dev/null || true
-
-    # Remove signatures from all files inside framework
-    find "$frameworkPath" -type f -exec codesign --remove-signature {} \; 2>/dev/null || true
-
-    # Remove all extended attributes (which can contain signatures)
-    find "$frameworkPath" -type f -exec xattr -c {} \; 2>/dev/null || true
-
-    echo "Code signatures stripped from $(basename "$frameworkPath")"
-
-    return 0
-}
 
 # Function to archive a target
 archive() {
@@ -154,7 +64,7 @@ archive() {
 
     local resultFrameworksPath="$outputPath/Products/usr/local/lib"
     local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDK/BuildProductsPath/Release-$sdk"
-
+    
     echo "Archiving for $platform ($sdk)"
     xcodebuild archive -workspace "$srcPath" \
         -scheme GiniHealthSDK \
@@ -164,25 +74,21 @@ archive() {
         -derivedDataPath "$derivedDataPath" \
         SKIP_INSTALL=NO \
         BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-        CODE_SIGNING_ALLOWED=NO \
-        CODE_SIGN_IDENTITY="" \
+        CODE_SIGNING_ALLOWED=YES \
         CODE_SIGNING_REQUIRED=NO
 
     for framework in "${frameworks[@]}"; do
         cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
     done
 
-    for framework in "${frameworks[@]}"; do
-        copy-resources "$framework" "$resultFrameworksPath" "" "$derivedDataPath"
-    done
+    # Copy bundle resources
+    local bundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniHealthSDK_GiniHealthSDK.bundle"
+    if [ -d "$bundlePath" ]; then
+        cp -a "$bundlePath" "$resultFrameworksPath/GiniHealthSDK.framework/GiniHealthSDK_GiniHealthSDK.bundle"
+    else
+        echo "Resource bundle not found at expected path, skipping: $bundlePath"
+    fi
 
-    # Strip code signatures after copying resources
-    for framework in "${frameworks[@]}"; do
-        local frameworkPath="$resultFrameworksPath/$framework.framework"
-        if [[ -d "$frameworkPath" ]]; then
-            strip-code-signatures "$frameworkPath"
-        fi
-    done
 }
 
 # Function to create an XCFramework
