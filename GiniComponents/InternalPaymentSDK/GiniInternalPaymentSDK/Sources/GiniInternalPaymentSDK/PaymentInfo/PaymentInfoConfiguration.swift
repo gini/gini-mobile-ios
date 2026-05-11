@@ -94,13 +94,19 @@ public struct PaymentInfoFAQStrings {
     let titleText: String
     let questions: [String]
     let answers: [String]
+    let accessibilityExpandedText: String
+    let accessibilityCollapsedText: String
 
     public init(titleText: String,
                 questions: [String],
-                answers: [String]) {
+                answers: [String],
+                accessibilityExpandedText: String,
+                accessibilityCollapsedText: String) {
         self.titleText = titleText
         self.questions = questions
         self.answers = answers
+        self.accessibilityExpandedText = accessibilityExpandedText
+        self.accessibilityCollapsedText = accessibilityCollapsedText
     }
 }
 

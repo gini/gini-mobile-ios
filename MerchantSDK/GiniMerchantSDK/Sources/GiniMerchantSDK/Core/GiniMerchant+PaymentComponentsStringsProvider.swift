@@ -149,7 +149,11 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                           NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.5",
                                                            comment: "Answers description"),
                           NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.6",
-                                                           comment: "Answers description")])
+                                                           comment: "Answers description")],
+                accessibilityExpandedText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.accessibility.expanded",
+                                                                            comment: "Accessibility label for an expanded FAQ question header"),
+                accessibilityCollapsedText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.accessibility.collapsed",
+                                                                             comment: "Accessibility label for a collapsed FAQ question header"))
         )
     }
     

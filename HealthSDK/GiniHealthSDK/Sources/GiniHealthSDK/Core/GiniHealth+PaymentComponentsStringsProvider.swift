@@ -149,7 +149,11 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                           NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.questions.answer.5",
                                                            comment: "Answers description for question 5"),
                           NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.questions.answer.6",
-                                                           comment: "Answers description for question 6")])
+                                                           comment: "Answers description for question 6")],
+                accessibilityExpandedText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.questions.accessibility.expanded",
+                                                                            comment: "Accessibility label for an expanded FAQ question header"),
+                accessibilityCollapsedText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed",
+                                                                             comment: "Accessibility label for a collapsed FAQ question header"))
         )
     }
 

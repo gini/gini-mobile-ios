@@ -287,6 +287,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
+        UIAccessibility.post(notification: .layoutChanged, argument: questionsTableView.headerView(forSection: section))
     }
     
     private func bindToTableViewSizeUpdates() {

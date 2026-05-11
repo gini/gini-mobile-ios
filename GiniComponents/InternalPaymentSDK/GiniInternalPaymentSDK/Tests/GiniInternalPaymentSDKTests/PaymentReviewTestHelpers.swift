@@ -340,7 +340,9 @@ extension PaymentInfoStrings {
                                                 urlText: "https://gini.net/privacy"),
                            faq: .init(titleText: "Questions",
                                       questions: [],
-                                      answers: []))
+                                      answers: [],
+                                      accessibilityExpandedText: "Expanded",
+                                      accessibilityCollapsedText: "Collapsed"))
     }
 }
 
