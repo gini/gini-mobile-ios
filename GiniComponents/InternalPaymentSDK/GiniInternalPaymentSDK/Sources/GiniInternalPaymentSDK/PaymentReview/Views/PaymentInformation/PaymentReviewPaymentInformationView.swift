@@ -311,10 +311,10 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
             }
-            // At accessibility text sizes the adaptiveStack places the picker above the
-            // pay button in a VStack. Expand to full width so both controls align,
-            // instead of leaving a narrow 96-pt button floating above a full-width button.
-            .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : Constants.paymentProviderPickerSize.width,
+            // At xxxLarge and above, adaptiveStack places the picker above the pay button
+            // in a VStack. Expand to full width so both controls align, instead of leaving
+            // a narrow 96-pt button floating above a full-width button.
+            .frame(maxWidth: dynamicTypeSize >= .xxxLarge ? .infinity : Constants.paymentProviderPickerSize.width,
                    minHeight: Constants.paymentProviderPickerSize.height)
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
