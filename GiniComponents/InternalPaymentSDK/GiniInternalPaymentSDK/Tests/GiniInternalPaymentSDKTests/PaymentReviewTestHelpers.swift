@@ -306,25 +306,27 @@ extension MoreInformationStrings {
 
 extension PaymentInfoConfiguration {
     static var test: PaymentInfoConfiguration {
-        PaymentInfoConfiguration(giniFont: .systemFont(ofSize: 14),
-                                 answersFont: .systemFont(ofSize: 12),
-                                 answerCellTextColor: .label,
-                                 answerCellLinkColor: .systemBlue,
-                                 questionsTitleFont: .systemFont(ofSize: 16, weight: .semibold),
-                                 questionsTitleColor: .label,
-                                 questionHeaderFont: .systemFont(ofSize: 14, weight: .medium),
-                                 questionHeaderTitleColor: .label,
-                                 questionHeaderMinusIcon: UIImage(),
-                                 questionHeaderPlusIcon: UIImage(),
-                                 bankCellBorderColor: .systemGray4,
-                                 payBillsTitleFont: .systemFont(ofSize: 18, weight: .bold),
-                                 payBillsTitleColor: .label,
-                                 payBillsDescriptionFont: .systemFont(ofSize: 14),
-                                 linksFont: .systemFont(ofSize: 12),
-                                 linksColor: .systemBlue,
-                                 separatorColor: .systemGray5,
-                                 backgroundColor: .systemBackground,
-                                 questionHeaderIconTintColor: .label)
+        PaymentInfoConfiguration(
+            answerCell: .init(font: .systemFont(ofSize: 12),
+                              textColor: .label,
+                              linkColor: .systemBlue),
+            questionHeader: .init(font: .systemFont(ofSize: 14, weight: .medium),
+                                  titleColor: .label,
+                                  minusIcon: UIImage(),
+                                  plusIcon: UIImage(),
+                                  iconTintColor: .label),
+            questionsTitle: .init(font: .systemFont(ofSize: 16, weight: .semibold),
+                                  color: .label),
+            payBills: .init(titleFont: .systemFont(ofSize: 18, weight: .bold),
+                            titleColor: .label,
+                            descriptionFont: .systemFont(ofSize: 14)),
+            links: .init(giniFont: .systemFont(ofSize: 14),
+                         font: .systemFont(ofSize: 12),
+                         color: .systemBlue),
+            layout: .init(bankCellBorderColor: .systemGray4,
+                          separatorColor: .systemGray5,
+                          backgroundColor: .systemBackground)
+        )
     }
 }
 
