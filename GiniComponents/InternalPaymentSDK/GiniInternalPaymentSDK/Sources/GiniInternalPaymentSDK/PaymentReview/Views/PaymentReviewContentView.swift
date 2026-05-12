@@ -154,7 +154,7 @@ public struct PaymentReviewContentView: View {
     }
     
     // MARK: - Private Views
-    
+
     @ViewBuilder
     private var loadingOverlay: some View {
         if viewModel.isLoading {

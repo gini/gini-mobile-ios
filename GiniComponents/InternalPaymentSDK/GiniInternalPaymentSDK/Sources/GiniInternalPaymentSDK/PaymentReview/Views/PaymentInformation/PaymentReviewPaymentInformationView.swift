@@ -64,21 +64,7 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            scrollView
-            // Keep banner in tree while either flag is true so the exit animation plays.
-            if showBanner || bannerVisible {
-                infoBannerView
-                    .offset(y: bannerVisible ? 0 : -Constants.bannerHiddenOffset)
-                    .opacity(bannerVisible ? 1 : 0)
-                    .animation(!UIAccessibility.isReduceMotionEnabled
-                                    ? .spring(response: Constants.bannerEntranceDuration,
-                                              dampingFraction: 0.8)
-                                    : nil,
-                               value: bannerVisible)
-            }
-        }
-        .clipped()
+        scrollView
         .onAppear {
             viewModel.isViewVisible = true
             viewModel.populateFieldsIfNeeded()
@@ -165,6 +151,13 @@ struct PaymentReviewPaymentInformationView: View {
     private var baseScrollView: some View {
         ScrollView {
             VStack(spacing: Constants.textFieldsContainerSpacing) {
+                if bannerVisible {
+                    infoBannerView
+                        .transition(!UIAccessibility.isReduceMotionEnabled
+                                        ? .move(edge: .top).combined(with: .opacity)
+                                        : .opacity)
+                }
+
                 recipientTextField
 
                 adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
@@ -204,19 +197,12 @@ struct PaymentReviewPaymentInformationView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, Constants.bannerVerticalPadding)
         .background(Color(infoBar.backgroundColor))
-        .clipShape(
-            .rect(
-                topLeadingRadius: Constants.bannerCornerRadius,
-                bottomLeadingRadius: 0.0,
-                bottomTrailingRadius: 0.0,
-                topTrailingRadius: Constants.bannerCornerRadius
-            )
-        )
+        .clipShape(.rect(cornerRadius: Constants.bannerCornerRadius))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityLabel(viewModel.model.strings.infoBarMessage)
     }
-    
+
     @ViewBuilder
     private var recipientTextField: some View {
         TextField("", text: $viewModel.recipientInputState.text)
@@ -443,9 +429,8 @@ struct PaymentReviewPaymentInformationView: View {
     }
 
     private struct Constants {
-        static let bannerVerticalPadding = 16.0
+        static let bannerVerticalPadding = 12.0
         static let bannerCornerRadius = 12.0
-        static let bannerHiddenOffset = 80.0
         static let bannerEntranceDuration = 0.45
         static let bannerDismissDuration = 0.3
         static let textFieldsContainerSpacing = 8.0
