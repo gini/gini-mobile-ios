@@ -241,6 +241,5 @@ extension PaymentInfo {
                   purpose: paymentConponentsInfo.purpose,
                   paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentConponentsInfo.paymentProviderId)
-        self.bic = paymentConponentsInfo.bic
     }
 }
