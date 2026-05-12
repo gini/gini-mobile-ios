@@ -207,7 +207,14 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
             /// no onChange fires to trigger handleAmountTextChange.
             amountInputState.hasError = false
             amountInputState.errorMessage = nil
-            amountInputState.text = amountToPay.stringWithoutSymbol ?? ""
+            /// Only strip the currency symbol from the displayed text when there is a
+            /// positive amount. For zero / unset values the text is already empty and
+            /// a programmatic change from "" to "0,00" inside a Task can race with
+            /// UIKit establishing first-responder, causing the field to briefly lose
+            /// focus, re-trigger the validation path, and show the error again.
+            if amountToPay.value > 0, let rawText = amountToPay.stringWithoutSymbol {
+                amountInputState.text = rawText
+            }
         } else {
             if !amountInputState.text.isEmpty,
                let decimalAmount = amountInputState.text.decimal() {
