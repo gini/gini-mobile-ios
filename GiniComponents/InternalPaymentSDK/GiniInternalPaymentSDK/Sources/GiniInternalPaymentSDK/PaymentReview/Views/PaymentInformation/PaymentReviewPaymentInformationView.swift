@@ -198,8 +198,7 @@ struct PaymentReviewPaymentInformationView: View {
         .disabled(viewModel.isFieldsLocked)
         .submitLabel(.done)
         .onSubmit {
-            focusedField = nil
-            viewModel.activeField = nil
+            clearFocus()
         }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.recipient,
                                            field: .recipient,
@@ -223,8 +222,7 @@ struct PaymentReviewPaymentInformationView: View {
         .textInputAutocapitalization(.characters)
         .submitLabel(.done)
         .onSubmit {
-            focusedField = nil
-            viewModel.activeField = nil
+            clearFocus()
         }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.iban,
                                            field: .iban,
@@ -265,8 +263,7 @@ struct PaymentReviewPaymentInformationView: View {
         .disabled(viewModel.isFieldsLocked)
         .submitLabel(.done)
         .onSubmit {
-            focusedField = nil
-            viewModel.activeField = nil
+            clearFocus()
         }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.usage,
                                            field: .paymentPurpose,
@@ -392,6 +389,11 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     // MARK: Private methods
+
+    private func clearFocus() {
+        focusedField = nil
+        viewModel.activeField = nil
+    }
 
     private func makeTextFieldStyle(title: String,
                                     field: ActivePaymentField,
