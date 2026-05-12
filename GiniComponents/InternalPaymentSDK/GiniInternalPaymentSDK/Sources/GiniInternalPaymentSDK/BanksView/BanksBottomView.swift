@@ -18,21 +18,16 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private let contentView = EmptyView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
 
-    private lazy var titleView: UIView = {
-        let view = EmptyView()
-        view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.heightTitleView)
-        return view
-    }()
+    private let titleView = EmptyView()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
-        label.font = viewModel.configuration.selectBankFont
-        label.adjustsFontSizeToFitWidth = true
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
+        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.selectBankFont)
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
         return label
     }()
     
@@ -43,8 +38,8 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = viewModel.configuration.descriptionFont
-        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.descriptionFont)
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
     }()
@@ -91,8 +86,8 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        // Detect the initial orientation and set up the appropriate constraints
         setupInitialLayout()
+        setupContentSizeCategoryObserver()
     }
 
     public init(viewModel: BanksBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
@@ -167,8 +162,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewAttributes() {
-        let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
-        paymentProvidersTableView.isScrollEnabled = isFullScreen
+        paymentProvidersTableView.isScrollEnabled = true
     }
 
     private func setupLayout() {
@@ -204,7 +198,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
                                                 constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor,
                                                 constant: -Constants.viewPaddingConstraint),
-            titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
         ])
@@ -234,7 +227,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            bottomStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.bottomViewHeight)
         ])
     }
 
@@ -260,11 +253,26 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             setupLandscapeConstraints(screenWidth: screenSize.width)
         }
     }
+
+    private func setupContentSizeCategoryObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(contentSizeCategoryDidChange),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
+    }
+
+    @objc private func contentSizeCategoryDidChange() {
+        viewModel.calculateHeights()
+        updateLayoutForCurrentOrientation(screenSize: view.bounds.size)
+        paymentProvidersTableView.reloadData()
+        view.layoutIfNeeded()
+    }
 }
 
 extension BanksBottomView {
     enum Constants {
-        static let heightTitleView = 49.0
         static let descriptionTopPadding = 4.0
         static let viewPaddingConstraint = 16.0
         static let topAnchorTitleView = 32.0

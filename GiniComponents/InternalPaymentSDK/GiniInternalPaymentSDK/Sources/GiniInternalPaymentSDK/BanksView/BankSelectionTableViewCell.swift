@@ -17,6 +17,7 @@ class BankSelectionTableViewCell: UITableViewCell, ReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -116,7 +117,7 @@ private extension BankSelectionTableViewCell {
         bankImageView.layer.borderColor = cellViewModel.colors.bankIconBorderColor.cgColor
 
         bankNameLabel.text = cellViewModel.bankName
-        bankNameLabel.font = cellViewModel.bankNameFont
+        bankNameLabel.font = UIFontMetrics.default.scaledFont(for: cellViewModel.bankNameFont)
         bankNameLabel.textColor = cellViewModel.colors.bankNameAccentColor
 
         cellView.backgroundColor = cellViewModel.colors.backgroundColor
