@@ -24,6 +24,19 @@ struct PaymentReviewHandleAmountFocusChangeTests {
         #expect(sut.amountInputState.text == (sut.amountToPay.stringWithoutSymbol ?? ""), "focus gained must set amount text to the raw numeric value of amountToPay")
     }
 
+    @Test("focus gained clears any existing error")
+    func focusGainedClearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+        sut.amountInputState.hasError = true
+        sut.amountInputState.errorMessage = "some error"
+
+        sut.handleAmountFocusChange(isFocused: true)
+
+        #expect(sut.amountInputState.hasError == false, "focus gained must clear hasError so the field is immediately editable even when text did not change")
+        #expect(sut.amountInputState.errorMessage == nil, "focus gained must clear errorMessage")
+    }
+
     @Test("focus lost with empty text sets hasError")
     func focusLostEmptyTextSetsError() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())

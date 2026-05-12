@@ -202,6 +202,11 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      */
     func handleAmountFocusChange(isFocused: Bool) {
         if isFocused {
+            /// Always clear the error on focus-gain so the field immediately shows
+            /// as editable, even when the raw text equals the prior stored value and
+            /// no onChange fires to trigger handleAmountTextChange.
+            amountInputState.hasError = false
+            amountInputState.errorMessage = nil
             amountInputState.text = amountToPay.stringWithoutSymbol ?? ""
         } else {
             if !amountInputState.text.isEmpty,
