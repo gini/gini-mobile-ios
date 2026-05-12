@@ -226,11 +226,21 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
 
     /**
-     Handles a text change in the amount field: clears the error flag and updates
-     both the displayed text and the `amountToPay` value if the input is parsable.
+     Handles a text change in the amount field: clears the error flag (only while the
+     user is actively editing) and updates both the displayed text and the `amountToPay`
+     value if the input is parsable.
+
+     The guard on `isAmountFieldFocused` prevents programmatic text changes — e.g.
+     the reformatting step inside `handleAmountFocusChange(isFocused: false)` — from
+     discarding a validation error that was just set by `updateFieldErrorStates` or the
+     pay-button action.
      */
     func handleAmountTextChange(updatedText: String) {
-        amountInputState.hasError = false
+        /// Only clear the error while the user is actively typing. Programmatic
+        /// changes (formatting on focus-out) must not discard a validation error.
+        if isAmountFieldFocused {
+            amountInputState.hasError = false
+        }
         if let result = adjustAmountValue(text: updatedText) {
             amountInputState.text = result.adjustedText
             amountToPay.value = result.newValue
