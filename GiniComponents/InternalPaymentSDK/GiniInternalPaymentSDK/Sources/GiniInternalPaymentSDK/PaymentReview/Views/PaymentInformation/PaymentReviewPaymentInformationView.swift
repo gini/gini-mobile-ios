@@ -17,10 +17,17 @@ struct PaymentReviewPaymentInformationView: View {
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
     
     @FocusState private var focusedField: ActivePaymentField?
-    
+
     @Binding private var contentHeight: CGFloat
     @Binding private var showBanner: Bool
-    
+
+    /**
+     Separate animation driver for the banner. `showBanner` is already `true` at init so a
+     SwiftUI transition would never fire; this state starts `false` and animates to `true`
+     in `.onAppear`, making the banner slide down from above the sheet grabber.
+     */
+    @State private var bannerVisible: Bool = false
+
     @Environment(\.giniLayout) private var giniLayout
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -59,12 +66,16 @@ struct PaymentReviewPaymentInformationView: View {
     var body: some View {
         ZStack(alignment: .top) {
             scrollView
-            if showBanner {
+            // Keep banner in tree while either flag is true so the exit animation plays.
+            if showBanner || bannerVisible {
                 infoBannerView
-                    .onAppear {
-                        UIAccessibility.post(notification: .announcement,
-                                             argument: viewModel.model.strings.infoBarMessage)
-                    }
+                    .offset(y: bannerVisible ? 0 : -Constants.bannerHiddenOffset)
+                    .opacity(bannerVisible ? 1 : 0)
+                    .animation(!UIAccessibility.isReduceMotionEnabled
+                                    ? .spring(response: Constants.bannerEntranceDuration,
+                                              dampingFraction: 0.8)
+                                    : nil,
+                               value: bannerVisible)
             }
         }
         .clipped()
@@ -76,6 +87,24 @@ struct PaymentReviewPaymentInformationView: View {
             UIAccessibility.post(notification: .screenChanged, argument: nil)
             // After a rotation the view is recreated; restore keyboard if it was open.
             restoreFocusIfNeeded()
+            guard showBanner else { return }
+            let animation: Animation? = !UIAccessibility.isReduceMotionEnabled
+                ? .spring(response: Constants.bannerEntranceDuration, dampingFraction: 0.8)
+                : nil
+            withAnimation(animation) { bannerVisible = true }
+        }
+        .onChange(of: bannerVisible) { visible in
+            if visible {
+                UIAccessibility.post(notification: .announcement,
+                                     argument: viewModel.model.strings.infoBarMessage)
+            }
+        }
+        .onChange(of: showBanner) { newValue in
+            guard newValue != bannerVisible else { return }
+            let animation: Animation? = !UIAccessibility.isReduceMotionEnabled
+                ? .easeInOut(duration: Constants.bannerDismissDuration)
+                : nil
+            withAnimation(animation) { bannerVisible = newValue }
         }
         .onDisappear {
             viewModel.isViewVisible = false
@@ -183,7 +212,6 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityLabel(viewModel.model.strings.infoBarMessage)
@@ -417,6 +445,9 @@ struct PaymentReviewPaymentInformationView: View {
     private struct Constants {
         static let bannerVerticalPadding = 16.0
         static let bannerCornerRadius = 12.0
+        static let bannerHiddenOffset = 80.0
+        static let bannerEntranceDuration = 0.45
+        static let bannerDismissDuration = 0.3
         static let textFieldsContainerSpacing = 8.0
         static let buttonsContainerSpacing = 8.0
         static let paymentProviderPickerSpacing = 12.0
