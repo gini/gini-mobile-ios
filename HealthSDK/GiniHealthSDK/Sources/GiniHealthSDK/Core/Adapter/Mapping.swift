@@ -239,11 +239,11 @@ extension GiniInternalPaymentSDK.PaymentInfo {
     public init(paymentComponentsInfo: GiniHealthSDK.PaymentInfo) {
         self.init(recipient: paymentComponentsInfo.recipient,
                   iban: paymentComponentsInfo.iban,
-                  bic: paymentComponentsInfo.bic,
                   amount: paymentComponentsInfo.amount,
                   purpose: paymentComponentsInfo.purpose,
                   paymentUniversalLink: paymentComponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentComponentsInfo.paymentProviderId)
+        self.bic = paymentComponentsInfo.bic
     }
 }
 

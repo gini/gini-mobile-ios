@@ -112,7 +112,7 @@ struct PaymentInfoTests {
     }
 
     @Test("bic is stored when set as a property")
-    func bicStoredWhenProvided() {
+    func bicStoredWhenSetAsProperty() {
         var info = PaymentInfo(recipient: "R",
                                iban: "DE89370400440532013000",
                                amount: "1.00:EUR",
