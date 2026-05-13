@@ -9,22 +9,11 @@ import UIKit
 import SwiftUI
 
 public final class FontProvider {
+    private var textStyleFonts = FontProvider.defaultFonts
 
-    // Base font specification — stores the design-time values, not a pre-scaled instance.
-    private struct FontSpec {
-        let size: CGFloat
-        let weight: UIFont.Weight
-        /// The UIKit text style used by `UIFontMetrics` to scale `size` at call time.
-        let scalingStyle: UIFont.TextStyle
+    public init() {
+        // Uses default font specs defined in `FontProvider.defaultFonts`.
     }
-
-    // Per-text-style base specs (never scaled; computed fresh on every `font(for:)` call).
-    private var fontSpecs: [UIFont.TextStyle: FontSpec] = FontProvider.defaultSpecs
-
-    // Custom UIFont overrides registered by the host app via `updateFont(_:for:)`.
-    private var customFonts: [UIFont.TextStyle: UIFont] = [:]
-
-    public init() {}
 
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
@@ -33,36 +22,21 @@ public final class FontProvider {
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
-        customFonts[textStyle] = font
+        textStyleFonts[textStyle] = font
     }
 
     /**
      Retrieves the font associated with a specific text style.
 
-     For built-in Gini text styles the returned `UIFont` is computed fresh on every call using
-     `UIFontMetrics`, so it always reflects the user's **current** Dynamic Type size.
-     Custom fonts registered via `updateFont(_:for:)` are returned as-is; the caller is
-     responsible for pre-scaling them (e.g. via `UIFont.scaledFont(_:textStyle:)`).
-
      - parameter textStyle: The text style for which to retrieve the font.
      - returns: The font associated with the given text style.
      */
     public func font(for textStyle: UIFont.TextStyle) -> UIFont {
-        if let custom = customFonts[textStyle] {
-            return custom
-        }
-        guard let spec = fontSpecs[textStyle] else {
-            return UIFont.systemFont(ofSize: 17)
-        }
-        let base = UIFont.systemFont(ofSize: spec.size, weight: spec.weight)
-        return UIFontMetrics(forTextStyle: spec.scalingStyle).scaledFont(for: base)
+        return textStyleFonts[textStyle] ?? UIFont.systemFont(ofSize: 17)
     }
 
     /**
      Retrieves the SwiftUI `Font` associated with a specific text style.
-
-     The returned `Font` wraps a freshly-computed `UIFont`, so it reflects the current Dynamic Type
-     size at the moment it is called.
 
      - parameter textStyle: The text style for which to retrieve the SwiftUI font.
      - returns: A `SwiftUI.Font` created from the associated `UIFont`.
@@ -76,21 +50,23 @@ public final class FontProvider {
 // MARK: - Private
 
 private extension FontProvider {
+    private static func createFont(textStyle: UIFont.TextStyle, size: CGFloat, weight: UIFont.Weight) -> UIFont {
+        let font = UIFont.systemFont(ofSize: size, weight: weight)
+        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
+    }
 
-    /// Design-time specifications for every Gini text style.
-    /// Values are **not** pre-scaled; `font(for:)` applies `UIFontMetrics` at call time.
-    private static let defaultSpecs: [UIFont.TextStyle: FontSpec] = [
-        .headline1:  FontSpec(size: 26, weight: .regular, scalingStyle: .headline),
-        .headline2:  FontSpec(size: 20, weight: .bold,    scalingStyle: .headline),
-        .headline3:  FontSpec(size: 18, weight: .bold,    scalingStyle: .headline),
-        .captions1:  FontSpec(size: 13, weight: .regular, scalingStyle: .caption1),
-        .captions2:  FontSpec(size: 12, weight: .regular, scalingStyle: .caption2),
-        .linkBold:   FontSpec(size: 14, weight: .bold,    scalingStyle: .footnote),
-        .subtitle1:  FontSpec(size: 16, weight: .bold,    scalingStyle: .subheadline),
-        .subtitle2:  FontSpec(size: 14, weight: .medium,  scalingStyle: .subheadline),
-        .input:      FontSpec(size: 16, weight: .medium,  scalingStyle: .caption1),
-        .button:     FontSpec(size: 16, weight: .bold,    scalingStyle: .caption2),
-        .body1:      FontSpec(size: 16, weight: .regular, scalingStyle: .body),
-        .body2:      FontSpec(size: 14, weight: .regular, scalingStyle: .body),
+    private static let defaultFonts : [UIFont.TextStyle: UIFont] = [
+        .headline1: createFont(textStyle: .headline, size: 26, weight: .regular),
+        .headline2: createFont(textStyle: .headline, size: 20, weight: .bold),
+        .headline3: createFont(textStyle: .headline, size: 18, weight: .bold),
+        .captions1: createFont(textStyle: .caption1, size: 13, weight: .regular),
+        .captions2: createFont(textStyle: .caption2, size: 12, weight: .regular),
+        .linkBold: createFont(textStyle: .footnote, size: 14, weight: .bold),
+        .subtitle1: createFont(textStyle: .subheadline, size: 16, weight: .bold),
+        .subtitle2: createFont(textStyle: .subheadline, size: 14, weight: .medium),
+        .input: createFont(textStyle: .caption1, size: 16, weight: .medium),
+        .button: createFont(textStyle: .caption2, size: 16, weight: .bold),
+        .body1: createFont(textStyle: .body, size: 16, weight: .regular),
+        .body2: createFont(textStyle: .body, size: 14, weight: .regular)
     ]
 }
