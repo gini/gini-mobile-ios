@@ -276,4 +276,56 @@ final class GiniHealthTests: GiniHealthTestCase {
         // Then
         XCTAssertTrue(mockDelegate.didDismissHealthSDKCalled, "didDismissPaymentComponents should call didDismissHealthSDK on the health delegate")
     }
+
+    // MARK: - Dynamic Type configuration
+
+    func testDefaultStyleInputFieldConfigurationHasDynamicTextFont() {
+        // Given
+        let config = GiniHealthConfiguration()
+
+        // When
+        let dynamicFont = config.defaultStyleInputFieldConfiguration.dynamicTextFont
+
+        // Then
+        XCTAssertNotNil(dynamicFont, "defaultStyleInputFieldConfiguration should have a dynamicTextFont closure")
+        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
+    }
+
+    func testErrorStyleInputFieldConfigurationHasDynamicTextFont() {
+        // Given
+        let config = GiniHealthConfiguration()
+
+        // When
+        let dynamicFont = config.errorStyleInputFieldConfiguration.dynamicTextFont
+
+        // Then
+        XCTAssertNotNil(dynamicFont, "errorStyleInputFieldConfiguration should have a dynamicTextFont closure")
+        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
+    }
+
+    func testSelectionStyleInputFieldConfigurationHasDynamicTextFont() {
+        // Given
+        let config = GiniHealthConfiguration()
+
+        // When
+        let dynamicFont = config.selectionStyleInputFieldConfiguration.dynamicTextFont
+
+        // Then
+        XCTAssertNotNil(dynamicFont, "selectionStyleInputFieldConfiguration should have a dynamicTextFont closure")
+        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
+    }
+
+    func testPaymentInfoConfigurationHasGiniDynamicFont() {
+        // Given
+        let config = GiniHealthConfiguration()
+        giniHealth.setConfiguration(config)
+
+        // When
+        let giniDynamicFont = giniHealth.paymentInfoConfiguration.giniDynamicFont
+
+        // Then
+        XCTAssertNotNil(giniDynamicFont, "paymentInfoConfiguration should have a giniDynamicFont closure")
+        XCTAssertNotNil(giniDynamicFont?(.body), "giniDynamicFont closure should return a non-nil UIFont for .body style")
+        XCTAssertNotNil(giniDynamicFont?(.headline), "giniDynamicFont closure should return a non-nil UIFont for .headline style")
+    }
 }
