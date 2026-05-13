@@ -168,6 +168,9 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewAttributes() {
+        /// Scrolling is always enabled; Auto Layout constrains the visible height.
+        /// A fixed cell-height calculation previously gated this, which under-estimated
+        /// actual heights at large Dynamic Type sizes.
         paymentProvidersTableView.isScrollEnabled = true
     }
 
@@ -203,7 +206,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor,
                                                 constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor,
-                                                constant: -Constants.viewPaddingConstraint),
+                                                 constant: -Constants.viewPaddingConstraint),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
         ])
