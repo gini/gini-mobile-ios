@@ -100,6 +100,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIContentSizeCategory.didChangeNotification,
+                                                  object: nil)
+    }
+
     private func setupInitialLayout() {
         updateLayoutForCurrentOrientation(screenSize: UIScreen.main.bounds.size)
     }
@@ -255,12 +261,10 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupContentSizeCategoryObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(contentSizeCategoryDidChange),
-            name: UIContentSizeCategory.didChangeNotification,
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(contentSizeCategoryDidChange),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
     }
 
     @objc private func contentSizeCategoryDidChange() {
