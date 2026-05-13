@@ -391,18 +391,21 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         guard let headerView = paymentProvidersTableView.tableHeaderView,
               paymentProvidersTableView.bounds.width > 0 else { return }
         let width = paymentProvidersTableView.bounds.width
-        // Pin the container to the current table width so systemLayoutSizeFitting
-        // can resolve leading/trailing constraints and compute the correct height.
-        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: width)
-        widthConstraint.isActive = true
-        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        widthConstraint.isActive = false
+        let labelWidth = width - 2 * Constants.viewPaddingConstraint
+        // Set preferredMaxLayoutWidth so labels wrap at the correct width
+        // regardless of whether the trailing constraint was broken by UITableView's
+        // encapsulated width==0 constraint during initial assignment.
+        headerView.subviews.compactMap { $0 as? UILabel }.forEach {
+            $0.preferredMaxLayoutWidth = labelWidth
+        }
+        let height = headerView.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
         guard headerView.frame.size.height != height else { return }
         headerView.frame = CGRect(x: 0, y: 0, width: width, height: height)
         paymentProvidersTableView.tableHeaderView = headerView
-        // Reset content offset so cells are repositioned relative to the updated
-        // header height; without this, cells stay at their old offset until the
-        // user scrolls, leaving a gap between the header and the first cell.
         paymentProvidersTableView.setContentOffset(.zero, animated: false)
     }
 }
