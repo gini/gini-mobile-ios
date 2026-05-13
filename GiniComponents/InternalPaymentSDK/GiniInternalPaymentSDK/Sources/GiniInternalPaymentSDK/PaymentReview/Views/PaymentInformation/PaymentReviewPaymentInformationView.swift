@@ -213,6 +213,10 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.recipientInputState.text) { _ in
+            /// Clearing the error while the field is focused triggers a `.error → .focused`
+            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
+            /// dismissing the keyboard (HEAL-377). Only clear when the field is not focused.
+            guard focusedField != .recipient else { return }
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
         }
     }
@@ -240,6 +244,10 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.ibanInputState.text) { _ in
+            /// Clearing the error while the field is focused triggers a `.error → .focused`
+            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
+            /// dismissing the keyboard (HEAL-377). Only clear when the field is not focused.
+            guard focusedField != .iban else { return }
             viewModel.clearErrorOnTextChange(for: \.ibanInputState)
         }
     }
@@ -247,19 +255,27 @@ struct PaymentReviewPaymentInformationView: View {
     @ViewBuilder
     private var amountTextField: some View {
         TextField("", text: $viewModel.amountInputState.text)
-        .focused($focusedField, equals: .amount)
-        .onChange(of: viewModel.amountInputState.text) { newValue in
-            viewModel.handleAmountTextChange(updatedText: newValue)
-        }
-        .onChange(of: focusedField) { newFocus in
-            Task { @MainActor in
-                viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
+            .focused($focusedField, equals: .amount)
+            .onChange(of: viewModel.amountInputState.text) { newValue in
+                viewModel.handleAmountTextChange(updatedText: newValue)
+                /// Clearing the error while the field is focused triggers a `.error → .focused`
+                /// style-state transition that causes SwiftUI to replace the underlying UITextField,
+                /// dismissing the keyboard (HEAL-377). Only clear when the field is not focused.
+                if focusedField != .amount {
+                    viewModel.clearErrorOnTextChange(for: \.amountInputState)
+                }
             }
-        }
-        .keyboardType(.decimalPad)
-        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.amount,
-                                           field: .amount,
-                                           inputState: viewModel.amountInputState))
+            .onChange(of: focusedField) { newFocus in
+                Task { @MainActor in
+                    viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
+                }
+            }
+            .keyboardType(.decimalPad)
+            .textFieldStyle(makeTextFieldStyle(
+                title: viewModelStrings.fieldPlaceholders.amount,
+                field: .amount,
+                inputState: viewModel.amountInputState
+            ))
     }
     
     @ViewBuilder
@@ -284,6 +300,10 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
+            /// Clearing the error while the field is focused triggers a `.error → .focused`
+            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
+            /// dismissing the keyboard (HEAL-377). Only clear when the field is not focused.
+            guard focusedField != .paymentPurpose else { return }
             viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
         }
     }
