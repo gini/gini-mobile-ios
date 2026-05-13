@@ -33,7 +33,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
         label.textColor = viewModel.configuration.titleAccentColor
-        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.titleFont)
+        label.font = viewModel.configuration.titleFont
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
@@ -60,7 +60,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.descriptionLabelText
         label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.descriptionFont)
+        label.font = viewModel.configuration.descriptionFont
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
@@ -486,7 +486,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.text = text
         label.textAlignment = .left
         let baseFont = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
-        label.font = UIFontMetrics.default.scaledFont(for: baseFont)
+        label.font = baseFont
         label.adjustsFontForContentSizeCategory = true
         label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
         label.numberOfLines = 0
@@ -509,8 +509,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     @objc private func contentSizeCategoryDidChange() {
-        updateLayoutForCurrentOrientation()
-        view.layoutIfNeeded()
+        updateViews()
     }
 
     private func bindToSizeUpdates() {

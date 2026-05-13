@@ -22,7 +22,8 @@ public final class MoreInformationView: UIButton {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontSizeToFitWidth = true
-        label.numberOfLines = 0
+        label.minimumScaleFactor = 0.7
+        label.numberOfLines = 1
         
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: viewModel.configuration.moreInformationTextColor,

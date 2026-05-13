@@ -25,7 +25,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
-        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.selectBankFont)
+        label.font = viewModel.configuration.selectBankFont
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
@@ -38,7 +38,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.descriptionFont)
+        label.font = viewModel.configuration.descriptionFont
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
@@ -52,7 +52,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(cellType: BankSelectionTableViewCell.self)
-        tableView.estimatedRowHeight = viewModel.rowHeight
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
@@ -120,7 +120,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private func setupPortraitConstraints() {
         deactivateAllConstraints()
         let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
-        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
+        heightConstraint.priority = .defaultHigh
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -134,7 +134,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         deactivateAllConstraints()
         let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
         let heightConstraint = paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
-        heightConstraint.priority = .defaultHigh  // Lower priority so it can be broken if needed
+        heightConstraint.priority = .defaultHigh
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
@@ -174,9 +174,9 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewAttributes() {
-        /// Scrolling is always enabled; Auto Layout constrains the visible height.
-        /// A fixed cell-height calculation previously gated this, which under-estimated
-        /// actual heights at large Dynamic Type sizes.
+        // Scrolling is always enabled; Auto Layout constrains the visible height.
+        // A fixed cell-height calculation previously gated this, which under-estimated
+        // actual heights at large Dynamic Type sizes.
         paymentProvidersTableView.isScrollEnabled = true
     }
 
@@ -315,44 +315,70 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
 
-        let titleLbl = UILabel()
-        titleLbl.translatesAutoresizingMaskIntoConstraints = false
-        titleLbl.text = viewModel.strings.selectBankTitleText
-        titleLbl.textColor = viewModel.configuration.selectBankAccentColor
-        titleLbl.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.selectBankFont)
-        titleLbl.adjustsFontForContentSizeCategory = true
-        titleLbl.numberOfLines = 0
+        let titleLabel = makeTitleLabel()
+        let descriptionLabel = makeDescriptionLabel()
 
-        let descLbl = UILabel()
-        descLbl.translatesAutoresizingMaskIntoConstraints = false
-        descLbl.text = viewModel.strings.descriptionText
-        descLbl.textColor = viewModel.configuration.descriptionAccentColor
-        descLbl.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.descriptionFont)
-        descLbl.adjustsFontForContentSizeCategory = true
-        descLbl.numberOfLines = 0
+        container.addSubview(titleLabel)
+        container.addSubview(descriptionLabel)
 
-        container.addSubview(titleLbl)
-        container.addSubview(descLbl)
+        activateHeaderConstraints(in: container,
+                                  titleLabel: titleLabel,
+                                  descriptionLabel: descriptionLabel)
+        return container
+    }
+
+    private func makeTitleLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.strings.selectBankTitleText
+        label.textColor = viewModel.configuration.selectBankAccentColor
+        label.font = viewModel.configuration.selectBankFont
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        return label
+    }
+
+    private func makeDescriptionLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.strings.descriptionText
+        label.textColor = viewModel.configuration.descriptionAccentColor
+        label.font = viewModel.configuration.descriptionFont
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        return label
+    }
+
+    private func activateHeaderConstraints(in container: UIView,
+                                           titleLabel: UILabel,
+                                           descriptionLabel: UILabel) {
+        // Leading/trailing at .defaultHigh so they gracefully yield when UITableView
+        // initially sets the header's encapsulated width constraint to 0.
+        let titleLeading = titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor,
+                                                               constant: Constants.viewPaddingConstraint)
+        let titleTrailing = titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor,
+                                                                 constant: -Constants.viewPaddingConstraint)
+        let descLeading = descriptionLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor,
+                                                                    constant: Constants.viewPaddingConstraint)
+        let descTrailing = descriptionLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor,
+                                                                      constant: -Constants.viewPaddingConstraint)
+        titleLeading.priority = .defaultHigh
+        titleTrailing.priority = .defaultHigh
+        descLeading.priority = .defaultHigh
+        descTrailing.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
-            titleLbl.topAnchor.constraint(equalTo: container.topAnchor,
-                                          constant: Constants.descriptionTopPadding),
-            titleLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor,
-                                              constant: Constants.viewPaddingConstraint),
-            titleLbl.trailingAnchor.constraint(equalTo: container.trailingAnchor,
-                                               constant: -Constants.viewPaddingConstraint),
-
-            descLbl.topAnchor.constraint(equalTo: titleLbl.bottomAnchor,
-                                         constant: Constants.descriptionTopPadding),
-            descLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor,
-                                             constant: Constants.viewPaddingConstraint),
-            descLbl.trailingAnchor.constraint(equalTo: container.trailingAnchor,
-                                              constant: -Constants.viewPaddingConstraint),
-            descLbl.bottomAnchor.constraint(equalTo: container.bottomAnchor,
-                                            constant: -Constants.viewPaddingConstraint)
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor,
+                                            constant: Constants.descriptionTopPadding),
+            titleLeading,
+            titleTrailing,
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                                  constant: Constants.descriptionTopPadding),
+            descLeading,
+            descTrailing,
+            descriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor,
+                                                     constant: -Constants.viewPaddingConstraint)
         ])
-
-        return container
     }
 
     /**
@@ -364,17 +390,20 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private func sizeTableHeaderView() {
         guard let headerView = paymentProvidersTableView.tableHeaderView,
               paymentProvidersTableView.bounds.width > 0 else { return }
-        let targetSize = CGSize(width: paymentProvidersTableView.bounds.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        let height = headerView.systemLayoutSizeFitting(targetSize,
-                                                        withHorizontalFittingPriority: .required,
-                                                        verticalFittingPriority: .fittingSizeLevel).height
-        var frame = headerView.frame
-        if frame.size.height != height {
-            frame.size.height = height
-            headerView.frame = frame
-            paymentProvidersTableView.tableHeaderView = headerView
-        }
+        let width = paymentProvidersTableView.bounds.width
+        // Pin the container to the current table width so systemLayoutSizeFitting
+        // can resolve leading/trailing constraints and compute the correct height.
+        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: width)
+        widthConstraint.isActive = true
+        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        widthConstraint.isActive = false
+        guard headerView.frame.size.height != height else { return }
+        headerView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        paymentProvidersTableView.tableHeaderView = headerView
+        // Reset content offset so cells are repositioned relative to the updated
+        // header height; without this, cells stay at their old offset until the
+        // user scrolls, leaving a gap between the header and the first cell.
+        paymentProvidersTableView.setContentOffset(.zero, animated: false)
     }
 }
 

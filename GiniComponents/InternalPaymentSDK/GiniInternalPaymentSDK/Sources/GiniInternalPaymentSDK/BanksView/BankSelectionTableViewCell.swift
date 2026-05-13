@@ -117,7 +117,7 @@ private extension BankSelectionTableViewCell {
         bankImageView.layer.borderColor = cellViewModel.colors.bankIconBorderColor.cgColor
 
         bankNameLabel.text = cellViewModel.bankName
-        bankNameLabel.font = UIFontMetrics.default.scaledFont(for: cellViewModel.bankNameFont)
+        bankNameLabel.font = cellViewModel.bankNameFont
         bankNameLabel.textColor = cellViewModel.colors.bankNameAccentColor
 
         cellView.backgroundColor = cellViewModel.colors.backgroundColor
