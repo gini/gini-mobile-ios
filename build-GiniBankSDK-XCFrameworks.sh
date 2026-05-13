@@ -226,23 +226,25 @@ make-slim-xcframework() {
     local fr_name=$1
     local src_path=$2
     local src_path_sim=$3
-    local slim_sim_dir="slim-sim-${fr_name}"
+    local slim_sim_parent="slim-sim-${fr_name}"
+    local slim_sim_framework="$slim_sim_parent/$fr_name.framework"
 
     local framework_path="$src_path/Products/usr/local/lib/$fr_name.framework"
     local framework_path_sim="$src_path_sim/Products/usr/local/lib/$fr_name.framework"
 
-    # Copy simulator framework to a temp dir and thin it
-    rm -rf "$slim_sim_dir"
-    cp -a "$framework_path_sim" "$slim_sim_dir"
-    thin-simulator-framework "$slim_sim_dir"
+    # Copy simulator framework into a temp parent dir, preserving the .framework name
+    rm -rf "$slim_sim_parent"
+    mkdir -p "$slim_sim_parent"
+    cp -a "$framework_path_sim" "$slim_sim_framework"
+    thin-simulator-framework "$slim_sim_framework"
 
     echo "Creating slim XCFramework for $fr_name (arm64 only)"
     xcodebuild -create-xcframework \
         -framework "$framework_path" \
-        -framework "$slim_sim_dir" \
+        -framework "$slim_sim_framework" \
         -output "${fr_name}-arm64only.xcframework"
 
-    rm -rf "$slim_sim_dir"
+    rm -rf "$slim_sim_parent"
 }
 
 # Pre-cleanup
