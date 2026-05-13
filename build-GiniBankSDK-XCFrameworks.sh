@@ -13,7 +13,7 @@ frameworks=("GiniBankAPILibrary" "GiniUtilites" "GiniCaptureSDK" "GiniBankSDK")
 
 # Function to cleanup simulator and iOS archives
 cleanup-artefacts() {
-    if [[ "$1" == "--no-cleanup" || "$1" == "-n" ]]; then
+    if [[ "${1:-}" == "--no-cleanup" || "${1:-}" == "-n" ]]; then
         echo "warning: running without cleaning up"
     else
         echo "Cleaning up intermediate caches and artefacts..."
