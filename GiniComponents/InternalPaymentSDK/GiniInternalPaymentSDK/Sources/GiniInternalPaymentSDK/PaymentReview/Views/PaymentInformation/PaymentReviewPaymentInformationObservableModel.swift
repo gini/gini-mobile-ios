@@ -176,16 +176,16 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
 
     /**
      Handles a focus-change event for a generic text field.
-     When the field gains focus its error state is cleared; when it loses focus the field is
-     re-validated and, if invalid, the error message is announced to VoiceOver.
+     On focus-lost the field is re-validated and, if invalid, the error message is announced
+     to VoiceOver. Error clearing on focus-gain is intentionally deferred to text-change
+     (see `clearErrorOnTextChange(for:)`) to avoid a layout-height change while the keyboard
+     is animating in, which would cause the bottom-sheet detent to update and dismiss the keyboard.
      */
     func handleFocusChange(isFocused: Bool,
                            inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>,
                            validate: (String) -> Bool,
                            error: KeyPath<PaymentReviewPaymentInformationObservableModel, String?>) {
-        if isFocused {
-            self[keyPath: inputState].hasError = false
-        } else {
+        if !isFocused {
             let text = self[keyPath: inputState].text
             self[keyPath: inputState].hasError = !validate(text)
             self[keyPath: inputState].errorMessage = self[keyPath: error]
@@ -196,25 +196,45 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
 
     /**
+     Clears the error state for a text field when the user edits its content.
+     Called from `onChange(of: text)` in the view so the error disappears on the first
+     keystroke rather than on focus-gain. This keeps the layout height stable while the
+     keyboard animates in, preventing the bottom-sheet from dismissing the keyboard.
+     */
+    func clearErrorOnTextChange(for inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>) {
+        guard self[keyPath: inputState].hasError else { return }
+        self[keyPath: inputState].hasError = false
+        self[keyPath: inputState].errorMessage = nil
+    }
+
+    /**
      Handles a focus-change event specific to the amount field.
      On focus-gained the raw numeric value is shown; on focus-lost the value is re-formatted,
      validated, and any error is announced to VoiceOver.
+     Error clearing on focus-gain is deferred to `handleAmountTextChange` (via `onChange`)
+     to keep the layout height stable while the keyboard animates in. For the rare edge case
+     where the text is already in raw format and no `onChange` fires, error clearing is
+     scheduled after the keyboard animation completes.
      */
     func handleAmountFocusChange(isFocused: Bool) {
         if isFocused {
-            /// Always clear the error on focus-gain so the field immediately shows
-            /// as editable, even when the raw text equals the prior stored value and
-            /// no onChange fires to trigger handleAmountTextChange.
-            amountInputState.hasError = false
-            amountInputState.errorMessage = nil
             /// Only strip the currency symbol from the displayed text when there is a
             /// positive amount. For zero / unset values the text is already empty and
             /// a programmatic change from "" to "0,00" inside a Task can race with
             /// UIKit establishing first-responder, causing the field to briefly lose
             /// focus, re-trigger the validation path, and show the error again.
             if amountToPay.value > 0, let rawText = amountToPay.stringWithoutSymbol {
-                amountInputState.text = rawText
+                if rawText != amountInputState.text {
+                    amountInputState.text = rawText
+                    // onChange(of: amountInputState.text) fires → handleAmountTextChange → clears error
+                } else {
+                    // Text is already in raw format — no onChange fires, so handleAmountTextChange
+                    // won't run. Clear the error after the keyboard animation completes to avoid
+                    // a height change that would conflict with keyboard appearance.
+                    clearAmountErrorAfterKeyboardAppears()
+                }
             }
+            // Zero/empty amount: error is cleared when the user starts typing.
         } else {
             if !amountInputState.text.isEmpty,
                let decimalAmount = amountInputState.text.decimal() {
@@ -293,6 +313,15 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         return ("", "", "", "")
     }
     
+    private func clearAmountErrorAfterKeyboardAppears() {
+        Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(Constants.keyboardAnimationDelay))
+            guard let self, self.isAmountFieldFocused else { return }
+            self.amountInputState.hasError = false
+            self.amountInputState.errorMessage = nil
+        }
+    }
+
     private func setupBindings() {
         model.onExtractionFetched = { [weak self] () in
             Task { @MainActor in
@@ -326,5 +355,13 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         let amountString = paymentInfo.amount
         
         return (recipient, iban, amountString, purpose)
+    }
+
+    private struct Constants {
+        /// Approximate duration of the iOS keyboard appearance animation.
+        /// Used to defer error-clearing for the amount field in the edge case where
+        /// no text-change fires on focus-gain, ensuring the height change does not
+        /// conflict with keyboard presentation in bottom-sheet mode.
+        static let keyboardAnimationDelay = 0.35
     }
 }
