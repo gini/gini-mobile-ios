@@ -41,6 +41,28 @@ configuration.updateFont(UIFont(name: "Impact", size: 15)!, for: .body1)
 merchant.setConfiguration(configuration)
 ```
 
+#### Dynamic Type
+
+The SDK fully supports Dynamic Type. Built-in Gini fonts scale automatically with the user's Accessibility font size setting.
+
+If you provide a custom font via `updateFont(_:for:)`, you are responsible for pre-scaling it so it also responds to Dynamic Type. Use `UIFontMetrics` to do this:
+
+```swift
+let myFont = UIFont(name: "MyBrandFont-Regular", size: 16)!
+let scaledFont = UIFontMetrics(forTextStyle: .body).scaledFont(for: myFont)
+
+configuration.updateFont(scaledFont, for: .body1)
+```
+
+Alternatively, use the Gini utility method:
+
+```swift
+let scaledFont = UIFont.scaledFont(myFont, textStyle: .body)
+configuration.updateFont(scaledFont, for: .body1)
+```
+
+A custom font passed without scaling will render at a fixed size and will **not** grow or shrink when the user changes the font size in Settings → Accessibility → Display & Text Size.
+
 ### Text
 
 Text customization is done via overriding of string resources.
