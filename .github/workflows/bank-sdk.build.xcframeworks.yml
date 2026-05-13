@@ -45,7 +45,6 @@ jobs:
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" ~/Library/Keychains/app-signing.keychain-db
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
