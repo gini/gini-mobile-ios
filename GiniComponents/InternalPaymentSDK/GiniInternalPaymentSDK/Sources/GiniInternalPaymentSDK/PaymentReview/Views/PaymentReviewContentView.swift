@@ -69,6 +69,7 @@ public struct PaymentReviewContentView: View {
                     Spacer()
                     Button(viewModel.keyboardDoneButtonTitle) {
                         viewModel.trackKeyboardDismissed()
+                        viewModel.validateAmountFieldOnKeyboardDismiss()
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                         to: nil,
                                                         from: nil,
