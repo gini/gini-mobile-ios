@@ -111,6 +111,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             backgroundColor: GiniColor.standard7.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
+        // Closure so fonts are re-fetched at the current content size category on each Dynamic Type change.
         config.giniDynamicFont = { GiniHealthConfiguration.shared.font(for: $0) }
         return config
     }
