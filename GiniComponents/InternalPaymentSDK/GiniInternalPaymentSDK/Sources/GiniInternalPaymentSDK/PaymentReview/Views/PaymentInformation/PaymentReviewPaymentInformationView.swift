@@ -58,15 +58,6 @@ struct PaymentReviewPaymentInformationView: View {
     
     var body: some View {
         scrollView
-            .overlay(alignment: .top) {
-                if showBanner {
-                    infoBannerView
-                        .onAppear {
-                            UIAccessibility.post(notification: .announcement,
-                                                 argument: viewModel.model.strings.infoBarMessage)
-                        }
-                }
-            }
             .onAppear {
                 viewModel.isViewVisible = true
 
@@ -135,28 +126,39 @@ struct PaymentReviewPaymentInformationView: View {
 
     private var baseScrollView: some View {
         ScrollView {
-            VStack(spacing: Constants.textFieldsContainerSpacing) {
-                recipientTextField
-
-                adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
-                    ibanTextField
-                    amountTextField
+            VStack(spacing: 0) {
+                if showBanner {
+                    infoBannerView
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .onAppear {
+                            UIAccessibility.post(notification: .announcement,
+                                                 argument: viewModel.model.strings.infoBarMessage)
+                        }
                 }
 
-                paymentPurposeTextField
+                VStack(spacing: Constants.textFieldsContainerSpacing) {
+                    recipientTextField
 
-                adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
-                    paymentProviderSelectionPicker
-                    payButton
-                }
-                .padding(.bottom, Constants.buttonsContainerBottomPadding)
+                    adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
+                        ibanTextField
+                        amountTextField
+                    }
 
-                if viewModel.shouldShowBrandedView {
-                    poweredByGiniView
+                    paymentPurposeTextField
+
+                    adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
+                        paymentProviderSelectionPicker
+                        payButton
+                    }
+                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
+
+                    if viewModel.shouldShowBrandedView {
+                        poweredByGiniView
+                    }
                 }
+                .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
+                .padding(.top, Constants.textFieldsContainerTopPadding)
             }
-            .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
-            .padding(.top, Constants.textFieldsContainerTopPadding)
             .getHeight(for: $contentHeight)
         }
     }
@@ -183,8 +185,6 @@ struct PaymentReviewPaymentInformationView: View {
                 topTrailingRadius: Constants.bannerCornerRadius
             )
         )
-        .offset(y: giniLayout.isLandscape ? 0.0 : Constants.bannerYOffset)
-        .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityLabel(viewModel.model.strings.infoBarMessage)
@@ -431,7 +431,6 @@ struct PaymentReviewPaymentInformationView: View {
     private struct Constants {
         static let bannerVerticalPadding = 16.0
         static let bannerCornerRadius = 12.0
-        static let bannerYOffset = -8.0
         static let textFieldsContainerSpacing = 8.0
         static let buttonsContainerSpacing = 8.0
         static let paymentProviderPickerSpacing = 12.0
