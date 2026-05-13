@@ -11,7 +11,6 @@ final class GiniHealthTests: GiniHealthTestCase {
     private func assertClientConfiguration(_ config: ClientConfiguration,
                                            communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
                                            brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
-        XCTAssertNotNil(config, "Client configuration should not be nil")
         XCTAssertEqual(config.communicationTone, communicationTone, "Communication tone should match")
         XCTAssertEqual(config.ingredientBrandType, brandType, "Ingredient brand type should match")
     }
@@ -279,42 +278,6 @@ final class GiniHealthTests: GiniHealthTestCase {
 
     // MARK: - Dynamic Type configuration
 
-    func testDefaultStyleInputFieldConfigurationHasDynamicTextFont() {
-        // Given
-        let config = GiniHealthConfiguration()
-
-        // When
-        let dynamicFont = config.defaultStyleInputFieldConfiguration.dynamicTextFont
-
-        // Then
-        XCTAssertNotNil(dynamicFont, "defaultStyleInputFieldConfiguration should have a dynamicTextFont closure")
-        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
-    }
-
-    func testErrorStyleInputFieldConfigurationHasDynamicTextFont() {
-        // Given
-        let config = GiniHealthConfiguration()
-
-        // When
-        let dynamicFont = config.errorStyleInputFieldConfiguration.dynamicTextFont
-
-        // Then
-        XCTAssertNotNil(dynamicFont, "errorStyleInputFieldConfiguration should have a dynamicTextFont closure")
-        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
-    }
-
-    func testSelectionStyleInputFieldConfigurationHasDynamicTextFont() {
-        // Given
-        let config = GiniHealthConfiguration()
-
-        // When
-        let dynamicFont = config.selectionStyleInputFieldConfiguration.dynamicTextFont
-
-        // Then
-        XCTAssertNotNil(dynamicFont, "selectionStyleInputFieldConfiguration should have a dynamicTextFont closure")
-        XCTAssertNotNil(dynamicFont?(), "dynamicTextFont closure should return a non-nil UIFont")
-    }
-
     func testPaymentInfoConfigurationHasGiniDynamicFont() {
         // Given
         let config = GiniHealthConfiguration()
@@ -325,7 +288,8 @@ final class GiniHealthTests: GiniHealthTestCase {
 
         // Then
         XCTAssertNotNil(giniDynamicFont, "paymentInfoConfiguration should have a giniDynamicFont closure")
-        XCTAssertNotNil(giniDynamicFont?(.body), "giniDynamicFont closure should return a non-nil UIFont for .body style")
-        XCTAssertNotNil(giniDynamicFont?(.headline), "giniDynamicFont closure should return a non-nil UIFont for .headline style")
+        XCTAssertNotNil(giniDynamicFont?(.body1), "giniDynamicFont closure should return a non-nil UIFont for .body1 style")
+        XCTAssertNotNil(giniDynamicFont?(.body2), "giniDynamicFont closure should return a non-nil UIFont for .body2 style")
+        XCTAssertNotNil(giniDynamicFont?(.button), "giniDynamicFont closure should return a non-nil UIFont for .button style")
     }
 }

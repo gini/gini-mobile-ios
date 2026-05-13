@@ -59,12 +59,12 @@ public final class PaymentInfoViewModel {
     }
 
     private func setupQuestions(answersFont: UIFont?, linksFont: UIFont?) {
-        let resolvedAnswersFont = answersFont ?? configuration.answersFont
-        let resolvedLinksFont = linksFont ?? configuration.linksFont
+        let answersFont = answersFont ?? configuration.answersFont
+        let linksFont = linksFont ?? configuration.linksFont
         questions = zip(strings.faq.questions, strings.faq.answers).map { question, answer in
-            let answerAttributedString = answerWithAttributes(answer: answer, font: resolvedAnswersFont)
+            let answerAttributedString = answerWithAttributes(answer: answer, font: answersFont)
             return FAQSection(title: question,
-                              description: textWithLinks(linkFont: resolvedLinksFont, attributedString: answerAttributedString),
+                              description: textWithLinks(linkFont: linksFont, attributedString: answerAttributedString),
                               isExtended: false)
         }
     }
@@ -74,16 +74,16 @@ public final class PaymentInfoViewModel {
     }
 
     private func configurePayBillsGiniLink(descriptionFont: UIFont?, giniFont: UIFont?) {
-        let resolvedDescriptionFont = descriptionFont ?? configuration.payBillsDescriptionFont
-        let resolvedGiniFont = giniFont ?? configuration.giniFont
+        let descriptionFont = descriptionFont ?? configuration.payBillsDescriptionFont
+        let giniFont = giniFont ?? configuration.giniFont
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
         payBillsDescriptionAttributedText = NSMutableAttributedString(string: strings.payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
-                                                                                   .font: resolvedDescriptionFont,
+                                                                                   .font: descriptionFont,
                                                                                    .foregroundColor: configuration.payBillsTitleColor])
-        payBillsDescriptionAttributedText = textWithLinks(linkFont: resolvedGiniFont,
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: giniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
 
@@ -101,19 +101,20 @@ public final class PaymentInfoViewModel {
     }
 
     /**
-     Rebuilds all attributed strings using freshly-scaled fonts for the current Dynamic Type size.
+     Rebuilds all attributed strings when the Dynamic Type size changes.
 
-     Call this when the user's preferred content size category changes at runtime so that
-     `payBillsDescriptionAttributedText` and all FAQ answer descriptions reflect the new font size.
+     Recomputes paragraph styles, link ranges, and font references so that
+     `payBillsDescriptionAttributedText` and all FAQ answer descriptions stay consistent
+     with the current content size category.
      */
     func refreshAttributedContent() {
         let dynamicFont = configuration.giniDynamicFont
         let descriptionFont = dynamicFont?(.body2)
-        let freshGiniFont = dynamicFont?(.button)
+        let buttonFont = dynamicFont?(.button)
         let answersFont = dynamicFont?(.body2)
         let linksFont = dynamicFont?(.linkBold)
         payBillsDescriptionLinkAttributes = [.font: linksFont ?? configuration.linksFont]
-        configurePayBillsGiniLink(descriptionFont: descriptionFont, giniFont: freshGiniFont)
+        configurePayBillsGiniLink(descriptionFont: descriptionFont, giniFont: buttonFont)
         let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }
         setupQuestions(answersFont: answersFont, linksFont: linksFont)
         for index in openExtendedSections where index < questions.count {
