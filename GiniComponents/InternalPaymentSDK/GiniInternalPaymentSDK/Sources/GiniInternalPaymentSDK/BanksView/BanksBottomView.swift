@@ -88,6 +88,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupView()
         setupInitialLayout()
         setupContentSizeCategoryObserver()
+        updateAccessibilityLayout()
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        sizeTableHeaderView()
     }
 
     public init(viewModel: BanksBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
@@ -251,6 +257,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             self.setupTableViewConstraints()
             self.setupPoweredByGiniConstraints()
             self.setupViewAttributes()
+            self.sizeTableHeaderView()
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -272,9 +279,102 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     @objc private func contentSizeCategoryDidChange() {
         viewModel.calculateHeights()
+        updateAccessibilityLayout()
         updateLayoutForCurrentOrientation(screenSize: view.bounds.size)
         paymentProvidersTableView.reloadData()
+        sizeTableHeaderView()
         view.layoutIfNeeded()
+    }
+
+    /**
+     Switches between two layout modes based on the active Dynamic Type size.
+
+     At accessibility sizes (AX1–AX5), the title and description are moved into the table view's
+     `tableHeaderView` so the entire content scrolls as a single surface.
+     At standard sizes they remain in the stack view above the table.
+     */
+    private func updateAccessibilityLayout() {
+        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        titleView.isHidden = isAccessibility
+        descriptionView.isHidden = isAccessibility
+
+        if isAccessibility {
+            if paymentProvidersTableView.tableHeaderView == nil {
+                paymentProvidersTableView.tableHeaderView = makeTableAccessibilityHeader()
+            }
+        } else {
+            paymentProvidersTableView.tableHeaderView = nil
+        }
+    }
+
+    /**
+     Builds a header view containing title and description labels for use as `tableHeaderView`
+     at accessibility font sizes.
+     */
+    private func makeTableAccessibilityHeader() -> UIView {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLbl = UILabel()
+        titleLbl.translatesAutoresizingMaskIntoConstraints = false
+        titleLbl.text = viewModel.strings.selectBankTitleText
+        titleLbl.textColor = viewModel.configuration.selectBankAccentColor
+        titleLbl.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.selectBankFont)
+        titleLbl.adjustsFontForContentSizeCategory = true
+        titleLbl.numberOfLines = 0
+
+        let descLbl = UILabel()
+        descLbl.translatesAutoresizingMaskIntoConstraints = false
+        descLbl.text = viewModel.strings.descriptionText
+        descLbl.textColor = viewModel.configuration.descriptionAccentColor
+        descLbl.font = UIFontMetrics.default.scaledFont(for: viewModel.configuration.descriptionFont)
+        descLbl.adjustsFontForContentSizeCategory = true
+        descLbl.numberOfLines = 0
+
+        container.addSubview(titleLbl)
+        container.addSubview(descLbl)
+
+        NSLayoutConstraint.activate([
+            titleLbl.topAnchor.constraint(equalTo: container.topAnchor,
+                                          constant: Constants.descriptionTopPadding),
+            titleLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor,
+                                              constant: Constants.viewPaddingConstraint),
+            titleLbl.trailingAnchor.constraint(equalTo: container.trailingAnchor,
+                                               constant: -Constants.viewPaddingConstraint),
+
+            descLbl.topAnchor.constraint(equalTo: titleLbl.bottomAnchor,
+                                         constant: Constants.descriptionTopPadding),
+            descLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor,
+                                             constant: Constants.viewPaddingConstraint),
+            descLbl.trailingAnchor.constraint(equalTo: container.trailingAnchor,
+                                              constant: -Constants.viewPaddingConstraint),
+            descLbl.bottomAnchor.constraint(equalTo: container.bottomAnchor,
+                                            constant: -Constants.viewPaddingConstraint)
+        ])
+
+        return container
+    }
+
+    /**
+     Re-measures and applies the correct height to the table header view.
+
+     `UITableView` does not automatically resize its `tableHeaderView` when using Auto Layout;
+     this must be triggered manually after layout passes.
+     */
+    private func sizeTableHeaderView() {
+        guard let headerView = paymentProvidersTableView.tableHeaderView,
+              paymentProvidersTableView.bounds.width > 0 else { return }
+        let targetSize = CGSize(width: paymentProvidersTableView.bounds.width,
+                                height: UIView.layoutFittingCompressedSize.height)
+        let height = headerView.systemLayoutSizeFitting(targetSize,
+                                                        withHorizontalFittingPriority: .required,
+                                                        verticalFittingPriority: .fittingSizeLevel).height
+        var frame = headerView.frame
+        if frame.size.height != height {
+            frame.size.height = height
+            headerView.frame = frame
+            paymentProvidersTableView.tableHeaderView = headerView
+        }
     }
 }
 
