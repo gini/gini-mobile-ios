@@ -111,7 +111,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             backgroundColor: GiniColor.standard7.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
-        config.dynamicFont = { GiniMerchantConfiguration.shared.font(for: $0) }
+        config.giniDynamicFont = { GiniMerchantConfiguration.shared.font(for: $0) }
         return config
     }
     

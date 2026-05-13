@@ -111,7 +111,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             backgroundColor: GiniColor.standard7.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
-        config.dynamicFont = { GiniHealthConfiguration.shared.font(for: $0) }
+        config.giniDynamicFont = { GiniHealthConfiguration.shared.font(for: $0) }
         return config
     }
 

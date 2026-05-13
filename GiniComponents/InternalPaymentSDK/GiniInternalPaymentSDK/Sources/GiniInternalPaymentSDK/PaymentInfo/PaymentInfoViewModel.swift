@@ -107,7 +107,7 @@ public final class PaymentInfoViewModel {
      `payBillsDescriptionAttributedText` and all FAQ answer descriptions reflect the new font size.
      */
     func refreshAttributedContent() {
-        let dynamicFont = configuration.dynamicFont
+        let dynamicFont = configuration.giniDynamicFont
         let descriptionFont = dynamicFont?(.body2)
         let freshGiniFont = dynamicFont?(.button)
         let answersFont = dynamicFont?(.body2)
