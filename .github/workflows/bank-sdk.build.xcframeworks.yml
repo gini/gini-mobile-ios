@@ -45,11 +45,15 @@ jobs:
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          # sign xcframeworks
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" ~/Library/Keychains/app-signing.keychain-db
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
-          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary-arm64only.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK-arm64only.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK-arm64only.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites-arm64only.xcframework
 
       - name: Archive frameworks
         uses: actions/upload-artifact@v4
@@ -60,3 +64,8 @@ jobs:
             GiniBankSDK.xcframework
             GiniCaptureSDK.xcframework
             GiniUtilites.xcframework
+            GiniBankAPILibrary-arm64only.xcframework
+            GiniBankSDK-arm64only.xcframework
+            GiniCaptureSDK-arm64only.xcframework
+            GiniUtilites-arm64only.xcframework
+          

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Constants
 iphonesimulator_archive_path="iphonesimulatorGiniBankSDK.xcarchive"
@@ -193,6 +194,57 @@ make-xcframework() {
         -output "$fr_name.xcframework"
 }
 
+# Thin simulator framework binary to arm64 only, removing i386 and x86_64.
+# Operates in-place — only call this on a copy, never on the original archive.
+thin-simulator-framework() {
+    local framework_path=$1
+    local binary_name
+    binary_name=$(basename "$framework_path" .framework)
+    local binary_path="$framework_path/$binary_name"
+
+    if [[ ! -f "$binary_path" ]]; then
+        echo "warning: binary not found at $binary_path, skipping thinning"
+        return 0
+    fi
+
+    local archs
+    archs=$(lipo -archs "$binary_path" 2>/dev/null || true)
+    echo "Architectures in $binary_name: $archs"
+
+    for arch in i386 x86_64; do
+        if echo "$archs" | grep -qw "$arch"; then
+            lipo "$binary_path" -remove "$arch" -output "$binary_path"
+            echo "Removed $arch from $binary_name"
+        fi
+    done
+}
+
+# Creates an arm64-only XCFramework (no i386/x86_64 simulator slices).
+# Reuses the same archives as make-xcframework — no extra build step needed.
+# Output name is suffixed with -arm64only.
+make-slim-xcframework() {
+    local fr_name=$1
+    local src_path=$2
+    local src_path_sim=$3
+    local slim_sim_dir="slim-sim-${fr_name}"
+
+    local framework_path="$src_path/Products/usr/local/lib/$fr_name.framework"
+    local framework_path_sim="$src_path_sim/Products/usr/local/lib/$fr_name.framework"
+
+    # Copy simulator framework to a temp dir and thin it
+    rm -rf "$slim_sim_dir"
+    cp -a "$framework_path_sim" "$slim_sim_dir"
+    thin-simulator-framework "$slim_sim_dir"
+
+    echo "Creating slim XCFramework for $fr_name (arm64 only)"
+    xcodebuild -create-xcframework \
+        -framework "$framework_path" \
+        -framework "$slim_sim_dir" \
+        -output "${fr_name}-arm64only.xcframework"
+
+    rm -rf "$slim_sim_dir"
+}
+
 # Pre-cleanup
 cleanup-artefacts
 cleanup-frameworks
@@ -216,7 +268,11 @@ archive "BankSDK/GiniBankSDK" \
 for framework in "${frameworks[@]}"; do
     make-xcframework "$framework" "$iphoneos_archive_path" "$iphonesimulator_archive_path"
 done
-    
+
+for framework in "${frameworks[@]}"; do
+    make-slim-xcframework "$framework" "$iphoneos_archive_path" "$iphonesimulator_archive_path"
+done
+
 # swift package checks for "1" so making it empty is enough to clean it
 export GINI_FORCE_DYNAMIC_LIBRARY=""
 
