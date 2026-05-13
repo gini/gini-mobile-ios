@@ -212,6 +212,9 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.recipientError)
             }
         }
+        .onChange(of: viewModel.recipientInputState.text) { _ in
+            viewModel.clearErrorOnTextChange(for: \.recipientInputState)
+        }
     }
     
     @ViewBuilder
@@ -235,6 +238,9 @@ struct PaymentReviewPaymentInformationView: View {
                                             validate: viewModel.validateIBAN,
                                             error: \.ibanError)
             }
+        }
+        .onChange(of: viewModel.ibanInputState.text) { _ in
+            viewModel.clearErrorOnTextChange(for: \.ibanInputState)
         }
     }
     
@@ -276,6 +282,9 @@ struct PaymentReviewPaymentInformationView: View {
                                             validate: viewModel.validatePaymentPurpose,
                                             error: \.paymentPurposeError)
             }
+        }
+        .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
+            viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
         }
     }
     
