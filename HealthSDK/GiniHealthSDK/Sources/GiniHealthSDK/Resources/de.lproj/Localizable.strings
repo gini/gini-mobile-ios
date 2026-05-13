@@ -10,13 +10,14 @@
 "gini.health.bottomSheet.grabber.accessibility.label" = "Anfassbereich";
 "gini.health.bottomSheet.grabber.accessibility.hint" = "Doppeltippen zum Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
-"gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
-"gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
-"gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
 "gini.health.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
-"gini.health.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
+
+"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig";
+"gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig";
+"gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig";
+"gini.health.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig";
+"gini.health.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig";
+
 "gini.health.paymentcomponent.continue.to.overview.label" = "Weiter zur Übersicht";
 "gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text" = "Weiter";
 "gini.health.paymentcomponent.install.app.bottom.sheet.notes.description" = "Hinweis: Bitte aktualisieren oder installieren Sie zunächst die [BANK]-App aus dem App-Store.";
