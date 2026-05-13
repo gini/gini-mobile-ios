@@ -226,11 +226,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
             if amountToPay.value > 0, let rawText = amountToPay.stringWithoutSymbol {
                 if rawText != amountInputState.text {
                     amountInputState.text = rawText
-                    // onChange(of: amountInputState.text) fires → handleAmountTextChange → clears error
                 } else {
-                    // Text is already in raw format — no onChange fires, so handleAmountTextChange
-                    // won't run. Clear the error after the keyboard animation completes to avoid
-                    // a height change that would conflict with keyboard appearance.
+                    /// Text is already in raw format — no onChange fires.
+                    /// Clear the error after the keyboard animation completes to avoid
+                    /// a height change that would conflict with keyboard appearance.
                     clearAmountErrorAfterKeyboardAppears()
                 }
             }
@@ -258,21 +257,15 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
 
     /**
-     Handles a text change in the amount field: clears the error flag (only while the
-     user is actively editing) and updates both the displayed text and the `amountToPay`
-     value if the input is parsable.
+     Handles a text change in the amount field: updates both the displayed text and the
+     `amountToPay` value if the input is parsable.
 
-     The guard on `isAmountFieldFocused` prevents programmatic text changes — e.g.
-     the reformatting step inside `handleAmountFocusChange(isFocused: false)` — from
-     discarding a validation error that was just set by `updateFieldErrorStates` or the
-     pay-button action.
+     Error clearing is intentionally removed from this method. The view's
+     `onChange(of: amountInputState.text)` only calls `clearErrorOnTextChange` when the
+     amount field is **not** focused, which prevents the `.error → .focused` style
+     transition while the user is actively typing and avoids keyboard dismissal (HEAL-377).
      */
     func handleAmountTextChange(updatedText: String) {
-        /// Only clear the error while the user is actively typing. Programmatic
-        /// changes (formatting on focus-out) must not discard a validation error.
-        if isAmountFieldFocused {
-            amountInputState.hasError = false
-        }
         if let result = adjustAmountValue(text: updatedText) {
             amountInputState.text = result.adjustedText
             amountToPay.value = result.newValue
