@@ -68,7 +68,7 @@ copy-resources() {
     
     # If not found, search recursively
     if [[ -z "$asset_car_path" ]]; then
-        asset_car_path=$(find "$derived_data_path" -name "Assets.car" -type f | grep -v ".xcarchive" | head -1)
+        asset_car_path=$(find "$derived_data_path" -name "Assets.car" -type f | grep -i "${scheme_name}" | grep -v ".xcarchive" | head -1 || true)
         if [[ -n "$asset_car_path" ]]; then
             echo "Found Assets.car at: $asset_car_path"
         fi
@@ -97,7 +97,7 @@ copy-resources() {
     
     # If not found, search recursively
     if [[ -z "$bundle_path" ]]; then
-        bundle_path=$(find "$derived_data_path" -name "*${scheme_name}*.bundle" -type d | grep -v ".xcarchive" | head -1)
+        bundle_path=$(find "$derived_data_path" -name "*${scheme_name}*.bundle" -type d | grep -v ".xcarchive" | head -1 || true)
         if [[ -n "$bundle_path" ]]; then
             echo "Found bundle at: $bundle_path"
         fi
