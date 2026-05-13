@@ -124,6 +124,7 @@ struct PaymentReviewPaymentInformationView: View {
             Spacer()
             Button(viewModelStrings.keyboardDoneButtonTitle) {
                 onKeyboardDismissed()
+                viewModel.handleAmountFocusChange(isFocused: false)
                 focusedField = nil
             }
             .padding(.horizontal, Constants.doneButtonHorizontalPadding)
@@ -195,6 +196,10 @@ struct PaymentReviewPaymentInformationView: View {
         TextField("", text: $viewModel.recipientInputState.text)
         .focused($focusedField, equals: .recipient)
         .disabled(viewModel.isFieldsLocked)
+        .submitLabel(.done)
+        .onSubmit {
+            clearFocus()
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.recipient,
                                            field: .recipient,
                                            inputState: viewModel.recipientInputState,
@@ -215,6 +220,10 @@ struct PaymentReviewPaymentInformationView: View {
         .focused($focusedField, equals: .iban)
         .disabled(viewModel.isFieldsLocked)
         .textInputAutocapitalization(.characters)
+        .submitLabel(.done)
+        .onSubmit {
+            clearFocus()
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.iban,
                                            field: .iban,
                                            inputState: viewModel.ibanInputState,
@@ -252,6 +261,10 @@ struct PaymentReviewPaymentInformationView: View {
         TextField("", text: $viewModel.paymentPurposeInputState.text)
         .focused($focusedField, equals: .paymentPurpose)
         .disabled(viewModel.isFieldsLocked)
+        .submitLabel(.done)
+        .onSubmit {
+            clearFocus()
+        }
         .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.usage,
                                            field: .paymentPurpose,
                                            inputState: viewModel.paymentPurposeInputState,
@@ -296,8 +309,14 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
             }
-            .frame(width: Constants.paymentProviderPickerSize.width,
-                   height: Constants.paymentProviderPickerSize.height)
+            // At xxxLarge and above, adaptiveStack places the picker above the pay button
+            // in a VStack. Expand to full width so both controls align, instead of leaving
+            // a narrow 96-pt button floating above a full-width button.
+            // minWidth == maxWidth in the default case pins the width at exactly 96 pt
+            // (equivalent to width:), preventing the picker from shrinking below that.
+            .frame(minWidth: dynamicTypeSize >= .xxxLarge ? 0 : Constants.paymentProviderPickerSize.width,
+                   maxWidth: dynamicTypeSize >= .xxxLarge ? .infinity : Constants.paymentProviderPickerSize.width,
+                   minHeight: Constants.paymentProviderPickerSize.height)
             .padding(.vertical, Constants.paymentProviderPickerVerticalPadding)
         }
         .background(Color(secondaryButton.backgroundColor))
@@ -351,7 +370,9 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private func adaptiveStack<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
-        if dynamicTypeSize.isAccessibilitySize {
+        // Switch to VStack at xxxLarge and above so that wide content like IBAN numbers
+        // and the bank picker have full width; isAccessibilitySize covers AX1–AX5 (~190%+).
+        if dynamicTypeSize >= .xxxLarge {
             VStack(spacing: spacing) { content() }
         } else {
             HStack(alignment: .top, spacing: spacing) { content() }
@@ -368,6 +389,11 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     // MARK: Private methods
+
+    private func clearFocus() {
+        focusedField = nil
+        viewModel.activeField = nil
+    }
 
     private func makeTextFieldStyle(title: String,
                                     field: ActivePaymentField,
