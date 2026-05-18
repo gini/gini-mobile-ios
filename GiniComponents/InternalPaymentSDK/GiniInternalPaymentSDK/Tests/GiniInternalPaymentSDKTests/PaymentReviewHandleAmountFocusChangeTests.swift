@@ -91,6 +91,33 @@ struct PaymentReviewHandleAmountFocusChangeTests {
     // second call. UIAccessibility.post cannot be unit-tested directly, but the guard's
     // effect is verified indirectly: if hasError was already true on entry to the second
     // call, the announcement branch is skipped.
+    @Test("focus gained when text is already raw does not change text")
+    func focusGainedWithTextAlreadyRawDoesNotChangeText() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+        /// Pre-set the text to the raw value so the `rawText == amountInputState.text` branch is taken.
+        sut.amountInputState.text = sut.amountToPay.stringWithoutSymbol ?? "12.50"
+        let textBefore = sut.amountInputState.text
+
+        sut.handleAmountFocusChange(isFocused: true)
+
+        #expect(sut.amountInputState.text == textBefore, "focus gained with text already in raw format must not change the text")
+    }
+
+    @Test("focus gained when text is already raw does not immediately clear error (clears are deferred)")
+    func focusGainedWithTextAlreadyRawDoesNotImmediatelyClearError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
+        sut.amountInputState.text = sut.amountToPay.stringWithoutSymbol ?? "12.50"
+        sut.amountInputState.hasError = true
+        /// isAmountFieldFocused is false in this test — the deferred Task inside
+        /// clearAmountErrorAfterKeyboardAppears will guard on it and be a no-op.
+
+        sut.handleAmountFocusChange(isFocused: true)
+
+        #expect(sut.amountInputState.hasError == true, "error must not be cleared immediately when the deferred-clear path is taken")
+    }
+
     @Test("calling handleAmountFocusChange(isFocused: false) twice with valid amount stays error-free")
     func doubleCallWithValidAmountIsIdempotent() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
