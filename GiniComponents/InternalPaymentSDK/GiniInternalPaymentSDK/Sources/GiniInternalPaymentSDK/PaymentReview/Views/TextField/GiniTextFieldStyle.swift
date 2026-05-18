@@ -39,7 +39,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private var shouldAnimate: Bool {
         !UIAccessibility.isReduceMotionEnabled
     }
-    
+
     init(lockedIcon: Image? = nil,
          title: String,
          state: GiniTextFieldState = .normal,
@@ -130,7 +130,9 @@ struct GiniTextFieldStyle: TextFieldStyle {
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),
                                     removal: .opacity))
-            .accessibilityHidden(true) // prevents double-reading; error is already in field's accessibilityValue
+            // Error is already surfaced via accessibilityHint on the field above.
+            // Hiding here prevents VoiceOver from reading the same message twice.
+            .accessibilityHidden(true)
             .animation(shouldAnimate ? Animation.easeInOut(duration: Constants.animationDuration) : nil,
                        value: errorMessage)
     }

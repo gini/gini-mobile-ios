@@ -27,7 +27,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      Tracks which field was focused before the view was recreated (e.g. after rotation),
      so the keyboard can be restored in the new layout.
      */
-    var activeField: ActivePaymentField? = nil
+    @Published var activeField: ActivePaymentField? = nil
 
     /**
      Set to `true` while the view is on screen. Used to distinguish a rotation (view
@@ -202,7 +202,19 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      */
     func handleAmountFocusChange(isFocused: Bool) {
         if isFocused {
-            amountInputState.text = amountToPay.stringWithoutSymbol ?? ""
+            /// Always clear the error on focus-gain so the field immediately shows
+            /// as editable, even when the raw text equals the prior stored value and
+            /// no onChange fires to trigger handleAmountTextChange.
+            amountInputState.hasError = false
+            amountInputState.errorMessage = nil
+            /// Only strip the currency symbol from the displayed text when there is a
+            /// positive amount. For zero / unset values the text is already empty and
+            /// a programmatic change from "" to "0,00" inside a Task can race with
+            /// UIKit establishing first-responder, causing the field to briefly lose
+            /// focus, re-trigger the validation path, and show the error again.
+            if amountToPay.value > 0, let rawText = amountToPay.stringWithoutSymbol {
+                amountInputState.text = rawText
+            }
         } else {
             if !amountInputState.text.isEmpty,
                let decimalAmount = amountInputState.text.decimal() {
@@ -213,20 +225,34 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
                     amountInputState.text = ""
                 }
             }
+            let wasAlreadyInError = amountInputState.hasError
             amountInputState.hasError = !validateAmount(amountInputState.text, amount: amountToPay.value)
             amountInputState.errorMessage = amountError
-            if amountInputState.hasError, let errorMessage = amountError {
+            // Only announce when the error is newly introduced — not on a repeat call
+            // (e.g. the Done button triggers handleAmountFocusChange directly and then
+            // focusedField = nil triggers a second call via onChange).
+            if amountInputState.hasError, !wasAlreadyInError, let errorMessage = amountError {
                 UIAccessibility.post(notification: .announcement, argument: errorMessage)
             }
         }
     }
 
     /**
-     Handles a text change in the amount field: clears the error flag and updates
-     both the displayed text and the `amountToPay` value if the input is parsable.
+     Handles a text change in the amount field: clears the error flag (only while the
+     user is actively editing) and updates both the displayed text and the `amountToPay`
+     value if the input is parsable.
+
+     The guard on `isAmountFieldFocused` prevents programmatic text changes — e.g.
+     the reformatting step inside `handleAmountFocusChange(isFocused: false)` — from
+     discarding a validation error that was just set by `updateFieldErrorStates` or the
+     pay-button action.
      */
     func handleAmountTextChange(updatedText: String) {
-        amountInputState.hasError = false
+        /// Only clear the error while the user is actively typing. Programmatic
+        /// changes (formatting on focus-out) must not discard a validation error.
+        if isAmountFieldFocused {
+            amountInputState.hasError = false
+        }
         if let result = adjustAmountValue(text: updatedText) {
             amountInputState.text = result.adjustedText
             amountToPay.value = result.newValue
