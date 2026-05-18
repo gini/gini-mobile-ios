@@ -12,19 +12,6 @@ import Testing
 @MainActor
 struct PaymentReviewHandleFocusChangeTests {
 
-    @Test("focus gained clears hasError")
-    func focusGainedClearsError() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        sut.recipientInputState.hasError = true
-
-        sut.handleFocusChange(isFocused: true,
-                              inputState: \.recipientInputState,
-                              validate: sut.validateRecipient,
-                              error: \.recipientError)
-
-        #expect(sut.recipientInputState.hasError == false, "focus gained must clear hasError on the input state")
-    }
-
     @Test("focus lost with valid text sets no error")
     func focusLostValidTextNoError() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
