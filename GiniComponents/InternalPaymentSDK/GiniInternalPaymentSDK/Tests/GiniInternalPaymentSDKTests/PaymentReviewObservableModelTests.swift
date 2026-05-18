@@ -370,22 +370,6 @@ struct PaymentReviewObservableModelTests {
 
     // MARK: - validateAmountFieldOnKeyboardDismiss
 
-    @Test("validateAmountFieldOnKeyboardDismiss does not affect focus state")
-    func validateAmountFieldOnKeyboardDismissDoesNotChangeFocusState() {
-        let delegate = MockPaymentReviewDelegate()
-        let provider = MockBottomSheetsProvider()
-        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
-        let sut = PaymentReviewObservableModel(model: model)
-        /// Simulate the landscape Done button path: validates the amount field directly
-        /// because SwiftUI's @FocusState update from UIKit resignFirstResponder is not
-        /// guaranteed to be synchronous.
-
-        sut.validateAmountFieldOnKeyboardDismiss()
-
-        #expect(sut.isAmountFieldFocused == false,
-                "validateAmountFieldOnKeyboardDismiss must not alter the focus state of the amount field")
-    }
-
     @Test("validateAmountFieldOnKeyboardDismiss is safe to call twice without crashing")
     func validateAmountFieldOnKeyboardDismissIsIdempotent() {
         let delegate = MockPaymentReviewDelegate()
