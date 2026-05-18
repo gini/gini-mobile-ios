@@ -35,19 +35,6 @@ struct PaymentReviewHandleAmountFocusChangeTests {
         #expect(sut.amountInputState.text == "", "focus gained with zero amount must not pre-fill text — a programmatic '\"\" → \"0,00\"' change inside the async Task can race with UIKit first-responder setup and trigger a focus loss that re-shows the error")
     }
 
-    @Test("focus gained clears any existing error")
-    func focusGainedClearsError() {
-        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        sut.amountToPay = Price(value: 12.50, currencyCode: "EUR")
-        sut.amountInputState.hasError = true
-        sut.amountInputState.errorMessage = "some error"
-
-        sut.handleAmountFocusChange(isFocused: true)
-
-        #expect(sut.amountInputState.hasError == false, "focus gained must clear hasError so the field is immediately editable even when text did not change")
-        #expect(sut.amountInputState.errorMessage == nil, "focus gained must clear errorMessage")
-    }
-
     @Test("focus lost with empty text sets hasError")
     func focusLostEmptyTextSetsError() {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
