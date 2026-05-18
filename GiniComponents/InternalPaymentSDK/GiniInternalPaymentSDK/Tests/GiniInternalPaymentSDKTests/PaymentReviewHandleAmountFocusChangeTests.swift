@@ -142,3 +142,33 @@ struct PaymentReviewHandleAmountFocusChangeTests {
         #expect(sut.amountInputState.hasError == true, "double call with empty amount must keep hasError set — the Done button triggers this path")
     }
 }
+
+// MARK: - applyAmountErrorClear
+
+@Suite("PaymentReviewPaymentInformationObservableModel — applyAmountErrorClear")
+@MainActor
+struct PaymentReviewApplyAmountErrorClearTests {
+
+    @Test("clears hasError and errorMessage")
+    func clearsError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.hasError = true
+        sut.amountInputState.errorMessage = "Amount is required"
+
+        sut.applyAmountErrorClear()
+
+        #expect(sut.amountInputState.hasError == false, "applyAmountErrorClear must set hasError to false")
+        #expect(sut.amountInputState.errorMessage == nil, "applyAmountErrorClear must clear errorMessage")
+    }
+
+    @Test("is a no-op when no error is set")
+    func isNoOpWhenNoError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.amountInputState.hasError = false
+        sut.amountInputState.errorMessage = nil
+
+        sut.applyAmountErrorClear()
+
+        #expect(sut.amountInputState.hasError == false, "applyAmountErrorClear must not flip hasError when already false")
+    }
+}
