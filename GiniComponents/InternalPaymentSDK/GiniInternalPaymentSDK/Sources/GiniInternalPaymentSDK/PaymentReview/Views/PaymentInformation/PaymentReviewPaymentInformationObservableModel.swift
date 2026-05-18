@@ -201,7 +201,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      for programmatic text changes (e.g. population on load) — never while the user is actively
      typing. Clearing error during typing would trigger a `.error → .focused` style transition
      inside `GiniTextFieldStyle`, causing SwiftUI to replace the underlying `UITextField` and
-     dismiss the keyboard (HEAL-377).
+     dismiss the keyboard.
      */
     func clearErrorOnTextChange(for inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>) {
         guard self[keyPath: inputState].hasError else { return }
@@ -265,7 +265,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      Error clearing is intentionally removed from this method. The view's
      `onChange(of: amountInputState.text)` only calls `clearErrorOnTextChange` when the
      amount field is **not** focused, which prevents the `.error → .focused` style
-     transition while the user is actively typing and avoids keyboard dismissal (HEAL-377).
+     transition while the user is actively typing and avoids keyboard dismissal.
      */
     func handleAmountTextChange(updatedText: String) {
         if let result = adjustAmountValue(text: updatedText) {
