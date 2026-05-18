@@ -196,10 +196,12 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
 
     /**
-     Clears the error state for a text field when the user edits its content.
-     Called from `onChange(of: text)` in the view so the error disappears on the first
-     keystroke rather than on focus-gain. This keeps the layout height stable while the
-     keyboard animates in, preventing the bottom-sheet from dismissing the keyboard.
+     Clears the error state for a text field when its text changes while the field is not focused.
+     Called from `onChange(of: text)` in the view, guarded by a focus check, so it only runs
+     for programmatic text changes (e.g. population on load) — never while the user is actively
+     typing. Clearing error during typing would trigger a `.error → .focused` style transition
+     inside `GiniTextFieldStyle`, causing SwiftUI to replace the underlying `UITextField` and
+     dismiss the keyboard (HEAL-377).
      */
     func clearErrorOnTextChange(for inputState: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>) {
         guard self[keyPath: inputState].hasError else { return }
