@@ -42,6 +42,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     @Published var isAmountFieldFocused: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
+    private var amountErrorClearTask: Task<Void, Never>?
     
     @Published var extractions: [Extraction]
     @Published var selectedPaymentProvider: PaymentProvider
@@ -309,9 +310,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
     
     private func clearAmountErrorAfterKeyboardAppears() {
-        Task { @MainActor [weak self] in
+        amountErrorClearTask?.cancel()
+        amountErrorClearTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(Constants.keyboardAnimationDelay))
-            guard let self, self.isAmountFieldFocused else { return }
+            guard !Task.isCancelled, let self, self.isAmountFieldFocused else { return }
             self.amountInputState.hasError = false
             self.amountInputState.errorMessage = nil
         }
