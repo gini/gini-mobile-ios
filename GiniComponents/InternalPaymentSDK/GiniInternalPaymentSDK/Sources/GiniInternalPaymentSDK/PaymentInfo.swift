@@ -18,8 +18,6 @@ public struct PaymentInfo {
     public var recipient: String
     /** The IBAN (International Bank Account Number) of the payment recipient. */
     public var iban: String
-    /** The BIC (Bank Identifier Code) for the payment, if available. */
-    public var bic: String?
     /** The payment amount as a formatted string (e.g., "100.00:EUR"). */
     public var amount: String
     /** The purpose of the payment, such as an invoice reference or customer identifier. */
@@ -31,7 +29,6 @@ public struct PaymentInfo {
 
     /**
      Creates a new payment info object.
-     The `bic` field defaults to `nil` and can be set as a property after initialisation if needed.
      - Parameters:
        - sourceDocumentLocation: The URI of the source document, if available.
        - recipient: The recipient of the payment.
@@ -51,7 +48,6 @@ public struct PaymentInfo {
         self.sourceDocumentLocation = sourceDocumentLocation
         self.recipient = recipient
         self.iban = iban.uppercased()
-        self.bic = nil
         self.amount = amount
         self.purpose = purpose
         self.paymentUniversalLink = paymentUniversalLink

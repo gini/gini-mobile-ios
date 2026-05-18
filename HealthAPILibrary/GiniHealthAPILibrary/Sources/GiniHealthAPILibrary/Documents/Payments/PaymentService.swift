@@ -42,7 +42,6 @@ public final class PaymentService: PaymentServiceProtocol {
        - paymentProvider: The id of the target payment provider.
        - recipient: The recipient of the payment.
        - iban: The IBAN of the payment recipient.
-       - bic: The BIC for the payment (optional).
        - amount: The amount of the payment.
        - purpose: The purpose of the payment, e.g. the invoice or customer identifier.
        - completion: A completion callback, returning the payment request id on success.
@@ -51,11 +50,10 @@ public final class PaymentService: PaymentServiceProtocol {
                                      paymentProvider: String,
                                      recipient: String,
                                      iban: String,
-                                     bic: String? = nil,
                                      amount: String,
                                      purpose: String,
                                      completion: @escaping CompletionResult<String>) {
-        let requestBody = PaymentRequestBody(sourceDocumentLocation: sourceDocumentLocation, paymentProvider: paymentProvider, recipient: recipient, iban: iban, bic: bic, amount: amount, purpose: purpose)
+        let requestBody = PaymentRequestBody(sourceDocumentLocation: sourceDocumentLocation, paymentProvider: paymentProvider, recipient: recipient, iban: iban, amount: amount, purpose: purpose)
         self.createPaymentRequest(paymentRequestBody: requestBody, resourceHandler: sessionManager.data, completion: completion)
     }
     
@@ -197,7 +195,6 @@ protocol PaymentServiceProtocol: AnyObject {
        - paymentProvider: The id of the target payment provider.
        - recipient: The recipient of the payment.
        - iban: The IBAN of the payment recipient.
-       - bic: The BIC for the payment (optional).
        - amount: The amount of the payment.
        - purpose: The purpose of the payment, e.g. the invoice or customer identifier.
        - completion: A completion callback, returning the payment request id on success.
@@ -206,7 +203,6 @@ protocol PaymentServiceProtocol: AnyObject {
                               paymentProvider: String,
                               recipient: String,
                               iban: String,
-                              bic: String?,
                               amount: String,
                               purpose: String,
                               completion: @escaping CompletionResult<String>)

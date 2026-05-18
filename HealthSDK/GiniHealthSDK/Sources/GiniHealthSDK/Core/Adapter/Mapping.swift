@@ -243,7 +243,6 @@ extension GiniInternalPaymentSDK.PaymentInfo {
                   purpose: paymentComponentsInfo.purpose,
                   paymentUniversalLink: paymentComponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentComponentsInfo.paymentProviderId)
-        self.bic = paymentComponentsInfo.bic
     }
 }
 
