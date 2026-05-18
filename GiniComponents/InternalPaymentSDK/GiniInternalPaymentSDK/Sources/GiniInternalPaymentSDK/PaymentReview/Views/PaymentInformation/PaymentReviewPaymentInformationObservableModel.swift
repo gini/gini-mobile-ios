@@ -314,9 +314,13 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         amountErrorClearTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(Constants.keyboardAnimationDelay))
             guard !Task.isCancelled, let self, self.isAmountFieldFocused else { return }
-            self.amountInputState.hasError = false
-            self.amountInputState.errorMessage = nil
+            self.applyAmountErrorClear()
         }
+    }
+
+    func applyAmountErrorClear() {
+        amountInputState.hasError = false
+        amountInputState.errorMessage = nil
     }
 
     private func setupBindings() {
