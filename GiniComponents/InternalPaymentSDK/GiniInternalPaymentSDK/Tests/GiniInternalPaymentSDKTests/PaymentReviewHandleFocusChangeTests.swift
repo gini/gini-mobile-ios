@@ -52,3 +52,44 @@ struct PaymentReviewHandleFocusChangeTests {
         #expect(sut.ibanInputState.hasError == true, "focus lost with invalid IBAN must set hasError on the IBAN input state")
     }
 }
+
+// MARK: - clearErrorOnTextChange
+
+@Suite("PaymentReviewPaymentInformationObservableModel — clearErrorOnTextChange")
+@MainActor
+struct PaymentReviewClearErrorOnTextChangeTests {
+
+    @Test("clears hasError and errorMessage when hasError is true")
+    func clearsErrorWhenErrorIsSet() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.recipientInputState.hasError = true
+        sut.recipientInputState.errorMessage = "Recipient is required"
+
+        sut.clearErrorOnTextChange(for: \.recipientInputState)
+
+        #expect(sut.recipientInputState.hasError == false, "clearErrorOnTextChange must set hasError to false")
+        #expect(sut.recipientInputState.errorMessage == nil, "clearErrorOnTextChange must clear errorMessage")
+    }
+
+    @Test("is a no-op when hasError is already false")
+    func isNoOpWhenNoError() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.recipientInputState.hasError = false
+        sut.recipientInputState.errorMessage = nil
+
+        sut.clearErrorOnTextChange(for: \.recipientInputState)
+
+        #expect(sut.recipientInputState.hasError == false, "clearErrorOnTextChange must not flip hasError when it is already false")
+    }
+
+    @Test("works for any field via the key path parameter")
+    func worksForIBANField() {
+        let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
+        sut.ibanInputState.hasError = true
+        sut.ibanInputState.errorMessage = "Invalid IBAN"
+
+        sut.clearErrorOnTextChange(for: \.ibanInputState)
+
+        #expect(sut.ibanInputState.hasError == false, "clearErrorOnTextChange must clear the field identified by the key path")
+    }
+}
