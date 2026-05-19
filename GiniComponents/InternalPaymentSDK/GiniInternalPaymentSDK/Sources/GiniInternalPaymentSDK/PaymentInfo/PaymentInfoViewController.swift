@@ -82,6 +82,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         textView.textContainer.lineFragmentPadding = 0
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = .clear
+        textView.adjustsFontForContentSizeCategory = true
         textView.attributedText = viewModel.payBillsDescriptionAttributedText
         textView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
         return textView
@@ -153,6 +154,15 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         self.setupView()
         bindToTableViewSizeUpdates()
         observeContentSizeCategory()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // attributedText with an explicit .font attribute does not auto-scale via
+        // adjustsFontForContentSizeCategory — only the label/textView .font property
+        // benefits from that flag. Rebuild attributed content here so the text view
+        // always reflects the current Dynamic Type size on first appearance.
+        handleContentSizeCategoryChange()
     }
 
     private func setupView() {
@@ -232,12 +242,17 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
+            // Pin the content view to the scroll view's content layout guide so that
+            // contentSize grows with the content and vertical scrolling works when the
+            // content exceeds the bottom-sheet frame height (e.g. at 200 % Dynamic Type).
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+
+            // Lock the content width to the scroll view frame — no horizontal scrolling.
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
     }
     
