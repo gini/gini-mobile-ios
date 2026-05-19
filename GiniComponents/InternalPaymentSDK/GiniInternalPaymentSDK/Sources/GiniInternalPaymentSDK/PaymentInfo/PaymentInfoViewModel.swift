@@ -16,7 +16,12 @@ struct FAQSection {
 }
 
 public final class PaymentInfoViewModel {
-    let configuration: PaymentInfoConfiguration
+    /// Current configuration. Replaced on each Dynamic Type change if `configurationRefresher` is set.
+    var configuration: PaymentInfoConfiguration
+    /// Called in `refreshAttributedContent()` to obtain a fresh configuration with up-to-date
+    /// scaled fonts whenever the Dynamic Type size changes. Returns nil when the owner is gone
+    /// (weak-self capture), in which case the last known configuration is kept unchanged.
+    private let configurationRefresher: (() -> PaymentInfoConfiguration?)?
     let strings: PaymentInfoStrings
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders
     let poweredByGiniViewModel: PoweredByGiniViewModel
@@ -41,9 +46,11 @@ public final class PaymentInfoViewModel {
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                configurationRefresher: (() -> PaymentInfoConfiguration?)? = nil) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
+        self.configurationRefresher = configurationRefresher
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.clientConfiguration = clientConfiguration
@@ -93,6 +100,9 @@ public final class PaymentInfoViewModel {
      with the current content size category.
      */
     func refreshAttributedContent() {
+        if let fresh = configurationRefresher?() {
+            configuration = fresh
+        }
         payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
         configurePayBillsGiniLink()
         let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }

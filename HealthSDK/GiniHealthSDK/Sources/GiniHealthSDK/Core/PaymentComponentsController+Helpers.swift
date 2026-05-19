@@ -176,7 +176,10 @@ extension PaymentComponentsController {
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
                                                                    paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
                                                                    paymentInfoStrings: stringsProvider.paymentInfoStrings,
-                                                                   clientConfiguration: configurationProvider.clientConfiguration)
+                                                                   clientConfiguration: configurationProvider.clientConfiguration,
+                                                                   paymentInfoConfigurationProvider: { [weak self] in
+                                                                       self?.configurationProvider.paymentInfoConfiguration
+                                                                   })
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         
@@ -288,7 +291,10 @@ extension PaymentComponentsController {
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                         poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                        clientConfiguration: configurationProvider.clientConfiguration)
+                                                        clientConfiguration: configurationProvider.clientConfiguration,
+                                                        configurationRefresher: { [weak self] in
+                                                            self?.configurationProvider.paymentInfoConfiguration
+                                                        })
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
