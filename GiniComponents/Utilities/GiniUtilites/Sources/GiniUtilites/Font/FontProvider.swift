@@ -9,11 +9,10 @@ import UIKit
 import SwiftUI
 
 public final class FontProvider {
-    private var textStyleFonts = FontProvider.defaultFonts
+    /// Custom fonts set by the integrator via `updateFont(_:for:)`.
+    private var customFonts: [UIFont.TextStyle: UIFont] = [:]
 
-    public init() {
-        // Uses default font specs defined in `FontProvider.defaultFonts`.
-    }
+    public init() {}
 
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
@@ -22,17 +21,27 @@ public final class FontProvider {
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
-        textStyleFonts[textStyle] = font
+        customFonts[textStyle] = font
     }
 
     /**
-     Retrieves the font associated with a specific text style.
+     Retrieves the font associated with a specific text style, scaled to the current Dynamic Type size.
+
+     Custom fonts registered via `updateFont(_:for:)` are returned as-is.
+     Built-in fonts are re-scaled on every call via `UIFontMetrics` so that
+     the returned font always reflects the current content-size category.
 
      - parameter textStyle: The text style for which to retrieve the font.
      - returns: The font associated with the given text style.
      */
     public func font(for textStyle: UIFont.TextStyle) -> UIFont {
-        return textStyleFonts[textStyle] ?? UIFont.systemFont(ofSize: 17)
+        if let custom = customFonts[textStyle] {
+            return custom
+        }
+        guard let spec = FontProvider.defaultFontSpecs[textStyle] else {
+            return UIFont.systemFont(ofSize: 17)
+        }
+        return UIFontMetrics(forTextStyle: spec.metricsStyle).scaledFont(for: spec.baseFont)
     }
 
     /**
@@ -50,23 +59,32 @@ public final class FontProvider {
 // MARK: - Private
 
 private extension FontProvider {
-    private static func createFont(textStyle: UIFont.TextStyle, size: CGFloat, weight: UIFont.Weight) -> UIFont {
-        let font = UIFont.systemFont(ofSize: size, weight: weight)
-        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
+    struct FontSpec {
+        let baseFont: UIFont
+        let metricsStyle: UIFont.TextStyle
     }
 
-    private static let defaultFonts : [UIFont.TextStyle: UIFont] = [
-        .headline1: createFont(textStyle: .headline, size: 26, weight: .regular),
-        .headline2: createFont(textStyle: .headline, size: 20, weight: .bold),
-        .headline3: createFont(textStyle: .headline, size: 18, weight: .bold),
-        .captions1: createFont(textStyle: .caption1, size: 13, weight: .regular),
-        .captions2: createFont(textStyle: .caption2, size: 12, weight: .regular),
-        .linkBold: createFont(textStyle: .footnote, size: 14, weight: .bold),
-        .subtitle1: createFont(textStyle: .subheadline, size: 16, weight: .bold),
-        .subtitle2: createFont(textStyle: .subheadline, size: 14, weight: .medium),
-        .input: createFont(textStyle: .caption1, size: 16, weight: .medium),
-        .button: createFont(textStyle: .caption2, size: 16, weight: .bold),
-        .body1: createFont(textStyle: .body, size: 16, weight: .regular),
-        .body2: createFont(textStyle: .body, size: 14, weight: .regular)
-    ]
+    /// Static table of unscaled base fonts and their associated `UIFontMetrics` text style.
+    /// Scaling is applied fresh on each call to `font(for:)` so the returned font always
+    /// reflects the current Dynamic Type size category.
+    static let defaultFontSpecs: [UIFont.TextStyle: FontSpec] = {
+        func spec(_ metricsStyle: UIFont.TextStyle, size: CGFloat, weight: UIFont.Weight) -> FontSpec {
+            FontSpec(baseFont: UIFont.systemFont(ofSize: size, weight: weight),
+                     metricsStyle: metricsStyle)
+        }
+        return [
+            .headline1: spec(.headline,    size: 26, weight: .regular),
+            .headline2: spec(.headline,    size: 20, weight: .bold),
+            .headline3: spec(.headline,    size: 18, weight: .bold),
+            .captions1: spec(.caption1,    size: 13, weight: .regular),
+            .captions2: spec(.caption2,    size: 12, weight: .regular),
+            .linkBold:  spec(.footnote,    size: 14, weight: .bold),
+            .subtitle1: spec(.subheadline, size: 16, weight: .bold),
+            .subtitle2: spec(.subheadline, size: 14, weight: .medium),
+            .input:     spec(.caption1,    size: 16, weight: .medium),
+            .button:    spec(.caption2,    size: 16, weight: .bold),
+            .body1:     spec(.body,        size: 16, weight: .regular),
+            .body2:     spec(.body,        size: 14, weight: .regular),
+        ]
+    }()
 }
