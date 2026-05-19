@@ -6,65 +6,113 @@
 
 import UIKit
 
-public struct PaymentInfoConfiguration {
+public struct PaymentInfoAnswerCellConfiguration {
+    let font: UIFont
+    let textColor: UIColor
+    let linkColor: UIColor
+
+    public init(font: UIFont,
+                textColor: UIColor,
+                linkColor: UIColor) {
+        self.font = font
+        self.textColor = textColor
+        self.linkColor = linkColor
+    }
+}
+
+public struct PaymentInfoQuestionHeaderConfiguration {
+    let font: UIFont
+    let titleColor: UIColor
+    let minusIcon: UIImage
+    let plusIcon: UIImage
+    let iconTintColor: UIColor
+
+    public init(font: UIFont,
+                titleColor: UIColor,
+                minusIcon: UIImage,
+                plusIcon: UIImage,
+                iconTintColor: UIColor) {
+        self.font = font
+        self.titleColor = titleColor
+        self.minusIcon = minusIcon
+        self.plusIcon = plusIcon
+        self.iconTintColor = iconTintColor
+    }
+}
+
+public struct PaymentInfoQuestionsTitleConfiguration {
+    let font: UIFont
+    let color: UIColor
+
+    public init(font: UIFont,
+                color: UIColor) {
+        self.font = font
+        self.color = color
+    }
+}
+
+public struct PaymentInfoPayBillsConfiguration {
+    let titleFont: UIFont
+    let titleColor: UIColor
+    let descriptionFont: UIFont
+
+    public init(titleFont: UIFont,
+                titleColor: UIColor,
+                descriptionFont: UIFont) {
+        self.titleFont = titleFont
+        self.titleColor = titleColor
+        self.descriptionFont = descriptionFont
+    }
+}
+
+public struct PaymentInfoLinkConfiguration {
     let giniFont: UIFont
-    let answersFont: UIFont
-    let answerCellTextColor: UIColor
-    let answerCellLinkColor: UIColor
-    let questionsTitleFont: UIFont
-    let questionsTitleColor: UIColor
-    let questionHeaderFont: UIFont
-    let questionHeaderTitleColor: UIColor
-    let questionHeaderMinusIcon: UIImage
-    let questionHeaderPlusIcon: UIImage
-    let bankCellBorderColor: UIColor
-    let payBillsTitleFont: UIFont
-    let payBillsTitleColor: UIColor
-    let payBillsDescriptionFont: UIFont
-    let linksFont: UIFont
-    let linksColor: UIColor
-    let separatorColor: UIColor
-    let backgroundColor: UIColor
-    let questionHeaderIconTintColor: UIColor
+    let font: UIFont
+    let color: UIColor
 
     public init(giniFont: UIFont,
-                answersFont: UIFont,
-                answerCellTextColor: UIColor,
-                answerCellLinkColor: UIColor,
-                questionsTitleFont: UIFont,
-                questionsTitleColor: UIColor,
-                questionHeaderFont: UIFont,
-                questionHeaderTitleColor: UIColor,
-                questionHeaderMinusIcon: UIImage,
-                questionHeaderPlusIcon: UIImage,
-                bankCellBorderColor: UIColor,
-                payBillsTitleFont: UIFont,
-                payBillsTitleColor: UIColor,
-                payBillsDescriptionFont: UIFont,
-                linksFont: UIFont,
-                linksColor: UIColor,
-                separatorColor: UIColor,
-                backgroundColor: UIColor,
-                questionHeaderIconTintColor: UIColor) {
+                font: UIFont,
+                color: UIColor) {
         self.giniFont = giniFont
-        self.answersFont = answersFont
-        self.answerCellTextColor = answerCellTextColor
-        self.answerCellLinkColor = answerCellLinkColor
-        self.questionsTitleFont = questionsTitleFont
-        self.questionsTitleColor = questionsTitleColor
-        self.questionHeaderFont = questionHeaderFont
-        self.questionHeaderTitleColor = questionHeaderTitleColor
-        self.questionHeaderMinusIcon = questionHeaderMinusIcon
-        self.questionHeaderPlusIcon = questionHeaderPlusIcon
+        self.font = font
+        self.color = color
+    }
+}
+
+public struct PaymentInfoLayoutConfiguration {
+    let bankCellBorderColor: UIColor
+    let separatorColor: UIColor
+    let backgroundColor: UIColor
+
+    public init(bankCellBorderColor: UIColor,
+                separatorColor: UIColor,
+                backgroundColor: UIColor) {
         self.bankCellBorderColor = bankCellBorderColor
-        self.payBillsTitleFont = payBillsTitleFont
-        self.payBillsTitleColor = payBillsTitleColor
-        self.payBillsDescriptionFont = payBillsDescriptionFont
-        self.linksFont = linksFont
-        self.linksColor = linksColor
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
-        self.questionHeaderIconTintColor = questionHeaderIconTintColor
+    }
+}
+
+public struct PaymentInfoConfiguration {
+    let answerCell: PaymentInfoAnswerCellConfiguration
+    let questionHeader: PaymentInfoQuestionHeaderConfiguration
+    let questionsTitle: PaymentInfoQuestionsTitleConfiguration
+    let payBills: PaymentInfoPayBillsConfiguration
+    let links: PaymentInfoLinkConfiguration
+    let layout: PaymentInfoLayoutConfiguration
+
+    public init(answerCell: PaymentInfoAnswerCellConfiguration,
+                questionHeader: PaymentInfoQuestionHeaderConfiguration,
+                questionsTitle: PaymentInfoQuestionsTitleConfiguration,
+                payBills: PaymentInfoPayBillsConfiguration,
+                links: PaymentInfoLinkConfiguration,
+                layout: PaymentInfoLayoutConfiguration) {
+        self.answerCell = answerCell
+        self.questionHeader = questionHeader
+        self.questionsTitle = questionsTitle
+        self.payBills = payBills
+        self.links = links
+        self.layout = layout
     }
 }
 

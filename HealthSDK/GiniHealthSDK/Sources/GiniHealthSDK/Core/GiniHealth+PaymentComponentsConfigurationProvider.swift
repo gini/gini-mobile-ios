@@ -91,25 +91,25 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var paymentInfoConfiguration: PaymentInfoConfiguration {
         PaymentInfoConfiguration(
-            giniFont: GiniHealthConfiguration.shared.font(for: .button),
-            answersFont: GiniHealthConfiguration.shared.font(for: .body2),
-            answerCellTextColor: GiniColor.standard1.uiColor(),
-            answerCellLinkColor: GiniColor.accent1.uiColor(),
-            questionsTitleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
-            questionsTitleColor: GiniColor.standard1.uiColor(),
-            questionHeaderFont: GiniHealthConfiguration.shared.font(for: .body1),
-            questionHeaderTitleColor: GiniColor.standard1.uiColor(),
-            questionHeaderMinusIcon: GiniHealthImage.minus.preferredUIImage(),
-            questionHeaderPlusIcon: GiniHealthImage.plus.preferredUIImage(),
-            bankCellBorderColor: GiniColor.standard5.uiColor(),
-            payBillsTitleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
-            payBillsTitleColor: GiniColor.standard1.uiColor(),
-            payBillsDescriptionFont: GiniHealthConfiguration.shared.font(for: .body2),
-            linksFont: GiniHealthConfiguration.shared.font(for: .linkBold),
-            linksColor: GiniColor.accent1.uiColor(),
-            separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor(),
-            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
+            answerCell: .init(font: GiniHealthConfiguration.shared.font(for: .body2),
+                              textColor: GiniColor.standard1.uiColor(),
+                              linkColor: GiniColor.accent1.uiColor()),
+            questionHeader: .init(font: GiniHealthConfiguration.shared.font(for: .body1),
+                                  titleColor: GiniColor.standard1.uiColor(),
+                                  minusIcon: GiniHealthImage.minus.preferredUIImage(),
+                                  plusIcon: GiniHealthImage.plus.preferredUIImage(),
+                                  iconTintColor: GiniColor.accent1.uiColor()),
+            questionsTitle: .init(font: GiniHealthConfiguration.shared.font(for: .subtitle1),
+                                  color: GiniColor.standard1.uiColor()),
+            payBills: .init(titleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
+                            titleColor: GiniColor.standard1.uiColor(),
+                            descriptionFont: GiniHealthConfiguration.shared.font(for: .body2)),
+            links: .init(giniFont: GiniHealthConfiguration.shared.font(for: .button),
+                         font: GiniHealthConfiguration.shared.font(for: .linkBold),
+                         color: GiniColor.accent1.uiColor()),
+            layout: .init(bankCellBorderColor: GiniColor.standard5.uiColor(),
+                          separatorColor: GiniColor.standard5.uiColor(),
+                          backgroundColor: GiniColor.standard7.uiColor())
         )
     }
 
