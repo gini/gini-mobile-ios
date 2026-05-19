@@ -80,10 +80,12 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         guard isLandscape, let presentedVC = presentedViewController else { return }
 
         // iOS captures a snapshot of the current screen before the rotation animation
-        // begins — SwiftUI's onChange fires too late to affect it. Hiding the sheet view
-        // here, before the snapshot is taken, prevents it from appearing during rotation.
-        // SwiftUI's onChange(of: giniLayout.isLandscape) still owns the actual dismissal.
-        presentedVC.view.isHidden = true
+        // begins — SwiftUI's onChange fires too late to affect it. Hiding the entire
+        // presentation container (not just the sheet's content view) ensures both the
+        // sheet content and UIKit's dimming/backdrop overlay are invisible in the
+        // snapshot. SwiftUI's onChange(of: giniLayout.isLandscape) still owns the
+        // actual dismissal.
+        presentedVC.presentationController?.containerView?.isHidden = true
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
