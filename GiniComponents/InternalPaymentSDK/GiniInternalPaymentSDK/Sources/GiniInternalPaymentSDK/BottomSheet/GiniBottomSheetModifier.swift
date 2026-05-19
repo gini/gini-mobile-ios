@@ -35,10 +35,10 @@ struct GiniBottomSheetModifier: ViewModifier {
         
         if #available(iOS 16.4, *) {
             let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
-            
+
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
-                .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
+                .presentationCompactAdaptation(horizontal: .sheet, vertical: .sheet)
                 .presentationContentInteraction(.scrolls)
         } else {
             base
