@@ -21,7 +21,7 @@ public final class PaymentInfoViewModel {
     /// Called in `refreshAttributedContent()` to obtain a fresh configuration with up-to-date
     /// scaled fonts whenever the Dynamic Type size changes. Returns nil when the owner is gone
     /// (weak-self capture), in which case the last known configuration is kept unchanged.
-    private let configurationRefresher: (() -> PaymentInfoConfiguration?)?
+    private let configurationRefresher: (() -> PaymentInfoConfiguration?)? // UIFont metrics are computed once at init; this closure lets the owner re-supply a freshly scaled configuration after a Dynamic Type change
     let strings: PaymentInfoStrings
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders
     let poweredByGiniViewModel: PoweredByGiniViewModel
