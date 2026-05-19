@@ -68,6 +68,24 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         model.closePaymentReview()
     }
     
+    public override func viewWillTransition(to size: CGSize,
+                                            with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        guard model.displayMode == .documentCollection else { return }
+
+        // `size` is the *incoming* size, not the current one — it must be used here rather than
+        // UIDevice.isPortrait() reflects the old orientation at this point in the transition.
+        let isLandscape = size.width > size.height
+        guard isLandscape, let presentedVC = presentedViewController else { return }
+
+        // iOS captures a snapshot of the current screen before the rotation animation
+        // begins — SwiftUI's onChange fires too late to affect it. Hiding the sheet view
+        // here, before the snapshot is taken, prevents it from appearing during rotation.
+        // SwiftUI's onChange(of: giniLayout.isLandscape) still owns the actual dismissal.
+        presentedVC.view.isHidden = true
+    }
+
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         overlayPresenter.dismiss(animated: false)
