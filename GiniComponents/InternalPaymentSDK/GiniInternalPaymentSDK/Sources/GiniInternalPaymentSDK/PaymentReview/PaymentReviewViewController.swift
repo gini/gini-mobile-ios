@@ -75,7 +75,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         guard model.displayMode == .documentCollection else { return }
 
         // `size` is the *incoming* size, not the current one — it must be used here rather than
-        // UIDevice.isPortrait() reflects the old orientation at this point in the transition.
+        // relying on `UIDevice.isPortrait()`, which reflects the old orientation at this point in the transition.
         let isLandscape = size.width > size.height
         guard isLandscape, let presentedVC = presentedViewController else { return }
 
