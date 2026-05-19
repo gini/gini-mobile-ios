@@ -12,7 +12,6 @@ public struct PaymentReviewContentView: View {
     @State private var hasAppeared = false
     @State private var showBottomSheet = true
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
-    @State private var isDismissingForRotation = false
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
     @Environment(\.giniLayout) private var giniLayout
@@ -38,11 +37,10 @@ public struct PaymentReviewContentView: View {
         .ignoresSafeArea(.keyboard)
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
         .onChange(of: giniLayout.isLandscape) { landscape in
-            // When rotating to landscape in documentCollection mode, dismiss the
-            // sheet immediately (without animation) so the crossfade transition
-            // isn't disrupted by the sheet's own dismissal animation.
+            // Belt-and-suspenders for iOS 17+: the sheet is already dismissed imperatively
+            // from viewWillTransition on iOS 16, but on iOS 17 we keep this path as well.
             if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
-                isDismissingForRotation = true
+                viewModel.isDismissingForRotation = true
                 showBottomSheet = false
             }
         }
@@ -116,8 +114,8 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            defer { isDismissingForRotation = false }
-            if !isDismissingForRotation && (viewModel.isBottomSheetMode || isVoiceOverEnabled) {
+            defer { viewModel.isDismissingForRotation = false }
+            if !viewModel.isDismissingForRotation && (viewModel.isBottomSheetMode || isVoiceOverEnabled) {
                 viewModel.didTapClose()
             }
         } content: {
