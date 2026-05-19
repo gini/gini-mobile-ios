@@ -213,9 +213,9 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.recipientInputState.text) { _ in
-            /// Clearing the error while the field is focused triggers a `.error → .focused`
-            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
-            /// dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing the error while the field is focused triggers a `.error → .focused`
+            // style-state transition that causes SwiftUI to replace the underlying UITextField,
+            // dismissing the keyboard. Only clear when the field is not focused.
             guard focusedField != .recipient else { return }
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
         }
@@ -244,9 +244,9 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.ibanInputState.text) { _ in
-            /// Clearing the error while the field is focused triggers a `.error → .focused`
-            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
-            /// dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing the error while the field is focused triggers a `.error → .focused`
+            // style-state transition that causes SwiftUI to replace the underlying UITextField,
+            // dismissing the keyboard. Only clear when the field is not focused.
             guard focusedField != .iban else { return }
             viewModel.clearErrorOnTextChange(for: \.ibanInputState)
         }
@@ -258,8 +258,8 @@ struct PaymentReviewPaymentInformationView: View {
             .focused($focusedField, equals: .amount)
             .onChange(of: viewModel.amountInputState.text) { newValue in
                 viewModel.handleAmountTextChange(updatedText: newValue)
-                /// Amount error clearing is handled by `handleAmountFocusChange` and
-                /// `clearAmountErrorAfterKeyboardAppears` — not by text change.
+                // Amount error clearing is handled by `handleAmountFocusChange` and
+                // `clearAmountErrorAfterKeyboardAppears` — not by text change.
             }
             .onChange(of: focusedField) { newFocus in
                 Task { @MainActor in
@@ -296,9 +296,9 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
-            /// Clearing the error while the field is focused triggers a `.error → .focused`
-            /// style-state transition that causes SwiftUI to replace the underlying UITextField,
-            /// dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing the error while the field is focused triggers a `.error → .focused`
+            // style-state transition that causes SwiftUI to replace the underlying UITextField,
+            // dismissing the keyboard. Only clear when the field is not focused.
             guard focusedField != .paymentPurpose else { return }
             viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
         }
