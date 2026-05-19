@@ -11,8 +11,9 @@ import SwiftUI
 public final class FontProvider {
     private var textStyleFonts: [UIFont.TextStyle: UIFont] = [:]
 
-    // Empty initializer for public access.
-    public init() {}
+    public init() {
+        // Empty initializer for public access.
+    }
 
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
