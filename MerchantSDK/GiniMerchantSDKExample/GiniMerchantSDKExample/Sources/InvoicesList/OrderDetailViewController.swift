@@ -225,7 +225,6 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
 
         return PaymentInfo(recipient: order.recipient,
                            iban: order.iban,
-                           bic: "",
                            amount: order.amountToPay,
                            purpose: order.purpose,
                            paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",

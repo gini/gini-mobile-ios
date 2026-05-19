@@ -18,8 +18,6 @@ public struct PaymentInfo {
     public var recipient: String
     /** The IBAN (International Bank Account Number) of the payment recipient. */
     public var iban: String
-    /** The BIC (Bank Identifier Code) for the payment, if available. */
-    public var bic: String?
     /** The payment amount as a formatted string (e.g., "100.00:EUR"). */
     public var amount: String
     /** The purpose of the payment, such as an invoice reference or customer identifier. */
@@ -35,7 +33,6 @@ public struct PaymentInfo {
        - sourceDocumentLocation: The URI of the source document, if available.
        - recipient: The recipient of the payment.
        - iban: The IBAN of the payment recipient.
-       - bic: The BIC for the payment, if available.
        - amount: The payment amount as a formatted string.
        - purpose: The purpose of the payment.
        - paymentUniversalLink: The universal link used to open the payment provider app.
@@ -44,7 +41,6 @@ public struct PaymentInfo {
     public init(sourceDocumentLocation: String? = nil,
                 recipient: String,
                 iban: String,
-                bic: String? = nil,
                 amount: String,
                 purpose: String,
                 paymentUniversalLink: String,
@@ -52,7 +48,6 @@ public struct PaymentInfo {
         self.sourceDocumentLocation = sourceDocumentLocation
         self.recipient = recipient
         self.iban = iban.uppercased()
-        self.bic = bic
         self.amount = amount
         self.purpose = purpose
         self.paymentUniversalLink = paymentUniversalLink

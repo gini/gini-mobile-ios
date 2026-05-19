@@ -111,7 +111,6 @@ final class GiniHealthSDKPaymentRequestTests: GiniHealthSDKIntegrationTestsBase 
                                             paymentProvider: providerId,
                                             recipient: recipient,
                                             iban: iban,
-                                            bic: nil,
                                             amount: amount,
                                             purpose: purpose) { result in
             if case .success(let id) = result {

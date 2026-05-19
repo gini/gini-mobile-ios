@@ -237,8 +237,7 @@ extension PaymentInfo {
     init(paymentConponentsInfo: GiniInternalPaymentSDK.PaymentInfo) {
         self.init(recipient: paymentConponentsInfo.recipient,
                   iban: paymentConponentsInfo.iban,
-                  bic: paymentConponentsInfo.bic,
-                  amount: paymentConponentsInfo.amount, 
+                  amount: paymentConponentsInfo.amount,
                   purpose: paymentConponentsInfo.purpose,
                   paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentConponentsInfo.paymentProviderId)

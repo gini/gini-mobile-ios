@@ -1,10 +1,6 @@
 {
     "items": [
         {
-            "code": "2012",
-            "message": "Provide a valid BIC number"
-        },
-        {
             "code": "2002",
             "message": "Value of payment purpose should be at least 4, at most 200 characters long"
         },

@@ -24,7 +24,6 @@ class PaymentServiceTests: DocumentServiceTestBase {
                                                      paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
                                                      recipient: "James Bond",
                                                      iban: "DE02300209000106531065",
-                                                     bic: nil,
                                                      amount: "33.78:EUR",
                                                      purpose: "save the world",
                                                      completion: $0)

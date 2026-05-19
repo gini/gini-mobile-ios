@@ -240,7 +240,12 @@ final class GiniMerchantTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Creating payment request")
         var receivedRequestId: String?
-        let paymentInfo = PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        var paymentInfo = PaymentInfo(recipient: "Uno Flüchtlingshilfe",
+                                      iban: "DE78370501980020008850",
+                                      amount: "1.00:EUR",
+                                      purpose: "ReNr 12345",
+                                      paymentUniversalLink: "ginipay-test://paymentRequester",
+                                      paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
         giniMerchant.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
             switch result {
             case .success(let requestId):
