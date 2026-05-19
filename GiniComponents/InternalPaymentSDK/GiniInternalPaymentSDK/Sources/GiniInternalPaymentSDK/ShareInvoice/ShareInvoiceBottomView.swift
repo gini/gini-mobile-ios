@@ -125,13 +125,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         super.viewDidLoad()
         setupView()
         setupInitialLayout()
-        setupContentSizeCategoryObserver()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIContentSizeCategory.didChangeNotification,
-                                                  object: nil)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -189,8 +182,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewHierarchy() {
-        // Add contentStackView to the UIScrollView
-        scrollView.addSubview(contentStackView)
+        // Add contentStackView through EmptyScrollView's content view so that the
+        // internal contentView drives contentLayoutGuide.height and vertical scrolling works.
+        scrollView.addContentSubview(contentStackView)
         bindToSizeUpdates()
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -212,7 +206,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
         topStackView.addArrangedSubview(qrCodeView)
         topStackView.addArrangedSubview(brandView)
-        topStackView.addArrangedSubview(EmptyView())
 
         bottomStackView.addArrangedSubview(continueView)
         bottomStackView.addArrangedSubview(descriptionView)
@@ -501,23 +494,17 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         return stackView
     }
     
-    private func setupContentSizeCategoryObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(contentSizeCategoryDidChange),
-                                               name: UIContentSizeCategory.didChangeNotification,
-                                               object: nil)
-    }
-
-    @objc private func contentSizeCategoryDidChange() {
-        updateViews()
-    }
-
     private func bindToSizeUpdates() {
         scrollView.$size
             .receive(on: DispatchQueue.main)
             .sink { [weak self] size in
                 self?.updateBottomSheetHeight(size.height)
             }.store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.updateViews() }
+            .store(in: &cancellables)
     }
 
     // Handle orientation change

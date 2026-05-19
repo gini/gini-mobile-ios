@@ -61,9 +61,11 @@ public final class PoweredByGiniView: UIView {
             giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
             poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
             poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
-            giniImageView.heightAnchor.constraint(equalToConstant: giniImageView.frame.height),
-            giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width),
-            giniImageView.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor)
+            // Top + bottom pins define mainContainer.height unambiguously so that the
+            // parent scroll view content size can be computed via Auto Layout bottom-up.
+            giniImageView.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
+            giniImageView.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding),
+            giniImageView.widthAnchor.constraint(equalToConstant: Constants.widthGiniLogo)
         ])
     }
     

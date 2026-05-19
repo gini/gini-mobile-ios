@@ -90,7 +90,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     }
 
     public var paymentInfoConfiguration: PaymentInfoConfiguration {
-        var config = PaymentInfoConfiguration(
+        PaymentInfoConfiguration(
             giniFont: GiniMerchantConfiguration.shared.font(for: .button),
             answersFont: GiniMerchantConfiguration.shared.font(for: .body2),
             answerCellTextColor: GiniColor.standard1.uiColor(),
@@ -111,8 +111,6 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             backgroundColor: GiniColor.standard7.uiColor(),
             questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
-        config.giniDynamicFont = { GiniMerchantConfiguration.shared.font(for: $0) }
-        return config
     }
     
     public var bankSelectionConfiguration: BankSelectionConfiguration {

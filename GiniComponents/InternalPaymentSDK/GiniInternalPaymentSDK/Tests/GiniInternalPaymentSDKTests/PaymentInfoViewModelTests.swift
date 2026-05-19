@@ -214,52 +214,15 @@ struct PaymentInfoViewModelTests {
 
     // MARK: - refreshAttributedContent
 
-    /**
-     Builds a SUT whose `PaymentInfoConfiguration` has a `giniDynamicFont` closure that
-     returns the given font for every text style, so tests can assert that `refreshAttributedContent`
-     picks up the dynamic font rather than the static one stored in the configuration.
-     */
-    private func makeSUTWithDynamicFont(_ font: UIFont,
-                                        questions: [String] = [],
-                                        answers: [String] = []) -> PaymentInfoViewModel {
-        var config = PaymentInfoConfiguration.test
-        config.giniDynamicFont = { _ in font }
-        let strings = makeStrings(questions: questions, answers: answers)
-        return PaymentInfoViewModel(paymentProviders: [],
-                                    configuration: config,
-                                    strings: strings,
-                                    poweredByGiniConfiguration: .test,
-                                    poweredByGiniStrings: .test,
-                                    clientConfiguration: nil)
-    }
-
-    @Test("refreshAttributedContent applies giniDynamicFont to payBillsDescriptionAttributedText")
-    func refreshAppliesDynamicFontToDescription() {
-        let sentinel = UIFont.systemFont(ofSize: 99)
-        let sut = makeSUTWithDynamicFont(sentinel)
-
-        sut.refreshAttributedContent()
-
-        var foundFont: UIFont?
-        let fullRange = NSRange(location: 0, length: sut.payBillsDescriptionAttributedText.length)
-        sut.payBillsDescriptionAttributedText.enumerateAttribute(.font,
-                                                                  in: fullRange,
-                                                                  options: []) { value, _, _ in
-            if foundFont == nil { foundFont = value as? UIFont }
-        }
-        #expect(foundFont?.pointSize == 99,
-                "payBillsDescriptionAttributedText must use the font returned by giniDynamicFont after refresh")
-    }
-
-    @Test("refreshAttributedContent preserves the description text string when giniDynamicFont is nil")
-    func refreshWithNilDynamicFontPreservesContent() {
+    @Test("refreshAttributedContent preserves the description text string")
+    func refreshPreservesContent() {
         let sut = makeSUT()
         let textBefore = sut.payBillsDescriptionAttributedText.string
 
         sut.refreshAttributedContent()
 
         #expect(sut.payBillsDescriptionAttributedText.string == textBefore,
-                "refreshAttributedContent must not alter the text content when giniDynamicFont is nil")
+                "refreshAttributedContent must not alter the text content")
     }
 
     @Test("refreshAttributedContent preserves expanded state of open FAQ sections")
@@ -276,16 +239,16 @@ struct PaymentInfoViewModelTests {
                 "expanded section must remain expanded after refresh")
     }
 
-    @Test("refreshAttributedContent updates payBillsDescriptionLinkAttributes using giniDynamicFont")
+    @Test("refreshAttributedContent updates payBillsDescriptionLinkAttributes using linksFont")
     func refreshUpdatesLinkAttributes() {
-        let sentinel = UIFont.systemFont(ofSize: 88)
-        let sut = makeSUTWithDynamicFont(sentinel)
+        let sut = makeSUT()
+        let expectedSize = sut.configuration.linksFont.pointSize
 
         sut.refreshAttributedContent()
 
         let resolvedFont = sut.payBillsDescriptionLinkAttributes[.font] as? UIFont
-        #expect(resolvedFont?.pointSize == 88,
-                "payBillsDescriptionLinkAttributes must use the font returned by giniDynamicFont after refresh")
+        #expect(resolvedFont?.pointSize == expectedSize,
+                "payBillsDescriptionLinkAttributes must use configuration.linksFont after refresh")
     }
 
     // MARK: - infoBankCellModel
