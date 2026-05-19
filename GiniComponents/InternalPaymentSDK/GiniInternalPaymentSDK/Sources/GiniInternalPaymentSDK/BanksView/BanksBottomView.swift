@@ -25,7 +25,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
-        label.font = viewModel.configuration.selectBankFont
+        label.font = viewModel.configuration.selectBankFont.limitingFontSize(to: Constants.titleMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
@@ -38,8 +38,9 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = viewModel.configuration.descriptionFont
+        label.font = viewModel.configuration.descriptionFont.limitingFontSize(to: Constants.descriptionMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         label.numberOfLines = 0
         return label
     }()
@@ -165,6 +166,13 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)
         view.addSubview(contentView)
+
+        // Title, description, and bottom bar hug their content tightly.
+        // The bank list (paymentProvidersView) absorbs all remaining vertical space.
+        titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        descriptionView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        bottomView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        paymentProvidersView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
     private func setupViewAttributes() {
@@ -256,7 +264,10 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
-        if UIDevice.isPortrait() {
+        let isPortrait = UIDevice.isPortrait()
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        descriptionView.isHidden = !isPortrait && isAccessibilitySize
+        if isPortrait {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints(screenWidth: screenSize.width)
@@ -288,6 +299,8 @@ extension BanksBottomView {
         static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
         static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
+        static let titleMaxFontSize = 22.0
+        static let descriptionMaxFontSize = 20.0
     }
 }
 
