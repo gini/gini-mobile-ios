@@ -98,12 +98,19 @@ public struct PaymentReviewContentView: View {
             // On iOS 16/17, rotating to landscape destroys portraitLayout which
             // dismisses the sheet and sets showBottomSheet to false. Restore it
             // when portraitLayout reappears in documentCollection mode.
-            // Delay so the layout crossfade finishes before the sheet slides in.
+            // Delay so the layout crossfade finishes before the sheet appears.
+            // disablesAnimations suppresses the sheet's default slide-up animation
+            // so it appears instantly at its resting position, matching the
+            // no-animation dismiss applied when rotating to landscape.
             if !viewModel.isBottomSheetMode && !showBottomSheet {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
                     // Re-check conditions in case the mode changed during the delay.
                     if !viewModel.isBottomSheetMode && !showBottomSheet {
-                        showBottomSheet = true
+                        var transaction = Transaction()
+                        transaction.disablesAnimations = true
+                        withTransaction(transaction) {
+                            showBottomSheet = true
+                        }
                     }
                 }
             }
