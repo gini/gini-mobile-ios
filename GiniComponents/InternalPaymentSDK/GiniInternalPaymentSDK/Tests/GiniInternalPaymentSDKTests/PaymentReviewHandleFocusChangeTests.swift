@@ -82,14 +82,22 @@ struct PaymentReviewClearErrorOnTextChangeTests {
         #expect(sut.recipientInputState.hasError == false, "clearErrorOnTextChange must not flip hasError when it is already false")
     }
 
-    @Test("works for any field via the key path parameter")
-    func worksForIBANField() {
+    @Test("clears error for any field", arguments: [
+        \PaymentReviewPaymentInformationObservableModel.recipientInputState,
+        \.ibanInputState,
+        \.amountInputState,
+        \.paymentPurposeInputState
+    ])
+    func clearsErrorForField(
+        keyPath: ReferenceWritableKeyPath<PaymentReviewPaymentInformationObservableModel, GiniInputFieldState>
+    ) {
         let sut = PaymentReviewPaymentInformationObservableModel(model: .test())
-        sut.ibanInputState.hasError = true
-        sut.ibanInputState.errorMessage = "Invalid IBAN"
+        sut[keyPath: keyPath].hasError = true
+        sut[keyPath: keyPath].errorMessage = "Error"
 
-        sut.clearErrorOnTextChange(for: \.ibanInputState)
+        sut.clearErrorOnTextChange(for: keyPath)
 
-        #expect(sut.ibanInputState.hasError == false, "clearErrorOnTextChange must clear the field identified by the key path")
+        #expect(sut[keyPath: keyPath].hasError == false, "clearErrorOnTextChange must clear hasError")
+        #expect(sut[keyPath: keyPath].errorMessage == nil, "clearErrorOnTextChange must clear errorMessage")
     }
 }
