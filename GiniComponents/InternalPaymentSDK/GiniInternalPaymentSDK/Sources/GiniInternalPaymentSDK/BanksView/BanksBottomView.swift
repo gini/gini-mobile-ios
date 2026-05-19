@@ -88,12 +88,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupView()
         setupInitialLayout()
         setupContentSizeCategoryObserver()
-        updateAccessibilityLayout()
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        sizeTableHeaderView()
     }
 
     public init(viewModel: BanksBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
@@ -242,7 +236,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.bottomViewHeight)
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
 
@@ -257,7 +251,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             self.setupTableViewConstraints()
             self.setupPoweredByGiniConstraints()
             self.setupViewAttributes()
-            self.sizeTableHeaderView()
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -279,134 +272,9 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     @objc private func contentSizeCategoryDidChange() {
         viewModel.calculateHeights()
-        updateAccessibilityLayout()
         updateLayoutForCurrentOrientation(screenSize: view.bounds.size)
         paymentProvidersTableView.reloadData()
-        sizeTableHeaderView()
         view.layoutIfNeeded()
-    }
-
-    /**
-     Switches between two layout modes based on the active Dynamic Type size.
-
-     At accessibility sizes (AX1–AX5), the title and description are moved into the table view's
-     `tableHeaderView` so the entire content scrolls as a single surface.
-     At standard sizes they remain in the stack view above the table.
-     */
-    private func updateAccessibilityLayout() {
-        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        titleView.isHidden = isAccessibility
-        descriptionView.isHidden = isAccessibility
-
-        if isAccessibility {
-            if paymentProvidersTableView.tableHeaderView == nil {
-                paymentProvidersTableView.tableHeaderView = makeTableAccessibilityHeader()
-            }
-        } else {
-            paymentProvidersTableView.tableHeaderView = nil
-        }
-    }
-
-    /**
-     Builds a header view containing title and description labels for use as `tableHeaderView`
-     at accessibility font sizes.
-     */
-    private func makeTableAccessibilityHeader() -> UIView {
-        let container = UIView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-
-        let titleLabel = makeTitleLabel()
-        let descriptionLabel = makeDescriptionLabel()
-
-        container.addSubview(titleLabel)
-        container.addSubview(descriptionLabel)
-
-        activateHeaderConstraints(in: container,
-                                  titleLabel: titleLabel,
-                                  descriptionLabel: descriptionLabel)
-        return container
-    }
-
-    private func makeTitleLabel() -> UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.strings.selectBankTitleText
-        label.textColor = viewModel.configuration.selectBankAccentColor
-        label.font = viewModel.configuration.selectBankFont
-        label.adjustsFontForContentSizeCategory = true
-        label.numberOfLines = 0
-        return label
-    }
-
-    private func makeDescriptionLabel() -> UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.strings.descriptionText
-        label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = viewModel.configuration.descriptionFont
-        label.adjustsFontForContentSizeCategory = true
-        label.numberOfLines = 0
-        return label
-    }
-
-    private func activateHeaderConstraints(in container: UIView,
-                                           titleLabel: UILabel,
-                                           descriptionLabel: UILabel) {
-        // Leading/trailing at .defaultHigh so they gracefully yield when UITableView
-        // initially sets the header's encapsulated width constraint to 0.
-        let titleLeading = titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor,
-                                                               constant: Constants.viewPaddingConstraint)
-        let titleTrailing = titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor,
-                                                                 constant: -Constants.viewPaddingConstraint)
-        let descLeading = descriptionLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor,
-                                                                    constant: Constants.viewPaddingConstraint)
-        let descTrailing = descriptionLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor,
-                                                                      constant: -Constants.viewPaddingConstraint)
-        titleLeading.priority = .defaultHigh
-        titleTrailing.priority = .defaultHigh
-        descLeading.priority = .defaultHigh
-        descTrailing.priority = .defaultHigh
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor,
-                                            constant: Constants.descriptionTopPadding),
-            titleLeading,
-            titleTrailing,
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                                  constant: Constants.descriptionTopPadding),
-            descLeading,
-            descTrailing,
-            descriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor,
-                                                     constant: -Constants.viewPaddingConstraint)
-        ])
-    }
-
-    /**
-     Re-measures and applies the correct height to the table header view.
-
-     `UITableView` does not automatically resize its `tableHeaderView` when using Auto Layout;
-     this must be triggered manually after layout passes.
-     */
-    private func sizeTableHeaderView() {
-        guard let headerView = paymentProvidersTableView.tableHeaderView,
-              paymentProvidersTableView.bounds.width > 0 else { return }
-        let width = paymentProvidersTableView.bounds.width
-        let labelWidth = width - 2 * Constants.viewPaddingConstraint
-        // Set preferredMaxLayoutWidth so labels wrap at the correct width
-        // regardless of whether the trailing constraint was broken by UITableView's
-        // encapsulated width==0 constraint during initial assignment.
-        headerView.subviews.compactMap { $0 as? UILabel }.forEach {
-            $0.preferredMaxLayoutWidth = labelWidth
-        }
-        let height = headerView.systemLayoutSizeFitting(
-            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel
-        ).height
-        guard headerView.frame.size.height != height else { return }
-        headerView.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        paymentProvidersTableView.tableHeaderView = headerView
-        paymentProvidersTableView.setContentOffset(.zero, animated: false)
     }
 }
 
