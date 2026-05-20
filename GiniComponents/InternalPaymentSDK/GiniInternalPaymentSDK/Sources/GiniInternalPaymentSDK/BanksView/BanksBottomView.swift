@@ -25,6 +25,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
+        // Font size is capped at accessibility sizes to prevent clipping. Remove when HEAL-414 migrates this screen to a fully scrollable layout.
         label.font = viewModel.configuration.selectBankFont.limitingFontSize(to: Constants.titleMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
@@ -38,6 +39,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
+        // Font size is capped at accessibility sizes to prevent clipping. Remove when HEAL-414 migrates this screen to a fully scrollable layout.
         label.font = viewModel.configuration.descriptionFont.limitingFontSize(to: Constants.descriptionMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
         label.setContentCompressionResistancePriority(.required, for: .vertical)
