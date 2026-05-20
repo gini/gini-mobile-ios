@@ -259,7 +259,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation() {
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory || UIDevice.isPortrait() {
+        if UIDevice.isPortrait() {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints()
