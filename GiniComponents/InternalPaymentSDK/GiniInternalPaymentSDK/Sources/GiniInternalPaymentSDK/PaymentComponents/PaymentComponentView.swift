@@ -107,6 +107,7 @@ public final class PaymentComponentView: UIView {
         updateButtonsViews()
         setupGestures()
         setupAccessibility()
+        updateBottomStackOrientation()
     }
 
     private func setupAccessibility() {
@@ -205,6 +206,18 @@ public final class PaymentComponentView: UIView {
     @objc
     private func tapOnPayInvoiceView() {
         viewModel.tapOnPayInvoiceView()
+    }
+
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            updateBottomStackOrientation()
+        }
+    }
+
+    private func updateBottomStackOrientation() {
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
     }
 }
 
