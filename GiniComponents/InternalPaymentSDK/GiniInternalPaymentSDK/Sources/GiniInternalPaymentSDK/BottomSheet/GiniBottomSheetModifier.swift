@@ -38,7 +38,7 @@ struct GiniBottomSheetModifier: ViewModifier {
 
             base
                 .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
-                .presentationCompactAdaptation(horizontal: .sheet, vertical: .sheet)
+                .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
                 .presentationContentInteraction(.scrolls)
         } else {
             base

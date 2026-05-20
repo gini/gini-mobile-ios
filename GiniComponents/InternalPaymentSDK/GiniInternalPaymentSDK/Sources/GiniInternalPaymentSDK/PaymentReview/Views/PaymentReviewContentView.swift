@@ -79,7 +79,7 @@ public struct PaymentReviewContentView: View {
             }
         }
     }
-    
+
     // MARK: - Portrait Layout
     
     @ViewBuilder
@@ -114,9 +114,18 @@ public struct PaymentReviewContentView: View {
                 viewModel.didTapClose()
             }
         } content: {
-            viewModel.paymentReviewPaymentInformationView(
-                contentHeight: $bottomSheetHeight
-            )
+            VStack(spacing: Constants.zero) {
+                if giniLayout.isLandscape && viewModel.isBottomSheetMode
+                    && viewModel.cellViewModels.isEmpty && !viewModel.isImagesLoading {
+                    HStack {
+                        Spacer()
+                        closeButton
+                    }
+                }
+                viewModel.paymentReviewPaymentInformationView(
+                    contentHeight: $bottomSheetHeight
+                )
+            }
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
                 allowsDismiss: viewModel.isBottomSheetMode,
@@ -154,7 +163,22 @@ public struct PaymentReviewContentView: View {
     }
     
     // MARK: - Private Views
-    
+
+    @ViewBuilder
+    private var closeButton: some View {
+        Button {
+            viewModel.didTapClose()
+        } label: {
+            Image(uiImage: viewModel.model.configuration.paymentReviewClose)
+                .renderingMode(.original)
+                .padding(Constants.closeButtonPadding)
+                .background(Color(UIColor.systemBackground).opacity(Constants.closeButtonBackgroundOpacity))
+                .clipShape(.circle)
+        }
+        .accessibilityLabel(viewModel.model.strings.closeButtonAccessibilityLabel)
+        .padding(Constants.closeButtonEdgePadding)
+    }
+
     @ViewBuilder
     private var loadingOverlay: some View {
         if viewModel.isLoading {
@@ -224,5 +248,8 @@ public struct PaymentReviewContentView: View {
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
         static let doneButtonHorizontalPadding: CGFloat = 16.0
+        static let closeButtonPadding: CGFloat = 8.0
+        static let closeButtonEdgePadding: CGFloat = 12.0
+        static let closeButtonBackgroundOpacity: CGFloat = 0.9
     }
 }
