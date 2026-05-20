@@ -28,6 +28,13 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.displayMode == .bottomSheet
     }
 
+    /**
+     Set to `true` by `PaymentReviewViewController.viewWillTransition` before imperatively
+     dismissing the sheet, so the sheet's `onDismiss` handler knows not to call `didTapClose`.
+     Reset to `false` inside that same `onDismiss` handler via `defer`.
+     */
+    @Published var isDismissingForRotation: Bool = false
+
     var invoiceImageAccessibilityLabel: String {
         model.strings.invoiceImageAccessibilityLabel
     }
