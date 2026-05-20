@@ -59,13 +59,14 @@ public final class PoweredByGiniView: UIView {
             mainContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
             mainContainer.trailingAnchor.constraint(equalTo: giniImageView.trailingAnchor),
             giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
-            poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
+            giniImageView.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor),
+            giniImageView.widthAnchor.constraint(equalToConstant: Constants.widthGiniLogo),
+            giniImageView.heightAnchor.constraint(equalToConstant: Constants.heightGiniLogo),
             poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
-            // Top + bottom pins define mainContainer.height unambiguously so that the
-            // parent scroll view content size can be computed via Auto Layout bottom-up.
-            giniImageView.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
-            giniImageView.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding),
-            giniImageView.widthAnchor.constraint(equalToConstant: Constants.widthGiniLogo)
+            // Label top+bottom pins drive mainContainer.height so the scroll view
+            // content size is computed correctly at all accessibility font sizes.
+            poweredByGiniLabel.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
+            poweredByGiniLabel.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding)
         ])
     }
     
