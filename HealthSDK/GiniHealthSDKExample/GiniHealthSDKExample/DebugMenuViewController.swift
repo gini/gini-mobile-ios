@@ -124,7 +124,6 @@ class DebugMenuViewController: UIViewController {
 
     init(showReviewScreen: Bool,
          useBottomPaymentComponent: Bool,
-         paymentComponentConfiguration: PaymentComponentConfiguration,
          showPaymentCloseButton: Bool,
          popupDuration: TimeInterval,
          shouldUseAlternativeNavigation: Bool,
@@ -312,12 +311,13 @@ private extension DebugMenuViewController {
         return mySwitch
     }
 
+    static let ingredientBrandTypes: [GiniHealthAPILibrary.IngredientBrandTypeEnum] = [.fullVisible, .paymentComponent, .invisible]
+
     func segmentedControl(selectedType: GiniHealthAPILibrary.IngredientBrandTypeEnum) -> UISegmentedControl {
-        let types: [GiniHealthAPILibrary.IngredientBrandTypeEnum] = [.fullVisible, .paymentComponent, .invisible]
         let titles = ["Full Visible", "Payment", "Invisible"]
         let control = UISegmentedControl(items: titles)
         control.translatesAutoresizingMaskIntoConstraints = false
-        control.selectedSegmentIndex = types.firstIndex(of: selectedType) ?? 2
+        control.selectedSegmentIndex = DebugMenuViewController.ingredientBrandTypes.firstIndex(of: selectedType) ?? DebugMenuViewController.ingredientBrandTypes.count - 1
         control.addTarget(self, action: #selector(brandedViewSegmentChanged(_:)), for: .valueChanged)
         return control
     }
@@ -386,7 +386,7 @@ private extension DebugMenuViewController {
     }
 
     @objc private func brandedViewSegmentChanged(_ sender: UISegmentedControl) {
-        let types: [GiniHealthAPILibrary.IngredientBrandTypeEnum] = [.fullVisible, .paymentComponent, .invisible]
+        let types = DebugMenuViewController.ingredientBrandTypes
         guard sender.selectedSegmentIndex < types.count else { return }
         delegate?.didChangeIngredientBrandType(types[sender.selectedSegmentIndex])
     }

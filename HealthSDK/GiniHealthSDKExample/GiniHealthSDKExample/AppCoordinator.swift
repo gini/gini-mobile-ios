@@ -451,7 +451,6 @@ extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
                                                               popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
                                                               shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
@@ -480,6 +479,9 @@ extension AppCoordinator: DebugMenuDelegate {
     }
 
     func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        if health.clientConfiguration == nil {
+            health.clientConfiguration = ClientConfiguration()
+        }
         health.clientConfiguration?.ingredientBrandType = type
     }
 

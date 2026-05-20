@@ -120,7 +120,6 @@ private extension HandleErrorsInternallyTests {
         DebugMenuViewController(
             showReviewScreen: false,
             useBottomPaymentComponent: false,
-            paymentComponentConfiguration: PaymentComponentConfiguration(),
             showPaymentCloseButton: false,
             popupDuration: 3,
             shouldUseAlternativeNavigation: false,
