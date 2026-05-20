@@ -259,7 +259,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation() {
-        if UIDevice.isPortrait() {
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory || UIDevice.isPortrait() {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints()
@@ -274,14 +274,15 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         // Update the split stack view and payment info stack view
         setupSplitStackViewHierarchy()
         splitStacKView.orientation(orientation).spacing(orientation == .vertical ? 0 : Constants.viewPaddingConstraint)
-        
+        splitStacKView.alignment = orientation == .horizontal ? .top : .fill
+
         paymentInfoStackView = generatePaymentInfoViews(orientation: orientation)
         updatePaymentInfoView()
-        
+
         let isPortrait = orientation == .vertical
-        
+
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
-        let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
+        let contentPadding: CGFloat = 0
         
         let sharedConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
@@ -426,9 +427,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
     
     private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        let resolvedOrientation: NSLayoutConstraint.Axis = isAccessibility ? .vertical : orientation
-        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: resolvedOrientation)
+        // Always stack vertically: the IBAN is too long to share a row without breaking mid-number.
+        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         
         let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
         let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)

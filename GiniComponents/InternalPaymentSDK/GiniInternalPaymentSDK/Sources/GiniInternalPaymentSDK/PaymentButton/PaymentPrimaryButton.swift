@@ -93,7 +93,19 @@ public final class PaymentPrimaryButton: UIButton {
         titleTrailingConstraint?.isActive = false
         buttonTitleLabel.trailingAnchor.constraint(equalTo: rightImageView.leadingAnchor).isActive = true
     }
-        
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        // `preferredMaxLayoutWidth` defaults to 0, causing the label to compute its
+        // intrinsic height as a single line before Auto Layout resolves the frame.
+        // Updating it here lets the label wrap correctly and drives the button's height.
+        let width = buttonTitleLabel.frame.width
+        if width > 0, buttonTitleLabel.preferredMaxLayoutWidth != width {
+            buttonTitleLabel.preferredMaxLayoutWidth = width
+            invalidateIntrinsicContentSize()
+        }
+    }
+
     @objc private func tapOnPayInvoiceView() {
         didTapButton?()
     }
