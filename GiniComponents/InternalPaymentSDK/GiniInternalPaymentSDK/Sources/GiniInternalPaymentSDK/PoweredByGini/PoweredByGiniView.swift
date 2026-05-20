@@ -93,8 +93,10 @@ public final class PoweredByGiniView: UIView {
     }
 
     /**
-     Switches between horizontal (image trailing) and vertical (image leading) layouts.
-     Call with `true` when the view is stacked vertically so the logo and text start from the leading edge.
+     Switches between a compact leading-aligned layout and the default full-width layout.
+     When `isVertical` is `true`, the label starts at the leading edge and the logo follows it
+     without stretching to the trailing edge. When `false`, the label fills the available width
+     and the logo is pinned to the trailing edge.
      */
     func configureForVerticalLayout(_ isVertical: Bool) {
         if isVertical {
