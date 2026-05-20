@@ -68,7 +68,6 @@ class GiniHealthSDKPinningExampleIntegrationTests: GiniHealthSDKIntegrationTests
                                             paymentProvider: providerId,
                                             recipient: "Dr. med. Hackler",
                                             iban: "DE02300209000106531065",
-                                            bic: "CMCIDEDDXXX",
                                             amount: "335.50:EUR",
                                             purpose: "ReNr AZ356789Z") { result in
             switch result {

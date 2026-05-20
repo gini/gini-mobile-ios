@@ -28,6 +28,13 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.displayMode == .bottomSheet
     }
 
+    /**
+     Set to `true` by `PaymentReviewViewController.viewWillTransition` before imperatively
+     dismissing the sheet, so the sheet's `onDismiss` handler knows not to call `didTapClose`.
+     Reset to `false` inside that same `onDismiss` handler via `defer`.
+     */
+    @Published var isDismissingForRotation: Bool = false
+
     var invoiceImageAccessibilityLabel: String {
         model.strings.invoiceImageAccessibilityLabel
     }
@@ -61,6 +68,19 @@ final class PaymentReviewObservableModel: ObservableObject {
         // wins the race.
         paymentInformationObservableModel.activeField = nil
         model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
+    }
+
+    /**
+     Validates the amount field as if it had just lost focus.
+     Called explicitly by the landscape Done button, which resigns first responder via
+     UIKit rather than setting `focusedField = nil`. SwiftUI's `@FocusState` update from
+     a UIKit `resignFirstResponder` call is not guaranteed to be synchronous, so relying
+     solely on `onChange(of: focusedField)` to trigger validation can cause the error
+     message to appear only on the second Done press. Calling this directly — mirroring
+     what the portrait Done button does — ensures validation runs immediately.
+     */
+    func validateAmountFieldOnKeyboardDismiss() {
+        paymentInformationObservableModel.handleAmountFocusChange(isFocused: false)
     }
     
     @Published private var showBanner: Bool
