@@ -56,7 +56,6 @@ final class PaymentServiceErrorTests: XCTestCase {
                                              paymentProvider: "provider-id",
                                              recipient: "John Doe",
                                              iban: "INVALID-IBAN",
-                                             bic: "INVALID-BIC",
                                              amount: "1.00:EUR",
                                              purpose: "abc",
                                              completion: completion)
@@ -64,11 +63,10 @@ final class PaymentServiceErrorTests: XCTestCase {
         XCTAssertEqual(error.statusCode, 400, "Status code should be 400 for bad request")
         XCTAssertEqual(error.requestId, "7cc7-229b-4b88-dd94-3aad-f072", "Request ID should match")
         let items = error.items ?? []
-        XCTAssertEqual(items.count, 3, "There should be 3 error items")
+        XCTAssertEqual(items.count, 2, "There should be 2 error items")
         let codes = Set(items.map { $0.code })
-        XCTAssertEqual(codes, Set(["2012", "2002", "2007"]), "Error codes should match")
+        XCTAssertEqual(codes, Set(["2002", "2007"]), "Error codes should match")
         let messages = items.compactMap { $0.message }
-        XCTAssertTrue(messages.contains("Provide a valid BIC number"), "BIC validation message should be present")
         XCTAssertTrue(messages.contains("Value of payment purpose should be at least 4, at most 200 characters long"), "Payment purpose validation message should be present")
         XCTAssertTrue(messages.contains("Provide a valid IBAN number"), "IBAN validation message should be present")
     }

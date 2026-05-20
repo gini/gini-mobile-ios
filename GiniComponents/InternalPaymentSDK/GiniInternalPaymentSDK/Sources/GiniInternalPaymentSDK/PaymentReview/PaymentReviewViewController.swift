@@ -20,19 +20,22 @@ public enum DisplayMode: Int {
 }
 
 public class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
-    
+
     private let selectedPaymentProvider: PaymentProvider
     private var isInfoBarHidden = true
     private let overlayPresenter = GiniOverlayWindowPresenter()
-    
+    // Stored so viewWillTransition can set isDismissingForRotation before dismissing the sheet.
+    private let observableModel: PaymentReviewObservableModel
+
     public let model: PaymentReviewModel
-    
+
     public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
         self.model = viewModel
         self.selectedPaymentProvider = selectedPaymentProvider
         self.isInfoBarHidden = viewModel.configuration.isInfoBarHidden
-        
+
         let observableModel = PaymentReviewObservableModel(model: model)
+        self.observableModel = observableModel
         super.init(rootView: PaymentReviewContentView(viewModel: observableModel))
     }
     
@@ -68,6 +71,33 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
         model.closePaymentReview()
     }
     
+    public override func viewWillTransition(to size: CGSize,
+                                            with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        guard model.displayMode == .documentCollection else { return }
+
+        // `size` is the *incoming* size, not the current one — it must be used here rather than
+        // relying on `UIDevice.isPortrait()`, which reflects the old orientation at this point in the transition.
+        let isLandscape = size.width > size.height
+        guard isLandscape, let presentedVC = presentedViewController else { return }
+
+        // On iOS 16 the `.presentationCompactAdaptation(.fullScreenCover)` animation fires
+        // the moment the size class changes — before SwiftUI's onChange and before a
+        // snapshot-hiding approach can take effect. The only reliable fix is to dismiss
+        // the sheet imperatively at the UIKit level here, before that animation starts.
+        //
+        // Setting isDismissingForRotation first ensures the sheet's onDismiss handler
+        // does not call didTapClose (which would close the entire payment review).
+        // SwiftUI reconciles showBottomSheet = false via the sheet's isPresented binding
+        // when the UIKit dismiss fires the onDismiss callback.
+        //
+        // On iOS 17+ SwiftUI's onChange(of: giniLayout.isLandscape) also runs, but
+        // showBottomSheet is already false by then so it becomes a no-op.
+        observableModel.isDismissingForRotation = true
+        presentedVC.dismiss(animated: false)
+    }
+
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         overlayPresenter.dismiss(animated: false)

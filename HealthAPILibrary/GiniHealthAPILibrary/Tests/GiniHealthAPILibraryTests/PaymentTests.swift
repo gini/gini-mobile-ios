@@ -59,7 +59,6 @@ final class PaymentTests: XCTestCase {
                                                     paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
                                                     recipient: "James Bond",
                                                     iban: "DE89370400440532013000",
-                                                    bic: "INGDDEFF123",
                                                     amount: "33.78:EUR",
                                                     purpose: "Save the world")
 
@@ -67,7 +66,7 @@ final class PaymentTests: XCTestCase {
             assertionFailure("The PaymentRequestBody cannot be encoded")
             return
         }
-        
+
         let resource = APIResource<String>(method: .createPaymentRequest,
                                            apiDomain: .default,
                                            apiVersion: versionAPI,
@@ -94,7 +93,6 @@ final class PaymentTests: XCTestCase {
                                                     paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57",
                                                     recipient: "James Bond",
                                                     iban: "DE89370400440532013000",
-                                                    bic: "INGDDEFF123",
                                                     amount: "33.78:EUR",
                                                     purpose: "Save the world")
         guard let jsonData = try? JSONEncoder().encode(paymentRequestBody) else {

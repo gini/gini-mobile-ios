@@ -250,7 +250,6 @@ extension InvoicesListViewModel {
         }
         return PaymentInfo(recipient: invoices[index].recipient ?? "",
                            iban: invoices[index].iban ?? "",
-                           bic: "",
                            amount: invoices[index].amountToPay ?? "",
                            purpose: invoices[index].purpose ?? "",
                            paymentUniversalLink: health?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",

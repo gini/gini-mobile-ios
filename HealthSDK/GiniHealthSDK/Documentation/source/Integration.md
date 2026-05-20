@@ -367,7 +367,6 @@ If you don't have any document/invoice you need to pass `GiniHealthSDK.PaymentIn
 
 let paymentInfo = PaymentInfo(recipient: recipient,
                               iban: iban,
-                              bic: "",
                               amount: amountToPay,
                               purpose: purpose,
                               paymentUniversalLink: "",
