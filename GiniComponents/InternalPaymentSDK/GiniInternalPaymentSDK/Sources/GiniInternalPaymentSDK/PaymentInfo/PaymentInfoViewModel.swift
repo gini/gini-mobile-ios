@@ -55,7 +55,7 @@ public final class PaymentInfoViewModel {
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.clientConfiguration = clientConfiguration
 
-        payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
+        payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
 
         configurePayBillsGiniLink()
         setupQuestions()
@@ -63,9 +63,9 @@ public final class PaymentInfoViewModel {
     
     private func setupQuestions() {
         questions = zip(strings.faq.questions, strings.faq.answers).map { question, answer in
-            let answerAttributedString = answerWithAttributes(answer: answer, font: configuration.answersFont)
+            let answerAttributedString = answerWithAttributes(answer: answer, font: configuration.answerCell.font)
             return FAQSection(title: question,
-                              description: textWithLinks(linkFont: configuration.linksFont,
+                              description: textWithLinks(linkFont: configuration.links.font,
                                                          attributedString: answerAttributedString),
                               isExtended: false)
         }
@@ -77,9 +77,9 @@ public final class PaymentInfoViewModel {
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
         payBillsDescriptionAttributedText = NSMutableAttributedString(string: strings.payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
-                                                                                   .font: configuration.payBillsDescriptionFont,
-                                                                                   .foregroundColor: configuration.payBillsTitleColor])
-        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.giniFont,
+                                                                                   .font: configuration.payBills.descriptionFont,
+                                                                                   .foregroundColor: configuration.payBills.titleColor])
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.links.giniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
 
@@ -103,7 +103,7 @@ public final class PaymentInfoViewModel {
         if let fresh = configurationRefresher?() {
             configuration = fresh
         }
-        payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
+        payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
         configurePayBillsGiniLink()
         let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }
         setupQuestions()
@@ -116,13 +116,13 @@ public final class PaymentInfoViewModel {
         let attributedString = attributedString
         let giniRange = (attributedString.string as NSString).range(of: strings.giniLink.websiteText)
         attributedString.addLinkToRange(link: strings.giniLink.urlText,
-                                        color: configuration.linksColor,
+                                        color: configuration.links.color,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
         let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.privacyPolicy.text)
         attributedString.addLinkToRange(link: strings.privacyPolicy.urlText,
-                                        color: configuration.linksColor,
+                                        color: configuration.links.color,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
@@ -131,16 +131,16 @@ public final class PaymentInfoViewModel {
 
     func infoAnswerCellModel(at index: Int) -> PaymentInfoAnswerTableViewModel {
         PaymentInfoAnswerTableViewModel(answerAttributedText: questions[index].description, 
-                                        answerTextColor: configuration.answerCellTextColor,
-                                        answerLinkColor: configuration.answerCellLinkColor)
+                                        answerTextColor: configuration.answerCell.textColor,
+                                        answerLinkColor: configuration.answerCell.linkColor)
     }
 
     func infoQuestionHeaderViewModel(at index: Int) -> PaymentInfoQuestionHeaderViewModel {
         PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title,
-                                           titleFont: configuration.questionHeaderFont,
-                                           titleColor: configuration.questionHeaderTitleColor,
-                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
-                                           iconTintColor: configuration.questionHeaderIconTintColor,
+                                           titleFont: configuration.questionHeader.font,
+                                           titleColor: configuration.questionHeader.titleColor,
+                                           extendedIcon: questions[index].isExtended ? configuration.questionHeader.minusIcon : configuration.questionHeader.plusIcon,
+                                           iconTintColor: configuration.questionHeader.iconTintColor,
                                            isExpanded: questions[index].isExtended,
                                            toggleAccessibilityStrings: .init(expanded: strings.faq.accessibilityExpandedText,
                                                                              collapsed: strings.faq.accessibilityCollapsedText))
@@ -148,7 +148,7 @@ public final class PaymentInfoViewModel {
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
         PaymentInfoBankCollectionViewCellModel(bankImageIconData: paymentProviders[index].iconData,
-                                               borderColor: configuration.bankCellBorderColor)
+                                               borderColor: configuration.layout.bankCellBorderColor)
     }
 }
 

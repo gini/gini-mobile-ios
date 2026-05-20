@@ -100,26 +100,4 @@ struct PaymentInfoTests {
         #expect(info.sourceDocumentLocation == "https://example.com/doc")
     }
 
-    @Test("bic defaults to nil")
-    func bicDefaultsToNil() {
-        let info = PaymentInfo(recipient: "R",
-                               iban: "DE89370400440532013000",
-                               amount: "1.00:EUR",
-                               purpose: "P",
-                               paymentUniversalLink: "",
-                               paymentProviderId: "p")
-        #expect(info.bic == nil)
-    }
-
-    @Test("bic is stored when provided")
-    func bicStoredWhenProvided() {
-        let info = PaymentInfo(recipient: "R",
-                               iban: "DE89370400440532013000",
-                               bic: "TESTDE01",
-                               amount: "1.00:EUR",
-                               purpose: "P",
-                               paymentUniversalLink: "",
-                               paymentProviderId: "p")
-        #expect(info.bic == "TESTDE01")
-    }
 }

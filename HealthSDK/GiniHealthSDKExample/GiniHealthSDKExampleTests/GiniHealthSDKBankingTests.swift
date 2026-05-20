@@ -152,7 +152,6 @@ final class GiniHealthSDKBankingTests: GiniHealthSDKIntegrationTestsBase {
                                  providerId: String) -> GiniInternalPaymentSDK.PaymentInfo {
         GiniInternalPaymentSDK.PaymentInfo(recipient: recipient,
                                            iban: "DE89370400440532013000",
-                                           bic: nil,
                                            amount: amount,
                                            purpose: purpose,
                                            paymentUniversalLink: "",

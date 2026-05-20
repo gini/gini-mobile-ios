@@ -60,8 +60,8 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     private lazy var payBillsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.configuration.payBillsTitleFont
-        label.textColor = viewModel.configuration.payBillsTitleColor
+        label.font = viewModel.configuration.payBills.titleFont
+        label.textColor = viewModel.configuration.payBills.titleColor
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -91,8 +91,8 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     private lazy var questionsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.configuration.questionsTitleFont
-        label.textColor = viewModel.configuration.questionsTitleColor
+        label.font = viewModel.configuration.questionsTitle.font
+        label.textColor = viewModel.configuration.questionsTitle.color
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -187,7 +187,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     }
     
     private func setupViewAttributes() {
-        view.backgroundColor = viewModel.configuration.backgroundColor
+        view.backgroundColor = viewModel.configuration.layout.backgroundColor
     }
     
     private func setupViewConstraints() {
@@ -421,7 +421,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < viewModel.questions.count - 1 else { return UIView() }
         let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
-        separatorView.backgroundColor = viewModel.configuration.separatorColor
+        separatorView.backgroundColor = viewModel.configuration.layout.separatorColor
         return separatorView
     }
     

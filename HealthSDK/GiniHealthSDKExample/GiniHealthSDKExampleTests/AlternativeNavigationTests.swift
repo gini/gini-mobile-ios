@@ -189,7 +189,6 @@ struct AlternativeNavigationTests {
     private func giniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
         PaymentInfo(recipient: "testRecipient",
                     iban: "DE1234567890123456789",
-                    bic: "",
                     amount: "23.45",
                     purpose: "testPurpose",
                     paymentUniversalLink: "",
