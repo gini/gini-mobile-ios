@@ -216,6 +216,8 @@ public final class PaymentComponentView: UIView {
     }
 
     private func updateBottomStackOrientation() {
+        /// Axis change only applies when the branded logo is present with a single item the axis has no effect.
+        guard viewModel.shouldShowBrandedView else { return }
         let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
         poweredByGiniView.configureForVerticalLayout(isAccessibilitySize)
