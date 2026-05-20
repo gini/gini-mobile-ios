@@ -266,6 +266,8 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
         let isPortrait = UIDevice.isPortrait()
         let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        /// In landscape with an accessibility font size 200%, the description label is hidden
+        /// to prevent it consuming the limited vertical space above the bank list.
         descriptionView.isHidden = !isPortrait && isAccessibilitySize
         if isPortrait {
             setupPortraitConstraints()
