@@ -125,7 +125,7 @@ struct GiniTextFieldStyle: TextFieldStyle {
     private func errorMessageView(_ errorMessage: String) -> some View {
         Text(errorMessage)
             .foregroundStyle(Color(errorConfiguration.borderColor))
-            .font(Font(errorConfiguration.textFont))
+            .font(Font(giniFont: errorConfiguration.textFont))
             .padding(.horizontal, Constants.errorMessageHorizontalPadding)
             .multilineTextAlignment(.leading)
             .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)),

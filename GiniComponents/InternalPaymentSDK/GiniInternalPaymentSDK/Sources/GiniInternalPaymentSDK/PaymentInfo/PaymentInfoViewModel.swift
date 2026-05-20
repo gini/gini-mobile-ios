@@ -16,7 +16,12 @@ struct FAQSection {
 }
 
 public final class PaymentInfoViewModel {
-    let configuration: PaymentInfoConfiguration
+    /// Current configuration. Replaced on each Dynamic Type change if `configurationRefresher` is set.
+    var configuration: PaymentInfoConfiguration
+    /// Called in `refreshAttributedContent()` to obtain a fresh configuration with up-to-date
+    /// scaled fonts whenever the Dynamic Type size changes. Returns nil when the owner is gone
+    /// (weak-self capture), in which case the last known configuration is kept unchanged.
+    private let configurationRefresher: (() -> PaymentInfoConfiguration?)? // UIFont metrics are computed once at init; this closure lets the owner re-supply a freshly scaled configuration after a Dynamic Type change
     let strings: PaymentInfoStrings
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders
     let poweredByGiniViewModel: PoweredByGiniViewModel
@@ -41,9 +46,11 @@ public final class PaymentInfoViewModel {
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                configurationRefresher: (() -> PaymentInfoConfiguration?)? = nil) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
+        self.configurationRefresher = configurationRefresher
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.clientConfiguration = clientConfiguration
@@ -56,13 +63,14 @@ public final class PaymentInfoViewModel {
     
     private func setupQuestions() {
         questions = zip(strings.faq.questions, strings.faq.answers).map { question, answer in
-            let answerAttributedString = answerWithAttributes(answer: answer)
+            let answerAttributedString = answerWithAttributes(answer: answer, font: configuration.answerCell.font)
             return FAQSection(title: question,
-                              description: textWithLinks(linkFont: configuration.links.font, attributedString: answerAttributedString),
+                              description: textWithLinks(linkFont: configuration.links.font,
+                                                         attributedString: answerAttributedString),
                               isExtended: false)
         }
     }
-    
+
     private func configurePayBillsGiniLink() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
@@ -74,14 +82,34 @@ public final class PaymentInfoViewModel {
         payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.links.giniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
-    
-    private func answerWithAttributes(answer: String) -> NSMutableAttributedString {
+
+    private func answerWithAttributes(answer: String, font: UIFont) -> NSMutableAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.answersLineHeight
         paragraphStyle.paragraphSpacing = Constants.answersParagraphSpacing
         let answerAttributedText = NSMutableAttributedString(string: answer,
-                                                             attributes: [.font: configuration.answerCell.font, .paragraphStyle: paragraphStyle])
+                                                             attributes: [.font: font, .paragraphStyle: paragraphStyle])
         return answerAttributedText
+    }
+
+    /**
+     Rebuilds all attributed strings when the Dynamic Type size changes.
+
+     Recomputes paragraph styles, link ranges, and font references so that
+     `payBillsDescriptionAttributedText` and all FAQ answer descriptions stay consistent
+     with the current content size category.
+     */
+    func refreshAttributedContent() {
+        if let fresh = configurationRefresher?() {
+            configuration = fresh
+        }
+        payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
+        configurePayBillsGiniLink()
+        let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }
+        setupQuestions()
+        for index in openExtendedSections where index < questions.count {
+            questions[index].isExtended = true
+        }
     }
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {

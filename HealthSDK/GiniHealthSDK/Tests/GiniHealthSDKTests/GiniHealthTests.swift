@@ -11,7 +11,6 @@ final class GiniHealthTests: GiniHealthTestCase {
     private func assertClientConfiguration(_ config: ClientConfiguration,
                                            communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
                                            brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
-        XCTAssertNotNil(config, "Client configuration should not be nil")
         XCTAssertEqual(config.communicationTone, communicationTone, "Communication tone should match")
         XCTAssertEqual(config.ingredientBrandType, brandType, "Ingredient brand type should match")
     }
@@ -276,4 +275,5 @@ final class GiniHealthTests: GiniHealthTestCase {
         // Then
         XCTAssertTrue(mockDelegate.didDismissHealthSDKCalled, "didDismissPaymentComponents should call didDismissHealthSDK on the health delegate")
     }
+
 }
