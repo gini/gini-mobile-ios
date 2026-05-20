@@ -218,7 +218,7 @@ public final class PaymentComponentView: UIView {
     private func updateBottomStackOrientation() {
         let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
-        bottomStackView.alignment = isAccessibilitySize ? .leading : .fill
+        poweredByGiniView.configureForVerticalLayout(isAccessibilitySize)
     }
 }
 
