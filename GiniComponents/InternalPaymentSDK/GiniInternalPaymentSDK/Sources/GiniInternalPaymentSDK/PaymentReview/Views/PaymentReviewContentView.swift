@@ -126,6 +126,21 @@ public struct PaymentReviewContentView: View {
                     contentHeight: $bottomSheetHeight
                 )
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if giniLayout.isLandscape && viewModel.isAmountFieldFocused {
+                        Spacer()
+                        Button(viewModel.keyboardDoneButtonTitle) {
+                            viewModel.trackKeyboardDismissed()
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                            to: nil,
+                                                            from: nil,
+                                                            for: nil)
+                        }
+                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
+                    }
+                }
+            }
             .modifier(GiniBottomSheetModifier(
                 contentHeight: bottomSheetHeight,
                 allowsDismiss: viewModel.isBottomSheetMode,
