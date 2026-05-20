@@ -37,6 +37,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         label.text = viewModel.titleText
         label.textColor = viewModel.configuration.titleAccentColor
         label.font = viewModel.configuration.titleFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -68,6 +69,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = viewModel.configuration.moreInformationTextColor
         label.font = viewModel.configuration.moreInformationFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.text = viewModel.moreInformationLabelText
         return label
