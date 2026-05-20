@@ -239,16 +239,16 @@ struct PaymentInfoViewModelTests {
                 "expanded section must remain expanded after refresh")
     }
 
-    @Test("refreshAttributedContent updates payBillsDescriptionLinkAttributes using linksFont")
+    @Test("refreshAttributedContent updates payBillsDescriptionLinkAttributes using links.font")
     func refreshUpdatesLinkAttributes() {
         let sut = makeSUT()
-        let expectedSize = sut.configuration.linksFont.pointSize
+        let expectedSize = sut.configuration.links.font.pointSize
 
         sut.refreshAttributedContent()
 
         let resolvedFont = sut.payBillsDescriptionLinkAttributes[.font] as? UIFont
         #expect(resolvedFont?.pointSize == expectedSize,
-                "payBillsDescriptionLinkAttributes must use configuration.linksFont after refresh")
+                "payBillsDescriptionLinkAttributes must use configuration.links.font after refresh")
     }
 
     // MARK: - infoBankCellModel
