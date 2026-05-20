@@ -363,4 +363,17 @@ struct PaymentReviewObservableModelTests {
         #expect(vmDelegate.lastErrorMessage == "Payment error",
                 "The error message must match the configured createPaymentErrorMessage")
     }
+
+    // MARK: - validateAmountFieldOnKeyboardDismiss
+
+    @Test("validateAmountFieldOnKeyboardDismiss is safe to call twice without crashing")
+    func validateAmountFieldOnKeyboardDismissIsIdempotent() {
+        let delegate = MockPaymentReviewDelegate()
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        sut.validateAmountFieldOnKeyboardDismiss()
+        sut.validateAmountFieldOnKeyboardDismiss()
+    }
 }
