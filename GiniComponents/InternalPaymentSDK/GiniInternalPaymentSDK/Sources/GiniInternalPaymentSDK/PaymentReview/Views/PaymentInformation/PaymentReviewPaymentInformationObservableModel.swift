@@ -236,7 +236,6 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
                     clearAmountErrorAfterKeyboardAppears()
                 }
             }
-            // Zero/empty amount: error is cleared when the user starts typing.
         } else {
             if !amountInputState.text.isEmpty,
                let decimalAmount = amountInputState.text.decimal() {
