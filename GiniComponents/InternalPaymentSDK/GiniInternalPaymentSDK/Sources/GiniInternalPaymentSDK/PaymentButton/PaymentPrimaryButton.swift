@@ -21,8 +21,8 @@ public final class PaymentPrimaryButton: UIButton {
     private lazy var buttonTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
         return label
     }()
@@ -66,8 +66,7 @@ public final class PaymentPrimaryButton: UIButton {
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            buttonTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.titlePadding),
-            buttonTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.titlePadding)
+            contentView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor)
         ])
         
         titleLeadingConstraint?.isActive = true
