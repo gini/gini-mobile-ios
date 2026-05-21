@@ -146,7 +146,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private func setupView() {
         // Use .large() detent so the sheet fills the screen and automatically
-        // adapts to orientation changes without manual viewWillTransition updates.
         configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
