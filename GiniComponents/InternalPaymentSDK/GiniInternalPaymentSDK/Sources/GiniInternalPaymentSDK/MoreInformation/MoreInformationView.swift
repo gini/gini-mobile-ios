@@ -100,7 +100,7 @@ public final class MoreInformationView: UIButton {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        /// Re-query height once real width is known (required for multi-line label wrapping).
+        // Re-query height once real width is known (required for multi-line label wrapping).
         invalidateIntrinsicContentSize()
     }
 
