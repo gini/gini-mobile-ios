@@ -261,12 +261,18 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             self.setupTableViewConstraints()
             self.setupPoweredByGiniConstraints()
             self.setupViewAttributes()
+            // Pass the full incoming height so UISheetPresentationController clamps it to its
+            // maximumDetentValue, matching the full-screen appearance of the initial portrait presentation.
+            // Using 90% of the height (Constants.bottomSheetHeight) leaves a visible gap after rotation.
+            self.updateBottomSheetHeight(size.height)
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
 
     private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
-        let isPortrait = UIDevice.isPortrait()
+        // Use the incoming size to determine orientation instead of UIDevice.isPortrait(),
+        // which still reflects the old orientation during viewWillTransition.
+        let isPortrait = screenSize.height > screenSize.width
         let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         // In landscape with an accessibility font size 200%, the description label is hidden
         // to prevent it consuming the limited vertical space above the bank list.
