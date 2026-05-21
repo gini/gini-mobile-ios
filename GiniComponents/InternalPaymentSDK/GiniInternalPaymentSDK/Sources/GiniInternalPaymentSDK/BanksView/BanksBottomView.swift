@@ -145,8 +145,9 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet()
-        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
+        // Use .large() detent so the sheet fills the screen and automatically
+        // adapts to orientation changes without manual viewWillTransition updates.
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
@@ -261,10 +262,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             self.setupTableViewConstraints()
             self.setupPoweredByGiniConstraints()
             self.setupViewAttributes()
-            // Pass the full incoming height so UISheetPresentationController clamps it to its
-            // maximumDetentValue, matching the full-screen appearance of the initial portrait presentation.
-            // Using 90% of the height (Constants.bottomSheetHeight) leaves a visible gap after rotation.
-            self.updateBottomSheetHeight(size.height)
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
