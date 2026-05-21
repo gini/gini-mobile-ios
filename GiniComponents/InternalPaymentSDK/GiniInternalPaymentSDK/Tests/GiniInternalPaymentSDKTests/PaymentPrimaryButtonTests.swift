@@ -31,9 +31,9 @@ struct PaymentPrimaryButtonTests {
         var tapped = false
         sut.didTapButton = { tapped = true }
 
-        /// `sendActions(for:)` dispatches through `UIApplication` which is unreliable
-        /// in headless tests. Call the registered @objc action directly via the
-        /// Obj-C runtime to test the callback wiring without UIKit event machinery.
+        // `sendActions(for:)` dispatches through `UIApplication` which is unreliable
+        // in headless tests. Call the registered @objc action directly via the
+        // Obj-C runtime to test the callback wiring without UIKit event machinery.
         _ = sut.perform(NSSelectorFromString("tapOnPayInvoiceView"))
 
         #expect(tapped, "didTapButton closure must be called when touchUpInside is sent")
