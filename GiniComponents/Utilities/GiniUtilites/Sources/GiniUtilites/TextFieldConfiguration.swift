@@ -16,15 +16,17 @@ public struct TextFieldConfiguration {
     public let borderWidth: CGFloat
     public let placeholderForegroundColor: UIColor
 
-    /// Text Field configuration initalizer
-    /// - Parameters:
-    ///   - backgroundColor: the textField's background color
-    ///   - borderColor: the textField's border color
-    ///   - textColor: the textField's text color
-    ///   - cornerRadius: the textField's corner radius
-    ///   - borderWidth: the textField's border width
-    ///   - placeholderForegroundColor:the textField's placeholder foreground color
-
+    /**
+     Text Field configuration initializer.
+     - Parameters:
+       - backgroundColor: the textField's background color
+       - borderColor: the textField's border color
+       - textColor: the textField's text color
+       - textFont: the textField's font
+       - cornerRadius: the textField's corner radius
+       - borderWidth: the textField's border width
+       - placeholderForegroundColor: the textField's placeholder foreground color
+     */
     public init(backgroundColor: UIColor,
                 borderColor: UIColor,
                 textColor: UIColor,

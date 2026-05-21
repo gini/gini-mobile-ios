@@ -112,7 +112,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -142,7 +141,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -182,7 +180,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "",
@@ -213,7 +210,6 @@ struct PaymentReviewObservableModelTests {
 
         let paymentInfo = PaymentInfo(recipient: "Test GmbH",
                                       iban: "DE89370400440532013000",
-                                      bic: "",
                                       amount: "99.99:EUR",
                                       purpose: "Invoice 123",
                                       paymentUniversalLink: "https://testbank.example/pay",
@@ -366,5 +362,18 @@ struct PaymentReviewObservableModelTests {
                 "onCreatePaymentRequestErrorHandling must present an error alert with the payment error message")
         #expect(vmDelegate.lastErrorMessage == "Payment error",
                 "The error message must match the configured createPaymentErrorMessage")
+    }
+
+    // MARK: - validateAmountFieldOnKeyboardDismiss
+
+    @Test("validateAmountFieldOnKeyboardDismiss is safe to call twice without crashing")
+    func validateAmountFieldOnKeyboardDismissIsIdempotent() {
+        let delegate = MockPaymentReviewDelegate()
+        let provider = MockBottomSheetsProvider()
+        let model = makePaymentReviewModel(delegate: delegate, bottomSheetsProvider: provider)
+        let sut = PaymentReviewObservableModel(model: model)
+
+        sut.validateAmountFieldOnKeyboardDismiss()
+        sut.validateAmountFieldOnKeyboardDismiss()
     }
 }

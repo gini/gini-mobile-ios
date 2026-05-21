@@ -34,6 +34,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.text = viewModel.titleText
         label.textColor = viewModel.configuration.titleAccentColor
         label.font = viewModel.configuration.titleFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .center
@@ -60,6 +61,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.text = viewModel.descriptionLabelText
         label.textColor = viewModel.configuration.descriptionAccentColor
         label.font = viewModel.configuration.descriptionFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .left
@@ -180,8 +182,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewHierarchy() {
-        // Add contentStackView to the UIScrollView
-        scrollView.addSubview(contentStackView)
+        // Add contentStackView through EmptyScrollView's content view so that the
+        // internal contentView drives contentLayoutGuide.height and vertical scrolling works.
+        scrollView.addContentSubview(contentStackView)
         bindToSizeUpdates()
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -203,7 +206,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
         topStackView.addArrangedSubview(qrCodeView)
         topStackView.addArrangedSubview(brandView)
-        topStackView.addArrangedSubview(EmptyView())
 
         bottomStackView.addArrangedSubview(continueView)
         bottomStackView.addArrangedSubview(descriptionView)
@@ -424,7 +426,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
     
     private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: orientation)
+        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        let resolvedOrientation: NSLayoutConstraint.Axis = isAccessibility ? .vertical : orientation
+        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: resolvedOrientation)
         
         let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
         let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)
@@ -437,7 +441,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
         let placeholderLabel = createLabel(text: title, isTitle: true)
         let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
-        valueLabel.adjustsFontSizeToFitWidth = true
 
         placeholderLabel.isAccessibilityElement = false
         if let subtitle = subtitle, !subtitle.isEmpty {
@@ -456,7 +459,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func generateAmountPurposeStackView() -> UIStackView {
-        let amountPurposeStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
+        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        let axis: NSLayoutConstraint.Axis = isAccessibility ? .vertical : .horizontal
+        let amountPurposeStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: axis)
         var stackViews: [UIStackView] = []
         
         if let amountToPayString = viewModel.paymentInfo?.amount, let amountToPay = Price(extractionString: amountToPayString) {
@@ -473,7 +478,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let label = UILabel()
         label.text = text
         label.textAlignment = .left
-        label.font = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
+        let baseFont = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
+        label.font = baseFont
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
         label.numberOfLines = 0
         return label
@@ -493,6 +500,11 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
             .sink { [weak self] size in
                 self?.updateBottomSheetHeight(size.height)
             }.store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.updateViews() }
+            .store(in: &cancellables)
     }
 
     // Handle orientation change

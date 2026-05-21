@@ -358,7 +358,10 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
                                                                    paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
                                                                    paymentInfoStrings: stringsProvider.paymentInfoStrings,
-                                                                   clientConfiguration: nil)
+                                                                   clientConfiguration: nil,
+                                                                   paymentInfoConfigurationProvider: { [weak self] in
+                                                                       self?.configurationProvider.paymentInfoConfiguration
+                                                                   })
         paymentProvidersBottomViewModel.viewDelegate = self
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
@@ -372,12 +375,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Returns: A configured `UIViewController` for displaying payment information.
      */
     public func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders, 
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                         poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                        clientConfiguration: nil)
+                                                        clientConfiguration: nil,
+                                                        configurationRefresher: { [weak self] in
+                                                            self?.configurationProvider.paymentInfoConfiguration
+                                                        })
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -449,7 +455,10 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
                                                                    paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
                                                                    paymentInfoStrings: stringsProvider.paymentInfoStrings,
-                                                                   clientConfiguration: nil)
+                                                                   clientConfiguration: nil,
+                                                                   paymentInfoConfigurationProvider: { [weak self] in
+                                                                       self?.configurationProvider.paymentInfoConfiguration
+                                                                   })
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)

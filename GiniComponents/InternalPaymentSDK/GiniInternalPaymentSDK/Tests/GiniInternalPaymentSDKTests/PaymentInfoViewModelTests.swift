@@ -212,6 +212,45 @@ struct PaymentInfoViewModelTests {
                 "question 1 must be expanded after setting isExtended")
     }
 
+    // MARK: - refreshAttributedContent
+
+    @Test("refreshAttributedContent preserves the description text string")
+    func refreshPreservesContent() {
+        let sut = makeSUT()
+        let textBefore = sut.payBillsDescriptionAttributedText.string
+
+        sut.refreshAttributedContent()
+
+        #expect(sut.payBillsDescriptionAttributedText.string == textBefore,
+                "refreshAttributedContent must not alter the text content")
+    }
+
+    @Test("refreshAttributedContent preserves expanded state of open FAQ sections")
+    func refreshPreservesExpandedSections() {
+        let strings = makeStrings(questions: ["Q1", "Q2"], answers: ["A1", "A2"])
+        let sut = makeSUT(strings: strings)
+        sut.questions[1].isExtended = true
+
+        sut.refreshAttributedContent()
+
+        #expect(sut.questions[0].isExtended == false,
+                "collapsed section must remain collapsed after refresh")
+        #expect(sut.questions[1].isExtended == true,
+                "expanded section must remain expanded after refresh")
+    }
+
+    @Test("refreshAttributedContent updates payBillsDescriptionLinkAttributes using links.font")
+    func refreshUpdatesLinkAttributes() {
+        let sut = makeSUT()
+        let expectedSize = sut.configuration.links.font.pointSize
+
+        sut.refreshAttributedContent()
+
+        let resolvedFont = sut.payBillsDescriptionLinkAttributes[.font] as? UIFont
+        #expect(resolvedFont?.pointSize == expectedSize,
+                "payBillsDescriptionLinkAttributes must use configuration.links.font after refresh")
+    }
+
     // MARK: - infoBankCellModel
 
     @Test("infoBankCellModel exposes the configured border color")

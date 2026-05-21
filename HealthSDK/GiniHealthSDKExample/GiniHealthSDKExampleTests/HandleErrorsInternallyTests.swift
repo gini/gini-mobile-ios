@@ -9,6 +9,7 @@ import UIKit
 import GiniHealthSDK
 import GiniInternalPaymentSDK
 import GiniUtilites
+import GiniHealthAPILibrary
 @testable import GiniHealthSDKExample
 
 @MainActor
@@ -119,11 +120,11 @@ private extension HandleErrorsInternallyTests {
         DebugMenuViewController(
             showReviewScreen: false,
             useBottomPaymentComponent: false,
-            paymentComponentConfiguration: PaymentComponentConfiguration(),
             showPaymentCloseButton: false,
             popupDuration: 3,
             shouldUseAlternativeNavigation: false,
-            handleErrorsInternally: handleErrorsInternally
+            handleErrorsInternally: handleErrorsInternally,
+            ingredientBrandType: .fullVisible
         )
     }
 
@@ -150,6 +151,12 @@ private extension HandleErrorsInternallyTests {
 // MARK: - MockDebugMenuDelegate
 
 private final class MockDebugMenuDelegate: DebugMenuDelegate {
+    var lastIngredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum?
+
+    func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        lastIngredientBrandType = type
+    }
+
     var lastSwitchType: SwitchType?
     var lastIsOn: Bool?
 
