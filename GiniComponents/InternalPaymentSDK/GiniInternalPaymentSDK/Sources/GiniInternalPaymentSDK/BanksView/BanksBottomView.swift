@@ -145,8 +145,8 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet()
-        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
+        // Use .large() detent so the sheet fills the screen and automatically
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
@@ -302,7 +302,6 @@ extension BanksBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
-        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
         static let titleMaxFontSize = 22.0
         static let descriptionMaxFontSize = 20.0
     }
