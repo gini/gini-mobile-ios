@@ -91,11 +91,11 @@ public final class MoreInformationView: UIButton {
      */
     public override var intrinsicContentSize: CGSize {
         guard bounds.width > 0 else { return super.intrinsicContentSize }
-        let labelWidth = bounds.width - Constants.infoIconSize - Constants.spacingPadding
+        let labelWidth = max(bounds.width - Constants.infoIconSize - Constants.spacingPadding, 0)
         let labelHeight = moreInformationLabel.sizeThatFits(
             CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
         ).height
-        return CGSize(width: bounds.width, height: max(labelHeight, Constants.infoIconSize))
+        return CGSize(width: UIView.noIntrinsicMetric, height: max(labelHeight, Constants.infoIconSize))
     }
 
     public override func layoutSubviews() {
