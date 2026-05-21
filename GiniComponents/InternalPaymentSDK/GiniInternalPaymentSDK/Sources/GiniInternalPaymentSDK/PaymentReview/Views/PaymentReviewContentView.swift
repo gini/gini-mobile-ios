@@ -66,15 +66,7 @@ public struct PaymentReviewContentView: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
-                    Spacer()
-                    Button(viewModel.keyboardDoneButtonTitle) {
-                        viewModel.trackKeyboardDismissed()
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                        to: nil,
-                                                        from: nil,
-                                                        for: nil)
-                    }
-                    .padding(.trailing, Constants.doneButtonHorizontalPadding)
+                    keyboardDoneButton
                 }
             }
         }
@@ -129,15 +121,7 @@ public struct PaymentReviewContentView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     if giniLayout.isLandscape && viewModel.isAmountFieldFocused {
-                        Spacer()
-                        Button(viewModel.keyboardDoneButtonTitle) {
-                            viewModel.trackKeyboardDismissed()
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                            to: nil,
-                                                            from: nil,
-                                                            for: nil)
-                        }
-                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
+                        keyboardDoneButton
                     }
                 }
             }
@@ -192,6 +176,19 @@ public struct PaymentReviewContentView: View {
         }
         .accessibilityLabel(viewModel.model.strings.closeButtonAccessibilityLabel)
         .padding(Constants.closeButtonEdgePadding)
+    }
+
+    @ViewBuilder
+    private var keyboardDoneButton: some View {
+        Spacer()
+        Button(viewModel.keyboardDoneButtonTitle) {
+            viewModel.trackKeyboardDismissed()
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                            to: nil,
+                                            from: nil,
+                                            for: nil)
+        }
+        .padding(.trailing, Constants.doneButtonHorizontalPadding)
     }
 
     @ViewBuilder
