@@ -161,7 +161,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         paymentProvidersView.addSubview(paymentProvidersTableView)
         contentStackView.addArrangedSubview(paymentProvidersView)
         bottomStackView.addArrangedSubview(moreInformationView)
-        bottomStackView.addArrangedSubview(UIView())
         if viewModel.shouldShowBrandedView {
             bottomStackView.addArrangedSubview(poweredByGiniView)
         }
@@ -246,8 +245,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
     }
 
