@@ -465,7 +465,5 @@ extension PaymentInfoViewController {
         static let estimatedAnswerHeight = 250.0
 
         static let viewPaddingLandscape = 126.0
-        
-        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
     }
 }
