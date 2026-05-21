@@ -166,8 +166,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet()
-        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
