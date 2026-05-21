@@ -150,6 +150,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
+        updateBottomStackOrientation()
     }
 
     private func setupViewHierarchy() {
@@ -289,7 +290,16 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         viewModel.calculateHeights()
         updateLayoutForCurrentOrientation(screenSize: view.bounds.size)
         paymentProvidersTableView.reloadData()
+        updateBottomStackOrientation()
         view.layoutIfNeeded()
+    }
+
+    private func updateBottomStackOrientation() {
+        /// Axis change only applies when the branded logo is present; with a single item the axis has no effect.
+        guard viewModel.shouldShowBrandedView else { return }
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
+        poweredByGiniView.configureForVerticalLayout(isAccessibilitySize)
     }
 }
 
