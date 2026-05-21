@@ -291,15 +291,13 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let isPortrait = orientation == .vertical
 
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
-        let contentPadding: CGFloat = 0
-        
         let sharedConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                      constant: contentPadding),
+                                                      constant: Constants.contentPadding),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
-                                                       constant: -contentPadding),
+                                                       constant: -Constants.contentPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                                    constant: -2 * contentPadding),
+                                                    constant: -2 * Constants.contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
             paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor,
@@ -550,5 +548,6 @@ extension ShareInvoiceBottomView {
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
         static let landscapePaddingRatio = 0.15
+        static let contentPadding: CGFloat = 0
     }
 }
