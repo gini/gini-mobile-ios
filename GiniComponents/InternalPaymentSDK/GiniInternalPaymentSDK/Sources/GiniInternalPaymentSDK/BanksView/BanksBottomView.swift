@@ -308,7 +308,6 @@ extension BanksBottomView {
         static let topAnchorTitleView = 32.0
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
-        static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
         static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
         static let titleMaxFontSize = 22.0
