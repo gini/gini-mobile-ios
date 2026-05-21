@@ -33,7 +33,12 @@ public final class PoweredByGiniView: UIView {
         imageView.isAccessibilityElement = false
         return imageView
     }()
-    
+
+    /// Constraints active in the default horizontal layout (label leading → image trailing).
+    private var horizontalLayoutConstraints: [NSLayoutConstraint] = []
+    /// Constraints active in the vertical/accessibility layout (image leading → label trailing).
+    private var verticalLayoutConstraints: [NSLayoutConstraint] = []
+
     public init(viewModel: PoweredByGiniViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -51,28 +56,58 @@ public final class PoweredByGiniView: UIView {
         mainContainer.addSubview(poweredByGiniLabel)
         mainContainer.addSubview(giniImageView)
         self.addSubview(mainContainer)
-        
+
         NSLayoutConstraint.activate([
             mainContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainContainer.topAnchor.constraint(equalTo: topAnchor),
             mainContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-            mainContainer.trailingAnchor.constraint(equalTo: giniImageView.trailingAnchor),
-            giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
-            poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
-            poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
-            // Top + bottom pins define mainContainer.height unambiguously so that the
-            // parent scroll view content size can be computed via Auto Layout bottom-up.
-            giniImageView.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
-            giniImageView.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding),
-            giniImageView.widthAnchor.constraint(equalToConstant: Constants.widthGiniLogo)
+            giniImageView.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor),
+            giniImageView.widthAnchor.constraint(equalToConstant: Constants.widthGiniLogo),
+            giniImageView.heightAnchor.constraint(equalToConstant: Constants.heightGiniLogo),
+            // Label top+bottom pins drive mainContainer.height so the scroll view
+            // content size is computed correctly at all accessibility font sizes.
+            poweredByGiniLabel.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
+            poweredByGiniLabel.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding)
         ])
+
+        horizontalLayoutConstraints = [
+            poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
+            giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
+            giniImageView.trailingAnchor.constraint(equalTo: mainContainer.trailingAnchor)
+        ]
+
+        verticalLayoutConstraints = [
+            poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
+            giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
+            giniImageView.trailingAnchor.constraint(lessThanOrEqualTo: mainContainer.trailingAnchor)
+        ]
+
+        NSLayoutConstraint.activate(horizontalLayoutConstraints)
     }
     
     private func setupAccessibility() {
         mainContainer.isAccessibilityElement = true
         mainContainer.accessibilityLabel = viewModel.strings.poweredByGiniText + "Gini"
         mainContainer.accessibilityElements = [poweredByGiniLabel, giniImageView]
+    }
+
+    /**
+     Switches between a compact leading-aligned layout and the default full-width layout.
+     When `isVertical` is `true`, the label starts at the leading edge and the logo follows it
+     without stretching to the trailing edge. When `false`, the label fills the available width
+     and the logo is pinned to the trailing edge.
+     */
+    func configureForVerticalLayout(_ isVertical: Bool) {
+        if isVertical {
+            NSLayoutConstraint.deactivate(horizontalLayoutConstraints)
+            NSLayoutConstraint.activate(verticalLayoutConstraints)
+            poweredByGiniLabel.textAlignment = .natural
+        } else {
+            NSLayoutConstraint.deactivate(verticalLayoutConstraints)
+            NSLayoutConstraint.activate(horizontalLayoutConstraints)
+            poweredByGiniLabel.textAlignment = .right
+        }
     }
 }
 
