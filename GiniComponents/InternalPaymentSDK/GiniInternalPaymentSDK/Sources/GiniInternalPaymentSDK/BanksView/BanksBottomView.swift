@@ -267,9 +267,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
-        // Use the incoming size to determine orientation instead of UIDevice.isPortrait(),
-        // which still reflects the old orientation during viewWillTransition.
-        let isPortrait = screenSize.height > screenSize.width
+        let isPortrait = UIDevice.isPortrait()
         let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         // In landscape with an accessibility font size 200%, the description label is hidden
         // to prevent it consuming the limited vertical space above the bank list.
