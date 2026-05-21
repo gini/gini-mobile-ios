@@ -94,7 +94,7 @@ public final class PoweredByGiniView: UIView {
     public override var intrinsicContentSize: CGSize {
         let labelHeight = poweredByGiniLabel.intrinsicContentSize.height
         return CGSize(width: UIView.noIntrinsicMetric,
-                      height: labelHeight + 2 * Constants.imageTopBottomPadding)
+                      height: max(labelHeight + 2 * Constants.imageTopBottomPadding, Constants.heightGiniLogo))
     }
 
     private func setupAccessibility() {
