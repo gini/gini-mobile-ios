@@ -20,7 +20,7 @@ Further documentation with information about how install and integrate it can be
 ## Requirements
 
 - iOS 17+
-- Xcode 15+
+- Xcode 26+
 
 ## Author
 
