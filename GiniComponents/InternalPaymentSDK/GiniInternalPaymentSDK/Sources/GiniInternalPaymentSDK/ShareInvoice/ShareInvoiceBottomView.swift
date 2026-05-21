@@ -253,13 +253,22 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         updateLayoutForCurrentOrientation()
     }
     
-    public func updateViews() {
-        updateLayoutForCurrentOrientation()
+    public func updateViews(for targetSize: CGSize? = nil) {
+        updateLayoutForCurrentOrientation(for: targetSize)
         view.layoutIfNeeded()
     }
 
-    private func updateLayoutForCurrentOrientation() {
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory || UIDevice.isPortrait() {
+    private func updateLayoutForCurrentOrientation(for targetSize: CGSize? = nil) {
+        let usePortrait: Bool
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            usePortrait = true
+        } else if let size = targetSize {
+            usePortrait = size.width <= size.height
+        } else {
+            usePortrait = UIDevice.isPortrait()
+        }
+
+        if usePortrait {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints()
@@ -511,9 +520,11 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        // Perform layout updates with animation
+        // Perform layout updates with animation, passing the known target size so
+        // that constraint selection uses the incoming dimensions rather than the
+        // device orientation, which can lag behind during the transition.
         coordinator.animate(alongsideTransition: { [weak self] context in
-            self?.updateViews()
+            self?.updateViews(for: size)
         }, completion: { [weak self] _ in
             self?.notifyLayoutChanged()
         })
