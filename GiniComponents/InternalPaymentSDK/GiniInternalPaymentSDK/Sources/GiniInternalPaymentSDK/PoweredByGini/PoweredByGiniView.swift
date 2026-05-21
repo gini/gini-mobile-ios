@@ -86,6 +86,17 @@ public final class PoweredByGiniView: UIView {
         NSLayoutConstraint.activate(horizontalLayoutConstraints)
     }
     
+    /**
+     UIView does not derive `intrinsicContentSize` from subview constraints. This override
+     returns the correct height driven by the label so UIStackView allocates sufficient
+     space at all font sizes.
+     */
+    public override var intrinsicContentSize: CGSize {
+        let labelHeight = poweredByGiniLabel.intrinsicContentSize.height
+        return CGSize(width: UIView.noIntrinsicMetric,
+                      height: labelHeight + 2 * Constants.imageTopBottomPadding)
+    }
+
     private func setupAccessibility() {
         mainContainer.isAccessibilityElement = true
         mainContainer.accessibilityLabel = viewModel.strings.poweredByGiniText + "Gini"
