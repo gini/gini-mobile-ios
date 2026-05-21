@@ -25,7 +25,8 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
-        label.font = viewModel.configuration.selectBankFont
+        // Font size is capped at accessibility sizes to prevent clipping. Remove when HEAL-414 migrates this screen to a fully scrollable layout.
+        label.font = viewModel.configuration.selectBankFont.limitingFontSize(to: Constants.titleMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
@@ -38,8 +39,10 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
-        label.font = viewModel.configuration.descriptionFont
+        // Font size is capped at accessibility sizes to prevent clipping. Remove when HEAL-414 migrates this screen to a fully scrollable layout.
+        label.font = viewModel.configuration.descriptionFont.limitingFontSize(to: Constants.descriptionMaxFontSize)
         label.adjustsFontForContentSizeCategory = true
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         label.numberOfLines = 0
         return label
     }()
@@ -165,6 +168,13 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)
         view.addSubview(contentView)
+
+        // Title, description, and bottom bar hug their content tightly.
+        // The bank list (paymentProvidersView) absorbs all remaining vertical space.
+        titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        descriptionView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        bottomView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        paymentProvidersView.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
 
     private func setupViewAttributes() {
@@ -256,7 +266,12 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
-        if UIDevice.isPortrait() {
+        let isPortrait = UIDevice.isPortrait()
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        // In landscape with an accessibility font size 200%, the description label is hidden
+        // to prevent it consuming the limited vertical space above the bank list.
+        descriptionView.isHidden = !isPortrait && isAccessibilitySize
+        if isPortrait {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints(screenWidth: screenSize.width)
@@ -288,6 +303,8 @@ extension BanksBottomView {
         static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
         static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
+        static let titleMaxFontSize = 22.0
+        static let descriptionMaxFontSize = 20.0
     }
 }
 
