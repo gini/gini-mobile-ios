@@ -7,6 +7,7 @@
 
 import Testing
 import UIKit
+import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
 
 @Suite("ShareInvoiceBottomView")
