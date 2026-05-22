@@ -175,7 +175,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         view.accessibilityViewIsModal = true
         view.accessibilityElements = [
             titleLabel,
-            qrImageView,
+            qrImageView
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : []) + [
             continueButton,
             descriptionLabel
         ] + dynamicInfoLabels
