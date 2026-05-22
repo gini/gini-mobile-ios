@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "GiniInternalPaymentSDK",
     defaultLocalization: "en",
-    platforms: [.iOS("16.4")],
+    platforms: [.iOS("17.0")],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
