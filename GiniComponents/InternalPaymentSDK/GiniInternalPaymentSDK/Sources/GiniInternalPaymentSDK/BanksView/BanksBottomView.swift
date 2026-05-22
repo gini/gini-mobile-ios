@@ -150,6 +150,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
+        updateBottomStackOrientation()
     }
 
     private func setupViewHierarchy() {
@@ -160,7 +161,6 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         paymentProvidersView.addSubview(paymentProvidersTableView)
         contentStackView.addArrangedSubview(paymentProvidersView)
         bottomStackView.addArrangedSubview(moreInformationView)
-        bottomStackView.addArrangedSubview(UIView())
         if viewModel.shouldShowBrandedView {
             bottomStackView.addArrangedSubview(poweredByGiniView)
         }
@@ -245,8 +245,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
     }
 
@@ -289,7 +288,16 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         viewModel.calculateHeights()
         updateLayoutForCurrentOrientation(screenSize: view.bounds.size)
         paymentProvidersTableView.reloadData()
+        updateBottomStackOrientation()
         view.layoutIfNeeded()
+    }
+
+    private func updateBottomStackOrientation() {
+        /// Axis change only applies when the branded logo is present; with a single item the axis has no effect.
+        guard viewModel.shouldShowBrandedView else { return }
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
+        poweredByGiniView.configureForVerticalLayout(isAccessibilitySize)
     }
 }
 
@@ -300,7 +308,6 @@ extension BanksBottomView {
         static let topAnchorTitleView = 32.0
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
-        static let bottomViewHeight = 44.0
         static let landscapePaddingRatio = 0.15
         static let titleMaxFontSize = 22.0
         static let descriptionMaxFontSize = 20.0
