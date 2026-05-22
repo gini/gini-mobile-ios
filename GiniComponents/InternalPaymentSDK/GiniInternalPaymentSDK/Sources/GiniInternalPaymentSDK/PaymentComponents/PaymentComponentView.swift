@@ -116,7 +116,7 @@ public final class PaymentComponentView: UIView {
             selectBankButton,
             payInvoiceButton,
             moreInformationView
-        ]
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : [])
     }
     
     private func activateAllConstraints() {
