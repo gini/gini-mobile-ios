@@ -173,12 +173,20 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     
     private func setupAccessibility() {
         view.accessibilityViewIsModal = true
-        view.accessibilityElements = [
+        // Elements are assigned to scrollView (not view) so that UIKit recognises the
+        // UIScrollView as the accessibility container. This causes VoiceOver to automatically
+        // call scrollRectToVisible when navigating to an off-screen element in landscape,
+        // where the sheet height is reduced and content overflows below the visible area.
+        // Setting view.accessibilityElements = [scrollView] keeps the modal trap intact
+        // while routing all traversal through the scroll view.
+        scrollView.accessibilityElements = [
             titleLabel,
-            qrImageView,
+            qrImageView
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : []) + [
             continueButton,
             descriptionLabel
         ] + dynamicInfoLabels
+        view.accessibilityElements = [scrollView]
     }
 
     private func setupViewHierarchy() {

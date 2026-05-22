@@ -15,6 +15,7 @@
 
 import Testing
 import UIKit
+import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
 
 // MARK: - View controller factories
@@ -42,6 +43,33 @@ private func makeShareInvoiceBottomView() -> ShareInvoiceBottomView {
                                                 paymentInfo: nil,
                                                 paymentRequestId: "test-request-id",
                                                 clientConfiguration: nil)
+    return ShareInvoiceBottomView(viewModel: viewModel,
+                                  bottomSheetConfiguration: .test)
+}
+
+private func makeInstallAppBottomViewWithBranding() -> InstallAppBottomView {
+    let viewModel = InstallAppBottomViewModel(selectedPaymentProvider: nil,
+                                              installAppConfiguration: .test,
+                                              strings: .test,
+                                              primaryButtonConfiguration: .test,
+                                              poweredByGiniConfiguration: .test,
+                                              poweredByGiniStrings: .test,
+                                              clientConfiguration: .test(ingredientBrandType: .fullVisible))
+    return InstallAppBottomView(viewModel: viewModel,
+                                bottomSheetConfiguration: .test)
+}
+
+private func makeShareInvoiceBottomViewWithBranding() -> ShareInvoiceBottomView {
+    let viewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: nil,
+                                                configuration: .test,
+                                                strings: .test,
+                                                primaryButtonConfiguration: .test,
+                                                poweredByGiniConfiguration: .test,
+                                                poweredByGiniStrings: .test,
+                                                qrCodeData: Data(),
+                                                paymentInfo: nil,
+                                                paymentRequestId: "test-request-id",
+                                                clientConfiguration: .test(ingredientBrandType: .fullVisible))
     return ShareInvoiceBottomView(viewModel: viewModel,
                                   bottomSheetConfiguration: .test)
 }
@@ -142,6 +170,42 @@ struct AccessibilityTests {
             vc.view.accessibilityViewIsModal == false,
             "[\(viewType.testDescription)] accessibilityViewIsModal must be cleared in viewWillDisappear"
         )
+    }
+
+    // MARK: Branded view — accessibilityElements ordering
+
+    /// Verifies that `ShareInvoiceBottomView` with `.fullVisible` client configuration routes
+    /// VoiceOver through the scroll view and includes `PoweredByGiniView` in the element order.
+    @Test("ShareInvoiceBottomView routes accessibility through scrollView and includes PoweredByGiniView when fullVisible")
+    func shareInvoiceBrandedViewAccessibilityElements() throws {
+        let vc = makeShareInvoiceBottomViewWithBranding()
+        vc.loadViewIfNeeded()
+
+        let scrollView = try #require(
+            vc.view.accessibilityElements?.first as? UIScrollView,
+            "view.accessibilityElements must route VoiceOver through the scroll view"
+        )
+        #expect(
+            vc.view.accessibilityElements?.count == 1,
+            "view.accessibilityElements must contain only the scroll view to maintain the modal trap"
+        )
+        let hasBrandedView = scrollView.accessibilityElements?.contains(where: { $0 is PoweredByGiniView }) == true
+        #expect(hasBrandedView, "PoweredByGiniView must be present in scrollView.accessibilityElements when ingredientBrandType is .fullVisible")
+    }
+
+    /// Verifies that `InstallAppBottomView` with `.fullVisible` client configuration includes
+    /// `PoweredByGiniView` in the content scroll view's accessibility element order.
+    @Test("InstallAppBottomView includes PoweredByGiniView in contentView accessibilityElements when fullVisible")
+    func installAppBrandedViewAccessibilityElements() throws {
+        let vc = makeInstallAppBottomViewWithBranding()
+        vc.loadViewIfNeeded()
+
+        let scrollView = try #require(
+            vc.view.subviews.first(where: { $0 is UIScrollView }),
+            "InstallAppBottomView must add contentView (EmptyScrollView) as a subview of view"
+        )
+        let hasBrandedView = scrollView.accessibilityElements?.contains(where: { $0 is PoweredByGiniView }) == true
+        #expect(hasBrandedView, "PoweredByGiniView must be present in contentView.accessibilityElements when ingredientBrandType is .fullVisible")
     }
 
     // MARK: PaymentComponentBottomView
