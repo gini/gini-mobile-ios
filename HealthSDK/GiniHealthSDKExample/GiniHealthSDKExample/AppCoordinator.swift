@@ -451,11 +451,11 @@ extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
                                                               popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
                                                               shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
-                                                              handleErrorsInternally: handleErrorsInternally)
+                                                              handleErrorsInternally: handleErrorsInternally,
+                                                              ingredientBrandType: health.clientConfiguration?.ingredientBrandType ?? .invisible)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -467,8 +467,6 @@ extension AppCoordinator: DebugMenuDelegate {
         switch type {
         case .showReviewScreen:
             giniHealthConfiguration.showPaymentReviewScreen = isOn
-        case .showBrandedView:
-            health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
         case .useBottomPaymentComponent:
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
         case .showPaymentCloseButton:
@@ -478,6 +476,13 @@ extension AppCoordinator: DebugMenuDelegate {
         case .handleErrorsInternally:
             handleErrorsInternally = isOn
         }
+    }
+
+    func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        if health.clientConfiguration == nil {
+            health.clientConfiguration = ClientConfiguration()
+        }
+        health.clientConfiguration?.ingredientBrandType = type
     }
 
     func didPickNewLocalization(localization: GiniLocalization) {

@@ -166,8 +166,7 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     }
 
     private func setupView() {
-        configureBottomSheet()
-        updateBottomSheetHeight(Constants.bottomSheetHeight(view.bounds.height))
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
@@ -466,7 +465,5 @@ extension PaymentInfoViewController {
         static let estimatedAnswerHeight = 250.0
 
         static let viewPaddingLandscape = 126.0
-        
-        static let bottomSheetHeight: (CGFloat) -> CGFloat = { screenHeight in screenHeight * 0.9 }
     }
 }

@@ -5,13 +5,13 @@
 //
 
 import UIKit
+import GiniHealthAPILibrary
 import GiniHealthSDK
 import GiniInternalPaymentSDK
 import GiniUtilites
 
 enum SwitchType {
     case showReviewScreen
-    case showBrandedView
     case useBottomPaymentComponent
     case showPaymentCloseButton
     case useAlternativeNavigation
@@ -24,6 +24,7 @@ protocol DebugMenuDelegate: AnyObject {
     func didChangeSliderValue(value: Float)
     func didCustomizeShareWithFilename(filename: String)
     func didTapOnBulkDelete()
+    func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -80,6 +81,12 @@ class DebugMenuViewController: UIViewController {
     private lazy var handleErrorsInternallyRow = stackView(axis: .horizontal,
                                                            subviews: [handleErrorsInternallyLabel,
                                                                       handleErrorsInternallySwitch])
+
+    private lazy var brandedViewOptionLabel: UILabel = rowTitle("Branded View")
+    private var brandedViewSegmentedControl: UISegmentedControl!
+    private lazy var brandedViewRow: UIStackView = stackView(axis: .horizontal,
+                                                             subviews: [brandedViewOptionLabel,
+                                                                        brandedViewSegmentedControl])
     
     private lazy var popupDurationTitleLabel: UILabel = rowTitle("Popup Duration Time")
     
@@ -117,11 +124,11 @@ class DebugMenuViewController: UIViewController {
 
     init(showReviewScreen: Bool,
          useBottomPaymentComponent: Bool,
-         paymentComponentConfiguration: PaymentComponentConfiguration,
          showPaymentCloseButton: Bool,
          popupDuration: TimeInterval,
          shouldUseAlternativeNavigation: Bool,
-         handleErrorsInternally: Bool) {
+         handleErrorsInternally: Bool,
+         ingredientBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
@@ -129,6 +136,7 @@ class DebugMenuViewController: UIViewController {
         self.useAlternativeNavigationSwitch = self.switchView(isOn: shouldUseAlternativeNavigation)
         self.handleErrorsInternallySwitch = self.switchView(isOn: handleErrorsInternally)
         self.popupDurationSlider.value = Float(popupDuration)
+        self.brandedViewSegmentedControl = self.segmentedControl(selectedType: ingredientBrandType)
     }
 
     required init?(coder: NSCoder) {
@@ -194,6 +202,7 @@ class DebugMenuViewController: UIViewController {
             reviewScreenRow,
             bottomPaymentComponentEditableRow,
             closeButtonRow,
+            brandedViewRow,
             popupDurationRow,
             shareWithFilenameRow,
             bulkDeleteButton,
@@ -218,6 +227,7 @@ class DebugMenuViewController: UIViewController {
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            brandedViewRow.heightAnchor.constraint(equalToConstant: rowHeight),
             popupDurationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             shareWithFilenameRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bulkDeleteButton.heightAnchor.constraint(equalToConstant: rowHeight)
@@ -301,6 +311,17 @@ private extension DebugMenuViewController {
         return mySwitch
     }
 
+    static let ingredientBrandTypes: [GiniHealthAPILibrary.IngredientBrandTypeEnum] = [.fullVisible, .paymentComponent, .invisible]
+
+    func segmentedControl(selectedType: GiniHealthAPILibrary.IngredientBrandTypeEnum) -> UISegmentedControl {
+        let titles = ["Full Visible", "Payment", "Invisible"]
+        let control = UISegmentedControl(items: titles)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        control.selectedSegmentIndex = DebugMenuViewController.ingredientBrandTypes.firstIndex(of: selectedType) ?? DebugMenuViewController.ingredientBrandTypes.count - 1
+        control.addTarget(self, action: #selector(brandedViewSegmentChanged(_:)), for: .valueChanged)
+        return control
+    }
+
     func actionButton(for type: DebugMenuActionType) -> UIButton {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -362,6 +383,12 @@ private extension DebugMenuViewController {
         default:
             break
         }
+    }
+
+    @objc private func brandedViewSegmentChanged(_ sender: UISegmentedControl) {
+        let types = DebugMenuViewController.ingredientBrandTypes
+        guard sender.selectedSegmentIndex < types.count else { return }
+        delegate?.didChangeIngredientBrandType(types[sender.selectedSegmentIndex])
     }
 }
 

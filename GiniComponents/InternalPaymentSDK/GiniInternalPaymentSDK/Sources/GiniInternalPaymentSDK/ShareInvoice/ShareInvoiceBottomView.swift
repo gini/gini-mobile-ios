@@ -253,13 +253,22 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         updateLayoutForCurrentOrientation()
     }
     
-    public func updateViews() {
-        updateLayoutForCurrentOrientation()
+    public func updateViews(for targetSize: CGSize? = nil) {
+        updateLayoutForCurrentOrientation(for: targetSize)
         view.layoutIfNeeded()
     }
 
-    private func updateLayoutForCurrentOrientation() {
-        if UIDevice.isPortrait() {
+    private func updateLayoutForCurrentOrientation(for targetSize: CGSize? = nil) {
+        let usePortrait: Bool
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            usePortrait = true
+        } else if let size = targetSize {
+            usePortrait = size.width <= size.height
+        } else {
+            usePortrait = UIDevice.isPortrait()
+        }
+
+        if usePortrait {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints()
@@ -274,22 +283,21 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         // Update the split stack view and payment info stack view
         setupSplitStackViewHierarchy()
         splitStacKView.orientation(orientation).spacing(orientation == .vertical ? 0 : Constants.viewPaddingConstraint)
-        
+        splitStacKView.alignment = orientation == .horizontal ? .top : .fill
+
         paymentInfoStackView = generatePaymentInfoViews(orientation: orientation)
         updatePaymentInfoView()
-        
+
         let isPortrait = orientation == .vertical
-        
+
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
-        let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
-        
         let sharedConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                      constant: contentPadding),
+                                                      constant: Constants.contentPadding),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
-                                                       constant: -contentPadding),
+                                                       constant: -Constants.contentPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                                    constant: -2 * contentPadding),
+                                                    constant: -2 * Constants.contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
             paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor,
@@ -426,9 +434,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
     
     private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        let resolvedOrientation: NSLayoutConstraint.Axis = isAccessibility ? .vertical : orientation
-        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: resolvedOrientation)
+        // Always stack vertically: the IBAN is too long to share a row without breaking mid-number.
+        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         
         let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
         let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)
@@ -511,9 +518,11 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        // Perform layout updates with animation
+        // Perform layout updates with animation, passing the known target size so
+        // that constraint selection uses the incoming dimensions rather than the
+        // device orientation, which can lag behind during the transition.
         coordinator.animate(alongsideTransition: { [weak self] context in
-            self?.updateViews()
+            self?.updateViews(for: size)
         }, completion: { [weak self] _ in
             self?.notifyLayoutChanged()
         })
@@ -539,5 +548,6 @@ extension ShareInvoiceBottomView {
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
         static let landscapePaddingRatio = 0.15
+        static let contentPadding: CGFloat = 0
     }
 }
