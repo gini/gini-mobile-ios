@@ -186,7 +186,8 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     private func setupAccessibility() {
         view.accessibilityViewIsModal = true
-        view.accessibilityElements = [
+        // Set on `contentView` (scroll view) so VoiceOver can auto-scroll off-screen elements in landscape.
+        contentView.accessibilityElements = [
             titleLabel,
             bankIconImageView,
             moreInformationLabel,
