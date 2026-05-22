@@ -14,7 +14,9 @@ public struct PaymentReviewContentView: View {
     @State private var bottomSheetHeight = Constants.bottomSheetDefaultHeight
     
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.giniLayout) private var giniLayout
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
     /**
      The init method is internal to prevent users from creating instances of this view directly
@@ -123,11 +125,17 @@ public struct PaymentReviewContentView: View {
             viewModel.paymentReviewPaymentInformationView(
                 contentHeight: $bottomSheetHeight
             )
-            .modifier(GiniBottomSheetModifier(
-                contentHeight: bottomSheetHeight,
-                allowsDismiss: viewModel.isBottomSheetMode,
-                accessibilityAction: viewModel.didTapClose
-            ))
+            .padding(.top, verticalSizeClass == .compact && !reduceMotion
+                ? Constants.grabberBottomPadding
+                : 0)
+            .overlay(alignment: .top) {
+                if verticalSizeClass == .compact && !reduceMotion {
+                    landscapeGrabberCapsule
+                }
+            }
+            .modifier(GiniBottomSheetModifier(contentHeight: bottomSheetHeight,
+                                              allowsDismiss: viewModel.isBottomSheetMode,
+                                              accessibilityAction: viewModel.didTapClose))
         }
     }
     
@@ -161,6 +169,22 @@ public struct PaymentReviewContentView: View {
     
     // MARK: - Private Views
     
+    // Replacement for the system drag indicator, which is hidden by .fullScreenCover adaptation in landscape.
+    // Wrapping in Button ensures VoiceOver announces it as an interactive element and double-tap dismisses.
+    private var landscapeGrabberCapsule: some View {
+        Button(action: viewModel.didTapClose) {
+            Capsule()
+                .fill(Color(UIColor.tertiaryLabel))
+                .frame(width: Constants.grabberWidth, height: Constants.grabberHeight)
+                .frame(width: Constants.grabberHitAreaWidth, height: Constants.grabberHitAreaHeight)
+        }
+        .buttonStyle(.plain)
+        .contentShape(Rectangle())
+        .padding(.top, Constants.grabberTopPadding)
+        .accessibilityLabel(viewModel.model.strings.sheetGrabberAccessibilityLabel)
+        .accessibilityHint(viewModel.model.strings.sheetGrabberAccessibilityHint)
+    }
+
     @ViewBuilder
     private var loadingOverlay: some View {
         if viewModel.isLoading {
@@ -207,7 +231,9 @@ public struct PaymentReviewContentView: View {
         if isLandscape {
             calculatedHeight = geometry.size.height - Constants.totalPaddings - Constants.pageIndicatorSpace
         } else {
-            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight + Constants.bottomSheetOverlap - Constants.totalPaddings - Constants.pageIndicatorSpace
+            calculatedHeight = geometry.size.height - effectiveBottomSheetHeight
+            + Constants.bottomSheetOverlap - Constants.totalPaddings
+            - Constants.pageIndicatorSpace
         }
         
         return max(calculatedHeight, Constants.carouselDefaultHeight)
@@ -230,5 +256,11 @@ public struct PaymentReviewContentView: View {
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
         static let doneButtonHorizontalPadding: CGFloat = 16.0
+        static let grabberWidth: CGFloat = 36.0
+        static let grabberHeight: CGFloat = 5.0
+        static let grabberHitAreaWidth: CGFloat = 60.0
+        static let grabberHitAreaHeight: CGFloat = 44.0
+        static let grabberTopPadding: CGFloat = 8.0
+        static let grabberBottomPadding: CGFloat = 24.0
     }
 }
