@@ -192,7 +192,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
             moreInformationLabel,
             appStoreImageView,
             continueButton
-        ]
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : [])
     }
     
     private func setupViewHierarchy() {
