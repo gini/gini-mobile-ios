@@ -435,13 +435,13 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         dynamicInfoLabels.removeAll()
         let stackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
-            generateRecipientIbanStackView(orientation: orientation),
+            generateRecipientIbanStackView(),
             generateAmountPurposeStackView()
         ].forEach { stackView.addArrangedSubview($0) }
         return stackView
     }
     
-    private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+    private func generateRecipientIbanStackView() -> UIStackView {
         // Always stack vertically: the IBAN is too long to share a row without breaking mid-number.
         let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         
