@@ -342,7 +342,8 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
                                                   constant: Constants.contentViewTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                     constant: -Constants.viewPaddingConstraint),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.viewPaddingConstraint),
@@ -401,7 +402,11 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         contentView.$size
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedSize in
-                self?.updateBottomSheetHeight(updatedSize.height)
+                guard let self else { return }
+                // Include the safe-area bottom inset so the sheet is tall enough
+                // to reveal the full content above the home indicator.
+                let safeAreaBottom = view.safeAreaInsets.bottom
+                updateBottomSheetHeight(updatedSize.height + safeAreaBottom)
             }.store(in: &cancellables)
     }
     
