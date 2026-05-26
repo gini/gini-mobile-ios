@@ -293,7 +293,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         splitStacKView.orientation(orientation).spacing(orientation == .vertical ? 0 : Constants.viewPaddingConstraint)
         splitStacKView.alignment = orientation == .horizontal ? .top : .fill
 
-        paymentInfoStackView = generatePaymentInfoViews(orientation: orientation)
+        paymentInfoStackView = generatePaymentInfoViews()
         updatePaymentInfoView()
 
         let isPortrait = orientation == .vertical
@@ -431,7 +431,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         }
     }
     
-    private func generatePaymentInfoViews(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+    private func generatePaymentInfoViews() -> UIStackView {
         dynamicInfoLabels.removeAll()
         let stackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
