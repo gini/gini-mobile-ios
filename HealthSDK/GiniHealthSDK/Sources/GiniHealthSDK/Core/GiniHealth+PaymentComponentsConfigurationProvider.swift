@@ -147,7 +147,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             infoBarBackgroundColor: GiniColor.success1.uiColor(),
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
-            paymentReviewClose: GiniHealthImage.paymentReviewClose.preferredUIImage(),
+            paymentReviewClose: GiniHealthImage.close.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
             rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniHealthConfiguration.shared.font(for: .captions1),

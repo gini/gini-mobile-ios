@@ -18,13 +18,11 @@ public enum GiniHealthImage: String {
     case logo = "gh.giniLogo"
     case info = "gh.infoCircle"
     case close = "gh.close"
-    case more = "gh.more"
     case plus = "gh.plus"
     case minus = "gh.minus"
     case appStore = "gh.appStoreIcon"
     case chevronDown = "gh.iconChevronDown"
     case selectionIndicator = "gh.selectionIndicator"
-    case paymentReviewClose = "gh.paymentReviewClose"
     case lock = "gh.iconInputLock"
 
     /**

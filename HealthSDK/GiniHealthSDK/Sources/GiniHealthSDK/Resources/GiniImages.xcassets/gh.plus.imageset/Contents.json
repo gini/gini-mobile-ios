@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_plus.pdf",
+      "filename" : "gh.plus_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.plus_dark.pdf",
       "idiom" : "universal"
     }
   ],
