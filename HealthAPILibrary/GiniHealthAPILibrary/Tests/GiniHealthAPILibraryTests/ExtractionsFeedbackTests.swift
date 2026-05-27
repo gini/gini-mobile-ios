@@ -2,7 +2,7 @@
 //  ExtractionsFeedbackTests.swift
 //  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/22/19.
+//  Copyright © 2019 Gini. All rights reserved.
 //
 
 import XCTest

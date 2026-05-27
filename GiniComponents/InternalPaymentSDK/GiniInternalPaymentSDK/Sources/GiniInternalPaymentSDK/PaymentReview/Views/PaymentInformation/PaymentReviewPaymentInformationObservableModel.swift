@@ -86,6 +86,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     }
     
     deinit {
+        amountErrorClearTask?.cancel()
         cancellables.removeAll()
     }
     
@@ -149,6 +150,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
                     paymentProviderId: selectedPaymentProvider.id)
     }
     
+    /**
+     - Note: The `toPrice` call enforces a maximum of 7 integer digits.
+       Amounts with more digits are rejected and `nil` is returned, leaving the field unchanged.
+     */
     func adjustAmountValue(text: String) -> (adjustedText: String, newValue: Decimal)? {
         guard let newPrice = text.toPrice(maxDigitsLength: 7),
               let newAmount = newPrice.stringWithoutSymbol else {
@@ -317,7 +322,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         }
     }
 
-    func applyAmountErrorClear() {
+    private func applyAmountErrorClear() {
         amountInputState.hasError = false
         amountInputState.errorMessage = nil
     }
@@ -339,22 +344,22 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func extractValuesFromExtractions() -> (String, String, String, String) {
+    private func extractValuesFromExtractions() -> (recipient: String, iban: String, amount: String, purpose: String) {
         let recipient = extractions.first(where: { $0.name == "payment_recipient" })?.value ?? ""
         let iban = extractions.first(where: { $0.name == "iban" })?.value.uppercased() ?? ""
         let purpose = extractions.first(where: { $0.name == "payment_purpose" })?.value ?? ""
         let amountString = extractions.first(where: { $0.name == "amount_to_pay" })?.value ?? ""
-        
-        return (recipient, iban, amountString, purpose)
+
+        return (recipient: recipient, iban: iban, amount: amountString, purpose: purpose)
     }
-    
-    private func extractValuesFromPaymentInfo(_ paymentInfo: PaymentInfo) -> (String, String, String, String) {
+
+    private func extractValuesFromPaymentInfo(_ paymentInfo: PaymentInfo) -> (recipient: String, iban: String, amount: String, purpose: String) {
         let recipient = paymentInfo.recipient
         let iban = paymentInfo.iban.uppercased()
         let purpose = paymentInfo.purpose
         let amountString = paymentInfo.amount
-        
-        return (recipient, iban, amountString, purpose)
+
+        return (recipient: recipient, iban: iban, amount: amountString, purpose: purpose)
     }
 
     private struct Constants {

@@ -1,7 +1,7 @@
 //
 //  PaymentReviewViewController.swift
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 
@@ -19,20 +19,23 @@ public enum DisplayMode: Int {
     case documentCollection
 }
 
-public class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
+public final class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
 
-    private let selectedPaymentProvider: PaymentProvider
-    private var isInfoBarHidden = true
     private let overlayPresenter = GiniOverlayWindowPresenter()
     // Stored so viewWillTransition can set isDismissingForRotation before dismissing the sheet.
     private let observableModel: PaymentReviewObservableModel
 
     public let model: PaymentReviewModel
 
+    /**
+     Creates a `PaymentReviewViewController` configured for the given model and payment provider.
+
+     - Parameters:
+       - viewModel: The `PaymentReviewModel` driving the payment review screen.
+       - selectedPaymentProvider: The payment provider pre-selected for this review session.
+     */
     public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
         self.model = viewModel
-        self.selectedPaymentProvider = selectedPaymentProvider
-        self.isInfoBarHidden = viewModel.configuration.isInfoBarHidden
 
         let observableModel = PaymentReviewObservableModel(model: model)
         self.observableModel = observableModel
@@ -64,6 +67,7 @@ public class PaymentReviewViewController: UIHostingController<PaymentReviewConte
                                           action: #selector(closeButtonTapped))
         
         closeButton.accessibilityLabel = model.strings.closeButtonAccessibilityLabel
+        closeButton.accessibilityHint =  model.strings.closeButtonAccessibilityHint
         navigationItem.rightBarButtonItem = closeButton
     }
     
@@ -131,8 +135,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
     
     func dismissPaymentReview() {
-        if navigationController != nil {
-            navigationController?.popViewController(animated: true)
+        if let navigationController {
+            navigationController.popViewController(animated: true)
         } else {
             dismissScreen()
         }

@@ -1,11 +1,12 @@
 //
 //  Font+Extensions.swift
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import SwiftUI
 
+/** SwiftUI `Font` extensions for bridging UIKit fonts into SwiftUI views. */
 public extension Font {
     
     /**

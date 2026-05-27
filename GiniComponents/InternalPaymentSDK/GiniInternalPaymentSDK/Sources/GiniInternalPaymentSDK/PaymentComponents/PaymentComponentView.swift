@@ -208,6 +208,11 @@ public final class PaymentComponentView: UIView {
         viewModel.tapOnPayInvoiceView()
     }
 
+    /**
+     If the user changes their text size while the app is running (via Control Center → Text Size),
+     UIKit won't automatically re-run layout logic.
+     This override catches that live change and re-applies the correct orientation.
+     */
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {

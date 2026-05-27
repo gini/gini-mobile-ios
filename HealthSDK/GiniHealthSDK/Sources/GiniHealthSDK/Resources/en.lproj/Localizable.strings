@@ -24,6 +24,7 @@
 
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Close";
+"gini.health.close.button.accessibility.hint" = "Tap to dismiss";
 "gini.health.bottomSheet.grabber.accessibility.label" = "Sheet grabber";
 "gini.health.bottomSheet.grabber.accessibility.hint" = "Double tap to dismiss";
 

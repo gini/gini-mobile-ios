@@ -1,7 +1,7 @@
 //
 //  GiniCarouselView.swift
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 

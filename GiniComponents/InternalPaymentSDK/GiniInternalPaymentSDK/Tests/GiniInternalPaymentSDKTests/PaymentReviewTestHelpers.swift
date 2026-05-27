@@ -172,6 +172,7 @@ extension PaymentReviewStrings {
                              createPaymentErrorMessage: "Payment error",
                              invoiceImageAccessibilityLabel: "Invoice",
                              closeButtonAccessibilityLabel: "Close",
+                             closeButtonAccessibilityHint: "Close",
                              sheetGrabberAccessibilityLabel: "Sheet",
                              sheetGrabberAccessibilityHint: "Drag")
     }

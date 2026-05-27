@@ -80,7 +80,7 @@ private func makeShareInvoiceBottomViewWithBranding() -> ShareInvoiceBottomView 
 /// `viewWillDisappear` teardown is under test.  Using an enum instead of raw strings
 /// means Swift exhaustiveness checking replaces the previous unreachable `default: throw`
 /// branch, and a typo in a case name is a compiler error rather than a silent test skip.
-enum BottomViewType: CaseIterable, CustomTestStringConvertible {
+private enum BottomViewType: CaseIterable, CustomTestStringConvertible {
     case installApp
     case shareInvoice
 
@@ -92,6 +92,18 @@ enum BottomViewType: CaseIterable, CustomTestStringConvertible {
             "ShareInvoiceBottomView"
         }
     }
+}
+
+// MARK: - Shared helpers
+
+/// Creates a minimal concrete `BottomSheetViewController` subclass with its view loaded,
+/// ready for accessibility assertions.
+@MainActor
+private func makeLoadedConcreteSheet() -> BottomSheetViewController {
+    final class ConcreteSheet: BottomSheetViewController {}
+    let vc = ConcreteSheet(configuration: .test)
+    vc.loadViewIfNeeded()
+    return vc
 }
 
 // MARK: - Tests
@@ -111,9 +123,7 @@ struct AccessibilityTests {
     /// full-screen opaque view first and find no readable content, falling silent.
     @Test("dimmedView is hidden from VoiceOver")
     func dimmedViewHiddenFromVoiceOver() throws {
-        final class ConcreteSheet: BottomSheetViewController {}
-        let vc = ConcreteSheet(configuration: .test)
-        vc.loadViewIfNeeded()
+        let vc = makeLoadedConcreteSheet()
 
         let overlay = try #require(
             vc.view.subviews.first,
@@ -133,9 +143,7 @@ struct AccessibilityTests {
     /// so the fade-out animation works correctly (was previously fading *to* maxAlpha).
     @Test("dimmedView starts transparent before presentation")
     func dimmedViewStartsTransparent() throws {
-        final class ConcreteSheet: BottomSheetViewController {}
-        let vc = ConcreteSheet(configuration: .test)
-        vc.loadViewIfNeeded()
+        let vc = makeLoadedConcreteSheet()
 
         let overlay = try #require(vc.view.subviews.first)
         #expect(
