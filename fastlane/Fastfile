@@ -274,8 +274,8 @@ platform :ios do
           contents = File.open(version_file).read
 
           if match = contents.match(/=.*?"(.+)"/)
-            components = version_file.split("/")
-            { :package_folder => components[2], :version => match.captures[0] }
+            package_name = File.basename(version_file).sub("Version.swift", "")
+            { :package_folder => package_name, :version => match.captures[0] }
           end
         }
         .compact
