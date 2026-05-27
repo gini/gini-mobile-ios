@@ -69,7 +69,7 @@ Text customization is done via overriding of string resources.
 For example you would like to customize pay invoice button label in the Payment Review screen:
 
 1. Find a string key for a text that you would like to customize.
-For the [To the banking app button label](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=16914-14742&t=frkU7wM8jb9IqqA4-4) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
+   For the [To the banking app button label](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=16914-14742&t=frkU7wM8jb9IqqA4-4) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
 2. Add the string key with a desired value to `Localizable.strings` in your app.
     2.1 For German informal tone, you must add a key with `.informal` suffix to `Localizable.strings` in your app. For example, `gini.health.paymentcomponent.to.banking.app.label.informal`.
 ### Supporting dark mode
