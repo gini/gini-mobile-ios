@@ -380,7 +380,7 @@ health.startPaymentFlow(documentId: nil,
 
 ### Optional (Recommended start payment entry button):
 
-We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=16914-16138&t=vrAVy8gvjhDLHRca-1)
+We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12906-23094&t=iGR0Abq0MskLlJJ1-4)
 For that please call next method:
 
 ```swift
