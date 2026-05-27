@@ -32,17 +32,13 @@ struct GiniBottomSheetModifier: ViewModifier {
             .accessibilityAction(.escape) {
                 accessibilityAction?()
             }
-        
-        if #available(iOS 16.4, *) {
-            let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
-            
-            base
-                .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
-                .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
-                .presentationContentInteraction(.scrolls)
-        } else {
-            base
-        }
+
+        let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
+
+        return base
+            .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
+            .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
+            .presentationContentInteraction(.scrolls)
     }
     
     private func detentsForOrientation() -> Set<PresentationDetent> {
