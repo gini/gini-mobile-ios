@@ -18,7 +18,7 @@ We provide a global color palette `GiniColors.xcassets` which you are free to ov
 For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
 The custom colors are then applied to all screens.
 
-Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10662&t=frkU7wM8jb9IqqA4-4).
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10662&t=frkU7wM8jb9IqqA4-4)).
 
 ### Images
 
@@ -30,7 +30,7 @@ If you want to override specific SDK images:
 ### Typography
 
 We provide global typography based on text appearance styles from UIFont.TextStyle.
-Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10470&t=frkU7wM8jb9IqqA4-4).
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10470&t=frkU7wM8jb9IqqA4-4)).
 
 In the example below you can see to override a font for `.body1`
 
@@ -111,7 +111,7 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-11429&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-11429&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
  
@@ -120,7 +120,7 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-12507&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-12507&embed-host=share" allowfullscreen></iframe>
 
 
 > **Note:** 
