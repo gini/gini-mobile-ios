@@ -180,6 +180,8 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                              comment: "accessibility label for invoice image"),
             closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accessibility.label",
                                                                             comment: "accessibility label for close button"),
+            closeButtonAccessibilityHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accessibility.hint",
+                                                                           comment: "accessibility hint for close button"),
             sheetGrabberAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.label",
                                                                              comment: "Sheet grabber accessibility label"),
             sheetGrabberAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.hint",

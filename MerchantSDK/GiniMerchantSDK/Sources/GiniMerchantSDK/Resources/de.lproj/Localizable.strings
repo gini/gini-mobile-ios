@@ -66,4 +66,5 @@
 "gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
 "gini.merchant.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
 "gini.merchant.reviewscreen.close.button.accessibility.label" = "Schließen";
+"gini.merchant.reviewscreen.close.button.accessibility.hint" = "Tippen zum Schließen";
 "gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
