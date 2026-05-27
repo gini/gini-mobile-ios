@@ -322,7 +322,7 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         }
     }
 
-    private func applyAmountErrorClear() {
+    func applyAmountErrorClear() {
         amountInputState.hasError = false
         amountInputState.errorMessage = nil
     }

@@ -80,7 +80,7 @@ private func makeShareInvoiceBottomViewWithBranding() -> ShareInvoiceBottomView 
 /// `viewWillDisappear` teardown is under test.  Using an enum instead of raw strings
 /// means Swift exhaustiveness checking replaces the previous unreachable `default: throw`
 /// branch, and a typo in a case name is a compiler error rather than a silent test skip.
-private enum BottomViewType: CaseIterable, CustomTestStringConvertible {
+enum BottomViewType: CaseIterable, CustomTestStringConvertible {
     case installApp
     case shareInvoice
 
