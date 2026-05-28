@@ -12,8 +12,9 @@ jobs:
     uses: ./.github/workflows/shared-config.yml
 
   check:
-    needs: get-config
-    uses: gini/gini-mobile-ios/.github/workflows/internal-payment-sdk.check.yml@main
+    uses: ./.github/workflows/internal-payment-sdk.check.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
     needs: check
@@ -38,9 +39,9 @@ jobs:
         lane: 'publish_swift_package'
         options: >
           { 
-            "project_folder": "GiniComponents",
+            "project_folder": "GiniComponents/InternalPaymentSDK",
             "package_folder": "GiniInternalPaymentSDK",
-            "version_file_path": "GiniComponents/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift",
+            "version_file_path": "GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/internal-payment-sdk-ios.git",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
