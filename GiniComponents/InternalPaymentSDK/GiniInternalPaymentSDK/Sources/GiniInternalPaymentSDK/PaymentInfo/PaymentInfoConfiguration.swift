@@ -6,112 +6,180 @@
 
 import UIKit
 
-public struct PaymentInfoConfiguration {
+public struct PaymentInfoAnswerCellConfiguration {
+    let font: UIFont
+    let textColor: UIColor
+    let linkColor: UIColor
+
+    public init(font: UIFont,
+                textColor: UIColor,
+                linkColor: UIColor) {
+        self.font = font
+        self.textColor = textColor
+        self.linkColor = linkColor
+    }
+}
+
+public struct PaymentInfoQuestionHeaderConfiguration {
+    let font: UIFont
+    let titleColor: UIColor
+    let minusIcon: UIImage
+    let plusIcon: UIImage
+    let iconTintColor: UIColor
+
+    public init(font: UIFont,
+                titleColor: UIColor,
+                minusIcon: UIImage,
+                plusIcon: UIImage,
+                iconTintColor: UIColor) {
+        self.font = font
+        self.titleColor = titleColor
+        self.minusIcon = minusIcon
+        self.plusIcon = plusIcon
+        self.iconTintColor = iconTintColor
+    }
+}
+
+public struct PaymentInfoQuestionsTitleConfiguration {
+    let font: UIFont
+    let color: UIColor
+
+    public init(font: UIFont,
+                color: UIColor) {
+        self.font = font
+        self.color = color
+    }
+}
+
+public struct PaymentInfoPayBillsConfiguration {
+    let titleFont: UIFont
+    let titleColor: UIColor
+    let descriptionFont: UIFont
+
+    public init(titleFont: UIFont,
+                titleColor: UIColor,
+                descriptionFont: UIFont) {
+        self.titleFont = titleFont
+        self.titleColor = titleColor
+        self.descriptionFont = descriptionFont
+    }
+}
+
+public struct PaymentInfoLinkConfiguration {
     let giniFont: UIFont
-    let answersFont: UIFont
-    let answerCellTextColor: UIColor
-    let answerCellLinkColor: UIColor
-    let questionsTitleFont: UIFont
-    let questionsTitleColor: UIColor
-    let questionHeaderFont: UIFont
-    let questionHeaderTitleColor: UIColor
-    let questionHeaderMinusIcon: UIImage
-    let questionHeaderPlusIcon: UIImage
-    let bankCellBorderColor: UIColor
-    let payBillsTitleFont: UIFont
-    let payBillsTitleColor: UIColor
-    let payBillsDescriptionFont: UIFont
-    let linksFont: UIFont
-    let linksColor: UIColor
-    let separatorColor: UIColor
-    let backgroundColor: UIColor
-    let closeIcon: UIImage?
-    let closeIconTintColor: UIColor?
-    let questionHeaderIconTintColor: UIColor
+    let font: UIFont
+    let color: UIColor
 
     public init(giniFont: UIFont,
-                answersFont: UIFont,
-                answerCellTextColor: UIColor,
-                answerCellLinkColor: UIColor,
-                questionsTitleFont: UIFont,
-                questionsTitleColor: UIColor,
-                questionHeaderFont: UIFont,
-                questionHeaderTitleColor: UIColor,
-                questionHeaderMinusIcon: UIImage,
-                questionHeaderPlusIcon: UIImage,
-                bankCellBorderColor: UIColor,
-                payBillsTitleFont: UIFont,
-                payBillsTitleColor: UIColor,
-                payBillsDescriptionFont: UIFont,
-                linksFont: UIFont,
-                linksColor: UIColor,
-                separatorColor: UIColor,
-                backgroundColor: UIColor,
-                closeIcon: UIImage? = nil,
-                closeIconTintColor: UIColor? = nil,
-                questionHeaderIconTintColor: UIColor) {
+                font: UIFont,
+                color: UIColor) {
         self.giniFont = giniFont
-        self.answersFont = answersFont
-        self.answerCellTextColor = answerCellTextColor
-        self.answerCellLinkColor = answerCellLinkColor
-        self.questionsTitleFont = questionsTitleFont
-        self.questionsTitleColor = questionsTitleColor
-        self.questionHeaderFont = questionHeaderFont
-        self.questionHeaderTitleColor = questionHeaderTitleColor
-        self.questionHeaderMinusIcon = questionHeaderMinusIcon
-        self.questionHeaderPlusIcon = questionHeaderPlusIcon
+        self.font = font
+        self.color = color
+    }
+}
+
+public struct PaymentInfoLayoutConfiguration {
+    let bankCellBorderColor: UIColor
+    let separatorColor: UIColor
+    let backgroundColor: UIColor
+
+    public init(bankCellBorderColor: UIColor,
+                separatorColor: UIColor,
+                backgroundColor: UIColor) {
         self.bankCellBorderColor = bankCellBorderColor
-        self.payBillsTitleFont = payBillsTitleFont
-        self.payBillsTitleColor = payBillsTitleColor
-        self.payBillsDescriptionFont = payBillsDescriptionFont
-        self.linksFont = linksFont
-        self.linksColor = linksColor
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
-        self.closeIcon = closeIcon
-        self.closeIconTintColor = closeIconTintColor
-        self.questionHeaderIconTintColor = questionHeaderIconTintColor
+    }
+}
+
+public struct PaymentInfoConfiguration {
+    let answerCell: PaymentInfoAnswerCellConfiguration
+    let questionHeader: PaymentInfoQuestionHeaderConfiguration
+    let questionsTitle: PaymentInfoQuestionsTitleConfiguration
+    let payBills: PaymentInfoPayBillsConfiguration
+    let links: PaymentInfoLinkConfiguration
+    let layout: PaymentInfoLayoutConfiguration
+
+    public init(answerCell: PaymentInfoAnswerCellConfiguration,
+                questionHeader: PaymentInfoQuestionHeaderConfiguration,
+                questionsTitle: PaymentInfoQuestionsTitleConfiguration,
+                payBills: PaymentInfoPayBillsConfiguration,
+                links: PaymentInfoLinkConfiguration,
+                layout: PaymentInfoLayoutConfiguration) {
+        self.answerCell = answerCell
+        self.questionHeader = questionHeader
+        self.questionsTitle = questionsTitle
+        self.payBills = payBills
+        self.links = links
+        self.layout = layout
+    }
+}
+
+public struct PaymentInfoGiniLinkStrings {
+    let websiteText: String
+    let urlText: String
+
+    public init(websiteText: String,
+                urlText: String) {
+        self.websiteText = websiteText
+        self.urlText = urlText
+    }
+}
+
+public struct PaymentInfoPrivacyPolicyStrings {
+    let text: String
+    let urlText: String
+
+    public init(text: String,
+                urlText: String) {
+        self.text = text
+        self.urlText = urlText
+    }
+}
+
+public struct PaymentInfoFAQStrings {
+    let titleText: String
+    let questions: [String]
+    let answers: [String]
+    let accessibilityExpandedText: String
+    let accessibilityCollapsedText: String
+
+    public init(titleText: String,
+                questions: [String],
+                answers: [String],
+                accessibilityExpandedText: String,
+                accessibilityCollapsedText: String) {
+        self.titleText = titleText
+        self.questions = questions
+        self.answers = answers
+        self.accessibilityExpandedText = accessibilityExpandedText
+        self.accessibilityCollapsedText = accessibilityCollapsedText
     }
 }
 
 public struct PaymentInfoStrings {
-    let accessibilityCloseText: String
-    let giniWebsiteText: String
-    let giniURLText: String
+    let giniLink: PaymentInfoGiniLinkStrings
     let supportedBanksText: String
-    let questionsTitleText: String
-    let answerPrivacyPolicyText: String
-    let privacyPolicyURLText: String
     let titleText: String
     let payBillsTitleText: String
     let payBillsDescriptionText: String
+    let privacyPolicy: PaymentInfoPrivacyPolicyStrings
+    let faq: PaymentInfoFAQStrings
 
-    let answers: [String]
-    let questions: [String]
-
-    public init(accessibilityCloseText: String,
-                giniWebsiteText: String,
-                giniURLText: String,
+    public init(giniLink: PaymentInfoGiniLinkStrings,
                 supportedBanksText: String,
-                questionsTitleText: String,
-                answerPrivacyPolicyText: String,
-                privacyPolicyURLText: String,
                 titleText: String,
                 payBillsTitleText: String,
                 payBillsDescriptionText: String,
-                answers: [String],
-                questions: [String]) {
-        self.accessibilityCloseText = accessibilityCloseText
-        self.answers = answers
-        self.questions = questions
-        self.giniURLText = giniURLText
-        self.giniWebsiteText = giniWebsiteText
+                privacyPolicy: PaymentInfoPrivacyPolicyStrings,
+                faq: PaymentInfoFAQStrings) {
+        self.giniLink = giniLink
         self.supportedBanksText = supportedBanksText
         self.titleText = titleText
         self.payBillsTitleText = payBillsTitleText
         self.payBillsDescriptionText = payBillsDescriptionText
-        self.answerPrivacyPolicyText = answerPrivacyPolicyText
-        self.privacyPolicyURLText = privacyPolicyURLText
-        self.questionsTitleText = questionsTitleText
+        self.privacyPolicy = privacyPolicy
+        self.faq = faq
     }
 }

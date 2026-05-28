@@ -10,39 +10,40 @@ import UIKit
 import GiniHealthAPILibrary
 import GiniHealthSDK
 
-class UploadDocumentsTests: XCTestCase {
-    lazy var giniHelper = GiniSetupHelper()
+class UploadDocumentsTests: GiniHealthSDKIntegrationTestsBase {
 
-    override func setUp() {
-        giniHelper.setup()
+    func testUploadLargeImageToGiniHealthAPI() throws {
+        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
+
+        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else {
+            XCTFail("Failed to load test fixture: invoice-12MB.png is missing from test bundle")
+            return
+        }
+
+        uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
+
+        wait(for: [expect], timeout: extendedTimeout)
     }
 
-//    func testUploadLargeImageToGiniHealthAPI() {
-//        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
-//
-//        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else { return }
-//
-//        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
-//
-//        wait(for: [expect], timeout: 60)
-//    }
-
-    func testFailUploadLargePDFToGiniHealthAPI() {
+    func testFailUploadLargePDFToGiniHealthAPI() throws {
         let expect = expectation(description: "Upload of pdf above 10MB to HealthAPILibrary should fail. Local compression won't be done for this kind of file.")
 
-        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else { return }
+        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else {
+            XCTFail("Failed to load test fixture: invoice-13MB.pdf is missing from test bundle")
+            return
+        }
 
-        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
+        uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: networkTimeout)
     }
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {
-        giniHelper.giniHealthAPIDocumentService.createDocument(fileName: nil, docType: .invoice, type: .partial(data), metadata: nil) { result in
+        giniHealth.documentService.createDocument(fileName: nil, docType: .invoice, type: .partial(data), metadata: nil) { result in
             switch result {
             case .success(let createdDocument):
-                self.giniHelper.giniHealthAPIDocumentService?.extractions(for: createdDocument,
-                                                                              cancellationToken: CancellationToken()) { result in
+                self.giniHealth.documentService.extractions(for: createdDocument,
+                                                            cancellationToken: CancellationToken()) { result in
                     switch result {
                     case let .success(extractionResult):
                         XCTAssertNotNil(extractionResult)
@@ -60,7 +61,7 @@ class UploadDocumentsTests: XCTestCase {
                             XCTFail()
                             return
                         }
-                            XCTAssertNotNil(recipient.value)
+                        XCTAssertNotNil(recipient.value)
                         expect.fulfill()
                     case let .failure(error):
                         if data.isImage() {

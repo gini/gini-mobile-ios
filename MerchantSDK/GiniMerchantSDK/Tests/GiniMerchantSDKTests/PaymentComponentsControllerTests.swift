@@ -37,7 +37,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testLoadPaymentProviders_Success() {
+    func testLoadPaymentProvidersSuccess() {
         // When
         mockPaymentComponentsController.loadPaymentProviders()
 
@@ -46,7 +46,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
     }
     
-    func testCheckIfDocumentIsPayable_Success() {
+    func testCheckIfDocumentIsPayableSuccess() {
         let expectedResult: Result<Bool, GiniMerchantError> = .success(true)
         // When
         var receivedResult: Result<Bool, GiniMerchantError>?
@@ -58,7 +58,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(receivedResult, expectedResult)
     }
     
-    func testCheckIfDocumentIsPayable_NotPayable() {
+    func testCheckIfDocumentIsPayableNotPayable() {
         let expectedResult: Result<Bool, GiniMerchantError> = .success(false)
         // When
         var receivedResult: Result<Bool, GiniMerchantError>?
@@ -70,7 +70,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(receivedResult, expectedResult)
     }
     
-    func testCheckIfDocumentIsPayable_Failure() {
+    func testCheckIfDocumentIsPayableFailure() {
         let expectedResult: Result<Bool, GiniMerchantError> = .failure(.apiError(GiniError.decorator(.noResponse)))
         // When
         var receivedResult: Result<Bool, GiniMerchantError>?
@@ -82,7 +82,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(receivedResult, expectedResult)
     }
     
-    func testPaymentView_ReturnsView() {
+    func testPaymentViewReturnsView() {
         // Given
         let documentId = "123456"
         let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil,
@@ -112,7 +112,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(view.viewModel.documentId, expectedView.viewModel.documentId)
     }
     
-    func testBankSelectionBottomSheet_ReturnsViewController() {
+    func testBankSelectionBottomSheetReturnsViewController() {
         // When
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
 
@@ -125,7 +125,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertNotNil(bottomSheet.viewModel)
     }
     
-    func testLoadPaymentReviewScreenFor_Success() {
+    func testLoadPaymentReviewScreenForSuccess() {
         // Given
         let documentId = MockSessionManager.payableDocumentID
 
@@ -142,7 +142,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertNotNil(receivedViewController)
     }
     
-    func testLoadPaymentReviewScreenFor_Failure() {
+    func testLoadPaymentReviewScreenForFailure() {
         // Given
         let documentId = MockSessionManager.missingDocumentID
 
@@ -160,7 +160,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(receivedError, .apiError(GiniError.decorator(.noResponse)))
     }
     
-    func testPaymentInfoViewController_ReturnsCorrectViewController() {
+    func testPaymentInfoViewControllerReturnsCorrectViewController() {
         // When
         let viewController = mockPaymentComponentsController.paymentInfoViewController()
 

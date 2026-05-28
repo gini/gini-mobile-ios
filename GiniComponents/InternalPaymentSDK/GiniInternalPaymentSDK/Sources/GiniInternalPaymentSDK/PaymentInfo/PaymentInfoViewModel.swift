@@ -16,7 +16,16 @@ struct FAQSection {
 }
 
 public final class PaymentInfoViewModel {
-    let configuration: PaymentInfoConfiguration
+    /// Current configuration. Replaced on each Dynamic Type change if `configurationRefresher` is set.
+    var configuration: PaymentInfoConfiguration
+    /**
+     Called in `refreshAttributedContent()` to obtain a fresh configuration with up-to-date
+     scaled fonts whenever the Dynamic Type size changes. Returns nil when the owner is gone
+     (weak-self capture), in which case the last known configuration is kept unchanged.
+     UIFont metrics are computed once at init; this closure lets the owner re-supply a freshly
+     scaled configuration after a Dynamic Type change.
+     */
+    private let configurationRefresher: (() -> PaymentInfoConfiguration?)?
     let strings: PaymentInfoStrings
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders
     let poweredByGiniViewModel: PoweredByGiniViewModel
@@ -41,61 +50,83 @@ public final class PaymentInfoViewModel {
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                configurationRefresher: (() -> PaymentInfoConfiguration?)? = nil) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
+        self.configurationRefresher = configurationRefresher
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.clientConfiguration = clientConfiguration
 
-        payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
+        payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
 
         configurePayBillsGiniLink()
         setupQuestions()
     }
     
     private func setupQuestions() {
-        for index in 0 ... strings.questions.count-1 {
-            let answerAttributedString = answerWithAttributes(answer: strings.answers[index])
-            let questionSection = FAQSection(title: strings.questions[index],
-                                             description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
-                                             isExtended: false)
-            questions.append(questionSection)
+        questions = zip(strings.faq.questions, strings.faq.answers).map { question, answer in
+            let answerAttributedString = answerWithAttributes(answer: answer, font: configuration.answerCell.font)
+            return FAQSection(title: question,
+                              description: textWithLinks(linkFont: configuration.links.font,
+                                                         attributedString: answerAttributedString),
+                              isExtended: false)
         }
     }
-    
+
     private func configurePayBillsGiniLink() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
         payBillsDescriptionAttributedText = NSMutableAttributedString(string: strings.payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
-                                                                                   .font: configuration.payBillsDescriptionFont,
-                                                                                   .foregroundColor: configuration.payBillsTitleColor])
-        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.giniFont,
+                                                                                   .font: configuration.payBills.descriptionFont,
+                                                                                   .foregroundColor: configuration.payBills.titleColor])
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.links.giniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
-    
-    private func answerWithAttributes(answer: String) -> NSMutableAttributedString {
+
+    private func answerWithAttributes(answer: String, font: UIFont) -> NSMutableAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.answersLineHeight
         paragraphStyle.paragraphSpacing = Constants.answersParagraphSpacing
         let answerAttributedText = NSMutableAttributedString(string: answer,
-                                                             attributes: [.font: configuration.answersFont, .paragraphStyle: paragraphStyle])
+                                                             attributes: [.font: font, .paragraphStyle: paragraphStyle])
         return answerAttributedText
+    }
+
+    /**
+     Rebuilds all attributed strings when the Dynamic Type size changes.
+
+     Recomputes paragraph styles, link ranges, and font references so that
+     `payBillsDescriptionAttributedText` and all FAQ answer descriptions stay consistent
+     with the current content size category.
+     */
+    func refreshAttributedContent() {
+        if let fresh = configurationRefresher?() {
+            configuration = fresh
+        }
+        payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
+        configurePayBillsGiniLink()
+        let openExtendedSections = questions.enumerated().compactMap { $0.element.isExtended ? $0.offset : nil }
+        setupQuestions()
+        for index in openExtendedSections where index < questions.count {
+            questions[index].isExtended = true
+        }
     }
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
         let attributedString = attributedString
-        let giniRange = (attributedString.string as NSString).range(of: strings.giniWebsiteText)
-        attributedString.addLinkToRange(link: strings.giniURLText,
-                                        color: configuration.linksColor,
+        let giniRange = (attributedString.string as NSString).range(of: strings.giniLink.websiteText)
+        attributedString.addLinkToRange(link: strings.giniLink.urlText,
+                                        color: configuration.links.color,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
-        let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.answerPrivacyPolicyText)
-        attributedString.addLinkToRange(link: strings.privacyPolicyURLText,
-                                        color: configuration.linksColor,
+        let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.privacyPolicy.text)
+        attributedString.addLinkToRange(link: strings.privacyPolicy.urlText,
+                                        color: configuration.links.color,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
@@ -104,21 +135,24 @@ public final class PaymentInfoViewModel {
 
     func infoAnswerCellModel(at index: Int) -> PaymentInfoAnswerTableViewModel {
         PaymentInfoAnswerTableViewModel(answerAttributedText: questions[index].description, 
-                                        answerTextColor: configuration.answerCellTextColor,
-                                        answerLinkColor: configuration.answerCellLinkColor)
+                                        answerTextColor: configuration.answerCell.textColor,
+                                        answerLinkColor: configuration.answerCell.linkColor)
     }
 
     func infoQuestionHeaderViewModel(at index: Int) -> PaymentInfoQuestionHeaderViewModel {
-        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
-                                           titleFont: configuration.questionHeaderFont,
-                                           titleColor: configuration.questionHeaderTitleColor,
-                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
-                                           iconTintColor: configuration.questionHeaderIconTintColor)
+        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title,
+                                           titleFont: configuration.questionHeader.font,
+                                           titleColor: configuration.questionHeader.titleColor,
+                                           extendedIcon: questions[index].isExtended ? configuration.questionHeader.minusIcon : configuration.questionHeader.plusIcon,
+                                           iconTintColor: configuration.questionHeader.iconTintColor,
+                                           isExpanded: questions[index].isExtended,
+                                           toggleAccessibilityStrings: .init(expanded: strings.faq.accessibilityExpandedText,
+                                                                             collapsed: strings.faq.accessibilityCollapsedText))
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
         PaymentInfoBankCollectionViewCellModel(bankImageIconData: paymentProviders[index].iconData,
-                                               borderColor: configuration.bankCellBorderColor)
+                                               borderColor: configuration.layout.bankCellBorderColor)
     }
 }
 

@@ -16,22 +16,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
-    
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(didTapOnCloseButton), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
-        return button
-    }()
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
 
     private lazy var scrollView: EmptyScrollView = {
         let scrollView = EmptyScrollView()
@@ -49,6 +34,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.text = viewModel.titleText
         label.textColor = viewModel.configuration.titleAccentColor
         label.font = viewModel.configuration.titleFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .center
@@ -75,6 +61,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         label.text = viewModel.descriptionLabelText
         label.textColor = viewModel.configuration.descriptionAccentColor
         label.font = viewModel.configuration.descriptionFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .left
@@ -147,6 +134,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         setupAccessibility()
     }
     
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
+        view.accessibilityViewIsModal = false
+    }
+    
     public init(viewModel: ShareInvoiceBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -156,15 +151,15 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
-    /// VoiceOver has already finished processing the UI changes.
+
     private func notifyLayoutChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            guard let self = self else { return }
-            self.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .layoutChanged, argument: closeButton)
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: work)
     }
     
     private func setupView() {
@@ -173,21 +168,31 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         setupLayout()
         setButtonsState()
         setupViewVisibility()
+        setupAccessibility()
     }
     
     private func setupAccessibility() {
-        view.accessibilityElements = [
-            closeButton,
+        view.accessibilityViewIsModal = true
+        // Elements are assigned to scrollView (not view) so that UIKit recognises the
+        // UIScrollView as the accessibility container. This causes VoiceOver to automatically
+        // call scrollRectToVisible when navigating to an off-screen element in landscape,
+        // where the sheet height is reduced and content overflows below the visible area.
+        // Setting view.accessibilityElements = [scrollView] keeps the modal trap intact
+        // while routing all traversal through the scroll view.
+        scrollView.accessibilityElements = [
             titleLabel,
-            qrImageView,
+            qrImageView
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : []) + [
             continueButton,
             descriptionLabel
         ] + dynamicInfoLabels
+        view.accessibilityElements = [scrollView]
     }
 
     private func setupViewHierarchy() {
-        // Add contentStackView to the UIScrollView
-        scrollView.addSubview(contentStackView)
+        // Add contentStackView through EmptyScrollView's content view so that the
+        // internal contentView drives contentLayoutGuide.height and vertical scrolling works.
+        scrollView.addContentSubview(contentStackView)
         bindToSizeUpdates()
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -199,9 +204,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         
         qrCodeView.addSubview(qrImageView)
 
-        brandStackView.addArrangedSubview(UIView())
         brandStackView.addArrangedSubview(poweredByGiniView)
-        brandStackView.addArrangedSubview(UIView())
         brandView.addSubview(brandStackView)
 
         continueView.addSubview(continueButton)
@@ -211,7 +214,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
         topStackView.addArrangedSubview(qrCodeView)
         topStackView.addArrangedSubview(brandView)
-        topStackView.addArrangedSubview(EmptyView())
 
         bottomStackView.addArrangedSubview(continueView)
         bottomStackView.addArrangedSubview(descriptionView)
@@ -236,21 +238,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
-    
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                  constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
-    }
 
     fileprivate func setupSplitStackViewHierarchy() {
         splitStacKView.removeAllArrangedSubviews()
@@ -258,7 +245,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         
         splitStacKView.addArrangedSubview(topStackView)
         splitStacKView.addArrangedSubview(bottomStackView)
-        addCloseButton()
         contentStackView.addArrangedSubview(titleView)
         contentStackView.addArrangedSubview(splitStacKView)
     }
@@ -275,13 +261,22 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         updateLayoutForCurrentOrientation()
     }
     
-    public func updateViews() {
-        updateLayoutForCurrentOrientation()
+    public func updateViews(for targetSize: CGSize? = nil) {
+        updateLayoutForCurrentOrientation(for: targetSize)
         view.layoutIfNeeded()
     }
 
-    private func updateLayoutForCurrentOrientation() {
-        if UIDevice.isPortrait() {
+    private func updateLayoutForCurrentOrientation(for targetSize: CGSize? = nil) {
+        let usePortrait: Bool
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            usePortrait = true
+        } else if let size = targetSize {
+            usePortrait = size.width <= size.height
+        } else {
+            usePortrait = UIDevice.isPortrait()
+        }
+
+        if usePortrait {
             setupPortraitConstraints()
         } else {
             setupLandscapeConstraints()
@@ -296,22 +291,21 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         // Update the split stack view and payment info stack view
         setupSplitStackViewHierarchy()
         splitStacKView.orientation(orientation).spacing(orientation == .vertical ? 0 : Constants.viewPaddingConstraint)
-        
-        paymentInfoStackView = generatePaymentInfoViews(orientation: orientation)
+        splitStacKView.alignment = orientation == .horizontal ? .top : .fill
+
+        paymentInfoStackView = generatePaymentInfoViews()
         updatePaymentInfoView()
-        
+
         let isPortrait = orientation == .vertical
-        
+
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
-        let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
-        
-        let constraints = [
+        let sharedConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                      constant: contentPadding),
+                                                      constant: Constants.contentPadding),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
-                                                       constant: -contentPadding),
+                                                       constant: -Constants.contentPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                                    constant: -2 * contentPadding),
+                                                    constant: -2 * Constants.contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
             paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor,
@@ -325,10 +319,12 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         ]
 
         if isPortrait {
-            portraitConstraints = constraints
+            portraitConstraints = sharedConstraints
             NSLayoutConstraint.activate(portraitConstraints)
         } else {
-            landscapeConstraints = constraints
+            landscapeConstraints = sharedConstraints + [
+                topStackView.widthAnchor.constraint(equalToConstant: qrCodeSize)
+            ]
             NSLayoutConstraint.activate(landscapeConstraints)
         }
     }
@@ -366,8 +362,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.topBottomPaddingConstraint),
-            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint),
-            descriptionLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: -Constants.bottomDescriptionConstraintPortrait)
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint)
         ])
     }
     
@@ -392,7 +387,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         NSLayoutConstraint.activate([
             continueButton.leadingAnchor.constraint(equalTo: continueView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             continueButton.trailingAnchor.constraint(equalTo: continueView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            continueButton.heightAnchor.constraint(equalToConstant: Constants.continueButtonViewHeight),
+            continueButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.continueButtonViewHeight),
             continueButton.topAnchor.constraint(equalTo: continueView.topAnchor, constant: Constants.topBottomPaddingConstraint),
             continueButton.bottomAnchor.constraint(equalTo: continueView.bottomAnchor)
         ])
@@ -400,13 +395,10 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor),
-            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor),
+            brandStackView.centerXAnchor.constraint(equalTo: qrImageView.centerXAnchor),
             brandStackView.topAnchor.constraint(equalTo: brandView.topAnchor),
             brandStackView.bottomAnchor.constraint(equalTo: brandView.bottomAnchor),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight),
-            poweredByGiniView.centerXAnchor.constraint(equalTo: qrImageView.centerXAnchor),
-            brandView.widthAnchor.constraint(equalTo: qrImageView.widthAnchor)
+            poweredByGiniView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight)
         ])
     }
     
@@ -429,12 +421,6 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
     
-    @objc
-    private func didTapOnCloseButton() {
-        dismiss(animated: true)
-    }
-        
-    
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
         guard let urlString = urlString else {
             print("AppStore link unavailable for this payment provider")
@@ -445,17 +431,19 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         }
     }
     
-    private func generatePaymentInfoViews(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+    private func generatePaymentInfoViews() -> UIStackView {
+        dynamicInfoLabels.removeAll()
         let stackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
-            generateRecipientIbanStackView(orientation: orientation),
+            generateRecipientIbanStackView(),
             generateAmountPurposeStackView()
         ].forEach { stackView.addArrangedSubview($0) }
         return stackView
     }
     
-    private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: orientation)
+    private func generateRecipientIbanStackView() -> UIStackView {
+        // Always stack vertically: the IBAN is too long to share a row without breaking mid-number.
+        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         
         let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
         let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)
@@ -468,8 +456,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
         let placeholderLabel = createLabel(text: title, isTitle: true)
         let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
-        valueLabel.adjustsFontSizeToFitWidth = true
-        
+
+        placeholderLabel.isAccessibilityElement = false
+        if let subtitle = subtitle, !subtitle.isEmpty {
+            valueLabel.accessibilityLabel = "\(title), \(subtitle)"
+        } else {
+            valueLabel.accessibilityLabel = title
+        }
+
         stackView.addArrangedSubview(placeholderLabel)
         stackView.addArrangedSubview(valueLabel)
         
@@ -480,7 +474,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
 
     private func generateAmountPurposeStackView() -> UIStackView {
-        let amountPurposeStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
+        let isAccessibility = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        let axis: NSLayoutConstraint.Axis = isAccessibility ? .vertical : .horizontal
+        let amountPurposeStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: axis)
         var stackViews: [UIStackView] = []
         
         if let amountToPayString = viewModel.paymentInfo?.amount, let amountToPay = Price(extractionString: amountToPayString) {
@@ -497,7 +493,9 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         let label = UILabel()
         label.text = text
         label.textAlignment = .left
-        label.font = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
+        let baseFont = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
+        label.font = baseFont
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
         label.numberOfLines = 0
         return label
@@ -517,15 +515,22 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
             .sink { [weak self] size in
                 self?.updateBottomSheetHeight(size.height)
             }.store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.updateViews() }
+            .store(in: &cancellables)
     }
 
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        // Perform layout updates with animation
-        coordinator.animate(alongsideTransition: { context in
-            self.updateViews()
+        // Perform layout updates with animation, passing the known target size so
+        // that constraint selection uses the incoming dimensions rather than the
+        // device orientation, which can lag behind during the transition.
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateViews(for: size)
         }, completion: { [weak self] _ in
             self?.notifyLayoutChanged()
         })
@@ -551,6 +556,6 @@ extension ShareInvoiceBottomView {
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
         static let landscapePaddingRatio = 0.15
-        static let closeIconSize = 24.0
+        static let contentPadding: CGFloat = 0
     }
 }

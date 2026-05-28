@@ -16,7 +16,6 @@ import GiniHealthAPILibrary
 public protocol BanksSelectionProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider)
     func didTapOnMoreInformation()
-    func didTapOnClose()
     func didTapOnContinueOnShareBottomSheet()
     func didTapForwardOnInstallBottomSheet()
     func didTapOnPayButton()
@@ -64,20 +63,22 @@ public final class BanksBottomViewModel {
                 paymentInfoConfiguration: PaymentInfoConfiguration,
                 paymentInfoStrings: PaymentInfoStrings,
                 urlOpener: URLOpener = URLOpener(UIApplication.shared),
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                paymentInfoConfigurationProvider: (() -> PaymentInfoConfiguration?)? = nil) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
         self.configuration = configuration
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
-        
+
         self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.uniqued(by: { $0.id }),
                                                          configuration: paymentInfoConfiguration,
                                                          strings: paymentInfoStrings,
                                                          poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                          poweredByGiniStrings: poweredByGiniStrings,
-                                                         clientConfiguration: clientConfiguration)
+                                                         clientConfiguration: clientConfiguration,
+                                                         configurationRefresher: paymentInfoConfigurationProvider)
         
         self.clientConfiguration = clientConfiguration
 
@@ -132,10 +133,6 @@ public final class BanksBottomViewModel {
             colors: bankSelectionTableViewCellModelColors,
             selectionIndicatorImage: configuration.bankCellSelectionIndicatorImage
         )
-    }
-    
-    func didTapOnClose() {
-        viewDelegate?.didTapOnClose()
     }
 
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {

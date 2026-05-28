@@ -32,13 +32,24 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     
     public var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration {
         PaymentReviewContainerConfiguration(
-            errorLabelTextColor: GiniColor.feedback1.uiColor(),
-            errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniMerchantImage.lock.preferredUIImage(),
-            lockedFields: true,
-            showBanksPicker: false,
-            chevronDownIcon: nil,
-            chevronDownIconColor: nil
+            errorLabel: .init(
+                textColor: GiniColor.feedback1.uiColor(),
+                font: GiniMerchantConfiguration.shared.font(for: .captions2)
+            ),
+            banksPicker: .init(
+                lockIcon: GiniMerchantImage.lock.preferredUIImage(),
+                lockedFields: true,
+                showBanksPicker: false,
+                chevronDownIcon: nil,
+                chevronDownIconColor: nil
+            ),
+            infoBar: .init(
+                labelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
+                labelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+                backgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
+                containerBackgroundColor: GiniColor.standard7.uiColor()
+            ),
+            popupAnimationDuration: 0
         )
     }
     
@@ -51,9 +62,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             moreInformationAccentColor: GiniColor.standard3.uiColor(),
             moreInformationIcon: GiniMerchantImage.info.preferredUIImage(),
             appStoreIcon: GiniMerchantImage.appStore.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor(),
-            closeIcon: GiniMerchantImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor()
+            bankIconBorderColor: GiniColor.standard5.uiColor()
         )
     }
 
@@ -77,32 +86,30 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .captions2),
             subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2),
-            closeIcon: GiniMerchantImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
-    
+
     public var paymentInfoConfiguration: PaymentInfoConfiguration {
         PaymentInfoConfiguration(
-            giniFont: GiniMerchantConfiguration.shared.font(for: .button),
-            answersFont: GiniMerchantConfiguration.shared.font(for: .body2),
-            answerCellTextColor: GiniColor.standard1.uiColor(),
-            answerCellLinkColor: GiniColor.accent1.uiColor(),
-            questionsTitleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
-            questionsTitleColor: GiniColor.standard1.uiColor(),
-            questionHeaderFont: GiniMerchantConfiguration.shared.font(for: .body1),
-            questionHeaderTitleColor: GiniColor.standard1.uiColor(),
-            questionHeaderMinusIcon: GiniMerchantImage.minus.preferredUIImage(),
-            questionHeaderPlusIcon: GiniMerchantImage.plus.preferredUIImage(),
-            bankCellBorderColor: GiniColor.standard5.uiColor(),
-            payBillsTitleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
-            payBillsTitleColor: GiniColor.standard1.uiColor(),
-            payBillsDescriptionFont: GiniMerchantConfiguration.shared.font(for: .body2),
-            linksFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
-            linksColor: GiniColor.accent1.uiColor(),
-            separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor(),
-            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
+            answerCell: .init(font: GiniMerchantConfiguration.shared.font(for: .body2),
+                              textColor: GiniColor.standard1.uiColor(),
+                              linkColor: GiniColor.accent1.uiColor()),
+            questionHeader: .init(font: GiniMerchantConfiguration.shared.font(for: .body1),
+                                  titleColor: GiniColor.standard1.uiColor(),
+                                  minusIcon: GiniMerchantImage.minus.preferredUIImage(),
+                                  plusIcon: GiniMerchantImage.plus.preferredUIImage(),
+                                  iconTintColor: GiniColor.accent1.uiColor()),
+            questionsTitle: .init(font: GiniMerchantConfiguration.shared.font(for: .subtitle1),
+                                  color: GiniColor.standard1.uiColor()),
+            payBills: .init(titleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
+                            titleColor: GiniColor.standard1.uiColor(),
+                            descriptionFont: GiniMerchantConfiguration.shared.font(for: .body2)),
+            links: .init(giniFont: GiniMerchantConfiguration.shared.font(for: .button),
+                         font: GiniMerchantConfiguration.shared.font(for: .linkBold),
+                         color: GiniColor.accent1.uiColor()),
+            layout: .init(bankCellBorderColor: GiniColor.standard5.uiColor(),
+                          separatorColor: GiniColor.standard5.uiColor(),
+                          backgroundColor: GiniColor.standard7.uiColor())
         )
     }
     
@@ -112,8 +119,6 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             selectBankAccentColor: GiniColor.standard2.uiColor(),
             selectBankFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
-            closeTitleIcon: GiniMerchantImage.close.preferredUIImage(),
-            closeIconAccentColor: GiniColor.standard2.uiColor(),
             bankCellBackgroundColor: GiniColor.standard7.uiColor(),
             bankCellIconBorderColor: GiniColor.standard5.uiColor(),
             bankCellNameFont: GiniMerchantConfiguration.shared.font(for: .body1),

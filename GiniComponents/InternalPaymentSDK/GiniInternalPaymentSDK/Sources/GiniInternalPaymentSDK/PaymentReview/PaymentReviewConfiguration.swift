@@ -63,6 +63,7 @@ public struct PaymentReviewStrings {
     public let createPaymentErrorMessage: String
     public let invoiceImageAccessibilityLabel: String
     public let closeButtonAccessibilityLabel: String
+    public let closeButtonAccessibilityHint: String
     public let sheetGrabberAccessibilityLabel: String
     public let sheetGrabberAccessibilityHint: String
 
@@ -72,6 +73,7 @@ public struct PaymentReviewStrings {
                 createPaymentErrorMessage: String,
                 invoiceImageAccessibilityLabel: String,
                 closeButtonAccessibilityLabel: String,
+                closeButtonAccessibilityHint: String,
                 sheetGrabberAccessibilityLabel: String,
                 sheetGrabberAccessibilityHint: String) {
         self.alertOkButtonTitle = alertOkButtonTitle
@@ -80,6 +82,7 @@ public struct PaymentReviewStrings {
         self.createPaymentErrorMessage = createPaymentErrorMessage
         self.invoiceImageAccessibilityLabel = invoiceImageAccessibilityLabel
         self.closeButtonAccessibilityLabel = closeButtonAccessibilityLabel
+        self.closeButtonAccessibilityHint = closeButtonAccessibilityHint
         self.sheetGrabberAccessibilityLabel = sheetGrabberAccessibilityLabel
         self.sheetGrabberAccessibilityHint = sheetGrabberAccessibilityHint
     }

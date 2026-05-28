@@ -21,7 +21,7 @@ public final class MoreInformationView: UIButton {
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         
         let attributes: [NSAttributedString.Key: Any] = [
@@ -84,6 +84,26 @@ public final class MoreInformationView: UIButton {
         ])
     }
     
+    /**
+     UIButton does not derive `intrinsicContentSize` from custom subviews. This override
+     returns the correct height for the wrapped label so UIStackView allocates sufficient
+     space at larger accessibility sizes.
+     */
+    public override var intrinsicContentSize: CGSize {
+        guard bounds.width > 0 else { return super.intrinsicContentSize }
+        let labelWidth = max(bounds.width - Constants.infoIconSize - Constants.spacingPadding, 0)
+        let labelHeight = moreInformationLabel.sizeThatFits(
+            CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
+        ).height
+        return CGSize(width: UIView.noIntrinsicMetric, height: max(labelHeight, Constants.infoIconSize))
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        // Re-query height once real width is known (required for multi-line label wrapping).
+        invalidateIntrinsicContentSize()
+    }
+
     @objc
     private func tapOnMoreInformationButtonAction() {
         viewModel.tapOnMoreInformation()
