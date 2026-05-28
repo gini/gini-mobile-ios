@@ -9,7 +9,7 @@ on:
 
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/internal-payment-sdk.check.yml@main
+    uses: ./.github/workflows/internal-payment-sdk.check.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
