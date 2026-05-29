@@ -11,6 +11,7 @@
 "gini.merchant.reviewscreen.usage.placeholder" = "Reference number";
 "gini.merchant.reviewscreen.banking.app.button.label" = "To the banking app";
 "gini.merchant.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.merchant.reviewscreen.keyboard.done.button.title" = "Done";
 "gini.merchant.errors.default" = "Oops something went wrong. Please try again.";
 "gini.merchant.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "gini.merchant.errors.failed.recipient.non.empty.check" = "Recipient is required.";
@@ -65,4 +66,5 @@
 "gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore" = "App Store";
 "gini.merchant.paymentcomponent.share.invoice.qr.code.image" = "QR Code";
 "gini.merchant.reviewscreen.close.button.accessibility.label" = "Close";
+"gini.merchant.reviewscreen.close.button.accessibility.hint" = "Tap to dismiss";
 "gini.merchant.reviewscreen.invoice.image.content.description" = "Invoice document";

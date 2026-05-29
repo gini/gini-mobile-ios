@@ -12,18 +12,19 @@
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
 "gini.health.reviewscreen.banking.app.button.hint" = "It opens the banking app to complete the payment.";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.health.reviewscreen.keyboard.done.button.title" = "Done";
 "gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
 "gini.health.errors.default" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
-"gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";
-"gini.health.errors.failed.iban.non.empty.check" = "IBAN is required.";
-"gini.health.errors.failed.iban.validation.check" = "IBAN is not valid.";
-"gini.health.errors.failed.amount.non.empty.check" = "Amount is required.";
-"gini.health.errors.failed.purpose.non.empty.check" = "Reference is required.";
-"gini.health.errors.failed.default.textfield.validation.check" = "The field is not valid.";
+"gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required";
+"gini.health.errors.failed.iban.non.empty.check" = "IBAN is required";
+"gini.health.errors.failed.iban.validation.check" = "IBAN is not valid";
+"gini.health.errors.failed.amount.non.empty.check" = "Amount is required";
+"gini.health.errors.failed.purpose.non.empty.check" = "Reference is required";
 
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Close";
+"gini.health.close.button.accessibility.hint" = "Tap to dismiss";
 "gini.health.bottomSheet.grabber.accessibility.label" = "Sheet grabber";
 "gini.health.bottomSheet.grabber.accessibility.hint" = "Double tap to dismiss";
 
@@ -57,6 +58,9 @@
 "gini.health.paymentcomponent.payment.info.questions.answer.5" = "Whether a photo of an invoice, screenshot or digital PDF - any format is suitable. Please just make sure that all payment information such as IBAN, recipient, purpose and amount are visible and not cut off.";
 "gini.health.paymentcomponent.payment.info.questions.answer.6" = "The banks that support the Gini payment function are displayed in the bank selection menu. To use it, you must have installed your bank's mobile banking app on the same smartphone or tablet on which you use the insurance app. If you have not installed any of the banking apps, you can download them from the Apple App Store or Google Playstore. Subsequent activation of the banking app may be necessary.";
 "gini.health.paymentcomponent.payment.info.questions.answer.clickable.text" = "privacy policy[LINK]";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.expanded" = "Expanded";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed" = "Collapsed";
+
 "gini.health.paymentcomponent.payment.info.gini.link" = "https://gini.net/en/";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "";
 "gini.health.paymentcomponent.install.app.bottom.sheet.title" = "Invoice data ready to share with the [BANK] bank";

@@ -48,7 +48,7 @@ class GiniMerchantSDKExampleWrongCertificatesTests: XCTestCase {
     func testCreatePaymentRequest(){
         let expect = expectation(description: "it creates a payment request")
 
-        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", bic: "CMCIDEDDXXX", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
+        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
             switch result {
             case .success:
                 XCTFail("creating a payment request should have failed due to wrong pinning certificates")

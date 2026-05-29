@@ -1,148 +1,150 @@
-# bs_build_and_upload.sh
+# BrowserStack Scripts
 
-Builds the `GiniBankSDKExample` app and test runner, uploads them to BrowserStack along with media files, and triggers a test run. By default runs `testCXCaptureFlow`; change `TEST_IDENTIFIER` in the script to run the full class or a different test. 
+Builds the `GiniBankSDKExample` app and test runner, uploads the relevant media files to BrowserStack, and triggers a focused test run.
+
+The original monolithic script has been split into scenario-focused scripts that share a common helper library.
 
 ---
 
-## Parameters
+## Scripts overview
 
-### Positional arguments
-
-| Argument | Default | Description |
+| Script | Tests | Media uploaded |
 |---|---|---|
-| `$1` — `MEDIA_FILENAME` | `Photopayment_Invoice1.png` | Filename inside `TestSamples/TestSamplesForBS/` used for `uploadMedia` (gallery upload flow) |
+| `bs_run_cx_normal.sh` | `GiniCaptureFlowUITestsUsingBS`, `GiniCXFeatureFlagsUITests` | `Swift_AccNo_routing_DOLL.png`, `Photopayment_Invoice1.png`, `cx_invoice.png`, `cx_invoice.pdf` |
+| `bs_run_cx_multipage.sh` | `GiniCXMultiPageUITests/testCXMultiPageInvoiceFlowTwoSeparatePNGPages` | `multi_page_invoice_CX_page1.png`, `multi_page_invoice_CX_page2.png` |
+| `bs_run_cx_no_results.sh` | `GiniCXNoResultsUITests`, `GiniReturnAssistantScreenUITests/testReturnAssistantBS`, `GiniSkontoScreenUITests` | `cx_no_results_invoice.pdf`, `skonto_past.pdf`, `return_asistant.pdf` |
+| `bs_run_ra.sh` | `GiniReturnAssistantScreenUITests/testReturnAssistantBS` | `return_asistant.pdf` |
+| `bs_run_skonto.sh` | `GiniSkontoScreenUITests` | `skonto_past.pdf`, `skonot_valid.pdf` |
+| `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 
-### Environment variables
-
-| Variable | Default | Description |
-|---|---|---|
-| `BS_USER` | `<your_browserstack_user_name>` | BrowserStack username |
-| `BS_KEY` | `<your_browserstack_access_key>` | BrowserStack access key |
-
-### Fixed (not parameterised)
-
-| Value | Description |
-|---|---|
-| `Photopayment_Invoice1.png` | Camera injection file for `testPPCaptureFlow` (`PPCaptureInjection`) |
-| `Swift_AccNo_routing_DOLL.png` | Camera injection file for `testCXCaptureFlow` and `testCXflowGalleryUpload` (`CXCaptureInjection`) |
-| `iPhone 15-17` | Target BrowserStack device |
-| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow` | Default test run by the script (single test). Change to class level to run all three. |
-
-Both camera injection files are always uploaded. BrowserStack matches each file to the test that calls `injectImage(imageName:)` with the matching filename.
+> ⚠️ `bs_run_cx_no_results.sh` and `bs_run_skonto.sh` require `GiniCXNoResultsUITests` and `GiniSkontoScreenUITests` to be updated to use `tapFileWithNameFromBSCustomFiles()` instead of `tapFileWithName()` before they will pass on BrowserStack.
 
 ---
 
-## Output files
+## Credentials
 
-Both are written inside the `BSScripts/` folder:
+All scripts read credentials from environment variables with a fallback placeholder:
 
-- `GiniBankSDKExample.ipa` — packaged app
-- `GiniBankSDKExampleUITests.zip` — zipped test runner
-
----
-
-## Usage examples
-
-### Run with all defaults
 ```bash
-cd BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/BSScripts
-./bs_build_and_upload.sh
+BS_USER="${BS_USER:-<your_browserstack_user_name>}"
+BS_KEY="${BS_KEY:-<your_browserstack_access_key>}"
 ```
 
-### Run with a custom upload media file
+Set them in your shell session to avoid editing each script:
+
 ```bash
-./bs_build_and_upload.sh Photopayment_Invoice2.png
+export BS_USER="your_username"
+export BS_KEY="your_access_key"
 ```
 
-### Run with custom BrowserStack credentials
-```bash
-BS_USER="my_bs_username" BS_KEY="my_bs_key" ./bs_build_and_upload.sh
-```
+Or pass them inline per run:
 
-### Run with custom credentials and a custom upload media file
 ```bash
-BS_USER="my_bs_username" BS_KEY="my_bs_key" ./bs_build_and_upload.sh Photopayment_Invoice2.png
-```
-
-### Export credentials for the session, then run multiple times
-```bash
-export BS_USER="my_bs_username"
-export BS_KEY="my_bs_key"
-
-./bs_build_and_upload.sh Photopayment_Invoice1.png
-./bs_build_and_upload.sh Photopayment_Invoice2.png
+BS_USER="your_username" BS_KEY="your_access_key" ./bs_run_cx_normal.sh
 ```
 
 ---
 
-## What the script does
+## Usage
+
+Run from the `Scripts/` directory:
+
+```bash
+# CX results — camera inject, gallery, PDF, feature flags
+./bs_run_cx_normal.sh
+
+# CX multi-page — two PNGs from Photos gallery
+./bs_run_cx_multipage.sh
+
+# CX no-results + Skonto (past) + Return Assistant
+./bs_run_cx_no_results.sh
+
+# Return Assistant only
+./bs_run_ra.sh
+
+# Skonto only (past + valid invoices)
+./bs_run_skonto.sh
+```
+
+---
+
+## What each run does
+
+Every `bs_run_*.sh` script follows the same steps:
 
 | Step | Description |
 |---|---|
-| 1 | Validates that all three media files exist before starting the build |
-| 2 | Builds `GiniBankSDKExample` for testing using `xcodebuild` |
-| 3 | Packages the app as an `.ipa` |
-| 4 | Zips the UI test runner |
-| 5 | Uploads `MEDIA_FILENAME` to BrowserStack as `uploadMedia` (gallery upload) |
-| 6 | Uploads `Photopayment_Invoice1.png` to BrowserStack as `PPCaptureInjection` (camera injection for `testPPCaptureFlow`) |
-| 7 | Uploads `Swift_AccNo_routing_DOLL.png` to BrowserStack as `CXCaptureInjection` (camera injection for `testCXCaptureFlow` and `testCXflowGalleryUpload`) |
-| 8 | Uploads the `.ipa` and test runner zip |
-| 9 | Triggers `testCXCaptureFlow` on BrowserStack by default with `enableCameraImageInjection: true` (change `TEST_IDENTIFIER` in the script to run the full class or a different test) |
+| 1 | Builds `GiniBankSDKExample` for testing using `xcodebuild build-for-testing` |
+| 2 | Packages the app as an `.ipa` |
+| 3 | Zips the UI test runner |
+| 4 | Uploads scenario-specific media files to BrowserStack |
+| 5 | Uploads the `.ipa` and test runner zip |
+| 6 | Triggers the test run on `iPhone 16-18` and `iPhone 13 Pro Max-18` |
+| 7 | Removes local `.ipa` and `.zip` artifacts |
+
+Results appear in the **BrowserStack App Automate dashboard**.
 
 ---
 
-## Manual Debug Steps
+## Media file routing on BrowserStack
 
-Use these commands to upload and trigger tests individually from Terminal - useful when debugging a single step without re-running the full script.
+| File type | Destination on device |
+|---|---|
+| `.png` / `.jpg` | Photos library (gallery) |
+| `.pdf` | Files app → BrowserStack Custom_Files folder |
 
-Set your credentials first:
+This determines which helper the test uses to access the file:
+- **Gallery**: `uploadLatestPhotoFromGallery(offset:)` — picks by recency (`offset: 0` = most recent, `offset: 1` = second-to-last)
+- **Custom_Files**: `tapFileWithNameFromBSCustomFiles(fileName:)` — picks by filename
+
+---
+
+## bs_run_cx_multipage.sh — upload order
+
+Upload order matters because `uploadLatestPhotoFromGallery()` picks by recency:
+
+| Upload order | File | Gallery position | Picked by |
+|---|---|---|---|
+| 1st | `multi_page_invoice_CX_page1.png` | Second-to-last | `uploadLatestPhotoFromGallery(offset: 1)` |
+| 2nd | `multi_page_invoice_CX_page2.png` | Last (most recent) | `uploadLatestPhotoFromGallery(offset: 0)` |
+
+---
+
+## `only-testing` format
+
+`only-testing` tells BrowserStack which tests to run inside the uploaded suite. Without it BrowserStack runs the entire bundle.
+
+Format: `TestBundleName/TestClassName` or `TestBundleName/TestClassName/testMethodName`
+
+| Value | What runs |
+|---|---|
+| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS` | All tests in the class |
+| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow` | Only `testCXCaptureFlow` |
+| `GiniBankSDKExampleUITests/GiniCXMultiPageUITests/testCXMultiPageInvoiceFlowTwoSeparatePNGPages` | Only the two-PNG multipage test |
+
+---
+
+## Manual debug steps
+
+Useful for re-triggering a test run without rebuilding. Set credentials first:
+
 ```bash
-export BS_USER="your_browserstack_username"
-export BS_KEY="your_browserstack_access_key"
+export BS_USER="your_username"
+export BS_KEY="your_access_key"
 ```
 
----
-
-### Step 1 - Upload media file (gallery upload)
+### Upload a media file
 
 ```bash
 curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@/path/to/Photopayment_Invoice1.png" \
-  -F "custom_id=UploadMedia"
+  -F "file=@/path/to/file.png" \
+  -F "custom_id=MyCustomId"
 ```
 
-Copy the `media_url` from the response (e.g. `media://abc123...`). You will need it in Step 6.
+Copy the `media_url` from the response.
 
----
-
-### Step 2 - Upload PP camera injection file
-
-```bash
-curl -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@/path/to/Photopayment_Invoice1.png" \
-  -F "custom_id=PPCaptureInjection"
-```
-
-Copy the `media_url`. You will need it in Step 6.
-
----
-
-### Step 3 - Upload CX camera injection file
-
-```bash
-curl -u "$BS_USER:$BS_KEY" \
-  -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
-  -F "file=@/path/to/Swift_AccNo_routing_DOLL.png" \
-  -F "custom_id=CXCaptureInjection"
-```
-
-Copy the `media_url`. You will need it in Step 6.
-
----
-
-### Step 4 - Upload app IPA
+### Upload app IPA
 
 ```bash
 curl -u "$BS_USER:$BS_KEY" \
@@ -150,13 +152,9 @@ curl -u "$BS_USER:$BS_KEY" \
   -F "file=@/path/to/GiniBankSDKExample.ipa"
 ```
 
-Copy the `app_url` from the response (e.g. `bs://abc123...`). You will need it in Step 6.
+Copy the `app_url` from the response.
 
-> The script outputs the IPA to `BSScripts/GiniBankSDKExample.ipa`.
-
----
-
-### Step 5 - Upload test suite
+### Upload test suite
 
 ```bash
 curl -u "$BS_USER:$BS_KEY" \
@@ -164,47 +162,26 @@ curl -u "$BS_USER:$BS_KEY" \
   -F "file=@/path/to/GiniBankSDKExampleUITests.zip"
 ```
 
-Copy the `test_suite_url` from the response (e.g. `bs://def456...`). You will need it in Step 6.
+Copy the `test_suite_url` from the response.
 
-> The script outputs the zip to `BSScripts/GiniBankSDKExampleUITests.zip`.
-
----
-
-### Step 6 - Trigger test build
-
-Replace `APP_URL`, `TEST_SUITE_URL`, `MEDIA_URL`, `PP_INJECTION_URL`, and `CX_INJECTION_URL` with the values copied from the steps above.
+### Trigger test run
 
 ```bash
 curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d '{
-    "devices": ["iPhone 15-17"],
+    "devices": ["iPhone 16-18", "iPhone 13 Pro Max-18"],
     "app": "APP_URL",
     "testSuite": "TEST_SUITE_URL",
     "only-testing": ["GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS"],
-    "uploadMedia": ["MEDIA_URL", "PP_INJECTION_URL", "CX_INJECTION_URL"],
-    "resignApp": "true",
-    "enableCameraImageInjection": "true",
-    "cameraInjectionMedia": ["PP_INJECTION_URL", "CX_INJECTION_URL"]
+    "uploadMedia": ["MEDIA_URL"],
+    "resignApp": "true"
   }'
 ```
 
-> **Note:** If the build fails when `uploadMedia` is included, try removing that key - the build command without `uploadMedia` runs successfully.
-
----
-
-### `only-testing` explained
-
-`only-testing` tells BrowserStack which tests to run inside the uploaded test suite. Without it, BrowserStack runs every test in the bundle.
-
-The value follows the format: `TestBundleName/TestClassName` or `TestBundleName/TestClassName/testMethodName`
-
-| Value | What runs |
-|---|---|
-| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS` | All three tests in the class |
-| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testPPCaptureFlow` | Only `testPPCaptureFlow` |
-| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXCaptureFlow` | Only `testCXCaptureFlow` |
-| `GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS/testCXflowGalleryUpload` | Only `testCXflowGalleryUpload` |
-
-Multiple entries can be passed in the array to run a subset of tests.
+For camera injection tests add:
+```json
+"enableCameraImageInjection": "true",
+"cameraInjectionMedia": ["INJECTION_MEDIA_URL"]
+```

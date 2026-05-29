@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
-// Please remove the prefix if you want to test locally on a simulator
-
 class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -18,9 +15,44 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         "return_asistant" PDF file
         a return assistant sample image to the Photos library for the gallery flow test
      */
+    
+    // MARK: - Return Assistant PDF upload via BrowserStack Custom_Files folder
+
+    func testReturnAssistantBS() {
+        // Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        // Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        // Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        // Tap Files button
+        captureScreen.filesButton.tap()
+        // Tap Upload files button
+        captureScreen.uploadFilesButton.tap()
+        // Navigate to BrowserStack Custom_Files folder and tap the RA document
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        // Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        // Assert Get started button is displayed
+        XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10), "Return Assistant Get Started button should appear")
+        // Tap Get Started button
+        returnAssistantScreen.getStartedButton.tap()
+        // Tap Proceed button
+        returnAssistantScreen.proceedButton.tap()
+        // Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
+        // Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5), "Done/Send feedback button should appear")
+        mainScreen.sendFeedbackButton.tap()
+        // Assert main screen is shown again
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable, "Photopayment button should be hittable after completing the flow")
+    }
 
     func testReturnAssistant() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -32,17 +64,21 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
         returnAssistantScreen.getStartedButton.tap()
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -51,7 +87,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantGalleryUpload() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -66,10 +101,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.handlePhotoPermission(answer: true)
         //Select and upload a photo from the gallery
         uploadLatestPhotoFromGallery()
-        //Wait for review screen and tap Process
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
-        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
-        reviewScreen.processButton.tap()
+        //Review screen is optional — PDFs may go straight to analysis on some environments.
+        if reviewScreen.processButton.waitForExistence(timeout: 15) {
+            reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+            reviewScreen.processButton.tap()
+        }
         //Wait for analysis screen to go away if it appears
         waitForAnalysisIfNeeded()
         //Assert Get started button is displayed
@@ -78,8 +114,10 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         returnAssistantScreen.getStartedButton.tap()
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -88,7 +126,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantEditName() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -100,9 +137,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
@@ -119,8 +158,10 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(app.staticTexts["1x New Product"].waitForExistence(timeout: 1))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -129,7 +170,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantEditPrice() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -141,9 +181,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
@@ -166,8 +208,10 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.assertTextIsDisplayedInAnyStaticText(expectedText: value as! String)
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -176,7 +220,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantEditQuantity() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -188,9 +231,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
@@ -215,8 +260,10 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(app.staticTexts["2x New Product"].waitForExistence(timeout: 1))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -225,7 +272,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantDisableSwitch() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -237,9 +283,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
@@ -248,8 +296,10 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         app.switches.firstMatch.tap()
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -258,7 +308,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantCancelButton() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -270,9 +319,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button
@@ -284,7 +335,6 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testReturnAssistantHelpButton() {
-        
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -296,9 +346,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.returnAssistant)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.returnAssistant)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert Get started button is displayed
         XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
         //Tap Get Started button

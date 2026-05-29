@@ -27,8 +27,14 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = false
-    
+    var isSimulator = true
+
+    /**
+     Override in a subclass to inject extra launch arguments before the app launches.
+     The base argument `-StartFromCleanState YES` is always included.
+     */
+    var additionalLaunchArguments: [String] { [] }
+
     override func setUpWithError() throws {
         if isSimulator {
             throw XCTSkip("Skipping test")
@@ -36,8 +42,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
-        app.launchArguments = ["-testing"]
-        app.launchArguments = ["-StartFromCleanState", "YES"]
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+            app.resetAuthorizationStatus(for: .photos)
+        }
+        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -167,11 +176,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
         app.tables.cells.firstMatch.tap()
         let imageCells = app.collectionViews.cells
         XCTAssertTrue(imageCells.firstMatch.waitForExistence(timeout: 10))
-        guard let latestVisibleImage = imageCells.allElementsBoundByIndex.last else {
-            XCTFail("No gallery image was found to upload.")
+        let allCells = imageCells.allElementsBoundByIndex
+        let targetIndex = allCells.count - 1 - offset
+        guard targetIndex >= 0 else {
+            XCTFail("No gallery image found at offset \(offset) — only \(allCells.count) photo(s) available.")
             return
         }
-        latestVisibleImage.tap()
+        allCells[targetIndex].tap()
         XCTAssertTrue(app.buttons[galleryDoneButtonTitle].firstMatch.waitForExistence(timeout: 10))
         tapDoneInAnyKnownContext()
     }

@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniUtilites
+import SwiftUI
 
 enum GiniHealthColorPalette: String {
     case accent1 = "Accent01"
@@ -60,6 +61,12 @@ extension GiniHealthColorPalette {
         }
         return color
     }
+    
+    func preferredColor() -> Color {
+        let uiColor: UIColor = preferredColor()
+        
+        return Color(uiColor)
+    }
 }
 
 extension GiniColor {
@@ -87,8 +94,8 @@ extension GiniColor {
      - parameter darkModeColorName: color name for the dark mode
      */
     convenience init(lightModeColorName: GiniHealthColorPalette, darkModeColorName: GiniHealthColorPalette) {
-        let lightColor = lightModeColorName.preferredColor()
-        let darkColor = darkModeColorName.preferredColor()
+        let lightColor: UIColor = lightModeColorName.preferredColor()
+        let darkColor: UIColor = darkModeColorName.preferredColor()
         self.init(lightModeColor: lightColor, darkModeColor: darkColor)
     }
 }

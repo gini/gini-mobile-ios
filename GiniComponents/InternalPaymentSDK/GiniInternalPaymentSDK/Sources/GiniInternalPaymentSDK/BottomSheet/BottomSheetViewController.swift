@@ -46,6 +46,10 @@ open class BottomSheetViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.alpha = 0
+        // Decorative backdrop — hidden from VoiceOver to prevent the dim layer
+        // from capturing focus and leaving VoiceOver silent.
+        view.isAccessibilityElement = false
+        view.accessibilityElementsHidden = true
         return view
     }()
 
@@ -151,7 +155,10 @@ private extension BottomSheetViewController {
     }
     
     func obtainTopAnchorMinHeightConstraint() -> CGFloat {
-        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        let window = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
         let extraBottomSafeAreaConstant = window?.safeAreaInsets.bottom == 0 ? Constants.safeAreaBottomPadding : 0 // fix for small devices
         let topAnchorWithMinHeightConstant = view.frame.height - minHeight + extraBottomSafeAreaConstant
         return topAnchorWithMinHeightConstant
@@ -250,7 +257,7 @@ private extension BottomSheetViewController {
     func dismissBottomSheet() {
         UIView.animate(withDuration: 0.2, animations: {  [weak self] in
             guard let self = self else { return }
-            self.dimmedView.alpha = Constants.maxDimmedAlpha
+            self.dimmedView.alpha = 0
             self.mainContainerView.frame.origin.y = self.view.frame.height
         }, completion: {  [weak self] _ in
             self?.dismiss(animated: false)

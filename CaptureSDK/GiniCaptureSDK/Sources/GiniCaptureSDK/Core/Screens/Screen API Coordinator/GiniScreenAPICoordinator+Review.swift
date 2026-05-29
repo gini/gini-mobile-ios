@@ -9,7 +9,7 @@ import UIKit
 // MARK: - Review screen
 
 extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
-    public func review(_ controller: ReviewViewController,
+    public func review(_: ReviewViewController,
                        didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
@@ -19,7 +19,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         }
     }
 
-    public func review(_ viewController: ReviewViewController,
+    public func review(_: ReviewViewController,
                        didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
         visionDelegate?.didCapture(document: page.document, networkDelegate: self)

@@ -21,7 +21,7 @@ public final class PaymentComponentView: UIView {
         label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
-        label.adjustsFontSizeToFitWidth = true
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
     }()
@@ -107,6 +107,7 @@ public final class PaymentComponentView: UIView {
         updateButtonsViews()
         setupGestures()
         setupAccessibility()
+        updateBottomStackOrientation()
     }
 
     private func setupAccessibility() {
@@ -115,7 +116,7 @@ public final class PaymentComponentView: UIView {
             selectBankButton,
             payInvoiceButton,
             moreInformationView
-        ]
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : [])
     }
     
     private func activateAllConstraints() {
@@ -184,7 +185,7 @@ public final class PaymentComponentView: UIView {
             buttonsStackView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.buttonsTopBottomSpacing),
             buttonsStackView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.buttonsTopBottomSpacing),
-            payInvoiceButton.heightAnchor.constraint(equalToConstant: viewModel.minimumButtonsHeight)
+            payInvoiceButton.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.minimumButtonsHeight)
         ])
     }
     
@@ -205,6 +206,26 @@ public final class PaymentComponentView: UIView {
     @objc
     private func tapOnPayInvoiceView() {
         viewModel.tapOnPayInvoiceView()
+    }
+
+    /**
+     If the user changes their text size while the app is running (via Control Center → Text Size),
+     UIKit won't automatically re-run layout logic.
+     This override catches that live change and re-applies the correct orientation.
+     */
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            updateBottomStackOrientation()
+        }
+    }
+
+    private func updateBottomStackOrientation() {
+        /// Axis change only applies when the branded logo is present with a single item the axis has no effect.
+        guard viewModel.shouldShowBrandedView else { return }
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        bottomStackView.axis = isAccessibilitySize ? .vertical : .horizontal
+        poweredByGiniView.configureForVerticalLayout(isAccessibilitySize)
     }
 }
 

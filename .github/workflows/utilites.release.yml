@@ -10,7 +10,9 @@ on:
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/utilites.check.yml@main
-
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
   release:
     needs: check
     runs-on: macos-latest   
@@ -34,7 +36,7 @@ jobs:
         lane: 'publish_swift_package'
         options: >
           { 
-            "project_folder": "GiniComponents",
+            "project_folder": "GiniComponents/Utilities",
             "package_folder": "GiniUtilites",
             "version_file_path": "GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/GiniUtilitesVersion.swift",
             "git_tag": "${{ github.ref }}", 

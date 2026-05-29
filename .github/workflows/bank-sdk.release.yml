@@ -14,6 +14,7 @@ jobs:
     secrets:
       GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
       GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
   release:
     needs: check

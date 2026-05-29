@@ -1,0 +1,59 @@
+//
+//  GiniBottomSheetModifier.swift
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+//
+
+import SwiftUI
+
+struct GiniBottomSheetModifier: ViewModifier {
+    
+    private let contentHeight: CGFloat
+    private let allowsDismiss: Bool
+    private let accessibilityAction: (() -> Void)?
+    
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
+    @Environment(\.giniLayout) private var giniLayout
+    
+    init(contentHeight: CGFloat,
+         allowsDismiss: Bool = false,
+         accessibilityAction: (() -> Void)?) {
+        self.contentHeight = max(contentHeight, Constants.minimumHeight)
+        self.allowsDismiss = allowsDismiss
+        self.accessibilityAction = accessibilityAction
+    }
+    
+    func body(content: Content) -> some View {
+        let base = content
+            .presentationDetents(detentsForOrientation())
+            .presentationDragIndicator(reduceMotion ? .hidden : .visible)
+            .interactiveDismissDisabled(!allowsDismiss && !isVoiceOverEnabled)
+            .accessibilityAction(.escape) {
+                accessibilityAction?()
+            }
+
+        let presentationBackgroundInteractionForVoiceOver = isVoiceOverEnabled ? .disabled : PresentationBackgroundInteraction.enabled(upThrough: .height(contentHeight))
+
+        return base
+            .presentationBackgroundInteraction(allowsDismiss ? .automatic : presentationBackgroundInteractionForVoiceOver)
+            .presentationCompactAdaptation(horizontal: .sheet, vertical: .fullScreenCover)
+            .presentationContentInteraction(.scrolls)
+    }
+    
+    private func detentsForOrientation() -> Set<PresentationDetent> {
+        if giniLayout.isLandscape {
+            return [.large]
+        } else {
+            // Only one detent in portrait: the sheet stays at its content height and the
+            // inner ScrollView scrolls to show the focused field. A .large detent causes
+            // iOS to auto-snap to full screen when the keyboard appears.
+            return [.height(contentHeight)]
+        }
+    }
+    
+    private struct Constants {
+        
+        static let minimumHeight: CGFloat = 300
+    }
+}

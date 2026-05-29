@@ -11,8 +11,6 @@ public struct BankSelectionConfiguration {
     let descriptionFont: UIFont
     let selectBankAccentColor: UIColor
     let selectBankFont: UIFont
-    let closeTitleIcon: UIImage
-    let closeIconAccentColor: UIColor
 
     let bankCellBackgroundColor: UIColor
     let bankCellIconBorderColor: UIColor
@@ -26,8 +24,6 @@ public struct BankSelectionConfiguration {
                 descriptionFont: UIFont,
                 selectBankAccentColor: UIColor,
                 selectBankFont: UIFont,
-                closeTitleIcon: UIImage,
-                closeIconAccentColor: UIColor,
                 bankCellBackgroundColor: UIColor,
                 bankCellIconBorderColor: UIColor,
                 bankCellNameFont: UIFont,
@@ -39,8 +35,6 @@ public struct BankSelectionConfiguration {
         self.descriptionFont = descriptionFont
         self.selectBankAccentColor = selectBankAccentColor
         self.selectBankFont = selectBankFont
-        self.closeTitleIcon = closeTitleIcon
-        self.closeIconAccentColor = closeIconAccentColor
         self.bankCellBackgroundColor = bankCellBackgroundColor
         self.bankCellIconBorderColor = bankCellIconBorderColor
         self.bankCellNameFont = bankCellNameFont
@@ -54,13 +48,10 @@ public struct BankSelectionConfiguration {
 public struct BanksBottomStrings {
     let selectBankTitleText: String
     let descriptionText: String
-    let closeButtonAccessibilityLabel: String
 
     public init(selectBankTitleText: String,
-                descriptionText: String,
-                closeButtonAccessibilityLabel: String) {
+                descriptionText: String) {
         self.selectBankTitleText = selectBankTitleText
         self.descriptionText = descriptionText
-        self.closeButtonAccessibilityLabel = closeButtonAccessibilityLabel
     }
 }

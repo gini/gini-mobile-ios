@@ -7,9 +7,11 @@
 import UIKit
 import GiniCaptureSDK
 
-/// A unified, fully programmatic extraction result cell used in both the SEPA and
-/// cross-border payment flows. Pass `isEditable: false` to render the value as
-/// a read-only, dimmed field; pass `true` to allow the user to edit it.
+/**
+ A unified, fully programmatic extraction result cell used in both the SEPA and
+ cross-border payment flows. Pass `isEditable: false` to render the value as
+ a read-only, dimmed field; pass `true` to allow the user to edit it.
+ */
 final class ExtractionResultCell: UITableViewCell, CodeLoadableView {
 
     // MARK: - Subviews
