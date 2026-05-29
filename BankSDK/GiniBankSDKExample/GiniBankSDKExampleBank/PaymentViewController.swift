@@ -77,9 +77,9 @@ class PaymentViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.viewModel?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: .large, color: UIColor.white, scale: 1.0)
+                    self?.showLoading(style: .large, color: UIColor.white, scale: 1.0)
                 } else {
-                    self?.view.giniStopLoadingIndicator()
+                    self?.stopLoadingIndicator()
                 }
             }
         }
@@ -157,6 +157,35 @@ class PaymentViewController: UIViewController {
         purpose.text = paymentInfo.purpose
         payButton.isEnabled = true
         self.showAlert("", message: "Payment data was successfully fetched")
+    }
+    
+    private func showLoading(style: UIActivityIndicatorView.Style = .large,
+                             color: UIColor? = .orange,
+                             scale: CGFloat? = 1.0) {
+        let loading = UIActivityIndicatorView(style: style)
+        if let color = color {
+            loading.color = color
+        }
+        loading.contentScaleFactor = scale ?? 1.0
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.startAnimating()
+        loading.hidesWhenStopped = true
+        view.addSubview(loading)
+        loading.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loading.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+
+    private func stopLoadingIndicator() {
+        removeActivityIndicator()
+    }
+    
+    private func removeActivityIndicator() {
+        let activityIndicators = view.subviews.filter { $0 is UIActivityIndicatorView } as? [UIActivityIndicatorView]
+        
+        activityIndicators?.forEach { activityIndicator in
+            activityIndicator.stopAnimating()
+            activityIndicator.removeFromSuperview()
+        }
     }
 }
 

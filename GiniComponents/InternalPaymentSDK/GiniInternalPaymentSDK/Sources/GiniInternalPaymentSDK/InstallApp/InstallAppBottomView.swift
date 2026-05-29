@@ -17,33 +17,18 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
     
     public var shouldShowInFullScreenInLandscapeMode: Bool {
-        true
+        false
     }
 
     var viewModel: InstallAppBottomViewModel
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
 
     private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
     
-    private lazy var closeButtonContainerView: EmptyView = {
-        let view = EmptyView()
-        return view
-    }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
-                        for: .normal)
-        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
-        button.tintColor = viewModel.configuration.closeIconAccentColor
-        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
-        return button
-    }()
-
     private let titleView = EmptyView()
 
     private lazy var titleLabel: UILabel = {
@@ -52,6 +37,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         label.text = viewModel.titleText
         label.textColor = viewModel.configuration.titleAccentColor
         label.font = viewModel.configuration.titleFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -83,6 +69,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = viewModel.configuration.moreInformationTextColor
         label.font = viewModel.configuration.moreInformationFont
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.text = viewModel.moreInformationLabelText
         return label
@@ -141,6 +128,14 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         
         postAccessibilityFocus()
     }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
+        view.accessibilityViewIsModal = false
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -156,14 +151,26 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
-    /// VoiceOver has already finished processing the UI changes.
+    /**
+     Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
+
+     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
+     accessibility engine correctly hides sibling views from VoiceOver. Setting it on the
+     `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
+     leaving VoiceOver free to wander into the dimmed background behind the sheet.
+
+     The 0.5 s delay gives the sheet presentation controller time to finish its sizing
+     pass before VoiceOver reads the element tree. We previously used 1.0 s but that
+     caused a noticeable lag in VoiceOver announcements.
+     */
     private func postAccessibilityFocus() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.accessibilityViewIsModal = true
-            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
         }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work)
     }
 
     private func setupView() {
@@ -178,18 +185,18 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
 
     private func setupAccessibility() {
-        view.accessibilityElements = [
-            closeButton,
+        view.accessibilityViewIsModal = true
+        // Set on `contentView` (scroll view) so VoiceOver can auto-scroll off-screen elements in landscape.
+        contentView.accessibilityElements = [
             titleLabel,
             bankIconImageView,
             moreInformationLabel,
             appStoreImageView,
             continueButton
-        ]
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : [])
     }
     
     private func setupViewHierarchy() {
-        addCloseButton()
         titleView.addSubview(titleLabel)
         contentStackView.addArrangedSubview(titleView)
         bankView.addSubview(bankIconImageView)
@@ -216,21 +223,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         ])
     }
     
-    private func addCloseButton() {
-        closeButtonContainerView.addSubview(closeButton)
-        
-        NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
-            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
-            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
-                                                 constant: -Constants.viewPaddingConstraint),
-        ])
-        
-        contentStackView.addArrangedSubview(closeButtonContainerView)
-    }
-
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
@@ -265,7 +257,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
         updateMoreInformationStackView(for: .portrait)
 
@@ -280,7 +271,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         updateMoreInformationStackView(for: .landscape)
 
@@ -337,10 +327,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         postAccessibilityFocus()
     }
     
-    @objc private func tapOnCloseIcon() {
-        dismiss(animated: true)
-    }
-    
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
@@ -356,7 +342,8 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
                                                   constant: Constants.contentViewTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                     constant: -Constants.viewPaddingConstraint),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.viewPaddingConstraint),
@@ -415,7 +402,11 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         contentView.$size
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedSize in
-                self?.updateBottomSheetHeight(updatedSize.height)
+                guard let self else { return }
+                // Include the safe-area bottom inset so the sheet is tall enough
+                // to reveal the full content above the home indicator.
+                let safeAreaBottom = view.safeAreaInsets.bottom
+                updateBottomSheetHeight(updatedSize.height + safeAreaBottom)
             }.store(in: &cancellables)
     }
     
@@ -447,8 +438,13 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.updateLayoutForCurrentOrientation()
             self?.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            // Post the accessibility focus notification only AFTER the transition
+            // animation has fully completed and the layout is stable.  Calling it
+            // inside alongsideTransition fired the notification while the view was
+            // still animating, so VoiceOver read elements at incorrect positions.
             self?.postAccessibilityFocus()
-        }, completion: nil)
+        })
     }
 }
 
@@ -471,6 +467,5 @@ extension InstallAppBottomView {
         static let bottomViewHeight = 22.0
         static let landscapePadding = 126.0
         static let moreInformationTopPaddingLandscape = 32.0
-        static let closeIconSize = 24.0
     }
 }

@@ -10,34 +10,42 @@ import GiniInternalPaymentSDK
 extension GiniMerchant: PaymentComponentsStringsProvider {
     public var paymentReviewContainerStrings: PaymentReviewContainerStrings {
         PaymentReviewContainerStrings(
-            emptyCheckErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
-                                                                     comment: "the field failed non empty check"),
-            ibanCheckErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
-                                                                    comment: "iban failed validation check"),
-            recipientFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
-                                                                        comment: "placeholder text for recipient input field"),
-            ibanFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
-                                                                   comment: "placeholder text for iban input field"),
-            amountFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
-                                                                     comment: "placeholder text for amount input field"),
-            usageFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
-                                                                    comment: "placeholder text for usage input field"),
-            recipientErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
-                                                                    comment: "recipient failed non empty check"),
-            ibanErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check",
-                                                               comment: "iban failed non empty check"),
-            amountErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check",
-                                                                 comment: "amount failed non empty check"),
-            purposeErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
-                                                                  comment: "purpose failed non empty check"),
+            fieldPlaceholders: .init(
+                recipient: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
+                                                            comment: "placeholder text for recipient input field"),
+                iban: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
+                                                       comment: "placeholder text for iban input field"),
+                amount: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
+                                                         comment: "placeholder text for amount input field"),
+                usage: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
+                                                        comment: "placeholder text for usage input field")
+            ),
+            fieldErrors: .init(
+                ibanCheck: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
+                                                            comment: "iban failed validation check"),
+                recipient: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
+                                                            comment: "recipient failed non empty check"),
+                iban: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check",
+                                                       comment: "iban failed non empty check"),
+                amount: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check",
+                                                         comment: "amount failed non empty check"),
+                purpose: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
+                                                          comment: "purpose failed non empty check")
+            ),
+            bankSelectionAccessibility: .init(
+                payInvoiceHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.hint",
+                                                                 comment: "Title label used for the pay invoice button"),
+                selectBankText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
+                                                                 comment: "Accessibility label for the select bank button"),
+                selectBankHint: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.hint",
+                                                                 comment: "Accessibility hint for the select bank button")
+            ),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
                                                                   comment: "Title label used for the pay invoice button"),
-            payInvoiceAccessibilityHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.hint",
-                                                                          comment: "Title label used for the pay invoice button"),
-            selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
-                                                                          comment: "Accessibility label for the select bank button"),
-            selectBankAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.hint",
-                                                                          comment: "Accessibility hint for the select bank button")
+            infoBarMessage: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message",
+                                                             comment: "info bar message"),
+            keyboardDoneButtonTitle: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.keyboard.done.button.title",
+                                                                      comment: "Done button title for keyboard accessory")
         )
     }
 
@@ -70,12 +78,10 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             accessibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore",
                                                                         comment: "Accessibility label for the App Store button"),
             accessibilityBankLogoText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo",
-                                                                        comment: "Accessibility label for the bank logo image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                         comment: "close button accessibility label text")
+                                                                        comment: "Accessibility label for the bank logo image")
         )
     }
-    
+
     public var shareInvoiceStrings: ShareInvoiceStrings {
         ShareInvoiceStrings(
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.continue.button.text",
@@ -93,58 +99,61 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
                                                                comment: "placeholder text for usage input field"),
             accessibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.qr.code.image",
-                                                                           comment: "accessibility label for qr code image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                         comment: "close button accessibility label text")
+                                                                           comment: "accessibility label for qr code image")
         )
     }
     
     public var paymentInfoStrings: PaymentInfoStrings {
         PaymentInfoStrings(
-            accessibilityCloseText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                     comment: "close button accessibility label text"),
-            giniWebsiteText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text",
-                                                              comment: "Word range that's clickable in pay bills description"),
-            giniURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.link",
-                                                          comment: "Gini website link url"),
+            giniLink: .init(
+                websiteText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text",
+                                                             comment: "Word range that's clickable in pay bills description"),
+                urlText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.link",
+                                                         comment: "Gini website link url")),
             supportedBanksText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.supported.banks.label",
                                                                  comment: "supported banks label text"),
-            questionsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.title.label",
-                                                                 comment: "Payment Info questions title label text"),
-            answerPrivacyPolicyText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.clickable.text",
-                                                                      comment: "Payment info answers clickable privacy policy"),
-            privacyPolicyURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.privacypolicy.link",
-                                                                   comment: "Gini privacy policy link url"),
             titleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.title.label",
                                                         comment: "Payment Info title label text"),
             payBillsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.title.label",
                                                                 comment: "Payment Info pay bills title label text"),
             payBillsDescriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.label",
                                                                       comment: "Payment Info pay bills description text"),
-            answers: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.1",
-                                                       comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.2",
-                                                       comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.3",
-                                                       comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.4",
-                                                       comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.5",
-                                                       comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.6",
-                                                       comment: "Answers description")],
-            questions: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.1",
-                                                         comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.2",
-                                                         comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.3",
-                                                         comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.4",
-                                                         comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.5",
-                                                         comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.6",
-                                                         comment: "Questions titles")]
+            privacyPolicy: .init(
+                text: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.clickable.text",
+                                                      comment: "Payment info answers clickable privacy policy"),
+                urlText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.privacypolicy.link",
+                                                         comment: "Gini privacy policy link url")),
+            faq: .init(
+                titleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.title.label",
+                                                           comment: "Payment Info questions title label text"),
+                questions: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.1",
+                                                             comment: "Questions titles"),
+                            NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.2",
+                                                             comment: "Questions titles"),
+                            NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.3",
+                                                             comment: "Questions titles"),
+                            NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.4",
+                                                             comment: "Questions titles"),
+                            NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.5",
+                                                             comment: "Questions titles"),
+                            NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.6",
+                                                             comment: "Questions titles")],
+                answers: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.1",
+                                                           comment: "Answers description"),
+                          NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.2",
+                                                           comment: "Answers description"),
+                          NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.3",
+                                                           comment: "Answers description"),
+                          NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.4",
+                                                           comment: "Answers description"),
+                          NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.5",
+                                                           comment: "Answers description"),
+                          NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.6",
+                                                           comment: "Answers description")],
+                accessibilityExpandedText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.accessibility.expanded",
+                                                                            comment: "Accessibility label for an expanded FAQ question header"),
+                accessibilityCollapsedText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.accessibility.collapsed",
+                                                                             comment: "Accessibility label for a collapsed FAQ question header"))
         )
     }
     
@@ -153,9 +162,7 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             selectBankTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                   comment: "Select bank text from the top label on payment providers bottom sheet"),
             descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.providers.list.description",
-                                                              comment: "Top description text on payment providers bottom sheet"),
-            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                            comment: "Close button accessibility label text")
+                                                              comment: "Top description text on payment providers bottom sheet")
         )
     }
     
@@ -173,6 +180,8 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                              comment: "accessibility label for invoice image"),
             closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accessibility.label",
                                                                             comment: "accessibility label for close button"),
+            closeButtonAccessibilityHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accessibility.hint",
+                                                                           comment: "accessibility hint for close button"),
             sheetGrabberAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.label",
                                                                              comment: "Sheet grabber accessibility label"),
             sheetGrabberAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.hint",

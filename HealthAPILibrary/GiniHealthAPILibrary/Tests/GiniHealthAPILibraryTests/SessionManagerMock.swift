@@ -1,8 +1,8 @@
 //
 //  SessionManagerMock.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/26/19.
+//  Copyright © 2019 Gini. All rights reserved.
 //
 
 import Foundation
@@ -22,7 +22,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     static let paymentID = "b4bd3e80-7bd1-11e4-95ab-000000000000"
     var documents: [Document] = []
     var providersResponse: [PaymentProviderResponse] = []
-    var providerResponse: PaymentProviderResponse =  loadProviderResponse()
+    var providerResponse: PaymentProviderResponse = load(fromFile: "provider", type: "json")
     var paymentRequests: [PaymentRequest] = []
     var extractionFeedbackBody: Data?
 
@@ -39,11 +39,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func initializeWithPaymentProvidersResponse() {
-        providersResponse = loadProvidersResponse()
+        providersResponse = load(fromFile: "providers", type: "json")
     }
     
     func initializeWithPaymentRequests() {
-        paymentRequests = loadPaymentRequests()
+        paymentRequests = load(fromFile: "paymentRequests", type: "json")
     }
     
     func initializeWithV2MockedDocuments() {
@@ -95,27 +95,29 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .createPaymentRequest:
                 completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
-                let providerResponse: PaymentProviderResponse = loadProviderResponse()
+                let providerResponse: PaymentProviderResponse = load(fromFile: "provider", type: "json")
                 completion(.success(providerResponse as! T.ResponseType))
             case .paymentProviders:
-                let paymentProvidersResponse: [PaymentProviderResponse] = loadProvidersResponse()
+                let paymentProvidersResponse: [PaymentProviderResponse] = load(fromFile: "providers", type: "json")
                 completion(.success(paymentProvidersResponse as! T.ResponseType))
             case .paymentRequest(_):
                 if resource.params.method == .delete {
                     completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
                 } else {
-                    let paymentRequest: PaymentRequest = loadPaymentRequest()
+                    let paymentRequest: PaymentRequest = load(fromFile: "paymentRequest", type: "json")
                     completion(.success(paymentRequest as! T.ResponseType))
                 }
+            case .paymentRequests(_, _):
+                completion(.success(paymentRequests as! T.ResponseType))
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
             case .payment(_):
-                let payment: Payment = loadPayment()
+                let payment: Payment = load(fromFile: "payment", type: "json")
                 completion(.success(payment as! T.ResponseType))
             case .pdfWithQRCode(_,_):
                 let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
-                    completion(.success(pdfData as! T.ResponseType))
+                completion(.success(pdfData as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
@@ -129,7 +131,8 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
-                let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+                let imageData = UIImage(named: "Gini-Test-Payment-Provider",
+                                        in: Bundle.module, compatibleWith: nil)?.pngData()
                 completion(.success(imageData as! T.ResponseType))
             default:
                 break

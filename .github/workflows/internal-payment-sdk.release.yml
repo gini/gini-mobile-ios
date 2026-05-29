@@ -9,7 +9,9 @@ on:
 
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/internal-payment-sdk.check.yml@main
+    uses: ./.github/workflows/internal-payment-sdk.check.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
     needs: check
@@ -34,7 +36,7 @@ jobs:
         lane: 'publish_swift_package'
         options: >
           { 
-            "project_folder": "GiniComponents",
+            "project_folder": "GiniComponents/InternalPaymentSDK",
             "package_folder": "GiniInternalPaymentSDK",
             "version_file_path": "GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift",
             "git_tag": "${{ github.ref }}", 

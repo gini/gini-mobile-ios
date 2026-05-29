@@ -207,6 +207,63 @@ class MainScreen {
         fileElement.tap()
     }
     
+    /// Navigates the document picker to the BrowserStack-supplied `Custom_Files` folder and taps the file.
+    ///
+    /// BrowserStack places non-media files directly at:
+    /// **Browse → Custom_Files → <file>**
+    ///
+    /// - Parameter fileName: File name without extension (matched with CONTAINS[c]).
+    func tapFileWithNameFromBSCustomFiles(fileName: String) {
+        let customFilesFolder = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+
+        // Only tap Browse if Custom_Files is not already visible (i.e. we're still on Recents).
+        if !customFilesFolder.exists {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+            }
+        }
+
+        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5), "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test")
+        customFilesFolder.tap()
+
+        // Tap the target file
+        let fileElement = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 5), "File '\(fileName)' not found in Custom_Files folder")
+        fileElement.tap()
+    }
+
+    /**
+     Picks a file by name from the document picker, automatically routing to BrowserStack's
+     `Custom_Files` folder when running on BrowserStack, or to Recents when running locally.
+     - Parameters:
+       - fileName: File name without extension (matched with CONTAINS[c]).
+     */
+    func tapFileFromBestAvailableSource(fileName: String) {
+        let customFilesAny = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+
+        // Check if Custom_Files is already visible before tapping Browse.
+        // When the Files picker opens on the Browse locations screen (not Recents), Custom_Files
+        // is already in the list — tapping Browse again navigates to a different level and breaks detection.
+        if !customFilesAny.waitForExistence(timeout: 3) {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+                sleep(5) // Give the Files app time to render the Browse location list (BrowserStack can be slow)
+            }
+        }
+
+        if customFilesAny.waitForExistence(timeout: 15) {
+            // BrowserStack: Custom_Files is visible — navigate into it and pick the file.
+            tapFileWithNameFromBSCustomFiles(fileName: fileName)
+        } else {
+            // Local: fall back to Recents-based lookup.
+            tapFileWithName(fileName: fileName)
+        }
+    }
+
     func assertTextIsDisplayedInAnyStaticText(expectedText: String) {
         
         // Get all static text elements
@@ -222,6 +279,5 @@ class MainScreen {
         // If the text was not found in any static text element
         XCTFail("The text '\(expectedText)' was not found in any static text element.")
     }
-
 }
 

@@ -10,6 +10,8 @@ on:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
+      SONAR_TOKEN:
+        required: false
   workflow_dispatch:
 
 concurrency:
@@ -63,7 +65,9 @@ jobs:
     - name: Convert coverage to SonarQube generic format
       if: ${{ matrix.target == 'GiniHealthAPILibrary' }}
       run: |
-        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult > HealthAPILibrary/coverage.xml
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
+          | sed 's|path="[^"]*/HealthAPILibrary/|path="|g' \
+          > HealthAPILibrary/coverage.xml
 
     - name: Upload coverage report
       if: ${{ matrix.target == 'GiniHealthAPILibrary' }}

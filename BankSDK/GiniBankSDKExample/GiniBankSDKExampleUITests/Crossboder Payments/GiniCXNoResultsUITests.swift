@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-//
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings.
 // 2. Upload to device: "cx_no_results_invoice" — a document that produces no CX extractions
@@ -34,14 +31,23 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert the No-Results screen (retry button) appears instead of Transfer Summary
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30),
                       "No-Results screen should be displayed when CX backend returns no extractions.")
@@ -57,14 +63,23 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
         //Tap Back to camera button

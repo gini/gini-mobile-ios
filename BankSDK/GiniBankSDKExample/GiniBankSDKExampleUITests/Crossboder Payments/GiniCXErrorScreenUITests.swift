@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-
 /**
  Group F — Smoke tests that verify the Error screen behaviour when `productTag = cxExtractions`.
 
@@ -26,6 +23,8 @@ class GiniCXErrorScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Tap Photo Payment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -51,6 +50,8 @@ class GiniCXErrorScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Tap Photo Payment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up

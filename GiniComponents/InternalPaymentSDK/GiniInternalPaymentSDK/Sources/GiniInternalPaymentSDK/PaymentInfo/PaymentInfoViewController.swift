@@ -10,7 +10,8 @@ import UIKit
 import GiniUtilites
 import Combine
 
-public final class PaymentInfoViewController: UIViewController {
+public final class PaymentInfoViewController: GiniBottomSheetViewController {
+    
     let viewModel: PaymentInfoViewModel
 
     private var portraitConstraints: [NSLayoutConstraint] = []
@@ -59,8 +60,8 @@ public final class PaymentInfoViewController: UIViewController {
     private lazy var payBillsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.configuration.payBillsTitleFont
-        label.textColor = viewModel.configuration.payBillsTitleColor
+        label.font = viewModel.configuration.payBills.titleFont
+        label.textColor = viewModel.configuration.payBills.titleColor
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -68,6 +69,7 @@ public final class PaymentInfoViewController: UIViewController {
         paragraphStyle.lineHeightMultiple = Constants.payBillsTitleLineHeight
         label.attributedText = NSMutableAttributedString(string: viewModel.strings.payBillsTitleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -80,6 +82,7 @@ public final class PaymentInfoViewController: UIViewController {
         textView.textContainer.lineFragmentPadding = 0
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = .clear
+        textView.adjustsFontForContentSizeCategory = true
         textView.attributedText = viewModel.payBillsDescriptionAttributedText
         textView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
         return textView
@@ -88,15 +91,16 @@ public final class PaymentInfoViewController: UIViewController {
     private lazy var questionsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.configuration.questionsTitleFont
-        label.textColor = viewModel.configuration.questionsTitleColor
+        label.font = viewModel.configuration.questionsTitle.font
+        label.textColor = viewModel.configuration.questionsTitle.color
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
-        label.attributedText = NSMutableAttributedString(string: viewModel.strings.questionsTitleText,
+        label.attributedText = NSMutableAttributedString(string: viewModel.strings.faq.titleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -125,6 +129,14 @@ public final class PaymentInfoViewController: UIViewController {
         questionsTableView.heightAnchor.constraint(equalToConstant: Constants.questionTitleHeight)
     }()
     
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+    
     private var cancellables = Set<AnyCancellable>()
     
     public init(viewModel: PaymentInfoViewModel) {
@@ -141,29 +153,25 @@ public final class PaymentInfoViewController: UIViewController {
         self.title = viewModel.strings.titleText
         self.setupView()
         bindToTableViewSizeUpdates()
+        observeContentSizeCategory()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // attributedText with an explicit .font attribute does not auto-scale via
+        // adjustsFontForContentSizeCategory — only the label/textView .font property
+        // benefits from that flag. Rebuild attributed content here so the text view
+        // always reflects the current Dynamic Type size on first appearance.
+        handleContentSizeCategoryChange()
     }
 
     private func setupView() {
-        addCloseButton()
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
         setupInitialLayout()
         setupViewVisibility()
-    }
-    
-    private func addCloseButton() {
-        let closeIconTintColor = viewModel.configuration.closeIconTintColor
-        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate)
-
-        let closeButton = UIBarButtonItem(image: closeButtonIcon,
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(didTapCloseButton))
-
-        closeButton.tintColor = closeIconTintColor
-        closeButton.accessibilityLabel = viewModel.strings.accessibilityCloseText
-        navigationItem.leftBarButtonItem = closeButton
     }
     
     private func setupViewHierarchy() {
@@ -178,7 +186,7 @@ public final class PaymentInfoViewController: UIViewController {
     }
     
     private func setupViewAttributes() {
-        view.backgroundColor = viewModel.configuration.backgroundColor
+        view.backgroundColor = viewModel.configuration.layout.backgroundColor
     }
     
     private func setupViewConstraints() {
@@ -233,12 +241,17 @@ public final class PaymentInfoViewController: UIViewController {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
+            // Pin the content view to the scroll view's content layout guide so that
+            // contentSize grows with the content and vertical scrolling works when the
+            // content exceeds the bottom-sheet frame height (e.g. at 200 % Dynamic Type).
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+
+            // Lock the content width to the scroll view frame — no horizontal scrolling.
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
     }
     
@@ -263,7 +276,6 @@ public final class PaymentInfoViewController: UIViewController {
             payBillsTitleLabel.topAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.payBillsTitleTopPadding),
             payBillsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             payBillsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
-            payBillsTitleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxPayBillsTitleHeight),
             payBillsDescriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             payBillsDescriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
             payBillsDescriptionTextView.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
@@ -289,6 +301,7 @@ public final class PaymentInfoViewController: UIViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
+        UIAccessibility.post(notification: .layoutChanged, argument: questionsTableView.headerView(forSection: section))
     }
     
     private func bindToTableViewSizeUpdates() {
@@ -299,9 +312,20 @@ public final class PaymentInfoViewController: UIViewController {
                 self?.tableViewQuestionHeightConstraint.constant = value.height
             }.store(in: &cancellables)
     }
-    
-    @objc private func didTapCloseButton() {
-        dismiss(animated: true)
+
+    private func observeContentSizeCategory() {
+        NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleContentSizeCategoryChange()
+            }.store(in: &cancellables)
+    }
+
+    private func handleContentSizeCategoryChange() {
+        viewModel.refreshAttributedContent()
+        payBillsDescriptionTextView.attributedText = viewModel.payBillsDescriptionAttributedText
+        payBillsDescriptionTextView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
+        questionsTableView.reloadData()
     }
 
     // Handle orientation change
@@ -396,7 +420,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < viewModel.questions.count - 1 else { return UIView() }
         let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
-        separatorView.backgroundColor = viewModel.configuration.separatorColor
+        separatorView.backgroundColor = viewModel.configuration.layout.separatorColor
         return separatorView
     }
     
@@ -428,7 +452,6 @@ extension PaymentInfoViewController {
         
         static let payBillsTitleTopPadding = 16.0
         static let payBillsTitleLineHeight = 1.26
-        static let maxPayBillsTitleHeight = 100.0
         static let payBillsDescriptionTopPadding = 8.0
         static let payBillsDescriptionRightPadding = 31.0
         static let minPayBillsDescriptionHeight = 100.0

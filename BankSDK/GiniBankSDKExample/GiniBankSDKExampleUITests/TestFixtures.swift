@@ -35,11 +35,14 @@ enum TestFixtures {
         /// Used in No-Results screen tests.
         static let cxNoResultsInvoice = "cx_no_results_invoice"
 
-        /// First page of a multi-page CX invoice.
-        static let cxMultiPageInvoice = "cx_invoice_multi_page"
+        /// Multi-page CX invoice PDF.
+        static let cxMultiPageInvoicePDF = "cx_invoice_multi_page"
+
+        /// First page of a multi-page CX invoice PDF.
+        static let cxMultiPageInvoicePage1 = "multi_page_invoice_CX_page1"
 
         /// Second page of a multi-page CX invoice.
-        static let cxMultiPageInvoicePage2 = "cx_invoice_page2"
+        static let cxMultiPageInvoicePage2 = "multi_page_invoice_CX_page2"
 
         // MARK: SEPA
 
