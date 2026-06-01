@@ -34,15 +34,11 @@ platform :ios do
       version_file_path     - the path to the file containing the package version
       git_tag               - the git tag name used to release the project
       repo_url              - the url of the release repository
-      ci                    - set to true if running on a CI machine
 
   DOC
   lane :publish_swift_package do |options|
-    (project_folder, package_folder, version_file_path, git_tag, repo_url, ci) =
-      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url, :ci], UI)
-
-      # Coerce boolean strings to actual booleans
-      ci = ci.to_s.downcase == "true"
+    (project_folder, package_folder, version_file_path, git_tag, repo_url) =
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url], UI)
 
       tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
       package_version = get_project_version_from_version_file(version_file_path, UI)

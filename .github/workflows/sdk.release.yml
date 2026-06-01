@@ -75,6 +75,5 @@ jobs:
               "package_folder": "${{ inputs.package_folder }}",
               "version_file_path": "${{ inputs.version_file_path }}",
               "git_tag": "${{ inputs.git_tag }}",
-              "repo_url": "${{ inputs.repo_url }}",
-              "ci": true
+              "repo_url": "${{ inputs.repo_url }}"
             }
