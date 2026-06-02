@@ -41,7 +41,7 @@ jobs:
           lane: 'generate_sboms'
           options: >
             {
-              "swift_package_repo_urls": "https://github.com/gini/bank-api-library-ios.git,https://github.com/gini/bank-sdk-ios.git,https://github.com/gini/capture-sdk-ios.git,https://github.com/gini/health-api-library-ios.git,https://github.com/gini/health-sdk-ios.git,https://github.com/gini/internal-payment-sdk-ios.git,https://github.com/gini/utilites-ios.git"
+              "swift_package_repo_urls": "https://github.com/gini/bank-api-library-ios.git,https://github.com/gini/bank-sdk-ios.git,https://github.com/gini/capture-sdk-ios.git,https://github.com/gini/health-api-library-ios.git,https://github.com/gini/health-sdk-ios.git,https://github.com/gini/utilites-ios.git"
             }
 
       - name: validate cyclonedx sboms
@@ -54,7 +54,6 @@ jobs:
           ./cyclonedx validate --input-file fastlane/capture-sdk-ios/GiniCaptureSDK-sbom.json
           ./cyclonedx validate --input-file fastlane/health-api-library-ios/GiniHealthAPILibrary-sbom.json
           ./cyclonedx validate --input-file fastlane/health-sdk-ios/GiniHealthSDK-sbom.json
-          ./cyclonedx validate --input-file fastlane/internal-payment-sdk-ios/GiniInternalPaymentSDK-sbom.json
           ./cyclonedx validate --input-file fastlane/utilites-ios/GiniUtilites-sbom.json
 
       - name: archive the cyclonedx sboms
