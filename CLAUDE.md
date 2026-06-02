@@ -20,7 +20,7 @@ open GiniMobile.xcworkspace
 xcodebuild clean test \
   -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
   -scheme "GiniBankSDKExampleTests" \
-  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.5" \
+  -destination "platform=iOS Simulator,name=iPhone 16,OS=26.2" \
   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 ```
 
@@ -113,8 +113,8 @@ PP-4102
 
 ## CI Environment
 
-- **Xcode:** 16.4
-- **Simulator:** iPhone 16, iOS 18.5
+- **Xcode:** 26.2
+- **Simulator:** iPhone 16, iOS 26.2
 - **Runner:** macOS latest
 - **Minimum deployment target:** iOS 13+ (HealthAPILibrary: iOS 12+)
 
