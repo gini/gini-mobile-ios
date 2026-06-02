@@ -103,6 +103,18 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                          "should not throw an error since qr code is valid")
     }
 
+    func testEPC06912QRCodeMissingIBANDoesNotCrash() {
+        // Malformed EPC QR code: starts with BCD but IBAN field (index 6) is absent
+        // Reproduces PP-2591: "AUTOHAUS MARTIN WURST GMBH" case where QR code stops at beneficiary name
+        let scannedString = "BCD\r\n001\r\n2\r\nSCT\r\nGENODES1NUE\r\nAUTOHAUS MARTIN WURST GMBH"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                      withConfig: giniConfiguration),
+                             "should throw a validation error for EPC QR code missing IBAN")
+        XCTAssertNil(qrDocument.qrCodeFormat,
+                     "qrCodeFormat should be nil for EPC QR code missing IBAN")
+    }
+
     func testGiniQRCode() {
         let scannedString = "https://pay.gini.net/482a6cc2-8247-4724-af5d-24cc44408254"
         let qrDocument = GiniQRCodeDocument(scannedString: scannedString)

@@ -58,7 +58,7 @@ import GiniUtilites
                 print("WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.")
             }
 
-            if IBANValidator().isValid(iban: lines[6]) {
+            if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
                 return .epc06912
             } else {
                 return nil
