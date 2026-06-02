@@ -419,8 +419,8 @@ platform :ios do
 
   DOC
   lane :generate_sboms do |options|
-    swift_package_repo_urls =
-      check_and_get_options(options, [:swift_package_repo_urls], UI).first
+    (swift_package_repo_urls,) =
+      check_and_get_options(options, [:swift_package_repo_urls], UI)
 
       UI.message <<~MESSAGE
         Will generate CycloneDX SBOMs for swift packages:
