@@ -110,7 +110,10 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                       withConfig: giniConfiguration),
-                             "should throw a validation error for EPC QR code missing IBAN")
+                             "should throw a validation error for EPC QR code missing IBAN") { error in
+            XCTAssertTrue(error as? DocumentValidationError == DocumentValidationError.qrCodeFormatNotValid,
+                          "should throw qrCodeFormatNotValid")
+        }
         XCTAssertNil(qrDocument.qrCodeFormat,
                      "qrCodeFormat should be nil for EPC QR code missing IBAN")
     }

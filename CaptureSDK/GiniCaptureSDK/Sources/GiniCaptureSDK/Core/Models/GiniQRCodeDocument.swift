@@ -54,7 +54,7 @@ import GiniUtilites
             return .eps4mobile
         } else if let lines = Optional(self.scannedString.splitlines),
                   lines.count > 0 && lines[0] == QRCodesFormat.epc06912.prefixURL {
-            if !(lines[2] == "1" || lines[2] == "2") {
+            if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
                 print("WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.")
             }
 
