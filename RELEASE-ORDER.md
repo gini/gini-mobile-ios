@@ -26,8 +26,3 @@ Release order for GiniHealthSDK:
     3. GiniInternalPaymentSDK
     4. GiniHealthSDK
 
-Release order for GiniMerchantSDK:
-    1. GiniHealthAPILibrary
-    2. GiniUtilites
-    3. GiniInternalPaymentSDK
-    4. GiniMerchantSDK

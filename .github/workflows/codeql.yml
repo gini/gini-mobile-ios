@@ -15,7 +15,6 @@ jobs:
     outputs:
       bank-sdk: ${{ steps.filter.outputs['bank-sdk'] }}
       health-sdk: ${{ steps.filter.outputs['health-sdk'] }}
-      merchant-sdk: ${{ steps.filter.outputs['merchant-sdk'] }}
       capture-sdk: ${{ steps.filter.outputs['capture-sdk'] }}
       health-api-library: ${{ steps.filter.outputs['health-api-library'] }}
       bank-api-library: ${{ steps.filter.outputs['bank-api-library'] }}
@@ -37,8 +36,6 @@ jobs:
             - 'HealthSDK/**'
             - 'HealthAPILibrary/**'
             - 'GiniComponents/GiniUtilites/**'
-          merchant-sdk:
-            - 'MerchantSDK/**'
           health-api-library:
             - 'HealthAPILibrary/**'
           bank-api-library:
@@ -84,7 +81,6 @@ jobs:
     if: >-
       needs.detect-changes.outputs['bank-sdk'] == 'true' ||
       needs.detect-changes.outputs['health-sdk'] == 'true' ||
-      needs.detect-changes.outputs['merchant-sdk'] == 'true' ||
       needs.detect-changes.outputs['capture-sdk'] == 'true' ||
       needs.detect-changes.outputs['health-api-library'] == 'true' ||
       needs.detect-changes.outputs['bank-api-library'] == 'true'
@@ -104,9 +100,6 @@ jobs:
         - scheme: GiniHealthSDKExample
           project: HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
           change-key: health-sdk
-        - scheme: GiniMerchantSDKExample
-          project: MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj
-          change-key: merchant-sdk
 
     steps:
     - name: Check if scheme should run

@@ -180,7 +180,7 @@ extension GiniHealthAPI {
 
             // Initialize GiniHealthAPILib
             switch api {
-            case .default, .merchant:
+            case .default:
                 return createHealthAPI()
             case let .custom(_, tokenSource):
                 return createHealthAPI(tokenSource: tokenSource)
