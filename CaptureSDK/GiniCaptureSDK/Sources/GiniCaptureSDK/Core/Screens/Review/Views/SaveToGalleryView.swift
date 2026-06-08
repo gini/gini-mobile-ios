@@ -52,7 +52,7 @@ final class SaveToGalleryView: UIView {
         }
     }
 
-    @Published var valueChanged = false
+    @Published private(set) var valueChanged = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
