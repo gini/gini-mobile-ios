@@ -44,7 +44,6 @@ import GiniUtilites
     fileprivate let scannedString: String
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
-    fileprivate let epc06912LinesCount = 12
     public lazy var qrCodeFormat: QRCodesFormat? = {
         if self.scannedString.starts(with: QRCodesFormat.giniQRCode.prefixURL) {
             return .giniQRCode
@@ -55,7 +54,8 @@ import GiniUtilites
         } else if let lines = Optional(self.scannedString.splitlines),
                   lines.count > 0 && lines[0] == QRCodesFormat.epc06912.prefixURL {
             if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
-                Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.", event: "EPC QR code")
+                Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.",
+                    event: "EPC QR code")
             }
 
             if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
@@ -69,7 +69,10 @@ import GiniUtilites
     }()
 
     init(scannedString: String, uploadMetadata: Document.UploadMetadata? = nil) {
-        self.scannedString = scannedString
+        // Defensive: strip any embedded null bytes. The camera pipeline (Camera.swift)
+        // handles truncation at the bit-stream level before reaching here, but callers
+        // using this public initialiser directly may pass strings with \0 characters.
+        self.scannedString = scannedString.replacingOccurrences(of: "\0", with: "")
         self.uploadMetadata = uploadMetadata
         self.id = UUID().uuidString
         super.init()
