@@ -1,4 +1,4 @@
-Copyright (c) 2021-2022, Gini GmbH
+Copyright (c) 2021, Gini GmbH
 
 All rights reserved.
 
@@ -11,3 +11,17 @@ relationship between Gini and the licensee.
 
 For license related inquiries contact Gini via the email address
 technical-support@gini.net.
+
+# Module Licenses
+
+Each module in this repository is licensed individually. Find the applicable license for the module you are using:
+
+| Module | License |
+|--------|---------|
+| Gini Bank API Library | [LICENSE.md](BankAPILibrary/GiniBankAPILibrary/LICENSE) |
+| Gini Bank SDK | [LICENSE.md](BankSDK/GiniBankSDK/LICENSE) |
+| Gini Capture SDK | [LICENSE.md](CaptureSDK/GiniCaptureSDK/LICENSE) |
+| Gini Utilites | [LICENSE.md](GiniComponents/Utilities/LICENSE) |
+| Gini Health API Library | [LICENSE.md](HealthAPILibrary/GiniHealthAPILibrary/LICENSE) |
+| Gini Health SDK | [LICENSE.md](HealthSDK/GiniHealthSDK/LICENSE) |
+| Gini Internal Payment SDK | [LICENSE.md](GiniComponents/InternalPaymentSDK/LICENSE) |
