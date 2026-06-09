@@ -302,9 +302,7 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        }
+        let okAction = UIAlertAction(title: "OK", style: .default)
         alertViewController.addAction(okAction)
         alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
@@ -315,9 +313,7 @@ final class AppCoordinator: Coordinator {
                                                     message: message,
                                                     preferredStyle: .alert)
 
-        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        }
+        let okAction = UIAlertAction(title: "OK", style: .default)
         alertViewController.addAction(okAction)
         alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
