@@ -289,10 +289,11 @@ final class AppCoordinator: Coordinator {
                                                     "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+        let jaAction = UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
-        
+        }
+        alertViewController.addAction(jaAction)
+        alertViewController.preferredAction = jaAction
         rootViewController.present(alertViewController, animated: true)
     }
     
@@ -301,22 +302,24 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
-    
+
     fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
                                                     message: message,
                                                     preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
     

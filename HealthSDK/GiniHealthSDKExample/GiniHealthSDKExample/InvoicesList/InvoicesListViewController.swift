@@ -193,7 +193,9 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
         let alertController = UIAlertController(title: viewModel.errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+        let okAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(okAction)
+        alertController.preferredAction = okAction
         self.present(alertController, animated: true)
     }
 }
