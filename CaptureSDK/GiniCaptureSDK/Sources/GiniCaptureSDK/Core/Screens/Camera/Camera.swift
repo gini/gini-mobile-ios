@@ -441,7 +441,7 @@ fileprivate extension Camera {
     // low nibble of payload[b] OR'd with high nibble of payload[b+1].
     // (payload[b] << 4 in UInt8 naturally discards the high nibble via overflow.)
     // Returns nil for non-byte-mode streams or when the declared count exceeds the data.
-    static func unpackByteModePayload(_ data: Data, version: Int) -> Data? {
+    internal static func unpackByteModePayload(_ data: Data, version: Int) -> Data? {
         let bytes = Array(data)
         guard bytes.count >= 2, bytes[0] >> 4 == 0b0100 else { return nil }
 
