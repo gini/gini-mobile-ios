@@ -416,17 +416,21 @@ fileprivate extension Camera {
     // subsequent EPC fields. CIQRCodeDescriptor.errorCorrectedPayload is the raw QR
     // data-codeword bit stream; we parse it directly to recover the full content.
     func qrCodeString(from metadataObj: AVMetadataMachineReadableCodeObject) -> String? {
-        if let descriptor = metadataObj.descriptor as? CIQRCodeDescriptor,
-           let contentData = Camera.unpackByteModePayload(descriptor.errorCorrectedPayload,
-                                                          version: descriptor.symbolVersion),
-           contentData.contains(0x00) {
-            let cleanData = contentData.filter { $0 != 0x00 }
-            // Try UTF-8 first (EPC character set "1"). Latin-1 never returns nil (every
-            // byte 0x00–0xFF is valid), so it is a safe final fallback for character set "2".
-            return String(data: cleanData, encoding: .utf8)
-                ?? String(data: cleanData, encoding: .isoLatin1)
-        }
-        return metadataObj.stringValue
+        Camera.resolveQRString(descriptor: metadataObj.descriptor as? CIQRCodeDescriptor,
+                               fallbackStringValue: metadataObj.stringValue)
+    }
+
+    internal static func resolveQRString(descriptor: CIQRCodeDescriptor?,
+                                         fallbackStringValue: String?) -> String? {
+        guard let descriptor else { return fallbackStringValue }
+        guard let contentData = unpackByteModePayload(descriptor.errorCorrectedPayload,
+                                                      version: descriptor.symbolVersion),
+              contentData.contains(0x00) else { return fallbackStringValue }
+        let cleanData = contentData.filter { $0 != 0x00 }
+        // Try UTF-8 first (EPC character set "1"). Latin-1 never returns nil (every
+        // byte 0x00–0xFF is valid), so it is a safe final fallback for character set "2".
+        return String(data: cleanData, encoding: .utf8)
+            ?? String(data: cleanData, encoding: .isoLatin1)
     }
 
     // Extracts content bytes from a QR byte-mode data-codeword bit stream.

@@ -321,4 +321,100 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                          "should not throw an error since qr code is valid")
         XCTAssertEqual(qrDocument.qrCodeFormat, .giniQRCode)
     }
+
+    // MARK: - resolveQRString
+
+    func testResolveQRStringWithNilDescriptorReturnsFallback() {
+        // When there is no CIQRCodeDescriptor the original stringValue must be returned unchanged
+        XCTAssertEqual(Camera.resolveQRString(descriptor: nil, fallbackStringValue: "bank://test"),
+                       "bank://test")
+    }
+
+    func testResolveQRStringWithNilDescriptorAndNilFallbackReturnsNil() {
+        XCTAssertNil(Camera.resolveQRString(descriptor: nil, fallbackStringValue: nil))
+    }
+
+    // MARK: - unpackByteModePayload — version 1–9 path
+
+    func testUnpackByteModePayloadVersion19Roundtrip() {
+        // Payload for "BCD" encoded with version 1 (8-bit character count).
+        // Bit layout (40 bits = 5 bytes):
+        //   [0100][00000011][01000010 01000011 01000100][0000 terminator]
+        //   Byte 0: 0x40  (mode=0100, count bits 7–4=0000)
+        //   Byte 1: 0x34  (count bits 3–0=0011, 'B' bits 7–4=0100)
+        //   Byte 2: 0x24  ('B' bits 3–0=0010, 'C' bits 7–4=0100)
+        //   Byte 3: 0x34  ('C' bits 3–0=0011, 'D' bits 7–4=0100)
+        //   Byte 4: 0x40  ('D' bits 3–0=0100, terminator=0000)
+        let payload = Data([0x40, 0x34, 0x24, 0x34, 0x40])
+        XCTAssertEqual(Camera.unpackByteModePayload(payload, version: 1),
+                       Data([0x42, 0x43, 0x44]),
+                       "version 1 (8-bit count) must extract 'BCD' correctly")
+    }
+
+    func testUnpackByteModePayloadSingleByteReturnsNil() {
+        // Fewer than 2 bytes — cannot read the mode indicator
+        XCTAssertNil(Camera.unpackByteModePayload(Data([0x40]), version: 1))
+    }
+
+    func testUnpackByteModePayloadVersion10TwoBytesReturnsNil() {
+        // version >= 10 needs 3 bytes to read the 16-bit count; 2 bytes must return nil
+        XCTAssertNil(Camera.unpackByteModePayload(Data([0x40, 0x00]), version: 10))
+    }
+
+    func testUnpackByteModePayloadZeroCharCountReturnsNil() {
+        // Both nibbles of the 8-bit count are zero → charCount = 0 → must return nil
+        XCTAssertNil(Camera.unpackByteModePayload(Data([0x40, 0x00]), version: 1))
+    }
+
+    // MARK: - EPC extractor missing-field branches
+
+    func testEPC06912QRCodeEmptyBICYieldsEmptyString() {
+        // Line 4 (BIC) is empty — extractor must return "" for the "bic" key
+        let scannedString = "BCD\n001\n1\nSCT\n\nMax Mustermann\nDE52210900070088299309\nEUR100.00"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.extractedParameters["bic"], "")
+    }
+
+    func testEPC06912QRCodeEmptyNameYieldsEmptyString() {
+        // Line 5 (beneficiary name) is empty — extractor must return "" for "paymentRecipient"
+        let scannedString = "BCD\n001\n1\nSCT\nGENODEF1KIL\n\nDE52210900070088299309\nEUR100.00"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.extractedParameters["paymentRecipient"], "")
+    }
+
+    func testEPC06912QRCodeBothReferencesEmptyYieldsEmptyString() {
+        // Both structured reference (line 9) and unstructured reference (line 10) are empty —
+        // extractor must return "" for "paymentReference"
+        let scannedString = "BCD\n001\n1\nSCT\nGENODEF1KIL\nMax Mustermann\nDE52210900070088299309\nEUR100.00\n\n\n"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.extractedParameters["paymentReference"], "")
+    }
+
+    func testEPC06912QRCodeAmountWithoutCurrencyPrefixYieldsEmptyAmount() {
+        // Amount field has no 3-letter currency prefix — normalize() returns nil,
+        // so "amountToPay" must be "" rather than a malformed string
+        let scannedString = "BCD\n001\n1\nSCT\nGENODEF1KIL\nMax Mustermann\nDE52210900070088299309\n1456.89"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.extractedParameters["amountToPay"], "")
+    }
+
+    func testEPC06912QRCodeMissingAmountFieldYieldsEmptyAmount() {
+        // Amount field (line 7) is absent entirely — extractor must return "" for "amountToPay"
+        let scannedString = "BCD\n001\n1\nSCT\nGENODEF1KIL\nMax Mustermann\nDE52210900070088299309"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.extractedParameters["amountToPay"], "")
+    }
+
+    // MARK: - qrCodeFormat edge cases
+
+    func testEPC06912QRCodeUnknownCharacterSetIsStillParsed() {
+        // Character set "3" is outside the EPC spec (only "1"=UTF-8 and "2"=ISO 8859-1 are valid).
+        // The SDK logs a warning but continues rather than rejecting the QR code outright.
+        let scannedString = "BCD\n001\n3\nSCT\nGENODEF1KIL\nMax Mustermann\nDE52210900070088299309\nEUR100.00"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertEqual(qrDocument.qrCodeFormat, .epc06912,
+                       "unknown charset must still resolve to epc06912 when IBAN is valid")
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                   withConfig: giniConfiguration))
+    }
 }
