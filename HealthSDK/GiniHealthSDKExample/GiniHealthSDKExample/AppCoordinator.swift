@@ -289,7 +289,7 @@ final class AppCoordinator: Coordinator {
                                                     "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
         
-        let jaAction = UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+        let jaAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         }
         alertViewController.addAction(jaAction)
