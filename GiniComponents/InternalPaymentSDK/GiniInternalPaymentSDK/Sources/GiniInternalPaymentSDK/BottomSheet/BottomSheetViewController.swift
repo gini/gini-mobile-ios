@@ -107,7 +107,6 @@ public extension BottomSheetViewController {
 // MARK: - Private
 private extension BottomSheetViewController {
     func setupViews() {
-        view.backgroundColor = configuration.dimmingBackgroundColor
         view.isOpaque = false
        
         view.addSubview(dimmedView)

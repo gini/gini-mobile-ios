@@ -91,8 +91,7 @@ extension PoweredByGiniStrings {
 extension BottomSheetConfiguration {
     static var test: BottomSheetConfiguration {
         BottomSheetConfiguration(backgroundColor: .white,
-                                 rectangleColor: .systemGray4,
-                                 dimmingBackgroundColor: UIColor.black.withAlphaComponent(0.5))
+                                 rectangleColor: .systemGray4)
     }
 }
 

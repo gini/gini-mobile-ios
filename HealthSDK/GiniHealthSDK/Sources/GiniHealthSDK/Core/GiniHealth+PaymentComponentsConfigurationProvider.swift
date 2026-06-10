@@ -64,8 +64,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     public var bottomSheetConfiguration: BottomSheetConfiguration {
         BottomSheetConfiguration(
             backgroundColor: GiniColor.standard7.uiColor(),
-            rectangleColor: GiniColor.standard5.uiColor(),
-            dimmingBackgroundColor: GiniColor(lightModeColor: UIColor.black, darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
+            rectangleColor: GiniColor.standard5.uiColor()
         )
     }
 
