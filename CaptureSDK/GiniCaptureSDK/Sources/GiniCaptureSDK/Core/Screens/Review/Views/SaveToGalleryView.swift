@@ -52,6 +52,7 @@ final class SaveToGalleryView: UIView {
         }
     }
 
+    /// Externally read-only; `false` suppresses the initial Combine emission to avoid triggering photo permission on load.
     @Published private(set) var valueChanged = false
 
     override init(frame: CGRect) {
