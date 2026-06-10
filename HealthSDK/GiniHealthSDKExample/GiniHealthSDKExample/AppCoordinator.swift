@@ -302,7 +302,7 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
         alertViewController.addAction(okAction)
         alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
@@ -313,7 +313,7 @@ final class AppCoordinator: Coordinator {
                                                     message: message,
                                                     preferredStyle: .alert)
 
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
         alertViewController.addAction(okAction)
         alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
