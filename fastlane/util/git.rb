@@ -1,4 +1,27 @@
 ##
+# Configures a temporary git credential helper that reads GH_TOKEN from the environment,
+# yields to the given block, then cleans up the helper and git config on exit.
+#
+# Keeps the token out of command lines and process listings.
+#
+def with_git_token_auth
+  credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
+  begin
+    File.write(credential_helper, <<~SCRIPT)
+      #!/bin/bash
+      echo "username=x-access-token"
+      echo "password=${GH_TOKEN}"
+    SCRIPT
+    sh("chmod +x #{credential_helper}")
+    sh("git config --global credential.helper '#{credential_helper}'")
+    yield
+  ensure
+    sh("git config --global --unset credential.helper || true")
+    sh("rm -f #{credential_helper}")
+  end
+end
+
+##
 # Configure git on CI machines.
 #
 # Usually CI machines start with a "clean slate" and we need to set
