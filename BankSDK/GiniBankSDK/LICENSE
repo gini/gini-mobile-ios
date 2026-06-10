@@ -8,5 +8,13 @@ licensee, where the licensee can gain access to a non-exclusive,
 non-transferable usage right which is restricted for the time of a contractual
 relationship between Gini and the licensee.
 
-For license related inquiries contact Gini via the email address 
+For license related inquiries contact Gini via the email address
 technical-support@gini.net.
+
+The Gini Bank SDK uses code from the following libraries:
+
+| Module | License |
+|--------|---------|
+| Gini Bank API Library | [LICENSE.md](../../BankAPILibrary/GiniBankAPILibrary/LICENSE) |
+| Gini Capture SDK | [LICENSE.md](../../CaptureSDK/GiniCaptureSDK/LICENSE) |
+| Gini Utilities | [LICENSE.md](../../GiniComponents/Utilities/LICENSE) |
