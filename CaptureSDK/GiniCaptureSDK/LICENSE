@@ -15,5 +15,5 @@ The Gini Capture SDK uses code from the following libraries:
 
 | Module | License |
 |--------|---------|
-| Gini Bank API Library | [LICENSE.md](https://github.com/gini/gini-mobile-ios/blob/8686dca6aee8768d63dd825f2a1bbe08dd0eec67/BankAPILibrary/GiniBankAPILibrary/LICENSE) |
-| Gini Utilities | [LICENSE.md](https://github.com/gini/gini-mobile-ios/blob/743a4cd19f4eac03a982c2cfd7f7732feb335a06/GiniComponents/Utilities/LICENSE) |
+| Gini Bank API Library | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/8686dca6aee8768d63dd825f2a1bbe08dd0eec67/BankAPILibrary/GiniBankAPILibrary/LICENSE) |
+| Gini Utilities | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/743a4cd19f4eac03a982c2cfd7f7732feb335a06/GiniComponents/Utilities/LICENSE) |
