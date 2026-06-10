@@ -26,7 +26,7 @@ let package = Package(
             name: "GiniInternalPaymentSDK",
             dependencies: ["GiniHealthAPILibrary", "GiniUtilites"]),
         .testTarget(
-            name: "GiniInternalPaymentTests",
+            name: "GiniInternalPaymentSDKTests",
             dependencies: ["GiniInternalPaymentSDK"]),
     ]
 )
