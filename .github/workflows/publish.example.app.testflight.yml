@@ -108,6 +108,7 @@ jobs:
             CODE_SIGN_IDENTITY="Apple Distribution" \
             CODE_SIGN_STYLE=Manual \
             DEVELOPMENT_TEAM=${{ inputs.team_id }} \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             ONLY_ACTIVE_ARCH=NO
 
       - name: Export .ipa File
