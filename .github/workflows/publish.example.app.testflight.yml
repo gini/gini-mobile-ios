@@ -123,16 +123,9 @@ jobs:
           files: "${{ inputs.ipa_name }}.ipa"
           fail: true
 
-      - name: Decode App Store Connect API Key
-        env:
-          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-        run: |
-          mkdir -p build_artifacts
-          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > build_artifacts/AppStoreConnectAPIKey.p8
-
       - name: Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_PATH: build_artifacts/AppStoreConnectAPIKey.p8
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: bundle exec fastlane publish_to_testflight ipa_path:"${{ inputs.ipa_name }}.ipa"
