@@ -1,0 +1,16 @@
+name: SBOM
+
+# Synced to all repos by infra-ci-platform. On every push to main/master (the default
+# branch across Gini repos), generate a CycloneDX SBOM and upload it to the
+# gini-sbom-artifacts S3 bucket.
+on:
+  push:
+    branches: [main, master]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sbom:
+    uses: gini/infra-ci-platform/.github/workflows/infra-ci-platform-sbom.yaml@main

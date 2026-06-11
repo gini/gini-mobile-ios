@@ -1,0 +1,79 @@
+name: Release SDK (Reusable)
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      project_folder:
+        description: 'The folder containing the project to release'
+        required: true
+        type: string
+      package_folder:
+        description: 'The folder containing the package'
+        required: true
+        type: string
+      version_file_path:
+        description: 'The path to the version file'
+        required: true
+        type: string
+      git_tag:
+        description: 'The Git tag for the release'
+        required: true
+        type: string
+      repo_url:
+        description: 'The URL of the release repository'
+        required: true
+        type: string
+    secrets:
+      MOBILE_CI_APP_ID:
+        required: true
+      MOBILE_CI_APP_PRIVATE_KEY:
+        required: true
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    steps:
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: '16.4'
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
+      - name: Configure the git client
+        run: |
+          git config --global user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+      - name: Publish package
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          lane: publish_swift_package
+          options: >
+            {
+              "project_folder": "${{ inputs.project_folder }}",
+              "package_folder": "${{ inputs.package_folder }}",
+              "version_file_path": "${{ inputs.version_file_path }}",
+              "git_tag": "${{ inputs.git_tag }}",
+              "repo_url": "${{ inputs.repo_url }}"
+            }
