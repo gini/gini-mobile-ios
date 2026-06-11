@@ -22,7 +22,7 @@ on:
       xcode_version:
         description: 'Xcode version to use'
         required: false
-        default: '16.4'
+        default: '26.2'
         type: string
       project_path:
         description: 'Relative path to the .xcodeproj file'
@@ -90,11 +90,12 @@ jobs:
               inputs.bundle_identifier_extension != '' &&
               format(',{0}', inputs.bundle_identifier_extension) || ''
             }}
-          DISTRIBUTION_TYPE: appstore
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: bundle exec fastlane download_profiles
+        run: |
+          DISTRIBUTION_TYPE=appstore bundle exec fastlane download_profiles
+          DISTRIBUTION_TYPE=adhoc APP_IDENTIFIER=${{ inputs.bundle_identifier }} bundle exec fastlane download_profiles
 
       - name: Archive Xcode Project
         run: |
