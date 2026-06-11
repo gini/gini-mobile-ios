@@ -22,6 +22,7 @@ public enum DisplayMode: Int {
 public final class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
 
     private let overlayPresenter = GiniOverlayWindowPresenter()
+    private let alertPresenter = GiniAlertWindowPresenter()
     // Stored so viewWillTransition can set isDismissingForRotation before dismissing the sheet.
     private let observableModel: PaymentReviewObservableModel
 
@@ -105,6 +106,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         overlayPresenter.dismiss(animated: false)
+        alertPresenter.dismiss()
         model.viewDidDisappear()
     }
 }
@@ -147,12 +149,13 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
                                                 message: message,
                                                 preferredStyle: .alert)
         let okAction = UIAlertAction(title: model.strings.alertOkButtonTitle,
-                                     style: .default)
+                                     style: .default) { [weak self] _ in
+            self?.alertPresenter.dismiss()
+        }
         alertController.addAction(okAction)
-        // preferredAction must be set after addAction
         alertController.preferredAction = okAction
 
-        giniTopMostViewController().present(alertController, animated: true)
+        alertPresenter.present(alertController, from: self)
     }
     
     private func dismissScreen() {
