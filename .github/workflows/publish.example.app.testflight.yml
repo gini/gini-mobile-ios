@@ -22,7 +22,7 @@ on:
       xcode_version:
         description: 'Xcode version to use'
         required: false
-        default: '16.3'
+        default: '16.4'
         type: string
       project_path:
         description: 'Relative path to the .xcodeproj file'
