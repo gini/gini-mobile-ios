@@ -423,8 +423,15 @@ fileprivate extension Camera {
     internal static func resolveQRString(descriptor: CIQRCodeDescriptor?,
                                          fallbackStringValue: String?) -> String? {
         guard let descriptor else { return fallbackStringValue }
-        guard let contentData = unpackByteModePayload(descriptor.errorCorrectedPayload,
-                                                      version: descriptor.symbolVersion),
+        return resolveQRString(payload: descriptor.errorCorrectedPayload,
+                               version: descriptor.symbolVersion,
+                               fallbackStringValue: fallbackStringValue)
+    }
+
+    internal static func resolveQRString(payload: Data,
+                                         version: Int,
+                                         fallbackStringValue: String?) -> String? {
+        guard let contentData = unpackByteModePayload(payload, version: version),
               contentData.contains(0x00) else { return fallbackStringValue }
         let cleanData = contentData.filter { $0 != 0x00 }
         // Try UTF-8 first (EPC character set "1"). Latin-1 never returns nil (every

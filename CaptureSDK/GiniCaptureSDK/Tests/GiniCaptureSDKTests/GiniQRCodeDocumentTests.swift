@@ -334,6 +334,72 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         XCTAssertNil(Camera.resolveQRString(descriptor: nil, fallbackStringValue: nil))
     }
 
+    // MARK: - resolveQRString(payload:version:fallbackStringValue:)
+
+    func testResolveQRStringPayloadNonByteModeReturnsFallback() {
+        // Numeric-mode indicator (0b0001) — unpackByteModePayload returns nil → fallback
+        let numericPayload = Data([0b0001_0000, 0x00, 0x00])
+        XCTAssertEqual(Camera.resolveQRString(payload: numericPayload,
+                                              version: 1,
+                                              fallbackStringValue: "fallback"),
+                       "fallback")
+    }
+
+    func testResolveQRStringPayloadNonByteModeNilFallbackReturnsNil() {
+        let numericPayload = Data([0b0001_0000, 0x00, 0x00])
+        XCTAssertNil(Camera.resolveQRString(payload: numericPayload,
+                                            version: 1,
+                                            fallbackStringValue: nil))
+    }
+
+    func testResolveQRStringPayloadNoNullBytesReturnsFallback() {
+        // Payload for "Hello" (5 bytes, no 0x00): contentData.contains(0x00) is false → fallback.
+        // Byte layout (version 1, 8-bit count=5):
+        //   [0100][00000101][01001000 01100101 01101100 01101100 01101111][0000 term]
+        let payload = Data([0x40, 0x54, 0x86, 0x56, 0xC6, 0xC6, 0xF0])
+        XCTAssertEqual(Camera.resolveQRString(payload: payload,
+                                              version: 1,
+                                              fallbackStringValue: "original"),
+                       "original")
+    }
+
+    func testResolveQRStringPayloadWithNullByteDecodesUTF8() {
+        // Payload for "Hello\0" (6 bytes): null byte present, content is valid UTF-8.
+        // After stripping nulls resolveQRString must return "Hello".
+        // Byte layout (version 1, 8-bit count=6):
+        //   [0100][00000110][01001000 01100101 01101100 01101100 01101111 00000000][0000 term]
+        let payload = Data([0x40, 0x64, 0x86, 0x56, 0xC6, 0xC6, 0xF0, 0x00])
+        XCTAssertEqual(Camera.resolveQRString(payload: payload,
+                                              version: 1,
+                                              fallbackStringValue: "fallback"),
+                       "Hello")
+    }
+
+    func testResolveQRStringPayloadLatin1NullTerminatedFallsBackToLatin1() {
+        // Payload for [0xDC, 0x00] — "Ü\0" in ISO 8859-1.
+        // 0xDC is not valid UTF-8, so String(utf8) returns nil and Latin-1 fallback is used.
+        // Byte layout (version 1, 8-bit count=2):
+        //   [0100][00000010][11011100 00000000][0000 term]
+        let payload = Data([0x40, 0x2D, 0xC0, 0x00])
+        XCTAssertEqual(Camera.resolveQRString(payload: payload,
+                                              version: 1,
+                                              fallbackStringValue: "fallback"),
+                       "Ü")
+    }
+
+    func testResolveQRStringPayloadAllNullsYieldsEmptyString() {
+        // Payload where every content byte is 0x00: after stripping all nulls cleanData
+        // is empty. String(data:Data(), encoding:.utf8) returns "" — not nil — so
+        // resolveQRString returns "" rather than the fallback.
+        // Byte layout (version 1, 8-bit count=2, content=[0x00, 0x00]):
+        //   [0100][00000010][00000000 00000000][0000 term]
+        let payload = Data([0x40, 0x20, 0x00, 0x00])
+        XCTAssertEqual(Camera.resolveQRString(payload: payload,
+                                              version: 1,
+                                              fallbackStringValue: "fallback"),
+                       "")
+    }
+
     // MARK: - unpackByteModePayload — version 1–9 path
 
     func testUnpackByteModePayloadVersion19Roundtrip() {
