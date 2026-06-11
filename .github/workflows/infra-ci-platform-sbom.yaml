@@ -13,4 +13,4 @@ permissions:
 
 jobs:
   sbom:
-    uses: gini/infra-ci-platform/.github/workflows/infra-ci-platform-sbom.yaml@main
+    uses: gini/infra-ci-platform/.github/workflows/repo-sbom.yaml@main
