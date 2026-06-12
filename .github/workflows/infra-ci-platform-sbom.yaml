@@ -13,4 +13,34 @@ permissions:
 
 jobs:
   sbom:
-    uses: gini/infra-ci-platform/.github/workflows/repo-sbom.yaml@main
+    name: Generate and upload SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+          # SBOM is persisted to S3 below; no GitHub-side artifact needed.
+          upload-artifact: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::794883792908:role/github-actions-sbom-uploader
+          aws-region: eu-central-1
+
+      - name: Upload SBOM to S3
+        env:
+          BUCKET: gini-sbom-artifacts
+          # github.repository is "owner/name"; strip the owner to key by repo name.
+          GH_REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          REPO="${GH_REPO##*/}"
+          aws s3 cp sbom.cdx.json "s3://${BUCKET}/${REPO}/${SHA}/sbom.cdx.json"
+          aws s3 cp sbom.cdx.json "s3://${BUCKET}/${REPO}/latest/sbom.cdx.json"
