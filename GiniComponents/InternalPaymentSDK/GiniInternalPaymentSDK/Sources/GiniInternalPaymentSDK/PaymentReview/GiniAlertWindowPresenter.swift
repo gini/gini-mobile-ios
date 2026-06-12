@@ -27,8 +27,17 @@ final class GiniAlertWindowPresenter {
      */
     func present(_ alertController: UIAlertController,
                  from sourceViewController: UIViewController) {
-        guard !isPresenting,
-              let windowScene = sourceViewController.view.window?.windowScene else { return }
+        guard !isPresenting else { return }
+
+        // Prefer the source VC's window scene; fall back to the foreground active scene
+        // so the alert is still shown if the source VC isn't yet attached to a window
+        // (e.g. during a transition).
+        let windowScene = sourceViewController.view.window?.windowScene
+            ?? UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }
+
+        guard let windowScene else { return }
 
         let window = UIWindow(windowScene: windowScene)
         let rootVC = UIViewController()
@@ -46,6 +55,20 @@ final class GiniAlertWindowPresenter {
      and from the host view controller's `viewDidDisappear`.
      */
     func dismiss() {
+        guard let rootVC = alertWindow?.rootViewController else {
+            tearDown()
+            return
+        }
+        if let presented = rootVC.presentedViewController {
+            presented.dismiss(animated: false) { [weak self] in
+                self?.tearDown()
+            }
+        } else {
+            tearDown()
+        }
+    }
+
+    private func tearDown() {
         let window = alertWindow
         alertWindow = nil
         DispatchQueue.main.async {
