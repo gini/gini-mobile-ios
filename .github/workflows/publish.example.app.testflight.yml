@@ -61,7 +61,7 @@ on:
         required: true
       APP_STORE_API_KEY_ID:
         required: true
-      APP_STORE_API_ISSUER_ID:
+      APP_STORE_API_KEY_ISSUER_ID:
         required: true
 
 jobs:
@@ -127,6 +127,6 @@ jobs:
       - name: Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
-          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: bundle exec fastlane publish_to_testflight ipa_path:"${{ inputs.ipa_name }}.ipa"
