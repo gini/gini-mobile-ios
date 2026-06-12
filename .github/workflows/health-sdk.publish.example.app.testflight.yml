@@ -1,0 +1,30 @@
+name: Upload GiniHealthSDKExample to TestFlight
+
+permissions:
+  contents: read
+on:
+  # schedule:
+    # - cron: '0 0 1 1,4,7,10 *'  # 1st of Jan, Apr, Jul, Oct at midnight UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
+
+jobs:
+  upload-testflight:
+    uses: ./.github/workflows/publish.example.app.testflight.yml
+    with:
+      xcode_version: '26.2'
+      project_path: 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj'
+      scheme: 'GiniHealthSDKExample'
+      bundle_identifier: 'net.gini.healthsdk.example'
+      ipa_name: 'GiniHealthSDKExample'
+    secrets:
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64}}
+      APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      APP_STORE_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
