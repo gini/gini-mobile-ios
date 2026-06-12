@@ -7,16 +7,18 @@
 */
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Schließen";
+"gini.health.close.button.accessibility.hint" = "Tippen zum Schließen";
 "gini.health.bottomSheet.grabber.accessibility.label" = "Anfassbereich";
 "gini.health.bottomSheet.grabber.accessibility.hint" = "Doppeltippen zum Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
-"gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
-"gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
-"gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
 "gini.health.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
-"gini.health.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
+
+"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig";
+"gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig";
+"gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig";
+"gini.health.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig";
+"gini.health.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig";
+
 "gini.health.paymentcomponent.continue.to.overview.label" = "Weiter zur Übersicht";
 "gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text" = "Weiter";
 "gini.health.paymentcomponent.install.app.bottom.sheet.notes.description" = "Hinweis: Bitte aktualisieren oder installieren Sie zunächst die [BANK]-App aus dem App-Store.";
@@ -45,6 +47,9 @@
 "gini.health.paymentcomponent.payment.info.questions.question.4" = "Wer oder Was ist Gini?";
 "gini.health.paymentcomponent.payment.info.questions.question.5" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6" = "Wie erkenne ich, welche Banken unterstützt werden?";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.expanded" = "Erweitert";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed" = "Reduziert";
+
 "gini.health.paymentcomponent.payment.info.title.label" = "Mehr Informationen";
 "gini.health.paymentcomponent.payment.providers.list.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "gini.health.paymentcomponent.powered.by.gini.label" = "Powered by";
@@ -62,6 +67,7 @@
 "gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
+"gini.health.reviewscreen.keyboard.done.button.title" = "Fertig";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
@@ -73,6 +79,7 @@
 
 "gini.health.alert.ok.title.informal" = "OK";
 "gini.health.close.button.accessibility.label.informal" = "Schließen";
+"gini.health.close.button.accessibility.hint.informal" = "Tippen zum Schließen";
 "gini.health.bottomSheet.grabber.accessibility.label.informal" = "Anfassbereich";
 "gini.health.bottomSheet.grabber.accessibility.hint.informal" = "Doppeltippen zum Schließen";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
@@ -110,6 +117,10 @@
 "gini.health.paymentcomponent.payment.info.questions.question.4.informal" = "Wer oder Was ist Gini?";
 "gini.health.paymentcomponent.payment.info.questions.question.5.informal" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6.informal" = "Wie erkenne ich, welche Banken unterstützt werden?";
+
+"gini.health.paymentcomponent.payment.info.questions.accessibility.expanded.informal" = "Erweitert";
+"gini.health.paymentcomponent.payment.info.questions.accessibility.collapsed.informal" = "Reduziert";
+
 "gini.health.paymentcomponent.payment.info.title.label.informal" = "Mehr Informationen";
 "gini.health.paymentcomponent.payment.info.supported.banks.label.informal" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.payment.providers.list.description.informal" = "Du kannst die Rechnung nur bezahlen, wenn du ein Konto bei einer der unten aufgeführten Banken hast.";
@@ -128,6 +139,7 @@
 "gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder.informal" = "IBAN";
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
+"gini.health.reviewscreen.keyboard.done.button.title.informal" = "Fertig";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
 "gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code zur Einleitung einer SEPA-Überweisung.";

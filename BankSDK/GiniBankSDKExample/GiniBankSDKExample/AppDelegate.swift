@@ -19,10 +19,8 @@ import Firebase
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 #if DEBUG
-        /// This is to not initialize what we don't need in the tests.
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
-            return true
-        }
+        applyUITestCleanStateLaunchArguments()
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil { return true }
 #endif
         FirebaseApp.configure()
 
@@ -30,6 +28,25 @@ import Firebase
         coordinator = AppCoordinator(window: window ?? UIWindow())
         coordinator.start()
         return true
+    }
+
+    private func applyUITestCleanStateLaunchArguments() {
+        if CommandLine.arguments.contains("-StartFromCleanState") {
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+                UserDefaults.standard.synchronize()
+            }
+            if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+               let contents = try? FileManager.default.contentsOfDirectory(at: docs, includingPropertiesForKeys: nil) {
+                contents.forEach { try? FileManager.default.removeItem(at: $0) }
+            }
+        }
+        if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
+            UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
+        }
+        if CommandLine.arguments.contains("-DisableReturnAssistant") {
+            GiniBankConfiguration.shared.returnAssistantEnabled = false
+        }
     }
 
     func application(_ app: UIApplication,

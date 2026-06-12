@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-//
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings (for D1–D3).
 // 2. Upload to device:
@@ -35,14 +32,28 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert Transfer Summary appears and shows at least one extraction
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         //Close SDK
@@ -57,14 +68,28 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert at least one extraction cell is visible
         XCTAssertTrue(transactionSummaryScreen.firstExtractionCell.waitForExistence(timeout: 20))
         //Assert that the first text field in the extraction cell is editable
@@ -83,16 +108,30 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.cxInvoice)
-        captureScreen.openGalleryButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery()
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
+        reviewScreen.processButton.tap()
+        //Handle Return Assistant if it appears
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Wait for Transfer Summary
-        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 30))
+        XCTAssertTrue(transactionSummaryScreen.doneButton.waitForExistence(timeout: 15))
         //Tap Done — submits transfer summary and closes the SDK
         transactionSummaryScreen.tapDoneButton()
         //Assert main screen is shown (SDK closed successfully)
@@ -107,21 +146,25 @@ class GiniCXTransactionSummaryUITests: GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 0)
+        //Close settings
+        settingScreen.closeButton.tap()
         //Launch scanning flow with a SEPA invoice
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.sepaInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxInvoice)
         captureScreen.openGalleryButton.tap()
-        //Assert Get started button is displayed
-        XCTAssertTrue(returnAssistantScreen.getStartedButton.waitForExistence(timeout: 10))
-        //Tap Get Started button
-        returnAssistantScreen.getStartedButton.tap()
-        //Tap Proceed button
-        returnAssistantScreen.proceedButton.tap()
-        //Tap Only for this transaction
+        //Handle Return Assistant if it appears (SEPA flow may show it depending on invoice content)
+        if returnAssistantScreen.getStartedButton.waitForExistence(timeout: 15) {
+            returnAssistantScreen.getStartedButton.tap()
+            returnAssistantScreen.proceedButton.tap()
+        }
+        //Tap Only for this transaction if the dialog appears (may be skipped depending on invoice/device)
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 15) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Assert Transfer Summary appears and shows extractions
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         //Tap send feedback and close

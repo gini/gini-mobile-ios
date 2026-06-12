@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Group 188.pdf",
+      "filename" : "gh.infoCircle_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.infoCircle_dark.pdf",
       "idiom" : "universal"
     }
   ],

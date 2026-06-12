@@ -45,7 +45,9 @@ extension BaseIntegrationTest {
             return
         }
 
-        /// Helper that finds an extraction by name from a flat `[Extraction]` array.
+        /**
+         Helper that finds an extraction by name from a flat `[Extraction]` array.
+         */
         func value(for name: String, in group: [Extraction]) -> String? {
             group.first(where: { $0.name == name })?.value.lowercased()
         }

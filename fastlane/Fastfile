@@ -27,21 +27,18 @@ import "Fastfile_archiving"
 platform :ios do
   desc <<~DOC
     Publish a swift package to our release repository.
-    
+
     Parameters:
       project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)"
       package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)"
       version_file_path     - the path to the file containing the package version
       git_tag               - the git tag name used to release the project
       repo_url              - the url of the release repository
-      repo_user             - the username to use for authentication
-      repo_password         - the password to use for authentication
-      ci                    - set to "true" if running on a CI machine
 
   DOC
   lane :publish_swift_package do |options|
-    (project_folder, package_folder, version_file_path, git_tag, repo_url, repo_user, repo_password, ci) = 
-      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url, :repo_user, :repo_password, :ci], UI)
+    (project_folder, package_folder, version_file_path, git_tag, repo_url) =
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url], UI)
 
       tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
       package_version = get_project_version_from_version_file(version_file_path, UI)
@@ -51,7 +48,7 @@ platform :ios do
           Version in the tag is different from the package version:
             * tag       : #{tag_version}
             * project   : #{package_version}
-          
+
           Change the version in the tag or update the packages's version in "#{version_file_path}".
         MESSAGE
       end
@@ -64,16 +61,14 @@ platform :ios do
           * version         : #{package_version}
       MESSAGE
 
-      if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
+      with_git_token_auth do
+        release_repo_path = checkout_release_repo(repo_url)
+
+        copy_swift_package_to_release_repo(release_repo_path, project_folder, package_folder)
+
+        update_release_repo(release_repo_path, package_version)
       end
 
-      release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
-
-      copy_swift_package_to_release_repo(release_repo_path, project_folder, package_folder)
-
-      update_release_repo(release_repo_path, package_version)
-      
       UI.success <<~MESSAGE
         Successfully released to the release repository:
           * repository url  : #{repo_url}
@@ -175,20 +170,7 @@ platform :ios do
       # Clear gh-pages directory 
       sh("rm -rf gh-pages")
 
-      # Create a temporary credential helper script that uses GH_TOKEN
-      # This approach keeps the token out of command lines and process listings
-      credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
-      
-      begin
-        File.write(credential_helper, <<~SCRIPT)
-          #!/bin/bash
-          echo "username=x-access-token"
-          echo "password=${GH_TOKEN}"
-        SCRIPT
-        sh("chmod +x #{credential_helper}")
-        
-        # Configure git to use the credential helper and clone
-        sh("git config --global credential.helper '#{credential_helper}'")
+      with_git_token_auth do
         sh("git clone -b gh-pages https://github.com/gini/gini-mobile-ios.git gh-pages")
 
         destination_path = "#{package_folder}/#{package_version}"
@@ -229,7 +211,7 @@ platform :ios do
             UI.message "Skipping root index.html update (not a stable release)"
           end
 
-          if !dry_run 
+          if !dry_run
             UI.message "Commit and push the new documentation"
             sh("git add --all")
             sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
@@ -238,10 +220,6 @@ platform :ios do
             UI.message "Skipping commit and push (dry run)"
           end
         end
-      ensure
-        # Clean up credential helper and git config
-        sh("git config --global --unset credential.helper || true")
-        sh("rm -f #{credential_helper}")
       end
 
       UI.success <<~MESSAGE
@@ -274,8 +252,8 @@ platform :ios do
           contents = File.open(version_file).read
 
           if match = contents.match(/=.*?"(.+)"/)
-            components = version_file.split("/")
-            { :package_folder => components[2], :version => match.captures[0] }
+            package_name = File.basename(version_file).sub("Version.swift", "")
+            { :package_folder => package_name, :version => match.captures[0] }
           end
         }
         .compact
@@ -435,46 +413,41 @@ platform :ios do
 
   desc <<~DOC
     Generate CycloneDX SBOMS for all swift packages. The SBOMs are zipped and uploaded to GitHub.
-    
+
     Parameters:
       swift_package_repo_urls     - the list of swift package repository urls
-      repo_user                   - the username to use for authentication
-      repo_password               - the password to use for authentication
-      ci                          - set to "true" if running on a CI machine
 
   DOC
   lane :generate_sboms do |options|
-    (swift_package_repo_urls, repo_user, repo_password, ci) = 
-      check_and_get_options(options, [:swift_package_repo_urls, :repo_user, :repo_password, :ci], UI)
+    (swift_package_repo_urls,) =
+      check_and_get_options(options, [:swift_package_repo_urls], UI)
 
       UI.message <<~MESSAGE
         Will generate CycloneDX SBOMs for swift packages:
           * swift package repository urls  : #{swift_package_repo_urls}
       MESSAGE
 
-      if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
-      end
-
       sbom_paths = []
 
       swift_package_repos = swift_package_repo_urls.split(",").map(&:strip)
 
-      swift_package_repos.each do |repo_url|
-        release_repo_path = clone_repo(repo_url, repo_user, repo_password, 1)
-        sbom_path = generate_sbom(release_repo_path)
+      with_git_token_auth do
+        swift_package_repos.each do |repo_url|
+          release_repo_path = clone_repo(repo_url, 1)
+          sbom_path = generate_sbom(release_repo_path)
 
-        sbom_paths.push sbom_path
+          sbom_paths.push sbom_path
+        end
       end
 
       all_sboms_zip_file_name = "sbom-jsons.zip"
-      
+
       sh("zip -rj #{all_sboms_zip_file_name} #{sbom_paths.join(" ")}")
-      
+
       UI.success <<~MESSAGE
         Successfully generated CycloneDX SBOMS for all swift packages:
           * swift package repository urls   : #{swift_package_repo_urls}
-          * generated sbom paths                 : #{sbom_paths.map{ |path| "fastlane/#{path}" }.join(", ")}
+          * generated sbom paths            : #{sbom_paths.map{ |path| "fastlane/#{path}" }.join(", ")}
           * location of zip with all sboms  : "fastlane/#{all_sboms_zip_file_name}"
       MESSAGE
 
@@ -587,15 +560,15 @@ lane :run_unit_tests do |options|
   sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
 end
 
-<<~DOC
-Builds targets using the `gym` action (a wrapper around xcodebuild).
+desc <<~DOC
+  Builds targets using the `gym` action (a wrapper around xcodebuild).
 
-This lane builds the specified target without code signing or archiving, useful for 
-CI/CD pipelines where you only need to verify the build succeeds.
+  This lane builds the specified target without code signing or archiving, useful for
+  CI/CD pipelines where you only need to verify the build succeeds.
 
-Parameters:
-- `scheme`: The name of the scheme to build. Example: `GinBankSDK`.
-- `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+  Parameters:
+  - `scheme`: The name of the scheme to build. Example: `GiniBankSDK`.
+  - `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
 DOC
 lane :build_scheme do |options|
   gym(
@@ -629,4 +602,131 @@ DOC
 lane :register_new_devices do 
     register_devices(devices_file: "./devices.txt")
 end
+
+
+  desc <<~DOC
+    Generic lane: archive and export any iOS app as an .ipa for App Store / TestFlight distribution.
+
+    Uses manual signing — provisioning profiles must already be installed on the machine
+    (or set up by setup_manual_signing in CI).
+
+    Parameters:
+      project            - Path to the .xcodeproj (relative to repo root)
+      scheme             - Xcode scheme to build
+      output_name        - IPA filename without extension (default: scheme name)
+      output_directory   - Directory to write the IPA into (default: ".")
+      team_id            - Apple Developer Team ID (default: "JA825X8F7Z")
+      provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+      configuration      - Build configuration (default: "Release")
+  DOC
+  lane :archive_ios_app do |options|
+    project     = options[:project]     || UI.user_error!("Missing required option: project")
+    scheme      = options[:scheme]      || UI.user_error!("Missing required option: scheme")
+    profiles    = options[:provisioning_profiles] || UI.user_error!("Missing required option: provisioning_profiles")
+    # When called from the CLI, options arrive as strings — parse JSON if needed
+    profiles    = JSON.parse(profiles) if profiles.is_a?(String)
+    output_name = options[:output_name]      || scheme
+    output_dir  = options[:output_directory] || "."
+    team_id     = options[:team_id]          || "JA825X8F7Z"
+    config      = options[:configuration]    || "Release"
+
+    gym(
+      project: project,
+      scheme: scheme,
+      configuration: config,
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: profiles,
+        signingStyle: "manual",
+        signingCertificate: "Apple Distribution",
+        teamID: team_id,
+        stripSwiftSymbols: true,
+        thinning: "<none>"
+      },
+      destination: "generic/platform=iOS",
+      output_directory: output_dir,
+      output_name: output_name
+    )
+  end
+
+  desc <<~DOC
+    Build any iOS app IPA and upload it to TestFlight in one step.
+
+    Parameters:
+      project               - Path to the .xcodeproj (relative to repo root)
+      scheme                - Xcode scheme to build
+      ipa_name              - IPA filename without extension (default: scheme name)
+      output_directory      - Directory to write the IPA into (default: ".")
+      team_id               - Apple Developer Team ID (default: "JA825X8F7Z")
+      provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+      configuration         - Build configuration (default: "Release")
+
+    Environment Variables:
+      APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+      APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+  DOC
+  lane :build_and_upload_to_testflight do |options|
+    ipa_name       = options[:ipa_name] || options[:scheme] || UI.user_error!("Missing required option: ipa_name or scheme")
+    output_dir     = options[:output_directory] || "."
+
+    archive_ios_app(options.merge(output_name: ipa_name, output_directory: output_dir))
+    publish_to_testflight(ipa_path: "#{output_dir}/#{ipa_name}.ipa")
+  end
+
+  desc <<~DOC
+    Upload an .ipa to TestFlight via xcrun altool.
+
+    Parameters:
+      ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
+
+    Environment Variables:
+      APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+      APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+                                          (default: build_artifacts/AppStoreConnectAPIKey.p8)
+  DOC
+  lane :publish_to_testflight do |options|
+    ipa_path  = options[:ipa_path] || "./GiniBankSDKExample.ipa"
+    key_id    = ENV['APP_STORE_CONNECT_API_KEY_ID']
+    issuer_id = ENV['APP_STORE_CONNECT_API_ISSUER_ID']
+    key_path  = ENV['APP_STORE_CONNECT_API_KEY_PATH'] || "build_artifacts/AppStoreConnectAPIKey.p8"
+
+    repo_root         = File.expand_path("..", __dir__)
+    resolved_key_path = File.expand_path(key_path, repo_root)
+    resolved_ipa_path = File.expand_path(ipa_path, repo_root)
+
+    UI.user_error!("APP_STORE_CONNECT_API_KEY_ID is not set")    if key_id.nil? || key_id.empty?
+    UI.user_error!("APP_STORE_CONNECT_API_ISSUER_ID is not set") if issuer_id.nil? || issuer_id.empty?
+    UI.user_error!("API key not found at: #{resolved_key_path}") unless File.exist?(resolved_key_path)
+    UI.user_error!("IPA not found at: #{resolved_ipa_path}")     unless File.exist?(resolved_ipa_path)
+
+    # xcrun altool reads .p8 keys from ~/.appstoreconnect/private_keys/AuthKey_<ID>.p8
+    private_keys_dir      = File.expand_path("~/.appstoreconnect/private_keys")
+    expected_key_path     = "#{private_keys_dir}/AuthKey_#{key_id}.p8"
+    created_temporary_key = false
+    sh("mkdir -p '#{private_keys_dir}'")
+    unless resolved_key_path == expected_key_path
+      sh("cp '#{resolved_key_path}' '#{expected_key_path}'")
+      created_temporary_key = true
+    end
+    # Ensure restrictive permissions on the API key file
+    sh("chmod 600 '#{expected_key_path}'") if File.exist?(expected_key_path)
+
+    begin
+      UI.message "🚀 Uploading #{resolved_ipa_path} to TestFlight..."
+      sh(
+        "xcrun altool --upload-app" \
+        " --file '#{resolved_ipa_path}'" \
+        " --type ios" \
+        " --apiKey '#{key_id}'" \
+        " --apiIssuer '#{issuer_id}'"
+      )
+    ensure
+      # Remove the temporary key copy to avoid leaving credentials on disk
+      sh("rm -f '#{expected_key_path}'") if created_temporary_key
+    end
+  end
+
 end

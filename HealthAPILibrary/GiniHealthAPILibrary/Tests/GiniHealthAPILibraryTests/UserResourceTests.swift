@@ -1,8 +1,7 @@
 //
 //  UserResourceTests.swift
-//  GiniExampleTests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 1/20/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
@@ -13,14 +12,14 @@ class UserResourceTests: XCTestCase {
     
     let baseUserCenterAPIURLString = "https://user.gini.net"
     let requestParameters = RequestParameters(method: .get,
-                                              headers: ["Accept": "application/vnd.gini.v4+json"])
-    
+                                              headers: TestsConfig.acceptHeader)
+
     func testTokenResourceWithClientCredentials() {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: .default,
                                            httpMethod: .get)
         let urlString: String = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=client_credentials")
+        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=client_credentials", "Should've built the correct URL for client credentials grant")
     }
     
     func testTokenResourceWithPassword() {
@@ -28,7 +27,7 @@ class UserResourceTests: XCTestCase {
                                            userDomain: .default,
                                            httpMethod: .get)
         let urlString: String = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=password")
+        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=password", "URL should match for password grant")
     }
     
     func testUsersResource() {
@@ -36,7 +35,7 @@ class UserResourceTests: XCTestCase {
                                            userDomain: .default,
                                            httpMethod: .post)
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/api/users")
+        XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/api/users", "URL should match for users resource")
     }
     
     func testCustomUserDomain() {
@@ -44,7 +43,7 @@ class UserResourceTests: XCTestCase {
                                            userDomain: .custom(domain: "custom.domain.com"),
                                            httpMethod: .post)
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, "https://custom.domain.com/api/users")
+        XCTAssertEqual(urlString, "https://custom.domain.com/api/users", "URL should match for custom user domain")
     }
     
 }

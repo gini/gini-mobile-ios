@@ -261,7 +261,6 @@ final class OrderDetailViewController: UIViewController {
 
         return PaymentInfo(recipient: order.recipient,
                            iban: order.iban,
-                           bic: "",
                            amount: order.amountToPay,
                            purpose: order.purpose,
                            paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
@@ -273,7 +272,6 @@ final class OrderDetailViewController: UIViewController {
 
         return PaymentInfo(recipient: order.recipient,
                            iban: order.iban,
-                           bic: "",
                            amount: order.amountToPay,
                            purpose: order.purpose,
                            paymentUniversalLink: "",

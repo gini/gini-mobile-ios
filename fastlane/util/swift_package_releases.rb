@@ -3,9 +3,8 @@
 # 
 # Returns the relative path to the release repo.
 #
-def checkout_release_repo(release_repo_url, repo_user, repo_password)
+def checkout_release_repo(release_repo_url)
   sh("rm -rf release-repo")
-  release_repo_url["://"] = "://#{repo_user}:#{repo_password}@"
   sh("git clone #{release_repo_url} release-repo")
   "release-repo"
 end

@@ -1,6 +1,6 @@
 //
 //  PaymentInfoAnswerTableViewCell.swift
-//  GiniMerchantSDK
+//  GiniInternalPaymentSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //

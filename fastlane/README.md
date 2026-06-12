@@ -94,13 +94,13 @@ Parameters:
 [bundle exec] fastlane ios publish_docs
 ```
 
-Publish a documentation to gh-pages.
+Publish documentation to gh-pages.
 
 Releases the documentation into a folder hierarchy constructed from the package_folder and project version:
 <gh_pages_url>/<package_folder>/<project_version>
 Example: <gh_pages_url>/GiniCaptureSDK/1.11.0
 
-If the 'is_stable_release' option is set to 'true', then it updates the package root index.html 
+If the 'is_stable_release' option is set to true, then it updates the package root index.html 
 (at <gh_pages_url>/<package_folder>/index.html) to automatically redirect to the released version.
 
 Parameters:
@@ -108,11 +108,9 @@ Parameters:
   package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
   version_file_path     - the path to the file containing the package version
   git_tag               - the git tag name used to release the project
-  repo_user             - the username to use for authentication
-  repo_password         - the password to use for authentication
-  ci                    - set to "true" if running on a CI machine
+  ci                    - set to true if running on a CI machine
   documentation_title   - the title used on the root index page
-  is_stable_release     - set to "true" if it's a stable release that should be shown by default 
+  is_stable_release     - set to true if it's a stable release that should be shown by default 
   dry_run               - (optional) executes without permanent side effects
 
 
@@ -206,6 +204,14 @@ Parameters:
 [bundle exec] fastlane ios build_scheme
 ```
 
+Builds targets using the `gym` action (a wrapper around xcodebuild).
+
+This lane builds the specified target without code signing or archiving, useful for
+CI/CD pipelines where you only need to verify the build succeeds.
+
+Parameters:
+- `scheme`: The name of the scheme to build. Example: `GiniBankSDK`.
+- `destination`: The destination for the build. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
 
 
 ### ios register_new_devices
@@ -226,6 +232,68 @@ Parameters:
 Example devices.txt format:
   1234567890abcdef1234567890abcdef12345678	John's ios
   abcdef1234567890abcdef1234567890123456	Jane's ios
+
+
+### ios archive_ios_app
+
+```sh
+[bundle exec] fastlane ios archive_ios_app
+```
+
+Generic lane: archive and export any iOS app as an .ipa for App Store / TestFlight distribution.
+
+Uses manual signing — provisioning profiles must already be installed on the machine
+(or set up by setup_manual_signing in CI).
+
+Parameters:
+  project            - Path to the .xcodeproj (relative to repo root)
+  scheme             - Xcode scheme to build
+  output_name        - IPA filename without extension (default: scheme name)
+  output_directory   - Directory to write the IPA into (default: ".")
+  team_id            - Apple Developer Team ID (default: "JA825X8F7Z")
+  provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+  configuration      - Build configuration (default: "Release")
+
+
+### ios build_and_upload_to_testflight
+
+```sh
+[bundle exec] fastlane ios build_and_upload_to_testflight
+```
+
+Build any iOS app IPA and upload it to TestFlight in one step.
+
+Parameters:
+  project               - Path to the .xcodeproj (relative to repo root)
+  scheme                - Xcode scheme to build
+  ipa_name              - IPA filename without extension (default: scheme name)
+  output_directory      - Directory to write the IPA into (default: ".")
+  team_id               - Apple Developer Team ID (default: "JA825X8F7Z")
+  provisioning_profiles - Hash of { bundle_id => profile_name } (required)
+  configuration         - Build configuration (default: "Release")
+
+Environment Variables:
+  APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+  APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+  APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+
+
+### ios publish_to_testflight
+
+```sh
+[bundle exec] fastlane ios publish_to_testflight
+```
+
+Upload an .ipa to TestFlight via xcrun altool.
+
+Parameters:
+  ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
+
+Environment Variables:
+  APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
+  APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
+  APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+                                      (default: build_artifacts/AppStoreConnectAPIKey.p8)
 
 
 ----

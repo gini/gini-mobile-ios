@@ -90,11 +90,9 @@ func makeDocumentWithoutUploadMetadata() -> GiniImageDocument {
  simulating a document captured from the camera.
  */
 func makeDocumentWithUploadMetadata() -> GiniImageDocument {
-    let uploadMetadata = Document.UploadMetadata(
-        interfaceOrientation: .portrait,
-        documentSource: .camera,
-        importMethod: nil
-    )
+    let uploadMetadata = Document.UploadMetadata(interfaceOrientation: .portrait,
+                                                 documentSource: .camera,
+                                                 importMethod: nil)
     return GiniImageDocument(data: makeInvoiceData(),
                              imageSource: .camera,
                              deviceOrientation: .portrait,

@@ -27,15 +27,24 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
+    /**
+     Override in a subclass to inject extra launch arguments before the app launches.
+     The base argument `-StartFromCleanState YES` is always included.
+     */
+    var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
         #if targetEnvironment(simulator)
         throw XCTSkip("Skipping test on simulator")
         #endif
         continueAfterFailure = false
+        copyFixturesToSimulator()
         app = XCUIApplication()
-        app.launchArguments = ["-testing"]
-        app.launchArguments = ["-StartFromCleanState", "YES"]
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+            app.resetAuthorizationStatus(for: .photos)
+        }
+        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -115,16 +124,63 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
+    /// Copies all PDFs from TestFixturePDFs/ into every booted simulator's app Documents folder.
+    /// The UI test runner executes on the Mac host (not inside the simulator sandbox), so it has
+    /// full access to ~/Library/Developer/CoreSimulator/. We scan all booted simulators rather
+    /// than relying on SIMULATOR_UDID, which is not injected by Xcode into the test process.
+    /// Copies all PDFs from TestFixturePDFs/ into the tested app's Documents folder.
+    /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
+    ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
+    /// Going one level up reaches the shared Application/ directory where all app containers
+    /// for this test device live — including the tested app's container.
+    private func copyFixturesToSimulator() {
+        let fileManager = FileManager.default
+
+        let applicationDir = URL(fileURLWithPath: NSHomeDirectory())
+            .deletingLastPathComponent()
+            .path
+
+        guard let appFolders = try? fileManager.contentsOfDirectory(atPath: applicationDir) else { return }
+
+        let fixturesURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()  // GiniBankSDKExampleUITests/
+            .deletingLastPathComponent()  // GiniBankSDKExample/
+            .appendingPathComponent("TestFixturePDFs")
+
+        let pdfFiles = ((try? fileManager.contentsOfDirectory(at: fixturesURL,
+                                                              includingPropertiesForKeys: nil,
+                                                              options: .skipsHiddenFiles)) ?? [])
+            .filter { $0.pathExtension == "pdf" }
+        guard !pdfFiles.isEmpty else { return }
+
+        for folder in appFolders {
+            let metadataPath = "\(applicationDir)/\(folder)/.com.apple.mobile_container_manager.metadata.plist"
+            guard let metadata = NSDictionary(contentsOfFile: metadataPath),
+                  let bundleID = metadata["MCMMetadataIdentifier"] as? String,
+                  bundleID == "net.gini.banksdk.example" else { continue }
+
+            let docsURL = URL(fileURLWithPath: "\(applicationDir)/\(folder)/Documents")
+            try? fileManager.createDirectory(at: docsURL, withIntermediateDirectories: true)
+            for pdf in pdfFiles {
+                let dest = docsURL.appendingPathComponent(pdf.lastPathComponent)
+                try? fileManager.copyItem(at: pdf, to: dest)
+            }
+            return
+        }
+    }
+
     func uploadLatestPhotoFromGallery() {
         XCTAssertTrue(app.navigationBars[galleryTitle].waitForExistence(timeout: 10))
         app.tables.cells.firstMatch.tap()
         let imageCells = app.collectionViews.cells
         XCTAssertTrue(imageCells.firstMatch.waitForExistence(timeout: 10))
-        guard let latestVisibleImage = imageCells.allElementsBoundByIndex.last else {
-            XCTFail("No gallery image was found to upload.")
+        let allCells = imageCells.allElementsBoundByIndex
+        let targetIndex = allCells.count - 1 - offset
+        guard targetIndex >= 0 else {
+            XCTFail("No gallery image found at offset \(offset) — only \(allCells.count) photo(s) available.")
             return
         }
-        latestVisibleImage.tap()
+        allCells[targetIndex].tap()
         XCTAssertTrue(app.buttons[galleryDoneButtonTitle].firstMatch.waitForExistence(timeout: 10))
         tapDoneInAnyKnownContext()
     }

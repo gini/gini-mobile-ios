@@ -58,14 +58,13 @@ clean: ## Clean build artifacts
 	@echo "$(GREEN)✓ Clean complete$(NC)"
 
 .PHONY: lint-all-main
-lint-all-main: ## Lint all main SDK schemes (GiniBankSDK, GiniCaptureSDK, GiniHealthSDK, GiniMerchantSDK)
+lint-all-main: ## Lint all main SDK schemes (GiniBankSDK, GiniCaptureSDK, GiniHealthSDK)
 	@echo "$(BLUE)======================================$(NC)"
 	@echo "$(BLUE)Linting all main SDK schemes$(NC)"
 	@echo "$(BLUE)======================================$(NC)"
 	@$(MAKE) lint scheme=GiniBankSDK
 	@$(MAKE) lint scheme=GiniCaptureSDK
 	@$(MAKE) lint scheme=GiniHealthSDK
-	@$(MAKE) lint scheme=GiniMerchantSDK
 	@echo ""
 	@echo "$(GREEN)✓ All main SDKs validated successfully$(NC)"
 
