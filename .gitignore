@@ -25,6 +25,5 @@ DerivedData
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 fastlane/report.xml
-
-# Test fixture PDFs — place locally, never commit
-BankSDK/GiniBankSDKExample/TestFixturePDFs/*.pdf
+BankSDK/GiniBankSDK/.build
+CaptureSDK/GiniCaptureSDK/.build
