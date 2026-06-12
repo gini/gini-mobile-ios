@@ -46,10 +46,10 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           # sign xcframeworks
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
-          codesign --timestamp -v --sign "iPhone Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
 
       - name: Archive frameworks
         uses: actions/upload-artifact@v4

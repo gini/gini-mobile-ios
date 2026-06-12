@@ -4,30 +4,17 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-final class GiniHealthTests: XCTestCase {
-    
-    var giniHealthAPI: GiniHealthAPI!
-    var giniHealth: GiniHealth!
-    private let versionAPI = 4
+final class GiniHealthTests: GiniHealthTestCase {
 
-    override func setUp() {
-        let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        GiniHealthConfiguration.shared.clientConfiguration = nil
-        giniHealthAPI = GiniHealthAPI(documentService: documentService,
-                                      paymentService: paymentService,
-                                      clientConfigurationService: clientConfigurationService)
-        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
+    // MARK: - Helper
+
+    private func assertClientConfiguration(_ config: ClientConfiguration,
+                                           communicationTone: GiniHealthAPILibrary.CommunicationToneEnum,
+                                           brandType: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        XCTAssertEqual(config.communicationTone, communicationTone, "Communication tone should match")
+        XCTAssertEqual(config.ingredientBrandType, brandType, "Ingredient brand type should match")
     }
 
-    override func tearDown() {
-        giniHealthAPI = nil
-        giniHealth = nil
-        super.tearDown()
-    }
-    
     func testSetConfiguration() throws {
         // Given
         let configuration = GiniHealthConfiguration()
@@ -36,7 +23,7 @@ final class GiniHealthTests: XCTestCase {
         giniHealth.setConfiguration(configuration)
         
         // Then
-        XCTAssertEqual(GiniHealthConfiguration.shared, configuration)
+        XCTAssertEqual(GiniHealthConfiguration.shared, configuration, "Shared configuration should match the set configuration")
     }
     
     func testFetchBankingAppsSuccess() {
@@ -58,9 +45,9 @@ final class GiniHealthTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
         
         // Then
-        XCTAssertNotNil(receivedProviders)
-        XCTAssertEqual(receivedProviders?.count, expectedProviders?.count)
-        XCTAssertEqual(receivedProviders, expectedProviders)
+        XCTAssertNotNil(receivedProviders, "Received providers should not be nil")
+        XCTAssertEqual(receivedProviders?.count, expectedProviders?.count, "Providers count should match")
+        XCTAssertEqual(receivedProviders, expectedProviders, "Received providers should match expected providers")
     }
     
     func testOpenLinkSuccess() {
@@ -68,9 +55,12 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
-            XCTAssert(open == true, "testOpenLink - FAILED to open link")
+            XCTAssert(open == true, "TestOpenLink - FAILED to open link")
         })
 
         waitForExpectations(timeout: 0.1, handler: nil)
@@ -81,9 +71,12 @@ final class GiniHealthTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was not opened")
 
-        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniHealth.openPaymentProviderApp(requestID: "123",
+                                          universalLink: "ginipay-bank://",
+                                          urlOpener: urlOpener,
+                                          completion: { open in
             waitForWebsiteOpen.fulfill()
-            XCTAssert(open == false, "testOpenLink - MANAGED to open link")
+            XCTAssert(open == false, "TestOpenLink - MANAGED to open link")
         })
 
         waitForExpectations(timeout: 0.1, handler: nil)
@@ -109,59 +102,178 @@ final class GiniHealthTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedClientConfiguration)
-        XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType)
-        XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType)
+        XCTAssertNotNil(receivedClientConfiguration, "Client configuration should not be nil")
+        XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType, "Communication tone should match")
+        XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType, "Ingredient brand type should match")
     }
 
     func testLoadDefaultClientConfiguration() {
-        // Given
         let clientConfiguration = ClientConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
     }
-    
+
     func testFormalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration()
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.customLocalization = .de
         configuration.clientConfiguration = clientConfiguration
         giniHealth.setConfiguration(configuration)
-        
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
-        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+        assertClientConfiguration(clientConfiguration, communicationTone: .formal, brandType: .invisible)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Formal German tip pattern should match")
     }
-    
+
     func testInformalDE() {
-        // Given
         let clientConfiguration = ClientConfiguration(communicationTone: .informal)
         let configuration = GiniHealthConfiguration()
-        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
-        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
-        
-        // When
         configuration.clientConfiguration = clientConfiguration
         configuration.customLocalization = .de
         giniHealth.setConfiguration(configuration)
 
-        // Expected
-        XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
-        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
-        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+        assertClientConfiguration(clientConfiguration, communicationTone: .informal, brandType: .invisible)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.", "Informal German tip pattern should match")
     }
+
+    // MARK: - Initializers
+
+    func testInitWithCredentialsCreatesValidInstance() throws {
+        // Probe Keychain before invoking the credential init.
+        // The SPM test runner lacks Keychain entitlements; skip instead of crashing.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain")
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by credential initializer")
+    }
+
+    func testInitWithPinningConfigCreatesValidInstance() throws {
+        // Probe Keychain before invoking the pinning-config init.
+        let probe = KeychainManagerItem(key: .clientId,
+                                        value: "probe",
+                                        service: .auth)
+        do {
+            try KeychainStore().save(item: probe)
+            try? KeychainStore().remove(service: .auth, key: .clientId)
+        } catch {
+            throw XCTSkip("Keychain unavailable in this test environment — add the keychain-access-groups entitlement to run this test")
+        }
+
+        // When
+        let instance = GiniHealth(id: "test-id",
+                                  secret: "test-secret",
+                                  domain: "test.domain",
+                                  pinningConfig: ["test.domain": ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="]])
+
+        // Then
+        XCTAssertNotNil(instance.paymentComponentsController, "paymentComponentsController should be set up by pinning-config initializer")
+    }
+
+    // MARK: - Start Payment Flow
+
+    func testStartPaymentFlowDoesNotCrash() {
+        // Given
+        let navigationController = UINavigationController()
+
+        // When / Then — just verifies no crash on the public entry point
+        giniHealth.startPaymentFlow(documentId: nil,
+                                    paymentInfo: nil,
+                                    navigationController: navigationController,
+                                    trackingDelegate: nil)
+    }
+
+    // MARK: - Version String
+
+    func testVersionString() {
+        XCTAssertFalse(GiniHealth.versionString.isEmpty, "Version string should not be empty")
+    }
+
+    // MARK: - Fetch Bank Logos
+
+    func testFetchBankLogos() {
+        // Providers are loaded synchronously by the mock in setUp, so logos is non-nil
+        let result = giniHealth.fetchBankLogos()
+        XCTAssertNotNil(result.logos, "fetchBankLogos should return a logos value")
+    }
+
+    // MARK: - DataForReview init
+
+    func testDataForReviewInitStoresValues() throws {
+        // Given
+        let apiDocument: GiniHealthAPILibrary.Document = try XCTUnwrap(GiniHealthSDKTests.load(fromFile: "document1"))
+        let document = try XCTUnwrap(GiniHealthSDK.Document(healthDocument: apiDocument))
+        let extractions: [GiniHealthSDK.Extraction] = []
+
+        // When
+        let dataForReview = DataForReview(document: document,
+                                          extractions: extractions)
+
+        // Then
+        XCTAssertEqual(dataForReview.document, document, "DataForReview should store the document")
+        XCTAssertEqual(dataForReview.extractions.count, extractions.count, "DataForReview should store the extractions")
+    }
+
+    // MARK: - Delegate Forwarding
+
+    func testIsLoadingStateChangedForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: true)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, true, "Loading state value should be forwarded")
+    }
+
+    func testIsLoadingStateChangedFalseForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.isLoadingStateChanged(isLoading: false)
+
+        // Then
+        XCTAssertTrue(mockDelegate.isLoadingStateChangedCalled, "isLoadingStateChanged should be forwarded to paymentDelegate")
+        XCTAssertEqual(mockDelegate.lastLoadingState, false, "Loading state false should be forwarded")
+    }
+
+    func testDidFetchedPaymentProvidersForwardsToPaymentDelegate() {
+        // Given
+        let mockDelegate = MockPaymentComponentsDelegate()
+        giniHealth.paymentDelegate = mockDelegate
+
+        // When
+        giniHealth.didFetchedPaymentProviders()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didFetchedPaymentProvidersCalled, "didFetchedPaymentProviders should be forwarded to paymentDelegate")
+    }
+
+    func testDidDismissPaymentComponentsForwardsToHealthDelegate() {
+        // Given
+        let mockDelegate = MockGiniHealthDelegate()
+        giniHealth.delegate = mockDelegate
+
+        // When
+        giniHealth.didDismissPaymentComponents()
+
+        // Then
+        XCTAssertTrue(mockDelegate.didDismissHealthSDKCalled, "didDismissPaymentComponents should call didDismissHealthSDK on the health delegate")
+    }
+
 }

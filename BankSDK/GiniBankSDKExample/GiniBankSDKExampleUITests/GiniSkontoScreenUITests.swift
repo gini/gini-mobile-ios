@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
-// Please remove the prefix if you want to test locally on a simulator
-
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
 
     /*
@@ -36,12 +33,35 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.filesButton.tap()
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
-        //Tap valid skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
-        //Tap Open button
-        captureScreen.openGalleryButton.tap()
-        //Assert Skonto screen appeared — proves Files upload was processed successfully
-        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        //Tap valid skonto document
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
+//        //Tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert Skonto screen appeared — proves Files upload was processed successfully
+//        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+
+        //tap Skonto document
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Assert that Got it button is displayed
+        XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
+        //Tap Got it button
+        skontoScreen.gotItButton.tap()
+        //Tap Proceed button
+        skontoScreen.proceedButton.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
+        //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
+        mainScreen.sendFeedbackButton.tap()
+        //Assert Photopayment button is displayed
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
     
@@ -91,9 +111,11 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -116,9 +138,11 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -131,8 +155,10 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
         //Tap Proceed button
         skontoScreen.proceedButton.tap()
-        //Tap Only for this transaction
-        transactionDocsScreen.onlyForThisTransaction.tap()
+        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
+            transactionDocsScreen.onlyForThisTransaction.tap()
+        }
         //Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
@@ -153,12 +179,23 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
-        //Assert Skonto screen is shown (Got it button does NOT appear for valid/future skonto)
+
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
+//        //tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert Skonto screen is shown (Got it button does NOT appear for valid/future skonto)
+//        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+//        //Assert that Switch is enabled for valid skonto
+
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoValid)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //For a valid/future skonto there is no expired-discount banner — assert the Skonto screen itself is visible.
         XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
-        //Assert that Switch is enabled for valid skonto
+        //Assert that switch is enabled (skonto is still active)
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
     }
     
@@ -174,10 +211,20 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
-        //Assert that Got it button is displayed for expired skonto
+
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
+//        //tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert that Got it button is displayed for expired skonto
+
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
+        //Assert that Got it button is displayed
+
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Assert that Switch is disabled for expired skonto
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
@@ -195,9 +242,11 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
-        //tap Open button
-        captureScreen.openGalleryButton.tap()
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
+        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button

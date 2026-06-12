@@ -1,0 +1,10 @@
+{
+    "items": [
+        {
+            "code": "2901",
+            "message": "The deletion operation on the payment request is not authorized",
+            "object": ["forbidden1", "forbidden2"]
+        }
+    ],
+    "requestId": "7cc7-229b-4b88-dd94-3aad-f072"
+    }

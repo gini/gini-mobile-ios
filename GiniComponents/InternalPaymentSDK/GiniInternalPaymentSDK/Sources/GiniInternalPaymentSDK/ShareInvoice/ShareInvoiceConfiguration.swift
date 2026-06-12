@@ -17,8 +17,6 @@ public struct ShareInvoiceConfiguration {
     public let titlePaymentInfoFont: UIFont
     public let subtitlePaymentInfoTextColor: UIColor
     public let subtitlePaymentInfoFont: UIFont
-    public let closeIcon: UIImage
-    public let closeIconAccentColor: UIColor
 
     public init(titleFont: UIFont,
                 titleAccentColor: UIColor,
@@ -29,9 +27,7 @@ public struct ShareInvoiceConfiguration {
                 titlePaymentInfoTextColor: UIColor,
                 subtitlePaymentInfoTextColor: UIColor,
                 titlepaymentInfoFont: UIFont,
-                subtitlePaymentInfoFont: UIFont,
-                closeIcon: UIImage,
-                closeIconAccentColor: UIColor) {
+                subtitlePaymentInfoFont: UIFont) {
         self.titleFont = titleFont
         self.titleAccentColor = titleAccentColor
         self.descriptionFont = descriptionFont
@@ -42,8 +38,6 @@ public struct ShareInvoiceConfiguration {
         self.subtitlePaymentInfoTextColor = subtitlePaymentInfoTextColor
         self.titlePaymentInfoFont = titlepaymentInfoFont
         self.subtitlePaymentInfoFont = subtitlePaymentInfoFont
-        self.closeIcon = closeIcon
-        self.closeIconAccentColor = closeIconAccentColor
     }
 }
 
@@ -56,7 +50,6 @@ public struct ShareInvoiceStrings {
     let ibanLabelText: String
     let purposeLabelText: String
     let accessibilityQRCodeImageText: String
-    let accessibilityCloseIconText: String
 
     public init(continueLabelText: String,
                 titleTextPattern: String,
@@ -65,8 +58,7 @@ public struct ShareInvoiceStrings {
                 amountLabelText: String,
                 ibanLabelText: String,
                 purposeLabelText: String,
-                accessibilityQRCodeImageText: String,
-                accessibilityCloseIconText: String) {
+                accessibilityQRCodeImageText: String) {
         self.continueLabelText = continueLabelText
         self.titleTextPattern = titleTextPattern
         self.descriptionTextPattern = descriptionTextPattern
@@ -75,6 +67,5 @@ public struct ShareInvoiceStrings {
         self.ibanLabelText = ibanLabelText
         self.purposeLabelText = purposeLabelText
         self.accessibilityQRCodeImageText = accessibilityQRCodeImageText
-        self.accessibilityCloseIconText = accessibilityCloseIconText
     }
 }

@@ -51,6 +51,18 @@ final class InvoicesListViewController: UIViewController {
     
     var viewModel: InvoicesListViewModel!
     
+    // MARK: - Lifecycle
+    deinit {
+        #if DEBUG
+        print("✅ InvoicesListViewController deinitialized")
+        #endif
+        // Only clear delegates if tableView was already initialized
+        if isViewLoaded {
+            invoicesTableView.dataSource = nil
+            invoicesTableView.delegate = nil
+        }
+    }
+    
     // MARK: - Functions
     override func loadView() {
         super.loadView()
@@ -97,7 +109,16 @@ final class InvoicesListViewController: UIViewController {
     }
 
     @objc func dismissViewControllerTapped() {
-        self.dismiss(animated: true)
+        #if DEBUG
+        print("🔵 dismissViewControllerTapped called")
+        #endif
+        let coordinator = viewModel.coordinator
+        self.dismiss(animated: true) { [weak self] in
+            #if DEBUG
+            print("🔵 Dismiss completion handler called")
+            #endif
+            coordinator?.removeFromParent()
+        }
     }
 }
 
@@ -110,11 +131,11 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                           health: viewModel.health) }[indexPath.row]
+        let invoice = viewModel.invoices[indexPath.row]
+        let invoiceTableViewCellModel = InvoiceTableViewCellModel(invoice: invoice, health: viewModel.health)
         cell.cellViewModel = invoiceTableViewCellModel
         cell.action = { [weak self] in
-            self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")
+            self?.tapOnAction(documentID: invoice.documentId)
         }
         return cell
     }
@@ -184,3 +205,4 @@ extension InvoicesListViewController {
         static let rowHeight: CGFloat = 40
     }
 }
+

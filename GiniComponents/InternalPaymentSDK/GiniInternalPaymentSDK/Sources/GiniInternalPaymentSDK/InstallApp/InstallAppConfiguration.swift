@@ -15,8 +15,6 @@ public struct InstallAppConfiguration {
     let moreInformationIcon: UIImage
     let appStoreIcon: UIImage
     let bankIconBorderColor: UIColor
-    let closeIcon: UIImage
-    let closeIconAccentColor: UIColor
 
     public init(titleAccentColor: UIColor,
                 titleFont: UIFont,
@@ -25,9 +23,7 @@ public struct InstallAppConfiguration {
                 moreInformationAccentColor: UIColor,
                 moreInformationIcon: UIImage,
                 appStoreIcon: UIImage,
-                bankIconBorderColor: UIColor,
-                closeIcon: UIImage,
-                closeIconAccentColor: UIColor) {
+                bankIconBorderColor: UIColor) {
         self.titleAccentColor = titleAccentColor
         self.titleFont = titleFont
         self.moreInformationFont = moreInformationFont
@@ -36,8 +32,6 @@ public struct InstallAppConfiguration {
         self.moreInformationIcon = moreInformationIcon
         self.appStoreIcon = appStoreIcon
         self.bankIconBorderColor = bankIconBorderColor
-        self.closeIcon = closeIcon
-        self.closeIconAccentColor = closeIconAccentColor
     }
 }
 
@@ -48,21 +42,18 @@ public struct InstallAppStrings {
     let continueLabelText: String
     let accessibilityAppStoreText: String
     let accessibilityBankLogoText: String
-    let accessibilityCloseIconText: String
 
     public init(titlePattern: String,
                 moreInformationTipPattern: String,
                 moreInformationNotePattern: String,
                 continueLabelText: String,
                 accessibilityAppStoreText: String,
-                accessibilityBankLogoText: String,
-                accessibilityCloseIconText: String) {
+                accessibilityBankLogoText: String) {
         self.titlePattern = titlePattern
         self.moreInformationTipPattern = moreInformationTipPattern
         self.moreInformationNotePattern = moreInformationNotePattern
         self.continueLabelText = continueLabelText
         self.accessibilityAppStoreText = accessibilityAppStoreText
         self.accessibilityBankLogoText = accessibilityBankLogoText
-        self.accessibilityCloseIconText = accessibilityCloseIconText
     }
 }

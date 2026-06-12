@@ -176,7 +176,10 @@ extension PaymentComponentsController {
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
                                                                    paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
                                                                    paymentInfoStrings: stringsProvider.paymentInfoStrings,
-                                                                   clientConfiguration: configurationProvider.clientConfiguration)
+                                                                   clientConfiguration: configurationProvider.clientConfiguration,
+                                                                   paymentInfoConfigurationProvider: { [weak self] in
+                                                                       self?.configurationProvider.paymentInfoConfiguration
+                                                                   })
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         
@@ -267,10 +270,10 @@ extension PaymentComponentsController {
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
                                            previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            clientConfiguration: configurationProvider.clientConfiguration)
-
-        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
-
+        
+        let vc = PaymentReviewViewController(viewModel: viewModel,
+                                               selectedPaymentProvider: healthSelectedPaymentProvider)
+        
         completion(vc, nil)
     }
 
@@ -288,7 +291,10 @@ extension PaymentComponentsController {
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                         poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                        clientConfiguration: configurationProvider.clientConfiguration)
+                                                        clientConfiguration: configurationProvider.clientConfiguration,
+                                                        configurationRefresher: { [weak self] in
+                                                            self?.configurationProvider.paymentInfoConfiguration
+                                                        })
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -401,6 +407,7 @@ extension PaymentComponentsController {
     
     private func loadPDFData(paymentRequestId: String, viewController: UIViewController) {
         self.loadPDF(paymentRequestId: paymentRequestId, completion: { [weak self] pdfData in
+            guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
             let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestId)
 
             guard let pdfPath else {
@@ -408,7 +415,10 @@ extension PaymentComponentsController {
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
+            self?.sharePDF(pdfURL: pdfPath,
+                           paymentRequestId: paymentRequestId,
+                           viewController:
+                            shareInvoiceBottomSheet) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
                     self?.shareInvoiceBottomSheet?.updateViews()
                 }
@@ -498,7 +508,7 @@ extension PaymentComponentsController {
                 completion(.success(paymentRequestId))
                 self.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         })
@@ -515,12 +525,13 @@ extension PaymentComponentsController {
     public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
         let newDocument = Document(healthDocument: document)
         let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
-        giniSDK.documentService.submitFeedback(for: newDocument, with: [], and: ["payment": [extractions]]) { result in
+        giniSDK.documentService.submitFeedback(for: newDocument,
+                                               with: extractions) { result in
             switch result {
             case .success(let result):
                 completion?(.success(result))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion?(.failure(healthError))
             }
         }
@@ -540,7 +551,7 @@ extension PaymentComponentsController {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         }
@@ -569,7 +580,7 @@ extension PaymentComponentsController {
             case .success(let paymentRequest):
                 completion(.success(paymentRequest))
             case .failure(let error):
-                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                let healthError = GiniHealthAPILibrary.GiniError.customError(response: error.response, data: error.data)
                 completion(.failure(healthError))
             }
         }
@@ -701,7 +712,9 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
     }
     
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String,
+                                               paymentInfo: GiniInternalPaymentSDK.PaymentInfo,
+                                               completion: @escaping (UIViewController) -> Void) {
         self.paymentInfo = paymentInfo
         giniSDK.paymentService.qrCodeImage(paymentRequestId: paymentRequestId) { [weak self] result in
             switch result {
@@ -709,7 +722,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
                 DispatchQueue.main.async {
                     let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image, paymentRequestId: paymentRequestId)
                     guard let shareInvoiceBottomSheet else { return }
-                    self?.navigationControllerProvided?.giniTopMostViewController().present(shareInvoiceBottomSheet, animated: true)
+                    completion(shareInvoiceBottomSheet)
                 }
             case .failure(let error):
                 self?.handleError(error)

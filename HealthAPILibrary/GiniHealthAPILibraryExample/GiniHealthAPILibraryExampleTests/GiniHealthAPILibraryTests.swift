@@ -2,7 +2,7 @@
 //  GiniHealthAPITests.swift
 //  GiniHealthAPI-Unit-Tests
 //
-//  Created by Alpár Szotyori on 03.04.20.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import XCTest
@@ -10,7 +10,7 @@ import XCTest
 // swiftlint:disable force_cast
 
 final class GiniApiLibTests: XCTestCase {
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     func testBuildWithCustomApiDomain() {
         let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),

@@ -34,8 +34,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
         #endif
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-testing"]
-        app.launchArguments = ["-StartFromCleanState", "YES"]
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+            app.resetAuthorizationStatus(for: .photos)
+        }
+        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -115,16 +118,18 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    func uploadLatestPhotoFromGallery() {
+    func uploadLatestPhotoFromGallery(offset: Int = 0) {
         XCTAssertTrue(app.navigationBars[galleryTitle].waitForExistence(timeout: 10))
         app.tables.cells.firstMatch.tap()
         let imageCells = app.collectionViews.cells
         XCTAssertTrue(imageCells.firstMatch.waitForExistence(timeout: 10))
-        guard let latestVisibleImage = imageCells.allElementsBoundByIndex.last else {
-            XCTFail("No gallery image was found to upload.")
+        let allCells = imageCells.allElementsBoundByIndex
+        let targetIndex = allCells.count - 1 - offset
+        guard targetIndex >= 0 else {
+            XCTFail("No gallery image found at offset \(offset) — only \(allCells.count) photo(s) available.")
             return
         }
-        latestVisibleImage.tap()
+        allCells[targetIndex].tap()
         XCTAssertTrue(app.buttons[galleryDoneButtonTitle].firstMatch.waitForExistence(timeout: 10))
         tapDoneInAnyKnownContext()
     }

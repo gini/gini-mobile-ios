@@ -25,16 +25,23 @@ jobs:
           ruby-version: '3.2.0'
           bundler-cache: true
 
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
       - name: generate a cyclonedx sbom for each project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
           lane: 'generate_sboms'
           options: >
-            { 
-              "swift_package_repo_urls": "https://github.com/gini/bank-api-library-ios.git,https://github.com/gini/bank-api-library-pinning-ios.git,https://github.com/gini/bank-sdk-ios.git,https://github.com/gini/bank-sdk-pinning-ios.git,https://github.com/gini/capture-sdk-ios.git,https://github.com/gini/capture-sdk-pinning-ios.git,https://github.com/gini/health-api-library-ios.git,https://github.com/gini/health-api-library-pinning-ios.git,https://github.com/gini/health-sdk-ios.git,https://github.com/gini/health-sdk-pinning-ios.git",
-              "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-              "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-              "ci": "true"
+            {
+              "swift_package_repo_urls": "https://github.com/gini/bank-api-library-ios.git,https://github.com/gini/bank-sdk-ios.git,https://github.com/gini/capture-sdk-ios.git,https://github.com/gini/health-api-library-ios.git,https://github.com/gini/health-sdk-ios.git,https://github.com/gini/internal-payment-sdk-ios.git,https://github.com/gini/utilites-ios.git"
             }
 
       - name: validate cyclonedx sboms
@@ -43,15 +50,12 @@ jobs:
           curl -Lo cyclonedx https://github.com/CycloneDX/cyclonedx-cli/releases/download/v0.25.0/cyclonedx-linux-x64
           chmod +x cyclonedx
           ./cyclonedx validate --input-file fastlane/bank-api-library-ios/GiniBankAPILibrary-sbom.json
-          ./cyclonedx validate --input-file fastlane/bank-api-library-pinning-ios/GiniBankAPILibraryPinning-sbom.json
           ./cyclonedx validate --input-file fastlane/bank-sdk-ios/GiniBankSDK-sbom.json
-          ./cyclonedx validate --input-file fastlane/bank-sdk-pinning-ios/GiniBankSDKPinning-sbom.json
           ./cyclonedx validate --input-file fastlane/capture-sdk-ios/GiniCaptureSDK-sbom.json
-          ./cyclonedx validate --input-file fastlane/capture-sdk-pinning-ios/GiniCaptureSDKPinning-sbom.json
           ./cyclonedx validate --input-file fastlane/health-api-library-ios/GiniHealthAPILibrary-sbom.json
-          ./cyclonedx validate --input-file fastlane/health-api-library-pinning-ios/GiniHealthAPILibraryPinning-sbom.json
           ./cyclonedx validate --input-file fastlane/health-sdk-ios/GiniHealthSDK-sbom.json
-          ./cyclonedx validate --input-file fastlane/health-sdk-pinning-ios/GiniHealthSDKPinning-sbom.json
+          ./cyclonedx validate --input-file fastlane/internal-payment-sdk-ios/GiniInternalPaymentSDK-sbom.json
+          ./cyclonedx validate --input-file fastlane/utilites-ios/GiniUtilites-sbom.json
 
       - name: archive the cyclonedx sboms
         uses: actions/upload-artifact@v4

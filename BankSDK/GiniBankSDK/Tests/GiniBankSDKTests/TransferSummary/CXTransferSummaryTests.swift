@@ -59,7 +59,7 @@ final class CXTransferSummaryTests: XCTestCase {
         configuration.sendTransferSummary(extractions: fields)
 
         let compound = try XCTUnwrap(documentServiceMock.capturedCompoundExtractions,
-                                     "updatedCompoundExtractions must not be nil")
+                                     "UpdatedCompoundExtractions must not be nil")
         let group = try XCTUnwrap(compound["crossBorderPayment"],
                                   "Compound must contain a 'crossBorderPayment' key")
         let capturedExtractions = try XCTUnwrap(group.first, "First group must exist")
@@ -88,9 +88,9 @@ final class CXTransferSummaryTests: XCTestCase {
 
     func testSepaGenericMethodSendsAsFlatExtractions() {
         configuration.productTag = .sepaExtractions
-
-        configuration.sendTransferSummary(extractions: ["iban": "DE89370400440532013000",
-                                                 "bic": "COBADEFFXXX"])
+        let extractions = ["iban": "DE89370400440532013000",
+                           "bic": "COBADEFFXXX"]
+        configuration.sendTransferSummary(extractions: extractions)
 
         XCTAssertGreaterThan(documentServiceMock.capturedFlatExtractions?.count ?? 0, 0,
                              "SEPA path must produce non-empty flat extractions")

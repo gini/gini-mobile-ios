@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Monorepo containing Gini's iOS SDKs for document capture, bank integration, health insurance, and merchant payment processing. All SDKs are Swift Packages managed through a single Xcode workspace (`GiniMobile.xcworkspace`).
+Monorepo containing Gini's iOS SDKs for document capture, bank integration, and health insurance. All SDKs are Swift Packages managed through a single Xcode workspace (`GiniMobile.xcworkspace`).
 
 ## Build & Test Commands
 
@@ -48,8 +48,7 @@ GiniBankAPILibrary ──┐
 GiniUtilites ────────┼──→ GiniCaptureSDK ──→ GiniBankSDK
                      │
 GiniHealthAPILibrary─┤
-GiniUtilites ────────┼──→ GiniInternalPaymentSDK ──┬──→ GiniHealthSDK
-                     │                              └──→ GiniMerchantSDK
+GiniUtilites ────────┼──→ GiniInternalPaymentSDK ──→ GiniHealthSDK
 ```
 
 When modifying a lower-level package, changes propagate to all dependents. Release order must follow this dependency chain (see `RELEASE-ORDER.md`).
@@ -74,7 +73,6 @@ Each SDK follows this structure:
 - `BankAPILibrary/` and `HealthAPILibrary/` — Low-level REST API clients
 - `CaptureSDK/` — Document capture, review, and image analysis
 - `BankSDK/` and `HealthSDK/` — Full-featured SDKs with UI components
-- `MerchantSDK/` — Merchant payment processing
 - `GiniComponents/GiniUtilites/` — Shared utilities (logging, networking)
 - `GiniComponents/GiniInternalPaymentSDK/` — Shared payment logic
 
@@ -208,3 +206,22 @@ init(compositeDocuments: [CompositeDocument]?,
 Refer to AGENTS.md for PR description generation and repository conventions.
 
 Always follow AGENTS.md instructions when generating pull request descriptions.
+
+
+
+# Skills
+
+Skills are reusable prompt files that extend Claude's capabilities for specific team workflows.
+They live in `.claude/skills/` and are invoked by name in any Claude conversation.
+
+---
+
+## Available Skills
+
+### `/generate-xray-tests`
+
+Generates manual test cases from a Jira ticket, local spec file, or pasted text, and writes them as a CSV ready to import into Xray Cloud.
+
+- **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
+- **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
+- **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
