@@ -665,7 +665,7 @@ end
     Environment Variables:
       APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
       APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
-      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+      APP_STORE_CONNECT_API_KEY         - App Store Connect API key content (base64-encoded .p8)
   DOC
   lane :build_and_upload_to_testflight do |options|
     ipa_name       = options[:ipa_name] || options[:scheme] || UI.user_error!("Missing required option: ipa_name or scheme")
@@ -676,7 +676,7 @@ end
   end
 
   desc <<~DOC
-    Upload an .ipa to TestFlight via xcrun altool.
+    Upload an .ipa to TestFlight via the App Store Connect API.
 
     Parameters:
       ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
@@ -684,8 +684,7 @@ end
     Environment Variables:
       APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
       APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
-      APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
-                                          (default: build_artifacts/AppStoreConnectAPIKey.p8)
+      APP_STORE_CONNECT_API_KEY         - App Store Connect API key content (base64-encoded .p8)
   DOC
   lane :publish_to_testflight do |options|
     ipa_path    = options[:ipa_path] || "./GiniBankSDKExample.ipa"
