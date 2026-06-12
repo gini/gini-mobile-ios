@@ -27,8 +27,6 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = true
-
     /**
      Override in a subclass to inject extra launch arguments before the app launches.
      The base argument `-StartFromCleanState YES` is always included.
