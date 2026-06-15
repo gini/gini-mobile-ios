@@ -153,6 +153,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
             self?.alertPresenter.dismiss()
         }
         alertController.addAction(okAction)
+        // preferredAction must be set after addAction
         alertController.preferredAction = okAction
 
         alertPresenter.present(alertController, from: self)
