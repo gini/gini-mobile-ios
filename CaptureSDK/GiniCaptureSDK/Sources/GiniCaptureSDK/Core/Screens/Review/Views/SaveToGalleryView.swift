@@ -52,7 +52,8 @@ final class SaveToGalleryView: UIView {
         }
     }
 
-    @Published var valueChanged = GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn == true
+    /// Externally read-only; `false` suppresses the initial Combine emission to avoid triggering photo permission on load.
+    @Published private(set) var valueChanged = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
