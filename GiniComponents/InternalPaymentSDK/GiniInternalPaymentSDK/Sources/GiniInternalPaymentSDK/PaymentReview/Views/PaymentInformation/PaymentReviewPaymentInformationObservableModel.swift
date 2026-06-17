@@ -12,7 +12,7 @@ import GiniUtilites
 /** Identifies which payment form field is currently focused.
  Stored in the observable model so focus can be restored after orientation changes recreate the view.
  */
-enum ActivePaymentField: Equatable {
+enum ActivePaymentField: Hashable {
     case recipient
     case iban
     case amount
