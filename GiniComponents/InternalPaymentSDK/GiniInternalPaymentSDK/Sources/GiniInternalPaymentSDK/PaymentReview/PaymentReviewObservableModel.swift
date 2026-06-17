@@ -39,18 +39,11 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.strings.invoiceImageAccessibilityLabel
     }
 
-    /**
-     Reflects whether the amount field inside the payment information form is currently focused.
-     Changes trigger a re-render of `PaymentReviewContentView` so the landscape Done toolbar
-     can appear or disappear in sync with keyboard focus.
-     */
+    // Reflects amount-field focus so PaymentReviewContentView re-renders the landscape toolbar.
     var isAmountFieldFocused: Bool {
         paymentInformationObservableModel.isAmountFieldFocused
     }
 
-    /**
-     The localized title for the keyboard Done button.
-     */
     var keyboardDoneButtonTitle: String {
         containerViewModel.strings.keyboardDoneButtonTitle
     }
@@ -70,19 +63,14 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
     }
 
-    /**
-     Validates the amount field as if it had just lost focus.
-     Called explicitly by the landscape Done button, which resigns first responder via
-     UIKit rather than setting `focusedField = nil`. SwiftUI's `@FocusState` update from
-     a UIKit `resignFirstResponder` call is not guaranteed to be synchronous, so relying
-     solely on `onChange(of: focusedField)` to trigger validation can cause the error
-     message to appear only on the second Done press. Calling this directly — mirroring
-     what the portrait Done button does — ensures validation runs immediately.
-     */
+    // Validates the amount field as if it just lost focus.
+    // Called by the landscape Done button which resigns first responder via UIKit — SwiftUI's
+    // @FocusState update is not guaranteed synchronous, so validation would otherwise fire
+    // only on the second Done press.
     func validateAmountFieldOnKeyboardDismiss() {
         paymentInformationObservableModel.handleAmountFocusChange(isFocused: false)
     }
-    
+
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
@@ -209,8 +197,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
     
     private func setupBindings() {
-        // Forward `isAmountFieldFocused` changes from the inner observable model so that
-        // `PaymentReviewContentView` re-renders when the amount field gains or loses focus.
+        // Forward isAmountFieldFocused changes so PaymentReviewContentView re-renders
+        // its landscape keyboard toolbar when the amount field gains or loses focus.
         paymentInformationObservableModel.$isAmountFieldFocused
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)

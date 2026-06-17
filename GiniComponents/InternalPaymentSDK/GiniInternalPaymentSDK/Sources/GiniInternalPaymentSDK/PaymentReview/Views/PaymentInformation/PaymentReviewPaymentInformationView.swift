@@ -78,12 +78,10 @@ struct PaymentReviewPaymentInformationView: View {
             .background(Color(.systemBackground))
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
                 guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                // Strip the keyboard UIKit animation so SwiftUI applies safeAreaInset changes
-                // instantly (one scroll evaluation against the final viewport).
-                withTransaction(.withoutAnimation) { keyboardHeight = frame.height }
+                keyboardHeight = frame.height
             }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                withTransaction(.withoutAnimation) { keyboardHeight = 0 }
+                keyboardHeight = 0
             }
             // iOS 26+ only: sheet/toolbar interop is fixed so one ToolbarItemGroup covers all modes.
             // iOS <26 falls back to doneButtonBar (portrait/landscape-bottomSheet) and
@@ -113,16 +111,17 @@ struct PaymentReviewPaymentInformationView: View {
             .safeAreaInset(edge: .bottom) {
                 let isBottomSheetMode = viewModel.model.displayMode == .bottomSheet
                 VStack(spacing: 0) {
-                    // iOS <26: landscape documentCollection is handled by PaymentReviewContentView.toolbar —
-                    // showing it here too would add 44pt and cause auto-scroll to overshoot.
+                    // iOS <26: landscape documentCollection is handled by PaymentReviewContentView.toolbar
+                    // (full-width native accessory). Portrait and landscape-bottomSheet use doneButtonBar
+                    // here — those contexts are behind a sheet boundary where toolbar items cannot propagate.
                     if #unavailable(iOS 26) {
                         if (!giniLayout.isLandscape || isBottomSheetMode) && focusedField == .amount && keyboardHeight > 0 {
                             doneButtonBar
                         }
                     }
                     // Landscape documentCollection: re-inject keyboard height so content scrolls above it.
-                    // Landscape bottomSheet: the sheet repositions above the keyboard — spacer not needed
-                    // and would push doneButtonBar toward the top and collapse the visible scroll area.
+                    // Landscape bottomSheet: sheet repositions above keyboard — spacer not needed and
+                    // would collapse the visible scroll area.
                     // allowsHitTesting(false): safeAreaInset overlays scroll content — without this the spacer swallows taps.
                     Color.clear
                         .frame(height: giniLayout.isLandscape && !isBottomSheetMode ? keyboardHeight : 0)

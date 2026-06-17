@@ -58,8 +58,7 @@ public struct PaymentReviewContentView: View {
             viewModel.dismissBannerAfterDelay()
         }
         // Full-width Done toolbar above the keyboard for landscape documentCollection on iOS <26.
-        // iOS 26+ is handled entirely by PaymentReviewPaymentInformationView.toolbar; without
-        // this guard both ToolbarItemGroups fire and two Done buttons appear simultaneously.
+        // iOS 26+ is handled entirely by PaymentReviewPaymentInformationView.toolbar.
         .toolbar {
             if #unavailable(iOS 26) {
                 ToolbarItemGroup(placement: .keyboard) {
