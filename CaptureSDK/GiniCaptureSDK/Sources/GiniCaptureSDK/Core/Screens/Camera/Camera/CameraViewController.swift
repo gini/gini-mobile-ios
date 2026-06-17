@@ -589,24 +589,31 @@ final class CameraViewController: UIViewController {
         resetQRCodeTask?.cancel()
         detectedQRCodeDocument = document
 
-        hideQRCodeTask = DispatchWorkItem(block: {
-            self.resetQRCodeScanning(isValid: isValid)
-
-            if let QRDocument = self.detectedQRCodeDocument {
-                if isValid {
+        if isValid {
+            hideQRCodeTask = DispatchWorkItem(block: {
+                self.resetQRCodeScanning(isValid: true)
+                if let QRDocument = self.detectedQRCodeDocument {
                     self.didPick(QRDocument)
                 }
-            }
-        })
-
-        if isValid {
+            })
             showValidQRCodeFeedback()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
         } else {
             if !isValidIBANDetected {
-                showInvalidQRCodeFeedback()
+                if GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled == true {
+                    // Backend flag enabled: show the new unsupported QR code warning alert.
+                    // QR detection is paused inside the alert and resumed/kept paused based on user action.
+                    showUnsupportedQRCodeAlert()
+                } else {
+                    // Backend flag disabled: show the existing yellow QR code overlay (legacy behavior).
+                    showInvalidQRCodeFeedback()
+                    hideQRCodeTask = DispatchWorkItem(block: {
+                        self.resetQRCodeScanning(isValid: false)
+                    })
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
+                }
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
     }
 
     private func showValidQRCodeFeedback() {
