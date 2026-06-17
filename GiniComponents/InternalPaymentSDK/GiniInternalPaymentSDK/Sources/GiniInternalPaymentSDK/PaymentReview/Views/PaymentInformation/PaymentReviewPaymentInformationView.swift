@@ -32,11 +32,6 @@ struct PaymentReviewPaymentInformationView: View {
     private var isDocCollection: Bool {
         giniLayout.isLandscape && viewModel.model.displayMode != .bottomSheet
     }
-
-    // Sheet context: sheet repositions above keyboard; Done bar and toolbar button are ours to manage.
-    private var isSheetContext: Bool {
-        !giniLayout.isLandscape || viewModel.model.displayMode == .bottomSheet
-    }
     
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
@@ -69,53 +64,56 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        let base = scrollView
-            .onAppear {
-                viewModel.isViewVisible = true
-                viewModel.populateFieldsIfNeeded()
-                // Move VoiceOver focus into sheet content on appear.
-                UIAccessibility.post(notification: .screenChanged, argument: nil)
-                // Restore focus after rotation recreates the view.
-                restoreFocusIfNeeded()
-            }
-            .onDisappear {
-                viewModel.isViewVisible = false
-            }
-            .onChange(of: focusedField) { newField in
-                handleFocusedFieldChange(newField)
-            }
-            .background(Color(.systemBackground))
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                keyboardHideToken += 1
-                let newHeight = max(keyboardHeight, frame.height)
-                guard newHeight != keyboardHeight else { return }
-                // Animate spacer growth in landscape so a size change between keyboard types
-                // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
-                if isDocCollection {
-                    let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-                    withAnimation(.easeInOut(duration: duration)) {
+        keyboardToolbarIfNeeded(
+            scrollView
+                .onAppear {
+                    viewModel.isViewVisible = true
+                    viewModel.populateFieldsIfNeeded()
+                    // Move VoiceOver focus into sheet content on appear.
+                    UIAccessibility.post(notification: .screenChanged, argument: nil)
+                    // Restore focus after rotation recreates the view.
+                    restoreFocusIfNeeded()
+                }
+                .onDisappear {
+                    viewModel.isViewVisible = false
+                }
+                .onChange(of: focusedField) { newField in
+                    handleFocusedFieldChange(newField)
+                }
+                .background(Color(.systemBackground))
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                    guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                    keyboardHideToken += 1
+                    let newHeight = max(keyboardHeight, frame.height)
+                    guard newHeight != keyboardHeight else { return }
+                    // Animate spacer growth in landscape so a size change between keyboard types
+                    // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
+                    if isDocCollection {
+                        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+                        withAnimation(.easeInOut(duration: duration)) {
+                            keyboardHeight = newHeight
+                        }
+                    } else {
                         keyboardHeight = newHeight
                     }
-                } else {
-                    keyboardHeight = newHeight
                 }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
-                let token = keyboardHideToken
-                DispatchQueue.main.async {
-                    guard keyboardHideToken == token else { return }
-                    keyboardHeight = 0
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
+                    let token = keyboardHideToken
+                    DispatchQueue.main.async {
+                        guard keyboardHideToken == token else { return }
+                        keyboardHeight = 0
+                    }
                 }
-            }
-        // Apply the toolbar only on iOS 26+. An empty .toolbar{} on iOS <26 creates a
-        // zero-width UIToolbar causing a harmless but noisy UIKit constraint warning.
+        )
+    }
+
+    // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
+    // on iOS <26 (which would log a harmless but noisy _UIToolbarContentView.width==0 warning).
+    @ViewBuilder
+    private func keyboardToolbarIfNeeded<V: View>(_ base: V) -> some View {
         if #available(iOS 26, *) {
             base.toolbar {
-                // Liquid Glass Done button for all modes on iOS 26.
-                // The button floats above the keyboard; a Color.clear spacer in safeAreaInset
-                // ensures scroll content doesn't slide under it in sheet contexts.
                 if focusedField == .amount && keyboardHeight > 0 {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
@@ -134,7 +132,7 @@ struct PaymentReviewPaymentInformationView: View {
 
     @ViewBuilder
     private var scrollView: some View {
-        if isSheetContext {
+        if !isDocCollection {
             // Sheet repositions above the keyboard; suppress double-adjustment.
             baseScrollView
                 .ignoresSafeArea(.keyboard)
@@ -147,7 +145,16 @@ struct PaymentReviewPaymentInformationView: View {
                                 .frame(height: Constants.doneButtonBarHeight)
                                 .allowsHitTesting(false)
                         } else {
-                            doneButtonBar
+                            HStack {
+                                Spacer()
+                                Button(viewModelStrings.keyboardDoneButtonTitle) {
+                                    dismissAmountKeyboard()
+                                }
+                                .padding(.horizontal, Constants.doneButtonHorizontalPadding)
+                            }
+                            .frame(height: Constants.doneButtonBarHeight)
+                            .background(.regularMaterial)
+                            .overlay(alignment: .top) { Divider() }
                         }
                     }
                 }
@@ -162,20 +169,6 @@ struct PaymentReviewPaymentInformationView: View {
                         .allowsHitTesting(false)
                 }
         }
-    }
-
-    @ViewBuilder
-    private var doneButtonBar: some View {
-        HStack {
-            Spacer()
-            Button(viewModelStrings.keyboardDoneButtonTitle) {
-                dismissAmountKeyboard()
-            }
-            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
-        }
-        .frame(height: Constants.doneButtonBarHeight)
-        .background(.regularMaterial)
-        .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
