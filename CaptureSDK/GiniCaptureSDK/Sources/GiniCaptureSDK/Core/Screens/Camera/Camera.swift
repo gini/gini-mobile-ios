@@ -33,6 +33,8 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func pauseQRDetection()
+    func resumeQRDetection()
 
     // IBAN detection
     func startOCR()
