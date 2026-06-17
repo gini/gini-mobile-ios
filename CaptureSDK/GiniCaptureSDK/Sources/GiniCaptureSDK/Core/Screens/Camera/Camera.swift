@@ -76,6 +76,9 @@ final class Camera: NSObject, CameraProtocol {
 
     fileprivate let application: UIApplication
 
+    // QR detection
+    private var qrMetadataOutput: AVCaptureMetadataOutput?
+
     // IBAN detection
     private var request: VNImageBasedRequest?
     private var textOrientation = CGImagePropertyOrientation.up
@@ -274,7 +277,23 @@ final class Camera: NSObject, CameraProtocol {
         if qrOutput.availableMetadataObjectTypes.contains(.qr) {
             qrOutput.metadataObjectTypes = [.qr]
         }
+        qrMetadataOutput = qrOutput
         session.commitConfiguration()
+    }
+
+    func pauseQRDetection() {
+        sessionQueue.async { [weak self] in
+            self?.qrMetadataOutput?.metadataObjectTypes = []
+        }
+    }
+
+    func resumeQRDetection() {
+        sessionQueue.async { [weak self] in
+            guard let self = self,
+                  let output = self.qrMetadataOutput,
+                  output.availableMetadataObjectTypes.contains(.qr) else { return }
+            output.metadataObjectTypes = [.qr]
+        }
     }
 }
 
