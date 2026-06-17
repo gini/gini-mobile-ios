@@ -494,12 +494,11 @@ extension ReviewViewController {
     }
 
     private func saveToGalleryValueDidChange() {
-        saveToGalleryView.$valueChanged.sink { isOn in
+        saveToGalleryView.$valueChanged.dropFirst().sink { [weak self] isOn in
             GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn = isOn
             if isOn {
-                self.handleSaveToGalleryToggle()
+                self?.handleSaveToGalleryToggle()
             }
-
         }.store(in: &cancellables)
     }
 
