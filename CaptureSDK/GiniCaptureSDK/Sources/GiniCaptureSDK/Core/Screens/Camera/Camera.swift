@@ -412,6 +412,71 @@ fileprivate extension Camera {
         }
     }
 
+    // AVFoundation's stringValue truncates at the first 0x00 byte, losing IBAN and all
+    // subsequent EPC fields. CIQRCodeDescriptor.errorCorrectedPayload is the raw QR
+    // data-codeword bit stream; we parse it directly to recover the full content.
+    func qrCodeString(from metadataObj: AVMetadataMachineReadableCodeObject) -> String? {
+        Camera.resolveQRString(descriptor: metadataObj.descriptor as? CIQRCodeDescriptor,
+                               fallbackStringValue: metadataObj.stringValue)
+    }
+
+    internal static func resolveQRString(descriptor: CIQRCodeDescriptor?,
+                                         fallbackStringValue: String?) -> String? {
+        guard let descriptor else { return fallbackStringValue }
+        return resolveQRString(payload: descriptor.errorCorrectedPayload,
+                               version: descriptor.symbolVersion,
+                               fallbackStringValue: fallbackStringValue)
+    }
+
+    internal static func resolveQRString(payload: Data,
+                                         version: Int,
+                                         fallbackStringValue: String?) -> String? {
+        guard let contentData = unpackByteModePayload(payload, version: version),
+              contentData.contains(0x00) else { return fallbackStringValue }
+        let cleanData = contentData.filter { $0 != 0x00 }
+        // Try UTF-8 first (EPC character set "1"). Latin-1 never returns nil (every
+        // byte 0x00–0xFF is valid), so it is a safe final fallback for character set "2".
+        return String(data: cleanData, encoding: .utf8)
+            ?? String(data: cleanData, encoding: .isoLatin1)
+    }
+
+    // Extracts content bytes from a QR byte-mode data-codeword bit stream.
+    //
+    // QR byte-mode bit layout (MSB first):
+    //   bits  0– 3 : mode indicator (0b0100 = byte mode)
+    //   bits  4–19 : 16-bit character count  (version 10–40)
+    //   bits  4–11 :  8-bit character count  (version  1– 9)
+    //   bits 20/12+: content bytes, one per 8 bits
+    //
+    // Content bytes always start at a half-byte (4-bit) offset, so each byte =
+    // low nibble of payload[b] OR'd with high nibble of payload[b+1].
+    // (payload[b] << 4 in UInt8 naturally discards the high nibble via overflow.)
+    // Returns nil for non-byte-mode streams or when the declared count exceeds the data.
+    internal static func unpackByteModePayload(_ data: Data, version: Int) -> Data? {
+        let bytes = Array(data)
+        guard bytes.count >= 2, bytes[0] >> 4 == 0b0100 else { return nil }
+
+        let uses16BitCount = version >= 10
+        let dataStart = uses16BitCount ? 2 : 1
+
+        let charCount: Int
+        if uses16BitCount {
+            guard bytes.count >= 3 else { return nil }
+            charCount = (Int(bytes[0] & 0x0F) << 12) | (Int(bytes[1]) << 4) | Int(bytes[2] >> 4)
+        } else {
+            charCount = (Int(bytes[0] & 0x0F) << 4) | Int(bytes[1] >> 4)
+        }
+
+        guard charCount > 0, bytes.count > dataStart + charCount else { return nil }
+
+        var result = Data(capacity: charCount)
+        for i in 0..<charCount {
+            let b = dataStart + i
+            result.append((bytes[b] << 4) | (bytes[b + 1] >> 4))
+        }
+        return result
+    }
+
     func generateUploadMetadata() -> Document.UploadMetadata {
         Document.UploadMetadata(
             deviceOrientation: UIDevice.current.orientation,
@@ -432,7 +497,8 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         }
 
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-           metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
+           metadataObj.type == AVMetadataObject.ObjectType.qr,
+           let metaString = qrCodeString(from: metadataObj) {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
             if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {
                 do {
