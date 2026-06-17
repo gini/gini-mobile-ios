@@ -149,6 +149,9 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         let okAction = UIAlertAction(title: model.strings.alertOkButtonTitle,
                                      style: .default)
         alertController.addAction(okAction)
+        // preferredAction must be set after addAction
+        alertController.preferredAction = okAction
+
         giniTopMostViewController().present(alertController, animated: true)
     }
     

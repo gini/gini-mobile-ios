@@ -151,7 +151,28 @@ final class ReviewViewControllerTests: XCTestCase {
     }
 
 
-// MARK: - Fix the test with tap event simulation
+    // MARK: - Regression Guards
+
+    func testSaveToGalleryViewValueChangedInitialisesToFalse() {
+        let saveToGalleryView = SaveToGalleryView()
+        XCTAssertFalse(saveToGalleryView.valueChanged,
+                       "valueChanged must start as false to prevent the initial Combine emission from triggering the permission flow on view load (PP-2563)")
+    }
+
+    func testUserDefaultsSavePhotosSwitchNotOverwrittenOnViewLoad() {
+        GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn = true
+
+        let vc = ReviewViewController(pages: imagePages,
+                                      giniConfiguration: giniConfiguration)
+        _ = vc.view
+
+        XCTAssertEqual(GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn, true,
+                       "userSettingsSavePhotosSwitchOn must not be overwritten on view load — dropFirst() must suppress the initial emission (PP-2563 / PP-2171 regression guard)")
+
+        GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn = nil
+    }
+
+    // MARK: - Fix the test with tap event simulation
 
 //    func testDatasourceOnDelete() {
 //        let vc = ReviewViewController(pages: imagePages,
