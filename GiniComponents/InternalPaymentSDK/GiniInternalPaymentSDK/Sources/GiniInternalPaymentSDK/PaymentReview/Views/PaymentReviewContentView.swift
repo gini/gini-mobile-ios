@@ -57,25 +57,24 @@ public struct PaymentReviewContentView: View {
         .onAppear {
             viewModel.dismissBannerAfterDelay()
         }
-        // Full-width Done toolbar rendered above the keyboard in landscape (documentCollection)
-        // mode. `ToolbarItemGroup(placement: .keyboard)` is the correct way to place content
-        // above the keyboard — `safeAreaInset` on the HStack would place it behind the keyboard
-        // because the outer container suppresses the keyboard safe area with `ignoresSafeArea`.
-        // The inner form view's narrow Done bar is suppressed in landscape so only this
-        // full-width version appears.
+        // Full-width Done toolbar above the keyboard for landscape documentCollection on iOS <26.
+        // iOS 26+ is handled entirely by PaymentReviewPaymentInformationView.toolbar; without
+        // this guard both ToolbarItemGroups fire and two Done buttons appear simultaneously.
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
-                    Spacer()
-                    Button(viewModel.keyboardDoneButtonTitle) {
-                        viewModel.trackKeyboardDismissed()
-                        viewModel.validateAmountFieldOnKeyboardDismiss()
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                        to: nil,
-                                                        from: nil,
-                                                        for: nil)
+            if #unavailable(iOS 26) {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
+                        Spacer()
+                        Button(viewModel.keyboardDoneButtonTitle) {
+                            viewModel.trackKeyboardDismissed()
+                            viewModel.validateAmountFieldOnKeyboardDismiss()
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                            to: nil,
+                                                            from: nil,
+                                                            for: nil)
+                        }
+                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
                     }
-                    .padding(.trailing, Constants.doneButtonHorizontalPadding)
                 }
             }
         }
@@ -107,9 +106,7 @@ public struct PaymentReviewContentView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
                     // Re-check conditions in case the mode changed during the delay.
                     if !viewModel.isBottomSheetMode && !showBottomSheet {
-                        var transaction = Transaction()
-                        transaction.disablesAnimations = true
-                        withTransaction(transaction) {
+                        withTransaction(.withoutAnimation) {
                             showBottomSheet = true
                         }
                     }

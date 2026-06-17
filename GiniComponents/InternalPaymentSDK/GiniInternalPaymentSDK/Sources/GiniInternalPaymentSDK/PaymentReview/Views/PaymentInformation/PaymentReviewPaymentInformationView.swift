@@ -78,10 +78,27 @@ struct PaymentReviewPaymentInformationView: View {
             .background(Color(.systemBackground))
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
                 guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                keyboardHeight = frame.height
+                // Strip the keyboard UIKit animation so SwiftUI applies safeAreaInset changes
+                // instantly (one scroll evaluation against the final viewport).
+                withTransaction(.withoutAnimation) { keyboardHeight = frame.height }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                keyboardHeight = 0
+                withTransaction(.withoutAnimation) { keyboardHeight = 0 }
+            }
+            // iOS 26+ only: sheet/toolbar interop is fixed so one ToolbarItemGroup covers all modes.
+            // iOS <26 falls back to doneButtonBar (portrait/landscape-bottomSheet) and
+            // PaymentReviewContentView.toolbar (landscape documentCollection).
+            .toolbar {
+                if #available(iOS 26, *) {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        if focusedField == .amount {
+                            Spacer()
+                            Button(viewModelStrings.keyboardDoneButtonTitle) {
+                                dismissAmountKeyboard()
+                            }
+                        }
+                    }
+                }
             }
     }
 
@@ -95,34 +112,21 @@ struct PaymentReviewPaymentInformationView: View {
             .ignoresSafeArea(.keyboard)
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 0) {
-                    // Done button shown here only in portrait (bottom-sheet mode). In landscape
-                    // the outer PaymentReviewContentView renders a full-width Done toolbar above
-                    // the keyboard, so the narrow per-panel bar is suppressed.
-                    if !giniLayout.isLandscape && focusedField == .amount && keyboardHeight > 0 {
-                        doneButtonBar
+                    // iOS <26: landscape documentCollection is handled by PaymentReviewContentView.toolbar —
+                    // showing it here too would add 44pt and cause auto-scroll to overshoot.
+                    if #unavailable(iOS 26) {
+                        let isBottomSheetMode = viewModel.model.displayMode == .bottomSheet
+                        if (!giniLayout.isLandscape || isBottomSheetMode) && focusedField == .amount && keyboardHeight > 0 {
+                            doneButtonBar
+                        }
                     }
-                    // In landscape the keyboard sits below the inline view; re-inject its
-                    // height so the ScrollView scrolls content above it. In portrait the
-                    // sheet already repositions above the keyboard — no extra space needed.
-                    Color.clear.frame(height: giniLayout.isLandscape ? keyboardHeight : 0)
+                    // Landscape: re-inject keyboard height so content scrolls above it; portrait doesn't need it.
+                    // allowsHitTesting(false): safeAreaInset overlays scroll content — without this the spacer swallows taps.
+                    Color.clear
+                        .frame(height: giniLayout.isLandscape ? keyboardHeight : 0)
+                        .allowsHitTesting(false)
                 }
             }
-    }
-
-    @ViewBuilder
-    private var doneButtonBar: some View {
-        HStack {
-            Spacer()
-            Button(viewModelStrings.keyboardDoneButtonTitle) {
-                onKeyboardDismissed()
-                viewModel.handleAmountFocusChange(isFocused: false)
-                focusedField = nil
-            }
-            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
-        }
-        .frame(height: Constants.doneButtonBarHeight)
-        .background(Color(UIColor.systemGroupedBackground))
-        .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
@@ -130,7 +134,12 @@ struct PaymentReviewPaymentInformationView: View {
             VStack(spacing: 0) {
                 if showBanner {
                     infoBannerView
-                        .transition(.move(edge: .top).combined(with: .opacity))
+                        // Removal uses opacity-only: .move animates height, triggering repeated scroll
+                        // evaluations while the keyboard is visible. Opacity is instant for layout.
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .top).combined(with: .opacity),
+                            removal: .opacity
+                        ))
                         .onAppear {
                             UIAccessibility.post(notification: .announcement,
                                                  argument: viewModel.model.strings.infoBarMessage)
@@ -412,7 +421,28 @@ struct PaymentReviewPaymentInformationView: View {
         }
         .padding(.top, Constants.poweredByGiniTopPadding)
     }
-    
+
+    // Done bar substituting the return key absent from .decimalPad; shown on iOS <26.
+    @ViewBuilder
+    private var doneButtonBar: some View {
+        HStack {
+            Spacer()
+            Button(viewModelStrings.keyboardDoneButtonTitle) {
+                dismissAmountKeyboard()
+            }
+            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
+        }
+        .frame(height: Constants.doneButtonBarHeight)
+        .background(.regularMaterial)
+        .overlay(alignment: .top) { Divider() }
+    }
+
+    private func dismissAmountKeyboard() {
+        onKeyboardDismissed()
+        viewModel.handleAmountFocusChange(isFocused: false)
+        focusedField = nil
+    }
+
     // MARK: Private methods
 
     private func clearFocus() {
@@ -436,12 +466,6 @@ struct PaymentReviewPaymentInformationView: View {
     
     // MARK: - Orientation Helpers
 
-    /**
-     Handles focus changes on the active field.
-     When focus moves to a field, the model's `activeField` and `isAmountFieldFocused` are updated.
-     When focus is cleared, amount-focus is cleared immediately and `activeField` is cleared
-     after a short delay — distinguishing a user keyboard dismissal from a rotation-triggered view recreation.
-     */
     private func handleFocusedFieldChange(_ newField: ActivePaymentField?) {
         if let field = newField {
             viewModel.activeField = field
@@ -466,11 +490,7 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    /**
-     Re-applies keyboard focus after the view is recreated by an orientation change.
-     The delay lets the rotation animation and any pending keyboard dismissal finish
-     before requesting focus again.
-     */
+    // Re-applies focus after rotation recreates the view; delays 400ms for the animation to finish.
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
