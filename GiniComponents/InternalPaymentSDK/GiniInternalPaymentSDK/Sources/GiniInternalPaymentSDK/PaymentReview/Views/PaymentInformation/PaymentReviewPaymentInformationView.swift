@@ -107,17 +107,16 @@ struct PaymentReviewPaymentInformationView: View {
                 DispatchQueue.main.async {
                     guard keyboardHideToken == token else { return }
                     keyboardHeight = 0
-                    focusedField = nil
                 }
             }
         // Apply the toolbar only on iOS 26+. An empty .toolbar{} on iOS <26 creates a
         // zero-width UIToolbar causing a harmless but noisy UIKit constraint warning.
         if #available(iOS 26, *) {
             base.toolbar {
-                // Liquid Glass Done button only for landscape-docCollection where the keyboard
-                // toolbar floats correctly above the panel. Portrait and landscape-bottomSheet
-                // use doneButtonBar in safeAreaInset to avoid overlapping sheet content.
-                if isDocCollection && focusedField == .amount && keyboardHeight > 0 {
+                // Liquid Glass Done button for all modes on iOS 26.
+                // The button floats above the keyboard; a Color.clear spacer in safeAreaInset
+                // ensures scroll content doesn't slide under it in sheet contexts.
+                if focusedField == .amount && keyboardHeight > 0 {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         Button(viewModelStrings.keyboardDoneButtonTitle) {
@@ -140,11 +139,16 @@ struct PaymentReviewPaymentInformationView: View {
             baseScrollView
                 .ignoresSafeArea(.keyboard)
                 .safeAreaInset(edge: .bottom) {
-                    // doneButtonBar for all sheet contexts and all iOS versions.
-                    // In portrait/bottomSheet the sheet sits above the keyboard; a ToolbarItemGroup
-                    // button would land at the keyboard edge and overlap the last row of content.
                     if focusedField == .amount && keyboardHeight > 0 {
-                        doneButtonBar
+                        if #available(iOS 26, *) {
+                            // Reserve height for the floating Liquid Glass button so content
+                            // doesn't slide under it at the sheet/keyboard boundary.
+                            Color.clear
+                                .frame(height: Constants.doneButtonBarHeight)
+                                .allowsHitTesting(false)
+                        } else {
+                            doneButtonBar
+                        }
                     }
                 }
         } else {
