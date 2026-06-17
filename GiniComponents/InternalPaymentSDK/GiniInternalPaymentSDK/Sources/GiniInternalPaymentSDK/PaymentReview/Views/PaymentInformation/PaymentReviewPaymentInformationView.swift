@@ -111,19 +111,21 @@ struct PaymentReviewPaymentInformationView: View {
             // an automatic gap. Keyboard space is re-injected explicitly via safeAreaInset.
             .ignoresSafeArea(.keyboard)
             .safeAreaInset(edge: .bottom) {
+                let isBottomSheetMode = viewModel.model.displayMode == .bottomSheet
                 VStack(spacing: 0) {
                     // iOS <26: landscape documentCollection is handled by PaymentReviewContentView.toolbar —
                     // showing it here too would add 44pt and cause auto-scroll to overshoot.
                     if #unavailable(iOS 26) {
-                        let isBottomSheetMode = viewModel.model.displayMode == .bottomSheet
                         if (!giniLayout.isLandscape || isBottomSheetMode) && focusedField == .amount && keyboardHeight > 0 {
                             doneButtonBar
                         }
                     }
-                    // Landscape: re-inject keyboard height so content scrolls above it; portrait doesn't need it.
+                    // Landscape documentCollection: re-inject keyboard height so content scrolls above it.
+                    // Landscape bottomSheet: the sheet repositions above the keyboard — spacer not needed
+                    // and would push doneButtonBar toward the top and collapse the visible scroll area.
                     // allowsHitTesting(false): safeAreaInset overlays scroll content — without this the spacer swallows taps.
                     Color.clear
-                        .frame(height: giniLayout.isLandscape ? keyboardHeight : 0)
+                        .frame(height: giniLayout.isLandscape && !isBottomSheetMode ? keyboardHeight : 0)
                         .allowsHitTesting(false)
                 }
             }
