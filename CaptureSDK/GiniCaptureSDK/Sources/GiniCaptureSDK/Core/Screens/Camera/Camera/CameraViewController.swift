@@ -651,6 +651,39 @@ final class CameraViewController: UIViewController {
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
     }
 
+    private func showUnsupportedQRCodeAlert() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.warning)
+
+        cameraPreviewViewController.camera.pauseQRDetection()
+
+        sendGiniAnalyticsEventForInvalidQRCode()
+        playVoiceOverMessage(success: false)
+
+        let alert = UIAlertController(title: "This is not a payment QR code",
+                                      message: nil,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Scan another QR code", style: .default) { [weak self] _ in
+            self?.handleScanAnotherQRCode()
+        })
+        alert.addAction(UIAlertAction(title: "Take photo of document", style: .default) { [weak self] _ in
+            self?.handleTakePhotoOfDocument()
+        })
+
+        present(alert, animated: true)
+    }
+
+    private func handleScanAnotherQRCode() {
+        cameraPreviewViewController.camera.resumeQRDetection()
+        detectedQRCodeDocument = nil
+    }
+
+    private func handleTakePhotoOfDocument() {
+        // QR detection stays paused — resuming here would immediately re-trigger the alert
+        cameraPreviewViewController.cameraFrameView.isHidden = false
+        detectedQRCodeDocument = nil
+    }
+
     private func isAccessibilityLargeTextEnabled() -> Bool {
         let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
         return contentSizeCategory.isAccessibilityCategory
