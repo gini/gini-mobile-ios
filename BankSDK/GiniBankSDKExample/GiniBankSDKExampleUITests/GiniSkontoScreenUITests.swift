@@ -16,7 +16,13 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         "skonto_valid" file with valid skonto
      */
     
-    func testSkonto() {
+    /**
+     Verifies the complete Skonto flow is reachable when a document is uploaded via the Files app.
+     This test focuses on the Files upload path — Skonto state assertions are covered by dedicated state tests.
+
+     Pre-condition: the `skonto_valid` file must be available in the Files app on the device or simulator.
+     */
+    func testSkontoFullFlowWithDiscountViaFiles() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -25,8 +31,16 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Upload photo button
+        //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        //Tap valid skonto document
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
+//        //Tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert Skonto screen appeared — proves Files upload was processed successfully
+//        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+
         //tap Skonto document
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
         //Open button appears on some iOS versions/flows; safe to skip if absent.
@@ -49,6 +63,41 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
+    
+    
+    /**
+     Verifies the complete Skonto flow is reachable when a document is uploaded via the photo gallery.
+     This test focuses on the gallery upload path — Skonto state assertions are covered by dedicated state tests.
+
+     Pre-condition: add the `skonto_valid` image (PNG or JPG) to the simulator's photo library before
+     running this test. The method picks the **last** photo in the library, so make sure it is the most
+     recently added one.
+     */
+    func testSkontoFullFlowWithDiscountViaGallery() {
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button to open the upload menu
+        captureScreen.filesButton.tap()
+        //Tap Upload photo button to open the photo library picker
+        captureScreen.uploadPhotoButton.tap()
+        //Handle photo library permission alert if it appears
+        mainScreen.handlePhotoPermission(answer: true)
+        //Select the latest photo from the gallery (skonto_valid image)
+        uploadLatestPhotoFromGallery()
+        //Wait for ReviewViewController and tap Process to trigger analysis
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
+        reviewScreen.processButton.tap()
+        //Wait for analysis screen to finish if it appears
+        waitForAnalysisIfNeeded()
+        //Assert Skonto screen appeared — proves gallery upload was processed successfully
+        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+    }
+
     
     func testSkontoBackButton() {
         //Tap Photopayment button
@@ -118,7 +167,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     }
     
     
-    func testSkontoInFuture() {
+    func testSkontoSwitchEnabledForValidDiscount() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -130,6 +179,15 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
+
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoValid)
+//        //tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert Skonto screen is shown (Got it button does NOT appear for valid/future skonto)
+//        XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
+//        //Assert that Switch is enabled for valid skonto
+
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoValid)
         //Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
@@ -141,7 +199,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
     }
     
-    func testSkontoInPast() {
+    func testSkontoSwitchDisabledForExpiredDiscount() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -153,18 +211,26 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
+
+        //TODO: Check if we need this or the below implementation `tapFileFromBestAvailableSource`
+//        mainScreen.tapFileWithName(fileName: TestFixtures.Files.skontoPast)
+//        //tap Open button
+//        captureScreen.openGalleryButton.tap()
+//        //Assert that Got it button is displayed for expired skonto
+
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.skontoPast)
         //Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
         }
         //Assert that Got it button is displayed
+
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
-        //Assert that Switch is disabled
+        //Assert that Switch is disabled for expired skonto
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
     }
     
-    func testSkontoHelpButtonbo() {
+    func testSkontoHelpButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
