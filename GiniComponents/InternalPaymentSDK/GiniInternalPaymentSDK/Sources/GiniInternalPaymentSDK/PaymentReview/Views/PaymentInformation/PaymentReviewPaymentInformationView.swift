@@ -123,9 +123,10 @@ struct PaymentReviewPaymentInformationView: View {
     @ViewBuilder
     private func keyboardToolbarIfNeeded(_ base: some View) -> some View {
         if #available(iOS 26, *) {
+            // Condition must stay inside ToolbarItemGroup (always-registered) for all modes.
+            // Moving it outside switches the view identity when the keyboard appears, which
+            // destroys and recreates the view — causing a jump and breaking keyboard presentation.
             base.toolbar {
-                // Always-registered so the bar never detaches mid-transition (same rationale
-                // as ContentView's iOS <26 ToolbarItemGroup). Condition is inside the group.
                 ToolbarItemGroup(placement: .keyboard) {
                     if focusedField == .amount && keyboardHeight > 0 {
                         Spacer()
@@ -159,8 +160,8 @@ struct PaymentReviewPaymentInformationView: View {
             .safeAreaInset(edge: .bottom) {
                 if focusedField == .amount && keyboardHeight > 0 {
                     if #available(iOS 26, *) {
-                        // Reserve height for the floating Liquid Glass button so content
-                        // doesn't slide under it at the sheet/keyboard boundary.
+                        // Reserve height for the Liquid Glass button (ToolbarItemGroup) so
+                        // content doesn't slide behind it at the sheet/keyboard boundary.
                         Color.clear
                             .frame(height: Constants.doneButtonBarHeight)
                             .allowsHitTesting(false)
