@@ -111,11 +111,13 @@ struct PaymentReviewPaymentInformationView: View {
     // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
     // on iOS <26 (which would log a harmless but noisy _UIToolbarContentView.width==0 warning).
     @ViewBuilder
-    private func keyboardToolbarIfNeeded<V: View>(_ base: V) -> some View {
+    private func keyboardToolbarIfNeeded(_ base: some View) -> some View {
         if #available(iOS 26, *) {
             base.toolbar {
-                if focusedField == .amount && keyboardHeight > 0 {
-                    ToolbarItemGroup(placement: .keyboard) {
+                // Always-registered so the bar never detaches mid-transition (same rationale
+                // as ContentView's iOS <26 ToolbarItemGroup). Condition is inside the group.
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .amount && keyboardHeight > 0 {
                         Spacer()
                         Button(viewModelStrings.keyboardDoneButtonTitle) {
                             dismissAmountKeyboard()
@@ -220,7 +222,7 @@ struct PaymentReviewPaymentInformationView: View {
             // No anchor → minimum scroll: if the field is already visible nothing happens,
             // which avoids a spurious micro-scroll when switching between adjacent fields (IBAN/amount).
             .onChange(of: keyboardHeight) { height in
-                guard giniLayout.isLandscape else { return }
+                guard isDocCollection else { return }
                 if height > 0, let field = focusedField {
                     proxy.scrollTo(field)
                 } else if height == 0 {
