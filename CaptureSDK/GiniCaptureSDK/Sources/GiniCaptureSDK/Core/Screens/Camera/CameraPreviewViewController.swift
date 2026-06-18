@@ -73,7 +73,7 @@ final class CameraPreviewViewController: UIViewController {
     private var notAuthorizedView: UIView?
     private let giniConfiguration: GiniConfiguration
     private typealias FocusIndicator = UIImageView
-    private var camera: CameraProtocol
+    var camera: CameraProtocol
     private var defaultImageView: UIImageView?
     private var focusIndicatorImageView: UIImageView?
 
