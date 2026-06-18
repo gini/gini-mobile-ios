@@ -82,30 +82,40 @@ struct PaymentReviewPaymentInformationView: View {
                 }
                 .background(Color(.systemBackground))
                 .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                    guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                    keyboardHideToken += 1
-                    let newHeight = max(keyboardHeight, frame.height)
-                    guard newHeight != keyboardHeight else { return }
-                    // Animate spacer growth in landscape so a size change between keyboard types
-                    // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
-                    if isDocCollection {
-                        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-                        withAnimation(.easeInOut(duration: duration)) {
-                            keyboardHeight = newHeight
-                        }
-                    } else {
-                        keyboardHeight = newHeight
-                    }
+                    handleKeyboardWillShow(notification)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
-                    let token = keyboardHideToken
-                    DispatchQueue.main.async {
-                        guard keyboardHideToken == token else { return }
-                        keyboardHeight = 0
-                    }
+                    handleKeyboardWillHide()
                 }
         )
+    }
+
+    // MARK: Private keyboard handlers
+
+    private func handleKeyboardWillShow(_ notification: Notification) {
+        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        keyboardHideToken += 1
+        let newHeight = max(keyboardHeight, frame.height)
+        guard newHeight != keyboardHeight else { return }
+        // Animate spacer growth in landscape so a size change between keyboard types
+        // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
+        if isDocCollection {
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+            withAnimation(.easeInOut(duration: duration)) {
+                keyboardHeight = newHeight
+            }
+        } else {
+            keyboardHeight = newHeight
+        }
+    }
+
+    private func handleKeyboardWillHide() {
+        // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
+        let token = keyboardHideToken
+        DispatchQueue.main.async {
+            guard keyboardHideToken == token else { return }
+            keyboardHeight = 0
+        }
     }
 
     // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
@@ -135,42 +145,58 @@ struct PaymentReviewPaymentInformationView: View {
     @ViewBuilder
     private var scrollView: some View {
         if !isDocCollection {
-            // Sheet repositions above the keyboard; suppress double-adjustment.
-            baseScrollView
-                .ignoresSafeArea(.keyboard)
-                .safeAreaInset(edge: .bottom) {
-                    if focusedField == .amount && keyboardHeight > 0 {
-                        if #available(iOS 26, *) {
-                            // Reserve height for the floating Liquid Glass button so content
-                            // doesn't slide under it at the sheet/keyboard boundary.
-                            Color.clear
-                                .frame(height: Constants.doneButtonBarHeight)
-                                .allowsHitTesting(false)
-                        } else {
-                            HStack {
-                                Spacer()
-                                Button(viewModelStrings.keyboardDoneButtonTitle) {
-                                    dismissAmountKeyboard()
-                                }
-                                .padding(.horizontal, Constants.doneButtonHorizontalPadding)
-                            }
+            sheetScrollView
+        } else {
+            docCollectionScrollView
+        }
+    }
+
+    // Sheet context: sheet repositions above the keyboard; suppress double-adjustment.
+    @ViewBuilder
+    private var sheetScrollView: some View {
+        baseScrollView
+            .ignoresSafeArea(.keyboard)
+            .safeAreaInset(edge: .bottom) {
+                if focusedField == .amount && keyboardHeight > 0 {
+                    if #available(iOS 26, *) {
+                        // Reserve height for the floating Liquid Glass button so content
+                        // doesn't slide under it at the sheet/keyboard boundary.
+                        Color.clear
                             .frame(height: Constants.doneButtonBarHeight)
-                            .background(.regularMaterial)
-                            .overlay(alignment: .top) { Divider() }
-                        }
+                            .allowsHitTesting(false)
+                    } else {
+                        doneButtonBar
                     }
                 }
-        } else {
-            // Landscape docCollection: manual spacer keeps content above the keyboard.
-            // Done button: ContentView toolbar (iOS <26) or Liquid Glass toolbar (iOS 26+).
-            baseScrollView
-                .ignoresSafeArea(.keyboard)
-                .safeAreaInset(edge: .bottom) {
-                    Color.clear
-                        .frame(height: keyboardHeight)
-                        .allowsHitTesting(false)
-                }
+            }
+    }
+
+    // Landscape docCollection: manual spacer keeps content above the keyboard.
+    // Done button: ContentView toolbar (iOS <26) or Liquid Glass toolbar (iOS 26+).
+    @ViewBuilder
+    private var docCollectionScrollView: some View {
+        baseScrollView
+            .ignoresSafeArea(.keyboard)
+            .safeAreaInset(edge: .bottom) {
+                Color.clear
+                    .frame(height: keyboardHeight)
+                    .allowsHitTesting(false)
+            }
+    }
+
+    // Done bar substituting the missing return key on .decimalPad; iOS <26 only.
+    @ViewBuilder
+    private var doneButtonBar: some View {
+        HStack {
+            Spacer()
+            Button(viewModelStrings.keyboardDoneButtonTitle) {
+                dismissAmountKeyboard()
+            }
+            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
         }
+        .frame(height: Constants.doneButtonBarHeight)
+        .background(.regularMaterial)
+        .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
