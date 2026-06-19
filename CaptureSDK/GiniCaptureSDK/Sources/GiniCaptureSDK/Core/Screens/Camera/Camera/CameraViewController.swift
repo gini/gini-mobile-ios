@@ -677,13 +677,13 @@ final class CameraViewController: UIViewController {
         sendGiniAnalyticsEventForInvalidQRCode()
         playVoiceOverMessage(success: false)
 
-        let alert = UIAlertController(title: "This is not a payment QR code",
+        let alert = UIAlertController(title: Strings.unsupportedQRAlertTitle,
                                       message: nil,
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Scan another QR code", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.scanAnotherQRCode, style: .default) { [weak self] _ in
             self?.handleScanAnotherQRCode()
         })
-        alert.addAction(UIAlertAction(title: "Take photo of document", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.takePhotoOfDocument, style: .default) { [weak self] _ in
             self?.handleTakePhotoOfDocument()
         })
 
@@ -828,6 +828,21 @@ private extension CameraViewController {
                                                                    comment: "Info label")
         static let cameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
                                                                   comment: "Camera title")
+
+        static let unsupportedQRAlertTitleKey = "ginicapture.QRscanning.alert.title"
+        static let unsupportedQRAlertTitleComment = "Unsupported QR code alert title"
+        static let unsupportedQRAlertTitle = NSLocalizedStringPreferredFormat(unsupportedQRAlertTitleKey,
+                                                                              comment: unsupportedQRAlertTitleComment)
+
+        static let scanAnotherQRCodeKey = "ginicapture.QRscanning.alert.scanAnother"
+        static let scanAnotherQRCodeComment = "Scan another QR code button"
+        static let scanAnotherQRCode = NSLocalizedStringPreferredFormat(scanAnotherQRCodeKey,
+                                                                        comment: scanAnotherQRCodeComment)
+
+        static let takePhotoOfDocumentKey = "ginicapture.QRscanning.alert.takePhoto"
+        static let takePhotoOfDocumentComment = "Take photo of document button"
+        static let takePhotoOfDocument = NSLocalizedStringPreferredFormat(takePhotoOfDocumentKey,
+                                                                          comment: takePhotoOfDocumentComment)
     }
 }
 // swiftlint:enable type_body_length
