@@ -46,6 +46,10 @@ final class CameraViewController: UIViewController {
     private var isPresentedOnScreen = false
 
     private var isValidIBANDetected: Bool = false
+    // Snapshot of the backend flag taken on the first invalid QR scan.
+    // Stays fixed for the session so all repeated scans show the same feedback type.
+    private var sessionUnsupportedQRCodeWarningEnabled: Bool?
+    private var isWarningFlagSnapshotted = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
     private var ibanOverlayFirstAppearance: Bool = true
@@ -600,12 +604,18 @@ final class CameraViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
         } else {
             if !isValidIBANDetected {
-                if GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled == true {
-                    // Backend flag enabled: show the new unsupported QR code warning alert.
-                    // QR detection is paused inside the alert and resumed/kept paused based on user action.
+                // Snapshot the flag once so the feedback type stays consistent across
+                // repeated scans in the same session. A separate boolean guards the snapshot
+                // because assigning nil to a Bool? still leaves it nil, making a nil-check
+                // unreliable as a "has snapshotted" gate.
+                if !isWarningFlagSnapshotted {
+                    sessionUnsupportedQRCodeWarningEnabled = GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled
+                    isWarningFlagSnapshotted = true
+                }
+
+                if sessionUnsupportedQRCodeWarningEnabled == true {
                     showUnsupportedQRCodeAlert()
                 } else {
-                    // Backend flag disabled: show the existing yellow QR code overlay (legacy behavior).
                     showInvalidQRCodeFeedback()
                     hideQRCodeTask = DispatchWorkItem(block: {
                         self.resetQRCodeScanning(isValid: false)
