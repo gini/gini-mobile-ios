@@ -138,13 +138,131 @@ public final class QRCodesExtractor {
         return parameters
     }
 
-    // MARK: - New format extractors (implementations added in Step 3)
+    // MARK: - SPC (Swiss Payment Code / QR-bill)
 
-    class func extractParameters(fromSPCCodeString string: String) -> [String: String] { [:] }
-    class func extractParameters(fromSPDCodeString string: String) -> [String: String] { [:] }
-    class func extractParameters(fromPayBySquareString string: String) -> [String: String] { [:] }
-    class func extractParameters(fromUPNQRCodeString string: String) -> [String: String] { [:] }
-    class func extractParameters(fromHUB3CodeString string: String) -> [String: String] { [:] }
+    class func extractParameters(fromSPCCodeString string: String) -> [String: String] {
+        let lines = string.splitlines
+        var parameters: [String: String] = [:]
+
+        if lines.indices.contains(3) && IBANValidator().isValid(iban: lines[3]) {
+            parameters["iban"] = lines[3]
+        }
+        if lines.indices.contains(5) && !lines[5].isEmpty {
+            parameters["paymentRecipient"] = lines[5]
+        }
+        let currency = lines.indices.contains(19) ? lines[19] : "CHF"
+        if lines.indices.contains(18) && !lines[18].isEmpty,
+           let amountToPay = normalize(amount: lines[18], currency: currency) {
+            parameters["amountToPay"] = amountToPay
+        }
+        // Reference value is only meaningful when reference type is not "NON"
+        if lines.indices.contains(27) && lines[27] != "NON",
+           lines.indices.contains(28) && !lines[28].isEmpty {
+            parameters["paymentReference"] = lines[28]
+        }
+
+        return parameters
+    }
+
+    // MARK: - SPD (Czech/Slovak Payment Descriptor)
+
+    class func extractParameters(fromSPDCodeString string: String) -> [String: String] {
+        var parameters: [String: String] = [:]
+        let segments = string.components(separatedBy: "*").dropFirst(2) // skip "SPD" and version
+
+        for segment in segments {
+            let parts = segment.split(separator: ":", maxSplits: 1).map(String.init)
+            guard parts.count == 2 else { continue }
+            let key = parts[0]
+            let value = parts[1]
+            switch key {
+            case "ACC": parameters["iban"] = value
+            case "AM":  parameters["amountToPay"] = value
+            case "CC":
+                if let amount = parameters["amountToPay"] {
+                    parameters["amountToPay"] = amount + ":" + value
+                }
+            case "RN":  parameters["paymentRecipient"] = value
+            case "MSG": parameters["paymentReference"] = value
+            default:    break
+            }
+        }
+
+        return parameters
+    }
+
+    // MARK: - Pay by Square (Slovak compressed QR)
+
+    class func extractParameters(fromPayBySquareString string: String) -> [String: String] {
+        guard let decoded = PayBySquareDecoder.decode(string) else { return [:] }
+        var parameters: [String: String] = [:]
+
+        parameters["iban"] = decoded.iban
+        parameters["paymentRecipient"] = decoded.payeeName
+        if !decoded.amount.isEmpty && !decoded.currency.isEmpty {
+            parameters["amountToPay"] = decoded.amount + ":" + decoded.currency
+        }
+        if !decoded.paymentNote.isEmpty {
+            parameters["paymentReference"] = decoded.paymentNote
+        }
+        if let bic = decoded.swift, !bic.isEmpty {
+            parameters["bic"] = bic
+        }
+
+        return parameters
+    }
+
+    // MARK: - UPNQR (Slovenian UPN QR)
+
+    class func extractParameters(fromUPNQRCodeString string: String) -> [String: String] {
+        let lines = string.splitlines
+        var parameters: [String: String] = [:]
+
+        if lines.indices.contains(9), let cents = Int(lines[9]) {
+            let amount = String(format: "%.2f", Double(cents) / 100.0)
+            parameters["amountToPay"] = amount + ":EUR"
+        }
+        if lines.indices.contains(13) && !lines[13].isEmpty {
+            parameters["paymentReference"] = lines[13]
+        }
+        if lines.indices.contains(15) {
+            parameters["iban"] = lines[15]
+        }
+        if lines.indices.contains(16) && !lines[16].isEmpty {
+            parameters["bic"] = lines[16]
+        }
+        if lines.indices.contains(17) && !lines[17].isEmpty {
+            parameters["paymentRecipient"] = lines[17]
+        }
+
+        return parameters
+    }
+
+    // MARK: - HUB3 (Croatian PDF417)
+
+    class func extractParameters(fromHUB3CodeString string: String) -> [String: String] {
+        let lines = string.splitlines
+        var parameters: [String: String] = [:]
+
+        let currency = lines.indices.contains(1) ? lines[1] : "EUR"
+        if lines.indices.contains(2), let cents = Int(lines[2]) {
+            let amount = String(format: "%.2f", Double(cents) / 100.0)
+            parameters["amountToPay"] = amount + ":" + currency
+        }
+        if lines.indices.contains(6) && !lines[6].isEmpty {
+            parameters["paymentRecipient"] = lines[6]
+        }
+        if lines.indices.contains(9) {
+            parameters["iban"] = lines[9]
+        }
+        let model = lines.indices.contains(10) ? lines[10] : ""
+        let reference = lines.indices.contains(11) ? lines[11] : ""
+        if !model.isEmpty || !reference.isEmpty {
+            parameters["paymentReference"] = model + "-" + reference
+        }
+
+        return parameters
+    }
 
     fileprivate class func normalize(amount: String, currency: String?) -> String? {
         let regexCurrency = try? NSRegularExpression(pattern: "[aA-zZ]", options: [])
