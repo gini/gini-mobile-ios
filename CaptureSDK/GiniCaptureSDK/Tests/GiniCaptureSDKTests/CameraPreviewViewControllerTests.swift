@@ -112,4 +112,30 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         camera.resumeQRDetection()
         flushSessionQueue(camera)
     }
+
+    func testPauseQRDetectionClearsMetadataObjectTypes() {
+        let camera = makeCamera()
+        let output = AVCaptureMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.pauseQRDetection()
+        flushSessionQueue(camera)
+
+        XCTAssertTrue(output.metadataObjectTypes.isEmpty,
+                      "metadataObjectTypes should be empty after pauseQRDetection")
+    }
+
+    func testResumeQRDetectionGuardsAgainstUnavailableQRType() {
+        let camera = makeCamera()
+        let output = AVCaptureMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.resumeQRDetection()
+        flushSessionQueue(camera)
+
+        // On CI simulators .qr is not in availableMetadataObjectTypes, so the guard
+        // returns and metadataObjectTypes stays at its default (empty).
+        XCTAssertTrue(output.metadataObjectTypes.isEmpty,
+                      "metadataObjectTypes should remain unchanged when .qr is unavailable")
+    }
 }

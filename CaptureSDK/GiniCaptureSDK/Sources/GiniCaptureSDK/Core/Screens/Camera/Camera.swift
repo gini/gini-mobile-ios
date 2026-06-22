@@ -77,7 +77,7 @@ final class Camera: NSObject, CameraProtocol {
     fileprivate let application: UIApplication
 
     // QR detection
-    private var qrMetadataOutput: AVCaptureMetadataOutput?
+    private(set) var qrMetadataOutput: AVCaptureMetadataOutput?
 
     // IBAN detection
     private var request: VNImageBasedRequest?
@@ -294,6 +294,12 @@ final class Camera: NSObject, CameraProtocol {
                   output.availableMetadataObjectTypes.contains(.qr) else { return }
             output.metadataObjectTypes = [.qr]
         }
+    }
+
+    // Intended for unit tests only — injects a metadata output without going
+    // through full session setup, which is unstable on CI simulators.
+    func setQRMetadataOutputForTesting(_ output: AVCaptureMetadataOutput?) {
+        qrMetadataOutput = output
     }
 }
 
