@@ -39,7 +39,9 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.strings.invoiceImageAccessibilityLabel
     }
 
-    // Reflects amount-field focus so PaymentReviewContentView re-renders the landscape toolbar.
+    /**
+     Reflects amount-field focus so PaymentReviewContentView re-renders the landscape toolbar.
+     */
     var isAmountFieldFocused: Bool {
         paymentInformationObservableModel.isAmountFieldFocused
     }
@@ -63,10 +65,12 @@ final class PaymentReviewObservableModel: ObservableObject {
         model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
     }
 
-    // Validates the amount field as if it just lost focus.
-    // Called by the landscape Done button which resigns first responder via UIKit — SwiftUI's
-    // @FocusState update is not guaranteed synchronous, so validation would otherwise fire
-    // only on the second Done press.
+    /**
+     Validates the amount field as if it just lost focus.
+     Called by the landscape Done button which resigns first responder via UIKit — SwiftUI's
+     @FocusState update is not guaranteed synchronous, so validation would otherwise fire
+     only on the second Done press.
+     */
     func validateAmountFieldOnKeyboardDismiss() {
         paymentInformationObservableModel.handleAmountFocusChange(isFocused: false)
     }

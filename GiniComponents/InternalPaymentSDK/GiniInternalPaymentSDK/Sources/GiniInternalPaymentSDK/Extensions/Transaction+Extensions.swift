@@ -7,7 +7,9 @@
 import SwiftUI
 
 extension Transaction {
-    // Disables ambient UIKit animation inheritance (e.g. keyboard CATransaction).
+    /**
+     Disables ambient UIKit animation inheritance (e.g. keyboard CATransaction).
+     */
     static var withoutAnimation: Transaction {
         var transaction = Transaction()
         transaction.disablesAnimations = true
