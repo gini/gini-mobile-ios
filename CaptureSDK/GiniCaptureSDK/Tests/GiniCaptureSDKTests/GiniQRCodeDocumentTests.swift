@@ -6,6 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
+import Testing
 import XCTest
 @testable import GiniCaptureSDK
 final class GiniQRCodeDocumentTests: XCTestCase {
@@ -482,5 +483,223 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                        "unknown charset must still resolve to epc06912 when IBAN is valid")
         XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                    withConfig: giniConfiguration))
+    }
+}
+
+// MARK: - SPC (Swiss Payment Code / QR-bill)
+
+@Suite("SPC QR Code")
+struct SPCQRCodeTests {
+
+    let config = GiniConfiguration()
+
+    private func makeSPC(referenceType: String = "QRR",
+                         reference: String = "210000000003139471430009017",
+                         iban: String = "DE89370400440532013000") -> String {
+        var lines = Array(repeating: "", count: 31)
+        lines[0]  = "SPC"
+        lines[1]  = "0200"
+        lines[2]  = "1"
+        lines[3]  = iban
+        lines[4]  = "S"
+        lines[5]  = "Test Recipient"
+        lines[18] = "1234.50"
+        lines[19] = "CHF"
+        lines[27] = referenceType
+        lines[28] = reference
+        return lines.joined(separator: "\n")
+    }
+
+    @Test func detectedAsSPC() {
+        let doc = GiniQRCodeDocument(scannedString: makeSPC())
+        #expect(doc.qrCodeFormat == .spc)
+    }
+
+    @Test func extractsIBANRecipientAndAmount() {
+        let doc = GiniQRCodeDocument(scannedString: makeSPC())
+        #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
+        #expect(doc.extractedParameters["paymentRecipient"] == "Test Recipient")
+        #expect(doc.extractedParameters["amountToPay"] == "1234.50:CHF")
+    }
+
+    @Test func extractsReferenceWhenQRR() {
+        let doc = GiniQRCodeDocument(scannedString: makeSPC())
+        #expect(doc.extractedParameters["paymentReference"] == "210000000003139471430009017")
+    }
+
+    @Test func noReferenceWhenNON() {
+        let doc = GiniQRCodeDocument(scannedString: makeSPC(referenceType: "NON",
+                                                            reference: "210000000003139471430009017"))
+        #expect(doc.extractedParameters["paymentReference"] == nil)
+    }
+
+    @Test func nilFormatForInvalidIBAN() {
+        let doc = GiniQRCodeDocument(scannedString: makeSPC(iban: "NOTANIBAN"))
+        #expect(doc.qrCodeFormat == nil)
+    }
+}
+
+// MARK: - SPD (Czech/Slovak Payment Descriptor)
+
+@Suite("SPD QR Code")
+struct SPDQRCodeTests {
+
+    let config = GiniConfiguration()
+
+    private let validSPD = "SPD*1.0*ACC:CZ6508000000192000145399*AM:100.50*CC:CZK*RN:Test Recipient*MSG:Invoice 123*"
+
+    @Test func detectedAsSPD() {
+        let doc = GiniQRCodeDocument(scannedString: validSPD)
+        #expect(doc.qrCodeFormat == .spd)
+    }
+
+    @Test func extractsAllFields() {
+        let doc = GiniQRCodeDocument(scannedString: validSPD)
+        #expect(doc.extractedParameters["iban"] == "CZ6508000000192000145399")
+        #expect(doc.extractedParameters["amountToPay"] == "100.50:CZK")
+        #expect(doc.extractedParameters["paymentRecipient"] == "Test Recipient")
+        #expect(doc.extractedParameters["paymentReference"] == "Invoice 123")
+    }
+
+    @Test func amountHasNoCurrencySuffixWhenCCMissing() {
+        let doc = GiniQRCodeDocument(scannedString: "SPD*1.0*ACC:CZ6508000000192000145399*AM:100.50*RN:Test Recipient*")
+        #expect(doc.extractedParameters["amountToPay"] == "100.50")
+    }
+
+    @Test func ibanNilWhenACCMissing() {
+        let doc = GiniQRCodeDocument(scannedString: "SPD*1.0*AM:100.50*CC:CZK*RN:Test Recipient*")
+        #expect(doc.extractedParameters["iban"] == nil)
+    }
+}
+
+// MARK: - Pay by Square (Slovak compressed QR)
+
+@Suite("Pay by Square QR Code")
+struct PayBySquareQRCodeTests {
+
+    let config = GiniConfiguration()
+
+    // 16-char base32hex string. bytes[0] decodes to docType != 0, so decode() returns nil.
+    private let detectionString = "ABCDEF0123456789"
+
+    @Test func detectedAsPayBySquare() {
+        let doc = GiniQRCodeDocument(scannedString: detectionString)
+        #expect(doc.qrCodeFormat == .payBySquare)
+    }
+
+    @Test func nonBase32HexStringNotDetected() {
+        // Lowercase letters are outside the base32hex alphabet (0–9, A–V)
+        let doc = GiniQRCodeDocument(scannedString: "abcdef0123456789")
+        #expect(doc.qrCodeFormat != .payBySquare)
+    }
+
+    @Test func corruptPayloadYieldsEmptyParameters() {
+        let doc = GiniQRCodeDocument(scannedString: detectionString)
+        #expect(doc.extractedParameters.isEmpty)
+    }
+
+    @Test func corruptPayloadFailsValidation() {
+        let doc = GiniQRCodeDocument(scannedString: detectionString)
+        #expect(throws: DocumentValidationError.qrCodeFormatNotValid) {
+            try GiniCaptureDocumentValidator.validate(doc, withConfig: config)
+        }
+    }
+
+    // TODO: Add a test with a verified BYSQUARE test vector to cover correct field extraction
+    // (iban, paymentRecipient, amountToPay, paymentReference, bic) after full LZ77 decode.
+}
+
+// MARK: - UPNQR (Slovenian UPN QR)
+
+@Suite("UPNQR QR Code")
+struct UPNQRQRCodeTests {
+
+    let config = GiniConfiguration()
+
+    private func makeUPNQR(amountCents: String = "00000048050",
+                            reference: String = "SI00 1234-5678",
+                            iban: String = "DE89370400440532013000",
+                            bic: String = "LJBASI2X",
+                            payee: String = "Gini d.o.o.") -> String {
+        var lines = Array(repeating: "", count: 18)
+        lines[0]  = "UPNQR"
+        lines[9]  = amountCents
+        lines[13] = reference
+        lines[15] = iban
+        lines[16] = bic
+        lines[17] = payee
+        return lines.joined(separator: "\n")
+    }
+
+    @Test func detectedAsUPNQR() {
+        let doc = GiniQRCodeDocument(scannedString: makeUPNQR())
+        #expect(doc.qrCodeFormat == .upnqr)
+    }
+
+    @Test func extractsAllFields() {
+        let doc = GiniQRCodeDocument(scannedString: makeUPNQR())
+        #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
+        #expect(doc.extractedParameters["paymentRecipient"] == "Gini d.o.o.")
+        #expect(doc.extractedParameters["amountToPay"] == "480.50:EUR")
+        #expect(doc.extractedParameters["bic"] == "LJBASI2X")
+        #expect(doc.extractedParameters["paymentReference"] == "SI00 1234-5678")
+    }
+
+    @Test func convertsCentsToDecimalEUR() {
+        let doc = GiniQRCodeDocument(scannedString: makeUPNQR(amountCents: "00000048050"))
+        #expect(doc.extractedParameters["amountToPay"] == "480.50:EUR")
+    }
+
+    @Test func emptyReferenceOmitsPaymentReference() {
+        let doc = GiniQRCodeDocument(scannedString: makeUPNQR(reference: ""))
+        #expect(doc.extractedParameters["paymentReference"] == nil)
+    }
+}
+
+// MARK: - HUB3 (Croatian PDF417)
+
+@Suite("HUB3 QR Code")
+struct HUB3QRCodeTests {
+
+    let config = GiniConfiguration()
+
+    private func makeHUB3(currency: String = "EUR",
+                           amountCents: String = "000000000010000",
+                           payee: String = "Gini d.o.o.",
+                           iban: String = "DE89370400440532013000",
+                           model: String = "HR00",
+                           reference: String = "1234567890") -> String {
+        var lines = Array(repeating: "", count: 12)
+        lines[0]  = "HRVHUB3"
+        lines[1]  = currency
+        lines[2]  = amountCents
+        lines[6]  = payee
+        lines[9]  = iban
+        lines[10] = model
+        lines[11] = reference
+        return lines.joined(separator: "\n")
+    }
+
+    @Test func detectedAsHUB3() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3())
+        #expect(doc.qrCodeFormat == .hub3)
+    }
+
+    @Test func extractsAllFields() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3())
+        #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
+        #expect(doc.extractedParameters["paymentRecipient"] == "Gini d.o.o.")
+        #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
+        #expect(doc.extractedParameters["paymentReference"] == "HR00-1234567890")
+    }
+
+    @Test func convertsCentsToDecimalEUR() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(amountCents: "000000000010000"))
+        #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
+    }
+
+    @Test func paymentReferenceFormattedAsModelDashReference() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR00", reference: "1234567890"))
+        #expect(doc.extractedParameters["paymentReference"] == "HR00-1234567890")
     }
 }
