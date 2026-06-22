@@ -51,18 +51,34 @@ import GiniUtilites
             return .bezahl
         } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.prefixURL) {
             return .eps4mobile
-        } else if let lines = Optional(self.scannedString.splitlines),
-                  lines.count > 0 && lines[0] == QRCodesFormat.epc06912.prefixURL {
-            if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
-                Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.",
-                    event: "EPC QR code")
-            }
-
-            if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
-                return .epc06912
-            } else {
+        } else if self.scannedString.starts(with: QRCodesFormat.spd.prefixURL) {
+            return .spd
+        } else if let lines = Optional(self.scannedString.splitlines), !lines.isEmpty {
+            switch lines[0] {
+            case QRCodesFormat.epc06912.prefixURL:
+                if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
+                    Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.",
+                        event: "EPC QR code")
+                }
+                if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
+                    return .epc06912
+                }
                 return nil
+            case QRCodesFormat.spc.prefixURL:
+                if lines.indices.contains(3) && IBANValidator().isValid(iban: lines[3]) {
+                    return .spc
+                }
+                return nil
+            case QRCodesFormat.upnqr.prefixURL:
+                return .upnqr
+            case QRCodesFormat.hub3.prefixURL:
+                return .hub3
+            default:
+                if PayBySquareDecoder.looksLikePayBySquare(self.scannedString) {
+                    return .payBySquare
+                }
             }
+            return nil
         } else {
             return nil
         }
