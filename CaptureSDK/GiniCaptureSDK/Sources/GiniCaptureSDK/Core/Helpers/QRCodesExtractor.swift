@@ -29,7 +29,7 @@ public enum QRCodesFormat {
         case .spd:         return "SPD*"
         case .payBySquare: return ""
         case .upnqr:       return "UPNQR"
-        case .hub3:        return "HRVHUB3"
+        case .hub3:        return "HRVHUB30"
         }
     }
 }
@@ -202,8 +202,8 @@ public final class QRCodesExtractor {
         if !decoded.amount.isEmpty && !decoded.currency.isEmpty {
             parameters["amountToPay"] = decoded.amount + ":" + decoded.currency
         }
-        if !decoded.paymentNote.isEmpty {
-            parameters["paymentReference"] = decoded.paymentNote
+        if !decoded.paymentReference.isEmpty {
+            parameters["paymentReference"] = decoded.paymentReference
         }
         if let bic = decoded.swift, !bic.isEmpty {
             parameters["bic"] = bic
@@ -218,21 +218,24 @@ public final class QRCodesExtractor {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
-        if lines.indices.contains(9), let cents = Int(lines[9]) {
+        if lines.indices.contains(8), let cents = Int(lines[8]) {
             let amount = String(format: "%.2f", Double(cents) / 100.0)
             parameters["amountToPay"] = amount + ":EUR"
         }
-        if lines.indices.contains(13) && !lines[13].isEmpty {
-            parameters["paymentReference"] = lines[13]
+        let primaryRef = lines.indices.contains(12) ? lines[12] : ""
+        let fallbackRef = lines.indices.contains(4) ? lines[4] : ""
+        let reference = primaryRef.isEmpty ? fallbackRef : primaryRef
+        if !reference.isEmpty {
+            parameters["paymentReference"] = reference
         }
-        if lines.indices.contains(15) {
-            parameters["iban"] = lines[15]
+        if lines.indices.contains(14) {
+            parameters["iban"] = lines[14]
+        }
+        if lines.indices.contains(13) && !lines[13].isEmpty {
+            parameters["bic"] = lines[13]
         }
         if lines.indices.contains(16) && !lines[16].isEmpty {
-            parameters["bic"] = lines[16]
-        }
-        if lines.indices.contains(17) && !lines[17].isEmpty {
-            parameters["paymentRecipient"] = lines[17]
+            parameters["paymentRecipient"] = lines[16]
         }
 
         return parameters
@@ -255,10 +258,8 @@ public final class QRCodesExtractor {
         if lines.indices.contains(9) {
             parameters["iban"] = lines[9]
         }
-        let model = lines.indices.contains(10) ? lines[10] : ""
-        let reference = lines.indices.contains(11) ? lines[11] : ""
-        if !model.isEmpty || !reference.isEmpty {
-            parameters["paymentReference"] = model + "-" + reference
+        if lines.indices.contains(11) && !lines[11].isEmpty {
+            parameters["paymentReference"] = lines[11]
         }
 
         return parameters

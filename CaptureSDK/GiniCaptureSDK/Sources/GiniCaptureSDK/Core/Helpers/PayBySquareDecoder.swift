@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import Compression
 
 struct PayBySquarePayment {
     let iban: String
@@ -11,53 +12,79 @@ struct PayBySquarePayment {
     let amount: String
     let currency: String
     let payeeName: String
-    let paymentNote: String
+    let paymentReference: String
 }
 
 final class PayBySquareDecoder {
 
     static func looksLikePayBySquare(_ string: String) -> Bool {
+        let upper = string.uppercased()
         let base32hexChars = CharacterSet(charactersIn: "0123456789ABCDEFGHIJKLMNOPQRSTUV")
-        return string.count >= 16
-            && string.unicodeScalars.allSatisfy { base32hexChars.contains($0) }
+        return upper.count >= 16
+            && upper.unicodeScalars.allSatisfy { base32hexChars.contains($0) }
     }
 
     static func decode(_ string: String) -> PayBySquarePayment? {
-        // 1. Base32hex decode: map each char to 5-bit value, pack into bytes
-        guard let bytes = base32hexDecode(string) else { return nil }
+        let upper = string.uppercased()
 
-        // 2. Parse header (3 bytes):
-        //    - Byte 0 bits 3-0: document type (0 = Payment)
-        //    - Bytes 1-2: decompressed data length, little-endian uint16
-        guard bytes.count >= 3 else { return nil }
-        let docType = bytes[0] & 0x0F
-        guard docType == 0 else { return nil }
-        let decompressedLength = Int(bytes[1]) | (Int(bytes[2]) << 8)
+        // 1. Base32hex decode
+        guard let bytes = base32hexDecode(upper) else { return nil }
 
-        // 3. LZ77 decompress bytes[3...]
-        guard let decompressed = lz77Decompress(Array(bytes[3...]),
-                                                expectedLength: decompressedLength) else { return nil }
+        // 2. Parse 4-byte bysquare header:
+        //    bytes[0-1]: bysquare header (upper nibble of byte 0 = bysquare type; 0 = PAY)
+        //    bytes[2-3]: payload length (little-endian uint16 = decompressed size including CRC32)
+        guard bytes.count > 4 else { return nil }
+        let bysquareType = (Int(bytes[0]) >> 4) & 0x0F
+        guard bysquareType == 0 else { return nil }
+        let payloadLength = Int(bytes[2]) | (Int(bytes[3]) << 8)
+        guard payloadLength > 4 else { return nil }
 
-        // 4. Decode as UTF-8
-        guard let text = String(bytes: decompressed, encoding: .utf8) else { return nil }
+        // 3. LZMA decompress bytes[4...]
+        guard let decompressed = lzmaDecompress(rawBody: Array(bytes[4...]),
+                                                payloadLength: payloadLength) else { return nil }
 
-        // 5. Tab-separated fields per BYSQUARE Payment spec:
-        //    [0] InvoiceID  [1] PaymentOptions  [2] Amount      [3] CurrencyCode
-        //    [4] DueDate    [5] VariableSymbol  [6] ConstSymbol [7] SpecificSymbol
-        //    [8] OriginatorRefInfo  [9] PaymentNote  [10] BankAccountsCount
-        //    [11] IBAN  [12] SWIFT/BIC  [13] PayeeName
+        // 4. Skip 4-byte CRC32 prefix; decode remaining as UTF-8
+        guard decompressed.count > 4 else { return nil }
+        guard let text = String(bytes: Array(decompressed[4...]), encoding: .utf8) else { return nil }
+
+        // 5. Tab-separated fields (bysquare spec v1.1):
+        //    [0] invoiceId      [1] paymentsCount  [2] paymentType  [3] amount
+        //    [4] currencyCode   [5] paymentDueDate [6] variableSymbol [7] constantSymbol
+        //    [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
+        //    [12] IBAN          [13] BIC           ...extensions...  [12+N*2+2] beneficiaryName
         let fields = text.components(separatedBy: "\t")
-        guard fields.count > 13 else { return nil }
+        let banksCount = max(1, Int(fields.indices.contains(11) ? fields[11].trimmingCharacters(in: .whitespaces) : "") ?? 1)
+        let beneficiaryIdx = 12 + banksCount * 2 + 2
+        guard fields.indices.contains(beneficiaryIdx) else { return nil }
 
-        return PayBySquarePayment(iban: fields[11],
-                                  swift: fields[12].isEmpty ? nil : fields[12],
-                                  amount: fields[2],
-                                  currency: fields[3],
-                                  payeeName: fields[13],
-                                  paymentNote: fields[9])
+        let iban = fields.indices.contains(12) ? fields[12] : ""
+        let bic = fields.indices.contains(13) && !fields[13].isEmpty ? fields[13] : nil
+        let amount = fields.indices.contains(3) ? fields[3] : ""
+        let currency = fields.indices.contains(4) ? fields[4] : ""
+        let beneficiaryName = fields[beneficiaryIdx]
+        let variableSymbol = fields.indices.contains(6) ? fields[6] : ""
+        let paymentNote = fields.indices.contains(10) ? fields[10] : ""
+        let reference = buildReference(variableSymbol: variableSymbol, paymentNote: paymentNote)
+
+        return PayBySquarePayment(iban: iban,
+                                  swift: bic,
+                                  amount: amount,
+                                  currency: currency,
+                                  payeeName: beneficiaryName,
+                                  paymentReference: reference)
     }
 
     // MARK: - Private
+
+    private static func buildReference(variableSymbol: String, paymentNote: String) -> String {
+        if !variableSymbol.isEmpty && !paymentNote.isEmpty {
+            return variableSymbol + " " + paymentNote
+        } else if !variableSymbol.isEmpty {
+            return variableSymbol
+        } else {
+            return paymentNote
+        }
+    }
 
     private static func base32hexDecode(_ string: String) -> [UInt8]? {
         var accumulator: UInt32 = 0
@@ -83,58 +110,44 @@ final class PayBySquareDecoder {
         return result
     }
 
-    // Haruhiko Okumura LZSS variant used by the BYSQUARE standard.
-    // Window: 4096-byte ring buffer initialised to 0x20 (space).
-    // Control byte LSB-first: 1 = literal, 0 = back-reference (2 bytes).
-    // Back-reference encoding: b0 = low 8 bits of position,
-    //   b1 high-nibble = bits 11-8 of position, b1 low-nibble = length - 3.
-    private static func lz77Decompress(_ data: [UInt8], expectedLength: Int) -> [UInt8]? {
-        let windowSize = 4096
-        let minMatchLength = 3   // THRESHOLD + 1
+    /// Decompresses raw LZMA1 body (without the 13-byte LZMA "alone" header) using
+    /// Apple's Compression framework. Reconstructs the standard LZMA "alone" header
+    /// with the fixed bysquare parameters (lc=3, lp=0, pb=2, dictSize=131072) before
+    /// passing the data to the decoder.
+    private static func lzmaDecompress(rawBody: [UInt8], payloadLength: Int) -> [UInt8]? {
+        // Build the 13-byte LZMA "alone" header:
+        //   1 byte  properties: 0x5D = (pb*5+lp)*9+lc = (2*5+0)*9+3 = 93 = 0x5D
+        //   4 bytes dictionary size: 131072 = 0x00020000, little-endian
+        //   8 bytes uncompressed size: payloadLength, little-endian uint64
+        let header: [UInt8] = [
+            0x5D,
+            0x00, 0x00, 0x02, 0x00,
+            UInt8( payloadLength        & 0xFF),
+            UInt8((payloadLength >>  8) & 0xFF),
+            UInt8((payloadLength >> 16) & 0xFF),
+            UInt8((payloadLength >> 24) & 0xFF),
+            0, 0, 0, 0
+        ]
 
-        var ringBuf = [UInt8](repeating: 0x20, count: windowSize)
-        var r = windowSize - 18  // initial insert position (= 4078)
-        var output = [UInt8]()
-        output.reserveCapacity(expectedLength)
+        let fullData = header + rawBody
+        var dest = [UInt8](repeating: 0, count: payloadLength)
 
-        var i = 0
-
-        while i < data.count, output.count < expectedLength {
-            let flags = Int(data[i])
-            i += 1
-
-            for bit in 0..<8 {
-                guard i < data.count, output.count < expectedLength else { break }
-
-                if flags & (1 << bit) != 0 {
-                    // Literal byte
-                    let c = data[i]
-                    i += 1
-                    output.append(c)
-                    ringBuf[r] = c
-                    r = (r + 1) % windowSize
-                } else {
-                    // Back-reference
-                    guard i + 1 < data.count else { return nil }
-                    let b0 = Int(data[i])
-                    let b1 = Int(data[i + 1])
-                    i += 2
-
-                    var position = b0 | ((b1 & 0xF0) << 4)
-                    let length = (b1 & 0x0F) + minMatchLength
-
-                    for _ in 0..<length {
-                        guard output.count < expectedLength else { break }
-                        let c = ringBuf[position % windowSize]
-                        output.append(c)
-                        ringBuf[r] = c
-                        r = (r + 1) % windowSize
-                        position += 1
-                    }
-                }
+        let result = fullData.withUnsafeBytes { srcPtr -> Int in
+            guard let srcBase = srcPtr.baseAddress else { return 0 }
+            return dest.withUnsafeMutableBytes { dstPtr -> Int in
+                guard let dstBase = dstPtr.baseAddress else { return 0 }
+                return compression_decode_buffer(
+                    dstBase.assumingMemoryBound(to: UInt8.self),
+                    payloadLength,
+                    srcBase.assumingMemoryBound(to: UInt8.self),
+                    fullData.count,
+                    nil,
+                    COMPRESSION_LZMA
+                )
             }
         }
 
-        return output.count == expectedLength ? output : nil
+        guard result == payloadLength else { return nil }
+        return dest
     }
 }

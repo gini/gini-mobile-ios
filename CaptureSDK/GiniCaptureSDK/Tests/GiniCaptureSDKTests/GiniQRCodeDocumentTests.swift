@@ -579,7 +579,7 @@ struct PayBySquareQRCodeTests {
 
     let config = GiniConfiguration()
 
-    // 16-char base32hex string. bytes[0] decodes to docType != 0, so decode() returns nil.
+    // 16-char base32hex string. Upper nibble of bytes[0] = bysquareType != 0, so decode() returns nil.
     private let detectionString = "ABCDEF0123456789"
 
     @Test func detectedAsPayBySquare() {
@@ -606,7 +606,7 @@ struct PayBySquareQRCodeTests {
     }
 
     // TODO: Add a test with a verified BYSQUARE test vector to cover correct field extraction
-    // (iban, paymentRecipient, amountToPay, paymentReference, bic) after full LZ77 decode.
+    // (iban, paymentRecipient, amountToPay, paymentReference, bic) after full LZMA decode.
 }
 
 // MARK: - UPNQR (Slovenian UPN QR)
@@ -621,13 +621,13 @@ struct UPNQRQRCodeTests {
                             iban: String = "DE89370400440532013000",
                             bic: String = "LJBASI2X",
                             payee: String = "Gini d.o.o.") -> String {
-        var lines = Array(repeating: "", count: 18)
+        var lines = Array(repeating: "", count: 20)
         lines[0]  = "UPNQR"
-        lines[9]  = amountCents
-        lines[13] = reference
-        lines[15] = iban
-        lines[16] = bic
-        lines[17] = payee
+        lines[8]  = amountCents
+        lines[12] = reference
+        lines[13] = bic
+        lines[14] = iban
+        lines[16] = payee
         return lines.joined(separator: "\n")
     }
 
@@ -654,6 +654,17 @@ struct UPNQRQRCodeTests {
         let doc = GiniQRCodeDocument(scannedString: makeUPNQR(reference: ""))
         #expect(doc.extractedParameters["paymentReference"] == nil)
     }
+
+    @Test func fallsBackToPayerReferenceWhenPaymentReferenceIsEmpty() {
+        var lines = Array(repeating: "", count: 20)
+        lines[0]  = "UPNQR"
+        lines[4]  = "SI01-999"
+        lines[8]  = "0000010000"
+        lines[14] = "DE89370400440532013000"
+        lines[16] = "Gini d.o.o."
+        let doc = GiniQRCodeDocument(scannedString: lines.joined(separator: "\n"))
+        #expect(doc.extractedParameters["paymentReference"] == "SI01-999")
+    }
 }
 
 // MARK: - HUB3 (Croatian PDF417)
@@ -667,15 +678,13 @@ struct HUB3QRCodeTests {
                            amountCents: String = "000000000010000",
                            payee: String = "Gini d.o.o.",
                            iban: String = "DE89370400440532013000",
-                           model: String = "HR00",
-                           reference: String = "1234567890") -> String {
-        var lines = Array(repeating: "", count: 12)
-        lines[0]  = "HRVHUB3"
+                           reference: String = "HR00 1234567890") -> String {
+        var lines = Array(repeating: "", count: 14)
+        lines[0]  = "HRVHUB30"
         lines[1]  = currency
         lines[2]  = amountCents
         lines[6]  = payee
         lines[9]  = iban
-        lines[10] = model
         lines[11] = reference
         return lines.joined(separator: "\n")
     }
@@ -690,7 +699,7 @@ struct HUB3QRCodeTests {
         #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
         #expect(doc.extractedParameters["paymentRecipient"] == "Gini d.o.o.")
         #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
-        #expect(doc.extractedParameters["paymentReference"] == "HR00-1234567890")
+        #expect(doc.extractedParameters["paymentReference"] == "HR00 1234567890")
     }
 
     @Test func convertsCentsToDecimalEUR() {
@@ -698,8 +707,8 @@ struct HUB3QRCodeTests {
         #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
     }
 
-    @Test func paymentReferenceFormattedAsModelDashReference() {
-        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR00", reference: "1234567890"))
-        #expect(doc.extractedParameters["paymentReference"] == "HR00-1234567890")
+    @Test func paymentReferenceUsesCallNumberFieldDirectly() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(reference: "HR99 555-666"))
+        #expect(doc.extractedParameters["paymentReference"] == "HR99 555-666")
     }
 }
