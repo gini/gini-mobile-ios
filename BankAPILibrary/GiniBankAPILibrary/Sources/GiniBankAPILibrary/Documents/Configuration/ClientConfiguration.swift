@@ -57,7 +57,7 @@ public struct ClientConfiguration: Codable {
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool,
-                unsupportedQRCodeWarningEnabled: Bool = false) {
+                unsupportedQRCodeWarningEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
