@@ -25,10 +25,14 @@ struct PaymentReviewPaymentInformationView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var keyboardHeight: CGFloat = 0
-    // Cancels a pending keyboardWillHide zero when a new keyboardWillShow fires (keyboard-type switch).
+    /**
+     Cancels a pending `keyboardWillHide` zero when a new `keyboardWillShow` fires (keyboard-type switch).
+     */
     @State private var keyboardHideToken = 0
 
-    // Landscape doc-collection layout: side-by-side panels, keyboard scroll is manual.
+    /**
+     Landscape doc-collection layout: side-by-side panels, keyboard scroll is manual.
+     */
     private var isDocCollection: Bool {
         giniLayout.isLandscape && viewModel.model.displayMode != .bottomSheet
     }
@@ -543,7 +547,9 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    // Delays 400 ms for rotation animation before re-applying focus.
+    /**
+     Delays 400 ms for rotation animation before re-applying focus.
+     */
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in

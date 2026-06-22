@@ -9,9 +9,11 @@ import Testing
 @testable import GiniInternalPaymentSDK
 
 // MARK: - Hashable conformance
-// ActivePaymentField is used as a SwiftUI .id() tag for ScrollViewReader.scrollTo(_:),
-// which requires Hashable. These tests guard against regressions in that conformance.
 
+/**
+ `ActivePaymentField` is used as a SwiftUI `.id()` tag for `ScrollViewReader.scrollTo(_:)`,
+ which requires `Hashable`. These tests guard against regressions in that conformance.
+ */
 @Suite("ActivePaymentField — Hashable")
 struct ActivePaymentFieldHashableTests {
 
