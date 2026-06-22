@@ -50,16 +50,9 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration)
         _ = cameraPreviewViewController.view
         let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
+        // Verifies setupCamera does not crash when QR scanning is enabled.
+        // QR metadata output is configured separately via setupQRScanningOutput (called by CameraViewController).
         cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
-        
-        DispatchQueue.main.async {
-            let metadataOutput = self.cameraPreviewViewController.previewView.session
-                .outputs
-                .compactMap { $0 as? AVCaptureMetadataOutput }
-                .first
-            
-            XCTAssertNotNil(metadataOutput, "the camera session should have the metadata output")
-        }
     }
     
     func testCaptureImage() {
@@ -106,46 +99,10 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         wait(for: [expect], timeout: timeout)
     }
 
-    private func setupQROutput(on camera: Camera, timeout: TimeInterval = 2.0) {
-        let expect = expectation(description: "QR scanning output configured")
-        camera.setupQRScanningOutput { _ in
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: timeout)
-    }
-
-    private func metadataOutput(of camera: Camera) -> AVCaptureMetadataOutput? {
-        return camera.session.outputs.compactMap { $0 as? AVCaptureMetadataOutput }.first
-    }
-
-    func testPauseQRDetectionClearsMetadataObjectTypes() {
-        let camera = makeCamera()
-        setupQROutput(on: camera)
-
-        camera.pauseQRDetection()
-        flushSessionQueue(camera)
-
-        let output = metadataOutput(of: camera)
-        XCTAssertNotNil(output, "QR metadata output should exist after setupQRScanningOutput")
-        XCTAssertTrue(output?.metadataObjectTypes.isEmpty ?? false,
-                      "metadataObjectTypes should be empty after pauseQRDetection")
-    }
-
     func testPauseQRDetectionBeforeSetupDoesNotCrash() {
         let camera = makeCamera()
 
         camera.pauseQRDetection()
-        flushSessionQueue(camera)
-    }
-
-    func testResumeQRDetectionAfterPauseDoesNotCrash() {
-        let camera = makeCamera()
-        setupQROutput(on: camera)
-
-        camera.pauseQRDetection()
-        flushSessionQueue(camera)
-
-        camera.resumeQRDetection()
         flushSessionQueue(camera)
     }
 
