@@ -269,8 +269,9 @@ final class Camera: NSObject, CameraProtocol {
         }
         session.addOutput(qrOutput)
         qrOutput.setMetadataObjectsDelegate(self, queue: sessionQueue)
-        if qrOutput.availableMetadataObjectTypes.contains(.qr) {
-            qrOutput.metadataObjectTypes = [.qr]
+        let desiredTypes: [AVMetadataObject.ObjectType] = [.qr, .pdf417]
+        qrOutput.metadataObjectTypes = desiredTypes.filter {
+            qrOutput.availableMetadataObjectTypes.contains($0)
         }
         session.commitConfiguration()
     }
@@ -497,7 +498,7 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         }
 
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-           metadataObj.type == AVMetadataObject.ObjectType.qr,
+           metadataObj.type == .qr || metadataObj.type == .pdf417,
            let metaString = qrCodeString(from: metadataObj) {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
             if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {
