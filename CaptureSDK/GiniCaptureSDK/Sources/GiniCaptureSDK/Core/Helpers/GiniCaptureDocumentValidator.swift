@@ -109,6 +109,9 @@ fileprivate extension GiniCaptureDocumentValidator {
             if document.extractedParameters[QRCodesExtractor.giniCodeUrlKey] == nil {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
+        case .some(.spc), .some(.spd), .some(.payBySquare), .some(.upnqr), .some(.hub3):
+            // Validation implemented in Step 6
+            break
         case .none:
             throw DocumentValidationError.qrCodeFormatNotValid
         }

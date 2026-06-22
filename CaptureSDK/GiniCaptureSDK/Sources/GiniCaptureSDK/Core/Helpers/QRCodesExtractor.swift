@@ -13,17 +13,23 @@ public enum QRCodesFormat {
     case eps4mobile
     case bezahl
     case giniQRCode
+    case spc
+    case spd
+    case payBySquare
+    case upnqr
+    case hub3
 
     var prefixURL: String {
         switch self {
-        case .epc06912:
-            return "BCD"
-        case .eps4mobile:
-            return "epspayment://"
-        case .bezahl:
-            return "bank://"
-        case .giniQRCode:
-            return "https://pay.gini.net/"
+        case .epc06912:    return "BCD"
+        case .eps4mobile:  return "epspayment://"
+        case .bezahl:      return "bank://"
+        case .giniQRCode:  return "https://pay.gini.net/"
+        case .spc:         return "SPC"
+        case .spd:         return "SPD*"
+        case .payBySquare: return ""
+        case .upnqr:       return "UPNQR"
+        case .hub3:        return "HRVHUB3"
         }
     }
 }
@@ -35,16 +41,16 @@ public final class QRCodesExtractor {
 
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
-        case .some(.bezahl):
-            return extractParameters(fromBezhalCodeString: string)
-        case .some(.epc06912):
-            return extractParameters(fromEPC06912CodeString: string)
-        case .some(.eps4mobile):
-            return [epsCodeUrlKey: string]
-        case .some(.giniQRCode):
-            return [giniCodeUrlKey: string]
-        case .none:
-            return [:]
+        case .some(.bezahl):      return extractParameters(fromBezhalCodeString: string)
+        case .some(.epc06912):    return extractParameters(fromEPC06912CodeString: string)
+        case .some(.eps4mobile):  return [epsCodeUrlKey: string]
+        case .some(.giniQRCode):  return [giniCodeUrlKey: string]
+        case .some(.spc):         return extractParameters(fromSPCCodeString: string)
+        case .some(.spd):         return extractParameters(fromSPDCodeString: string)
+        case .some(.payBySquare): return extractParameters(fromPayBySquareString: string)
+        case .some(.upnqr):       return extractParameters(fromUPNQRCodeString: string)
+        case .some(.hub3):        return extractParameters(fromHUB3CodeString: string)
+        case .none:               return [:]
         }
     }
 
@@ -131,6 +137,14 @@ public final class QRCodesExtractor {
 
         return parameters
     }
+
+    // MARK: - New format extractors (implementations added in Step 3)
+
+    class func extractParameters(fromSPCCodeString string: String) -> [String: String] { [:] }
+    class func extractParameters(fromSPDCodeString string: String) -> [String: String] { [:] }
+    class func extractParameters(fromPayBySquareString string: String) -> [String: String] { [:] }
+    class func extractParameters(fromUPNQRCodeString string: String) -> [String: String] { [:] }
+    class func extractParameters(fromHUB3CodeString string: String) -> [String: String] { [:] }
 
     fileprivate class func normalize(amount: String, currency: String?) -> String? {
         let regexCurrency = try? NSRegularExpression(pattern: "[aA-zZ]", options: [])
