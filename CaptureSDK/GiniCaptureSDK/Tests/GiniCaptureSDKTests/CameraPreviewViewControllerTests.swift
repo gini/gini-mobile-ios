@@ -138,4 +138,16 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         XCTAssertTrue(output.metadataObjectTypes.isEmpty,
                       "metadataObjectTypes should remain unchanged when .qr is unavailable")
     }
+
+    func testSetupQRScanningOutputAssignsMetadataOutput() {
+        let camera = makeCamera()
+
+        // Trigger setup but don't wait for the main-queue completion callback —
+        // just flush the serial sessionQueue, which runs after configureQROutput finishes.
+        camera.setupQRScanningOutput { _ in }
+        flushSessionQueue(camera, timeout: 10.0)
+
+        XCTAssertNotNil(camera.qrMetadataOutput,
+                        "qrMetadataOutput should be assigned after configureQROutput runs")
+    }
 }
