@@ -115,8 +115,8 @@ fileprivate extension GiniCaptureDocumentValidator {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .some(.spd):
-            // SPD IBANs include non-SEPA formats; require presence but skip strict IBAN validation
-            if document.extractedParameters["iban"] == nil {
+            // SPD IBANs include non-SEPA formats; require non-empty presence but skip strict IBAN validation
+            guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .some(.payBySquare):
