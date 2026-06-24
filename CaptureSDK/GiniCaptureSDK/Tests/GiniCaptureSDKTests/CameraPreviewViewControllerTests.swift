@@ -150,4 +150,31 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         XCTAssertNotNil(camera.qrMetadataOutput,
                         "qrMetadataOutput should be assigned after configureQROutput runs")
     }
+
+    func testResumeQRDetectionEnablesQRTypeWhenAvailable() {
+        let camera = makeCamera()
+        let output = FakeQRAvailableMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.resumeQRDetection()
+        flushSessionQueue(camera)
+
+        XCTAssertEqual(output.metadataObjectTypes, [.qr],
+                       "metadataObjectTypes should be set to [.qr] when .qr is available")
+    }
+}
+
+// Test stub that pretends .qr is supported, allowing the `availableMetadataObjectTypes.contains(.qr)`
+// guard branch in resumeQRDetection to be exercised on CI simulators (which have no real camera).
+private final class FakeQRAvailableMetadataOutput: AVCaptureMetadataOutput {
+    private var _objectTypes: [AVMetadataObject.ObjectType]? = []
+
+    override var availableMetadataObjectTypes: [AVMetadataObject.ObjectType] {
+        return [.qr]
+    }
+
+    override var metadataObjectTypes: [AVMetadataObject.ObjectType]! {
+        get { _objectTypes }
+        set { _objectTypes = newValue }
+    }
 }
