@@ -12,10 +12,15 @@ import GiniUtilites
 /**
  A Gini Capture document made from a QR code.
 
- The Gini Capture SDK supports the following QR code formats:
+ The Gini Capture SDK supports the following QR code / payment code formats:
  - Bezahlcode (http://www.bezahlcode.de).
  - Stuzza (AT) and GiroCode (DE) (https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation).
  - EPS E-Payment (https://eservice.stuzza.at/de/eps-ueberweisung-dokumentation/category/5-dokumentation.html).
+ - SPC / Swiss QR-bill (https://www.paymentstandards.ch).
+ - SPD – Czech/Slovak Payment Descriptor.
+ - Pay-by-Square (Slovak compressed QR, base32hex + LZMA).
+ - UPNQR – Slovenian Universal Payment Order QR.
+ - HUB3 – Croatian payment PDF417 barcode.
 
  */
 @objc final public class GiniQRCodeDocument: NSObject, GiniCaptureDocument {
