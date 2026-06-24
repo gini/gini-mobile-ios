@@ -671,6 +671,10 @@ final class CameraViewController: UIViewController {
     }
 
     private func showUnsupportedQRCodeAlert() {
+        // Skip duplicate side-effects when the alert is already on screen and more frames
+        // are still queued before pauseQRDetection takes effect on the session queue.
+        guard presentedViewController == nil else { return }
+
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
 
