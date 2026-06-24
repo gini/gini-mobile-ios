@@ -5,6 +5,7 @@
  //  Copyright © 2024 Gini GmbH. All rights reserved.
 
 */
+"gini.health.reviewscreen.title" = "";
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Schließen";
 "gini.health.close.button.accessibility.hint" = "Tippen zum Schließen";
