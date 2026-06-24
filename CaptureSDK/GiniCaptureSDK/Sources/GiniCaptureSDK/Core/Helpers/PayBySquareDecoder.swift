@@ -43,6 +43,8 @@ final class PayBySquareDecoder {
                                                     outputLength: payloadLength) else { return nil }
 
         // 4. Skip 4-byte CRC32 prefix; decode remaining as UTF-8
+        // Note: CRC32 validation was attempted but rejected valid codes from the field — the bysquare
+        // spec's exact CRC32 variant and byte layout need a verified test vector before re-enabling.
         guard decompressed.count > 4 else { return nil }
         guard let text = String(bytes: Array(decompressed[4...]), encoding: .utf8) else { return nil }
 
