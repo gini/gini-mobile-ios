@@ -150,7 +150,7 @@ public final class QRCodesExtractor {
         if lines.indices.contains(5) && !lines[5].isEmpty {
             parameters["paymentRecipient"] = lines[5]
         }
-        let currency = lines.indices.contains(19) ? lines[19] : "CHF"
+        let currency = (lines.indices.contains(19) && !lines[19].isEmpty) ? lines[19] : "CHF"
         if lines.indices.contains(18) && !lines[18].isEmpty,
            let amountToPay = normalize(amount: lines[18], currency: currency) {
             parameters["amountToPay"] = amountToPay
