@@ -594,14 +594,15 @@ final class CameraViewController: UIViewController {
         detectedQRCodeDocument = document
 
         if isValid {
-            hideQRCodeTask = DispatchWorkItem(block: {
+            let task = DispatchWorkItem(block: {
                 self.resetQRCodeScanning(isValid: true)
                 if let QRDocument = self.detectedQRCodeDocument {
                     self.didPick(QRDocument)
                 }
             })
+            hideQRCodeTask = task
             showValidQRCodeFeedback()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
         } else {
             if !isValidIBANDetected {
                 // Snapshot the flag once so the feedback type stays consistent across
@@ -617,10 +618,11 @@ final class CameraViewController: UIViewController {
                     showUnsupportedQRCodeAlert()
                 } else {
                     showInvalidQRCodeFeedback()
-                    hideQRCodeTask = DispatchWorkItem(block: {
+                    let task = DispatchWorkItem(block: {
                         self.resetQRCodeScanning(isValid: false)
                     })
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
+                    hideQRCodeTask = task
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
                 }
             }
         }
@@ -817,6 +819,7 @@ private extension CameraViewController {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
+        static let hideQRCodeDelay: TimeInterval = 1.5
     }
 
     private struct Strings {
