@@ -247,7 +247,7 @@ public final class QRCodesExtractor {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
-        let currency = lines.indices.contains(1) ? lines[1] : "EUR"
+        let currency = (lines.indices.contains(1) && !lines[1].isEmpty) ? lines[1] : "EUR"
         if lines.indices.contains(2), let cents = Int(lines[2]) {
             let amount = String(format: "%.2f", Double(cents) / 100.0)
             parameters["amountToPay"] = amount + ":" + currency
