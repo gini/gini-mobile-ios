@@ -281,7 +281,7 @@ final class QRCodeOverlay: UIView {
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             correctQRCenterYAnchor,
-            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
+            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.safeAreaLayoutGuide.topAnchor,
                                                    constant: Constants.topSpacing),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                        constant: Constants.expandedSpacing),
