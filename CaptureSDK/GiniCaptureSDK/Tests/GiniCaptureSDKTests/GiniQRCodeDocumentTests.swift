@@ -588,8 +588,8 @@ struct PayBySquareQRCodeTests {
     }
 
     @Test func nonBase32HexStringNotDetected() {
-        // Lowercase letters are outside the base32hex alphabet (0–9, A–V)
-        let doc = GiniQRCodeDocument(scannedString: "abcdef0123456789")
+        // 'W' is outside the base32hex alphabet (0–9, A–V); uppercasing won't rescue it
+        let doc = GiniQRCodeDocument(scannedString: "WWWWWWWWWWWWWWWW")
         #expect(doc.qrCodeFormat != .payBySquare)
     }
 
