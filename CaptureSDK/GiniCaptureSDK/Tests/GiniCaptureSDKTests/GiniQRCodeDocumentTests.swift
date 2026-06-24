@@ -605,8 +605,42 @@ struct PayBySquareQRCodeTests {
         }
     }
 
-    // TODO: Add a test with a verified BYSQUARE test vector to cover correct field extraction
-    // (iban, paymentRecipient, amountToPay, paymentReference, bic) after full LZMA decode.
+    // Official bysquare test vector from the bysquare spec (Confluence page 1300430853).
+    // Encodes: IBAN SK2811000000002620154106, amount 12 EUR, variable symbol 2017001,
+    // payment note "PAY bysquare - platba za webovú službu balík Wise".
+    private let officialTestVector =
+        "0008400060RT11GHI1H3ICS8RR40PJJKAMLODMK50MI251UDD11UNM7E306OLN8AGMJUTE" +
+        "SOV4TTES0CMS44EP8OJ9JO3RQP89UE7GME4GHQ9GG62L461V517BI4186SI8J5KT45VUGH" +
+        "OOG9AM35MC87I22BUPU8O2HQLVCDV1DMSQOT1BMEGH00"
+
+    @Test func officialTestVectorDetectedAsPayBySquare() {
+        let doc = GiniQRCodeDocument(scannedString: officialTestVector)
+        #expect(doc.qrCodeFormat == .payBySquare)
+    }
+
+    @Test func officialTestVectorDecodesIBAN() {
+        let doc = GiniQRCodeDocument(scannedString: officialTestVector)
+        #expect(doc.extractedParameters["iban"] == "SK2811000000002620154106")
+    }
+
+    @Test func officialTestVectorDecodesAmount() {
+        let doc = GiniQRCodeDocument(scannedString: officialTestVector)
+        #expect(doc.extractedParameters["amountToPay"] == "12:EUR")
+    }
+
+    @Test func officialTestVectorDecodesPaymentReference() {
+        // variableSymbol "2017001" + " " + paymentNote "PAY bysquare - platba za webovú službu balík Wise"
+        let expected = "2017001 PAY bysquare - platba za webov\u{00FA} službu bal\u{00ED}k Wise"
+        let doc = GiniQRCodeDocument(scannedString: officialTestVector)
+        #expect(doc.extractedParameters["paymentReference"] == expected)
+    }
+
+    @Test func officialTestVectorPassesValidation() {
+        let doc = GiniQRCodeDocument(scannedString: officialTestVector)
+        #expect(throws: Never.self) {
+            try GiniCaptureDocumentValidator.validate(doc, withConfig: config)
+        }
+    }
 }
 
 // MARK: - UPNQR (Slovenian UPN QR)
