@@ -120,8 +120,7 @@ fileprivate extension GiniCaptureDocumentValidator {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .some(.payBySquare):
-            // Successful decode is indicated by non-empty extractedParameters
-            if document.extractedParameters.isEmpty {
+            guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .none:
