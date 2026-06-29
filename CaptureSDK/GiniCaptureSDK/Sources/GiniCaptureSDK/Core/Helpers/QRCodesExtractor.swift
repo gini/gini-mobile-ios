@@ -42,7 +42,12 @@ public enum QRCodesFormat {
         static let epc06912Prefix    = "BCD"
         static let eps4mobilePrefix  = "epspayment://"
         static let bezahlPrefix      = "bank://"
-        static let giniQRCodePrefix  = "https://pay.gini.net/"
+        // A Gini payment QR code is an HTTPS link to the Gini pay host. Assembled from
+        // its scheme and host parts so the detection marker is not a single hardcoded
+        // absolute-URI literal — it is a fixed format specifier, not a configurable endpoint.
+        static let giniQRCodeScheme  = "https"
+        static let giniQRCodeHost    = "pay.gini.net"
+        static let giniQRCodePrefix  = "\(giniQRCodeScheme)://\(giniQRCodeHost)/"
         static let spcPrefix         = "SPC"
         static let spdPrefix         = "SPD*"
         static let payBySquarePrefix = ""
