@@ -91,7 +91,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         return Camera(giniConfiguration: GiniConfiguration())
     }
 
-    private func flushSessionQueue(_ camera: Camera, timeout: TimeInterval = 2.0) {
+    private func cleanSessionQueue(_ camera: Camera, timeout: TimeInterval = 2.0) {
         let expect = expectation(description: "session queue flushed")
         camera.sessionQueue.async {
             expect.fulfill()
@@ -103,14 +103,14 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         let camera = makeCamera()
 
         camera.pauseQRDetection()
-        flushSessionQueue(camera)
+        cleanSessionQueue(camera)
     }
 
     func testResumeQRDetectionBeforeSetupDoesNotCrash() {
         let camera = makeCamera()
 
         camera.resumeQRDetection()
-        flushSessionQueue(camera)
+        cleanSessionQueue(camera)
     }
 
     func testPauseQRDetectionClearsMetadataObjectTypes() {
@@ -119,7 +119,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         camera.setQRMetadataOutputForTesting(output)
 
         camera.pauseQRDetection()
-        flushSessionQueue(camera)
+        cleanSessionQueue(camera)
 
         XCTAssertTrue(output.metadataObjectTypes.isEmpty,
                       "metadataObjectTypes should be empty after pauseQRDetection")
@@ -131,7 +131,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         camera.setQRMetadataOutputForTesting(output)
 
         camera.resumeQRDetection()
-        flushSessionQueue(camera)
+        cleanSessionQueue(camera)
 
         // On CI simulators .qr is not in availableMetadataObjectTypes, so the guard
         // returns and metadataObjectTypes stays at its default (empty).
@@ -145,7 +145,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         // Trigger setup but don't wait for the main-queue completion callback —
         // just flush the serial sessionQueue, which runs after configureQROutput finishes.
         camera.setupQRScanningOutput { _ in }
-        flushSessionQueue(camera, timeout: 10.0)
+        cleanSessionQueue(camera, timeout: 10.0)
 
         XCTAssertNotNil(camera.qrMetadataOutput,
                         "qrMetadataOutput should be assigned after configureQROutput runs")
@@ -157,7 +157,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         camera.setQRMetadataOutputForTesting(output)
 
         camera.resumeQRDetection()
-        flushSessionQueue(camera)
+        cleanSessionQueue(camera)
 
         XCTAssertEqual(output.metadataObjectTypes, [.qr],
                        "metadataObjectTypes should be set to [.qr] when .qr is available")
