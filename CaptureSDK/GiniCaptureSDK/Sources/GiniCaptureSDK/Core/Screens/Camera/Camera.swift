@@ -296,11 +296,13 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
 
+    #if DEBUG
     // Intended for unit tests only — injects a metadata output without going
     // through full session setup, which is unstable on CI simulators.
     func setQRMetadataOutputForTesting(_ output: AVCaptureMetadataOutput?) {
         qrMetadataOutput = output
     }
+    #endif
 }
 
 // MARK: - Fileprivate
