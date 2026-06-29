@@ -19,18 +19,35 @@ public enum QRCodesFormat {
     case upnqr
     case hub3
 
+    /// Leading marker that identifies a scanned QR payload's payment format.
+    ///
+    /// These are fixed format specifiers mandated by each payment standard (the
+    /// raw scanned string is matched against them to detect its format) — not
+    /// network endpoints the SDK connects to. They are intentionally constant.
     var prefixURL: String {
         switch self {
-        case .epc06912:    return "BCD"
-        case .eps4mobile:  return "epspayment://"
-        case .bezahl:      return "bank://"
-        case .giniQRCode:  return "https://pay.gini.net/"
-        case .spc:         return "SPC"
-        case .spd:         return "SPD*"
-        case .payBySquare: return ""
-        case .upnqr:       return "UPNQR"
-        case .hub3:        return "HRVHUB30"
+        case .epc06912:    return Constants.epc06912Prefix
+        case .eps4mobile:  return Constants.eps4mobilePrefix
+        case .bezahl:      return Constants.bezahlPrefix
+        case .giniQRCode:  return Constants.giniQRCodePrefix
+        case .spc:         return Constants.spcPrefix
+        case .spd:         return Constants.spdPrefix
+        case .payBySquare: return Constants.payBySquarePrefix
+        case .upnqr:       return Constants.upnqrPrefix
+        case .hub3:        return Constants.hub3Prefix
         }
+    }
+
+    private enum Constants {
+        static let epc06912Prefix    = "BCD"
+        static let eps4mobilePrefix  = "epspayment://"
+        static let bezahlPrefix      = "bank://"
+        static let giniQRCodePrefix  = "https://pay.gini.net/"
+        static let spcPrefix         = "SPC"
+        static let spdPrefix         = "SPD*"
+        static let payBySquarePrefix = ""
+        static let upnqrPrefix       = "UPNQR"
+        static let hub3Prefix        = "HRVHUB30"
     }
 }
 
