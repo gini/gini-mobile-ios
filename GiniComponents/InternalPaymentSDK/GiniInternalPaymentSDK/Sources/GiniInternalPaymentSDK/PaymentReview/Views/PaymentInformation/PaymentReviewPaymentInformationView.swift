@@ -99,6 +99,8 @@ struct PaymentReviewPaymentInformationView: View {
     private func handleKeyboardWillShow(_ notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         keyboardHideToken += 1
+        // Never shrink during an active keyboard session — avoids a layout jump when switching
+        // between keyboard types (e.g. decimalPad+toolbar → default+toolbar → decimalPad+toolbar).
         let newHeight = max(keyboardHeight, frame.height)
         guard newHeight != keyboardHeight else { return }
         // Animate spacer growth in landscape so a size change between keyboard types
@@ -116,7 +118,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func handleKeyboardWillHide() {
         // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
         let token = keyboardHideToken
-        DispatchQueue.main.async {
+        Task { @MainActor in
             guard keyboardHideToken == token else { return }
             keyboardHeight = 0
         }
@@ -554,6 +556,7 @@ struct PaymentReviewPaymentInformationView: View {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(400))
+            guard viewModel.isViewVisible else { return }
             focusedField = field
         }
     }

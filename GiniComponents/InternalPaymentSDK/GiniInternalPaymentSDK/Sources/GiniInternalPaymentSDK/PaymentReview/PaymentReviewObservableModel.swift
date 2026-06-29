@@ -46,6 +46,9 @@ final class PaymentReviewObservableModel: ObservableObject {
         paymentInformationObservableModel.isAmountFieldFocused
     }
 
+    /**
+     The localized title for the keyboard Done button.
+     */
     var keyboardDoneButtonTitle: String {
         containerViewModel.strings.keyboardDoneButtonTitle
     }
