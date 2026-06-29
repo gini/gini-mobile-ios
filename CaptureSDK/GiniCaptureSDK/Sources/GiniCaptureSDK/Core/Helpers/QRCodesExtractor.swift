@@ -161,24 +161,35 @@ public final class QRCodesExtractor {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
-        if lines.indices.contains(3) && IBANValidator().isValid(iban: lines[3]) {
-            parameters["iban"] = lines[3]
-        }
-        if lines.indices.contains(5) && !lines[5].isEmpty {
-            parameters["paymentRecipient"] = lines[5]
-        }
-        let currency = (lines.indices.contains(19) && !lines[19].isEmpty) ? lines[19] : "CHF"
-        if lines.indices.contains(18) && !lines[18].isEmpty,
-           let amountToPay = normalize(amount: lines[18], currency: currency) {
-            parameters["amountToPay"] = amountToPay
-        }
-        // Reference value is only meaningful when reference type is not "NON"
-        if lines.indices.contains(27) && lines[27] != "NON",
-           lines.indices.contains(28) && !lines[28].isEmpty {
-            parameters["paymentReference"] = lines[28]
-        }
+        // Assigning nil to a dictionary subscript leaves the key absent, so each
+        // helper returning nil mirrors the original "only set when valid" behaviour.
+        parameters["iban"]             = spcIBAN(from: lines)
+        parameters["paymentRecipient"] = nonEmptyLine(lines, at: 5)
+        parameters["amountToPay"]      = spcAmount(from: lines)
+        parameters["paymentReference"] = spcReference(from: lines)
 
         return parameters
+    }
+
+    private static func nonEmptyLine(_ lines: [String], at index: Int) -> String? {
+        guard lines.indices.contains(index), !lines[index].isEmpty else { return nil }
+        return lines[index]
+    }
+
+    private static func spcIBAN(from lines: [String]) -> String? {
+        guard lines.indices.contains(3), IBANValidator().isValid(iban: lines[3]) else { return nil }
+        return lines[3]
+    }
+
+    private static func spcAmount(from lines: [String]) -> String? {
+        guard let amount = nonEmptyLine(lines, at: 18) else { return nil }
+        let currency = nonEmptyLine(lines, at: 19) ?? "CHF"
+        return normalize(amount: amount, currency: currency)
+    }
+
+    private static func spcReference(from lines: [String]) -> String? {
+        guard lines.indices.contains(27), lines[27] != "NON" else { return nil }
+        return nonEmptyLine(lines, at: 28)
     }
 
     // MARK: - SPD (Czech/Slovak Payment Descriptor)
