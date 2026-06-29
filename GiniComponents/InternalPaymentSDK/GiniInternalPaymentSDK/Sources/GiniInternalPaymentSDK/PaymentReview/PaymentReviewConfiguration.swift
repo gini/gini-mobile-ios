@@ -77,7 +77,7 @@ public struct PaymentReviewStrings {
                 closeButtonAccessibilityHint: String,
                 sheetGrabberAccessibilityLabel: String,
                 sheetGrabberAccessibilityHint: String,
-                paymentReviewScreenTitle: String) {
+                paymentReviewScreenTitle: String = "") {
         self.alertOkButtonTitle = alertOkButtonTitle
         self.infoBarMessage = infoBarMessage
         self.defaultErrorMessage = defaultErrorMessage

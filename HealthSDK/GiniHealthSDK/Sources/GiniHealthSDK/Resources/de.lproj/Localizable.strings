@@ -78,6 +78,7 @@
 
 // INFORMAL KEYS - German informal localization strings
 
+"gini.health.reviewscreen.title.informal" = "";
 "gini.health.alert.ok.title.informal" = "OK";
 "gini.health.close.button.accessibility.label.informal" = "Schließen";
 "gini.health.close.button.accessibility.hint.informal" = "Tippen zum Schließen";
