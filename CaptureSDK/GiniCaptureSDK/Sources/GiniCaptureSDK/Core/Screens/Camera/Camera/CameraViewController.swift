@@ -602,24 +602,28 @@ final class CameraViewController: UIViewController {
                 }
             }
         } else {
-            if !isValidIBANDetected {
-                // Snapshot the flag once so the feedback type stays consistent across
-                // repeated scans in the same session. A separate boolean guards the snapshot
-                // because assigning nil to a Bool? still leaves it nil, making a nil-check
-                // unreliable as a "has snapshotted" gate.
-                if !isWarningFlagSnapshotted {
-                    sessionUnsupportedQRCodeWarningEnabled = GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled
-                    isWarningFlagSnapshotted = true
-                }
+            handleInvalidQRCode()
+        }
+    }
 
-                if sessionUnsupportedQRCodeWarningEnabled == true {
-                    showUnsupportedQRCodeAlert()
-                } else {
-                    showInvalidQRCodeFeedback()
-                    scheduleHideQRCodeTask {
-                        self.resetQRCodeScanning(isValid: false)
-                    }
-                }
+    private func handleInvalidQRCode() {
+        guard !isValidIBANDetected else { return }
+
+        // Snapshot the flag once so the feedback type stays consistent across
+        // repeated scans in the same session. A separate boolean guards the snapshot
+        // because assigning nil to a Bool? still leaves it nil, making a nil-check
+        // unreliable as a "has snapshotted" gate.
+        if !isWarningFlagSnapshotted {
+            sessionUnsupportedQRCodeWarningEnabled = GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled
+            isWarningFlagSnapshotted = true
+        }
+
+        if sessionUnsupportedQRCodeWarningEnabled == true {
+            showUnsupportedQRCodeAlert()
+        } else {
+            showInvalidQRCodeFeedback()
+            scheduleHideQRCodeTask {
+                self.resetQRCodeScanning(isValid: false)
             }
         }
     }
