@@ -1,7 +1,7 @@
-name: Upload GiniBankSDKExample to TestFlight
+name: Upload GiniHealthSDKExample to TestFlight
 
 permissions:
-  contents: read 
+  contents: read
 on:
   schedule:
     - cron: '0 9 * 2,5,8,11 1'  # Every Monday in Feb, May, Aug, Nov at 09:00 UTC
@@ -33,11 +33,10 @@ jobs:
     uses: ./.github/workflows/publish.example.app.testflight.yml
     with:
       xcode_version: '26.2'
-      project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
-      scheme: 'GiniBankSDKExample'
-      bundle_identifier: 'net.gini.banksdk.example'
-      bundle_identifier_extension: 'net.gini.banksdk.example.ShareExtension'
-      ipa_name: 'GiniBankSDKExample'
+      project_path: 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj'
+      scheme: 'GiniHealthSDKExample'
+      bundle_identifier: 'net.gini.healthsdk.example'
+      ipa_name: 'GiniHealthSDKExample'
     secrets:
       MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

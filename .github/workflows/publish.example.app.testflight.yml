@@ -22,7 +22,7 @@ on:
       xcode_version:
         description: 'Xcode version to use'
         required: false
-        default: '16.3'
+        default: '26.2'
         type: string
       project_path:
         description: 'Relative path to the .xcodeproj file'
@@ -61,7 +61,7 @@ on:
         required: true
       APP_STORE_API_KEY_ID:
         required: true
-      APP_STORE_API_ISSUER_ID:
+      APP_STORE_API_KEY_ISSUER_ID:
         required: true
 
 jobs:
@@ -90,11 +90,12 @@ jobs:
               inputs.bundle_identifier_extension != '' &&
               format(',{0}', inputs.bundle_identifier_extension) || ''
             }}
-          DISTRIBUTION_TYPE: appstore
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: bundle exec fastlane download_profiles
+        run: |
+          DISTRIBUTION_TYPE=appstore bundle exec fastlane download_profiles
+          DISTRIBUTION_TYPE=adhoc APP_IDENTIFIER=${{ inputs.bundle_identifier }} bundle exec fastlane download_profiles
 
       - name: Archive Xcode Project
         run: |
@@ -107,6 +108,7 @@ jobs:
             CODE_SIGN_IDENTITY="Apple Distribution" \
             CODE_SIGN_STYLE=Manual \
             DEVELOPMENT_TEAM=${{ inputs.team_id }} \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             ONLY_ACTIVE_ARCH=NO
 
       - name: Export .ipa File
@@ -122,16 +124,9 @@ jobs:
           files: "${{ inputs.ipa_name }}.ipa"
           fail: true
 
-      - name: Decode App Store Connect API Key
-        env:
-          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-        run: |
-          mkdir -p build_artifacts
-          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > build_artifacts/AppStoreConnectAPIKey.p8
-
       - name: Upload to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
-          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_PATH: build_artifacts/AppStoreConnectAPIKey.p8
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: bundle exec fastlane publish_to_testflight ipa_path:"${{ inputs.ipa_name }}.ipa"
