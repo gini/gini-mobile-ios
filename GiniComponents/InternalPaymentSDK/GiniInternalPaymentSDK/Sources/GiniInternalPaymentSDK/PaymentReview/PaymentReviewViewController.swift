@@ -35,7 +35,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
        - viewModel: The `PaymentReviewModel` driving the payment review screen.
        - selectedPaymentProvider: The payment provider pre-selected for this review session.
      */
-    public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
+    public init(viewModel: PaymentReviewModel, selectedPaymentProvider _: PaymentProvider) {
         self.model = viewModel
 
         let observableModel = PaymentReviewObservableModel(model: model)
@@ -44,7 +44,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     }
     
     @MainActor
-    @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @preconcurrency required dynamic init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
