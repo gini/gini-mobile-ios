@@ -58,17 +58,19 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     }
     
     private func setupNavigationBar() {
-        guard model.showPaymentReviewCloseButton,
-              model.displayMode == .documentCollection else { return }
-        
+        guard model.displayMode == .documentCollection else { return }
+
+        navigationItem.title = model.strings.paymentReviewScreenTitle
+
+        guard model.showPaymentReviewCloseButton else { return }
+
         let closeImage = model.configuration.paymentReviewClose.withRenderingMode(.alwaysTemplate)
         let closeButton = UIBarButtonItem(image: closeImage,
                                           style: .plain,
                                           target: self,
                                           action: #selector(closeButtonTapped))
-        
         closeButton.accessibilityLabel = model.strings.closeButtonAccessibilityLabel
-        closeButton.accessibilityHint =  model.strings.closeButtonAccessibilityHint
+        closeButton.accessibilityHint = model.strings.closeButtonAccessibilityHint
         navigationItem.rightBarButtonItem = closeButton
     }
     
