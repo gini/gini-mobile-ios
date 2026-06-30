@@ -8,13 +8,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     uses: gini/gini-mobile-ios/.github/workflows/utilites.check.yml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
   release:
-    needs: check
+    needs: [get-config, check]
     permissions:
       contents: write
     uses: ./.github/workflows/sdk.release.yml
@@ -24,6 +28,8 @@ jobs:
       version_file_path: 'GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/GiniUtilitesVersion.swift'
       git_tag: ${{ github.ref }}
       repo_url: 'https://github.com/gini/utilites-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

@@ -13,10 +13,14 @@ concurrency:
 
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   upload-testflight:
+    needs: get-config
     uses: ./.github/workflows/publish.example.app.testflight.yml
     with:
-      xcode_version: '16.3'
+      xcode_version: ${{ needs.get-config.outputs.xcode-version }}
       project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
       scheme: 'GiniBankSDKExample'
       bundle_identifier: 'net.gini.banksdk.example'
