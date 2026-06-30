@@ -539,7 +539,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.isAmountFieldFocused = false
             let fieldToClear = viewModel.activeField
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(100))
+                try await Task.sleep(for: .milliseconds(100))
                 if viewModel.isViewVisible,
                    focusedField == nil,
                    viewModel.activeField == fieldToClear {
@@ -555,7 +555,7 @@ struct PaymentReviewPaymentInformationView: View {
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(400))
+            try await Task.sleep(for: .milliseconds(400))
             guard viewModel.isViewVisible else { return }
             focusedField = field
         }
