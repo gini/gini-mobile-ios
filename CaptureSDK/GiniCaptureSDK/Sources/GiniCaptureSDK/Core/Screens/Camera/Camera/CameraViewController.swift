@@ -49,7 +49,7 @@ final class CameraViewController: UIViewController {
     // Snapshot of the backend flag taken on the first invalid QR scan.
     // Stays fixed for the session so all repeated scans show the same feedback type.
     private var sessionUnsupportedQRCodeWarningEnabled: Bool?
-    private var isWarningFlagSnapshotted = false
+    private var didCaptureSessionUnsupportedQRCodeWarning = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
     private var ibanOverlayFirstAppearance: Bool = true
@@ -609,13 +609,11 @@ final class CameraViewController: UIViewController {
     private func handleInvalidQRCode() {
         guard !isValidIBANDetected else { return }
 
-        // Snapshot the flag once so the feedback type stays consistent across
-        // repeated scans in the same session. A separate boolean guards the snapshot
-        // because assigning nil to a Bool? still leaves it nil, making a nil-check
-        // unreliable as a "has snapshotted" gate.
-        if !isWarningFlagSnapshotted {
+        // A separate Bool gates the capture because nil on Bool? is a legitimate
+        // captured value — nil-check alone can't tell "not captured yet" from "captured as nil".
+        if !didCaptureSessionUnsupportedQRCodeWarning {
             sessionUnsupportedQRCodeWarningEnabled = GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled
-            isWarningFlagSnapshotted = true
+            didCaptureSessionUnsupportedQRCodeWarning = true
         }
 
         if sessionUnsupportedQRCodeWarningEnabled == true {
@@ -735,9 +733,10 @@ final class CameraViewController: UIViewController {
     }
 
     private func resetQRCodeScanning(isValid: Bool) {
-        resetQRCodeTask = DispatchWorkItem(block: {
+        let task = DispatchWorkItem(block: {
             self.detectedQRCodeDocument = nil
         })
+        resetQRCodeTask = task
 
         if isValid {
             cameraPreviewViewController.cameraFrameView.isHidden = true
@@ -750,7 +749,7 @@ final class CameraViewController: UIViewController {
                 self.cameraPaneHorizontal?.isUserInteractionEnabled = true
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.resetQRCodeDelay, execute: resetQRCodeTask!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.resetQRCodeDelay, execute: task)
         }
     }
 }
