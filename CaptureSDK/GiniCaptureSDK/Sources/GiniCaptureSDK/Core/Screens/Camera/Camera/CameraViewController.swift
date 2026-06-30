@@ -675,9 +675,6 @@ final class CameraViewController: UIViewController {
         // are still queued before pauseQRDetection takes effect on the session queue.
         guard presentedViewController == nil else { return }
 
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
-
         cameraPreviewViewController.camera.pauseQRDetection()
 
         sendGiniAnalyticsEventForInvalidQRCode()
