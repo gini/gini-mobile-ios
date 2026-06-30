@@ -739,14 +739,14 @@ final class CameraViewController: UIViewController {
             cameraPreviewViewController.cameraFrameView.isHidden = true
             qrCodeOverLay.showAnimation()
         } else {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: Constants.qrResetAnimationDuration) {
                 self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
                 self.qrCodeOverLay.isHidden = true
                 self.cameraPane.isUserInteractionEnabled = true
                 self.cameraPaneHorizontal?.isUserInteractionEnabled = true
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetQRCodeTask!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.resetQRCodeDelay, execute: resetQRCodeTask!)
         }
     }
 }
@@ -823,6 +823,8 @@ private extension CameraViewController {
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
         static let hideQRCodeDelay: TimeInterval = 1.5
+        static let resetQRCodeDelay: TimeInterval = 1
+        static let qrResetAnimationDuration: TimeInterval = 0.3
     }
 
     private struct Strings {
