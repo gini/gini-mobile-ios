@@ -594,15 +594,13 @@ final class CameraViewController: UIViewController {
         detectedQRCodeDocument = document
 
         if isValid {
-            let task = DispatchWorkItem(block: {
+            showValidQRCodeFeedback()
+            scheduleHideQRCodeTask {
                 self.resetQRCodeScanning(isValid: true)
                 if let QRDocument = self.detectedQRCodeDocument {
                     self.didPick(QRDocument)
                 }
-            })
-            hideQRCodeTask = task
-            showValidQRCodeFeedback()
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
+            }
         } else {
             if !isValidIBANDetected {
                 // Snapshot the flag once so the feedback type stays consistent across
@@ -618,11 +616,9 @@ final class CameraViewController: UIViewController {
                     showUnsupportedQRCodeAlert()
                 } else {
                     showInvalidQRCodeFeedback()
-                    let task = DispatchWorkItem(block: {
+                    scheduleHideQRCodeTask {
                         self.resetQRCodeScanning(isValid: false)
-                    })
-                    hideQRCodeTask = task
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
+                    }
                 }
             }
         }
@@ -726,6 +722,12 @@ final class CameraViewController: UIViewController {
                                    screenName: .camera,
                                    properties: [GiniAnalyticsProperty(key: .qrCodeValid, value: false)])
         invalidQRCodeOverlayFirstAppearance = false
+    }
+
+    private func scheduleHideQRCodeTask(_ work: @escaping () -> Void) {
+        let task = DispatchWorkItem(block: work)
+        hideQRCodeTask = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
     }
 
     private func resetQRCodeScanning(isValid: Bool) {
