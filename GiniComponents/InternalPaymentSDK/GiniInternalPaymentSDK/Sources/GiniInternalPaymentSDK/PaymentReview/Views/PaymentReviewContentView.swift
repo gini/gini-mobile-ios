@@ -31,6 +31,7 @@ public struct PaymentReviewContentView: View {
             if giniLayout.isLandscape && !viewModel.isBottomSheetMode {
                 landscapeLayout(geometry: geometry)
                     .transition(.opacity)
+                // GeometryReader shrinks for the keyboard; ScrollViewReader scrolls the focused field.
             } else {
                 portraitLayout(geometry: geometry)
                     .transition(.opacity)
@@ -39,8 +40,7 @@ public struct PaymentReviewContentView: View {
         .ignoresSafeArea(.keyboard)
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
         .onChange(of: giniLayout.isLandscape) { landscape in
-            // Belt-and-suspenders for iOS 17+: the sheet is already dismissed imperatively
-            // from viewWillTransition on iOS 16, but on iOS 17 we keep this path as well.
+            // Belt-and-suspenders: iOS 16 uses viewWillTransition; iOS 17+ uses this path.
             if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
                 viewModel.isDismissingForRotation = true
                 showBottomSheet = false
@@ -57,25 +57,24 @@ public struct PaymentReviewContentView: View {
         .onAppear {
             viewModel.dismissBannerAfterDelay()
         }
-        // Full-width Done toolbar rendered above the keyboard in landscape (documentCollection)
-        // mode. `ToolbarItemGroup(placement: .keyboard)` is the correct way to place content
-        // above the keyboard — `safeAreaInset` on the HStack would place it behind the keyboard
-        // because the outer container suppresses the keyboard safe area with `ignoresSafeArea`.
-        // The inner form view's narrow Done bar is suppressed in landscape so only this
-        // full-width version appears.
+        // iOS <26 landscape: always-registered ToolbarItemGroup (condition inside) so the bar
+        // never detaches mid-transition, which would cause a glitch when leaving the amount field.
+        // UIKit may log a _UIToolbarContentView.width==0 warning on initial layout; it recovers harmlessly.
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
-                    Spacer()
-                    Button(viewModel.keyboardDoneButtonTitle) {
-                        viewModel.trackKeyboardDismissed()
-                        viewModel.validateAmountFieldOnKeyboardDismiss()
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                        to: nil,
-                                                        from: nil,
-                                                        for: nil)
+            if #unavailable(iOS 26) {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
+                        Spacer()
+                        Button(viewModel.keyboardDoneButtonTitle) {
+                            viewModel.trackKeyboardDismissed()
+                            viewModel.validateAmountFieldOnKeyboardDismiss()
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                            to: nil,
+                                                            from: nil,
+                                                            for: nil)
+                        }
+                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
                     }
-                    .padding(.trailing, Constants.doneButtonHorizontalPadding)
                 }
             }
         }
@@ -96,20 +95,11 @@ public struct PaymentReviewContentView: View {
             }
         }
         .onAppear {
-            // On iOS 16/17, rotating to landscape destroys portraitLayout which
-            // dismisses the sheet and sets showBottomSheet to false. Restore it
-            // when portraitLayout reappears in documentCollection mode.
-            // Delay so the layout crossfade finishes before the sheet appears.
-            // disablesAnimations suppresses the sheet's default slide-up animation
-            // so it appears instantly at its resting position, matching the
-            // no-animation dismiss applied when rotating to landscape.
+            // Restore sheet after rotation back to portrait; suppress slide-up to match no-animation dismiss.
             if !viewModel.isBottomSheetMode && !showBottomSheet {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.layoutTransitionDuration) {
-                    // Re-check conditions in case the mode changed during the delay.
                     if !viewModel.isBottomSheetMode && !showBottomSheet {
-                        var transaction = Transaction()
-                        transaction.disablesAnimations = true
-                        withTransaction(transaction) {
+                        withTransaction(.withoutAnimation) {
                             showBottomSheet = true
                         }
                     }
@@ -169,8 +159,7 @@ public struct PaymentReviewContentView: View {
     
     // MARK: - Private Views
     
-    // Replacement for the system drag indicator, which is hidden by .fullScreenCover adaptation in landscape.
-    // Wrapping in Button ensures VoiceOver announces it as an interactive element and double-tap dismisses.
+    // Replaces the system drag indicator hidden by .fullScreenCover in landscape; Button gives VoiceOver double-tap dismiss.
     private var landscapeGrabberCapsule: some View {
         Button(action: viewModel.didTapClose) {
             Capsule()

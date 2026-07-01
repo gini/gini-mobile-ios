@@ -25,6 +25,17 @@ struct PaymentReviewPaymentInformationView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var keyboardHeight: CGFloat = 0
+    /**
+     Cancels a pending `keyboardWillHide` zero when a new `keyboardWillShow` fires (keyboard-type switch).
+     */
+    @State private var keyboardHideToken = 0
+
+    /**
+     Landscape doc-collection layout: side-by-side panels, keyboard scroll is manual.
+     */
+    private var isDocCollection: Bool {
+        giniLayout.isLandscape && viewModel.model.displayMode != .bottomSheet
+    }
     
     private var textFieldConfiguration: TextFieldConfiguration {
         viewModel.model.defaultStyleInputFieldConfiguration
@@ -57,110 +68,200 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        scrollView
-            .onAppear {
-                viewModel.isViewVisible = true
+        keyboardToolbarIfNeeded(
+            scrollView
+                .onAppear {
+                    viewModel.isViewVisible = true
+                    viewModel.populateFieldsIfNeeded()
+                    // Move VoiceOver focus into sheet content on appear.
+                    UIAccessibility.post(notification: .screenChanged, argument: nil)
+                    // Restore focus after rotation recreates the view.
+                    restoreFocusIfNeeded()
+                }
+                .onDisappear {
+                    viewModel.isViewVisible = false
+                }
+                .onChange(of: focusedField) { newField in
+                    handleFocusedFieldChange(newField)
+                }
+                .background(Color(.systemBackground))
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                    handleKeyboardWillShow(notification)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    handleKeyboardWillHide()
+                }
+        )
+    }
 
-                viewModel.populateFieldsIfNeeded()
-                // Notify VoiceOver that a new screen (the sheet) appeared,
-                // so it moves focus into the sheet content.
-                UIAccessibility.post(notification: .screenChanged, argument: nil)
-                // After a rotation the view is recreated; restore keyboard if it was open.
-                restoreFocusIfNeeded()
+    // MARK: Private keyboard handlers
+
+    private func handleKeyboardWillShow(_ notification: Notification) {
+        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        keyboardHideToken += 1
+        // Never shrink during an active keyboard session — avoids a layout jump when switching
+        // between keyboard types (e.g. decimalPad+toolbar → default+toolbar → decimalPad+toolbar).
+        let newHeight = max(keyboardHeight, frame.height)
+        guard newHeight != keyboardHeight else { return }
+        // Animate spacer growth in landscape so a size change between keyboard types
+        // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
+        if isDocCollection {
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+            withAnimation(.easeInOut(duration: duration)) {
+                keyboardHeight = newHeight
             }
-            .onDisappear {
-                viewModel.isViewVisible = false
+        } else {
+            keyboardHeight = newHeight
+        }
+    }
+
+    private func handleKeyboardWillHide() {
+        // Defer so a keyboard-type switch (hide → show in the same run-loop) cancels the zero.
+        let token = keyboardHideToken
+        Task { @MainActor in
+            guard keyboardHideToken == token else { return }
+            keyboardHeight = 0
+        }
+    }
+
+    // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
+    // on iOS <26 (which would log a harmless but noisy _UIToolbarContentView.width==0 warning).
+    @ViewBuilder
+    private func keyboardToolbarIfNeeded(_ base: some View) -> some View {
+        if #available(iOS 26, *) {
+            // Condition must stay inside ToolbarItemGroup (always-registered) for all modes.
+            // Moving it outside switches the view identity when the keyboard appears, which
+            // destroys and recreates the view — causing a jump and breaking keyboard presentation.
+            base.toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .amount && keyboardHeight > 0 {
+                        Spacer()
+                        Button(viewModelStrings.keyboardDoneButtonTitle) {
+                            dismissAmountKeyboard()
+                        }
+                    }
+                }
             }
-        // Track which field is active so it can be restored after orientation changes.
-            .onChange(of: focusedField) { newField in
-                handleFocusedFieldChange(newField)
-            }
-            .background(Color(.systemBackground))
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                keyboardHeight = frame.height
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                keyboardHeight = 0
-            }
+        } else {
+            base
+        }
     }
 
     // MARK: Private views
 
     @ViewBuilder
     private var scrollView: some View {
+        if !isDocCollection {
+            sheetScrollView
+        } else {
+            docCollectionScrollView
+        }
+    }
+
+    // Sheet context: sheet repositions above the keyboard; suppress double-adjustment.
+    @ViewBuilder
+    private var sheetScrollView: some View {
         baseScrollView
-            // Keyboard safe area is suppressed so neither portrait nor landscape creates
-            // an automatic gap. Keyboard space is re-injected explicitly via safeAreaInset.
             .ignoresSafeArea(.keyboard)
             .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 0) {
-                    // Done button shown here only in portrait (bottom-sheet mode). In landscape
-                    // the outer PaymentReviewContentView renders a full-width Done toolbar above
-                    // the keyboard, so the narrow per-panel bar is suppressed.
-                    if !giniLayout.isLandscape && focusedField == .amount && keyboardHeight > 0 {
+                if focusedField == .amount && keyboardHeight > 0 {
+                    if #available(iOS 26, *) {
+                        // Reserve height for the Liquid Glass button (ToolbarItemGroup) so
+                        // content doesn't slide behind it at the sheet/keyboard boundary.
+                        Color.clear
+                            .frame(height: Constants.doneButtonBarHeight)
+                            .allowsHitTesting(false)
+                    } else {
                         doneButtonBar
                     }
-                    // In landscape the keyboard sits below the inline view; re-inject its
-                    // height so the ScrollView scrolls content above it. In portrait the
-                    // sheet already repositions above the keyboard — no extra space needed.
-                    Color.clear.frame(height: giniLayout.isLandscape ? keyboardHeight : 0)
                 }
             }
     }
 
+    // Landscape docCollection: manual spacer keeps content above the keyboard.
+    // Done button: ContentView toolbar (iOS <26) or Liquid Glass toolbar (iOS 26+).
+    @ViewBuilder
+    private var docCollectionScrollView: some View {
+        baseScrollView
+            .ignoresSafeArea(.keyboard)
+            .safeAreaInset(edge: .bottom) {
+                Color.clear
+                    .frame(height: keyboardHeight)
+                    .allowsHitTesting(false)
+            }
+    }
+
+    // Done bar substituting the missing return key on .decimalPad; iOS <26 only.
     @ViewBuilder
     private var doneButtonBar: some View {
         HStack {
             Spacer()
             Button(viewModelStrings.keyboardDoneButtonTitle) {
-                onKeyboardDismissed()
-                viewModel.handleAmountFocusChange(isFocused: false)
-                focusedField = nil
+                dismissAmountKeyboard()
             }
             .padding(.horizontal, Constants.doneButtonHorizontalPadding)
         }
         .frame(height: Constants.doneButtonBarHeight)
-        .background(Color(UIColor.systemGroupedBackground))
+        .background(.regularMaterial)
         .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                if showBanner {
-                    infoBannerView
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                        .onAppear {
-                            UIAccessibility.post(notification: .announcement,
-                                                 argument: viewModel.model.strings.infoBarMessage)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(spacing: 0) {
+                    if showBanner {
+                        infoBannerView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .top).combined(with: .opacity),
+                                removal: .opacity
+                            ))
+                            .onAppear {
+                                UIAccessibility.post(notification: .announcement,
+                                                     argument: viewModel.model.strings.infoBarMessage)
+                            }
+                    }
+
+                    VStack(spacing: Constants.textFieldsContainerSpacing) {
+                        recipientTextField
+                            .id(ActivePaymentField.recipient)
+
+                        adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
+                            ibanTextField
+                                .id(ActivePaymentField.iban)
+                            amountTextField
+                                .id(ActivePaymentField.amount)
                         }
+
+                        paymentPurposeTextField
+                            .id(ActivePaymentField.paymentPurpose)
+
+                        adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
+                            paymentProviderSelectionPicker
+                            payButton
+                        }
+                        .padding(.bottom, Constants.buttonsContainerBottomPadding)
+
+                        if viewModel.shouldShowBrandedView {
+                            poweredByGiniView
+                        }
+                    }
+                    .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
+                    .padding(.top, Constants.textFieldsContainerTopPadding)
                 }
-
-                VStack(spacing: Constants.textFieldsContainerSpacing) {
-                    recipientTextField
-
-                    adaptiveStack(spacing: Constants.textFieldsContainerSpacing) {
-                        ibanTextField
-                        amountTextField
-                    }
-
-                    paymentPurposeTextField
-
-                    adaptiveStack(spacing: Constants.buttonsContainerSpacing) {
-                        paymentProviderSelectionPicker
-                        payButton
-                    }
-                    .padding(.bottom, Constants.buttonsContainerBottomPadding)
-
-                    if viewModel.shouldShowBrandedView {
-                        poweredByGiniView
-                    }
-                }
-                .padding(.horizontal, Constants.textFieldsContainerHorizontalPadding)
-                .padding(.top, Constants.textFieldsContainerTopPadding)
+                .getHeight(for: $contentHeight)
             }
-            .getHeight(for: $contentHeight)
+            // Landscape: UIKit-backed fields don't auto-scroll; drive it from keyboardHeight changes.
+            // No anchor → minimum scroll: if the field is already visible nothing happens,
+            // which avoids a spurious micro-scroll when switching between adjacent fields (IBAN/amount).
+            .onChange(of: keyboardHeight) { height in
+                guard isDocCollection else { return }
+                if height > 0, let field = focusedField {
+                    proxy.scrollTo(field)
+                } else if height == 0 {
+                    proxy.scrollTo(ActivePaymentField.recipient, anchor: .top)
+                }
+            }
         }
     }
 
@@ -213,9 +314,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.recipientInputState.text) { _ in
-            // Clearing the error while the field is focused triggers a `.error → .focused`
-            // style-state transition that causes SwiftUI to replace the underlying UITextField,
-            // dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .recipient else { return }
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
         }
@@ -244,9 +343,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.ibanInputState.text) { _ in
-            // Clearing the error while the field is focused triggers a `.error → .focused`
-            // style-state transition that causes SwiftUI to replace the underlying UITextField,
-            // dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .iban else { return }
             viewModel.clearErrorOnTextChange(for: \.ibanInputState)
         }
@@ -258,8 +355,7 @@ struct PaymentReviewPaymentInformationView: View {
             .focused($focusedField, equals: .amount)
             .onChange(of: viewModel.amountInputState.text) { newValue in
                 viewModel.handleAmountTextChange(updatedText: newValue)
-                // Amount error clearing is handled by `handleAmountFocusChange` and
-                // `clearAmountErrorAfterKeyboardAppears` — not by text change.
+                // Error clearing is handled by handleAmountFocusChange, not text change.
             }
             .onChange(of: focusedField) { newFocus in
                 Task { @MainActor in
@@ -296,9 +392,7 @@ struct PaymentReviewPaymentInformationView: View {
             }
         }
         .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
-            // Clearing the error while the field is focused triggers a `.error → .focused`
-            // style-state transition that causes SwiftUI to replace the underlying UITextField,
-            // dismissing the keyboard. Only clear when the field is not focused.
+            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .paymentPurpose else { return }
             viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
         }
@@ -334,11 +428,7 @@ struct PaymentReviewPaymentInformationView: View {
                         .accessibilityHidden(true)
                 }
             }
-            // At xxxLarge and above, adaptiveStack places the picker above the pay button
-            // in a VStack. Expand to full width so both controls align, instead of leaving
-            // a narrow 96-pt button floating above a full-width button.
-            // minWidth == maxWidth in the default case pins the width at exactly 96 pt
-            // (equivalent to width:), preventing the picker from shrinking below that.
+            // At xxxLarge+ the picker is in a VStack; expand to full width so it aligns with payButton.
             .frame(minWidth: dynamicTypeSize >= .xxxLarge ? 0 : Constants.paymentProviderPickerSize.width,
                    maxWidth: dynamicTypeSize >= .xxxLarge ? .infinity : Constants.paymentProviderPickerSize.width,
                    minHeight: Constants.paymentProviderPickerSize.height)
@@ -371,8 +461,7 @@ struct PaymentReviewPaymentInformationView: View {
                                       viewModel.paymentPurposeError]
                         .compactMap { $0 }.first
                     if let firstError {
-                        // Delay allows VoiceOver to finish announcing the button activation
-                        // before the error announcement is posted, preventing it from being dropped.
+                        // Delay so VoiceOver finishes announcing button activation before error.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             UIAccessibility.post(notification: .announcement, argument: firstError)
                         }
@@ -395,8 +484,7 @@ struct PaymentReviewPaymentInformationView: View {
     
     @ViewBuilder
     private func adaptiveStack<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
-        // Switch to VStack at xxxLarge and above so that wide content like IBAN numbers
-        // and the bank picker have full width; isAccessibilitySize covers AX1–AX5 (~190%+).
+        // xxxLarge+ uses VStack so wide content gets full width.
         if dynamicTypeSize >= .xxxLarge {
             VStack(spacing: spacing) { content() }
         } else {
@@ -412,7 +500,13 @@ struct PaymentReviewPaymentInformationView: View {
         }
         .padding(.top, Constants.poweredByGiniTopPadding)
     }
-    
+
+    private func dismissAmountKeyboard() {
+        onKeyboardDismissed()
+        viewModel.handleAmountFocusChange(isFocused: false)
+        focusedField = nil
+    }
+
     // MARK: Private methods
 
     private func clearFocus() {
@@ -436,27 +530,16 @@ struct PaymentReviewPaymentInformationView: View {
     
     // MARK: - Orientation Helpers
 
-    /**
-     Handles focus changes on the active field.
-     When focus moves to a field, the model's `activeField` and `isAmountFieldFocused` are updated.
-     When focus is cleared, amount-focus is cleared immediately and `activeField` is cleared
-     after a short delay — distinguishing a user keyboard dismissal from a rotation-triggered view recreation.
-     */
     private func handleFocusedFieldChange(_ newField: ActivePaymentField?) {
         if let field = newField {
             viewModel.activeField = field
             viewModel.isAmountFieldFocused = (field == .amount)
         } else {
-            // Clear amount-focus immediately so the Done toolbar hides right away.
+            // Hide Done toolbar immediately; delay clearing activeField to distinguish dismiss from rotation.
             viewModel.isAmountFieldFocused = false
-            // Don't clear activeField immediately: the same nil event fires during rotation
-            // (view is destroyed) AND when the user manually dismisses the keyboard.
-            // Capture the current field so the task can verify nothing changed during the delay:
-            //   - Still visible + focus still nil + same field → user dismissed → clear activeField
-            //   - Gone (rotation) or focus moved to another field → keep activeField for restoration
             let fieldToClear = viewModel.activeField
             Task { @MainActor in
-                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 s
+                try await Task.sleep(for: .milliseconds(100))
                 if viewModel.isViewVisible,
                    focusedField == nil,
                    viewModel.activeField == fieldToClear {
@@ -467,14 +550,13 @@ struct PaymentReviewPaymentInformationView: View {
     }
 
     /**
-     Re-applies keyboard focus after the view is recreated by an orientation change.
-     The delay lets the rotation animation and any pending keyboard dismissal finish
-     before requesting focus again.
+     Delays 400 ms for rotation animation before re-applying focus.
      */
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
-            try? await Task.sleep(nanoseconds: 400_000_000) // 0.4 s
+            try await Task.sleep(for: .milliseconds(400))
+            guard viewModel.isViewVisible else { return }
             focusedField = field
         }
     }

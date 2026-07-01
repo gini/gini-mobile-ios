@@ -22,6 +22,7 @@ public enum DisplayMode: Int {
 public final class PaymentReviewViewController: UIHostingController<PaymentReviewContentView> {
 
     private let overlayPresenter = GiniOverlayWindowPresenter()
+    private let alertPresenter = GiniAlertWindowPresenter()
     // Stored so viewWillTransition can set isDismissingForRotation before dismissing the sheet.
     private let observableModel: PaymentReviewObservableModel
 
@@ -34,7 +35,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
        - viewModel: The `PaymentReviewModel` driving the payment review screen.
        - selectedPaymentProvider: The payment provider pre-selected for this review session.
      */
-    public init(viewModel: PaymentReviewModel, selectedPaymentProvider: PaymentProvider) {
+    public init(viewModel: PaymentReviewModel, selectedPaymentProvider _: PaymentProvider) {
         self.model = viewModel
 
         let observableModel = PaymentReviewObservableModel(model: model)
@@ -43,7 +44,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     }
     
     @MainActor
-    @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @preconcurrency required dynamic init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -57,17 +58,19 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     }
     
     private func setupNavigationBar() {
-        guard model.showPaymentReviewCloseButton,
-              model.displayMode == .documentCollection else { return }
-        
+        guard model.displayMode == .documentCollection else { return }
+
+        navigationItem.title = model.strings.paymentReviewScreenTitle
+
+        guard model.showPaymentReviewCloseButton else { return }
+
         let closeImage = model.configuration.paymentReviewClose.withRenderingMode(.alwaysTemplate)
         let closeButton = UIBarButtonItem(image: closeImage,
                                           style: .plain,
                                           target: self,
                                           action: #selector(closeButtonTapped))
-        
         closeButton.accessibilityLabel = model.strings.closeButtonAccessibilityLabel
-        closeButton.accessibilityHint =  model.strings.closeButtonAccessibilityHint
+        closeButton.accessibilityHint = model.strings.closeButtonAccessibilityHint
         navigationItem.rightBarButtonItem = closeButton
     }
     
@@ -105,6 +108,7 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         overlayPresenter.dismiss(animated: false)
+        alertPresenter.dismiss()
         model.viewDidDisappear()
     }
 }
@@ -147,9 +151,14 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
                                                 message: message,
                                                 preferredStyle: .alert)
         let okAction = UIAlertAction(title: model.strings.alertOkButtonTitle,
-                                     style: .default)
+                                     style: .default) { [weak self] _ in
+            self?.alertPresenter.dismiss()
+        }
         alertController.addAction(okAction)
-        giniTopMostViewController().present(alertController, animated: true)
+        // preferredAction must be set after addAction
+        alertController.preferredAction = okAction
+
+        alertPresenter.present(alertController, from: self)
     }
     
     private func dismissScreen() {

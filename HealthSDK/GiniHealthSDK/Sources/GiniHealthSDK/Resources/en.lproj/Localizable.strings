@@ -5,6 +5,7 @@
  //  Copyright © 2024 Gini GmbH. All rights reserved.
 
 */
+"gini.health.reviewscreen.title" = "";
 "gini.health.reviewscreen.recipient.placeholder" = "Recipient";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.amount.placeholder" = "Amount";
