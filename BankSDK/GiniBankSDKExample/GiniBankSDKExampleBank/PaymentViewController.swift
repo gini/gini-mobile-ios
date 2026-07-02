@@ -447,10 +447,10 @@ extension PaymentViewController {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: "ok", style: .default, handler: nil)
-        alertController.addAction(OKAction)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
         // preferredAction must be set after addAction
-        alertController.preferredAction = OKAction
+        alertController.preferredAction = okAction
         present(alertController, animated: true, completion: nil)
     }
 }
