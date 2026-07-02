@@ -245,7 +245,7 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
                                       message: message,
                                       preferredStyle: .alert)
 
-        let okAction = UIAlertAction(title: NSLocalizedString("gini.bank.example.alert.ok", comment: ""), style: .default, handler: nil)
+        let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default, handler: nil)
         alert.addAction(okAction)
         // preferredAction must be set after addAction
         alert.preferredAction = okAction
@@ -285,7 +285,7 @@ extension SettingsViewController: UpdateUserDefaultsCellDelegate {
                                           message: "The preference was successfully removed.",
                                           preferredStyle: .alert)
 
-            let okAction = UIAlertAction(title: NSLocalizedString("gini.bank.example.alert.ok", comment: ""), style: .default, handler: nil)
+            let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default, handler: nil)
             alert.addAction(okAction)
             // preferredAction must be set after addAction
             alert.preferredAction = okAction

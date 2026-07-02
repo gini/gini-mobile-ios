@@ -175,7 +175,7 @@ final class AppCoordinator: Coordinator {
 									  message: "`Open with` feature is currently disabled. \n If you want to test this, please enable it in Gini configuration!",
 									  preferredStyle: .alert)
 		
-		let ok = UIAlertAction(title: NSLocalizedString("gini.bank.example.alert.ok", comment: ""), style: .default) { _ in
+		let ok = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default) { _ in
 			self.rootViewController.dismiss(animated: true)
 		}
 
@@ -313,7 +313,7 @@ final class AppCoordinator: Coordinator {
                                                            comment: "Import error description")
 
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("gini.bank.example.alert.ok", comment: ""), style: .default) { _ in
+        let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default) { _ in
             alertViewController.dismiss(animated: true)
         }
         alertViewController.addAction(okAction)
