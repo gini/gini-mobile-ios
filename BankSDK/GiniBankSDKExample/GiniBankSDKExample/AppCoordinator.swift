@@ -180,6 +180,8 @@ final class AppCoordinator: Coordinator {
 		}
 
 		alert.addAction(ok)
+		// preferredAction must be set after addAction
+		alert.preferredAction = ok
 		rootViewController.present(alert, animated: true)
 	}
 	
@@ -292,13 +294,15 @@ final class AppCoordinator: Coordinator {
                                                                  comment: "No")
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
 
-        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
+        let startAction = UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
+        }
+        alertViewController.addAction(startAction)
         alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
             alertViewController.dismiss(animated: true)
         })
-
+        // preferredAction must be set after addAction
+        alertViewController.preferredAction = startAction
 
         rootViewController.present(alertViewController, animated: true)
     }
@@ -309,10 +313,13 @@ final class AppCoordinator: Coordinator {
                                                            comment: "Import error description")
 
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        // preferredAction must be set after addAction
+        alertViewController.preferredAction = okAction
+
         rootViewController.present(alertViewController, animated: true)
     }
     
