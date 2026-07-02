@@ -50,16 +50,9 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration)
         _ = cameraPreviewViewController.view
         let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
+        // Verifies setupCamera does not crash when QR scanning is enabled.
+        // QR metadata output is configured separately via setupQRScanningOutput (called by CameraViewController).
         cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
-        
-        DispatchQueue.main.async {
-            let metadataOutput = self.cameraPreviewViewController.previewView.session
-                .outputs
-                .compactMap { $0 as? AVCaptureMetadataOutput }
-                .first
-            
-            XCTAssertNotNil(metadataOutput, "the camera session should have the metadata output")
-        }
     }
     
     func testCaptureImage() {
@@ -83,12 +76,105 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         let defaultFlashState = camera.isFlashOn
         let giniConfiguration = GiniConfiguration()
         giniConfiguration.flashToggleEnabled = true
-        
+
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration,
                                                                   camera: camera)
         _ = cameraPreviewViewController.view
         cameraPreviewViewController.isFlashOn = false
-        
+
         XCTAssertNotEqual(defaultFlashState, camera.isFlashOn, "camera flash state should change it after toggle it")
+    }
+
+    // MARK: - QR Detection Pause/Resume
+
+    private func makeCamera() -> Camera {
+        return Camera(giniConfiguration: GiniConfiguration())
+    }
+
+    private func cleanSessionQueue(_ camera: Camera, timeout: TimeInterval = 2.0) {
+        let expect = expectation(description: "session queue flushed")
+        camera.sessionQueue.async {
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
+    func testPauseQRDetectionBeforeSetupDoesNotCrash() {
+        let camera = makeCamera()
+
+        camera.pauseQRDetection()
+        cleanSessionQueue(camera)
+    }
+
+    func testResumeQRDetectionBeforeSetupDoesNotCrash() {
+        let camera = makeCamera()
+
+        camera.resumeQRDetection()
+        cleanSessionQueue(camera)
+    }
+
+    func testPauseQRDetectionClearsMetadataObjectTypes() {
+        let camera = makeCamera()
+        let output = AVCaptureMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.pauseQRDetection()
+        cleanSessionQueue(camera)
+
+        XCTAssertTrue(output.metadataObjectTypes.isEmpty,
+                      "metadataObjectTypes should be empty after pauseQRDetection")
+    }
+
+    func testResumeQRDetectionGuardsAgainstUnavailableQRType() {
+        let camera = makeCamera()
+        let output = AVCaptureMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.resumeQRDetection()
+        cleanSessionQueue(camera)
+
+        // On CI simulators .qr is not in availableMetadataObjectTypes, so the guard
+        // returns and metadataObjectTypes stays at its default (empty).
+        XCTAssertTrue(output.metadataObjectTypes.isEmpty,
+                      "metadataObjectTypes should remain unchanged when .qr is unavailable")
+    }
+
+    func testSetupQRScanningOutputAssignsMetadataOutput() {
+        let camera = makeCamera()
+
+        // Trigger setup but don't wait for the main-queue completion callback —
+        // just flush the serial sessionQueue, which runs after configureQROutput finishes.
+        camera.setupQRScanningOutput { _ in }
+        cleanSessionQueue(camera, timeout: 10.0)
+
+        XCTAssertNotNil(camera.qrMetadataOutput,
+                        "qrMetadataOutput should be assigned after configureQROutput runs")
+    }
+
+    func testResumeQRDetectionEnablesQRTypeWhenAvailable() {
+        let camera = makeCamera()
+        let output = FakeQRAvailableMetadataOutput()
+        camera.setQRMetadataOutputForTesting(output)
+
+        camera.resumeQRDetection()
+        cleanSessionQueue(camera)
+
+        XCTAssertEqual(output.metadataObjectTypes, [.qr],
+                       "metadataObjectTypes should be set to [.qr] when .qr is available")
+    }
+}
+
+// Test stub that pretends .qr is supported, allowing the `availableMetadataObjectTypes.contains(.qr)`
+// guard branch in resumeQRDetection to be exercised on CI simulators (which have no real camera).
+private final class FakeQRAvailableMetadataOutput: AVCaptureMetadataOutput {
+    private var _objectTypes: [AVMetadataObject.ObjectType]? = []
+
+    override var availableMetadataObjectTypes: [AVMetadataObject.ObjectType] {
+        return [.qr]
+    }
+
+    override var metadataObjectTypes: [AVMetadataObject.ObjectType]! {
+        get { _objectTypes }
+        set { _objectTypes = newValue }
     }
 }

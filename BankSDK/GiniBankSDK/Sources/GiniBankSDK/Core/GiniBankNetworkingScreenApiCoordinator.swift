@@ -306,6 +306,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
                     GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
                     GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled = configuration.savePhotosLocallyEnabled
+                    GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
+                        configuration.unsupportedQRCodeWarningEnabled
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
