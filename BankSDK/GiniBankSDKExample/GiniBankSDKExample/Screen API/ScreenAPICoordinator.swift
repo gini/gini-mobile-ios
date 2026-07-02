@@ -227,7 +227,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                       message: nil,
                                       preferredStyle: .alert)
 
-        let ok = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+        let ok = UIAlertAction(title: NSLocalizedString("gini.bank.example.alert.ok", comment: ""), style: .default) { [weak self] _ in
             self?.rootViewController.dismiss(animated: true)
         }
 
