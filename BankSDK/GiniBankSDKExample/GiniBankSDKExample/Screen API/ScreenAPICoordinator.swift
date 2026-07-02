@@ -232,6 +232,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
 
         alert.addAction(ok)
+        // preferredAction must be set after addAction
+        alert.preferredAction = ok
         rootViewController.present(alert, animated: true)
     }
 }
