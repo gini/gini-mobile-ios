@@ -460,11 +460,29 @@ import Photos
     }
 
     // MARK: - Handling UI - Payment DueHint
-    private func setupScrollableStackView(dueDate: String) {
 
-        /// hide views before showing hint
+    private func tearDownLoadingUI() {
         loadingIndicatorText.isHidden = true
         loadingIndicatorView.stopAnimating()
+        loadingIndicatorContainer.removeFromSuperview()
+
+        if let customIndicator = giniConfiguration.customLoadingIndicator {
+            customIndicator.stopAnimation()
+            customIndicator.injectedView().removeFromSuperview()
+        }
+
+        // Drain pending continuations so any Task waiting on animation completion is not stranded.
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        loadingViewModel = nil
+
+        view.subviews
+            .compactMap { $0 as? QRCodeEducationLoadingView }
+            .forEach { $0.removeFromSuperview() }
+    }
+
+    private func setupScrollableStackView(dueDate: String) {
+        tearDownLoadingUI()
 
         view.addSubview(scrollView)
 
