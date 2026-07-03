@@ -117,7 +117,8 @@ import Photos
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .clear
+        scrollView.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                               dark: .GiniCapture.dark2).uiColor()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
