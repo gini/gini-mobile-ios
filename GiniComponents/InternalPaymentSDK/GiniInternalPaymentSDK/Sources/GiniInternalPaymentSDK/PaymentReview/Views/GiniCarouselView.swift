@@ -24,8 +24,9 @@ struct GiniCarouselView: View {
     init(viewModel: GiniCarouselViewModel) {
         self.images = viewModel.images
         self.imageAccessibilityLabel = viewModel.imageAccessibilityLabel
-        UIPageControl.appearance().currentPageIndicatorTintColor = viewModel.currentPageIndicatorTintColor
-        UIPageControl.appearance().pageIndicatorTintColor = viewModel.pageIndicatorTintColor
+        let pageControlAppearance = UIPageControl.appearance(whenContainedInInstancesOf: [PaymentReviewViewController.self])
+        pageControlAppearance.currentPageIndicatorTintColor = viewModel.currentPageIndicatorTintColor
+        pageControlAppearance.pageIndicatorTintColor = viewModel.pageIndicatorTintColor
     }
     
     var body: some View {
