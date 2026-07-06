@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+struct GiniCarouselViewModel {
+    let images: [UIImage]
+    let imageAccessibilityLabel: String?
+    let pageIndicatorTintColor: UIColor
+    let currentPageIndicatorTintColor: UIColor
+}
+
 struct GiniCarouselView: View {
     
     private let images: [UIImage]
@@ -14,9 +21,11 @@ struct GiniCarouselView: View {
     
     @State private var currentIndex: Int = 0
     
-    init(images: [UIImage], imageAccessibilityLabel: String? = nil) {
-        self.images = images
-        self.imageAccessibilityLabel = imageAccessibilityLabel
+    init(viewModel: GiniCarouselViewModel) {
+        self.images = viewModel.images
+        self.imageAccessibilityLabel = viewModel.imageAccessibilityLabel
+        UIPageControl.appearance().currentPageIndicatorTintColor = viewModel.currentPageIndicatorTintColor
+        UIPageControl.appearance().pageIndicatorTintColor = viewModel.pageIndicatorTintColor
     }
     
     var body: some View {

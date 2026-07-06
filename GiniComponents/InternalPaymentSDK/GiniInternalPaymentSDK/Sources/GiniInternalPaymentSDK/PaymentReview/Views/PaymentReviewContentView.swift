@@ -205,9 +205,11 @@ public struct PaymentReviewContentView: View {
     @ViewBuilder
     private func showPreviewImageCarousel(carouselHeight: CGFloat) -> some View {
         let images = viewModel.cellViewModels.compactMap { $0.preview }
-        
-        GiniCarouselView(images: images,
-                         imageAccessibilityLabel: viewModel.invoiceImageAccessibilityLabel)
+        let viewModel = GiniCarouselViewModel(images: images,
+                                              imageAccessibilityLabel: viewModel.invoiceImageAccessibilityLabel,
+                                              pageIndicatorTintColor: viewModel.model.configuration.pageIndicatorTintColor,
+                                              currentPageIndicatorTintColor: viewModel.model.configuration.currentPageIndicatorTintColor)
+        GiniCarouselView(viewModel: viewModel)
             .frame(height: carouselHeight)
     }
     
