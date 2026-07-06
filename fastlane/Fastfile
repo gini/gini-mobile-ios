@@ -679,7 +679,8 @@ end
     Upload an .ipa to TestFlight via the App Store Connect API.
 
     Parameters:
-      ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
+      ipa_path - Path to the .ipa file, e.g. "./GiniBankSDKExample.ipa" or
+                 "./GiniHealthSDKExample.ipa" (default: "./GiniBankSDKExample.ipa")
 
     Environment Variables:
       APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
@@ -687,6 +688,7 @@ end
       APP_STORE_CONNECT_API_KEY         - App Store Connect API key content (base64-encoded .p8)
   DOC
   lane :publish_to_testflight do |options|
+    # The caller passes the ipa_path, e.g. "./GiniBankSDKExample.ipa" or "./GiniHealthSDKExample.ipa"
     ipa_path    = options[:ipa_path] || "./GiniBankSDKExample.ipa"
     key_id      = ENV['APP_STORE_CONNECT_API_KEY_ID']
     issuer_id   = ENV['APP_STORE_CONNECT_API_ISSUER_ID']

@@ -95,6 +95,10 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           DISTRIBUTION_TYPE=appstore bundle exec fastlane download_profiles
+          # The AdHoc profile is needed only for the main app target: its Release build
+          # configuration signs with "match AdHoc <bundle_id>" at archive time (the export
+          # step then re-signs with the AppStore profiles above). Extension targets sign
+          # with AppStore profiles in Release, so they are excluded here on purpose.
           DISTRIBUTION_TYPE=adhoc APP_IDENTIFIER=${{ inputs.bundle_identifier }} bundle exec fastlane download_profiles
 
       - name: Archive Xcode Project
