@@ -27,12 +27,15 @@ jobs:
             echo "should_run=false" >> $GITHUB_OUTPUT
           fi
 
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   upload-testflight:
-    needs: check-schedule
+    needs: [check-schedule, get-config]
     if: needs.check-schedule.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/publish.example.app.testflight.yml
     with:
-      xcode_version: '26.2'
+      xcode_version: ${{ needs.get-config.outputs.xcode-version }}
       project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
       scheme: 'GiniBankSDKExample'
       bundle_identifier: 'net.gini.banksdk.example'
