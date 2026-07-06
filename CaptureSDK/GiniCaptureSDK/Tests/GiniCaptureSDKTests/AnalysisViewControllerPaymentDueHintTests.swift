@@ -33,7 +33,11 @@ struct AnalysisViewControllerPaymentDueHintTests {
 
     private func makeImportedImageVC(config: GiniConfiguration) -> AnalysisViewController {
         let image = GiniCaptureTestsHelper.loadImage(named: "invoice")
-        let data = image.jpegData(compressionQuality: 0.2) ?? Data()
+        guard let data = image.jpegData(compressionQuality: 0.2) else {
+            #expect(Bool(false), "Failed to create JPEG data from invoice image")
+            let document = GiniImageDocument(data: Data(), imageSource: .external)
+            return AnalysisViewController(document: document, giniConfiguration: config)
+        }
         let document = GiniImageDocument(data: data, imageSource: .external)
         return AnalysisViewController(document: document, giniConfiguration: config)
     }
