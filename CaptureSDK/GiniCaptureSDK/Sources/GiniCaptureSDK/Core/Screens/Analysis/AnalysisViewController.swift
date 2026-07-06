@@ -569,12 +569,6 @@ import Photos
             self.updateContentStackConstraints()
         })
     }
-    
-    func someCallerThatUsedToCallSetupScrollableStackView(dueDate: String) {
-        Task { @MainActor [weak self] in
-            self?.setupScrollableStackView(dueDate: dueDate)
-        }
-    }
 }
 
 extension AnalysisViewController: PaymentDueDateProtocol {
@@ -583,12 +577,9 @@ extension AnalysisViewController: PaymentDueDateProtocol {
         removeCaptureSuggestions()
 
         /// show due hint view
-        Task { @MainActor [weak self] in
-            self?.setupScrollableStackView(dueDate: dueDate)
-        }
+        setupScrollableStackView(dueDate: dueDate)
     }
 
-    @MainActor
     public func clearPaymentDueDate(after timeout: TimeInterval) async {
         await withCheckedContinuation { continuation in
             var didClear = false
