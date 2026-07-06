@@ -293,7 +293,7 @@ final class OrderDetailViewController: UIViewController {
                                                 message: error,
                                                 preferredStyle: .alert)
         let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""),
-                                         style: .default)
+                                     style: .default)
         alertController.addAction(okAction)
         alertController.preferredAction = okAction
         self.present(alertController, animated: true)

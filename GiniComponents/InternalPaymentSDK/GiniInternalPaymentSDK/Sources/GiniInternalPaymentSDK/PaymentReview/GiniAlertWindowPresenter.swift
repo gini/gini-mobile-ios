@@ -40,14 +40,14 @@ final class GiniAlertWindowPresenter {
         guard let windowScene else { return }
 
         let window = UIWindow(windowScene: windowScene)
-        let rootVC = UIViewController()
-        rootVC.view.backgroundColor = .clear
-        window.rootViewController = rootVC
+        let rootViewController = UIViewController()
+        rootViewController.view.backgroundColor = .clear
+        window.rootViewController = rootViewController
         window.windowLevel = .alert
         window.makeKeyAndVisible()
         alertWindow = window
 
-        rootVC.present(alertController, animated: true)
+        rootViewController.present(alertController, animated: true)
     }
 
     /**
@@ -55,11 +55,11 @@ final class GiniAlertWindowPresenter {
      and from the host view controller's `viewDidDisappear`.
      */
     func dismiss() {
-        guard let rootVC = alertWindow?.rootViewController else {
+        guard let rootViewController = alertWindow?.rootViewController else {
             tearDown()
             return
         }
-        if let presented = rootVC.presentedViewController {
+        if let presented = rootViewController.presentedViewController {
             presented.dismiss(animated: false) { [weak self] in
                 self?.tearDown()
             }
