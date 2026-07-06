@@ -9,47 +9,36 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
-    needs: check
-    runs-on: macos-latest  
-    steps:
-    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
-      with:
-        xcode-version: '16.4'
+    needs: [get-config, check]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sdk.release.yml
+    with:
+      project_folder: 'BankAPILibrary'
+      package_folder: 'GiniBankAPILibrary'
+      version_file_path: 'BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift'
+      git_tag: ${{ github.ref }}
+      repo_url: 'https://github.com/gini/bank-api-library-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
+    secrets:
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
 
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: setup ruby
-      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
-      with:
-        ruby-version: '3.2.0'
-        bundler-cache: true
-
-    - name: Publish GiniBankAPILibrary package to the release repo
-      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-      with:
-        lane: 'publish_swift_package'
-        options: >
-          { 
-            "project_folder": "BankAPILibrary",
-            "package_folder": "GiniBankAPILibrary",
-            "version_file_path": "BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift",
-            "git_tag": "${{ github.ref }}", 
-            "repo_url": "https://github.com/gini/bank-api-library-ios.git", 
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-            "ci": "true"
-          }
-    
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@GiniBankSDK-release-4.0.0
+    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@main
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

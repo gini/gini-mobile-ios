@@ -78,6 +78,24 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var customResourceProvider: CustomResourceProvider?
 
+    /**
+     Custom network provider for HTTP requests.
+     
+     Allows you to provide a custom HTTP client implementation for all network requests.
+     This gives you full control over transport, headers, logging, TLS configuration, and proxies.
+
+     **Example Usage:**
+     ```swift
+     let configuration = GiniBankConfiguration.shared
+     configuration.customNetworkProvider = MyNetworkProvider()
+     ```
+     
+     - Note: If this property is set to nil (default), the SDK will use its built-in secure networking implementation,
+     including certificate pinning where applicable.
+     - Note: This configuration is passed through to `GiniConfiguration` and flows to the API layer.
+     */
+    public var customNetworkProvider: GiniNetworkProvider?
+
     // MARK: - Button configuration options
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color,
@@ -407,6 +425,20 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var entryPoint = GiniConfiguration.GiniEntryPoint.button
 
+    // MARK: - Product Tag
+    /**
+     Set the product tag used for document extraction routing.
+
+     This determines which extraction pipeline processes uploaded documents:
+     - `sepaExtractions` (default): Standard SEPA payment extractions.
+     - `cxExtractions`: Cross-border (CX) payment extractions.
+     - `otherProductTag(String)`: Custom product tag value.
+
+     This configuration is set once at SDK initialization time and applies
+     to all documents uploaded during the session.
+     */
+    public var productTag: GiniProductTag? = .sepaExtractions
+
     // MARK: - Error Logger
     /**
      Sets if the default error logging implementation is on.
@@ -480,6 +512,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customMenuItems = self.customMenuItems
         configuration.transactionDocsEnabled = self.transactionDocsEnabled
 
+        configuration.productTag = self.productTag
+
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
 
@@ -501,6 +535,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.entryPoint = self.entryPoint
         configuration.customResourceBundle = self.customResourceBundle
         configuration.customResourceProvider = self.customResourceProvider
+        configuration.customNetworkProvider = self.customNetworkProvider
 
         configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
 
@@ -563,6 +598,9 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
         giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
         giniBankConfiguration.customResourceProvider = configuration.customResourceProvider
+        giniBankConfiguration.customNetworkProvider = configuration.customNetworkProvider
+
+        giniBankConfiguration.productTag = configuration.productTag
     }
 
     // MARK: - Update to custom font
@@ -579,22 +617,17 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     // MARK: - Transfer summary sending and cleanup
-    // Deprecated method - Please use sendTransferSummary()
     /**
      Function for clean up
      - Parameters:
-     - paymentRecipient: paymentRecipient description
-     - paymentReference: paymentReference description
-     - iban: iban description
-     - bic: bic description
-     - amountToPay: amountToPay description
+        - paymentRecipient: paymentRecipient description
+        - paymentReference: paymentReference description
+        - iban: iban description
+        - bic: bic description
+        - amountToPay: amountToPay description
      */
 
-    // swiftlint:disable line_length
-    @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
-    // swiftlint:enable line_length
     // swiftlint:disable function_parameter_count
-    // swiftlint:disable function_body_length
     public func cleanup(paymentRecipient: String,
                         paymentReference: String,
                         paymentPurpose: String,
@@ -622,28 +655,35 @@ public final class GiniBankConfiguration: NSObject {
         self.documentService = nil
         self.lineItems = nil
     }
-    // swiftlint:enable function_body_length
     // swiftlint:enable function_parameter_count
-
     /**
-     Function for transfer summary.
-     Provides transfer summary to Gini.
-     Please provide the required transfer summary to improve the future extraction accuracy.
+     Sends the confirmed SEPA transfer summary to Gini.
+     Call this method after the user has approved the SEPA payment values, before calling `cleanup()`.
+     Provide the final values approved by the user, including fields that were not originally extracted.
 
-     Please follow the recommendations below:
-     - Make sure to call this method before calling `cleanup()` if the user has completed TAN verification.
-     - Provide values for all necessary fields, including those that were not extracted.
-     - Provide the final data approved by the user (and not the initially extracted only).
-     - Send the transfer summary after TAN verification and provide the extraction values the user has used.
+     Example usage:
+     ```swift
+     configuration.sendTransferSummary(
+         paymentRecipient: "Acme GmbH",
+         paymentReference: "REF-2024-001",
+         paymentPurpose:   "Invoice March",
+         iban:             "DE89370400440532013000",
+         bic:              "COBADEFFXXX",
+         amountToPay:      ExtractionAmount(value: 99.99, currency: .EUR),
+         instantPayment:   false
+     )
+     ```
+
+     For cross-border (CX) payments use `sendTransferSummary(extractions:)` instead.
 
      - Parameters:
-     - paymentRecipient: The name of the recipient to whom the payment is being made.
-     - paymentReference: A reference string used to identify the payment transaction.
-     - paymentPurpose: A brief description of the purpose of the payment.
-     - iban: The International Bank Account Number of the recipient.
-     - bic: The Bank Identifier Code associated with the recipient’s bank.
-     - amountToPay: The amount to be transferred, including currency information.
-     - instantPayment: A Boolean value indicating whether the payment should be processed as an instant payment.
+       - paymentRecipient: The name of the recipient to whom the payment is being made.
+       - paymentReference: A reference string used to identify the payment transaction.
+       - paymentPurpose: A brief description of the purpose of the payment.
+       - iban: The International Bank Account Number of the recipient.
+       - bic: The Bank Identifier Code associated with the recipient's bank.
+       - amountToPay: The amount to be transferred, including currency information.
+       - instantPayment: Specifies whether the payment should be processed as an instant payment.
      */
     // swiftlint:disable function_parameter_count
     public func sendTransferSummary(paymentRecipient: String,
@@ -661,6 +701,69 @@ public final class GiniBankConfiguration: NSObject {
                                                           amountToPayString: amountToPay.formattedString(),
                                                           instantPayment: instantPayment)
         sendTransferSummary(updatedExtractions: updatedExtractions)
+    }
+
+    private func sendTransferSummary(updatedExtractions: [Extraction]) {
+        let updatedCompoundExtractions = addLineItems(to: [:])
+        documentService?.sendFeedback(with: updatedExtractions,
+                                      updatedCompoundExtractions: updatedCompoundExtractions)
+    }
+
+    /**
+     Sends the confirmed transfer summary to Gini for any payment type.
+     Call this method after the user has approved the extracted values, before calling `cleanup()`.
+     The SDK routes the confirmed values to the correct backend structure based on the configured `productTag`.
+
+     **SEPA payments** (`productTag == .sepaExtractions`)
+     
+      Pass the confirmed values directly. When providing `amountToPay`,
+     use the `"value:currency"` format (e.g. `"950.00:EUR"`):
+     ```swift
+     configuration.sendTransferSummary(extractions: [
+         "iban":        "DE89370400440532013000",
+         "bic":         "COBADEFFXXX",
+         "amountToPay": "950.00:EUR"
+     ])
+     ```
+
+     **Cross-border (CX) payments** (`productTag == .cxExtractions`)
+
+     Pass the confirmed CX field names and values exactly as received in
+     `AnalysisResult.crossBorderPayment`. The SDK automatically wraps them
+     under `compoundExtractions["crossBorderPayment"]`:
+     ```swift
+     configuration.sendTransferSummary(
+         extractions: [
+             "iban":     "GB29NWBK60161331926819",
+             "bic":      "NWBKGB2L",
+             "currency": "GBP"
+         ])
+     ```
+
+     - Parameters:
+        - extractions: Confirmed field names and their values for the active `productTag`.
+         Field names must match the extraction names returned by the backend.
+
+    - Note: When providing `amountToPay`, use the `"value:currency"` format (e.g. `"950.00:EUR"`).
+
+     */
+    public func sendTransferSummary(extractions: [String: String]) {
+        let extractionList = extractions.map { name, value in
+            Extraction(box: nil,
+                       candidates: nil,
+                       entity: name,
+                       value: value,
+                       name: name)
+        }
+
+        if productTag == .cxExtractions {
+            let compoundExtractions = ["crossBorderPayment": [extractionList]]
+            documentService?.sendFeedback(with: [],
+                                          updatedCompoundExtractions: compoundExtractions)
+        } else {
+            documentService?.sendFeedback(with: extractionList,
+                                          updatedCompoundExtractions: addLineItems(to: [:]))
+        }
     }
 
     internal func generateBasicExtractions(paymentRecipient: String,
@@ -722,11 +825,6 @@ public final class GiniBankConfiguration: NSObject {
         return extractions
     }
     // swiftlint:enable function_parameter_count
-
-    private func sendTransferSummary(updatedExtractions: [Extraction]) {
-        let updatedCompoundExtractions = addLineItems(to: [:])
-        documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
-    }
 
     func sendTransferSummaryWithSkonto(amountToPayExtraction: Extraction, amountToPayString: String) {
         // The following guard ensures that a Skonto discount is actually applied before proceeding.

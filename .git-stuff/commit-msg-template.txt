@@ -7,13 +7,12 @@
 # Please fill out the template above according to these conventions:
 # * <type>: the type of the commit is one of the following:
 #   * feat: new or modified features including UI and public API changes. Also
-#     when adding tests to features.
+#     when adding tests to features and documentation.
 #   * fix: bug fixes, test fixes, dependency updates for fixes.
 #   * refactor: code changes without introducing public breaking changes (public API 
 #     or UI was not modified) or without changing functional behaviour. Also changes 
 #     that do code cleanup (comments, restructuring, method name changes, etc.)
 #     or when refactoring tests.
-#   * docs: documentation changes.
 #   * ci: changes to build scripts or any other automation scripts or
 #     configs (e.g., jazzy config, sphinx config). Also for git related 
 #     changes (e.g., .gitignore or commit template)
@@ -23,12 +22,8 @@
 #   Examples:
 #   * Commit that changes the GiniBankSDK project:
 #     feat(GiniBankSDK): Add error logging interface
-#   * Commit that updates the GiniHealthSDK documentation:
-#     doc(GiniHealthSDK): Update extraction feedback guide
 #   * Commit that changes the build script:
 #     ci: Send slack message with build result
-#   * Commit that changes many projects:
-#     chore: Update the android gradle plugin
 # * <subject>: short description in imperative mood summarising 
 #   the changes. For example: Add photo selection button.
 #   You can find more subject related advice here:

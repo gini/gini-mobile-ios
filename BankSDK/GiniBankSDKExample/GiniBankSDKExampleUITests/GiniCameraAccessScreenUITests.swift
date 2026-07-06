@@ -83,6 +83,15 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         cameraAccessScreen.giveAccessButton.firstMatch.tap()
         //Assert that Settings is opened
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        // iOS 18 may open "Settings > Apps" list instead of navigating directly to the app page.
+        // If the app title isn't immediately visible, find and tap the app row in the list first.
+        let appSettingsTitle = settingsApp.staticTexts["GiniBankSDKExample"]
+        if !appSettingsTitle.waitForExistence(timeout: 5) {
+            let appCell = settingsApp.cells.containing(.staticText, identifier: "GiniBankSDKExample").firstMatch
+            if appCell.waitForExistence(timeout: 5) {
+                appCell.tap()
+            }
+        }
         XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].waitForExistence(timeout: 5))
         //Reset Camera Access
         if #available(iOS 13.4, *) {

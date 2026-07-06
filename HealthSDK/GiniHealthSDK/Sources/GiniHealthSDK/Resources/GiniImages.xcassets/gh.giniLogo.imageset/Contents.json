@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "giniLogo.pdf",
+      "filename" : "gh.giniLogo_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.giniLogo_dark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -12,4 +12,5 @@ public enum SettingScreenAccessibilityIdentifiers: String {
     case qrCodeScanOnlySwitch = "qrCodeScanOnlySwitchIdentifier"
     case multiPageSwitch = "multipageSwitch"
     case flashToggleSwitch = "flashToggleSwitchIdentifier"
+    case productTagSegmentedControl = "productTagSegmentedControlIdentifier"
 }

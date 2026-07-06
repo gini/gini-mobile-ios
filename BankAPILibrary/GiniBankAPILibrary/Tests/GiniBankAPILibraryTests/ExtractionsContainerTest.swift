@@ -23,6 +23,36 @@ final class ExtractionsContainerTest: XCTestCase {
                          "extractions container without candidates should be decoded")
     }
     
+    func testCrossBorderPaymentDecoding() throws {
+        let json = loadFile(withName: "extractionsContainerWithCrossBorderPayment", ofType: "json")
+        let container = try JSONDecoder().decode(ExtractionsContainer.self, from: json)
+
+        let crossBorderPayment = try XCTUnwrap(container.compoundExtractions?.crossBorderPayment,
+                                               "crossBorderPayment should be present")
+
+        XCTAssertEqual(crossBorderPayment.count, 1, "Expected 1 cross-border payment group")
+
+        let group = try XCTUnwrap(crossBorderPayment.first, "First group should exist")
+        XCTAssertEqual(group.count, 4, "Expected 4 extractions in the group")
+
+        let fieldNames = group.compactMap { $0.name }
+        XCTAssertTrue(fieldNames.contains("iban"), "Group should contain 'iban' extraction")
+        XCTAssertTrue(fieldNames.contains("bic"), "Group should contain 'bic' extraction")
+        XCTAssertTrue(fieldNames.contains("bankName"), "Group should contain 'bankName' extraction")
+        XCTAssertTrue(fieldNames.contains("paymentRecipient"), "Group should contain 'paymentRecipient' extraction")
+
+        let ibanExtraction = Extraction(box: Extraction.Box(height: 9.0,
+                                                            left: 72.0,
+                                                            page: 1,
+                                                            top: 100.0,
+                                                            width: 140.0),
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: "GB29NWBK60161331926819",
+                                        name: "iban")
+        XCTAssertTrue(group.contains(ibanExtraction), "Group should contain the expected IBAN extraction with name set")
+    }
+
     func testExtractionsContainerDecoding() throws {
         
         let container = try JSONDecoder().decode(ExtractionsContainer.self, from: extractionsContainerJson)

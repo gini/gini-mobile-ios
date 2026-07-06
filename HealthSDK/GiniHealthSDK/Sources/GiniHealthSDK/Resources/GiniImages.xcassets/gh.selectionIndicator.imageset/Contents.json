@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_check_selected.pdf",
+      "filename" : "gh.selectionIndicator_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.selectionIndicator_dark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -81,6 +81,7 @@ extension GiniBankAPI {
         var userApi: UserDomain = .default
         var logLevel: LogLevel
         public var sessionDelegate: URLSessionDelegate? = nil
+        var customNetworkProvider: GiniNetworkProvider? = nil
         
         /**
          *  Initializes a Gini Bank API Library instance.
@@ -163,6 +164,21 @@ extension GiniBankAPI {
                       logLevel: logLevel,
                       sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
         }
+        
+        /**
+         * Sets a custom network provider for all HTTP requests.
+         *
+         * Allows you to provide a custom HTTP client for all network requests made by the SDK.
+         * Use this for corporate proxy configuration, custom TLS requirements, or specialized logging.
+         *
+         * - Parameter provider: The custom network provider, or nil to use default implementation
+         * - Returns: Updated builder instance
+         */
+        public func setCustomNetworkProvider(_ provider: GiniNetworkProvider?) -> Builder {
+            var builder = self
+            builder.customNetworkProvider = provider
+            return builder
+        }
 
         public func build() -> GiniBankAPI {
             // Save client information
@@ -185,15 +201,24 @@ extension GiniBankAPI {
         }
         
         private func createSessionManager() -> SessionManager {
+            // Extract custom HTTP client if provider exists
+            let httpClient = customNetworkProvider?.httpClient()
+            
             switch api {
             case .default:
-                return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-            case .custom(_, _, let tokenSource):
-                if let tokenSource = tokenSource {
-                    return SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
-                } else {
-                    return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-                }
+                return SessionManager(userDomain: userApi,
+                                      sessionDelegate: sessionDelegate,
+                                      customHTTPClient: httpClient)
+                case .custom(_, _, let tokenSource):
+                    if let tokenSource = tokenSource {
+                        return SessionManager(alternativeTokenSource: tokenSource,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    } else {
+                        return SessionManager(userDomain: userApi,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    }
             }
         }
         

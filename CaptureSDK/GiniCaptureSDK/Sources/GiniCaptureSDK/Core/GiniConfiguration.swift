@@ -10,37 +10,6 @@ import GiniBankAPILibrary
 import GiniUtilites
 
 /**
- The `GiniColor` class allows to customize color for the light and the dark modes.
- */
-@objc public class GiniColor: NSObject {
-    var light: UIColor
-    var dark: UIColor
-
-    /**
-     Creates a GiniColor with the colors for the light and dark modes.
-
-     - parameter light: color for the light mode
-     - parameter dark: color for the dark mode
-     */
-    public init(light: UIColor, dark: UIColor) {
-        self.light = light
-        self.dark = dark
-    }
-
-    public func uiColor() -> UIColor {
-        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-            if UITraitCollection.userInterfaceStyle == .dark {
-                /// Return the color for Dark Mode
-                return self.dark
-            } else {
-                /// Return the color for Light Mode
-                return self.light
-            }
-        }
-    }
-}
-
-/**
  The `GiniConfiguration` class allows customizations to the look and feel of the Gini Capture SDK.
  If there are limitations regarding which API can be used, this is clearly stated for the specific attribute.
 
@@ -100,6 +69,17 @@ import GiniUtilites
      - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations, such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`, `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
      */
     public var customResourceProvider: CustomResourceProvider?
+
+    /**
+     Custom network provider for HTTP requests.
+     
+     Allows you to provide a custom HTTP client implementation for all network requests.
+     This gives you full control over transport, headers, logging, TLS configuration, and proxies.
+     
+     - Note: If this property is set to nil (default), the SDK will use its built-in secure networking implementation,
+     including certificate pinning where applicable.
+     */
+    public var customNetworkProvider: GiniNetworkProvider?
 
     // MARK: Button configuration options
 
@@ -393,6 +373,21 @@ import GiniUtilites
      * whether to attach images or PDFs to the transaction.
      */
     public var transactionDocsEnabled: Bool = true
+
+    // MARK: - Product Tag
+    /**
+     Set the product tag used for document extraction routing.
+
+     This determines which extraction pipeline processes uploaded documents:
+     - `sepaExtractions` (default): Standard SEPA payment extractions.
+     - `cxExtractions`: Cross-border (CX) payment extractions.
+     - `autoDetectExtractions`: Reserved for future use.
+     - `otherProductTag(String)`: Custom product tag value.
+
+     This configuration is set once at SDK initialization time and applies
+     to all documents uploaded during the session.
+     */
+    public var productTag: GiniProductTag? = .sepaExtractions
 
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.

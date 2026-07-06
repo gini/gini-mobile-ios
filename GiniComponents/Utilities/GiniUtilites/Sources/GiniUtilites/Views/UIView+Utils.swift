@@ -1,0 +1,63 @@
+//
+//  UIView+Utils.swift
+//  GiniUtilites
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+import UIKit
+import SwiftUI
+
+// MARK: - Adds round corners to any UIView, configurable with UIRectCorner, radius
+
+extension UIView {
+    public func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        var masked = CACornerMask()
+        if corners.contains(.topLeft) {
+            masked.insert(.layerMinXMinYCorner)
+        }
+        if corners.contains(.topRight) {
+            masked.insert(.layerMaxXMinYCorner)
+        }
+        if corners.contains(.bottomLeft) {
+            masked.insert(.layerMinXMaxYCorner)
+        }
+        if corners.contains(.bottomRight) {
+            masked.insert(.layerMaxXMaxYCorner)
+        }
+        self.layer.maskedCorners = masked
+    }
+}
+
+public extension View {
+    
+    /**
+     Measures and reports the view's height through a binding.
+     
+     Uses `GeometryReader` and `PreferenceKey` to measure the view's natural height
+     and updates the binding when the height changes. The view is configured with
+     `.fixedSize(horizontal: false, vertical: true)` to calculate its natural vertical size.
+     
+     - Parameter height: A binding to receive the measured height value.
+     - Returns: A view that reports its height through the provided binding.
+     */
+    @available(iOS 15.0, *)
+    func getHeight(for height: Binding<CGFloat>) -> some View {
+        self
+            .fixedSize(horizontal: false, vertical: true)
+            .background {
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: GiniHeightPreferenceKey.self,
+                                    value: geometry.size.height)
+                }
+            }
+            .onPreferenceChange(GiniHeightPreferenceKey.self) { newHeight in
+                DispatchQueue.main.async {
+                    height.wrappedValue = newHeight
+                }
+            }
+    }
+}

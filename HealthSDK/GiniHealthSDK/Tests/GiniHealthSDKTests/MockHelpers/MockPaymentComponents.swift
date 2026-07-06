@@ -51,7 +51,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         case MockSessionManager.notPayableDocumentID:
             completion(.success(false))
         case MockSessionManager.missingDocumentID:
-            completion(.failure(.apiError(.decorator(.noResponse))))
+            completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse))))
         default:
             fatalError("Document id not handled in tests")
         }
@@ -64,7 +64,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         case MockSessionManager.notPayableDocumentID:
             completion(.success(true))
         case MockSessionManager.missingDocumentID:
-            completion(.failure(.apiError(.decorator(.noResponse))))
+            completion(.failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse))))
         default:
             fatalError("Document id not handled in tests")
         }

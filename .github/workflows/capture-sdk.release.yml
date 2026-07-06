@@ -9,43 +9,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
-    needs: check
-    runs-on: macos-latest
-    steps:
-    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
-      with:
-        xcode-version: '16.4'
-
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: setup ruby
-      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
-      with:
-        ruby-version: '3.2.0'
-        bundler-cache: true
-
-    - name: Publish GiniCaptureSDK package to the release repo
-      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
-      with:
-        lane: 'publish_swift_package'
-        options: >
-          { 
-            "project_folder": "CaptureSDK",
-            "package_folder": "GiniCaptureSDK",
-            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
-            "git_tag": "${{ github.ref }}", 
-            "repo_url": "https://github.com/gini/capture-sdk-ios.git", 
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-            "ci": "true"
-          }
+    needs: [get-config, check]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sdk.release.yml
+    with:
+      project_folder: 'CaptureSDK'
+      package_folder: 'GiniCaptureSDK'
+      version_file_path: 'CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift'
+      git_tag: ${{ github.ref }}
+      repo_url: 'https://github.com/gini/capture-sdk-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
+    secrets:
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
 
   release-documentation:
     needs: release

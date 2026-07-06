@@ -1,9 +1,9 @@
 Getting started
 =============================
 
-The Gini Bank API Library provides ways to interact with the Gini Bank API and therefore, adds the possiblity to scan documents and retrieve the extractions from them.
+The Gini Bank API Library provides ways to interact with the Gini Bank API and therefore, adds the possibility to scan documents and retrieve the extractions from them.
 
-In order to create an instance of the `GiniBankAPI` class, you need both your client id and your client secret. If you don’t have a client id and client secret yet, you need to contact us and we’ll provide you with credential.
+In order to create an instance of the `GiniBankAPI` class, you need both your client id and your client secret. If you don’t have a client id and client secret yet, you need to contact us and we’ll provide you with credentials.
 
 All requests to the Gini Bank API are made on behalf of a user. This means particularly that all created documents are bound to a specific user account. But since you are most likely only interested in the results of the semantic document analysis and not in a cloud document storage system, the Gini Bank API has the feature of anonymous users. This means that user accounts are created on the fly and the user account is unknown to your application’s user.
 
@@ -119,9 +119,106 @@ You can also extract the hash from a public key. The following example shows how
 $ cat gini.pub | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
 ```
 
-## Using the library
+## Custom Network Provider (Corporate Proxy Support)
 
-You can also extract the hash from a public key. The following example shows how to extract it from a public key named gini.pub:
+For advanced networking scenarios such as corporate proxy configurations, custom TLS requirements, or specialized logging, you can provide a custom HTTP client implementation.
+
+### Basic Setup
+
+```swift
+// 1. Implement the GiniHTTPClient protocol
+final class MyHTTPClient: GiniHTTPClient {
+    private let session: URLSession
+    
+    init() {
+        let config = URLSessionConfiguration.default
+        config.connectionProxyDictionary = [
+            kCFNetworkProxiesHTTPEnable: true,
+            kCFNetworkProxiesHTTPProxy: "proxy.company.com",
+            kCFNetworkProxiesHTTPPort: 8080
+        ]
+        self.session = URLSession(configuration: config)
+    }
+    
+    @discardableResult
+    func dataRequest(_ request: URLRequest,
+                     completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.dataTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
+    }
+    
+    @discardableResult
+    func uploadRequest(_ request: URLRequest,
+                       body: Data,
+                       completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.uploadTask(with: request, from: body, completionHandler: completion)
+        task.resume()
+        return task
+    }
+    
+    @discardableResult
+    func downloadRequest(_ request: URLRequest,
+                         completion: @escaping (URL?, URLResponse?, Error?) -> Void) -> CancellableTask {
+        let task = session.downloadTask(with: request, completionHandler: completion)
+        task.resume()
+        return task
+    }
+}
+
+// 2. Create a network provider
+final class MyNetworkProvider: GiniNetworkProvider {
+    private let client: GiniHTTPClient
+    
+    init(client: GiniHTTPClient) {
+        self.client = client
+    }
+    
+    func httpClient() -> GiniHTTPClient {
+        return client
+    }
+}
+
+// 3. Configure the SDK with your custom provider
+let customHTTPClient = MyHTTPClient()
+let networkProvider = MyNetworkProvider(client: customHTTPClient)
+
+let giniBankAPI = GiniBankAPI
+    .Builder(client: Client(id: "your-id",
+                            secret: "your-secret",
+                            domain: "your-domain"))
+    .setCustomNetworkProvider(networkProvider)
+    .build()
+```
+
+### Important Security Notes
+
+> ⚠️  **Warning**
+> When you provide a custom HTTP client, the SDK's default security mechanisms—including SSL certificate pinning configured via `sessionDelegate`—are **bypassed entirely**. You are responsible for implementing proper TLS configuration and certificate validation in your `URLSession` setup.
+
+### Use Cases
+
+- **Corporate Proxy**: Route all SDK traffic through your company's proxy server
+- **Custom TLS**: Implement organization-specific TLS requirements or mutual TLS authentication
+- **Advanced Logging**: Add detailed request/response logging for debugging
+- **Third-party Libraries**: Integrate with networking libraries like Alamofire
+
+### Cancellation Support
+
+The `GiniHTTPClient` protocol requires all methods to return a `CancellableTask`, which allows the SDK to cancel in-flight requests. If you're using URLSession, `URLSessionTask` already conforms to this protocol. For custom implementations, use `AnyCancellableTask`:
+
+```swift
+@discardableResult
+func dataRequest(_ request: URLRequest,
+                 completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
+    let customTask = myNetworkLibrary.execute(request) { data, response, error in
+        completion(data, response, error)
+    }
+    return AnyCancellableTask { customTask.abort() }
+}
+```
+
+## Using the library
 
 Now that the `GiniBankAPI` has been initialized, you can start using it. To do so, just get the _Document service_ from it. 
 
@@ -217,7 +314,7 @@ documentService
 
 Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us transfer summary for the extractions we are able to continuously improve the extraction quality.
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B4.0.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B4.1.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://gini.atlassian.net/wiki/spaces/PA1/pages/36733143/Submit+Transfer+Summary+on+Extractions#Test-example) for testing extraction feedback sending.
 

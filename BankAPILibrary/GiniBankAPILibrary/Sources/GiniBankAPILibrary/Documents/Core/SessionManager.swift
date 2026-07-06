@@ -55,10 +55,13 @@ final class SessionManager: NSObject {
     
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
-    private let session: URLSession
+    
     let userDomain: UserDomain
     var clientAccessToken: String?
     var userAccessToken: String?
+
+    /// HTTP client for executing network requests.
+    private let httpClient: GiniHTTPClient
 
     enum TaskType {
         case data, download, upload(Data)
@@ -66,14 +69,24 @@ final class SessionManager: NSObject {
 
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
-         urlSession: URLSession = .init(configuration: .default),
+         urlSessionConfiguration: URLSessionConfiguration = .default,
          userDomain: UserDomain = .default,
-         sessionDelegate: URLSessionDelegate? = nil) {
-        
+         sessionDelegate: URLSessionDelegate? = nil,
+         customHTTPClient: GiniHTTPClient? = nil) {
+
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = URLSession.init(configuration: urlSession.configuration, delegate: sessionDelegate, delegateQueue: nil)
         self.userDomain = userDomain
+
+        // Use custom client or create default
+        if let customClient = customHTTPClient {
+            self.httpClient = customClient
+        } else {
+            let session = URLSession(configuration: urlSessionConfiguration,
+                                     delegate: sessionDelegate,
+                                     delegateQueue: nil)
+            self.httpClient = DefaultGiniHTTPClient(session: session)
+        }
     }
 }
 
@@ -101,23 +114,6 @@ extension SessionManager: SessionProtocol {
     }
 }
 
-/// Cancellation token needed during the analysis process
-public final class CancellationToken {
-    internal weak var task: URLSessionTask?
-    
-    /// Indicates if the analysis has been cancelled
-    public var isCancelled = false
-    
-    public init() {
-        // This initializer is intentionally left empty because no custom setup is required at initialization.
-    }
-    
-    /// Cancels the current task
-    public func cancel() {
-        isCancelled = true
-        task?.cancel()
-    }
-}
 
 // MARK: - Private
 
@@ -154,7 +150,7 @@ private extension SessionManager {
                          finalRequest: request,
                          type: taskType,
                          cancellationToken: cancellationToken,
-                         completion: completion).resume()
+                         completion: completion)
             } else {
                 Log("Stored token is no longer valid", event: .warning)
                 handleLoginFlow(resource: resource,
@@ -168,7 +164,7 @@ private extension SessionManager {
                      finalRequest: request,
                      type: taskType,
                      cancellationToken: cancellationToken,
-                     completion: completion).resume()
+                     completion: completion)
         }
     }
     
@@ -176,41 +172,34 @@ private extension SessionManager {
                                        finalRequest request: URLRequest,
                                        type: TaskType,
                                        cancellationToken: CancellationToken?,
-                                       completion: @escaping CompletionResult<T.ResponseType>)
-        -> URLSessionTask {
-            let task: URLSessionTask
-            switch type {
-            case .data:
-                task = session.dataTask(with: request,
-                                        completionHandler: taskCompletionHandler(for: resource,
-                                                                                 request: request,
-                                                                                 taskType: type,
-                                                                                 cancellationToken: cancellationToken,
-                                                                                 completion: completion))
-            case .download:
-                task = session
-                    .downloadTask(with: request,
-                                  completionHandler: downloadTaskCompletionHandler(for: resource,
-                                                                                   request: request,
-                                                                                   taskType: type,
-                                                                                   cancellationToken: cancellationToken,
-                                                                                   completion: completion))
-            case .upload(let data):
-                task = session.uploadTask(with: request,
-                                          from: data,
-                                          completionHandler: taskCompletionHandler(for: resource,
-                                                                                   request: request,
-                                                                                   taskType: type,
-                                                                                   cancellationToken: cancellationToken,
-                                                                                   completion: completion))
-                
-            }
-            
-            cancellationToken?.task = task
-            return task
+                                       completion: @escaping CompletionResult<T.ResponseType>) {
+        let cancellableTask: CancellableTask
+        switch type {
+        case .data:
+            cancellableTask = httpClient.dataRequest(request,
+                                                     completion: taskCompletionHandler(for: resource,
+                                                                                       request: request,
+                                                                                       taskType: type,
+                                                                                       cancellationToken: cancellationToken,
+                                                                                       completion: completion))
+        case .upload(let body):
+            cancellableTask = httpClient.uploadRequest(request, body: body,
+                                                       completion: taskCompletionHandler(for: resource,
+                                                                                         request: request,
+                                                                                         taskType: type,
+                                                                                         cancellationToken: cancellationToken,
+                                                                                         completion: completion))
+        case .download:
+            cancellableTask = httpClient.downloadRequest(request,
+                                                         completion: downloadTaskCompletionHandler(for: resource,
+                                                                                                   request: request,
+                                                                                                   taskType: type,
+                                                                                                   cancellationToken: cancellationToken,
+                                                                                                   completion: completion))
+        }
+        cancellationToken?.task = cancellableTask
     }
     
-    // swiftlint:disable function_body_length
     private typealias DataResponseCompletion<T> = (Data?, URLResponse?, Error?) -> Void
 
     private func taskCompletionHandler<T: Resource>(for resource: T,
@@ -314,7 +303,7 @@ private extension SessionManager {
                                        completion: completion)(Data(url: url), response, error)
         }
     }
-
+    
     private func handleLoginFlow<T: Resource>(resource: T,
                                               taskType: TaskType,
                                               cancellationToken: CancellationToken?,
@@ -332,3 +321,4 @@ private extension SessionManager {
         }
     }
 }
+

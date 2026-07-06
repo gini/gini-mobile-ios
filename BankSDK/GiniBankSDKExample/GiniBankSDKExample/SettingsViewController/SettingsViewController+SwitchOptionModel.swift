@@ -17,6 +17,7 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
         case customResourceProvider
+        case customNetworkProvider
 		case onboardingShowAtLaunch
 		case onboardingShowAtFirstLaunch
 		case onboardingAlignCornersIllustrationAdapter
@@ -64,6 +65,8 @@ struct SwitchOptionModel {
 				return "Flash default state"
             case .customResourceProvider:
                 return "Use custom resource provider"
+            case .customNetworkProvider:
+                return "Use custom network provider (HTTPClient)"
 			case .onboardingShowAtLaunch:
 				return "Onboarding screens at every launch"
 			case .onboardingShowAtFirstLaunch:
@@ -127,6 +130,21 @@ struct SwitchOptionModel {
             }
 		}
 		
+		var accessibilityIdentifier: String? {
+			switch self {
+			case .qrCodeScanning:
+				return SettingScreenAccessibilityIdentifiers.qrCodeScanSwitch.rawValue
+			case .qrCodeScanningOnly:
+				return SettingScreenAccessibilityIdentifiers.qrCodeScanOnlySwitch.rawValue
+			case .multipage:
+				return SettingScreenAccessibilityIdentifiers.multiPageSwitch.rawValue
+			case .flashToggle:
+				return SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue
+			default:
+				return nil
+			}
+		}
+
 		var message: String? {
 			switch self {
 			case .qrCodeScanningOnly:
@@ -137,6 +155,8 @@ struct SwitchOptionModel {
 				return "This will work if the `Flash button` switch is also enabled."
             case .customResourceProvider:
                 return "Enables the customization of resources to override the default Gini resources. The change will affect all screens."
+            case .customNetworkProvider:
+                return "Enables custom HTTP client for network requests. Provides control over transport, proxies, TLS, and logging. See console for HTTP logs when enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:

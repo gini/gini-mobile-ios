@@ -14,6 +14,8 @@ on:
         required: true
       GINI_MOBILE_CI_USERNAME:
         required: true
+      SONAR_TOKEN:
+        required: false
   workflow_dispatch:
 
 concurrency:
@@ -21,16 +23,19 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     runs-on: macos-latest
     strategy:
       matrix:
         target: [GiniBankSDK]
-        destination: ['platform=iOS Simulator,OS=18.5,name=iPhone 16']
     steps:
     - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
-        xcode-version: '16.4'
+        xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -45,7 +50,7 @@ jobs:
     - name: Setup ruby
       uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
       with:
-        ruby-version: '3.2.0'
+        ruby-version: ${{ needs.get-config.outputs.ruby-version }}
         bundler-cache: true
 
     - name: Build and run tests for "${{ matrix.target }}"
@@ -58,10 +63,26 @@ jobs:
         options: >
             {
               "target": "${{ matrix.target }}",
-              "destination": "${{ matrix.destination }}",
+              "destination": "${{ needs.get-config.outputs.ios-simulator-destination }}",
               "clientId": "$TEST_CLIENT_ID",
-              "clientSecret": "$TEST_CLIENT_SECRET"
+              "clientSecret": "$TEST_CLIENT_SECRET",
+              "result_bundle_path": "sonar-coverage.xcresult"
             }
+
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniBankSDK' }}
+      run: |
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
+          | sed 's|path="[^"]*/BankSDK/|path="|g' \
+          > BankSDK/coverage.xml
+
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniBankSDK' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-bank-sdk
+        path: BankSDK/coverage.xml
+        retention-days: 1
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
       env:
@@ -72,9 +93,19 @@ jobs:
         xcodebuild clean test
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
         -scheme "GiniBankSDKExampleTests"
-        -destination "${{ matrix.destination }}"
+        -destination "${{ needs.get-config.outputs.ios-simulator-destination }}"
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="$TEST_CLIENT_ID"
         CLIENT_SECRET="$TEST_CLIENT_SECRET"
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankSDK
+      coverage_artifact_name: sonar-coverage-bank-sdk
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

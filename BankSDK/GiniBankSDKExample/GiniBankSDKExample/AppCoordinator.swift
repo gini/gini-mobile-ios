@@ -54,6 +54,10 @@ final class AppCoordinator: Coordinator {
         // NOTE: if you use customResourceProvider please initialise it before adding custom implementation for the Gini buttons
 //        let customProvider = GiniBankCustomResourceProvider()
 //        configuration.customResourceProvider = customProvider
+        
+        // Custom Network Provider can be enabled in Settings > General UI Customization
+        // Or programmatically with: configuration.customNetworkProvider = ExampleHTTPClientProvider()
+        
         // 1. primaryButtonConfiguration
         // 2. secondaryButtonConfiguration
         // 3. transparentButtonConfiguration
@@ -268,9 +272,7 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
-                                                            enablePinningSDK: enablePinningSDK,
-                                                            client: client,
+        let settingsViewController = SettingsViewController(enablePinningSDK: enablePinningSDK,
                                                             giniConfiguration: configuration,
                                                             settingsButtonStates: settingsButtonStates,
                                                             documentValidationsState: documentValidationsState)
@@ -374,6 +376,12 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func didRequestRescan(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: false)
+        self.remove(childCoordinator: coordinator as Coordinator)
+        showScreenAPI()
+    }
+    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()

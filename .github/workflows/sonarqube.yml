@@ -1,0 +1,41 @@
+name: SonarQube Scan
+permissions:
+  contents: read
+on:
+  workflow_call:
+    inputs:
+      project_base_dir:
+        description: 'Directory containing sonar-project.properties'
+        required: true
+        type: string
+      coverage_artifact_name:
+        description: 'Name of the GitHub Actions artifact containing coverage.xml (optional)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Download coverage report
+        if: ${{ inputs.coverage_artifact_name != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.coverage_artifact_name }}
+          path: ${{ inputs.project_base_dir }}
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          projectBaseDir: ${{ inputs.project_base_dir }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
