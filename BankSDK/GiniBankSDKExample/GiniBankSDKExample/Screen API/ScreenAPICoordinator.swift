@@ -227,11 +227,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                       message: nil,
                                       preferredStyle: .alert)
 
-        let ok = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+        let ok = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default) { [weak self] _ in
             self?.rootViewController.dismiss(animated: true)
         }
 
         alert.addAction(ok)
+        // preferredAction must be set after addAction
+        alert.preferredAction = ok
         rootViewController.present(alert, animated: true)
     }
 }
