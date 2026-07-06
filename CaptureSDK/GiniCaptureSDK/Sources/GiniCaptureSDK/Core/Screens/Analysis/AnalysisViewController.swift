@@ -472,7 +472,7 @@ import Photos
             customIndicator.injectedView().removeFromSuperview()
         }
 
-        // Drain pending continuations so any Task waiting on animation completion is not stranded.
+        /// Drain pending continuations so any `Task` waiting on animation completion is not stranded.
         animationCompletionContinuations.forEach { $0.resume() }
         animationCompletionContinuations.removeAll()
         loadingViewModel = nil
