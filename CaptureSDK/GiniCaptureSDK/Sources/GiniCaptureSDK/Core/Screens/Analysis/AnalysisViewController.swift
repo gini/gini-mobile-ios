@@ -482,6 +482,7 @@ import Photos
             .forEach { $0.removeFromSuperview() }
     }
 
+    @MainActor
     private func setupScrollableStackView(dueDate: String) {
         tearDownLoadingUI()
 
@@ -568,6 +569,12 @@ import Photos
             self.updateContentStackConstraints()
         })
     }
+    
+    func someCallerThatUsedToCallSetupScrollableStackView(dueDate: String) {
+        Task { @MainActor [weak self] in
+            self?.setupScrollableStackView(dueDate: dueDate)
+        }
+    }
 }
 
 extension AnalysisViewController: PaymentDueDateProtocol {
@@ -576,7 +583,9 @@ extension AnalysisViewController: PaymentDueDateProtocol {
         removeCaptureSuggestions()
 
         /// show due hint view
-        setupScrollableStackView(dueDate: dueDate)
+        Task { @MainActor [weak self] in
+            self?.setupScrollableStackView(dueDate: dueDate)
+        }
     }
 
     @MainActor
@@ -636,3 +645,4 @@ private extension AnalysisViewController {
         )
     }
 }
+
