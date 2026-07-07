@@ -139,6 +139,7 @@ struct PaymentReviewPaymentInformationView: View {
                         Button(viewModelStrings.keyboardDoneButtonTitle) {
                             dismissAmountKeyboard()
                         }
+                        .tint(viewModel.keyboardDoneButtonTintColor)
                     }
                 }
             }
@@ -199,6 +200,7 @@ struct PaymentReviewPaymentInformationView: View {
             Button(viewModelStrings.keyboardDoneButtonTitle) {
                 dismissAmountKeyboard()
             }
+            .tint(viewModel.keyboardDoneButtonTintColor)
             .padding(.horizontal, Constants.doneButtonHorizontalPadding)
         }
         .frame(height: Constants.doneButtonBarHeight)

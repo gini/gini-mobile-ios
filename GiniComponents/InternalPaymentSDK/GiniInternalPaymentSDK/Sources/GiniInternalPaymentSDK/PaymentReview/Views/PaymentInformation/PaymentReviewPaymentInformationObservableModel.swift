@@ -75,7 +75,16 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     var poweredByGiniViewModel: PoweredByGiniViewModel {
         model.poweredByGiniViewModel
     }
-    
+
+    /**
+     Tint for the keyboard Done button. Supplied by the host SDK via
+     PaymentReviewContainerConfiguration so it stays decoupled from the
+     primary/Pay button styling.
+     */
+    var keyboardDoneButtonTintColor: Color {
+        Color(uiColor: model.configuration.keyboardDoneButtonTintColor)
+    }
+
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {

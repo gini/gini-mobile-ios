@@ -44,7 +44,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
                            labelFont: GiniHealthConfiguration.shared.font(for: .captions1),
                            backgroundColor: GiniColor.success1.uiColor(),
                            containerBackgroundColor: GiniColor.standard7.uiColor()),
-            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
+            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview,
+            keyboardDoneButtonTintColor: GiniColor.accent1.uiColor()
         )
     }
 
