@@ -346,10 +346,12 @@ private struct RangeDecoder {
         for _ in 0..<numBits {
             range >>= 1
             code &-= range                          // wrapping subtract
-            // If code underflowed (was < range), restore it and record a 1-bit
+            // If code underflowed (was < range), restore it and record a 0-bit;
+            // otherwise the bit is 1. This matches the LZMA reference decoder,
+            // where the decoded bit is the inverse of the underflow flag.
             let underflow = Int(code >> 31)         // 1 if MSB set after subtract
             if underflow != 0 { code &+= range }
-            result = (result << 1) | underflow
+            result = (result << 1) | (1 &- underflow)
             normalize()
         }
         return result
