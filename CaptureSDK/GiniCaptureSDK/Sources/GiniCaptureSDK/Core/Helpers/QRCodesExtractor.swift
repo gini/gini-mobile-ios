@@ -19,11 +19,13 @@ public enum QRCodesFormat {
     case upnqr
     case hub3
 
-    /// Leading marker that identifies a scanned QR payload's payment format.
-    ///
-    /// These are fixed format specifiers mandated by each payment standard (the
-    /// raw scanned string is matched against them to detect its format) — not
-    /// network endpoints the SDK connects to. They are intentionally constant.
+    /**
+     Leading marker that identifies a scanned QR payload's payment format.
+
+     These are fixed format specifiers mandated by each payment standard (the
+     raw scanned string is matched against them to detect its format) — not
+     network endpoints the SDK connects to. They are intentionally constant.
+     */
     var prefixURL: String {
         switch self {
         case .epc06912:    return Constants.epc06912Prefix
@@ -50,6 +52,9 @@ public enum QRCodesFormat {
         static let giniQRCodePrefix  = "\(giniQRCodeScheme)://\(giniQRCodeHost)/"
         static let spcPrefix         = "SPC"
         static let spdPrefix         = "SPD*"
+        // Pay-by-Square carries no leading marker string, unlike every other format
+        // above. It is detected heuristically (base32hex alphabet + length) via
+        // PayBySquareDecoder.looksLikePayBySquare, so its prefix is intentionally empty.
         static let payBySquarePrefix = ""
         static let upnqrPrefix       = "UPNQR"
         static let hub3Prefix        = "HRVHUB30"

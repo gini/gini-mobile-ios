@@ -1,6 +1,7 @@
 //
 //  LZMADecoder.swift
-//  GiniCaptureSDK
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 //  Pure Swift LZMA1 decoder for the bysquare QR payment format.
 //  Parameters are fixed to the values mandated by the bysquare specification:
@@ -19,14 +20,15 @@ enum LZMADecoder {
 
     // MARK: – Public entry point
 
-    /// Decompresses a raw LZMA1 bitstream using the bysquare fixed parameters.
-    ///
-    /// - Parameters:
-    ///   - input:        Raw LZMA1 compressed bytes. The first byte must be `0x00`
-    ///                   (mandatory range-coder invariant); bytes 1–4 are the initial
-    ///                   range-coder `code` value (big-endian).
-    ///   - outputLength: Expected decompressed byte count.
-    /// - Returns: Exactly `outputLength` decompressed bytes, or `nil` on any error.
+    /**
+     Decompresses a raw LZMA1 bitstream using the bysquare fixed parameters.
+     - Parameters:
+       - input: Raw LZMA1 compressed bytes. The first byte must be `0x00`
+         (mandatory range-coder invariant); bytes 1–4 are the initial
+         range-coder `code` value (big-endian).
+       - outputLength: Expected decompressed byte count.
+     - Returns: Exactly `outputLength` decompressed bytes, or `nil` on any error.
+     */
     static func decode(input: [UInt8], outputLength: Int) -> [UInt8]? {
         guard outputLength > 0 else { return [] }
         guard input.count >= 5, input[0] == 0x00 else { return nil }
@@ -38,9 +40,11 @@ enum LZMADecoder {
 
 // MARK: – Decoder state machine
 
-/// Holds the full mutable state of an in-progress LZMA1 decode and drives the
-/// decode loop. Splitting the loop body across `decodeLiteral`, `decodeNewMatch`,
-/// `decodeRep` and `copyMatch` keeps each step's branching small and isolated.
+/**
+ Holds the full mutable state of an in-progress LZMA1 decode and drives the
+ decode loop. Splitting the loop body across `decodeLiteral`, `decodeNewMatch`,
+ `decodeRep` and `copyMatch` keeps each step's branching small and isolated.
+ */
 private struct Machine {
 
     // MARK: – Fixed bysquare parameters
@@ -140,8 +144,10 @@ private struct Machine {
 
     // MARK: – Match / Rep
 
-    /// Decodes a match or rep. Returns the number of bytes to copy, or `nil` when
-    /// a short rep (single byte) has already been emitted and no copy is needed.
+    /**
+     Decodes a match or rep. Returns the number of bytes to copy, or `nil` when
+     a short rep (single byte) has already been emitted and no copy is needed.
+     */
     private mutating func decodeMatchOrRep(posState: Int) -> Int? {
         if rc.decodeBit(probs: &p.isRep, index: state) == 0 {
             return decodeNewMatch(posState: posState)
@@ -149,7 +155,9 @@ private struct Machine {
         return decodeRep(posState: posState)
     }
 
-    /// New match: shift the rep history, decode a fresh back-reference distance.
+    /**
+     New match: shift the rep history, decode a fresh back-reference distance.
+     */
     private mutating func decodeNewMatch(posState: Int) -> Int {
         rep3 = rep2; rep2 = rep1; rep1 = rep0
 
@@ -167,7 +175,9 @@ private struct Machine {
         return rawLen + Self.kMatchMinLen
     }
 
-    /// Decodes the back-reference distance for a new match from its position slot.
+    /**
+     Decodes the back-reference distance for a new match from its position slot.
+     */
     private mutating func decodeDistance(posSlot: Int) -> UInt32 {
         if posSlot < Self.kStartPosModelIndex {
             // Slots 0–3: distance equals slot number
@@ -197,8 +207,10 @@ private struct Machine {
         return dist
     }
 
-    /// Rep: reuse a saved back-reference distance. Returns the copy length, or
-    /// `nil` if a short rep was handled inline.
+    /**
+     Rep: reuse a saved back-reference distance. Returns the copy length, or
+     `nil` if a short rep was handled inline.
+     */
     private mutating func decodeRep(posState: Int) -> Int? {
         if rc.decodeBit(probs: &p.isRepG0, index: state) == 0 {
             if rc.decodeBit(probs: &p.isRep0Long,
@@ -228,7 +240,9 @@ private struct Machine {
 
     // MARK: – Output helpers
 
-    /// Copies `len` bytes from the dictionary at distance rep0 into the output.
+    /**
+     Copies `len` bytes from the dictionary at distance rep0 into the output.
+     */
     private mutating func copyMatch(len: Int) {
         for _ in 0..<len {
             guard output.count < outputLength else { break }
@@ -236,7 +250,9 @@ private struct Machine {
         }
     }
 
-    /// Writes a byte to both the sliding-window dictionary and the output stream.
+    /**
+     Writes a byte to both the sliding-window dictionary and the output stream.
+     */
     private mutating func appendByte(_ byte: UInt8) {
         dict[dictPos & Self.dictMask] = byte
         dictPos += 1
@@ -268,111 +284,5 @@ private struct Machine {
         var repLenLow      = [UInt16](repeating: 1024, count: 32)
         var repLenMid      = [UInt16](repeating: 1024, count: 32)
         var repLenHigh     = [UInt16](repeating: 1024, count: 256)
-    }
-}
-
-// MARK: – Range Decoder
-
-private struct RangeDecoder {
-
-    private static let topMask:       UInt32 = 0xFF00_0000
-    private static let bitModelTotal: UInt32 = 2048
-    private static let numMoveBits            = 5
-
-    var range: UInt32 = 0xFFFF_FFFF
-    var code:  UInt32
-    var input: [UInt8]
-    var pos:   Int = 5
-
-    init(input: [UInt8]) {
-        self.input = input
-        // First byte (index 0) is always 0x00 in valid LZMA1 streams.
-        // Bytes 1–4 initialise the range-coder 'code' register (big-endian).
-        code = UInt32(input[1]) << 24 | UInt32(input[2]) << 16
-             | UInt32(input[3]) << 8  | UInt32(input[4])
-    }
-
-    // Bring range back above the top-byte boundary
-    private mutating func normalize() {
-        if range & Self.topMask == 0 {
-            range <<= 8
-            let next: UInt32 = pos < input.count ? UInt32(input[pos]) : 0
-            code = (code << 8) | next
-            pos += 1
-        }
-    }
-
-    // Decode one probability-modelled bit; updates the probability in place
-    mutating func decodeBit(probs: inout [UInt16], index: Int) -> Int {
-        let prob  = UInt32(probs[index])
-        let bound = (range >> 11) * prob
-        if code < bound {
-            range = bound
-            probs[index] += UInt16((Self.bitModelTotal - prob) >> Self.numMoveBits)
-            normalize()
-            return 0
-        } else {
-            range -= bound
-            code  -= bound
-            probs[index] -= UInt16(prob >> Self.numMoveBits)
-            normalize()
-            return 1
-        }
-    }
-
-    // Standard (big-endian) bit tree: MSB decoded first; result in 0..(2^numBits - 1)
-    mutating func decodeBitTree(probs: inout [UInt16], offset: Int, numBits: Int) -> Int {
-        var m = 1
-        for _ in 0..<numBits {
-            m = (m << 1) | decodeBit(probs: &probs, index: offset + m)
-        }
-        return m - (1 << numBits)
-    }
-
-    // Reverse bit tree: LSB decoded first; result has bit-0 from the first decoded bit
-    mutating func decodeReverseBitTree(probs: inout [UInt16], offset: Int, numBits: Int) -> Int {
-        var m = 1, sym = 0
-        for i in 0..<numBits {
-            let bit = decodeBit(probs: &probs, index: offset + m)
-            m   = (m << 1) | bit
-            sym |= bit << i
-        }
-        return sym
-    }
-
-    // Uniform-probability bits (no probability model)
-    mutating func decodeDirectBits(numBits: Int) -> Int {
-        var result = 0
-        for _ in 0..<numBits {
-            range >>= 1
-            code &-= range                          // wrapping subtract
-            // If code underflowed (was < range), restore it and record a 0-bit;
-            // otherwise the bit is 1. This matches the LZMA reference decoder,
-            // where the decoded bit is the inverse of the underflow flag.
-            let underflow = Int(code >> 31)         // 1 if MSB set after subtract
-            if underflow != 0 { code &+= range }
-            result = (result << 1) | (1 &- underflow)
-            normalize()
-        }
-        return result
-    }
-
-    // Three-tier length coder; returns 0..(kNumLowLenSymbols + kNumMidLenSymbols + kNumHighLenSymbols - 1)
-    // The caller adds kMatchMinLen (= 2) to obtain the actual match/rep length.
-    mutating func decodeLen(choice:   inout [UInt16],
-                            low:      inout [UInt16],
-                            mid:      inout [UInt16],
-                            high:     inout [UInt16],
-                            posState: Int) -> Int {
-        if decodeBit(probs: &choice, index: 0) == 0 {
-            // Low tier: 8 symbols (3 bits)
-            return decodeBitTree(probs: &low, offset: posState * 8, numBits: 3)
-        }
-        if decodeBit(probs: &choice, index: 1) == 0 {
-            // Mid tier: 8 symbols (3 bits)
-            return 8 + decodeBitTree(probs: &mid, offset: posState * 8, numBits: 3)
-        }
-        // High tier: 256 symbols (8 bits)
-        return 16 + decodeBitTree(probs: &high, offset: 0, numBits: 8)
     }
 }

@@ -1,10 +1,14 @@
 //
 //  PayBySquareDecoder.swift
-//  GiniCaptureSDK
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
+/**
+ A single payment decoded from a Pay-by-Square (bysquare) QR payload.
+ */
 struct PayBySquarePayment {
     let iban: String
     let bic: String?
@@ -14,6 +18,15 @@ struct PayBySquarePayment {
     let paymentReference: String
 }
 
+/**
+ Decodes Pay-by-Square (Slovak "bysquare") QR payloads into a `PayBySquarePayment`.
+
+ The payload is a base32hex-encoded string wrapping an LZMA1-compressed, tab-separated
+ record. Decoding runs the pipeline: base32hex decode → parse the 4-byte bysquare header
+ → LZMA1 decompress the body (via `LZMADecoder`) → skip the CRC32 prefix → split the
+ UTF-8 text into the bysquare fields. `looksLikePayBySquare(_:)` provides a cheap
+ heuristic to detect the format before attempting a full decode.
+ */
 enum PayBySquareDecoder {
 
     static func looksLikePayBySquare(_ string: String) -> Bool {
@@ -56,23 +69,24 @@ enum PayBySquareDecoder {
         //    [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
         //    [12] IBAN          [13] BIC           ...extensions...  [12+N*2+2] beneficiaryName
         let fields = text.components(separatedBy: "\t")
-        let rawBanksCount = max(1, Int(fields.indices.contains(11) ? fields[11].trimmingCharacters(in: .whitespaces) : "") ?? 1)
+        let rawBanksCount = max(1, Int(field(fields, at: Field.bankAccountsCount).trimmingCharacters(in: .whitespaces)) ?? 1)
         // Bound by field count so a malformed payload can't push beneficiaryIdx far past the array.
         let banksCount = min(rawBanksCount, fields.count)
-        // Extension fields are controlled by the PaymentOptions bitmask (field[2]):
+        // Extension fields are controlled by the PaymentOptions bitmask (Field.paymentType):
         //   bit 0 (standing order): +4 extension fields
         //   bit 1 (direct debit):   +10 extension fields
-        let paymentOptions = Int(fields.indices.contains(2) ? fields[2].trimmingCharacters(in: .whitespaces) : "") ?? 0
+        let paymentOptions = Int(field(fields, at: Field.paymentType).trimmingCharacters(in: .whitespaces)) ?? 0
         let extFields = ((paymentOptions & 1) != 0 ? 4 : 0) + ((paymentOptions & 2) != 0 ? 10 : 0)
-        let beneficiaryIdx = 12 + banksCount * 2 + extFields
+        let beneficiaryIdx = Field.iban + banksCount * 2 + extFields
 
-        let iban = fields.indices.contains(12) ? fields[12] : ""
-        let bic = fields.indices.contains(13) && !fields[13].isEmpty ? fields[13] : nil
-        let amount = fields.indices.contains(3) ? fields[3] : ""
-        let currency = fields.indices.contains(4) ? fields[4] : ""
+        let bicValue = field(fields, at: Field.bic)
+        let iban = field(fields, at: Field.iban)
+        let bic = bicValue.isEmpty ? nil : bicValue
+        let amount = field(fields, at: Field.amount)
+        let currency = field(fields, at: Field.currency)
         let beneficiaryName = fields.indices.contains(beneficiaryIdx) ? fields[beneficiaryIdx] : ""
-        let variableSymbol = fields.indices.contains(6) ? fields[6] : ""
-        let paymentNote = fields.indices.contains(10) ? fields[10] : ""
+        let variableSymbol = field(fields, at: Field.variableSymbol)
+        let paymentNote = field(fields, at: Field.paymentNote)
         let reference = buildReference(variableSymbol: variableSymbol, paymentNote: paymentNote)
 
         return PayBySquarePayment(iban: iban,
@@ -84,6 +98,27 @@ enum PayBySquareDecoder {
     }
 
     // MARK: - Private
+
+    /**
+     Zero-based indices of the tab-separated bysquare fields (spec v1.1).
+     */
+    private enum Field {
+        static let paymentType       = 2   // PaymentOptions bitmask
+        static let amount            = 3
+        static let currency          = 4
+        static let variableSymbol    = 6
+        static let paymentNote       = 10
+        static let bankAccountsCount = 11
+        static let iban              = 12
+        static let bic               = 13
+    }
+
+    /**
+     Returns the field at `index`, or an empty string when it is out of range.
+     */
+    private static func field(_ fields: [String], at index: Int) -> String {
+        fields.indices.contains(index) ? fields[index] : ""
+    }
 
     private static func buildReference(variableSymbol: String, paymentNote: String) -> String {
         if !variableSymbol.isEmpty && !paymentNote.isEmpty {
