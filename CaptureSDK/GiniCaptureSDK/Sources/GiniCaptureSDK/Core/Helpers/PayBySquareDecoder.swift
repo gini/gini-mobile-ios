@@ -7,17 +7,19 @@ import Foundation
 
 struct PayBySquarePayment {
     let iban: String
-    let swift: String?
+    let bic: String?
     let amount: String
     let currency: String
     let payeeName: String
     let paymentReference: String
 }
 
-final class PayBySquareDecoder {
+enum PayBySquareDecoder {
 
     static func looksLikePayBySquare(_ string: String) -> Bool {
-        let base32hexChars = CharacterSet(charactersIn: "0123456789ABCDEFGHIJKLMNOPQRSTUV")
+        // Accept lowercase too; decode() normalises to uppercase before parsing.
+        let base32hexChars = CharacterSet(charactersIn:
+            "0123456789ABCDEFGHIJKLMNOPQRSTUVabcdefghijklmnopqrstuv")
         return string.count >= 16
             && string.unicodeScalars.allSatisfy { base32hexChars.contains($0) }
     }
@@ -54,11 +56,13 @@ final class PayBySquareDecoder {
         //    [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
         //    [12] IBAN          [13] BIC           ...extensions...  [12+N*2+2] beneficiaryName
         let fields = text.components(separatedBy: "\t")
-        let banksCount = max(1, Int(fields.indices.contains(11) ? fields[11].trimmingCharacters(in: .whitespaces) : "") ?? 1)
+        let rawBanksCount = max(1, Int(fields.indices.contains(11) ? fields[11].trimmingCharacters(in: .whitespaces) : "") ?? 1)
+        // Bound by field count so a malformed payload can't push beneficiaryIdx far past the array.
+        let banksCount = min(rawBanksCount, fields.count)
         // Extension fields are controlled by the PaymentOptions bitmask (field[2]):
         //   bit 0 (standing order): +4 extension fields
         //   bit 1 (direct debit):   +10 extension fields
-        let paymentOptions = Int(fields.indices.contains(2) ? fields[2] : "") ?? 0
+        let paymentOptions = Int(fields.indices.contains(2) ? fields[2].trimmingCharacters(in: .whitespaces) : "") ?? 0
         let extFields = ((paymentOptions & 1) != 0 ? 4 : 0) + ((paymentOptions & 2) != 0 ? 10 : 0)
         let beneficiaryIdx = 12 + banksCount * 2 + extFields
 
@@ -72,7 +76,7 @@ final class PayBySquareDecoder {
         let reference = buildReference(variableSymbol: variableSymbol, paymentNote: paymentNote)
 
         return PayBySquarePayment(iban: iban,
-                                  swift: bic,
+                                  bic: bic,
                                   amount: amount,
                                   currency: currency,
                                   payeeName: beneficiaryName,
@@ -83,7 +87,7 @@ final class PayBySquareDecoder {
 
     private static func buildReference(variableSymbol: String, paymentNote: String) -> String {
         if !variableSymbol.isEmpty && !paymentNote.isEmpty {
-            return variableSymbol + " " + paymentNote
+            return "\(variableSymbol) \(paymentNote)"
         } else if !variableSymbol.isEmpty {
             return variableSymbol
         } else {
@@ -114,6 +118,4 @@ final class PayBySquareDecoder {
 
         return result
     }
-
-
 }

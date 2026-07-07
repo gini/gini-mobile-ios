@@ -58,7 +58,9 @@ import GiniUtilites
             return .eps4mobile
         } else if self.scannedString.starts(with: QRCodesFormat.spd.prefixURL) {
             return .spd
-        } else if let lines = Optional(self.scannedString.splitlines), !lines.isEmpty {
+        } else {
+            let lines = self.scannedString.splitlines
+            guard !lines.isEmpty else { return nil }
             switch lines[0] {
             case QRCodesFormat.epc06912.prefixURL:
                 return Self.epc06912Format(from: lines)
@@ -71,8 +73,6 @@ import GiniUtilites
             default:
                 return PayBySquareDecoder.looksLikePayBySquare(self.scannedString) ? .payBySquare : nil
             }
-        } else {
-            return nil
         }
     }()
 

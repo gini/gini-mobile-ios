@@ -95,10 +95,8 @@ fileprivate extension GiniCaptureDocumentValidator {
     class func validate(qrCode document: GiniQRCodeDocument) throws {
         switch document.qrCodeFormat {
         case .some(.bezahl), .some(.epc06912):
-            if document.qrCodeFormat == nil ||
-                document.extractedParameters.isEmpty ||
-                document.extractedParameters["iban"] == nil ||
-                !IBANValidator().isValid(iban: document.extractedParameters["iban"] ?? "") {
+            guard let iban = document.extractedParameters["iban"],
+                  IBANValidator().isValid(iban: iban) else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .some(.eps4mobile):
@@ -114,12 +112,9 @@ fileprivate extension GiniCaptureDocumentValidator {
                   IBANValidator().isValid(iban: iban) else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
-        case .some(.spd):
-            // SPD IBANs include non-SEPA formats; require non-empty presence but skip strict IBAN validation
-            guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
-        case .some(.payBySquare):
+        case .some(.spd), .some(.payBySquare):
+            // SPD/Pay-by-Square IBANs include non-SEPA formats; require non-empty
+            // presence but skip strict IBAN validation.
             guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }

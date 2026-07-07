@@ -491,8 +491,6 @@ final class GiniQRCodeDocumentTests: XCTestCase {
 @Suite("SPC QR Code")
 struct SPCQRCodeTests {
 
-    let config = GiniConfiguration()
-
     private func makeSPC(referenceType: String = "QRR",
                          reference: String = "210000000003139471430009017",
                          iban: String = "DE89370400440532013000") -> String {
@@ -544,8 +542,6 @@ struct SPCQRCodeTests {
 @Suite("SPD QR Code")
 struct SPDQRCodeTests {
 
-    let config = GiniConfiguration()
-
     private let validSPD = "SPD*1.0*ACC:CZ6508000000192000145399*AM:100.50*CC:CZK*RN:Test Recipient*MSG:Invoice 123*"
 
     @Test func detectedAsSPD() {
@@ -569,6 +565,12 @@ struct SPDQRCodeTests {
     @Test func ibanNilWhenACCMissing() {
         let doc = GiniQRCodeDocument(scannedString: "SPD*1.0*AM:100.50*CC:CZK*RN:Test Recipient*")
         #expect(doc.extractedParameters["iban"] == nil)
+    }
+
+    @Test func combinesAmountAndCurrencyWhenCCPrecedesAM() {
+        // AM and CC may appear in any order; currency must not be dropped when CC comes first.
+        let doc = GiniQRCodeDocument(scannedString: "SPD*1.0*ACC:CZ6508000000192000145399*CC:CZK*AM:100.50*")
+        #expect(doc.extractedParameters["amountToPay"] == "100.50:CZK")
     }
 }
 
@@ -700,8 +702,6 @@ struct LZMADecoderTests {
 @Suite("UPNQR QR Code")
 struct UPNQRQRCodeTests {
 
-    let config = GiniConfiguration()
-
     private func makeUPNQR(amountCents: String = "00000048050",
                             reference: String = "SI00 1234-5678",
                             iban: String = "DE89370400440532013000",
@@ -757,8 +757,6 @@ struct UPNQRQRCodeTests {
 
 @Suite("HUB3 QR Code")
 struct HUB3QRCodeTests {
-
-    let config = GiniConfiguration()
 
     private func makeHUB3(currency: String = "EUR",
                            amountCents: String = "000000000010000",

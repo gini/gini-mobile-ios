@@ -63,7 +63,7 @@ public final class QRCodesExtractor {
 
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
-        case .some(.bezahl):      return extractParameters(fromBezhalCodeString: string)
+        case .some(.bezahl):      return extractParameters(fromBezahlCodeString: string)
         case .some(.epc06912):    return extractParameters(fromEPC06912CodeString: string)
         case .some(.eps4mobile):  return [epsCodeUrlKey: string]
         case .some(.giniQRCode):  return [giniCodeUrlKey: string]
@@ -76,7 +76,7 @@ public final class QRCodesExtractor {
         }
     }
 
-    class func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
+    class func extractParameters(fromBezahlCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
 
         if let encodedString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -203,6 +203,10 @@ public final class QRCodesExtractor {
         var parameters: [String: String] = [:]
         let segments = string.components(separatedBy: "*").dropFirst(2) // skip "SPD" and version
 
+        // AM (amount) and CC (currency) can appear in any order within the payload,
+        // so collect them separately and combine once both segments are parsed.
+        var amount: String?
+        var currency: String?
         for segment in segments {
             let parts = segment.split(separator: ":", maxSplits: 1).map(String.init)
             guard parts.count == 2 else { continue }
@@ -210,14 +214,19 @@ public final class QRCodesExtractor {
             let value = parts[1]
             switch key {
             case "ACC": parameters["iban"] = value
-            case "AM":  parameters["amountToPay"] = value
-            case "CC":
-                if let amount = parameters["amountToPay"] {
-                    parameters["amountToPay"] = amount + ":" + value
-                }
+            case "AM":  amount = value
+            case "CC":  currency = value
             case "RN":  parameters["paymentRecipient"] = value
             case "MSG": parameters["paymentReference"] = value
             default:    break
+            }
+        }
+
+        if let amount = amount {
+            if let currency = currency {
+                parameters["amountToPay"] = "\(amount):\(currency)"
+            } else {
+                parameters["amountToPay"] = amount
             }
         }
 
@@ -233,12 +242,12 @@ public final class QRCodesExtractor {
         parameters["iban"] = decoded.iban
         parameters["paymentRecipient"] = decoded.payeeName
         if !decoded.amount.isEmpty && !decoded.currency.isEmpty {
-            parameters["amountToPay"] = decoded.amount + ":" + decoded.currency
+            parameters["amountToPay"] = "\(decoded.amount):\(decoded.currency)"
         }
         if !decoded.paymentReference.isEmpty {
             parameters["paymentReference"] = decoded.paymentReference
         }
-        if let bic = decoded.swift, !bic.isEmpty {
+        if let bic = decoded.bic, !bic.isEmpty {
             parameters["bic"] = bic
         }
 
@@ -253,7 +262,7 @@ public final class QRCodesExtractor {
 
         if lines.indices.contains(8), let cents = Int(lines[8]) {
             let amount = String(format: "%.2f", Double(cents) / 100.0)
-            parameters["amountToPay"] = amount + ":EUR"
+            parameters["amountToPay"] = "\(amount):EUR"
         }
         let primaryRef = lines.indices.contains(12) ? lines[12] : ""
         let fallbackRef = lines.indices.contains(4) ? lines[4] : ""
