@@ -125,11 +125,6 @@ included:
   - HealthAPILibrary/GiniHealthAPILibrary/Tests
   - HealthAPILibrary/GiniHealthAPILibraryExample
 
-  # MerchantSDK
-  - MerchantSDK/GiniMerchantSDK/Sources
-  - MerchantSDK/GiniMerchantSDK/Tests
-  - MerchantSDK/GiniMerchantSDKExample
-
   # GiniComponents
   - GiniComponents/GiniInternalPaymentSDK/Sources
   - GiniComponents/GiniInternalPaymentSDK/Tests
