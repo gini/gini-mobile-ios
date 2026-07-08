@@ -6,7 +6,6 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-import Testing
 import XCTest
 @testable import GiniCaptureSDK
 final class GiniQRCodeDocumentTests: XCTestCase {
