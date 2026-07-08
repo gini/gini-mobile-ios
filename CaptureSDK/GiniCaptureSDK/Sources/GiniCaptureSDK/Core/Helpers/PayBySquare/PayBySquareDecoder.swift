@@ -33,6 +33,9 @@ enum PayBySquareDecoder {
         // Accept lowercase too; decode() normalises to uppercase before parsing.
         let base32hexChars = CharacterSet(charactersIn:
             "0123456789ABCDEFGHIJKLMNOPQRSTUVabcdefghijklmnopqrstuv")
+        // A real bysquare payload (4-byte header + LZMA1-compressed body) always encodes to
+        // far more than 16 base32hex characters; 16 is a conservative lower bound that cheaply
+        // rejects short base32hex-looking strings before attempting a full decode.
         return string.count >= 16
             && string.unicodeScalars.allSatisfy { base32hexChars.contains($0) }
     }

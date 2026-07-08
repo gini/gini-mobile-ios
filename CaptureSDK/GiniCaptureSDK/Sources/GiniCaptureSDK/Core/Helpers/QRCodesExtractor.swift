@@ -26,7 +26,7 @@ public enum QRCodesFormat {
      raw scanned string is matched against them to detect its format) — not
      network endpoints the SDK connects to. They are intentionally constant.
      */
-    var prefixURL: String {
+    var formatMarker: String {
         switch self {
         case .epc06912:    return Constants.epc06912Prefix
         case .eps4mobile:  return Constants.eps4mobilePrefix
@@ -319,8 +319,16 @@ public final class QRCodesExtractor {
         if lines.indices.contains(9) {
             parameters["iban"] = lines[9]
         }
-        if lines.indices.contains(11) && !lines[11].isEmpty {
-            parameters["paymentReference"] = lines[11]
+        // Croatian "poziv na broj" is the model (line 10, e.g. "HR01") followed by the
+        // reference number (line 11); the current parser dropped the model. Combine them,
+        // falling back to whichever part is present.
+        // NOTE: assumes the backend expects the combined poziv na broj — verify against a
+        // real HUB3 payload before relying on the exact format.
+        let model = lines.indices.contains(10) ? lines[10] : ""
+        let referenceNumber = lines.indices.contains(11) ? lines[11] : ""
+        let pozivNaBroj = [model, referenceNumber].filter { !$0.isEmpty }.joined(separator: " ")
+        if !pozivNaBroj.isEmpty {
+            parameters["paymentReference"] = pozivNaBroj
         }
 
         return parameters

@@ -5,7 +5,7 @@
 //
 
 import Testing
-import XCTest
+import Foundation
 @testable import GiniCaptureSDK
 
 @Suite("Pay by Square QR Code")

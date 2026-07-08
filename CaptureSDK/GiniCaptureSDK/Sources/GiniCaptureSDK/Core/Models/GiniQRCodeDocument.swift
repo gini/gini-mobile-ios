@@ -50,25 +50,25 @@ import GiniUtilites
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     public lazy var qrCodeFormat: QRCodesFormat? = {
-        if self.scannedString.starts(with: QRCodesFormat.giniQRCode.prefixURL) {
+        if self.scannedString.starts(with: QRCodesFormat.giniQRCode.formatMarker) {
             return .giniQRCode
-        } else if self.scannedString.starts(with: QRCodesFormat.bezahl.prefixURL) {
+        } else if self.scannedString.starts(with: QRCodesFormat.bezahl.formatMarker) {
             return .bezahl
-        } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.prefixURL) {
+        } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.formatMarker) {
             return .eps4mobile
-        } else if self.scannedString.starts(with: QRCodesFormat.spd.prefixURL) {
+        } else if self.scannedString.starts(with: QRCodesFormat.spd.formatMarker) {
             return .spd
         } else {
             let lines = self.scannedString.splitlines
             guard !lines.isEmpty else { return nil }
             switch lines[0] {
-            case QRCodesFormat.epc06912.prefixURL:
+            case QRCodesFormat.epc06912.formatMarker:
                 return Self.epc06912Format(from: lines)
-            case QRCodesFormat.spc.prefixURL:
+            case QRCodesFormat.spc.formatMarker:
                 return Self.spcFormat(from: lines)
-            case QRCodesFormat.upnqr.prefixURL:
+            case QRCodesFormat.upnqr.formatMarker:
                 return .upnqr
-            case QRCodesFormat.hub3.prefixURL:
+            case QRCodesFormat.hub3.formatMarker:
                 return .hub3
             default:
                 // Pay-by-Square is the only format with no leading marker, so it can't

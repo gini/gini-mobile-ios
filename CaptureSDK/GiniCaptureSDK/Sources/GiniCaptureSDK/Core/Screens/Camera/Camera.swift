@@ -269,6 +269,9 @@ final class Camera: NSObject, CameraProtocol {
         }
         session.addOutput(qrOutput)
         qrOutput.setMetadataObjectsDelegate(self, queue: sessionQueue)
+        // Scan QR and PDF417: HUB3 (Croatian) payment codes are carried as PDF417 barcodes,
+        // whereas every other supported payment format is a QR code. Enable only the types
+        // the current device actually reports as available.
         let desiredTypes: [AVMetadataObject.ObjectType] = [.qr, .pdf417]
         qrOutput.metadataObjectTypes = desiredTypes.filter {
             qrOutput.availableMetadataObjectTypes.contains($0)
@@ -497,8 +500,11 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-           metadataObj.type == .qr || metadataObj.type == .pdf417,
+        // Pick the first machine-readable QR/PDF417 object rather than blindly the first
+        // metadata object, so a frame containing a mix still surfaces the intended code.
+        if let metadataObj = metadataObjects
+            .compactMap({ $0 as? AVMetadataMachineReadableCodeObject })
+            .first(where: { $0.type == .qr || $0.type == .pdf417 }),
            let metaString = qrCodeString(from: metadataObj) {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
             if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {

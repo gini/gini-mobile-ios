@@ -5,7 +5,7 @@
 //
 
 import Testing
-import XCTest
+import Foundation
 @testable import GiniCaptureSDK
 
 @Suite("HUB3 QR Code")
@@ -15,13 +15,15 @@ struct HUB3QRCodeTests {
                            amountCents: String = "000000000010000",
                            payee: String = "Gini d.o.o.",
                            iban: String = "DE89370400440532013000",
-                           reference: String = "HR00 1234567890") -> String {
+                           model: String = "HR00",
+                           reference: String = "1234567890") -> String {
         var lines = Array(repeating: "", count: 14)
         lines[0]  = "HRVHUB30"
         lines[1]  = currency
         lines[2]  = amountCents
         lines[6]  = payee
         lines[9]  = iban
+        lines[10] = model
         lines[11] = reference
         return lines.joined(separator: "\n")
     }
@@ -44,8 +46,13 @@ struct HUB3QRCodeTests {
         #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
     }
 
-    @Test func paymentReferenceUsesCallNumberFieldDirectly() {
-        let doc = GiniQRCodeDocument(scannedString: makeHUB3(reference: "HR99 555-666"))
+    @Test func combinesModelAndReference() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR99", reference: "555-666"))
         #expect(doc.extractedParameters["paymentReference"] == "HR99 555-666")
+    }
+
+    @Test func usesReferenceOnlyWhenModelEmpty() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "", reference: "555-666"))
+        #expect(doc.extractedParameters["paymentReference"] == "555-666")
     }
 }
