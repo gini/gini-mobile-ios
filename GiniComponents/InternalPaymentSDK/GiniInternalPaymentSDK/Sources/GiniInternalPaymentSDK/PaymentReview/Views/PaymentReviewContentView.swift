@@ -73,6 +73,7 @@ public struct PaymentReviewContentView: View {
                                                             from: nil,
                                                             for: nil)
                         }
+                        .tint(viewModel.keyboardDoneButtonTintColor)
                         .padding(.trailing, Constants.doneButtonHorizontalPadding)
                     }
                 }

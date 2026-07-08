@@ -54,6 +54,15 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
 
     /**
+     Tint for the keyboard Done button. Supplied by the host SDK via
+     PaymentReviewContainerConfiguration so it stays decoupled from the
+     primary/Pay button styling.
+     */
+    var keyboardDoneButtonTintColor: Color {
+        Color(uiColor: containerViewModel.configuration.keyboardDoneButtonTintColor)
+    }
+
+    /**
      Tracks the keyboard-dismissed analytics event and clears the stored active field so that
      a subsequent device rotation does not restore focus (and reopen the keyboard).
      Call this when the user explicitly taps the Done button.
