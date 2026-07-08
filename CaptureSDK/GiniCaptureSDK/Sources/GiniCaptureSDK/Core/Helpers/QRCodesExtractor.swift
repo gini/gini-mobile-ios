@@ -68,16 +68,26 @@ public final class QRCodesExtractor {
 
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
-        case .some(.bezahl):      return extractParameters(fromBezahlCodeString: string)
-        case .some(.epc06912):    return extractParameters(fromEPC06912CodeString: string)
-        case .some(.eps4mobile):  return [epsCodeUrlKey: string]
-        case .some(.giniQRCode):  return [giniCodeUrlKey: string]
-        case .some(.spc):         return extractParameters(fromSPCCodeString: string)
-        case .some(.spd):         return extractParameters(fromSPDCodeString: string)
-        case .some(.payBySquare): return extractParameters(fromPayBySquareString: string)
-        case .some(.upnqr):       return extractParameters(fromUPNQRCodeString: string)
-        case .some(.hub3):        return extractParameters(fromHUB3CodeString: string)
-        case .none:               return [:]
+        case .some(.bezahl):
+            return extractParameters(fromBezahlCodeString: string)
+        case .some(.epc06912):
+            return extractParameters(fromEPC06912CodeString: string)
+        case .some(.eps4mobile):
+            return [epsCodeUrlKey: string]
+        case .some(.giniQRCode):
+            return [giniCodeUrlKey: string]
+        case .some(.spc):
+            return extractParameters(fromSPCCodeString: string)
+        case .some(.spd):
+            return extractParameters(fromSPDCodeString: string)
+        case .some(.payBySquare):
+            return extractParameters(fromPayBySquareString: string)
+        case .some(.upnqr):
+            return extractParameters(fromUPNQRCodeString: string)
+        case .some(.hub3):
+            return extractParameters(fromHUB3CodeString: string)
+        case .none:
+            return [:]
         }
     }
 
@@ -193,11 +203,15 @@ public final class QRCodesExtractor {
 
     private static func spcAmount(from lines: [String]) -> String? {
         guard let amount = nonEmptyLine(lines, at: 18) else { return nil }
+        // Swiss QR-bill supports CHF and EUR; CHF is the spec default when the
+        // currency line is absent.
         let currency = nonEmptyLine(lines, at: 19) ?? "CHF"
         return normalize(amount: amount, currency: currency)
     }
 
     private static func spcReference(from lines: [String]) -> String? {
+        // "NON" is the Swiss QR-bill reference-type token meaning "no reference"
+        // (as opposed to "QRR"/"SCOR"), so there is nothing to extract.
         guard lines.indices.contains(27), lines[27] != "NON" else { return nil }
         return nonEmptyLine(lines, at: 28)
     }

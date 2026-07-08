@@ -76,8 +76,8 @@ private struct Machine {
 
     // MARK: – Mutable state
 
-    private var p = Probs()
-    private var rc: RangeDecoder
+    private var probs = Probs()
+    private var rangeDecoder: RangeDecoder
     private let outputLength: Int
 
     // Sliding-window dictionary (ring buffer)
@@ -93,7 +93,7 @@ private struct Machine {
 
     init(input: [UInt8],
          outputLength: Int) {
-        self.rc = RangeDecoder(input: input)
+        self.rangeDecoder = RangeDecoder(input: input)
         self.outputLength = outputLength
         output.reserveCapacity(outputLength)
     }
@@ -104,7 +104,7 @@ private struct Machine {
         while output.count < outputLength {
             let posState = dictPos & Self.posStateMask  // dictPos & 3 for pb=2
 
-            if rc.decodeBit(probs: &p.isMatch, index: state * Self.numPosStates + posState) == 0 {
+            if rangeDecoder.decodeBit(probs: &probs.isMatch, index: state * Self.numPosStates + posState) == 0 {
                 decodeLiteral()
             } else if let len = decodeMatchOrRep(posState: posState) {
                 copyMatch(len: len)
@@ -128,14 +128,14 @@ private struct Machine {
             while sym < 0x100 {
                 let matchBit = Int(matchByte >> 7) & 1
                 matchByte <<= 1
-                let bit = rc.decodeBit(probs: &p.litProbs,
-                                       index: base + ((1 + matchBit) << 8) + sym)
+                let bit = rangeDecoder.decodeBit(probs: &probs.litProbs,
+                                                 index: base + ((1 + matchBit) << 8) + sym)
                 sym = (sym << 1) | bit
                 if matchBit != bit { break }    // divergence → switch to plain decode
             }
         }
         while sym < 0x100 {
-            sym = (sym << 1) | rc.decodeBit(probs: &p.litProbs, index: base + sym)
+            sym = (sym << 1) | rangeDecoder.decodeBit(probs: &probs.litProbs, index: base + sym)
         }
 
         appendByte(UInt8(sym & 0xFF))
@@ -149,7 +149,7 @@ private struct Machine {
      a short rep (single byte) has already been emitted and no copy is needed.
      */
     private mutating func decodeMatchOrRep(posState: Int) -> Int? {
-        if rc.decodeBit(probs: &p.isRep, index: state) == 0 {
+        if rangeDecoder.decodeBit(probs: &probs.isRep, index: state) == 0 {
             return decodeNewMatch(posState: posState)
         }
         return decodeRep(posState: posState)
@@ -161,15 +161,15 @@ private struct Machine {
     private mutating func decodeNewMatch(posState: Int) -> Int {
         rep3 = rep2; rep2 = rep1; rep1 = rep0
 
-        let rawLen = rc.decodeLen(choice: &p.matchLenChoice,
-                                  low:    &p.matchLenLow,
-                                  mid:    &p.matchLenMid,
-                                  high:   &p.matchLenHigh,
-                                  posState: posState)
+        let rawLen = rangeDecoder.decodeLen(choice: &probs.matchLenChoice,
+                                            low:    &probs.matchLenLow,
+                                            mid:    &probs.matchLenMid,
+                                            high:   &probs.matchLenHigh,
+                                            posState: posState)
         let lenState = min(rawLen, Self.numLenToPosStates - 1)
-        let posSlot = rc.decodeBitTree(probs: &p.posSlotProbs,
-                                       offset: lenState * Self.numPosSlots,
-                                       numBits: Self.numPosSlotBits)
+        let posSlot = rangeDecoder.decodeBitTree(probs: &probs.posSlotProbs,
+                                                 offset: lenState * Self.numPosSlots,
+                                                 numBits: Self.numPosSlotBits)
         rep0 = decodeDistance(posSlot: posSlot)
         state = Self.matchNextState[state]
         return rawLen + Self.kMatchMinLen
@@ -190,20 +190,20 @@ private struct Machine {
             let distBase = (2 | (posSlot & 1)) << numDirBits
             let specOff  = distBase - posSlot - 1   // offset into specProbs
             var dist = UInt32(distBase)
-            dist |= UInt32(rc.decodeReverseBitTree(probs: &p.specProbs,
-                                                    offset: specOff,
-                                                    numBits: numDirBits))
+            dist |= UInt32(rangeDecoder.decodeReverseBitTree(probs: &probs.specProbs,
+                                                              offset: specOff,
+                                                              numBits: numDirBits))
             return dist
         }
 
         // Slots 14+: (numDirBits - 4) direct bits + 4 align bits
         let distBase = (2 | (posSlot & 1))
-        let directBits = rc.decodeDirectBits(numBits: numDirBits - Self.numAlignBits)
+        let directBits = rangeDecoder.decodeDirectBits(numBits: numDirBits - Self.numAlignBits)
         var dist = UInt32(distBase) << UInt32(numDirBits)
         dist |= UInt32(directBits) << UInt32(Self.numAlignBits)
-        dist |= UInt32(rc.decodeReverseBitTree(probs: &p.alignProbs,
-                                               offset: -1,
-                                               numBits: Self.numAlignBits))
+        dist |= UInt32(rangeDecoder.decodeReverseBitTree(probs: &probs.alignProbs,
+                                                         offset: -1,
+                                                         numBits: Self.numAlignBits))
         return dist
     }
 
@@ -212,28 +212,28 @@ private struct Machine {
      `nil` if a short rep was handled inline.
      */
     private mutating func decodeRep(posState: Int) -> Int? {
-        if rc.decodeBit(probs: &p.isRepG0, index: state) == 0 {
-            if rc.decodeBit(probs: &p.isRep0Long,
-                            index: state * Self.numPosStates + posState) == 0 {
+        if rangeDecoder.decodeBit(probs: &probs.isRepG0, index: state) == 0 {
+            if rangeDecoder.decodeBit(probs: &probs.isRep0Long,
+                                      index: state * Self.numPosStates + posState) == 0 {
                 // Short rep: copy exactly 1 byte from distance rep0
                 appendByte(dict[(dictPos - Int(rep0) - 1) & Self.dictMask])
                 state = Self.shortRepNextState[state]
                 return nil
             }
             // Long rep0 — distance stays as rep0, fall through to copy
-        } else if rc.decodeBit(probs: &p.isRepG1, index: state) == 0 {
+        } else if rangeDecoder.decodeBit(probs: &probs.isRepG1, index: state) == 0 {
             swap(&rep0, &rep1)
-        } else if rc.decodeBit(probs: &p.isRepG2, index: state) == 0 {
+        } else if rangeDecoder.decodeBit(probs: &probs.isRepG2, index: state) == 0 {
             let tmp = rep2; rep2 = rep1; rep1 = rep0; rep0 = tmp
         } else {
             let tmp = rep3; rep3 = rep2; rep2 = rep1; rep1 = rep0; rep0 = tmp
         }
 
-        let rawLen = rc.decodeLen(choice: &p.repLenChoice,
-                                  low:    &p.repLenLow,
-                                  mid:    &p.repLenMid,
-                                  high:   &p.repLenHigh,
-                                  posState: posState)
+        let rawLen = rangeDecoder.decodeLen(choice: &probs.repLenChoice,
+                                            low:    &probs.repLenLow,
+                                            mid:    &probs.repLenMid,
+                                            high:   &probs.repLenHigh,
+                                            posState: posState)
         state = Self.repNextState[state]
         return rawLen + Self.kMatchMinLen
     }

@@ -71,6 +71,9 @@ import GiniUtilites
             case QRCodesFormat.hub3.prefixURL:
                 return .hub3
             default:
+                // Pay-by-Square is the only format with no leading marker, so it can't
+                // be matched by a prefix case. It's the fallback, but only when the
+                // base32hex heuristic confirms it; otherwise the format is unknown (nil).
                 return PayBySquareDecoder.looksLikePayBySquare(self.scannedString) ? .payBySquare : nil
             }
         }
