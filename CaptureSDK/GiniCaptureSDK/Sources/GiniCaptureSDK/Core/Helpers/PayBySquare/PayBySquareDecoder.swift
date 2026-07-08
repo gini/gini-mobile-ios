@@ -67,17 +67,21 @@ enum PayBySquareDecoder {
         //    [0] invoiceId      [1] paymentsCount  [2] paymentType  [3] amount
         //    [4] currencyCode   [5] paymentDueDate [6] variableSymbol [7] constantSymbol
         //    [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
-        //    [12] IBAN          [13] BIC           ...extensions...  [12+N*2+2] beneficiaryName
+        //    [12] IBAN          [13] BIC           ...N accounts...
+        //    Then two extension-presence flags, any present extension blocks, then:
+        //    [12 + N*2 + 2 (+ extension fields)] beneficiaryName
         let fields = text.components(separatedBy: "\t")
         let rawBanksCount = max(1, Int(field(fields, at: Field.bankAccountsCount).trimmingCharacters(in: .whitespaces)) ?? 1)
         // Bound by field count so a malformed payload can't push beneficiaryIdx far past the array.
         let banksCount = min(rawBanksCount, fields.count)
-        // Extension fields are controlled by the PaymentOptions bitmask (Field.paymentType):
-        //   bit 0 (standing order): +4 extension fields
-        //   bit 1 (direct debit):   +10 extension fields
+        // PaymentOptions bitmask (Field.paymentType): paymentorder = 1, standingorder = 2,
+        // directdebit = 4. A present standing order adds 4 fields; a present direct debit adds 10.
         let paymentOptions = Int(field(fields, at: Field.paymentType).trimmingCharacters(in: .whitespaces)) ?? 0
-        let extFields = ((paymentOptions & 1) != 0 ? 4 : 0) + ((paymentOptions & 2) != 0 ? 10 : 0)
-        let beneficiaryIdx = Field.iban + banksCount * 2 + extFields
+        let extensionFields = ((paymentOptions & 2) != 0 ? 4 : 0)   // standing order block
+                            + ((paymentOptions & 4) != 0 ? 10 : 0)  // direct debit block
+        // Two presence-flag fields always sit between the last bank account and the
+        // beneficiary name, regardless of whether the extension blocks are present.
+        let beneficiaryIdx = Field.iban + banksCount * 2 + 2 + extensionFields
 
         let bicValue = field(fields, at: Field.bic)
         let iban = field(fields, at: Field.iban)

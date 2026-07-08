@@ -69,6 +69,26 @@ struct PayBySquareQRCodeTests {
         #expect(doc.extractedParameters["paymentReference"] == expected)
     }
 
+    // Synthetic payment-order vector (paymentOptions=1, one account, no extensions) whose
+    // beneficiary name is non-empty. The bysquare layout places two extension-presence flags
+    // between the bank account and the beneficiary name, so the payee sits at field [16].
+    // Regression guard for the beneficiary-index off-by bug (payeeName came back empty).
+    private let beneficiaryVector =
+        "0006000001K919RSC458AF4QJ6NUS2G6TL8ENCAV7O09E5DAUA1LMFJ72D0V200TU6BNT3" +
+        "SGC80TTOS65JRAK7439GKVLUPIUAUH6IHCMFIOGAL28LRLPQFTAGSEBVH6RD52SI1PTNRQ" +
+        "EEFVTAC3000"
+
+    @Test func decodesBeneficiaryName() {
+        let doc = GiniQRCodeDocument(scannedString: beneficiaryVector)
+        #expect(doc.extractedParameters["paymentRecipient"] == "Test Payee GmbH")
+    }
+
+    @Test func beneficiaryVectorDecodesIBANAndAmount() {
+        let doc = GiniQRCodeDocument(scannedString: beneficiaryVector)
+        #expect(doc.extractedParameters["iban"] == "SK2811000000002620154106")
+        #expect(doc.extractedParameters["amountToPay"] == "12.50:EUR")
+    }
+
     @Test func officialTestVectorPassesValidation() {
         let doc = GiniQRCodeDocument(scannedString: officialTestVector)
         #expect(throws: Never.self) {
