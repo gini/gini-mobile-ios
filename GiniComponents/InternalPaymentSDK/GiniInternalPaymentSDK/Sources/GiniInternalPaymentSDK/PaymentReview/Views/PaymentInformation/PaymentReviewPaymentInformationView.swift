@@ -242,6 +242,15 @@ struct PaymentReviewPaymentInformationView: View {
                     proxy.scrollTo(ActivePaymentField.recipient, anchor: .top)
                 }
             }
+            // Also reset scroll when focus clears explicitly (Return / Done on keyboard).
+            // SwiftUI `TextField` used in the reference branch auto-scrolls its ancestor
+            // ScrollView back when it loses focus; our UITextField-Representable doesn't
+            // get that behaviour for free, so we reset here as soon as `focusedField`
+            // becomes `nil` — without waiting for `keyboardHeight` to reach `0`.
+            .onChange(of: focusedField) { _, newField in
+                guard isDocCollection, newField == nil else { return }
+                proxy.scrollTo(ActivePaymentField.recipient, anchor: .top)
+            }
         }
     }
 
