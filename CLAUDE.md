@@ -116,6 +116,35 @@ PP-4102
 - **Runner:** macOS latest
 - **Minimum deployment target:** iOS 13+ (HealthAPILibrary: iOS 12+)
 
+## Working on All Tasks
+
+**Before making any code changes, always explain your approach first:**
+
+For **all requests** — whether new features, bug fixes, refactors, or code review comments:
+
+1. **Explain the problem/request** — Clarify what needs to be done and why
+   - What is the issue, missing feature, or requested change?
+   - Where in the code does it occur (file paths, line numbers)?
+   - Why is it happening or why is it needed?
+
+2. **Present 2–3 options** with trade-offs for each approach
+   - Brief description of each option
+   - Pros and cons / when to use each one
+   - Recommendation if one is clearly better
+
+3. **Wait for feedback** — Let the user confirm the approach before implementing
+   - This prevents silent fixes and ensures alignment
+   - User can ask for a different option or clarification
+   - Creates a decision record in the conversation
+
+**Then implement** once the user approves or after reasonable silence (implies approval).
+
+4. **Run tests only after confirmation** — Do not run tests by default after changes
+   - After implementation, ask if the user wants tests run
+   - Or wait for the user to request test runs
+   - This gives the user control over CI and avoids unnecessary test runs
+
+Keep explanations concise — 2–3 sentences per option. For very simple tasks (typo fixes, obvious one-liners), brief mention of what you're doing is fine, but default to explaining first for any non-trivial change.
 
 # MyApp Standards
 
