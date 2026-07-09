@@ -85,6 +85,14 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
         Color(uiColor: model.configuration.keyboardDoneButtonTintColor)
     }
 
+    /**
+     UIKit variant of `keyboardDoneButtonTintColor`, consumed by `GiniDoneAccessoryView`
+     (a UIToolbar-based `inputAccessoryView`) which needs a `UIColor` rather than SwiftUI `Color`.
+     */
+    var keyboardDoneButtonTintUIColor: UIColor {
+        model.configuration.keyboardDoneButtonTintColor
+    }
+
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {

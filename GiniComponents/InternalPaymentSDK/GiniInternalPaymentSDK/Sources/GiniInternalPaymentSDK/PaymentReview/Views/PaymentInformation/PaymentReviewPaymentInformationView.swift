@@ -68,30 +68,28 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        keyboardToolbarIfNeeded(
-            scrollView
-                .onAppear {
-                    viewModel.isViewVisible = true
-                    viewModel.populateFieldsIfNeeded()
-                    // Move VoiceOver focus into sheet content on appear.
-                    UIAccessibility.post(notification: .screenChanged, argument: nil)
-                    // Restore focus after rotation recreates the view.
-                    restoreFocusIfNeeded()
-                }
-                .onDisappear {
-                    viewModel.isViewVisible = false
-                }
-                .onChange(of: focusedField) { newField in
-                    handleFocusedFieldChange(newField)
-                }
-                .background(Color(.systemBackground))
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                    handleKeyboardWillShow(notification)
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    handleKeyboardWillHide()
-                }
-        )
+        scrollView
+            .onAppear {
+                viewModel.isViewVisible = true
+                viewModel.populateFieldsIfNeeded()
+                // Move VoiceOver focus into sheet content on appear.
+                UIAccessibility.post(notification: .screenChanged, argument: nil)
+                // Restore focus after rotation recreates the view.
+                restoreFocusIfNeeded()
+            }
+            .onDisappear {
+                viewModel.isViewVisible = false
+            }
+            .onChange(of: focusedField) { newField in
+                handleFocusedFieldChange(newField)
+            }
+            .background(Color(.systemBackground))
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                handleKeyboardWillShow(notification)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                handleKeyboardWillHide()
+            }
     }
 
     // MARK: Private keyboard handlers
@@ -124,30 +122,6 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
-    // on iOS <26 (which would log a harmless but noisy _UIToolbarContentView.width==0 warning).
-    @ViewBuilder
-    private func keyboardToolbarIfNeeded(_ base: some View) -> some View {
-        if #available(iOS 26, *) {
-            // Condition must stay inside ToolbarItemGroup (always-registered) for all modes.
-            // Moving it outside switches the view identity when the keyboard appears, which
-            // destroys and recreates the view — causing a jump and breaking keyboard presentation.
-            base.toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    if focusedField == .amount && keyboardHeight > 0 {
-                        Spacer()
-                        Button(viewModelStrings.keyboardDoneButtonTitle) {
-                            dismissAmountKeyboard()
-                        }
-                        .tint(viewModel.keyboardDoneButtonTintColor)
-                    }
-                }
-            }
-        } else {
-            base
-        }
-    }
-
     // MARK: Private views
 
     @ViewBuilder
@@ -159,28 +133,19 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    // Sheet context: sheet repositions above the keyboard; suppress double-adjustment.
+    // Sheet context: sheet lifts above the keyboard; suppress double-adjustment.
+    // No safeAreaInset for a Done button: the amount field's UIKit input accessory view
+    // (`GiniDoneAccessoryView`, installed by `KeyboardAccessoryInstaller`) is part of the
+    // keyboard from the system's point of view, so the sheet already lifts above it.
     @ViewBuilder
     private var sheetScrollView: some View {
         baseScrollView
             .ignoresSafeArea(.keyboard)
-            .safeAreaInset(edge: .bottom) {
-                if focusedField == .amount && keyboardHeight > 0 {
-                    if #available(iOS 26, *) {
-                        // Reserve height for the Liquid Glass button (ToolbarItemGroup) so
-                        // content doesn't slide behind it at the sheet/keyboard boundary.
-                        Color.clear
-                            .frame(height: Constants.doneButtonBarHeight)
-                            .allowsHitTesting(false)
-                    } else {
-                        doneButtonBar
-                    }
-                }
-            }
     }
 
     // Landscape docCollection: manual spacer keeps content above the keyboard.
-    // Done button: ContentView toolbar (iOS <26) or Liquid Glass toolbar (iOS 26+).
+    // Done button comes from the amount field's UIKit input accessory view — no toolbar needed.
+    // `keyboardHeight` from the will-show notification already includes the accessory-view height.
     @ViewBuilder
     private var docCollectionScrollView: some View {
         baseScrollView
@@ -190,22 +155,6 @@ struct PaymentReviewPaymentInformationView: View {
                     .frame(height: keyboardHeight)
                     .allowsHitTesting(false)
             }
-    }
-
-    // Done bar substituting the missing return key on .decimalPad; iOS <26 only.
-    @ViewBuilder
-    private var doneButtonBar: some View {
-        HStack {
-            Spacer()
-            Button(viewModelStrings.keyboardDoneButtonTitle) {
-                dismissAmountKeyboard()
-            }
-            .tint(viewModel.keyboardDoneButtonTintColor)
-            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
-        }
-        .frame(height: Constants.doneButtonBarHeight)
-        .background(.regularMaterial)
-        .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
@@ -370,6 +319,21 @@ struct PaymentReviewPaymentInformationView: View {
                 field: .amount,
                 inputState: viewModel.amountInputState
             ))
+            // Attach the UIKit Done accessory to whichever UITextField SwiftUI creates for this
+            // field. Done via responder-chain traversal (see KeyboardAccessoryInstaller): reliable
+            // because `UITextField.inputAccessoryView` is glued to the keyboard's own window by
+            // the system, and non-invasive because SwiftUI TextField + @FocusState continue to
+            // manage the editing/focus lifecycle exactly as they do for the other fields.
+            .background(
+                KeyboardAccessoryInstaller(
+                    isActive: focusedField == .amount,
+                    doneTintColor: viewModel.keyboardDoneButtonTintUIColor,
+                    onDone: { dismissAmountKeyboard() }
+                )
+                .frame(width: 0, height: 0)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+            )
     }
     
     @ViewBuilder
@@ -506,6 +470,12 @@ struct PaymentReviewPaymentInformationView: View {
     private func dismissAmountKeyboard() {
         onKeyboardDismissed()
         viewModel.handleAmountFocusChange(isFocused: false)
+        // Clear activeField up-front (mirrors clearFocus()), so the field's visual .focused
+        // state drops the moment the user taps Done — otherwise it lingers until the 100ms
+        // delayed clear in handleFocusedFieldChange runs, and can miss entirely if a rotation
+        // fires in the meantime. Safe here because Done is an explicit user dismiss, not a
+        // transient rotation.
+        viewModel.activeField = nil
         focusedField = nil
     }
 
@@ -541,7 +511,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.isAmountFieldFocused = false
             let fieldToClear = viewModel.activeField
             Task { @MainActor in
-                try await Task.sleep(for: .milliseconds(100))
+                try? await Task.sleep(for: .milliseconds(100))
                 if viewModel.isViewVisible,
                    focusedField == nil,
                    viewModel.activeField == fieldToClear {
@@ -552,13 +522,16 @@ struct PaymentReviewPaymentInformationView: View {
     }
 
     /**
-     Delays 400 ms for rotation animation before re-applying focus.
+     Delays 400 ms for rotation animation before re-applying focus. No `isViewVisible` guard —
+     it reads the shared viewmodel flag and races with the outgoing view's `onDisappear`, which
+     can fire *after* the incoming view's `onAppear` during a SwiftUI transition and flip the flag
+     back to `false`, causing the guard to fail even though the current view is alive and ready
+     for focus. Setting `focusedField` on a dismissed view is a benign no-op, so no guard is safer.
      */
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
-            try await Task.sleep(for: .milliseconds(400))
-            guard viewModel.isViewVisible else { return }
+            try? await Task.sleep(for: .milliseconds(400))
             focusedField = field
         }
     }
@@ -579,7 +552,5 @@ struct PaymentReviewPaymentInformationView: View {
         static let textFieldsContainerHorizontalPadding = 16.0
         static let textFieldsContainerTopPadding = 24.0
         static let poweredByGiniTopPadding = 8.0
-        static let doneButtonBarHeight = 44.0
-        static let doneButtonHorizontalPadding = 16.0
     }
 }
