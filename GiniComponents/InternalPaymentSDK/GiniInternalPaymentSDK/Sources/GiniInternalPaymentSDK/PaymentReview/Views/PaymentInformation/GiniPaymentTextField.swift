@@ -22,6 +22,7 @@ import GiniUtilites
 struct GiniPaymentTextField: View {
 
     @Binding var text: String
+    @Binding var isFocused: Bool
 
     let title: String
     let state: GiniTextFieldState
@@ -57,6 +58,7 @@ struct GiniPaymentTextField: View {
                 titleView
 
                 GiniPaymentUITextFieldRepresentable(text: $text,
+                                                    isFocused: $isFocused,
                                                     font: currentConfiguration.textFont,
                                                     textColor: currentConfiguration.textColor,
                                                     keyboardType: keyboardType,
@@ -142,6 +144,7 @@ struct GiniPaymentTextField: View {
 private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
 
     @Binding var text: String
+    @Binding var isFocused: Bool
 
     let font: UIFont
     let textColor: UIColor
@@ -158,6 +161,7 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
         let field = UITextField()
         field.borderStyle = .none
         field.backgroundColor = .clear
+        field.delegate = context.coordinator
         field.addTarget(context.coordinator,
                         action: #selector(Coordinator.editingChanged(_:)),
                         for: .editingChanged)
@@ -184,14 +188,58 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
         }
         if uiView.returnKeyType != returnKeyType { uiView.returnKeyType = returnKeyType }
         if uiView.isEnabled != isEnabled { uiView.isEnabled = isEnabled }
+
+        // Bridge focus binding → UITextField first responder state.
+        if isFocused, !uiView.isFirstResponder, isEnabled {
+            context.coordinator.attemptBecomeFirstResponder(uiView)
+        } else if !isFocused, uiView.isFirstResponder {
+            context.coordinator.cancelPendingFocusAttempt()
+            DispatchQueue.main.async { uiView.resignFirstResponder() }
+        }
     }
 
-    final class Coordinator: NSObject {
+    final class Coordinator: NSObject, UITextFieldDelegate {
 
         var parent: GiniPaymentUITextFieldRepresentable
 
+        private var focusAttemptTask: Task<Void, Never>?
+
         init(_ parent: GiniPaymentUITextFieldRepresentable) {
             self.parent = parent
+        }
+
+        deinit {
+            focusAttemptTask?.cancel()
+        }
+
+        /**
+         Retries `becomeFirstResponder` until the field is attached to a window (or the
+         `isFocused` binding flips to `false`). Handles the rotation case where
+         `updateUIView` runs before SwiftUI has finished attaching the recreated view.
+         */
+        func attemptBecomeFirstResponder(_ uiView: UITextField) {
+            focusAttemptTask?.cancel()
+            focusAttemptTask = Task { @MainActor [weak self, weak uiView] in
+                for _ in 0..<Constants.focusRetryCount {
+                    guard !Task.isCancelled,
+                          let uiView,
+                          let self,
+                          self.parent.isFocused
+                    else { return }
+                    if uiView.window != nil,
+                       uiView.isEnabled,
+                       !uiView.isHidden,
+                       uiView.becomeFirstResponder() {
+                        return
+                    }
+                    try? await Task.sleep(for: .milliseconds(Constants.focusRetryIntervalMs))
+                }
+            }
+        }
+
+        func cancelPendingFocusAttempt() {
+            focusAttemptTask?.cancel()
+            focusAttemptTask = nil
         }
 
         @objc func editingChanged(_ textField: UITextField) {
@@ -199,6 +247,28 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
             if parent.text != newValue {
                 parent.text = newValue
             }
+        }
+
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            if !parent.isFocused {
+                parent.isFocused = true
+            }
+        }
+
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            if parent.isFocused {
+                parent.isFocused = false
+            }
+        }
+
+        private enum Constants {
+            /**
+             ~60 × 25 ms = ~1.5 s of retry budget. Enough to cover a landscape /
+             sheet-presentation transition where the view is briefly created before
+             it's attached to a window.
+             */
+            static let focusRetryCount = 60
+            static let focusRetryIntervalMs = 25
         }
     }
 }
