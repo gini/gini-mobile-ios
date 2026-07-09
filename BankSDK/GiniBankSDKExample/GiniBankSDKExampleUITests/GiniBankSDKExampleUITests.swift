@@ -64,13 +64,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
-        #if !targetEnvironment(simulator)
+        // Always terminate the app and attach failure screenshots on both simulator and device.
+        // This prevents state leakage between test runs and ensures diagnostic screenshots are available.
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.lifetime = .deleteOnSuccess
         add(attachment)
         app.terminate()
-        #endif
     }
 
     var galleryTitle: String {
