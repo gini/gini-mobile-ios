@@ -7,14 +7,10 @@
 import Foundation
 import XCTest
 
-class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
+// Pre-condition: run scripts/copy_test_fixtures.sh once after booting the simulator
+// to copy the required PDFs into the app's Documents folder.
 
-    /*
-     To launch these tests and closely mimic real user behavior
-     Please upload to device:
-        "skonto_past" file with expired skonto
-        "skonto_valid" file with valid skonto
-     */
+class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
     /**
      Verifies the complete Skonto flow is reachable when a document is uploaded via the Files app.
