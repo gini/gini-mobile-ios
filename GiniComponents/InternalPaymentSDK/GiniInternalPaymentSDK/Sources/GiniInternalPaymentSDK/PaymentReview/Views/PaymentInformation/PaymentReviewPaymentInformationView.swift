@@ -607,16 +607,22 @@ struct PaymentReviewPaymentInformationView: View {
             }
         } else {
             viewModel.isAmountFieldFocused = false
-            // Clear `activeField` so the visual focused-border also drops. Safe because
-            // this branch only runs when `focusedField` *actually* transitioned to `nil`,
-            // which happens on:
-            //   - Explicit user dismissal (Done → `clearFocus` / `dismissAmountKeyboard`).
-            //   - System-driven dismissal (dragging the sheet grabber, tap-to-dismiss).
-            // It does NOT fire on rotation: the landscape view's teardown resigns the
-            // UITextField with `window == nil`, and our `textFieldDidEndEditing` guard
-            // short-circuits before it can flip `focusedField` — so this handler is
-            // never entered during rotation and `activeField` stays intact for restore.
-            viewModel.activeField = nil
+            // Deferred `activeField` clear so a view teardown has time to flip
+            // `isViewOnScreen` to `false` before we decide to clear:
+            //   - Rotation portrait→landscape: `viewWillTransition` dismisses the sheet
+            //     with `animated: false`, so `onDismiss` and the payment info view's
+            //     `onDisappear` fire within a few ms — well before 100 ms. The guard
+            //     then reads `isViewOnScreen == false` and skips → `activeField`
+            //     preserved for the landscape restore.
+            //   - Grabber drag / tap-outside / Done: view stays on screen, guard
+            //     passes at 100 ms → `activeField` cleared → focused-border drops.
+            // Also re-checks `focusedField == nil` so a fast re-focus (e.g. user
+            // dismisses then taps a field within 100 ms) doesn't get clobbered.
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(100))
+                guard isViewOnScreen, focusedField == nil else { return }
+                viewModel.activeField = nil
+            }
         }
     }
 
