@@ -57,28 +57,9 @@ public struct PaymentReviewContentView: View {
         .onAppear {
             viewModel.dismissBannerAfterDelay()
         }
-        // iOS <26 landscape: always-registered ToolbarItemGroup (condition inside) so the bar
-        // never detaches mid-transition, which would cause a glitch when leaving the amount field.
-        // UIKit may log a _UIToolbarContentView.width==0 warning on initial layout; it recovers harmlessly.
-        .toolbar {
-            if #unavailable(iOS 26) {
-                ToolbarItemGroup(placement: .keyboard) {
-                    if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
-                        Spacer()
-                        Button(viewModel.keyboardDoneButtonTitle) {
-                            viewModel.trackKeyboardDismissed()
-                            viewModel.validateAmountFieldOnKeyboardDismiss()
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                            to: nil,
-                                                            from: nil,
-                                                            for: nil)
-                        }
-                        .tint(viewModel.keyboardDoneButtonTintColor)
-                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
-                    }
-                }
-            }
-        }
+        // Every payment-review field carries its own UIKit `inputAccessoryView` (previous /
+        // next / Done — see `GiniPaymentTextField` / `GiniAmountInputAccessoryView`), so no
+        // landscape keyboard toolbar is needed here.
     }
     
     // MARK: - Portrait Layout
@@ -249,7 +230,6 @@ public struct PaymentReviewContentView: View {
         static let landscapeContainerSpacing: CGFloat = 8.0
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
-        static let doneButtonHorizontalPadding: CGFloat = 16.0
         static let grabberWidth: CGFloat = 36.0
         static let grabberHeight: CGFloat = 5.0
         static let grabberHitAreaWidth: CGFloat = 60.0
