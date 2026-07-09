@@ -272,12 +272,10 @@ struct PaymentReviewPaymentInformationView: View {
         .accessibilityLabel(viewModel.model.strings.infoBarMessage)
     }
     
-    // MARK: - Field navigation
+    // MARK: - Fields
     //
-    // Field order in the form: recipient → iban → amount → paymentPurpose.
-    // Each field's accessory prev/next callbacks jump to the neighbour, matching the Bank
-    // SDK's `[nameLabelView, priceLabelView]` navigation pattern. Arrows are disabled at
-    // boundaries or when the host has locked the sibling fields.
+    // Only the amount field opts into the input accessory view (Done tick). The other
+    // three fields have a normal keyboard with a return key that dismisses focus.
 
     @ViewBuilder
     private var recipientTextField: some View {
@@ -292,15 +290,12 @@ struct PaymentReviewPaymentInformationView: View {
                              errorConfiguration: errorTextFieldConfiguration,
                              keyboardType: .default,
                              autocapitalizationType: .sentences,
-                             returnKeyType: .default,
+                             returnKeyType: .done,
                              isDisabled: viewModel.isFieldsLocked,
                              lockedIcon: viewModel.lockIcon,
                              accessoryView: sharedAccessoryView,
                              accessoryTintColor: accessoryTintColor,
-                             isPreviousEnabled: false,
-                             isNextEnabled: !viewModel.isFieldsLocked,
-                             onPrevious: {},
-                             onNext: { focusedField = .iban },
+                             hasAccessory: false,
                              onDone: { clearFocus() },
                              onSubmit: { clearFocus() })
             .onChange(of: viewModel.recipientInputState.text) { _ in
@@ -322,15 +317,12 @@ struct PaymentReviewPaymentInformationView: View {
                              errorConfiguration: errorTextFieldConfiguration,
                              keyboardType: .default,
                              autocapitalizationType: .allCharacters,
-                             returnKeyType: .default,
+                             returnKeyType: .done,
                              isDisabled: viewModel.isFieldsLocked,
                              lockedIcon: viewModel.lockIcon,
                              accessoryView: sharedAccessoryView,
                              accessoryTintColor: accessoryTintColor,
-                             isPreviousEnabled: !viewModel.isFieldsLocked,
-                             isNextEnabled: true,
-                             onPrevious: { focusedField = .recipient },
-                             onNext: { focusedField = .amount },
+                             hasAccessory: false,
                              onDone: { clearFocus() },
                              onSubmit: { clearFocus() })
             .onChange(of: viewModel.ibanInputState.text) { _ in
@@ -357,10 +349,7 @@ struct PaymentReviewPaymentInformationView: View {
                              lockedIcon: nil,
                              accessoryView: sharedAccessoryView,
                              accessoryTintColor: accessoryTintColor,
-                             isPreviousEnabled: !viewModel.isFieldsLocked,
-                             isNextEnabled: !viewModel.isFieldsLocked,
-                             onPrevious: { focusedField = .iban },
-                             onNext: { focusedField = .paymentPurpose },
+                             hasAccessory: true,
                              onDone: dismissAmountKeyboard,
                              onSubmit: {})
             .onChange(of: viewModel.amountInputState.text) { newValue in
@@ -382,15 +371,12 @@ struct PaymentReviewPaymentInformationView: View {
                              errorConfiguration: errorTextFieldConfiguration,
                              keyboardType: .default,
                              autocapitalizationType: .sentences,
-                             returnKeyType: .default,
+                             returnKeyType: .done,
                              isDisabled: viewModel.isFieldsLocked,
                              lockedIcon: viewModel.lockIcon,
                              accessoryView: sharedAccessoryView,
                              accessoryTintColor: accessoryTintColor,
-                             isPreviousEnabled: true,
-                             isNextEnabled: false,
-                             onPrevious: { focusedField = .amount },
-                             onNext: {},
+                             hasAccessory: false,
                              onDone: { clearFocus() },
                              onSubmit: { clearFocus() })
             .onChange(of: viewModel.paymentPurposeInputState.text) { _ in

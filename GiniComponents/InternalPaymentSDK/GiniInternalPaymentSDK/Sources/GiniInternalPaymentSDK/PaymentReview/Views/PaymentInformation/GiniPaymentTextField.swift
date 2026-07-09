@@ -36,16 +36,18 @@ struct GiniPaymentTextField: View {
     let isDisabled: Bool
     let lockedIcon: Image?
     /**
-     Shared `inputAccessoryView` instance owned by the parent view. Every field points
-     at the same instance so focus transitions don't cause iOS to uninstall / install a
-     different accessory (which would reflow the keyboard and produce a visible jump).
+     Shared `inputAccessoryView` instance owned by the parent view. Only fields whose
+     keyboard needs an above-keyboard Done tick (the decimal-pad amount field) actually
+     attach it — see `hasAccessory` below. Sharing one instance across the fields that
+     do attach it means iOS doesn't reflow the keyboard when focus moves between them.
      */
     let accessoryView: GiniAmountInputAccessoryView
     let accessoryTintColor: UIColor
-    let isPreviousEnabled: Bool
-    let isNextEnabled: Bool
-    let onPrevious: () -> Void
-    let onNext: () -> Void
+    /**
+     Whether this field's `UITextField` gets the shared accessory attached. Alphanumeric
+     fields' keyboards already have a return key, so they don't need an accessory.
+     */
+    let hasAccessory: Bool
     let onDone: () -> Void
     let onSubmit: () -> Void
 
@@ -80,10 +82,7 @@ struct GiniPaymentTextField: View {
                                                     isEnabled: !isDisabled,
                                                     accessoryView: accessoryView,
                                                     accessoryTintColor: accessoryTintColor,
-                                                    isPreviousEnabled: isPreviousEnabled,
-                                                    isNextEnabled: isNextEnabled,
-                                                    onPrevious: onPrevious,
-                                                    onNext: onNext,
+                                                    hasAccessory: hasAccessory,
                                                     onDone: onDone,
                                                     onSubmit: onSubmit)
                     // Fixed height (not `minHeight`): a UIViewRepresentable-wrapped
@@ -181,10 +180,7 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
     let isEnabled: Bool
     let accessoryView: GiniAmountInputAccessoryView
     let accessoryTintColor: UIColor
-    let isPreviousEnabled: Bool
-    let isNextEnabled: Bool
-    let onPrevious: () -> Void
-    let onNext: () -> Void
+    let hasAccessory: Bool
     let onDone: () -> Void
     let onSubmit: () -> Void
 
@@ -207,10 +203,12 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
         field.returnKeyType = returnKeyType
         field.isEnabled = isEnabled
 
-        // Every field points at the SAME accessory-view instance (owned by the parent
-        // view). iOS keeps the accessory installed as first responder moves between
-        // fields, so switching fields doesn't cause a keyboard reflow / content jump.
-        field.inputAccessoryView = accessoryView
+        // Only fields that opt-in via `hasAccessory` (currently: amount) get the shared
+        // accessory attached. The other three fields have a normal keyboard with a
+        // return key that already dismisses focus, so no toolbar is needed.
+        if hasAccessory {
+            field.inputAccessoryView = accessoryView
+        }
 
         return field
     }
@@ -333,12 +331,9 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
          correct parent closures for the newly-focused field.
          */
         private func bindAccessoryToParent() {
+            guard parent.hasAccessory else { return }
             let accessory = parent.accessoryView
             accessory.tintColor = parent.accessoryTintColor
-            accessory.isPreviousEnabled = parent.isPreviousEnabled
-            accessory.isNextEnabled = parent.isNextEnabled
-            accessory.onPrevious = parent.onPrevious
-            accessory.onNext = parent.onNext
             accessory.onDone = parent.onDone
         }
 

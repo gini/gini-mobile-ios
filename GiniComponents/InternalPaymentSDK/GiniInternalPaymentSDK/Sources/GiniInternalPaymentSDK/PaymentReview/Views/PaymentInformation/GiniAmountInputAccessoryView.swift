@@ -7,23 +7,15 @@
 import UIKit
 
 /**
- Keyboard accessory view for the payment-review fields.
+ Keyboard accessory view for the payment-review amount field.
 
- A `UIToolbar` with previous / next chevrons for field navigation, a flexible space, and
- a `UIBarButtonItem(barButtonSystemItem: .done)`. The system `.done` bar-button item is
- what renders as the Liquid Glass tick on iOS 26 and picks up the correct blue tint
- automatically on all iOS versions, matching the pattern used by `GiniInputAccessoryView`
- in `GiniBankSDK`.
+ A `UIToolbar` with a flexible space and a `UIBarButtonItem(barButtonSystemItem: .done)`.
+ The system `.done` bar-button item renders as the Liquid Glass tick on iOS 26 and picks
+ up the correct blue tint automatically on all iOS versions.
 
- **Shared across all fields.** One instance is assigned as `inputAccessoryView` on every
- payment-review `UITextField`, mirroring `setupInputAccessoryView(for: [...])` in the Bank
- SDK. This avoids the keyboard reflowing its `_UIKBAutolayoutHeightConstraint  height == 44`
- every time focus moves between fields — reinstalling a *different* accessory instance
- would otherwise cause a visible content jump when navigating with the prev/next chevrons.
-
- Callbacks are exposed as closures (not a delegate) so the currently-focused field's
- coordinator can update them on `textFieldDidBeginEditing` without fighting over a single
- `delegate` slot.
+ Only the amount field attaches this accessory — the other three fields (recipient, IBAN,
+ payment purpose) have a normal keyboard with a return key that already dismisses focus,
+ so they don't need an accessory bar at all.
 
  Rendered as a real UIKit `inputAccessoryView` — not a SwiftUI `.toolbar(placement: .keyboard)`
  — so it survives rotation without conflicting with `_UIRemoteKeyboardPlaceholderView`
@@ -34,37 +26,13 @@ import UIKit
  */
 final class GiniAmountInputAccessoryView: UIView {
 
-    var onPrevious: (() -> Void)?
-    var onNext: (() -> Void)?
     var onDone: (() -> Void)?
-
-    var isPreviousEnabled: Bool = true {
-        didSet { previousButton.isEnabled = isPreviousEnabled }
-    }
-
-    var isNextEnabled: Bool = true {
-        didSet { nextButton.isEnabled = isNextEnabled }
-    }
 
     private lazy var toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         toolbar.barStyle = .default
         return toolbar
-    }()
-
-    private lazy var previousButton: UIBarButtonItem = {
-        UIBarButtonItem(image: UIImage(systemName: Constants.previousChevron),
-                        style: .plain,
-                        target: self,
-                        action: #selector(previousTapped))
-    }()
-
-    private lazy var nextButton: UIBarButtonItem = {
-        UIBarButtonItem(image: UIImage(systemName: Constants.nextChevron),
-                        style: .plain,
-                        target: self,
-                        action: #selector(nextTapped))
     }()
 
     private lazy var doneButton: UIBarButtonItem = {
@@ -96,8 +64,7 @@ final class GiniAmountInputAccessoryView: UIView {
     private func setupView() {
         addSubview(toolbar)
         // Center the 44 pt UIToolbar vertically inside a slightly taller accessory
-        // container so the chevrons and Done checkmark don't hug the top / bottom edges.
-        // Matches the padding Apple uses for Liquid Glass keyboard toolbars on iOS 26.
+        // container so the Done checkmark doesn't hug the top / bottom edges.
         NSLayoutConstraint.activate([
             toolbar.centerYAnchor.constraint(equalTo: centerYAnchor),
             toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
@@ -106,16 +73,7 @@ final class GiniAmountInputAccessoryView: UIView {
             toolbar.trailingAnchor.constraint(equalTo: trailingAnchor,
                                               constant: -Constants.horizontalInset)
         ])
-        toolbar.setItems([previousButton, nextButton, flexibleSpace, doneButton],
-                         animated: false)
-    }
-
-    @objc private func previousTapped() {
-        onPrevious?()
-    }
-
-    @objc private func nextTapped() {
-        onNext?()
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
     }
 
     @objc private func doneTapped() {
@@ -123,19 +81,8 @@ final class GiniAmountInputAccessoryView: UIView {
     }
 
     private enum Constants {
-        /**
-         Outer container height. Taller than the inner UIToolbar so the chevrons
-         and Done checkmark have vertical breathing room, matching iOS 26 Liquid
-         Glass keyboard toolbar padding.
-         */
         static let toolbarHeight: CGFloat = 56
         static let innerToolbarHeight: CGFloat = 44
-        /**
-         Trims a few points from each edge so the outermost button doesn't sit
-         flush against the keyboard window edge.
-         */
         static let horizontalInset: CGFloat = 4
-        static let previousChevron = "chevron.up"
-        static let nextChevron = "chevron.down"
     }
 }
