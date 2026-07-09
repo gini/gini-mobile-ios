@@ -190,11 +190,28 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
         if uiView.isEnabled != isEnabled { uiView.isEnabled = isEnabled }
 
         // Bridge focus binding → UITextField first responder state.
+        //
+        // Sync `becomeFirstResponder` matches the timing UIKit sees on a direct tap so
+        // programmatic focus changes (e.g. prev/next chevrons) don't visibly bounce the
+        // sheet detent. It's wrapped in `performProgrammaticFocusChange` so the delegate
+        // callbacks it triggers know they're firing from our own call and skip their
+        // SwiftUI state writes — otherwise we'd cycle by mutating `parent.isFocused`
+        // during SwiftUI's own update pass. If the sync attempt returns false (window
+        // not attached yet), the retry Task handles it.
         if isFocused, !uiView.isFirstResponder, isEnabled {
-            context.coordinator.attemptBecomeFirstResponder(uiView)
+            context.coordinator.performProgrammaticFocusChange {
+                uiView.window != nil
+                    && !uiView.isHidden
+                    && uiView.becomeFirstResponder()
+            } fallback: {
+                context.coordinator.attemptBecomeFirstResponder(uiView)
+            }
         } else if !isFocused, uiView.isFirstResponder {
             context.coordinator.cancelPendingFocusAttempt()
-            DispatchQueue.main.async { uiView.resignFirstResponder() }
+            context.coordinator.performProgrammaticFocusChange {
+                uiView.resignFirstResponder()
+                return true
+            } fallback: { }
         }
     }
 
@@ -204,12 +221,39 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
 
         private var focusAttemptTask: Task<Void, Never>?
 
+        /**
+         Non-zero while we're inside a first-responder change we initiated ourselves
+         (from `updateUIView`). While set, the UITextField delegate methods skip their
+         SwiftUI state writes — the state that triggered our call is already correct,
+         and writing again during SwiftUI's own update pass would create an
+         AttributeGraph cycle and the "Modifying state during view update" warning.
+         */
+        private var programmaticFocusDepth = 0
+
         init(_ parent: GiniPaymentUITextFieldRepresentable) {
             self.parent = parent
         }
 
         deinit {
             focusAttemptTask?.cancel()
+        }
+
+        /**
+         Runs `attempt` while marking any UITextField delegate callbacks it triggers as
+         coming from us. If `attempt` returns false, `fallback` runs *after* the guard
+         so it can schedule further work normally (e.g. the retry Task).
+         */
+        func performProgrammaticFocusChange(_ attempt: () -> Bool, fallback: () -> Void) {
+            programmaticFocusDepth += 1
+            let succeeded = attempt()
+            programmaticFocusDepth -= 1
+            if !succeeded {
+                fallback()
+            }
+        }
+
+        private var isDelegateFromProgrammaticChange: Bool {
+            programmaticFocusDepth > 0
         }
 
         /**
@@ -250,12 +294,23 @@ private struct GiniPaymentUITextFieldRepresentable: UIViewRepresentable {
         }
 
         func textFieldDidBeginEditing(_ textField: UITextField) {
+            // Skip when *we* triggered this become. `focusedField` is already correct
+            // in that case, and writing again during SwiftUI's update pass would cycle.
+            // Only update when UIKit initiated the become (direct user tap).
+            guard !isDelegateFromProgrammaticChange else { return }
             if !parent.isFocused {
                 parent.isFocused = true
             }
         }
 
         func textFieldDidEndEditing(_ textField: UITextField) {
+            guard !isDelegateFromProgrammaticChange else { return }
+            // Skip when the field is being torn down (view removed from hierarchy).
+            // `window == nil` distinguishes teardown-resign from user-initiated resign,
+            // so a landscape→portrait rotation doesn't cascade `focusedField = nil`
+            // through the delegate and blow away the field the parent view wants to
+            // restore focus to.
+            guard textField.window != nil else { return }
             if parent.isFocused {
                 parent.isFocused = false
             }
