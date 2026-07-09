@@ -102,8 +102,8 @@ struct PaymentReviewPaymentInformationView: View {
                 isViewOnScreen = false
                 viewModel.isViewVisible = false
             }
-            .onChange(of: focusedField) { newField in
-                handleFocusedFieldChange(newField)
+            .onChange(of: focusedField) { oldField, newField in
+                handleFocusedFieldChange(from: oldField, to: newField)
             }
             .background(Color(.systemBackground))
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
@@ -554,10 +554,16 @@ struct PaymentReviewPaymentInformationView: View {
     /**
      Central handler for focus changes. Runs per-field validation for the field losing
      focus and the field gaining it, and keeps the model in sync.
-     */
-    private func handleFocusedFieldChange(_ newField: ActivePaymentField?) {
-        let previousField = viewModel.activeField
 
+     Takes the previous focused field explicitly (from SwiftUI's two-parameter
+     `onChange`) rather than reading it from `viewModel.activeField`. Callers like
+     `clearFocus()` and `trackKeyboardDismissed()` clear `activeField` before this
+     runs, so relying on that would leave the switch below with `previousField == nil`
+     and skip on-blur validation — which is what caused the "Done on empty field
+     doesn't highlight the error" regression.
+     */
+    private func handleFocusedFieldChange(from previousField: ActivePaymentField?,
+                                          to newField: ActivePaymentField?) {
         // Fire on-blur validation for the field losing focus.
         switch previousField {
         case .recipient:
