@@ -95,11 +95,16 @@ final class GiniAmountInputAccessoryView: UIView {
 
     private func setupView() {
         addSubview(toolbar)
+        // Center the 44 pt UIToolbar vertically inside a slightly taller accessory
+        // container so the chevrons and Done checkmark don't hug the top / bottom edges.
+        // Matches the padding Apple uses for Liquid Glass keyboard toolbars on iOS 26.
         NSLayoutConstraint.activate([
-            toolbar.topAnchor.constraint(equalTo: topAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor)
+            toolbar.centerYAnchor.constraint(equalTo: centerYAnchor),
+            toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
+            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                             constant: Constants.horizontalInset),
+            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                              constant: -Constants.horizontalInset)
         ])
         toolbar.setItems([previousButton, nextButton, flexibleSpace, doneButton],
                          animated: false)
@@ -118,7 +123,18 @@ final class GiniAmountInputAccessoryView: UIView {
     }
 
     private enum Constants {
-        static let toolbarHeight: CGFloat = 44
+        /**
+         Outer container height. Taller than the inner UIToolbar so the chevrons
+         and Done checkmark have vertical breathing room, matching iOS 26 Liquid
+         Glass keyboard toolbar padding.
+         */
+        static let toolbarHeight: CGFloat = 56
+        static let innerToolbarHeight: CGFloat = 44
+        /**
+         Trims a few points from each edge so the outermost button doesn't sit
+         flush against the keyboard window edge.
+         */
+        static let horizontalInset: CGFloat = 4
         static let previousChevron = "chevron.up"
         static let nextChevron = "chevron.down"
     }
