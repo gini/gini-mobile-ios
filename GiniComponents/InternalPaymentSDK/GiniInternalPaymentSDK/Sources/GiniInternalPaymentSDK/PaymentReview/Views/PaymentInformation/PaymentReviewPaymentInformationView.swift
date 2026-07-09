@@ -98,20 +98,29 @@ struct PaymentReviewPaymentInformationView: View {
 
     private func handleKeyboardWillShow(_ notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        keyboardHideToken += 1
-        // Never shrink during an active keyboard session — avoids a layout jump when switching
-        // between keyboard types (e.g. decimalPad+toolbar → default+toolbar → decimalPad+toolbar).
-        let newHeight = max(keyboardHeight, frame.height)
-        guard newHeight != keyboardHeight else { return }
-        // Animate spacer growth in landscape so a size change between keyboard types
-        // (e.g. decimalPad+toolbar → default+toolbar) slides smoothly rather than jumps.
-        if isDocCollection {
-            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-            withAnimation(.easeInOut(duration: duration)) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        // Defer @State writes off the current runloop turn. `keyboardWillShow` is posted
+        // synchronously by UIKit inside `becomeFirstResponder`; once the payment review
+        // fields are UIKit-backed (later commit) and `updateUIView` calls `becomeFirstResponder`
+        // synchronously, writing @State here on the same runloop would happen during
+        // SwiftUI's own update pass — producing AttributeGraph cycles and "Modifying state
+        // during view update" warnings. Deferring keeps the state write outside the pass.
+        Task { @MainActor in
+            keyboardHideToken += 1
+            // Never shrink during an active keyboard session — avoids a layout jump when
+            // switching between keyboard types (e.g. decimalPad+toolbar → default+toolbar
+            // → decimalPad+toolbar).
+            let newHeight = max(keyboardHeight, frame.height)
+            guard newHeight != keyboardHeight else { return }
+            // Animate spacer growth in landscape so a size change between keyboard types
+            // slides smoothly rather than jumps.
+            if isDocCollection {
+                withAnimation(.easeInOut(duration: duration)) {
+                    keyboardHeight = newHeight
+                }
+            } else {
                 keyboardHeight = newHeight
             }
-        } else {
-            keyboardHeight = newHeight
         }
     }
 
