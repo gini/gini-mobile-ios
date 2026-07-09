@@ -69,9 +69,6 @@ Parameters:
   version_file_path     - the path to the file containing the package version
   git_tag               - the git tag name used to release the project
   repo_url              - the url of the release repository
-  repo_user             - the username to use for authentication
-  repo_password         - the password to use for authentication
-  ci                    - set to "true" if running on a CI machine
 
 
 
@@ -161,9 +158,6 @@ Generate CycloneDX SBOMS for all swift packages. The SBOMs are zipped and upload
 
 Parameters:
   swift_package_repo_urls     - the list of swift package repository urls
-  repo_user                   - the username to use for authentication
-  repo_password               - the password to use for authentication
-  ci                          - set to "true" if running on a CI machine
 
 
 
