@@ -607,10 +607,16 @@ struct PaymentReviewPaymentInformationView: View {
             }
         } else {
             viewModel.isAmountFieldFocused = false
-            // `activeField` is NOT cleared here. Explicit user dismissal paths
-            // (`dismissAmountKeyboard`, `clearFocus`) clear it; a landscape→portrait
-            // rotation used to trip a deferred clear that wiped the field we wanted to
-            // restore focus to, so the clear is now the caller's responsibility.
+            // Clear `activeField` so the visual focused-border also drops. Safe because
+            // this branch only runs when `focusedField` *actually* transitioned to `nil`,
+            // which happens on:
+            //   - Explicit user dismissal (Done → `clearFocus` / `dismissAmountKeyboard`).
+            //   - System-driven dismissal (dragging the sheet grabber, tap-to-dismiss).
+            // It does NOT fire on rotation: the landscape view's teardown resigns the
+            // UITextField with `window == nil`, and our `textFieldDidEndEditing` guard
+            // short-circuits before it can flip `focusedField` — so this handler is
+            // never entered during rotation and `activeField` stays intact for restore.
+            viewModel.activeField = nil
         }
     }
 
