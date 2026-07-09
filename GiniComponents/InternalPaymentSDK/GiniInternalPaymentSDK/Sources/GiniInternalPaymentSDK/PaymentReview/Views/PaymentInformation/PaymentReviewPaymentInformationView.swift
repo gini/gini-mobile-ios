@@ -15,12 +15,17 @@ struct PaymentReviewPaymentInformationView: View {
     let onKeyboardDismissed: () -> Void
     
     @ObservedObject private var viewModel: PaymentReviewPaymentInformationObservableModel
-    
-    @FocusState private var focusedField: ActivePaymentField?
-    
+
+    /**
+     Every field is a UIKit-backed `GiniPaymentTextField`, so focus is a plain `@State`
+     value rather than `@FocusState`. Each field derives its own `isFocused: Binding<Bool>`
+     from this via `focusBinding(_:)`.
+     */
+    @State private var focusedField: ActivePaymentField?
+
     @Binding private var contentHeight: CGFloat
     @Binding private var showBanner: Bool
-    
+
     @Environment(\.giniLayout) private var giniLayout
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -29,6 +34,21 @@ struct PaymentReviewPaymentInformationView: View {
      Cancels a pending `keyboardWillHide` zero when a new `keyboardWillShow` fires (keyboard-type switch).
      */
     @State private var keyboardHideToken = 0
+
+    /**
+     Instance-local visibility flag. Distinct from `viewModel.isViewVisible` (shared on the
+     ObservableObject) — on rotation the NEW view's `onAppear` can fire before the OLD
+     view's `onDisappear`, and using this local `@State` keeps the restore Task guard
+     reliable per instance.
+     */
+    @State private var isViewOnScreen: Bool = false
+
+    /**
+     One shared `inputAccessoryView` instance across all four fields. iOS keeps it in
+     place as first responder moves between fields, so switching fields doesn't reflow
+     the keyboard or bounce the sheet detent.
+     */
+    @State private var sharedAccessoryView = GiniAmountInputAccessoryView()
 
     /**
      Landscape doc-collection layout: side-by-side panels, keyboard scroll is manual.
@@ -68,30 +88,30 @@ struct PaymentReviewPaymentInformationView: View {
     }
     
     var body: some View {
-        keyboardToolbarIfNeeded(
-            scrollView
-                .onAppear {
-                    viewModel.isViewVisible = true
-                    viewModel.populateFieldsIfNeeded()
-                    // Move VoiceOver focus into sheet content on appear.
-                    UIAccessibility.post(notification: .screenChanged, argument: nil)
-                    // Restore focus after rotation recreates the view.
-                    restoreFocusIfNeeded()
-                }
-                .onDisappear {
-                    viewModel.isViewVisible = false
-                }
-                .onChange(of: focusedField) { newField in
-                    handleFocusedFieldChange(newField)
-                }
-                .background(Color(.systemBackground))
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                    handleKeyboardWillShow(notification)
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    handleKeyboardWillHide()
-                }
-        )
+        scrollView
+            .onAppear {
+                isViewOnScreen = true
+                viewModel.isViewVisible = true
+                viewModel.populateFieldsIfNeeded()
+                // Move VoiceOver focus into sheet content on appear.
+                UIAccessibility.post(notification: .screenChanged, argument: nil)
+                // Restore focus after rotation recreates the view.
+                restoreFocusIfNeeded()
+            }
+            .onDisappear {
+                isViewOnScreen = false
+                viewModel.isViewVisible = false
+            }
+            .onChange(of: focusedField) { newField in
+                handleFocusedFieldChange(newField)
+            }
+            .background(Color(.systemBackground))
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                handleKeyboardWillShow(notification)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                handleKeyboardWillHide()
+            }
     }
 
     // MARK: Private keyboard handlers
@@ -133,30 +153,6 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    // Attaches the iOS 26 Liquid Glass keyboard toolbar without creating an empty UIToolbar
-    // on iOS <26 (which would log a harmless but noisy _UIToolbarContentView.width==0 warning).
-    @ViewBuilder
-    private func keyboardToolbarIfNeeded(_ base: some View) -> some View {
-        if #available(iOS 26, *) {
-            // Condition must stay inside ToolbarItemGroup (always-registered) for all modes.
-            // Moving it outside switches the view identity when the keyboard appears, which
-            // destroys and recreates the view — causing a jump and breaking keyboard presentation.
-            base.toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    if focusedField == .amount && keyboardHeight > 0 {
-                        Spacer()
-                        Button(viewModelStrings.keyboardDoneButtonTitle) {
-                            dismissAmountKeyboard()
-                        }
-                        .tint(viewModel.keyboardDoneButtonTintColor)
-                    }
-                }
-            }
-        } else {
-            base
-        }
-    }
-
     // MARK: Private views
 
     @ViewBuilder
@@ -168,28 +164,17 @@ struct PaymentReviewPaymentInformationView: View {
         }
     }
 
-    // Sheet context: sheet repositions above the keyboard; suppress double-adjustment.
+    // Sheet context: sheet repositions above the keyboard automatically. The Done
+    // affordance is a UIKit `inputAccessoryView` on each field (via `GiniPaymentTextField`),
+    // so no in-content bar is inserted here.
     @ViewBuilder
     private var sheetScrollView: some View {
         baseScrollView
             .ignoresSafeArea(.keyboard)
-            .safeAreaInset(edge: .bottom) {
-                if focusedField == .amount && keyboardHeight > 0 {
-                    if #available(iOS 26, *) {
-                        // Reserve height for the Liquid Glass button (ToolbarItemGroup) so
-                        // content doesn't slide behind it at the sheet/keyboard boundary.
-                        Color.clear
-                            .frame(height: Constants.doneButtonBarHeight)
-                            .allowsHitTesting(false)
-                    } else {
-                        doneButtonBar
-                    }
-                }
-            }
     }
 
     // Landscape docCollection: manual spacer keeps content above the keyboard.
-    // Done button: ContentView toolbar (iOS <26) or Liquid Glass toolbar (iOS 26+).
+    // Every field's toolbar is provided by its UIKit `inputAccessoryView`.
     @ViewBuilder
     private var docCollectionScrollView: some View {
         baseScrollView
@@ -199,22 +184,6 @@ struct PaymentReviewPaymentInformationView: View {
                     .frame(height: keyboardHeight)
                     .allowsHitTesting(false)
             }
-    }
-
-    // Done bar substituting the missing return key on .decimalPad; iOS <26 only.
-    @ViewBuilder
-    private var doneButtonBar: some View {
-        HStack {
-            Spacer()
-            Button(viewModelStrings.keyboardDoneButtonTitle) {
-                dismissAmountKeyboard()
-            }
-            .tint(viewModel.keyboardDoneButtonTintColor)
-            .padding(.horizontal, Constants.doneButtonHorizontalPadding)
-        }
-        .frame(height: Constants.doneButtonBarHeight)
-        .background(.regularMaterial)
-        .overlay(alignment: .top) { Divider() }
     }
 
     private var baseScrollView: some View {
@@ -303,110 +272,131 @@ struct PaymentReviewPaymentInformationView: View {
         .accessibilityLabel(viewModel.model.strings.infoBarMessage)
     }
     
+    // MARK: - Field navigation
+    //
+    // Field order in the form: recipient → iban → amount → paymentPurpose.
+    // Each field's accessory prev/next callbacks jump to the neighbour, matching the Bank
+    // SDK's `[nameLabelView, priceLabelView]` navigation pattern. Arrows are disabled at
+    // boundaries or when the host has locked the sibling fields.
+
     @ViewBuilder
     private var recipientTextField: some View {
-        TextField("", text: $viewModel.recipientInputState.text)
-        .focused($focusedField, equals: .recipient)
-        .disabled(viewModel.isFieldsLocked)
-        .submitLabel(.done)
-        .onSubmit {
-            clearFocus()
-        }
-        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.recipient,
-                                           field: .recipient,
-                                           inputState: viewModel.recipientInputState,
-                                           lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
-            Task { @MainActor in
-                viewModel.handleFocusChange(isFocused: newFocus == .recipient,
-                                            inputState: \.recipientInputState,
-                                            validate: viewModel.validateRecipient,
-                                            error: \.recipientError)
+        GiniPaymentTextField(text: $viewModel.recipientInputState.text,
+                             isFocused: focusBinding(.recipient),
+                             title: viewModelStrings.fieldPlaceholders.recipient,
+                             state: viewModel.fieldState(for: .recipient,
+                                                         hasError: viewModel.recipientInputState.hasError),
+                             errorMessage: viewModel.recipientInputState.errorMessage,
+                             normalConfiguration: textFieldConfiguration,
+                             focusedConfiguration: focusedTextFieldConfiguration,
+                             errorConfiguration: errorTextFieldConfiguration,
+                             keyboardType: .default,
+                             autocapitalizationType: .sentences,
+                             returnKeyType: .done,
+                             isDisabled: viewModel.isFieldsLocked,
+                             lockedIcon: viewModel.lockIcon,
+                             accessoryView: sharedAccessoryView,
+                             accessoryTintColor: accessoryTintColor,
+                             isPreviousEnabled: false,
+                             isNextEnabled: !viewModel.isFieldsLocked,
+                             onPrevious: {},
+                             onNext: { focusedField = .iban },
+                             onDone: { clearFocus() },
+                             onSubmit: { clearFocus() })
+            .onChange(of: viewModel.recipientInputState.text) { _ in
+                guard focusedField != .recipient else { return }
+                viewModel.clearErrorOnTextChange(for: \.recipientInputState)
             }
-        }
-        .onChange(of: viewModel.recipientInputState.text) { _ in
-            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
-            guard focusedField != .recipient else { return }
-            viewModel.clearErrorOnTextChange(for: \.recipientInputState)
-        }
     }
-    
+
     @ViewBuilder
     private var ibanTextField: some View {
-        TextField("", text: $viewModel.ibanInputState.text)
-        .focused($focusedField, equals: .iban)
-        .disabled(viewModel.isFieldsLocked)
-        .textInputAutocapitalization(.characters)
-        .submitLabel(.done)
-        .onSubmit {
-            clearFocus()
-        }
-        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.iban,
-                                           field: .iban,
-                                           inputState: viewModel.ibanInputState,
-                                           lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
-            Task { @MainActor in
-                viewModel.handleFocusChange(isFocused: newFocus == .iban,
-                                            inputState: \.ibanInputState,
-                                            validate: viewModel.validateIBAN,
-                                            error: \.ibanError)
+        GiniPaymentTextField(text: $viewModel.ibanInputState.text,
+                             isFocused: focusBinding(.iban),
+                             title: viewModelStrings.fieldPlaceholders.iban,
+                             state: viewModel.fieldState(for: .iban,
+                                                         hasError: viewModel.ibanInputState.hasError),
+                             errorMessage: viewModel.ibanInputState.errorMessage,
+                             normalConfiguration: textFieldConfiguration,
+                             focusedConfiguration: focusedTextFieldConfiguration,
+                             errorConfiguration: errorTextFieldConfiguration,
+                             keyboardType: .default,
+                             autocapitalizationType: .allCharacters,
+                             returnKeyType: .done,
+                             isDisabled: viewModel.isFieldsLocked,
+                             lockedIcon: viewModel.lockIcon,
+                             accessoryView: sharedAccessoryView,
+                             accessoryTintColor: accessoryTintColor,
+                             isPreviousEnabled: !viewModel.isFieldsLocked,
+                             isNextEnabled: true,
+                             onPrevious: { focusedField = .recipient },
+                             onNext: { focusedField = .amount },
+                             onDone: { clearFocus() },
+                             onSubmit: { clearFocus() })
+            .onChange(of: viewModel.ibanInputState.text) { _ in
+                guard focusedField != .iban else { return }
+                viewModel.clearErrorOnTextChange(for: \.ibanInputState)
             }
-        }
-        .onChange(of: viewModel.ibanInputState.text) { _ in
-            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
-            guard focusedField != .iban else { return }
-            viewModel.clearErrorOnTextChange(for: \.ibanInputState)
-        }
     }
-    
+
     @ViewBuilder
     private var amountTextField: some View {
-        TextField("", text: $viewModel.amountInputState.text)
-            .focused($focusedField, equals: .amount)
+        GiniPaymentTextField(text: $viewModel.amountInputState.text,
+                             isFocused: focusBinding(.amount),
+                             title: viewModelStrings.fieldPlaceholders.amount,
+                             state: viewModel.fieldState(for: .amount,
+                                                         hasError: viewModel.amountInputState.hasError),
+                             errorMessage: viewModel.amountInputState.errorMessage,
+                             normalConfiguration: textFieldConfiguration,
+                             focusedConfiguration: focusedTextFieldConfiguration,
+                             errorConfiguration: errorTextFieldConfiguration,
+                             keyboardType: .decimalPad,
+                             autocapitalizationType: .none,
+                             returnKeyType: .default,
+                             isDisabled: false,
+                             lockedIcon: nil,
+                             accessoryView: sharedAccessoryView,
+                             accessoryTintColor: accessoryTintColor,
+                             isPreviousEnabled: !viewModel.isFieldsLocked,
+                             isNextEnabled: !viewModel.isFieldsLocked,
+                             onPrevious: { focusedField = .iban },
+                             onNext: { focusedField = .paymentPurpose },
+                             onDone: dismissAmountKeyboard,
+                             onSubmit: {})
             .onChange(of: viewModel.amountInputState.text) { newValue in
                 viewModel.handleAmountTextChange(updatedText: newValue)
                 // Error clearing is handled by handleAmountFocusChange, not text change.
             }
-            .onChange(of: focusedField) { newFocus in
-                Task { @MainActor in
-                    viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
-                }
-            }
-            .keyboardType(.decimalPad)
-            .textFieldStyle(makeTextFieldStyle(
-                title: viewModelStrings.fieldPlaceholders.amount,
-                field: .amount,
-                inputState: viewModel.amountInputState
-            ))
     }
-    
+
     @ViewBuilder
     private var paymentPurposeTextField: some View {
-        TextField("", text: $viewModel.paymentPurposeInputState.text)
-        .focused($focusedField, equals: .paymentPurpose)
-        .disabled(viewModel.isFieldsLocked)
-        .submitLabel(.done)
-        .onSubmit {
-            clearFocus()
-        }
-        .textFieldStyle(makeTextFieldStyle(title: viewModelStrings.fieldPlaceholders.usage,
-                                           field: .paymentPurpose,
-                                           inputState: viewModel.paymentPurposeInputState,
-                                           lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
-            Task { @MainActor in
-                viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
-                                            inputState: \.paymentPurposeInputState,
-                                            validate: viewModel.validatePaymentPurpose,
-                                            error: \.paymentPurposeError)
+        GiniPaymentTextField(text: $viewModel.paymentPurposeInputState.text,
+                             isFocused: focusBinding(.paymentPurpose),
+                             title: viewModelStrings.fieldPlaceholders.usage,
+                             state: viewModel.fieldState(for: .paymentPurpose,
+                                                         hasError: viewModel.paymentPurposeInputState.hasError),
+                             errorMessage: viewModel.paymentPurposeInputState.errorMessage,
+                             normalConfiguration: textFieldConfiguration,
+                             focusedConfiguration: focusedTextFieldConfiguration,
+                             errorConfiguration: errorTextFieldConfiguration,
+                             keyboardType: .default,
+                             autocapitalizationType: .sentences,
+                             returnKeyType: .done,
+                             isDisabled: viewModel.isFieldsLocked,
+                             lockedIcon: viewModel.lockIcon,
+                             accessoryView: sharedAccessoryView,
+                             accessoryTintColor: accessoryTintColor,
+                             isPreviousEnabled: true,
+                             isNextEnabled: false,
+                             onPrevious: { focusedField = .amount },
+                             onNext: {},
+                             onDone: { clearFocus() },
+                             onSubmit: { clearFocus() })
+            .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
+                guard focusedField != .paymentPurpose else { return }
+                viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
             }
-        }
-        .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
-            // Clearing error while focused replaces the UITextField and dismisses the keyboard.
-            guard focusedField != .paymentPurpose else { return }
-            viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
-        }
     }
     
     @ViewBuilder
@@ -512,9 +502,14 @@ struct PaymentReviewPaymentInformationView: View {
         .padding(.top, Constants.poweredByGiniTopPadding)
     }
 
+    /**
+     Called when the user taps the amount field's Done accessory button. Runs the
+     tracking / activeField-clear path via `onKeyboardDismissed`, then clears focus —
+     the field's Representable resigns the `UITextField` and validation fires via
+     `handleFocusedFieldChange`.
+     */
     private func dismissAmountKeyboard() {
         onKeyboardDismissed()
-        viewModel.handleAmountFocusChange(isFocused: false)
         focusedField = nil
     }
 
@@ -525,49 +520,108 @@ struct PaymentReviewPaymentInformationView: View {
         viewModel.activeField = nil
     }
 
-    private func makeTextFieldStyle(title: String,
-                                    field: ActivePaymentField,
-                                    inputState: GiniInputFieldState,
-                                    lockedIcon: Image? = nil) -> GiniTextFieldStyle {
-        GiniTextFieldStyle(lockedIcon: lockedIcon,
-                           title: title,
-                           state: viewModel.fieldState(for: field, hasError: inputState.hasError),
-                           errorMessage: inputState.errorMessage,
-                           normalConfiguration: textFieldConfiguration,
-                           focusedConfiguration: focusedTextFieldConfiguration,
-                           errorConfiguration: errorTextFieldConfiguration,
-                           onTap: { focusedField = field })
+    /**
+     Two-way `Binding<Bool>` connecting a specific field to the shared `focusedField`
+     state. Writing `true` moves focus to this field; writing `false` clears it only if
+     this field was the currently focused one (siblings can't clobber a transfer).
+     */
+    private func focusBinding(_ field: ActivePaymentField) -> Binding<Bool> {
+        Binding(
+            get: { focusedField == field },
+            set: { newValue in
+                if newValue {
+                    if focusedField != field {
+                        focusedField = field
+                    }
+                } else if focusedField == field {
+                    focusedField = nil
+                }
+            }
+        )
     }
-    
-    // MARK: - Orientation Helpers
 
+    /**
+     Shared accessory-toolbar tint. Sourced from the container configuration so host apps
+     can override; system blue by default (the `.done` `UIBarButtonItem` uses this tint,
+     giving the correct Liquid Glass tick on iOS 26).
+     */
+    private var accessoryTintColor: UIColor {
+        viewModel.model.configuration.keyboardDoneButtonTintColor
+    }
+
+    // MARK: - Focus coordination
+
+    /**
+     Central handler for focus changes. Runs per-field validation for the field losing
+     focus and the field gaining it, and keeps the model in sync.
+     */
     private func handleFocusedFieldChange(_ newField: ActivePaymentField?) {
+        let previousField = viewModel.activeField
+
+        // Fire on-blur validation for the field losing focus.
+        switch previousField {
+        case .recipient:
+            Task { @MainActor in
+                viewModel.handleFocusChange(isFocused: false,
+                                            inputState: \.recipientInputState,
+                                            validate: viewModel.validateRecipient,
+                                            error: \.recipientError)
+            }
+        case .iban:
+            Task { @MainActor in
+                viewModel.handleFocusChange(isFocused: false,
+                                            inputState: \.ibanInputState,
+                                            validate: viewModel.validateIBAN,
+                                            error: \.ibanError)
+            }
+        case .amount:
+            if newField != .amount {
+                Task { @MainActor in
+                    viewModel.handleAmountFocusChange(isFocused: false)
+                }
+            }
+        case .paymentPurpose:
+            Task { @MainActor in
+                viewModel.handleFocusChange(isFocused: false,
+                                            inputState: \.paymentPurposeInputState,
+                                            validate: viewModel.validatePaymentPurpose,
+                                            error: \.paymentPurposeError)
+            }
+        case .none:
+            break
+        }
+
         if let field = newField {
             viewModel.activeField = field
             viewModel.isAmountFieldFocused = (field == .amount)
-        } else {
-            // Hide Done toolbar immediately; delay clearing activeField to distinguish dismiss from rotation.
-            viewModel.isAmountFieldFocused = false
-            let fieldToClear = viewModel.activeField
-            Task { @MainActor in
-                try await Task.sleep(for: .milliseconds(100))
-                if viewModel.isViewVisible,
-                   focusedField == nil,
-                   viewModel.activeField == fieldToClear {
-                    viewModel.activeField = nil
+            if field == .amount, previousField != .amount {
+                Task { @MainActor in
+                    viewModel.handleAmountFocusChange(isFocused: true)
                 }
             }
+        } else {
+            viewModel.isAmountFieldFocused = false
+            // `activeField` is NOT cleared here. Explicit user dismissal paths
+            // (`dismissAmountKeyboard`, `clearFocus`) clear it; a landscape→portrait
+            // rotation used to trip a deferred clear that wiped the field we wanted to
+            // restore focus to, so the clear is now the caller's responsibility.
         }
     }
 
     /**
-     Delays 400 ms for rotation animation before re-applying focus.
+     Waits 500 ms past the rotation / layout transition, then writes `focusedField`.
+     Deferring puts the UITextField's `becomeFirstResponder` (triggered by the write)
+     safely after all rotation-related state churn — otherwise the sync
+     `becomeFirstResponder` inside the Representable's `updateUIView` would run during
+     SwiftUI's transition, triggering AttributeGraph cycles and preventing the keyboard
+     from actually presenting.
      */
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }
         Task { @MainActor in
-            try await Task.sleep(for: .milliseconds(400))
-            guard viewModel.isViewVisible else { return }
+            try? await Task.sleep(for: .milliseconds(500))
+            guard isViewOnScreen else { return }
+            guard viewModel.activeField == field else { return }
             focusedField = field
         }
     }
@@ -588,7 +642,5 @@ struct PaymentReviewPaymentInformationView: View {
         static let textFieldsContainerHorizontalPadding = 16.0
         static let textFieldsContainerTopPadding = 24.0
         static let poweredByGiniTopPadding = 8.0
-        static let doneButtonBarHeight = 44.0
-        static let doneButtonHorizontalPadding = 16.0
     }
 }
