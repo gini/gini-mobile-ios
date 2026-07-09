@@ -86,7 +86,13 @@ struct GiniPaymentTextField: View {
                                                     onNext: onNext,
                                                     onDone: onDone,
                                                     onSubmit: onSubmit)
-                    .frame(minHeight: Constants.textFieldHeight)
+                    // Fixed height (not `minHeight`): a UIViewRepresentable-wrapped
+                    // UITextField accepts the height SwiftUI proposes, which under an
+                    // `HStack` makes the amount field stretch to match a taller sibling
+                    // (e.g. IBAN + its error label). Native SwiftUI `TextField` uses its
+                    // intrinsic size and doesn't stretch — pinning to `textFieldHeight`
+                    // restores that behaviour.
+                    .frame(height: Constants.textFieldHeight)
                     .accessibilityLabel(title)
                     .accessibilityHintIfPresent(state == .error ? errorMessage : nil)
             }
