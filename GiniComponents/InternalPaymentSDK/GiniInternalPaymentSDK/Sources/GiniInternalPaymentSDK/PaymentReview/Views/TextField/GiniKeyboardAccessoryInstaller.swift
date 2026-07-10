@@ -59,8 +59,11 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
          */
         private weak var attachedField: UITextField?
 
-        /// Cached accessory — reused on every install so we don't allocate a fresh one
-        /// per SwiftUI update (its Done tap would target a stale delegate on iOS 17.4).
+        /**
+         Cached accessory — reused on every install so we don't allocate a fresh one
+         per SwiftUI update (its Done tap would target a stale delegate on iOS 17.4).
+         */
+         
         private var persistentAccessory: GiniDoneAccessoryView?
 
         /**
