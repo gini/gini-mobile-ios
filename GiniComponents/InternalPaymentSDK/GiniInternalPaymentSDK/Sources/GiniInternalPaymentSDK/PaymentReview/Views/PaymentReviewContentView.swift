@@ -44,6 +44,16 @@ public struct PaymentReviewContentView: View {
             if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
                 viewModel.isDismissingForRotation = true
                 showBottomSheet = false
+            } else if !landscape && !viewModel.isBottomSheetMode {
+                // Landscape → portrait in embedded mode: the numeric keyboard would
+                // otherwise stay up throughout the sheet re-presentation, visible over
+                // the still-animating sheet for ~500 ms. Force-resign first responder now
+                // so the keyboard hides immediately; `restoreFocusIfNeeded` re-focuses
+                // (and re-raises the keyboard) after the sheet finishes animating in.
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                to: nil,
+                                                from: nil,
+                                                for: nil)
             }
         }
         .overlay {
