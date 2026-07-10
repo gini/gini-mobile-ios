@@ -6,6 +6,7 @@
 //
 
 import Testing
+import SwiftUI
 import UIKit
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
@@ -196,6 +197,18 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
         #expect(invoked)
     }
 
+    @Test("Hosting the representable exercises makeUIView + updateUIView + default scene walk")
+    func hostingExercisesRepresentableLifecycle() async {
+        let installer = GiniKeyboardAccessoryInstaller(isActive: true, doneTintColor: .systemBlue, onDone: {})
+        let host = UIHostingController(rootView: installer)
+        // Force the SwiftUI hierarchy to load — drives makeCoordinator → makeUIView → updateUIView.
+        // With isActive == true, the async closure in apply calls installIfNeeded, which invokes
+        // the default `currentFirstResponder` (the scene-walk static method).
+        _ = host.view
+        host.view.layoutIfNeeded()
+        try? await Task.sleep(for: .milliseconds(20))
+    }
+
     @Test("GiniKeyboardAccessoryInstaller.dismantleUIView triggers uninstall on the coordinator")
     func structDismantleTriggersUninstall() {
         let field = MockTextField()
@@ -242,6 +255,24 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
         try? await Task.sleep(for: .milliseconds(20))
 
         #expect(field.inputAccessoryView == nil, "uninstall must run after the async dispatch")
+    }
+
+    @Test("apply captures self weakly — a coordinator released before the async fires is deallocated cleanly")
+    func applyCapturesSelfWeakly() async {
+        let field = MockTextField()
+        weak var weakSut: GiniKeyboardAccessoryInstaller.Coordinator?
+
+        do {
+            let sut = makeCoordinator(currentFirstResponder: { field })
+            weakSut = sut
+            sut.apply(isActive: true, doneTintColor: .systemRed, onDone: {})
+            // sut goes out of scope; nothing else retains the coordinator.
+        }
+
+        try? await Task.sleep(for: .milliseconds(20))
+
+        #expect(weakSut == nil, "coordinator must deallocate — closure must not retain it")
+        #expect(field.inputAccessoryView == nil, "async install must not fire on a deallocated coordinator")
     }
 
     // MARK: - Responder-chain helpers
@@ -312,8 +343,10 @@ private func makeCoordinator(
                                            currentFirstResponder: currentFirstResponder)
 }
 
-/// UITextField subclass that lets tests fake first-responder state and count `reloadInputViews`
-/// invocations without needing a real key window.
+/**
+ `UITextField` subclass that lets tests fake first-responder state and count
+ `reloadInputViews` invocations without needing a real key window.
+ */
 private final class MockTextField: UITextField {
     var mockIsFirstResponder = false
     var reloadInputViewsCount = 0

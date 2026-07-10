@@ -7,30 +7,39 @@
 
 import UIKit
 
-/// Delegate for `GiniDoneAccessoryView` — invoked when the user taps the Done button.
+/**
+ Delegate for `GiniDoneAccessoryView` — invoked when the user taps the Done button.
+ */
 public protocol GiniDoneAccessoryViewDelegate: AnyObject {
     func giniDoneAccessoryViewDidTapDone(_ view: GiniDoneAccessoryView)
 }
 
-/// A UIKit input accessory view containing a single trailing Done button, meant to be assigned
-/// to `UITextField.inputAccessoryView` for keyboard types that lack a return-key affordance
-/// (e.g. `.decimalPad`, `.numberPad`).
-///
-/// Uses a plain `UIToolbar` so the button is rendered by the system in whichever style the
-/// current iOS version dictates (regular bar on iOS <26, Liquid Glass on iOS 26+). This
-/// avoids the SwiftUI `ToolbarItemGroup(placement: .keyboard)` rotation/sheet fragilities
-/// because the system glues an input accessory view to the keyboard's own window.
+/**
+ A UIKit input accessory view containing a single trailing Done button, meant to be assigned
+ to `UITextField.inputAccessoryView` for keyboard types that lack a return-key affordance
+ (e.g. `.decimalPad`, `.numberPad`).
+
+ Uses a plain `UIToolbar` so the button is rendered by the system in whichever style the
+ current iOS version dictates (regular bar on iOS <26, Liquid Glass on iOS 26+). This
+ avoids the SwiftUI `ToolbarItemGroup(placement: .keyboard)` rotation/sheet fragilities
+ because the system glues an input accessory view to the keyboard's own window.
+ */
 public final class GiniDoneAccessoryView: UIView {
 
-    /// Notified when the Done button is tapped.
+    /**
+     Notified when the Done button is tapped.
+     */
     public weak var delegate: GiniDoneAccessoryViewDelegate?
 
     private let toolbar: UIToolbar
     private let doneButton: UIBarButtonItem
 
-    /// - Parameter tintColor: Tint applied to the system Done button. Pass `nil` to inherit the
-    ///   system tint. The button title itself is the system-provided, iOS-localized "Done".
-    ///   On iOS 26 Liquid Glass this renders as a checkmark glyph inside the accessory pill.
+    /**
+     Creates a new accessory view with an optional Done-button tint.
+     - Parameter tintColor: Tint applied to the system Done button. Pass `nil` to inherit the
+       system tint. The button title itself is the system-provided, iOS-localized "Done". On
+       iOS 26 Liquid Glass this renders as a checkmark glyph inside the accessory pill.
+     */
     public init(tintColor: UIColor? = nil) {
         let toolbar = UIToolbar()
         toolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -72,9 +81,11 @@ public final class GiniDoneAccessoryView: UIView {
         autoresizingMask = .flexibleWidth
     }
 
-    /// Return the outer container height directly — the toolbar's own intrinsic size is
-    /// forced to `innerToolbarHeight` (44) via the height constraint above, and the
-    /// container is 56 to give the Liquid Glass pill vertical breathing room.
+    /**
+     Returns the outer container height directly — the toolbar's own intrinsic size is forced
+     to `innerToolbarHeight` (44) via the height constraint above, and the container is 56 to
+     give the Liquid Glass pill vertical breathing room.
+     */
     public override var intrinsicContentSize: CGSize {
         CGSize(width: UIView.noIntrinsicMetric, height: Constants.toolbarHeight)
     }
@@ -84,7 +95,10 @@ public final class GiniDoneAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Update the Done button's tint colour.
+    /**
+     Updates the Done button's tint colour.
+     - Parameter color: New tint. Pass `nil` to inherit the system tint.
+     */
     public func setDoneTintColor(_ color: UIColor?) {
         doneButton.tintColor = color
     }
@@ -94,14 +108,19 @@ public final class GiniDoneAccessoryView: UIView {
     }
 
     private enum Constants {
-        /// Outer container height. Taller than the inner UIToolbar so the Done
-        /// checkmark has vertical breathing room, matching iOS 26 Liquid Glass
-        /// keyboard toolbar padding.
+        /**
+         Outer container height. Taller than the inner `UIToolbar` so the Done checkmark
+         has vertical breathing room, matching iOS 26 Liquid Glass keyboard toolbar padding.
+         */
         static let toolbarHeight: CGFloat = 56
-        /// Height of the UIToolbar itself. UIKit's standard toolbar metric.
+        /**
+         Height of the `UIToolbar` itself. UIKit's standard toolbar metric.
+         */
         static let innerToolbarHeight: CGFloat = 44
-        /// Trims a few points from each edge so the Done button doesn't sit flush
-        /// against the keyboard's window edge.
+        /**
+         Trims a few points from each edge so the Done button doesn't sit flush against
+         the keyboard's window edge.
+         */
         static let horizontalInset: CGFloat = 4
     }
 }

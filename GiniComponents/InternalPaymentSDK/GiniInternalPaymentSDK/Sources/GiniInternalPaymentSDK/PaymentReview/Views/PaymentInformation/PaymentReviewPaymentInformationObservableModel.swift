@@ -30,8 +30,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      */
     @Published var activeField: ActivePaymentField? = nil
 
-    /// Back-reference so the view's focus handler can read `isDismissingForRotation`
-    /// to tell a rotation teardown from a user dismiss.
+    /**
+     Back-reference so the view's focus handler can read `isDismissingForRotation`
+     to tell a rotation teardown from a user dismiss.
+     */
     weak var parentModel: PaymentReviewObservableModel?
 
     /**

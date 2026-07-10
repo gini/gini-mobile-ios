@@ -8,20 +8,22 @@ import SwiftUI
 import UIKit
 import GiniUtilites
 
-/// A zero-size SwiftUI helper that installs a `GiniDoneAccessoryView` on the current
-/// first-responder `UITextField` while `isActive` is true.
-///
-/// Use as a `.background(...)` on the SwiftUI `TextField` that owns the focus (or on any
-/// ancestor). The SwiftUI `TextField` continues to manage editing and `@FocusState`;
-/// this helper only sets `inputAccessoryView` on whichever underlying UIKit `UITextField` is
-/// currently first responder.
-///
-/// Why this instead of a `.toolbar { ToolbarItemGroup(placement: .keyboard) }`:
-/// SwiftUI's keyboard toolbar is unreliable inside a `.sheet {}` on iOS 26 — after a
-/// portrait→landscape→portrait rotation the re-presented sheet's toolbar sometimes fails
-/// to re-attach, and the accessory view's height flipping empty↔populated triggers
-/// `_UIRemoteKeyboardPlaceholderView` constraint conflicts. UIKit's `inputAccessoryView`
-/// is glued to the keyboard's own window and has none of those failure modes.
+/**
+ A zero-size SwiftUI helper that installs a `GiniDoneAccessoryView` on the current
+ first-responder `UITextField` while `isActive` is `true`.
+
+ Use as a `.background(...)` on the SwiftUI `TextField` that owns the focus (or on any
+ ancestor). The SwiftUI `TextField` continues to manage editing and `@FocusState`; this
+ helper only sets `inputAccessoryView` on whichever underlying UIKit `UITextField` is
+ currently first responder.
+
+ Why this instead of a `.toolbar { ToolbarItemGroup(placement: .keyboard) }`:
+ SwiftUI's keyboard toolbar is unreliable inside a `.sheet {}` on iOS 26 — after a
+ portrait→landscape→portrait rotation the re-presented sheet's toolbar sometimes fails
+ to re-attach, and the accessory view's height flipping empty↔populated triggers
+ `_UIRemoteKeyboardPlaceholderView` constraint conflicts. UIKit's `inputAccessoryView`
+ is glued to the keyboard's own window and has none of those failure modes.
+ */
 struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
 
     let isActive: Bool
@@ -51,11 +53,15 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
         var onDone: () -> Void
         var doneTintColor: UIColor
 
-        /// The field we most recently attached to, so we can revert its `inputAccessoryView`
-        /// when the accessory is no longer relevant (focus moved to a non-decimal field, view dismissed).
+        /**
+         The field we most recently attached to, so we can clear our accessory
+         when it is no longer relevant (focus moved to a non-decimal field, view dismissed).
+         */
         private weak var attachedField: UITextField?
 
-        /// Injectable for tests; defaults to walking `UIApplication.shared.connectedScenes`.
+        /**
+         Injectable for tests; defaults to walking `UIApplication.shared.connectedScenes`.
+         */
         private let currentFirstResponder: () -> UITextField?
 
         init(doneTintColor: UIColor,
@@ -66,12 +72,19 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
             self.currentFirstResponder = currentFirstResponder
         }
 
-        /// Deferred to the next runloop so we don't mutate first-responder state during a SwiftUI update pass.
+        /**
+         Deferred to the next runloop so we don't mutate first-responder state during a
+         SwiftUI update pass.
+         */
         func apply(isActive: Bool, doneTintColor: UIColor, onDone: @escaping () -> Void) {
             self.onDone = onDone
             self.doneTintColor = doneTintColor
             let shouldInstall = isActive
-            DispatchQueue.main.async {
+            // `[weak self]` so a `dismantleUIView` between this schedule and the fire lets the
+            // coordinator deallocate — the closure then no-ops instead of re-installing on a
+            // first responder owned by another view.
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
                 if shouldInstall {
                     self.installIfNeeded()
                 } else {
