@@ -201,12 +201,20 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
     func hostingExercisesRepresentableLifecycle() async {
         let installer = GiniKeyboardAccessoryInstaller(isActive: true, doneTintColor: .systemBlue, onDone: {})
         let host = UIHostingController(rootView: installer)
-        // Force the SwiftUI hierarchy to load — drives makeCoordinator → makeUIView → updateUIView.
-        // With isActive == true, the async closure in apply calls installIfNeeded, which invokes
-        // the default `currentFirstResponder` (the scene-walk static method).
-        _ = host.view
+        // Put the host in a proper window and force a full layout pass — merely accessing
+        // `host.view` doesn't cause SwiftUI to instantiate the representable's UIView.
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
+        window.rootViewController = host
+        window.isHidden = false
+        host.beginAppearanceTransition(true, animated: false)
         host.view.layoutIfNeeded()
+        host.endAppearanceTransition()
+        // Update to isActive == false to also drive the else branch of updateUIView's coordinator.apply.
+        host.rootView = GiniKeyboardAccessoryInstaller(isActive: false, doneTintColor: .systemRed, onDone: {})
+        host.view.layoutIfNeeded()
+        // Yield so the DispatchQueue.main.async body inside apply drains.
         try? await Task.sleep(for: .milliseconds(20))
+        window.isHidden = true
     }
 
     @Test("GiniKeyboardAccessoryInstaller.dismantleUIView triggers uninstall on the coordinator")
