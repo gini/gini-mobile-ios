@@ -28,11 +28,11 @@ struct KeyboardAccessoryInstaller: UIViewRepresentable {
     let doneTintColor: UIColor
     let onDone: () -> Void
 
-    func makeUIView(context: Context) -> UIView {
+    func makeUIView(context _: Context) -> UIView {
         UIView(frame: .zero)
     }
 
-    func updateUIView(_ view: UIView, context: Context) {
+    func updateUIView(_: UIView, context: Context) {
         // Refresh the coordinator's captured callback so the Done tap always dispatches
         // through the current view struct's closure.
         context.coordinator.onDone = onDone
@@ -51,7 +51,7 @@ struct KeyboardAccessoryInstaller: UIViewRepresentable {
         }
     }
 
-    static func dismantleUIView(_ view: UIView, coordinator: Coordinator) {
+    static func dismantleUIView(_: UIView, coordinator: Coordinator) {
         coordinator.uninstallIfInstalled()
     }
 
@@ -103,7 +103,7 @@ struct KeyboardAccessoryInstaller: UIViewRepresentable {
             attachedField = nil
         }
 
-        func giniDoneAccessoryViewDidTapDone(_ view: GiniDoneAccessoryView) {
+        func giniDoneAccessoryViewDidTapDone(_: GiniDoneAccessoryView) {
             onDone()
         }
 
