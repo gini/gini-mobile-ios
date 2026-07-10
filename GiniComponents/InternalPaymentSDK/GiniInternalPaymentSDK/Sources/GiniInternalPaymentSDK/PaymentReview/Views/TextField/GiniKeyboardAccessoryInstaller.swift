@@ -59,6 +59,10 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
          */
         private weak var attachedField: UITextField?
 
+        /// Cached accessory — reused on every install so we don't allocate a fresh one
+        /// per SwiftUI update (its Done tap would target a stale delegate on iOS 17.4).
+        private var persistentAccessory: GiniDoneAccessoryView?
+
         /**
          Injectable for tests; defaults to walking `UIApplication.shared.connectedScenes`.
          */
@@ -101,7 +105,8 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
                 existing.setDoneTintColor(doneTintColor)
                 return
             }
-            let accessory = GiniDoneAccessoryView(tintColor: doneTintColor)
+            let accessory = persistentAccessory ?? GiniDoneAccessoryView(tintColor: doneTintColor)
+            persistentAccessory = accessory
             accessory.delegate = self
             field.inputAccessoryView = accessory
             field.reloadInputViews()
@@ -119,6 +124,7 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
                 }
             }
             attachedField = nil
+            persistentAccessory = nil
         }
 
         func giniDoneAccessoryViewDidTapDone(_: GiniDoneAccessoryView) {
