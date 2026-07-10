@@ -56,11 +56,12 @@ public final class GiniDoneAccessoryView: UIView {
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
 
         addSubview(toolbar)
-        // Center the 44 pt UIToolbar vertically inside a slightly taller accessory
-        // container so the Done checkmark doesn't hug the top/bottom edges.
-        // Matches the padding Apple uses for Liquid Glass keyboard toolbars on iOS 26.
+        // Pin the toolbar's BOTTOM (not centerY) to the container's bottom so it sits
+        // flush against the keyboard's top edge — no visible gap on any iOS version.
+        // The extra ~12 pt goes to the top of the container, giving iOS 26's Liquid
+        // Glass pill breathing room above without exposing the keyboard below.
         NSLayoutConstraint.activate([
-            toolbar.centerYAnchor.constraint(equalTo: centerYAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor),
             toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
             toolbar.leadingAnchor.constraint(equalTo: leadingAnchor,
                                              constant: Constants.horizontalInset),
