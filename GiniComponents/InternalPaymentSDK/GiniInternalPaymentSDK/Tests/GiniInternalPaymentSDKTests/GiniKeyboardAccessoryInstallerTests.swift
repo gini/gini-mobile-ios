@@ -162,6 +162,59 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
                 "uninstall must leave an accessory owned by other code untouched")
     }
 
+    @Test("installIfNeeded reuses the persistent accessory when the field's inputAccessoryView reads back nil")
+    func installReusesPersistentAccessoryAfterExternalClear() throws {
+        // Simulates the SwiftUI TextField subclass whose `inputAccessoryView` getter returns
+        // nil on a subsequent update even after we set it. The idempotent branch will miss,
+        // and we must fall through to reusing the persistent instance — not allocate fresh.
+        let field = MockTextField()
+        let sut = makeCoordinator(currentFirstResponder: { field })
+        sut.installIfNeeded()
+        let first = try #require(field.inputAccessoryView as? GiniDoneAccessoryView)
+
+        // Simulate the SwiftUI-getter-returns-nil quirk.
+        field.inputAccessoryView = nil
+
+        sut.installIfNeeded()
+        let second = try #require(field.inputAccessoryView as? GiniDoneAccessoryView)
+
+        #expect(first === second, "the coordinator must reuse its cached accessory, not allocate a fresh one")
+    }
+
+    @Test("uninstallIfInstalled reloads the current first responder when focus moved to a different field")
+    func uninstallReloadsCurrentFirstResponderWhenDifferent() {
+        // Amount focused → IBAN focused before uninstall fires: the previous field's Done
+        // toolbar can linger on iOS 26+ unless the current FR is told to reload.
+        let amountField = MockTextField()
+        let ibanField = MockTextField()
+        var currentFR: UITextField? = amountField
+        let sut = makeCoordinator(currentFirstResponder: { currentFR })
+        sut.installIfNeeded()
+        let ibanReloadsBefore = ibanField.reloadInputViewsCount
+
+        currentFR = ibanField
+        sut.uninstallIfInstalled()
+
+        #expect(ibanField.reloadInputViewsCount == ibanReloadsBefore + 1,
+                "current first responder must be reloaded so a stale accessory drops")
+    }
+
+    @Test("uninstallIfInstalled skips the current-FR reload when currentFirstResponder returns nil")
+    func uninstallSkipsReloadWhenNoCurrentFirstResponder() {
+        // Covers the `let current = currentFirstResponder()` branch where the resolver
+        // returns nil (e.g. no responder anywhere in the hierarchy at uninstall time).
+        let field = MockTextField()
+        field.mockIsFirstResponder = false
+        var currentFR: UITextField? = field
+        let sut = makeCoordinator(currentFirstResponder: { currentFR })
+        sut.installIfNeeded()
+
+        currentFR = nil
+        sut.uninstallIfInstalled()
+
+        #expect(field.inputAccessoryView == nil, "the attached field must still have its accessory cleared")
+    }
+
     @Test("uninstallIfInstalled clears attachedField so subsequent uninstall is a no-op")
     func uninstallClearsAttachedField() {
         let field = MockTextField()
