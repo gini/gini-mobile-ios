@@ -70,15 +70,11 @@ struct PaymentReviewPaymentInformationView: View {
     var body: some View {
         scrollView
             .onAppear {
-                viewModel.isViewVisible = true
                 viewModel.populateFieldsIfNeeded()
                 // Move VoiceOver focus into sheet content on appear.
                 UIAccessibility.post(notification: .screenChanged, argument: nil)
                 // Restore focus after rotation recreates the view.
                 restoreFocusIfNeeded()
-            }
-            .onDisappear {
-                viewModel.isViewVisible = false
             }
             .onChange(of: focusedField) { newField in
                 handleFocusedFieldChange(newField)
@@ -506,27 +502,20 @@ struct PaymentReviewPaymentInformationView: View {
         if let field = newField {
             viewModel.activeField = field
             viewModel.isAmountFieldFocused = (field == .amount)
+            // A focus event means rotation is done — subsequent focus resigns should clear.
+            viewModel.parentModel?.isDismissingForRotation = false
         } else {
-            // Hide Done toolbar immediately; delay clearing activeField to distinguish dismiss from rotation.
             viewModel.isAmountFieldFocused = false
-            let fieldToClear = viewModel.activeField
-            Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(100))
-                if viewModel.isViewVisible,
-                   focusedField == nil,
-                   viewModel.activeField == fieldToClear {
-                    viewModel.activeField = nil
-                }
+            // Preserve activeField during rotation so `restoreFocusIfNeeded` can re-apply focus.
+            if viewModel.parentModel?.isDismissingForRotation != true {
+                viewModel.activeField = nil
             }
         }
     }
 
     /**
-     Delays 400 ms for rotation animation before re-applying focus. No `isViewVisible` guard —
-     it reads the shared viewmodel flag and races with the outgoing view's `onDisappear`, which
-     can fire *after* the incoming view's `onAppear` during a SwiftUI transition and flip the flag
-     back to `false`, causing the guard to fail even though the current view is alive and ready
-     for focus. Setting `focusedField` on a dismissed view is a benign no-op, so no guard is safer.
+     Delays 400 ms for the rotation animation to settle before re-applying focus. Setting
+     `focusedField` on a dismissed view is a benign no-op, so no visibility guard is needed.
      */
     private func restoreFocusIfNeeded() {
         guard let field = viewModel.activeField else { return }

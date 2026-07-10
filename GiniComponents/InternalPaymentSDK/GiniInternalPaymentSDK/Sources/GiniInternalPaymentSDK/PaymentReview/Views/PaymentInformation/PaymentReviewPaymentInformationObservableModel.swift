@@ -30,11 +30,9 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      */
     @Published var activeField: ActivePaymentField? = nil
 
-    /**
-     Set to `true` while the view is on screen. Used to distinguish a rotation (view
-     disappears quickly) from the user explicitly dismissing the keyboard (view stays visible).
-     */
-    var isViewVisible: Bool = false
+    /// Back-reference so the view's focus handler can read `isDismissingForRotation`
+    /// to tell a rotation teardown from a user dismiss.
+    weak var parentModel: PaymentReviewObservableModel?
 
     /**
      Tracks whether the amount field is currently focused.
