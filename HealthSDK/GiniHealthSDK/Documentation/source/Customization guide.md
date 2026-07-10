@@ -126,3 +126,41 @@ To copy text from Figma you need to have a Figma account. If you don't have one,
 > **Note:** 
 > - PaymentReviewViewController contains the following configuration options:
 > - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
+
+### iOS 26 Liquid Glass adaptations
+
+On iOS 26+ the Payment Review screen adopts system Liquid Glass automatically — no host-app configuration is required. Three customization hooks were introduced alongside the adaptation and apply to all iOS versions:
+
+#### Navigation bar title
+
+The screen supports a navigation bar title, set via a localized string. The default is empty (no title shown), preserving existing behavior.
+
+To display a title, add the key to your `Localizable.strings`:
+
+```swift
+"gini.health.reviewscreen.title" = "Payment Review";
+```
+
+For German informal tone, add the `.informal` variant:
+
+```swift
+"gini.health.reviewscreen.title.informal" = "Zahlungsübersicht";
+```
+
+#### Keyboard "Done" button
+
+The amount field's numeric keyboard shows a Done accessory that dismisses the keyboard. On iOS 26+ the system renders it as a Liquid Glass pill; on earlier iOS versions it renders as a labeled bar button.
+
+- **Label** — override via `Localizable.strings`:
+
+  ```swift
+  "gini.health.reviewscreen.keyboard.done.button.title" = "Done";
+  ```
+
+  A `.informal` variant is also supported for the German informal tone.
+
+- **Tint color** — follows the `Accent01` color asset used across the SDK. Override `Accent01.colorset` in your main bundle to change it. See [Colors](#colors).
+
+#### Page indicator colors
+
+The document carousel's page indicators use colors driven by the `Standard01` color asset — the current-page dot renders at full opacity, other dots at 45% alpha. Override `Standard01.colorset` in your main bundle to change both.
