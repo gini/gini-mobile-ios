@@ -89,6 +89,11 @@ public final class PaymentReviewViewController: UIHostingController<PaymentRevie
         let isLandscape = size.width > size.height
 
         observableModel.isDismissingForRotation = true
+        // Reset when the rotation animation completes so the flag can't get stuck `true`
+        // if no field regains focus after the transition.
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            self?.observableModel.isDismissingForRotation = false
+        }
 
         // On iOS 16 the `.presentationCompactAdaptation(.fullScreenCover)` animation fires
         // the moment the size class changes — before SwiftUI's onChange and before a
