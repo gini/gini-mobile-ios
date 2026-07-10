@@ -29,9 +29,9 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
 
     /**
-     Set to `true` by `PaymentReviewViewController.viewWillTransition` before imperatively
-     dismissing the sheet, so the sheet's `onDismiss` handler knows not to call `didTapClose`.
-     Reset to `false` inside that same `onDismiss` handler via `defer`.
+     `true` while a rotation is tearing the view down. Read by the sheet's `onDismiss` (to
+     skip `didTapClose`) and by `handleFocusedFieldChange` (to preserve `activeField` so
+     `restoreFocusIfNeeded` can restore focus). Reset when the remounted view regains focus.
      */
     @Published var isDismissingForRotation: Bool = false
 
@@ -68,11 +68,7 @@ final class PaymentReviewObservableModel: ObservableObject {
      Call this when the user explicitly taps the Done button.
      */
     func trackKeyboardDismissed() {
-        // Clear immediately — the 0.1 s delay in `onChange(of: focusedField)` is designed to
-        // distinguish rotation from a manual dismiss, but if the user rotates right after tapping
-        // Done the view is already gone and the check sees `isViewVisible == false`, keeping
-        // `activeField` set and reopening the keyboard in the new layout. Clearing here first
-        // wins the race.
+        // Clear so a subsequent rotation doesn't re-focus via `restoreFocusIfNeeded`.
         paymentInformationObservableModel.activeField = nil
         model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
     }
@@ -104,6 +100,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         self.containerViewModel = model.paymentReviewContainerViewModel()
         self.paymentInformationObservableModel = PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
         self.showBanner = !model.configuration.isInfoBarHidden
+        paymentInformationObservableModel.parentModel = self
         setupBindings()
         
         reduceMotionObserver = NotificationCenter.default.addObserver(forName: UIAccessibility.reduceMotionStatusDidChangeNotification, object: nil, queue: .main) { [weak self] _ in

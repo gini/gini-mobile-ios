@@ -41,10 +41,11 @@ public struct PaymentReviewContentView: View {
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
         .onChange(of: giniLayout.isLandscape) { landscape in
             // Belt-and-suspenders: iOS 16 uses viewWillTransition; iOS 17+ uses this path.
-            if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
-                viewModel.isDismissingForRotation = true
+            guard !viewModel.isBottomSheetMode else { return }
+            viewModel.isDismissingForRotation = true
+            if landscape && showBottomSheet {
                 showBottomSheet = false
-            } else if !landscape && !viewModel.isBottomSheetMode {
+            } else if !landscape {
                 // Landscape → portrait in embedded mode: the numeric keyboard would
                 // otherwise stay up throughout the sheet re-presentation, visible over
                 // the still-animating sheet for ~500 ms. Force-resign first responder now
@@ -101,7 +102,8 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            defer { viewModel.isDismissingForRotation = false }
+            // No flag reset here — `handleFocusedFieldChange` needs it true through the portrait
+            // teardown; it's reset when the remounted view regains focus.
             if !viewModel.isDismissingForRotation && (viewModel.isBottomSheetMode || isVoiceOverEnabled) {
                 viewModel.didTapClose()
             }
