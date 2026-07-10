@@ -141,11 +141,11 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Got it button
         skontoScreen.gotItButton.tap()
         //Assert that Switch is disabled
-        XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
+        XCTAssertEqual((skontoScreen.skontoSwitch.value as? String) ?? "" , "0")
         //Enable Skonto switch
         skontoScreen.skontoSwitch.tap()
         //Assert that Switch is enabled
-        XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
+        XCTAssertEqual((skontoScreen.skontoSwitch.value as? String) ?? "" , "1")
         //Tap Proceed button
         skontoScreen.proceedButton.tap()
         //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
@@ -180,7 +180,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //For a valid/future skonto there is no expired-discount banner — assert the Skonto screen itself is visible.
         XCTAssertTrue(skontoScreen.proceedButton.waitForExistence(timeout: 10))
         //Assert that switch is enabled (skonto is still active)
-        XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
+        XCTAssertEqual((skontoScreen.skontoSwitch.value as? String) ?? "" , "1")
     }
     
     func testSkontoSwitchDisabledForExpiredDiscount() {
@@ -204,7 +204,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
 
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Assert that Switch is disabled for expired skonto
-        XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
+        XCTAssertEqual((skontoScreen.skontoSwitch.value as? String) ?? "" , "0")
     }
     
     func testSkontoHelpButton() {

@@ -34,9 +34,9 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
-        #if targetEnvironment(simulator)
-        throw XCTSkip("Skipping test on simulator")
-        #endif
+//        #if targetEnvironment(simulator)
+//        throw XCTSkip("Skipping test on simulator")
+//        #endif
         continueAfterFailure = false
         app = XCUIApplication()
         if #available(iOS 13.4, *) {
