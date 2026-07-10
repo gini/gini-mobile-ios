@@ -117,14 +117,21 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
         }
 
         func uninstallIfInstalled() {
-            guard let field = attachedField else { return }
-            if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
+            // Clear from the previously attached field (if it still exists).
+            if let field = attachedField {
                 field.inputAccessoryView = nil
-                // Only reload if the field is still first responder; otherwise it's a no-op
-                // that can cause a keyboard flash on some iOS versions.
                 if field.isFirstResponder {
                     field.reloadInputViews()
                 }
+            }
+            // Also clear from the CURRENT first responder — on iOS 26+ SwiftUI can
+            // switch focus (e.g. amount → IBAN) before our deferred uninstall runs,
+            // leaving the amount's Done toolbar visible above the IBAN keyboard.
+            if let current = currentFirstResponder(),
+               current !== attachedField,
+               current.inputAccessoryView is GiniDoneAccessoryView {
+                current.inputAccessoryView = nil
+                current.reloadInputViews()
             }
             attachedField = nil
             persistentAccessory = nil
