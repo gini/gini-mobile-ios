@@ -1,0 +1,152 @@
+//
+//  GiniKeyboardAccessoryInstaller.swift
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+//
+
+import SwiftUI
+import UIKit
+import GiniUtilites
+
+/**
+ A zero-size SwiftUI helper that installs a `GiniDoneAccessoryView` on the current
+ first-responder `UITextField` while `isActive` is `true`.
+
+ Use as a `.background(...)` on the SwiftUI `TextField` that owns the focus (or on any
+ ancestor). The SwiftUI `TextField` continues to manage editing and `@FocusState`; this
+ helper only sets `inputAccessoryView` on whichever underlying UIKit `UITextField` is
+ currently first responder.
+
+ Why this instead of a `.toolbar { ToolbarItemGroup(placement: .keyboard) }`:
+ SwiftUI's keyboard toolbar is unreliable inside a `.sheet {}` on iOS 26 — after a
+ portrait→landscape→portrait rotation the re-presented sheet's toolbar sometimes fails
+ to re-attach, and the accessory view's height flipping empty↔populated triggers
+ `_UIRemoteKeyboardPlaceholderView` constraint conflicts. UIKit's `inputAccessoryView`
+ is glued to the keyboard's own window and has none of those failure modes.
+ */
+struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
+
+    let isActive: Bool
+    let doneTintColor: UIColor
+    let onDone: () -> Void
+
+    func makeUIView(context _: Context) -> UIView {
+        UIView(frame: .zero)
+    }
+
+    func updateUIView(_: UIView, context: Context) {
+        context.coordinator.apply(isActive: isActive, doneTintColor: doneTintColor, onDone: onDone)
+    }
+
+    static func dismantleUIView(_: UIView, coordinator: Coordinator) {
+        coordinator.uninstallIfInstalled()
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(doneTintColor: doneTintColor, onDone: onDone)
+    }
+
+    // MARK: - Coordinator
+
+    final class Coordinator: NSObject, GiniDoneAccessoryViewDelegate {
+
+        var onDone: () -> Void
+        var doneTintColor: UIColor
+
+        /**
+         The field we most recently attached to, so we can clear our accessory
+         when it is no longer relevant (focus moved to a non-decimal field, view dismissed).
+         */
+        private weak var attachedField: UITextField?
+
+        /**
+         Injectable for tests; defaults to walking `UIApplication.shared.connectedScenes`.
+         */
+        private let currentFirstResponder: () -> UITextField?
+
+        init(doneTintColor: UIColor,
+             onDone: @escaping () -> Void,
+             currentFirstResponder: @escaping () -> UITextField? = { Coordinator.currentFirstResponderUITextField() }) {
+            self.doneTintColor = doneTintColor
+            self.onDone = onDone
+            self.currentFirstResponder = currentFirstResponder
+        }
+
+        /**
+         Deferred to the next runloop so we don't mutate first-responder state during a
+         SwiftUI update pass.
+         */
+        func apply(isActive: Bool, doneTintColor: UIColor, onDone: @escaping () -> Void) {
+            self.onDone = onDone
+            self.doneTintColor = doneTintColor
+            let shouldInstall = isActive
+            // `[weak self]` so a `dismantleUIView` between this schedule and the fire lets the
+            // coordinator deallocate — the closure then no-ops instead of re-installing on a
+            // first responder owned by another view.
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                if shouldInstall {
+                    self.installIfNeeded()
+                } else {
+                    self.uninstallIfInstalled()
+                }
+            }
+        }
+
+        func installIfNeeded() {
+            guard let field = currentFirstResponder() else { return }
+            // Idempotent — if we already installed on this same field, keep the accessory and
+            // just refresh the tint.
+            if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
+                existing.setDoneTintColor(doneTintColor)
+                return
+            }
+            let accessory = GiniDoneAccessoryView(tintColor: doneTintColor)
+            accessory.delegate = self
+            field.inputAccessoryView = accessory
+            field.reloadInputViews()
+            attachedField = field
+        }
+
+        func uninstallIfInstalled() {
+            guard let field = attachedField else { return }
+            if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
+                field.inputAccessoryView = nil
+                // Only reload if the field is still first responder; otherwise it's a no-op
+                // that can cause a keyboard flash on some iOS versions.
+                if field.isFirstResponder {
+                    field.reloadInputViews()
+                }
+            }
+            attachedField = nil
+        }
+
+        func giniDoneAccessoryViewDidTapDone(_: GiniDoneAccessoryView) {
+            onDone()
+        }
+
+        // MARK: - Responder-chain discovery
+
+        static func currentFirstResponderUITextField() -> UITextField? {
+            for scene in UIApplication.shared.connectedScenes {
+                guard let windowScene = scene as? UIWindowScene else { continue }
+                for window in windowScene.windows where window.isKeyWindow {
+                    if let responder = findFirstResponder(in: window) as? UITextField {
+                        return responder
+                    }
+                }
+            }
+            return nil
+        }
+
+        static func findFirstResponder(in view: UIView) -> UIResponder? {
+            if view.isFirstResponder { return view }
+            for subview in view.subviews {
+                if let responder = findFirstResponder(in: subview) {
+                    return responder
+                }
+            }
+            return nil
+        }
+    }
+}

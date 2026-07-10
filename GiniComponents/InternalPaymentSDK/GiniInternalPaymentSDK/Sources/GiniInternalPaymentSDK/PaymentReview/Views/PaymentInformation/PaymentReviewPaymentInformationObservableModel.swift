@@ -31,10 +31,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     @Published var activeField: ActivePaymentField? = nil
 
     /**
-     Set to `true` while the view is on screen. Used to distinguish a rotation (view
-     disappears quickly) from the user explicitly dismissing the keyboard (view stays visible).
+     Back-reference so the view's focus handler can read `isDismissingForRotation`
+     to tell a rotation teardown from a user dismiss.
      */
-    var isViewVisible: Bool = false
+    weak var parentModel: PaymentReviewObservableModel?
 
     /**
      Tracks whether the amount field is currently focused.
@@ -83,6 +83,14 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
      */
     var keyboardDoneButtonTintColor: Color {
         Color(uiColor: model.configuration.keyboardDoneButtonTintColor)
+    }
+
+    /**
+     UIKit variant of `keyboardDoneButtonTintColor`, consumed by `GiniDoneAccessoryView`
+     (a UIToolbar-based `inputAccessoryView`) which needs a `UIColor` rather than SwiftUI `Color`.
+     */
+    var keyboardDoneButtonTintUIColor: UIColor {
+        model.configuration.keyboardDoneButtonTintColor
     }
 
     let model: PaymentReviewContainerViewModel

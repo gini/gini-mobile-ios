@@ -41,9 +41,20 @@ public struct PaymentReviewContentView: View {
         .animation(.easeInOut(duration: Constants.layoutTransitionDuration), value: giniLayout.isLandscape)
         .onChange(of: giniLayout.isLandscape) { landscape in
             // Belt-and-suspenders: iOS 16 uses viewWillTransition; iOS 17+ uses this path.
-            if landscape && !viewModel.isBottomSheetMode && showBottomSheet {
-                viewModel.isDismissingForRotation = true
+            guard !viewModel.isBottomSheetMode else { return }
+            viewModel.isDismissingForRotation = true
+            if landscape && showBottomSheet {
                 showBottomSheet = false
+            } else if !landscape {
+                // Landscape → portrait in embedded mode: the numeric keyboard would
+                // otherwise stay up throughout the sheet re-presentation, visible over
+                // the still-animating sheet for ~500 ms. Force-resign first responder now
+                // so the keyboard hides immediately; `restoreFocusIfNeeded` re-focuses
+                // (and re-raises the keyboard) after the sheet finishes animating in.
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                to: nil,
+                                                from: nil,
+                                                for: nil)
             }
         }
         .overlay {
@@ -57,28 +68,11 @@ public struct PaymentReviewContentView: View {
         .onAppear {
             viewModel.dismissBannerAfterDelay()
         }
-        // iOS <26 landscape: always-registered ToolbarItemGroup (condition inside) so the bar
-        // never detaches mid-transition, which would cause a glitch when leaving the amount field.
-        // UIKit may log a _UIToolbarContentView.width==0 warning on initial layout; it recovers harmlessly.
-        .toolbar {
-            if #unavailable(iOS 26) {
-                ToolbarItemGroup(placement: .keyboard) {
-                    if giniLayout.isLandscape && !viewModel.isBottomSheetMode && viewModel.isAmountFieldFocused {
-                        Spacer()
-                        Button(viewModel.keyboardDoneButtonTitle) {
-                            viewModel.trackKeyboardDismissed()
-                            viewModel.validateAmountFieldOnKeyboardDismiss()
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                            to: nil,
-                                                            from: nil,
-                                                            for: nil)
-                        }
-                        .tint(viewModel.keyboardDoneButtonTintColor)
-                        .padding(.trailing, Constants.doneButtonHorizontalPadding)
-                    }
-                }
-            }
-        }
+        // No `.toolbar { ToolbarItemGroup(placement: .keyboard) }` here. The amount field
+        // supplies its own Done button via `GiniKeyboardAccessoryInstaller`, which installs a
+        // `GiniDoneAccessoryView` as the current UITextField's `inputAccessoryView` — the
+        // system attaches it directly to the keyboard's own window, reliable across all iOS
+        // versions, orientations, and sheet presentations.
     }
     
     // MARK: - Portrait Layout
@@ -108,7 +102,8 @@ public struct PaymentReviewContentView: View {
             }
         }
         .sheet(isPresented: $showBottomSheet) {
-            defer { viewModel.isDismissingForRotation = false }
+            // No flag reset here — `handleFocusedFieldChange` needs it true through the portrait
+            // teardown; it's reset when the remounted view regains focus.
             if !viewModel.isDismissingForRotation && (viewModel.isBottomSheetMode || isVoiceOverEnabled) {
                 viewModel.didTapClose()
             }
@@ -249,7 +244,6 @@ public struct PaymentReviewContentView: View {
         static let landscapeContainerSpacing: CGFloat = 8.0
         static let paymentInformationContainerTopCornerRadius: CGFloat = 12.0
         static let paymentInformationContainerBottomCornerRadius: CGFloat = 6.0
-        static let doneButtonHorizontalPadding: CGFloat = 16.0
         static let grabberWidth: CGFloat = 36.0
         static let grabberHeight: CGFloat = 5.0
         static let grabberHitAreaWidth: CGFloat = 60.0
