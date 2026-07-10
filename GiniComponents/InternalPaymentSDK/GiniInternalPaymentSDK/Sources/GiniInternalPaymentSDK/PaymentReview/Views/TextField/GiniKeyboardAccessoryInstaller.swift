@@ -33,22 +33,7 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
     }
 
     func updateUIView(_: UIView, context: Context) {
-        // Refresh the coordinator's captured callback so the Done tap always dispatches
-        // through the current view struct's closure.
-        context.coordinator.onDone = onDone
-        context.coordinator.doneTintColor = doneTintColor
-
-        // Defer to the next runloop so we don't mutate first-responder state during a
-        // SwiftUI update pass. By the time this fires, the SwiftUI TextField the user
-        // just focused has become first responder.
-        let shouldInstall = isActive
-        DispatchQueue.main.async {
-            if shouldInstall {
-                context.coordinator.installIfNeeded()
-            } else {
-                context.coordinator.uninstallIfInstalled()
-            }
-        }
+        context.coordinator.apply(isActive: isActive, doneTintColor: doneTintColor, onDone: onDone)
     }
 
     static func dismantleUIView(_: UIView, coordinator: Coordinator) {
@@ -70,13 +55,33 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
         /// when the accessory is no longer relevant (focus moved to a non-decimal field, view dismissed).
         private weak var attachedField: UITextField?
 
-        init(doneTintColor: UIColor, onDone: @escaping () -> Void) {
+        /// Injectable for tests; defaults to walking `UIApplication.shared.connectedScenes`.
+        private let currentFirstResponder: () -> UITextField?
+
+        init(doneTintColor: UIColor,
+             onDone: @escaping () -> Void,
+             currentFirstResponder: @escaping () -> UITextField? = { Coordinator.currentFirstResponderUITextField() }) {
             self.doneTintColor = doneTintColor
             self.onDone = onDone
+            self.currentFirstResponder = currentFirstResponder
+        }
+
+        /// Deferred to the next runloop so we don't mutate first-responder state during a SwiftUI update pass.
+        func apply(isActive: Bool, doneTintColor: UIColor, onDone: @escaping () -> Void) {
+            self.onDone = onDone
+            self.doneTintColor = doneTintColor
+            let shouldInstall = isActive
+            DispatchQueue.main.async {
+                if shouldInstall {
+                    self.installIfNeeded()
+                } else {
+                    self.uninstallIfInstalled()
+                }
+            }
         }
 
         func installIfNeeded() {
-            guard let field = Self.currentFirstResponderUITextField() else { return }
+            guard let field = currentFirstResponder() else { return }
             // Idempotent — if we already installed on this same field, keep the accessory and
             // just refresh the tint.
             if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
@@ -109,7 +114,7 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
 
         // MARK: - Responder-chain discovery
 
-        private static func currentFirstResponderUITextField() -> UITextField? {
+        static func currentFirstResponderUITextField() -> UITextField? {
             for scene in UIApplication.shared.connectedScenes {
                 guard let windowScene = scene as? UIWindowScene else { continue }
                 for window in windowScene.windows where window.isKeyWindow {
@@ -121,7 +126,7 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
             return nil
         }
 
-        private static func findFirstResponder(in view: UIView) -> UIResponder? {
+        static func findFirstResponder(in view: UIView) -> UIResponder? {
             if view.isFirstResponder { return view }
             for subview in view.subviews {
                 if let responder = findFirstResponder(in: subview) {
