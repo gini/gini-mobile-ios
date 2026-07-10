@@ -41,7 +41,10 @@ public final class GiniDoneAccessoryView: UIView {
        iOS 26 Liquid Glass this renders as a checkmark glyph inside the accessory pill.
      */
     public init(tintColor: UIColor? = nil) {
-        let toolbar = UIToolbar()
+        // Non-zero initial width avoids the iOS < 26 `_UIToolbarContentView.width == 0` conflict loop.
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0,
+                                              width: UIScreen.main.bounds.width,
+                                              height: Constants.innerToolbarHeight))
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         toolbar.barStyle = .default
 
