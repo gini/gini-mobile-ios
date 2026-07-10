@@ -252,7 +252,15 @@ final class DigitalInvoiceViewController: UIViewController {
                 navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
             }
         }
-        tableView.reloadData()
+        // Reconfigure visible cells in place instead of dequeueing new ones so
+        // the iOS 26 Liquid Glass UISwitch isn't animated on unrelated rows
+        // when the table reloads after a tap.
+        if #available(iOS 15.0, *),
+           let visibleIndexPaths = tableView.indexPathsForVisibleRows, !visibleIndexPaths.isEmpty {
+            tableView.reconfigureRows(at: visibleIndexPaths)
+        } else {
+            tableView.reloadData()
+        }
         proceedView.configure(viewModel: viewModel)
     }
 
