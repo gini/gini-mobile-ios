@@ -45,7 +45,7 @@ public final class GiniDoneAccessoryView: UIView {
         self.doneButton = doneButton
 
         // Initial frame matches the fixed `intrinsicContentSize` — no post-layout resize needed.
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: Constants.height))
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: Constants.toolbarHeight))
 
         doneButton.target = self
         doneButton.action = #selector(handleDoneTap)
@@ -56,25 +56,26 @@ public final class GiniDoneAccessoryView: UIView {
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
 
         addSubview(toolbar)
+        // Center the 44 pt UIToolbar vertically inside a slightly taller accessory
+        // container so the Done checkmark doesn't hug the top/bottom edges.
+        // Matches the padding Apple uses for Liquid Glass keyboard toolbars on iOS 26.
         NSLayoutConstraint.activate([
-            toolbar.topAnchor.constraint(equalTo: topAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor)
+            toolbar.centerYAnchor.constraint(equalTo: centerYAnchor),
+            toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
+            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                             constant: Constants.horizontalInset),
+            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                              constant: -Constants.horizontalInset)
         ])
 
         autoresizingMask = .flexibleWidth
     }
 
-    /// Forward the toolbar's own intrinsic size as ours. A fixed smaller height clips the
-    /// Liquid Glass pill on iOS 26 (its rounded shape needs the full ~44pt bar to render
-    /// without being cut off on the trailing edge), and hard-coding a larger value risks
-    /// stale metrics if UIKit changes them. Falling back to `Constants.height` guards against
-    /// the toolbar reporting 0 before it's in the hierarchy.
+    /// Return the outer container height directly — the toolbar's own intrinsic size is
+    /// forced to `innerToolbarHeight` (44) via the height constraint above, and the
+    /// container is 56 to give the Liquid Glass pill vertical breathing room.
     public override var intrinsicContentSize: CGSize {
-        let toolbarSize = toolbar.intrinsicContentSize
-        let height = toolbarSize.height > 0 ? toolbarSize.height : Constants.height
-        return CGSize(width: UIView.noIntrinsicMetric, height: height)
+        CGSize(width: UIView.noIntrinsicMetric, height: Constants.toolbarHeight)
     }
 
     @available(*, unavailable)
@@ -92,9 +93,14 @@ public final class GiniDoneAccessoryView: UIView {
     }
 
     private enum Constants {
-        /// Fallback height used only if `toolbar.intrinsicContentSize` hasn't resolved yet
-        /// (the toolbar reports 0 before it's laid out). Sized to comfortably fit the iOS 26
-        /// Liquid Glass pill so nothing clips on first mount before Auto Layout kicks in.
-        static let height: CGFloat = 60
+        /// Outer container height. Taller than the inner UIToolbar so the Done
+        /// checkmark has vertical breathing room, matching iOS 26 Liquid Glass
+        /// keyboard toolbar padding.
+        static let toolbarHeight: CGFloat = 56
+        /// Height of the UIToolbar itself. UIKit's standard toolbar metric.
+        static let innerToolbarHeight: CGFloat = 44
+        /// Trims a few points from each edge so the Done button doesn't sit flush
+        /// against the keyboard's window edge.
+        static let horizontalInset: CGFloat = 4
     }
 }
