@@ -131,7 +131,7 @@ struct PaymentReviewPaymentInformationView: View {
 
     // Sheet context: sheet lifts above the keyboard; suppress double-adjustment.
     // No safeAreaInset for a Done button: the amount field's UIKit input accessory view
-    // (`GiniDoneAccessoryView`, installed by `KeyboardAccessoryInstaller`) is part of the
+    // (`GiniDoneAccessoryView`, installed by `GiniKeyboardAccessoryInstaller`) is part of the
     // keyboard from the system's point of view, so the sheet already lifts above it.
     @ViewBuilder
     private var sheetScrollView: some View {
@@ -316,12 +316,12 @@ struct PaymentReviewPaymentInformationView: View {
                 inputState: viewModel.amountInputState
             ))
             // Attach the UIKit Done accessory to whichever UITextField SwiftUI creates for this
-            // field. Done via responder-chain traversal (see KeyboardAccessoryInstaller): reliable
+            // field. Done via responder-chain traversal (see GiniKeyboardAccessoryInstaller): reliable
             // because `UITextField.inputAccessoryView` is glued to the keyboard's own window by
             // the system, and non-invasive because SwiftUI TextField + @FocusState continue to
             // manage the editing/focus lifecycle exactly as they do for the other fields.
             .background(
-                KeyboardAccessoryInstaller(
+                GiniKeyboardAccessoryInstaller(
                     isActive: focusedField == .amount,
                     doneTintColor: viewModel.keyboardDoneButtonTintUIColor,
                     onDone: { dismissAmountKeyboard() }

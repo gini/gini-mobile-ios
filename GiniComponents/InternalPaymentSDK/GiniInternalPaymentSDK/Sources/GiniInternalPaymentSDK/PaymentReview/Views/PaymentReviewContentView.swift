@@ -69,7 +69,7 @@ public struct PaymentReviewContentView: View {
             viewModel.dismissBannerAfterDelay()
         }
         // No `.toolbar { ToolbarItemGroup(placement: .keyboard) }` here. The amount field
-        // supplies its own Done button via `KeyboardAccessoryInstaller`, which installs a
+        // supplies its own Done button via `GiniKeyboardAccessoryInstaller`, which installs a
         // `GiniDoneAccessoryView` as the current UITextField's `inputAccessoryView` — the
         // system attaches it directly to the keyboard's own window, reliable across all iOS
         // versions, orientations, and sheet presentations.

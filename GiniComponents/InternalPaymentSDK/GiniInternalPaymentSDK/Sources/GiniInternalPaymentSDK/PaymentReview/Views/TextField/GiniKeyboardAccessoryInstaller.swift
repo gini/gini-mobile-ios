@@ -1,5 +1,5 @@
 //
-//  KeyboardAccessoryInstaller.swift
+//  GiniKeyboardAccessoryInstaller.swift
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
@@ -22,7 +22,7 @@ import GiniUtilites
 /// to re-attach, and the accessory view's height flipping empty↔populated triggers
 /// `_UIRemoteKeyboardPlaceholderView` constraint conflicts. UIKit's `inputAccessoryView`
 /// is glued to the keyboard's own window and has none of those failure modes.
-struct KeyboardAccessoryInstaller: UIViewRepresentable {
+struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
 
     let isActive: Bool
     let doneTintColor: UIColor
