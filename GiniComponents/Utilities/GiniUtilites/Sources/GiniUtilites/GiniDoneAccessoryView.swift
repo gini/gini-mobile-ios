@@ -70,7 +70,7 @@ public final class GiniDoneAccessoryView: UIView {
         // The extra ~12 pt goes to the top of the container, giving iOS 26's Liquid
         // Glass pill breathing room above without exposing the keyboard below.
         NSLayoutConstraint.activate([
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.toolbarBottomInset),
             toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
             toolbar.leadingAnchor.constraint(equalTo: leadingAnchor,
                                              constant: Constants.horizontalInset),
@@ -122,5 +122,10 @@ public final class GiniDoneAccessoryView: UIView {
          the keyboard's window edge.
          */
         static let horizontalInset: CGFloat = 4
+        
+        /**
+         Slight overlap with the keyboard to avoid a visible seam on iOS 26.
+         */
+        static let toolbarBottomInset: CGFloat = -1
     }
 }
