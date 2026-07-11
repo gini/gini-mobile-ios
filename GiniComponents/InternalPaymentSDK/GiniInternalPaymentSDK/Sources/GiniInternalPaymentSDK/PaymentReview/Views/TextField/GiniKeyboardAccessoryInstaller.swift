@@ -71,6 +71,16 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
          */
         private let currentFirstResponder: () -> UITextField?
 
+        /**
+         Debounce for `apply` — cancels any pending install/uninstall from a previous
+         SwiftUI update before scheduling the new one. Without this, a burst of
+         `apply(isActive: true)` calls followed by `apply(isActive: false)` (which
+         happens on every focus change during a SwiftUI update storm) would fire ALL
+         the queued `installIfNeeded` closures AFTER the user has already moved focus
+         to a different field, installing our accessory on the wrong UITextField.
+         */
+        private var pendingWork: DispatchWorkItem?
+
         init(doneTintColor: UIColor,
              onDone: @escaping () -> Void,
              currentFirstResponder: @escaping () -> UITextField? = { Coordinator.currentFirstResponderUITextField() }) {
@@ -86,24 +96,34 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
         func apply(isActive: Bool, doneTintColor: UIColor, onDone: @escaping () -> Void) {
             self.onDone = onDone
             self.doneTintColor = doneTintColor
-            let shouldInstall = isActive
-            // `[weak self]` so a `dismantleUIView` between this schedule and the fire lets the
-            // coordinator deallocate — the closure then no-ops instead of re-installing on a
-            // first responder owned by another view.
-            DispatchQueue.main.async { [weak self] in
+            // Cancel any pending work — the LATEST apply's intent wins. Otherwise
+            // stale `installIfNeeded` closures from earlier `apply(isActive: true)`
+            // calls would fire after focus has moved to another field and install
+            // our accessory on the wrong UITextField.
+            pendingWork?.cancel()
+            let work = DispatchWorkItem { [weak self] in
                 guard let self else { return }
-                if shouldInstall {
+                if isActive {
                     self.installIfNeeded()
                 } else {
                     self.uninstallIfInstalled()
                 }
             }
+            pendingWork = work
+            DispatchQueue.main.async(execute: work)
         }
 
         func installIfNeeded() {
             guard let field = currentFirstResponder() else { return }
-            // Idempotent — if we already installed on this same field, keep the accessory and
-            // just refresh the tint.
+            // If we already have an attachedField and the current FR is a different one,
+            // focus has moved between when apply(true) was queued and when it fired. Don't
+            // install on the wrong field — that caused the sticky Done toolbar over the
+            // alphanumeric keyboard when moving amount → IBAN.
+            if let attached = attachedField, attached !== field {
+                return
+            }
+            // Idempotent — if we already installed on this same field, keep the accessory
+            // and just refresh the tint.
             if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
                 existing.setDoneTintColor(doneTintColor)
                 return
@@ -117,12 +137,7 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
         }
 
         func uninstallIfInstalled() {
-            let hadInstallation = attachedField != nil || persistentAccessory != nil
-            guard let field = attachedField else {
-                attachedField = nil
-                persistentAccessory = nil
-                return
-            }
+            guard let field = attachedField else { return }
             if let existing = field.inputAccessoryView as? GiniDoneAccessoryView, existing.delegate === self {
                 field.inputAccessoryView = nil
                 // Only reload if the field is still first responder; otherwise it's a no-op
@@ -130,15 +145,6 @@ struct GiniKeyboardAccessoryInstaller: UIViewRepresentable {
                 if field.isFirstResponder {
                     field.reloadInputViews()
                 }
-            }
-            // On iOS 26+ SwiftUI can switch focus (amount → IBAN) before our deferred
-            // uninstall runs, leaving the previous field's Done toolbar visible above the
-            // new field's keyboard. Force-reload the current first responder so the
-            // keyboard window re-queries its (nil) accessory and drops the stale one.
-            if hadInstallation,
-               let current = currentFirstResponder(),
-               current !== field {
-                current.reloadInputViews()
             }
             attachedField = nil
             persistentAccessory = nil
