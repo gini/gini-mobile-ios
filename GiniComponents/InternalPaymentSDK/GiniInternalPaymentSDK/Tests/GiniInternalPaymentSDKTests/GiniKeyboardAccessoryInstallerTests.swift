@@ -162,6 +162,25 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
                 "uninstall must leave an accessory owned by other code untouched")
     }
 
+    @Test("installIfNeeded reuses the persistent accessory when the field's inputAccessoryView reads back nil")
+    func installReusesPersistentAccessoryAfterExternalClear() throws {
+        // Simulates the SwiftUI TextField subclass whose `inputAccessoryView` getter returns
+        // nil on a subsequent update even after we set it. The idempotent branch will miss,
+        // and we must fall through to reusing the persistent instance — not allocate fresh.
+        let field = MockTextField()
+        let sut = makeCoordinator(currentFirstResponder: { field })
+        sut.installIfNeeded()
+        let first = try #require(field.inputAccessoryView as? GiniDoneAccessoryView)
+
+        // Simulate the SwiftUI-getter-returns-nil quirk.
+        field.inputAccessoryView = nil
+
+        sut.installIfNeeded()
+        let second = try #require(field.inputAccessoryView as? GiniDoneAccessoryView)
+
+        #expect(first === second, "the coordinator must reuse its cached accessory, not allocate a fresh one")
+    }
+
     @Test("uninstallIfInstalled clears attachedField so subsequent uninstall is a no-op")
     func uninstallClearsAttachedField() {
         let field = MockTextField()
@@ -263,6 +282,27 @@ struct GiniKeyboardAccessoryInstallerCoordinatorTests {
         try? await Task.sleep(for: .milliseconds(20))
 
         #expect(field.inputAccessoryView == nil, "uninstall must run after the async dispatch")
+    }
+
+    @Test("apply cancels the previous pending work — the latest intent wins")
+    func applyCancelsPreviousPendingWork() async {
+        // Simulates the SwiftUI update storm: many rapid `apply` calls before the first
+        // work item has a chance to fire. Only the LATEST intent must run — the previous
+        // pending install must be cancelled, otherwise a stale install would run and
+        // then be undone by the queued uninstall, wasting a reloadInputViews call.
+        let field = MockTextField()
+        field.mockIsFirstResponder = false
+        let sut = makeCoordinator(currentFirstResponder: { field })
+
+        sut.apply(isActive: true, doneTintColor: .systemBlue, onDone: {})
+        sut.apply(isActive: false, doneTintColor: .systemBlue, onDone: {})
+
+        try? await Task.sleep(for: .milliseconds(20))
+
+        #expect(field.inputAccessoryView == nil,
+                "the cancelled install must not have run")
+        #expect(field.reloadInputViewsCount == 0,
+                "the cancelled install's reloadInputViews must NOT fire")
     }
 
     @Test("apply captures self weakly — a coordinator released before the async fires is deallocated cleanly")
