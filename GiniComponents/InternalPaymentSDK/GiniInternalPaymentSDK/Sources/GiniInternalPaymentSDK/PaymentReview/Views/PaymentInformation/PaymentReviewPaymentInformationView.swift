@@ -246,19 +246,22 @@ struct PaymentReviewPaymentInformationView: View {
      devices where the initial content-length update from the inline spacer hasn't propagated
      to the ScrollView's scrollable range in time.
 
-     `focusedField` is read at execution time (not captured) so a rapid field switch during the
-     delay window scrolls to the latest field rather than the stale one.
+     All state (`focusedField`, `keyboardHeight`, `isDocCollection`) is re-read at execution
+     time so both dispatches bail out if the keyboard has been dismissed or the layout has
+     switched out of docCollection mode during the delay — otherwise a stale corrective scroll
+     would override the "scroll to top on keyboard hide" handler. Reading `focusedField` late
+     also means a rapid field switch scrolls to the latest field, not the stale one.
      */
     private func scrollFocusedFieldAboveKeyboard(proxy: ScrollViewProxy) {
         DispatchQueue.main.async {
-            guard let field = focusedField else { return }
+            guard isDocCollection, keyboardHeight > 0, let field = focusedField else { return }
             withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
                 proxy.scrollTo(field, anchor: .top)
             }
         }
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(Constants.correctiveScrollDelayMs))
-            guard let field = focusedField else { return }
+            guard isDocCollection, keyboardHeight > 0, let field = focusedField else { return }
             withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
                 proxy.scrollTo(field, anchor: .top)
             }
