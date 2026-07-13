@@ -129,7 +129,7 @@ To copy text from Figma you need to have a Figma account. If you don't have one,
 
 ### iOS 26 Liquid Glass adaptations
 
-On iOS 26+ the Payment Review screen adopts system Liquid Glass automatically — no host-app configuration is required. Three customization hooks were introduced alongside the adaptation and apply to all iOS versions:
+On iOS 26+ the Payment Review screen adopts system Liquid Glass automatically — no host-app configuration is required. The three customization hooks below were introduced alongside the adaptation and are available on all supported iOS versions:
 
 #### Navigation bar title
 
@@ -159,8 +159,8 @@ The amount field's numeric keyboard shows a Done accessory that dismisses the ke
 
   A `.informal` variant is also supported for the German informal tone.
 
-- **Tint color** — follows the `Accent01` color asset used across the SDK. Override `Accent01.colorset` in your main bundle to change it. See [Colors](#colors).
+- **Tint color** — follows the accent color used across the SDK, which resolves through the `Accent01Dark` (light mode) and `Accent01Light` (dark mode) color assets. To override, add `Accent01Dark.colorset` and `Accent01Light.colorset` to your main bundle. See [Colors](#colors).
 
 #### Page indicator colors
 
-The document carousel's page indicators use colors driven by the `Standard01` color asset — the current-page dot renders at full opacity, other dots at 45% alpha. Override `Standard01.colorset` in your main bundle to change both.
+The document carousel's page indicators use the standard foreground color, which resolves through the `Dark01` (light mode) and `Light01` (dark mode) color assets. The current-page dot renders at full opacity; other dots at 45% alpha. To override, add `Dark01.colorset` and `Light01.colorset` to your main bundle.
