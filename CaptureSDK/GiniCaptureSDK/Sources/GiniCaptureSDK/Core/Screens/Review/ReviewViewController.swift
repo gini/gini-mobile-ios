@@ -155,6 +155,12 @@ public final class ReviewViewController: UIViewController {
         pageControl.addTarget(self,
                               action: #selector(pageControlSelectionAction(_:)),
                               for: .valueChanged)
+        if #available(iOS 14.0, *) {
+            // Persistent capsule behind the dots on iOS 14+. iOS 26 upgrades this to
+            // the Liquid Glass adaptive material automatically. Gated because the
+            // SDK deployment target is iOS 13, where `backgroundStyle` doesn't exist.
+            pageControl.backgroundStyle = .prominent
+        }
 
         return pageControl
     }()

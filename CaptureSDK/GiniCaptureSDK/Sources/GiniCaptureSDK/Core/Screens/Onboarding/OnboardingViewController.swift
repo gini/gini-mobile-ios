@@ -59,6 +59,12 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
+        if #available(iOS 14.0, *) {
+            // Persistent capsule behind the dots on iOS 14+. iOS 26 upgrades this to
+            // the Liquid Glass adaptive material automatically. Gated because the
+            // SDK deployment target is iOS 13, where `backgroundStyle` doesn't exist.
+            pageControl.backgroundStyle = .prominent
+        }
         updatePageControlAndNavigationButtons(at: 0)
     }
 
