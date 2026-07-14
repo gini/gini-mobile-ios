@@ -76,7 +76,7 @@ struct PaymentReviewPaymentInformationView: View {
                 // Restore focus after rotation recreates the view.
                 restoreFocusIfNeeded()
             }
-            .onChange(of: focusedField) { newField in
+            .onChange(of: focusedField) { _, newField in
                 handleFocusedFieldChange(newField)
             }
             .background(Color(.systemBackground))
@@ -212,7 +212,7 @@ struct PaymentReviewPaymentInformationView: View {
             // keyboard. Anchor `.top` aligns the field with the ScrollView's viewport top —
             // guaranteed above the keyboard regardless of device height, because the inline
             // trailing spacer above extends the scrollable content by exactly keyboardHeight.
-            .onChange(of: keyboardHeight) { height in
+            .onChange(of: keyboardHeight) { _, height in
                 guard isDocCollection else { return }
                 if height > 0 {
                     scrollFocusedFieldAboveKeyboard(proxy: proxy)
@@ -224,9 +224,10 @@ struct PaymentReviewPaymentInformationView: View {
             }
             // Field-switch (IBAN → paymentPurpose) while keyboard is already up, AND
             // portrait→landscape focus restore (restoreFocusIfNeeded sets focusedField 400 ms
-            // after mount).
-            .onChange(of: focusedField) { _ in
-                guard isDocCollection, keyboardHeight > 0 else { return }
+            // after mount). Skip when focus is being cleared — resign events would otherwise
+            // schedule unnecessary async scroll work that bails out later anyway.
+            .onChange(of: focusedField) { _, newFocus in
+                guard isDocCollection, keyboardHeight > 0, newFocus != nil else { return }
                 scrollFocusedFieldAboveKeyboard(proxy: proxy)
             }
         }
@@ -308,7 +309,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .recipient,
                                            inputState: viewModel.recipientInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .recipient,
                                             inputState: \.recipientInputState,
@@ -316,7 +317,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.recipientError)
             }
         }
-        .onChange(of: viewModel.recipientInputState.text) { _ in
+        .onChange(of: viewModel.recipientInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .recipient else { return }
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
@@ -337,7 +338,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .iban,
                                            inputState: viewModel.ibanInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .iban,
                                             inputState: \.ibanInputState,
@@ -345,7 +346,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.ibanError)
             }
         }
-        .onChange(of: viewModel.ibanInputState.text) { _ in
+        .onChange(of: viewModel.ibanInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .iban else { return }
             viewModel.clearErrorOnTextChange(for: \.ibanInputState)
@@ -356,11 +357,11 @@ struct PaymentReviewPaymentInformationView: View {
     private var amountTextField: some View {
         TextField("", text: $viewModel.amountInputState.text)
             .focused($focusedField, equals: .amount)
-            .onChange(of: viewModel.amountInputState.text) { newValue in
+            .onChange(of: viewModel.amountInputState.text) { _, newValue in
                 viewModel.handleAmountTextChange(updatedText: newValue)
                 // Error clearing is handled by handleAmountFocusChange, not text change.
             }
-            .onChange(of: focusedField) { newFocus in
+            .onChange(of: focusedField) { _, newFocus in
                 Task { @MainActor in
                     viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
                 }
@@ -401,7 +402,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .paymentPurpose,
                                            inputState: viewModel.paymentPurposeInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
                                             inputState: \.paymentPurposeInputState,
@@ -409,7 +410,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.paymentPurposeError)
             }
         }
-        .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
+        .onChange(of: viewModel.paymentPurposeInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .paymentPurpose else { return }
             viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
