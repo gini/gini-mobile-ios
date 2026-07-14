@@ -25,6 +25,7 @@ struct PaymentReviewPaymentInformationView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var keyboardHeight: CGFloat = 0
+    @State private var correctiveScrollTask: Task<Void, Never>?
     /**
      Cancels a pending `keyboardWillHide` zero when a new `keyboardWillShow` fires (keyboard-type switch).
      */
@@ -260,9 +261,13 @@ struct PaymentReviewPaymentInformationView: View {
                 proxy.scrollTo(field, anchor: .top)
             }
         }
-        Task { @MainActor in
+        correctiveScrollTask?.cancel()
+        correctiveScrollTask = Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(Constants.correctiveScrollDelayMs))
-            guard isDocCollection, keyboardHeight > 0, let field = focusedField else { return }
+            guard !Task.isCancelled,
+                  isDocCollection,
+                  keyboardHeight > 0,
+                  let field = focusedField else { return }
             withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
                 proxy.scrollTo(field, anchor: .top)
             }
