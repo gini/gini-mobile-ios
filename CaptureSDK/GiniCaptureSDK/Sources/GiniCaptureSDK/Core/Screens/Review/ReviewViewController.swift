@@ -219,6 +219,7 @@ public final class ReviewViewController: UIViewController {
         let view = UIStackView(arrangedSubviews: [saveToGalleryView])
 
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isLayoutMarginsRelativeArrangement = true // Use layout margins for arranged subviews.
         view.axis = .vertical
 
         return view
@@ -670,9 +671,17 @@ extension ReviewViewController {
             Constants.buttonContainerWithSaveToGalleryHorizontalSpacing
             : Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = Constants.saveToGalleryBottomConstant(false)
+            // Landscape uses `optionsStackViewHorizontalConstraints` — the stack is
+            // centred vertically rather than pinned under the page control, so no
+            // top gap is needed. Reset in case we rotated in from portrait.
+            optionsStackView.directionalLayoutMargins.top = 0
         } else {
             buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant(true) : 0
+            // Portrait only: when the save-to-gallery view is hidden the process button
+            // collapses flush against the page control. Insert a top gap.
+            optionsStackView.directionalLayoutMargins.top =
+                shouldShowSaveToGalleryView ? 0 : Constants.pageControlToProcessButtonPadding
         }
     }
 
@@ -1276,6 +1285,8 @@ extension ReviewViewController {
         static let saveToGalleryBottomConstant: (_ isPortrait: Bool) -> CGFloat = { isPortrait in
             isPortrait ? 11.0 : 28.0
         }
+        /// Top gap when save-to-gallery is hidden.
+        static let pageControlToProcessButtonPadding: CGFloat = 24.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
         static let minCollectionPadding: CGFloat = 5.0
         static let collectionInterItemSpacing: (_ isIpad: Bool, _ isPortrait: Bool) -> CGFloat = { isIpad, isPortrait in
