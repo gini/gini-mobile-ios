@@ -567,6 +567,10 @@ extension ReviewViewController {
         buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(UIDevice.current.isIphoneAndLandscape)
         let saveToGalleryBottomConstant = Constants.saveToGalleryBottomConstant(UIDevice.current.isPortrait)
         optionsStackView.spacing = shouldShowSaveToGalleryView ? saveToGalleryBottomConstant : 0
+        // Mirrors the portrait iPhone path: when save-to-gallery is hidden the process
+        // button collapses flush against the page control on multi-page reviews. Insert a top gap.
+        optionsStackView.directionalLayoutMargins.top =
+            shouldShowSaveToGalleryView ? 0 : Constants.pageControlToProcessButtonPadding
 
         // Handle bottom navigation bar placement (always use portrait behavior)
         if giniConfiguration.bottomNavigationBarEnabled {
@@ -1285,7 +1289,7 @@ extension ReviewViewController {
         static let saveToGalleryBottomConstant: (_ isPortrait: Bool) -> CGFloat = { isPortrait in
             isPortrait ? 11.0 : 28.0
         }
-        /// Top gap when save-to-gallery is hidden.
+        // Top gap when save-to-gallery is hidden.
         static let pageControlToProcessButtonPadding: CGFloat = 24.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
         static let minCollectionPadding: CGFloat = 5.0
