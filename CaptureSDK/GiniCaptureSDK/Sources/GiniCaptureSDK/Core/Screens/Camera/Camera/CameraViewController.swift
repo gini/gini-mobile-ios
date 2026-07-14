@@ -50,6 +50,7 @@ final class CameraViewController: UIViewController {
     // Stays fixed for the session so all repeated scans show the same feedback type.
     private var sessionUnsupportedQRCodeWarningEnabled: Bool?
     private var didCaptureSessionUnsupportedQRCodeWarning = false
+    private var isUnsupportedQRAlertPresented = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
     private var ibanOverlayFirstAppearance: Bool = true
@@ -541,6 +542,13 @@ final class CameraViewController: UIViewController {
 
     // MARK: - IBANs Detection
     private func showIBANFeedback(_ IBANs: [String]) {
+        // Suspend IBAN feedback while the unsupported-QR alert is on top so
+        // the banner doesn't render over the dialog.
+        guard !isUnsupportedQRAlertPresented else {
+            hideIBANOverlay()
+            return
+        }
+
         isValidIBANDetected = !IBANs.isEmpty
         guard isValidIBANDetected else {
             hideIBANOverlay()
@@ -674,6 +682,8 @@ final class CameraViewController: UIViewController {
         guard presentedViewController == nil else { return }
 
         cameraPreviewViewController.camera.pauseQRDetection()
+        isUnsupportedQRAlertPresented = true
+        hideIBANOverlay()
 
         sendGiniAnalyticsEventForInvalidQRCode()
         playVoiceOverMessage(success: false)
@@ -693,12 +703,14 @@ final class CameraViewController: UIViewController {
 
     private func handleScanAnotherQRCode() {
         cameraPreviewViewController.camera.resumeQRDetection()
+        isUnsupportedQRAlertPresented = false
         detectedQRCodeDocument = nil
     }
 
     private func handleTakePhotoOfDocument() {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         cameraPreviewViewController.cameraFrameView.isHidden = false
+        isUnsupportedQRAlertPresented = false
         detectedQRCodeDocument = nil
     }
 
