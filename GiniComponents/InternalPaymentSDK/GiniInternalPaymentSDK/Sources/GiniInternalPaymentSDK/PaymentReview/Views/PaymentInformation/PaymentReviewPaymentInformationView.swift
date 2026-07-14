@@ -25,6 +25,7 @@ struct PaymentReviewPaymentInformationView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var keyboardHeight: CGFloat = 0
+    @State private var correctiveScrollTask: Task<Void, Never>?
     /**
      Cancels a pending `keyboardWillHide` zero when a new `keyboardWillShow` fires (keyboard-type switch).
      */
@@ -76,7 +77,7 @@ struct PaymentReviewPaymentInformationView: View {
                 // Restore focus after rotation recreates the view.
                 restoreFocusIfNeeded()
             }
-            .onChange(of: focusedField) { newField in
+            .onChange(of: focusedField) { _, newField in
                 handleFocusedFieldChange(newField)
             }
             .background(Color(.systemBackground))
@@ -139,18 +140,16 @@ struct PaymentReviewPaymentInformationView: View {
             .ignoresSafeArea(.keyboard)
     }
 
-    // Landscape docCollection: manual spacer keeps content above the keyboard.
-    // Done button comes from the amount field's UIKit input accessory view — no toolbar needed.
-    // `keyboardHeight` from the will-show notification already includes the accessory-view height.
+    // Landscape docCollection: keyboard spacer is inline at the end of the scroll content
+    // (see `baseScrollView`), not as a safeAreaInset. On compact devices like iPhone SE 2
+    // landscape (iOS 26), safeAreaInset didn't reliably signal the ScrollView's visible bounds
+    // to `proxy.scrollTo`, so scrolls landed behind the keyboard. Making the spacer part of
+    // the scrollable content guarantees the ScrollView has room to scroll and lets the scroll
+    // anchor land the field predictably.
     @ViewBuilder
     private var docCollectionScrollView: some View {
         baseScrollView
             .ignoresSafeArea(.keyboard)
-            .safeAreaInset(edge: .bottom) {
-                Color.clear
-                    .frame(height: keyboardHeight)
-                    .allowsHitTesting(false)
-            }
     }
 
     private var baseScrollView: some View {
@@ -197,17 +196,80 @@ struct PaymentReviewPaymentInformationView: View {
                     .padding(.top, Constants.textFieldsContainerTopPadding)
                 }
                 .getHeight(for: $contentHeight)
-            }
-            // Landscape: UIKit-backed fields don't auto-scroll; drive it from keyboardHeight changes.
-            // No anchor → minimum scroll: if the field is already visible nothing happens,
-            // which avoids a spurious micro-scroll when switching between adjacent fields (IBAN/amount).
-            .onChange(of: keyboardHeight) { height in
-                guard isDocCollection else { return }
-                if height > 0, let field = focusedField {
-                    proxy.scrollTo(field)
-                } else if height == 0 {
-                    proxy.scrollTo(ActivePaymentField.recipient, anchor: .top)
+
+                // Inline keyboard spacer for landscape docCollection. Placing it inside the
+                // ScrollView content (rather than as a safeAreaInset) guarantees the ScrollView
+                // has enough scrollable range to bring any focused field to the top of the
+                // viewport, avoiding an iOS 26 quirk on compact devices (iPhone SE 2) where
+                // safeAreaInset didn't reduce the ScrollView's effective visible bounds for
+                // `proxy.scrollTo` computations.
+                if isDocCollection && keyboardHeight > 0 {
+                    Color.clear
+                        .frame(height: keyboardHeight)
+                        .allowsHitTesting(false)
                 }
+            }
+            // Landscape docCollection: UIKit-backed fields don't auto-scroll to stay above the
+            // keyboard. Anchor `.top` aligns the field with the ScrollView's viewport top —
+            // guaranteed above the keyboard regardless of device height, because the inline
+            // trailing spacer above extends the scrollable content by exactly keyboardHeight.
+            .onChange(of: keyboardHeight) { _, height in
+                guard isDocCollection else { return }
+                if height > 0 {
+                    scrollFocusedFieldAboveKeyboard(proxy: proxy)
+                } else if height == 0 {
+                    withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
+                        proxy.scrollTo(ActivePaymentField.recipient, anchor: .top)
+                    }
+                }
+            }
+            // Field-switch (IBAN → paymentPurpose) while keyboard is already up, AND
+            // portrait→landscape focus restore (restoreFocusIfNeeded sets focusedField 400 ms
+            // after mount). Skip when focus is being cleared — resign events would otherwise
+            // schedule unnecessary async scroll work that bails out later anyway.
+            .onChange(of: focusedField) { _, newFocus in
+                guard isDocCollection, keyboardHeight > 0, newFocus != nil else { return }
+                scrollFocusedFieldAboveKeyboard(proxy: proxy)
+            }
+        }
+    }
+
+    /**
+     Scrolls the currently focused field to the top of the viewport in landscape docCollection.
+
+     Anchor `.top` combined with the inline trailing spacer (in `baseScrollView`) guarantees
+     the field lands above the keyboard on every device size: the spacer extends the content
+     by keyboardHeight so the ScrollView always has enough range to bring any field to Y = 0,
+     regardless of how compact the visible area is (iPhone SE 2 landscape has ~62 pt above
+     the keyboard on iOS 26 — anchor .bottom against safeAreaInset was unreliable there).
+
+     Fires twice: an immediate deferred scroll for larger devices where layout commits in one
+     run-loop tick, and a corrective scroll after the keyboard animation completes for compact
+     devices where the initial content-length update from the inline spacer hasn't propagated
+     to the ScrollView's scrollable range in time.
+
+     All state (`focusedField`, `keyboardHeight`, `isDocCollection`) is re-read at execution
+     time so both dispatches bail out if the keyboard has been dismissed or the layout has
+     switched out of docCollection mode during the delay — otherwise a stale corrective scroll
+     would override the "scroll to top on keyboard hide" handler. Reading `focusedField` late
+     also means a rapid field switch scrolls to the latest field, not the stale one.
+     */
+    private func scrollFocusedFieldAboveKeyboard(proxy: ScrollViewProxy) {
+        DispatchQueue.main.async {
+            guard isDocCollection, keyboardHeight > 0, let field = focusedField else { return }
+            withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
+                proxy.scrollTo(field, anchor: .top)
+            }
+        }
+        correctiveScrollTask?.cancel()
+        correctiveScrollTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(Constants.correctiveScrollDelayMs))
+            guard !Task.isCancelled,
+                  isDocCollection,
+                  keyboardHeight > 0,
+                  let field = focusedField else { return }
+            withAnimation(.easeInOut(duration: Constants.scrollAnimationDuration)) {
+                proxy.scrollTo(field, anchor: .top)
             }
         }
     }
@@ -252,7 +314,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .recipient,
                                            inputState: viewModel.recipientInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .recipient,
                                             inputState: \.recipientInputState,
@@ -260,7 +322,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.recipientError)
             }
         }
-        .onChange(of: viewModel.recipientInputState.text) { _ in
+        .onChange(of: viewModel.recipientInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .recipient else { return }
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
@@ -281,7 +343,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .iban,
                                            inputState: viewModel.ibanInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .iban,
                                             inputState: \.ibanInputState,
@@ -289,7 +351,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.ibanError)
             }
         }
-        .onChange(of: viewModel.ibanInputState.text) { _ in
+        .onChange(of: viewModel.ibanInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .iban else { return }
             viewModel.clearErrorOnTextChange(for: \.ibanInputState)
@@ -300,11 +362,11 @@ struct PaymentReviewPaymentInformationView: View {
     private var amountTextField: some View {
         TextField("", text: $viewModel.amountInputState.text)
             .focused($focusedField, equals: .amount)
-            .onChange(of: viewModel.amountInputState.text) { newValue in
+            .onChange(of: viewModel.amountInputState.text) { _, newValue in
                 viewModel.handleAmountTextChange(updatedText: newValue)
                 // Error clearing is handled by handleAmountFocusChange, not text change.
             }
-            .onChange(of: focusedField) { newFocus in
+            .onChange(of: focusedField) { _, newFocus in
                 Task { @MainActor in
                     viewModel.handleAmountFocusChange(isFocused: newFocus == .amount)
                 }
@@ -345,7 +407,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .paymentPurpose,
                                            inputState: viewModel.paymentPurposeInputState,
                                            lockedIcon: viewModel.lockIcon))
-        .onChange(of: focusedField) { newFocus in
+        .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
                                             inputState: \.paymentPurposeInputState,
@@ -353,7 +415,7 @@ struct PaymentReviewPaymentInformationView: View {
                                             error: \.paymentPurposeError)
             }
         }
-        .onChange(of: viewModel.paymentPurposeInputState.text) { _ in
+        .onChange(of: viewModel.paymentPurposeInputState.text) {
             // Clearing error while focused replaces the UITextField and dismisses the keyboard.
             guard focusedField != .paymentPurpose else { return }
             viewModel.clearErrorOnTextChange(for: \.paymentPurposeInputState)
@@ -541,5 +603,9 @@ struct PaymentReviewPaymentInformationView: View {
         static let textFieldsContainerHorizontalPadding = 16.0
         static let textFieldsContainerTopPadding = 24.0
         static let poweredByGiniTopPadding = 8.0
+        static let scrollAnimationDuration = 0.25
+        // Longer than the keyboard's ~250 ms animation so the corrective scroll runs
+        // against fully-committed layout. Critical on iPhone SE 2 landscape (iOS 26).
+        static let correctiveScrollDelayMs = 350
     }
 }

@@ -72,8 +72,16 @@ public final class GiniDoneAccessoryView: UIView {
         // flush against the keyboard's top edge — no visible gap on any iOS version.
         // The extra ~12 pt goes to the top of the container, giving iOS 26's Liquid
         // Glass pill breathing room above without exposing the keyboard below.
+        // On iOS 26 the pill needs a tiny negative inset to hide a Liquid Glass seam;
+        // on iOS <26 the solid toolbar must sit flush or a 1 pt gap becomes visible.
+        let bottomInset: CGFloat
+        if #available(iOS 26, *) {
+            bottomInset = Constants.toolbarBottomInset
+        } else {
+            bottomInset = 0
+        }
         NSLayoutConstraint.activate([
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.toolbarBottomInset),
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: bottomInset),
             toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight),
             toolbar.leadingAnchor.constraint(equalTo: leadingAnchor,
                                              constant: Constants.horizontalInset),
@@ -127,7 +135,9 @@ public final class GiniDoneAccessoryView: UIView {
         static let horizontalInset: CGFloat = 4
         
         /**
-         Slight overlap with the keyboard to avoid a visible seam on iOS 26.
+         Slight overlap with the keyboard to avoid a visible seam on iOS 26 Liquid Glass.
+         Only applied on iOS 26+ — on older versions the solid toolbar must sit flush
+         against the keyboard or the negative inset exposes a 1 pt gap beneath it.
          */
         static let toolbarBottomInset: CGFloat = -1
     }
