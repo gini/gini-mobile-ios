@@ -79,7 +79,7 @@ We support dark mode in our SDK. If you decide to customize the color palette, p
 
 ## Payment Component
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&t=QIIdMD5XVFcf24hv-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&t=Q07UvHyFl3LftADO-4).
 
 For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
 
@@ -94,34 +94,34 @@ healthSDK.setConfiguration(config)
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&embed-host=share" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&t=QIIdMD5XVFcf24hv-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Feature Info Screen
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&t=QIIdMD5XVFcf24hv-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&t=QIIdMD5XVFcf24hv-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=12906-11434&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&embed-host=share" allowfullscreen></iframe>
 
 
 > **Note:** 
@@ -166,4 +166,4 @@ The amount field's numeric keyboard shows a Done accessory that dismisses the ke
 
 #### Page indicator colors
 
-The [document carousel's page indicators])https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21909-17450&t=QIIdMD5XVFcf24hv-1) use the standard foreground color, which resolves through the `Dark01` (light mode) and `Light01` (dark mode) color assets. The current-page dot renders at full opacity; other dots at 45% alpha. To override, add `Dark01.colorset` and `Light01.colorset` to your main bundle.
+The [document carousel's page indicators](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21909-17450&t=QIIdMD5XVFcf24hv-1) use the standard foreground color, which resolves through the `Dark01` (light mode) and `Light01` (dark mode) color assets. The current-page dot renders at full opacity; other dots at 45% alpha. To override, add `Dark01.colorset` and `Light01.colorset` to your main bundle.
