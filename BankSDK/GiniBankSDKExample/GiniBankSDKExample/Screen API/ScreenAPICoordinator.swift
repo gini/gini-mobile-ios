@@ -157,11 +157,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                                            isCrossBorderPayment: isCrossBorderPayment)
 
         DispatchQueue.main.async { [weak self] in
-            if #available(iOS 15.0, *) {
-                if let config = self?.configuration.captureConfiguration(),
-                   config.customNavigationController == nil {
-                    self?.screenAPIViewController.applyStyle(withConfiguration: config)
-                }
+            if let config = self?.configuration.captureConfiguration(),
+               config.customNavigationController == nil {
+                self?.screenAPIViewController.applyStyle(withConfiguration: config)
             }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             
