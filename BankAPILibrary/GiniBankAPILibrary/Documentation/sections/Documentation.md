@@ -16,7 +16,7 @@ The Gini Bank API provides an information extraction service for analyzing Bank 
 
 ## Requirements
 
-- iOS 13+
+- iOS 15+
 - Xcode 12+
 
 ## Author
