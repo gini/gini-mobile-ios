@@ -110,7 +110,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     }
     
     func updateBottomSheetHeight(_ height: CGFloat) {
-        /// For iOS version prior to 16, this method will have no effect and the sheet will not be resized.
+        /// For iOS versions prior to 16, this method will have no effect and the sheet will not be resized.
         if #available(iOS 16, *),
            let presentationController = sheetPresentationController {
             let identifier = UISheetPresentationController.Detent.Identifier("customHeight")
