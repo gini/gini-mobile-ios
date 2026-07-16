@@ -183,9 +183,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private func configureDatePicker() {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-        }
+        datePicker.preferredDatePickerStyle = .wheels
         datePicker.date = viewModel.dueDate
         let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
