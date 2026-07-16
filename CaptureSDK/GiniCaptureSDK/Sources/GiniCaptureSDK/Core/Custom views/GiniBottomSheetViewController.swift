@@ -49,9 +49,8 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     /**
      Configures the view controller to be presented as a bottom sheet.
 
-     - Parameters:
-     - shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()` detent.
-     Otherwise, a `.medium()` detent is used.
+     - Parameter shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()`
+       detent. Otherwise, a `.medium()` detent is used.
      */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
         modalPresentationStyle = .pageSheet
@@ -74,10 +73,10 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
      to the presented content.
 
      - Parameters:
-     - presenter: The view controller that will present this bottom sheet.
-     - animated: Whether to animate the presentation. Defaults to `true`.
-     - completion: An optional closure to execute after the presentation and accessibility
-     configuration are complete.
+       - presenter: The view controller that will present this bottom sheet.
+       - animated: Whether to animate the presentation. Defaults to `true`.
+       - completion: An optional closure to execute after the presentation and
+         accessibility configuration are complete.
      */
     func presentAsBottomSheet(from presenter: UIViewController,
                               animated: Bool = true,
@@ -103,8 +102,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
 
      On iOS 16+, it defines and applies a custom detent with the given height.
 
-     - Parameters:
-     - height: The target height for the bottom sheet.
+     - Parameter height: The target height for the bottom sheet.
      */
     func updateBottomSheetHeight(to height: CGFloat) {
 
