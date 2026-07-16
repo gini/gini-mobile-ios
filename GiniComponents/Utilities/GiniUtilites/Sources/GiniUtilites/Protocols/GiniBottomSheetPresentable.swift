@@ -91,6 +91,7 @@ public protocol GiniBottomSheetPresentable {
 public extension GiniBottomSheetPresentable where Self: UIViewController {
     
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
+        modalPresentationStyle = .pageSheet
         if let presentationController = sheetPresentationController {
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
