@@ -60,11 +60,19 @@ enum PayBySquareDecoder {
         guard let decompressed = LZMADecoder.decode(input: Array(bytes[4...]),
                                                     outputLength: payloadLength) else { return nil }
 
-        // 4. Skip 4-byte CRC32 prefix; decode remaining as UTF-8
-        // Note: CRC32 validation was attempted but rejected valid codes from the field — the bysquare
-        // spec's exact CRC32 variant and byte layout need a verified test vector before re-enabling.
+        // 4. The decompressed payload is a 4-byte CRC32 prefix followed by the tab-separated
+        // data. The checksum is a standard CRC-32 (ISO-HDLC / zlib, polynomial 0xEDB88320)
+        // computed over the data bytes and stored little-endian; reject any payload whose
+        // checksum does not match so a corrupted stream cannot surface a bogus payment.
+        // (Confirmed against the official bysquare test vector.)
         guard decompressed.count > 4 else { return nil }
-        guard let text = String(bytes: Array(decompressed[4...]), encoding: .utf8) else { return nil }
+        let payloadBytes = Array(decompressed[4...])
+        let expectedCRC = UInt32(decompressed[0])
+                        | (UInt32(decompressed[1]) << 8)
+                        | (UInt32(decompressed[2]) << 16)
+                        | (UInt32(decompressed[3]) << 24)
+        guard crc32(payloadBytes) == expectedCRC else { return nil }
+        guard let text = String(bytes: payloadBytes, encoding: .utf8) else { return nil }
 
         // 5. Split into tab-separated bysquare fields and map to a payment.
         return makePayment(fromFields: text.components(separatedBy: "\t"))
@@ -149,6 +157,22 @@ enum PayBySquareDecoder {
         } else {
             return paymentNote
         }
+    }
+
+    /**
+     Standard CRC-32 (ISO-HDLC / zlib variant): reflected input/output, polynomial
+     0xEDB88320, initial value 0xFFFFFFFF, final XOR 0xFFFFFFFF. Used to verify the
+     checksum prefix on a decompressed bysquare payload.
+     */
+    private static func crc32(_ bytes: [UInt8]) -> UInt32 {
+        var crc: UInt32 = 0xFFFF_FFFF
+        for byte in bytes {
+            crc ^= UInt32(byte)
+            for _ in 0..<8 {
+                crc = (crc & 1) != 0 ? (crc >> 1) ^ 0xEDB8_8320 : (crc >> 1)
+            }
+        }
+        return ~crc
     }
 
     private static func base32hexDecode(_ string: String) -> [UInt8]? {

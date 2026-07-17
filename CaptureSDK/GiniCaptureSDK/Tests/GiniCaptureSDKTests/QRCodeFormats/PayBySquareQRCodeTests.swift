@@ -70,10 +70,18 @@ struct PayBySquareQRCodeTests {
     }
 
     // Synthetic payment-order vector (paymentOptions=1, one account, no extensions) whose
-    // beneficiary name is non-empty. The bysquare layout places two extension-presence flags
-    // between the bank account and the beneficiary name, so the payee sits at field [16].
-    // Regression guard for the beneficiary-index off-by bug (payeeName came back empty).
+    // beneficiary name is non-empty and which carries a valid CRC32 checksum. The bysquare
+    // layout places two extension-presence flags between the bank account and the beneficiary
+    // name, so the payee sits at field [16]. Regression guard for the beneficiary-index off-by
+    // bug (payeeName came back empty).
     private let beneficiaryVector =
+        "0006000046NDD9V2BE1292JFQB6ID43925N5B44410GB6T3V0MFFAURJBEJBJ5T5FKNPDLSSNQC6BJTNV7" +
+        "V73AH0H65DTIL5AV5C5M0JPNVU3U0SD5DKFD82SDR1H66RLEO3IJUTGH38BJAG1BVVA1B400"
+
+    // Same well-formed payload as `beneficiaryVector` but with a zeroed (invalid) CRC32 prefix.
+    // It decompresses cleanly, so it isolates the checksum check: a decoder that verifies CRC32
+    // must reject it and produce no parameters.
+    private let invalidCRCVector =
         "0006000001K919RSC458AF4QJ6NUS2G6TL8ENCAV7O09E5DAUA1LMFJ72D0V200TU6BNT3" +
         "SGC80TTOS65JRAK7439GKVLUPIUAUH6IHCMFIOGAL28LRLPQFTAGSEBVH6RD52SI1PTNRQ" +
         "EEFVTAC3000"
@@ -92,6 +100,20 @@ struct PayBySquareQRCodeTests {
     @Test func officialTestVectorPassesValidation() {
         let doc = GiniQRCodeDocument(scannedString: officialTestVector)
         #expect(throws: Never.self) {
+            try GiniCaptureDocumentValidator.validate(doc, withConfig: config)
+        }
+    }
+
+    @Test func rejectsPayloadWithInvalidCRC() {
+        // Decompresses to well-formed fields but the CRC32 prefix does not match, so decoding
+        // must fail and yield no parameters.
+        let doc = GiniQRCodeDocument(scannedString: invalidCRCVector)
+        #expect(doc.extractedParameters.isEmpty)
+    }
+
+    @Test func invalidCRCPayloadFailsValidation() {
+        let doc = GiniQRCodeDocument(scannedString: invalidCRCVector)
+        #expect(throws: DocumentValidationError.qrCodeFormatNotValid) {
             try GiniCaptureDocumentValidator.validate(doc, withConfig: config)
         }
     }
