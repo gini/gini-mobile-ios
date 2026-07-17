@@ -25,6 +25,7 @@ final class HelpTipCell: UITableViewCell, HelpCell {
         // Group the icon, header, and description as one VoiceOver element per tip.
         // The combined accessibilityLabel is assigned in HelpTipsDataSource.configureCell.
         isAccessibilityElement = true
+        accessibilityTraits = .staticText
         selectionStyle = .none
         backgroundColor = GiniColor(light: .GiniCapture.light1,
                                     dark: .GiniCapture.dark3).uiColor()

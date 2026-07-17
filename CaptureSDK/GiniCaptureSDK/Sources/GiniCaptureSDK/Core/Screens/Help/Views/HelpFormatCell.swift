@@ -20,6 +20,7 @@ final class HelpFormatCell: UITableViewCell, HelpCell {
         // Group icon and description as a single VoiceOver element per row.
         // The section title is already read by HelpFormatSectionHeader.
         self.isAccessibilityElement = true
+        self.accessibilityTraits = .staticText
         self.iconImageView.isAccessibilityElement = false
         self.descriptionLabel.isAccessibilityElement = false
         if #available(iOS 14.0, *) {
