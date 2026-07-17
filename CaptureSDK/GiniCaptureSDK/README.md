@@ -26,7 +26,7 @@ Further documentation with installation, integration or customization guides can
 ## Requirements
 
 - iOS 15+
-- Xcode 12+
+- Xcode 26+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:

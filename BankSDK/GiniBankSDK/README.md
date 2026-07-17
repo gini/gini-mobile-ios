@@ -47,7 +47,7 @@ To check the redirection from the example health app please run your banking app
 ## Requirements
 
 - iOS 15+
-- Xcode 12+
+- Xcode 26+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
