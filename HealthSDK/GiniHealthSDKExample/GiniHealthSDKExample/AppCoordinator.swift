@@ -289,10 +289,11 @@ final class AppCoordinator: Coordinator {
                                                     "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
     
@@ -301,22 +302,20 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        })
-        
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
-    
+
     fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
                                                     message: message,
                                                     preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        })
-        
+
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
     

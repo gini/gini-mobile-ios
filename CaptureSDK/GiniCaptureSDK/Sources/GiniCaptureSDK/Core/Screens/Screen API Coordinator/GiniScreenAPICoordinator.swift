@@ -13,6 +13,7 @@ protocol Coordinator: AnyObject {
 }
 
 /// Defines how a view can show and hide a payment due date message.
+@MainActor
 public protocol PaymentDueDateProtocol: AnyObject {
 
     /// Show the payment due date text

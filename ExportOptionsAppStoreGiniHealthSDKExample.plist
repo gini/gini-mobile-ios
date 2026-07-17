@@ -2,25 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>compileBitcode</key>
-	<false/>
-	<key>iCloudContainerEnvironment</key>
-	<string>Production</string>
-	<key>manifest</key>
-	<dict>
-		<key>appURL</key>
-		<string>https://</string>
-		<key>displayImageURL</key>
-		<string>https://</string>
-		<key>fullSizeImageURL</key>
-		<string>https://</string>
-	</dict>
 	<key>method</key>
-	<string>ad-hoc</string>
+	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>net.gini.healthsdk.example</key>
-		<string>Gini Health SDK Example App Ad-Hoc Distribution</string>
+		<string>match AppStore net.gini.healthsdk.example</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
@@ -31,6 +18,6 @@
 	<key>teamID</key>
 	<string>JA825X8F7Z</string>
 	<key>thinning</key>
-	<string>&lt;none&gt;</string>
+	<string>none</string>
 </dict>
 </plist>
