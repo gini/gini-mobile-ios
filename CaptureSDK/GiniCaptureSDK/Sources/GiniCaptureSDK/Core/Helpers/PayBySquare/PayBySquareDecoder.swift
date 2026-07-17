@@ -66,14 +66,28 @@ enum PayBySquareDecoder {
         guard decompressed.count > 4 else { return nil }
         guard let text = String(bytes: Array(decompressed[4...]), encoding: .utf8) else { return nil }
 
-        // 5. Tab-separated fields (bysquare spec v1.1):
-        //    [0] invoiceId      [1] paymentsCount  [2] paymentType  [3] amount
-        //    [4] currencyCode   [5] paymentDueDate [6] variableSymbol [7] constantSymbol
-        //    [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
-        //    [12] IBAN          [13] BIC           ...N accounts...
-        //    Then two extension-presence flags, any present extension blocks, then:
-        //    [12 + N*2 + 2 (+ extension fields)] beneficiaryName
-        let fields = text.components(separatedBy: "\t")
+        // 5. Split into tab-separated bysquare fields and map to a payment.
+        return makePayment(fromFields: text.components(separatedBy: "\t"))
+    }
+
+    /**
+     Maps the tab-separated bysquare fields (spec v1.1) to a `PayBySquarePayment`.
+
+     The beneficiary name is not at a fixed index: it follows the variable number of
+     bank-account fields and any optional standing-order / direct-debit extension
+     blocks, so its position is derived from `bankAccountsCount` and the `paymentType`
+     bitmask. Kept separate from `decode` so this index arithmetic can be unit-tested
+     without a full base32hex + LZMA1 round-trip.
+
+     Field layout:
+       [0] invoiceId      [1] paymentsCount  [2] paymentType  [3] amount
+       [4] currencyCode   [5] paymentDueDate [6] variableSymbol [7] constantSymbol
+       [8] specificSymbol [9] originatorRef  [10] paymentNote  [11] bankAccountsCount
+       [12] IBAN          [13] BIC           ...N accounts...
+       Then two extension-presence flags, any present extension blocks, then:
+       [12 + N*2 + 2 (+ extension fields)] beneficiaryName
+     */
+    static func makePayment(fromFields fields: [String]) -> PayBySquarePayment {
         let rawBanksCount = max(1, Int(field(fields, at: Field.bankAccountsCount).trimmingCharacters(in: .whitespaces)) ?? 1)
         // Bound by field count so a malformed payload can't push beneficiaryIdx far past the array.
         let banksCount = min(rawBanksCount, fields.count)

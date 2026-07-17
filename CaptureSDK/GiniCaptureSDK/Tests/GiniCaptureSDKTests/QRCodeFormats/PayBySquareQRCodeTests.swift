@@ -96,3 +96,81 @@ struct PayBySquareQRCodeTests {
         }
     }
 }
+
+@Suite("Pay by Square field mapping")
+struct PayBySquareFieldMappingTests {
+
+    /// Lays out the bysquare fields positionally in spec order (v1.1), independent of the
+    /// decoder's `beneficiaryIdx` arithmetic. Because the beneficiary is placed by counting
+    /// real fields rather than by the same formula the decoder uses, a regression in that
+    /// arithmetic (off-by-one, wrong multiplier, dropped presence flags) makes the payee
+    /// come back wrong and fails the test.
+    ///
+    /// Note: the block sizes (two presence flags, +4 standing order, +10 direct debit) are
+    /// the same spec constants the decoder assumes; independently verifying *those* would
+    /// require a real captured standing-order / direct-debit vector.
+    private func buildFields(paymentOptions: Int,
+                             banksCount: Int = 1,
+                             iban: String = "SK2811000000002620154106",
+                             beneficiary: String) -> [String] {
+        var fields = [String](repeating: "", count: 12)   // header block [0]...[11]
+        fields[2]  = String(paymentOptions)               // paymentType bitmask
+        fields[3]  = "12.50"                               // amount
+        fields[4]  = "EUR"                                 // currencyCode
+        fields[6]  = "2017001"                             // variableSymbol
+        fields[10] = "Note"                                // paymentNote
+        fields[11] = String(banksCount)                    // bankAccountsCount
+
+        // Bank accounts: IBAN + BIC per account; the first account carries the test IBAN.
+        for index in 0..<banksCount {
+            fields.append(index == 0 ? iban : "SK0000000000000000000000")
+            fields.append("")   // BIC
+        }
+        // Two extension-presence flag fields always follow the bank accounts.
+        fields.append((paymentOptions & 2) != 0 ? "1" : "0")
+        fields.append((paymentOptions & 4) != 0 ? "1" : "0")
+        // Standing-order extension block: 4 fields.
+        if (paymentOptions & 2) != 0 { fields.append(contentsOf: Array(repeating: "so", count: 4)) }
+        // Direct-debit extension block: 10 fields.
+        if (paymentOptions & 4) != 0 { fields.append(contentsOf: Array(repeating: "dd", count: 10)) }
+        // Beneficiary fields.
+        fields.append(beneficiary)   // beneficiaryName
+        fields.append("")            // beneficiary address line 1
+        fields.append("")            // beneficiary address line 2
+        return fields
+    }
+
+    @Test func paymentOrderBeneficiaryAtBaseIndex() {
+        let fields = buildFields(paymentOptions: 1, beneficiary: "Payment Order Payee")
+        #expect(PayBySquareDecoder.makePayment(fromFields: fields).payeeName == "Payment Order Payee")
+    }
+
+    @Test func standingOrderShiftsBeneficiary() {
+        let fields = buildFields(paymentOptions: 2, beneficiary: "Standing Order Payee")
+        #expect(PayBySquareDecoder.makePayment(fromFields: fields).payeeName == "Standing Order Payee")
+    }
+
+    @Test func directDebitShiftsBeneficiary() {
+        let fields = buildFields(paymentOptions: 4, beneficiary: "Direct Debit Payee")
+        #expect(PayBySquareDecoder.makePayment(fromFields: fields).payeeName == "Direct Debit Payee")
+    }
+
+    @Test func bothExtensionsShiftBeneficiary() {
+        let fields = buildFields(paymentOptions: 6, beneficiary: "Both Extensions Payee")
+        #expect(PayBySquareDecoder.makePayment(fromFields: fields).payeeName == "Both Extensions Payee")
+    }
+
+    @Test func multipleAccountsShiftBeneficiary() {
+        let fields = buildFields(paymentOptions: 2, banksCount: 2, beneficiary: "Multi Account Payee")
+        #expect(PayBySquareDecoder.makePayment(fromFields: fields).payeeName == "Multi Account Payee")
+    }
+
+    @Test func mapsCoreFieldsWithExtensionsPresent() {
+        let fields = buildFields(paymentOptions: 4, beneficiary: "Payee")
+        let payment = PayBySquareDecoder.makePayment(fromFields: fields)
+        #expect(payment.iban == "SK2811000000002620154106")
+        #expect(payment.amount == "12.50")
+        #expect(payment.currency == "EUR")
+        #expect(payment.paymentReference == "2017001 Note")
+    }
+}

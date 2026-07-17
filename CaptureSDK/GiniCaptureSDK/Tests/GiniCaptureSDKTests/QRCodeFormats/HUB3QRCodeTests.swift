@@ -38,7 +38,9 @@ struct HUB3QRCodeTests {
         #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
         #expect(doc.extractedParameters["paymentRecipient"] == "Gini d.o.o.")
         #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
-        #expect(doc.extractedParameters["paymentReference"] == "HR00 1234567890")
+        // Reference is line 11 (call number) verbatim; the model line (10) is ignored,
+        // matching the Android SDK's HUB3Parser.
+        #expect(doc.extractedParameters["paymentReference"] == "1234567890")
     }
 
     @Test func convertsCentsToDecimalEUR() {
@@ -46,13 +48,13 @@ struct HUB3QRCodeTests {
         #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
     }
 
-    @Test func combinesModelAndReference() {
+    @Test func referenceIsCallNumberOnlyIgnoringModel() {
         let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR99", reference: "555-666"))
-        #expect(doc.extractedParameters["paymentReference"] == "HR99 555-666")
+        #expect(doc.extractedParameters["paymentReference"] == "555-666")
     }
 
-    @Test func usesReferenceOnlyWhenModelEmpty() {
-        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "", reference: "555-666"))
-        #expect(doc.extractedParameters["paymentReference"] == "555-666")
+    @Test func noReferenceWhenCallNumberEmpty() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR00", reference: ""))
+        #expect(doc.extractedParameters["paymentReference"] == nil)
     }
 }

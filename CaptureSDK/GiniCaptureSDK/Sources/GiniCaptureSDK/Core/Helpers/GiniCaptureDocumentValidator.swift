@@ -107,14 +107,17 @@ fileprivate extension GiniCaptureDocumentValidator {
             if document.extractedParameters[QRCodesExtractor.giniCodeUrlKey] == nil {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
-        case .some(.spc), .some(.upnqr), .some(.hub3):
+        case .some(.spc), .some(.upnqr), .some(.hub3), .some(.payBySquare):
+            // Pay-by-Square is Slovak-only and always SEPA, so it gets the same strict
+            // IBAN check-digit validation as SPC/UPNQR/HUB3 — a corrupt scan is rejected
+            // rather than surfaced as a wrong-IBAN payment prompt.
             guard let iban = document.extractedParameters["iban"],
                   IBANValidator().isValid(iban: iban) else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
-        case .some(.spd), .some(.payBySquare):
-            // SPD/Pay-by-Square IBANs include non-SEPA formats; require non-empty
-            // presence but skip strict IBAN validation.
+        case .some(.spd):
+            // SPD IBANs include non-SEPA formats; require non-empty presence but
+            // skip strict IBAN validation.
             guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }

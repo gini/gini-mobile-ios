@@ -319,16 +319,11 @@ public final class QRCodesExtractor {
         if lines.indices.contains(9) {
             parameters["iban"] = lines[9]
         }
-        // Croatian "poziv na broj" is the model (line 10, e.g. "HR01") followed by the
-        // reference number (line 11); the current parser dropped the model. Combine them,
-        // falling back to whichever part is present.
-        // NOTE: assumes the backend expects the combined poziv na broj — verify against a
-        // real HUB3 payload before relying on the exact format.
-        let model = lines.indices.contains(10) ? lines[10] : ""
-        let referenceNumber = lines.indices.contains(11) ? lines[11] : ""
-        let pozivNaBroj = [model, referenceNumber].filter { !$0.isEmpty }.joined(separator: " ")
-        if !pozivNaBroj.isEmpty {
-            parameters["paymentReference"] = pozivNaBroj
+        // Croatian "poziv na broj" (payment reference) is line 11, sent verbatim. This
+        // matches the Android SDK (HUB3Parser), which reads only this field; the model
+        // line (10) is not part of the reference sent to the backend.
+        if lines.indices.contains(11) && !lines[11].isEmpty {
+            parameters["paymentReference"] = lines[11]
         }
 
         return parameters
