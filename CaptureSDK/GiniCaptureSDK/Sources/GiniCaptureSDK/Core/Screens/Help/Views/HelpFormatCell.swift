@@ -17,9 +17,11 @@ final class HelpFormatCell: UITableViewCell, HelpCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.isAccessibilityElement = false
-        self.iconImageView.isAccessibilityElement = true
-        self.descriptionLabel.isAccessibilityElement = true
+        // Group icon and description as a single VoiceOver element per row.
+        // The section title is already read by HelpFormatSectionHeader.
+        self.isAccessibilityElement = true
+        self.iconImageView.isAccessibilityElement = false
+        self.descriptionLabel.isAccessibilityElement = false
         if #available(iOS 14.0, *) {
             var bgConfig = UIBackgroundConfiguration.listPlainCell()
             bgConfig.backgroundColor = UIColor.clear
