@@ -29,9 +29,9 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
 
     /**
-     Set to `true` by `PaymentReviewViewController.viewWillTransition` before imperatively
-     dismissing the sheet, so the sheet's `onDismiss` handler knows not to call `didTapClose`.
-     Reset to `false` inside that same `onDismiss` handler via `defer`.
+     `true` while a rotation is tearing the view down. Read by the sheet's `onDismiss` (to
+     skip `didTapClose`) and by `handleFocusedFieldChange` (to preserve `activeField` so
+     `restoreFocusIfNeeded` can restore focus). Reset when the remounted view regains focus.
      */
     @Published var isDismissingForRotation: Bool = false
 
@@ -40,9 +40,7 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
 
     /**
-     Reflects whether the amount field inside the payment information form is currently focused.
-     Changes trigger a re-render of `PaymentReviewContentView` so the landscape Done toolbar
-     can appear or disappear in sync with keyboard focus.
+     Reflects amount-field focus so PaymentReviewContentView re-renders the landscape toolbar.
      */
     var isAmountFieldFocused: Bool {
         paymentInformationObservableModel.isAmountFieldFocused
@@ -56,33 +54,35 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
 
     /**
+     Tint for the keyboard Done button. Supplied by the host SDK via
+     PaymentReviewContainerConfiguration so it stays decoupled from the
+     primary/Pay button styling.
+     */
+    var keyboardDoneButtonTintColor: Color {
+        Color(uiColor: containerViewModel.configuration.keyboardDoneButtonTintColor)
+    }
+
+    /**
      Tracks the keyboard-dismissed analytics event and clears the stored active field so that
      a subsequent device rotation does not restore focus (and reopen the keyboard).
      Call this when the user explicitly taps the Done button.
      */
     func trackKeyboardDismissed() {
-        // Clear immediately — the 0.1 s delay in `onChange(of: focusedField)` is designed to
-        // distinguish rotation from a manual dismiss, but if the user rotates right after tapping
-        // Done the view is already gone and the check sees `isViewVisible == false`, keeping
-        // `activeField` set and reopening the keyboard in the new layout. Clearing here first
-        // wins the race.
+        // Clear so a subsequent rotation doesn't re-focus via `restoreFocusIfNeeded`.
         paymentInformationObservableModel.activeField = nil
         model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
     }
 
     /**
-     Validates the amount field as if it had just lost focus.
-     Called explicitly by the landscape Done button, which resigns first responder via
-     UIKit rather than setting `focusedField = nil`. SwiftUI's `@FocusState` update from
-     a UIKit `resignFirstResponder` call is not guaranteed to be synchronous, so relying
-     solely on `onChange(of: focusedField)` to trigger validation can cause the error
-     message to appear only on the second Done press. Calling this directly — mirroring
-     what the portrait Done button does — ensures validation runs immediately.
+     Validates the amount field as if it just lost focus.
+     Called by the landscape Done button which resigns first responder via UIKit — SwiftUI's
+     @FocusState update is not guaranteed synchronous, so validation would otherwise fire
+     only on the second Done press.
      */
     func validateAmountFieldOnKeyboardDismiss() {
         paymentInformationObservableModel.handleAmountFocusChange(isFocused: false)
     }
-    
+
     @Published private var showBanner: Bool
     
     @Published var cellViewModels: [PageCollectionCellViewModel] = []
@@ -100,6 +100,7 @@ final class PaymentReviewObservableModel: ObservableObject {
         self.containerViewModel = model.paymentReviewContainerViewModel()
         self.paymentInformationObservableModel = PaymentReviewPaymentInformationObservableModel(model: containerViewModel)
         self.showBanner = !model.configuration.isInfoBarHidden
+        paymentInformationObservableModel.parentModel = self
         setupBindings()
         
         reduceMotionObserver = NotificationCenter.default.addObserver(forName: UIAccessibility.reduceMotionStatusDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
@@ -209,8 +210,8 @@ final class PaymentReviewObservableModel: ObservableObject {
     }
     
     private func setupBindings() {
-        // Forward `isAmountFieldFocused` changes from the inner observable model so that
-        // `PaymentReviewContentView` re-renders when the amount field gains or loses focus.
+        // Forward isAmountFieldFocused changes so PaymentReviewContentView re-renders
+        // its landscape keyboard toolbar when the amount field gains or loses focus.
         paymentInformationObservableModel.$isAmountFieldFocused
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)

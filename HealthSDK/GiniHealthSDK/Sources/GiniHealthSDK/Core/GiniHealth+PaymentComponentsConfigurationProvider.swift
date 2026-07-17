@@ -44,7 +44,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
                            labelFont: GiniHealthConfiguration.shared.font(for: .captions1),
                            backgroundColor: GiniColor.success1.uiColor(),
                            containerBackgroundColor: GiniColor.standard7.uiColor()),
-            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
+            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview,
+            keyboardDoneButtonTintColor: GiniColor.accent1.uiColor()
         )
     }
 
@@ -143,12 +144,13 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
             paymentReviewClose: GiniHealthImage.close.preferredUIImage(),
-            backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
+            backgroundColor: GiniColor(lightModeColorName: .light7,
+                                       darkModeColorName: .light7).uiColor(),
             rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniHealthConfiguration.shared.font(for: .captions1),
             statusBarStyle: GiniHealthConfiguration.shared.paymentReviewStatusBarStyle,
-            pageIndicatorTintColor: GiniColor.standard4.uiColor(),
-            currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor(),
+            pageIndicatorTintColor: GiniColor.standard1.uiColor().withAlphaComponent(0.45),
+            currentPageIndicatorTintColor: GiniColor.standard1.uiColor(),
             isInfoBarHidden: GiniHealthConfiguration.shared.useInvoiceWithoutDocument ? true : false,
             popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
         )
