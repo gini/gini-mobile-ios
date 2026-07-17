@@ -483,4 +483,25 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                    withConfig: giniConfiguration))
     }
+
+    // MARK: - UIImage(qrData:) — used by GiniQRCodeDocument.previewImage
+
+    func testUIImageQRDataInitReturnsBitmapBackedImage() {
+        // Exercises the CIContext.createCGImage + UIImage(cgImage:) path in UIImage(qrData:).
+        // The resulting image must be bitmap-backed because it is later saved via
+        // PHAssetChangeRequest.creationRequestForAsset(from:) in AnalysisViewController.
+        let data = "https://example.com/payment".data(using: .utf8)!
+        let image = UIImage(qrData: data)
+        XCTAssertNotNil(image, "QR code image must be generated for non-empty payload data")
+        XCTAssertNotNil(image?.cgImage, "returned UIImage must be bitmap-backed (non-nil .cgImage)")
+    }
+
+    // MARK: - GiniTrackingPermissionManager
+
+    func testTrackingAuthorizedReturnsTrueWhenStatusIsNotDetermined() {
+        // In a unit test simulator the user has never been prompted for AppTrackingTransparency,
+        // so ATTrackingManager.trackingAuthorizationStatus is .notDetermined and
+        // trackingAuthorized() returns true.
+        XCTAssertTrue(GiniTrackingPermissionManager.shared.trackingAuthorized())
+    }
 }
