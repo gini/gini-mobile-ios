@@ -16,6 +16,10 @@ extension UIImage {
         filter?.setValue("Q", forKey: "inputCorrectionLevel")
 
         if let outputImage = filter?.outputImage {
+            // TODO: Check if we can replace this with UIImage(ciImage:) now that we only support iOS 15.
+            // Note: the returned UIImage is passed to PHAssetChangeRequest.creationRequestForAsset(from:)
+            // in AnalysisViewController.saveDocumentPhotoToGalleryIfNeeded, so it must be bitmap-backed
+            // (a CIImage-backed UIImage has nil .cgImage and can fail the Photos save path).
             let ciContext = CIContext(options: nil)
             defer {
                 ciContext.clearCaches()
