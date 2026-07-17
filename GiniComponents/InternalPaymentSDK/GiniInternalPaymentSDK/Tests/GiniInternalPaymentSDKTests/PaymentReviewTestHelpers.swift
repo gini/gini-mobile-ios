@@ -135,7 +135,8 @@ extension PaymentReviewContainerConfiguration {
         return PaymentReviewContainerConfiguration(errorLabel: errorLabel,
                                                    banksPicker: banksPicker,
                                                    infoBar: infoBar,
-                                                   popupAnimationDuration: 3.0)
+                                                   popupAnimationDuration: 3.0,
+                                                   keyboardDoneButtonTintColor: .systemBlue)
     }
 }
 

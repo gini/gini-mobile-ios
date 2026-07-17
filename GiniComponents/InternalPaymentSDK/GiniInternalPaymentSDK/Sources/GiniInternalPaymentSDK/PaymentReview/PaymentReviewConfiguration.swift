@@ -66,6 +66,7 @@ public struct PaymentReviewStrings {
     public let closeButtonAccessibilityHint: String
     public let sheetGrabberAccessibilityLabel: String
     public let sheetGrabberAccessibilityHint: String
+    public let paymentReviewScreenTitle: String
 
     public init(alertOkButtonTitle: String,
                 infoBarMessage: String,
@@ -75,7 +76,8 @@ public struct PaymentReviewStrings {
                 closeButtonAccessibilityLabel: String,
                 closeButtonAccessibilityHint: String,
                 sheetGrabberAccessibilityLabel: String,
-                sheetGrabberAccessibilityHint: String) {
+                sheetGrabberAccessibilityHint: String,
+                paymentReviewScreenTitle: String = "") {
         self.alertOkButtonTitle = alertOkButtonTitle
         self.infoBarMessage = infoBarMessage
         self.defaultErrorMessage = defaultErrorMessage
@@ -85,5 +87,6 @@ public struct PaymentReviewStrings {
         self.closeButtonAccessibilityHint = closeButtonAccessibilityHint
         self.sheetGrabberAccessibilityLabel = sheetGrabberAccessibilityLabel
         self.sheetGrabberAccessibilityHint = sheetGrabberAccessibilityHint
+        self.paymentReviewScreenTitle = paymentReviewScreenTitle
     }
 }

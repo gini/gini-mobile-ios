@@ -43,4 +43,4 @@ jobs:
         run: |
           echo "xcode-version=26.2" >> $GITHUB_OUTPUT
           echo "ruby-version=3.2.0" >> $GITHUB_OUTPUT
-          echo "ios-simulator-destination=platform=iOS Simulator,name=iPhone 16,OS=26.2" >> $GITHUB_OUTPUT
+          echo "ios-simulator-destination=platform=iOS Simulator,name=iPhone 17,OS=26.2" >> $GITHUB_OUTPUT
