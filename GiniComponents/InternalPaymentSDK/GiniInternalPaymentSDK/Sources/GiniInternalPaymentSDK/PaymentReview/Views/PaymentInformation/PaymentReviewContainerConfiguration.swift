@@ -72,15 +72,18 @@ public struct PaymentReviewContainerConfiguration {
     let banksPicker: PaymentReviewBanksPickerConfiguration
     let infoBar: PaymentReviewInfoBarConfiguration
     let popupAnimationDuration: TimeInterval
-    
+    let keyboardDoneButtonTintColor: UIColor
+
     public init(errorLabel: PaymentReviewErrorLabelConfiguration,
                 banksPicker: PaymentReviewBanksPickerConfiguration,
                 infoBar: PaymentReviewInfoBarConfiguration,
-                popupAnimationDuration: TimeInterval) {
+                popupAnimationDuration: TimeInterval,
+                keyboardDoneButtonTintColor: UIColor = .tintColor) {
         self.errorLabel = errorLabel
         self.banksPicker = banksPicker
         self.infoBar = infoBar
         self.popupAnimationDuration = popupAnimationDuration
+        self.keyboardDoneButtonTintColor = keyboardDoneButtonTintColor
     }
 }
 

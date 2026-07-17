@@ -793,7 +793,9 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
         
         alertController.addAction(okAction)
-        
+        // preferredAction must be set after addAction
+        alertController.preferredAction = okAction
+
         navigationControllerProvided?.present(alertController, animated: true)
     }
     
