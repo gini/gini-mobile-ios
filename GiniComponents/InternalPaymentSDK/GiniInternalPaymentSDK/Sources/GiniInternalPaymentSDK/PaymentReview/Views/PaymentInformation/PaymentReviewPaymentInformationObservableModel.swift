@@ -9,10 +9,11 @@ import GiniHealthAPILibrary
 import SwiftUI
 import GiniUtilites
 
-/** Identifies which payment form field is currently focused.
+/**
+ Identifies which payment form field is currently focused.
  Stored in the observable model so focus can be restored after orientation changes recreate the view.
  */
-enum ActivePaymentField: Equatable {
+enum ActivePaymentField: Hashable {
     case recipient
     case iban
     case amount
@@ -30,10 +31,10 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     @Published var activeField: ActivePaymentField? = nil
 
     /**
-     Set to `true` while the view is on screen. Used to distinguish a rotation (view
-     disappears quickly) from the user explicitly dismissing the keyboard (view stays visible).
+     Back-reference so the view's focus handler can read `isDismissingForRotation`
+     to tell a rotation teardown from a user dismiss.
      */
-    var isViewVisible: Bool = false
+    weak var parentModel: PaymentReviewObservableModel?
 
     /**
      Tracks whether the amount field is currently focused.
@@ -74,7 +75,24 @@ final class PaymentReviewPaymentInformationObservableModel: ObservableObject {
     var poweredByGiniViewModel: PoweredByGiniViewModel {
         model.poweredByGiniViewModel
     }
-    
+
+    /**
+     Tint for the keyboard Done button. Supplied by the host SDK via
+     PaymentReviewContainerConfiguration so it stays decoupled from the
+     primary/Pay button styling.
+     */
+    var keyboardDoneButtonTintColor: Color {
+        Color(uiColor: model.configuration.keyboardDoneButtonTintColor)
+    }
+
+    /**
+     UIKit variant of `keyboardDoneButtonTintColor`, consumed by `GiniDoneAccessoryView`
+     (a UIToolbar-based `inputAccessoryView`) which needs a `UIColor` rather than SwiftUI `Color`.
+     */
+    var keyboardDoneButtonTintUIColor: UIColor {
+        model.configuration.keyboardDoneButtonTintColor
+    }
+
     let model: PaymentReviewContainerViewModel
     
     init(model: PaymentReviewContainerViewModel) {
