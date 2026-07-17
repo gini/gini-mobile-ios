@@ -1,5 +1,8 @@
 name: "CodeQL Advanced"
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -7,6 +10,9 @@ on:
     branches: [main]
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   detect-changes:
     name: Detect changed paths
     runs-on: ubuntu-latest
@@ -76,7 +82,7 @@ jobs:
 
   analyze-swift:
     name: Analyze Swift (${{ matrix.scheme }})
-    needs: detect-changes
+    needs: [detect-changes, get-config]
     runs-on: macos-latest
     if: >-
       needs.detect-changes.outputs['bank-sdk'] == 'true' ||
@@ -110,7 +116,7 @@ jobs:
       if: steps.should-run.outputs.run == 'true'
       uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
-        xcode-version: '16.4'
+        xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
     - name: Checkout repository
       if: steps.should-run.outputs.run == 'true'
@@ -129,7 +135,7 @@ jobs:
         xcodebuild build \
           -project ${{ matrix.project }} \
           -scheme ${{ matrix.scheme }} \
-          -destination 'platform=iOS Simulator,OS=18.5,name=iPhone 16' \
+          -destination '${{ needs.get-config.outputs.ios-simulator-destination }}' \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \

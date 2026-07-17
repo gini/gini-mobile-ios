@@ -8,12 +8,16 @@ on:
   workflow_dispatch:
   
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@main
+    needs: get-config
+    uses: ./.github/workflows/health-sdk.check.yml
     secrets: inherit
 
   release:
-    needs: check
+    needs: [get-config, check]
     permissions:
       contents: write
     uses: ./.github/workflows/sdk.release.yml
@@ -23,6 +27,8 @@ jobs:
       version_file_path: 'HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/GiniHealthSDKVersion.swift'
       git_tag: ${{ github.ref }}
       repo_url: 'https://github.com/gini/health-sdk-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
