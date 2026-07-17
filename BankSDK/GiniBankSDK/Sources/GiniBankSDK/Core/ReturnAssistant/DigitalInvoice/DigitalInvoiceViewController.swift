@@ -257,8 +257,6 @@ final class DigitalInvoiceViewController: UIViewController {
         // when the table reloads after a tap.
         if let visibleIndexPaths = tableView.indexPathsForVisibleRows, !visibleIndexPaths.isEmpty {
             tableView.reconfigureRows(at: visibleIndexPaths)
-        } else {
-            tableView.reloadData()
         }
         proceedView.configure(viewModel: viewModel)
     }
