@@ -160,7 +160,7 @@
 "ginicapture.help.menu.import" = "Import documents from other apps";
 
 "ginicapture.albums.title" = "Albums";
-"ginicapture.imagepicker.openbutton" = "Done";
+"ginicapture.imagepicker.openbutton" = "Done";
 
 "ginicapture.multipagereview.title" = "Review";
 "ginicapture.multipagereview.description" = "Make sure the payment details are visible";
