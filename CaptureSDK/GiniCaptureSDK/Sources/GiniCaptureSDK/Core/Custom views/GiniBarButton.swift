@@ -114,7 +114,13 @@ public final class GiniBarButton {
      */
     public init(ofType type: BarButtonType) {
         let (label, icon) = Self.titleAndIcon(for: type)
-        if let icon = icon {
+        if case .done = type, #available(iOS 26.0, *) {
+            // iOS 26+ renders the Liquid Glass checkmark; earlier versions
+            // fall through to the localized "Done" title below.
+            nativeItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                         target: nil,
+                                         action: nil)
+        } else if let icon = icon {
             nativeItem = UIBarButtonItem(image: icon,
                                          style: .plain,
                                          target: nil,
@@ -187,9 +193,11 @@ public final class GiniBarButton {
         case .back(let title):
             return (title, UIImageNamedPreferred(named: "barButton_back"))
         case .done:
+            // Icon dropped from the SDK contract: iOS 26+ uses the system
+            // Liquid Glass checkmark, earlier versions show localized text.
             return (NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
                                                     comment: "Done"),
-                    UIImageNamedPreferred(named: "barButton_done"))
+                    nil)
         case .skip:
             return (NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
                                                     comment: "Skip button"),
