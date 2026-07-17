@@ -50,9 +50,10 @@ final class CameraViewController: UIViewController {
     // Stays fixed for the session so all repeated scans show the same feedback type.
     private var sessionUnsupportedQRCodeWarningEnabled: Bool?
     private var didCaptureSessionUnsupportedQRCodeWarning = false
-    // Set true when the unsupported-QR alert appears; cleared only when the user picks
-    // "Take photo of document". "Scan another QR code" keeps it true — the user has
-    // chosen the QR flow, so IBAN feedback stays suspended until they leave or restart.
+/**
+ Indicates whether the user is in the QR scan flow (unsupported-QR alert shown or "Scan another QR code" selected).
+ When `true`, IBAN feedback is suppressed until the user selects "Take photo of document".
+ */
     private var isQRScanFlowActive = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
