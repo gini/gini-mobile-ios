@@ -95,33 +95,41 @@ fileprivate extension GiniCaptureDocumentValidator {
     class func validate(qrCode document: GiniQRCodeDocument) throws {
         switch document.qrCodeFormat {
         case .some(.bezahl), .some(.epc06912):
-            guard let iban = document.extractedParameters["iban"],
-                  IBANValidator().isValid(iban: iban) else {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
+            try validateStrictIBAN(in: document)
         case .some(.eps4mobile):
-            if document.extractedParameters[QRCodesExtractor.epsCodeUrlKey] == nil {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
+            try validateContainsKey(QRCodesExtractor.epsCodeUrlKey, in: document)
         case .some(.giniQRCode):
-            if document.extractedParameters[QRCodesExtractor.giniCodeUrlKey] == nil {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
+            try validateContainsKey(QRCodesExtractor.giniCodeUrlKey, in: document)
         case .some(.spc), .some(.upnqr), .some(.hub3), .some(.payBySquare):
             // Pay-by-Square is Slovak-only and always SEPA, so it gets the same strict
-            // IBAN check-digit validation as SPC/UPNQR/HUB3 — a corrupt scan is rejected
-            // rather than surfaced as a wrong-IBAN payment prompt.
-            guard let iban = document.extractedParameters["iban"],
-                  IBANValidator().isValid(iban: iban) else {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
+            // IBAN check-digit validation as SPC/UPNQR/HUB3.
+            try validateStrictIBAN(in: document)
         case .some(.spd):
-            // SPD IBANs include non-SEPA formats; require non-empty presence but
-            // skip strict IBAN validation.
-            guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
-                throw DocumentValidationError.qrCodeFormatNotValid
-            }
+            // SPD IBANs include non-SEPA formats; require presence but not strict validation.
+            try validateNonEmptyIBAN(in: document)
         case .none:
+            throw DocumentValidationError.qrCodeFormatNotValid
+        }
+    }
+
+    /// Requires an `iban` parameter that passes IBAN check-digit validation.
+    class func validateStrictIBAN(in document: GiniQRCodeDocument) throws {
+        guard let iban = document.extractedParameters["iban"],
+              IBANValidator().isValid(iban: iban) else {
+            throw DocumentValidationError.qrCodeFormatNotValid
+        }
+    }
+
+    /// Requires an `iban` parameter that is present and non-empty (non-SEPA formats allowed).
+    class func validateNonEmptyIBAN(in document: GiniQRCodeDocument) throws {
+        guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
+            throw DocumentValidationError.qrCodeFormatNotValid
+        }
+    }
+
+    /// Requires the given key to be present in the document's extracted parameters.
+    class func validateContainsKey(_ key: String, in document: GiniQRCodeDocument) throws {
+        if document.extractedParameters[key] == nil {
             throw DocumentValidationError.qrCodeFormatNotValid
         }
     }
