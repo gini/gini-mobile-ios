@@ -7,14 +7,8 @@
 */
 
 "ginicapture.navigationbar.camera.title"        = "Scan";
-"ginicapture.navigationbar.onboarding.title"    = "Instructions";
-"ginicapture.navigationbar.review.title"        = "Check photo quality";
-"ginicapture.navigationbar.analysis.title"      = "Be patient, analysing photo";
 "ginicapture.navigationbar.camera.close"        = "";
 "ginicapture.navigationbar.camera.help"         = "Help";
-"ginicapture.navigationbar.onboarding.continue" = "Next";
-"ginicapture.navigationbar.review.back"         = "";
-"ginicapture.navigationbar.review.close"        = "";
 "ginicapture.navigationbar.review.continue"     = "Next";
 "ginicapture.navigationbar.analysis.back"       = "Cancel";
 "ginicapture.navigationbar.help.backToCamera"   = "Camera";
