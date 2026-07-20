@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "gh.close_dark.pdf",
+      "filename" : "gh.close_light.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "gh.close_dark 1.pdf",
+      "filename" : "gh.close_dark.pdf",
       "idiom" : "universal"
     }
   ],
