@@ -53,7 +53,6 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
        detent. Otherwise, a `.medium()` detent is used.
      */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
-        modalPresentationStyle = .pageSheet
         guard let presentationController = sheetPresentationController else { return }
 
         presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
