@@ -56,7 +56,8 @@ public final class GiniBarButton {
           message is sent to the first responder.
         - action: The action method to invoke on the target.
      */
-    public func addAction(_ target: Any?, _ action: Selector) {
+    public func addAction(_ target: Any?,
+                          _ action: Selector) {
         nativeItem.target = target as? AnyObject
         nativeItem.action = action
         // stackView recognizer serves `.buttonView` callers; nativeItem handles `.barButton`.
