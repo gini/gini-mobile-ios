@@ -20,7 +20,7 @@
 "ginibank.help.menu.returnAssistant.section3.body" = "If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
-"ginibank.digitalinvoice.screentitle" = "Digital invoice";
+"ginibank.digitalinvoice.screentitle" = "Invoice";
 "ginibank.digitalinvoice.paybutton.title" = "Confirm and proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
@@ -81,7 +81,7 @@
 "ginibank.digitalinvoice.backbutton" = "Back";
 
 "ginibank.digitalinvoice.help.screenTitle" = "Help";
-"ginibank.digitalinvoice.help.backToInvoice" = "Digital invoice";
+"ginibank.digitalinvoice.help.backToInvoice" = "Invoice";
 "ginibank.digitalinvoice.help.title1" = "1. How does a digital invoice work?";
 "ginibank.digitalinvoice.help.description1" = "We extracted all articles from your invoice and listed them for you. In case you want to return an ordered article or just partly pay your invoice, you simply deselect the article and the new total will be calculated automatically. ";
 "ginibank.digitalinvoice.help.title2" = "2. How can I edit an article?";
@@ -136,7 +136,7 @@
 "ginibank.skonto.help.footer.title" = "Take a photo of your invoice and the app will automatically calculate the Skonto discount. Just review the details, confirm, and enjoy the savings!";
 "ginibank.skonto.help.back" = "Skonto discount";
 
-"ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
+"ginibank.skonto.document.pages.screen.title" = "Details";
 "ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Try again";
 "ginibank.skonto.editableField.accessibility" = "Double tap to edit";
 

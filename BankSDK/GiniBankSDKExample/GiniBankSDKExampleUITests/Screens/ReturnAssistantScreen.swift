@@ -44,7 +44,7 @@ class ReturnAssistantScreen {
         case "de":
             helpButton = app.buttons["Hilfe"]
             getStartedButton = app.buttons["Los geht’s"]
-            digitalInvoiceTitleText = app.staticTexts["Digitale Rechnung"]
+            digitalInvoiceTitleText = app.staticTexts["Rechnung"]
             cancelButtonNavigation = app.navigationBars.buttons["Abbrechen"]
             editButton = app.buttons["Bearbeiten"]
             proceedButton = app.buttons["Bestätigen und weiter"]
