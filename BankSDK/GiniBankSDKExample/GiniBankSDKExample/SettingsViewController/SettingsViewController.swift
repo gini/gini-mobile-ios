@@ -79,9 +79,7 @@ final class SettingsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 65
 
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
+        tableView.sectionHeaderTopPadding = 0
 
         tableView.register(SwitchOptionTableViewCell.self)
         tableView.register(SegmentedOptionTableViewCell.self)

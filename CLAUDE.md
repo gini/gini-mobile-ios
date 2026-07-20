@@ -114,7 +114,7 @@ PP-4102
 - **Xcode:** 26.2
 - **Simulator:** iPhone 16, iOS 26.2
 - **Runner:** macOS latest
-- **Minimum deployment target:** iOS 13+ (HealthAPILibrary: iOS 12+)
+- **Minimum deployment target:** iOS 15+ (HealthSDK & HealthAPILibrary: iOS 17+)
 
 
 # MyApp Standards
