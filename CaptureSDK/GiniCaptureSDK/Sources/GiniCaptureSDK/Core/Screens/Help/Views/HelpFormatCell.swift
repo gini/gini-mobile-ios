@@ -18,11 +18,9 @@ final class HelpFormatCell: UITableViewCell, HelpCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureAccessibility()
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            backgroundConfiguration = bgConfig
-        }
+        var bgConfig = UIBackgroundConfiguration.listPlainCell()
+        bgConfig.backgroundColor = UIColor.clear
+        backgroundConfiguration = bgConfig
     }
 
     // Group icon and description as a single VoiceOver element per row.
