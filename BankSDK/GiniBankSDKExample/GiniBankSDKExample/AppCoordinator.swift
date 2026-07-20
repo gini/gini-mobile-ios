@@ -254,20 +254,15 @@ final class AppCoordinator: Coordinator {
     }
 
     fileprivate func requestTrackingPermission(completion: @escaping (Bool) -> Void) {
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                switch status {
-                    case .authorized:
-                        completion(true)
-                    case .denied, .restricted, .notDetermined:
-                        completion(false)
-                    @unknown default:
-                        completion(false)
-                }
+        ATTrackingManager.requestTrackingAuthorization { status in
+            switch status {
+                case .authorized:
+                    completion(true)
+                case .denied, .restricted, .notDetermined:
+                    completion(false)
+                @unknown default:
+                    completion(false)
             }
-        } else {
-            // Tracking is enabled by default on earlier iOS versions
-            completion(true)
         }
     }
 

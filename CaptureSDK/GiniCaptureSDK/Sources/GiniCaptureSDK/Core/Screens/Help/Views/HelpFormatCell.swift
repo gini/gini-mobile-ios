@@ -20,10 +20,8 @@ final class HelpFormatCell: UITableViewCell, HelpCell {
         self.isAccessibilityElement = false
         self.iconImageView.isAccessibilityElement = true
         self.descriptionLabel.isAccessibilityElement = true
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            backgroundConfiguration = bgConfig
-        }
+        var bgConfig = UIBackgroundConfiguration.listPlainCell()
+        bgConfig.backgroundColor = UIColor.clear
+        backgroundConfiguration = bgConfig
     }
 }
