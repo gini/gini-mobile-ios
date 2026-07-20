@@ -92,6 +92,6 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
 
         cell.layoutSubviews()
 
-        cell.accessibilityLabel = "\(item.header). \(item.details)"
+        cell.accessibilityLabel = "\(item.header), \(item.details)"
     }
 }
