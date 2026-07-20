@@ -490,7 +490,7 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         // Exercises the CIContext.createCGImage + UIImage(cgImage:) path in UIImage(qrData:).
         // The resulting image must be bitmap-backed because it is later saved via
         // PHAssetChangeRequest.creationRequestForAsset(from:) in AnalysisViewController.
-        let data = "https://example.com/payment".data(using: .utf8)!
+        let data = Data("https://example.com/payment".utf8)
         let image = UIImage(qrData: data)
         XCTAssertNotNil(image, "QR code image must be generated for non-empty payload data")
         XCTAssertNotNil(image?.cgImage, "returned UIImage must be bitmap-backed (non-nil .cgImage)")
