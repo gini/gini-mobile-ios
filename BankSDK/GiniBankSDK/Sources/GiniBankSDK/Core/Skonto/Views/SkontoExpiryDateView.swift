@@ -96,6 +96,29 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.resignFirstResponder()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateDatePickerAutoresizingForCurrentTrait()
+    }
+
+    /// On iOS 26 the wheel `UIDatePicker`'s host overlaps the input accessory
+    /// band in landscape (compact height), drawing Done behind the wheels.
+    /// Enabling `.flexibleHeight` lets UIKit shrink the picker to fit. In
+    /// portrait the mask must be cleared and the input views reloaded so
+    /// UIKit re-establishes a single input host — otherwise the accessory
+    /// host stays inflated after returning from landscape, leaving a gap
+    /// between the toolbar and the wheels.
+    private func updateDatePickerAutoresizingForCurrentTrait() {
+        guard #available(iOS 26, *),
+              let picker = textField.inputView as? UIDatePicker else { return }
+        picker.autoresizingMask = traitCollection.verticalSizeClass == .compact
+            ? .flexibleHeight
+            : []
+        if textField.isFirstResponder {
+            textField.reloadInputViews()
+        }
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
@@ -192,14 +215,8 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
-        if #available(iOS 26, *) {
-            // In landscape on iOS 26 the wheel picker's host overlaps the
-            // input accessory band, drawing the Done button behind the wheels.
-            // Flexing the picker's height lets UIKit shrink it to fit above
-            // the toolbar in the compact-height keyboard region.
-            datePicker.autoresizingMask = .flexibleHeight
-        }
         textField.inputView = datePicker
+        updateDatePickerAutoresizingForCurrentTrait()
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
