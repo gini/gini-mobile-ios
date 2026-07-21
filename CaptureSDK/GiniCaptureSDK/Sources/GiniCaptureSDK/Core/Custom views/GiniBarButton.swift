@@ -115,7 +115,7 @@ public final class GiniBarButton {
      */
     public init(ofType type: BarButtonType) {
         let (label, icon) = Self.titleAndIcon(for: type)
-        if case .done = type, #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), case .done = type {
             // iOS 26+ renders the Liquid Glass checkmark; earlier versions
             // fall through to the localized "Done" title below.
             nativeItem = UIBarButtonItem(barButtonSystemItem: .done,
