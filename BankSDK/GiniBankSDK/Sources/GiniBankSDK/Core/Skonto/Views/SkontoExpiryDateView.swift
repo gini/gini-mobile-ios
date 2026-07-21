@@ -192,6 +192,13 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        if #available(iOS 26, *) {
+            // In landscape on iOS 26 the wheel picker's host overlaps the
+            // input accessory band, drawing the Done button behind the wheels.
+            // Flexing the picker's height lets UIKit shrink it to fit above
+            // the toolbar in the compact-height keyboard region.
+            datePicker.autoresizingMask = .flexibleHeight
+        }
         textField.inputView = datePicker
     }
 
