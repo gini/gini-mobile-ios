@@ -11,7 +11,7 @@ import XCTest
 class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
     
     func testCancelButtonInMenu() throws {
-        
+
         //No Cancel button on iPad
         if UIDevice.current.userInterfaceIdiom == .pad {
                throw XCTSkip("Skipping test on iPad")
@@ -24,10 +24,24 @@ class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Cancel button
-        captureScreen.cancelButtonInMenu.tap()
-        //Assert Cancel button isn't displayed
-        XCTAssertFalse(captureScreen.cancelButtonInMenu.isHittable)
+
+        //Wait for the sheet to appear (Upload files is one of its actions)
+        XCTAssertTrue(captureScreen.uploadFilesButton.waitForExistence(timeout: 5),
+                      "Files menu did not appear")
+
+        if #available(iOS 26.0, *) {
+            //iOS 26: the sheet is presented via UISheetPresentationController and its Cancel action
+            //isn't accessible — dismiss with an interactive swipe-down gesture on the sheet body.
+            let start = captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
+            let end = captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98))
+            start.press(forDuration: 0.1, thenDragTo: end)
+        } else {
+            //iOS < 26: tap the sheet's Cancel button as before.
+            captureScreen.cancelButtonInMenu.tap()
+        }
+
+        //Assert the sheet was dismissed by verifying a sheet-only action is no longer hittable
+        XCTAssertFalse(captureScreen.uploadFilesButton.isHittable)
     }
     
     func testUploadFilesButtonInMenu() {
