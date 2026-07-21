@@ -20,7 +20,7 @@
 "ginibank.help.menu.returnAssistant.section3.body" = "Sollte der Preis mal nicht perfekt ausgelesen worden sein, können Sie diesen einfach manuell korrigieren. Der Gesamtpreis aktualisiert sich automatisch.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
-"ginibank.digitalinvoice.screentitle" = "Rechnung";
+"ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
 "ginibank.digitalinvoice.paybutton.title" = "Bestätigen und weiter";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
@@ -73,7 +73,7 @@
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
 "ginibank.digitalinvoice.help.screenTitle" = "Hilfe";
-"ginibank.digitalinvoice.help.backToInvoice" = "Rechnung";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digitale Rechnung";
 "ginibank.digitalinvoice.help.title1" = "1. Wie funktioniert die Digitale Rechnung?";
 "ginibank.digitalinvoice.help.description1" = "Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
 "ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten?";
@@ -129,7 +129,7 @@
 "ginibank.skonto.help.footer.title" = "Machen Sie einfach ein Foto der Rechnung und die App erkennt automatisch die Rabatte. Überprüfen Sie die Details, bestätigen Sie und sparen Sie mit den Rabatten!";
 "ginibank.skonto.help.back" = "Skonto";
 
-"ginibank.skonto.document.pages.screen.title" = "Details";
+"ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
 "ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Versuch's nochmal";
 "ginibank.skonto.editableField.accessibility" = "Zum Bearbeiten Doppeltippen";
 
