@@ -46,10 +46,17 @@ final class CameraViewController: UIViewController {
     private var isPresentedOnScreen = false
 
     private var isValidIBANDetected: Bool = false
-    // Snapshot of the backend flag taken on the first invalid QR scan.
-    // Stays fixed for the session so all repeated scans show the same feedback type.
+    /**
+     Snapshot of the backend flag taken on the first invalid QR scan.
+     Stays fixed for the session so all repeated scans show the same feedback type.
+     */
     private var sessionUnsupportedQRCodeWarningEnabled: Bool?
     private var didCaptureSessionUnsupportedQRCodeWarning = false
+    /**
+     Indicates whether the user is in the QR scan flow (unsupported-QR alert shown or "Scan another QR code" selected).
+     When `true`, IBAN feedback is suppressed until the user selects "Take photo of document".
+     */
+    private var isQRScanFlowActive = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
     private var ibanOverlayFirstAppearance: Bool = true
@@ -541,6 +548,13 @@ final class CameraViewController: UIViewController {
 
     // MARK: - IBANs Detection
     private func showIBANFeedback(_ IBANs: [String]) {
+        // Suspend IBAN feedback once the user is in the QR flow — first while the
+        // unsupported-QR alert is on top, then permanently after "Scan another QR code".
+        guard !isQRScanFlowActive else {
+            hideIBANOverlay()
+            return
+        }
+
         isValidIBANDetected = !IBANs.isEmpty
         guard isValidIBANDetected else {
             hideIBANOverlay()
@@ -674,6 +688,8 @@ final class CameraViewController: UIViewController {
         guard presentedViewController == nil else { return }
 
         cameraPreviewViewController.camera.pauseQRDetection()
+        isQRScanFlowActive = true
+        hideIBANOverlay()
 
         sendGiniAnalyticsEventForInvalidQRCode()
         playVoiceOverMessage(success: false)
@@ -692,6 +708,8 @@ final class CameraViewController: UIViewController {
     }
 
     private func handleScanAnotherQRCode() {
+        // Keep isQRScanFlowActive = true — user chose the QR flow, IBAN
+        // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
         detectedQRCodeDocument = nil
     }
@@ -699,6 +717,7 @@ final class CameraViewController: UIViewController {
     private func handleTakePhotoOfDocument() {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         cameraPreviewViewController.cameraFrameView.isHidden = false
+        isQRScanFlowActive = false
         detectedQRCodeDocument = nil
     }
 
