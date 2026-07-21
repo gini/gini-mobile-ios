@@ -101,13 +101,10 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         updateDatePickerAutoresizingForCurrentTrait()
     }
 
-    /// On iOS 26 the wheel `UIDatePicker`'s host overlaps the input accessory
-    /// band in landscape (compact height), drawing Done behind the wheels.
-    /// Enabling `.flexibleHeight` lets UIKit shrink the picker to fit. In
-    /// portrait the mask must be cleared and the input views reloaded so
-    /// UIKit re-establishes a single input host — otherwise the accessory
-    /// host stays inflated after returning from landscape, leaving a gap
-    /// between the toolbar and the wheels.
+/**
+ Updates the wheel `UIDatePicker` autoresizing mask on iOS 26 to prevent the input accessory from overlapping it in compact height.
+ Reloads the input views while editing to avoid leaving a layout gap after returning to regular height.
+ */
     private func updateDatePickerAutoresizingForCurrentTrait() {
         guard #available(iOS 26, *),
               let picker = textField.inputView as? UIDatePicker else { return }
