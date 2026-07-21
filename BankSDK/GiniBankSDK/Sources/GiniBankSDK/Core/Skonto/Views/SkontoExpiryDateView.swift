@@ -101,10 +101,10 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         updateDatePickerAutoresizingForCurrentTrait()
     }
 
-/**
- Updates the wheel `UIDatePicker` autoresizing mask on iOS 26 to prevent the input accessory from overlapping it in compact height.
- Reloads the input views while editing to avoid leaving a layout gap after returning to regular height.
- */
+    /**
+     Updates the wheel `UIDatePicker` autoresizing mask on iOS 26 to prevent the input accessory from overlapping it in compact height.
+     Reloads the input views while editing to avoid leaving a layout gap after returning to regular height.
+     */
     private func updateDatePickerAutoresizingForCurrentTrait() {
         guard #available(iOS 26, *),
               let picker = textField.inputView as? UIDatePicker else { return }
