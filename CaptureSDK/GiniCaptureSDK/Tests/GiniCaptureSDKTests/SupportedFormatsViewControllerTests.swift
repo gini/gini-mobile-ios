@@ -96,10 +96,32 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
     
     func testRowSelectionDisabled() {
         let selectionState = supportedFormatsViewController.tableView.allowsSelection
-        
+
         XCTAssertFalse(selectionState, "table view cell selection should not be allowed")
     }
-    
+
+    func testFormatCellAccessibilityIsConfiguredWhenDequeued() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = supportedFormatsViewController.dataSource.tableView(
+            supportedFormatsViewController.tableView,
+            cellForRowAt: indexPath) as? HelpFormatCell
+
+        XCTAssertNotNil(cell, "HelpFormatCell should be dequeued for the first row")
+        XCTAssertTrue(cell?.isAccessibilityElement ?? false,
+                      "HelpFormatCell should expose itself as a single VoiceOver element")
+        XCTAssertTrue(cell?.accessibilityTraits.contains(.staticText) ?? false,
+                      "HelpFormatCell should be read with static-text traits")
+        XCTAssertFalse(cell?.iconImageView.isAccessibilityElement ?? true,
+                       "HelpFormatCell icon must not be a separate VoiceOver element")
+        XCTAssertFalse(cell?.descriptionLabel.isAccessibilityElement ?? true,
+                       "HelpFormatCell description must not be a separate VoiceOver element")
+
+        let expectedItem = supportedFormatsViewController.dataSource
+            .items[indexPath.section].formats[indexPath.row]
+        XCTAssertEqual(cell?.accessibilityLabel, expectedItem,
+                       "Cell accessibility label should equal the format string")
+    }
+
     override func tearDown() {
         super.tearDown()
         GiniConfiguration.shared = initialGiniConfiguration
