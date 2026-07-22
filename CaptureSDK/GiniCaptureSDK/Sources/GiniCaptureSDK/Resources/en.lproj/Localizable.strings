@@ -7,9 +7,7 @@
 */
 
 "ginicapture.navigationbar.camera.title"        = "Scan";
-"ginicapture.navigationbar.camera.close"        = "";
 "ginicapture.navigationbar.camera.help"         = "Help";
-"ginicapture.navigationbar.review.continue"     = "Next";
 "ginicapture.navigationbar.analysis.back"       = "Cancel";
 "ginicapture.navigationbar.help.backToCamera"   = "Camera";
 "ginicapture.navigationbar.help.backToMenu"     = "Help";

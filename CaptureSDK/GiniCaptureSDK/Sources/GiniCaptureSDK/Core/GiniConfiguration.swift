@@ -434,14 +434,6 @@ import GiniUtilites
      */
     public var localizedStringsTableName: String?
 
-    // Undocumented--Xamarin only
-    @objc public var closeButtonResource: PreferredButtonResource?
-    @objc public var helpButtonResource: PreferredButtonResource?
-    @objc public var backToCameraButtonResource: PreferredButtonResource?
-    @objc public var backToMenuButtonResource: PreferredButtonResource?
-    @objc public var nextButtonResource: PreferredButtonResource?
-    @objc public var cancelButtonResource: PreferredButtonResource?
-
     /**
      Set dictionary of fonts for available text styles. Used internally.
      */
