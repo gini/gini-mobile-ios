@@ -17,13 +17,18 @@ final class HelpFormatCell: UITableViewCell, HelpCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.isAccessibilityElement = false
-        self.iconImageView.isAccessibilityElement = true
-        self.descriptionLabel.isAccessibilityElement = true
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            backgroundConfiguration = bgConfig
-        }
+        configureAccessibility()
+        var bgConfig = UIBackgroundConfiguration.listPlainCell()
+        bgConfig.backgroundColor = UIColor.clear
+        backgroundConfiguration = bgConfig
+    }
+
+    // Group icon and description as a single VoiceOver element per row.
+    // The section title is already read by HelpFormatSectionHeader.
+    private func configureAccessibility() {
+        isAccessibilityElement = true
+        accessibilityTraits = .staticText
+        iconImageView.isAccessibilityElement = false
+        descriptionLabel.isAccessibilityElement = false
     }
 }
