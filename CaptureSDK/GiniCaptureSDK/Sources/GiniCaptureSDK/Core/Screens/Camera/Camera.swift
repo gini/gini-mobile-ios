@@ -33,6 +33,8 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func pauseQRDetection()
+    func resumeQRDetection()
 
     // IBAN detection
     func startOCR()
@@ -73,6 +75,9 @@ final class Camera: NSObject, CameraProtocol {
     }()
 
     fileprivate let application: UIApplication
+
+    // QR detection
+    private(set) var qrMetadataOutput: AVCaptureMetadataOutput?
 
     // IBAN detection
     private var request: VNImageBasedRequest?
@@ -276,8 +281,32 @@ final class Camera: NSObject, CameraProtocol {
         qrOutput.metadataObjectTypes = desiredTypes.filter {
             qrOutput.availableMetadataObjectTypes.contains($0)
         }
+        qrMetadataOutput = qrOutput
         session.commitConfiguration()
     }
+
+    func pauseQRDetection() {
+        sessionQueue.async { [weak self] in
+            self?.qrMetadataOutput?.metadataObjectTypes = []
+        }
+    }
+
+    func resumeQRDetection() {
+        sessionQueue.async { [weak self] in
+            guard let self = self,
+                  let output = self.qrMetadataOutput,
+                  output.availableMetadataObjectTypes.contains(.qr) else { return }
+            output.metadataObjectTypes = [.qr]
+        }
+    }
+
+    #if DEBUG
+    // Intended for unit tests only — injects a metadata output without going
+    // through full session setup, which is unstable on CI simulators.
+    func setQRMetadataOutputForTesting(_ output: AVCaptureMetadataOutput?) {
+        qrMetadataOutput = output
+    }
+    #endif
 }
 
 // MARK: - Fileprivate

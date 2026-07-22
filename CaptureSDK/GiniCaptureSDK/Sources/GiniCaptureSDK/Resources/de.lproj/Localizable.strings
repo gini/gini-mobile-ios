@@ -225,6 +225,9 @@
 "ginicapture.QRscanning.correct" = "QR-Code erkannt";
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
+"ginicapture.QRscanning.alert.title" = "Dieser QR-Code ist kein Zahlungs-QR-Code";
+"ginicapture.QRscanning.alert.scanAnother" = "Anderen QR-Code scannen";
+"ginicapture.QRscanning.alert.takePhoto" = "Dokument fotografieren";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
 "ginicapture.QRscanning.education.loading.captureTip" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 
