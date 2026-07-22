@@ -30,11 +30,9 @@ class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
                       "Files menu did not appear")
 
         if #available(iOS 26.0, *) {
-            //iOS 26: the sheet is presented via UISheetPresentationController and its Cancel action
-            //isn't accessible — dismiss with an interactive swipe-down gesture on the sheet body.
-            let start = captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
-            let end = captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98))
-            start.press(forDuration: 0.1, thenDragTo: end)
+            //iOS 26: the sheet's Cancel action is drawn visually at the bottom of the sheet
+            //but is not exposed to accessibility. Tap its screen position directly.
+            captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.96)).tap()
         } else {
             //iOS < 26: tap the sheet's Cancel button as before.
             captureScreen.cancelButtonInMenu.tap()

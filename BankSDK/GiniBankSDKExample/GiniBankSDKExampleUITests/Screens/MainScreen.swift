@@ -56,8 +56,12 @@ class MainScreen {
         let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
         let buttonToTap: XCUIElement
 
-        if answer {
-            buttonToTap = allowButton.exists ? allowButton : allowButtonDE
+        if answer, allowButton.waitForExistence(timeout: 3) {
+            buttonToTap = allowButton
+        } else if answer, allowButtonDE.waitForExistence(timeout: 3) {
+            buttonToTap = allowButtonDE
+        } else if answer {
+            buttonToTap = allowButton
         } else if dontAllowButton.waitForExistence(timeout: 3) {
             buttonToTap = dontAllowButton
         } else if dontAllowButtonStraight.waitForExistence(timeout: 3) {
