@@ -112,7 +112,9 @@ fileprivate extension GiniCaptureDocumentValidator {
         }
     }
 
-    /// Requires an `iban` parameter that passes IBAN check-digit validation.
+    /**
+     Requires an `iban` parameter that passes IBAN check-digit validation.
+     */
     class func validateStrictIBAN(in document: GiniQRCodeDocument) throws {
         guard let iban = document.extractedParameters["iban"],
               IBANValidator().isValid(iban: iban) else {
@@ -120,14 +122,18 @@ fileprivate extension GiniCaptureDocumentValidator {
         }
     }
 
-    /// Requires an `iban` parameter that is present and non-empty (non-SEPA formats allowed).
+    /**
+     Requires an `iban` parameter that is present and non-empty (non-SEPA formats allowed).
+     */
     class func validateNonEmptyIBAN(in document: GiniQRCodeDocument) throws {
         guard let iban = document.extractedParameters["iban"], !iban.isEmpty else {
             throw DocumentValidationError.qrCodeFormatNotValid
         }
     }
 
-    /// Requires the given key to be present in the document's extracted parameters.
+    /**
+     Requires the given key to be present in the document's extracted parameters.
+     */
     class func validateContainsKey(_ key: String, in document: GiniQRCodeDocument) throws {
         if document.extractedParameters[key] == nil {
             throw DocumentValidationError.qrCodeFormatNotValid

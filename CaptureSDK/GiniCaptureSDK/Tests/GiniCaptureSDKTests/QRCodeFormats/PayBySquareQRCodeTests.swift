@@ -122,15 +122,17 @@ struct PayBySquareQRCodeTests {
 @Suite("Pay by Square field mapping")
 struct PayBySquareFieldMappingTests {
 
-    /// Lays out the bysquare fields positionally in spec order (v1.1), independent of the
-    /// decoder's `beneficiaryIdx` arithmetic. Because the beneficiary is placed by counting
-    /// real fields rather than by the same formula the decoder uses, a regression in that
-    /// arithmetic (off-by-one, wrong multiplier, dropped presence flags) makes the payee
-    /// come back wrong and fails the test.
-    ///
-    /// Note: the block sizes (two presence flags, +4 standing order, +10 direct debit) are
-    /// the same spec constants the decoder assumes; independently verifying *those* would
-    /// require a real captured standing-order / direct-debit vector.
+    /**
+     Lays out the bysquare fields positionally in spec order (v1.1), independent of the
+     decoder's `beneficiaryIdx` arithmetic. Because the beneficiary is placed by counting
+     real fields rather than by the same formula the decoder uses, a regression in that
+     arithmetic (off-by-one, wrong multiplier, dropped presence flags) makes the payee
+     come back wrong and fails the test.
+
+     Note: the block sizes (two presence flags, +4 standing order, +10 direct debit) are
+     the same spec constants the decoder assumes; independently verifying *those* would
+     require a real captured standing-order / direct-debit vector.
+     */
     private func buildFields(paymentOptions: Int,
                              banksCount: Int = 1,
                              iban: String = "SK2811000000002620154106",
