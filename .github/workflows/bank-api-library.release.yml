@@ -9,14 +9,18 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
+    needs: get-config
     uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
-    needs: check
+    needs: [get-config, check]
     permissions:
       contents: write
     uses: ./.github/workflows/sdk.release.yml
@@ -26,6 +30,8 @@ jobs:
       version_file_path: 'BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift'
       git_tag: ${{ github.ref }}
       repo_url: 'https://github.com/gini/bank-api-library-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

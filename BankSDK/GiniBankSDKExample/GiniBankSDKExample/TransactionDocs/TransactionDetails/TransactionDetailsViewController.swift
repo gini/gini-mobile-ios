@@ -60,9 +60,7 @@ class TransactionDetailsViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
+        tableView.sectionHeaderTopPadding = 0
 
         tableView.register(TransactionDetailCell.self)
         tableView.register(AttachmentsTableViewCell.self)

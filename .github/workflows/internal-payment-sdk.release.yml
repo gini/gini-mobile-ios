@@ -8,13 +8,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
     uses: ./.github/workflows/internal-payment-sdk.check.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   release:
-    needs: check
+    needs: [get-config, check]
     permissions:
       contents: write
     uses: ./.github/workflows/sdk.release.yml
@@ -24,6 +27,8 @@ jobs:
       version_file_path: 'GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/Sources/GiniInternalPaymentSDK/GiniInternalPaymentSDKVersion.swift'
       git_tag: ${{ github.ref }}
       repo_url: 'https://github.com/gini/internal-payment-sdk-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
     secrets:
       MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
       MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

@@ -18,7 +18,7 @@ We provide a global color palette `GiniColors.xcassets` which you are free to ov
 For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
 The custom colors are then applied to all screens.
 
-Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10662&t=frkU7wM8jb9IqqA4-4)).
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=17116-10662&t=QIIdMD5XVFcf24hv-1)).
 
 ### Images
 
@@ -30,7 +30,7 @@ If you want to override specific SDK images:
 ### Typography
 
 We provide global typography based on text appearance styles from UIFont.TextStyle.
-Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=17116-10470&t=frkU7wM8jb9IqqA4-4)).
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=17116-10470&t=QIIdMD5XVFcf24hv-1)).
 
 In the example below you can see to override a font for `.body1`
 
@@ -69,16 +69,17 @@ Text customization is done via overriding of string resources.
 For example you would like to customize pay invoice button label in the Payment Review screen:
 
 1. Find a string key for a text that you would like to customize.
-   For the [To the banking app button label](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=16914-14742&t=frkU7wM8jb9IqqA4-4) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
+   For the [To the banking app button label](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-27247&t=QIIdMD5XVFcf24hv-1) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
 2. Add the string key with a desired value to `Localizable.strings` in your app.
     2.1 For German informal tone, you must add a key with `.informal` suffix to `Localizable.strings` in your app. For example, `gini.health.paymentcomponent.to.banking.app.label.informal`.
+
 ### Supporting dark mode
 
 We support dark mode in our SDK. If you decide to customize the color palette, please ensure that the text colors are also set in contrast to the background colors.
 
 ## Payment Component
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12906-23094&t=frkU7wM8jb9IqqA4-4).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&t=Q07UvHyFl3LftADO-4).
 
 For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
 
@@ -93,36 +94,76 @@ healthSDK.setConfiguration(config)
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12906-23094&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&embed-host=share" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-10274&t=frkU7wM8jb9IqqA4-4).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-10274&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Feature Info Screen
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-11429&t=frkU7wM8jb9IqqA4-4).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-11429&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-12507&t=frkU7wM8jb9IqqA4-4).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&t=Q07UvHyFl3LftADO-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/pImKS4S03V7d8NQhzbnDKa/iOS-Gini-Health-SDK-6.0.0?node-id=12907-12507&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&embed-host=share" allowfullscreen></iframe>
 
 
 > **Note:** 
 > - PaymentReviewViewController contains the following configuration options:
 > - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
+
+### iOS 26 Liquid Glass adaptations
+
+All screens with Liquid Glass adaptation can be found [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-16041&t=QIIdMD5XVFcf24hv-1)
+On iOS 26+ the Payment Review screen adopts system Liquid Glass automatically — no host-app configuration is required. 
+The three customization hooks below were introduced alongside the adaptation and are available on all supported iOS versions:
+
+#### Navigation bar title
+
+The [screen](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-16255&t=QIIdMD5XVFcf24hv-1) supports a navigation bar title, set via a localized string. The default is empty (no title shown), preserving existing behavior.
+
+To display a title, add the key to your `Localizable.strings`:
+
+```swift
+"gini.health.reviewscreen.title" = "Your Invoice";
+```
+
+For German informal tone, add the `.informal` variant:
+
+```swift
+"gini.health.reviewscreen.title.informal" = "Ihre Rechnung";
+```
+
+#### Keyboard "Done" button
+
+The amount field's numeric keyboard shows a Done accessory that dismisses the keyboard. On iOS 26+ the system renders it as a Liquid Glass pill; on earlier iOS versions it renders as a labeled bar button.
+
+- **Label** — override via `Localizable.strings`:
+
+  ```swift
+  "gini.health.reviewscreen.keyboard.done.button.title" = "Done";
+  ```
+
+  A `.informal` variant is also supported for the German informal tone.
+
+- **Tint color** — follows the accent color used across the SDK, which resolves through the `Accent01Dark` (light mode) and `Accent01Light` (dark mode) color assets. To override, add `Accent01Dark.colorset` and `Accent01Light.colorset` to your main bundle. See [Colors](#colors).
+
+#### Page indicator colors
+
+The [document carousel's page indicators](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21909-17450&t=QIIdMD5XVFcf24hv-1) use the standard foreground color, which resolves through the `Dark01` (light mode) and `Light01` (dark mode) color assets. The current-page dot renders at full opacity; other dots at 45% alpha. To override, add `Dark01.colorset` and `Light01.colorset` to your main bundle.
