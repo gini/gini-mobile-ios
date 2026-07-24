@@ -117,7 +117,8 @@ import Photos
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .clear
+        scrollView.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                               dark: .GiniCapture.dark2).uiColor()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -460,11 +461,30 @@ import Photos
     }
 
     // MARK: - Handling UI - Payment DueHint
-    private func setupScrollableStackView(dueDate: String) {
 
-        /// hide views before showing hint
+    private func tearDownLoadingUI() {
         loadingIndicatorText.isHidden = true
         loadingIndicatorView.stopAnimating()
+        loadingIndicatorContainer.removeFromSuperview()
+
+        if let customIndicator = giniConfiguration.customLoadingIndicator {
+            customIndicator.stopAnimation()
+            customIndicator.injectedView().removeFromSuperview()
+        }
+
+        /// Drain pending continuations so any `Task` waiting on animation completion is not stranded.
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        loadingViewModel = nil
+
+        view.subviews
+            .compactMap { $0 as? QRCodeEducationLoadingView }
+            .forEach { $0.removeFromSuperview() }
+    }
+
+    @MainActor
+    private func setupScrollableStackView(dueDate: String) {
+        tearDownLoadingUI()
 
         view.addSubview(scrollView)
 
@@ -560,7 +580,6 @@ extension AnalysisViewController: PaymentDueDateProtocol {
         setupScrollableStackView(dueDate: dueDate)
     }
 
-    @MainActor
     public func clearPaymentDueDate(after timeout: TimeInterval) async {
         await withCheckedContinuation { continuation in
             var didClear = false
@@ -617,3 +636,4 @@ private extension AnalysisViewController {
         )
     }
 }
+

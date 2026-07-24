@@ -43,7 +43,6 @@ public extension View {
      - Parameter height: A binding to receive the measured height value.
      - Returns: A view that reports its height through the provided binding.
      */
-    @available(iOS 15.0, *)
     func getHeight(for height: Binding<CGFloat>) -> some View {
         self
             .fixedSize(horizontal: false, vertical: true)

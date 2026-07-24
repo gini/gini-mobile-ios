@@ -43,6 +43,8 @@ class SkontoAlertFactory {
                                                                                      comment: "Understood"),
                                      style: .default)
         alert.addAction(okAction)
+        // preferredAction must be set after addAction
+        alert.preferredAction = okAction
         return alert
     }
 }

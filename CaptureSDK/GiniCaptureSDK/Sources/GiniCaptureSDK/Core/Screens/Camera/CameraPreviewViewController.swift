@@ -217,7 +217,10 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameViewHeightAnchorPortrait])
         } else {
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor,
+                // Anchor to safe area top so the frame is not clipped by a host nav bar
+                // when the SDK is presented in a non-full-screen style (e.g. .pageSheet).
+                // In .fullScreen this resolves to the same y as view.topAnchor.
+                cameraFrameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                                      constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),

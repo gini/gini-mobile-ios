@@ -155,6 +155,7 @@ public final class ReviewViewController: UIViewController {
         pageControl.addTarget(self,
                               action: #selector(pageControlSelectionAction(_:)),
                               for: .valueChanged)
+        pageControl.backgroundStyle = .prominent
 
         return pageControl
     }()
@@ -213,6 +214,7 @@ public final class ReviewViewController: UIViewController {
         let view = UIStackView(arrangedSubviews: [saveToGalleryView])
 
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isLayoutMarginsRelativeArrangement = true // Use layout margins for arranged subviews.
         view.axis = .vertical
 
         return view
@@ -271,7 +273,8 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = {
         return [
-            tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                          constant: Constants.tipLabelTopPadding),
             tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                               constant: Constants.tipLabelPadding),
             tipLabel.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
@@ -560,6 +563,10 @@ extension ReviewViewController {
         buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(UIDevice.current.isIphoneAndLandscape)
         let saveToGalleryBottomConstant = Constants.saveToGalleryBottomConstant(UIDevice.current.isPortrait)
         optionsStackView.spacing = shouldShowSaveToGalleryView ? saveToGalleryBottomConstant : 0
+        // Mirrors the portrait iPhone path: when save-to-gallery is hidden the process
+        // button collapses flush against the page control on multi-page reviews. Insert a top gap.
+        optionsStackView.directionalLayoutMargins.top =
+            shouldShowSaveToGalleryView ? 0 : Constants.pageControlToProcessButtonPadding
 
         // Handle bottom navigation bar placement (always use portrait behavior)
         if giniConfiguration.bottomNavigationBarEnabled {
@@ -664,9 +671,17 @@ extension ReviewViewController {
             Constants.buttonContainerWithSaveToGalleryHorizontalSpacing
             : Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = Constants.saveToGalleryBottomConstant(false)
+            // Landscape uses `optionsStackViewHorizontalConstraints` — the stack is
+            // centred vertically rather than pinned under the page control, so no
+            // top gap is needed. Reset in case we rotated in from portrait.
+            optionsStackView.directionalLayoutMargins.top = 0
         } else {
             buttonsStackViewContainer.spacing = Constants.buttonContainerSpacing(isLandscape)
             optionsStackView.spacing = shouldShowSaveToGalleryView ? Constants.saveToGalleryBottomConstant(true) : 0
+            // Portrait only: when the save-to-gallery view is hidden the process button
+            // collapses flush against the page control. Insert a top gap.
+            optionsStackView.directionalLayoutMargins.top =
+                shouldShowSaveToGalleryView ? 0 : Constants.pageControlToProcessButtonPadding
         }
     }
 
@@ -1226,6 +1241,7 @@ extension ReviewViewController {
 
         static let padding: CGFloat = 16
         static let tipLabelPadding: CGFloat = 8
+        static let tipLabelTopPadding: CGFloat = 6
         static let largePadding: CGFloat = 32
         static let bottomPadding: CGFloat = 50
         static let pageControlBottomPadding: CGFloat = 130
@@ -1270,6 +1286,8 @@ extension ReviewViewController {
         static let saveToGalleryBottomConstant: (_ isPortrait: Bool) -> CGFloat = { isPortrait in
             isPortrait ? 11.0 : 28.0
         }
+        // Top gap when save-to-gallery is hidden.
+        static let pageControlToProcessButtonPadding: CGFloat = 24.0
         static let collectionViewHorizontalSpaceLandscape: CGFloat = 24.0
         static let minCollectionPadding: CGFloat = 5.0
         static let collectionInterItemSpacing: (_ isIpad: Bool, _ isPortrait: Bool) -> CGFloat = { isIpad, isPortrait in
