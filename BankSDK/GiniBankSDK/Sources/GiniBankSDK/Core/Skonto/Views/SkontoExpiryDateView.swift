@@ -96,6 +96,26 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.resignFirstResponder()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateDatePickerAutoresizingForCurrentTrait()
+    }
+
+    /**
+     Updates the wheel `UIDatePicker` autoresizing mask on iOS 26 to prevent the input accessory from overlapping it in compact height.
+     Reloads the input views while editing to avoid leaving a layout gap after returning to regular height.
+     */
+    private func updateDatePickerAutoresizingForCurrentTrait() {
+        guard #available(iOS 26, *),
+              let picker = textField.inputView as? UIDatePicker else { return }
+        picker.autoresizingMask = traitCollection.verticalSizeClass == .compact
+            ? .flexibleHeight
+            : []
+        if textField.isFirstResponder {
+            textField.reloadInputViews()
+        }
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
@@ -193,6 +213,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
+        updateDatePickerAutoresizingForCurrentTrait()
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {

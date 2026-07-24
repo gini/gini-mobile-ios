@@ -92,9 +92,22 @@ final class HelpMenuViewControllerTests: XCTestCase {
         let indexPath = IndexPath(row: 0, section: 0)
         let itemText = helpMenuViewController.dataSource.items[indexPath.row].title
         let cell = helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath) as! HelpMenuCell
-        
+
         XCTAssertEqual(itemText, cell.titleLabel.text,
                        "cell text in the first row should be the same as the first item text")
     }
-    
+
+    func testDidSelectRowClearsSelectionAndForwardsToDelegate() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        helpMenuViewController.tableView.selectRow(at: indexPath,
+                                                   animated: false,
+                                                   scrollPosition: .none)
+
+        helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView,
+                                                    didSelectRowAt: indexPath)
+
+        XCTAssertNil(helpMenuViewController.tableView.indexPathForSelectedRow,
+                     "Row selection should be cleared so VoiceOver doesn't re-announce it")
+    }
+
 }

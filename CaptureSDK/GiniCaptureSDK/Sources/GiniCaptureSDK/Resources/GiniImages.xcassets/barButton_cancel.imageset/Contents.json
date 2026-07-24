@@ -1,6 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "gh.close_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.close_dark.pdf",
       "idiom" : "universal"
     }
   ],

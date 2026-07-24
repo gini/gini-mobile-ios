@@ -499,9 +499,22 @@ final class GiniQRCodeDocumentTests: XCTestCase {
     // MARK: - GiniTrackingPermissionManager
 
     func testTrackingAuthorizedReturnsTrueWhenStatusIsNotDetermined() {
-        // In a unit test simulator the user has never been prompted for AppTrackingTransparency,
-        // so ATTrackingManager.trackingAuthorizationStatus is .notDetermined and
-        // trackingAuthorized() returns true.
-        XCTAssertTrue(GiniTrackingPermissionManager.shared.trackingAuthorized())
+        let manager = GiniTrackingPermissionManager(statusProvider: { .notDetermined })
+        XCTAssertTrue(manager.trackingAuthorized())
+    }
+
+    func testTrackingAuthorizedReturnsTrueWhenStatusIsAuthorized() {
+        let manager = GiniTrackingPermissionManager(statusProvider: { .authorized })
+        XCTAssertTrue(manager.trackingAuthorized())
+    }
+
+    func testTrackingAuthorizedReturnsFalseWhenStatusIsDenied() {
+        let manager = GiniTrackingPermissionManager(statusProvider: { .denied })
+        XCTAssertFalse(manager.trackingAuthorized())
+    }
+
+    func testTrackingAuthorizedReturnsFalseWhenStatusIsRestricted() {
+        let manager = GiniTrackingPermissionManager(statusProvider: { .restricted })
+        XCTAssertFalse(manager.trackingAuthorized())
     }
 }
