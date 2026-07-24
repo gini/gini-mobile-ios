@@ -51,7 +51,8 @@ final class MockSessionManager: SessionManagerProtocol {
     func logOut() {
         // This method will remain empty; no implementation is needed.
     }
-    
+
+    // swiftlint:disable:next function_body_length
     func data<T>(resource: T,
                  cancellationToken: GiniHealthAPILibrary.CancellationToken?,
                  completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
