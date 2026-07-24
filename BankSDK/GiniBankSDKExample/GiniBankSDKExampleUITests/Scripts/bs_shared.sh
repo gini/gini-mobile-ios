@@ -33,11 +33,11 @@ IPA_OUTPUT="$SCRIPT_DIR/GiniBankSDKExample.ipa"
 TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
 
 # ── Devices ───────────────────────────────────────────────────────────────────
-DEVICE_1="iPhone 16-18"
-DEVICE_2="iPhone 13 Pro Max-18"
+DEVICE_1="iPhone 17-26"
+DEVICE_2="iPhone 16-18"
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-BS_PROJECT="GiniBankSDK-CX-Payment-4.2.0"
+BS_PROJECT="GiniBankSDK-LiquidGlass-4.3.0"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
