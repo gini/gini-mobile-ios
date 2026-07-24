@@ -1,0 +1,60 @@
+//
+//  HUB3QRCodeTests.swift
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+//
+
+import Testing
+import Foundation
+@testable import GiniCaptureSDK
+
+@Suite("HUB3 QR Code")
+struct HUB3QRCodeTests {
+
+    private func makeHUB3(currency: String = "EUR",
+                           amountCents: String = "000000000010000",
+                           payee: String = "Gini d.o.o.",
+                           iban: String = "DE89370400440532013000",
+                           model: String = "HR00",
+                           reference: String = "1234567890") -> String {
+        var lines = Array(repeating: "", count: 14)
+        lines[0]  = "HRVHUB30"
+        lines[1]  = currency
+        lines[2]  = amountCents
+        lines[6]  = payee
+        lines[9]  = iban
+        lines[10] = model
+        lines[11] = reference
+        return lines.joined(separator: "\n")
+    }
+
+    @Test func detectedAsHUB3() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3())
+        #expect(doc.qrCodeFormat == .hub3)
+    }
+
+    @Test func extractsAllFields() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3())
+        #expect(doc.extractedParameters["iban"] == "DE89370400440532013000")
+        #expect(doc.extractedParameters["paymentRecipient"] == "Gini d.o.o.")
+        #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
+        // Reference is line 11 (call number) verbatim; the model line (10) is ignored,
+        // matching the Android SDK's HUB3Parser.
+        #expect(doc.extractedParameters["paymentReference"] == "1234567890")
+    }
+
+    @Test func convertsCentsToDecimalEUR() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(amountCents: "000000000010000"))
+        #expect(doc.extractedParameters["amountToPay"] == "100.00:EUR")
+    }
+
+    @Test func referenceIsCallNumberOnlyIgnoringModel() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR99", reference: "555-666"))
+        #expect(doc.extractedParameters["paymentReference"] == "555-666")
+    }
+
+    @Test func noReferenceWhenCallNumberEmpty() {
+        let doc = GiniQRCodeDocument(scannedString: makeHUB3(model: "HR00", reference: ""))
+        #expect(doc.extractedParameters["paymentReference"] == nil)
+    }
+}
