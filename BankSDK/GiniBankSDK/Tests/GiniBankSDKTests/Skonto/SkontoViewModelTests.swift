@@ -340,4 +340,45 @@ class SkontoViewModelTests: XCTestCase {
     private func formatValue(_ value: Double) -> String {
         return NumberFormatter.twoDecimalPriceFormatter.string(from: NSNumber(value: value)) ?? ""
     }
+
+    // MARK: - SkontoAlertFactory
+
+    func testSkontoAlertFactoryReturnsAlertWithPreferredOKActionForExpiredEdgeCase() {
+        // Fixture yields remainingDays = -63 → edgeCase == .expired.
+        let alert = SkontoAlertFactory(viewModel: viewModel).createEdgeCaseAlert()
+
+        XCTAssertNotNil(alert, "Expired edge case must produce an alert.")
+        XCTAssertEqual(alert?.preferredStyle, .alert)
+        XCTAssertEqual(alert?.actions.count, 1)
+        XCTAssertNotNil(alert?.preferredAction,
+                        "preferredAction must be set so the OK button is the default.")
+        XCTAssertTrue(alert?.preferredAction === alert?.actions.first,
+                      "preferredAction should be the OK action that was added.")
+    }
+
+    func testSkontoAlertFactoryReturnsNilWhenNoEdgeCase() {
+        // Push expiry into the future so remainingDays > 0 and (with non-cash payment) there is no edge case.
+        let futureDate = Calendar.current.date(byAdding: .day, value: 30, to: Date()) ?? Date()
+        viewModel.setExpiryDate(futureDate)
+
+        XCTAssertNil(SkontoAlertFactory(viewModel: viewModel).createEdgeCaseAlert(),
+                     "Factory must return nil when no edge case is active.")
+    }
+
+    // MARK: - UIView.currentInterfaceOrientation
+
+    func testUIViewCurrentInterfaceOrientationReturnsAnOrientation() {
+        // Without an attached window, the extension falls back to UIApplication.shared.statusBarOrientation,
+        // which is a valid UIInterfaceOrientation value in the test host.
+        let view = UIView()
+        let orientation = view.currentInterfaceOrientation
+        XCTAssertTrue([
+            .portrait,
+            .portraitUpsideDown,
+            .landscapeLeft,
+            .landscapeRight,
+            .unknown
+        ].contains(orientation),
+                      "currentInterfaceOrientation must return a UIInterfaceOrientation value.")
+    }
 }

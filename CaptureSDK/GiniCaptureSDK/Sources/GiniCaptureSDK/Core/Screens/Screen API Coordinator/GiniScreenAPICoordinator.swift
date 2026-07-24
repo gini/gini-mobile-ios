@@ -13,6 +13,7 @@ protocol Coordinator: AnyObject {
 }
 
 /// Defines how a view can show and hide a payment due date message.
+@MainActor
 public protocol PaymentDueDateProtocol: AnyObject {
 
     /// Show the payment due date text
@@ -63,36 +64,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public var giniConfiguration: GiniConfiguration
     public var pages: [GiniCapturePage] = []
     public weak var visionDelegate: GiniCaptureDelegate?
-    // Resources
-    fileprivate(set) lazy var cancelButtonResource =
-        giniConfiguration.cancelButtonResource ??
-            GiniPreferredButtonResource(image: "navigationAnalysisBack",
-                                        title: "ginicapture.navigationbar.analysis.back",
-                                        comment: "Button title in the navigation bar for" +
-                "the back button on the analysis screen",
-                                        configEntry: self.giniConfiguration.navigationBarAnalysisTitleBackButton)
-    fileprivate(set) lazy var closeButtonResource =
-        giniConfiguration.closeButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationCameraClose",
-                title: "ginicapture.navigationbar.camera.close",
-                comment: "Button title in the navigation bar for the close button on the camera screen",
-                configEntry: giniConfiguration.navigationBarCameraTitleCloseButton)
-    fileprivate(set) lazy var helpButtonResource =
-        giniConfiguration.helpButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationCameraHelp",
-                title: "ginicapture.navigationbar.camera.help",
-                comment: "Button title in the navigation bar for the help button on the camera screen",
-                configEntry: giniConfiguration.navigationBarCameraTitleHelpButton)
-    fileprivate(set) lazy var nextButtonResource =
-        giniConfiguration.nextButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationReviewContinue",
-                title: "ginicapture.navigationbar.review.continue",
-                comment: "Button title in the navigation bar for " +
-                "the continue button on the review screen",
-                configEntry: giniConfiguration.navigationBarReviewTitleContinueButton)
 
     public init(withDelegate delegate: GiniCaptureDelegate?,
                 giniConfiguration: GiniConfiguration) {

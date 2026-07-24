@@ -19,10 +19,8 @@ final class HelpFormatSectionHeader: UITableViewHeaderFooterView {
     }
 
     func configureView() {
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = .clear
-            self.backgroundConfiguration = bgConfig
-        }
+        var bgConfig = UIBackgroundConfiguration.listPlainCell()
+        bgConfig.backgroundColor = .clear
+        self.backgroundConfiguration = bgConfig
     }
 }

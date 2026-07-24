@@ -42,10 +42,8 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
         continueAfterFailure = false
         app = XCUIApplication()
-        if #available(iOS 13.4, *) {
-            app.resetAuthorizationStatus(for: .camera)
-            app.resetAuthorizationStatus(for: .photos)
-        }
+        app.resetAuthorizationStatus(for: .camera)
+        app.resetAuthorizationStatus(for: .photos)
         app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale

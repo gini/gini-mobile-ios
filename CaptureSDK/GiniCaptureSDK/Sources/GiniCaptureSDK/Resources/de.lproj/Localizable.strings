@@ -7,15 +7,7 @@
 */
 
 "ginicapture.navigationbar.camera.title"        = "Aufnahme";
-"ginicapture.navigationbar.onboarding.title"    = "Anleitung";
-"ginicapture.navigationbar.review.title"        = "Überprüfen";
-"ginicapture.navigationbar.analysis.title"      = "Etwas Geduld, analysiere Foto";
-"ginicapture.navigationbar.camera.close"        = "";
 "ginicapture.navigationbar.camera.help"         = "Hilfe";
-"ginicapture.navigationbar.onboarding.continue" = "Weiter";
-"ginicapture.navigationbar.review.back"         = "";
-"ginicapture.navigationbar.review.close"        = "";
-"ginicapture.navigationbar.review.continue"     = "Weiter";
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
 "ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";

@@ -55,9 +55,7 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.contentInset = Constants.tableContentInset
 
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = Constants.sectionHeaderTopPadding
-        }
+        tableView.sectionHeaderTopPadding = Constants.sectionHeaderTopPadding
 
         tableView.register(TransactionCell.self)
         tableView.register(TransactionListTableViewHeader.self)

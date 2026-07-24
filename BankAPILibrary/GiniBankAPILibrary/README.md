@@ -19,8 +19,8 @@ Further documentation with information about how install and integrate it can be
 
 ## Requirements
 
-- iOS 13+
-- Xcode 12+
+- iOS 15+
+- Xcode 26+
 
 ## Author
 

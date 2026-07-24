@@ -14,6 +14,7 @@ enum DemoScreenStrings: Localized {
     case photoPaymentButtonTitle
     case alternativeText
     case transactionListButtonTitle
+    case alertOk
 }
 
 extension DemoScreenStrings {
@@ -33,6 +34,8 @@ extension DemoScreenStrings {
                 return "alternative.text"
             case .transactionListButtonTitle:
                 return "transaction.list.button.title"
+            case .alertOk:
+                return "gini.bank.example.alert.ok"
         }
     }
 }

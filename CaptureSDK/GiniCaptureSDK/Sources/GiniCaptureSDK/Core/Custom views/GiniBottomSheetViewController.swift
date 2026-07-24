@@ -49,24 +49,18 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     /**
      Configures the view controller to be presented as a bottom sheet.
 
-     - Parameters:
-     - shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()` detent.
-     Otherwise, a `.medium()` detent is used. On iOS 13–14, this falls back to `.pageSheet`.
+     - Parameter shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()`
+       detent. Otherwise, a `.medium()` detent is used.
      */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
-        if #available(iOS 15, *),
-           let presentationController = sheetPresentationController {
+        guard let presentationController = sheetPresentationController else { return }
 
-            presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
-            presentationController.prefersGrabberVisible = shouldShowDragIndicator
-            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-            // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
-            // when the height class is compact — such as in landscape mode on an iPhone.
-            presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
-        } else {
-            // Fallback for iOS 13–14
-            modalPresentationStyle = .pageSheet
-        }
+        presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
+        presentationController.prefersGrabberVisible = shouldShowDragIndicator
+        presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
+        // when the height class is compact — such as in landscape mode on an iPhone.
+        presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
     }
 
     /**
@@ -78,10 +72,10 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
      to the presented content.
 
      - Parameters:
-     - presenter: The view controller that will present this bottom sheet.
-     - animated: Whether to animate the presentation. Defaults to `true`.
-     - completion: An optional closure to execute after the presentation and accessibility
-     configuration are complete.
+       - presenter: The view controller that will present this bottom sheet.
+       - animated: Whether to animate the presentation. Defaults to `true`.
+       - completion: An optional closure to execute after the presentation and
+         accessibility configuration are complete.
      */
     func presentAsBottomSheet(from presenter: UIViewController,
                               animated: Bool = true,
@@ -107,8 +101,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
 
      On iOS 16+, it defines and applies a custom detent with the given height.
 
-     - Parameters:
-     - height: The target height for the bottom sheet.
+     - Parameter height: The target height for the bottom sheet.
      */
     func updateBottomSheetHeight(to height: CGFloat) {
 

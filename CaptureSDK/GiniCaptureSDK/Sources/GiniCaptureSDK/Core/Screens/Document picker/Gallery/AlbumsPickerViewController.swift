@@ -77,9 +77,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     func setupTableView() {
-        if #available(iOS 15.0, *) {
-             albumsTableView.sectionHeaderTopPadding = 0
-         }
+        albumsTableView.sectionHeaderTopPadding = 0
         view.addSubview(albumsTableView)
 
         tableViewHeightAnchor.priority = .defaultHigh
@@ -99,29 +97,20 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     func showLimitedLibraryPicker() {
-        if #available(iOS 15.0, *) {
-            library.presentLimitedLibraryPicker(from: self) { _ in
-                DispatchQueue.main.async {
-                    self.galleryManager.reloadAlbums()
-                    self.reloadAlbums()
-                }
+        library.presentLimitedLibraryPicker(from: self) { _ in
+            DispatchQueue.main.async {
+                self.galleryManager.reloadAlbums()
+                self.reloadAlbums()
             }
-            return
-        }
-
-        if #available(iOS 14.0, *) {
-            library.presentLimitedLibraryPicker(from: self)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 14.0, *) {
-            library.register(self)
-            if galleryManager.isGalleryAccessLimited {
-                let footerView = AlbumsFooterView()
-                albumsTableView.tableFooterView = footerView
-            }
+        library.register(self)
+        if galleryManager.isGalleryAccessLimited {
+            let footerView = AlbumsFooterView()
+            albumsTableView.tableFooterView = footerView
         }
 
         edgesForExtendedLayout = []
@@ -130,10 +119,8 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if #available(iOS 14.0, *) {
-            if galleryManager.isGalleryAccessLimited {
-                self.updateLayoutForFooter()
-            }
+        if galleryManager.isGalleryAccessLimited {
+            self.updateLayoutForFooter()
         }
         tableViewHeightAnchor.constant = tableViewContentHeight
         if UIDevice.current.isIphone {
@@ -168,9 +155,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     deinit {
-        if #available(iOS 14.0, *) {
-            library.unregisterChangeObserver(self)
-        }
+        library.unregisterChangeObserver(self)
     }
 }
 
@@ -195,29 +180,20 @@ extension AlbumsPickerViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if #available(iOS 14.0, *) {
-            if galleryManager.isGalleryAccessLimited && section == 0 {
-                let headerView = AlbumsHeaderView().loadNib() as? AlbumsHeaderView
-                headerView?.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
-
-                headerView?.didTapSelectButton = {
-                    self.showLimitedLibraryPicker()
-                }
-                return headerView
-            } else {
-                return nil
-            }
-        } else {
+        guard galleryManager.isGalleryAccessLimited && section == 0 else {
             return nil
         }
+        let headerView = AlbumsHeaderView().loadNib() as? AlbumsHeaderView
+        headerView?.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
+
+        headerView?.didTapSelectButton = {
+            self.showLimitedLibraryPicker()
+        }
+        return headerView
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if #available(iOS 14.0, *) {
-            return galleryManager.isGalleryAccessLimited && section == 0 ? headerHeight : 0.0
-        } else {
-            return 0.0
-        }
+        galleryManager.isGalleryAccessLimited && section == 0 ? headerHeight : 0.0
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {

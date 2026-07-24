@@ -79,9 +79,7 @@ final class SettingsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 65
 
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
+        tableView.sectionHeaderTopPadding = 0
 
         tableView.register(SwitchOptionTableViewCell.self)
         tableView.register(SegmentedOptionTableViewCell.self)
@@ -245,7 +243,10 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
                                       message: message,
                                       preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default, handler: nil)
+        alert.addAction(okAction)
+        // preferredAction must be set after addAction
+        alert.preferredAction = okAction
 
         present(alert, animated: true, completion: nil)
     }
@@ -282,7 +283,10 @@ extension SettingsViewController: UpdateUserDefaultsCellDelegate {
                                           message: "The preference was successfully removed.",
                                           preferredStyle: .alert)
 
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default, handler: nil)
+            alert.addAction(okAction)
+            // preferredAction must be set after addAction
+            alert.preferredAction = okAction
 
             // Present the alert on the provided viewController
             present(alert, animated: true, completion: nil)
