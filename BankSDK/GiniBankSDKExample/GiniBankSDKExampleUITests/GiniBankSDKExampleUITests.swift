@@ -27,8 +27,6 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = true
-
     /**
      Override in a subclass to inject extra launch arguments before the app launches.
      The base argument `-StartFromCleanState YES` is always included.
@@ -36,10 +34,6 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
-        
-        if isSimulator {
-            throw XCTSkip("Skipping test")
-        }
         continueAfterFailure = false
         app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
@@ -65,13 +59,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
+        // Always terminate the app and attach failure screenshots on both simulator and device.
+        // This prevents state leakage between test runs and ensures diagnostic screenshots are available.
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
-        if !isSimulator {
-            attachment.lifetime = .deleteOnSuccess
-            add(attachment)
-            app.terminate()
-        }
+        attachment.lifetime = .deleteOnSuccess
+        add(attachment)
+        app.terminate()
     }
 
     var galleryTitle: String {
