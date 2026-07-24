@@ -64,18 +64,11 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Give access button
         cameraAccessScreen.giveAccessButton.firstMatch.tap()
-        //Assert that Settings is opened
+        //Assert that Settings is opened (foreground) — avoid depending on Settings' internal layout,
+        //which varies between iOS versions.
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
-        // iOS 18 may open "Settings > Apps" list instead of navigating directly to the app page.
-        // If the app title isn't immediately visible, find and tap the app row in the list first.
-        let appSettingsTitle = settingsApp.staticTexts["GiniBankSDKExample"]
-        if !appSettingsTitle.waitForExistence(timeout: 5) {
-            let appCell = settingsApp.cells.containing(.staticText, identifier: "GiniBankSDKExample").firstMatch
-            if appCell.waitForExistence(timeout: 5) {
-                appCell.tap()
-            }
-        }
-        XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].waitForExistence(timeout: 5))
+        XCTAssertTrue(settingsApp.wait(for: .runningForeground, timeout: 5),
+                      "Settings.app did not open after tapping Give access")
         //Reset Camera Access
         app.resetAuthorizationStatus(for: .camera)
     }
