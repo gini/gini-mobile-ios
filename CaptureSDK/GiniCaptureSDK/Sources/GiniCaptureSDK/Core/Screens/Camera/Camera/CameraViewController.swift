@@ -722,6 +722,8 @@ final class CameraViewController: UIViewController {
         cameraPreviewViewController.cameraFrameView.isHidden = false
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
+        cameraPane.cameraTitleLabel?.text = Strings.onlyInvoice
+        cameraPaneHorizontal?.cameraTitleLabel?.text = Strings.onlyInvoice
     }
 
     private func isAccessibilityLargeTextEnabled() -> Bool {
