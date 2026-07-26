@@ -143,9 +143,18 @@ final class CameraViewController: UIViewController {
 
     fileprivate func configureTitle() {
         let device = UIDevice.current
+        // True once the user has opted out of QR scanning via "Take photo of document".
+        let didOptOutOfQRScanning = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
+            || title == Strings.onlyInvoice
 
         if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
+            return
+        }
+
+        // Keep "Scan invoice" title across rotation after the user opted out of QR scanning.
+        if didOptOutOfQRScanning {
+            title = Strings.onlyInvoice
             return
         }
 
@@ -722,8 +731,14 @@ final class CameraViewController: UIViewController {
         cameraPreviewViewController.cameraFrameView.isHidden = false
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
+        showOnlyInvoiceTitles()
+    }
+
+    private func showOnlyInvoiceTitles() {
         cameraPane.cameraTitleLabel?.text = Strings.onlyInvoice
         cameraPaneHorizontal?.cameraTitleLabel?.text = Strings.onlyInvoice
+        title = Strings.onlyInvoice
+        configureTitle()
     }
 
     private func isAccessibilityLargeTextEnabled() -> Bool {
