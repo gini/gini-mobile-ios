@@ -225,3 +225,10 @@ Generates manual test cases from a Jira ticket, local spec file, or pasted text,
 - **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
 - **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
 - **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
+
+### `/update-figma-links`
+
+Migrates the Figma design links on the iOS Gini Bank SDK "Figma Links in public documentation" Confluence page from one SDK version's UI-customisation guide to a newer one (e.g. 4.3 → 4.4). Verifies each node-id resolves to the correct screen, standardises links to live embed previews, and writes back safely with a post-write diff.
+
+- **Skill prompt:** `.claude/skills/update-figma-links/SKILL.md`
+- **Helper script:** `.claude/skills/update-figma-links/transform_links.py`
