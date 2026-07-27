@@ -56,6 +56,11 @@ file_length:
   warning: 1000
   # error: 2000 # Temporarily disabled
 
+function_body_length:
+ignore_comment_only_lines: true
+  warning: 100
+  # error: 200 # Temporarily disabled
+
 large_tuple:
   warning: 4
   # error: 5 # Temporarily disabled
