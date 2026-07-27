@@ -700,9 +700,12 @@ final class CameraViewController: UIViewController {
         alert.addAction(UIAlertAction(title: Strings.scanAnotherQRCode, style: .default) { [weak self] _ in
             self?.handleScanAnotherQRCode()
         })
-        alert.addAction(UIAlertAction(title: Strings.takePhotoOfDocument, style: .default) { [weak self] _ in
+
+        let takePhotoAction = UIAlertAction(title: Strings.takePhotoOfDocument, style: .default) { [weak self] _ in
             self?.handleTakePhotoOfDocument()
-        })
+        }
+        alert.addAction(takePhotoAction)
+        alert.preferredAction = takePhotoAction
 
         present(alert, animated: true)
     }
