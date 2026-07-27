@@ -630,7 +630,12 @@ final class CameraViewController: UIViewController {
             didCaptureSessionUnsupportedQRCodeWarning = true
         }
 
-        if sessionUnsupportedQRCodeWarningEnabled == true {
+        // In QR-only mode, fall back to the legacy yellow overlay: the new alert's
+        // "Take photo of document" action is invalid when document capture is disabled.
+        let shouldShowUnsupportedQRAlert = sessionUnsupportedQRCodeWarningEnabled == true
+            && !giniConfiguration.onlyQRCodeScanningEnabled
+
+        if shouldShowUnsupportedQRAlert {
             showUnsupportedQRCodeAlert()
         } else {
             showInvalidQRCodeFeedback()
