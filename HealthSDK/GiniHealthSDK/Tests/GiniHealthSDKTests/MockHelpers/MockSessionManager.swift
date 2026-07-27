@@ -51,7 +51,7 @@ final class MockSessionManager: SessionManagerProtocol {
     func logOut() {
         // This method will remain empty; no implementation is needed.
     }
-    
+    // swiftlint:disable function_body_length
     func data<T>(resource: T,
                  cancellationToken: GiniHealthAPILibrary.CancellationToken?,
                  completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T: GiniHealthAPILibrary.Resource {
@@ -252,7 +252,7 @@ final class MockSessionManager: SessionManagerProtocol {
             }
         }
     }
-
+    // swiftlint:enable function_body_length
     private func processPaymentRequest<T>(_ paymentRequestId: String,
                                           completion: (Result<T, GiniError>) -> Void) {
         let fileName: String
