@@ -730,6 +730,23 @@ final class CameraViewController: UIViewController {
         // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
         detectedQRCodeDocument = nil
+        showQRScanOnlyModeUI()
+    }
+
+    private func showQRScanOnlyModeUI() {
+        cameraPane.alpha = 0
+        cameraPaneHorizontal?.alpha = 0
+        cameraPane.toggleCaptureButtonActivation(state: false)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
+        cameraPreviewViewController.cameraFrameView.isHidden = true
+        cameraPreviewViewController.qrCodeFrameView.isHidden = false
+        hideCameraTitles()
+    }
+
+    private func hideCameraTitles() {
+        cameraPane.cameraTitleLabel?.text = ""
+        cameraPaneHorizontal?.cameraTitleLabel?.text = ""
+        title = ""
     }
 
     func handleTakePhotoOfDocument() {
