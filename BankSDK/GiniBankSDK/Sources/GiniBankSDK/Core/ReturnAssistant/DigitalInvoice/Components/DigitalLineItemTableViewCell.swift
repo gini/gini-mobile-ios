@@ -25,6 +25,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var unitPriceLabel: UILabel!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var modeSwitchTrailingConstraint: NSLayoutConstraint!
 
     override var canBecomeFocused: Bool {
         false
@@ -91,6 +92,13 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
         modeSwitch.removeTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
         modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
+
+        // The iOS 26 Liquid Glass UISwitch renders a visually wider pill than
+        // the legacy style, so the same trailing constant looks tighter to the
+        // card edge. Bump the constant on iOS 26+ to match the pre-26 padding.
+        if #available(iOS 26.0, *) {
+            modeSwitchTrailingConstraint.constant = Constants.modeSwitchTrailingLiquidGlass
+        }
     }
 
     private func updateUIWithViewModel() {
@@ -178,6 +186,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 private extension DigitalLineItemTableViewCell {
     struct Constants {
         static let cornerRadius: CGFloat = 8.0
+        static let modeSwitchTrailingLiquidGlass: CGFloat = 23
     }
 }
 
