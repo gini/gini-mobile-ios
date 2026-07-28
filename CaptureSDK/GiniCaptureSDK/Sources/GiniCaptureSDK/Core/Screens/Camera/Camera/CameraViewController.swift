@@ -762,7 +762,7 @@ final class CameraViewController: UIViewController {
     private func hideCameraTitles() {
         cameraPane.cameraTitleLabel?.text = ""
         cameraPaneHorizontal?.cameraTitleLabel?.text = ""
-        title = ""
+        title = Strings.cameraTitle
     }
 
     func handleTakePhotoOfDocument() {
