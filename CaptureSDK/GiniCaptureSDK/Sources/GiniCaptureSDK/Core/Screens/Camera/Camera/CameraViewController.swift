@@ -143,8 +143,9 @@ final class CameraViewController: UIViewController {
 
     fileprivate func configureTitle() {
         let device = UIDevice.current
-        // True once the user has opted out of QR scanning via "Take photo of document".
-        let didOptOutOfQRScanning = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
+        // The camera UI already shows "Scan invoice" — from initial config with QR disabled,
+        // or after the user tapped "Take photo of document".
+        let cameraTitleAlreadyReadsInvoice = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
             || title == Strings.onlyInvoice
 
         if device.isIphone && device.isPortrait {
@@ -152,8 +153,8 @@ final class CameraViewController: UIViewController {
             return
         }
 
-        // Keep "Scan invoice" title across rotation after the user opted out of QR scanning.
-        if didOptOutOfQRScanning {
+        // Preserve the "Scan invoice" title on rotation after the opt-out.
+        if cameraTitleAlreadyReadsInvoice {
             title = Strings.onlyInvoice
             return
         }
