@@ -193,6 +193,56 @@ final class CameraPreviewViewControllerTests: XCTestCase {
                            "Navigation title should stay 'Scan invoice' after opt-out and rotation on iPad / iPhone landscape")
         }
     }
+
+    // MARK: - CameraViewController "Scan another QR code" behavior
+
+    private func makeQRScanEnabledCameraViewController() -> CameraViewController {
+        let giniConfiguration = GiniConfiguration()
+        giniConfiguration.qrCodeScanningEnabled = true
+        let viewController = CameraViewController(giniConfiguration: giniConfiguration,
+                                                  viewModel: CameraButtonsViewModel())
+        viewController.loadViewIfNeeded()
+        return viewController
+    }
+
+    func testScanAnotherQRCodeAppliesQRScanOnlyPresentation() {
+        let viewController = makeQRScanEnabledCameraViewController()
+        let cameraTitle = NSLocalizedString("ginicapture.navigationbar.camera.title",
+                                            bundle: giniCaptureBundle(),
+                                            comment: "")
+
+        viewController.handleScanAnotherQRCode()
+
+        XCTAssertEqual(viewController.cameraPane.alpha, 0,
+                       "cameraPane should be alpha 0 so the capture UI is invisible")
+        XCTAssertFalse(viewController.cameraPane.captureButton.isEnabled,
+                       "Capture button should be disabled while in QR-scan-only presentation")
+        XCTAssertTrue(viewController.cameraPreviewViewController.cameraFrameView.isHidden,
+                      "Large document focus frame should be hidden")
+        XCTAssertFalse(viewController.cameraPreviewViewController.qrCodeFrameView.isHidden,
+                       "Small QR focus frame should be visible")
+        XCTAssertEqual(viewController.cameraPane.cameraTitleLabel?.text, "",
+                       "Bottom pane info label should be cleared")
+        XCTAssertEqual(viewController.title, cameraTitle,
+                       "Navigation title should read the plain 'Scan' camera title")
+    }
+
+    func testTakePhotoOfDocumentRestoresCaptureUIAfterScanAnother() {
+        let viewController = makeQRScanEnabledCameraViewController()
+
+        viewController.handleScanAnotherQRCode()
+        viewController.handleTakePhotoOfDocument()
+
+        XCTAssertEqual(viewController.cameraPane.alpha, 1,
+                       "cameraPane should be visible again after Take photo of document")
+        XCTAssertTrue(viewController.cameraPane.captureButton.isEnabled,
+                      "Capture button should be re-enabled after Take photo of document")
+        XCTAssertFalse(viewController.cameraPreviewViewController.cameraFrameView.isHidden,
+                       "Large document focus frame should be visible again")
+        XCTAssertTrue(viewController.cameraPreviewViewController.qrCodeFrameView.isHidden,
+                      "Small QR focus frame should be hidden again")
+    }
+
 }
 
 // Fires the animate closure synchronously so tests can exercise viewWillTransition without a real transition.
