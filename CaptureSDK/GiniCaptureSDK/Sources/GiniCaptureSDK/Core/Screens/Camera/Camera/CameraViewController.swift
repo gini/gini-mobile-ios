@@ -131,8 +131,12 @@ final class CameraViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        // Skip re-enabling the capture button while in QR-only presentation — the pane is
+        // hidden and a re-enable would make the invisible button tappable again.
+        if !isQRScanOnlyPresentation {
+            cameraPane.toggleCaptureButtonActivation(state: true)
+            cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        }
         cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
     }
 
