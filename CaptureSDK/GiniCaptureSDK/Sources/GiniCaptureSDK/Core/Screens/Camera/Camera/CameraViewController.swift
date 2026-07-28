@@ -726,7 +726,7 @@ final class CameraViewController: UIViewController {
         detectedQRCodeDocument = nil
     }
 
-    private func handleTakePhotoOfDocument() {
+    func handleTakePhotoOfDocument() {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         cameraPreviewViewController.cameraFrameView.isHidden = false
         isQRScanFlowActive = false
