@@ -67,9 +67,9 @@ final class CameraViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
-    // True when the QR-only presentation should be shown — either the config forces it, or the
+    // True when the camera is in QR-scan-only mode — either the config forces it, or the
     // user opted into "Scan another QR code" at runtime.
-    private var isQRScanOnlyPresentation: Bool {
+    private var isQRScanOnlyModeActive: Bool {
         qrCodeScanningOnlyEnabled || isQRScanFlowActive
     }
 
@@ -131,9 +131,9 @@ final class CameraViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Skip re-enabling the capture button while in QR-only presentation — the pane is
+        // Skip re-enabling the capture button while in QR-scan-only mode — the pane is
         // hidden and a re-enable would make the invisible button tappable again.
-        if !isQRScanOnlyPresentation {
+        if !isQRScanOnlyModeActive {
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
         }
@@ -851,7 +851,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if !isQRScanOnlyPresentation {
+        if !isQRScanOnlyModeActive {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
