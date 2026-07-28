@@ -148,6 +148,12 @@ final class CameraViewController: UIViewController {
         let cameraTitleAlreadyReadsInvoice = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
             || title == Strings.onlyInvoice
 
+        // Preserve the cleared titles across rotation after "Scan another QR code".
+        if isQRScanFlowActive {
+            hideCameraTitles()
+            return
+        }
+
         if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
             return
