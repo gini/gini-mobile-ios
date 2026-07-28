@@ -725,6 +725,8 @@ final class CameraViewController: UIViewController {
         sendGiniAnalyticsEventForInvalidQRCode()
         playVoiceOverMessage(success: false)
 
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.error3)
+
         let alert = UIAlertController(title: Strings.unsupportedQRAlertTitle,
                                       message: nil,
                                       preferredStyle: .alert)
@@ -746,6 +748,7 @@ final class CameraViewController: UIViewController {
         // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
         detectedQRCodeDocument = nil
+        resetQRFrameColor()
         showQRScanOnlyModeUI()
     }
 
@@ -769,8 +772,13 @@ final class CameraViewController: UIViewController {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
+        resetQRFrameColor()
         hideQRScanOnlyModeUI()
         showOnlyInvoiceTitles()
+    }
+
+    private func resetQRFrameColor() {
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
     }
 
     private func hideQRScanOnlyModeUI() {
