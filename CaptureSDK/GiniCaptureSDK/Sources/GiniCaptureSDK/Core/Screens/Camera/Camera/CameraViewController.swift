@@ -67,6 +67,12 @@ final class CameraViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
+    // True when the QR-only presentation should be shown — either the config forces it, or the
+    // user opted into "Scan another QR code" at runtime.
+    private var isQRScanOnlyPresentation: Bool {
+        qrCodeScanningOnlyEnabled || isQRScanFlowActive
+    }
+
     @IBOutlet var cameraPaneHorizontalBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var cameraPaneHorizontal: CameraPane!
     @IBOutlet weak var cameraPane: CameraPane!
@@ -841,7 +847,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if !qrCodeScanningOnlyEnabled {
+        if !isQRScanOnlyPresentation {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
