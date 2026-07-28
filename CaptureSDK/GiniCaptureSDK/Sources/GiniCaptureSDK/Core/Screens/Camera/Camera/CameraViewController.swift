@@ -741,7 +741,7 @@ final class CameraViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    private func handleScanAnotherQRCode() {
+    func handleScanAnotherQRCode() {
         // Keep isQRScanFlowActive = true — user chose the QR flow, IBAN
         // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
