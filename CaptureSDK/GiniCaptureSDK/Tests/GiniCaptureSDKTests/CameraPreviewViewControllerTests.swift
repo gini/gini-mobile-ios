@@ -176,10 +176,8 @@ final class CameraPreviewViewControllerTests: XCTestCase {
                                                  bundle: giniCaptureBundle(),
                                                  comment: "")
 
-        // Simulate the post-"Take photo of document" state (handleTakePhotoOfDocument is private).
-        viewController.cameraPane.cameraTitleLabel?.text = onlyInvoiceLabel
-        viewController.cameraPaneHorizontal?.cameraTitleLabel?.text = onlyInvoiceLabel
-        viewController.title = onlyInvoiceLabel
+        // Real entry point — mirrors the alert's "Take photo of document" action.
+        viewController.handleTakePhotoOfDocument()
 
         // Simulate a rotation — viewWillTransition invokes configureTitle inside its coordinator.
         viewController.viewWillTransition(to: CGSize(width: 800, height: 600),
