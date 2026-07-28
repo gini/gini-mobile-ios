@@ -143,9 +143,19 @@ final class CameraViewController: UIViewController {
 
     fileprivate func configureTitle() {
         let device = UIDevice.current
+        // The camera UI already shows "Scan invoice" — from initial config with QR disabled,
+        // or after the user tapped "Take photo of document".
+        let cameraTitleAlreadyReadsInvoice = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
+            || title == Strings.onlyInvoice
 
         if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
+            return
+        }
+
+        // Preserve the "Scan invoice" title on rotation after the opt-out.
+        if cameraTitleAlreadyReadsInvoice {
+            title = Strings.onlyInvoice
             return
         }
 
@@ -722,11 +732,19 @@ final class CameraViewController: UIViewController {
         detectedQRCodeDocument = nil
     }
 
-    private func handleTakePhotoOfDocument() {
+    func handleTakePhotoOfDocument() {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         cameraPreviewViewController.cameraFrameView.isHidden = false
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
+        showOnlyInvoiceTitles()
+    }
+
+    private func showOnlyInvoiceTitles() {
+        cameraPane.cameraTitleLabel?.text = Strings.onlyInvoice
+        cameraPaneHorizontal?.cameraTitleLabel?.text = Strings.onlyInvoice
+        title = Strings.onlyInvoice
+        configureTitle()
     }
 
     private func isAccessibilityLargeTextEnabled() -> Bool {
