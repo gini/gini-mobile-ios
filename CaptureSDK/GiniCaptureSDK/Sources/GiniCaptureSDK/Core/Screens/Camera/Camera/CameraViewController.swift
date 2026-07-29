@@ -133,6 +133,7 @@ final class CameraViewController: UIViewController {
         super.viewWillAppear(animated)
         // Keep the capture button disabled while the camera is presented in QR-scan-only mode.
         // The UI is hidden in this mode and is re-enabled when leaving it.
+        if !isQRScanOnlyModeActive {
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
         }
