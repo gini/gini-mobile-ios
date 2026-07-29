@@ -119,15 +119,14 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    /// Copies all PDFs from TestFixturePDFs/ into every booted simulator's app Documents folder.
-    /// The UI test runner executes on the Mac host (not inside the simulator sandbox), so it has
-    /// full access to ~/Library/Developer/CoreSimulator/. We scan all booted simulators rather
-    /// than relying on SIMULATOR_UDID, which is not injected by Xcode into the test process.
-    /// Copies all PDFs from TestFixturePDFs/ into the tested app's Documents folder.
+    /// Copies all PDFs from TestSamples/TestSamplesForBS/ into the tested app's Documents folder,
+    /// so the Files picker in UI tests can select them under "On My iPhone → GiniBankSDKExample".
+    ///
     /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
     ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
     /// Going one level up reaches the shared Application/ directory where all app containers
-    /// for this test device live — including the tested app's container.
+    /// for this test device live — including the tested app's container, which we identify by
+    /// its MCMMetadataIdentifier plist entry.
     private func copyFixturesToSimulator() {
         let fileManager = FileManager.default
 
@@ -139,8 +138,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
 
         let fixturesURL = URL(fileURLWithPath: #file)
             .deletingLastPathComponent()  // GiniBankSDKExampleUITests/
-            .deletingLastPathComponent()  // GiniBankSDKExample/
-            .appendingPathComponent("TestFixturePDFs")
+            .appendingPathComponent("TestSamples/TestSamplesForBS")
 
         let pdfFiles = ((try? fileManager.contentsOfDirectory(at: fixturesURL,
                                                               includingPropertiesForKeys: nil,

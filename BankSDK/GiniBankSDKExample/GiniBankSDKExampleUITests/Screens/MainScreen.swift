@@ -196,7 +196,7 @@ class MainScreen {
         // Open the app folder.
         let appFolder = app.staticTexts["GiniBankSDKExample"].firstMatch
         XCTAssertTrue(appFolder.waitForExistence(timeout: 5),
-                      "GiniBankSDKExample folder not found. Run scripts/copy_test_fixtures.sh first.")
+                      "GiniBankSDKExample folder not found. Ensure PDFs exist in GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS.")
         appFolder.tap()
 
         sleep(1)
@@ -225,7 +225,7 @@ class MainScreen {
         }
 
         guard let fileElement = findFileElement() else {
-            XCTFail("File '\(fileName)' not found. Run scripts/copy_test_fixtures.sh to copy fixtures to the simulator.")
+            XCTFail("File '\(fileName)' not found. Ensure it exists in GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS.")
             return
         }
 
