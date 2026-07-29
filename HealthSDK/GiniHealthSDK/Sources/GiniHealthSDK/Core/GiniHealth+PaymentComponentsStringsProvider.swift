@@ -185,7 +185,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             sheetGrabberAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.label",
                                                                              comment: "Sheet grabber accessibility label"),
             sheetGrabberAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.hint",
-                                                                            comment: "Sheet grabber accessibility hint text")
+                                                                            comment: "Sheet grabber accessibility hint text"),
+            paymentReviewScreenTitle: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.title",
+                                                                       comment: "navigation bar title for payment review screen")
         )
     }
 

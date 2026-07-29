@@ -33,7 +33,6 @@ struct PaymentReviewObservableModelTests {
                                           displayMode: .bottomSheet)
         let sut = PaymentReviewObservableModel(model: model)
 
-        // The default .test(keyboardDoneButtonTitle:) uses "Done"
         #expect(sut.keyboardDoneButtonTitle == "Done", "keyboardDoneButtonTitle must return the default configured string")
     }
 

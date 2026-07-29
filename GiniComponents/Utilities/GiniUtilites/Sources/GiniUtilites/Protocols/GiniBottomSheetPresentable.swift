@@ -14,10 +14,9 @@ public typealias GiniBottomSheetViewController = UIViewController & GiniBottomSh
 /**
  A protocol that provides bottom sheet presentation functionality to UIViewController instances.
  
- Conforming view controllers can be presented using iOS 15+ sheet presentation controllers
- with configurable detents and drag indicators. For iOS versions prior to 15, the view controller
- will be presented as a standard modal sheet.
- 
+ Conforming view controllers can be presented using sheet presentation controllers
+ with configurable detents and drag indicators.
+
  - Note: This protocol leverages `UISheetPresentationController` which is available from iOS 15.0+
  
  ## Topics
@@ -53,13 +52,10 @@ public protocol GiniBottomSheetPresentable {
      
      This method sets up the sheet presentation controller with appropriate detents and behavior.
      The drag indicator visibility is controlled by the `shouldShowDragIndicator` property.
-     
+
      - Parameter shouldIncludeLargeDetent: Whether to include a large detent option.
      If `true`, uses `.large()` detent; if `false`, uses `.medium()` detent. Defaults to `false`.
-     
-     - Note: This functionality is only available on iOS 15.0 and later.
-     On earlier versions, the view controller will be presented as a standard modal sheet.
-     
+
      ## Example
      ```swift
      // Configure with medium detent
@@ -95,9 +91,8 @@ public protocol GiniBottomSheetPresentable {
 public extension GiniBottomSheetPresentable where Self: UIViewController {
     
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
-        /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
-        if #available(iOS 15, *),
-           let presentationController = sheetPresentationController {
+        modalPresentationStyle = .pageSheet
+        if let presentationController = sheetPresentationController {
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
             presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
@@ -115,8 +110,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     }
     
     func updateBottomSheetHeight(_ height: CGFloat) {
-        /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
-        /// For iOS version prior to 16, this method will have no effect and the sheet will not be resized.
+        /// For iOS versions prior to 16, this method will have no effect and the sheet will not be resized.
         if #available(iOS 16, *),
            let presentationController = sheetPresentationController {
             let identifier = UISheetPresentationController.Detent.Identifier("customHeight")

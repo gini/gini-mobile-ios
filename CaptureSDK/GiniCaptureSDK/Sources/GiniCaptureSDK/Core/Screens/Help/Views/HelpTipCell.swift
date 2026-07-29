@@ -22,22 +22,24 @@ final class HelpTipCell: UITableViewCell, HelpCell {
 
     private func setupView() {
         let configuration = GiniConfiguration.shared
-        isAccessibilityElement = false
+        // Group the icon, header, and description as one VoiceOver element per tip.
+        // The combined accessibilityLabel is assigned in HelpTipsDataSource.configureCell.
+        isAccessibilityElement = true
+        accessibilityTraits = .staticText
         selectionStyle = .none
         backgroundColor = GiniColor(light: .GiniCapture.light1,
                                     dark: .GiniCapture.dark3).uiColor()
 
-        iconImageView.isAccessibilityElement = true
-        iconImageView.accessibilityTraits = .image
+        iconImageView.isAccessibilityElement = false
         iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
-        headerLabel.isAccessibilityElement = true
+        headerLabel.isAccessibilityElement = false
         headerLabel.font = configuration.textStyleFonts[.calloutBold]
         headerLabel.adjustsFontForContentSizeCategory = true
         headerLabel.textColor = GiniColor(light: .GiniCapture.dark1,
                                           dark: UIColor.GiniCapture.light1).uiColor()
 
-        descriptionLabel.isAccessibilityElement = true
+        descriptionLabel.isAccessibilityElement = false
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
         descriptionLabel.adjustsFontForContentSizeCategory = true
         descriptionLabel.textColor = GiniColor(light: .GiniCapture.dark6,

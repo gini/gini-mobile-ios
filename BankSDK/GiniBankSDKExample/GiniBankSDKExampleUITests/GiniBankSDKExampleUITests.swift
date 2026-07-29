@@ -34,16 +34,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
-        #if targetEnvironment(simulator)
-        throw XCTSkip("Skipping test on simulator")
-        #endif
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
-        if #available(iOS 13.4, *) {
-            app.resetAuthorizationStatus(for: .camera)
-            app.resetAuthorizationStatus(for: .photos)
-        }
+        app.resetAuthorizationStatus(for: .camera)
+        app.resetAuthorizationStatus(for: .photos)
         app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
@@ -65,13 +60,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
-        #if !targetEnvironment(simulator)
+        // Always terminate the app and attach failure screenshots on both simulator and device.
+        // This prevents state leakage between test runs and ensures diagnostic screenshots are available.
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.lifetime = .deleteOnSuccess
         add(attachment)
         app.terminate()
-        #endif
     }
 
     var galleryTitle: String {

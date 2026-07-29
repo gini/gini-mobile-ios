@@ -33,14 +33,8 @@ public struct URLOpener {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
-            if #available(iOS 13, *) {
-                Task { @MainActor in
-                    completion?(false)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    completion?(false)
-                }
+            Task { @MainActor in
+                completion?(false)
             }
         }
     }

@@ -25,8 +25,8 @@ Further documentation with installation, integration or customization guides can
 You can find implementation example of the capture feature under 'GiniBankSDKExample' target.
 You need to specify the NSCameraUsageDescription key in your Info.plist file. This key is mandatory for all apps since iOS 10 when using the Camera framework.
 
-**Note: iOS 14**
-Starting in iOS 14, PhotoKit further enhances user privacy controls with the addition of the limited Photos library, which lets users select specific assets and resources to share with an app. Add an entry to your Info.plist file with the appropriate key. If your app only adds to the library, use the NSPhotoLibraryAddUsageDescription key. For all other cases, use NSPhotoLibraryUsageDescription.
+**Note: Photos library access**
+PhotoKit enforces user privacy controls with the limited Photos library, which lets users select specific assets and resources to share with an app. Add an entry to your Info.plist file with the appropriate key. If your app only adds to the library, use the NSPhotoLibraryAddUsageDescription key. For all other cases, use NSPhotoLibraryUsageDescription.
 
 In order to run [the example app](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.3.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample), clone the repo ,open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
 
@@ -46,13 +46,13 @@ To check the redirection from the example health app please run your banking app
 
 ## Requirements
 
-- iOS 13+
-- Xcode 12+
+- iOS 15+
+- Xcode 26+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 13 or higher.
+* iPhones with iOS 15 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author

@@ -96,18 +96,22 @@ public final class QRCodesExtractor {
         }
 
         if lines.indices.contains(5) && !lines[5].isEmpty {
-            parameters["paymentRecipient"] = lines[5]
+            // Sparkasse and similar generators pad the name with trailing spaces (and null bytes
+            // that Camera.swift strips before reaching here). Trim only this field.
+            parameters["paymentRecipient"] = lines[5].trimmingCharacters(in: .whitespaces)
         } else {
             parameters["paymentRecipient"] = ""
         }
 
+        // Field 9 (index 9) is the structured creditor reference; field 10 (index 10) is the
+        // unstructured remittance info. Some generators leave 9 empty and use 10 instead.
         if lines.indices.contains(9) && !lines[9].isEmpty {
             parameters["paymentReference"] = lines[9]
+        } else if lines.indices.contains(10) && !lines[10].isEmpty {
+            parameters["paymentReference"] = lines[10]
         } else {
             parameters["paymentReference"] = ""
         }
-
-        // if index out of range, return empty string
 
         if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
             parameters["iban"] = lines[6]
@@ -135,6 +139,7 @@ public final class QRCodesExtractor {
         if regexCurrency?.numberOfMatches(in: amount, options: [], range: NSRange(location: 0, length: length)) == 3 {
             let currency = String(amount[..<String.Index(utf16Offset: 3, in: amount)])
             let quantity = String(amount[String.Index(utf16Offset: 3, in: amount)...])
+                .trimmingCharacters(in: .whitespaces)
             return quantity + ":" + currency
         } else if let currency = currency {
             return amount + ":" + currency
