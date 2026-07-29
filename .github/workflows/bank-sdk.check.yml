@@ -94,8 +94,6 @@ jobs:
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
         -scheme "GiniBankSDKExampleTests"
         -destination "${{ needs.get-config.outputs.ios-simulator-destination }}"
-        -only-testing:GiniBankSDKExampleTests
-        -only-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoFullFlowWithDiscountViaFiles
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
