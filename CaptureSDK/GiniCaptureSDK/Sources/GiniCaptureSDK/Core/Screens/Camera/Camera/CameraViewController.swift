@@ -67,6 +67,12 @@ final class CameraViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
+    // True when the camera is in QR-scan-only mode — either the config forces it, or the
+    // user opted into "Scan another QR code" at runtime.
+    private var isQRScanOnlyModeActive: Bool {
+        qrCodeScanningOnlyEnabled || isQRScanFlowActive
+    }
+
     @IBOutlet var cameraPaneHorizontalBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var cameraPaneHorizontal: CameraPane!
     @IBOutlet weak var cameraPane: CameraPane!
@@ -125,8 +131,12 @@ final class CameraViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        // Keep the capture button disabled while the camera is presented in QR-scan-only mode.
+        // The UI is hidden in this mode and is re-enabled when leaving it.
+        if !isQRScanOnlyModeActive {
+            cameraPane.toggleCaptureButtonActivation(state: true)
+            cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        }
         cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
     }
 
@@ -147,6 +157,12 @@ final class CameraViewController: UIViewController {
         // or after the user tapped "Take photo of document".
         let cameraTitleAlreadyReadsInvoice = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
             || title == Strings.onlyInvoice
+
+        // Preserve the cleared titles across rotation after "Scan another QR code".
+        if isQRScanFlowActive {
+            hideCameraTitles()
+            return
+        }
 
         if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
@@ -725,19 +741,45 @@ final class CameraViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    private func handleScanAnotherQRCode() {
+    func handleScanAnotherQRCode() {
         // Keep isQRScanFlowActive = true — user chose the QR flow, IBAN
         // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
         detectedQRCodeDocument = nil
+        showQRScanOnlyModeUI()
+    }
+
+    private func showQRScanOnlyModeUI() {
+        cameraPane.alpha = 0
+        cameraPaneHorizontal?.alpha = 0
+        cameraPane.toggleCaptureButtonActivation(state: false)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
+        cameraPreviewViewController.cameraFrameView.isHidden = true
+        cameraPreviewViewController.qrCodeFrameView.isHidden = false
+        hideCameraTitles()
+    }
+
+    private func hideCameraTitles() {
+        cameraPane.cameraTitleLabel?.text = ""
+        cameraPaneHorizontal?.cameraTitleLabel?.text = ""
+        title = Strings.cameraTitle
     }
 
     func handleTakePhotoOfDocument() {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
-        cameraPreviewViewController.cameraFrameView.isHidden = false
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
+        hideQRScanOnlyModeUI()
         showOnlyInvoiceTitles()
+    }
+
+    private func hideQRScanOnlyModeUI() {
+        cameraPane.alpha = 1
+        cameraPaneHorizontal?.alpha = 1
+        cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        cameraPreviewViewController.cameraFrameView.isHidden = false
+        cameraPreviewViewController.qrCodeFrameView.isHidden = true
     }
 
     private func showOnlyInvoiceTitles() {
@@ -809,7 +851,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if !qrCodeScanningOnlyEnabled {
+        if !isQRScanOnlyModeActive {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
