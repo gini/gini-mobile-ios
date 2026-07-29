@@ -38,7 +38,11 @@ import Firebase
             }
             if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
                let contents = try? FileManager.default.contentsOfDirectory(at: docs, includingPropertiesForKeys: nil) {
-                contents.forEach { try? FileManager.default.removeItem(at: $0) }
+                // Preserve PDF test fixtures placed by the UI test setUpWithError copy;
+                // wipe everything else so tests start clean.
+                contents
+                    .filter { $0.pathExtension.lowercased() != "pdf" }
+                    .forEach { try? FileManager.default.removeItem(at: $0) }
             }
         }
         if CommandLine.arguments.contains("-ResetCaptureOnboarding") {
