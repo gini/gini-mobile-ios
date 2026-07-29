@@ -1,7 +1,9 @@
 //
 //  CameraViewControllerTests.swift
-//  GiniCapture
+//  GiniCaptureSDK
 //
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+
 
 import XCTest
 @testable import GiniCaptureSDK
