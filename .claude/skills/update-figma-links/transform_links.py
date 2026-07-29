@@ -70,8 +70,13 @@ def transform_value(url, args, node_map):
         url = url.replace(
             f'iOS-Gini-Bank-SDK-{args.old_version}-UI-Customisation',
             f'iOS-Gini-Bank-SDK-{args.new_version}-UI-Customisation')
-    for old_node, new_node in node_map.items():
-        url = url.replace(f'node-id={old_node}', f'node-id={new_node}')
+    # Single-pass, anchored node-id remap: the capture group matches a WHOLE
+    # node-id (stops at & " ' < or whitespace), so a mapped id that is a prefix
+    # of another id can't corrupt the longer one; and each id is looked up in the
+    # map exactly once, so sequential entries never chain (a->b, b->c).
+    if node_map:
+        url = re.sub(r'node-id=([^&"\'\s<]+)',
+                     lambda m: f'node-id={node_map.get(m.group(1), m.group(1))}', url)
     if args.strip_token:
         url = strip_share_token(url)
     return url
@@ -139,6 +144,22 @@ def main() -> int:
         body = EMBED_RE.sub(lambda m: conv(m, 'embed'), body)
         body = BLOCK_RE.sub(lambda m: conv(m, 'block'), body)
         body = EXT_RE.sub(lambda m: conv(m, 'extension'), body)
+        # Catch inline / straggler Figma links that are NOT inside the three
+        # wrappers (e.g. a plain <a href> in a paragraph) — otherwise they would
+        # silently keep the old file key and never appear in the audit.
+        # GUARD: only touch URLs that still contain the OLD key, so URLs already
+        # converted by the wrapper passes (new key) are skipped entirely. This is
+        # essential: re-running the remap over converted URLs could otherwise
+        # re-apply a map entry and re-introduce the chaining bug.
+        def catch(mo):
+            before = mo.group(0)
+            if not args.old_key or args.old_key not in before:
+                return before
+            after = transform_value(before, args, node_map)
+            if after != before:
+                report.append((before, after, 'inline'))
+            return after
+        body = FIGMA_URL_RE.sub(catch, body)
         mode = 'STANDARDISE TO EMBED (+ re-point)'
     else:
         def repoint(mo):
