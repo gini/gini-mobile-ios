@@ -162,7 +162,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    func uploadLatestPhotoFromGallery() {
+    func uploadLatestPhotoFromGallery(offset: Int = 0) {
         XCTAssertTrue(app.navigationBars[galleryTitle].waitForExistence(timeout: 10))
         app.tables.cells.firstMatch.tap()
         let imageCells = app.collectionViews.cells
