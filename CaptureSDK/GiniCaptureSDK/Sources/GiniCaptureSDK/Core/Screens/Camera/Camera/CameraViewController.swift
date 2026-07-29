@@ -748,7 +748,7 @@ final class CameraViewController: UIViewController {
         // feedback stays off for the remainder of this camera session.
         cameraPreviewViewController.camera.resumeQRDetection()
         detectedQRCodeDocument = nil
-        resetQRFrameColor()
+        restoreDefaultQRFrameColor()
         showQRScanOnlyModeUI()
     }
 
@@ -772,12 +772,12 @@ final class CameraViewController: UIViewController {
         // QR detection stays paused — resuming here would immediately re-trigger the alert
         isQRScanFlowActive = false
         detectedQRCodeDocument = nil
-        resetQRFrameColor()
+        restoreDefaultQRFrameColor()
         hideQRScanOnlyModeUI()
         showOnlyInvoiceTitles()
     }
 
-    private func resetQRFrameColor() {
+    private func restoreDefaultQRFrameColor() {
         cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
     }
 
