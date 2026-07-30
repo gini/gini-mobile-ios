@@ -57,7 +57,7 @@ file_length:
   # error: 2000 # Temporarily disabled
 
 function_body_length:
-ignore_comment_only_lines: true
+  ignore_comment_only_lines: true
   warning: 100
   # error: 200 # Temporarily disabled
 
