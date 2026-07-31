@@ -1,5 +1,0 @@
-# Shared Claude skill files that must stay byte-identical with gini-mobile-android.
-# One repo-relative path per line. Only list the general SKILL.md files —
-# never platform.md, which is platform-specific by design.
-# Read by shared-skills.check.yml and shared-skills.sync.yml.
-.claude/skills/gini-spec-feature/SKILL.md
