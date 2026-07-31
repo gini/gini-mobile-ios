@@ -26,17 +26,15 @@ make lint scheme=GiniCaptureSDK # For CaptureSDK changes
 
 When generating a pull request description:
 
-### Requirements
+**Requirements**
 
-- Use the repository PR template (`.github/pull_request_template.md`) exactly
-- Extract the Jira ticket from the commit message
-- Replace the placeholder ticket (e.g. PP-XXXX) with the real one
-- Describe:
-  - what changed
-  - why the change was needed
-  - how it was implemented (high level)
-- Mention affected modules, SDKs, flows, or APIs explicitly
-- Keep the description concise and reviewer-friendly
+- Use the repository PR template (`.github/pull_request_template.md`) exactly — it is the file GitHub pre-fills when a PR is opened.
+- If there is a Jira ticket, extract it from the commit message (the `<ticket-id>` line, e.g. `PP-1234`, `HEAL-99`, `XPL-42`).
+ - Replace the `[TICKET-ID]` placeholder with the real ticket, or `N/A` if no ticket applies.
+- Describe **what** changed, **why** the change was needed, and **how** it was implemented (high level).
+- Mention affected projects/modules explicitly in `<project>:<module>` form (e.g. `BankSDK`, `CaptureSDK`).
+- Keep the description concise and reviewer-friendly.
+
 
 ### Notes for Reviewers
 
@@ -73,6 +71,8 @@ Fill it in following the Requirements and Rules above:
 ## Swift Documentation and Comment Style
 
 Always write and rewrite Swift documentation and comments to match this exact house style. Do not preserve alternative documentation styles unless explicitly requested.
+
+**Canonical source:** [Code documentation style (Platform Mobile)](https://ginis.atlassian.net/wiki/spaces/PLMO/pages/1290534919/Code+documentation+style). Keep this section in sync with that page.
 
 ### Rules to Enforce
 
@@ -145,7 +145,7 @@ Always write and rewrite Swift documentation and comments to match this exact ho
 - Document behavior, side effects, defaults, constraints, and platform-specific details when relevant.
 - For booleans, prefer wording like "Indicates whether…" or "Specifies whether…".
 - For methods, start with an active verb: "Sets", "Updates", "Returns", "Configures", or "Retrieves".
-- For protocols, explain the capability the protocol provides.
+- For protocols, explain the capability the protocol provides; when useful, add a `- Note:` and `## Topics` groupings.
 - Preserve valid markdown links when they add value.
 
 ### Rewrite Workflow
@@ -167,15 +167,15 @@ Always write and rewrite Swift documentation and comments to match this exact ho
 
 ```swift
 func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
-    // For iOS versions prior to 15, the view controller is presented as a standard modal sheet.
+    /// For iOS versions prior to 15, the view controller is presented as a standard modal sheet.
     if #available(iOS 15, *) {
         // ...
     }
 }
 ```
-// → used for inline comments inside method bodies ✅
+`///` → used for inline explanatory comments inside function or method bodies ✅
 
-/// → used for documentation comments on declarations (functions, classes, properties) ❌ for inline use
+`/** ... */` → used for documentation comments on declarations (functions, classes, properties, etc.)
 
 #### Public method
 
@@ -194,6 +194,30 @@ public func updateConfiguration(withCaptureConfiguration configuration: GiniConf
  If set to `true`, a hint is displayed in the payment flow to remind the user about the upcoming payment due date.
  */
 public var paymentDueHintEnabled: Bool = true
+```
+
+#### Public protocol
+
+```swift
+/**
+ A protocol that provides bottom sheet presentation functionality to `UIViewController` instances.
+
+ Conforming view controllers can be presented using iOS 15+ sheet presentation controllers with
+ configurable detents and drag indicators. For iOS versions prior to 15, the view controller is
+ presented as a standard modal sheet.
+
+ - Note: This protocol leverages `UISheetPresentationController`, available from iOS 15.0+.
+
+ ## Topics
+
+ ### Configuring Bottom Sheet Behavior
+ - ``shouldShowDragIndicator``
+
+ ### Presentation Methods
+ - ``configureBottomSheet(shouldIncludeLargeDetent:)``
+ - ``updateBottomSheetHeight(_:)``
+ */
+public protocol GiniBottomSheetPresentable
 ```
 
 #### Method with parameters and return value
