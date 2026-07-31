@@ -59,28 +59,28 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
     // MARK: - E2
 
     func testCXNoResultsScreenRetryAction() {
-        //Select Cross-border product tag
+        // Select Cross-border product tag
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
-        //Close settings
+        // Close settings
         settingScreen.closeButton.tap()
-        //Launch scanning flow
+        // Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        // Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
         }
-        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        // Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
         if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
-        //Wait for No-Results screen
+        // Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
         //Tap Back to camera button
         noResultsScreen.backToCameraButton.tap()

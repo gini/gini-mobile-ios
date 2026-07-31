@@ -34,6 +34,9 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
+    #if targetEnvironment(simulator)
+        throw XCTSkip("Skipping test on simulator")
+    #endif
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
@@ -60,6 +63,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
+    #if !targetEnvironment(simulator)
         // Always terminate the app and attach failure screenshots on both simulator and device.
         // This prevents state leakage between test runs and ensures diagnostic screenshots are available.
         let screenshot = XCUIScreen.main.screenshot()
@@ -67,6 +71,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         attachment.lifetime = .deleteOnSuccess
         add(attachment)
         app.terminate()
+    #endif // !targetEnvironment(simulator)
     }
 
     var galleryTitle: String {
