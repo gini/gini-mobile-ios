@@ -13,15 +13,23 @@ Prefer the cheapest faithful reproduction, in this order:
 
 1. **Unit test** — most SDK logic is testable without a simulator. Put the
    repro test where the regression test will live (`Tests/<SDK>Tests/` of the
-   module owning the root cause). Swift Testing for new files
-   (`@Suite`/`@Test`/`#expect`); XCTest when extending a legacy suite
-   (match the neighboring file).
+   module owning the root cause). Swift Testing (`@Suite`/`@Test`/`#expect`)
+   is dominant in GiniInternalPaymentSDK and used for most new suites in
+   GiniBankAPILibrary and GiniCaptureSDK; GiniBankSDK, GiniHealthSDK, and
+   GiniHealthAPILibrary remain mostly XCTest. Match the neighboring file's
+   framework.
 2. **UI test / example-app instrumentation** when the bug needs real UIKit
    or lifecycle behavior — run via the example app's UI test scheme on the
-   CI simulator (iPhone 16, iOS 26.2). Example: `GiniBankSDKExampleUITests`.
+   CI simulator (iPhone 17, iOS 26.2). Existing UI tests live in
+   `<SDK>Example/<SDK>ExampleUITests/` (e.g. `GiniBankSDKExampleUITests`)
+   and use a Page Object pattern — screen selectors live under `Screens/`
+   (`MainScreen.swift`, `OnboardingScreen.swift`, `CameraAccessScreen.swift`,
+   …). Extend an existing screen object rather than adding raw selectors.
+   `BankSDK/GiniBankSDKExample/GiniBankSDKExampleSwiftUIUITests/` covers the
+   SwiftUI example variant.
 3. **Example app on the simulator** as a last resort:
    - Bank: open `GiniMobile.xcworkspace`, run `GiniBankSDKExample` on iPhone
-     16 / iOS 26.2.
+     17 / iOS 26.2.
    - Health: `GiniHealthSDKExample`. Real API access needs credentials in
      `Credentials.plist` / `CredentialsManager.swift` (see the example
      target). Without them, network-backed flows fail closed.
@@ -41,7 +49,7 @@ the matching release branch, not `main` — see `RELEASE.md` /
   xcodebuild test \
     -project <SDK>/<SDK>Example/<SDK>Example.xcodeproj \
     -scheme "<SDK>ExampleTests" \
-    -destination "platform=iOS Simulator,name=iPhone 16,OS=26.2" \
+    -destination "platform=iOS Simulator,name=iPhone 17,OS=26.2" \
     -only-testing:<SDK>ExampleTests/<TestClassOrSuiteName>
   ```
 - History of a suspicious file: `git log --follow -p -- <path>` and
@@ -55,16 +63,26 @@ the matching release branch, not `main` — see `RELEASE.md` /
 
 ## Regression test conventions
 
-- Unit tests in `Tests/<SDK>Tests/`, `<ClassUnderTest>Tests.swift`. New
-  files use Swift Testing (`@Suite`, `@Test`, `#expect`) per the MyApp
-  Standards rule in `CLAUDE.md`; when extending an XCTest suite, keep it
-  XCTest and match the file's style.
-- Manual protocol-conformance mocks — no third-party mocking framework.
-  JSON fixtures in `Tests/<SDK>Tests/Resources/`.
+- Unit tests in `Tests/<SDK>Tests/` (e.g.
+  `BankSDK/GiniBankSDK/Tests/GiniBankSDKTests/`), `<ClassUnderTest>Tests.swift`.
+  Swift Testing (`@Suite`, `@Test`, `#expect`) is fully adopted in
+  GiniInternalPaymentSDK and used for most new suites in GiniBankAPILibrary
+  and GiniCaptureSDK; GiniBankSDK, GiniHealthSDK, and GiniHealthAPILibrary
+  remain mostly XCTest. Match the neighboring test file when extending;
+  for a fresh location, follow the module's dominant framework.
+- Manual protocol-conformance mocks — no third-party mocking framework. No
+  snapshot-testing library in use.
+- Fixtures in `Tests/<SDK>Tests/Resources/`. Not only JSON — CaptureSDK
+  ships `.pdf` (rotated variants, multi-page), `.jpg`, and `.txt` extraction
+  fixtures; API libraries ship `.pdf` and `.png` payloads. Prefer an
+  existing fixture when your regression test needs a real document.
 - Name the test after the behavior. Reference the ticket in a comment only
   if the file's existing tests already do so — match local style.
-- Integration tests hitting the Gini API need `TEST_CLIENT_ID` /
-  `TEST_CLIENT_SECRET` in the environment (`CLAUDE.md`).
+- Integration tests: SDK-embedded integration tests hitting the Gini API
+  need `TEST_CLIENT_ID` / `TEST_CLIENT_SECRET` in the environment
+  (`CLAUDE.md`). Example apps have their own integration/unit split under
+  `BankSDK/GiniBankSDKExample/Tests/{IntegrationTests, UnitTests}/`
+  (SSL-pinning tests live under `IntegrationTests/SSLPinningTests/`).
 
 ## Verification (step 7 of the workflow)
 
@@ -78,8 +96,13 @@ e.g. `make lint scheme=GiniBankSDK` for BankSDK, `make lint scheme=GiniCaptureSD
 for CaptureSDK. Then run the unit tests of the touched module
 (`xcodebuild ... test` or `bundle exec fastlane run_unit_tests`). If the
 regression test is a UI test, run the example app's UI-test scheme on iPhone
-16 / iOS 26.2. Re-check the original reproduction from step 2 no longer
+17 / iOS 26.2. Re-check the original reproduction from step 2 no longer
 occurs.
+
+**Local vs CI destination:** `make lint` runs on `iPhone 15 Pro / iOS 17.2`
+(see `Makefile`) for faster iteration; CI's `shared-config.yml` uses
+`iPhone 17 / iOS 26.2`. Re-run failing checks in CI parity before pushing —
+behavior can differ on iOS-26-only APIs.
 
 ## Commit conventions
 
