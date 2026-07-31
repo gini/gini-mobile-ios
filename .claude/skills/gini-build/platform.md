@@ -129,8 +129,9 @@ violated:
 
 ## Commit conventions
 
-Follow the template at `.git-stuff/commit-msg-template.txt`. `type` is one of
-`feat` | `fix` | `refactor` | `ci`; `project` is the module name
+The template at `.git-stuff/commit-msg-template.txt` (repo root) is the source
+of truth for the allowed `type` values and what each covers — read it rather
+than relying on a list duplicated here. `project` is the module name
 (e.g. `GiniBankSDK`), omit the parentheses for multi-module changes; the
 ticket id ($ARGUMENTS) goes in the footer. Never push release tags —
 `<PackageName>;<version>` tags trigger release workflows.
