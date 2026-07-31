@@ -1,0 +1,116 @@
+---
+name: gini-spec-feature
+description: Fetch a ticket, clarify open questions, and write a feature spec before any code. Pass the ticket id as argument (e.g. PP-1234, IPC-42 — any board).
+---
+
+<!--
+  MIRRORED FILE — this file must stay byte-identical to
+  .claude/skills/gini-spec-feature/SKILL.md in gini-mobile-ios.
+  If you change it here, open a paired PR in the other repo with the same
+  content. CI (shared-skills.check.yml) fails when the copies diverge.
+  Platform-specific rules do NOT belong here — they live in the sibling
+  platform.md, which is intentionally different per repo.
+-->
+
+You are writing a feature spec for ticket $ARGUMENTS. Do NOT implement anything —
+this command ends when the spec file is written and the user has confirmed it.
+
+## 0. Load platform conventions — REQUIRED FIRST
+
+Read `platform.md` in this skill's directory. It defines this repository's
+module map, architecture patterns, language rules, wiring conventions, test
+stack, and the conventions checklist the spec must cover. Every
+platform-specific decision below MUST come from that file, never from your own
+defaults. If the file is missing, stop and tell the user this repository is not
+set up for the shared spec workflow.
+
+## 1. Fetch the ticket
+
+Fetch $ARGUMENTS from Jira (any board — PP or otherwise). Read the summary,
+description, acceptance criteria, comments, and linked issues. If the ticket
+cannot be fetched, ask the user to paste its content instead of guessing.
+
+## 2. Explore the code
+
+Identify which modules are affected, using the module map in `platform.md`.
+Read the relevant existing code so your questions and spec are grounded in
+how things actually work today. In particular, establish:
+
+- Public API surface: which touched declarations are visible to integrators.
+  Assess this the way `platform.md` prescribes for this repository.
+- The architecture pattern of the screens/components being touched.
+  `platform.md` lists the patterns in use and where. The spec must name the
+  pattern for new code and it must match a precedent that actually exists in
+  the touched module — don't prescribe a pattern the module doesn't use.
+- Existing precedents to imitate (similar sheet/dialog/screen/use case in the
+  same module) and the test stack of neighboring tests (see `platform.md`
+  for the frameworks in use).
+- How new code in that module is wired: dependency injection, string
+  resources/localization, and theming, per `platform.md`.
+
+## 3. Ask clarifying questions — REQUIRED, before writing the spec
+
+Use the AskUserQuestion tool. Never skip this step, even if the ticket seems
+clear. Ask about the things the ticket leaves open, for example:
+
+- Ambiguous or conflicting requirements in the ticket
+- Scope boundaries: what is explicitly OUT of scope?
+- Public API changes: additive only, or is a breaking change acceptable?
+- Which SDK consumers are affected (bank vs. health vs. capture integrators)?
+- Backwards compatibility and migration expectations
+- Testing expectations (unit only, or integration/UI tests too?)
+- Anything where you would otherwise have to assume
+
+Only ask questions whose answers change the spec. If a second round of
+questions is needed after the first answers, ask again.
+
+## 4. Write the spec
+
+Write the answers and your analysis into `specs/$ARGUMENTS-feature.md`
+(create the `specs/` directory if it doesn't exist) with this structure:
+
+```markdown
+# <Ticket ID>: <Title>
+
+Status: draft
+Ticket: <link to the Jira ticket>
+
+## Problem
+What the user/integrator needs and why. In your own words, not a ticket copy-paste.
+
+## Requirements
+Numbered, testable statements. Include decisions from the clarifying questions.
+
+## Affected modules
+Which modules change and how they relate.
+
+## Public API impact
+Changes to integrator-visible declarations per module, or "none". Note whether
+changes are additive or breaking. Assess visibility as prescribed by platform.md.
+
+## Technical conventions
+Concrete, repo-grounded rules /gini-build must follow. Cover every item in the
+conventions checklist in platform.md, grounded in the modules actually touched.
+
+## Design
+How it will work: key classes, data flow, integration points. Reference
+existing code with file paths.
+
+## Test plan
+Which tests prove each requirement. Name test classes/locations AND the test
+stack to use — match neighboring tests in the module (see platform.md). State
+the expectation that every new class gets a unit test, and list what is left
+to manual QA.
+
+## Out of scope
+Explicitly excluded work, so /gini-build doesn't drift into it.
+
+## Open questions
+Anything still unresolved (should be empty or short after step 3).
+```
+
+## 5. Hand off
+
+Show the user a short summary of the spec and where it was written. Remind
+them to review/edit it, then run `/gini-build $ARGUMENTS` (ideally in a fresh
+session) to build it. Do not start implementing yourself.
