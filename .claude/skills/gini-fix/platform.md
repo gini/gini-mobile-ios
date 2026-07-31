@@ -83,17 +83,8 @@ occurs.
 
 ## Commit conventions
 
-Format (`CLAUDE.md` → Commit Message Format):
-
-```
-fix(<project>): <subject>
-
-<body: what was broken, the root cause, what the fix does>
-
-<ticket-id>
-```
-
-`project` is the module name (e.g. `GiniBankSDK`); omit the parentheses for
-multi-module fixes. Subject in imperative mood, no period. Ticket ID
-($ARGUMENTS) is required on the last line. Never push release tags —
-`<PackageName>;<version>` tags trigger release workflows.
+Follow the template at `.git-stuff/commit-msg-template.txt` with `type` = `fix`.
+`project` is the module name (e.g. `GiniBankSDK`), omit the parentheses for
+multi-module fixes; the body says what was broken, the root cause, and what
+the fix does; the ticket id ($ARGUMENTS) goes in the footer. Never push
+release tags — `<PackageName>;<version>` tags trigger release workflows.
