@@ -202,10 +202,11 @@ init(compositeDocuments: [CompositeDocument]?,
   - Builders and factory methods
 
 
-# Pull Request Description Generation
-Refer to AGENTS.md for PR description generation and repository conventions.
+# Repository & Agent Conventions
 
-Always follow AGENTS.md instructions when generating pull request descriptions.
+Follow **AGENTS.md** for all repository and agent conventions in this repo — including the **graphify** knowledge-graph workflow (`## graphify`), the optional `code-review-graph` MCP tools, pull request description generation, and the Swift documentation style. Always follow AGENTS.md instructions when working here.
+
+Use the repository PR template at `.github/pull_request_template.md` (the file GitHub pre-fills for new PRs) as the canonical structure for PR descriptions.
 
 
 
@@ -225,77 +226,3 @@ Generates manual test cases from a Jira ticket, local spec file, or pasted text,
 - **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
 - **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
 - **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
-
----
-
-## graphify
-
-This monorepo has a **graphify knowledge graph** at `graphify-out/` covering all six SDKs
-(BankAPILibrary, HealthAPILibrary, CaptureSDK, BankSDK, HealthSDK, GiniComponents).
-The graph is built primarily from Swift/Ruby/shell AST plus semantic extraction over the docs.
-
-**Rules:**
-
-- Before answering architecture or codebase questions, read `graphify-out/GRAPH_REPORT.md`
-  for god nodes (`GiniCaptureSDK`, `GiniHealthAPILibrary`, `GiniConfiguration`,
-  `GiniBankAPILibrary`, `GiniBankConfiguration` …) and community structure.
-- `graphify-out/wiki/index.md` exists — navigate the wiki instead of reading raw files when
-  you need a topic overview.
-- For cross-module "how does X relate to Y" questions, prefer graph traversal over grep — it
-  follows the graph's EXTRACTED + INFERRED edges instead of scanning files:
-  - `graphify query "<question>"` — broad context (BFS)
-  - `graphify path "<A>" "<B>"` — shortest path between two concepts (e.g. `"GiniBankSDK" "GiniUtilites"`)
-  - `graphify explain "<concept>"` — plain-language explanation of a node
-- **The graph auto-rebuilds on branch switch** via a `post-checkout` git hook (AST-only, no
-  API cost) — installed at `.git/hooks/post-checkout`. This is the only hook installed:
-  commits do **not** trigger a rebuild, and a plain `git pull` does **not** either (a pull
-  fires no checkout).
-- After a `git pull` (e.g. pulling main) that you don't follow with a branch switch, run
-  `graphify update .` to refresh the graph against the pulled code.
-- After changing **docs, images, or PDFs** in a session (the hook only covers code), run
-  `/graphify --update` to fold them into the graph.
-- To rebuild manually at any time: `graphify update .` (AST-only, no API cost).
-
----
-
-## MCP Tools: code-review-graph (optional — only if configured)
-
-> **NOTE:** The `code-review-graph` MCP server is **not currently connected** to this project.
-> The tools below are only available once that MCP server has been added to the Claude Code /
-> Claude Desktop config. Until then, use the `graphify` CLI commands above and fall back to
-> Grep/Glob/Read. graphify can expose a subset of these live via `/graphify --mcp`
-> (tools: `query_graph`, `get_node`, `get_neighbors`, `get_community`, `god_nodes`,
-> `graph_stats`, `shortest_path`).
-
-**IF the `code-review-graph` MCP server is configured, prefer its tools BEFORE Grep/Glob/Read
-when exploring the codebase** — the graph is faster, cheaper (fewer tokens), and gives
-structural context (callers, dependents, test coverage) that file scanning cannot.
-
-### When to use graph tools first
-
-- **Exploring code**: `semantic_search_nodes` or `query_graph` instead of Grep
-- **Understanding impact**: `get_impact_radius` instead of manually tracing imports
-- **Code review**: `detect_changes` + `get_review_context` instead of reading entire files
-- **Finding relationships**: `query_graph` with callers_of / callees_of / imports_of / tests_for
-- **Architecture questions**: `get_architecture_overview` + `list_communities`
-
-Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
-
-### Key tools
-
-| Tool | Use when |
-|------|----------|
-| `detect_changes` | Reviewing code changes — gives risk-scored analysis |
-| `get_review_context` | Need source snippets for review — token-efficient |
-| `get_impact_radius` | Understanding blast radius of a change |
-| `get_affected_flows` | Finding which execution paths are impacted |
-| `query_graph` | Tracing callers, callees, imports, tests, dependencies |
-| `semantic_search_nodes` | Finding functions/classes by name or keyword |
-| `get_architecture_overview` | Understanding high-level codebase structure |
-| `refactor_tool` | Planning renames, finding dead code |
-
-### Workflow (when the MCP server is configured)
-
-1. Use `detect_changes` for code review.
-2. Use `get_affected_flows` to understand impact.
-3. Use `query_graph` with `pattern="tests_for"` to check coverage.
