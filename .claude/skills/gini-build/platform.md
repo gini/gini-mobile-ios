@@ -92,23 +92,15 @@ violated:
   `textStyleFonts[textStyle]`. Spacing in a local `enum Constants`.
 - Strings via typed `LocalizableStringResource` enums under
   `<sdk>.<feature>.<screen>.<element>`; never raw `NSLocalizedString`.
-- No SwiftUI in SDK sources — UIKit only. No Objective-C. Xamarin has been
-  removed; treat "Xamarin only" as dead code.
+- UIKit is the default in SDK sources today; SwiftUI is not banned — adopt
+  it when the spec calls for it and a precedent exists in the touched
+  module. No Objective-C. Xamarin has been removed; treat "Xamarin only"
+  as dead code.
 
 ## Commit conventions
 
-Format (`CLAUDE.md` → Commit Message Format):
-
-```
-<type>(<project>): <subject>
-
-<body>
-
-<ticket-id>
-```
-
-`type` ∈ `feat` | `fix` | `refactor` | `ci` (`chore` for cross-cutting).
-`project` is the module name (e.g. `GiniBankSDK`); omit the parentheses for
-multi-module changes. Subject in imperative mood, no period. Ticket ID
-($ARGUMENTS) is required on the last line, e.g. `PP-4102`. Never push
-release tags — `{PackageName};{version}` tags trigger release workflows.
+Follow the template at `.git-stuff/commit-msg-template.txt`. `type` is one of
+`feat` | `fix` | `refactor` | `ci`; `project` is the module name
+(e.g. `GiniBankSDK`), omit the parentheses for multi-module changes; the
+ticket id ($ARGUMENTS) goes in the footer. Never push release tags —
+`<PackageName>;<version>` tags trigger release workflows.
