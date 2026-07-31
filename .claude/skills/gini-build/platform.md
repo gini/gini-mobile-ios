@@ -16,11 +16,25 @@
   `CLAUDE.md` for the dependency graph.
 - Source: `Sources/<SDK>/` — `Core/`, `Extensions/`, `Resources/` (`.strings`,
   assets), `<SDK>Version.swift`, `PrivacyInfo.xcprivacy`.
-- Tests: `Tests/<SDK>Tests/` (Swift Testing preferred for new files,
-  `<ClassUnderTest>Tests.swift`; XCTest legacy remains in many files —
-  match neighboring tests when extending a suite). JSON fixtures in
-  `Tests/<SDK>Tests/Resources/`, referenced via `.process("Resources")` /
-  `.copy` in the test target.
+- Unit tests: `Tests/<SDK>Tests/` (e.g.
+  `BankSDK/GiniBankSDK/Tests/GiniBankSDKTests/`),
+  `<ClassUnderTest>Tests.swift`. Swift Testing (`@Suite`/`@Test`/`#expect`)
+  is fully adopted in **GiniInternalPaymentSDK** and used for most new suites
+  in GiniBankAPILibrary and GiniCaptureSDK. GiniBankSDK, GiniHealthSDK, and
+  GiniHealthAPILibrary tests remain mostly XCTest. Match the neighboring
+  test file when extending; for new files, follow the module's dominant
+  framework.
+- UI tests: `<SDK>Example/<SDK>ExampleUITests/` (`GiniBankSDKExampleUITests`,
+  `GiniHealthSDKExampleTests`, etc.). Existing UI suites use a Page Object
+  pattern — screen selectors live under `Screens/` (`MainScreen.swift`,
+  `OnboardingScreen.swift`, …). Extend an existing screen object rather
+  than adding raw selectors. `GiniBankSDKExampleSwiftUIUITests/` covers the
+  SwiftUI example variant. No snapshot-testing library is in use.
+- Fixtures: `Tests/<SDK>Tests/Resources/`, referenced via
+  `.process("Resources")` / `.copy` in the test target. Not only JSON —
+  CaptureSDK ships `.pdf` (rotated variants, multi-page), `.jpg`, and
+  `.txt` extraction fixtures; API libraries ship `.pdf` and `.png`
+  payloads. Reuse an existing fixture when possible.
 - Minimum deployment target: iOS 15+ (default), iOS 17+ for GiniHealthSDK
   and GiniHealthAPILibrary.
 
@@ -32,7 +46,7 @@ Prefer `xcodebuild` against the example app's Xcode project (CI parity):
 xcodebuild clean test \
   -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
   -scheme "GiniBankSDKExampleTests" \
-  -destination "platform=iOS Simulator,name=iPhone 16,OS=26.2" \
+  -destination "platform=iOS Simulator,name=iPhone 17,OS=26.2" \
   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 ```
 
@@ -50,8 +64,9 @@ Integration tests hitting the Gini API require `TEST_CLIENT_ID` /
 `TEST_CLIENT_SECRET` in the environment — they'll be skipped or fail without
 them (`CLAUDE.md`).
 
-CI environment: Xcode 26.2, iPhone 16 simulator on iOS 26.2, macOS-latest
-runner. Local runs on the same simulator remove one variable.
+CI environment: Xcode 26.2, iPhone 17 simulator on iOS 26.2, macOS-latest
+runner (see `.github/workflows/shared-config.yml`). Local runs on the same
+simulator remove one variable.
 
 ## Verification (step 5 of the workflow)
 
@@ -67,6 +82,11 @@ of the touched module (`xcodebuild ... test` above, or
 `bundle exec fastlane run_unit_tests`). If the spec's test plan includes
 UI tests, run them in the example app's UI-test target on the CI simulator.
 All must pass.
+
+**Local vs CI destination:** `make lint` runs on `iPhone 15 Pro / iOS 17.2`
+(see `Makefile`) for faster iteration; CI's `shared-config.yml` uses
+`iPhone 17 / iOS 26.2`. Behavior can differ on iOS-26-only APIs — re-run
+failing checks in CI parity before pushing.
 
 ## Coding conventions
 
@@ -87,15 +107,25 @@ violated:
 - Constructor injection; delegate back-references are the only permitted
   post-init injection. SDK entry points expose a fluent value-type builder
   (`GiniBankAPI.Builder` precedent).
-- Colors via `UIColor.GiniBank.*` / `UIColor.GiniCapture.*`; dark mode via
-  `GiniColor(light:dark:).uiColor()`. Dynamic Type via
-  `textStyleFonts[textStyle]`. Spacing in a local `enum Constants`.
+- Colors: prefer **`GiniColorScheme`**
+  (`GiniUtilites/Color/GiniColorScheme.swift`, with module extensions like
+  `GiniBankColorScheme`) for new code — it's the current standard and
+  already the majority pattern outside CaptureSDK. The legacy
+  `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces remain in place
+  and are still the norm inside CaptureSDK; match neighboring code when
+  extending existing files. Dark mode: `GiniColor(light:dark:).uiColor()`
+  is the underlying primitive that `GiniColorScheme` already wraps.
+  Dynamic Type via `textStyleFonts[textStyle]`. Spacing in a local
+  `enum Constants`.
 - Strings via typed `LocalizableStringResource` enums under
   `<sdk>.<feature>.<screen>.<element>`; never raw `NSLocalizedString`.
-- UIKit is the default in SDK sources today; SwiftUI is not banned — adopt
-  it when the spec calls for it and a precedent exists in the touched
-  module. No Objective-C. Xamarin has been removed; treat "Xamarin only"
-  as dead code.
+- UIKit remains the pattern in GiniBankSDK, GiniCaptureSDK screens, and
+  GiniHealthSDK view controllers. SwiftUI is the norm in
+  **GiniInternalPaymentSDK** (payment review, keyboard accessory, carousels)
+  and in the shared `GiniUtilites/SwiftUI/` helpers (font, color, layout,
+  height preference keys). Match neighboring code in the touched module —
+  don't rewrite a UIKit screen in SwiftUI opportunistically, and don't add
+  a UIKit view controller inside a SwiftUI feature.
 
 ## Commit conventions
 
