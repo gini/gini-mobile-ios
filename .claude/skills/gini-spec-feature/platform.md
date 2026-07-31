@@ -47,15 +47,19 @@ actually exists in the touched module:
   ViewModel MUST NOT import UIKit.
 - ViewController: layout + event forwarding only, no business logic.
 
-UIKit is the only UI framework used inside SDK targets. Do not introduce
-SwiftUI in SDK sources; example apps and utility surfaces are the only place
-SwiftUI appears. No Objective-C; Xamarin support has been removed and code
-marked "Xamarin only" is dead — don't treat it as a live ABI constraint.
+UIKit remains the pattern in GiniBankSDK, GiniCaptureSDK screens, and
+GiniHealthSDK view controllers. SwiftUI is the norm in
+**GiniInternalPaymentSDK** (payment review, keyboard accessory, carousels)
+and in the shared `GiniUtilites/SwiftUI/` helpers (font, color, layout,
+height preference keys). Match neighboring code in the touched module —
+don't rewrite a UIKit screen in SwiftUI opportunistically, and don't add a
+UIKit view controller inside a SwiftUI feature.
 
-Liquid Glass is being rolled out in a sequenced pair of release branches
-(`release/liquid_glass_health_sdk` first, `release/liquid_glass_bank_sdk`
-after). When the spec touches UI on either branch, call out Liquid Glass
-adoption impact explicitly (previews, glass effects, materials).
+Liquid Glass adoption is planned per SDK. Check `git branch -r | grep liquid`
+before assuming a release branch exists — the workflow is sequenced (Health
+SDK first, Bank SDK after) but neither branch is guaranteed to be live at any
+given time. When the spec targets an active `release/liquid_glass_*` branch,
+call out adoption impact explicitly (previews, glass effects, materials).
 
 ## Language rules
 
@@ -72,19 +76,28 @@ adoption impact explicitly (previews, glass effects, materials).
 
 ## UI rules
 
-- New UI: UIKit — `UIViewController` / `UIView` with AutoLayout. State
-  whether XIBs/storyboards are added or removed (prefer programmatic UI to
-  match the majority of the codebase).
-- Colors: `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces. Dark
-  mode is required via `GiniColor(lightModeColor:darkModeColor:).uiColor()`
-  — never a raw hex or asset without a dark counterpart.
+- New UI framework: **UIKit** in GiniBankSDK, GiniCaptureSDK, and
+  GiniHealthSDK view controllers (`UIViewController` / `UIView` with
+  AutoLayout — prefer programmatic UI). **SwiftUI** in GiniInternalPaymentSDK
+  and `GiniUtilites/SwiftUI/` helpers. Match the touched module; call out in
+  the spec which framework new views use and why.
+- Colors: prefer **`GiniColorScheme`**
+  (`GiniUtilites/Color/GiniColorScheme.swift`, with module extensions like
+  `GiniBankColorScheme`) for new code — it's the current standard and
+  already the majority pattern outside CaptureSDK. The legacy
+  `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces remain in place
+  and are still the norm inside CaptureSDK; match neighboring code when
+  extending existing files. Dark mode: `GiniColor(light:dark:).uiColor()`
+  is the underlying primitive that `GiniColorScheme` already wraps. Never
+  use a raw hex or asset without a dark counterpart.
 - Fonts: Dynamic Type via `textStyleFonts[textStyle]` from the design
   system.
 - Spacing: local `private enum Constants` inside the view/view controller —
   no magic numbers.
-- Liquid Glass: when the spec targets a `release/liquid_glass_*` branch,
-  list which glass effects / materials the new UI adopts and any fallbacks
-  for older OS versions.
+- Liquid Glass: check `git branch -r | grep liquid` before referencing a
+  release branch — when a `release/liquid_glass_*` branch is active and the
+  spec targets it, list which glass effects / materials the new UI adopts
+  and any fallbacks for older OS versions.
 
 ## Wiring
 
@@ -103,16 +116,31 @@ adoption impact explicitly (previews, glass effects, materials).
 
 ## Test stack
 
-- New tests use Swift Testing (`@Suite`, `@Test`, `#expect`) per the MyApp
-  Standards → Testing rule in `CLAUDE.md`. XCTest remains in legacy files
-  (GiniHealthSDK tests are still largely XCTest) — match the neighboring
-  file when extending an existing test suite; only new files are Swift
-  Testing by default.
+- Unit tests: `Tests/<SDK>Tests/` (e.g.
+  `BankSDK/GiniBankSDK/Tests/GiniBankSDKTests/`),
+  `<ClassUnderTest>Tests.swift`. Swift Testing (`@Suite`, `@Test`, `#expect`)
+  is fully adopted in GiniInternalPaymentSDK and used for most new suites in
+  GiniBankAPILibrary and GiniCaptureSDK; GiniBankSDK, GiniHealthSDK, and
+  GiniHealthAPILibrary tests remain mostly XCTest. Match the neighboring
+  test file when extending; for new files, follow the module's dominant
+  framework.
+- UI tests: `<SDK>Example/<SDK>ExampleUITests/` (e.g.
+  `GiniBankSDKExampleUITests`). Existing UI suites use a Page Object
+  pattern — screen selectors live under `Screens/` (`MainScreen.swift`,
+  `OnboardingScreen.swift`, …). Extend an existing screen object rather
+  than adding raw selectors. `GiniBankSDKExampleSwiftUIUITests/` covers the
+  SwiftUI example variant. No snapshot-testing library is in use.
 - Mocks: manual protocol conformances. No third-party mocking framework.
-- Fixtures: JSON files in `Tests/Resources/`, referenced via `.process`/
-  `.copy` in the package's test target.
+- Fixtures: `Tests/<SDK>Tests/Resources/`, referenced via `.process`/`.copy`
+  in the package's test target. Not only JSON — CaptureSDK ships `.pdf`
+  (rotated variants, multi-page), `.jpg`, and `.txt` extraction fixtures;
+  API libraries ship `.pdf` and `.png` payloads. Reuse an existing fixture
+  when possible.
 - Integration tests hitting the real API need `TEST_CLIENT_ID` and
-  `TEST_CLIENT_SECRET` environment variables (see `CLAUDE.md`).
+  `TEST_CLIENT_SECRET` environment variables (see `CLAUDE.md`). Example
+  apps have their own integration/unit split under
+  `BankSDK/GiniBankSDKExample/Tests/{IntegrationTests, UnitTests}/`
+  (SSL-pinning tests live under `IntegrationTests/SSLPinningTests/`).
 - Every new ViewModel and Service gets a unit test. Coverage is currently
   weakest on ViewControllers and Coordinators — the spec should not use
   that weakness as an excuse to omit tests for new coordinators.
@@ -125,11 +153,14 @@ modules actually touched:
 1. Language and access control: Swift, `internal` by default; `public` /
    `open` only where the public API impact section justifies it; doc-comment
    style (`/** */` for declarations, `///` inline) per `AGENTS.md`.
-2. UI: UIKit (`UIViewController` / `UIView`) in `UIColor.GiniBank.*` /
-   `UIColor.GiniCapture.*` with `GiniColor(light:dark:)` for dark mode,
-   Dynamic Type via `textStyleFonts[textStyle]`, spacing in a local
-   `enum Constants`; Liquid Glass adoption if on a `release/liquid_glass_*`
-   branch.
+2. UI: name the framework (UIKit `UIViewController`/`UIView` for
+   GiniBankSDK/GiniCaptureSDK/GiniHealthSDK; SwiftUI for
+   GiniInternalPaymentSDK and `GiniUtilites/SwiftUI/`); colors via
+   `GiniColorScheme` for new code (legacy `UIColor.GiniBank.*` /
+   `UIColor.GiniCapture.*` still norm inside CaptureSDK) with
+   `GiniColor(light:dark:)` under the hood for dark mode; Dynamic Type via
+   `textStyleFonts[textStyle]`; spacing in a local `enum Constants`; Liquid
+   Glass adoption when a `release/liquid_glass_*` branch is active.
 3. Architecture: MVVM + Coordinator; name the `<Feature>Coordinator`,
    `<Feature>ViewModel`, `<Feature>ViewModelDelegate`, and
    `<Feature>ViewController` types; entry point is a single static factory
@@ -142,6 +173,12 @@ modules actually touched:
    `<sdk>.<feature>.<screen>.<element>`, list the `Sources/<SDK>/Resources/`
    locale `.strings` files that gain entries.
 6. Quality gates: `make lint scheme=<Scheme>` clean per `AGENTS.md`
-   (`GiniBankSDK` / `GiniCaptureSDK` at minimum for touched SDKs); Swift
-   Testing coverage expectations for every new class; multi-parameter
-   formatting rule from `CLAUDE.md`.
+   (`GiniBankSDK` / `GiniCaptureSDK` at minimum for touched SDKs). Note
+   the local-vs-CI destination drift: `make lint` runs on `iPhone 15 Pro /
+   iOS 17.2` (see `Makefile`) while CI (`.github/workflows/shared-config.yml`)
+   uses `iPhone 17 / iOS 26.2` — re-run failing checks in CI parity before
+   pushing. Test-framework coverage expectation per the module's dominant
+   framework (Swift Testing for GiniInternalPaymentSDK / new suites in
+   GiniBankAPILibrary and GiniCaptureSDK; XCTest for GiniBankSDK,
+   GiniHealthSDK, GiniHealthAPILibrary). Multi-parameter formatting rule
+   from `CLAUDE.md`.
