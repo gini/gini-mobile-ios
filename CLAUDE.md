@@ -231,10 +231,11 @@ init(compositeDocuments: [CompositeDocument]?,
   - Builders and factory methods
 
 
-# Pull Request Description Generation
-Refer to AGENTS.md for PR description generation and repository conventions.
+# Repository & Agent Conventions
 
-Always follow AGENTS.md instructions when generating pull request descriptions.
+Follow **AGENTS.md** for all repository and agent conventions in this repo — including the **graphify** knowledge-graph workflow (`## graphify`), the optional `code-review-graph` MCP tools, pull request description generation, and the Swift documentation style. Always follow AGENTS.md instructions when working here.
+
+Use the repository PR template at `.github/pull_request_template.md` (the file GitHub pre-fills for new PRs) as the canonical structure for PR descriptions.
 
 
 
