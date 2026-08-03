@@ -22,6 +22,21 @@ make lint scheme=GiniCaptureSDK # For CaptureSDK changes
 
 ---
 
+## Push & Pull Request Workflow
+
+Whenever the user asks to push and open a pull request, always do all of the following — without being asked each time:
+
+1. **PR description from the template.** Generate the PR body using the repository PR template (`.github/pull_request_template.md`), following the *Pull Request Description Generation* rules below. Never open a PR with an empty or free-form body.
+2. **Human reviewers — ask, never guess.** Always ask the user which reviewers to add before or right after opening the PR. Do not infer reviewers from git history or previous PRs.
+3. **Copilot — add automatically.** Always request a GitHub Copilot code review, without asking. `gh pr create/edit --reviewer` cannot resolve the Copilot bot; use the REST API instead:
+
+   ```bash
+   gh api -X POST repos/<owner>/<repo>/pulls/<number>/requested_reviewers \
+     -f 'reviewers[]=copilot-pull-request-reviewer[bot]'
+   ```
+
+---
+
 ## Pull Request Description Generation
 
 When generating a pull request description:
