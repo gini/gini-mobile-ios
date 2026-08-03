@@ -47,19 +47,21 @@ actually exists in the touched module:
   ViewModel MUST NOT import UIKit.
 - ViewController: layout + event forwarding only, no business logic.
 
-UIKit remains the pattern in GiniBankSDK, GiniCaptureSDK screens, and
-GiniHealthSDK view controllers. SwiftUI is the norm in
-**GiniInternalPaymentSDK** (payment review, keyboard accessory, carousels)
-and in the shared `GiniUtilites/SwiftUI/` helpers (font, color, layout,
-height preference keys). Match neighboring code in the touched module —
-don't rewrite a UIKit screen in SwiftUI opportunistically, and don't add a
-UIKit view controller inside a SwiftUI feature.
+SwiftUI is the default framework for new standalone views and feature
+entry points. SwiftUI is already the norm in **GiniInternalPaymentSDK**
+(payment review, keyboard accessory, carousels) and in the shared
+`GiniUtilites/SwiftUI/` helpers (font, color, layout, height preference
+keys). UIKit remains the existing pattern in GiniBankSDK, GiniCaptureSDK
+screens, and GiniHealthSDK view controllers — match neighboring code when
+extending an existing UIKit screen there. A new coordinator or feature
+entry point is SwiftUI unless there's a specific reason (e.g. a UIKit-only
+API dependency); integrator-facing SDK entry points still return a
+`UIViewController` per `CLAUDE.md`, wrapping the SwiftUI root in a
+`UIHostingController` when the feature is SwiftUI-native.
 
-Liquid Glass adoption is planned per SDK. Check `git branch -r | grep liquid`
-before assuming a release branch exists — the workflow is sequenced (Health
-SDK first, Bank SDK after) but neither branch is guaranteed to be live at any
-given time. When the spec targets an active `release/liquid_glass_*` branch,
-call out adoption impact explicitly (previews, glass effects, materials).
+Liquid Glass adoption is planned per SDK. When the spec targets a UI
+change that adopts Liquid Glass, call out impact explicitly (previews,
+glass effects, materials, older-OS fallbacks).
 
 ## Language rules
 
@@ -76,11 +78,13 @@ call out adoption impact explicitly (previews, glass effects, materials).
 
 ## UI rules
 
-- New UI framework: **UIKit** in GiniBankSDK, GiniCaptureSDK, and
-  GiniHealthSDK view controllers (`UIViewController` / `UIView` with
-  AutoLayout — prefer programmatic UI). **SwiftUI** in GiniInternalPaymentSDK
-  and `GiniUtilites/SwiftUI/` helpers. Match the touched module; call out in
-  the spec which framework new views use and why.
+- New UI framework: **SwiftUI** by default for new standalone views and
+  feature entry points. Match the touched module — extending an existing
+  UIKit screen inside GiniBankSDK, GiniCaptureSDK, or GiniHealthSDK stays
+  UIKit (`UIViewController` / `UIView` with AutoLayout — prefer
+  programmatic UI). SwiftUI is already the norm in GiniInternalPaymentSDK
+  and `GiniUtilites/SwiftUI/`. Call out in the spec which framework new
+  views use and why.
 - Colors: prefer **`GiniColorScheme`**
   (`GiniUtilites/Color/GiniColorScheme.swift`, with module extensions like
   `GiniBankColorScheme`) for new code — it's the current standard and
@@ -94,10 +98,9 @@ call out adoption impact explicitly (previews, glass effects, materials).
   system.
 - Spacing: local `private enum Constants` inside the view/view controller —
   no magic numbers.
-- Liquid Glass: check `git branch -r | grep liquid` before referencing a
-  release branch — when a `release/liquid_glass_*` branch is active and the
-  spec targets it, list which glass effects / materials the new UI adopts
-  and any fallbacks for older OS versions.
+- Liquid Glass: when the spec targets a UI change that adopts Liquid
+  Glass, list which glass effects / materials the new UI adopts and any
+  fallbacks for older OS versions.
 
 ## Wiring
 
@@ -153,14 +156,15 @@ modules actually touched:
 1. Language and access control: Swift, `internal` by default; `public` /
    `open` only where the public API impact section justifies it; doc-comment
    style (`/** */` for declarations, `///` inline) per `AGENTS.md`.
-2. UI: name the framework (UIKit `UIViewController`/`UIView` for
-   GiniBankSDK/GiniCaptureSDK/GiniHealthSDK; SwiftUI for
-   GiniInternalPaymentSDK and `GiniUtilites/SwiftUI/`); colors via
-   `GiniColorScheme` for new code (legacy `UIColor.GiniBank.*` /
-   `UIColor.GiniCapture.*` still norm inside CaptureSDK) with
-   `GiniColor(light:dark:)` under the hood for dark mode; Dynamic Type via
-   `textStyleFonts[textStyle]`; spacing in a local `enum Constants`; Liquid
-   Glass adoption when a `release/liquid_glass_*` branch is active.
+2. UI: name the framework (SwiftUI by default for new views; UIKit
+   `UIViewController`/`UIView` when extending existing UIKit screens in
+   GiniBankSDK/GiniCaptureSDK/GiniHealthSDK); colors via `GiniColorScheme`
+   for new code (legacy `UIColor.GiniBank.*` / `UIColor.GiniCapture.*`
+   still norm inside CaptureSDK) with `GiniColor(light:dark:)` under the
+   hood for dark mode; Dynamic Type via `textStyleFonts[textStyle]`;
+   spacing in a local `enum Constants`; Liquid Glass adoption impact
+   (glass effects, materials, older-OS fallbacks) when the spec targets
+   it.
 3. Architecture: MVVM + Coordinator; name the `<Feature>Coordinator`,
    `<Feature>ViewModel`, `<Feature>ViewModelDelegate`, and
    `<Feature>ViewController` types; entry point is a single static factory
