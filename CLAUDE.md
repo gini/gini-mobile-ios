@@ -87,7 +87,7 @@ Follow Conventional Commits with this structure:
 <ticket-id>
 ```
 
-- **Types:** `feat`, `fix`, `refactor`, `ci`
+- **Types:** see `.git-stuff/commit-msg-template.txt` — it is the source of truth for the allowed `type` values and what each covers; don't rely on a list duplicated here.
 - **Project:** Module name (e.g., `GiniBankSDK`). Omit parentheses for multi-module changes.
 - **Subject:** Imperative mood, no period
 - **Ticket ID:** Required on last line (e.g., `PP-4102`)
