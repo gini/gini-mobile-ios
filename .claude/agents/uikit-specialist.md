@@ -4,7 +4,8 @@ description: >
   UIKit reviewer for the Gini SDKs. Enforces correct UIViewController/UIView
   patterns, Auto Layout, cell reuse, view lifecycle, and retain-cycle-free
   delegation. Reviews existing UIKit screens and the UIKit-fallback cases;
-  new BankSDK/CaptureSDK UI is SwiftUI-first (route to swiftui-specialist).
+  new BankSDK/CaptureSDK/HealthSDK UI is SwiftUI-first (route to
+  swiftui-specialist).
 tools:
   - Read
   - Edit

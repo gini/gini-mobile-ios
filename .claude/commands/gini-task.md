@@ -8,6 +8,6 @@ Use the **gini-orchestrator** agent to coordinate the following task. Invoke it 
 Task:
 $ARGUMENTS
 
-gini-orchestrator will read the task, select the right specialists (uikit, swiftui, accessibility, testing), and enforce the standards in `CLAUDE.md` and `AGENTS.md` (MVVM + Coordinator, design-system namespaces, 3-level localization, `/** */` + `///` doc style, one-parameter-per-line initializers, no mocks, built-ins first). Architecture, design-system, localization, concurrency, security, performance, and background-execution standards still apply and are enforced inline (their dedicated specialists are paused).
+gini-orchestrator will read the task, select the right specialists (uikit, swiftui, accessibility, testing), and enforce the standards in `CLAUDE.md`, `AGENTS.md`, and `.claude/rules/mandatory-rules.md` (MVVM + Coordinator, design-system namespaces, 3-level localization, `/** */` + `///` doc style, one-parameter-per-line initializers, no placeholders/stubs in production code — test mocks as manual protocol conformances per `CLAUDE.md` are allowed — built-ins first). Architecture, design-system, localization, concurrency, security, performance, and background-execution standards still apply and are enforced inline (their dedicated specialists are paused).
 
 When it finishes, synthesize the specialists' findings into a single clear answer for me — grouped by specialist, most important issues first.

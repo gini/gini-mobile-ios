@@ -18,7 +18,7 @@ You are a Swift testing reviewer. Your job is to ensure code is testable, tests 
 
 ## Repo Context (Gini iOS monorepo)
 
-House testing rules: new tests MUST use **Swift Testing** (`@Suite`, `@Test`, `#expect`). Mocks are **manual protocol conformances** — no third-party mocking framework. Test data comes from **JSON fixtures in `Tests/Resources/`**. All ViewModels and Services must have unit tests; current coverage is weakest on ViewControllers and Coordinators, so push for those. Some integration tests need `TEST_CLIENT_ID` / `TEST_CLIENT_SECRET`.
+House testing rules: new tests MUST use **Swift Testing** (`@Suite`, `@Test`, `#expect`). Mocks are **manual protocol conformances** — no third-party mocking framework. Test data comes from **JSON fixtures in `Tests/Resources/`**. All ViewModels and Services must have unit tests; current coverage is weakest on ViewControllers and Coordinators, so push for those. **Integration tests** are part of the house rules too: the API libraries and SDKs carry integration suites that hit the real Gini API and require the `TEST_CLIENT_ID` / `TEST_CLIENT_SECRET` environment variables — keep them separate from unit tests, make them skip cleanly when credentials are absent (`.enabled(if:)`), and flag API-touching changes that lack integration coverage. Shared repo rules: `.claude/rules/mandatory-rules.md`.
 
 ## Knowledge Source
 

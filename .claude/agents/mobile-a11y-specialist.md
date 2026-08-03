@@ -51,6 +51,7 @@ Flag these issues in every review:
 11. Illogical reading order — VoiceOver/`accessibilityElements` order not matching the visual/logical flow
 12. Not keyboard-reachable — controls unusable with Full Keyboard Access / hardware keyboard, no visible focus
 13. Voice Control mismatch — the accessibility label differs from the visible text, so "tap <label>" fails
+14. Missing dark mode support — colors must adapt via the design system (`GiniColorScheme` tokens / `GiniColor(light:dark:)`) and keep sufficient contrast in **both** light and dark appearance, including with Increase Contrast enabled
 
 ## Review Checklist
 
@@ -66,6 +67,7 @@ Flag these issues in every review:
 - [ ] Reduce Transparency respected
 - [ ] Increase Contrast respected
 - [ ] No information conveyed by color alone
+- [ ] Dark mode supported via `GiniColorScheme` / `GiniColor(light:dark:)` with sufficient contrast in both appearances
 - [ ] Custom actions provided for swipe-to-reveal and context menu features
 - [ ] Icon-only buttons have labels
 - [ ] Heading traits set on section headers
