@@ -275,12 +275,8 @@ final class CameraPreviewViewController: UIViewController {
             } else {
                 cameraFrameViewHeightAnchorPortrait.isActive = true
             }
-            /// Rebuilding from the raw asset discards any applied tint — restore it.
-            if let currentFrameColor {
-                cameraFrameView.image = orientedImage.tintedImageWithColor(currentFrameColor)
-            } else {
-                cameraFrameView.image = orientedImage
-            }
+            // Rebuilding from the raw asset discards any applied tint — restore it.
+            cameraFrameView.image = tintedForCurrentColor(orientedImage)
 
             if UIDevice.current.isIphone {
                 cameraFrameViewBottomConstrant.constant = isLandscape
@@ -386,7 +382,14 @@ final class CameraPreviewViewController: UIViewController {
 
     func changeCameraFrameColor(to color: UIColor) {
         currentFrameColor = color
-        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+        if let image = cameraFrameView.image {
+            cameraFrameView.image = tintedForCurrentColor(image)
+        }
+    }
+
+    private func tintedForCurrentColor(_ image: UIImage) -> UIImage? {
+        guard let currentFrameColor else { return image }
+        return image.tintedImageWithColor(currentFrameColor)
     }
 
     // MARK: - IBAN detection
