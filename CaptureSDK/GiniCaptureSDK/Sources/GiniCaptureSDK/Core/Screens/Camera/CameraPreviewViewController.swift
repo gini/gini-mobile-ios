@@ -50,9 +50,10 @@ final class CameraPreviewViewController: UIViewController {
     }()
 
     private let cameraFocusImage = UIImageNamedPreferred(named: "cameraFocus")
-    /// Color currently applied to the camera frame, reapplied after the frame
-    /// image is rebuilt on rotation so feedback states (e.g. invalid QR red)
-    /// survive orientation changes.
+    /**
+     Color currently applied to the camera frame.
+     Reapplied after the frame image is rebuilt on rotation so feedback states (for example invalid-QR red) survive orientation changes.
+     */
     private var currentFrameColor: UIColor?
     lazy var cameraFrameView: UIImageView = {
         let imageView = UIImageView()

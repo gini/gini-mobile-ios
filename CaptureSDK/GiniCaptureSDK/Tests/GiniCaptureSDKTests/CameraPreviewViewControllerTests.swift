@@ -103,7 +103,9 @@ final class CameraPreviewViewControllerTests: XCTestCase {
                       "frame image should stay red after an orientation update")
     }
 
-    /// Scans the image for at least one mostly-opaque pixel whose color matches `color`.
+    /**
+     Scans the image for at least one mostly-opaque pixel whose color matches `color`.
+     */
     private func hasPixel(matching color: UIColor, in image: UIImage?) -> Bool {
         guard let cgImage = image?.cgImage else { return false }
         let width = cgImage.width
