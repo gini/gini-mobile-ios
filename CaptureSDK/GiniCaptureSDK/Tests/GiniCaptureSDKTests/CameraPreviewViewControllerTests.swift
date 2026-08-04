@@ -85,6 +85,62 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         XCTAssertNotEqual(defaultFlashState, camera.isFlashOn, "camera flash state should change it after toggle it")
     }
 
+    // MARK: - Camera frame color across rotation (PP-3305)
+
+    func testCameraFrameKeepsColorAfterOrientationUpdate() {
+        _ = cameraPreviewViewController.view
+        XCTAssertNotNil(UIImageNamedPreferred(named: "cameraFocus"),
+                        "cameraFocus asset must be available for this test to be meaningful")
+
+        cameraPreviewViewController.changeCameraFrameColor(to: .red)
+        XCTAssertTrue(hasPixel(matching: .red, in: cameraPreviewViewController.cameraFrameView.image),
+                      "frame image should be tinted red after changeCameraFrameColor")
+
+        // What viewWillTransition triggers on device rotation — it rebuilds the frame image.
+        cameraPreviewViewController.updatePreviewViewOrientation()
+
+        XCTAssertTrue(hasPixel(matching: .red, in: cameraPreviewViewController.cameraFrameView.image),
+                      "frame image should stay red after an orientation update")
+    }
+
+    /// Scans the image for at least one mostly-opaque pixel whose color matches `color`.
+    private func hasPixel(matching color: UIColor, in image: UIImage?) -> Bool {
+        guard let cgImage = image?.cgImage else { return false }
+        let width = cgImage.width
+        let height = cgImage.height
+        var data = [UInt8](repeating: 0, count: width * height * 4)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        guard let context = CGContext(data: &data,
+                                      width: width,
+                                      height: height,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: width * 4,
+                                      space: colorSpace,
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            return false
+        }
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        let tolerance: CGFloat = 0.1
+        for index in stride(from: 0, to: data.count, by: 4) {
+            let pixelAlpha = CGFloat(data[index + 3]) / 255
+            guard pixelAlpha > 0.5 else { continue }
+            /// Un-premultiply before comparing against the target color.
+            let pixelRed = CGFloat(data[index]) / 255 / pixelAlpha
+            let pixelGreen = CGFloat(data[index + 1]) / 255 / pixelAlpha
+            let pixelBlue = CGFloat(data[index + 2]) / 255 / pixelAlpha
+            if abs(pixelRed - red) < tolerance,
+               abs(pixelGreen - green) < tolerance,
+               abs(pixelBlue - blue) < tolerance {
+                return true
+            }
+        }
+        return false
+    }
+
     // MARK: - QR Detection Pause/Resume
 
     private func makeCamera() -> Camera {

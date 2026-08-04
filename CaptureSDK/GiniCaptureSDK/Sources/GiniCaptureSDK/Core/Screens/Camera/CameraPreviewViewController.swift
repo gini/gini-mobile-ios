@@ -50,6 +50,10 @@ final class CameraPreviewViewController: UIViewController {
     }()
 
     private let cameraFocusImage = UIImageNamedPreferred(named: "cameraFocus")
+    /// Color currently applied to the camera frame, reapplied after the frame
+    /// image is rebuilt on rotation so feedback states (e.g. invalid QR red)
+    /// survive orientation changes.
+    private var currentFrameColor: UIColor?
     lazy var cameraFrameView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = cameraFocusImage
@@ -263,12 +267,19 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameViewHeightAnchorPortrait,
                 cameraFrameViewHeightAnchorLandscape
             ])
+            let orientedImage = UIImage(cgImage: image,
+                                        scale: 1.0,
+                                        orientation: isLandscape ? .left : .up)
             if isLandscape {
                 cameraFrameViewHeightAnchorLandscape.isActive = true
-                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
             } else {
                 cameraFrameViewHeightAnchorPortrait.isActive = true
-                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
+            }
+            /// Rebuilding from the raw asset discards any applied tint — restore it.
+            if let currentFrameColor {
+                cameraFrameView.image = orientedImage.tintedImageWithColor(currentFrameColor)
+            } else {
+                cameraFrameView.image = orientedImage
             }
 
             if UIDevice.current.isIphone {
@@ -374,6 +385,7 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     func changeCameraFrameColor(to color: UIColor) {
+        currentFrameColor = color
         cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
     }
 
