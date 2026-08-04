@@ -27,3 +27,4 @@ DerivedData
 fastlane/report.xml
 BankSDK/GiniBankSDK/.build
 CaptureSDK/GiniCaptureSDK/.build
+/graphify-out/

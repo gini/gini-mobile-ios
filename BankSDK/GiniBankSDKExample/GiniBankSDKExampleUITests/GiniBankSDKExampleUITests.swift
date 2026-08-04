@@ -27,8 +27,6 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    var isSimulator = true
-
     /**
      Override in a subclass to inject extra launch arguments before the app launches.
      The base argument `-StartFromCleanState YES` is always included.
@@ -36,11 +34,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
-        
-        if isSimulator {
-            throw XCTSkip("Skipping test")
-        }
+    #if targetEnvironment(simulator)
+        throw XCTSkip("Skipping test on simulator")
+    #endif
         continueAfterFailure = false
+        copyFixturesToSimulator()
         app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
         app.resetAuthorizationStatus(for: .photos)
@@ -65,13 +63,15 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
     
     override func tearDownWithError() throws  {
+    #if !targetEnvironment(simulator)
+        // Always terminate the app and attach failure screenshots on both simulator and device.
+        // This prevents state leakage between test runs and ensures diagnostic screenshots are available.
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
-        if !isSimulator {
-            attachment.lifetime = .deleteOnSuccess
-            add(attachment)
-            app.terminate()
-        }
+        attachment.lifetime = .deleteOnSuccess
+        add(attachment)
+        app.terminate()
+    #endif // !targetEnvironment(simulator)
     }
 
     var galleryTitle: String {
@@ -121,6 +121,49 @@ class GiniBankSDKExampleUITests: XCTestCase {
             let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: indicator)
             let result = XCTWaiter().wait(for: [expectation], timeout: 30)
             if result != .completed { XCTFail("Analysis screen did not disappear within timeout") }
+        }
+    }
+
+    /// Copies all PDFs from TestSamples/TestSamplesForBS/ into the tested app's Documents folder,
+    /// so the Files picker in UI tests can select them under "On My iPhone → GiniBankSDKExample".
+    ///
+    /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
+    ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
+    /// Going one level up reaches the shared Application/ directory where all app containers
+    /// for this test device live — including the tested app's container, which we identify by
+    /// its MCMMetadataIdentifier plist entry.
+    private func copyFixturesToSimulator() {
+        let fileManager = FileManager.default
+
+        let applicationDir = URL(fileURLWithPath: NSHomeDirectory())
+            .deletingLastPathComponent()
+            .path
+
+        guard let appFolders = try? fileManager.contentsOfDirectory(atPath: applicationDir) else { return }
+
+        let fixturesURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()  // GiniBankSDKExampleUITests/
+            .appendingPathComponent("TestSamples/TestSamplesForBS")
+
+        let pdfFiles = ((try? fileManager.contentsOfDirectory(at: fixturesURL,
+                                                              includingPropertiesForKeys: nil,
+                                                              options: .skipsHiddenFiles)) ?? [])
+            .filter { $0.pathExtension == "pdf" }
+        guard !pdfFiles.isEmpty else { return }
+
+        for folder in appFolders {
+            let metadataPath = "\(applicationDir)/\(folder)/.com.apple.mobile_container_manager.metadata.plist"
+            guard let metadata = NSDictionary(contentsOfFile: metadataPath),
+                  let bundleID = metadata["MCMMetadataIdentifier"] as? String,
+                  bundleID == "net.gini.banksdk.example" else { continue }
+
+            let docsURL = URL(fileURLWithPath: "\(applicationDir)/\(folder)/Documents")
+            try? fileManager.createDirectory(at: docsURL, withIntermediateDirectories: true)
+            for pdf in pdfFiles {
+                let dest = docsURL.appendingPathComponent(pdf.lastPathComponent)
+                try? fileManager.copyItem(at: pdf, to: dest)
+            }
+            return
         }
     }
 

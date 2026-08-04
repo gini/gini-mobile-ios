@@ -29,8 +29,18 @@ BUILD_PRODUCTS="$DERIVED_DATA/Build/Products/Debug-iphoneos"
 SIGNING_CONFIG="$DERIVED_DATA/BrowserStackSigning.xcconfig"
 SAMPLES_DIR="$SCRIPT_DIR/../TestSamples/TestSamplesForBS"
 
-IPA_OUTPUT="$SCRIPT_DIR/GiniBankSDKExample.ipa"
-TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
+SCRIPT_NAME="$(basename "$0" .sh)"
+case "$SCRIPT_NAME" in
+    bs_run_smoke_tests)  BUILD_LABEL="SmokeTests" ;;
+    bs_run_cx_normal)    BUILD_LABEL="Capture-Normal" ;;
+    bs_run_cx_multipage) BUILD_LABEL="Capture-Multipage" ;;
+    bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;
+    bs_run_skonto)       BUILD_LABEL="Skonto" ;;
+    bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
+    *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
+esac
+IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"
+TEST_SUITE_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}-Tests.zip"
 
 # ── Devices ───────────────────────────────────────────────────────────────────
 DEVICE_1="iPhone 17-26"

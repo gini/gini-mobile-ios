@@ -5,11 +5,11 @@ description: enforce a single swift documentation style for code comments and ap
 
 Rewrite Swift documentation and comments to match this exact house style. Do not preserve alternative doc styles.
 
+**Canonical source:** [Code documentation style (Platform Mobile)](https://ginis.atlassian.net/wiki/spaces/PLMO/pages/1290534919/Code+documentation+style). Keep this file in sync with that page.
+
 ## Rules to enforce
 
-1. // → used for inline comments inside method bodies ✅
-
-  /// → used for documentation comments on declarations (functions, classes, properties) ❌ for inline use
+1. Use `///` for inline explanatory comments inside function or method bodies.
 
 2. Use `/** ... */` for declaration documentation on functions, methods, classes, structs, enums, protocols, properties, initializers, and extensions.
 3. Do not use `///` as the documentation format for declarations.
@@ -68,9 +68,10 @@ Use this shape:
 
 ### Inline comment inside executable code
 Use this shape:
-// → used for inline comments inside method bodies ✅
 
-/// → used for documentation comments on declarations (functions, classes, properties) ❌ for inline use
+```swift
+/// Explains the behavior of the next line or block.
+```
 
 
 ## Style guidance
@@ -122,6 +123,29 @@ public func updateConfiguration(withCaptureConfiguration configuration: GiniConf
  If set to `true`, a hint is displayed in the payment flow to remind the user about the upcoming payment due date.
  */
 public var paymentDueHintEnabled: Bool = true
+```
+
+### Public protocol
+```swift
+/**
+ A protocol that provides bottom sheet presentation functionality to `UIViewController` instances.
+
+ Conforming view controllers can be presented using iOS 15+ sheet presentation controllers with
+ configurable detents and drag indicators. For iOS versions prior to 15, the view controller is
+ presented as a standard modal sheet.
+
+ - Note: This protocol leverages `UISheetPresentationController`, available from iOS 15.0+.
+
+ ## Topics
+
+ ### Configuring Bottom Sheet Behavior
+ - ``shouldShowDragIndicator``
+
+ ### Presentation Methods
+ - ``configureBottomSheet(shouldIncludeLargeDetent:)``
+ - ``updateBottomSheetHeight(_:)``
+ */
+public protocol GiniBottomSheetPresentable
 ```
 
 ### Method with parameters and return value
