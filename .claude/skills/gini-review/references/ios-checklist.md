@@ -280,6 +280,12 @@ UI test; ask for a manual verification note under **Needs a human** instead.
 - **Never review these paths:** `**/.build/` (vendored checkouts — SWCompression, BitByteData, …),
   `**/.swiftpm/`, `**/Pods/`, `**/build/`, `DerivedData`, `xcuserdata/`, `graphify-out/`,
   `Documentation/jazzy-theme/assets/js/`. `.swiftlint.yml`'s own `excluded:` list is the reference.
+- **Vendored binaries that are tracked in git**, which the ignore list does not cover: any
+  `**/*.xcframework/` in the tree, notably `BrowserStackTestHelper.xcframework` under
+  `BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/Frameworks/`. Its `.swiftinterface`,
+  `Info.plist` and `.dylib` contents are third-party build output — never review them, and never mistake
+  their `.swiftinterface` files for a snapshot of our own API (see `ios-api-surface.md`). A PR that
+  *replaces* such a binary is a different matter: that is a dependency bump and belongs under Design.
 - Pre-existing lines the PR did not modify, and deliberate suppressions carrying a comment.
 - Example-app config: `BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist` and
   `GoogleService-Info.plist` are **tracked** and routinely carry each developer's local values. An

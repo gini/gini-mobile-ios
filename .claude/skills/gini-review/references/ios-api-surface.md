@@ -29,13 +29,22 @@ the only opinion.** Verify rather than assume — if someone has since added a g
 say so:
 
 ```bash
-# Is there a committed API snapshot, or any surface check in CI?
-git ls-files | grep -iE '\.(api|swiftinterface)$'
-grep -rniE 'swift-api-digester|api-diff|swiftinterface|abi-baseline' .github/ scripts/ Makefile fastlane/ 2>/dev/null
+# A committed API snapshot for one of OUR modules? Vendored binaries carry their own
+# .swiftinterface files, so exclude them or every hit is a false positive.
+git ls-files | grep -iE '\.(api|swiftinterface)$' | grep -viE '\.(xc)?framework/|Frameworks/'
+
+# Any surface check wired into CI or the build scripts?
+grep -rniE 'swift-api-digester|api-diff|abi-baseline' .github/ scripts/ Makefile fastlane/ 2>/dev/null
 ```
 
-As of writing both come back empty, and no linter covers the gap — SwiftLint is only a warning-level build
-phase on the example projects (`ios-checklist.md` §8). So:
+As of writing the first command returns nothing and the second finds no check. Note what the filter is
+doing: the repo **does** track `.swiftinterface` files, but all of them belong to the vendored
+`BrowserStackTestHelper.xcframework` under `BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/Frameworks/`
+— a third-party UI-testing binary, not a snapshot of our public API. Unfiltered, that grep looks like the
+repo has an API baseline when it has none.
+
+No linter covers the gap either — SwiftLint is only a warning-level build phase on the example projects
+(`ios-checklist.md` §8). So:
 
 > **No automated check will tell anyone that this PR changed the public API surface.** State that
 > explicitly in the report whenever the diff adds, removes or alters a `public` or `open` declaration —

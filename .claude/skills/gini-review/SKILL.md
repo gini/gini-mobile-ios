@@ -44,9 +44,10 @@ Its own references resolve against `pr-review/` — `pr-review/references/ticket
 - Supports: deriving the public-surface diff by hand · source- vs binary-breaking changes in Swift ·
   judging a new `public` symbol · the deprecation cycle · both distribution modes (SPM source and
   XCFramework under library evolution)
-- Opens with a check for whether anything in CI guards the public surface on this branch. **On iOS
-  nothing does** — there is no `apiCheck` equivalent, no committed API snapshot, and SwiftLint is not in
-  CI either. Run the check anyway rather than assuming; if that ever changes, the report should say so.
+- Opens with a check for whether anything guards the public surface on this branch. **On iOS nothing
+  does** — no `apiCheck` equivalent, no committed API snapshot for our modules, and SwiftLint is only a
+  warning-level build phase on the example projects, never a gate. Run the check anyway rather than
+  assuming; if that ever changes, the report should say so.
 - Skip for: example apps, tests, CI, docs
 
 **Repo instructions** — `AGENTS.md` and `CLAUDE.md` at the root, plus any `CLAUDE.md` in the directories
