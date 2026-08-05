@@ -1,6 +1,6 @@
 # PP-3261: Due Date Hint bottom sheet on the Analysis screen
 
-Status: draft
+Status: implemented
 Ticket: https://ginis.atlassian.net/browse/PP-3261
 
 ## Problem
@@ -30,15 +30,20 @@ is an out-of-scope sibling that a later ticket will plug into the same
 
 1. When extractions have been returned and:
    - `giniBankConfiguration.paymentDueHintEnabled == true`, **and**
-   - the incoming `ClientConfiguration.paymentScheduleHintEnabled == false`
-     (owned by a separate ticket; this spec only reads it), **and**
-   - `paymentDueDate` parses to a valid `Date` strictly in the future
-     (`> today` in the user's current calendar), **and**
-   - the remaining-days count from today to `paymentDueDate` is strictly
-     greater than `giniBankConfiguration.paymentDueHintThresholdDays`
-     (default 5, min-clamp — see Open questions),
+   - `getDocumentPaymentDueDate(for:)` returns a non-nil `Date`, **and**
+   - `paymentDueDateHandler != nil` (legacy guard preserved), **and**
+   - Return Assistant / Skonto are not taking priority, **and**
+   - the pre-existing `Date.isDueSoon(within: paymentDueHintThresholdDays)`
+     predicate returns `true` (unchanged from the legacy inline-hint
+     flow — fires when `daysUntilDue + 1 ≥ threshold`),
    then the Due Date Hint bottom sheet is presented over the Analysis
    screen.
+   The `paymentScheduleHintEnabled` priority gate is owned by the
+   Schedule-Payment sibling ticket; when that ticket adds the flag to
+   `ClientConfiguration`, it also inserts the `paymentScheduleHintEnabled
+   == false` clause in front of the guards above. PP-3261 does not
+   reference the flag because the field does not exist on
+   `ClientConfiguration` today.
 2. Given the due date is today, in the past, or the remaining-days count is
    ≤ threshold, no sheet is shown and the flow continues as before.
 3. The legacy inline hint is removed from the SDK's own flow: the
@@ -57,10 +62,12 @@ is an out-of-scope sibling that a later ticket will plug into the same
 5. The `paymentDueDate` extraction is the same generic-extractions field the
    code reads today via
    `GiniBankNetworkingScreenApiCoordinator.getDocumentPaymentDueDate(for:)`
-   (raw `"yyyy-MM-dd"`, parsed by `Date.date(from:)`). Business logic on
-   which cases surface a hint (threshold, cross-border payment, return
-   assistant / skonto priority) is unchanged apart from the direction of the
-   threshold comparison (see design).
+   (raw `"yyyy-MM-dd"`, parsed by `Date.date(from:)`). Extraction reading
+   and the threshold check are **unchanged** — the same
+   `Date.isDueSoon(within:)` predicate that gated the legacy inline hint
+   now gates the new bottom sheet. Only the presentation channel changed:
+   what used to route through `paymentDueDateHandler` now presents
+   `DueDateHintBottomSheetViewController` directly from the coordinator.
 6. Sheet content (from Figma):
    - EN title: `Your invoice is due on dd.MM.yyyy.` (date formatted via
      the existing `Date.toDisplayString()` extension).
@@ -161,6 +168,11 @@ Every declaration on the current integrator-visible surface stays as-is.
   invoking `handlePaymentDueDate(_:)` on an `AnalysisViewController`
   instance directly (unusual, but possible) still gets the current
   behavior.
+- **New public hooks on `AnalysisViewController`** (additive, needed
+  for cross-module wiring from GiniBankSDK):
+  - `public var shouldSuppressCaptureSuggestions: Bool = false`
+  - `public func removeCaptureSuggestions()` (was `private`; body
+    unchanged).
 
 **GiniBankSDK (public):**
 - None. All changes live inside
@@ -298,26 +310,34 @@ the legacy `handler.handlePaymentDueDate` today (line 579).
 
 ### Coordinator flow (`GiniBankNetworkingScreenApiCoordinator.swift`)
 
-Existing `handleToBePaidCase` (lines 564–586) is rewritten. Preserved
-guards: `determineIfPaymentDueHintEnabled(for:)`,
-`getDocumentPaymentDueDate(for:)`,
-`shouldShowReturnAssistant(for:)`, `shouldShowSkonto(for:)`. **Replaced**
-condition:
+Existing `handleToBePaidCase` (lines 564–586) is rewritten. The full
+legacy guard chain is preserved verbatim inside an internal predicate
+`shouldPresentDueDateHint(for:)` — same field reads, same
+`Date.isDueSoon(within: threshold)` check:
 
 ```swift
-let threshold = giniBankConfiguration.paymentDueHintThresholdDays
-guard dueDate.isCalendarStrictlyAfterToday,           // new helper
-      dueDate.remainingDays(from: Date()) > threshold // inverted from isDueSoon
-else {
+func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
+    guard determineIfPaymentDueHintEnabled(for: extractionResult),
+          let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+          paymentDueDateHandler != nil,
+          !shouldShowReturnAssistant(for: extractionResult),
+          !shouldShowSkonto(for: extractionResult) else {
+        return false
+    }
+    return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
+}
+```
+
+`handleToBePaidCase` becomes a thin caller:
+
+```swift
+guard shouldPresentDueDateHint(for: extractionResult),
+      let dueDate = getDocumentPaymentDueDate(for: extractionResult) else {
     continueWithFeatureFlow()
     return
 }
-
-presentDueDateHintBottomSheet(
-    dueDate: dueDate,
-    extractionResult: extractionResult,
-    onProceed: continueWithFeatureFlow
-)
+presentDueDateHintBottomSheet(dueDate: dueDate,
+                              onProceed: continueWithFeatureFlow)
 ```
 
 New sibling to `presentDocumentMarkedAsPaidBottomSheet(_:onProceedTapped:)`:
@@ -351,22 +371,8 @@ locally" contract stays consistent when the user proceeds past a hint.
 
 ### Date helpers
 
-`Date+Formatting.swift` currently exposes `isDueSoon(within:)`. Add:
-
-```swift
-extension Date {
-    /// True when `self` (calendar-day compared) falls strictly after today.
-    var isCalendarStrictlyAfterToday: Bool { … }
-
-    /// Whole-day count from `reference` to `self` (calendar-day comparison,
-    /// e.g. dueDate 2026-08-13 with today 2026-08-04 → 9).
-    func remainingDays(from reference: Date) -> Int { … }
-}
-```
-
-`isDueSoon(within:)` stays for now — no other caller besides the
-already-removed legacy path uses it; delete only if nothing else depends
-on it after the coordinator rewrite (confirm during implementation).
+`Date+Formatting.swift` is **unchanged**. `Date.isDueSoon(within:)`
+remains the only threshold predicate — no new Date helpers are added.
 
 ### Analysis screen changes
 
@@ -450,9 +456,9 @@ Analysis screen           GiniBankNetworkingScreenApiCoordinator
       │              handleToBePaidCase    │
       │                     │              │
       │                     │ paymentDueHintEnabled?
-      │                     │ paymentScheduleHintEnabled == false?
-      │                     │ dueDate valid & > today?
-      │                     │ remainingDays > threshold?
+      │                     │ paymentDueDate valid?
+      │                     │ paymentDueDateHandler != nil?
+      │                     │ dueDate.isDueSoon(within: threshold)?
       │                     │
       │                     ├── no ─► continueWithFeatureFlow()
       │                     │
@@ -518,9 +524,6 @@ stays — it still validates the preserved
   = today + 10 days, threshold 5. Expect
   `presentDueDateHintBottomSheet` invoked (verify via a subclass hook or
   a mock `screenAPINavigationController`).
-- `func testDueDateHintNotPresentedWhenScheduleHintEnabled()` —
-  `paymentScheduleHintEnabled = true`, everything else as above. Expect
-  `continueWithFeatureFlow` invoked directly.
 - `func testDueDateHintNotPresentedWhenDueTodayOrPast()` — parameterize
   with dates: today, yesterday, 5 days ago. Expect no sheet.
 - `func testDueDateHintNotPresentedWhenRemainingDaysAtOrBelowThreshold()`
@@ -577,16 +580,7 @@ stays — it still validates the preserved
 
 ## Open questions
 
-1. **`isDueSoon(within:)`**: after this rewrite the SDK's own coordinator
-   no longer calls it. Because the public API preservation rule keeps
-   `PaymentDueHintView` alive, `isDueSoon` may still be called via the
-   old handler code path — confirm at implementation time whether the
-   old path still needs it (likely yes; the current `AnalysisViewController`
-   conformance forwards the string to the hint view, and the coordinator
-   is the only place that gated on `isDueSoon`, so it may end up
-   unreferenced after all). If unreferenced, leave it in place — it's a
-   public/internal Foundation extension and touching it is out of scope.
-2. **`paymentDueHintThresholdDays` minimum**: the Confluence source
+1. **`paymentDueHintThresholdDays` minimum**: the Confluence source
    proposes a hard floor of 5 (avoids weekend/bank-holiday races) at
    least when Schedule Payment is enabled. Not adding it in PP-3261,
    but confirming: is the accepted design to leave overrides free until
