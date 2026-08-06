@@ -91,34 +91,13 @@ failing checks in CI parity before pushing.
 ## Coding conventions
 
 The spec's "Technical conventions" section is the feature-specific contract.
-Repo-wide rules live in `AGENTS.md` and `CLAUDE.md`; the ones most often
-violated:
+Architecture (MVVM + Coordinator), dependency injection, design-system usage
+(colors/fonts/spacing), localization, multi-parameter formatting, and doc-comment
+style are enforced by **gini-orchestrator** per `.claude/rules/mandatory-rules.md`
+— read it, don't restate it here. What that shared rule set doesn't cover:
 
 - New Swift, `internal` by default; `public`/`open` only where the spec's
   Public API impact justifies it.
-- Doc comments follow `AGENTS.md`: `/** ... */` for declarations, `///` only
-  inline inside function bodies.
-- Multi-parameter initializers and methods: first parameter on the opening
-  paren line, remaining parameters aligned vertically on new lines
-  (`CLAUDE.md` code style).
-- MVVM + Coordinator: every feature gets `<Feature>Coordinator`,
-  `<Feature>ViewModel`, `<Feature>ViewModelDelegate`,
-  `<Feature>ViewController`. ViewModels MUST NOT import UIKit.
-- Constructor injection; delegate back-references are the only permitted
-  post-init injection. SDK entry points expose a fluent value-type builder
-  (`GiniBankAPI.Builder` precedent).
-- Colors: prefer **`GiniColorScheme`**
-  (`GiniUtilites/Color/GiniColorScheme.swift`, with module extensions like
-  `GiniBankColorScheme`) for new code — it's the current standard and
-  already the majority pattern outside CaptureSDK. The legacy
-  `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces remain in place
-  and are still the norm inside CaptureSDK; match neighboring code when
-  extending existing files. Dark mode: `GiniColor(light:dark:).uiColor()`
-  is the underlying primitive that `GiniColorScheme` already wraps.
-  Dynamic Type via `textStyleFonts[textStyle]`. Spacing in a local
-  `enum Constants`.
-- Strings via typed `LocalizableStringResource` enums under
-  `<sdk>.<feature>.<screen>.<element>`; never raw `NSLocalizedString`.
 - UIKit remains the pattern in GiniBankSDK, GiniCaptureSDK screens, and
   GiniHealthSDK view controllers. SwiftUI is the norm in
   **GiniInternalPaymentSDK** (payment review, keyboard accessory, carousels)
