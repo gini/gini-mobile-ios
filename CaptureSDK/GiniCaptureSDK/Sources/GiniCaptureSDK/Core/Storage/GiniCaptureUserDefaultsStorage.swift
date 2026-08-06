@@ -32,6 +32,11 @@ public struct GiniCaptureUserDefaultsStorage {
                      defaultValue: nil)
     public static var savePhotosLocallyEnabled: Bool?
 
+    // Configuration flag for the unsupported QR code warning alert
+    @GiniUserDefault("ginicapture.defaults.clientConfigurations.unsupportedQRCodeWarningEnabled",
+                     defaultValue: nil)
+    public static var unsupportedQRCodeWarningEnabled: Bool?
+
     // User preference for the Save photos locally feature
     @GiniUserDefault("ginicapture.defaults.userSettings.savePhotosSwitchOn",
                      defaultValue: nil)

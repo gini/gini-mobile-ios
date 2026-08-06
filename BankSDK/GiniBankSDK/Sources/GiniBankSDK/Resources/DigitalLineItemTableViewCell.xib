@@ -22,14 +22,17 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LC-kT-CZp" userLabel="Separator View">
-                                    <rect key="frame" x="0.0" y="0.0" width="337" height="1"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="349" height="1"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="w1f-up-Wj9"/>
                                     </constraints>
                                 </view>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CUJ-3d-daD">
-                                    <rect key="frame" x="337" y="17" width="63" height="28"/>
+                                    <rect key="frame" x="349" y="17" width="51" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="49" id="6yf-59-2jq"/>
+                                    </constraints>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" text="Nike Sportswear Air Max 97 - Sneaker Low…" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ci3-Xk-SLN">
                                     <rect key="frame" x="16" y="17" width="226" height="42.5"/>
@@ -113,6 +116,7 @@
                 <outlet property="editButton" destination="ogc-mD-pz6" id="oiL-SO-VZw"/>
                 <outlet property="leadingConstraint" destination="Gbt-6K-DwO" id="HSk-PA-gFy"/>
                 <outlet property="modeSwitch" destination="CUJ-3d-daD" id="fEz-kD-dRR"/>
+                <outlet property="modeSwitchTrailingConstraint" destination="ZiN-p2-IdN" id="mst-Tr-lgP"/>
                 <outlet property="nameLabel" destination="ci3-Xk-SLN" id="whg-Zb-Jno"/>
                 <outlet property="priceLabel" destination="GOU-G0-cKp" id="eio-a5-2Wg"/>
                 <outlet property="separatorView" destination="6LC-kT-CZp" id="8Ue-hi-CsT"/>

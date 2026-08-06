@@ -26,7 +26,8 @@ struct ClientConfigurationTests {
                                          eInvoiceEnabled: true,
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
-                                         paymentDueHintEnabled: true)
+                                         paymentDueHintEnabled: true,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -38,6 +39,7 @@ struct ClientConfigurationTests {
         #expect(config.eInvoiceEnabled, "Expected eInvoiceEnabled to be true")
         #expect(config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true")
         #expect(config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true")
+        #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 
     @Test("Initialization with all flags disabled")
@@ -52,9 +54,8 @@ struct ClientConfigurationTests {
                                          eInvoiceEnabled: false,
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: false,
-                                         paymentDueHintEnabled: false)
-
-        
+                                         paymentDueHintEnabled: false,
+                                         unsupportedQRCodeWarningEnabled: false)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(!config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be false")
@@ -66,6 +67,7 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(!config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false")
     }
 
     // MARK: - JSON Decoding Tests
@@ -87,6 +89,7 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false from JSON")
         #expect(!config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false from JSON")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false from JSON")
+        #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false from JSON")
     }
 
     @Test("Decoding fails when missing required clientID field")
@@ -113,7 +116,8 @@ struct ClientConfigurationTests {
                                          eInvoiceEnabled: true,
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
-                                         paymentDueHintEnabled: true)
+                                         paymentDueHintEnabled: true,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         let encoder = JSONEncoder()
 
@@ -140,6 +144,8 @@ struct ClientConfigurationTests {
                 "Expected alreadyPaidHintEnabled to be preserved")
         #expect(decodedConfig.savePhotosLocallyEnabled == config.savePhotosLocallyEnabled,
                 "Expected savePhotosLocallyEnabled to be preserved")
+        #expect(decodedConfig.unsupportedQRCodeWarningEnabled == config.unsupportedQRCodeWarningEnabled,
+                "Expected unsupportedQRCodeWarningEnabled to be preserved")
     }
 
     // MARK: - Property Combinations Tests
@@ -156,7 +162,8 @@ struct ClientConfigurationTests {
                                          eInvoiceEnabled: false,
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: true,
-                                         paymentDueHintEnabled: true)
+                                         paymentDueHintEnabled: true,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
         #expect(!config.skontoEnabled, "Expected skontoEnabled to be false")
@@ -167,5 +174,6 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 }

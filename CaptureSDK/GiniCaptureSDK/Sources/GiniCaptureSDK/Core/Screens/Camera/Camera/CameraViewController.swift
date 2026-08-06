@@ -46,6 +46,17 @@ final class CameraViewController: UIViewController {
     private var isPresentedOnScreen = false
 
     private var isValidIBANDetected: Bool = false
+    /**
+     Snapshot of the backend flag taken on the first invalid QR scan.
+     Stays fixed for the session so all repeated scans show the same feedback type.
+     */
+    private var sessionUnsupportedQRCodeWarningEnabled: Bool?
+    private var didCaptureSessionUnsupportedQRCodeWarning = false
+    /**
+     Indicates whether the user is in the QR scan flow (unsupported-QR alert shown or "Scan another QR code" selected).
+     When `true`, IBAN feedback is suppressed until the user selects "Take photo of document".
+     */
+    private var isQRScanFlowActive = false
     // Analytics
     private var invalidQRCodeOverlayFirstAppearance: Bool = true
     private var ibanOverlayFirstAppearance: Bool = true
@@ -55,6 +66,12 @@ final class CameraViewController: UIViewController {
     private lazy var qrCodeScanningOnlyEnabled: Bool = {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
+
+    // True when the camera is in QR-scan-only mode — either the config forces it, or the
+    // user opted into "Scan another QR code" at runtime.
+    private var isQRScanOnlyModeActive: Bool {
+        qrCodeScanningOnlyEnabled || isQRScanFlowActive
+    }
 
     @IBOutlet var cameraPaneHorizontalBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var cameraPaneHorizontal: CameraPane!
@@ -114,8 +131,12 @@ final class CameraViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        // Keep the capture button disabled while the camera is presented in QR-scan-only mode.
+        // The UI is hidden in this mode and is re-enabled when leaving it.
+        if !isQRScanOnlyModeActive {
+            cameraPane.toggleCaptureButtonActivation(state: true)
+            cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        }
         cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
     }
 
@@ -132,9 +153,25 @@ final class CameraViewController: UIViewController {
 
     fileprivate func configureTitle() {
         let device = UIDevice.current
+        // The camera UI already shows "Scan invoice" — from initial config with QR disabled,
+        // or after the user tapped "Take photo of document".
+        let cameraTitleAlreadyReadsInvoice = cameraPane.cameraTitleLabel?.text == Strings.onlyInvoice
+            || title == Strings.onlyInvoice
+
+        // Preserve the cleared titles across rotation after "Scan another QR code".
+        if isQRScanFlowActive {
+            hideCameraTitles()
+            return
+        }
 
         if device.isIphone && device.isPortrait {
             title = giniConfiguration.onlyQRCodeScanningEnabled ? Strings.onlyQr : Strings.cameraTitle
+            return
+        }
+
+        // Preserve the "Scan invoice" title on rotation after the opt-out.
+        if cameraTitleAlreadyReadsInvoice {
+            title = Strings.onlyInvoice
             return
         }
 
@@ -537,6 +574,13 @@ final class CameraViewController: UIViewController {
 
     // MARK: - IBANs Detection
     private func showIBANFeedback(_ IBANs: [String]) {
+        // Suspend IBAN feedback once the user is in the QR flow — first while the
+        // unsupported-QR alert is on top, then permanently after "Scan another QR code".
+        guard !isQRScanFlowActive else {
+            hideIBANOverlay()
+            return
+        }
+
         isValidIBANDetected = !IBANs.isEmpty
         guard isValidIBANDetected else {
             hideIBANOverlay()
@@ -589,24 +633,42 @@ final class CameraViewController: UIViewController {
         resetQRCodeTask?.cancel()
         detectedQRCodeDocument = document
 
-        hideQRCodeTask = DispatchWorkItem(block: {
-            self.resetQRCodeScanning(isValid: isValid)
-
-            if let QRDocument = self.detectedQRCodeDocument {
-                if isValid {
+        if isValid {
+            showValidQRCodeFeedback()
+            scheduleHideQRCodeTask {
+                self.resetQRCodeScanning(isValid: true)
+                if let QRDocument = self.detectedQRCodeDocument {
                     self.didPick(QRDocument)
                 }
             }
-        })
-
-        if isValid {
-            showValidQRCodeFeedback()
         } else {
-            if !isValidIBANDetected {
-                showInvalidQRCodeFeedback()
+            handleInvalidQRCode()
+        }
+    }
+
+    private func handleInvalidQRCode() {
+        guard !isValidIBANDetected else { return }
+
+        // A separate Bool gates the capture because nil on Bool? is a legitimate
+        // captured value — nil-check alone can't tell "not captured yet" from "captured as nil".
+        if !didCaptureSessionUnsupportedQRCodeWarning {
+            sessionUnsupportedQRCodeWarningEnabled = GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled
+            didCaptureSessionUnsupportedQRCodeWarning = true
+        }
+
+        // In QR-only mode, fall back to the legacy yellow overlay: the new alert's
+        // "Take photo of document" action is invalid when document capture is disabled.
+        let shouldShowUnsupportedQRCodeAlert = sessionUnsupportedQRCodeWarningEnabled == true
+            && !giniConfiguration.onlyQRCodeScanningEnabled
+
+        if shouldShowUnsupportedQRCodeAlert {
+            showUnsupportedQRCodeAlert()
+        } else {
+            showInvalidQRCodeFeedback()
+            scheduleHideQRCodeTask {
+                self.resetQRCodeScanning(isValid: false)
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
     }
 
     private func showValidQRCodeFeedback() {
@@ -651,6 +713,90 @@ final class CameraViewController: UIViewController {
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
     }
 
+    private func showUnsupportedQRCodeAlert() {
+        // Skip duplicate side-effects when the alert is already on screen and more frames
+        // are still queued before pauseQRDetection takes effect on the session queue.
+        guard presentedViewController == nil else { return }
+
+        cameraPreviewViewController.camera.pauseQRDetection()
+        isQRScanFlowActive = true
+        hideIBANOverlay()
+
+        sendGiniAnalyticsEventForInvalidQRCode()
+        playVoiceOverMessage(success: false)
+
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.error3)
+
+        let alert = UIAlertController(title: Strings.unsupportedQRAlertTitle,
+                                      message: nil,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.scanAnotherQRCode, style: .default) { [weak self] _ in
+            self?.handleScanAnotherQRCode()
+        })
+
+        let takePhotoAction = UIAlertAction(title: Strings.takePhotoOfDocument, style: .default) { [weak self] _ in
+            self?.handleTakePhotoOfDocument()
+        }
+        alert.addAction(takePhotoAction)
+        alert.preferredAction = takePhotoAction
+
+        present(alert, animated: true)
+    }
+
+    func handleScanAnotherQRCode() {
+        // Keep isQRScanFlowActive = true — user chose the QR flow, IBAN
+        // feedback stays off for the remainder of this camera session.
+        cameraPreviewViewController.camera.resumeQRDetection()
+        detectedQRCodeDocument = nil
+        restoreDefaultQRFrameColor()
+        showQRScanOnlyModeUI()
+    }
+
+    private func showQRScanOnlyModeUI() {
+        cameraPane.alpha = 0
+        cameraPaneHorizontal?.alpha = 0
+        cameraPane.toggleCaptureButtonActivation(state: false)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
+        cameraPreviewViewController.cameraFrameView.isHidden = true
+        cameraPreviewViewController.qrCodeFrameView.isHidden = false
+        hideCameraTitles()
+    }
+
+    private func hideCameraTitles() {
+        cameraPane.cameraTitleLabel?.text = ""
+        cameraPaneHorizontal?.cameraTitleLabel?.text = ""
+        title = Strings.cameraTitle
+    }
+
+    func handleTakePhotoOfDocument() {
+        // QR detection stays paused — resuming here would immediately re-trigger the alert
+        isQRScanFlowActive = false
+        detectedQRCodeDocument = nil
+        restoreDefaultQRFrameColor()
+        hideQRScanOnlyModeUI()
+        showOnlyInvoiceTitles()
+    }
+
+    private func restoreDefaultQRFrameColor() {
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
+    }
+
+    private func hideQRScanOnlyModeUI() {
+        cameraPane.alpha = 1
+        cameraPaneHorizontal?.alpha = 1
+        cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        cameraPreviewViewController.cameraFrameView.isHidden = false
+        cameraPreviewViewController.qrCodeFrameView.isHidden = true
+    }
+
+    private func showOnlyInvoiceTitles() {
+        cameraPane.cameraTitleLabel?.text = Strings.onlyInvoice
+        cameraPaneHorizontal?.cameraTitleLabel?.text = Strings.onlyInvoice
+        title = Strings.onlyInvoice
+        configureTitle()
+    }
+
     private func isAccessibilityLargeTextEnabled() -> Bool {
         let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
         return contentSizeCategory.isAccessibilityCategory
@@ -675,23 +821,30 @@ final class CameraViewController: UIViewController {
         invalidQRCodeOverlayFirstAppearance = false
     }
 
+    private func scheduleHideQRCodeTask(_ work: @escaping () -> Void) {
+        let task = DispatchWorkItem(block: work)
+        hideQRCodeTask = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.hideQRCodeDelay, execute: task)
+    }
+
     private func resetQRCodeScanning(isValid: Bool) {
-        resetQRCodeTask = DispatchWorkItem(block: {
+        let task = DispatchWorkItem(block: {
             self.detectedQRCodeDocument = nil
         })
+        resetQRCodeTask = task
 
         if isValid {
             cameraPreviewViewController.cameraFrameView.isHidden = true
             qrCodeOverLay.showAnimation()
         } else {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: Constants.qrResetAnimationDuration) {
                 self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
                 self.qrCodeOverLay.isHidden = true
                 self.cameraPane.isUserInteractionEnabled = true
                 self.cameraPaneHorizontal?.isUserInteractionEnabled = true
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetQRCodeTask!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.resetQRCodeDelay, execute: task)
         }
     }
 }
@@ -706,7 +859,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if !qrCodeScanningOnlyEnabled {
+        if !isQRScanOnlyModeActive {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
@@ -767,6 +920,9 @@ private extension CameraViewController {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
+        static let hideQRCodeDelay: TimeInterval = 1.5
+        static let resetQRCodeDelay: TimeInterval = 1
+        static let qrResetAnimationDuration: TimeInterval = 0.3
     }
 
     private struct Strings {
@@ -778,6 +934,21 @@ private extension CameraViewController {
                                                                    comment: "Info label")
         static let cameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
                                                                   comment: "Camera title")
+
+        static let unsupportedQRAlertTitleKey = "ginicapture.QRscanning.alert.title"
+        static let unsupportedQRAlertTitleComment = "Unsupported QR code alert title"
+        static let unsupportedQRAlertTitle = NSLocalizedStringPreferredFormat(unsupportedQRAlertTitleKey,
+                                                                              comment: unsupportedQRAlertTitleComment)
+
+        static let scanAnotherQRCodeKey = "ginicapture.QRscanning.alert.scanAnother"
+        static let scanAnotherQRCodeComment = "Scan another QR code button"
+        static let scanAnotherQRCode = NSLocalizedStringPreferredFormat(scanAnotherQRCodeKey,
+                                                                        comment: scanAnotherQRCodeComment)
+
+        static let takePhotoOfDocumentKey = "ginicapture.QRscanning.alert.takePhoto"
+        static let takePhotoOfDocumentComment = "Take photo of document button"
+        static let takePhotoOfDocument = NSLocalizedStringPreferredFormat(takePhotoOfDocumentKey,
+                                                                          comment: takePhotoOfDocumentComment)
     }
 }
 // swiftlint:enable type_body_length
