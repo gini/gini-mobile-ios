@@ -730,15 +730,13 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     /**
      Predicate — is the Due Date Hint bottom sheet warranted for this
-     extraction result? Preserves the exact legacy guard chain from the
-     inline-hint flow: `determineIfPaymentDueHintEnabled`, non-nil
-     `paymentDueDate`, non-nil `paymentDueDateHandler`, no Return-Assistant
-     / Skonto priority, and `Date.isDueSoon(within: threshold)`.
+     extraction result? Combines the existing `determineIfPaymentDueHintEnabled`
+     / Return-Assistant / Skonto gates with the pre-existing
+     `Date.isDueSoon(within: threshold)` check.
      */
     func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
         guard determineIfPaymentDueHintEnabled(for: extractionResult),
               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-              paymentDueDateHandler != nil,
               !shouldShowReturnAssistant(for: extractionResult),
               !shouldShowSkonto(for: extractionResult) else {
             return false

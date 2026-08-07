@@ -231,9 +231,14 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";
 
 // MARK: - Document has payment due date
+// DEPRECATED — the inline PaymentDueHintView / DismissMessageView have been
+// removed as of PP-3261. These keys remain for integrators that implement
+// `PaymentDueDateProtocol` on their own view. Will be removed in a future
+// release. Use `ginicapture.payment.duedate.hint.*` for new integrations.
 "ginicapture.payment.due.hint.prefix" = "Tip:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
 "ginicapture.dismiss.message.title" = "Dismiss Message";
+// END DEPRECATED — ginicapture.payment.due.hint.* / ginicapture.dismiss.message.title
 
 // MARK: - Due date hint bottom sheet
 "ginicapture.payment.duedate.hint.title.format" = "Your invoice is due on %@.";

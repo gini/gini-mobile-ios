@@ -128,20 +128,6 @@ extension NetworkingScreenApiCoordinatorTests {
                        "Due Date Hint requires a paymentDueDate extraction")
     }
 
-    func testShouldNotPresentDueDateHintWhenHandlerIsNil() throws {
-        let (coordinator, _) = try makeCoordinatorAndService()
-        configureForDueDateHint(coordinator)
-        // Drop both the strong reference AND the weak property so the guard
-        // observes nil.
-        dueDateHintStubStrongRef = nil
-        coordinator.paymentDueDateHandler = nil
-
-        let result = createExtractionResult(paymentDueDate: dateString(daysFromNow: 10))
-
-        XCTAssertFalse(coordinator.shouldPresentDueDateHint(for: result),
-                       "Legacy guard preserved: without a paymentDueDateHandler wired up, the hint must not fire")
-    }
-
     // MARK: - Helpers
 
     private func configureForDueDateHint(_ coordinator: GiniBankNetworkingScreenApiCoordinator) {
@@ -151,12 +137,6 @@ extension NetworkingScreenApiCoordinatorTests {
         coordinator.giniBankConfiguration.productTag = .sepaExtractions
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
                                                                               paymentDueHintEnabled: true)
-        // paymentDueDateHandler is `weak`; hold the stub in a file-scope
-        // strong reference so the guard `paymentDueDateHandler != nil` inside
-        // shouldPresentDueDateHint sees a live object.
-        let handler = StubPaymentDueDateHandler()
-        dueDateHintStubStrongRef = handler
-        coordinator.paymentDueDateHandler = handler
     }
 
     private func dateString(daysFromNow days: Int) -> String {
@@ -169,14 +149,3 @@ extension NetworkingScreenApiCoordinatorTests {
     }
 }
 
-// MARK: - Stub
-
-private final class StubPaymentDueDateHandler: PaymentDueDateProtocol {
-    nonisolated init() {}
-    func handlePaymentDueDate(_ dueDate: String) {}
-    func clearPaymentDueDate(after timeout: TimeInterval) async {}
-}
-
-/// File-scope strong ref keeping the weak `paymentDueDateHandler` alive for
-/// the duration of a single test method (tests run serially in this suite).
-private var dueDateHintStubStrongRef: StubPaymentDueDateHandler?
