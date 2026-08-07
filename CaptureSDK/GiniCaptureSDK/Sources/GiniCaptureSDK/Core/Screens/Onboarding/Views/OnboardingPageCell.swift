@@ -29,8 +29,9 @@ class OnboardingPageCell: UICollectionViewCell {
         //  .staticText indicates it's static content (no dynamic analysis needed)
         iconView.accessibilityTraits = [.image, .staticText]
 
-        titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                         dark: UIColor.GiniCapture.light1).uiColor()
+        titleLabel.textColor = elementColor(key: GiniElementColorKey.onboardingPageTitle,
+                                            default: GiniColor(light: UIColor.GiniCapture.dark1,
+                                                               dark: UIColor.GiniCapture.light1).uiColor())
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.1

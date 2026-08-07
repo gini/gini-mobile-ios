@@ -83,6 +83,33 @@ public func UIColorPreferredByProvider(named name: String) -> UIColor {
 }
 
 /**
+ Element keys supported by `CustomResourceProvider.customElementColor(for:)`.
+ Each key identifies a single UI element on a single screen, so overriding one
+ never affects any other element or screen.
+ */
+enum GiniElementColorKey {
+    /// Onboarding screen — page title
+    static let onboardingPageTitle = "onboarding.page.title"
+}
+
+/**
+ Returns the color for a single UI element, preferring a per-element override
+ from the client's `CustomResourceProvider` and falling back to the given SDK default.
+
+ - Parameter key: The element key, see `GiniElementColorKey`.
+ - Parameter defaultColor: The SDK's default color for this element.
+
+ - returns: The resolved UIColor, dynamic for light/dark mode.
+ */
+func elementColor(key: String,
+                  default defaultColor: UIColor) -> UIColor {
+    if let custom = GiniConfiguration.shared.customResourceProvider?.customElementColor(for: key) {
+        return custom.uiColor()
+    }
+    return defaultColor
+}
+
+/**
  Returns a localized string resource preferably from the client's bundle.
 
  - parameter key:     The key to search for in the strings file.
