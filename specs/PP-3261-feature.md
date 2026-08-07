@@ -9,18 +9,17 @@ When an invoice is being paid but the due date is comfortably in the future
 (more than the configured threshold of days), the current SDK inlines a
 "payment due date hint" on the Analysis screen (a `PaymentDueHintView` + a
 5-second-countdown `DismissMessageView`, both stacked inside
-`AnalysisViewController.contentStack`). The inline layout collides with the
-analysis progress indicator and with the capture-suggestions banner that
-appears after 4 seconds, has poor VoiceOver semantics (announcements race,
-focus doesn't move), and auto-dismisses whether the user has read it or not.
+`AnalysisViewController.contentStack`). The inline layout collides with the capture-suggestions 
+banner that appears after 4 seconds,
+and auto-dismisses whether the user has read it or not.
 
 PP-3261 replaces that inline hint with a **modal bottom sheet** presented on
 top of the Analysis screen with a clear title, description, and two CTAs
 ("Cancel Transfer" and primary "Proceed Anyway"). The sheet is one component
 with two states — Due Date Hint (this ticket) and Schedule Payment (separate
-ticket) — chosen by two backend/client-configuration flags. The user
-explicitly closes the sheet via one of the CTAs; no auto-dismiss, no
-tap-outside-to-dismiss, no progress bar.
+ticket) — chosen by different client feature flags. The user
+explicitly closes the sheet via one of the CTAs; no
+tap-outside-to-dismiss.
 
 This spec covers only the **Due Date Hint state**. The Schedule Payment state
 is an out-of-scope sibling that a later ticket will plug into the same
@@ -31,8 +30,8 @@ is an out-of-scope sibling that a later ticket will plug into the same
 1. When extractions have been returned and:
    - `giniBankConfiguration.paymentDueHintEnabled == true`, **and**
    - `getDocumentPaymentDueDate(for:)` returns a non-nil `Date`, **and**
-   - `paymentDueDateHandler != nil` (legacy guard preserved), **and**
-   - Return Assistant / Skonto are not taking priority, **and**
+   - `paymentDueDateHandler != nil` (legacy guard should be removed), **and**
+   - Return Assistant / Skonto are not shown in this flow, **and**
    - the pre-existing `Date.isDueSoon(within: paymentDueHintThresholdDays)`
      predicate returns `true` (unchanged from the legacy inline-hint
      flow — fires when `daysUntilDue + 1 ≥ threshold`),
@@ -45,7 +44,7 @@ is an out-of-scope sibling that a later ticket will plug into the same
    reference the flag because the field does not exist on
    `ClientConfiguration` today.
 2. Given the due date is today, in the past, or the remaining-days count is
-   ≤ threshold, no sheet is shown and the flow continues as before.
+   strictly less than the threshold, no bottom sheet is shown and the flow continues as before.
 3. The legacy inline hint is removed from the SDK's own flow: the
    `GiniBankNetworkingScreenApiCoordinator` no longer drives the
    `paymentDueDateHandler` (i.e. no longer calls
@@ -54,11 +53,8 @@ is an out-of-scope sibling that a later ticket will plug into the same
    legacy hint stays intact and functional — see (4).
 4. `PaymentDueDateProtocol`, `GiniScreenAPICoordinator.paymentDueDateHandler`,
    and the `AnalysisViewController` conformance (including the internal
-   `PaymentDueHintView` and `DismissMessageView` and the localization keys
-   that back them) all remain **unchanged and un-deprecated**. Integrators
-   that implement the protocol on a custom handler and drive it themselves
-   keep the same behavior they have today. This ticket only stops the SDK
-   from invoking that path automatically — the API stays fully alive.
+   `PaymentDueHintView` and `DismissMessageView`
+   that back them) all **should be removed**. The localization keys should remain and new ones should be added for this ticket. Mark the old ones deprecated if possible, if not, add a comment before and after the old ones that they are deprecated and will be removed in a future release. The public API surface is preserved for integrators that invoke it directly, but the SDK's own flow no longer calls it.
 5. The `paymentDueDate` extraction is the same generic-extractions field the
    code reads today via
    `GiniBankNetworkingScreenApiCoordinator.getDocumentPaymentDueDate(for:)`
@@ -91,7 +87,6 @@ is an out-of-scope sibling that a later ticket will plug into the same
      `InfoBottomSheetViewController`).
    - Tap-outside does not dismiss (already the `UISheetPresentationController`
      behavior when `isModalInPresentation == true`).
-   - No auto-dismiss, no timer, no progress bar.
 10. While the sheet is being presented, the 4-second-delayed
     `CaptureSuggestionsView` on the Analysis screen must not appear. This
     prevents VoiceOver from announcing suggestion hints on top of the modal.
@@ -136,7 +131,8 @@ is an out-of-scope sibling that a later ticket will plug into the same
   `presentDocumentMarkedAsPaidBottomSheet(_:onProceedTapped:)`. Renaming
   of the sheet-container VC to a two-state class is out of scope — this
   spec introduces the Due-Date-only VC; the Schedule-Payment ticket will
-  extend it.
+  extend it. Minimum deployment target: iOS 15+
+  (unchanged).
 
 No changes to `GiniBankAPILibrary`, `GiniHealthAPILibrary`, `GiniUtilites`,
 `GiniInternalPaymentSDK`, `GiniHealthSDK`.
@@ -152,15 +148,13 @@ Every declaration on the current integrator-visible surface stays as-is.
   onProceed: @escaping () -> Void)`. Mirrors
   `DocumentMarkedAsPaidViewController`. Located at
   `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/DueDateHint/DueDateHintBottomSheetViewController.swift`.
-- **Unchanged.** `public protocol PaymentDueDateProtocol` and
+- **Remove** `public protocol PaymentDueDateProtocol` and
   `public weak var paymentDueDateHandler: PaymentDueDateProtocol?` on
-  `GiniScreenAPICoordinator` keep their current signatures, doc comments,
-  and are not deprecated. Integrators that supply their own handler retain
-  the same callable surface.
+  `GiniScreenAPICoordinator` — plus the internal `PaymentDueHintView`,
+  `DismissMessageView`.
 - **Unchanged.** `AnalysisViewController`'s conformance to
   `PaymentDueDateProtocol` — `handlePaymentDueDate(_:)` and
-  `clearPaymentDueDate(after:)` — plus the internal `PaymentDueHintView`,
-  `DismissMessageView`, and their localization keys
+  `clearPaymentDueDate(after:)` — plus the old localization keys
   (`ginicapture.payment.due.hint.prefix`,
   `ginicapture.payment.due.hint.suggestion`,
   `ginicapture.dismiss.message.title`) all stay. They become dead
@@ -172,7 +166,7 @@ Every declaration on the current integrator-visible surface stays as-is.
   for cross-module wiring from GiniBankSDK):
   - `public var shouldSuppressCaptureSuggestions: Bool = false`
   - `public func removeCaptureSuggestions()` (was `private`; body
-    unchanged).
+    unchanged). Before introducinf this, check if we realy neeed them. Right now it should work for Already paid without any changes.
 
 **GiniBankSDK (public):**
 - None. All changes live inside
@@ -249,8 +243,7 @@ Grounded in `platform.md` and the modules touched:
 
    The legacy keys `ginicapture.payment.due.hint.prefix`,
    `ginicapture.payment.due.hint.suggestion`, and
-   `ginicapture.dismiss.message.title` are **kept** — they still back the
-   preserved `PaymentDueHintView` / `DismissMessageView` API path.
+   `ginicapture.dismiss.message.title` are **kept**.
 9. **Quality gates.** `make lint scheme=GiniBankSDK` and `make lint
    scheme=GiniCaptureSDK` must be clean (local runs on
    `iPhone 15 Pro / iOS 17.2`; CI on `iPhone 17 / iOS 26.2` per
@@ -378,19 +371,18 @@ remains the only threshold predicate — no new Date helpers are added.
 
 `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift`:
 
-- **Keep** `hintView: PaymentDueHintView` (line 135), `dismissView`, and
+- **Remove** `hintView: PaymentDueHintView` (line 135), `dismissView`, and
   every helper under the `// MARK: - Handling UI - Payment DueHint`
   region. They preserve the public `PaymentDueDateProtocol` behavior
   for integrators that drive it themselves.
-- **Keep** the `PaymentDueDateProtocol` conformance and both method
-  bodies unchanged.
-- **Keep** `PaymentDueHintView.swift` and `DismissMessageView.swift` in
-  place, unchanged.
+- **Remove** the `PaymentDueDateProtocol` conformance and both method
+  bodies, or reuse it if needed.
+- **Remove** `PaymentDueHintView.swift` and `DismissMessageView.swift`.
 - The behavior change is confined to the coordinator — see
   §Coordinator flow. From the SDK's own flow, `handlePaymentDueDate` is
   simply never called anymore.
 
-Suppression of the 4-second `CaptureSuggestionsView`:
+Suppression of the 4-second `CaptureSuggestionsView`(check this behaviour already threated for Already paid flow):
 
 - Add an internal `var shouldSuppressCaptureSuggestions: Bool = false` on
   `AnalysisViewController`.
@@ -577,12 +569,3 @@ stays — it still validates the preserved
   delegates.
 - Snapshot tests — no snapshot library exists in the repo (per
   `platform.md` §Test-stack).
-
-## Open questions
-
-1. **`paymentDueHintThresholdDays` minimum**: the Confluence source
-   proposes a hard floor of 5 (avoids weekend/bank-holiday races) at
-   least when Schedule Payment is enabled. Not adding it in PP-3261,
-   but confirming: is the accepted design to leave overrides free until
-   Schedule Payment lands, or clamp `< 5 → 5` proactively even for
-   Due-Date-only banks now?
