@@ -234,3 +234,9 @@
 "ginicapture.payment.due.hint.prefix" = "Tip:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
 "ginicapture.dismiss.message.title" = "Dismiss Message";
+
+// MARK: - Due date hint bottom sheet
+"ginicapture.payment.duedate.hint.title.format" = "Your invoice is due on %@.";
+"ginicapture.payment.duedate.hint.description" = "You could set it up as a scheduled transfer.";
+"ginicapture.payment.duedate.hint.proceedButtonTitle" = "Proceed Anyway";
+"ginicapture.payment.duedate.hint.cancelButtonTitle" = "Cancel Transfer";

@@ -564,25 +564,41 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func handleToBePaidCase(_ extractionResult: ExtractionResult,
                                     _ continueWithFeatureFlow: @escaping () -> Void) {
-        guard determineIfPaymentDueHintEnabled(for: extractionResult),
-              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-              let handler = paymentDueDateHandler,
-              !shouldShowReturnAssistant(for: extractionResult),
-              !shouldShowSkonto(for: extractionResult) else {
+        guard shouldPresentDueDateHint(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult) else {
             continueWithFeatureFlow()
             return
         }
 
-        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
-        if dueDate.isDueSoon(within: threshold) {
-            Task {
-                handler.handlePaymentDueDate(dueDate.toDisplayString())
-                await handler.clearPaymentDueDate(after: 5)
-                continueWithFeatureFlow()
+        presentDueDateHintBottomSheet(dueDate: dueDate,
+                                      onProceed: continueWithFeatureFlow)
+    }
+
+    @MainActor
+    private func presentDueDateHintBottomSheet(dueDate: Date,
+                                               onProceed: @escaping () -> Void) {
+        // Suppress the 4s capture-suggestions banner while the sheet is up
+        // (avoids VoiceOver conflicts). Also cancel any in-flight banner.
+        let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController
+        analysisVC?.shouldSuppressCaptureSuggestions = true
+        analysisVC?.removeCaptureSuggestions()
+
+        let sheet = DueDateHintBottomSheetViewController(
+            formattedDueDate: dueDate.toDisplayString(),
+            onCancel: { [weak self] in
+                self?.screenAPINavigationController.dismiss(animated: true) {
+                    self?.didCancelCapturing()
+                }
+            },
+            onProceed: { [weak self] in
+                self?.screenAPINavigationController.dismiss(animated: true) {
+                    onProceed()
+                }
             }
-        } else {
-            continueWithFeatureFlow()
-        }
+        )
+
+        sheet.isModalInPresentation = true
+        sheet.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     private func handlePaidCase(_ extractionResult: ExtractionResult,
@@ -710,6 +726,25 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
         let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    /**
+     Predicate — is the Due Date Hint bottom sheet warranted for this
+     extraction result? Preserves the exact legacy guard chain from the
+     inline-hint flow: `determineIfPaymentDueHintEnabled`, non-nil
+     `paymentDueDate`, non-nil `paymentDueDateHandler`, no Return-Assistant
+     / Skonto priority, and `Date.isDueSoon(within: threshold)`.
+     */
+    func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
+        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              paymentDueDateHandler != nil,
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            return false
+        }
+
+        return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
     }
 
     /**
