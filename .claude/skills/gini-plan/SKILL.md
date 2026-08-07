@@ -48,6 +48,12 @@ how things actually work today. In particular, establish:
 - How new code in that module is wired: dependency injection, string
   resources/localization, and theming, per `platform.md`.
 
+Grade your confidence in each of these findings as you go: HIGH means you
+read the actual declaration or precedent in this session; LOW means you are
+inferring from convention, naming, or memory. Keep track of the LOW ones —
+they are exactly what step 3 must ask about. A LOW-confidence flag is worth
+more than a confident guess.
+
 ## 3. Ask clarifying questions — REQUIRED, before writing the spec
 
 Use the AskUserQuestion tool. Never skip this step, even if the ticket seems
@@ -60,6 +66,8 @@ clear. Ask about the things the ticket leaves open, for example:
 - Backwards compatibility and migration expectations
 - Testing expectations (unit only, or integration/UI tests too?)
 - Anything where you would otherwise have to assume
+- Any LOW-confidence finding from step 2 that the user can settle faster
+  than further code archaeology can
 
 Only ask questions whose answers change the spec. If a second round of
 questions is needed after the first answers, ask again.
@@ -109,6 +117,15 @@ Explicitly excluded work, so /gini-build doesn't drift into it.
 Anything still unresolved (should be empty or short after step 3).
 ```
 
+Confidence marking: any claim in "Public API impact", "Technical
+conventions", or "Design" that you could not verify against code read in
+this session gets an explicit marker —
+`(confidence: LOW — <what would confirm it>)`. Unmarked claims assert HIGH
+confidence, and /gini-build will rely on them without re-checking. Every LOW
+marker must either be resolved by a step-3 question or appear in "Open
+questions" — a silent guess presented as fact is the one thing this spec
+must never contain.
+
 ## 5. Concreteness gate — REQUIRED before handoff
 
 A vague spec makes /gini-build improvise, which defeats the point of writing
@@ -131,6 +148,10 @@ one. Check the finished spec against every item below:
       not "add unit tests".
 - [ ] The "Design" section references real, existing code by file path — and
       you have read those files in this session, not assumed them.
+- [ ] Every `(confidence: LOW …)` marker left in the spec has a matching
+      entry in "Open questions". If a LOW marker sits on something
+      load-bearing (the entry point, the architecture pattern, the API
+      impact), it must not be left — resolve it in step 2 or 3 first.
 
 If any item fails, do NOT hand off: return to step 2 (re-explore) or step 3
 (ask the user) and fix the spec. Only a spec that passes every item moves on.
