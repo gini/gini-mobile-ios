@@ -87,7 +87,9 @@ Ticket: <link to the Jira ticket>
 What the user/integrator needs and why. In your own words, not a ticket copy-paste.
 
 ## Requirements
-Numbered, testable statements. Include decisions from the clarifying questions.
+Numbered Given/When/Then statements, each tagged MUST or SHOULD and
+categorized (entry / happy / error / async — see the format rules below).
+Include decisions from the clarifying questions.
 
 ## Affected modules
 Which modules change and how they relate.
@@ -117,6 +119,24 @@ Explicitly excluded work, so /gini-build doesn't drift into it.
 Anything still unresolved (should be empty or short after step 3).
 ```
 
+Requirements format: write each requirement as Given/When/Then — e.g.
+`R1 (MUST, entry): Given <integrator setup>, when <action>, then
+<observable result>` — tagged MUST (the feature is broken without it) or
+SHOULD (negotiable), and categorized so coverage is checkable:
+
+- **entry** — how the integrator reaches the feature: the public call,
+  callback, or configuration involved, and where its result becomes
+  observable.
+- **happy path** — the main flow with its concrete expected outcome.
+- **error path** — each failure mode and the exact error surface the
+  integrator sees (type/state/message), never just "an error is shown".
+- **async** — for asynchronous flows: what is observable while the work is
+  pending and how completion arrives.
+
+Where the outcome is data (an extraction, an amount, a parsed document), the
+"then" must depend on the "given": a criterion that would also pass with a
+hardcoded return value verifies nothing.
+
 Confidence marking: any claim in "Public API impact", "Technical
 conventions", or "Design" that you could not verify against code read in
 this session gets an explicit marker —
@@ -133,6 +153,9 @@ one. Check the finished spec against every item below:
 
 - [ ] Every requirement is testable as written — someone could write a
       failing test from the requirement alone, without asking what it means.
+- [ ] The requirements cover entry, happy path, and error path (and async
+      where the flow is asynchronous). A spec with no error-path
+      requirement is almost never complete.
 - [ ] No requirement hides behind vague words: "appropriate", "properly",
       "as needed", "correctly", "etc.", "and so on". Replace each with the
       concrete behavior meant.
