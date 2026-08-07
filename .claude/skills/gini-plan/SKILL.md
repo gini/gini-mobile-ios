@@ -109,7 +109,33 @@ Explicitly excluded work, so /gini-build doesn't drift into it.
 Anything still unresolved (should be empty or short after step 3).
 ```
 
-## 5. Hand off
+## 5. Concreteness gate — REQUIRED before handoff
+
+A vague spec makes /gini-build improvise, which defeats the point of writing
+one. Check the finished spec against every item below:
+
+- [ ] Every requirement is testable as written — someone could write a
+      failing test from the requirement alone, without asking what it means.
+- [ ] No requirement hides behind vague words: "appropriate", "properly",
+      "as needed", "correctly", "etc.", "and so on". Replace each with the
+      concrete behavior meant.
+- [ ] Affected modules are named exactly, using the module naming convention
+      in `platform.md` — not "the bank SDK" but the precise module path.
+- [ ] The integrator-visible entry point is named exactly: which public
+      declaration an integrator calls, implements, or observes to use this
+      feature — or the spec states the feature has no public entry point.
+- [ ] "Public API impact" names each changed declaration and whether the
+      change is additive or breaking — or states "none". No "minor API
+      changes".
+- [ ] The test plan names concrete test classes/locations and the test stack,
+      not "add unit tests".
+- [ ] The "Design" section references real, existing code by file path — and
+      you have read those files in this session, not assumed them.
+
+If any item fails, do NOT hand off: return to step 2 (re-explore) or step 3
+(ask the user) and fix the spec. Only a spec that passes every item moves on.
+
+## 6. Hand off
 
 Show the user a short summary of the spec and where it was written. Remind
 them to review/edit it, then run `/gini-build $ARGUMENTS` (ideally in a fresh
