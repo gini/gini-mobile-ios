@@ -5,18 +5,21 @@
 **Purpose:** word a finding so the author can act on it in one read, and keep improvements distinct
 from defects.
 
-**The two rules that matter most:**
+**The three rules that matter most:**
 
 1. **Stay inside the length budget.** A long comment is not a more thorough comment; it is a comment
    that gets skimmed. See §"Length budget" — it is a hard cap, not a target.
-2. **Internal machinery never appears in a comment a human reads** — no confidence scores, dimension
-   names, or severity labels. Ranking happens through report sections.
+2. **Open a posted comment with its category** — `**Blocker:**`, `**Suggestion:**` or `**Question:**`.
+   The author needs to know what is being asked of them before reading the finding.
+3. **No other internal machinery in a comment a human reads** — no confidence scores, no dimension
+   names, no severity words beyond the three categories.
 
 **Supports:**
 
 - **Length budget** — the hard cap, how to compress into it, what to drop first
 - **Inline comment format** — the three-part shape (fact → consequence → concrete fix)
-- **Writing rules** — third person, no labels, no inline praise, present tense, always actionable
+- **Writing rules** — the category prefix, third person, no inline praise, present tense, always
+  actionable
 - **Summary review** — overview paragraph, changes grouped by behaviour, `Reviewed X out of Y`,
   per-file table in `<details>`
 - **Improvements** — the five categories and how to frame one as deferrable so it gets adopted
@@ -96,10 +99,16 @@ Rules that follow from the format:
 
 - **Impersonal and third-person.** "The snippet uses…", "This produces…". Never "you", never "why did
   you".
-- **No severity labels**, no `issue:` prefixes, no confidence scores, no dimension names. Ranking
-  happens through report sections, not inside the comment text. One exception: a leading "Small nit:" or
-  "Optional:" on a genuinely deferrable improvement is allowed, because it sets the author's expectation
-  in two words and matches how human reviewers write here.
+- **Open every posted comment with its category, in bold**, so the author knows what is being asked of
+  them before reading the finding. Use exactly one of:
+  - `**Blocker:**` — must be resolved before merge.
+  - `**Suggestion:**` — optional and deferrable; the PR is mergeable without it.
+  - `**Question:**` — the finding depends on an answer only the author has; no fix is being asked for yet.
+
+  The prefix does not count against the 400-character prose budget. Nothing *else* internal goes in a
+  comment — no confidence scores, no dimension names, no `issue:` prefixes, no severity words beyond the
+  three categories above. Do not also write "Optional:" or "Small nit:" in the prose; `**Suggestion:**`
+  already says it.
 - **No praise comments inline.** They add noise to a PR thread. Keep anything positive to the
   acknowledgement clause in the summary body.
 - **Present tense, declarative.** No hedging stacks ("might possibly perhaps"), no exclamation marks, no

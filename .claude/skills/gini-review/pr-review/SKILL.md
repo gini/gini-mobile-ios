@@ -337,8 +337,8 @@ surface clean, repo conventions followed, all 7 files reviewed" is a valid and g
 ## 5. Report
 
 **Read `references/comment-style.md` before writing a single comment.** It holds the comment format,
-**the hard length budget**, and the rule that internal machinery — confidence scores, dimension names,
-severity labels — never appears in a comment a human reads.
+**the hard length budget**, the bold category prefix every posted comment opens with, and the rule that
+internal machinery — confidence scores, dimension names — never appears in a comment a human reads.
 
 **Everything in this section is the terminal report — it is not what gets posted.** This is the long
 form: it carries the coverage count, the per-file table and the section headings, and a finding here may
@@ -351,7 +351,8 @@ was long.
 
 Structure: overview, grouped changes, coverage count, per-file table in `<details>`, then the findings.
 Each finding body uses the three-part form: **fact about the code → consequence → concrete fix**,
-impersonal, no labels inside the text.
+impersonal. In the terminal report the section headings carry the category, so no prefix is needed here;
+a comment *posted* to the PR gets the bold category prefix instead, since it arrives without them.
 
 Everything in angle brackets below is a slot to fill from the PR under review. Substitute all of
 them — never carry an example value through into a real review.
@@ -429,8 +430,9 @@ Nothing has been sent anywhere yet. Now ask the user, with `AskUserQuestion`:
 > - **Post everything** — blocking + improvements, inline
 > - **Post as one summary comment** — no inline anchors
 
-Posted comments use the same prose voice as the terminal report, never the section labels or any
-internal scoring, and always inside the length budget in `references/comment-style.md`. For mechanical
+Posted comments use the same prose voice as the terminal report, each opening with its bold category
+prefix (`**Blocker:**` / `**Suggestion:**` / `**Question:**`) per `references/comment-style.md`, never
+any internal scoring, and always inside the length budget in that same file. For mechanical
 changes, attach a GitHub ```suggestion block so the author gets one-click apply — but only where you
 are confident it compiles as written and the span is small; see `references/comment-style.md`
 §"Posting to GitHub".
