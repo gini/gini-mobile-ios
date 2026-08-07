@@ -16,6 +16,13 @@ You are diagnosing and fixing bug ticket $ARGUMENTS. Root cause comes before
 any fix: no code change until the diagnosis is written down and confirmed.
 Never fix a symptom whose cause you haven't found.
 
+**Escalation rule — applies at every step below.** The moment the work stops
+being a minimal fix — the change needs design decisions, alters public API,
+or spreads beyond the module(s) implicated by the root cause — stop and say
+so. Finish writing the diagnosis (it stays valuable), then route the ticket
+to `/gini-plan $ARGUMENTS`, which uses the diagnosis as input for a real
+spec. Do not let a "fix" quietly grow into an unplanned feature.
+
 ## 0. Load platform conventions — REQUIRED FIRST
 
 Read `platform.md` in this skill's directory. It defines how to reproduce
@@ -97,7 +104,10 @@ Show the user the root cause and proposed fix (via AskUserQuestion). They can:
 
 - confirm — continue to step 6 in this session, or
 - stop here — the diagnosis file stands on its own; the fix can be
-  implemented later with `/gini-build $ARGUMENTS` in a fresh session.
+  implemented later with `/gini-build $ARGUMENTS` in a fresh session, or
+- escalate — the proposed fix turned out bigger than a fix (see the
+  escalation rule above): keep the diagnosis and plan it properly with
+  `/gini-plan $ARGUMENTS`.
 
 Do not proceed to code changes without confirmation.
 

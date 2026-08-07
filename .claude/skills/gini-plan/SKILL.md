@@ -30,6 +30,11 @@ Fetch $ARGUMENTS from Jira (any board — PP or otherwise). Read the summary,
 description, acceptance criteria, comments, and linked issues. If the ticket
 cannot be fetched, ask the user to paste its content instead of guessing.
 
+If `specs/$ARGUMENTS-bug.md` exists, this ticket was escalated from
+`/gini-fix`: read the diagnosis first. Its root cause, reproduction, and
+rejected minimal fix are established facts your spec builds on, not
+questions to re-open.
+
 ## 2. Explore the code
 
 Identify which modules are affected, using the module map in `platform.md`.
