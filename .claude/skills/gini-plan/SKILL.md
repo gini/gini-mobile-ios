@@ -1,11 +1,11 @@
 ---
-name: gini-spec-feature
+name: gini-plan
 description: Fetch a ticket, clarify open questions, and write a feature spec before any code. Pass the ticket id as argument (e.g. PP-1234, IPC-42 — any board).
 ---
 
 <!--
   MIRRORED FILE — this file must stay byte-identical to
-  .claude/skills/gini-spec-feature/SKILL.md in gini-mobile-ios.
+  .claude/skills/gini-plan/SKILL.md in gini-mobile-ios.
   If you change it here, open a paired PR in the other repo with the same
   content. CI (shared-skills.check.yml) fails when the copies diverge.
   Platform-specific rules do NOT belong here — they live in the sibling

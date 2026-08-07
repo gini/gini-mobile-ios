@@ -1,6 +1,6 @@
 ---
 name: gini-build
-description: Implement a feature from its spec written by gini-spec-feature. Pass the ticket id as argument (e.g. PP-1234, IPC-42) — the spec must already exist in specs/.
+description: Implement a feature from its spec written by gini-plan. Pass the ticket id as argument (e.g. PP-1234, IPC-42) — the spec must already exist in specs/.
 ---
 
 <!--
@@ -28,7 +28,7 @@ workflow.
 
 Read `specs/$ARGUMENTS-feature.md`, or — for a bug diagnosed with
 `/gini-fix` — `specs/$ARGUMENTS-bug.md`. If neither exists, stop and tell
-the user to run `/gini-spec-feature $ARGUMENTS` (features) or
+the user to run `/gini-plan $ARGUMENTS` (features) or
 `/gini-fix $ARGUMENTS` (bugs) first — do not improvise a spec from the
 ticket.
 
