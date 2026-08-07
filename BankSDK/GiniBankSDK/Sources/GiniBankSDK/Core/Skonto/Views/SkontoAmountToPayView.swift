@@ -19,7 +19,8 @@ class SkontoAmountToPayView: UIView {
         label.numberOfLines = 1
         label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
+        label.textColor = elementColor(key: GiniElementColorKey.skontoAmountToPayTitle,
+                                       default: .giniBankColorScheme().text.secondary.uiColor())
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -29,7 +30,8 @@ class SkontoAmountToPayView: UIView {
         let textField = PriceTextField()
         textField.priceDelegate = self
         textField.text = textFieldInitialText
-        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
+        textField.textColor = elementColor(key: GiniElementColorKey.skontoAmountToPayValue,
+                                           default: .giniBankColorScheme().text.primary.uiColor())
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .numberPad
@@ -45,7 +47,8 @@ class SkontoAmountToPayView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = currencyLabelText
-        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
+        label.textColor = elementColor(key: GiniElementColorKey.skontoAmountToPayCurrency,
+                                       default: .giniBankColorScheme().text.secondary.uiColor())
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)

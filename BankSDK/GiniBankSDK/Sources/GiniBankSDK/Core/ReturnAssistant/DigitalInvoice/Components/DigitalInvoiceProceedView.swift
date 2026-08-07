@@ -31,7 +31,8 @@ class DigitalInvoiceProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.subheadline]
-        label.textColor = .giniBankColorScheme().text.primary.uiColor()
+        label.textColor = elementColor(key: GiniElementColorKey.digitalInvoiceTotalTitle,
+                                       default: .giniBankColorScheme().text.primary.uiColor())
         let labelText = Strings.totalStringLabel
         label.text = labelText
         return label
@@ -41,7 +42,8 @@ class DigitalInvoiceProceedView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title2Bold]
-        label.textColor = .giniBankColorScheme().text.primary.uiColor()
+        label.textColor = elementColor(key: GiniElementColorKey.digitalInvoiceFinalAmount,
+                                       default: .giniBankColorScheme().text.primary.uiColor())
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -63,7 +65,8 @@ class DigitalInvoiceProceedView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniBankColorScheme().badge.background.uiColor()
+        view.backgroundColor = elementColor(key: GiniElementColorKey.digitalInvoiceBadgeBackground,
+                                            default: .giniBankColorScheme().badge.background.uiColor())
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.isHidden = true

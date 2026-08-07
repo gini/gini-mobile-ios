@@ -6,6 +6,7 @@
 //
 
 import GiniCaptureSDK
+import GiniUtilites
 import Foundation
 import UIKit
 public protocol GiniBankAnalysisDelegate: AnalysisDelegate {}
@@ -159,6 +160,43 @@ public func prefferedColorByProvider(named name: String) -> UIColor {
         return customProvider.customPrefferedColor(name: name)
     }
     return prefferedColor(named: name)
+}
+
+/**
+ Element keys supported by `CustomResourceProvider.customElementColor(for:)`.
+ Each key identifies a single UI element on a single screen, so overriding one
+ never affects any other element or screen.
+ */
+enum GiniElementColorKey {
+    /// Skonto screen — title of the amount-to-pay field
+    static let skontoAmountToPayTitle = "skonto.amountToPay.title"
+    /// Skonto screen — value text of the amount-to-pay field
+    static let skontoAmountToPayValue = "skonto.amountToPay.value"
+    /// Skonto screen — currency text of the amount-to-pay field
+    static let skontoAmountToPayCurrency = "skonto.amountToPay.currency"
+    /// Digital invoice screen — "Total" title in the proceed section
+    static let digitalInvoiceTotalTitle = "digitalInvoice.proceed.totalTitle"
+    /// Digital invoice screen — final amount-to-pay text in the proceed section
+    static let digitalInvoiceFinalAmount = "digitalInvoice.proceed.finalAmount"
+    /// Digital invoice screen — background of the Skonto percentage badge
+    static let digitalInvoiceBadgeBackground = "digitalInvoice.proceed.badgeBackground"
+}
+
+/**
+ Returns the color for a single UI element, preferring a per-element override
+ from the client's `CustomResourceProvider` and falling back to the given SDK default.
+
+ - Parameter key: The element key, see `GiniElementColorKey`.
+ - Parameter defaultColor: The SDK's default color for this element.
+
+ - returns: The resolved UIColor, dynamic for light/dark mode.
+ */
+func elementColor(key: String,
+                  default defaultColor: UIColor) -> UIColor {
+    if let custom = GiniBankConfiguration.shared.customResourceProvider?.customElementColor(for: key) {
+        return custom.uiColor()
+    }
+    return defaultColor
 }
 
 /**
