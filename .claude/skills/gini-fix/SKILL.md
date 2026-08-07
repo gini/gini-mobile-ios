@@ -105,7 +105,10 @@ Do not proceed to code changes without confirmation.
 
 - Write the regression test first and run it: it MUST fail for the reason
   the diagnosis describes. A regression test that passes before the fix
-  proves nothing — rework it until it fails correctly.
+  proves nothing — rework it until it fails correctly. If after 3 reworks
+  the test still cannot be made to fail for the diagnosed reason, the
+  diagnosis is probably wrong: go back to step 3 instead of forcing the
+  test.
 - Apply the minimal fix from the diagnosis. Match the style of the file you
   touch. No opportunistic refactoring, no scope creep into "Out of scope".
 - Re-run the regression test (now passing) and the tests around the touched
@@ -115,8 +118,17 @@ Do not proceed to code changes without confirmation.
 
 Run the verification steps defined in `platform.md` for the affected modules,
 and re-check the original reproduction from step 2 no longer occurs. Fix what
-fails and re-run until clean. Report results honestly — if something still
-fails or was skipped, say so explicitly.
+fails and re-run — with bounds:
+
+- Keep a running list of the fixes attempted for each distinct failure, and
+  never retry a fix already on that list.
+- After 3 failed fix attempts on the same failure, STOP. Show the user the
+  failure, each attempted fix and why it didn't work, and ask how to
+  proceed. Past that point you are thrashing, and a "fix" that merely
+  silences the symptom is worse than an honest stop.
+
+Report results honestly — if something still fails or was skipped, say so
+explicitly.
 
 ## 8. Wrap up
 

@@ -48,13 +48,28 @@ renamed, a precedent was removed, an approach is no longer viable), stop and
 show the user the conflict — let them decide whether to update the spec or
 proceed differently. Do not silently deviate from the spec.
 
-## 3. Plan the implementation
+## 3. Plan the implementation — in the spec file, not just in your head
 
-Produce an ordered list of changes, each mapped to the spec requirement(s) it
-satisfies. Order it so tests can be written first and the build stays green
-at every step. Keep the plan within the spec's affected modules; if you
-discover a module not listed in the spec must change, tell the user before
-touching it.
+If the spec already contains an `## Implementation plan` section with
+unchecked steps, you are resuming an interrupted build: verify that the
+checked steps really exist in the working tree (a session can die mid-edit),
+then continue from the first unchecked step. Do not replan from scratch.
+
+Otherwise, produce an ordered list of steps, each mapped to the spec
+requirement(s) it satisfies. Order it so tests can be written first and the
+build stays green at every step. Keep the plan within the spec's affected
+modules; if you discover a module not listed in the spec must change, tell
+the user before touching it.
+
+Append the plan to the spec file so it survives the session:
+
+```markdown
+## Implementation plan
+- [ ] 1. <change, with the module and key files> (requirements 1, 3)
+- [ ] 2. <change> (requirement 2)
+```
+
+and set the spec's `Status:` line to `implementing (0/N)`.
 
 ## 4. Implement, test-first
 
@@ -68,17 +83,32 @@ Work through the plan requirement by requirement:
 - Match the style, naming, and idioms of the files you touch.
 - Do not implement anything in "Out of scope". Do not widen public API beyond
   what "Public API impact" declares.
+- After each planned step lands with its tests passing, tick its checkbox in
+  the spec's Implementation plan and update the `Status:` count
+  (`implementing (k/N)`). The spec on disk must always reflect true
+  progress — that is what lets an interrupted build resume at step 3.
 
 ## 5. Verify
 
 Run the verification steps defined in `platform.md` for the affected modules.
-Fix what fails and re-run until clean. Report results honestly — if something
-still fails or was skipped, say so explicitly.
+Fix what fails and re-run — with bounds:
+
+- Keep a running list of the fixes attempted for each distinct failure, and
+  never retry a fix already on that list.
+- After 3 failed fix attempts on the same failure, STOP. Show the user the
+  failure, each attempted fix and why it didn't work, and ask how to
+  proceed. Past that point you are thrashing, and a "fix" that merely
+  silences the symptom is worse than an honest stop.
+
+Report results honestly — if something still fails or was skipped, say so
+explicitly.
 
 ## 6. Wrap up
 
-- Update the spec's `Status:` line from `draft` to `implemented` (feature)
-  or `fixed` (bug).
+- Check every box in the spec's Implementation plan is ticked, then update
+  the spec's `Status:` line from `implementing (N/N)` to `implemented`
+  (feature) or `fixed` (bug). An unticked box means unfinished work — resolve
+  it, don't paper over it.
 - Summarize for the user: each requirement and where it was implemented and
   tested (file paths), verification results, and anything left to manual QA
   per the spec's test plan.
