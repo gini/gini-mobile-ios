@@ -107,10 +107,21 @@ How it will work: key classes, data flow, integration points. Reference
 existing code with file paths.
 
 ## Test plan
-Which tests prove each requirement. Name test classes/locations AND the test
-stack to use — match neighboring tests in the module (see platform.md). State
-the expectation that every new class gets a unit test, and list what is left
-to manual QA.
+Which tests prove each requirement — every MUST requirement maps to at least
+one named test. Name test classes/locations AND the test stack to use —
+match neighboring tests in the module (see platform.md). State the
+expectation that every new class gets a unit test.
+
+For each test class, say whether it extends an existing test class or
+creates a new one — prefer extending the neighboring class that already
+covers the code being changed. Give a rough test count per class (a focused
+class usually needs 3–6 tests; a multi-path component 6–12) and justify a
+plan that calls for more — test count is not test quality.
+
+### Not tested
+What is deliberately not tested and why (framework behavior, third-party
+code, trivial delegation), and what is left to manual QA. An explicit gap
+a reviewer can see beats an accidental one.
 
 ## Out of scope
 Explicitly excluded work, so /gini-build doesn't drift into it.
