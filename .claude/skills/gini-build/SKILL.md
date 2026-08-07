@@ -114,3 +114,6 @@ explicitly.
   per the spec's test plan.
 - Offer to commit following the commit conventions in `platform.md`, but do
   not commit or push unless the user asks.
+- If this session exposed a wrong, missing, or misleading convention in the
+  standing docs, suggest running `/gini-reflect` to fold the learning back —
+  otherwise don't mention it.
