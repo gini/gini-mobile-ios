@@ -60,7 +60,7 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            sentTransferSummery(result: result, verifyInstantPayment: verifyInstantPayment)
+            sentTransferSummary(result: result)
             let mockedInvoice = mockedInvoiceResultName
             // Use the helper method to load the fixture extractions container
             guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoice) else {
@@ -79,22 +79,13 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                                                     verifyInstantPayment: verifyInstantPayment)
         }
 
-        private func sentTransferSummery(result: AnalysisResult, verifyInstantPayment: Bool?) {
-            var instantPaymentString = ""
-            var instantPayment: Bool?
-            if let instantPaymentExtractionResult = result.extractions["instantPayment"] {
-                instantPaymentString = instantPaymentExtractionResult.value
-                instantPayment = verifyInstantPayment == true ? (instantPaymentString.lowercased() == "true") : nil
+        private func sentTransferSummary(result: AnalysisResult) {
+            var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
+                dict[pair.key] = pair.value.value
             }
-
-            GiniBankConfiguration.shared.sendTransferSummary(
-                paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
-                paymentReference: result.extractions["paymentReference"]?.value ?? "",
-                paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
-                iban: result.extractions["iban"]?.value ?? "",
-                bic: result.extractions["bic"]?.value ?? "",
-                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
-                instantPayment: instantPayment)
+            /// Override `amountToPay` with the confirmed test value to guarantee the "value:currency" format.
+            extractions["amountToPay"] = ExtractionAmount(value: 950.00, currency: .EUR).formattedString()
+            GiniBankConfiguration.shared.sendTransferSummary(extractions: extractions)
         }
         func giniCaptureDidCancelAnalysis() {
             // nothing to test here

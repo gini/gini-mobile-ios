@@ -28,6 +28,7 @@ public struct ClientConfiguration: Codable {
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
     public let creditNoteHintEnabled: Bool
+    public let unsupportedQRCodeWarningEnabled: Bool
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -45,6 +46,7 @@ public struct ClientConfiguration: Codable {
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due date is enabled.
      - creditNoteHintEnabled: A flag indicating whether credit note hint for documents is enabled.
+     - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -57,7 +59,8 @@ public struct ClientConfiguration: Codable {
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool,
-                creditNoteHintEnabled: Bool) {
+                creditNoteHintEnabled: Bool,
+                unsupportedQRCodeWarningEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -70,5 +73,6 @@ public struct ClientConfiguration: Codable {
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled
         self.creditNoteHintEnabled = creditNoteHintEnabled
+        self.unsupportedQRCodeWarningEnabled = unsupportedQRCodeWarningEnabled
     }
 }

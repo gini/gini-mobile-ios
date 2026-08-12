@@ -54,6 +54,12 @@ import Photos
         return state == .showOriginalFlow
     }
 
+   internal var shouldDisplayEducationFlow: Bool {
+        giniConfiguration.productTag != .cxExtractions
+            && !document.isImported
+            && giniConfiguration.fileImportSupportedTypes != .none
+    }
+
     // User interface
     private var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -111,7 +117,8 @@ import Photos
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = .clear
+        scrollView.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                               dark: .GiniCapture.dark2).uiColor()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -239,7 +246,8 @@ import Photos
     private func setupView() {
         addImageView()
         edgesForExtendedLayout = []
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                         dark: .GiniCapture.dark2).uiColor()
         title = Strings.screenTitle
 
         if let document = document as? GiniPDFDocument {
@@ -274,9 +282,9 @@ import Photos
     }
 
     private func configureLoadingIndicator() {
-        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        // For cross border Extractions we don't want to show the education flow, so we can skip directly to showing the original loading message
         educationFlowController = EducationFlowController
-            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
+            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
 
         let nextState = educationFlowController?.nextState()
         switch nextState {
@@ -290,7 +298,8 @@ import Photos
     }
 
     private func showOriginalLoadingMessage() {
-        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1,
+                                               dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
         addLoadingContainer()
@@ -452,11 +461,30 @@ import Photos
     }
 
     // MARK: - Handling UI - Payment DueHint
-    private func setupScrollableStackView(dueDate: String) {
 
-        /// hide views before showing hint
+    private func tearDownLoadingUI() {
         loadingIndicatorText.isHidden = true
         loadingIndicatorView.stopAnimating()
+        loadingIndicatorContainer.removeFromSuperview()
+
+        if let customIndicator = giniConfiguration.customLoadingIndicator {
+            customIndicator.stopAnimation()
+            customIndicator.injectedView().removeFromSuperview()
+        }
+
+        /// Drain pending continuations so any `Task` waiting on animation completion is not stranded.
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        loadingViewModel = nil
+
+        view.subviews
+            .compactMap { $0 as? QRCodeEducationLoadingView }
+            .forEach { $0.removeFromSuperview() }
+    }
+
+    @MainActor
+    private func setupScrollableStackView(dueDate: String) {
+        tearDownLoadingUI()
 
         view.addSubview(scrollView)
 
@@ -552,7 +580,6 @@ extension AnalysisViewController: PaymentDueDateProtocol {
         setupScrollableStackView(dueDate: dueDate)
     }
 
-    @MainActor
     public func clearPaymentDueDate(after timeout: TimeInterval) async {
         await withCheckedContinuation { continuation in
             var didClear = false
@@ -609,3 +636,4 @@ private extension AnalysisViewController {
         )
     }
 }
+

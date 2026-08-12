@@ -1,4 +1,4 @@
-Copyright (c) 2021-2026, Gini GmbH
+Copyright (c) 2021, Gini GmbH
 All rights reserved.
 
 The Gini Bank SDK is licensed through Gini GmbH ("Gini") and may not be
@@ -8,5 +8,13 @@ licensee, where the licensee can gain access to a non-exclusive,
 non-transferable usage right which is restricted for the time of a contractual
 relationship between Gini and the licensee.
 
-For license related inquiries contact Gini via the email address 
+For license related inquiries contact Gini via the email address
 technical-support@gini.net.
+
+The Gini Bank SDK uses code from the following libraries:
+
+| Module | License |
+|--------|---------|
+| Gini Bank API Library | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/8686dca6aee8768d63dd825f2a1bbe08dd0eec67/BankAPILibrary/GiniBankAPILibrary/LICENSE) |
+| Gini Capture SDK | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/0715ced1c8feea900d6d79df8d9f5d8ff3968667/CaptureSDK/GiniCaptureSDK/LICENSE) |
+| Gini Utilities | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/743a4cd19f4eac03a982c2cfd7f7732feb335a06/GiniComponents/Utilities/LICENSE) |

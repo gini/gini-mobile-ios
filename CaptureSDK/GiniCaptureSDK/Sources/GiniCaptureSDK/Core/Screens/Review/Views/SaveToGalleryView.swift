@@ -29,7 +29,6 @@ final class SaveToGalleryView: UIView {
 
     private lazy var switchUIControl: UISwitch = {
         let switchUIControl = UISwitch()
-
         switchUIControl.onTintColor = GiniColor(light: .GiniCapture.accent1,
                                                 dark: .GiniCapture.accent1).uiColor()
 
@@ -52,7 +51,8 @@ final class SaveToGalleryView: UIView {
         }
     }
 
-    @Published var valueChanged = GiniCaptureUserDefaultsStorage.userSettingsSavePhotosSwitchOn == true
+    /// Externally read-only; `false` suppresses the initial Combine emission to avoid triggering photo permission on load.
+    @Published private(set) var valueChanged = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -111,9 +111,8 @@ final class SaveToGalleryView: UIView {
         backgroundColor = GiniColor(light: .GiniCapture.light1,
                                     dark: .GiniCapture.dark3).uiColor()
         layer.borderWidth = Constants.borderWidthOnStateApperance
-
-        switchUIControl.onTintColor = GiniColor(light: .GiniCapture.accent1,
-                                                dark: .GiniCapture.accent1).uiColor()
+        // onTintColor is set once in the switch's initializer. Keep it fixed
+        // to avoid iOS 26 Liquid Glass pill animation on tap.
     }
 
     private func applyOffStateAppearance() {
@@ -123,9 +122,9 @@ final class SaveToGalleryView: UIView {
         layer.borderWidth = Constants.borderWidthOffStateApperance
         layer.borderColor = GiniColor(light: .GiniCapture.light3,
                                       dark: .GiniCapture.dark4).uiColor().cgColor
-
-        switchUIControl.onTintColor = GiniColor(light: .GiniCapture.light4,
-                                                dark: .GiniCapture.dark4).uiColor()
+        // onTintColor is only visible while the switch is on. Rewriting it here
+        // makes the iOS 26 Liquid Glass pill animate its color mid-tap; keep it
+        // pinned to the on-state accent instead.
     }
 
     @objc private func didToggleSwitch(_ enabledSwitch: UISwitch) {

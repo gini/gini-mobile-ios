@@ -1,0 +1,29 @@
+{
+    "id": "f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657",
+    "name": "Document",
+    "pageCount": 1,
+    "creationDate": 1770371838477,
+    "expirationDate": 1772791038417,
+    "progress": "COMPLETED",
+    "origin": "UPLOAD",
+    "sourceClassification": "COMPOSITE",
+    "uploadMediaType": "application/vnd.gini.v4.composite+json",
+    "pages" : [{
+        "pageNumber": 1,
+        "images": {
+            "750x900": "/documents/c3b55e06-c689-4f18-b28b-f55e7658722e/pages/1/750x900",
+            "1280x1810": "/documents/c3b55e06-c689-4f18-b28b-f55e7658722e/pages/1/1280x1810"
+        }
+    }],
+    "_links": {
+        "document": "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657",
+        "extractions": "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657/extractions",
+        "layout": "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657/layout",
+        "processed": "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657/processed"
+    },
+    "partialDocuments": [{
+        "document": "https://health-api.gini.net/documents/c3b55e06-c689-4f18-b28b-f55e7658722e",
+        "rotationDelta": 0,
+        "documentId": "c3b55e06-c689-4f18-b28b-f55e7658722e"
+    }]
+}

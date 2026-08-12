@@ -1,0 +1,471 @@
+//
+//  InstallAppBottomView.swift
+//  GiniInternalPaymentSDK
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+
+import Combine
+import UIKit
+import GiniUtilites
+
+public final class InstallAppBottomView: GiniBottomSheetViewController {
+    
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+
+    var viewModel: InstallAppBottomViewModel
+
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var accessibilityFocusWorkItem: DispatchWorkItem?
+
+    private let contentView = EmptyScrollView()
+    private let contentStackView = EmptyStackView().orientation(.vertical)
+    
+    private let titleView = EmptyView()
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.titleText
+        label.textColor = viewModel.configuration.titleAccentColor
+        label.font = viewModel.configuration.titleFont
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        label.lineBreakMode = .byTruncatingTail
+        return label
+    }()
+    
+    private let bankView = EmptyView()
+    
+    private lazy var bankIconImageView: UIImageView = {
+        let imageView = UIImageView(image: viewModel.bankImageIcon)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
+        imageView.layer.borderWidth = Constants.bankIconBorderWidth
+        imageView.layer.borderColor = viewModel.configuration.bankIconBorderColor.cgColor
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityLabel = viewModel.strings.accessibilityBankLogoText.replacingOccurrences(of: viewModel.bankToReplaceString,
+                                                                                                        with: viewModel.selectedPaymentProvider?.name ?? "")
+        return imageView
+    }()
+    
+    private let moreInformationView = EmptyView()
+    
+    private lazy var moreInformationStackView = EmptyStackView()
+        .orientation(.horizontal)
+        .spacing(Constants.viewPaddingConstraint)
+        .distribution(.fillProportionally)
+
+    private lazy var moreInformationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = viewModel.configuration.moreInformationTextColor
+        label.font = viewModel.configuration.moreInformationFont
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        label.text = viewModel.moreInformationLabelText
+        return label
+    }()
+    
+    private lazy var moreInformationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
+        button.tintColor = viewModel.configuration.moreInformationAccentColor
+        button.isUserInteractionEnabled = false
+        button.isAccessibilityElement = false
+        return button
+    }()
+    
+    private lazy var continueButton: PaymentPrimaryButton = {
+        let button = PaymentPrimaryButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: viewModel.primaryButtonConfiguration)
+        button.customConfigure(text: viewModel.strings.continueLabelText,
+                               textColor: viewModel.paymentProviderColors?.text.toColor(),
+                               backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = viewModel.strings.continueLabelText
+        button.accessibilityTraits = .button
+        return button
+    }()
+    
+    private lazy var appStoreImageView: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
+        button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
+        return button
+    }()
+    
+    private let buttonsView: UIView = EmptyView()
+    private var cancellables = Set<AnyCancellable>()
+    
+    private let bottomView = EmptyView()
+
+    private lazy var poweredByGiniView: PoweredByGiniView = {
+        PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
+    }()
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+        setupInitialLayout()
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        postAccessibilityFocus()
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Cancel any pending focus work so a quick dismiss cannot re-trap VoiceOver
+        // after this flag is cleared.
+        accessibilityFocusWorkItem?.cancel()
+        view.accessibilityViewIsModal = false
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    public init(viewModel: InstallAppBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = bottomSheetConfiguration.backgroundColor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    /**
+     Traps VoiceOver focus inside this sheet and moves the cursor to the title label.
+
+     `accessibilityViewIsModal` must be set on `self.view` (a `UIView`) so that UIKit's
+     accessibility engine correctly hides sibling views from VoiceOver. Setting it on the
+     `UIViewController` itself is unsupported and was silently ignored on iOS 18.x,
+     leaving VoiceOver free to wander into the dimmed background behind the sheet.
+
+     The 0.5 s delay gives the sheet presentation controller time to finish its sizing
+     pass before VoiceOver reads the element tree. We previously used 1.0 s but that
+     caused a noticeable lag in VoiceOver announcements.
+     */
+    private func postAccessibilityFocus() {
+        accessibilityFocusWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, view.window != nil, !isBeingDismissed else { return }
+            UIAccessibility.post(notification: .screenChanged, argument: titleLabel)
+        }
+        accessibilityFocusWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work)
+    }
+
+    private func setupView() {
+        configureBottomSheet()
+        setupViewHierarchy()
+        bindToContentSizeUpdates()
+        setupLayout()
+        setupListeners()
+        setButtonsState()
+        setupViewVisibility()
+        setupAccessibility()
+    }
+
+    private func setupAccessibility() {
+        view.accessibilityViewIsModal = true
+        // Set on `contentView` (scroll view) so VoiceOver can auto-scroll off-screen elements in landscape.
+        contentView.accessibilityElements = [
+            titleLabel,
+            bankIconImageView,
+            moreInformationLabel,
+            appStoreImageView,
+            continueButton
+        ] + (viewModel.shouldShowBrandedView ? [poweredByGiniView] : [])
+    }
+    
+    private func setupViewHierarchy() {
+        titleView.addSubview(titleLabel)
+        contentStackView.addArrangedSubview(titleView)
+        bankView.addSubview(bankIconImageView)
+        contentStackView.addArrangedSubview(bankView)
+        moreInformationView.addSubview(moreInformationStackView)
+        contentStackView.addArrangedSubview(moreInformationView)
+        buttonsView.addSubview(continueButton)
+        buttonsView.addSubview(appStoreImageView)
+        contentStackView.addArrangedSubview(buttonsView)
+        bottomView.addSubview(poweredByGiniView)
+        contentStackView.addArrangedSubview(bottomView)
+        contentView.addContentSubview(contentStackView)
+        setContent(contentView)
+    }
+    
+    private func setContent(_ content: UIView) {
+        view.addSubview(content)
+        
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            content.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            content.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
+    }
+
+    private func setupLayout() {
+        setupTitleViewConstraints()
+        setupBankImageConstraints()
+        setupMoreInformationConstraints()
+        setupContinueButtonConstraints()
+        setupAppStoreButtonConstraints()
+        setupPoweredByGiniConstraints()
+    }
+    
+    private func setupListeners() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+    }
+
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        deactivateAllConstraints()
+        updateMoreInformationStackView(for: .portrait)
+
+        portraitConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints() {
+        deactivateAllConstraints()
+        updateMoreInformationStackView(for: .landscape)
+
+        landscapeConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.moreInformationTopPaddingLandscape),
+            poweredByGiniView.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
+    }
+
+    // Enum to Represent Layout Types
+    private enum LayoutType {
+        case portrait
+        case landscape
+    }
+
+    // Helper Method to Update More Information Stack View
+    private func updateMoreInformationStackView(for layout: LayoutType) {
+        moreInformationStackView.removeAllArrangedSubviews()
+
+        switch layout {
+        case .portrait:
+            configureStackView(alignment: .leading, textAlignment: .left, addPaddingViews: false)
+        case .landscape:
+            configureStackView(alignment: .center, textAlignment: .center, addPaddingViews: true)
+        }
+    }
+
+    private func configureStackView(alignment: UIStackView.Alignment, textAlignment: NSTextAlignment, addPaddingViews: Bool) {
+        titleLabel.textAlignment = textAlignment
+        moreInformationStackView.alignment = alignment
+        moreInformationLabel.textAlignment = textAlignment
+
+        if addPaddingViews {
+            moreInformationStackView.addArrangedSubview(UIView())
+        }
+
+        moreInformationStackView.addArrangedSubview(moreInformationButton)
+        moreInformationStackView.addArrangedSubview(moreInformationLabel)
+
+        if addPaddingViews {
+            moreInformationStackView.addArrangedSubview(UIView())
+        }
+    }
+
+    @objc private func willEnterForeground() {
+        setButtonsState()
+        postAccessibilityFocus()
+    }
+    
+    private func setButtonsState() {
+        appStoreImageView.isHidden = viewModel.isBankInstalled
+        continueButton.isHidden = !viewModel.isBankInstalled
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
+        moreInformationLabel.text = viewModel.moreInformationLabelText
+        
+        continueButton.didTapButton = { [weak self] in
+            self?.tapOnContinueButton()
+        }
+    }
+
+    private func setupTitleViewConstraints() {
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                  constant: Constants.contentViewTopPadding),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                     constant: -Constants.viewPaddingConstraint),
+            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.viewPaddingConstraint),
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint)
+        ])
+    }
+
+    private func setupBankImageConstraints() {
+        NSLayoutConstraint.activate([
+            bankIconImageView.heightAnchor.constraint(equalToConstant: Constants.bankIconSize),
+            bankIconImageView.widthAnchor.constraint(equalToConstant: Constants.bankIconSize),
+            bankIconImageView.topAnchor.constraint(equalTo: bankView.topAnchor),
+            bankIconImageView.bottomAnchor.constraint(equalTo: bankView.bottomAnchor),
+            bankIconImageView.centerXAnchor.constraint(equalTo: bankView.centerXAnchor)
+        ])
+    }
+    
+    private func setupMoreInformationConstraints() {
+        NSLayoutConstraint.activate([
+            moreInformationStackView.leadingAnchor.constraint(equalTo: moreInformationView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            moreInformationStackView.trailingAnchor.constraint(equalTo: moreInformationView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            moreInformationStackView.bottomAnchor.constraint(equalTo: moreInformationView.bottomAnchor, constant: Constants.moreInformationBottomAnchorConstraint),
+            moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize)
+        ])
+    }
+    
+    private func setupContinueButtonConstraints() {
+        NSLayoutConstraint.activate([
+            continueButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            continueButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            continueButton.heightAnchor.constraint(equalToConstant: Constants.continueButtonViewHeight),
+            continueButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.continueButtonTopAnchor),
+            continueButton.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.continueButtonBottomAnchor)
+        ])
+    }
+    
+    private func setupAppStoreButtonConstraints() {
+        NSLayoutConstraint.activate([
+            appStoreImageView.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            appStoreImageView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            appStoreImageView.heightAnchor.constraint(equalToConstant: Constants.appStoreImageViewHeight),
+            appStoreImageView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.continueButtonTopAnchor),
+            appStoreImageView.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
+            appStoreImageView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.appStoreBottomAnchor)
+        ])
+    }
+
+    private func setupPoweredByGiniConstraints() {
+        NSLayoutConstraint.activate([
+            poweredByGiniView.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
+            bottomView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+        ])
+    }
+    
+    private func bindToContentSizeUpdates() {
+        contentView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedSize in
+                guard let self else { return }
+                // Include the safe-area bottom inset so the sheet is tall enough
+                // to reveal the full content above the home indicator.
+                let safeAreaBottom = view.safeAreaInsets.bottom
+                updateBottomSheetHeight(updatedSize.height + safeAreaBottom)
+            }.store(in: &cancellables)
+    }
+    
+    @objc
+    private func tapOnContinueButton() {
+        viewModel.didTapOnContinue()
+    }
+
+    @objc
+    private func tapOnAppStoreButton() {
+        openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
+    }
+    
+    private func openPaymentProvidersAppStoreLink(urlString: String?) {
+        guard let urlString = urlString else {
+            print("AppStore link unavailable for this payment provider")
+            return
+        }
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            // Post the accessibility focus notification only AFTER the transition
+            // animation has fully completed and the layout is stable.  Calling it
+            // inside alongsideTransition fired the notification while the view was
+            // still animating, so VoiceOver read elements at incorrect positions.
+            self?.postAccessibilityFocus()
+        })
+    }
+}
+
+extension InstallAppBottomView {
+    enum Constants {
+        static let viewPaddingConstraint = 16.0
+        static let contentViewTopPadding = 48.0
+        static let bankIconSize = 36.0
+        static let bankIconCornerRadius = 6.0
+        static let bankIconBorderWidth = 1.0
+        static let continueButtonViewHeight = 56.0
+        static let continueButtonTopAnchor = 16.0
+        static let continueButtonBottomAnchor = 4.0
+        static let appStoreBottomAnchor = 16.0
+        static let appStoreImageViewHeight = 44.0
+        static let topBottomPaddingConstraint = 10.0
+        static let topAnchorPoweredByGiniConstraint = 5.0
+        static let moreInformationBottomAnchorConstraint = 8.0
+        static let infoIconSize = 24.0
+        static let bottomViewHeight = 22.0
+        static let landscapePadding = 126.0
+        static let moreInformationTopPaddingLandscape = 32.0
+    }
+}

@@ -217,7 +217,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
     @Test("Payment hints can be enabled and disabled")
     func alreadyPaidHintEnabled() {
         let configuration = GiniBankConfiguration()
-        
+
         configuration.alreadyPaidHintEnabled = false
         #expect(!configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false after disabling")
         
@@ -230,7 +230,7 @@ struct GiniBankConfigurationFeatureFlagsTests {
     @Test("Save photos locally can be enabled and disabled")
     func savePhotosLocallyEnabled() {
         let configuration = GiniBankConfiguration()
-        
+
         configuration.savePhotosLocallyEnabled = false
         #expect(!configuration.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false after disabling")
 

@@ -50,6 +50,11 @@ final class CameraPreviewViewController: UIViewController {
     }()
 
     private let cameraFocusImage = UIImageNamedPreferred(named: "cameraFocus")
+    /**
+     Color currently applied to the camera frame.
+     Reapplied after the frame image is rebuilt on rotation so feedback states (for example invalid-QR red) survive orientation changes.
+     */
+    private var currentFrameColor: UIColor?
     lazy var cameraFrameView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = cameraFocusImage
@@ -73,7 +78,7 @@ final class CameraPreviewViewController: UIViewController {
     private var notAuthorizedView: UIView?
     private let giniConfiguration: GiniConfiguration
     private typealias FocusIndicator = UIImageView
-    private var camera: CameraProtocol
+    private(set) var camera: CameraProtocol
     private var defaultImageView: UIImageView?
     private var focusIndicatorImageView: UIImageView?
 
@@ -217,7 +222,10 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameViewHeightAnchorPortrait])
         } else {
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor,
+                // Anchor to safe area top so the frame is not clipped by a host nav bar
+                // when the SDK is presented in a non-full-screen style (e.g. .pageSheet).
+                // In .fullScreen this resolves to the same y as view.topAnchor.
+                cameraFrameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                                      constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                          constant: Constants.padding),
@@ -260,13 +268,16 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameViewHeightAnchorPortrait,
                 cameraFrameViewHeightAnchorLandscape
             ])
+            let orientedImage = UIImage(cgImage: image,
+                                        scale: 1.0,
+                                        orientation: isLandscape ? .left : .up)
             if isLandscape {
                 cameraFrameViewHeightAnchorLandscape.isActive = true
-                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
             } else {
                 cameraFrameViewHeightAnchorPortrait.isActive = true
-                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
             }
+            // Rebuilding from the raw asset discards any applied tint — restore it.
+            cameraFrameView.image = tintedForCurrentColor(orientedImage)
 
             if UIDevice.current.isIphone {
                 cameraFrameViewBottomConstrant.constant = isLandscape
@@ -371,7 +382,15 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     func changeCameraFrameColor(to color: UIColor) {
-        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+        currentFrameColor = color
+        if let image = cameraFrameView.image {
+            cameraFrameView.image = tintedForCurrentColor(image)
+        }
+    }
+
+    private func tintedForCurrentColor(_ image: UIImage) -> UIImage? {
+        guard let currentFrameColor else { return image }
+        return image.tintedImageWithColor(currentFrameColor)
     }
 
     // MARK: - IBAN detection

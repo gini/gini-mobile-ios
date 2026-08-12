@@ -95,7 +95,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor().withAlphaComponent(0.4),
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor(),
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
                                                                      titleFont: font(for: .button),
@@ -129,6 +129,7 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                  cornerRadius: 12.0,
                                                                                  borderWidth: 1.0,
                                                                                  placeholderForegroundColor: GiniColor.standard4.uiColor())
+
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
@@ -139,6 +140,7 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                cornerRadius: 12.0,
                                                                                borderWidth: 1.0,
                                                                                placeholderForegroundColor: GiniColor.standard4.uiColor())
+
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */

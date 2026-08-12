@@ -15,10 +15,12 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
      Please upload to device:
         "test_image" image file with invoice
      */
-    let testImageFileName = "test_image"
     
     func testDontAttach() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -30,7 +32,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -47,6 +49,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testAttachOnlyThisTransaction() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -58,7 +63,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -75,6 +80,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testAlwaysAttach() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -86,7 +94,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -112,7 +120,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -122,15 +130,14 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         reviewScreen.processButton.tap()
         //Assert that Document is displayed
         XCTAssertTrue(transactionDocsScreen.documentName.waitForExistence(timeout: 5))
-        //Restore User Defaults
-        mainScreen.sendFeedbackButton.tap()
-        mainScreen.configurationButton.tap()
-        app.staticTexts["Remove from UserDefaults"].tap()
         
     }
     
     func testDeleteDocumentFromExtractions() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -142,14 +149,12 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
-
-
         //Tap Process button
         reviewScreen.processButton.tap()
         //Tap Only for this transaction button
@@ -167,6 +172,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testOpenDocument() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -178,14 +186,12 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
-
-
         //Tap Process button
         reviewScreen.processButton.tap()
         //Tap Only for this transaction button
@@ -201,6 +207,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testDeleteDocumentFromPreview() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -212,7 +221,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -237,6 +246,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testEditMenuCancelButtonExtractionScreen() throws {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -248,7 +260,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -274,6 +286,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testEditMenuCancelButtonPreviewScreen() throws {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -285,7 +300,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -313,6 +328,9 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
     func testBackButtonFromPreviewScreen() {
         
+        mainScreen.configurationButton.tap()
+        app.staticTexts["Remove from UserDefaults"].tap()
+        settingScreen.closeButton.tap()
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -324,7 +342,7 @@ class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: testImageFileName)
+        mainScreen.tapFileWithName(fileName: TestFixtures.Files.testImage)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed

@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_chevron-down.pdf",
+      "filename" : "gh.iconChevronDown_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gh.iconChevronDown_dark.pdf",
       "idiom" : "universal"
     }
   ],

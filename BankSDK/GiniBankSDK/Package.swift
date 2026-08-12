@@ -7,7 +7,7 @@ import PackageDescription
 let package = Package(
     name: "GiniBankSDK",
     defaultLocalization: "de",
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS(.v15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -24,7 +24,7 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniCaptureSDK", path: "../../CaptureSDK/GiniCaptureSDK"),
         .package(name: "GiniBankAPILibrary", path: "../../BankAPILibrary/GiniBankAPILibrary"),
-        .package(name: "GiniUtilites", path: "../../GiniComponents/GiniUtilites")
+        .package(name: "GiniUtilites", path: "../../GiniComponents/Utilities/GiniUtilites")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
