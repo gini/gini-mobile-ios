@@ -77,10 +77,22 @@ The RC ticket summary reads `[iOS] Release candidate for Gini <Product> <version
 ## Source paths
 
 ```bash
-git log --no-merges '<Package>;<prev-version>'..HEAD --format='%s' -- <package-folder>/
+git log --no-merges '<Package>;<prev-version>'..HEAD --format='%s' -- <path> [<path> …]
 ```
 
-Package folders are the top-level product folders: `BankSDK/`, `CaptureSDK/`, `BankAPILibrary/`, `HealthSDK/`, `HealthAPILibrary/`, `GiniComponents/InternalPaymentSDK/`, `GiniComponents/Utilities/`.
+Every product folder is a **wrapper**, not a package root — it also holds `sonar-project.properties`, sometimes a `LICENSE`, and for three products an example app. Pass the package root, plus the example app when the package has one:
+
+| Package | Package root | Also pass |
+|---|---|---|
+| `GiniBankSDK` | `BankSDK/GiniBankSDK/` | `BankSDK/GiniBankSDKExample/` |
+| `GiniCaptureSDK` | `CaptureSDK/GiniCaptureSDK/` | — |
+| `GiniBankAPILibrary` | `BankAPILibrary/GiniBankAPILibrary/` | — |
+| `GiniHealthSDK` | `HealthSDK/GiniHealthSDK/` | `HealthSDK/GiniHealthSDKExample/` |
+| `GiniHealthAPILibrary` | `HealthAPILibrary/GiniHealthAPILibrary/` | `HealthAPILibrary/GiniHealthAPILibraryExample/` |
+| `GiniInternalPaymentSDK` | `GiniComponents/InternalPaymentSDK/GiniInternalPaymentSDK/` | — |
+| `GiniUtilites` | `GiniComponents/Utilities/GiniUtilites/` | — |
+
+**Include the example app deliberately.** This check exists to catch a ticket that is *missing* from the fix version, so its failure mode is missing a commit, not showing an extra one. A commit that only touches the example app often carries the ticket key of a user-facing change, and dropping it would hide exactly what the check is looking for. Do not narrow the paths further to reduce noise.
 
 ## Bullet conventions
 
