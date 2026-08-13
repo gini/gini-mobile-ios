@@ -730,20 +730,23 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
             formattedDueDate: dueDate.toDisplayString(),
             onCancel: { [weak self] in
                 guard let self else { return }
-                self.screenAPINavigationController.dismiss(animated: true) {
-                    /// Restore accessibility on the presenter — `presentAsBottomSheet`
-                    /// hides the presenter's view from VoiceOver on presentation and
-                    /// leaves it hidden when the sheet goes away.
-                    self.screenAPINavigationController.view.accessibilityElementsHidden = false
-                    self.didCancelCapturing()
-                }
+                /// Restore accessibility on the presenter — `presentAsBottomSheet`
+                /// hides the presenter's view from VoiceOver on presentation and
+                /// leaves it hidden when the sheet goes away.
+                self.screenAPINavigationController.view.accessibilityElementsHidden = false
+                /// Dismiss the sheet and notify the delegate synchronously — same
+                /// callback-first order as Android's `WarningBottomSheet.Listener`
+                /// (`onPrimaryAction()` before `dismissAllowingStateLoss()`). Avoids
+                /// depending on `dismiss(animated: true) { completion }` firing on
+                /// CI simulators where the display-link-driven animation stalls.
+                self.screenAPINavigationController.dismiss(animated: true)
+                self.didCancelCapturing()
             },
             onProceed: { [weak self] in
                 guard let self else { return }
-                self.screenAPINavigationController.dismiss(animated: true) {
-                    self.screenAPINavigationController.view.accessibilityElementsHidden = false
-                    onProceed()
-                }
+                self.screenAPINavigationController.view.accessibilityElementsHidden = false
+                self.screenAPINavigationController.dismiss(animated: true)
+                onProceed()
             }
         )
 

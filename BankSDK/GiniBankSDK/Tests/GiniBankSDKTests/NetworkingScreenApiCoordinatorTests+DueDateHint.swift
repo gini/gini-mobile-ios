@@ -158,7 +158,7 @@ extension NetworkingScreenApiCoordinatorTests {
     }
 
     @MainActor
-    func testPresentDueDateHintBottomSheetProceedInvokesContinuationAfterDismiss() throws {
+    func testPresentDueDateHintBottomSheetProceedInvokesContinuation() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
         defer { tearDownWindow(window) }
@@ -169,16 +169,10 @@ extension NetworkingScreenApiCoordinatorTests {
         let sheet = try waitForPresentedDueDateSheet(on: coordinator)
         sheet.didPressPrimary()
 
-        let proceeded = XCTNSPredicateExpectation(
-            predicate: NSPredicate { _, _ in proceedCalled },
-            object: nil
-        )
-        wait(for: [proceeded], timeout: 5.0)
-
-        XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
-                     "Sheet must be dismissed before the continuation fires")
+        XCTAssertTrue(proceedCalled,
+                      "Primary CTA must invoke the continuation synchronously")
         XCTAssertFalse(coordinator.screenAPINavigationController.view.accessibilityElementsHidden,
-                       "Presenter must be re-exposed to VoiceOver after dismiss")
+                       "Presenter must be re-exposed to VoiceOver before dismiss animates out")
     }
 
     @MainActor
@@ -196,18 +190,10 @@ extension NetworkingScreenApiCoordinatorTests {
         let sheet = try waitForPresentedDueDateSheet(on: coordinator)
         sheet.didPressSecondary()
 
-        let cancelled = XCTNSPredicateExpectation(
-            predicate: NSPredicate { [resultsDelegate] _, _ in
-                resultsDelegate?.closeCalled == true
-            },
-            object: nil
-        )
-        wait(for: [cancelled], timeout: 5.0)
-
-        XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
-                     "Sheet must be dismissed before the cancel notification fires")
+        XCTAssertTrue(resultsDelegate.closeCalled,
+                      "Secondary CTA must call giniCaptureDidCancelAnalysis synchronously")
         XCTAssertFalse(coordinator.screenAPINavigationController.view.accessibilityElementsHidden,
-                       "Presenter must be re-exposed to VoiceOver after dismiss")
+                       "Presenter must be re-exposed to VoiceOver before dismiss animates out")
     }
 
     // MARK: handleToBePaidCase — branch coverage
