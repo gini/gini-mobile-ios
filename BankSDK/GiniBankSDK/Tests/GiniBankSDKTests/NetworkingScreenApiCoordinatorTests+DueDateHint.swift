@@ -135,7 +135,7 @@ extension NetworkingScreenApiCoordinatorTests {
     func testPresentDueDateHintBottomSheetShowsModalNonDismissibleSheet() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
-        defer { window.isHidden = true }
+        defer { tearDownWindow(window) }
 
         coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { }
 
@@ -145,7 +145,7 @@ extension NetworkingScreenApiCoordinatorTests {
             },
             object: nil
         )
-        wait(for: [sheetVisible], timeout: 2.0)
+        wait(for: [sheetVisible], timeout: 5.0)
 
         let sheet = try XCTUnwrap(
             coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
@@ -161,7 +161,7 @@ extension NetworkingScreenApiCoordinatorTests {
     func testPresentDueDateHintBottomSheetProceedInvokesContinuationAfterDismiss() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
-        defer { window.isHidden = true }
+        defer { tearDownWindow(window) }
 
         var proceedCalled = false
         coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { proceedCalled = true }
@@ -173,7 +173,7 @@ extension NetworkingScreenApiCoordinatorTests {
             predicate: NSPredicate { _, _ in proceedCalled },
             object: nil
         )
-        wait(for: [proceeded], timeout: 2.0)
+        wait(for: [proceeded], timeout: 5.0)
 
         XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
                      "Sheet must be dismissed before the continuation fires")
@@ -185,7 +185,7 @@ extension NetworkingScreenApiCoordinatorTests {
     func testPresentDueDateHintBottomSheetCancelNotifiesResultsDelegate() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
-        defer { window.isHidden = true }
+        defer { tearDownWindow(window) }
         XCTAssertFalse(resultsDelegate.closeCalled,
                        "Precondition: resultsDelegate must not have been notified yet")
 
@@ -202,7 +202,7 @@ extension NetworkingScreenApiCoordinatorTests {
             },
             object: nil
         )
-        wait(for: [cancelled], timeout: 2.0)
+        wait(for: [cancelled], timeout: 5.0)
 
         XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
                      "Sheet must be dismissed before the cancel notification fires")
@@ -216,7 +216,7 @@ extension NetworkingScreenApiCoordinatorTests {
     func testHandleToBePaidCaseInvokesContinuationImmediatelyWhenGateFails() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
-        defer { window.isHidden = true }
+        defer { tearDownWindow(window) }
         configureForDueDateHint(coordinator)
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
@@ -234,7 +234,7 @@ extension NetworkingScreenApiCoordinatorTests {
     func testHandleToBePaidCasePresentsSheetWhenGatesPass() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
         let window = mountNavigationController(for: coordinator)
-        defer { window.isHidden = true }
+        defer { tearDownWindow(window) }
         configureForDueDateHint(coordinator)
         coordinator.giniBankConfiguration.paymentDueHintThresholdDays = 5
 
@@ -251,6 +251,10 @@ extension NetworkingScreenApiCoordinatorTests {
 
     @MainActor
     private func mountNavigationController(for coordinator: GiniBankNetworkingScreenApiCoordinator) -> UIWindow {
+        /// Disable UIKit animations so `present(animated: true)` / `dismiss(animated: true)`
+        /// completions fire near-synchronously. Without this, CI simulators can take
+        /// several seconds to drive the animation frames and the wait predicates time out.
+        UIView.setAnimationsEnabled(false)
         let nav = coordinator.screenAPINavigationController
         if nav.viewControllers.isEmpty {
             nav.viewControllers = [UIViewController()]
@@ -262,6 +266,12 @@ extension NetworkingScreenApiCoordinatorTests {
     }
 
     @MainActor
+    private func tearDownWindow(_ window: UIWindow) {
+        window.isHidden = true
+        UIView.setAnimationsEnabled(true)
+    }
+
+    @MainActor
     private func waitForPresentedDueDateSheet(on coordinator: GiniBankNetworkingScreenApiCoordinator)
         throws -> DueDateHintBottomSheetViewController {
         let expectation = XCTNSPredicateExpectation(
@@ -270,7 +280,7 @@ extension NetworkingScreenApiCoordinatorTests {
             },
             object: nil
         )
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: 5.0)
         return try XCTUnwrap(
             coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
             "Sheet must be presented over the nav controller"

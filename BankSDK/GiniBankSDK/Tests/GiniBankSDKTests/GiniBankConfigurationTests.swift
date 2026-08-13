@@ -8,7 +8,13 @@ import Testing
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
 
-@Suite("GiniBankConfiguration Feature Flags")
+/// `captureConfigurationTransfersAllFlags` mutates `GiniConfiguration.shared`
+/// and reads it back; running its tests in parallel with each other (or with
+/// XCTestCase suites that also touch the singleton, like the coordinator's
+/// `captureConfiguration()` call in its init) causes interleaved writes to
+/// clobber the assertion reads. Serialize to keep the shared-state
+/// assertions deterministic.
+@Suite("GiniBankConfiguration Feature Flags", .serialized)
 struct GiniBankConfigurationFeatureFlagsTests {
 
     // MARK: - Default Flag Values
