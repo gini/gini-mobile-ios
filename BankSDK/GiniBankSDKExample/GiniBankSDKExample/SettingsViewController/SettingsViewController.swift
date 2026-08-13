@@ -227,11 +227,17 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
         let environment: APIEnvironment = environmentIndex == 0 ? .production : .stage
         viewModel.handleAPIEnvironmentSelection(environment: environment)
         delegate?.didSelectAPIEnvironment(apiEnvironment: environment)
+        applyCredentialsForSelectedSet()
     }
 
     func handleCredentialsSetSelection(credentialsIndex: Int) {
         viewModel.handleCredentialsSetSelection(credentialsIndex: credentialsIndex)
-        let credentials = CredentialsSet.credentials(for: credentialsIndex)
+        applyCredentialsForSelectedSet()
+    }
+
+    /// Pushes the credentials resolved for the selected set and environment to the delegate.
+    private func applyCredentialsForSelectedSet() {
+        let credentials = viewModel.credentialsForSelectedSet()
         delegate?.didTapSaveCredentialsButton(clientId: credentials.clientId,
                                               clientSecret: credentials.clientSecret)
         showCredentialsSavedAlert(setName: "client_id \(credentials.clientId)")
