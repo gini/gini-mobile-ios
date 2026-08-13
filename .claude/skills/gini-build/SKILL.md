@@ -27,10 +27,13 @@ workflow.
 ## 1. Load the spec — no spec, no code
 
 Read `specs/$ARGUMENTS-feature.md`, or — for a bug diagnosed with
-`/gini-fix` — `specs/$ARGUMENTS-bug.md`. If neither exists, stop and tell
-the user to run `/gini-plan $ARGUMENTS` (features) or
-`/gini-fix $ARGUMENTS` (bugs) first — do not improvise a spec from the
-ticket.
+`/gini-fix` — `specs/$ARGUMENTS-bug.md`. If both exist, the ticket was
+escalated from `/gini-fix` to `/gini-plan`: build from the feature spec,
+which supersedes the diagnosis's "Proposed fix" — that fix was set aside
+for turning out bigger than a fix. The diagnosis's root cause and
+regression test plan still apply. If neither exists, stop and tell the user
+to run `/gini-plan $ARGUMENTS` (features) or `/gini-fix $ARGUMENTS` (bugs)
+first — do not improvise a spec from the ticket.
 
 From a feature spec, internalize: the numbered requirements, the affected
 modules, the public API impact, the technical conventions, the design, the
@@ -50,10 +53,15 @@ proceed differently. Do not silently deviate from the spec.
 
 ## 3. Plan the implementation — in the spec file, not just in your head
 
-If the spec already contains an `## Implementation plan` section with
-unchecked steps, you are resuming an interrupted build: verify that the
-checked steps really exist in the working tree (a session can die mid-edit),
-then continue from the first unchecked step. Do not replan from scratch.
+If the spec already contains an `## Implementation plan` section, you are
+resuming an interrupted build — never replan from scratch, and never append
+a second plan. Verify that the checked steps really exist in the working
+tree (a session can die mid-edit), then continue from the first unchecked
+step; if every step is checked, the code already landed, so skip to step 5
+and verify it. The checkboxes — verified against the working tree — are the
+source of truth, not the `Status:` count: a session can die between ticking
+a box and updating the count, so rewrite `Status: implementing (k/N)` to
+match the verified boxes before continuing.
 
 Otherwise, produce an ordered list of steps, each mapped to the spec
 requirement(s) it satisfies. Order it so tests can be written first and the
