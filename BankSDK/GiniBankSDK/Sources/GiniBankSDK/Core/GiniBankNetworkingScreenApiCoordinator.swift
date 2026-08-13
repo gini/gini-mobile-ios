@@ -373,7 +373,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             if !document.isReviewable {
                 uploadAndStartAnalysisWithReturnAssistant(document: document,
                                                           networkDelegate: networkDelegate,
-                                                          uploadDidFail: {
+                                                          uploadDidFail:{
                     self.didCapture(document: document, networkDelegate: networkDelegate)
                 })
             } else if giniConfiguration.multipageEnabled {
@@ -548,7 +548,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
-                let filteredResult = self.excludingAmountToPay(from: extractionResult)
+                let strippedResult = self.excludingCompoundExtractions(from: extractionResult)
+                let filteredResult = self.excludingAmountToPay(from: strippedResult)
                 self.presentTransactionDocsAlert(extractionResult: filteredResult,
                                                  delegate: delegate)
             }
@@ -803,6 +804,21 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                 lineItems: extractionResult.lineItems,
                                 returnReasons: extractionResult.returnReasons,
                                 skontoDiscounts: extractionResult.skontoDiscounts,
+                                candidates: extractionResult.candidates)
+    }
+
+    /**
+     Returns a copy of the extraction result with the compound extractions
+     (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
+     Used for credit-note documents (PP-2263): without compound extractions the
+     Return Assistant and Skonto flows are never triggered and the host app
+     never receives them, matching the Android implementation.
+     */
+    func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
+        return ExtractionResult(extractions: extractionResult.extractions,
+                                lineItems: nil,
+                                returnReasons: nil,
+                                skontoDiscounts: nil,
                                 candidates: extractionResult.candidates)
     }
 
