@@ -8,13 +8,7 @@ import Testing
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
 
-/// `captureConfigurationTransfersAllFlags` mutates `GiniConfiguration.shared`
-/// and reads it back; running its tests in parallel with each other (or with
-/// XCTestCase suites that also touch the singleton, like the coordinator's
-/// `captureConfiguration()` call in its init) causes interleaved writes to
-/// clobber the assertion reads. Serialize to keep the shared-state
-/// assertions deterministic.
-@Suite("GiniBankConfiguration Feature Flags", .serialized)
+@Suite("GiniBankConfiguration Feature Flags")
 struct GiniBankConfigurationFeatureFlagsTests {
 
     // MARK: - Default Flag Values
@@ -288,7 +282,14 @@ struct GiniBankConfigurationFeatureFlagsTests {
         configuration.giniErrorLoggerIsOn = false
         configuration.debugModeOn = true
 
-        let config = configuration.captureConfiguration()
+        /// Verify the transfer against a fresh, isolated `GiniConfiguration`
+        /// instead of `GiniConfiguration.shared`. `captureConfiguration()`
+        /// still mutates the singleton for production consumers; the internal
+        /// `applyCaptureConfiguration(to:)` helper does the pure transfer,
+        /// which is what the test needs to observe without racing against
+        /// parallel tests that also touch the singleton.
+        let config = GiniConfiguration()
+        configuration.applyCaptureConfiguration(to: config)
 
         #expect(config.multipageEnabled, "Expected multipageEnabled to be transferred as true")
         #expect(config.qrCodeScanningEnabled, "Expected qrCodeScanningEnabled to be transferred as true")

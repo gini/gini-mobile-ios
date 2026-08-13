@@ -471,6 +471,15 @@ public final class GiniBankConfiguration: NSObject {
      */
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
+        applyCaptureConfiguration(to: configuration)
+        GiniCapture.setConfiguration(configuration)
+        return configuration
+    }
+
+    /// Copies the bank-side flags and adapters onto the given `GiniConfiguration`.
+    /// Isolated from `GiniConfiguration.shared` so tests can verify the transfer
+    /// against a fresh instance without racing on the singleton.
+    func applyCaptureConfiguration(to configuration: GiniConfiguration) {
         configuration.customDocumentValidations = self.customDocumentValidations
 
         configuration.debugModeOn = self.debugModeOn
@@ -538,10 +547,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customNetworkProvider = self.customNetworkProvider
 
         configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
-
-        GiniCapture.setConfiguration(configuration)
-
-        return configuration
     }
 
     /**
