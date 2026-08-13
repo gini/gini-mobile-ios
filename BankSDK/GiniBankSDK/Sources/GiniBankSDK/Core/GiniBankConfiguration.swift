@@ -476,9 +476,11 @@ public final class GiniBankConfiguration: NSObject {
         return configuration
     }
 
-    /// Copies the bank-side flags and adapters onto the given `GiniConfiguration`.
-    /// Isolated from `GiniConfiguration.shared` so tests can verify the transfer
-    /// against a fresh instance without racing on the singleton.
+    /**
+     Copies the bank-side flags onto the given `GiniConfiguration`.
+     Testable seam for `captureConfiguration()`, which mutates `GiniConfiguration.shared`
+     and would otherwise race with any parallel test.
+     */
     func applyCaptureConfiguration(to configuration: GiniConfiguration) {
         configuration.customDocumentValidations = self.customDocumentValidations
 
