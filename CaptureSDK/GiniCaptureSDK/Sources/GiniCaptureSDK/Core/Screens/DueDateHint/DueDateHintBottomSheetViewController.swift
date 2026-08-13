@@ -15,21 +15,33 @@ private struct DueDateHintContentViewModel: InfoBottomSheetViewModel {
 }
 
 /**
- A specialized bottom sheet that informs the user their invoice is due
- comfortably in the future, with Cancel and Proceed actions.
+ A specialized bottom sheet that informs the user that their invoice is due
+ comfortably in the future and offers Cancel and Proceed actions.
 
- Present it over the Analysis screen when the payment due date is more
- than the configured threshold days away.
+ Present it over the Analysis screen when
+ `Date.isDueSoon(within: paymentDueHintThresholdDays)` returns `true` for
+ the extracted due date — i.e. the due date is at least
+ `paymentDueHintThresholdDays - 1` days away (inclusive-days boundary).
  */
 public final class DueDateHintBottomSheetViewController: InfoBottomSheetViewController {
 
+    /**
+     Creates a due-date-hint bottom sheet with the given formatted date and CTAs.
+     - Parameters:
+       - formattedDueDate: The payment due date rendered for display in the sheet
+         title (e.g. `"13.08.2026"`). Interpolated into the localized title format.
+       - onCancel: Invoked when the user taps the secondary CTA (`Cancel Transfer`).
+         Callers typically dismiss the SDK flow and return to the host app.
+       - onProceed: Invoked when the user taps the primary CTA (`Proceed Anyway`).
+         Callers typically continue to the extraction-results screen.
+     */
     public init(formattedDueDate: String,
                 onCancel: @escaping () -> Void,
                 onProceed: @escaping () -> Void) {
         let title = String(format: Strings.titleFormat, formattedDueDate)
         let contentViewModel = DueDateHintContentViewModel(title: title)
 
-        // Figma: "Proceed Anyway" is the primary CTA for Due Date.
+        /// Figma: "Proceed Anyway" is the primary CTA for Due Date.
         let primaryButton = InfoBottomSheetButtonsViewModel.Button(title: Strings.proceedButton,
                                                                    action: onProceed)
 
@@ -41,7 +53,7 @@ public final class DueDateHintBottomSheetViewController: InfoBottomSheetViewCont
         super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

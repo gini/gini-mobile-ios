@@ -7,6 +7,7 @@
 @testable import GiniBankAPILibrary
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
+import UIKit
 import XCTest
 
 // MARK: - Due Date Hint gate
@@ -49,7 +50,7 @@ extension NetworkingScreenApiCoordinatorTests {
     }
 
     func testShouldPresentDueDateHintAtLegacyBoundary() throws {
-        // isDueSoon(within: 5) fires when daysUntilDue + 1 >= 5, i.e. daysUntilDue ≥ 4.
+        /// isDueSoon(within: 5) fires when daysUntilDue + 1 >= 5, i.e. daysUntilDue ≥ 4.
         let (coordinator, _) = try makeCoordinatorAndService()
         configureForDueDateHint(coordinator)
         coordinator.giniBankConfiguration.paymentDueHintThresholdDays = 5
@@ -76,7 +77,7 @@ extension NetworkingScreenApiCoordinatorTests {
         configureForDueDateHint(coordinator)
         coordinator.giniBankConfiguration.paymentDueHintThresholdDays = 3
 
-        // isDueSoon(within: 3) with daysUntilDue = 2 → 3 >= 3 → true.
+        /// isDueSoon(within: 3) with daysUntilDue = 2 → 3 >= 3 → true.
         let result = createExtractionResult(paymentDueDate: dateString(daysFromNow: 2))
 
         XCTAssertTrue(coordinator.shouldPresentDueDateHint(for: result),
@@ -128,7 +129,153 @@ extension NetworkingScreenApiCoordinatorTests {
                        "Due Date Hint requires a paymentDueDate extraction")
     }
 
+    // MARK: presentDueDateHintBottomSheet — flow-level coverage
+
+    @MainActor
+    func testPresentDueDateHintBottomSheetShowsModalNonDismissibleSheet() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        let window = mountNavigationController(for: coordinator)
+        defer { window.isHidden = true }
+
+        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { }
+
+        let sheetVisible = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in
+                coordinator.screenAPINavigationController.presentedViewController is DueDateHintBottomSheetViewController
+            },
+            object: nil
+        )
+        wait(for: [sheetVisible], timeout: 2.0)
+
+        let sheet = try XCTUnwrap(
+            coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
+            "Sheet must be presented over the nav controller"
+        )
+        XCTAssertTrue(sheet.isModalInPresentation,
+                      "Sheet must not be dismissible by tap-outside or swipe — CTA-driven only")
+        XCTAssertFalse(sheet.shouldShowDragIndicator,
+                       "Sheet must hide the drag indicator — CTA-driven only")
+    }
+
+    @MainActor
+    func testPresentDueDateHintBottomSheetProceedInvokesContinuationAfterDismiss() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        let window = mountNavigationController(for: coordinator)
+        defer { window.isHidden = true }
+
+        var proceedCalled = false
+        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { proceedCalled = true }
+
+        let sheet = try waitForPresentedDueDateSheet(on: coordinator)
+        sheet.didPressPrimary()
+
+        let proceeded = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in proceedCalled },
+            object: nil
+        )
+        wait(for: [proceeded], timeout: 2.0)
+
+        XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
+                     "Sheet must be dismissed before the continuation fires")
+        XCTAssertFalse(coordinator.screenAPINavigationController.view.accessibilityElementsHidden,
+                       "Presenter must be re-exposed to VoiceOver after dismiss")
+    }
+
+    @MainActor
+    func testPresentDueDateHintBottomSheetCancelNotifiesResultsDelegate() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        let window = mountNavigationController(for: coordinator)
+        defer { window.isHidden = true }
+        XCTAssertFalse(resultsDelegate.closeCalled,
+                       "Precondition: resultsDelegate must not have been notified yet")
+
+        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) {
+            XCTFail("Cancel path must not invoke the continuation")
+        }
+
+        let sheet = try waitForPresentedDueDateSheet(on: coordinator)
+        sheet.didPressSecondary()
+
+        let cancelled = XCTNSPredicateExpectation(
+            predicate: NSPredicate { [resultsDelegate] _, _ in
+                resultsDelegate?.closeCalled == true
+            },
+            object: nil
+        )
+        wait(for: [cancelled], timeout: 2.0)
+
+        XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
+                     "Sheet must be dismissed before the cancel notification fires")
+        XCTAssertFalse(coordinator.screenAPINavigationController.view.accessibilityElementsHidden,
+                       "Presenter must be re-exposed to VoiceOver after dismiss")
+    }
+
+    // MARK: handleToBePaidCase — branch coverage
+
+    @MainActor
+    func testHandleToBePaidCaseInvokesContinuationImmediatelyWhenGateFails() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        let window = mountNavigationController(for: coordinator)
+        defer { window.isHidden = true }
+        configureForDueDateHint(coordinator)
+        coordinator.giniBankConfiguration.paymentDueHintEnabled = false
+
+        let result = createExtractionResult(paymentDueDate: dateString(daysFromNow: 10))
+        var continuationCalled = false
+        coordinator.handleToBePaidCase(result) { continuationCalled = true }
+
+        XCTAssertTrue(continuationCalled,
+                      "When the gate fails, the continuation must fire synchronously")
+        XCTAssertNil(coordinator.screenAPINavigationController.presentedViewController,
+                     "When the gate fails, no sheet must be presented")
+    }
+
+    @MainActor
+    func testHandleToBePaidCasePresentsSheetWhenGatesPass() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+        let window = mountNavigationController(for: coordinator)
+        defer { window.isHidden = true }
+        configureForDueDateHint(coordinator)
+        coordinator.giniBankConfiguration.paymentDueHintThresholdDays = 5
+
+        let result = createExtractionResult(paymentDueDate: dateString(daysFromNow: 10))
+        var continuationCalled = false
+        coordinator.handleToBePaidCase(result) { continuationCalled = true }
+
+        _ = try waitForPresentedDueDateSheet(on: coordinator)
+        XCTAssertFalse(continuationCalled,
+                       "When the sheet is presented, the continuation must wait for the user's CTA")
+    }
+
     // MARK: - Helpers
+
+    @MainActor
+    private func mountNavigationController(for coordinator: GiniBankNetworkingScreenApiCoordinator) -> UIWindow {
+        let nav = coordinator.screenAPINavigationController
+        if nav.viewControllers.isEmpty {
+            nav.viewControllers = [UIViewController()]
+        }
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = nav
+        window.makeKeyAndVisible()
+        return window
+    }
+
+    @MainActor
+    private func waitForPresentedDueDateSheet(on coordinator: GiniBankNetworkingScreenApiCoordinator)
+        throws -> DueDateHintBottomSheetViewController {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in
+                coordinator.screenAPINavigationController.presentedViewController is DueDateHintBottomSheetViewController
+            },
+            object: nil
+        )
+        wait(for: [expectation], timeout: 2.0)
+        return try XCTUnwrap(
+            coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
+            "Sheet must be presented over the nav controller"
+        )
+    }
 
     private func configureForDueDateHint(_ coordinator: GiniBankNetworkingScreenApiCoordinator) {
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true

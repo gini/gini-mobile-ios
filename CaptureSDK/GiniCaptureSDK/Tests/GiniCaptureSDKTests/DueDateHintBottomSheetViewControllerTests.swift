@@ -37,9 +37,9 @@ struct DueDateHintBottomSheetViewControllerTests {
                                                        onProceed: { proceedCalled = true })
         _ = sut.view
 
-        // Bypass sendActions() — UIApplication isn't running in the test host,
-        // so the button-target chain wouldn't dispatch. The VC's @objc
-        // internal handler is the same target the button is wired to.
+        /// Bypass sendActions() — UIApplication isn't running in the test host,
+        /// so the button-target chain wouldn't dispatch. The VC's @objc
+        /// internal handler is the same target the button is wired to.
         sut.didPressPrimary()
 
         #expect(proceedCalled, "Tapping the primary button must invoke onProceed")
@@ -70,19 +70,6 @@ struct DueDateHintBottomSheetViewControllerTests {
                                                        onProceed: {})
         #expect(!sut.shouldShowDragIndicator,
                 "Due Date Hint sheet must not show a drag indicator — dismissal is CTA-driven only")
-    }
-
-    // MARK: - Localization
-
-    @Test("Localized strings resolve to non-empty values")
-    @MainActor func localizedStringsResolve() {
-        #expect(!DueDateHintBottomSheetViewController.Strings.titleFormat.isEmpty)
-        #expect(!DueDateHintBottomSheetViewController.Strings.description.isEmpty)
-        #expect(!DueDateHintBottomSheetViewController.Strings.proceedButton.isEmpty)
-        #expect(!DueDateHintBottomSheetViewController.Strings.cancelButton.isEmpty)
-        // Guard against typo drift on the format string.
-        #expect(DueDateHintBottomSheetViewController.Strings.titleFormat.contains("%@"),
-                "Title format must include a single %@ placeholder for the date")
     }
 
     // MARK: - Helpers

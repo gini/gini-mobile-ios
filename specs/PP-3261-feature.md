@@ -30,7 +30,6 @@ is an out-of-scope sibling that a later ticket will plug into the same
 1. When extractions have been returned and:
    - `giniBankConfiguration.paymentDueHintEnabled == true`, **and**
    - `getDocumentPaymentDueDate(for:)` returns a non-nil `Date`, **and**
-   - `paymentDueDateHandler != nil` (legacy guard should be removed), **and**
    - Return Assistant / Skonto are not shown in this flow, **and**
    - the pre-existing `Date.isDueSoon(within: paymentDueHintThresholdDays)`
      predicate returns `true` (unchanged from the legacy inline-hint
@@ -47,14 +46,24 @@ is an out-of-scope sibling that a later ticket will plug into the same
    strictly less than the threshold, no bottom sheet is shown and the flow continues as before.
 3. The legacy inline hint is removed from the SDK's own flow: the
    `GiniBankNetworkingScreenApiCoordinator` no longer drives the
-   `paymentDueDateHandler` (i.e. no longer calls
-   `handler.handlePaymentDueDate(_:)` / `handler.clearPaymentDueDate(after:)`)
-   inside `handleToBePaidCase`. The public API surface that backed the
-   legacy hint stays intact and functional — see (4).
+   `paymentDueDateHandler` (which itself has been deleted — see (4))
+   inside `handleToBePaidCase`. Presentation now goes through a new
+   `presentDueDateHintBottomSheet(dueDate:onProceed:)` helper.
 4. `PaymentDueDateProtocol`, `GiniScreenAPICoordinator.paymentDueDateHandler`,
-   and the `AnalysisViewController` conformance (including the internal
-   `PaymentDueHintView` and `DismissMessageView`
-   that back them) all **should be removed**. The localization keys should remain and new ones should be added for this ticket. Mark the old ones deprecated if possible, if not, add a comment before and after the old ones that they are deprecated and will be removed in a future release. The public API surface is preserved for integrators that invoke it directly, but the SDK's own flow no longer calls it.
+   the `AnalysisViewController` conformance
+   (`handlePaymentDueDate(_:)` / `clearPaymentDueDate(after:)`), the
+   supporting `PaymentDueHintView` and `DismissMessageView`, and the
+   scrolling-stack infra that hosted them are **removed**. The legacy
+   localization keys (`ginicapture.payment.due.hint.prefix`,
+   `ginicapture.payment.due.hint.suggestion`,
+   `ginicapture.dismiss.message.title`) are removed with them; new keys
+   under `ginicapture.payment.duedate.hint.*` back the new sheet. This is
+   a source-breaking API change for integrators who supplied their own
+   `paymentDueDateHandler`; per the ticket decision it lands without a
+   deprecation cycle, matching the parallel decision on Android PR #965
+   (`PaymentDueHintDismissListener`/`PaymentDueHintContent`/`PaymentDueHintColors`
+   removed outright). Release notes must call it out and the SDK version
+   tag needs a major-version bump per SemVer.
 5. The `paymentDueDate` extraction is the same generic-extractions field the
    code reads today via
    `GiniBankNetworkingScreenApiCoordinator.getDocumentPaymentDueDate(for:)`
@@ -87,11 +96,13 @@ is an out-of-scope sibling that a later ticket will plug into the same
      `InfoBottomSheetViewController`).
    - Tap-outside does not dismiss (already the `UISheetPresentationController`
      behavior when `isModalInPresentation == true`).
-10. While the sheet is being presented, the 4-second-delayed
-    `CaptureSuggestionsView` on the Analysis screen must not appear. This
-    prevents VoiceOver from announcing suggestion hints on top of the modal.
-    Implementation is a new `Bool` guard on the Analysis screen (see
-    design) — no configuration change surfaces to integrators.
+10. While the sheet is being presented, any pending
+    `CaptureSuggestionsView` banner on the Analysis screen must be cleared.
+    This prevents VoiceOver from announcing suggestion hints on top of the
+    modal. Implementation: the coordinator calls the pre-existing
+    `AnalysisViewController.removeCaptureSuggestions()` (elevated to
+    `public` in this ticket) before presenting the sheet — no new state
+    flag, matching the Android approach in PR #965 (`stopAndHideHints()`).
 11. Accessibility (matches the `InfoBottomSheetViewController` +
     `GiniBottomSheetViewController` precedent, no new custom code):
     - `accessibilityViewIsModal = true` set after presentation.
@@ -117,66 +128,76 @@ is an out-of-scope sibling that a later ticket will plug into the same
 
 ## Affected modules
 
-- **GiniCaptureSDK** — new public bottom-sheet ViewController and its
-  localization entries; new internal `CaptureSuggestionsView` suppression
-  flag on `AnalysisViewController`. No deletions. `PaymentDueHintView`,
-  `DismissMessageView`, `PaymentDueDateProtocol`,
-  `paymentDueDateHandler`, and the `AnalysisViewController` conformance
-  stay in place unchanged. Minimum deployment target: iOS 15+
-  (unchanged).
+- **GiniCaptureSDK** — new public `DueDateHintBottomSheetViewController`
+  and its localization entries. Removes `PaymentDueDateProtocol`,
+  `GiniScreenAPICoordinator.paymentDueDateHandler`, the
+  `AnalysisViewController` conformance, `PaymentDueHintView.swift`,
+  `DismissMessageView.swift`, and the supporting `scrollView` /
+  `contentStack` / `setupScrollableStackView` /
+  `updateContentStackConstraints` infrastructure. Elevates
+  `AnalysisViewController.removeCaptureSuggestions()` from `private` to
+  `public` so the coordinator can clear the pending
+  `CaptureSuggestionsView` banner before presenting the sheet. Minimum
+  deployment target: iOS 15+ (unchanged).
 - **GiniBankSDK** — depends on `GiniCaptureSDK`. Rewrites
   `GiniBankNetworkingScreenApiCoordinator.handleToBePaidCase(_:_:)` to
-  present the new sheet instead of driving the legacy handler. Adds a
-  `presentDueDateHintBottomSheet(...)` method that mirrors
-  `presentDocumentMarkedAsPaidBottomSheet(_:onProceedTapped:)`. Renaming
-  of the sheet-container VC to a two-state class is out of scope — this
-  spec introduces the Due-Date-only VC; the Schedule-Payment ticket will
-  extend it. Minimum deployment target: iOS 15+
-  (unchanged).
+  present the new sheet instead of driving the legacy handler. Adds an
+  internal `presentDueDateHintBottomSheet(dueDate:onProceed:)` helper
+  (mirrors `presentDocumentMarkedAsPaidBottomSheet(_:onProceedTapped:)`)
+  and an internal `shouldPresentDueDateHint(for:)` predicate that
+  consolidates the gate. Renaming of the sheet-container VC to a
+  two-state class is out of scope — this spec introduces the
+  Due-Date-only VC; the Schedule-Payment ticket will extend it. Minimum
+  deployment target: iOS 15+ (unchanged).
 
 No changes to `GiniBankAPILibrary`, `GiniHealthAPILibrary`, `GiniUtilites`,
 `GiniInternalPaymentSDK`, `GiniHealthSDK`.
 
 ## Public API impact
 
-**Additive only.** No deprecations, no removals, no signature changes.
-Every declaration on the current integrator-visible surface stays as-is.
+**Source-breaking.** The legacy inline-hint public surface is removed
+outright (no deprecation cycle) per the ticket decision and in parity
+with Android PR #965. This requires a major-version bump on GiniCaptureSDK.
 
 **GiniCaptureSDK (public):**
-- **New** `public final class DueDateHintBottomSheetViewController: InfoBottomSheetViewController`
-  with a `public init(formattedDueDate: String, onCancel: @escaping () -> Void,
-  onProceed: @escaping () -> Void)`. Mirrors
-  `DocumentMarkedAsPaidViewController`. Located at
+- **New.** `public final class DueDateHintBottomSheetViewController:
+  InfoBottomSheetViewController` with `public init(formattedDueDate:
+  String, onCancel: @escaping () -> Void, onProceed: @escaping () -> Void)`.
+  Mirrors `DocumentMarkedAsPaidViewController`. Located at
   `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/DueDateHint/DueDateHintBottomSheetViewController.swift`.
-- **Remove** `public protocol PaymentDueDateProtocol` and
+- **Removed.** `public protocol PaymentDueDateProtocol` and
   `public weak var paymentDueDateHandler: PaymentDueDateProtocol?` on
-  `GiniScreenAPICoordinator` — plus the internal `PaymentDueHintView`,
-  `DismissMessageView`.
-- **Unchanged.** `AnalysisViewController`'s conformance to
-  `PaymentDueDateProtocol` — `handlePaymentDueDate(_:)` and
-  `clearPaymentDueDate(after:)` — plus the old localization keys
-  (`ginicapture.payment.due.hint.prefix`,
+  `GiniScreenAPICoordinator`; the `AnalysisViewController` conformance
+  and its `handlePaymentDueDate(_:)` / `clearPaymentDueDate(after:)`
+  method bodies; the internal `PaymentDueHintView` and
+  `DismissMessageView`; and the scrolling-stack infra
+  (`scrollView`, `contentStack`, `setupScrollableStackView`,
+  `updateContentStackConstraints`) that hosted them.
+- **Removed localization keys.** `ginicapture.payment.due.hint.prefix`,
   `ginicapture.payment.due.hint.suggestion`,
-  `ginicapture.dismiss.message.title`) all stay. They become dead
-  paths only from the SDK's own coordinator side; any external caller
-  invoking `handlePaymentDueDate(_:)` on an `AnalysisViewController`
-  instance directly (unusual, but possible) still gets the current
-  behavior.
-- **New public hooks on `AnalysisViewController`** (additive, needed
-  for cross-module wiring from GiniBankSDK):
-  - `public var shouldSuppressCaptureSuggestions: Bool = false`
-  - `public func removeCaptureSuggestions()` (was `private`; body
-    unchanged). Before introducinf this, check if we realy neeed them. Right now it should work for Already paid without any changes.
+  `ginicapture.dismiss.message.title` are deleted from both
+  `en.lproj` and `de.lproj`. Integrator overrides for these keys become
+  no-ops at runtime.
+- **Visibility change.** `AnalysisViewController.removeCaptureSuggestions()`
+  is elevated from `private` to `public` (body unchanged). The
+  coordinator uses it to clear a pending capture-suggestions banner
+  before presenting the sheet. No new `Bool` flag is added — the earlier
+  draft's `shouldSuppressCaptureSuggestions` flag was discarded because
+  the guard it inserted only ran during `viewDidLoad`, before the
+  coordinator ever set it (Android reaches the same conclusion — its
+  `stopAndHideHints()` is a synchronous stop + hide, no future-suppression
+  flag).
 
 **GiniBankSDK (public):**
 - None. All changes live inside
-  `GiniBankNetworkingScreenApiCoordinator` (internal helper methods).
+  `GiniBankNetworkingScreenApiCoordinator` (internal helper methods:
+  `shouldPresentDueDateHint(for:)` and `presentDueDateHintBottomSheet(dueDate:onProceed:)`).
 - `paymentDueHintEnabled` and `paymentDueHintThresholdDays` on
   `GiniBankConfiguration` are unchanged.
 - `paymentScheduleHintEnabled` is not introduced by this spec.
 
-Because the change is additive, no `Package-release.swift` bumps or
-semver-major considerations are triggered.
+Requires `Package-release.swift` bump on `GiniCaptureSDK` and any
+release-repo dependents, plus a major-version SemVer bump.
 
 ## Technical conventions
 
@@ -243,7 +264,8 @@ Grounded in `platform.md` and the modules touched:
 
    The legacy keys `ginicapture.payment.due.hint.prefix`,
    `ginicapture.payment.due.hint.suggestion`, and
-   `ginicapture.dismiss.message.title` are **kept**.
+   `ginicapture.dismiss.message.title` are **removed** in both `en.lproj`
+   and `de.lproj`, along with the deprecated header/footer banners.
 9. **Quality gates.** `make lint scheme=GiniBankSDK` and `make lint
    scheme=GiniCaptureSDK` must be clean (local runs on
    `iPhone 15 Pro / iOS 17.2`; CI on `iPhone 17 / iOS 26.2` per
@@ -312,7 +334,6 @@ legacy guard chain is preserved verbatim inside an internal predicate
 func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
     guard determineIfPaymentDueHintEnabled(for: extractionResult),
           let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-          paymentDueDateHandler != nil,
           !shouldShowReturnAssistant(for: extractionResult),
           !shouldShowSkonto(for: extractionResult) else {
         return false
@@ -320,6 +341,9 @@ func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
     return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
 }
 ```
+
+The legacy `paymentDueDateHandler != nil` clause is gone because the
+handler property no longer exists (see §Public API impact).
 
 `handleToBePaidCase` becomes a thin caller:
 
@@ -336,31 +360,53 @@ presentDueDateHintBottomSheet(dueDate: dueDate,
 New sibling to `presentDocumentMarkedAsPaidBottomSheet(_:onProceedTapped:)`:
 
 ```swift
-private func presentDueDateHintBottomSheet(dueDate: Date,
-                                           extractionResult: ExtractionResult,
-                                           onProceed: @escaping () -> Void) {
-    let vc = DueDateHintBottomSheetViewController(
+@MainActor
+func presentDueDateHintBottomSheet(dueDate: Date,
+                                   onProceed: @escaping () -> Void) {
+    /// Cancel the pending capture-suggestions banner so it doesn't collide
+    /// with the sheet's VoiceOver focus while the sheet is up.
+    let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController
+    analysisVC?.removeCaptureSuggestions()
+
+    let sheet = DueDateHintBottomSheetViewController(
         formattedDueDate: dueDate.toDisplayString(),
         onCancel: { [weak self] in
-            self?.screenAPINavigationController.dismiss(animated: true) {
-                self?.didCancelCapturing()
+            guard let self else { return }
+            self.screenAPINavigationController.dismiss(animated: true) {
+                /// Restore accessibility on the presenter — `presentAsBottomSheet`
+                /// hides the presenter's view from VoiceOver on presentation and
+                /// leaves it hidden when the sheet goes away.
+                self.screenAPINavigationController.view.accessibilityElementsHidden = false
+                self.didCancelCapturing()
             }
         },
         onProceed: { [weak self] in
-            self?.handleSavingPhotos(for: extractionResult)
-            self?.screenAPINavigationController.dismiss(animated: true) {
+            guard let self else { return }
+            self.screenAPINavigationController.dismiss(animated: true) {
+                self.screenAPINavigationController.view.accessibilityElementsHidden = false
                 onProceed()
             }
         }
     )
-    vc.isModalInPresentation = true
-    vc.presentAsBottomSheet(from: screenAPINavigationController)
+    sheet.isModalInPresentation = true
+    sheet.presentAsBottomSheet(from: screenAPINavigationController)
 }
 ```
 
-`handleSavingPhotos(for:)` on the proceed branch is copied from the
-`presentDocumentMarkedAsPaidBottomSheet` precedent so the "save photo
-locally" contract stays consistent when the user proceeds past a hint.
+Notes:
+- The helper is `internal` (not `private`) so the flow-level tests can
+  drive it — same testability pattern used for
+  `shouldPresentDueDateHint(for:)`.
+- `handleSavingPhotos(for:)` is **not** called inside `onProceed`.
+  Unlike the paid-warning path, the `.toBePaid` branch of the switch at
+  `handleAnalysisResults` already calls `handleSavingPhotos` before
+  `handleToBePaidCase`; re-calling it here would double-save.
+- `accessibilityElementsHidden` is restored in both dismissal completions
+  because `presentAsBottomSheet` unconditionally sets it to `true` on the
+  presenter and never restores it. This fixes an inherited a11y bug in the
+  shared `presentAsBottomSheet` extension for the due-date consumer; the
+  sibling paid-warning path has the same latent issue and is left for a
+  follow-up scoped ticket.
 
 ### Date helpers
 
@@ -371,32 +417,28 @@ remains the only threshold predicate — no new Date helpers are added.
 
 `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift`:
 
-- **Remove** `hintView: PaymentDueHintView` (line 135), `dismissView`, and
-  every helper under the `// MARK: - Handling UI - Payment DueHint`
-  region. They preserve the public `PaymentDueDateProtocol` behavior
-  for integrators that drive it themselves.
+- **Remove** `hintView: PaymentDueHintView`, `dismissHintView`, and every
+  helper under the `// MARK: - Handling UI - Payment DueHint` region.
 - **Remove** the `PaymentDueDateProtocol` conformance and both method
-  bodies, or reuse it if needed.
+  bodies. The protocol itself is deleted from
+  `GiniScreenAPICoordinator.swift` (see §Public API impact).
 - **Remove** `PaymentDueHintView.swift` and `DismissMessageView.swift`.
-- The behavior change is confined to the coordinator — see
-  §Coordinator flow. From the SDK's own flow, `handlePaymentDueDate` is
-  simply never called anymore.
+- **Remove** the scroll/stack infrastructure that hosted the legacy hint:
+  `scrollView`, `contentStack`, `setupScrollableStackView()`,
+  `updateContentStackConstraints()`. The remaining screen goes back to
+  laying out `imageView` and `overlayView` directly.
 
-Suppression of the 4-second `CaptureSuggestionsView`(check this behaviour already threated for Already paid flow):
+Suppression of the 4-second `CaptureSuggestionsView`:
 
-- Add an internal `var shouldSuppressCaptureSuggestions: Bool = false` on
-  `AnalysisViewController`.
-- Guard the `showCaptureSuggestions()` call in `viewDidLoad()` (line 195)
-  with `guard !shouldSuppressCaptureSuggestions else { return }`.
-- In `GiniBankNetworkingScreenApiCoordinator.presentDueDateHintBottomSheet`,
-  before calling `presentAsBottomSheet`, set
-  `(screenAPINavigationController.children.last as? AnalysisViewController)?.shouldSuppressCaptureSuggestions = true`
-  and, in both cancel/proceed dismissal closures, reset the flag to
-  `false` and call `analysisVC.removeCaptureSuggestions()` (already an
-  existing method).
-
-This is deliberately internal state — no new public API — because the
-suggestions banner is not something integrators toggle today.
+- The Analysis screen exposes `removeCaptureSuggestions()` (visibility
+  elevated from `private` to `public`).
+- The coordinator's `presentDueDateHintBottomSheet(dueDate:onProceed:)`
+  calls `removeCaptureSuggestions()` on the top-of-stack
+  `AnalysisViewController` synchronously before presenting the sheet.
+- No `Bool` flag is added — a "suppress future banners" flag would only
+  matter if the coordinator could run before `viewDidLoad`, which it
+  can't. Android reaches the same conclusion (its `stopAndHideHints()`
+  is a synchronous stop + hide, no future-suppression flag).
 
 ### Sheet content plumbing
 
@@ -449,17 +491,17 @@ Analysis screen           GiniBankNetworkingScreenApiCoordinator
       │                     │              │
       │                     │ paymentDueHintEnabled?
       │                     │ paymentDueDate valid?
-      │                     │ paymentDueDateHandler != nil?
+      │                     │ Return Assistant / Skonto not shown?
       │                     │ dueDate.isDueSoon(within: threshold)?
       │                     │
       │                     ├── no ─► continueWithFeatureFlow()
       │                     │
-      │                     └── yes ─► shouldSuppressCaptureSuggestions = true
+      │                     └── yes ─► analysisVC.removeCaptureSuggestions()
       │                                presentDueDateHintBottomSheet(...)
       │◄─────────────────────────── modal bottom sheet
       │
-      │      Cancel Transfer  ─► dismiss + didCancelCapturing() → bank app
-      │      Proceed Anyway   ─► dismiss + continueWithFeatureFlow()
+      │      Cancel Transfer  ─► dismiss + restore a11y + didCancelCapturing() → bank app
+      │      Proceed Anyway   ─► dismiss + restore a11y + continueWithFeatureFlow()
 ```
 
 ## Test plan
@@ -471,61 +513,51 @@ and WCAG AA contrast are covered by manual QA per the ticket AC.
 ### GiniCaptureSDK (Swift Testing — `@Suite`/`@Test`/`#expect`)
 
 **Location:** `CaptureSDK/GiniCaptureSDK/Tests/GiniCaptureSDKTests/DueDateHintBottomSheetViewControllerTests.swift`
-(new). The existing `AnalysisViewControllerPaymentDueHintTests.swift`
-stays — it still validates the preserved
-`handlePaymentDueDate(_:)` / `clearPaymentDueDate(after:)` behavior.
+(new). The legacy `AnalysisViewControllerPaymentDueHintTests.swift`
+suite is **removed** — the code paths it exercised
+(`handlePaymentDueDate(_:)` / `clearPaymentDueDate(after:)`) no longer
+exist.
 
-- `@Suite("DueDateHintBottomSheetViewController")` with tests for:
-  - Title is formatted with the passed `formattedDueDate` (verify via
-    `viewDidLoad` + reading the private header via test-only
-    `accessibilityLabel` on the title label, matching the pattern the
-    deleted `AnalysisViewControllerPaymentDueHintTests` used to peek
-    into subviews).
+- `@Suite("DueDateHintBottomSheetViewController")` covers:
+  - Title is formatted with the passed `formattedDueDate` — assert the
+    header label text equals `String(format: Strings.titleFormat,
+    formattedDate)`.
   - Primary button tap invokes `onProceed`; secondary button tap invokes
-    `onCancel` (use expectation closures passed at init).
-  - `isModalInPresentation` is set by the caller — assert via a small
-    presenting-VC harness that constructs the sheet + calls
-    `presentAsBottomSheet` and inspects
-    `presentedViewController?.isModalInPresentation`.
-  - Localization: EN and DE bundle lookups resolve the four new keys
-    (guard against typo drift). Test bundle already ships EN + DE.
-  - Accessibility elements order equals
-    `[title, description, primary, secondary]` (in portrait; landscape
-    is a manual-QA target).
+    `onCancel`. Bypasses `sendActions()` — the UIApplication chain
+    isn't running in the test host — and calls the `@objc` `didPressPrimary`
+    / `didPressSecondary` handlers that back the button targets directly.
+  - `shouldShowDragIndicator == false` — dismissal is CTA-driven only.
 
-**Location:** `CaptureSDK/GiniCaptureSDK/Tests/GiniCaptureSDKTests/AnalysisViewControllerCaptureSuggestionsSuppressionTests.swift`
-(new).
-
-- `@Test` — when `shouldSuppressCaptureSuggestions == true` before
-  `viewDidLoad`, the `CaptureSuggestionsView` is not added to the view
-  hierarchy after the 4-second delay (advance a mocked scheduler / use
-  `withCheckedContinuation` — reuse the timing helper from the
-  preserved `AnalysisViewControllerPaymentDueHintTests` suite).
-- `@Test` — flipping the flag back to `false` and calling
-  `removeCaptureSuggestions()` does not crash and leaves the hierarchy
-  clean.
-
-### GiniBankSDK (XCTest)
+### GiniBankSDK (XCTest — extends the existing suite)
 
 **Location:** `BankSDK/GiniBankSDK/Tests/GiniBankSDKTests/NetworkingScreenApiCoordinatorTests+DueDateHint.swift`
-(new file, matches the pattern of `+CX.swift`).
+(new file, matches the pattern of `+CX.swift` / `+Helpers.swift`; extends
+the existing `NetworkingScreenApiCoordinatorTests: XCTestCase` via a
+Swift `extension` to reuse the fixture setup + helpers).
 
-- `func testDueDateHintSheetPresentedWhenAllGatesPass()` — configure
-  `paymentDueHintEnabled = true`, feed a mock `ClientConfiguration` with
-  `paymentScheduleHintEnabled = false`, extraction with `paymentDueDate`
-  = today + 10 days, threshold 5. Expect
-  `presentDueDateHintBottomSheet` invoked (verify via a subclass hook or
-  a mock `screenAPINavigationController`).
-- `func testDueDateHintNotPresentedWhenDueTodayOrPast()` — parameterize
-  with dates: today, yesterday, 5 days ago. Expect no sheet.
-- `func testDueDateHintNotPresentedWhenRemainingDaysAtOrBelowThreshold()`
-  — threshold 5, dueDate = today + 5 (edge: 5 is NOT > 5). Expect no
-  sheet. Then dueDate = today + 6 → expect sheet.
-- `func testDueDateHintThresholdRespectsConfiguration()` — override
-  `paymentDueHintThresholdDays = 3`, dueDate = today + 4 → expect sheet.
-- `func testDueDateHintDoesNotSurfaceWhenReturnAssistantWins()` — same
-  gate carried over from `handleToBePaidCase` today; assert precedence.
-- `func testDueDateHintDoesNotSurfaceWhenSkontoWins()` — analogous.
+Gate-predicate tests — `shouldPresentDueDateHint(for:)`:
+
+- Fires when the due date is comfortably beyond the threshold.
+- Does not fire when the due date is today, in the past, at the legacy
+  boundary (daysUntilDue = 3 with threshold 5), or below it.
+- Fires at the legacy boundary (daysUntilDue = 4 with threshold 5) and
+  under a custom threshold (daysUntilDue = 2 with threshold 3).
+- Does not fire when `paymentDueHintEnabled` is off, when Return Assistant
+  wins, when Skonto wins, or when `paymentDueDate` is missing.
+
+Flow-level presentation tests — `presentDueDateHintBottomSheet(...)`:
+
+- Sheet is presented as a `DueDateHintBottomSheetViewController` with
+  `isModalInPresentation == true` and `shouldShowDragIndicator == false`.
+- Primary CTA (`didPressPrimary`) dismisses the sheet, restores
+  `accessibilityElementsHidden` on the presenter, and invokes the
+  continuation.
+- Secondary CTA (`didPressSecondary`) dismisses the sheet, restores
+  `accessibilityElementsHidden`, and calls
+  `giniCaptureDidCancelAnalysis()` on the results delegate.
+- Presentation and dismissal are driven with the navigation controller
+  mounted in a `UIWindow`; async completion is awaited via
+  `XCTNSPredicateExpectation`.
 
 ### Manual QA (per the ticket AC)
 

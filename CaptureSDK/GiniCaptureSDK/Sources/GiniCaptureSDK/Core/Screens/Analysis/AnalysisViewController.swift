@@ -114,13 +114,6 @@ import Photos
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
-    /**
-     Skip the delayed capture-suggestions banner. Coordinators presenting
-     a modal over the Analysis screen (e.g. the Due Date Hint bottom
-     sheet) set this to avoid VoiceOver conflicts.
-     */
-    public var shouldSuppressCaptureSuggestions: Bool = false
-
     var pages: [GiniCapturePage]?
 
     /**
@@ -424,7 +417,6 @@ import Photos
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        guard !shouldSuppressCaptureSuggestions else { return }
         captureSuggestions = CaptureSuggestionsView(superView: view,
                                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions?.start()

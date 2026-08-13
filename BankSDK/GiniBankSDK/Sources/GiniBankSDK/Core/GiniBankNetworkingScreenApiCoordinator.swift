@@ -561,46 +561,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    @MainActor
-    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
-                                    _ continueWithFeatureFlow: @escaping () -> Void) {
-        guard shouldPresentDueDateHint(for: extractionResult),
-              let dueDate = getDocumentPaymentDueDate(for: extractionResult) else {
-            continueWithFeatureFlow()
-            return
-        }
-
-        presentDueDateHintBottomSheet(dueDate: dueDate,
-                                      onProceed: continueWithFeatureFlow)
-    }
-
-    @MainActor
-    private func presentDueDateHintBottomSheet(dueDate: Date,
-                                               onProceed: @escaping () -> Void) {
-        // Suppress the 4s capture-suggestions banner while the sheet is up
-        // (avoids VoiceOver conflicts). Also cancel any in-flight banner.
-        let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController
-        analysisVC?.shouldSuppressCaptureSuggestions = true
-        analysisVC?.removeCaptureSuggestions()
-
-        let sheet = DueDateHintBottomSheetViewController(
-            formattedDueDate: dueDate.toDisplayString(),
-            onCancel: { [weak self] in
-                self?.screenAPINavigationController.dismiss(animated: true) {
-                    self?.didCancelCapturing()
-                }
-            },
-            onProceed: { [weak self] in
-                self?.screenAPINavigationController.dismiss(animated: true) {
-                    onProceed()
-                }
-            }
-        )
-
-        sheet.isModalInPresentation = true
-        sheet.presentAsBottomSheet(from: screenAPINavigationController)
-    }
-
     private func handlePaidCase(_ extractionResult: ExtractionResult,
                                 _ continueWithFeatureFlow: @escaping () -> Void) {
         guard determineIfAlreadyPaidHintEnabled(for: extractionResult) else {
@@ -743,6 +703,52 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         }
 
         return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
+    }
+
+    @MainActor
+    func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                            _ continueWithFeatureFlow: @escaping () -> Void) {
+        guard shouldPresentDueDateHint(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult) else {
+            continueWithFeatureFlow()
+            return
+        }
+
+        presentDueDateHintBottomSheet(dueDate: dueDate,
+                                      onProceed: continueWithFeatureFlow)
+    }
+
+    @MainActor
+    func presentDueDateHintBottomSheet(dueDate: Date,
+                                       onProceed: @escaping () -> Void) {
+        /// Cancel the pending capture-suggestions banner so it doesn't collide
+        /// with the sheet's VoiceOver focus while the sheet is up.
+        let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController
+        analysisVC?.removeCaptureSuggestions()
+
+        let sheet = DueDateHintBottomSheetViewController(
+            formattedDueDate: dueDate.toDisplayString(),
+            onCancel: { [weak self] in
+                guard let self else { return }
+                self.screenAPINavigationController.dismiss(animated: true) {
+                    /// Restore accessibility on the presenter — `presentAsBottomSheet`
+                    /// hides the presenter's view from VoiceOver on presentation and
+                    /// leaves it hidden when the sheet goes away.
+                    self.screenAPINavigationController.view.accessibilityElementsHidden = false
+                    self.didCancelCapturing()
+                }
+            },
+            onProceed: { [weak self] in
+                guard let self else { return }
+                self.screenAPINavigationController.dismiss(animated: true) {
+                    self.screenAPINavigationController.view.accessibilityElementsHidden = false
+                    onProceed()
+                }
+            }
+        )
+
+        sheet.isModalInPresentation = true
+        sheet.presentAsBottomSheet(from: screenAPINavigationController)
     }
 
     /**
