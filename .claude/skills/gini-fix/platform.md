@@ -70,8 +70,9 @@ the matching release branch, not `main` — see `RELEASE.md` /
   and GiniCaptureSDK; GiniBankSDK, GiniHealthSDK, and GiniHealthAPILibrary
   remain mostly XCTest. Match the neighboring test file when extending;
   for a fresh location, follow the module's dominant framework.
-- Manual protocol-conformance mocks — no third-party mocking framework. No
-  snapshot-testing library in use.
+- Mocking framework choice is enforced by **gini-orchestrator** per
+  `.claude/rules/mandatory-rules.md` (manual protocol conformances, no
+  third-party framework). No snapshot-testing library in use.
 - Fixtures in `Tests/<SDK>Tests/Resources/`. Not only JSON — CaptureSDK
   ships `.pdf` (rotated variants, multi-page), `.jpg`, and `.txt` extraction
   fixtures; API libraries ship `.pdf` and `.png` payloads. Prefer an
