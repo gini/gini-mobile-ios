@@ -436,7 +436,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
-    // MARK: - excludingCompoundExtractions Tests (PP-2263)
+    // MARK: - excludingCompoundExtractions Tests
 
     func testExcludingCompoundExtractionsRemovesLineItemsSkontoDiscountsAndReturnReasons() throws {
         let (coordinator, _) = try makeCoordinatorAndService()

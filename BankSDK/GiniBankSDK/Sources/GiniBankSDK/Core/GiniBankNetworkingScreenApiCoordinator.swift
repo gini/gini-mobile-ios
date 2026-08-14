@@ -810,9 +810,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     /**
      Returns a copy of the extraction result with the compound extractions
      (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
-     Used for credit-note documents (PP-2263): without compound extractions the
-     Return Assistant and Skonto flows are never triggered and the host app
-     never receives them, matching the Android implementation.
      */
     func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
         return ExtractionResult(extractions: extractionResult.extractions,
