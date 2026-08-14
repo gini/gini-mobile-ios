@@ -16,7 +16,9 @@ struct CredentialsSet {
         return (clientId: client.id, clientSecret: client.secret)
     }
 
-    /// Staging counterpart of set A; set B (CX) has no staging variant.
+    /**
+     Provides the staging counterpart of `setA`; `setB` (CX) has no staging variant.
+     */
     static var stageSetA: (clientId: String, clientSecret: String) {
         let client = CredentialsManager.fetchStageClientFromBundle()
         return (clientId: client.id, clientSecret: client.secret)

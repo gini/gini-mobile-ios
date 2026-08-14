@@ -235,7 +235,9 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
         applyCredentialsForSelectedSet()
     }
 
-    /// Pushes the credentials resolved for the selected set and environment to the delegate.
+    /**
+     Pushes the credentials resolved for the selected set and environment to the delegate.
+     */
     private func applyCredentialsForSelectedSet() {
         let credentials = viewModel.credentialsForSelectedSet()
         delegate?.didTapSaveCredentialsButton(clientId: credentials.clientId,
