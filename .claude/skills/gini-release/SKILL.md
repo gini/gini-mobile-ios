@@ -1,6 +1,6 @@
 ---
 name: gini-release
-description: Guide an iOS package release end-to-end — ask the user for the packages with their new versions, create the Jira RC ticket(s) in PP/HEAL, wait for QA sign-off on the RC, then bump versions plus the Package-release.swift pins and documentation in dependency order with one commit per package, and hand the tag push to the user (tags trigger the release workflows). Use when asked to "release GiniBankSDK", "bump versions for a release", or "prepare an RC" in gini-mobile-ios.
+description: Guide an iOS package release end-to-end — ask the user for the packages with their new versions, create the Jira RC ticket(s) in PP/HEAL, bump versions plus the Package-release.swift pins and documentation in dependency order with one commit per package, then gate the tag push (tags trigger the release workflows). Use when asked to "release GiniBankSDK", "bump versions for a release", or "prepare an RC" in gini-mobile-ios.
 ---
 
 # /gini-release — prepare and execute an iOS package release
@@ -19,10 +19,9 @@ package into its public release repo.
 Ask the user for the packages being released with their **new versions**, one per line:
 
 ```
-GiniBankAPILibrary 4.5.0
+GiniCaptureSDK 4.4.1
+GiniBankSDK 4.4.1
 GiniUtilites 2.6.0
-GiniCaptureSDK 4.5.0
-GiniBankSDK 4.5.0
 ```
 
 That list is the single input — do not walk the user through chain questions. From it, determine:
@@ -46,9 +45,9 @@ The seven releasable packages, their version files and their release repos:
 | `GiniBankSDK` | `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift` | `gini/bank-sdk-ios` |
 | `GiniHealthSDK` | `HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/GiniHealthSDKVersion.swift` | `gini/health-sdk-ios` |
 
-**Spell `GiniUtilites` with one `i` in the middle** — that is the real package name, and the tag must
-mirror it exactly: `create_release_tags` derives the tag name from the `*Version.swift` filename, so a
-tag spelled any other way is invisible to the release workflows.
+**Spell `GiniUtilites` with one `i` in the middle** — that is the real package name. Past commits and one
+tag used `GiniUtilities`, and a mis-spelled tag is invisible to `create_release_tags`, which derives the
+name from the `*Version.swift` filename.
 
 Sanity-check the list against the current versions in those files and flag — don't silently fix:
 
@@ -59,6 +58,8 @@ Sanity-check the list against the current versions in those files and flag — d
   4.2.2 tag).
 - **The health chain is not locked.** `GiniHealthSDK` frequently releases alone (5.6.1, 6.1.0);
   `GiniHealthAPILibrary` joined only at 6.0.0. Do not "correct" a health list to match.
+- **`GiniUtilites` and `GiniInternalPaymentSDK` have their own version lines** (currently 2.x and 3.x) and
+  never share the SDK numbers. A list mixing them at an SDK's version is a mistake.
 - A released package forces every package **above** it in its chain to at least update its
   `.exact()` pin — and since that pin change is itself a source change that has to ship, the dependent
   normally needs releasing too. If a dependent is missing from the list, say so: otherwise the pin edit
@@ -156,42 +157,33 @@ to a board other than the project's own — if so the ticket legitimately won't 
 point at the `boardId` from the sprint record. JQL against a non-existent value returns an empty result
 rather than an error, so "no results" never proves absence.
 
-**Drive the ticket's status yourself.** Move it to `In Progress` when release prep starts and to the
-waiting-for-QA status once the build links are attached (the step 4 gate), via `transitionJiraIssue`.
-**Resolve transitions per ticket by name, case-insensitively** — call `getTransitionsForJiraIssue` on the
-actual ticket; the same status is spelled differently between the two projects, and ids collide across
-projects, so a copied id can silently move a ticket to `Cancelled`.
+**Drive the ticket's status yourself.** Move it to `In Progress` when the bumps start and to the
+waiting-for-QA status at the step 5 gate, via `transitionJiraIssue`. **Resolve transitions per ticket by
+name, case-insensitively** — call `getTransitionsForJiraIssue` on the actual ticket; the same status is
+spelled differently between the two projects, and ids collide across projects, so a copied id can silently
+move a ticket to `Cancelled`.
 
-Report the created ticket key(s) — they go in every bump commit (step 5). Then **offer to announce the RC
-ticket on Slack**: draft a short message (ticket link, SDK + version, build link) in the conversation and
-ask which channel it should go to — **never send it without the user approving the draft and the channel.**
+Report the created ticket key(s) — they go in every bump commit.
 
 ## 3. Pick the branch
 
-`RELEASE.md` says to be on `main`. **In practice releases happen on a long-lived
+`RELEASE.md` says to be on `main`. **In practice most releases happen on a long-lived
 `release/<theme>` branch** that feature PRs have been merged into — e.g. `release/qr-code-improvements`,
 `release/liquid_glass_bank_sdk`, `release/bank_sdk_release_4.2.2`. Naming is not standardised, and the
 theme usually matches the suffix on the Jira fix versions.
 
-**Never release directly from `main`** — `main` stays untouched; every release ships from a release
-branch and reaches `main` by PR. **Ask which `release/<theme>` branch this release ships from** (or create
-one if it does not exist yet), and confirm it is up to date with `main` before bumping.
+So **ask which branch this release ships from**; do not assume. Two cases:
 
-## 4. Wait for QA — hard gate
+- **An existing `release/<theme>` branch** — the normal case when the release has a theme. Confirm it is
+  up to date with `main` before bumping.
+- **`main` directly** — for a patch release with no integration branch.
 
-Stop here — **before any version bump**. Versions are not bumped until QA signs the RC ticket off and
-assigns it back: the bump commit should land right next to the release tags, and QA tests the Firebase
-build linked in the RC ticket, which does not need the bump. Ask the user to confirm the sign-off; never
-infer it.
+Do not invent an Android-style `PP-XXX-RC-…` branch; that convention does not exist in this repo.
 
-**Everything after this point runs only when the user confirms QA approval** — either later in this
-session, or by invoking `/gini-release` again in a new one. On a re-invocation, re-read the RC ticket and
-the release branch to establish what has already happened before continuing.
+## 4. Bump versions, one commit per package, in release order
 
-## 5. Bump versions, one commit per package, in release order
-
-Only after the QA go. For each package in the confirmed set, in `RELEASE-ORDER.md` order, edit **up to
-four** places. Missing any of the last three is the most common way an iOS release breaks:
+For each package in the confirmed set, in `RELEASE-ORDER.md` order, edit **up to four** places. Missing
+any of the last three is the most common way an iOS release breaks:
 
 1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from the step 1 table.
 2. **Every dependent's `Package-release.swift`** — bump the `.exact("<x.y.z>")` pin that points at the
@@ -204,9 +196,8 @@ four** places. Missing any of the last three is the most common way an iOS relea
 
 3. **The installation doc, where the package has one** — `Documentation/source/Installation.md` hardcodes
    the SPM pin, e.g.
-   `.package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("4.3.0"))`.
-   `GiniBankAPILibrary`, `GiniHealthAPILibrary` and `GiniHealthSDK` carry this today; verify rather than
-   assume:
+   `.package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("4.3.0"))`. Only
+   `GiniBankAPILibrary` and `GiniHealthAPILibrary` carry this today; verify rather than assume:
 
    ```bash
    grep -rn '\.exact(' --include='*.md' */*/Documentation/
@@ -233,21 +224,24 @@ use `feat`.
 Then run `make lint scheme=<Scheme>` for each affected package (the `AGENTS.md` gate) plus the touched
 packages' unit tests, and push the branch. **No tags yet.**
 
-Open the PR from the release branch into `main` now — the bumps merge like any other change, and tags are
-created after that lands.
+If the release ships from a `release/<theme>` branch, open the PR into `main` now — the bumps merge like
+any other change, and tags are created after that lands.
 
-## 6. Create and push release tags — the user runs this, not you
+## 5. Wait for QA — hard gate
+
+Stop here. Tags may only be created after QA signs the RC ticket off and assigns it back. Ask the user to
+confirm; never infer it. The Firebase build QA tests is the one linked in the RC ticket.
+
+## 6. Create and push release tags
 
 ```bash
 bundle exec fastlane create_release_tags
 ```
 
-**Never run this lane yourself.** Tag creation and pushing stays a manual step under the user's control:
-ask them to run the command in their terminal (typing `! bundle exec fastlane create_release_tags` runs it
-inside this session so the output lands in the conversation). The lane needs no arguments: it scans every
-`**/*Version.swift`, compares each package's version against its latest `<Package>;<version>` release tag,
-and creates a tag for every package that differs — prompting **"Push release tag?"** per package, which
-needs a real terminal anyway.
+The lane needs no arguments: it scans every `**/*Version.swift`, compares each package's version against
+its latest `<Package>;<version>` release tag, and creates a tag for every package that differs —
+prompting **"Push release tag?"** per package. It needs a terminal for those prompts, so suggest the user
+runs it themselves (`! bundle exec fastlane create_release_tags`).
 
 - Tag format is strict: `<Package>;X.Y.Z`, or `<Package>;X.Y.Z-betaNN` with **exactly two** beta digits.
   Anything else is ignored by the release workflows.
@@ -262,9 +256,6 @@ needs a real terminal anyway.
 by manual dispatch. Only do this if the user asks.
 
 ## 7. Post-tag checklist — external, walk the user through it
-
-**Deliberately not automated.** The iOS post-tag steps are fragile and regularly need judgement calls, so
-guide the user through each item and let them execute; do not script or run these yourself.
 
 1. **GitHub releases** — one per released package, on **its own release repo** (e.g.
    `github.com/gini/bank-sdk-ios/releases`), not on `gini-mobile-ios`. **All seven repos publish releases**,
@@ -304,5 +295,4 @@ rather than working around it every release:
   file is generated by a Gradle task and must never be edited manually, **iOS's `RELEASE-ORDER.md` has no
   generator** — if a dependency changes, edit it by hand in the same commit.
 - **It says "documentation file" without saying which.** It is `Documentation/source/Installation.md`, and
-  only three packages have one (`GiniBankAPILibrary`, `GiniHealthAPILibrary`, `GiniHealthSDK`). See
-  step 5.3.
+  only two packages have one. See step 4.3.
