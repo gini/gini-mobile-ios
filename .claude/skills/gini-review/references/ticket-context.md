@@ -1,14 +1,23 @@
-# Reading the Jira ticket and its links
+<!--
+  MIRRORED FILE — must stay byte-identical to
+  .claude/skills/gini-review/references/ticket-context.md in gini-mobile-ios.
+  Change it in one repo and open a paired PR in the other; CI
+  (shared-skills.check.yml) fails when the copies diverge.
+-->
 
-**Reference for the review engine** — read at **§2**, and again at §3 for the logic method.
+# Reading the ticket and its links
+
+**Reference for `/gini-review`** — read at **§2**, and again at §3 for the logic method.
 Used on every review.
 
-**Purpose:** get the ticket, and turn it into concrete checks against the diff.
+**Purpose:** get the ticket — from Jira, or from the user when Jira is not reachable — and turn it
+into concrete checks against the diff.
 
 **Supports:**
 
-- **Fetching the issue** — Jira site, cloudId, which fields to request, the fallback when the cloudId
-  is rejected
+- **Fetching the issue** — Jira site, resolving the cloudId, which fields to request, the scope quirk
+- **Working without Jira** — the paste-in fallback for a missing connector, a failed fetch, or a
+  reviewer who has no Jira access
 - **Extracting the key** — first `[A-Z]{2,5}-[0-9]+` anywhere in the branch name, and treating a
   ticketless branch as normal
 - **Field triage** — which of `issuetype`, `labels`, `parent`, `components`, `fixVersions`, `status`,
@@ -20,19 +29,23 @@ Used on every review.
 - **Comment triage** — when a comment overrides the description
 - **Logic checks** — the 8-step method, including the opposite-direction check
 
-**Does not cover:** repo coding rules and published API surface → the repo's platform layer
-(`../SKILL.md` §0) · comment wording → `comment-style.md`
+**Does not cover:** repo coding rules and published API surface → `../platform.md` · comment wording →
+`comment-style.md`
 
 The ticket is the specification. Reviewing a diff without it verifies only that the code is
-*well-formed*, not that it is *correct*. This file covers how to fetch it, what to extract, and how
-to turn it into logic checks.
+*well-formed*, not that it is *correct*. **So the ticket is never optional — but Jira is.** This file
+covers three ways to get it, what to extract, and how to turn it into logic checks.
 
-## Fetching
+## Fetching from Jira
 
 Site is **`ginis.atlassian.net`** (note the trailing `s` — `gini.atlassian.net` returns
 403 "app is not installed on this instance"). Use the Atlassian MCP tool `getJiraIssue`:
 
-- `cloudId`: `7740065a-6c74-4abe-89b4-eed057e702d4`
+- `cloudId`: **resolve it at run time — do not hard-code it.** Call
+  `getAccessibleAtlassianResources` and take the id of the `ginis.atlassian.net` entry. It is a
+  workspace identifier, not a credential: it is inert without an authorised OAuth session, and every
+  Atlassian client discovers it the same way. Looking it up also keeps this file correct if the site is
+  ever migrated.
 - `issueIdOrKey`: the key from the branch name — the **first match of `[A-Z]{2,5}-[0-9]+` anywhere in
   the name**, not anchored at the start. Branches are usually `<TICKET>-<kebab-description>`, but the
   key can sit under a segment (`backup/PP-1234-…`, `feature/FEAT-001-…`), and an anchored pattern
@@ -40,17 +53,42 @@ Site is **`ginis.atlassian.net`** (note the trailing `s` — `gini.atlassian.net
 - `responseContentFormat`: `markdown`
 - `fields`: `["summary","description","status","issuetype","priority","labels","components","comment","issuelinks","parent","fixVersions","attachment"]`
 
-If the cloudId is rejected, call `getAccessibleAtlassianResources` and use the entry whose scopes
-include `read:jira-work` — the same site is listed twice, once with Confluence scopes and once with
-Jira scopes, and only the latter works for issues.
+**The scope quirk:** `getAccessibleAtlassianResources` lists the same site **twice** with the same id —
+once with Confluence scopes, once with Jira scopes (`read:jira-work`). Only the Jira-scoped grant works
+for issues. If a call is rejected, re-read that list and use the Jira entry; if the connector was
+authorised for Confluence only, every issue call fails until Jira scopes are granted.
 
 **A branch with no ticket key is normal, not an error.** Plenty of branches here carry none — skill,
 CI, release, docs and refactor work. Do not hunt for a ticket that does not exist, and do not guess
 one from the diff. Note it under **Not checked** and review on the PR description alone.
 
-If the fetch fails, say so in the report and continue with a `Not checked: acceptance criteria`
-note. Never invent ticket content, and never infer requirements from the diff and then "verify" the
-diff against them — that is circular and produces confident nonsense.
+## When Jira is not available — ask, don't skip
+
+A missing Atlassian MCP connector, an expired session, a rejected cloudId or a reviewer without Jira
+access are all common, and none of them is a reason to review blind. **A ticket key exists and the
+fetch did not work → ask the user for the content before giving up.** Use `AskUserQuestion` or a plain
+request:
+
+> I couldn't reach Jira for `<KEY>`. Paste the ticket in and I'll review against it — description plus
+> Steps to Reproduce / Actual / Expected is enough. Or say "skip" and I'll review without acceptance
+> criteria and mark it under Not checked.
+
+What to do with what they give you:
+
+- **Pasted text** — treat it exactly as a fetched description: parse the same template sections, run
+  the same logic checks. Note in the report that the ticket was **pasted, not fetched**, so the
+  reviewer knows the field metadata (labels, epic, status, links) was not available.
+- **A partial paste** — a summary line and Expected Result is still worth far more than nothing. Work
+  with it and say which parts were missing.
+- **A URL only** — that is not content. `WebFetch` on a Jira issue URL returns the login page, not the
+  issue. Ask for the text.
+- **"Skip"** — proceed, and record `Not checked: acceptance criteria` in the report. That is an honest
+  outcome; silently reviewing as if you had the ticket is not.
+
+The same offer applies to attachments (see below) and to a linked Confluence page you cannot reach.
+
+Never invent ticket content, and never infer requirements from the diff and then "verify" the diff
+against them — that is circular and produces confident nonsense.
 
 ## Fields that change how you review
 
@@ -151,7 +189,8 @@ in the report, because the reviewer may not have read it.
 
 ## Turning the ticket into logic checks
 
-This is the point of all the above. Do it in this order:
+This is the point of all the above, and it works the same whether the ticket was fetched or pasted.
+Do it in this order:
 
 1. **State the expected behaviour as concrete propositions** before looking at the diff. For a bug,
    from Expected Result. For a story, from acceptance criteria. Write them down — vague expectations

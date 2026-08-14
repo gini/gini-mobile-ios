@@ -1,6 +1,13 @@
+<!--
+  MIRRORED FILE — must stay byte-identical to
+  .claude/skills/gini-review/references/comment-style.md in gini-mobile-ios.
+  Change it in one repo and open a paired PR in the other; CI
+  (shared-skills.check.yml) fails when the copies diverge.
+-->
+
 # Comment format
 
-**Reference for the review engine** — read at **§5**, before writing any comment. Used on every review.
+**Reference for `/gini-review`** — read at **§5**, before writing any comment. Used on every review.
 
 **Purpose:** word a finding so the author can act on it in one read, and keep improvements distinct
 from defects.
@@ -9,7 +16,7 @@ from defects.
 
 1. **Stay inside the length budget.** A long comment is not a more thorough comment; it is a comment
    that gets skimmed. See §"Length budget" — it is a hard cap, not a target.
-2. **Open a posted comment with its category** — `**Blocker:**`, `**Suggestion:**` or `**Question:**`.
+2. **Open a posted comment with its category** — `[Request]`, `[Suggestion]` or `[Clarification]`.
    The author needs to know what is being asked of them before reading the finding.
 3. **No other internal machinery in a comment a human reads** — no confidence scores, no dimension
    names, no severity words beyond the three categories.
@@ -17,22 +24,46 @@ from defects.
 **Supports:**
 
 - **Length budget** — the hard cap, how to compress into it, what to drop first
-- **Inline comment format** — the three-part shape (fact → consequence → concrete fix)
-- **Writing rules** — the category prefix, third person, no inline praise, present tense, always
-  actionable
+- **Inline comment format** — the category prefix and the three-part shape (fact → consequence →
+  concrete fix)
+- **Writing rules** — third person, no inline praise, present tense, always actionable
 - **Summary review** — overview paragraph, changes grouped by behaviour, `Reviewed X out of Y`,
   per-file table in `<details>`
 - **Improvements** — the five categories and how to frame one as deferrable so it gets adopted
 - **GitHub suggestion blocks** — when a one-click fix is safe to attach
 
-**Does not cover:** what to look for → `../SKILL.md` §3 plus the platform layer · deciding whether a
+**Does not cover:** what to look for → `../SKILL.md` §3 plus `../platform.md` · deciding whether a
 finding is real → `../SKILL.md` §4
+
+## The three categories
+
+Every comment posted to a PR opens with exactly one of these, in square brackets. This is the house
+style human reviewers already use here, and it is the first thing the author reads:
+
+| Prefix | Means | The author should |
+|---|---|---|
+| `[Request]` | Must be resolved before merge. | Change something, or explain why it is fine. |
+| `[Suggestion]` | Optional and deferrable; the PR is mergeable without it. | Take it now, or open a follow-up. |
+| `[Clarification]` | The finding depends on an answer only the author has; no fix is being asked for yet. | Answer. |
+
+Rules that follow:
+
+- **One prefix per comment.** A finding that is half a request and half a question is two findings, or
+  it is a `[Clarification]` until the answer makes it a `[Request]`.
+- **The prefix does not count against the 400-character prose budget**, but it does replace other
+  hedging: do not also write "Optional:", "Small nit:" or "Blocking:" in the prose. `[Suggestion]`
+  already says deferrable, and `[Request]` already says blocking.
+- **Terminal-report headings carry the same three categories** — `### Requests`, `### Suggestions`,
+  `### Clarifications` — so the prefix is redundant there. Prefix only what gets posted.
+- **Nothing else internal goes in a comment** — no confidence scores, no dimension names, no `issue:`
+  prefixes, no severity words beyond the three above.
 
 ## Length budget
 
 **Inline comment: 3–4 rendered lines. Two sentences. 400 characters, hard cap.**
 
-Count before posting. A code block attached as a `suggestion` does not count — the prose above it does.
+Count before posting. A code block attached as a `suggestion` does not count — the prose above it does,
+and neither does the category prefix.
 
 The budget is not a style preference. An inline comment appears in a narrow column beside the diff, and
 the author reads it while holding the code in their head. Past about four lines they stop reading the
@@ -65,8 +96,8 @@ Worked example — the same finding, over budget and inside it:
 > afterwards, or re-declaring the singleton, or restructuring the test so it does not need to override
 > the container at all.
 
-> **340 characters.** Unloading only removes the overriding definition — it does not restore the
-> production singleton, so the shared container is left without one for the rest of the process and a
+> **340 characters.** `[Request]` Unloading only removes the overriding definition — it does not restore
+> the production singleton, so the shared container is left without one for the rest of the process and a
 > later test that resolves it fails depending on class order. Reload the production module after
 > unloading.
 
@@ -79,42 +110,37 @@ own cut list. It is in `../SKILL.md` §6.
 
 The structure, every time:
 
+0. **Open with the category**, in square brackets: `[Request]`, `[Suggestion]` or `[Clarification]`.
 1. **State what the code does, as fact.** Name the exact symbol, file, or setting in backticks.
    "`pinnedValue` is written on init" — not "there may be an issue with initialisation".
 2. **State the consequence.** What goes wrong for whom — the user, the consumer, the next maintainer.
    This is the clause that justifies the comment existing.
-3. **Give a concrete fix.** Name the API, file, or pattern.
+3. **Give a concrete fix.** Name the API, file, or pattern. For a `[Clarification]`, this is the
+   question instead — one question, answerable in a sentence.
 
-Two real bot comments in this shape, as a calibration target:
+Three comments in this shape, as a calibration target:
 
-> The snippet under "Self-managed authentication" uses Kotlin syntax (`val`, lambda), but the code block
-> is marked as `java`, which leads to misleading syntax highlighting and copy/paste for readers. Either
-> switch the directive to `kotlin` or rewrite the snippet in Java syntax.
+> `[Request]` The snippet under "Self-managed authentication" uses Kotlin syntax (`val`, lambda), but the
+> code block is marked as `java`, which leads to misleading syntax highlighting and copy/paste for
+> readers. Either switch the directive to `kotlin` or rewrite the snippet in Java syntax.
 
-> The example is written in Kotlin (`val`, lambda) but declared as a `java` code block. This produces
-> incorrect syntax highlighting and may confuse integrators. Mark it as `kotlin` (or convert the snippet
-> to Java).
+> `[Suggestion]` `formatIban()` here duplicates the helper in `IbanUtils`, which already handles the
+> spacing and the empty case. Calling it instead drops ~20 lines and keeps one definition of the format.
+
+> `[Clarification]` The retry loop stops after three attempts but the timeout is unbounded, so a hung
+> request never reaches attempt two. Is the timeout meant to be per-attempt here?
 
 Rules that follow from the format:
 
 - **Impersonal and third-person.** "The snippet uses…", "This produces…". Never "you", never "why did
   you".
-- **Open every posted comment with its category, in bold**, so the author knows what is being asked of
-  them before reading the finding. Use exactly one of:
-  - `**Blocker:**` — must be resolved before merge.
-  - `**Suggestion:**` — optional and deferrable; the PR is mergeable without it.
-  - `**Question:**` — the finding depends on an answer only the author has; no fix is being asked for yet.
-
-  The prefix does not count against the 400-character prose budget. Nothing *else* internal goes in a
-  comment — no confidence scores, no dimension names, no `issue:` prefixes, no severity words beyond the
-  three categories above. Do not also write "Optional:" or "Small nit:" in the prose; `**Suggestion:**`
-  already says it.
 - **No praise comments inline.** They add noise to a PR thread. Keep anything positive to the
   acknowledgement clause in the summary body.
 - **Present tense, declarative.** No hedging stacks ("might possibly perhaps"), no exclamation marks, no
   emoji.
-- **Every comment ends with something actionable.** A comment that only describes a problem makes the
-  author do the work twice.
+- **Every comment ends with something actionable** — a fix for `[Request]` and `[Suggestion]`, a
+  question for `[Clarification]`. A comment that only describes a problem makes the author do the work
+  twice.
 
 ## Summary review
 
@@ -151,15 +177,18 @@ Notes:
 - The per-file table goes in `<details>` so it does not dominate the thread.
 - **Changes** groups by behaviour, not by file. "Add the session interceptor and update
   builders/repositories to rely on transport-layer auth" — one line covering many files.
+- **No category prefix in the summary body.** The prefixes belong on the individual findings; the body
+  is prose.
 
 **This full shape is the terminal report.** What gets *posted* is much shorter — see `../SKILL.md` §6
 §"The summary body comes first". The per-file table, the coverage count and the section headings never go
 on the PR.
 
-## Improvements
+## Improvements, not just defects
 
 Findings say what is wrong; improvements say what would be better. Keep them separate from defects so
-the must-fix list stays short, and use the same three-part shape and the same length budget.
+the must-fix list stays short, and use the same three-part shape and the same length budget. An
+improvement is always a `[Suggestion]`, never a `[Request]`.
 
 What is worth raising:
 
@@ -178,16 +207,15 @@ Framing, because it decides whether an improvement gets adopted:
   can be taken as a follow-up, and say when that is the better option.
 - **Say when an improvement is not worth it.** If a cleaner shape exists but the churn outweighs it, say
   so rather than raising it.
-- **Cap the list.** A handful at most. A long optional list reads as noise and buries the blocking
-  findings.
+- **Cap the list.** A handful at most. A long optional list reads as noise and buries the requests.
 
 ## Posting to GitHub
 
 For mechanical changes, attach a suggestion block so the author gets one-click apply:
 
 ````markdown
-The code block is marked `java` but the snippet is Kotlin, which gives readers wrong highlighting.
-Switch the directive to `kotlin`.
+[Request] The code block is marked `java` but the snippet is Kotlin, which gives readers wrong
+highlighting. Switch the directive to `kotlin`.
 
 ```suggestion
 .. code-block:: kotlin
