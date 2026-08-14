@@ -38,10 +38,9 @@ import Firebase
             }
             if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
                let contents = try? FileManager.default.contentsOfDirectory(at: docs, includingPropertiesForKeys: nil) {
-                // Preserve PDF test fixtures placed by the UI test setUpWithError copy;
-                // wipe everything else so tests start clean.
+                // Preserve PDF test fixtures and the Custom_Files folder BrowserStack places at launch; wipe everything else so tests start clean.
                 contents
-                    .filter { $0.pathExtension.lowercased() != "pdf" }
+                    .filter { $0.pathExtension.lowercased() != "pdf" && $0.lastPathComponent.lowercased() != "custom_files" }
                     .forEach { try? FileManager.default.removeItem(at: $0) }
             }
         }
