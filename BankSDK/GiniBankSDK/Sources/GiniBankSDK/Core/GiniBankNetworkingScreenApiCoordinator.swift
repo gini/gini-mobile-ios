@@ -689,10 +689,8 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Feature-flag gate for the Schedule Payment state of the payment-hint
-     bottom sheet. Both the SDK integrator (`GiniBankConfiguration`) and the
-     client configuration returned from `/configurations` must have opted in.
-     Cross-border payment flows are excluded, matching Android.
+     Feature-flag gate for the Schedule Payment state. Both
+     `GiniBankConfiguration` and the client configuration must opt in.
      */
     func determineIfPaymentScheduleHintEnabled(for extractionResult: ExtractionResult) -> Bool {
         guard !isCrossBorderPayment() else { return false }
@@ -703,9 +701,9 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Combines `determineIfPaymentDueHintEnabled`, Return-Assistant / Skonto
-     gates, and the `Date.isDueSoon(within: threshold)` check. Suppresses
-     itself when the Schedule Payment state takes priority.
+     Combines the feature-flag / Return-Assistant / Skonto gates with the
+     `Date.isDueSoon(within: threshold)` check. Suppressed by the Schedule
+     Payment state.
      */
     func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
         guard !determineIfPaymentScheduleHintEnabled(for: extractionResult),
@@ -720,9 +718,8 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Reuses the same eligibility as `shouldPresentDueDateHint` (parseable
-     due date, no Return Assistant / Skonto, `Date.isDueSoon(within: threshold)`)
-     and additionally requires `determineIfPaymentScheduleHintEnabled`.
+     Same eligibility as `shouldPresentDueDateHint`, gated on
+     `determineIfPaymentScheduleHintEnabled`.
      */
     func shouldPresentSchedulePaymentHint(for extractionResult: ExtractionResult) -> Bool {
         guard determineIfPaymentScheduleHintEnabled(for: extractionResult),
@@ -765,8 +762,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     @MainActor
     func presentPaymentHintBottomSheet(state: PaymentHintState) {
-        /// Cancel the pending capture-suggestions banner so it doesn't collide
-        /// with the sheet's VoiceOver focus while the sheet is up.
+        /// Cancel the capture-suggestions banner to avoid a VoiceOver collision.
         let analysisViewController = screenAPINavigationController.children.last as? AnalysisViewController
         analysisViewController?.removeCaptureSuggestions()
 
@@ -776,8 +772,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Wraps the caller's CTA closures with the dismiss + a11y-restore steps so
-     the view controller doesn't have to know about presentation lifecycle.
+     Wraps the state's CTA closures with the dismiss + a11y-restore steps.
      */
     private func wrapStateForDismissal(_ state: PaymentHintState) -> PaymentHintState {
         switch state {
@@ -809,19 +804,11 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Terminates the capture flow with the Schedule Payment hand-off.
-
-     Constructs the same `AnalysisResult` the success path in
-     `deliverWithReturnAssistant` produces, sends the SDK-close analytics
-     event, hands the result over via
+     Terminates the capture flow with the Schedule Payment hand-off. Builds
+     the same `AnalysisResult` as `deliverWithReturnAssistant`, sends the
+     SDK-close analytics event, invokes
      `giniCaptureDidRequestSchedulePayment(result:)`, and resets the document
-     service. Does NOT call `continueWithFeatureFlow` — the flow terminates
-     here.
-
-     The `isCrossBorderPayment()` guard cannot fire in practice (the schedule
-     eligibility gate excludes CX), but the construction is kept identical to
-     the pay-now hand-off to keep the two terminal paths in lock-step against
-     future changes.
+     service.
      */
     @MainActor
     private func finishWithSchedulePayment(extractionResult: ExtractionResult) {
