@@ -185,6 +185,11 @@
 "ginicapture.help.supportedFormats.qrcode.item.3" = "Stuzza (AT)";
 "ginicapture.help.supportedFormats.qrcode.item.4" = "Girocode (DE)";
 "ginicapture.help.supportedFormats.qrcode.item.5" = "QR by Gini";
+"ginicapture.help.supportedFormats.qrcode.item.6" = "Swiss QR Code (CH)";
+"ginicapture.help.supportedFormats.qrcode.item.7" = "SPD (CZ)";
+"ginicapture.help.supportedFormats.qrcode.item.8" = "Pay by Square (SK)";
+"ginicapture.help.supportedFormats.qrcode.item.9" = "UPN QR (SI)";
+"ginicapture.help.supportedFormats.qrcode.item.10" = "HUB3 (HR)";
 
 "ginicapture.help.menu.title" = "Hilfe";
 "ginicapture.help.menu.tips" = "Tipps für bessere Ergebnisse";
@@ -212,6 +217,9 @@
 "ginicapture.QRscanning.correct" = "QR-Code erkannt";
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
+"ginicapture.QRscanning.alert.title" = "Dieser QR-Code ist kein Zahlungs-QR-Code";
+"ginicapture.QRscanning.alert.scanAnother" = "Anderen QR-Code scannen";
+"ginicapture.QRscanning.alert.takePhoto" = "Dokument fotografieren";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
 "ginicapture.QRscanning.education.loading.captureTip" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 

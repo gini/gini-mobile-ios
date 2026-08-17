@@ -365,6 +365,7 @@ extension ClientConfiguration {
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
                   paymentDueHintEnabled: paymentDueHintEnabled,
-                  paymentScheduleHintEnabled: paymentScheduleHintEnabled)
+                  paymentScheduleHintEnabled: paymentScheduleHintEnabled,
+                  unsupportedQRCodeWarningEnabled: false)
     }
 }

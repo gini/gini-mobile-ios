@@ -28,6 +28,7 @@ public struct ClientConfiguration: Codable {
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
     public let paymentScheduleHintEnabled: Bool
+    public let unsupportedQRCodeWarningEnabled: Bool
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -47,6 +48,7 @@ public struct ClientConfiguration: Codable {
      - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the
        payment-hint bottom sheet is enabled. When `true`, the SDK offers to hand off to the
        integrator's own scheduled-transfer flow instead of the pay-now flow.
+     - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -59,7 +61,8 @@ public struct ClientConfiguration: Codable {
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool,
-                paymentScheduleHintEnabled: Bool) {
+                paymentScheduleHintEnabled: Bool,
+                unsupportedQRCodeWarningEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -72,5 +75,6 @@ public struct ClientConfiguration: Codable {
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled
         self.paymentScheduleHintEnabled = paymentScheduleHintEnabled
+        self.unsupportedQRCodeWarningEnabled = unsupportedQRCodeWarningEnabled
     }
 }

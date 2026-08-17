@@ -27,7 +27,8 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
-                                         paymentScheduleHintEnabled: true)
+                                         paymentScheduleHintEnabled: true,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -41,6 +42,7 @@ struct ClientConfigurationTests {
         #expect(config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true")
         #expect(config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be true")
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true")
+        #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 
     @Test("Initialization with all flags disabled")
@@ -56,7 +58,8 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: false,
                                          paymentDueHintEnabled: false,
-                                         paymentScheduleHintEnabled: false)
+                                         paymentScheduleHintEnabled: false,
+                                         unsupportedQRCodeWarningEnabled: false)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(!config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be false")
@@ -70,6 +73,7 @@ struct ClientConfigurationTests {
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
         #expect(!config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be false")
         #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
+        #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false")
     }
 
     // MARK: - JSON Decoding Tests
@@ -93,6 +97,7 @@ struct ClientConfigurationTests {
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false from JSON")
         #expect(!config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be false from JSON")
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true from JSON")
+        #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false from JSON")
     }
 
     @Test("paymentScheduleHintEnabled decodes from JSON payload")
@@ -133,7 +138,8 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
-                                         paymentScheduleHintEnabled: true)
+                                         paymentScheduleHintEnabled: true,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         let encoder = JSONEncoder()
 
@@ -164,6 +170,8 @@ struct ClientConfigurationTests {
                 "Expected paymentDueHintEnabled to be preserved")
         #expect(decodedConfig.paymentScheduleHintEnabled == config.paymentScheduleHintEnabled,
                 "Expected paymentScheduleHintEnabled to be preserved")
+        #expect(decodedConfig.unsupportedQRCodeWarningEnabled == config.unsupportedQRCodeWarningEnabled,
+                "Expected unsupportedQRCodeWarningEnabled to be preserved")
     }
 
     // MARK: - Property Combinations Tests
@@ -181,7 +189,8 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
-                                         paymentScheduleHintEnabled: false)
+                                         paymentScheduleHintEnabled: false,
+                                         unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
         #expect(!config.skontoEnabled, "Expected skontoEnabled to be false")
@@ -194,5 +203,6 @@ struct ClientConfigurationTests {
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
         #expect(config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be true")
         #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
+        #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 }

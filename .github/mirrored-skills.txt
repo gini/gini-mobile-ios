@@ -1,0 +1,11 @@
+# Shared Claude skill files that must stay byte-identical between
+# gini-mobile-android and gini-mobile-ios. One repo-relative path per line.
+# Only list the general SKILL.md files — never platform.md, which is
+# platform-specific by design. The list itself is mirrored too, so additions
+# propagate to the other repo via the sync PR instead of drifting.
+# Read by shared-skills.check.yml and shared-skills.sync.yml in both repos.
+.claude/skills/gini-plan/SKILL.md
+.claude/skills/gini-build/SKILL.md
+.claude/skills/gini-fix/SKILL.md
+.claude/skills/gini-reflect/SKILL.md
+.github/mirrored-skills.txt

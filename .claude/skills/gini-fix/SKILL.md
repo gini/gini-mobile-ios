@@ -16,6 +16,13 @@ You are diagnosing and fixing bug ticket $ARGUMENTS. Root cause comes before
 any fix: no code change until the diagnosis is written down and confirmed.
 Never fix a symptom whose cause you haven't found.
 
+**Escalation rule — applies at every step below.** The moment the work stops
+being a minimal fix — the change needs design decisions, alters public API,
+or spreads beyond the module(s) implicated by the root cause — stop and say
+so. Finish writing the diagnosis (it stays valuable), then route the ticket
+to `/gini-plan $ARGUMENTS`, which uses the diagnosis as input for a real
+spec. Do not let a "fix" quietly grow into an unplanned feature.
+
 ## 0. Load platform conventions — REQUIRED FIRST
 
 Read `platform.md` in this skill's directory. It defines how to reproduce
@@ -97,7 +104,10 @@ Show the user the root cause and proposed fix (via AskUserQuestion). They can:
 
 - confirm — continue to step 6 in this session, or
 - stop here — the diagnosis file stands on its own; the fix can be
-  implemented later with `/gini-build $ARGUMENTS` in a fresh session.
+  implemented later with `/gini-build $ARGUMENTS` in a fresh session, or
+- escalate — the proposed fix turned out bigger than a fix (see the
+  escalation rule above): keep the diagnosis and plan it properly with
+  `/gini-plan $ARGUMENTS`.
 
 Do not proceed to code changes without confirmation.
 
@@ -105,7 +115,10 @@ Do not proceed to code changes without confirmation.
 
 - Write the regression test first and run it: it MUST fail for the reason
   the diagnosis describes. A regression test that passes before the fix
-  proves nothing — rework it until it fails correctly.
+  proves nothing — rework it until it fails correctly. If after 3 reworks
+  the test still cannot be made to fail for the diagnosed reason, the
+  diagnosis is probably wrong: go back to step 3 instead of forcing the
+  test.
 - Apply the minimal fix from the diagnosis. Match the style of the file you
   touch. No opportunistic refactoring, no scope creep into "Out of scope".
 - Re-run the regression test (now passing) and the tests around the touched
@@ -115,8 +128,17 @@ Do not proceed to code changes without confirmation.
 
 Run the verification steps defined in `platform.md` for the affected modules,
 and re-check the original reproduction from step 2 no longer occurs. Fix what
-fails and re-run until clean. Report results honestly — if something still
-fails or was skipped, say so explicitly.
+fails and re-run — with bounds:
+
+- Keep a running list of the fixes attempted for each distinct failure, and
+  never retry a fix already on that list.
+- After 3 failed fix attempts on the same failure, STOP. Show the user the
+  failure, each attempted fix and why it didn't work, and ask how to
+  proceed. Past that point you are thrashing, and a "fix" that merely
+  silences the symptom is worse than an honest stop.
+
+Report results honestly — if something still fails or was skipped, say so
+explicitly.
 
 ## 8. Wrap up
 
@@ -125,3 +147,6 @@ fails or was skipped, say so explicitly.
   test, verification results, and anything left to manual QA.
 - Offer to commit following the commit conventions in `platform.md`, but do
   not commit or push unless the user asks.
+- If this session exposed a wrong, missing, or misleading convention in the
+  standing docs, suggest running `/gini-reflect` to fold the learning back —
+  otherwise don't mention it.
