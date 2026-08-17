@@ -197,7 +197,8 @@ struct PaymentHintScheduleStateTests {
         .first { !$0.contains("13.08.2026") && !$0.isEmpty }
 }
 
-@MainActor private func buttonTitle(at index: Int, in vc: UIViewController) -> String? {
+@MainActor private func buttonTitle(at index: Int,
+                                    in vc: UIViewController) -> String? {
     let buttons = allButtons(in: vc.view)
     guard buttons.indices.contains(index) else { return nil }
     return buttons[index].titleLabel?.text ?? buttons[index].title(for: .normal)

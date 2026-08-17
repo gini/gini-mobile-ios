@@ -83,6 +83,10 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
         // not tested
     }
 
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        // not tested
+    }
+
     // MARK: - Methods to override or customize in subclasses if needed
 
     /// Override this method in subclasses to apply any skonto-related modifications.

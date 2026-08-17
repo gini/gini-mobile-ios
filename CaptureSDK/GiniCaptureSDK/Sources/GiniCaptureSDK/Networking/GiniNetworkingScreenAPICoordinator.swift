@@ -33,11 +33,10 @@ import GiniBankAPILibrary
     /**
      Called when the user chose to schedule the payment instead of paying now.
 
-     The host app should present its own scheduled-transfer screen and carry
-     over the extractions from `result`. The capture flow has already been
-     torn down when this method is invoked — the callback is terminal, in the
-     same class as `giniCaptureAnalysisDidFinishWith(result:)` and
-     `giniCaptureDidCancelAnalysis()`.
+     Terminal callback — in the same class as
+     `giniCaptureAnalysisDidFinishWith(result:)` and
+     `giniCaptureDidCancelAnalysis()`. The host app should present its own
+     scheduled-transfer screen and carry over the extractions from `result`.
 
      - Parameter result: The analysis result — same shape and construction as
        the one delivered to `giniCaptureAnalysisDidFinishWith(result:)`.
