@@ -40,9 +40,6 @@ extension ContentViewModel: GiniBankSDKDelegate {
     }
 
     func captureRequestedSchedulePayment(result: AnalysisResult) {
-        /// Simulate the host app opening its scheduled-transfer screen with the
-        /// carried-over extractions — here we just print the count and dismiss,
-        /// matching the ScreenAPICoordinator example flow.
         print("💻 Schedule payment requested with \(result.extractions.count) extractions")
         modalController?.dismiss(animated: true)
     }
