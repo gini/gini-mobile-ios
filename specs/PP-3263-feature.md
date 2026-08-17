@@ -112,7 +112,7 @@ Android's; the shape is Swift/`@objc`-idiomatic.
     that carry their per-state CTAs as associated values.
   - Move localization keys under `ginicapture.payment.hint.duedate.*` and
     add sibling keys under `ginicapture.payment.hint.schedule.*`. The title
-    format is shared and lives under `ginicapture.payment.hint.title.format`
+    format is shared and lives under `ginicapture.payment.hint.title`
     (deduplicated across both states — see §Localization).
   - Add a new required method
     `giniCaptureDidRequestSchedulePayment(result:)` to
@@ -256,10 +256,14 @@ Grounded in `platform.md` and the modules touched:
    `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/{en,de}.lproj/Localizable.strings`.
    Accessed via `NSLocalizedStringPreferredFormat(key, comment:)` (matches
    PP-3261). Key layout (`<sdk>.<feature>.<screen>.<element>`):
-   - `ginicapture.payment.hint.title.format` — value with a single `%@`
-     for the formatted date. **Shared across both states** — the Figma
-     copy is identical (`"Your invoice is due on %@."` /
-     `"Deine Rechnung ist am %@ fällig."`).
+   - `ginicapture.payment.hint.title` — value with a single `%@`
+     placeholder for the formatted date. **Shared across both states** —
+     the Figma copy is identical (`"Your invoice is due on %@."` /
+     `"Deine Rechnung ist am %@ fällig."`). The trailing scope follows the
+     project convention (see `ginicapture.saveinvoice.local.title`); the
+     `%@` placeholder is documented in the accompanying `titleFormatKey`
+     constant on `PaymentHintBottomSheetViewController.Strings` rather than
+     encoded in the key.
    - `ginicapture.payment.hint.duedate.description`
    - `ginicapture.payment.hint.duedate.proceedButtonTitle`
    - `ginicapture.payment.hint.duedate.cancelButtonTitle`
