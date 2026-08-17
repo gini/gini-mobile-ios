@@ -414,11 +414,7 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Indicates whether the Schedule Payment state of the payment-hint bottom
-     sheet is enabled or not. When both this flag and
-     `ClientConfiguration.paymentScheduleHintEnabled` are `true`, the SDK
-     offers to hand off to the integrator's own scheduled-transfer flow via
-     `giniCaptureDidRequestSchedulePayment(result:)` instead of the pay-now
-     flow. Takes priority over the Due Date Hint state.
+     sheet is enabled. Takes priority over the Due Date Hint state.
      */
     public var paymentScheduleHintEnabled: Bool = true
 
