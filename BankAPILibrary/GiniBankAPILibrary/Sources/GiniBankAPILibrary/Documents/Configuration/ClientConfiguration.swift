@@ -45,9 +45,7 @@ public struct ClientConfiguration: Codable {
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due date is enabled.
-     - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the
-       payment-hint bottom sheet is enabled. When `true`, the SDK offers to hand off to the
-       integrator's own scheduled-transfer flow instead of the pay-now flow.
+     - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the payment-hint bottom sheet is enabled.
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      */
     public init(clientID: String,
