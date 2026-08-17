@@ -4,6 +4,7 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
+import GiniCaptureSDK
 import SwiftUI
 
 class ContentViewModel {
@@ -35,6 +36,14 @@ extension ContentViewModel: GiniBankSDKDelegate {
     }
 
     func captureCanceled() {
+        modalController?.dismiss(animated: true)
+    }
+
+    func captureRequestedSchedulePayment(result: AnalysisResult) {
+        /// Simulate the host app opening its scheduled-transfer screen with the
+        /// carried-over extractions — here we just print the count and dismiss,
+        /// matching the ScreenAPICoordinator example flow.
+        print("💻 Schedule payment requested with \(result.extractions.count) extractions")
         modalController?.dismiss(animated: true)
     }
 }

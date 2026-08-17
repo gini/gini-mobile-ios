@@ -351,7 +351,9 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(alreadyPaidHintEnabled: Bool, paymentDueHintEnabled: Bool = false) {
+    init(alreadyPaidHintEnabled: Bool,
+         paymentDueHintEnabled: Bool = false,
+         paymentScheduleHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -362,6 +364,7 @@ extension ClientConfiguration {
                   eInvoiceEnabled: false,
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
-                  paymentDueHintEnabled: paymentDueHintEnabled)
+                  paymentDueHintEnabled: paymentDueHintEnabled,
+                  paymentScheduleHintEnabled: paymentScheduleHintEnabled)
     }
 }

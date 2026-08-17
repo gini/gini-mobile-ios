@@ -689,13 +689,43 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Predicate — is the Due Date Hint bottom sheet warranted for this
-     extraction result? Combines the existing `determineIfPaymentDueHintEnabled`
-     / Return-Assistant / Skonto gates with the pre-existing
-     `Date.isDueSoon(within: threshold)` check.
+     Feature-flag gate for the Schedule Payment state of the payment-hint
+     bottom sheet. Both the SDK integrator (`GiniBankConfiguration`) and the
+     client configuration returned from `/configurations` must have opted in.
+     Cross-border payment flows are excluded, matching Android.
+     */
+    func determineIfPaymentScheduleHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        guard !isCrossBorderPayment() else { return false }
+        let globalScheduleHintEnabled = giniBankConfiguration.paymentScheduleHintEnabled
+        let clientScheduleHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .paymentScheduleHintEnabled ?? false
+        return globalScheduleHintEnabled && clientScheduleHintEnabled
+    }
+
+    /**
+     Combines `determineIfPaymentDueHintEnabled`, Return-Assistant / Skonto
+     gates, and the `Date.isDueSoon(within: threshold)` check. Suppresses
+     itself when the Schedule Payment state takes priority.
      */
     func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
-        guard determineIfPaymentDueHintEnabled(for: extractionResult),
+        guard !determineIfPaymentScheduleHintEnabled(for: extractionResult),
+              determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            return false
+        }
+
+        return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
+    }
+
+    /**
+     Reuses the same eligibility as `shouldPresentDueDateHint` (parseable
+     due date, no Return Assistant / Skonto, `Date.isDueSoon(within: threshold)`)
+     and additionally requires `determineIfPaymentScheduleHintEnabled`.
+     */
+    func shouldPresentSchedulePaymentHint(for extractionResult: ExtractionResult) -> Bool {
+        guard determineIfPaymentScheduleHintEnabled(for: extractionResult),
               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
               !shouldShowReturnAssistant(for: extractionResult),
               !shouldShowSkonto(for: extractionResult) else {
@@ -708,50 +738,110 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     func handleToBePaidCase(_ extractionResult: ExtractionResult,
                             _ continueWithFeatureFlow: @escaping () -> Void) {
-        guard shouldPresentDueDateHint(for: extractionResult),
-              let dueDate = getDocumentPaymentDueDate(for: extractionResult) else {
-            continueWithFeatureFlow()
+        if shouldPresentSchedulePaymentHint(for: extractionResult),
+           let dueDate = getDocumentPaymentDueDate(for: extractionResult) {
+            presentPaymentHintBottomSheet(
+                state: .schedulePayment(formattedDueDate: dueDate.toDisplayString(),
+                                        onSchedule: { [weak self] in
+                                            self?.finishWithSchedulePayment(extractionResult: extractionResult)
+                                        },
+                                        onProceed: continueWithFeatureFlow)
+            )
             return
         }
 
-        presentDueDateHintBottomSheet(dueDate: dueDate,
-                                      onProceed: continueWithFeatureFlow)
+        if shouldPresentDueDateHint(for: extractionResult),
+           let dueDate = getDocumentPaymentDueDate(for: extractionResult) {
+            presentPaymentHintBottomSheet(
+                state: .dueDate(formattedDueDate: dueDate.toDisplayString(),
+                                onProceed: continueWithFeatureFlow,
+                                onCancel: { [weak self] in self?.didCancelCapturing() })
+            )
+            return
+        }
+
+        continueWithFeatureFlow()
     }
 
     @MainActor
-    func presentDueDateHintBottomSheet(dueDate: Date,
-                                       onProceed: @escaping () -> Void) {
+    func presentPaymentHintBottomSheet(state: PaymentHintState) {
         /// Cancel the pending capture-suggestions banner so it doesn't collide
         /// with the sheet's VoiceOver focus while the sheet is up.
-        let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController
-        analysisVC?.removeCaptureSuggestions()
+        let analysisViewController = screenAPINavigationController.children.last as? AnalysisViewController
+        analysisViewController?.removeCaptureSuggestions()
 
-        let sheet = DueDateHintBottomSheetViewController(
-            formattedDueDate: dueDate.toDisplayString(),
-            onCancel: { [weak self] in
-                guard let self else { return }
-                /// Restore accessibility on the presenter — `presentAsBottomSheet`
-                /// hides the presenter's view from VoiceOver on presentation and
-                /// leaves it hidden when the sheet goes away.
-                self.screenAPINavigationController.view.accessibilityElementsHidden = false
-                /// Dismiss the sheet and notify the delegate synchronously — same
-                /// callback-first order as Android's `WarningBottomSheet.Listener`
-                /// (`onPrimaryAction()` before `dismissAllowingStateLoss()`). Avoids
-                /// depending on `dismiss(animated: true) { completion }` firing on
-                /// CI simulators where the display-link-driven animation stalls.
-                self.screenAPINavigationController.dismiss(animated: true)
-                self.didCancelCapturing()
-            },
-            onProceed: { [weak self] in
-                guard let self else { return }
-                self.screenAPINavigationController.view.accessibilityElementsHidden = false
-                self.screenAPINavigationController.dismiss(animated: true)
-                onProceed()
-            }
-        )
-
+        let sheet = PaymentHintBottomSheetViewController(state: wrapStateForDismissal(state))
         sheet.isModalInPresentation = true
         sheet.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    /**
+     Wraps the caller's CTA closures with the dismiss + a11y-restore steps so
+     the view controller doesn't have to know about presentation lifecycle.
+     */
+    private func wrapStateForDismissal(_ state: PaymentHintState) -> PaymentHintState {
+        switch state {
+        case let .dueDate(formattedDueDate, onProceed, onCancel):
+            return .dueDate(formattedDueDate: formattedDueDate,
+                            onProceed: { [weak self] in
+                                self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+                                self?.screenAPINavigationController.dismiss(animated: true)
+                                onProceed()
+                            },
+                            onCancel: { [weak self] in
+                                self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+                                self?.screenAPINavigationController.dismiss(animated: true)
+                                onCancel()
+                            })
+        case let .schedulePayment(formattedDueDate, onSchedule, onProceed):
+            return .schedulePayment(formattedDueDate: formattedDueDate,
+                                    onSchedule: { [weak self] in
+                                        self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+                                        self?.screenAPINavigationController.dismiss(animated: true)
+                                        onSchedule()
+                                    },
+                                    onProceed: { [weak self] in
+                                        self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+                                        self?.screenAPINavigationController.dismiss(animated: true)
+                                        onProceed()
+                                    })
+        }
+    }
+
+    /**
+     Terminates the capture flow with the Schedule Payment hand-off.
+
+     Constructs the same `AnalysisResult` the success path in
+     `deliverWithReturnAssistant` produces, sends the SDK-close analytics
+     event, hands the result over via
+     `giniCaptureDidRequestSchedulePayment(result:)`, and resets the document
+     service. Does NOT call `continueWithFeatureFlow` — the flow terminates
+     here.
+
+     The `isCrossBorderPayment()` guard cannot fire in practice (the schedule
+     eligibility gate excludes CX), but the construction is kept identical to
+     the pay-now hand-off to keep the two terminal paths in lock-step against
+     future changes.
+     */
+    @MainActor
+    private func finishWithSchedulePayment(extractionResult: ExtractionResult) {
+        let extractions: [String: Extraction] = Dictionary(
+            uniqueKeysWithValues: extractionResult.extractions.compactMap {
+                guard let name = $0.name else { return nil }
+                return (name, $0)
+            }
+        )
+        let images = pages.compactMap { $0.document.previewImage }
+        let analysisResult = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
+                                            lineItems: isCrossBorderPayment() ? nil : extractionResult.lineItems,
+                                            skontoDiscounts: isCrossBorderPayment() ? nil : extractionResult.skontoDiscounts,
+                                            crossBorderPayment: extractionResult.crossBorderPayment,
+                                            images: images,
+                                            document: documentService.document,
+                                            candidates: extractionResult.candidates)
+        sendAnalyticsEventSDKClose()
+        resultsDelegate?.giniCaptureDidRequestSchedulePayment(result: analysisResult)
+        documentService.resetToInitialState()
     }
 
     /**

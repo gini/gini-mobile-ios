@@ -129,7 +129,7 @@ extension NetworkingScreenApiCoordinatorTests {
                        "Due Date Hint requires a paymentDueDate extraction")
     }
 
-    // MARK: presentDueDateHintBottomSheet — flow-level coverage
+    // MARK: presentPaymentHintBottomSheet(.dueDate) — flow-level coverage
 
     @MainActor
     func testPresentDueDateHintBottomSheetShowsModalNonDismissibleSheet() throws {
@@ -137,18 +137,22 @@ extension NetworkingScreenApiCoordinatorTests {
         let window = mountNavigationController(for: coordinator)
         defer { tearDownWindow(window) }
 
-        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { }
+        coordinator.presentPaymentHintBottomSheet(
+            state: .dueDate(formattedDueDate: Date().toDisplayString(),
+                            onProceed: {},
+                            onCancel: {})
+        )
 
         let sheetVisible = XCTNSPredicateExpectation(
             predicate: NSPredicate { _, _ in
-                coordinator.screenAPINavigationController.presentedViewController is DueDateHintBottomSheetViewController
+                coordinator.screenAPINavigationController.presentedViewController is PaymentHintBottomSheetViewController
             },
             object: nil
         )
         wait(for: [sheetVisible], timeout: 5.0)
 
         let sheet = try XCTUnwrap(
-            coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
+            coordinator.screenAPINavigationController.presentedViewController as? PaymentHintBottomSheetViewController,
             "Sheet must be presented over the nav controller"
         )
         XCTAssertTrue(sheet.isModalInPresentation,
@@ -164,9 +168,13 @@ extension NetworkingScreenApiCoordinatorTests {
         defer { tearDownWindow(window) }
 
         var proceedCalled = false
-        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) { proceedCalled = true }
+        coordinator.presentPaymentHintBottomSheet(
+            state: .dueDate(formattedDueDate: Date().toDisplayString(),
+                            onProceed: { proceedCalled = true },
+                            onCancel: {})
+        )
 
-        let sheet = try waitForPresentedDueDateSheet(on: coordinator)
+        let sheet = try waitForPresentedPaymentHintSheet(on: coordinator)
         sheet.didPressPrimary()
 
         XCTAssertTrue(proceedCalled,
@@ -183,11 +191,13 @@ extension NetworkingScreenApiCoordinatorTests {
         XCTAssertFalse(resultsDelegate.closeCalled,
                        "Precondition: resultsDelegate must not have been notified yet")
 
-        coordinator.presentDueDateHintBottomSheet(dueDate: Date()) {
-            XCTFail("Cancel path must not invoke the continuation")
-        }
+        coordinator.presentPaymentHintBottomSheet(
+            state: .dueDate(formattedDueDate: Date().toDisplayString(),
+                            onProceed: { XCTFail("Cancel path must not invoke the continuation") },
+                            onCancel: { coordinator.didCancelCapturing() })
+        )
 
-        let sheet = try waitForPresentedDueDateSheet(on: coordinator)
+        let sheet = try waitForPresentedPaymentHintSheet(on: coordinator)
         sheet.didPressSecondary()
 
         XCTAssertTrue(resultsDelegate.closeCalled,
@@ -228,7 +238,7 @@ extension NetworkingScreenApiCoordinatorTests {
         var continuationCalled = false
         coordinator.handleToBePaidCase(result) { continuationCalled = true }
 
-        _ = try waitForPresentedDueDateSheet(on: coordinator)
+        _ = try waitForPresentedPaymentHintSheet(on: coordinator)
         XCTAssertFalse(continuationCalled,
                        "When the sheet is presented, the continuation must wait for the user's CTA")
     }
@@ -258,28 +268,31 @@ extension NetworkingScreenApiCoordinatorTests {
     }
 
     @MainActor
-    private func waitForPresentedDueDateSheet(on coordinator: GiniBankNetworkingScreenApiCoordinator)
-        throws -> DueDateHintBottomSheetViewController {
+    private func waitForPresentedPaymentHintSheet(on coordinator: GiniBankNetworkingScreenApiCoordinator)
+        throws -> PaymentHintBottomSheetViewController {
         let expectation = XCTNSPredicateExpectation(
             predicate: NSPredicate { _, _ in
-                coordinator.screenAPINavigationController.presentedViewController is DueDateHintBottomSheetViewController
+                coordinator.screenAPINavigationController.presentedViewController is PaymentHintBottomSheetViewController
             },
             object: nil
         )
         wait(for: [expectation], timeout: 5.0)
         return try XCTUnwrap(
-            coordinator.screenAPINavigationController.presentedViewController as? DueDateHintBottomSheetViewController,
+            coordinator.screenAPINavigationController.presentedViewController as? PaymentHintBottomSheetViewController,
             "Sheet must be presented over the nav controller"
         )
     }
 
     private func configureForDueDateHint(_ coordinator: GiniBankNetworkingScreenApiCoordinator) {
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true
+        coordinator.giniBankConfiguration.paymentScheduleHintEnabled = false
         coordinator.giniBankConfiguration.returnAssistantEnabled = false
         coordinator.giniBankConfiguration.skontoEnabled = false
         coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        /// Schedule state is disabled so the Due Date branch remains reachable in these tests.
         GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
-                                                                              paymentDueHintEnabled: true)
+                                                                              paymentDueHintEnabled: true,
+                                                                              paymentScheduleHintEnabled: false)
     }
 
     private func dateString(daysFromNow days: Int) -> String {

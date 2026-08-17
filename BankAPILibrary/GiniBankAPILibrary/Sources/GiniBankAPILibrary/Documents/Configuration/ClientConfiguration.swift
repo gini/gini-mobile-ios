@@ -27,6 +27,7 @@ public struct ClientConfiguration: Codable {
     public let savePhotosLocallyEnabled: Bool
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
+    public let paymentScheduleHintEnabled: Bool
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -43,6 +44,9 @@ public struct ClientConfiguration: Codable {
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due date is enabled.
+     - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the
+       payment-hint bottom sheet is enabled. When `true`, the SDK offers to hand off to the
+       integrator's own scheduled-transfer flow instead of the pay-now flow.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -54,7 +58,8 @@ public struct ClientConfiguration: Codable {
                 eInvoiceEnabled: Bool,
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
-                paymentDueHintEnabled: Bool) {
+                paymentDueHintEnabled: Bool,
+                paymentScheduleHintEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -66,5 +71,6 @@ public struct ClientConfiguration: Codable {
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled
+        self.paymentScheduleHintEnabled = paymentScheduleHintEnabled
     }
 }

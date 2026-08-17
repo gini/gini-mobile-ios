@@ -413,6 +413,16 @@ public final class GiniBankConfiguration: NSObject {
     public var paymentDueHintEnabled: Bool = true
 
     /**
+     Indicates whether the Schedule Payment state of the payment-hint bottom
+     sheet is enabled or not. When both this flag and
+     `ClientConfiguration.paymentScheduleHintEnabled` are `true`, the SDK
+     offers to hand off to the integrator's own scheduled-transfer flow via
+     `giniCaptureDidRequestSchedulePayment(result:)` instead of the pay-now
+     flow. Takes priority over the Due Date Hint state.
+     */
+    public var paymentScheduleHintEnabled: Bool = true
+
+    /**
      Indicates whether the Already Paid Hint feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to inform
      the user that the invoice appears to have already been paid.
