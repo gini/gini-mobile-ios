@@ -50,6 +50,21 @@ on:
         required: false
         default: 'JA825X8F7Z'
         type: string
+      credentials_plist_path:
+        description: 'Relative path to a Credentials.plist to inject Gini client credentials into (plutil style, e.g. BankSDK example)'
+        required: false
+        default: ''
+        type: string
+      credentials_manager_path:
+        description: 'Relative path to a CredentialsManager.swift to inject Gini client credentials into (sed style, e.g. HealthSDK example)'
+        required: false
+        default: ''
+        type: string
+      google_services_plist_path:
+        description: 'Relative path to the GoogleService-Info.plist whose placeholder API_KEY must be replaced before archiving'
+        required: false
+        default: ''
+        type: string
     secrets:
       MATCH_GIT_URL:
         required: true
@@ -63,6 +78,12 @@ on:
         required: true
       APP_STORE_API_KEY_ISSUER_ID:
         required: true
+      FIREBASE_API_KEY:
+        required: false
+      GINI_MOBILE_CI_USERNAME:
+        required: false
+      GINI_MOBILE_CI_PASSWORD:
+        required: false
 
 jobs:
   upload-testflight:
@@ -100,6 +121,45 @@ jobs:
           # step then re-signs with the AppStore profiles above). Extension targets sign
           # with AppStore profiles in Release, so they are excluded here on purpose.
           DISTRIBUTION_TYPE=adhoc APP_IDENTIFIER=${{ inputs.bundle_identifier }} bundle exec fastlane download_profiles
+
+      - name: Setup Credentials (plist)
+        if: inputs.credentials_plist_path != ''
+        env:
+          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        run: |
+          if [ -z "$TEST_CLIENT_ID" ] || [ -z "$TEST_CLIENT_SECRET" ]; then
+            echo "GINI_MOBILE_CI_USERNAME/GINI_MOBILE_CI_PASSWORD secrets are empty — refusing to ship placeholder credentials" >&2
+            exit 1
+          fi
+          plutil -replace client_id -string "$TEST_CLIENT_ID" "${{ inputs.credentials_plist_path }}"
+          plutil -replace client_password -string "$TEST_CLIENT_SECRET" "${{ inputs.credentials_plist_path }}"
+
+      - name: Setup Credentials (CredentialsManager.swift)
+        if: inputs.credentials_manager_path != ''
+        env:
+          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        run: |
+          if [ -z "$TEST_CLIENT_ID" ] || [ -z "$TEST_CLIENT_SECRET" ]; then
+            echo "GINI_MOBILE_CI_USERNAME/GINI_MOBILE_CI_PASSWORD secrets are empty — refusing to ship placeholder credentials" >&2
+            exit 1
+          fi
+          sed -i '' \
+          -e "s/clientID = \"client_id\"/clientID = \"$TEST_CLIENT_ID\"/" \
+          -e "s/clientPassword = \"client_password\"/clientPassword = \"$TEST_CLIENT_SECRET\"/" \
+          "${{ inputs.credentials_manager_path }}"
+
+      - name: Setup Firebase API Key
+        if: inputs.google_services_plist_path != ''
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+        run: |
+          if [ -z "$FIREBASE_API_KEY" ]; then
+            echo "FIREBASE_API_KEY secret is empty — refusing to ship placeholder API key (app would crash at launch)" >&2
+            exit 1
+          fi
+          plutil -replace API_KEY -string "$FIREBASE_API_KEY" "${{ inputs.google_services_plist_path }}"
 
       - name: Archive Xcode Project
         run: |

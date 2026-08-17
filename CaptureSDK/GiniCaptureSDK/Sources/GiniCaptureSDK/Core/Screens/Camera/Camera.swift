@@ -33,6 +33,8 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func pauseQRDetection()
+    func resumeQRDetection()
 
     // IBAN detection
     func startOCR()
@@ -73,6 +75,9 @@ final class Camera: NSObject, CameraProtocol {
     }()
 
     fileprivate let application: UIApplication
+
+    // QR detection
+    private(set) var qrMetadataOutput: AVCaptureMetadataOutput?
 
     // IBAN detection
     private var request: VNImageBasedRequest?
@@ -269,11 +274,39 @@ final class Camera: NSObject, CameraProtocol {
         }
         session.addOutput(qrOutput)
         qrOutput.setMetadataObjectsDelegate(self, queue: sessionQueue)
-        if qrOutput.availableMetadataObjectTypes.contains(.qr) {
-            qrOutput.metadataObjectTypes = [.qr]
+        // Scan QR and PDF417: HUB3 (Croatian) payment codes are carried as PDF417 barcodes,
+        // whereas every other supported payment format is a QR code. Enable only the types
+        // the current device actually reports as available.
+        let desiredTypes: [AVMetadataObject.ObjectType] = [.qr, .pdf417]
+        qrOutput.metadataObjectTypes = desiredTypes.filter {
+            qrOutput.availableMetadataObjectTypes.contains($0)
         }
+        qrMetadataOutput = qrOutput
         session.commitConfiguration()
     }
+
+    func pauseQRDetection() {
+        sessionQueue.async { [weak self] in
+            self?.qrMetadataOutput?.metadataObjectTypes = []
+        }
+    }
+
+    func resumeQRDetection() {
+        sessionQueue.async { [weak self] in
+            guard let self = self,
+                  let output = self.qrMetadataOutput,
+                  output.availableMetadataObjectTypes.contains(.qr) else { return }
+            output.metadataObjectTypes = [.qr]
+        }
+    }
+
+    #if DEBUG
+    // Intended for unit tests only — injects a metadata output without going
+    // through full session setup, which is unstable on CI simulators.
+    func setQRMetadataOutputForTesting(_ output: AVCaptureMetadataOutput?) {
+        qrMetadataOutput = output
+    }
+    #endif
 }
 
 // MARK: - Fileprivate
@@ -496,8 +529,11 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-           metadataObj.type == AVMetadataObject.ObjectType.qr,
+        // Pick the first machine-readable QR/PDF417 object rather than blindly the first
+        // metadata object, so a frame containing a mix still surfaces the intended code.
+        if let metadataObj = metadataObjects
+            .compactMap({ $0 as? AVMetadataMachineReadableCodeObject })
+            .first(where: { $0.type == .qr || $0.type == .pdf417 }),
            let metaString = qrCodeString(from: metadataObj) {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
             if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {

@@ -12,10 +12,15 @@ import GiniUtilites
 /**
  A Gini Capture document made from a QR code.
 
- The Gini Capture SDK supports the following QR code formats:
+ The Gini Capture SDK supports the following QR code / payment code formats:
  - Bezahlcode (http://www.bezahlcode.de).
  - Stuzza (AT) and GiroCode (DE) (https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation).
  - EPS E-Payment (https://eservice.stuzza.at/de/eps-ueberweisung-dokumentation/category/5-dokumentation.html).
+ - SPC / Swiss QR-bill (https://www.paymentstandards.ch).
+ - SPD – Czech/Slovak Payment Descriptor.
+ - Pay-by-Square (Slovak compressed QR, base32hex + LZMA).
+ - UPNQR – Slovenian Universal Payment Order QR.
+ - HUB3 – Croatian payment PDF417 barcode.
 
  */
 @objc final public class GiniQRCodeDocument: NSObject, GiniCaptureDocument {
@@ -45,28 +50,55 @@ import GiniUtilites
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     public lazy var qrCodeFormat: QRCodesFormat? = {
-        if self.scannedString.starts(with: QRCodesFormat.giniQRCode.prefixURL) {
+        if self.scannedString.starts(with: QRCodesFormat.giniQRCode.formatMarker) {
             return .giniQRCode
-        } else if self.scannedString.starts(with: QRCodesFormat.bezahl.prefixURL) {
+        } else if self.scannedString.starts(with: QRCodesFormat.bezahl.formatMarker) {
             return .bezahl
-        } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.prefixURL) {
+        } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.formatMarker) {
             return .eps4mobile
-        } else if let lines = Optional(self.scannedString.splitlines),
-                  lines.count > 0 && lines[0] == QRCodesFormat.epc06912.prefixURL {
-            if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
-                Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.",
-                    event: "EPC QR code")
-            }
-
-            if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
-                return .epc06912
-            } else {
-                return nil
-            }
+        } else if self.scannedString.starts(with: QRCodesFormat.spd.formatMarker) {
+            return .spd
         } else {
-            return nil
+            let lines = self.scannedString.splitlines
+            guard !lines.isEmpty else { return nil }
+            switch lines[0] {
+            case QRCodesFormat.epc06912.formatMarker:
+                return Self.epc06912Format(from: lines)
+            case QRCodesFormat.spc.formatMarker:
+                return Self.spcFormat(from: lines)
+            case QRCodesFormat.upnqr.formatMarker:
+                return .upnqr
+            case QRCodesFormat.hub3.formatMarker:
+                return .hub3
+            default:
+                // Pay-by-Square is the only format with no leading marker, so it can't
+                // be matched by a prefix case. It's the fallback, but only when the
+                // base32hex heuristic confirms it; otherwise the format is unknown (nil).
+                return PayBySquareDecoder.looksLikePayBySquare(self.scannedString) ? .payBySquare : nil
+            }
         }
     }()
+
+    /**
+     EPC069-12 (Stuzza/GiroCode): valid only when line 6 holds a valid IBAN.
+     Line 2 carries the character-set version (1 or 2); anything else is logged.
+     */
+    private static func epc06912Format(from lines: [String]) -> QRCodesFormat? {
+        if lines.indices.contains(2) && !(lines[2] == "1" || lines[2] == "2") {
+            Log(message: "WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.",
+                event: "EPC QR code")
+        }
+        guard lines.indices.contains(6), IBANValidator().isValid(iban: lines[6]) else { return nil }
+        return .epc06912
+    }
+
+    /**
+     SPC / Swiss QR-bill: valid only when line 3 holds a valid IBAN.
+     */
+    private static func spcFormat(from lines: [String]) -> QRCodesFormat? {
+        guard lines.indices.contains(3), IBANValidator().isValid(iban: lines[3]) else { return nil }
+        return .spc
+    }
 
     init(scannedString: String, uploadMetadata: Document.UploadMetadata? = nil) {
         // Defensive: strip any embedded null bytes. The camera pipeline (Camera.swift)
