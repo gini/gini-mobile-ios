@@ -40,7 +40,6 @@ extension ContentViewModel: GiniBankSDKDelegate {
     }
 
     func captureRequestedSchedulePayment(result: AnalysisResult) {
-        print("💻 Schedule payment requested with \(result.extractions.count) extractions")
         modalController?.dismiss(animated: true)
     }
 }
