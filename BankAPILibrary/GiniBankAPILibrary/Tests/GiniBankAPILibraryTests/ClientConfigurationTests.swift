@@ -97,23 +97,7 @@ struct ClientConfigurationTests {
 
     @Test("paymentScheduleHintEnabled decodes from JSON payload")
     func paymentScheduleHintEnabledDecodesFromJSON() throws {
-        let json = """
-        {
-            "clientID": "\(testClientID)",
-            "userJourneyAnalyticsEnabled": false,
-            "skontoEnabled": false,
-            "returnAssistantEnabled": false,
-            "transactionDocsEnabled": false,
-            "instantPaymentEnabled": false,
-            "qrCodeEducationEnabled": false,
-            "eInvoiceEnabled": false,
-            "savePhotosLocallyEnabled": false,
-            "alreadyPaidHintEnabled": false,
-            "paymentDueHintEnabled": false,
-            "paymentScheduleHintEnabled": true
-        }
-        """
-        let data = Data(json.utf8)
+        let data = loadFile(withName: "clientConfiguration", ofType: "json")
 
         let config = try JSONDecoder().decode(ClientConfiguration.self, from: data)
         let reencoded = try JSONEncoder().encode(config)
