@@ -201,12 +201,16 @@ Ships with a **major-version bump** on both `GiniBankAPILibrary` and
   implementation, even one that just calls
   `giniCaptureAnalysisDidFinishWith(result:)` to fall back to the
   pay-now path.
-- **Removed localization keys** (rename): `ginicapture.payment.duedate.hint.title.format`,
+- **Renamed localization keys — old keys retained as deprecated.** The
+  active keys move under `ginicapture.payment.hint.*` (see §Localization).
+  The previous `ginicapture.payment.duedate.hint.title.format`,
   `ginicapture.payment.duedate.hint.description`,
-  `ginicapture.payment.duedate.hint.proceedButtonTitle`,
-  `ginicapture.payment.duedate.hint.cancelButtonTitle`. Integrator overrides of
-  these keys become no-ops at runtime — release notes must call this out
-  alongside the PP-3261 removals.
+  `ginicapture.payment.duedate.hint.proceedButtonTitle`, and
+  `ginicapture.payment.duedate.hint.cancelButtonTitle` are kept in
+  `Localizable.strings` under `// DEPRECATED …` / `// END DEPRECATED`
+  banners so integrators that shipped overrides on the PP-3261 keys do
+  not hit runtime no-ops. Not source-breaking; slated for removal in a
+  future major.
 
 ### GiniBankSDK (public)
 
@@ -275,7 +279,8 @@ Grounded in `platform.md` and the modules touched:
      `ginicapture.payment.hint.duedate.proceedButtonTitle` but a separate
      key is kept so per-state copy tweaks stay independent (mirrors
      Android's per-state string entries).
-   All previous `ginicapture.payment.duedate.hint.*` keys are removed
+   All previous `ginicapture.payment.duedate.hint.*` keys are retained as
+   deprecated behind `// DEPRECATED …` / `// END DEPRECATED` banners
    (see §Public API impact).
 9. **Quality gates.** `make lint scheme=GiniBankSDK`, `make lint
    scheme=GiniCaptureSDK`, and `make lint scheme=GiniBankAPILibrary` must
