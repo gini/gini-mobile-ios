@@ -250,9 +250,8 @@
 "ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Terminüberweisung";
 "ginicapture.payment.hint.schedule.proceedButtonTitle" = "Trotzdem fortfahren";
 
-// DEPRECATED — PP-3263 renamed these to ginicapture.payment.hint.*
-// Kept so integrators that shipped overrides on the PP-3261 keys do not hit
-// runtime no-ops. Do not reference from new code; remove in a future major.
+// DEPRECATED — renamed these to ginicapture.payment.hint.*
+//  Do not reference from new code; remove in a future major.
 "ginicapture.payment.duedate.hint.title.format" = "Deine Rechnung ist am %@ fällig.";
 "ginicapture.payment.duedate.hint.description" = "Du könntest sie als Terminüberweisung anlegen.";
 "ginicapture.payment.duedate.hint.proceedButtonTitle" = "Trotzdem fortfahren";

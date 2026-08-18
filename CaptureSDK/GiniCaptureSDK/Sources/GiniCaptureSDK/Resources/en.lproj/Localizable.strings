@@ -247,9 +247,8 @@
 "ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Schedule Payment";
 "ginicapture.payment.hint.schedule.proceedButtonTitle" = "Proceed Anyway";
 
-// DEPRECATED — PP-3263 renamed these to ginicapture.payment.hint.*
-// Kept so integrators that shipped overrides on the PP-3261 keys do not hit
-// runtime no-ops. Do not reference from new code; remove in a future major.
+// DEPRECATED — renamed these to ginicapture.payment.hint.*
+//  Do not reference from new code; remove in a future major.
 "ginicapture.payment.duedate.hint.title.format" = "Your invoice is due on %@.";
 "ginicapture.payment.duedate.hint.description" = "You could set it up as a scheduled transfer.";
 "ginicapture.payment.duedate.hint.proceedButtonTitle" = "Proceed Anyway";
