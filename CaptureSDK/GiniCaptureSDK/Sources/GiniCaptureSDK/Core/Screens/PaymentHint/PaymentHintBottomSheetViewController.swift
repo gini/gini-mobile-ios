@@ -68,7 +68,6 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
         }
     }
 
-    /// Figma: "Proceed Anyway" is the primary CTA for the Due Date state.
     private static func makeDueDateViewModels(formattedDueDate: String,
                                               onProceed: @escaping () -> Void,
                                               onCancel: @escaping () -> Void)
@@ -82,7 +81,6 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
         return (content, InfoBottomSheetButtonsViewModel(primary, secondary))
     }
 
-    /// Figma: "Schedule Payment" is the primary CTA for the Schedule state.
     private static func makeScheduleViewModels(formattedDueDate: String,
                                                onSchedule: @escaping () -> Void,
                                                onProceed: @escaping () -> Void)
