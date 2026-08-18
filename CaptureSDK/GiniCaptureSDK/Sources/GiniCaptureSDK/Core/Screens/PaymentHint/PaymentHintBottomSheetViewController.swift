@@ -46,38 +46,54 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
      - Parameter state: The state the sheet should render.
      */
     public init(state: PaymentHintState) {
-        let contentViewModel: InfoBottomSheetViewModel
-        let buttonsViewModel: InfoBottomSheetButtonsViewModel
-
-        switch state {
-        case let .dueDate(formattedDueDate, onProceed, onCancel):
-            let title = String(format: Strings.titleFormat, formattedDueDate)
-            contentViewModel = DueDateContent(title: title)
-
-            /// Figma: "Proceed Anyway" is the primary CTA for the Due Date state.
-            let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.dueDateProceedButton,
-                                                                 action: onProceed)
-            let secondary = InfoBottomSheetButtonsViewModel.Button(title: Strings.dueDateCancelButton,
-                                                                   action: onCancel)
-            buttonsViewModel = InfoBottomSheetButtonsViewModel(primary, secondary)
-
-        case let .schedulePayment(formattedDueDate, onSchedule, onProceed):
-            let title = String(format: Strings.titleFormat, formattedDueDate)
-            contentViewModel = ScheduleContent(title: title)
-
-            /// Figma: "Schedule Payment" is the primary CTA for the Schedule state.
-            let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.scheduleButton,
-                                                                 action: onSchedule)
-            let secondary = InfoBottomSheetButtonsViewModel.Button(title: Strings.scheduleProceedButton,
-                                                                   action: onProceed)
-            buttonsViewModel = InfoBottomSheetButtonsViewModel(primary, secondary)
-        }
-
+        let (contentViewModel, buttonsViewModel) = Self.makeViewModels(for: state)
         super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
     }
 
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private static func makeViewModels(for state: PaymentHintState)
+        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+        switch state {
+        case let .dueDate(formattedDueDate, onProceed, onCancel):
+            return makeDueDateViewModels(formattedDueDate: formattedDueDate,
+                                         onProceed: onProceed,
+                                         onCancel: onCancel)
+        case let .schedulePayment(formattedDueDate, onSchedule, onProceed):
+            return makeScheduleViewModels(formattedDueDate: formattedDueDate,
+                                          onSchedule: onSchedule,
+                                          onProceed: onProceed)
+        }
+    }
+
+    /// Figma: "Proceed Anyway" is the primary CTA for the Due Date state.
+    private static func makeDueDateViewModels(formattedDueDate: String,
+                                              onProceed: @escaping () -> Void,
+                                              onCancel: @escaping () -> Void)
+        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+        let title = String(format: Strings.titleFormat, formattedDueDate)
+        let content = DueDateContent(title: title)
+        let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.dueDateProceedButton,
+                                                             action: onProceed)
+        let secondary = InfoBottomSheetButtonsViewModel.Button(title: Strings.dueDateCancelButton,
+                                                               action: onCancel)
+        return (content, InfoBottomSheetButtonsViewModel(primary, secondary))
+    }
+
+    /// Figma: "Schedule Payment" is the primary CTA for the Schedule state.
+    private static func makeScheduleViewModels(formattedDueDate: String,
+                                               onSchedule: @escaping () -> Void,
+                                               onProceed: @escaping () -> Void)
+        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+        let title = String(format: Strings.titleFormat, formattedDueDate)
+        let content = ScheduleContent(title: title)
+        let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.scheduleButton,
+                                                             action: onSchedule)
+        let secondary = InfoBottomSheetButtonsViewModel.Button(title: Strings.scheduleProceedButton,
+                                                               action: onProceed)
+        return (content, InfoBottomSheetButtonsViewModel(primary, secondary))
     }
 }
 
