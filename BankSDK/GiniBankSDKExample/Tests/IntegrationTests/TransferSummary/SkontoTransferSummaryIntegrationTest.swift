@@ -63,6 +63,8 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
     }
 
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+        /// A callback surviving a timed-out test must not run into the next test.
+        guard !testCase.isTestFinished else { return }
         guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoiceResultName) else {
             return
         }
@@ -94,6 +96,9 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
     func sendTransferSummary(result: AnalysisResult) {
         guard let amountToPayString = result.extractions["amountToPay"]?.value else { return }
         let amountExtraction = createAmountExtraction(value: amountToPayString)
+        /// Re-pin the shared document service to this test's own service so the
+        /// feedback can never target another test's document.
+        GiniBankConfiguration.shared.documentService = testCase.giniHelper.giniCaptureSDKDocumentService
         GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
                                                                    amountToPayString: amountToPayString)
     }
@@ -103,19 +108,24 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
     func updateAndVerifyTransferSummary(result: AnalysisResult,
                                         mockedInvoiceUpdatedResultName: String,
                                         expect: XCTestExpectation) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+        guard let document = result.document else {
+            XCTFail("Analysis result has no document to verify the transfer summary against")
+            return
+        }
+        guard let expectedAmountToPay = result.extractions["amountToPay"]?.value else {
+            XCTFail("Analysis result has no amountToPay to poll the transfer summary with")
+            return
+        }
+
+        /// Poll until the fed-back `amountToPay` is visible instead of sleeping a
+        /// fixed 10 seconds — a slow backend made the fixed delay assert stale values.
+        testCase.pollUpdatedExtractions(for: document,
+                                        expectedAmountToPay: expectedAmountToPay) { [weak self] extractionResult in
             guard let self = self else { return }
-            self.testCase.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
-                switch updatedResult {
-                case let .success(extractionResult):
-                    self.handleSuccessfulTransferSummary(extractionResult: extractionResult,
-                                                         mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
-                                                         expect: expect,
-                                                         result: result)
-                case let .failure(error):
-                    XCTFail("Error updating transfer summary: \(error)")
-                }
-            }
+            self.handleSuccessfulTransferSummary(extractionResult: extractionResult,
+                                                 mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
+                                                 expect: expect,
+                                                 result: result)
         }
     }
 
