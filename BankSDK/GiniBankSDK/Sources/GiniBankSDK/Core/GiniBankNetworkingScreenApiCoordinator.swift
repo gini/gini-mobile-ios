@@ -548,9 +548,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         if shouldProceedWithCreditNote(extractionResult) {
             presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
                 guard let self else { return }
-                let strippedResult = self.excludingCompoundExtractions(from: extractionResult)
-                let filteredResult = self.excludingAmountToPay(from: strippedResult)
-                self.presentTransactionDocsAlert(extractionResult: filteredResult,
+                self.presentTransactionDocsAlert(extractionResult: self.creditNoteDeliveryResult(from: extractionResult),
                                                  delegate: delegate)
             }
             return
@@ -817,6 +815,17 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                 returnReasons: nil,
                                 skontoDiscounts: nil,
                                 candidates: extractionResult.candidates)
+    }
+
+    /**
+     Builds the extraction result delivered for a confirmed credit-note document:
+     compound extractions (`lineItems`, `skontoDiscounts`, `returnReasons`) are stripped so
+     the Return Assistant and Skonto flows are never triggered, and `amountToPay` is removed
+     so the host app does not pre-fill a payment amount for a credit note.
+     */
+    func creditNoteDeliveryResult(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let strippedResult = excludingCompoundExtractions(from: extractionResult)
+        return excludingAmountToPay(from: strippedResult)
     }
 
     /**

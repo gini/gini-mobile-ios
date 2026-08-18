@@ -553,6 +553,47 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(coordinator.shouldShowSkonto(for: extractionResult),
                       "A non-credit-note document should keep its Skonto eligibility")
     }
+
+    // MARK: - creditNoteDeliveryResult Tests
+
+    func testCreditNoteDeliveryResultStripsCompoundExtractionsAndAmountToPay() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts(),
+                                                      returnReasons: createMockReturnReasons())
+
+        let delivered = coordinator.creditNoteDeliveryResult(from: extractionResult)
+
+        XCTAssertNil(delivered.lineItems, "lineItems should be removed from the delivered credit-note result")
+        XCTAssertNil(delivered.skontoDiscounts, "skontoDiscounts should be removed from the delivered credit-note result")
+        XCTAssertNil(delivered.returnReasons, "returnReasons should be removed from the delivered credit-note result")
+        XCTAssertFalse(delivered.extractions.contains { $0.name == "amountToPay" },
+                       "amountToPay should be removed from the delivered credit-note result")
+    }
+
+    func testCreditNoteDeliveryResultKeepsRemainingFlatExtractionsAndCandidates() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      candidates: createMockCandidates())
+
+        let delivered = coordinator.creditNoteDeliveryResult(from: extractionResult)
+
+        XCTAssertEqual(delivered.extractions.first(where: { $0.name == "businessDocType" })?.value,
+                       "creditnote",
+                       "businessDocType should still be delivered for a credit note")
+        XCTAssertEqual(delivered.extractions.count,
+                       extractionResult.extractions.count - 1,
+                       "Only amountToPay should be filtered from the flat extractions")
+        XCTAssertEqual(delivered.candidates["amounts"]?.first?.value,
+                       "100.00:EUR",
+                       "Candidates should be carried over unchanged")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
