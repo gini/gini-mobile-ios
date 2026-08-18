@@ -694,7 +694,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      Feature-flag gate for the Schedule Payment state. Both
      `GiniBankConfiguration` and the client configuration must opt in.
      */
-    func determineIfPaymentScheduleHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+    func determineIfPaymentScheduleHintEnabled(for _: ExtractionResult) -> Bool {
         guard !isCrossBorderPayment() else { return false }
         let globalScheduleHintEnabled = giniBankConfiguration.paymentScheduleHintEnabled
         let clientScheduleHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
@@ -780,28 +780,29 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         switch state {
         case let .dueDate(formattedDueDate, onProceed, onCancel):
             return .dueDate(formattedDueDate: formattedDueDate,
-                            onProceed: { [weak self] in
-                                self?.screenAPINavigationController.view.accessibilityElementsHidden = false
-                                self?.screenAPINavigationController.dismiss(animated: true)
-                                onProceed()
-                            },
-                            onCancel: { [weak self] in
-                                self?.screenAPINavigationController.view.accessibilityElementsHidden = false
-                                self?.screenAPINavigationController.dismiss(animated: true)
-                                onCancel()
-                            })
+                            onProceed: dismissSheet(then: onProceed),
+                            onCancel: dismissSheet(then: onCancel))
         case let .schedulePayment(formattedDueDate, onSchedule, onProceed):
             return .schedulePayment(formattedDueDate: formattedDueDate,
-                                    onSchedule: { [weak self] in
-                                        self?.screenAPINavigationController.view.accessibilityElementsHidden = false
-                                        self?.screenAPINavigationController.dismiss(animated: true)
-                                        onSchedule()
-                                    },
-                                    onProceed: { [weak self] in
-                                        self?.screenAPINavigationController.view.accessibilityElementsHidden = false
-                                        self?.screenAPINavigationController.dismiss(animated: true)
-                                        onProceed()
-                                    })
+                                    onSchedule: dismissSheet(then: onSchedule),
+                                    onProceed: dismissSheet(then: onProceed))
+        }
+    }
+
+    /**
+     Returns a closure that restores presenter accessibility, starts the
+     sheet dismissal animation, and invokes `callback` synchronously.
+     Matches Android's `WarningBottomSheet.Listener` ordering
+     (`onPrimaryAction()` before `dismissAllowingStateLoss()`) and avoids the
+     CI-simulator stall observed when depending on
+     `dismiss(animated: true) { completion }` in this presentation flow.
+     */
+    @MainActor
+    private func dismissSheet(then callback: @escaping () -> Void) -> () -> Void {
+        return { [weak self] in
+            self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+            self?.screenAPINavigationController.dismiss(animated: true)
+            callback()
         }
     }
 
