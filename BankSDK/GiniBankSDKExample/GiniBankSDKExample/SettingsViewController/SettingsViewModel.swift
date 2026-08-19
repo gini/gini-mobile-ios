@@ -86,7 +86,7 @@ final class SettingsViewModel {
         credentialsSection.items.append(.segmentedOption(data: CredentialsSetSegmentedOptionModel(selectedIndex: selectedCredentialsSetIndex)))
 
         // Credentials input fields
-        let currentCredentials = CredentialsSet.credentials(for: selectedCredentialsSetIndex)
+        let currentCredentials = credentialsForSelectedSet()
         credentialsSection.items.append(.credentials(data: .init(clientId: currentCredentials.clientId,
                                                                  secretId: currentCredentials.clientSecret)))
 
@@ -117,6 +117,15 @@ final class SettingsViewModel {
 
         setupContentData()
         delegate?.contentDataUpdated()
+    }
+
+    /**
+     Returns the credentials matching the selected credentials set and the
+     current API environment (set A resolves to its staging variant on stage).
+     */
+    func credentialsForSelectedSet() -> (clientId: String, clientSecret: String) {
+        return CredentialsSet.credentials(for: selectedCredentialsSetIndex,
+                                          environment: currentAPIEnvironment)
     }
 
     private func setupSDKTypeSection(enablePinningSDK: Bool) -> SettingsSection {

@@ -83,7 +83,9 @@ final class AppCoordinator: Coordinator {
        return configuration
     }()
     
-    private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
+    private lazy var client: Client = apiEnvironment == .stage
+        ? CredentialsManager.fetchStageClientFromBundle()
+        : CredentialsManager.fetchClientFromBundle()
     private var documentMetadata: Document.Metadata?
     private let documentMetadataBranchId = "GVLExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
@@ -91,7 +93,7 @@ final class AppCoordinator: Coordinator {
     private let imageDataKey = "imageData"
 	private var settingsButtonStates: SettingsButtonStates?
 	private var documentValidationsState: DocumentValidationsState?
-    private var apiEnvironment: APIEnvironment = .production
+    private var apiEnvironment: APIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
     private var enablePinningSDK: Bool = ExampleAppUserDefaultsStorage.enablePinningSDK
 
     init(window: UIWindow) {
