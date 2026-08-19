@@ -31,7 +31,9 @@ public final class CreditNoteWarningViewController: InfoBottomSheetViewControlle
 
         let buttonsViewModel = InfoBottomSheetButtonsViewModel(primaryButton, secondaryButton)
 
-        super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel, buttonOrder: [.secondary, .primary])
+        super.init(viewModel: contentViewModel,
+                   buttonsViewModel: buttonsViewModel,
+                   buttonOrder: [.primary, .secondary])
     }
 
     required init?(coder: NSCoder) {
