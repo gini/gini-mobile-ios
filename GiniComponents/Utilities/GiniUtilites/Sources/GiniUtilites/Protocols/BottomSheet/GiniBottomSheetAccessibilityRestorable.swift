@@ -20,7 +20,9 @@ public protocol GiniBottomSheetAccessibilityRestorable: AnyObject {
 
 extension GiniBottomSheetAccessibilityRestorable {
 
-    /// Default implementation: focus on the presenter's visible content
+    /**
+     Default implementation: focus on the presenter's visible content
+     */
     public var accessibilityFocusTargetViewController: UIViewController? {
         if let navigationController = presenterViewController as? UINavigationController {
             return navigationController.topViewController
