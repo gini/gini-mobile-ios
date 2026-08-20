@@ -32,7 +32,7 @@ final class EditLineItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let title = Strings.editTitle
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         label.textColor = GiniColor(light: .GiniBank.dark1,
                                     dark: .GiniBank.light1).uiColor()
         label.attributedText = NSAttributedString(string: title,
