@@ -247,10 +247,9 @@
 "ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Schedule Payment";
 "ginicapture.payment.hint.schedule.proceedButtonTitle" = "Proceed Anyway";
 
-// DEPRECATED — renamed these to ginicapture.payment.hint.*
-//  Do not reference from new code; remove in a future major.
-"ginicapture.payment.duedate.hint.title.format" = "Your invoice is due on %@.";
-"ginicapture.payment.duedate.hint.description" = "You could set it up as a scheduled transfer.";
-"ginicapture.payment.duedate.hint.proceedButtonTitle" = "Proceed Anyway";
-"ginicapture.payment.duedate.hint.cancelButtonTitle" = "Cancel Transfer";
+// DEPRECATED — legacy inline-hint keys retained so customer overrides
+//  keep resolving. Do not reference from new code; remove in a future major.
+"ginicapture.payment.due.hint.prefix" = "Tip:";
+"ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
+"ginicapture.dismiss.message.title" = "Dismiss Message";
 // END DEPRECATED
