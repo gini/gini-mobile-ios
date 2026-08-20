@@ -11,10 +11,14 @@ import UIKit
  VoiceOver accessibility after dismissal.
  */
 public protocol GiniBottomSheetAccessibilityRestorable: AnyObject {
-    /// The view controller used for presenting bottom sheets
+    /**
+     The view controller used for presenting bottom sheets.
+     */
     var presenterViewController: UIViewController { get }
 
-    /// The view controller to focus on after bottom sheet dismissal
+    /**
+     The view controller to focus on after bottom sheet dismissal.
+     */
     var accessibilityFocusTargetViewController: UIViewController? { get }
 }
 
