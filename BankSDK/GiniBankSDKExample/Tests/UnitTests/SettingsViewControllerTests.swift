@@ -1544,7 +1544,7 @@ extension SettingsViewModelTests {
             configuration.alreadyPaidHintEnabled = data.isSwitchOn
 
             XCTAssertTrue(configuration.alreadyPaidHintEnabled,
-                          "payment hints feature should not be enabled in the gini configuration")
+                          "payment hints feature should be enabled in the gini configuration")
         }
     }
 
@@ -1584,7 +1584,7 @@ extension SettingsViewModelTests {
             configuration.savePhotosLocallyEnabled = data.isSwitchOn
 
             XCTAssertTrue(configuration.savePhotosLocallyEnabled,
-                          "Save Photos Locally feature should not be enabled in the gini configuration")
+                          "Save Photos Locally feature should be enabled in the gini configuration")
         }
     }
 
@@ -1623,7 +1623,7 @@ extension SettingsViewModelTests {
             configuration.creditNoteHintEnabled = data.isSwitchOn
 
             XCTAssertTrue(configuration.creditNoteHintEnabled,
-                          "credit note feature should not be enabled in the gini configuration")
+                          "credit note feature should be enabled in the gini configuration")
         }
     }
 
