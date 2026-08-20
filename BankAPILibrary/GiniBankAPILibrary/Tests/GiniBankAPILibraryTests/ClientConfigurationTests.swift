@@ -110,6 +110,31 @@ struct ClientConfigurationTests {
         }
     }
 
+    /**
+     Pins the current synthesized-`Codable` behavior: every feature flag is a
+     non-optional `Bool` without a default, so a payload that omits
+     `creditNoteHintEnabled` fails to decode entirely instead of falling back
+     to a default value. This is a known limitation of the current model —
+     if it ever starts decoding successfully, the model's decoding strategy
+     changed and this test (and its callers' assumptions) must be revisited.
+     */
+    @Test("Decoding fails when the creditNoteHintEnabled key is absent from JSON")
+    func decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent() {
+        let data = loadFile(withName: "clientConfigurationMissingCreditNoteHint", ofType: "json")
+        let decoder = JSONDecoder()
+
+        let error = #expect(throws: DecodingError.self) {
+            try decoder.decode(ClientConfiguration.self, from: data)
+        }
+
+        guard case .keyNotFound(let missingKey, _)? = error else {
+            Issue.record("Expected DecodingError.keyNotFound for `creditNoteHintEnabled`, got \(String(describing: error))")
+            return
+        }
+        #expect(missingKey.stringValue == "creditNoteHintEnabled",
+                "Expected the missing key to be `creditNoteHintEnabled`, got `\(missingKey.stringValue)`")
+    }
+
     // MARK: - JSON Encoding Tests
 
     @Test("Encoding to JSON preserves all properties")
