@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import Combine
 
 private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
     var image: UIImage? = UIImageNamedPreferred(named: "infoMessageIcon")
