@@ -238,8 +238,19 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Cancel";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";
 
-// MARK: - Due date hint bottom sheet
+// MARK: - Payment hint bottom sheet
+"ginicapture.payment.hint.title" = "Your invoice is due on %@.";
+"ginicapture.payment.hint.duedate.description" = "You could set it up as a scheduled transfer.";
+"ginicapture.payment.hint.duedate.proceedButtonTitle" = "Proceed Anyway";
+"ginicapture.payment.hint.duedate.cancelButtonTitle" = "Cancel Transfer";
+"ginicapture.payment.hint.schedule.description" = "You can proceed with this Transaction now or schedule it for a future execution.";
+"ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Schedule Payment";
+"ginicapture.payment.hint.schedule.proceedButtonTitle" = "Proceed Anyway";
+
+// DEPRECATED — renamed these to ginicapture.payment.hint.*
+//  Do not reference from new code; remove in a future major.
 "ginicapture.payment.duedate.hint.title.format" = "Your invoice is due on %@.";
 "ginicapture.payment.duedate.hint.description" = "You could set it up as a scheduled transfer.";
 "ginicapture.payment.duedate.hint.proceedButtonTitle" = "Proceed Anyway";
 "ginicapture.payment.duedate.hint.cancelButtonTitle" = "Cancel Transfer";
+// END DEPRECATED

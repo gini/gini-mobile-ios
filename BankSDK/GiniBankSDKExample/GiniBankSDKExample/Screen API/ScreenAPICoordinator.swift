@@ -287,6 +287,21 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
+
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        /// The host app would open its own scheduled-transfer screen carrying the
+        /// extractions from `result`. Here we just surface the count and close the
+        /// capture flow, matching Android's example-app behaviour (visible toast +
+        /// logged extraction count).
+        let alert = UIAlertController(title: "Schedule Payment requested",
+                                      message: "Schedule payment requested with \(result.extractions.count) extractions.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            guard let self else { return }
+            self.delegate?.screenAPI(coordinator: self, didFinish: ())
+        })
+        rootViewController.present(alert, animated: true)
+    }
 }
 
 // MARK: - Screen API with custom networking GiniCaptureNetworkService

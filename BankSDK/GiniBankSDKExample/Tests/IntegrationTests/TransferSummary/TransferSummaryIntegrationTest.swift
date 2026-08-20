@@ -94,5 +94,9 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
         func giniCaptureDidEnterManually() {
             // nothing to test heretestCase
         }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+            // nothing to test here
+        }
     }
 }

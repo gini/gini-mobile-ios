@@ -27,6 +27,7 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
+                                         paymentScheduleHintEnabled: true,
                                          unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
@@ -39,6 +40,8 @@ struct ClientConfigurationTests {
         #expect(config.eInvoiceEnabled, "Expected eInvoiceEnabled to be true")
         #expect(config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true")
         #expect(config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true")
+        #expect(config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be true")
+        #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true")
         #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 
@@ -55,6 +58,7 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: false,
                                          paymentDueHintEnabled: false,
+                                         paymentScheduleHintEnabled: false,
                                          unsupportedQRCodeWarningEnabled: false)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
@@ -67,6 +71,8 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(!config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(!config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be false")
+        #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false")
     }
 
@@ -89,7 +95,22 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false from JSON")
         #expect(!config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be false from JSON")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false from JSON")
+        #expect(!config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be false from JSON")
+        #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true from JSON")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false from JSON")
+    }
+
+    @Test("paymentScheduleHintEnabled decodes from JSON payload")
+    func paymentScheduleHintEnabledDecodesFromJSON() throws {
+        let data = loadFile(withName: "clientConfiguration", ofType: "json")
+
+        let config = try JSONDecoder().decode(ClientConfiguration.self, from: data)
+        let reencoded = try JSONEncoder().encode(config)
+        let roundTripped = try JSONDecoder().decode(ClientConfiguration.self, from: reencoded)
+
+        #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to decode as true")
+        #expect(roundTripped.paymentScheduleHintEnabled == config.paymentScheduleHintEnabled,
+                "Expected paymentScheduleHintEnabled to survive an encode/decode round trip")
     }
 
     @Test("Decoding fails when missing required clientID field")
@@ -117,6 +138,7 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: true,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
+                                         paymentScheduleHintEnabled: true,
                                          unsupportedQRCodeWarningEnabled: true)
 
         let encoder = JSONEncoder()
@@ -144,6 +166,10 @@ struct ClientConfigurationTests {
                 "Expected alreadyPaidHintEnabled to be preserved")
         #expect(decodedConfig.savePhotosLocallyEnabled == config.savePhotosLocallyEnabled,
                 "Expected savePhotosLocallyEnabled to be preserved")
+        #expect(decodedConfig.paymentDueHintEnabled == config.paymentDueHintEnabled,
+                "Expected paymentDueHintEnabled to be preserved")
+        #expect(decodedConfig.paymentScheduleHintEnabled == config.paymentScheduleHintEnabled,
+                "Expected paymentScheduleHintEnabled to be preserved")
         #expect(decodedConfig.unsupportedQRCodeWarningEnabled == config.unsupportedQRCodeWarningEnabled,
                 "Expected unsupportedQRCodeWarningEnabled to be preserved")
     }
@@ -163,6 +189,7 @@ struct ClientConfigurationTests {
                                          savePhotosLocallyEnabled: false,
                                          alreadyPaidHintEnabled: true,
                                          paymentDueHintEnabled: true,
+                                         paymentScheduleHintEnabled: false,
                                          unsupportedQRCodeWarningEnabled: true)
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -174,6 +201,8 @@ struct ClientConfigurationTests {
         #expect(!config.eInvoiceEnabled, "Expected eInvoiceEnabled to be false")
         #expect(config.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true")
         #expect(!config.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be false")
+        #expect(config.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be true")
+        #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
         #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
     }
 }
