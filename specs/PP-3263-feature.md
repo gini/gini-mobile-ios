@@ -208,11 +208,8 @@ Ships with a **major-version bump** on both `GiniBankAPILibrary` and
   `ginicapture.dismiss.message.title` — are retained inside a
   `// DEPRECATED … // END DEPRECATED` banner in `Localizable.strings`
   with their pre-PR values, so any integrator override pinned against
-  those keys still resolves. The intermediate
-  `ginicapture.payment.duedate.hint.*` namespace introduced by the
-  PP-3261 draft was never released (only lived on this PR's branch)
-  and is not retained — nothing to be pinned against. Not
-  source-breaking; slated for removal in a future major.
+  those keys still resolves. Not source-breaking; slated for removal
+  in a future major.
 
 ### GiniBankSDK (public)
 
