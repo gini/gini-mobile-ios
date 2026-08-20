@@ -201,16 +201,18 @@ Ships with a **major-version bump** on both `GiniBankAPILibrary` and
   implementation, even one that just calls
   `giniCaptureAnalysisDidFinishWith(result:)` to fall back to the
   pay-now path.
-- **Renamed localization keys — old keys retained as deprecated.** The
+- **Renamed localization keys — legacy keys retained as deprecated.** The
   active keys move under `ginicapture.payment.hint.*` (see §Localization).
-  The previous `ginicapture.payment.duedate.hint.title.format`,
-  `ginicapture.payment.duedate.hint.description`,
-  `ginicapture.payment.duedate.hint.proceedButtonTitle`, and
-  `ginicapture.payment.duedate.hint.cancelButtonTitle` are kept in
-  `Localizable.strings` under `// DEPRECATED …` / `// END DEPRECATED`
-  banners so integrators that shipped overrides on the PP-3261 keys do
-  not hit runtime no-ops. Not source-breaking; slated for removal in a
-  future major.
+  The pre-PP-3261 shipping keys — `ginicapture.payment.due.hint.prefix`,
+  `ginicapture.payment.due.hint.suggestion`, and
+  `ginicapture.dismiss.message.title` — are retained inside a
+  `// DEPRECATED … // END DEPRECATED` banner in `Localizable.strings`
+  with their pre-PR values, so any integrator override pinned against
+  those keys still resolves. The intermediate
+  `ginicapture.payment.duedate.hint.*` namespace introduced by the
+  PP-3261 draft was never released (only lived on this PR's branch)
+  and is not retained — nothing to be pinned against. Not
+  source-breaking; slated for removal in a future major.
 
 ### GiniBankSDK (public)
 
@@ -279,9 +281,10 @@ Grounded in `platform.md` and the modules touched:
      `ginicapture.payment.hint.duedate.proceedButtonTitle` but a separate
      key is kept so per-state copy tweaks stay independent (mirrors
      Android's per-state string entries).
-   All previous `ginicapture.payment.duedate.hint.*` keys are retained as
-   deprecated behind `// DEPRECATED …` / `// END DEPRECATED` banners
-   (see §Public API impact).
+   The pre-PP-3261 shipping keys (`ginicapture.payment.due.hint.prefix`,
+   `ginicapture.payment.due.hint.suggestion`,
+   `ginicapture.dismiss.message.title`) are retained behind a
+   `// DEPRECATED … // END DEPRECATED` banner (see §Public API impact).
 9. **Quality gates.** `make lint scheme=GiniBankSDK`, `make lint
    scheme=GiniCaptureSDK`, and `make lint scheme=GiniBankAPILibrary` must
    be clean. Multi-parameter formatting per `CLAUDE.md` §Code Style.

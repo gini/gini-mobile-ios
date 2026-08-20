@@ -56,8 +56,12 @@ is an out-of-scope sibling that a later ticket will plug into the same
    scrolling-stack infra that hosted them are **removed**. The legacy
    localization keys (`ginicapture.payment.due.hint.prefix`,
    `ginicapture.payment.due.hint.suggestion`,
-   `ginicapture.dismiss.message.title`) are removed with them; new keys
-   under `ginicapture.payment.duedate.hint.*` back the new sheet. This is
+   `ginicapture.dismiss.message.title`) are **retained inside a
+   `// DEPRECATED … // END DEPRECATED` banner** in both `en.lproj` and
+   `de.lproj` — the SDK no longer references them, but the declarations
+   stay so that any integrator override pinned against a prior SDK
+   version resolves to the same base value. New keys under
+   `ginicapture.payment.hint.*` back the new sheet. This is
    a source-breaking API change for integrators who supplied their own
    `paymentDueDateHandler`; per the ticket decision it lands without a
    deprecation cycle, matching the parallel decision on Android PR #965
@@ -173,11 +177,15 @@ with Android PR #965. This requires a major-version bump on GiniCaptureSDK.
   `DismissMessageView`; and the scrolling-stack infra
   (`scrollView`, `contentStack`, `setupScrollableStackView`,
   `updateContentStackConstraints`) that hosted them.
-- **Removed localization keys.** `ginicapture.payment.due.hint.prefix`,
+- **Deprecated localization keys.** `ginicapture.payment.due.hint.prefix`,
   `ginicapture.payment.due.hint.suggestion`,
-  `ginicapture.dismiss.message.title` are deleted from both
-  `en.lproj` and `de.lproj`. Integrator overrides for these keys become
-  no-ops at runtime.
+  `ginicapture.dismiss.message.title` are retained inside a
+  `// DEPRECATED … // END DEPRECATED` banner in both `en.lproj` and
+  `de.lproj` with their pre-PR values. The SDK no longer references
+  them at runtime (the call sites in `PaymentDueHintView` /
+  `DismissMessageView` are gone), so they are inert; the declarations
+  stay only to keep any pinned integrator override resolving to the
+  same base value. Slated for removal in the next major.
 - **Visibility change.** `AnalysisViewController.removeCaptureSuggestions()`
   is elevated from `private` to `public` (body unchanged). The
   coordinator uses it to clear a pending capture-suggestions banner
@@ -256,16 +264,18 @@ Grounded in `platform.md` and the modules touched:
    than importing a new pattern. New keys (following the
    `<sdk>.<feature>.<screen>.<element>` convention adapted to CaptureSDK's
    dotted style):
-   - `ginicapture.payment.duedate.hint.title.format` — value with a
-     single `%@` for the formatted date.
-   - `ginicapture.payment.duedate.hint.description`
-   - `ginicapture.payment.duedate.hint.proceedButtonTitle`
-   - `ginicapture.payment.duedate.hint.cancelButtonTitle`
+   - `ginicapture.payment.hint.title` — value with a single `%@` for
+     the formatted date. Shared with the Schedule Payment state
+     (PP-3263).
+   - `ginicapture.payment.hint.duedate.description`
+   - `ginicapture.payment.hint.duedate.proceedButtonTitle`
+   - `ginicapture.payment.hint.duedate.cancelButtonTitle`
 
    The legacy keys `ginicapture.payment.due.hint.prefix`,
    `ginicapture.payment.due.hint.suggestion`, and
-   `ginicapture.dismiss.message.title` are **removed** in both `en.lproj`
-   and `de.lproj`, along with the deprecated header/footer banners.
+   `ginicapture.dismiss.message.title` are **retained** in both
+   `en.lproj` and `de.lproj` inside a
+   `// DEPRECATED … // END DEPRECATED` banner (see §Public API impact).
 9. **Quality gates.** `make lint scheme=GiniBankSDK` and `make lint
    scheme=GiniCaptureSDK` must be clean (local runs on
    `iPhone 15 Pro / iOS 17.2`; CI on `iPhone 17 / iOS 26.2` per
@@ -304,7 +314,7 @@ GiniCaptureSDK
   `Date`), `description`.
 - `private struct DueDateHintStrings` — same shape as
   `DocumentMarkedAsPaidViewController.Strings`. Title uses
-  `String(format: NSLocalizedStringPreferredFormat("ginicapture.payment.duedate.hint.title.format", comment: ...), formattedDate)`
+  `String(format: NSLocalizedStringPreferredFormat("ginicapture.payment.hint.title", comment: ...), formattedDate)`
   where `formattedDate = date.toDisplayString()` (existing
   `dd.MM.yyyy` formatter at
   `BankSDK/GiniBankSDK/Sources/GiniBankSDK/Extensions/Foundation/Date+Formatting.swift`
