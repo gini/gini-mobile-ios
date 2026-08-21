@@ -7,6 +7,13 @@ on:
     paths:
       - 'HealthSDK/**'
       - 'HealthAPILibrary/**'
+  # Analyze the main branch in SonarCloud after every merge so PR quality gates
+  # have a new-code baseline to compare against.
+  push:
+    branches: [main]
+    paths:
+      - 'HealthSDK/**'
+      - 'HealthAPILibrary/**'
   workflow_call:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
