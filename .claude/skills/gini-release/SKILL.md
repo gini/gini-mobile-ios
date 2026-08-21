@@ -241,7 +241,7 @@ git tag "GiniHealthSDK;<X.Y.Z>;xcframeworks"
 git push origin "GiniHealthSDK;<X.Y.Z>;xcframeworks"
 ```
 
-Each pushed tag triggers the matching workflow (`bank-sdk.build.xcframeworks` / `health-sdk.build.xcframeworks`). Verify the runs started under GitHub Actions before moving on.
+Each pushed tag triggers the matching workflow (`bank-sdk.build.xcframeworks` / `health-sdk.build.xcframeworks`). **Wait until both runs finish successfully** under GitHub Actions before continuing — the generated artifacts feed the archive prep below and the draft attachments in step 7.
 
 While the workflows run, prepare the archives that will be attached to the draft releases:
 
