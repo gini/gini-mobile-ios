@@ -825,7 +825,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let analysisResult = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
                                             lineItems: isCrossBorderPayment() ? nil : extractionResult.lineItems,
                                             skontoDiscounts: isCrossBorderPayment() ? nil : extractionResult.skontoDiscounts,
-                                            crossBorderPayment: isCrossBorderPayment() ? extractionResult.crossBorderPayment : nil,
+                                            crossBorderPayment: nil,
                                             images: images,
                                             document: documentService.document,
                                             candidates: extractionResult.candidates)
