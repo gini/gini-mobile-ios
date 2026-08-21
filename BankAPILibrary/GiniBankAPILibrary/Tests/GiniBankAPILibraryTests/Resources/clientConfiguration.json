@@ -10,5 +10,6 @@
     "savePhotosLocallyEnabled": false,
     "alreadyPaidHintEnabled": false,
     "paymentDueHintEnabled": false,
+    "paymentScheduleHintEnabled": true,
     "unsupportedQRCodeWarningEnabled": false
 }

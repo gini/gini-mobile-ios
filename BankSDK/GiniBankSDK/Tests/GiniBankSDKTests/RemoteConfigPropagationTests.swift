@@ -72,6 +72,7 @@ struct RemoteConfigPropagationTests {
                             savePhotosLocallyEnabled: false,
                             alreadyPaidHintEnabled: false,
                             paymentDueHintEnabled: false,
+                            paymentScheduleHintEnabled: false,
                             unsupportedQRCodeWarningEnabled: unsupportedQRCodeWarningEnabled)
     }
 }

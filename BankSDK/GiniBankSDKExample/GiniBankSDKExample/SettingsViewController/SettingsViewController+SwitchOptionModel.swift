@@ -47,6 +47,7 @@ struct SwitchOptionModel {
         case alreadyPaidHintEnabled
         case savePhotosLocallyEnabled
         case paymentDueHintEnabled
+        case paymentScheduleHintEnabled
         case closeSDK
 
 		var title: String {
@@ -115,6 +116,8 @@ struct SwitchOptionModel {
                 return "User payment warnings feature"
             case .paymentDueHintEnabled:
                 return "Payment due hint feature"
+            case .paymentScheduleHintEnabled:
+                return "Payment schedule hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
