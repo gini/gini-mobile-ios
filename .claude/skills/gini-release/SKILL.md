@@ -1,39 +1,36 @@
 ---
 name: gini-release
-description: Guide an iOS package release end-to-end — ask the user for the packages with their new versions, create the Jira RC ticket(s) in PP/HEAL, bump versions plus the Package-release.swift pins and documentation in dependency order with one commit per package, then gate the tag push (tags trigger the release workflows). Use when asked to "release GiniBankSDK", "bump versions for a release", or "prepare an RC" in gini-mobile-ios.
+description: Guide an iOS package release end-to-end following the Mobile Release Process — create the Jira Release(s) and RC ticket in PP/HEAL, gate on QA sign-off, bump versions and create tags on main, draft GitHub releases in the mono repo + individual release repos for user review, publish only after approval, then push the podspec, publish Jira, and post to #mobile-releases. Use when asked to "release GiniBankSDK", "prepare an RC", or "publish a release" in gini-mobile-ios.
 ---
 
-# /gini-release — prepare and execute an iOS package release
+# /gini-release — iOS package release end-to-end
 
-`RELEASE.md` is the nominal source of truth, but it is 15 lines and **parts of it are stale** — see
-"Where RELEASE.md is wrong" at the end before trusting it. This skill encodes what the repo and the
-fastlane lanes actually do. It automates the local git steps, creates the Jira RC ticket(s), and walks
-the user through the external steps (QA, GitHub releases, Jira).
+Follows the [Mobile Release Process](https://ginis.atlassian.net/wiki/spaces/PLMO/pages/83689511/Mobile+Release+Process), iOS side. The skill creates the Jira Release(s) and RC ticket, gates the release on QA, and walks the user through the version bumps, tags, and post-release publishing.
 
-Several steps are irreversible — **never push a release tag without explicit user confirmation in this
-session.** A pushed tag immediately triggers that package's release workflow, which force-pushes the
-package into its public release repo.
+Several steps are irreversible — **never push a release tag or a podspec without explicit user confirmation.** A pushed `<Package>;<version>` tag triggers that package's release workflow, which force-pushes into its public release repo.
 
 ## 1. Ask for the packages and their new versions
 
-Ask the user for the packages being released with their **new versions**, one per line:
+Ask for the packages being released with their **new versions**, one per line. Example covering both chains:
 
 ```
+GiniBankAPILibrary 4.4.0
 GiniCaptureSDK 4.4.1
 GiniBankSDK 4.4.1
 GiniUtilites 2.6.0
+GiniHealthAPILibrary 6.1.0
+GiniInternalPaymentSDK 3.2.0
+GiniHealthSDK 6.2.0
 ```
 
-That list is the single input — do not walk the user through chain questions. From it, determine:
+That list is the single input — do not walk the user through chain questions. From it, derive:
 
-- **Which side(s)**: bank (`GiniBankAPILibrary`, `GiniUtilites`, `GiniCaptureSDK`, `GiniBankSDK`) or
-  health (`GiniHealthAPILibrary`, `GiniUtilites`, `GiniInternalPaymentSDK`, `GiniHealthSDK`). This
-  decides the Jira project(s) in step 2. `GiniUtilites` sits in **both** chains.
-- **Release order**, from `RELEASE-ORDER.md`:
+- **Which side(s)**: bank (`GiniBankAPILibrary`, `GiniUtilites`, `GiniCaptureSDK`, `GiniBankSDK`) or health (`GiniHealthAPILibrary`, `GiniUtilites`, `GiniInternalPaymentSDK`, `GiniHealthSDK`). Decides the Jira project(s) in step 2. `GiniUtilites` sits in **both** chains — infer the side from the non-Utilites entries, and only ask when `GiniUtilites` is the sole input.
+- **Release order** from `RELEASE-ORDER.md`:
   - bank: `GiniBankAPILibrary` → `GiniUtilites` → `GiniCaptureSDK` → `GiniBankSDK`
   - health: `GiniHealthAPILibrary` → `GiniUtilites` → `GiniInternalPaymentSDK` → `GiniHealthSDK`
 
-The seven releasable packages, their version files and their release repos:
+Packages, version files, release repos:
 
 | Package | Version file | Release repo |
 |---|---|---|
@@ -45,30 +42,9 @@ The seven releasable packages, their version files and their release repos:
 | `GiniBankSDK` | `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift` | `gini/bank-sdk-ios` |
 | `GiniHealthSDK` | `HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/GiniHealthSDKVersion.swift` | `gini/health-sdk-ios` |
 
-**Spell `GiniUtilites` with one `i` in the middle** — that is the real package name. Past commits and one
-tag used `GiniUtilities`, and a mis-spelled tag is invisible to `create_release_tags`, which derives the
-name from the `*Version.swift` filename.
+**`GiniUtilites` — one `i` in the middle.** The tag must mirror the package name exactly (`GiniUtilites;2.4.0`); the misspelling can be corrected in a future major release. `create_release_tags` derives the tag name from the `*Version.swift` filename, so a correctly-cased `Utilites` produces a matching tag.
 
-Sanity-check the list against the current versions in those files and flag — don't silently fix:
-
-- **`GiniBankSDK` and `GiniCaptureSDK` share a version number.** Every bank release in the 4.x line —
-  4.0.0, 4.1.0, 4.1.1, 4.2.0, 4.2.2, 4.3.0 — tagged both at the same version. If the user lists one
-  without the other, or at a different number, flag it. `GiniBankAPILibrary` joins the lock on **minor and
-  major** releases (4.0.0, 4.1.0, 4.2.0, 4.3.0) but usually sits out **patches** (it has no 4.1.1 or
-  4.2.2 tag).
-- **The health chain is not locked.** `GiniHealthSDK` frequently releases alone (5.6.1, 6.1.0);
-  `GiniHealthAPILibrary` joined only at 6.0.0. Do not "correct" a health list to match.
-- **`GiniUtilites` and `GiniInternalPaymentSDK` have their own version lines** (currently 2.x and 3.x) and
-  never share the SDK numbers. A list mixing them at an SDK's version is a mistake.
-- A released package forces every package **above** it in its chain to at least update its
-  `.exact()` pin — and since that pin change is itself a source change that has to ship, the dependent
-  normally needs releasing too. If a dependent is missing from the list, say so: otherwise the pin edit
-  lands on the branch and never reaches an integrator.
-- A new version that isn't a semver increment of the current one.
-- Anything not in the table above. `GiniMerchantSDK` is archived; there are **no Pinning packages** any
-  more (see the end of this file).
-
-Read the current values rather than trusting anything here — the numbers above are as-of-writing:
+Read the current values rather than trusting anything here:
 
 ```bash
 for f in $(find . -name "*Version.swift" -not -path "*/.build/*"); do
@@ -76,139 +52,154 @@ for f in $(find . -name "*Version.swift" -not -path "*/.build/*"); do
 done
 ```
 
-Show a summary table (package, old → new) and get explicit confirmation before creating anything.
+Sanity-check and flag — don't silently fix:
 
-## 2. Create the RC ticket(s) in Jira
+- **Historically the bank chain often ships locked** — the 4.x line tagged `GiniBankSDK` and `GiniCaptureSDK` at the same number and `GiniBankAPILibrary` at the same on minor/major (but not on patches like 4.1.1, 4.2.2). This is a **pattern, not an agreement** — versions can diverge when source changes call for it. Surface the pattern if the list violates it, but don't force-align.
+- **`GiniHealthSDK` regularly ships alone** (5.6.1, 6.1.0); do not "correct" a health list to match a bank pattern.
+- **`GiniUtilites` and `GiniInternalPaymentSDK` have their own version lines** (2.x, 3.x) and never share the SDK numbers.
+- A released package forces every dependent to at least bump its `.exact()` pin. If a dependent is missing from the list, say so.
+- A new version that isn't a semver increment of the current one.
+- Anything not in the table above (`GiniMerchantSDK` is archived; no Pinning packages exist).
 
-Use the Atlassian connector, `ginis.atlassian.net`. One ticket per side — bank in project **PP**
-("Banking Team"), health in **HEAL** ("Health"); a release covering both creates **two tickets**. Older
-health releases carry `IPC-` ids from a since-removed project, which is why you will see
-`release/IPC-789-…` branches in the history.
+Show a summary table (package, old → new) and get explicit confirmation before continuing.
 
-**Start by reading the two most recent RC tickets in the target project and matching their shape** — that
-is what keeps this step correct as conventions drift, and it beats anything written below:
+## 2. Create the Jira Release(s) and RC ticket
+
+Atlassian tenant: `ginis.atlassian.net`. Projects:
+
+- **PP** (Photopayment) for `GiniBankAPILibrary`, `GiniCaptureSDK`, `GiniBankSDK`
+- **HEAL** (Insurance / Health) for `GiniHealthAPILibrary`, `GiniInternalPaymentSDK`, `GiniHealthSDK`
+
+A release spanning both sides needs entries in **both** projects. Fix versions are project-scoped — a ticket in one project cannot carry the other's version.
+
+### 2a. Jira Releases (fix versions)
+
+Naming convention: **`iOS Gini <Product> <version>`**, optionally with the release theme appended (`iOS Gini Bank SDK 4.4.0 QR code improvements`). The `iOS` prefix avoids collisions with the Android release of the same product.
+
+Create one Jira release per **customer-facing product** — for a bank release that's `iOS Gini Bank SDK`, `iOS Gini Capture SDK`, `iOS Gini Bank API Library`. `GiniUtilites` and `GiniInternalPaymentSDK` still get their own git tag + GitHub release but no Jira release.
+
+Verify which releases already exist, then create the missing ones **through the Releases page in the browser** — the Atlassian connector cannot create Jira versions, and Jira rejects an unknown `fixVersions` name. Open:
+
+```
+https://ginis.atlassian.net/projects/<KEY>?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=all
+```
+
+`status=all` matters — the default filter hides released versions. Match on name; permanent `UNRELEASED` versions are kept for parking tickets.
+
+In the `Create release` dialog: fill Release name and Description, and **clear the prefilled Release date** (defaults to today, wrong for an unshipped version — click field, `cmd+a`, `Backspace`, dismiss picker). Reload the page after creating — the table doesn't refresh, so success looks like failure. Read each version's numeric id off its table link (`/projects/<KEY>/versions/<id>/tab/…`).
+
+Once versions exist, assign them as `fixVersions` on all work tickets in the release using `editJiraIssue` (names work here). Without fix versions the release report is empty.
+
+Add **release notes in markdown** to each release description. These notes are reused verbatim on GitHub releases (step 7) — copy from the previous release and update.
+
+### 2b. RC ticket
+
+Create when the Firebase build from the release branch is ready — one ticket per side.
+
+**Start by reading the two most recent RC tickets in the target project** and match their shape:
 
 ```
 project = <KEY> AND issuetype = "Release Candidate" AND summary ~ "iOS" ORDER BY created DESC
 ```
 
-Fetch the top result with its `description`, `labels` and `fixVersions`. Where it disagrees with the
-guidance here, the ticket wins — and mention the difference so this file can be corrected.
+Fetch both results with `description`, `labels`, and `fixVersions`. Where the tickets disagree with the guidance here, the tickets win.
 
-- **Issue type:** `Release Candidate`. **Resolve it by name, never by id** — it is `10145` in PP and
-  `11087` in HEAL, and ids do not transfer between projects.
-- **Title:** `[iOS] Release candidate for Gini Bank SDK <version>` /
-  `[iOS] RC for Gini Health SDK <version>`. Both spellings are in use; match the most recent ticket in
-  that project. The version is the **main SDK's** new version. Where the release has a theme, recent
-  tickets append it (e.g. `… 4.2.0 CX (Cross-border Payment)`) — ask the user rather than inventing one.
-- **Labels:** recent PP tickets carry `iOS` and `mobile`; HEAL tickets are often unlabelled. Match the
-  most recent ticket in the target project.
-- **Description** — the iOS shape is simpler than Android's. Three sections, built from the tickets that
-  share this release's fix versions, not from your reading of the diffs:
+- **Issue type:** `Release Candidate`. Resolve by name, never by id — `10145` in PP, `11087` in HEAL, ids don't transfer across projects.
+- **Title:** `[iOS] Release candidate for Gini Bank SDK <version>` or `[iOS] RC for Gini Health SDK <version>` — match the most recent ticket. Append the release theme when applicable.
+- **Labels:** PP tickets carry `iOS` and `mobile`; HEAL is often unlabelled. Match the most recent ticket.
+- **Description** — three sections:
+  1. `**Issue Summary**` — the line "Here is the list of tickets for the release." then one `https://ginis.atlassian.net/browse/<TICKET>` link per ticket in the release. Find them with `fixVersion in ("<version-name>", …)`.
+  2. `**Listed Releases**` — one Jira release-report link per fix version: `https://ginis.atlassian.net/projects/<KEY>/versions/<id>/tab/release-report-all-issues`
+  3. `**Attachments**:` — "Build for testing can be found here:" plus the Firebase App Distribution console link and the tester-app link for the example app. **Ask the user** — these come from the CI/Firebase build.
 
-  1. `**Issue Summary**` — the line "Here is the list of tickets for the release." then one
-     `https://ginis.atlassian.net/browse/<TICKET-KEY>` link per ticket (PP tickets are numbered, HEAL
-     tickets are usually a plain list). A short trailing note on a link is normal where a ticket picked up
-     an extra fix. Find the tickets with `fixVersion in ("<version-name>", …)`.
-  2. `**Listed Releases**` — one Jira release-report link per fix version:
-     `https://ginis.atlassian.net/projects/<KEY>/versions/<version-id>/tab/release-report-all-issues`
-  3. `**Attachments**:` — "Build for testing can be found here:" plus the Firebase App Distribution
-     console link and the tester-app link for the example app. **Ask the user for these** — they come from
-     the CI/Firebase build and cannot be generated here.
+Set the same `fixVersions` on the RC ticket. Put it in the **active sprint**: fetch a ticket in `sprint in openSprints()` with `expand: names`, find the `Sprint` custom field, set the entry whose `state` is `active`.
 
-  There is no "Modules released" or "Scope of testing" section in current iOS tickets. Don't add one
-  unless the user asks.
+**Drive status via `transitionJiraIssue`** — resolve transitions per ticket by name, case-insensitively via `getTransitionsForJiraIssue`. Ids collide across projects and can silently move a ticket to `Cancelled`.
 
-**Check the Jira releases (fix versions) exist and create the missing ones.** These track the
-**customer-facing products**, not every tagged package — the 4.4.0 bank release carried exactly three
-(`iOS Gini Bank SDK`, `iOS Gini Capture SDK`, `iOS Gini Bank API Library`) and none for `GiniUtilites`,
-even though Utilites gets its own git tag and GitHub release. Naming is `iOS Gini <Product> <version>`,
-optionally with the release theme appended — e.g. `iOS Gini Bank SDK 4.4.0 QR code improvements`.
-**Keep the `iOS` prefix** so the version does not collide with the Android release of the same product.
+Assign the RC ticket to the QA engineer.
 
-Note the two projects are inconsistent here: recent PP tickets carry their fix versions properly, while
-some HEAL RC tickets have **none set at all** and only link the release report from the description. Set
-them anyway — without them the release report is empty — but don't treat a past HEAL ticket's empty field
-as the convention.
+Report the RC ticket key — it goes in the final release commit.
 
-Open the project's Releases page at
-`https://ginis.atlassian.net/projects/<KEY>?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=all`
-— `status=all` matters, the default filter hides released versions. Match on **name**, not the last row:
-permanent placeholder `UNRELEASED` versions are kept for parking tickets.
+## 3. Create the release candidate branch
 
-Missing versions must be created **through that page in the browser** — the connector has no tool for
-creating Jira versions, and Jira rejects an unknown `fixVersions` name (`Version name '…' is not valid`)
-rather than auto-creating it. In the `Create release` dialog: fill Release name and Description, and
-**clear the prefilled Release date** — it defaults to today, which is wrong for an unshipped version.
-Clear it by clicking the field, `cmd+a`, `Backspace`, then click the dialog heading to dismiss the picker;
-setting an empty string via `form_input` does not work. Don't click `Create release` twice — the second
-click closes the dialog. **Reload the page afterwards**; the table does not refresh, so a success looks
-like a failure. Read each version's numeric id off its table link (`/projects/<KEY>/versions/<id>/tab/…`).
+**Always release from a `release/<theme>` branch, never from `main`.** Feature PRs for the release merge into this branch; the theme usually matches the Jira fix versions suffix (`release/qr-code-improvements`, `release/liquid_glass_bank_sdk`, `release/bank_sdk_release_4.2.2`). Ask which branch this release ships from — do not assume.
 
-Once the versions exist, set them as `fixVersions` on the RC ticket with `editJiraIssue` — names work at
-that point. Do the same on the work tickets in this release, or the release report comes back empty. Fix
-versions are **project-scoped**: a ticket in another project cannot carry this project's version.
+Confirm the branch is up to date with `main` before proceeding.
 
-**Put the ticket in the active sprint.** A fresh ticket has no sprint, so it sits in the backlog and never
-appears on a board. The connector has no sprint-listing tool, so derive it: run
-`project = <KEY> AND sprint in openSprints()`, fetch one result with `expand: names`, find the
-`customfield_*` named `Sprint`, and set the entry whose `state` is `active`. The active sprint may belong
-to a board other than the project's own — if so the ticket legitimately won't show on the project board;
-point at the `boardId` from the sprint record. JQL against a non-existent value returns an empty result
-rather than an error, so "no results" never proves absence.
+## 4. Wait for QA — hard gate
 
-**Drive the ticket's status yourself.** Move it to `In Progress` when the bumps start and to the
-waiting-for-QA status at the step 5 gate, via `transitionJiraIssue`. **Resolve transitions per ticket by
-name, case-insensitively** — call `getTransitionsForJiraIssue` on the actual ticket; the same status is
-spelled differently between the two projects, and ids collide across projects, so a copied id can silently
-move a ticket to `Cancelled`.
+Stop. The RC ticket is with QA. Do not touch versions or tags. Ask the user to confirm the outcome; never infer.
 
-Report the created ticket key(s) — they go in every bump commit.
+- **QA passes:** proceed to step 5.
+- **QA fails, showstopper:** release postponed. Add details to the RC ticket and stop.
+- **QA fails, minor:** release not postponed. Create bug tickets with the release version set as `affectedVersion` and proceed once fixed.
 
-## 3. Pick the branch
+## 5. Merge, bump versions, create tags
 
-`RELEASE.md` says to be on `main`. **In practice most releases happen on a long-lived
-`release/<theme>` branch** that feature PRs have been merged into — e.g. `release/qr-code-improvements`,
-`release/liquid_glass_bank_sdk`, `release/bank_sdk_release_4.2.2`. Naming is not standardised, and the
-theme usually matches the suffix on the Jira fix versions.
+Version bumps and tag creation happen **together on the same commit**, on `main`, after QA sign-off.
 
-So **ask which branch this release ships from**; do not assume. Two cases:
+### 5a. Merge and switch to main
 
-- **An existing `release/<theme>` branch** — the normal case when the release has a theme. Confirm it is
-  up to date with `main` before bumping.
-- **`main` directly** — for a patch release with no integration branch.
+Merge the release PR into `main` (or confirm it has already merged). Then switch explicitly:
 
-Do not invent an Android-style `PP-XXX-RC-…` branch; that convention does not exist in this repo.
+```bash
+git checkout main
+git pull --ff-only
+```
 
-## 4. Bump versions, one commit per package, in release order
+Confirm `git log -1` points at the release merge commit — `create_release_tags` tags the current `HEAD`, so an out-of-date `main` tags the wrong commit.
 
-For each package in the confirmed set, in `RELEASE-ORDER.md` order, edit **up to four** places. Missing
-any of the last three is the most common way an iOS release breaks:
+### 5b. Verify the XCFramework build prerequisite
 
-1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from the step 1 table.
-2. **Every dependent's `Package-release.swift`** — bump the `.exact("<x.y.z>")` pin that points at the
-   package you just bumped. This is the step with no Android analogue and the one that breaks the release
-   build when skipped, because the PR checks only resolve the local `Package.swift`. Find every pin:
+Verify the branch-triggered XCFramework build workflow run for the release branch that just merged into `main` is green:
+
+- `bank-sdk.build.xcframeworks` — if the release includes `GiniBankSDK`.
+- `health-sdk.build.xcframeworks` — if the release includes `GiniHealthSDK`.
+
+Do not proceed before the applicable workflows are green. (Step 6 later triggers a separate tag-triggered run of these same workflows to produce the archives attached to the drafts.)
+
+### 5c. Bump versions in dependency order
+
+For each package in `RELEASE-ORDER.md` order, edit **up to four** places. Missing any of the last three is how iOS releases break silently:
+
+1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from step 1's table.
+2. **Every dependent's `Package-release.swift`** — bump the `.exact("<x.y.z>")` pin. PR checks only resolve `Package.swift`, not `Package-release.swift`, so a missed pin lands silently:
 
    ```bash
    grep -rn '\.exact(' --include='Package-release.swift' .
    ```
 
-3. **The installation doc, where the package has one** — `Documentation/source/Installation.md` hardcodes
-   the SPM pin, e.g.
-   `.package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("4.3.0"))`. Only
-   `GiniBankAPILibrary` and `GiniHealthAPILibrary` carry this today; verify rather than assume:
+3. **The installation doc, where the package has one** — `Documentation/source/Installation.md` hardcodes the SPM pin. `GiniBankAPILibrary`, `GiniHealthAPILibrary`, and `GiniHealthSDK` each have one:
 
    ```bash
-   grep -rn '\.exact(' --include='*.md' */*/Documentation/
+   grep -rn '\.exact(' --include='Installation.md' .
    ```
 
-4. **Versioned Figma links in the docs**, for a Health release — `GiniHealthSDK`'s
-   `Documentation/source/Customization guide.md` and `Integration.md` embed Figma URLs carrying the SDK
-   version (`…/iOS-Gini-Health-SDK-6.1.0?node-id=…`). Use the **`/update-figma-links`** skill in this repo
-   rather than hand-editing; the node-ids differ per section and a naive find-and-replace corrupts them.
+4. **Versioned Figma links in the docs**, for a Health release — `GiniHealthSDK`'s `Documentation/source/Customization guide.md` and `Integration.md` embed Figma URLs carrying the SDK version (`…/iOS-Gini-Health-SDK-6.1.0?node-id=…`). Update only the version segment; preserve every `node-id` verbatim. Find them:
 
-Then commit per package:
+   ```bash
+   grep -rEn 'iOS-Gini-Health-SDK-[0-9.]+' HealthSDK/GiniHealthSDK/Documentation/
+   ```
+
+### 5d. Validate the bumps
+
+Compile each affected package via the `AGENTS.md` gate:
+
+```bash
+make lint scheme=GiniBankSDK      # or GiniCaptureSDK, GiniHealthSDK, etc.
+```
+
+`make lint` validates **compilation only**, not style. Run swiftlint separately if there are style concerns:
+
+```bash
+swiftlint --fix BankSDK/GiniBankSDK/Sources
+```
+
+Also run unit tests for the touched packages.
+
+### 5e. Commit and push
+
+One commit per package, in release order:
 
 ```
 feat(<Package>): Bump version to <x.y.z>
@@ -216,83 +207,161 @@ feat(<Package>): Bump version to <x.y.z>
 <RC-ticket-id>
 ```
 
-`<Package>` is the package name (`GiniBankSDK`). Use the ticket of that package's side; for
-`GiniUtilites` in a both-sides release include both ticket ids. The valid `type` values live in
-`.git-stuff/commit-msg-template.txt` — note the history contains `feature(...)`, which is **not** valid;
-use `feat`.
+`<Package>` is the package name (`GiniBankSDK`). Use the RC ticket of that package's side; for `GiniUtilites` in a both-sides release include both ids. Valid commit types are in `.git-stuff/commit-msg-template.txt` — use `feat`, not `feature`.
 
-Then run `make lint scheme=<Scheme>` for each affected package (the `AGENTS.md` gate) plus the touched
-packages' unit tests, and push the branch. **No tags yet.**
+Push `main`.
 
-If the release ships from a `release/<theme>` branch, open the PR into `main` now — the bumps merge like
-any other change, and tags are created after that lands.
+### 5f. Create and push release tags
 
-## 5. Wait for QA — hard gate
-
-Stop here. Tags may only be created after QA signs the RC ticket off and assigns it back. Ask the user to
-confirm; never infer it. The Firebase build QA tests is the one linked in the RC ticket.
-
-## 6. Create and push release tags
+From the repo root:
 
 ```bash
 bundle exec fastlane create_release_tags
 ```
 
-The lane needs no arguments: it scans every `**/*Version.swift`, compares each package's version against
-its latest `<Package>;<version>` release tag, and creates a tag for every package that differs —
-prompting **"Push release tag?"** per package. It needs a terminal for those prompts, so suggest the user
-runs it themselves (`! bundle exec fastlane create_release_tags`).
+Run this **manually in the terminal** — the lane needs an interactive prompt (`! bundle exec fastlane create_release_tags`).
 
-- Tag format is strict: `<Package>;X.Y.Z`, or `<Package>;X.Y.Z-betaNN` with **exactly two** beta digits.
-  Anything else is ignored by the release workflows.
-- **Each pushed tag immediately triggers that package's release workflow**, which runs the package's
-  checks, then clones the release repo, wipes it, copies the package in with `Package-release.swift`
-  renamed to `Package.swift`, commits and tags it. Only push when the release is truly go.
-- Verify the workflows started under GitHub Actions afterwards. The release workflow also publishes that
-  package's Jazzy documentation as a dependent job.
+- The lane scans every `**/*Version.swift`, compares each package's version against its latest `<Package>;<version>` release tag, creates a local tag for every package that differs, and prompts **"Push release tag?"** per package.
+- **The lane creates the local tag before asking to push.** If a push prompt is declined, the local tag stays and the lane sees the package as up-to-date on the next run. Delete the unpushed local tag before rerunning: `git tag -d "<Package>;<version>"` (quote it — the `;` in the tag name is a shell separator otherwise).
+- **Tag format is strict:** `<Package>;X.Y.Z`, or (for `GiniBankAPILibrary`, `GiniCaptureSDK`, `GiniBankSDK` only) `<Package>;X.Y.Z-betaNN` with exactly two beta digits. Beta tags for `GiniHealthAPILibrary`, `GiniUtilites`, `GiniInternalPaymentSDK`, `GiniHealthSDK` are **not** matched by their release workflows and publish nothing.
+- **Each pushed tag triggers that package's release workflow**, which clones the release repo, wipes it, copies the package in with `Package-release.swift` renamed to `Package.swift`, commits, and tags. Only push when the release is truly go.
+- Verify the workflows started under GitHub Actions afterwards. Each release workflow also publishes Jazzy docs as a dependent job.
 
-**XCFramework builds are separate and not part of this.** The `build-xcframeworks` job is commented out in
-`bank-sdk.release.yml`; XCFrameworks are produced by pushing a `<Package>;<version>;xcframeworks` tag or
-by manual dispatch. Only do this if the user asks.
+## 6. Build XCFrameworks (GiniBankSDK, GiniHealthSDK)
 
-## 7. Post-tag checklist — external, walk the user through it
+XCFrameworks are built for both `GiniBankSDK` and `GiniHealthSDK`. Skip either sub-step if that SDK isn't in this release; jump to step 7 if neither is.
 
-1. **GitHub releases** — one per released package, on **its own release repo** (e.g.
-   `github.com/gini/bank-sdk-ios/releases`), not on `gini-mobile-ios`. **All seven repos publish releases**,
-   including `utilites-ios` and `internal-payment-sdk-ios`, so do not skip a package for being
-   "internal" — unlike Jira fix versions, which only cover the customer-facing products. Use the markdown
-   release notes from the Jira release description.
-2. **Jira** — confirm each release has its tickets connected via "Fix versions" and notes in the
-   description, then publish the releases in PP/HEAL.
-3. **Docs** — the release workflow publishes Jazzy automatically. A **documentation-only** change between
-   versions is released separately with `bundle exec fastlane create_documentation_release_tags`, which
-   tags `<Package>;<version>;doc-<n>`.
-4. **CocoaPods** — only `GiniBankSDK` has a podspec, and **no workflow publishes it**. It is a manual
-   `bundle exec fastlane publish_podspec` that requires the XCFrameworks from step 6's note and pushes to
-   `gini/gini-podspecs`. Do not bump `spec.version` in `BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec` by
-   hand — the lane rewrites it from the latest release tag, which is why the checked-in value is stale.
-5. Move the RC ticket(s) to `Done`, and merge the release branch into `main` if that has not happened yet.
+Start the XCFramework builds now so the archives are ready by the time the release drafts are reviewed. On `main`, on the commit that already carries the release tags, create and push one tag per SDK being released — creating the tag locally is not enough, only pushing it triggers the workflow:
 
-## 8. Report
+```bash
+git tag "GiniBankSDK;<X.Y.Z>;xcframeworks"
+git push origin "GiniBankSDK;<X.Y.Z>;xcframeworks"
 
-At the end — or when stopping at the QA gate — summarize: packages bumped with old → new versions, every
-`Package-release.swift` and doc file touched, RC ticket(s) created, commits made, what the lint/tests
-said, and which checklist steps remain. **State explicitly whether any tags were pushed.**
+git tag "GiniHealthSDK;<X.Y.Z>;xcframeworks"
+git push origin "GiniHealthSDK;<X.Y.Z>;xcframeworks"
+```
 
-## Where RELEASE.md is wrong
+Each pushed tag triggers the matching workflow (`bank-sdk.build.xcframeworks` / `health-sdk.build.xcframeworks`). **Wait until both runs finish successfully** under GitHub Actions before continuing — the generated artifacts feed the archive prep below and the draft attachments in step 7.
 
-Cite `RELEASE.md` for the shape of the process, but know these gaps — fix the file if the team agrees
-rather than working around it every release:
+While the workflows run, prepare the archives that will be attached to the draft releases:
 
-- **"don't forget to update also extended package with Pinning!"** — there are no Pinning packages. No
-  `Package.swift` declares one and no `*Pinning*Version.swift` exists; SSL pinning is now a source folder
-  (`Sources/<Package>/SSLPinning/`) inside the main packages. The `ignored_packages = [/\/.+Pinning\//]`
-  rule in `create_release_tags`, the `GiniBankSDKPinning` comment in `bank-sdk.check.yml`, and the
-  `capture-sdk-pinning-ios` repo reference are all vestigial.
-- **"Make sure you are on the `main` branch" / "Commit and push the changes to `main`"** — most releases
-  actually run from a `release/<theme>` branch and reach `main` by PR. See step 3.
-- **It does not mention `RELEASE-ORDER.md` being hand-maintained.** Unlike Android, where the equivalent
-  file is generated by a Gradle task and must never be edited manually, **iOS's `RELEASE-ORDER.md` has no
-  generator** — if a dependency changes, edit it by hand in the same commit.
-- **It says "documentation file" without saying which.** It is `Documentation/source/Installation.md`, and
-  only two packages have one. See step 4.3.
+**GiniBankSDK** — from the `bank-sdk.build.xcframeworks` run:
+
+1. Download the generated artifact and unzip.
+2. Create an archive `GiniBankSDK_<X.Y.Z>_XCFrameworks` containing only `GiniBankSDK`, `GiniCaptureSDK`, `GiniBankAPILibrary`, `GiniUtilites`.
+3. Keep it locally — it will be attached in step 7 and reused for the podspec in step 10.
+
+**GiniHealthSDK** — from the `health-sdk.build.xcframeworks` run:
+
+1. Download the generated artifact (uploaded as `GiniHealthSDKFramework`) and unzip.
+2. Create an archive `GiniHealthSDK_<X.Y.Z>_XCFrameworks` containing only `GiniHealthSDK`, `GiniHealthAPILibrary`, `GiniInternalPaymentSDK`, `GiniUtilites`.
+3. Keep it locally — it will be attached in step 7.
+
+See the [GiniBankSDK 3.0.0 release](https://github.com/gini/gini-mobile-ios/releases/tag/GiniBankSDK%3B3.0.0) for what the final attached archive looks like.
+
+## 7. Draft the GitHub releases
+
+For each pushed `<Package>;<X.Y.Z>` tag, create a **draft** GitHub release. Do not publish yet — the user reviews drafts before anything goes live.
+
+Destinations per pushed tag:
+
+- Mono repo `gini/gini-mobile-ios` — every `<Package>;<version>` tag gets a draft here.
+- Individual release repo, if the package has one: `gini/bank-api-library-ios`, `gini/capture-sdk-ios`, `gini/bank-sdk-ios`, `gini/health-api-library-ios`, `gini/internal-payment-sdk-ios`, `gini/utilites-ios`, `gini/health-sdk-ios`.
+
+**Use the previous release of the same SDK as the template.** Fetch its notes to mirror title formatting and section structure:
+
+```bash
+gh release view "<Package>;<previous-X.Y.Z>" --repo <repo> --json name,body
+```
+
+Fill the draft body from the Jira release description markdown, following the previous release's shape. Then create the draft:
+
+```bash
+gh release create "<Package>;<X.Y.Z>" \
+  --repo <repo> \
+  --draft \
+  --title "<title from previous release, updated>" \
+  --notes-file <notes.md>
+```
+
+For `GiniBankSDK` and `GiniHealthSDK` drafts in the mono repo, also attach the matching XCFrameworks archive built in step 6:
+
+```bash
+gh release upload "GiniBankSDK;<X.Y.Z>" \
+  --repo gini/gini-mobile-ios \
+  GiniBankSDK_<X.Y.Z>_XCFrameworks.zip
+
+gh release upload "GiniHealthSDK;<X.Y.Z>" \
+  --repo gini/gini-mobile-ios \
+  GiniHealthSDK_<X.Y.Z>_XCFrameworks.zip
+```
+
+Collect and report every draft URL — the user needs them for review.
+
+## 8. User review — hard gate
+
+Stop. Present the list of draft release URLs and ask the user to review each one on GitHub. **Do not publish until the user explicitly confirms all drafts look correct.** If the user requests changes to any draft, edit it (`gh release edit --notes-file …`) and re-present.
+
+## 9. Publish the GitHub releases
+
+Only after explicit user approval. Publish each draft:
+
+```bash
+gh release edit "<Package>;<X.Y.Z>" --repo <repo> --draft=false
+```
+
+For the mono repo, **mark `GiniBankSDK` as the latest release**:
+
+```bash
+gh release edit "GiniBankSDK;<X.Y.Z>" --repo gini/gini-mobile-ios --latest
+```
+
+## 10. Publish CocoaPods podspec (GiniBankSDK only)
+
+Skip if `GiniBankSDK` isn't in this release.
+
+Copy the `GiniBankSDK_<X.Y.Z>_XCFrameworks` folder from step 6 into `BankSDK/GiniBankSDK/Pod/` locally. Then, from the `gini-mobile-ios` repo root:
+
+```bash
+pod cache clean --all
+bundle exec fastlane publish_podspec \
+  xcframeworks_folder_path:<abs>/gini-mobile-ios/BankSDK/GiniBankSDK/Pod/GiniBankSDK_<X.Y.Z>_XCFrameworks \
+  pod_name:GiniBankSDK \
+  podspecs_repo_sdk_folder_path:<abs>/gini-podspecs/GiniBankSDK \
+  template_podspec_path:<abs>/gini-mobile-ios/BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec
+```
+
+Placeholders to replace with real absolute paths:
+
+- `xcframeworks_folder_path` — where you dropped the `GiniBankSDK_<X.Y.Z>_XCFrameworks` folder.
+- `pod_name` — always `GiniBankSDK`.
+- `podspecs_repo_sdk_folder_path` — your local checkout of `gini/gini-podspecs`, subfolder `GiniBankSDK`.
+- `template_podspec_path` — the checked-in podspec template in `gini-mobile-ios`.
+
+Example with real paths:
+
+```bash
+bundle exec fastlane publish_podspec \
+  xcframeworks_folder_path:/Users/you/Workspace/gini-mobile-ios/BankSDK/GiniBankSDK/Pod/GiniBankSDK_3.7.2_XCFrameworks \
+  pod_name:GiniBankSDK \
+  podspecs_repo_sdk_folder_path:/Users/you/Workspace/gini-podspecs/GiniBankSDK \
+  template_podspec_path:/Users/you/Workspace/gini-mobile-ios/BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec
+```
+
+The `pod cache clean --all` step is required before the lane runs; skipping it can publish a stale spec.
+
+The lane rewrites `spec.version` from the latest release tag and pushes to `gini/gini-podspecs`. **Do not bump `spec.version` in `BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec` by hand** — the checked-in value is intentionally stale.
+
+## 11. Publish Jira releases
+
+1. Mark each Jira release as **Released** in PP/HEAL. Confirm the fix versions have their tickets attached and the release notes match what shipped on GitHub.
+2. Move the RC ticket(s) to `Done`.
+3. Create next-release placeholders — one `UNRELEASED` version per product for the upcoming cycle so incoming tickets have somewhere to land.
+
+## 12. Post to #mobile-releases on Slack
+
+Announce the successful release in `#mobile-releases`: which SDKs shipped, a short summary of the changes, and the TestFlight link for the example app.
+
+## 13. Report
+
+At the end — or when stopping at the QA gate — summarize: packages bumped with old → new versions, every `Package-release.swift` and doc file touched, Jira releases and RC ticket(s) created, commits made, lint/test results, and what checklist steps remain. **State explicitly whether any tags were pushed.**
