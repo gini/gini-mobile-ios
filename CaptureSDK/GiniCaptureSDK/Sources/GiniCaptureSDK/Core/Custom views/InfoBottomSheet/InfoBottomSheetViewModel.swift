@@ -16,4 +16,6 @@ public protocol InfoBottomSheetViewModel {
     var title: String { get }
     /// Description text for the bottom sheet
     var description: String { get }
+    /// Optional background color to image
+    var imageBackgroundColor: UIColor? { get }
 }

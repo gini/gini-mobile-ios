@@ -82,15 +82,19 @@ extension BaseIntegrationTest {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            guard !self.isTestFinished else { return }
             self.getUpdatedExtractionsFromGiniBankSDK(for: document) { updatedResult in
-                switch updatedResult {
-                case .success:
-                    /// Backend accepted the `crossBorderPayment` feedback — document is still accessible.
-                    GiniBankConfiguration.shared.cleanup()
-                    XCTAssertNil(GiniBankConfiguration.shared.documentService)
-                    expect.fulfill()
-                case let .failure(error):
-                    XCTFail("CX transfer summary feedback was rejected by the backend: \(error)")
+                DispatchQueue.main.async {
+                    guard !self.isTestFinished else { return }
+                    switch updatedResult {
+                    case .success:
+                        /// Backend accepted the `crossBorderPayment` feedback — document is still accessible.
+                        GiniBankConfiguration.shared.cleanup()
+                        XCTAssertNil(GiniBankConfiguration.shared.documentService)
+                        expect.fulfill()
+                    case let .failure(error):
+                        XCTFail("CX transfer summary feedback was rejected by the backend: \(error)")
+                    }
                 }
             }
         }

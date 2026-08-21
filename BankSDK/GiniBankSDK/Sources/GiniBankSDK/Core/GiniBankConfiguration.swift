@@ -395,7 +395,7 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var savePhotosLocallyEnabled: Bool = true
 
-    // MARK: - Payment Due Hint Threshold
+    // MARK: - Payment Due Hint
     /**
      Indicates the number of days before the invoice due date within which (inclusive of today) the invoice due date falls, for a payment hint to be shown..
 
@@ -412,6 +412,7 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var paymentDueHintEnabled: Bool = true
 
+    // MARK: - Already Paid
     /**
      Indicates whether the Schedule Payment state of the payment-hint bottom
      sheet is enabled. Takes priority over the Due Date Hint state.
@@ -424,6 +425,14 @@ public final class GiniBankConfiguration: NSObject {
      the user that the invoice appears to have already been paid.
      */
     public var alreadyPaidHintEnabled: Bool = true
+
+    // MARK: - Credit Note
+    /**
+     Indicates whether the Credit Note feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to inform
+     the user that the invoice appears to be a credit note.
+     */
+    public var creditNoteHintEnabled: Bool = true
 
     /**
      Set the entry point used for launching the Gini Bank SDK.

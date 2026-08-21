@@ -73,12 +73,25 @@ extension NetworkingScreenApiCoordinatorTests {
 
     // MARK: - Test Data Creation
 
-    func createExtractionResult(paymentState: String? = nil,
+    func createExtractionResult(amountToPay: String? = nil,
+                                paymentState: String? = nil,
                                 paymentDueDate: String? = nil,
+                                businessDocType: String? = nil,
                                 lineItems: [[Extraction]]? = nil,
                                 skontoDiscounts: [[Extraction]]? = nil,
-                                crossBorderPayment: [[Extraction]]? = nil) -> ExtractionResult {
+                                crossBorderPayment: [[Extraction]]? = nil,
+                                returnReasons: [ReturnReason] = [],
+                                candidates: [String: [Extraction.Candidate]] = [:]) -> ExtractionResult {
         var extractions: [Extraction] = []
+
+        if let amountToPay = amountToPay {
+            let extraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "amountToPay",
+                                        value: amountToPay,
+                                        name: "amountToPay")
+            extractions.append(extraction)
+        }
 
         if let paymentState = paymentState {
             let extraction = Extraction(box: nil,
@@ -98,12 +111,32 @@ extension NetworkingScreenApiCoordinatorTests {
             extractions.append(dueDateExtraction)
         }
 
+        if let businessDocType = businessDocType {
+            let docTypeExtraction = Extraction(box: nil,
+                                               candidates: nil,
+                                               entity: "businessDocType",
+                                               value: businessDocType,
+                                               name: "businessDocType")
+            extractions.append(docTypeExtraction)
+        }
+
         return ExtractionResult(extractions: extractions,
                                 lineItems: lineItems,
-                                returnReasons: [],
+                                returnReasons: returnReasons,
                                 skontoDiscounts: skontoDiscounts,
                                 crossBorderPayment: crossBorderPayment,
-                                candidates: [:])
+                                candidates: candidates)
+    }
+
+    func createMockReturnReasons() -> [ReturnReason] {
+        return [ReturnReason(id: "r1", localizedLabels: ["de": "Beschädigt"])]
+    }
+
+    func createMockCandidates() -> [String: [Extraction.Candidate]] {
+        let candidate = Extraction.Candidate(box: nil,
+                                             entity: "amount",
+                                             value: "100.00:EUR")
+        return ["amounts": [candidate]]
     }
 
     func createMockLineItems() -> [[Extraction]] {

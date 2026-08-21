@@ -1508,9 +1508,9 @@ extension SettingsViewModelTests {
 		}
 	}
 
-    //MARK: - User payment warnings
+    //MARK: - Already paid
 
-    func testUserPaymentWarningsSwitchOff() {
+    func testAlreadyPaidHintSwitchOff() {
         guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
             XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
             return
@@ -1529,7 +1529,7 @@ extension SettingsViewModelTests {
         }
     }
 
-    func testUserPaymentWarningsSwitchOn() {
+    func testAlreadyPaidHintSwitchOn() {
         guard let index = getSwitchOptionIndex(for: .alreadyPaidHintEnabled) else {
             XCTFail("`alreadyPaidHintEnabled` option not found in sectionData")
             return
@@ -1544,7 +1544,7 @@ extension SettingsViewModelTests {
             configuration.alreadyPaidHintEnabled = data.isSwitchOn
 
             XCTAssertTrue(configuration.alreadyPaidHintEnabled,
-                          "payment hints feature should not be enabled in the gini configuration")
+                          "payment hints feature should be enabled in the gini configuration")
         }
     }
 
@@ -1584,9 +1584,49 @@ extension SettingsViewModelTests {
             configuration.savePhotosLocallyEnabled = data.isSwitchOn
 
             XCTAssertTrue(configuration.savePhotosLocallyEnabled,
-                          "Save Photos Locally feature should not be enabled in the gini configuration")
+                          "Save Photos Locally feature should be enabled in the gini configuration")
         }
     }
+
+    //MARK: - Credit note
+    func testCreditNoteHintSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .creditNoteHintEnabled) else {
+            XCTFail("`creditNoteHintEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .creditNoteHintEnabled else {
+                XCTFail("Expected type `creditNoteHintEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.creditNoteHintEnabled = data.isSwitchOn
+
+            XCTAssertFalse(configuration.creditNoteHintEnabled,
+                           "credit note feature should not be enabled in the gini configuration")
+        }
+    }
+
+    func testCreditNoteHintSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .creditNoteHintEnabled) else {
+            XCTFail("`creditNoteHintEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .creditNoteHintEnabled else {
+                XCTFail("Expected type `creditNoteHintEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.creditNoteHintEnabled = data.isSwitchOn
+
+            XCTAssertTrue(configuration.creditNoteHintEnabled,
+                          "credit note feature should be enabled in the gini configuration")
+        }
+    }
+
 
 	// MARK: - DebugMode
 	

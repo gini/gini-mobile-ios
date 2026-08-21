@@ -57,13 +57,12 @@ public class GiniCompoundConstraintAttribute {
     public func constant(_ value: CGFloat) -> Self {
         for attribute in attributes {
             switch attribute.attribute {
-                case .trailing, .right, .bottom:
-                    attribute.constant(-value)
-                default:
-                    attribute.constant(value)
+            case .trailing, .right, .bottom:
+                attribute.constant(-value)
+            default:
+                attribute.constant(value)
             }
         }
         return self
     }
 }
-

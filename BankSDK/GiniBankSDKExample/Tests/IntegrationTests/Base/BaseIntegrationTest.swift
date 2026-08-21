@@ -13,8 +13,27 @@ class BaseIntegrationTest: XCTestCase {
     lazy var giniHelper = GiniSetupHelper()
     var analysisExtractionResult: ExtractionResult?
 
+    /**
+     Set on the main queue when the test finishes (including timeouts).
+
+     Async callbacks from a timed-out test would otherwise keep running into the
+     following tests and send transfer summary feedback through the shared
+     `GiniBankConfiguration` — which by then points at the *next* test's document,
+     overwriting its extractions server-side. Every async continuation must check
+     this flag on the main queue and bail out when it is `true`.
+     */
+    private(set) var isTestFinished = false
+
     override func setUp() {
         giniHelper.setup()
+    }
+
+    override func tearDown() {
+        isTestFinished = true
+        /// Reset the shared configuration so a late callback of this test can never
+        /// reach the document service of the test that runs next.
+        GiniBankConfiguration.shared.cleanup()
+        super.tearDown()
     }
     /**
      * This method reproduces the document upload and analysis done by the Bank SDK.
@@ -45,12 +64,17 @@ class BaseIntegrationTest: XCTestCase {
 
         // Upload and analyze the document
         giniHelper.giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
-            switch result {
-                case .success(_):
-                    self.handleUploadSuccess(captureDocument: captureDocument,
-                                             delegate: delegate)
-                case let .failure(error):
-                    XCTFail(String(describing: error))
+            /// Hop to the main queue so `isTestFinished` is read race-free and all
+            /// follow-up test logic runs serially with the test's run loop.
+            DispatchQueue.main.async {
+                guard !self.isTestFinished else { return }
+                switch result {
+                    case .success(_):
+                        self.handleUploadSuccess(captureDocument: captureDocument,
+                                                 delegate: delegate)
+                    case let .failure(error):
+                        XCTFail(String(describing: error))
+                }
             }
         }
     }
@@ -66,12 +90,15 @@ class BaseIntegrationTest: XCTestCase {
     func handleUploadSuccess(captureDocument: GiniCaptureDocument,
                              delegate: GiniCaptureResultsDelegate) {
         giniHelper.giniCaptureSDKDocumentService?.startAnalysis { result in
-            switch result {
-                case let .success(extractionResult):
-                    self.handleAnalysisSuccess(extractionResult: extractionResult,
-                                               delegate: delegate)
-                case let .failure(error):
-                    XCTFail(String(describing: error))
+            DispatchQueue.main.async {
+                guard !self.isTestFinished else { return }
+                switch result {
+                    case let .success(extractionResult):
+                        self.handleAnalysisSuccess(extractionResult: extractionResult,
+                                                   delegate: delegate)
+                    case let .failure(error):
+                        XCTFail(String(describing: error))
+                }
             }
         }
     }
