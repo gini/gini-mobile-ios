@@ -90,7 +90,7 @@ In the `Create release` dialog: fill Release name and Description, and **clear t
 
 Once versions exist, assign them as `fixVersions` on all work tickets in the release using `editJiraIssue` (names work here). Without fix versions the release report is empty.
 
-Add **release notes in markdown** to each release description. These notes are reused verbatim on GitHub releases (step 6) — copy from the previous release and update.
+Add **release notes in markdown** to each release description. These notes are reused verbatim on GitHub releases (step 7) — copy from the previous release and update.
 
 ### 2b. RC ticket
 
@@ -151,12 +151,12 @@ Confirm `git log -1` points at the release merge commit — `create_release_tags
 
 ### 5b. Verify the XCFramework build prerequisite
 
-Verify the XCFramework build workflows have completed successfully on the release branch that just merged:
+Verify the branch-triggered XCFramework build workflow run for the release branch that just merged into `main` is green:
 
 - `bank-sdk.build.xcframeworks` — if the release includes `GiniBankSDK`.
 - `health-sdk.build.xcframeworks` — if the release includes `GiniHealthSDK`.
 
-Do not proceed before the applicable workflows are green.
+Do not proceed before the applicable workflows are green. (Step 6 later triggers a separate tag-triggered run of these same workflows to produce the archives attached to the drafts.)
 
 ### 5c. Bump versions in dependency order
 
@@ -222,7 +222,7 @@ bundle exec fastlane create_release_tags
 Run this **manually in the terminal** — the lane needs an interactive prompt (`! bundle exec fastlane create_release_tags`).
 
 - The lane scans every `**/*Version.swift`, compares each package's version against its latest `<Package>;<version>` release tag, creates a local tag for every package that differs, and prompts **"Push release tag?"** per package.
-- **The lane creates the local tag before asking to push.** If a push prompt is declined, the local tag stays and the lane sees the package as up-to-date on the next run. Delete the unpushed local tag before rerunning: `git tag -d <Package>;<version>`.
+- **The lane creates the local tag before asking to push.** If a push prompt is declined, the local tag stays and the lane sees the package as up-to-date on the next run. Delete the unpushed local tag before rerunning: `git tag -d "<Package>;<version>"` (quote it — the `;` in the tag name is a shell separator otherwise).
 - **Tag format is strict:** `<Package>;X.Y.Z`, or (for `GiniBankAPILibrary`, `GiniCaptureSDK`, `GiniBankSDK` only) `<Package>;X.Y.Z-betaNN` with exactly two beta digits. Beta tags for `GiniHealthAPILibrary`, `GiniUtilites`, `GiniInternalPaymentSDK`, `GiniHealthSDK` are **not** matched by their release workflows and publish nothing.
 - **Each pushed tag triggers that package's release workflow**, which clones the release repo, wipes it, copies the package in with `Package-release.swift` renamed to `Package.swift`, commits, and tags. Only push when the release is truly go.
 - Verify the workflows started under GitHub Actions afterwards. Each release workflow also publishes Jazzy docs as a dependent job.
@@ -231,14 +231,17 @@ Run this **manually in the terminal** — the lane needs an interactive prompt (
 
 XCFrameworks are built for both `GiniBankSDK` and `GiniHealthSDK`. Skip either sub-step if that SDK isn't in this release; jump to step 7 if neither is.
 
-Start the XCFramework builds now so the archives are ready by the time the release drafts are reviewed. On `main`, on the commit that already carries the release tags, add one tag per SDK being released:
+Start the XCFramework builds now so the archives are ready by the time the release drafts are reviewed. On `main`, on the commit that already carries the release tags, create and push one tag per SDK being released — creating the tag locally is not enough, only pushing it triggers the workflow:
 
-```
-GiniBankSDK;<X.Y.Z>;xcframeworks
-GiniHealthSDK;<X.Y.Z>;xcframeworks
+```bash
+git tag "GiniBankSDK;<X.Y.Z>;xcframeworks"
+git push origin "GiniBankSDK;<X.Y.Z>;xcframeworks"
+
+git tag "GiniHealthSDK;<X.Y.Z>;xcframeworks"
+git push origin "GiniHealthSDK;<X.Y.Z>;xcframeworks"
 ```
 
-Each tag triggers the matching workflow (`bank-sdk.build.xcframeworks` / `health-sdk.build.xcframeworks`).
+Each pushed tag triggers the matching workflow (`bank-sdk.build.xcframeworks` / `health-sdk.build.xcframeworks`). Verify the runs started under GitHub Actions before moving on.
 
 While the workflows run, prepare the archives that will be attached to the draft releases:
 
