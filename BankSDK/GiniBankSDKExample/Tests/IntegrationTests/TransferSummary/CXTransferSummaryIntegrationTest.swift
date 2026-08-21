@@ -131,5 +131,9 @@ class CXTransferSummaryIntegrationTest: BaseIntegrationTest {
         func giniCaptureDidEnterManually() {
             // This method will remain empty; no implementation is needed.
         }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+            // This method will remain empty; no implementation is needed.
+        }
     }
 }

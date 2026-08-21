@@ -1,0 +1,87 @@
+name: Check shared Claude skills are in sync with Android
+
+# The general part of shared Claude skills (SKILL.md) must stay byte-identical
+# between gini-mobile-ios and gini-mobile-android; only platform.md may differ.
+#
+# The intended flow when a mirrored file changes here: merge to main →
+# shared-skills.sync.yml opens a PR in gini-mobile-android → merge there →
+# converged. Divergence during that window is expected, so on pull_request
+# and push events it is only a WARNING. It is a hard FAILURE on the weekly
+# schedule and on manual dispatch, where divergence means lasting drift
+# (an abandoned sync PR, or the Android copy was edited directly).
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - '.github/mirrored-skills.txt'
+      - '.github/workflows/shared-skills.check.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '.claude/skills/**'
+      - '.github/mirrored-skills.txt'
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare mirrored skill files against gini-mobile-android
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          # The list of mirrored files lives in .github/mirrored-skills.txt,
+          # shared with shared-skills.sync.yml.
+          ANDROID_RAW="https://raw.githubusercontent.com/gini/gini-mobile-android/main"
+
+          # Divergence severity depends on the trigger (see header comment).
+          if [ "$EVENT_NAME" = "schedule" ] || [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            drift_level="error"
+          else
+            drift_level="warning"
+          fi
+
+          failed=0
+
+          while IFS= read -r f; do
+            case "$f" in ''|\#*) continue ;; esac
+            if [ ! -f "$f" ]; then
+              echo "::error file=$f::listed as mirrored but missing in this repo"
+              failed=1
+              continue
+            fi
+
+            http_code=$(curl -s -o android-copy.tmp -w "%{http_code}" "$ANDROID_RAW/$f")
+
+            if [ "$http_code" = "404" ]; then
+              echo "::warning file=$f::no counterpart in gini-mobile-android yet — add it there to activate the sync check"
+              continue
+            fi
+
+            if [ "$http_code" != "200" ]; then
+              echo "::error file=$f::could not fetch Android counterpart (HTTP $http_code)"
+              failed=1
+              continue
+            fi
+
+            if ! diff -u android-copy.tmp "$f" > diff-output.tmp; then
+              if [ "$drift_level" = "error" ]; then
+                echo "::error file=$f::out of sync with gini-mobile-android — no open sync should be pending; check for an abandoned sync PR in gini-mobile-android or a direct edit of the Android copy"
+                failed=1
+              else
+                echo "::warning file=$f::differs from gini-mobile-android — expected mid-flow; after merging to main, shared-skills.sync.yml opens the sync PR in gini-mobile-android"
+              fi
+              cat diff-output.tmp
+            fi
+          done < .github/mirrored-skills.txt
+
+          exit $failed

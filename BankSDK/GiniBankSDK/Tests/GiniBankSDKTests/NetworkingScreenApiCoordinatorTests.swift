@@ -601,7 +601,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 extension ClientConfiguration {
     init(alreadyPaidHintEnabled: Bool = false,
          paymentDueHintEnabled: Bool = false,
-         creditNoteHintEnabled: Bool = false) {
+         creditNoteHintEnabled: Bool = false,
+         paymentScheduleHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -614,6 +615,7 @@ extension ClientConfiguration {
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
                   paymentDueHintEnabled: paymentDueHintEnabled,
                   creditNoteHintEnabled: creditNoteHintEnabled,
+                  paymentScheduleHintEnabled: paymentScheduleHintEnabled,
                   unsupportedQRCodeWarningEnabled: false)
     }
 }

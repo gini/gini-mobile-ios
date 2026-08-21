@@ -353,7 +353,14 @@ extension GiniConfigurationSharedStateSuite {
             configuration.giniErrorLoggerIsOn = false
             configuration.debugModeOn = true
 
-            let config = configuration.captureConfiguration()
+            /// Verify the transfer against a fresh, isolated `GiniConfiguration`
+            /// instead of `GiniConfiguration.shared`. `captureConfiguration()`
+            /// still mutates the singleton for production consumers; the internal
+            /// `applyCaptureConfiguration(to:)` helper does the pure transfer,
+            /// which is what the test needs to observe without racing against
+            /// parallel tests that also touch the singleton.
+            let config = GiniConfiguration()
+            configuration.applyCaptureConfiguration(to: config)
 
             #expect(config.multipageEnabled, "Expected multipageEnabled to be transferred as true")
             #expect(config.qrCodeScanningEnabled, "Expected qrCodeScanningEnabled to be transferred as true")

@@ -74,6 +74,7 @@ extension GiniConfigurationSharedStateSuite {
                                 alreadyPaidHintEnabled: false,
                                 paymentDueHintEnabled: false,
                                 creditNoteHintEnabled: false,
+                                paymentScheduleHintEnabled: false,
                                 unsupportedQRCodeWarningEnabled: unsupportedQRCodeWarningEnabled)
         }
     }

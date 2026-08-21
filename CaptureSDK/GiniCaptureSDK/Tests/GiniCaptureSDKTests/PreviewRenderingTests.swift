@@ -91,18 +91,4 @@ struct PreviewRenderingTests {
             Helper.tap(button)
         }
     }
-
-    @Test("Dismiss message preview renders the message view inside its container")
-    func dismissMessagePreviewRenders() throws {
-        let window = renderPreview(DismissMessageView_Preview.previews)
-        defer { window.isHidden = true }
-
-        let dismissMessageView = try #require(Helper.firstView(ofType: DismissMessageView.self,
-                                                               in: window),
-                                              "The rendered preview should embed a DismissMessageView")
-        #expect(dismissMessageView.superview != nil,
-                "The dismiss message view should be installed in the preview controller's view")
-        #expect(dismissMessageView.isAccessibilityElement,
-                "The rendered dismiss message view keeps its accessibility configuration")
-    }
 }

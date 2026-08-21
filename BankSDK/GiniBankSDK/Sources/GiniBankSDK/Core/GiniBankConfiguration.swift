@@ -414,6 +414,12 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Already Paid
     /**
+     Indicates whether the Schedule Payment state of the payment-hint bottom
+     sheet is enabled. Takes priority over the Due Date Hint state.
+     */
+    public var paymentScheduleHintEnabled: Bool = true
+
+    /**
      Indicates whether the Already Paid Hint feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to inform
      the user that the invoice appears to have already been paid.
@@ -480,6 +486,17 @@ public final class GiniBankConfiguration: NSObject {
      */
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
+        applyCaptureConfiguration(to: configuration)
+        GiniCapture.setConfiguration(configuration)
+        return configuration
+    }
+
+    /**
+     Copies the bank-side flags onto the given `GiniConfiguration`.
+     Testable seam for `captureConfiguration()`, which mutates `GiniConfiguration.shared`
+     and would otherwise race with any parallel test.
+     */
+    func applyCaptureConfiguration(to configuration: GiniConfiguration) {
         configuration.customDocumentValidations = self.customDocumentValidations
 
         configuration.debugModeOn = self.debugModeOn
@@ -547,10 +564,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customNetworkProvider = self.customNetworkProvider
 
         configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
-
-        GiniCapture.setConfiguration(configuration)
-
-        return configuration
     }
 
     /**

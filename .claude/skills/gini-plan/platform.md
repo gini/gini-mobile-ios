@@ -35,17 +35,12 @@ configuration pattern for SDK entry points.
 
 ## Architecture patterns in use
 
-MVVM + Coordinator is mandatory for all new feature code (`CLAUDE.md` — MyApp
-Standards → Architecture). The spec must name the coordinator, view model,
-delegate, and view controller types for new code and match a precedent that
-actually exists in the touched module:
-
-- ViewModel ↔ Coordinator: weak delegate protocol (e.g.
-  `<Feature>ViewModelDelegate`) — post-init injection is only allowed for
-  this delegate back-reference.
-- View ↔ ViewModel: closure-based binding (`addStateChangeHandler`); the
-  ViewModel MUST NOT import UIKit.
-- ViewController: layout + event forwarding only, no business logic.
+MVVM + Coordinator, the ViewModel↔Coordinator weak-delegate pattern,
+closure-based ViewModel binding, and view-controller responsibilities are
+enforced by **gini-orchestrator** per `.claude/rules/mandatory-rules.md` — read
+it, don't restate it here. The spec must still name the coordinator, view
+model, delegate, and view controller types for new code and match a precedent
+that actually exists in the touched module.
 
 SwiftUI is the default framework for new standalone views and feature
 entry points. SwiftUI is already the norm in **GiniInternalPaymentSDK**
@@ -68,13 +63,9 @@ glass effects, materials, older-OS fallbacks).
 - New code in Swift; `internal` (the default) unless deliberately part of the
   public API. `public`/`open` require justification in the spec's public API
   impact section.
-- Multi-parameter initializers and functions follow the `CLAUDE.md` code
-  style: the first parameter stays on the opening-paren line; each following
-  parameter starts on a new line and is vertically aligned; the closing
-  paren and opening brace remain on the same line.
-- Swift doc comments follow the `AGENTS.md` house style: `/** ... */` for
-  declaration documentation; `///` reserved for inline explanatory comments
-  inside function bodies.
+- Multi-parameter formatting and doc-comment style (`/** */` vs `///`) are
+  enforced by **gini-orchestrator** per `.claude/rules/mandatory-rules.md` —
+  read it, don't restate it here.
 
 ## UI rules
 
@@ -85,37 +76,27 @@ glass effects, materials, older-OS fallbacks).
   programmatic UI). SwiftUI is already the norm in GiniInternalPaymentSDK
   and `GiniUtilites/SwiftUI/`. Call out in the spec which framework new
   views use and why.
-- Colors: prefer **`GiniColorScheme`**
-  (`GiniUtilites/Color/GiniColorScheme.swift`, with module extensions like
-  `GiniBankColorScheme`) for new code — it's the current standard and
-  already the majority pattern outside CaptureSDK. The legacy
-  `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces remain in place
-  and are still the norm inside CaptureSDK; match neighboring code when
-  extending existing files. Dark mode: `GiniColor(light:dark:).uiColor()`
-  is the underlying primitive that `GiniColorScheme` already wraps. Never
-  use a raw hex or asset without a dark counterpart.
-- Fonts: Dynamic Type via `textStyleFonts[textStyle]` from the design
-  system.
-- Spacing: local `private enum Constants` inside the view/view controller —
-  no magic numbers.
+- Colors/fonts/spacing: enforced by **gini-orchestrator** per
+  `.claude/rules/mandatory-rules.md` (`GiniColorScheme` first, legacy
+  `UIColor.GiniBank.*`/`UIColor.GiniCapture.*` still the norm inside
+  CaptureSDK — match neighboring code; `textStyleFonts[textStyle]`; local
+  `Constants` enum). Read it, don't restate it here.
 - Liquid Glass: when the spec targets a UI change that adopts Liquid
   Glass, list which glass effects / materials the new UI adopts and any
   fallbacks for older OS versions.
 
 ## Wiring
 
-- DI: constructor injection is mandatory. The delegate back-reference
-  described above is the only permitted post-init injection. SDK entry
-  points expose a fluent value-type builder (`GiniBankAPI.Builder`
-  precedent).
+- DI: constructor injection, delegate back-reference as the sole post-init
+  exception, and the fluent value-type builder pattern for SDK entry points
+  are enforced by **gini-orchestrator** per `.claude/rules/mandatory-rules.md`
+  — read it, don't restate it here.
 - Async: Swift concurrency (`async`/`await`, `Task`, `@MainActor` where the
   neighbor code already uses it); fall back to closure-based callbacks only
   where the module hasn't adopted concurrency yet. Match neighboring code.
-- Strings: typed `LocalizableStringResource` enums under the key convention
-  `<sdk>.<feature>.<screen>.<element>`. All strings go through the 3-level
-  lookup chain (host app → custom bundle → SDK bundle). Never raw
-  `NSLocalizedString`. State which locale `.strings` files under
-  `Sources/<SDK>/Resources/` gain entries.
+- Strings: key convention and 3-level lookup chain are enforced by
+  **gini-orchestrator** per `.claude/rules/mandatory-rules.md`. State which
+  locale `.strings` files under `Sources/<SDK>/Resources/` gain entries.
 
 ## Test stack
 
@@ -133,7 +114,8 @@ glass effects, materials, older-OS fallbacks).
   `OnboardingScreen.swift`, …). Extend an existing screen object rather
   than adding raw selectors. `GiniBankSDKExampleSwiftUIUITests/` covers the
   SwiftUI example variant. No snapshot-testing library is in use.
-- Mocks: manual protocol conformances. No third-party mocking framework.
+- Mocks: manual protocol conformances per `.claude/rules/mandatory-rules.md`
+  (gini-orchestrator-enforced). No third-party mocking framework.
 - Fixtures: `Tests/<SDK>Tests/Resources/`, referenced via `.process`/`.copy`
   in the package's test target. Not only JSON — CaptureSDK ships `.pdf`
   (rotated variants, multi-page), `.jpg`, and `.txt` extraction fixtures;
@@ -154,28 +136,25 @@ The spec's "Technical conventions" section must cover, grounded in the
 modules actually touched:
 
 1. Language and access control: Swift, `internal` by default; `public` /
-   `open` only where the public API impact section justifies it; doc-comment
-   style (`/** */` for declarations, `///` inline) per `AGENTS.md`.
+   `open` only where the public API impact section justifies it. Doc-comment
+   style per `.claude/rules/mandatory-rules.md` (gini-orchestrator-enforced).
 2. UI: name the framework (SwiftUI by default for new views; UIKit
    `UIViewController`/`UIView` when extending existing UIKit screens in
-   GiniBankSDK/GiniCaptureSDK/GiniHealthSDK); colors via `GiniColorScheme`
-   for new code (legacy `UIColor.GiniBank.*` / `UIColor.GiniCapture.*`
-   still norm inside CaptureSDK) with `GiniColor(light:dark:)` under the
-   hood for dark mode; Dynamic Type via `textStyleFonts[textStyle]`;
-   spacing in a local `enum Constants`; Liquid Glass adoption impact
-   (glass effects, materials, older-OS fallbacks) when the spec targets
-   it.
-3. Architecture: MVVM + Coordinator; name the `<Feature>Coordinator`,
+   GiniBankSDK/GiniCaptureSDK/GiniHealthSDK); colors/fonts/spacing per
+   `.claude/rules/mandatory-rules.md` (gini-orchestrator-enforced); Liquid
+   Glass adoption impact (glass effects, materials, older-OS fallbacks) when
+   the spec targets it.
+3. Architecture: MVVM + Coordinator per `.claude/rules/mandatory-rules.md`
+   (gini-orchestrator-enforced); name the `<Feature>Coordinator`,
    `<Feature>ViewModel`, `<Feature>ViewModelDelegate`, and
    `<Feature>ViewController` types; entry point is a single static factory
    returning a `UIViewController` when the feature is integrator-visible.
-4. Wiring: constructor injection only (delegate back-reference is the sole
-   post-init exception); async style (Swift concurrency where the module
-   already uses it, closures otherwise); fluent value-type builder for any
-   new SDK entry point.
-5. Localization: `LocalizableStringResource` enum, keys under
-   `<sdk>.<feature>.<screen>.<element>`, list the `Sources/<SDK>/Resources/`
-   locale `.strings` files that gain entries.
+4. Wiring: DI and builder pattern per `.claude/rules/mandatory-rules.md`
+   (gini-orchestrator-enforced); async style (Swift concurrency where the
+   module already uses it, closures otherwise).
+5. Localization: key convention and lookup chain per
+   `.claude/rules/mandatory-rules.md` (gini-orchestrator-enforced); list the
+   `Sources/<SDK>/Resources/` locale `.strings` files that gain entries.
 6. Quality gates: `make lint scheme=<Scheme>` clean per `AGENTS.md`
    (`GiniBankSDK` / `GiniCaptureSDK` at minimum for touched SDKs). Note
    the local-vs-CI destination drift: `make lint` runs on `iPhone 15 Pro /
@@ -185,4 +164,4 @@ modules actually touched:
    framework (Swift Testing for GiniInternalPaymentSDK / new suites in
    GiniBankAPILibrary and GiniCaptureSDK; XCTest for GiniBankSDK,
    GiniHealthSDK, GiniHealthAPILibrary). Multi-parameter formatting rule
-   from `CLAUDE.md`.
+   per `.claude/rules/mandatory-rules.md` (gini-orchestrator-enforced).
