@@ -12,6 +12,7 @@ private struct DueDateContent: InfoBottomSheetViewModel {
                                              dark: .GiniCapture.warning2).uiColor()
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.dueDateDescription
+    var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
 }
 
 private struct ScheduleContent: InfoBottomSheetViewModel {
@@ -20,6 +21,7 @@ private struct ScheduleContent: InfoBottomSheetViewModel {
                                              dark: .GiniCapture.warning2).uiColor()
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.scheduleDescription
+    var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
 }
 
 /**
@@ -128,6 +130,13 @@ extension PaymentHintBottomSheetViewController {
         static let scheduleProceedButtonComment = "Payment hint bottom sheet secondary CTA — Schedule Payment state (proceed with the pay-now flow)"
         static let scheduleProceedButton = NSLocalizedStringPreferredFormat(scheduleProceedButtonKey,
                                                                             comment: scheduleProceedButtonComment)
+    }
+
+    // MARK: - Colors
+    struct Colors {
+        static var imageBGColor: UIColor {
+            GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        }
     }
 }
 
