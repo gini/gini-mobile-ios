@@ -54,8 +54,7 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
         fatalError("init(coder:) has not been implemented")
     }
 
-    private static func makeViewModels(for state: PaymentHintState)
-        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+    private static func makeViewModels(for state: PaymentHintState) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
         switch state {
         case let .dueDate(formattedDueDate, onProceed, onCancel):
             return makeDueDateViewModels(formattedDueDate: formattedDueDate,
@@ -70,8 +69,7 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
 
     private static func makeDueDateViewModels(formattedDueDate: String,
                                               onProceed: @escaping () -> Void,
-                                              onCancel: @escaping () -> Void)
-        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+                                              onCancel: @escaping () -> Void) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
         let title = String(format: Strings.titleFormat, formattedDueDate)
         let content = DueDateContent(title: title)
         let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.dueDateProceedButton,
@@ -83,8 +81,7 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
 
     private static func makeScheduleViewModels(formattedDueDate: String,
                                                onSchedule: @escaping () -> Void,
-                                               onProceed: @escaping () -> Void)
-        -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
+                                               onProceed: @escaping () -> Void) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
         let title = String(format: Strings.titleFormat, formattedDueDate)
         let content = ScheduleContent(title: title)
         let primary = InfoBottomSheetButtonsViewModel.Button(title: Strings.scheduleButton,
