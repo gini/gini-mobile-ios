@@ -30,7 +30,7 @@ extension GiniConfigurationSharedStateSuite {
 
             // NOTE: Update this value whenever you add or remove a stored property.
             let propertyCount = mirror.children.count
-            let expectedCount = 67 // Current number of stored properties in GiniBankConfiguration
+            let expectedCount = 68 // Current number of stored properties in GiniBankConfiguration
             #expect(propertyCount == expectedCount,
                  "A new property was added to GiniBankConfiguration. Please update feature flag tests accordingly.")
         }
@@ -57,6 +57,7 @@ extension GiniConfigurationSharedStateSuite {
             #expect(configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true by default")
             #expect(configuration.savePhotosLocallyEnabled, "Expected savePhotosLocallyEnabled to be true by default")
             #expect(configuration.paymentDueHintEnabled, "Expected paymentDueHintEnabled to be true by default")
+            #expect(configuration.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true by default")
             #expect(configuration.paymentDueHintThresholdDays == 5, "Expected paymentDueHintThresholdDays to be 5 by default")
             #expect(configuration.creditNoteHintEnabled, "Expected creditNoteHintEnabled to be true by default")
             #expect(configuration.shouldShowSupportedFormatsScreen, "Expected shouldShowSupportedFormatsScreen to be true by default")
@@ -252,6 +253,19 @@ extension GiniConfigurationSharedStateSuite {
             configuration.paymentDueHintEnabled = true
             #expect(configuration.paymentDueHintEnabled,
                     "Expected paymentDueHintEnabled to be true after enabling")
+        }
+
+        @Test("Payment schedule hint can be enabled and disabled")
+        func paymentScheduleHintEnabled() {
+            let configuration = GiniBankConfiguration()
+
+            configuration.paymentScheduleHintEnabled = false
+            #expect(!configuration.paymentScheduleHintEnabled,
+                    "Expected paymentScheduleHintEnabled to be false after disabling")
+
+            configuration.paymentScheduleHintEnabled = true
+            #expect(configuration.paymentScheduleHintEnabled,
+                    "Expected paymentScheduleHintEnabled to be true after enabling")
         }
 
         @Test("Payment due hint threshold can be customized")
