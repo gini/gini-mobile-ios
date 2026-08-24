@@ -1,34 +1,23 @@
 //
 //  ButtonsView.swift
-//  
 //
-//  Created by Krzysztof Kryniecki on 21/11/2022.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
-
 class ButtonsView: UIView {
+
+    enum ButtonType {
+        case primary
+        case secondary
+    }
+
     private let giniConfiguration = GiniConfiguration.shared
     lazy var secondaryButton: MultilineTitleButton = configureStackViewButton(title: secondaryButtonTitle)
     lazy var primaryButton: MultilineTitleButton = configureStackViewButton(title: primaryButtonTitle)
 
-    private func configureStackViewButton(title: String) -> MultilineTitleButton {
-        let button = MultilineTitleButton()
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.accessibilityLabel = title
-
-        // Apply minimum height constraint
-        NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinimumHeight)
-        ])
-        return button
-    }
     private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
-        stackView.addArrangedSubview(primaryButton)
-        stackView.addArrangedSubview(secondaryButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
@@ -38,13 +27,27 @@ class ButtonsView: UIView {
 
     private let secondaryButtonTitle: String
     private let primaryButtonTitle: String
+    private let buttonOrder: [ButtonType]
 
-    init(secondaryButtonTitle: String, primaryButtonTitle: String) {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init(secondaryButtonTitle: String,
+         primaryButtonTitle: String,
+         buttonOrder: [ButtonType] = [.primary, .secondary]) {
         self.secondaryButtonTitle = secondaryButtonTitle
         self.primaryButtonTitle = primaryButtonTitle
+        self.buttonOrder = buttonOrder
         super.init(frame: CGRect.zero)
+        setupView()
+    }
+
+    private func setupView() {
         addSubview(buttonsView)
         configureButtons()
+        arrangeButtons()
+
         NSLayoutConstraint.activate([
             buttonsView.leadingAnchor.constraint(equalTo: leadingAnchor),
             buttonsView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -53,6 +56,17 @@ class ButtonsView: UIView {
         ])
 
         updateStackViewAxis()
+    }
+
+    private func arrangeButtons() {
+        buttonOrder.forEach { buttonType in
+            switch buttonType {
+            case .primary:
+                buttonsView.addArrangedSubview(primaryButton)
+            case .secondary:
+                buttonsView.addArrangedSubview(secondaryButton)
+            }
+        }
     }
 
     private func updateStackViewAxis() {
@@ -64,13 +78,22 @@ class ButtonsView: UIView {
         secondaryButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
     }
 
+    private func configureStackViewButton(title: String) -> MultilineTitleButton {
+        let button = MultilineTitleButton()
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityLabel = title
+
+        NSLayoutConstraint.activate([
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinimumHeight)
+        ])
+        return button
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateStackViewAxis()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

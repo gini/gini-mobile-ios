@@ -86,7 +86,7 @@ final class SettingsViewModel {
         credentialsSection.items.append(.segmentedOption(data: CredentialsSetSegmentedOptionModel(selectedIndex: selectedCredentialsSetIndex)))
 
         // Credentials input fields
-        let currentCredentials = CredentialsSet.credentials(for: selectedCredentialsSetIndex)
+        let currentCredentials = credentialsForSelectedSet()
         credentialsSection.items.append(.credentials(data: .init(clientId: currentCredentials.clientId,
                                                                  secretId: currentCredentials.clientSecret)))
 
@@ -117,6 +117,15 @@ final class SettingsViewModel {
 
         setupContentData()
         delegate?.contentDataUpdated()
+    }
+
+    /**
+     Returns the credentials matching the selected credentials set and the
+     current API environment (set A resolves to its staging variant on stage).
+     */
+    func credentialsForSelectedSet() -> (clientId: String, clientSecret: String) {
+        return CredentialsSet.credentials(for: selectedCredentialsSetIndex,
+                                          environment: currentAPIEnvironment)
     }
 
     private func setupSDKTypeSection(enablePinningSDK: Bool) -> SettingsSection {
@@ -193,6 +202,8 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.savePhotosLocallyEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentDueHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentDueHintEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .creditNoteHintEnabled,
+                                                                     isSwitchOn: giniConfiguration.creditNoteHintEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentScheduleHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentScheduleHintEnabled)))
         return featureTogglesSection
@@ -363,6 +374,8 @@ final class SettingsViewModel {
             giniConfiguration.alreadyPaidHintEnabled = data.isSwitchOn
         case .paymentDueHintEnabled:
             giniConfiguration.paymentDueHintEnabled = data.isSwitchOn
+        case .creditNoteHintEnabled:
+            giniConfiguration.creditNoteHintEnabled = data.isSwitchOn
         case .paymentScheduleHintEnabled:
             giniConfiguration.paymentScheduleHintEnabled = data.isSwitchOn
         case .savePhotosLocallyEnabled:

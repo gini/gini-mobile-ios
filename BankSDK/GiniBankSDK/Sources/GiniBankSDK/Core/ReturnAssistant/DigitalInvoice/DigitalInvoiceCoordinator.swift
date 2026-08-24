@@ -5,6 +5,7 @@
 //
 
 import GiniCaptureSDK
+import GiniUtilites
 import UIKit
 
 protocol DigitalInvoiceCoordinatorDelegate: AnyObject {
@@ -33,7 +34,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
         return digitalInvoiceViewController
     }
 
-    private var navigationController: UINavigationController
+    internal var navigationController: UINavigationController
 
     func start() {
         navigationController.pushViewController(rootViewController, animated: true)
@@ -110,8 +111,12 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
         let viewModel = EditLineItemViewModel(lineItem: lineItem, index: lineItemViewModel.index)
         viewModel.delegate = self
         let viewController = EditLineItemViewController(lineItemViewModel: viewModel)
-        viewController.modalPresentationStyle = .overCurrentContext
-        navigationController.present(viewController, animated: true)
+        viewController.isModalInPresentation = true
+
+        viewController.onDismiss = { [weak self] in
+            self?.restoreAccessibilityAfterBottomSheetDismissal()
+        }
+        viewController.presentAsBottomSheet(from: navigationController)
     }
 }
 
@@ -143,6 +148,12 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
         navigationController.dismiss(animated: true) { [weak self] in
             self?.digitalInvoiceViewController?.sendAnalyticsScreenShown()
         }
+    }
+}
+
+extension DigitalInvoiceCoordinator: GiniBottomSheetAccessibilityRestorable {
+    var presenterViewController: UIViewController {
+        navigationController
     }
 }
 

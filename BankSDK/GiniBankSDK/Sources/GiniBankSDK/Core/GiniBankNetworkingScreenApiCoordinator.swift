@@ -373,7 +373,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             if !document.isReviewable {
                 uploadAndStartAnalysisWithReturnAssistant(document: document,
                                                           networkDelegate: networkDelegate,
-                                                          uploadDidFail: {
+                                                          uploadDidFail:{
                     self.didCapture(document: document, networkDelegate: networkDelegate)
                 })
             } else if giniConfiguration.multipageEnabled {
@@ -544,7 +544,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
-        // Step:  Check document status for multiple states
+        /// Check document status for 'Credit Note'
+        if shouldProceedWithCreditNote(extractionResult) {
+            presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
+                guard let self else { return }
+                self.presentTransactionDocsAlert(extractionResult: self.creditNoteDeliveryResult(from: extractionResult),
+                                                 delegate: delegate)
+            }
+            return
+        }
+
+        /// Check document status for other states if the document is not a 'Credit Note'
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
@@ -561,6 +571,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handleSavingPhotos(for: extractionResult)
             continueWithFeatureFlow()
         }
+    }
+
+    private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled()
     }
 
     private func handlePaidCase(_ extractionResult: ExtractionResult,
@@ -686,8 +700,16 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
         guard !isCrossBorderPayment() else { return false }
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientPaymentHintsEnabled = clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
+    }
+
+    func determineIfCreditNoteHintEnabled() -> Bool {
+        let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientCreditNoteHintEnabled = clientConfiguration?.creditNoteHintEnabled ?? false
+        return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
     }
 
     /**
@@ -841,11 +863,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      - Returns: The `PaymentStatus` parsed from the `paymentState` extraction, or `nil` if absent.
      */
     func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
-        guard let paymentState = extractionResult.extractions
+        let paymentStateValue = extractionResult.extractions
             .first(where: { $0.name == "paymentState" })?
-            .value else {
-            return nil
-        }
+            .value
+
+        guard let paymentState = paymentStateValue else { return nil }
+
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
@@ -867,6 +890,20 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return Date.date(from: dueDate)
     }
 
+    /// Returns true if the document is marked as a Credit Note
+    func isDocumentMarkedAsCreditNote(from extractionResult: ExtractionResult) -> Bool {
+        /// Try to get the business document type from extractions
+        let businessDocTypeValue = extractionResult.extractions
+            .first(where: { $0.name == "businessDocType" })?
+            .value
+
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else {
+            return false
+        }
+
+        return businessDocType.lowercased() == "creditnote"
+    }
+
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
         !isCrossBorderPayment() &&
         giniBankConfiguration.returnAssistantEnabled &&
@@ -877,6 +914,38 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         !isCrossBorderPayment() &&
         giniBankConfiguration.skontoEnabled &&
         !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func excludingAmountToPay(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let filteredExtractions = extractionResult.extractions.filter { $0.name != "amountToPay" }
+        return ExtractionResult(extractions: filteredExtractions,
+                                lineItems: extractionResult.lineItems,
+                                returnReasons: extractionResult.returnReasons,
+                                skontoDiscounts: extractionResult.skontoDiscounts,
+                                candidates: extractionResult.candidates)
+    }
+
+    /**
+     Returns a copy of the extraction result with the compound extractions
+     (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
+     */
+    func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
+        return ExtractionResult(extractions: extractionResult.extractions,
+                                lineItems: nil,
+                                returnReasons: nil,
+                                skontoDiscounts: nil,
+                                candidates: extractionResult.candidates)
+    }
+
+    /**
+     Builds the extraction result delivered for a confirmed credit-note document:
+     compound extractions (`lineItems`, `skontoDiscounts`, `returnReasons`) are stripped so
+     the Return Assistant and Skonto flows are never triggered, and `amountToPay` is removed
+     so the host app does not pre-fill a payment amount for a credit note.
+     */
+    func creditNoteDeliveryResult(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let strippedResult = excludingCompoundExtractions(from: extractionResult)
+        return excludingAmountToPay(from: strippedResult)
     }
 
     /**
@@ -1109,6 +1178,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
                                                         onProceedTapped: @escaping () -> Void) {
         let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    private func presentDocumentMarkedAsCreditNoteBottomSheet(_ extractionResult: ExtractionResult,
+                                                              onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = CreditNoteWarningViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true) {
                 self?.didCancelCapturing()
             }

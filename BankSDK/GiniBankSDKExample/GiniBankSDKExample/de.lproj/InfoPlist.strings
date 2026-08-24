@@ -14,4 +14,4 @@
 
 /* iOS photo library permissions */
 
- "NSPhotoLibraryAddUsageDescription" = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos.";
+ "NSPhotoLibraryAddUsageDescription" = "Wir speichern Rechnungsfotos in Ihrer Fotos app, damit Sie später darauf zugreifen können.";
