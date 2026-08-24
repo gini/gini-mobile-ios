@@ -65,6 +65,7 @@ final class RecordingCaptureResultsDelegate: GiniCaptureResultsDelegate {
     private(set) var deliveredResults: [AnalysisResult] = []
     private(set) var cancelCallCount = 0
     private(set) var enterManuallyCallCount = 0
+    private(set) var schedulePaymentResults: [AnalysisResult] = []
 
     /// Invoked synchronously whenever a result is delivered.
     var onResult: ((AnalysisResult) -> Void)?
@@ -80,6 +81,10 @@ final class RecordingCaptureResultsDelegate: GiniCaptureResultsDelegate {
 
     func giniCaptureDidEnterManually() {
         enterManuallyCallCount += 1
+    }
+
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        schedulePaymentResults.append(result)
     }
 }
 
