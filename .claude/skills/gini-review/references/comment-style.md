@@ -1,8 +1,11 @@
 <!--
-  MIRRORED FILE — must stay byte-identical to
-  .claude/skills/gini-review/references/comment-style.md in gini-mobile-ios.
-  Change it in one repo and open a paired PR in the other; CI
-  (shared-skills.check.yml) fails when the copies diverge.
+  SHARED FILE — platform-neutral by design. Meant to stay byte-identical to
+  .claude/skills/gini-review/references/comment-style.md in gini-mobile-android.
+  Change it in one repo and open a paired PR in the other.
+  Anything naming a language, linter, framework or module belongs in
+  ../platform.md, never here.
+  Mirror enforcement status and the current path divergence between the two
+  repos: general-rules.md §"How the two copies are kept in sync".
 -->
 
 # Comment format
@@ -37,8 +40,10 @@ finding is real → `../SKILL.md` §4
 
 ## The three categories
 
-Every comment posted to a PR opens with exactly one of these, in square brackets. This is the house
-style human reviewers already use here, and it is the first thing the author reads:
+Every comment posted to a PR opens with exactly one of these, in square brackets. It is the first thing
+the author reads, and it is the convention for every comment this skill posts. Whether human reviewers on
+a given repo already use the prefixes varies, so do not present it to an author as a rule they were
+already breaking:
 
 | Prefix | Means | The author should |
 |---|---|---|
@@ -75,8 +80,8 @@ loses exactly the reasoning it spent its length on.
 1. **Fuse fact and consequence into one sentence.** "X happens, so Y breaks" is one sentence doing two
    jobs. This alone usually gets you inside the cap.
 2. **Cut the mechanism to its result.** The author does not need the derivation, only enough to check
-   your work. "Unloading removes the definition rather than restoring it" replaces a paragraph about
-   how the registry is keyed.
+   your work. "Teardown removes the registration rather than restoring it" replaces a paragraph about
+   how the container is keyed.
 3. **Drop the corroboration.** A second piece of evidence for a claim the author can verify in ten
    seconds is padding. One is enough.
 4. **Drop the alternatives.** Give the fix you would take. Offering a second option is idiomatic only
@@ -86,20 +91,20 @@ loses exactly the reasoning it spent its length on.
 
 Worked example — the same finding, over budget and inside it:
 
-> **730 characters.** The `@After` hook unloads the test module, but the container's unload operation is
-> implemented as a removal keyed by definition index rather than as a restore of the previously
-> registered factory, which means the production singleton that the test module overrode is deleted from
-> the shared container instead of being reinstated, and because that container is a process-wide object
-> shared by every test class in the same process, any later test class that resolves that type will fail
-> with a resolution error depending on the order the test classes happen to run in, which is exactly the
-> order-dependence the hook was added to prevent. Consider either reloading the production module
-> afterwards, or re-declaring the singleton, or restructuring the test so it does not need to override
-> the container at all.
+> **832 characters.** The teardown step removes the test's overriding registration from the shared
+> container, but the container's remove operation is implemented as a deletion keyed by registration
+> order rather than as a restore of the factory that was registered before it, which means the
+> production instance the test overrode is dropped from the container instead of being reinstated, and
+> because that container is a process-wide object shared by every test case in the same process, any
+> later test that resolves that type fails with a resolution error depending on the order the test cases
+> happen to run in, which is exactly the order-dependence the teardown was added to prevent. Consider
+> either registering the production instance again afterwards, or re-declaring it, or restructuring the
+> test so it does not need to override the container at all.
 
-> **340 characters.** `[Request]` Unloading only removes the overriding definition — it does not restore
-> the production singleton, so the shared container is left without one for the rest of the process and a
-> later test that resolves it fails depending on class order. Reload the production module after
-> unloading.
+> **311 characters.** `[Request]` Teardown only removes the overriding registration — it does not restore
+> the production instance, so the shared container is left without one for the rest of the process and a
+> later test that resolves it fails depending on case order. Register the production instance again after
+> removing the override.
 
 Same finding, same actionability. The second one gets read.
 
@@ -118,11 +123,13 @@ The structure, every time:
 3. **Give a concrete fix.** Name the API, file, or pattern. For a `[Clarification]`, this is the
    question instead — one question, answerable in a sentence.
 
-Three comments in this shape, as a calibration target:
+Three comments in this shape, as a calibration target. They are deliberately language-neutral — this
+file is shared across repositories, so anything that names a language, a linter or a framework belongs in
+that repo's `platform.md`, not here:
 
-> `[Request]` The snippet under "Self-managed authentication" uses Kotlin syntax (`val`, lambda), but the
-> code block is marked as `java`, which leads to misleading syntax highlighting and copy/paste for
-> readers. Either switch the directive to `kotlin` or rewrite the snippet in Java syntax.
+> `[Request]` `configure()` assigns `baseURL` after the request queue has already started, so the first
+> call goes to the default host instead of the configured one. Assign it before the queue starts, or hold
+> requests until configuration completes.
 
 > `[Suggestion]` `formatIban()` here duplicates the helper in `IbanUtils`, which already handles the
 > spacing and the empty case. Calling it instead drops ~20 lines and keeps one definition of the format.
@@ -214,11 +221,11 @@ Framing, because it decides whether an improvement gets adopted:
 For mechanical changes, attach a suggestion block so the author gets one-click apply:
 
 ````markdown
-[Request] The code block is marked `java` but the snippet is Kotlin, which gives readers wrong
-highlighting. Switch the directive to `kotlin`.
+[Request] The link to the setup page points at `/docs/integration`, which has returned 404 since that
+page moved, so the guide's first step dead-ends. Point it at `/docs/getting-started`.
 
 ```suggestion
-.. code-block:: kotlin
+[setup guide](/docs/getting-started)
 ```
 ````
 

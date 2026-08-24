@@ -1,11 +1,17 @@
 # gini-review platform conventions — iOS (gini-mobile-ios)
 
 <!--
-  NOT MIRRORED — this file is iOS-specific by design. The Android repo has its
-  own platform.md with the same nine section headings but Android content. If
-  you add a section here that the shared engine depends on, add the matching
-  section to the Android platform.md too. Nothing in here belongs in SKILL.md
-  or references/, which stay byte-identical across both repos.
+  NOT SHARED — this file is iOS-specific by design, and it is the only file in
+  this skill that may differ between the two repos.
+  The Android repo does NOT have a matching platform.md yet: its gini-review
+  still carries the older layout, with the local rules split across
+  references/android-checklist.md and references/android-api-surface.md, and a
+  nested pr-review/ copy of the shared files. Converging it is pending work.
+  So if you add a section here that the shared engine depends on, make sure the
+  Android side covers it too — in whichever file plays this role there.
+  Nothing in here belongs in SKILL.md or references/ — those are the shared,
+  platform-neutral part. See references/general-rules.md for the contract they
+  follow and for how the copies are kept in sync.
 -->
 
 **Platform layer for `/gini-review`** — read at **§0** of `SKILL.md`, applied at **§3**, on every
@@ -36,8 +42,13 @@ approximate and as-of-writing: re-check it against the tree rather than citing i
 **Where those instructions have drifted from the code.** Cite them anyway — they are what the team agreed
 — but know the gaps, so a finding doesn't collapse under one reply from the author:
 
-- `CLAUDE.md` mandates the `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` colour namespaces, but a newer
-  `GiniColorScheme` family has reached ~25 files without the doc being updated. See §5.
+- `CLAUDE.md` mandates the `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` colour namespaces, but the
+  newer `GiniColorScheme` — declared in `GiniUtilites`
+  (`GiniComponents/Utilities/GiniUtilites/…/Color/GiniColorScheme.swift`) and reached through a per-SDK
+  factory on `UIColor`, today only `giniBankColorScheme()`, as
+  `.giniBankColorScheme().text.primary.uiColor()` — is already in real use across the Bank SDK.
+  `.claude/rules/mandatory-rules.md` §"Design system" now prefers it where a matching token exists, while
+  `CLAUDE.md` still has not been updated. See §5.
 - `CLAUDE.md` says new tests MUST use Swift Testing, while XCTest is still the majority by file count.
   See §6.
 - `CLAUDE.md` describes test fixtures as JSON; several modules ship `.pdf`, `.jpg`, `.txt` and `.png`
@@ -56,12 +67,17 @@ leaks by accident here. That flips what review is for: every `public` or `open` 
 deliberate decision, so review it as one rather than hunting for accidents.
 
 - Visibility ladder: `open` > `public` > `package` > `internal` (default) > `fileprivate` > `private`.
-- **All seven modules ship to a public release repo** — there is no internal-only module:
-  `GiniBankSDK` → `gini/bank-sdk-ios`, `GiniCaptureSDK` → `gini/capture-sdk-ios`, `GiniHealthSDK` →
-  `gini/health-sdk-ios`, `GiniBankAPILibrary` → `gini/bank-api-library-ios`, `GiniHealthAPILibrary` →
-  `gini/health-api-library-ios`, `GiniUtilites` → `gini/utilites-ios`, and — **despite the name** —
-  `GiniInternalPaymentSDK` → `gini/internal-payment-sdk-ios`. Treat a new `public` symbol in
-  `GiniInternalPaymentSDK` as published API, not as internal shared code.
+- **All seven modules ship to a release repo, but only five of those are customer-facing API.**
+  Customer-facing: `GiniBankSDK` → `gini/bank-sdk-ios`, `GiniCaptureSDK` → `gini/capture-sdk-ios`,
+  `GiniHealthSDK` → `gini/health-sdk-ios`, `GiniBankAPILibrary` → `gini/bank-api-library-ios`,
+  `GiniHealthAPILibrary` → `gini/health-api-library-ios`.
+- **`GiniUtilites` → `gini/utilites-ios` and `GiniInternalPaymentSDK` → `gini/internal-payment-sdk-ios`
+  are internal packages.** They have public release repos only because SPM needs a resolvable URL for
+  the customer-facing SDKs to depend on — `gini/utilites-ios` describes itself as "Release repo for
+  internal package". So **treat their `public` surface as internal shared code**: a new or widened
+  `public` symbol there is not a customer-facing API decision, and needing one is not by itself a
+  finding. What still is a finding: a symbol from either module re-exported through a customer-facing
+  SDK's public surface, since that is the point it becomes a published contract.
 - `@testable import` reaches `internal`, so **a test never justifies making something `public`.** A
   diff that widens visibility "for testing" is a finding.
 - Once a `<Package>;<version>` tag ships, that symbol is in a public release repo
@@ -72,8 +88,8 @@ deliberate decision, so review it as one rather than hunting for accidents.
 
 ## 2. Dependencies and manifests
 
-Two manifests per module, and **keeping them in step is the highest-value mechanical check in this
-repo**:
+Two manifests per module — **except `GiniBankAPILibrary`, which has only `Package.swift`** — and
+**keeping the pair in step is the highest-value mechanical check in this repo**:
 
 | File | Role |
 |---|---|
@@ -83,12 +99,16 @@ repo**:
 - **A dependency or target added to `Package.swift` without the matching edit to
   `Package-release.swift` breaks the release build — and no PR check catches it.** `*.check.yml` only
   runs `swift package update` against the local manifest. If the diff touches one manifest and not the
-  other, say so and name the missing edit.
+  other, say so and name the missing edit. Confirm the module actually has a release manifest first
+  (`ls <SDK>/Package-release.swift`) — asking for an edit to a file that does not exist is a false
+  positive.
 - A **new third-party dependency** in an SDK target is a design question, not a detail: it propagates
   to every integrator and must resolve inside the XCFramework graph, which has no transitive
   resolution (see the comment in `BankSDK/GiniBankSDK/Package.swift`). Raise it under Design.
-- `platforms: [.iOS(.v15)]` — iOS 15 minimum, **iOS 17 for GiniHealthSDK and GiniHealthAPILibrary**. An
-  iOS-16+ API used without `if #available` in an iOS-15 module is a correctness defect, not a nit.
+- `platforms:` — iOS 15 (`.iOS(.v15)`) for GiniBankAPILibrary, GiniBankSDK, GiniCaptureSDK and
+  GiniUtilites; **iOS 17 (`.iOS("17.0")`) for GiniHealthAPILibrary, GiniHealthSDK and
+  GiniInternalPaymentSDK**. An iOS-16+ API used without `if #available` in an iOS-15 module is a
+  correctness defect, not a nit — so check the module's own manifest before raising or dismissing one.
 - `swift-tools-version:5.5`. Strict concurrency checking is **not** on; don't cite Swift 6 isolation
   rules as if the compiler enforced them here.
 - `*.xcodeproj/project.pbxproj` is tracked (everything else under `*.xcodeproj/` is gitignored).
@@ -144,8 +164,15 @@ not.
 
 ## 5. Architecture and style
 
-`CLAUDE.md` §"MyApp Standards" states these as **MUST**s, which makes them the strongest citations
-available in this repo. Quote the line.
+**`.claude/rules/mandatory-rules.md` is the merged source for this section** — architecture, design
+system, the CaptureSDK layout DSL, localization, formatting, documentation, accessibility and testing in
+one file, derived from `CLAUDE.md` §"MyApp Standards" and `AGENTS.md`, with those two winning on any
+drift. Read it first. Cite `CLAUDE.md`/`AGENTS.md` alongside it wherever the rule is written there as a
+**MUST**, since that is the strongest citation available in this repo — quote the line.
+
+The list below is a reviewer's index into that file, not a second source: it records which of those rules
+get broken often and how hard each one is to defend. Where the two disagree, `mandatory-rules.md` has been
+updated and this has not.
 
 - **MVVM + Coordinator.** Every feature gets its own `*Coordinator`. **The SDK entry point is always a
   single static factory returning a `UIViewController`** — a new public initialiser used as an entry
@@ -168,17 +195,20 @@ available in this repo. Quote the line.
   added without going through the typed enum silently breaks an integrator's override. When a diff adds a
   key, check it exists in the `Resources/*.strings` files the module already ships, not just the German
   default.
-- **Colours — cite `CLAUDE.md`, and know that the code has drifted from it.** `CLAUDE.md` §"Design
-  System" says colours **MUST** be accessed via the `UIColor.GiniBank.*` / `UIColor.GiniCapture.*`
-  namespaces, with dark mode via `GiniColor(light:dark:)`, fonts via `textStyleFonts[textStyle]` with
-  Dynamic Type, and spacing in a local `enum Constants` (no magic numbers). In the code,
-  `GiniColor(light:dark:)` is widespread (~76 files) and the namespaces are alive (~29 files), but a
-  newer `GiniColorScheme` family in
-  `GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/Color/GiniColorScheme.swift` has reached
-  ~25 files without `CLAUDE.md` blessing it. Practical rule: **match the file you are in**; you can cite
-  `CLAUDE.md` against a raw `UIColor(...)` or a hard-coded hex, but do not demand a migration in either
-  direction — the convention is genuinely unsettled and a PR is the wrong place to settle it. Flag the
-  drift under **Needs a human** if the diff makes it worse.
+- **Colours — the two docs disagree, so know which one you are quoting.** `CLAUDE.md` §"Design System"
+  says colours **MUST** go through the `UIColor.GiniBank.*` / `UIColor.GiniCapture.*` namespaces.
+  `.claude/rules/mandatory-rules.md` §"Design system" is newer and states the order: prefer the shared
+  semantic tokens in `GiniColorScheme` (declared in `GiniUtilites`) via the SDK's scheme factory —
+  `UIColor.giniBankColorScheme()`, used as `.giniBankColorScheme().text.primary.uiColor()`, the only
+  factory that exists today — and fall back to the per-SDK namespace with `GiniColor(light:dark:)` when no
+  matching token exists. All three coexist in the code — `GiniColor(light:dark:)` is the most widespread,
+  the per-SDK namespaces are still in wide use, and the scheme is the newest and smallest. Counting them
+  is a one-liner, so re-run it instead of quoting a number that has already drifted once:
+  `grep -rl --include="*.swift" --exclude-dir=.build "<pattern>" . | wc -l`. Practical rule: **match the
+  file you are in**; both
+  docs agree a raw `UIColor(...)` or a hard-coded hex is a finding, and dark mode is required either way,
+  but do not demand a migration in either direction — a PR is the wrong place to settle it. Flag the drift
+  under **Needs a human** if the diff makes it worse.
 - **UIKit vs SwiftUI is a carve-out, not a preference.** UIKit is the pattern in GiniBankSDK,
   GiniCaptureSDK screens and GiniHealthSDK view controllers. SwiftUI is the norm in
   GiniInternalPaymentSDK and `GiniUtilites/SwiftUI/`. Don't ask for a UIKit screen to be rewritten in
@@ -226,7 +256,11 @@ UI test; ask for a manual verification note under **Needs a human** instead.
 
 ## 7. Commit hygiene
 
-`.git-stuff/commit-msg-template.txt` is the source of truth — read it rather than trusting a list.
+**Two existing sources, both citable — read them rather than trusting a list.**
+`.github/instructions/commit-message-guideline.instructions.md` is the written guideline (format, the
+module names in use, subject and body rules, the ticket-id rule), and it defers explicitly to
+`.git-stuff/commit-msg-template.txt` as the **single source of truth for the allowed `<type>` values** and
+what each one covers. Quote the guideline for shape, the template for types.
 
 ```
 <type>(<project>): <subject>
@@ -236,11 +270,14 @@ UI test; ask for a manual verification note under **Needs a human** instead.
 <ticket-id>
 ```
 
-- Types: `feat`, `fix`, `refactor`, `ci`, and **`ai`** — the last one covers Claude Code skills, agents
-  and commands, i.e. anything under `.claude/` or `.github/instructions/`.
-- `<project>` is the module name (`GiniBankSDK`); omit the parentheses entirely for multi-module changes.
-- `<subject>` imperative, no trailing period. Ticket id alone on the **last** line — the key formats in
-  use are `PP-`, `HEAL-`, `XPL-` and `FEAT-` followed by digits.
+- Read the allowed `<type>` values off the template on the day you review — the set has grown before.
+  The one worth knowing is **`ai`**, which covers AI tooling and assets: Claude Code skills, agents,
+  commands and their markdown, i.e. anything under `.claude/` or `.github/instructions/`.
+- `<project>` is the module name (`GiniBankSDK`); omit the parentheses entirely for multi-module changes
+  or when no single module is affected. The guideline lists the names in use — use one of those spellings.
+- `<subject>` imperative mood, no trailing period. `<body>` says what changed and why, never how.
+- Ticket id alone on the **last** line. Take the key off the branch or PR rather than assuming a board;
+  `PP-` and `HEAL-` are what appear in practice, but the key is whatever the ticket is.
 - The PR title becomes the merge-commit subject, so hold it to the same standard.
 - **`AGENTS.md` mandates the PR body follow `.github/pull_request_template.md`** — Pull Request
   Description with the ticket, plus Notes for Reviewers covering how it was verified, devices and iOS
@@ -305,6 +342,11 @@ UI test; ask for a manual verification note under **Needs a human** instead.
 `GiniInternalPaymentSDK`. **Skip entirely for:** example apps, `*Tests/`, `*UITests/`, `.github/`,
 `scripts/`, `Documentation/`, `.claude/`, `Makefile`, `fastlane/`.
 
+**The bar is not the same for all seven.** Per §1, `GiniUtilites` and `GiniInternalPaymentSDK` are
+internal packages: the checks below apply to them as *internal* blast radius across both SDK chains, not
+as a contract with integrators. Reserve the breaking-change language for the five customer-facing
+modules, or for an internal symbol the diff re-exports through one of them.
+
 Every version, symbol and declaration shown below is a **format placeholder** — take the actual values
 from the diff, and re-run the greps rather than trusting a count or a line number quoted here.
 
@@ -363,9 +405,16 @@ context before reporting anything.
 **Scope rule: only declarations this PR added or modified are in scope.** A pre-existing `public` symbol
 the diff merely moved past is not a finding.
 
-Current baseline facts, so you can recognise a departure from the norm: `open` appears 3 times in the
-whole repo, and there is **no `@_spi`, no `package` access level, and no `@frozen`** anywhere. A diff
-introducing any of those is doing something unusual and deserves a question.
+Current baseline facts, so you can recognise a departure from the norm. `open` is used in **five
+declarations** across the shipping sources — the classes `GiniScreenAPICoordinator`,
+`GiniBankNetworkingScreenApiCoordinator` and `BottomSheetViewController`, plus two `open override func`s
+inside `BottomSheetViewController`. Grepping for `open` also hits the `open url:` argument label in
+`GiniBankUtils.swift`, which is not a declaration — count declarations, not matches, and re-count before
+citing the number. There is **no `@_spi`, no `package` access level, and no `@frozen`** anywhere.
+
+Per the scope rule above, only an `open` this diff adds or changes is reviewable; a pre-existing one is
+not a finding. A diff that introduces a new `open`, `@_spi`, `package` or `@frozen` is doing something
+unusual and deserves a question.
 
 ### Both distribution modes recompile against you
 
@@ -417,7 +466,8 @@ non-frozen public struct, widening a return type's optionality to non-optional, 
    API, and it is what Jazzy publishes to integrators. An undocumented new public symbol is a legitimate
    finding with a citable rule behind it.
 5. **Is `GiniUtilites` the right home?** It is the one module both SDK chains depend on, so anything
-   public there is public everywhere. Raise the blast radius explicitly.
+   public there reaches every SDK. That blast radius is internal, not customer-facing (§1) — raise it
+   explicitly, but as a design and maintenance cost, not as a published-API decision.
 
 ### Deprecation
 
@@ -465,4 +515,4 @@ check by hand.
 |---|---|
 | **Concurrency** | Mixed model: `async`/`await` and `Task` in newer code, completion handlers still dominant in the API libraries. Look for `Task` not cancelled on teardown, UI mutated off the main thread (missing `@MainActor` or `DispatchQueue.main.async`), escaping closures capturing `self` strongly, and shared mutable state touched from two queues. Swift 5.5 tools version — **no strict concurrency checking**, so the compiler will not catch isolation bugs. |
 | **Lifecycle** | `deinit` / `viewWillDisappear` teardown, Coordinator↔ViewController retain cycles, delegates that must be `weak`, and `NotificationCenter` observers never removed. Note that **`class_delegate_protocol` and `notification_center_detachment` are both disabled in SwiftLint** — nothing but review catches these two leak classes. Also: state lost across scene changes, and `UISheetPresentationController` detents behaving differently pre-iOS 15. |
-| **Documentation** | **Jazzy** is what integrators read — `<SDK>/.jazzy.yaml`, built by `bundle exec fastlane build_docs`. Every SDK's landing page is `Documentation/{s,S}ections/Documentation.md` (the `readme:` in its `.jazzy.yaml`; note BankSDK and CaptureSDK differ in the directory's capitalisation). The longer markdown guides — *Getting started*, *Installation*, *Migration guide* — live in `Documentation/source/`, which exists **only for GiniBankAPILibrary, GiniHealthAPILibrary and GiniHealthSDK**. GiniBankSDK and GiniCaptureSDK have no `source/`, so their landing page is the only doc surface. A public API change without the matching doc update is a legitimate finding — name the file that actually exists for that module. There is no Sphinx here. |
+| **Documentation** | **Jazzy** is what integrators read — `<SDK>/.jazzy.yaml`, built by `bundle exec fastlane build_docs`. Every SDK's landing page is `Documentation/{s,S}ections/Documentation.md` (the `readme:` in its `.jazzy.yaml`; **CaptureSDK is the only module that capitalises it as `Sections`** — every other module uses lowercase `sections`, so glob rather than hardcoding either spelling). The longer markdown guides — *Getting started*, *Installation*, *Migration guide* — live in `Documentation/source/`, which exists **only for GiniBankAPILibrary, GiniHealthAPILibrary and GiniHealthSDK**. GiniBankSDK and GiniCaptureSDK have no `source/`, so their landing page is the only doc surface. A public API change without the matching doc update is a legitimate finding — name the file that actually exists for that module. There is no Sphinx here. |

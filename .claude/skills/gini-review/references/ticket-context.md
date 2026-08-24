@@ -1,8 +1,11 @@
 <!--
-  MIRRORED FILE — must stay byte-identical to
-  .claude/skills/gini-review/references/ticket-context.md in gini-mobile-ios.
-  Change it in one repo and open a paired PR in the other; CI
-  (shared-skills.check.yml) fails when the copies diverge.
+  SHARED FILE — platform-neutral by design. Meant to stay byte-identical to
+  .claude/skills/gini-review/references/ticket-context.md in gini-mobile-android.
+  Change it in one repo and open a paired PR in the other.
+  Anything naming a language, linter, framework or module belongs in
+  ../platform.md, never here.
+  Mirror enforcement status and the current path divergence between the two
+  repos: general-rules.md §"How the two copies are kept in sync".
 -->
 
 # Reading the ticket and its links
@@ -47,9 +50,11 @@ Site is **`ginis.atlassian.net`** (note the trailing `s` — `gini.atlassian.net
   Atlassian client discovers it the same way. Looking it up also keeps this file correct if the site is
   ever migrated.
 - `issueIdOrKey`: the key from the branch name — the **first match of `[A-Z]{2,5}-[0-9]+` anywhere in
-  the name**, not anchored at the start. Branches are usually `<TICKET>-<kebab-description>`, but the
-  key can sit under a segment (`backup/PP-1234-…`, `feature/FEAT-001-…`), and an anchored pattern
-  silently misses those. The PR title and commit trailer carry the same key if the branch does not.
+  the name**, not anchored at the start. Many branches are just `<TICKET>-<kebab-description>`, but the
+  key can also sit under a path segment (`<segment>/<TICKET>-…`), and an anchored pattern silently
+  misses those. **Which segments are in use differs per repo, so do not match against a list of them** —
+  match on start-or-slash and let any segment through. The PR title and commit trailer carry the same
+  key if the branch does not.
 - `responseContentFormat`: `markdown`
 - `fields`: `["summary","description","status","issuetype","priority","labels","components","comment","issuelinks","parent","fixVersions","attachment"]`
 
@@ -98,7 +103,7 @@ against them — that is circular and produces confident nonsense.
 | `labels` | Platform labels (`Android`, `iOS`, `mobile`, `backend`). A ticket labelled for a different platform than the repo under review is worth asking about. |
 | `parent` | The epic. Often carries design intent the ticket itself omits. Fetch it when the ticket's own description assumes context. |
 | `components` | Which SDK the ticket concerns. Compare against which modules the PR actually touches. |
-| `fixVersions` | Ties to release planning; a per-platform "Unknown Fix Version" placeholder means unscheduled. |
+| `fixVersions` | Ties to release planning. Version names are per platform, so check the one that matches the repo under review; a placeholder version rather than a real one means unscheduled. |
 | `status` | A ticket still in **In Progress** with a PR up is normal; **Done** with an open PR is worth questioning. |
 | `attachment` | Screenshots and screen recordings for UI bugs. Often the only statement of correct appearance. |
 
@@ -150,15 +155,16 @@ Triage them, because what is attached tells you a lot even unread:
   appearance. If the review turns on visual behaviour, **stop and ask the user to paste the image
   into the conversation**, naming the specific file. Do not quietly file it under "not checked" when
   it is the crux of the ticket.
-- **Config or resource files** (theme and colour resources, logs, `.har`) — frequently the actual
-  evidence. A light-mode and a dark-mode resource file attached to a "section turns to black" bug point
-  straight at a colour definition, and that reshapes where you look in the diff. Ask for these too;
-  they are small and quotable.
+- **Config or resource files** (whatever this platform declares themes, colours and strings in, plus
+  logs and `.har` captures) — frequently the actual evidence. A light-mode and a dark-mode resource file
+  attached to a "section turns to black" bug point straight at a colour definition, and that reshapes
+  where you look in the diff. Ask for these too; they are small and quotable.
 - **Author and date matter.** An attachment added *after* the PR opened is usually a reviewer or QA
   responding to the current implementation — higher signal than the original report.
 
 If the user supplies a local path to a downloaded attachment, read it with the `Read` tool — it
-renders PNG and JPG visually and reads XML as text.
+renders PNG and JPG visually and reads text-based formats as text, whatever the platform's resource
+files happen to be (XML, plists, `.strings`, JSON, logs).
 
 Optional setup that removes the friction permanently: a Jira API token
 (`id.atlassian.com` → API tokens) makes attachments fetchable directly —
@@ -208,8 +214,9 @@ Do it in this order:
    branch, and the ticket only describes one. This check catches real regressions and is the single
    highest-yield item in this file.
 6. **Check state and lifecycle explicitly** when the repro involves closing and reopening, rotating,
-   or backgrounding. Persisted or cached state surviving when it should reset is
-   the actual defect in that class of bug.
+   backgrounding, or any teardown the platform can trigger on its own (a configuration change, a scene
+   or activity being recreated). Persisted or cached state surviving when it should reset is the actual
+   defect in that class of bug.
 7. **Does a test encode the ticket's steps?** A regression test that mirrors Steps to Reproduce is
    what stops the bug returning. Its absence is a legitimate blocking finding for a bug fix.
 8. **Scope:** anything in the diff that no proposition from step 1 required. Flag it — either the

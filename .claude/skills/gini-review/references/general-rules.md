@@ -1,21 +1,30 @@
 <!--
-  MIRRORED FILE — must stay byte-identical to
-  .claude/skills/gini-review/references/platform-rules.md in gini-mobile-ios.
-  Change it in one repo and open a paired PR in the other; CI
-  (shared-skills.check.yml) fails when the copies diverge.
+  SHARED FILE — platform-neutral by design. Meant to stay byte-identical to
+  .claude/skills/gini-review/references/general-rules.md in gini-mobile-android.
+  Change it in one repo and open a paired PR in the other.
+  Anything naming a language, linter, framework or module belongs in
+  ../platform.md, never here.
+  Mirror enforcement status and the current path divergence between the two
+  repos: §"How the two copies are kept in sync" below.
 -->
 
-# Writing a platform layer
+# General rules — the shared engine and how a platform layer plugs into it
 
 **Reference for `/gini-review`** — read only when writing or extending a `platform.md`. Not needed to
 run a review.
 
+**Why this file is called `general-rules.md`.** Everything in `references/` is general: it holds only the
+rules that hold on **every** repo the skill runs in — `gini-mobile-android`, `gini-mobile-ios`, and
+whatever comes next. Nothing platform-specific lives here; that is what the sibling `../platform.md` is
+for. This file is the neutral contract each platform layer is written against, not the rules of any one
+platform.
+
 **Purpose:** define the contract between the platform-neutral engine (`../SKILL.md`) and one repo's
-local rules (`../platform.md`), so a new platform — iOS/Swift, web, backend — can be added without
-touching the engine.
+local rules (`../platform.md`), so any platform — Android/Kotlin, iOS/Swift, and whatever comes next
+(web, backend) — plugs in without touching the engine.
 
 **Supports:** the nine sections a layer must supply · where it lives · what belongs in the layer versus
-the engine · how to verify a layer is doing its job
+the engine · how the shared copies stay in sync · how to verify a layer is doing its job
 
 **Does not cover:** the review procedure → `../SKILL.md` · ticket handling → `ticket-context.md` ·
 comment wording → `comment-style.md`
@@ -24,7 +33,8 @@ comment wording → `comment-style.md`
 
 The review *method* does not vary by language. Reading the whole file instead of the hunk, tracing the
 ticket's repro steps, checking the opposite direction, dropping findings CI already catches, keeping the
-posted comment short — none of that is Kotlin- or Swift-specific.
+posted comment short — none of that is Kotlin- or Swift-specific, which is why `../SKILL.md` and every
+file in `references/` are shared verbatim between the Android and iOS repos.
 
 What does vary: what counts as published API, which files may not be hand-edited, which linters run in
 CI, what "the module ripple" means, and what a missing test implies. Those are the layer.
@@ -39,18 +49,23 @@ One file, next to the engine:
 
 ```
 .claude/skills/gini-review/
-  SKILL.md                    ← the engine. Mirrored byte-identical across repos — never
+  SKILL.md                    ← the engine. Shared byte-identical across repos — never
                                 put a platform rule in here
-  platform.md                 ← the layer. This file's subject. Never mirrored
+  platform.md                 ← the layer. This file's subject. Never shared
   references/
-    ticket-context.md         ← mirrored
-    comment-style.md          ← mirrored
-    platform-rules.md         ← mirrored (this file)
+    ticket-context.md         ← shared
+    comment-style.md          ← shared
+    general-rules.md          ← shared (this file)
 ```
 
-This mirrors the layout the other shared skills use — `gini-build`, `gini-fix`, `gini-spec-feature`
-each pair a mirrored `SKILL.md` with a per-repo `platform.md` — so a reviewer opening any of them finds
-the same two files in the same places.
+**The rule the layout encodes: `platform.md` is the only file in this directory that may differ between
+repos.** `SKILL.md` and everything under `references/` are the general part. If you find yourself
+wanting to write "on Android…" or "in Swift…" in any of them, the sentence belongs in `platform.md`.
+
+This matches the layout the other shared skills use — each pairs a shared `SKILL.md` with a per-repo
+`platform.md`, so a reviewer opening any of them finds the same files in the same places. Which skills
+those are differs by repo (the two repos do not carry an identical skill set), so check the local
+`.claude/skills/` rather than trusting a list here.
 
 Keep `platform.md` in the repo it describes, not in a shared location. It is versioned with the code
 whose conventions it encodes, and it should change in the same PR as any convention it documents.
@@ -58,6 +73,38 @@ whose conventions it encodes, and it should change in the same PR as any convent
 `platform.md` runs long — it carries nine sections and is read on every review. That is expected and it
 is why it is a separate file: the engine stays readable, and the layer can grow without anyone having to
 re-read the procedure to find a local rule.
+
+## How the two copies are kept in sync
+
+The mechanism is real but **it does not cover this skill yet**, so do not rely on it and do not repeat
+the claim that CI enforces it.
+
+What exists today:
+
+- **`.github/mirrored-skills.txt`** — one repo-relative path per line, the authoritative list of files
+  that must stay byte-identical. It lives in `gini-mobile-android`.
+- **`.github/workflows/shared-skills.check.yml`** — fetches each listed path from
+  `gini-mobile-ios@main` and diffs it against the local copy. Divergence is a **warning** on
+  `pull_request` and `push` (expected while a sync PR is in flight) and a hard **error** on the weekly
+  schedule and on manual dispatch, where it means lasting drift.
+- **`.github/workflows/shared-skills.sync.yml`** — after a merge to `main`, opens the paired PR in
+  `gini-mobile-ios`.
+
+Three gaps to know about before citing any of this:
+
+1. **`gini-review` is not in `mirrored-skills.txt`.** Nothing in this skill is checked. Adding it is the
+   action item; until then the two copies drift silently.
+2. **Both workflows live only in `gini-mobile-android`.** The flow is one-directional: Android is the
+   source, iOS receives the sync PR. An edit made directly to the iOS copy is caught only by Android's
+   weekly run, not by iOS CI — there is none.
+3. **The check compares the same path in both repos, and the paths currently differ.** The shared files
+   sit at `.claude/skills/gini-review/references/…` in `gini-mobile-ios` and at
+   `.claude/skills/gini-review/pr-review/references/…` in `gini-mobile-android`. A missing counterpart
+   returns 404, which the workflow reports as a warning ("no counterpart yet") rather than a failure — so
+   adding the paths to the list before converging them would look green while checking nothing.
+
+**So: converge the paths first, then add them to `mirrored-skills.txt` in both repos.** Until both are
+done, treat a paired PR as a manual obligation, and say so rather than implying a gate exists.
 
 ## The nine sections a layer must supply
 

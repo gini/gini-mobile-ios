@@ -1,16 +1,18 @@
 ---
 name: gini-review
-description: Run a complete PR review so a human reviewer can spend minutes instead of an hour — resolves the PR from the current branch, a PR number, or a Jira ticket key (PP-/HEAL-/XPL-/FEAT-), reviews every changed file against the ticket's acceptance criteria and this repo's platform rules, reports a coverage ledger plus triaged findings, then asks whether to post them as PR comments. Use when asked to "review this PR", "review PP-1234", or to pre-review your own branch before pushing. Never casts an approve / request-changes verdict.
+description: Run a complete PR review so a human reviewer can spend minutes instead of an hour — resolves the PR from the current branch, a PR number, or a Jira ticket key (e.g. PP-1234, IPC-42 — any board), reviews every changed file against the ticket's acceptance criteria and this repo's platform rules, reports a coverage ledger plus triaged findings, then asks whether to post them as PR comments. Use when asked to "review this PR", "review PP-1234", or to pre-review your own branch before pushing. Never casts an approve / request-changes verdict.
 ---
 
 <!--
-  MIRRORED FILE — this file must stay byte-identical to
-  .claude/skills/gini-review/SKILL.md in gini-mobile-ios.
-  If you change it here, open a paired PR in the other repo with the same
-  content. CI (shared-skills.check.yml) fails when the copies diverge.
-  The same applies to everything under references/.
-  Platform-specific rules do NOT belong here — they live in the sibling
-  platform.md, which is intentionally different per repo.
+  SHARED FILE — platform-neutral by design. Meant to stay byte-identical to
+  .claude/skills/gini-review/SKILL.md in gini-mobile-android. If you change it
+  here, open a paired PR in the other repo with the same content. The same
+  applies to everything under references/ — those are shared too.
+  Platform-specific rules do NOT belong here or in references/ — they live in
+  the sibling platform.md, which is intentionally different per repo. If a
+  sentence would name a language, linter, framework or module, it goes there.
+  Mirror enforcement status and the current path divergence between the two
+  repos: references/general-rules.md §"How the two copies are kept in sync".
 -->
 
 # /gini-review — complete PR review, then offer to post
@@ -30,9 +32,9 @@ or Ruby. Everything language- or build-system-specific lives in the sibling `pla
 /gini-review ABC-1234     # by ticket key — which is also the branch-name prefix
 ```
 
-**The ticket key and the branch name are the same string.** Branches are
-`<TICKET>-<kebab-description>` (sometimes under a segment, e.g. `backup/ABC-1234-…`,
-`feature/ABC-001-…`), and the key also appears as the commit trailer. So:
+**The ticket key and the branch name are the same string.** Branches are often
+`<TICKET>-<kebab-description>`, but the key can also sit under a path segment
+(`<segment>/ABC-1234-…`), and it appears as the commit trailer either way. So:
 
 - **On the branch already** → just `/gini-review`. The key is read straight off the branch name; you
   do not need to pass it.
@@ -61,7 +63,7 @@ covers those), or posts to GitHub without your explicit yes.
 
 ## Files in this skill
 
-**`SKILL.md`** (this file) — the platform-neutral procedure. Mirrored across repos.
+**`SKILL.md`** (this file) — the platform-neutral procedure. Shared across repos.
 
 - Steps 0–6: platform layer → resolve → gather context → review → filter → report → ask before posting
 - The 13 review dimensions and the two design calls
@@ -69,27 +71,28 @@ covers those), or posts to GitHub without your explicit yes.
 - The confidence filter and the report template
 - The hard rules: never cast a verdict, never modify files
 
-**`platform.md`** — the local rules, read at **§0** and applied at **§3**. **Not** mirrored; each repo
+**`platform.md`** — the local rules, read at **§0** and applied at **§3**. **Not** shared; each repo
 has its own. Published API surface, dependency and build-file rules, release mechanics, downstream
 module ripple, architecture and style, test conventions, commit format, and the **do-not-flag** list.
 
-**`references/ticket-context.md`** — read at **§2**, on every review. Mirrored.
+**`references/ticket-context.md`** — read at **§2**, on every review. Shared.
 
 - Supports: fetching the ticket · knowing which fields matter · the fallback when there is no Jira
   connector · parsing the bug template · handling attachments · following links out of the ticket ·
   converting the ticket into logic checks
 - Does not cover: repo coding rules, API rules, comment wording
 
-**`references/comment-style.md`** — read at **§5**, before writing any comment. Mirrored.
+**`references/comment-style.md`** — read at **§5**, before writing any comment. Shared.
 
 - Supports: the inline comment format · **the category prefix** · **the length budget** · the
   summary-review skeleton · what never appears in a comment · improvements versus defects · GitHub
   `suggestion` blocks
 - Does not cover: what to look for, or how to decide a finding is real
 
-**`references/platform-rules.md`** — read only when writing or extending a `platform.md`. Mirrored.
+**`references/general-rules.md`** — read only when writing or extending a `platform.md`. Shared.
 
-- Supports: the nine sections a `platform.md` must supply, and how to write one for a new language or
+- Supports: the contract between this engine and a platform layer, the nine sections a `platform.md`
+  must supply, how the shared copies stay in sync, and how to write a layer for a new language or
   build system
 - Not needed to run a review
 
@@ -125,7 +128,7 @@ in the directories the diff touches. Those are canonical: a finding cites them o
 line, or it is a bare preference and gets dropped.
 
 If `platform.md` is missing, say so plainly at the top of the report, review on the generic dimensions
-alone, and offer to draft one from `references/platform-rules.md`. Do not invent local conventions
+alone, and offer to draft one from `references/general-rules.md`. Do not invent local conventions
 from the diff, and do not silently review as if the layer existed.
 
 Whatever `platform.md` says wins over generic instinct. Its **do-not-flag list** especially — that list
@@ -149,9 +152,9 @@ gh pr view <number> --json number,title,body,author,state,isDraft,baseRefName,he
 ```
 
 **Ticket key** (matches `^[A-Z]{2,5}-[0-9]+$`) — branches are `<TICKET>-<kebab-description>`, but the
-key is not always at position 0: it can sit under a segment such as `backup/ABC-1234-…` or
-`feature/ABC-001-…`. So anchor on start-or-slash, not start. Substitute the key the user gave for
-`<TICKET>`:
+key is not always at position 0: it can sit under a path segment. Which segments a repo uses varies, so
+anchor on start-or-slash and let any segment through rather than matching a list of them. Substitute the
+key the user gave for `<TICKET>`:
 
 ```bash
 gh pr list --state all --limit 200 --json number,title,headRefName,state \
@@ -194,9 +197,8 @@ candidate findings are already covered.
 
 **The ticket — read `references/ticket-context.md` and follow it.** This is not optional background;
 the ticket is the specification you are reviewing against. In short: extract the key from the branch —
-first match of `[A-Z]{2,5}-[0-9]+` anywhere in the name, since it may sit under a segment like
-`backup/` or `feature/` — then fetch it and pull the description, comments, parent epic, labels,
-attachments and issue links. **If the Jira connector is unavailable, that file's fallback applies: ask
+first match of `[A-Z]{2,5}-[0-9]+` anywhere in the name, since it may sit under a path segment — then
+fetch it and pull the description, comments, parent epic, labels, attachments and issue links. **If the Jira connector is unavailable, that file's fallback applies: ask
 the user to paste the ticket in rather than skipping acceptance-criteria verification.**
 
 Then follow the links. Design tool (Figma and similar) → design intent for UI changes. Confluence →
