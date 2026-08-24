@@ -412,13 +412,14 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var paymentDueHintEnabled: Bool = true
 
-    // MARK: - Already Paid
+    // MARK: - Payment Schedule Hint
     /**
      Indicates whether the Schedule Payment state of the payment-hint bottom
      sheet is enabled. Takes priority over the Due Date Hint state.
      */
     public var paymentScheduleHintEnabled: Bool = true
 
+    // MARK: - Already Paid
     /**
      Indicates whether the Already Paid Hint feature is enabled or not.
      If set to `true`, a hint will be displayed in the payment flow to inform
