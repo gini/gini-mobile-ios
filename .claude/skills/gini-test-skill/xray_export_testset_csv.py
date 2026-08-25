@@ -12,9 +12,7 @@ Columns:
     Issue Id,Summary,Test Type,Step,Data,Expected Result,Jira Key,Total Steps
 
 The first six are the Xray Test Case Importer layout, in its original order, so
-an existing importer column-mapping still works. The last two used to live in a
-separate "-tcid-to-jira-key.csv" traceability file; that extra file caused
-confusion, so its content now sits in these two files.
+an existing importer column-mapping still works.
 
 Rows sharing an Issue Id (TC-001, TC-002, ...) form one test case.
 
