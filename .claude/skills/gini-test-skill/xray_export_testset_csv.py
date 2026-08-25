@@ -2,10 +2,16 @@
 """
 Export Xray Cloud manual test cases to CSV, one row per test STEP.
 
-Writes TWO files (no more, no less):
+Writes UP TO two files:
 
     <prefix>.csv                 functional tests
     <prefix>-accessibility.csv   accessibility tests
+
+Splitting into the two is the default. A group with no matching tests is skipped
+rather than written empty, so a Test Set with no accessibility cases produces one
+file, not two -- do not assume both paths exist. --no-split writes every test to
+<prefix>.csv instead and never writes the accessibility file at all. The script
+prints the path of each file it actually wrote; rely on that, not on the names.
 
 Columns:
 
@@ -26,6 +32,14 @@ There is deliberately NO Preconditions column. Xray Cloud's importer expects a
 there fails the import with "Precondition type and test type mismatch". This
 script still READS preconditions and prints a warning naming any test that has
 one, so nothing is lost silently -- but they stay out of the file.
+
+Step and result text is written EXACTLY as Xray holds it, with no escaping beyond
+normal CSV quoting. A field that begins with "=", "+", "@" or "-" is therefore
+treated as a formula by Excel and Google Sheets. That is deliberate: prefixing
+such fields to defuse them would corrupt the file for re-import into Xray, and
+step text legitimately starts with "-" (dash-bulleted expected results). Treat
+the output as data exported from Xray rather than as a trusted spreadsheet, and
+if you need a spreadsheet-safe copy, sanitise it downstream instead of here.
 
 Credentials are read from a file (never passed on the command line, so they do
 not land in shell history). Default location: ~/.config/gini/xray.env
@@ -276,8 +290,9 @@ def main():
     else:
         print("Note     : no test has Xray Preconditions, so nothing is left out.")
 
-    if not os.path.isdir(args.out_dir):
-        os.makedirs(args.out_dir)
+    if os.path.exists(args.out_dir) and not os.path.isdir(args.out_dir):
+        sys.exit("--out-dir is not a directory: %s" % args.out_dir)
+    os.makedirs(args.out_dir, exist_ok=True)
 
     if args.no_split:
         groups = [("", tests)]
