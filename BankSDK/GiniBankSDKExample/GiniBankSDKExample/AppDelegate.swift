@@ -21,8 +21,14 @@ import Firebase
 #if DEBUG
         applyUITestCleanStateLaunchArguments()
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil { return true }
+        // UI tests: XCTestConfigurationFilePath isn't set in the app-under-test process, so
+        // reuse -StartFromCleanState to skip Firebase — committed GoogleService-Info.plist
+        // has API_KEY="" and would trip FIRInstallations validateAPIKey: on launch.
+        let skipFirebase = CommandLine.arguments.contains("-StartFromCleanState")
+#else
+        let skipFirebase = false
 #endif
-        FirebaseApp.configure()
+        if !skipFirebase { FirebaseApp.configure() }
 
         window = UIWindow(frame: UIScreen.main.bounds)
         coordinator = AppCoordinator(window: window ?? UIWindow())
@@ -49,6 +55,11 @@ import Firebase
         }
         if CommandLine.arguments.contains("-DisableReturnAssistant") {
             GiniBankConfiguration.shared.returnAssistantEnabled = false
+        }
+        if let idx = CommandLine.arguments.firstIndex(of: "-paymentDueHintThresholdDaysOverride"),
+           idx + 1 < CommandLine.arguments.count,
+           let value = Int(CommandLine.arguments[idx + 1]) {
+            GiniBankConfiguration.shared.paymentDueHintThresholdDays = value
         }
     }
 

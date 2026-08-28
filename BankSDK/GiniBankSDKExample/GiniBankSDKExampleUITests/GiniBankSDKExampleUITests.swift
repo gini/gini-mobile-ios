@@ -27,11 +27,23 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    /**
-     Override in a subclass to inject extra launch arguments before the app launches.
-     The base argument `-StartFromCleanState YES` is always included.
-     */
+    /// Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
     var additionalLaunchArguments: [String] { [] }
+
+    /// Per-test launch args. Assign before `relaunch()`; cleared in tearDown.
+    var extraLaunchArguments: [String] = []
+
+    /// Base + class-level + per-test.
+    private var currentLaunchArguments: [String] {
+        ["-StartFromCleanState", "YES"] + additionalLaunchArguments + extraLaunchArguments
+    }
+
+    /// Terminate + launch with `currentLaunchArguments`.
+    func relaunch() {
+        app.terminate()
+        app.launchArguments = currentLaunchArguments
+        app.launch()
+    }
 
     override func setUpWithError() throws {
     #if targetEnvironment(simulator)
@@ -42,7 +54,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
         app.resetAuthorizationStatus(for: .photos)
-        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
+        app.launchArguments = currentLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -72,6 +84,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         add(attachment)
         app.terminate()
     #endif // !targetEnvironment(simulator)
+        extraLaunchArguments = []
     }
 
     var galleryTitle: String {
@@ -95,18 +108,19 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    var galleryDoneButtonTitle: String {
-        switch Locale.current.languageCode ?? "en" {
-        case "de": return "Fertig"
-        default:   return "\u{0010}Done"
+    /// Picker's confirm button — text "Done"/"Fertig" on iOS < 26, checkmark on iOS 26+.
+    /// Tries nav-bar first, then any button, across known labels. `\u{0010}Done` legacy included.
+    func galleryConfirmButton() -> XCUIElement? {
+        let candidates = ["\u{0010}Done", "Done", "Fertig", "Choose", "Auswählen", "checkmark"]
+        for label in candidates {
+            let inNavBar = app.navigationBars.buttons[label].firstMatch
+            if inNavBar.waitForExistence(timeout: 1) { return inNavBar }
         }
-    }
-
-    func tapDoneInAnyKnownContext() {
-        switch Locale.current.languageCode ?? "en" {
-        case "de": app.buttons["Fertig"].firstMatch.tap()
-        default:   app.buttons["\u{0010}Done"].firstMatch.tap()
+        for label in candidates {
+            let anywhere = app.buttons[label].firstMatch
+            if anywhere.waitForExistence(timeout: 1) { return anywhere }
         }
+        return nil
     }
 
     func waitForAnalysisIfNeeded() {
@@ -179,7 +193,10 @@ class GiniBankSDKExampleUITests: XCTestCase {
             return
         }
         allCells[targetIndex].tap()
-        XCTAssertTrue(app.buttons[galleryDoneButtonTitle].firstMatch.waitForExistence(timeout: 10))
-        tapDoneInAnyKnownContext()
+        guard let confirm = galleryConfirmButton() else {
+            XCTFail("Gallery confirm button (Done / Fertig / checkmark) not found after selecting photo")
+            return
+        }
+        confirm.tap()
     }
 }

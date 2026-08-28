@@ -41,6 +41,8 @@ private struct ScheduleContent: InfoBottomSheetViewModel {
  */
 public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewController {
 
+    private let state: PaymentHintState
+
     /**
      Creates a payment-hint bottom sheet for the given state. The state's
      associated values drive title interpolation, description copy, and both
@@ -48,12 +50,49 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
      - Parameter state: The state the sheet should render.
      */
     public init(state: PaymentHintState) {
+        self.state = state
         let (contentViewModel, buttonsViewModel) = Self.makeViewModels(for: state)
         super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
     }
 
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        applyAccessibilityIdentifiers()
+    }
+
+    private func applyAccessibilityIdentifiers() {
+        let ids: StateIdentifiers
+        switch state {
+        case .dueDate:
+            ids = StateIdentifiers(container: AccessibilityIdentifiers.DueDate.container,
+                                   title: AccessibilityIdentifiers.DueDate.title,
+                                   description: AccessibilityIdentifiers.DueDate.description,
+                                   primaryButton: AccessibilityIdentifiers.DueDate.proceedButton,
+                                   secondaryButton: AccessibilityIdentifiers.DueDate.cancelButton)
+        case .schedulePayment:
+            ids = StateIdentifiers(container: AccessibilityIdentifiers.Schedule.container,
+                                   title: AccessibilityIdentifiers.Schedule.title,
+                                   description: AccessibilityIdentifiers.Schedule.description,
+                                   primaryButton: AccessibilityIdentifiers.Schedule.scheduleButton,
+                                   secondaryButton: AccessibilityIdentifiers.Schedule.proceedButton)
+        }
+        view.accessibilityIdentifier = ids.container
+        headerLabel.accessibilityIdentifier = ids.title
+        descriptionLabel.accessibilityIdentifier = ids.description
+        buttonsViewContainer.primaryButton.accessibilityIdentifier = ids.primaryButton
+        buttonsViewContainer.secondaryButton.accessibilityIdentifier = ids.secondaryButton
+    }
+
+    private struct StateIdentifiers {
+        let container: String
+        let title: String
+        let description: String
+        let primaryButton: String
+        let secondaryButton: String
     }
 
     private static func makeViewModels(for state: PaymentHintState) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
@@ -136,6 +175,31 @@ extension PaymentHintBottomSheetViewController {
     struct Colors {
         static var imageBGColor: UIColor {
             GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        }
+    }
+
+    // MARK: - Accessibility Identifiers
+    /**
+     Stable, state-scoped accessibility identifiers applied to the sheet
+     for UI-automation. Values are duplicated in the
+     `GiniBankSDKExampleUITests` target as
+     `PaymentHintScreenAccessibilityIdentifiers` — keep both sides in sync.
+     */
+    enum AccessibilityIdentifiers {
+        enum DueDate {
+            static let container = "paymentHint.dueDate.container"
+            static let title = "paymentHint.dueDate.title"
+            static let description = "paymentHint.dueDate.description"
+            static let proceedButton = "paymentHint.dueDate.proceedButton"
+            static let cancelButton = "paymentHint.dueDate.cancelButton"
+        }
+
+        enum Schedule {
+            static let container = "paymentHint.schedule.container"
+            static let title = "paymentHint.schedule.title"
+            static let description = "paymentHint.schedule.description"
+            static let scheduleButton = "paymentHint.schedule.scheduleButton"
+            static let proceedButton = "paymentHint.schedule.proceedButton"
         }
     }
 }

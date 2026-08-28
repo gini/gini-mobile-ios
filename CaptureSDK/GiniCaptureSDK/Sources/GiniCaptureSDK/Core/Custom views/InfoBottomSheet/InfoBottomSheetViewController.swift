@@ -54,7 +54,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         return stack
     }()
 
-    private let headerLabel: UILabel = {
+    let headerLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -67,7 +67,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         return label
     }()
 
-    private let descriptionLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = GiniConfiguration.shared.textStyleFonts[.body]

@@ -8,7 +8,7 @@ import Foundation
 import XCTest
 
 class SettingScreen {
-    
+
     let app: XCUIApplication
     let closeButton: XCUIElement
     let qrCodeScanSwitch: XCUIElement
@@ -18,7 +18,9 @@ class SettingScreen {
     let onboardingEveryLaunchSwitch: String
     let onboardingAtFirstLaunchSwitch: String
     let productTagSegmentedControl: XCUIElement
-    
+    let paymentDueHintSwitch: XCUIElement
+    let paymentScheduleHintSwitch: XCUIElement
+
     init(app: XCUIApplication, locale: String) {
         self.app = app
         closeButton = app.buttons[SettingScreenAccessibilityIdentifiers.closeButton.rawValue]
@@ -29,6 +31,8 @@ class SettingScreen {
         onboardingEveryLaunchSwitch = "Onboarding screens at every launch"
         onboardingAtFirstLaunchSwitch = "Onboarding screens at first launch"
         productTagSegmentedControl = app.segmentedControls[SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue]
+        paymentDueHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue]
+        paymentScheduleHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue]
     }
     
     public func tapFlashToggleSwitch(){
@@ -60,6 +64,32 @@ class SettingScreen {
         let segment = productTagSegmentedControl.buttons.element(boundBy: index)
         if segment.isHittable {
             segment.tap()
+        }
+    }
+
+    /**
+     Sets `paymentDueHintEnabled` / `paymentScheduleHintEnabled` on
+     `GiniBankConfiguration` via the Settings UI. Assumes both switches
+     are visible on screen (Settings screen is open, scroll to Feature
+     toggles if needed).
+     - Parameters:
+       - dueDate: desired `paymentDueHintEnabled` value
+       - schedule: desired `paymentScheduleHintEnabled` value
+     */
+    public func setPaymentHintFlags(dueDate: Bool, schedule: Bool) {
+        setSwitch(paymentDueHintSwitch, to: dueDate)
+        setSwitch(paymentScheduleHintSwitch, to: schedule)
+    }
+
+    private func setSwitch(_ switchElement: XCUIElement, to on: Bool) {
+        if !switchElement.exists {
+            /// Feature-toggles section is far down the Settings list; scroll
+            /// until the switch is on screen before tapping.
+            app.swipeUp()
+        }
+        let currentlyOn = switchElement.value as? String == "1"
+        if currentlyOn != on {
+            switchElement.tap()
         }
     }
 }

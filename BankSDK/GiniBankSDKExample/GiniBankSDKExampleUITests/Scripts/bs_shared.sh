@@ -37,6 +37,7 @@ case "$SCRIPT_NAME" in
     bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;
     bs_run_skonto)       BUILD_LABEL="Skonto" ;;
     bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
+    bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;
     *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
 esac
 IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"
@@ -47,7 +48,7 @@ DEVICE_1="iPhone 17-26"
 DEVICE_2="iPhone 16-18"
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-BS_PROJECT="GiniBankSDK-LiquidGlass-4.3.0"
+BS_PROJECT="GiniBankSDK-iOS-PaymentHints-4.5.0"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
