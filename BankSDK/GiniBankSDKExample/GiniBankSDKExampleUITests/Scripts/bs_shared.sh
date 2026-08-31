@@ -37,6 +37,7 @@ case "$SCRIPT_NAME" in
     bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;
     bs_run_skonto)       BUILD_LABEL="Skonto" ;;
     bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
+    bs_run_credit_note)  BUILD_LABEL="CreditNote" ;;
     *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
 esac
 IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"
@@ -46,8 +47,21 @@ TEST_SUITE_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}-Tests.zip"
 DEVICE_1="iPhone 17-26"
 DEVICE_2="iPhone 16-18"
 
+# BS_DEVICE overrides the default pair with one device or a comma-separated list,
+# e.g. BS_DEVICE="iPhone 13 Pro-15" or BS_DEVICE="iPhone 17-26,iPhone 13 Pro-15".
+# Scripts use $DEVICES_JSON in the build request; $DEVICE_COUNT feeds license pacing.
+if [ -n "${BS_DEVICE:-}" ]; then
+    DEVICES_JSON=$(python3 -c "import sys, json; print(json.dumps([d.strip() for d in sys.argv[1].split(',') if d.strip()]))" "$BS_DEVICE")
+    DEVICE_COUNT=$(python3 -c "import sys; print(len([d for d in sys.argv[1].split(',') if d.strip()]))" "$BS_DEVICE")
+else
+    DEVICES_JSON="[\"$DEVICE_1\", \"$DEVICE_2\"]"
+    DEVICE_COUNT=2
+fi
+
 # ── BrowserStack project ──────────────────────────────────────────────────────
-BS_PROJECT="GiniBankSDK-LiquidGlass-4.3.0"
+# Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
+# release; override per run via the BS_PROJECT environment variable.
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.0}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
@@ -126,6 +140,19 @@ XCCONFIG
     if [ -z "$runner_app" ]; then
         echo "ERROR: GiniBankSDKExampleUITests-Runner.app not found"
         exit 1
+    fi
+
+    # Xcode embeds Swift Testing's Testing.framework into every runner (XCTestCore
+    # hard-links it, so it cannot be removed), but does NOT embed the
+    # lib_TestingInterop.dylib it depends on. iOS 17+ resolves that from the OS;
+    # iOS 15/16 devices don't have it and the runner crashes at launch (dyld abort).
+    # Bundle the device-arch dylib from the Xcode toolchain next to the framework.
+    local interop_dylib="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/lib_TestingInterop.dylib"
+    if [ -d "$runner_app/Frameworks/Testing.framework" ] \
+        && [ ! -f "$runner_app/Frameworks/lib_TestingInterop.dylib" ] \
+        && [ -f "$interop_dylib" ]; then
+        cp "$interop_dylib" "$runner_app/Frameworks/"
+        echo "Bundled lib_TestingInterop.dylib into runner (iOS 15/16 compatibility)"
     fi
     pushd "$(dirname "$runner_app")" > /dev/null
     zip -r "$TEST_SUITE_OUTPUT" "GiniBankSDKExampleUITests-Runner.app" -q
