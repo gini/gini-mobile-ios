@@ -35,9 +35,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var additionalLaunchArguments: [String] { [] }
 
     override func setUpWithError() throws {
-    #if targetEnvironment(simulator)
-        throw XCTSkip("Skipping test on simulator")
-    #endif
+        // Simulator skip disabled so the suite runs on BrowserStack — re-enable to
+        // guard local simulator runs again.
+         #if targetEnvironment(simulator)
+             throw XCTSkip("Skipping test on simulator")
+         #endif
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
