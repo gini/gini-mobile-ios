@@ -89,26 +89,22 @@ class MainScreen {
      */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let allowFullAccess = springboard.buttons["Allow Full Access"]
-        let allowFullAccessDE = springboard.buttons["Zugriff auf alle Fotos erlauben"]
-        let dontAllowButton = springboard.buttons["Don’t Allow"]
-        let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
+        /// The full-access button title varies by iOS version:
+        /// iOS 17+ "Allow Full Access", iOS 15/16 "Allow Access to All Photos".
+        let allowTitles = ["Allow Full Access",
+                           "Allow Access to All Photos",
+                           "Zugriff auf alle Fotos erlauben"]
+        let allowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", allowTitles)).firstMatch
+        /// "Don't Allow" uses U+2019 on iOS < 26 and U+0027 on iOS 26+.
+        let dontAllowTitles = ["Don’t Allow", "Don't Allow", "Nicht erlauben"]
+        let dontAllowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", dontAllowTitles)).firstMatch
 
-        let buttonToTap: XCUIElement
-        if answer {
-            /// Wait for the dialog to actually appear before checking which button is present.
-            if allowFullAccess.waitForExistence(timeout: 5) {
-                buttonToTap = allowFullAccess
-            } else if allowFullAccessDE.waitForExistence(timeout: 1) {
-                buttonToTap = allowFullAccessDE
-            } else {
-                return
-            }
-        } else {
-            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
-        }
-
-        if buttonToTap.exists {
+        let buttonToTap = answer ? allowButton : dontAllowButton
+        /// Wait for the dialog to actually appear; it may legitimately be absent when
+        /// the permission was already granted in a previous launch.
+        if buttonToTap.waitForExistence(timeout: 5), buttonToTap.isHittable {
             buttonToTap.tap()
         }
     }
