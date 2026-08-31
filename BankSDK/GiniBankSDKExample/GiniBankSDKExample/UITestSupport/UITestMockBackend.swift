@@ -24,7 +24,8 @@ import GiniCaptureSDK
 
  `ScreenAPICoordinator` picks it up via `fromLaunchArguments()`. Never active in
  normal app runs. Unknown scenario names or flag keys fail loudly with
- `assertionFailure` — a typo must not silently test the wrong behaviour.
+ `preconditionFailure` — a typo must fail loudly in every build configuration
+ and never silently test the wrong behaviour.
 
  Extending: add a case to `UITestMockScenario` with its payload (or error).
  The client configuration needs no extension — every flag is overridable via
@@ -109,8 +110,7 @@ final class UITestMockBackend {
         }
         guard let scenario = UITestMockScenario(rawValue: scenarioName) else {
             /// A typo'd scenario would otherwise silently test the wrong behaviour.
-            assertionFailure("Unknown UITestMockScenario: \(scenarioName)")
-            return nil
+            preconditionFailure("Unknown UITestMockScenario: \(scenarioName)")
         }
         let overridesString = UserDefaults.standard.string(forKey: "UITestMockClientConfig")
         guard let overrides = parseClientConfigurationOverrides(from: overridesString) else {
@@ -157,8 +157,7 @@ final class UITestMockBackend {
                   knownConfigurationFlags.contains(pair[0]),
                   let value = Bool(pair[1]) else {
                 /// A typo'd flag would otherwise silently test the wrong configuration.
-                assertionFailure("Invalid UITestMockClientConfig entry: \(entry)")
-                return nil
+                preconditionFailure("Invalid UITestMockClientConfig entry: \(entry)")
             }
             overrides[pair[0]] = value
         }

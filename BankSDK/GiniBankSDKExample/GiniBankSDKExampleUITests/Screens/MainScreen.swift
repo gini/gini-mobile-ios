@@ -173,11 +173,11 @@ class MainScreen {
        - element: The text field to clear.
      */
     func clearInputField(element: XCUIElement) {
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "Text field to clear not found")
         guard let stringValue = element.value as? String else {
             XCTFail("Tried to clear non string value")
             return
         }
-        XCTAssertTrue(element.waitForExistence(timeout: 5), "Text field to clear not found")
         /// Focus the field, then place the cursor after the last character.
         element.tap()
         element.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()

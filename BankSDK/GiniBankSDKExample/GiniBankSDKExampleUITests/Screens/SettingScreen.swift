@@ -18,9 +18,11 @@ class SettingScreen {
     let onboardingEveryLaunchSwitch: String
     let onboardingAtFirstLaunchSwitch: String
     let productTagSegmentedControl: XCUIElement
-    /// Row title of the credit note hint feature toggle — the example-app settings UI
-    /// is English-only, so no locale switch is needed. The switch itself carries no
-    /// accessibility identifier yet, so it is located through its cell text.
+    /**
+     Row title of the credit note hint feature toggle — the example-app settings UI
+     is English-only, so no locale switch is needed. The switch itself carries no
+     accessibility identifier yet, so it is located through its cell text.
+     */
     let creditNoteHintCellText = "Credit note hint feature"
     
     init(app: XCUIApplication, locale: String) {
@@ -73,7 +75,10 @@ class SettingScreen {
             swipeCount += 1
         }
         XCTAssertTrue(cell.waitForExistence(timeout: 3), "Cell containing text '\(text)' not found in Settings")
-        return cell.switches.firstMatch
+        let switchElement = cell.switches.firstMatch
+        XCTAssertTrue(switchElement.waitForExistence(timeout: 3),
+                      "Switch in the cell containing text '\(text)' not found in Settings")
+        return switchElement
     }
 
     /**

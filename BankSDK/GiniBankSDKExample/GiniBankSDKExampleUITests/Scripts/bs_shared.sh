@@ -142,17 +142,37 @@ XCCONFIG
         exit 1
     fi
 
-    # Xcode embeds Swift Testing's Testing.framework into every runner (XCTestCore
-    # hard-links it, so it cannot be removed), but does NOT embed the
-    # lib_TestingInterop.dylib it depends on. iOS 17+ resolves that from the OS;
-    # iOS 15/16 devices don't have it and the runner crashes at launch (dyld abort).
-    # Bundle the device-arch dylib from the Xcode toolchain next to the framework.
-    local interop_dylib="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/lib_TestingInterop.dylib"
-    if [ -d "$runner_app/Frameworks/Testing.framework" ] \
-        && [ ! -f "$runner_app/Frameworks/lib_TestingInterop.dylib" ] \
-        && [ -f "$interop_dylib" ]; then
+    # Xcode embeds Swift Testing's Testing.framework into every runner (XCTestCore and
+    # libXCTestSwiftSupport hard-link the Swift Testing stack, so it cannot be removed),
+    # but does NOT embed its back-deployment dependencies. iOS 17+ resolves them from
+    # the OS; iOS 15/16 devices don't have them and the runner crashes at launch (dyld
+    # abort: lib_TestingInterop.dylib, _Testing_Foundation.framework, ...). Bundle the
+    # device-arch copies from the Xcode toolchain into the runner. Xcode path resolved
+    # via xcode-select so non-standard installs (Xcode-beta) work; missing files are a
+    # hard error — skipping them would just recreate the iOS 15 crash.
+    if [ -d "$runner_app/Frameworks/Testing.framework" ]; then
+        local xcode_dev
+        xcode_dev="$(xcode-select -p)"
+        local platform_dir="$xcode_dev/Platforms/iPhoneOS.platform/Developer"
+
+        local interop_dylib="$platform_dir/usr/lib/lib_TestingInterop.dylib"
+        if [ ! -f "$interop_dylib" ]; then
+            echo "ERROR: $interop_dylib not found — cannot make the runner iOS 15/16 compatible"
+            exit 1
+        fi
         cp "$interop_dylib" "$runner_app/Frameworks/"
-        echo "Bundled lib_TestingInterop.dylib into runner (iOS 15/16 compatibility)"
+
+        local fw
+        for fw in _Testing_Foundation _Testing_UIKit _Testing_CoreGraphics _Testing_CoreImage; do
+            local fw_path="$platform_dir/Library/Frameworks/$fw.framework"
+            if [ ! -d "$fw_path" ]; then
+                echo "ERROR: $fw_path not found — cannot make the runner iOS 15/16 compatible"
+                exit 1
+            fi
+            rm -rf "$runner_app/Frameworks/$fw.framework"
+            cp -R "$fw_path" "$runner_app/Frameworks/"
+        done
+        echo "Bundled Swift Testing back-deployment libraries into runner (iOS 15/16 compatibility)"
     fi
     pushd "$(dirname "$runner_app")" > /dev/null
     zip -r "$TEST_SUITE_OUTPUT" "GiniBankSDKExampleUITests-Runner.app" -q
