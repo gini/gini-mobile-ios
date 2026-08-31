@@ -51,12 +51,11 @@ enum TestFixtures {
         static let sepaDueDate = "sepa_due_date"
 
         /// Synthetic invoice extracting `paymentDueDate = 2028-09-01` + `paymentState = ToBePaid`.
-        /// Shared with Android PP-3301; validated with `gini-mobile-test` on 2026-08-17.
         /// Refresh before mid-2028 and update `PaymentHintFlowUITests.FIXTURE_DUE_DATE`.
         static let invoiceFutureDue = "invoice_future_due"
 
         /// Synthetic invoice with no `paymentDueDate` (still `paymentState = ToBePaid`).
-        /// Shared with Android PP-3301; used to verify sheet suppression.
+        /// Used to verify sheet suppression.
         static let invoiceNoDueDate = "invoice_no_due_date"
 
         // MARK: Skonto

@@ -68,24 +68,29 @@ class SettingScreen {
     }
 
     /**
-     Sets `paymentDueHintEnabled` / `paymentScheduleHintEnabled` on
-     `GiniBankConfiguration` via the Settings UI. Assumes both switches
-     are visible on screen (Settings screen is open, scroll to Feature
-     toggles if needed).
-     - Parameters:
-       - dueDate: desired `paymentDueHintEnabled` value
-       - schedule: desired `paymentScheduleHintEnabled` value
+     Sets `paymentDueHintEnabled` / `paymentScheduleHintEnabled` via Settings.
+     Scrolls to the Feature-toggles section if either switch is offscreen.
      */
-    public func setPaymentHintFlags(dueDate: Bool, schedule: Bool) {
+    public func setPaymentHintFlags(dueDate: Bool,
+                                    schedule: Bool) {
         setSwitch(paymentDueHintSwitch, to: dueDate)
         setSwitch(paymentScheduleHintSwitch, to: schedule)
     }
 
-    private func setSwitch(_ switchElement: XCUIElement, to on: Bool) {
-        if !switchElement.exists {
-            /// Feature-toggles section is far down the Settings list; scroll
-            /// until the switch is on screen before tapping.
+    /**
+     Scrolls up to six swipes until the switch is hittable, then sets it.
+     Fails explicitly if the switch never becomes hittable.
+     */
+    private func setSwitch(_ switchElement: XCUIElement,
+                           to on: Bool) {
+        var attempts = 0
+        while !switchElement.isHittable && attempts < 6 {
             app.swipeUp()
+            attempts += 1
+        }
+        guard switchElement.isHittable else {
+            XCTFail("Could not scroll \(switchElement) into view within \(attempts) swipes")
+            return
         }
         let currentlyOn = switchElement.value as? String == "1"
         if currentlyOn != on {

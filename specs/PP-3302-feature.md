@@ -135,15 +135,18 @@ capture flow begins.
    so date-rollover cannot flake this case on a night run. *(CSV
    PP-3261 TC-003 "exactly threshold days")*
 
-5. **R4 (MUST, error — below threshold: `threshold > remainingDays`):**
-   Given `paymentDueHintEnabled = true` and
-   `-paymentDueHintThresholdDaysOverride <remainingDays + 1>`, when
-   the flow reaches Analysis, then neither
-   `paymentHint.dueDate.container` nor `paymentHint.schedule.container`
-   appears within 30 s and the extraction screen (Done button in
-   navigation bar) is reached within 60 s. Same midnight-skip guard as
-   R3 (a rollover here would flip the outcome the other way). *(CSV
-   PP-3261 TC-004 "less than threshold")*
+5. **R4 (MUST, error — below threshold):** Given
+   `paymentDueHintEnabled = true` and
+   `-paymentDueHintThresholdDaysOverride <remainingDays + 2>`, when the
+   flow reaches Analysis, then neither `paymentHint.dueDate.container`
+   nor `paymentHint.schedule.container` appears within 30 s and the
+   extraction screen (Done button in navigation bar) is reached within
+   60 s. The `+ 2` offset (rather than `+ 1`) is required because
+   `Date.isDueSoon(within: N)` fires when `daysUntilDue + 1 >= N`, so
+   the largest firing threshold is `remainingDays + 1`; the first
+   strictly-non-firing threshold is `remainingDays + 2`. Same
+   midnight-skip guard as R3 (a rollover here would flip the outcome
+   the other way). *(CSV PP-3261 TC-004 "less than threshold")*
 
 **Negative cases**
 
@@ -241,24 +244,27 @@ capture flow begins.
     `BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/Scripts/bs_run_payment_hint.sh`,
     then the script sources `bs_shared.sh`, calls `bs_build`, uploads
     the IPA and test runner via `bs_upload_app_and_suite`, uploads the
-    `sepa_due_date.pdf` and `sepa_due_date.png` fixtures (and the
-    empty-due-date fixture if R6 stays in scope) via `upload_media`,
-    and triggers a BrowserStack build restricted to
-    `only-testing == ["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]`
-    on both `$DEVICE_1` and `$DEVICE_2`. The script exits non-zero on
-    any curl failure or missing `media_url`/`app_url`/`test_suite_url`,
-    matching the error contract in `bs_shared.sh`.
+    `invoice_future_due.jpeg` and `invoice_no_due_date.jpeg` fixtures
+    via `upload_media`, and triggers a BrowserStack build restricted
+    to `only-testing == ["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]`
+    on `$DEVICE_1`. The script exits non-zero on any curl failure or
+    missing `media_url`/`app_url`/`test_suite_url`, matching the error
+    contract in `bs_shared.sh`.
 
 16. **R15 (SHOULD, async — no flaky tests left enabled):** Given the
     new tests are merged onto `release/GiniBankSDK-4.5`, when
     `bs_run_payment_hint.sh` is executed 5 times against the same
-    commit, then every test in `PaymentHintFlowUITests` passes
-    on both `$DEVICE_1` and `$DEVICE_2` in every run (no `.disabled`
-    or `.skip` annotations left in the file, no unrelated
-    `XCTSkipIf` on the happy paths — only the R3/R4 midnight-skip
-    guards are permitted). Any case that cannot meet this bar is
-    deleted from this PR and refiled as a follow-up ticket — an
-    enabled flaky test would violate the ticket's second AC.
+    commit, then every test in `PaymentHintFlowUITests` passes on
+    `$DEVICE_1` (iPhone 17-26) in every run (no `.disabled` or
+    `.skip` annotations left in the file, no unrelated `XCTSkipIf`
+    on the happy paths — only the R3/R4 midnight-skip guards are
+    permitted). `$DEVICE_2` (iPhone 16-18.x) coverage is deferred:
+    that BS pool consistently hit Gini API extraction latency spikes
+    and session timeouts unrelated to the SDK. Re-enable once the
+    slot's stability improves. Any case that cannot meet the
+    single-device bar is deleted from this PR and refiled as a
+    follow-up ticket — an enabled flaky test would violate the
+    ticket's second AC.
 
 ## Affected modules
 
@@ -521,7 +527,9 @@ passes:
   shows (R1, R2, R7–R13)
 - `remainingDays` exactly → boundary case, sheet still shows (R3, with
   midnight-skip guard)
-- `remainingDays + 1` → sheet does not show (R4)
+- `remainingDays + 2` → sheet does not show (R4). `+ 1` still fires
+  because `isDueSoon(within: N)` uses `daysUntilDue + 1 >= N`; the
+  first strictly-non-firing threshold is `+ 2`.
 
 The fixture stays valid until its encoded date actually becomes
 today (approaching mid-2028). Regeneration deadline documented at
@@ -563,14 +571,18 @@ New file
 modeled 1:1 on `bs_run_smoke_tests.sh:1-77`. Differences:
 
 - `ONLY_TESTING = '["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]'`
-- `buildName = "bs_run_payment_hint"`
+- `buildName = "Payment Hints PP-3302"`
 - Uploads two media files:
-  `SAMPLES_DIR/sepa_due_date.pdf` and `SAMPLES_DIR/sepa_due_date.png`
-  (both are already staged there).
-- Runs on `[\"$DEVICE_1\", \"$DEVICE_2\"]` (both devices, unlike
-  `bs_run_smoke_tests.sh` which runs on `[\"$DEVICE_1\"]` only —
-  matches PP-3302's device-matrix decision to reuse the smoke matrix
-  in full).
+  `SAMPLES_DIR/invoice_no_due_date.jpeg` and
+  `SAMPLES_DIR/invoice_future_due.jpeg`. Upload order defines the
+  gallery offset the tests select — `invoice_no_due_date` first
+  (offset 1, used by R6), `invoice_future_due` second (offset 0, used
+  by R1–R5 and R7–R13). See `PaymentHintFlowUITests.swift` header.
+- Runs on `[\"$DEVICE_1\"]` (iPhone 17-26 only). The `$DEVICE_2`
+  (iPhone 16-18.x) pool was evaluated and dropped — it consistently
+  hit Gini API extraction latency spikes and session timeouts
+  unrelated to the SDK. Re-enable once BS pool stability for that
+  slot improves.
 
 Small update to `bs_shared.sh:33-41`: add
 `bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;` to the case

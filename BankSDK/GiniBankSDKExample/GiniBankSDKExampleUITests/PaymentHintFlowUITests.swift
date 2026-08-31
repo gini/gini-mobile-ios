@@ -24,14 +24,11 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
 
     // MARK: - Fixture
 
-    /// Encoded on `invoice_future_due.jpeg`. Validated against the real
-    /// Gini API with the `gini-mobile-test` client on 2026-08-17.
-    ///
-    /// Parsed identically to how the SDK ingests the API-returned `paymentDueDate`
-    /// (`Date.date(from:)` — `yyyy-MM-dd` in the device's default timezone), so
-    /// `remainingDays()` here and `Date.isDueSoon(within:)` inside the SDK always agree
-    /// regardless of the device's timezone. Pinning this to Europe/Berlin drifted by 1 day
-    /// on UTC-configured BS devices and broke the boundary math in `testSheetDoesNotAppearBelowThreshold`.
+    /**
+     Encoded on `invoice_future_due.jpeg` — validated against the real Gini API 2026-08-17.
+     Parses in the device's default timezone so `remainingDays()` matches the SDK's
+     `Date.isDueSoon(within:)` on UTC-configured BS devices.
+     */
     private static let FIXTURE_DUE_DATE: Date = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -39,8 +36,9 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         return formatter.date(from: "2028-09-01")!
     }()
 
-    /// `FIXTURE_DUE_DATE` as `dd.MM.yyyy` — locale-independent substring for title assertion.
-    /// Formatter uses the device's default timezone to match the SDK's `Date.toDisplayString`.
+    /**
+     `FIXTURE_DUE_DATE` as `dd.MM.yyyy` — locale-independent substring for title assertion.
+     */
     private static let FIXTURE_DUE_DATE_FORMATTED: String = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
@@ -58,7 +56,9 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         paymentHintScreen = PaymentHintScreen(app: app)
     }
 
-    /// Days between today and `FIXTURE_DUE_DATE`, computed like `Date.isDueSoon(within:)`.
+    /**
+     Days between today and `FIXTURE_DUE_DATE`, computed like `Date.isDueSoon(within:)`.
+     */
     private func remainingDays() -> Int {
         let calendar = Calendar(identifier: .gregorian)
         let today = calendar.startOfDay(for: Date())
@@ -66,9 +66,10 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         return calendar.dateComponents([.day], from: today, to: due).day ?? 0
     }
 
-    /// True within 30 min of midnight. Used to skip boundary-threshold tests
-    /// (mirrors Android PP-3301) — a date rollover between setup and the
-    /// coordinator's computation would flip the boundary the wrong way.
+    /**
+     `true` within 30 min of midnight. Skips boundary-threshold tests to avoid
+     date-rollover flips (mirrors Android PP-3301).
+     */
     private var isNearMidnight: Bool {
         let calendar = Calendar.current
         let now = Date()
@@ -78,59 +79,62 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         return minutesSinceMidnight < 30 || minutesSinceMidnight >= 23 * 60 + 30
     }
 
-    /// Relaunches with the given threshold override. Tests rely on the real Gini API
-    /// extraction of `invoice_future_due.jpeg` (`paymentState = ToBePaid`,
-    /// `paymentDueDate = 2028-09-01`) — no injection seam is needed.
+    /**
+     Relaunches with `paymentDueHintThresholdDays` set to `thresholdOverride`.
+     */
     private func relaunchApp(thresholdOverride: Int) {
         extraLaunchArguments = ["-paymentDueHintThresholdDaysOverride", "\(thresholdOverride)"]
         relaunch()
     }
 
-    /// Toggles both payment-hint switches via the Settings screen. Assumes main screen.
-    private func setPaymentHintFlags(dueDate: Bool, schedule: Bool) {
+    /**
+     Toggles both payment-hint switches via the Settings screen. Assumes main screen.
+     */
+    private func setPaymentHintFlags(dueDate: Bool,
+                                     schedule: Bool) {
         mainScreen.configurationButton.tap()
         settingScreen.setPaymentHintFlags(dueDate: dueDate, schedule: schedule)
         settingScreen.closeButton.tap()
     }
 
-    /// Runs the Photopayment flow up to (but not through) the payment-hint sheet.
-    /// `offset` 0 → `invoice_future_due`, 1 → `invoice_no_due_date` (see file header).
-    private func runFlowToAnalysis(photoOffset: Int) {
+    /**
+     Runs the Photopayment flow up to (but not through) the payment-hint sheet.
+     `offset` 0 → `invoice_future_due`, 1 → `invoice_no_due_date`.
+     */
+    private func runFlowToAnalysis(fileName: String) {
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        captureScreen.uploadPhotoButton.tap()
-        mainScreen.handlePhotoPermission(answer: true)
-        uploadLatestPhotoFromGallery(offset: photoOffset)
-
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 15),
-                      "Process button should appear on the review screen")
-        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 10)
-        reviewScreen.processButton.tap()
+        // "Upload files" opens the Files-app picker (not the Photos picker), which is what
+        // `tapFileFromBestAvailableSource` expects — Files can be selected by exact name from
+        // BS Custom_Files or from the local On-My-iPhone GiniBankSDKExample folder.
+        captureScreen.uploadFilesButton.tap()
+        // Tap Due date document
+        mainScreen.tapFileFromBestAvailableSource(fileName: fileName)
+        // "Open" button appears on some iOS versions/flows; safe to skip if absent.
+        // Selecting a PDF here goes straight into Analysis — no ReviewViewController /
+        // Process button step (matches the Skonto Files flow in GiniSkontoScreenUITests).
+        if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
+            captureScreen.openGalleryButton.tap()
+        }
     }
 
     private var extractionDoneButton: XCUIElement { app.navigationBars.buttons["Done"] }
 
-    /// Confirms the results screen was reached and the SDK closes back to the host's main screen.
-    /// Between analysis completion and the results screen the SDK may present a Transaction Docs
-    /// alert (host + client both opt in, first run on that device). On BrowserStack the alert
-    /// always shows and would block the results screen; locally with a cold install it may not.
-    /// Dismiss it with the "only-for-this-transaction" choice if present, then tap the
-    /// results-screen Done button (`mainScreen.sendFeedbackButton`) to close the SDK, and assert
-    /// we're back on main.
-    ///
-    /// `waitForResults` bounds how long we allow between the caller's last step (tapping Process /
-    /// proceed) and the alert appearing — effectively covers the real Gini API extraction time.
+    /**
+     Confirms the SDK reached the results screen and closes back to the host's main screen.
+     Dismisses the Transaction Docs alert with "only for this transaction" if it appears
+     (BrowserStack always shows it on first run; local cold-installs may not).
+     `waitForResults` bounds the wait for the alert — covers real Gini API extraction time.
+     */
     private func assertExtractionReachesMainScreen(waitForResults: TimeInterval) {
         if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: waitForResults) {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
-        // Tap Send feedback and close
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5),
                       "Send feedback (Done) button should appear on the results screen")
         mainScreen.sendFeedbackButton.tap()
-        // Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5),
                       "Main screen (Photopayment button) should be reached after closing the SDK")
     }
@@ -140,7 +144,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testDueDateSheetAppearsWithDefaultThreshold() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForDueDateSheet(),
                       "Due Date Hint container should appear within 60 s")
@@ -153,7 +157,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testScheduleSheetAppearsWhenBothFlagsOn() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForScheduleSheet(),
                       "Schedule container should appear when both flags are on (schedule priority)")
@@ -164,7 +168,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testScheduleSheetAppearsWhenOnlyScheduleFlagOn() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: false, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForScheduleSheet(),
                       "Schedule container should appear when only schedule flag is on")
@@ -179,7 +183,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         let boundary = remainingDays()
         relaunchApp(thresholdOverride: boundary)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForDueDateSheet(),
                       "Due Date Hint sheet should appear at boundary (threshold == remainingDays = \(boundary))")
@@ -191,11 +195,11 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         try XCTSkipIf(isNearMidnight,
                       "Skipping below-threshold test within 30 min of midnight to avoid date-rollover flake")
 
-        // `isDueSoon(within: N)` fires when `daysUntilDue + 1 >= N`, so the largest firing
-        // threshold is `remainingDays + 1`. Use `remainingDays + 2` to sit strictly above it.
+        /// `isDueSoon(within: N)` fires when `daysUntilDue + 1 >= N`, so the largest firing
+        /// threshold is `remainingDays + 1`. Use `remainingDays + 2` to sit strictly above it.
         relaunchApp(thresholdOverride: remainingDays() + 2)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertFalse(paymentHintScreen.dueDateContainer.waitForExistence(timeout: 30),
                        "Due Date container should NOT appear when threshold exceeds remainingDays")
@@ -209,7 +213,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testFlagsOffProceedsDirectlyToExtraction() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: false, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertFalse(paymentHintScreen.dueDateContainer.waitForExistence(timeout: 30),
                        "Due Date container should NOT appear with both flags off")
@@ -223,7 +227,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testNoSheetWhenPaymentDueDateExtractionEmpty() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 1)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceNoDueDate)
 
         XCTAssertFalse(paymentHintScreen.dueDateContainer.waitForExistence(timeout: 30),
                        "Due Date container should NOT appear when extraction has no paymentDueDate")
@@ -237,7 +241,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testDueDateProceedAnywayContinuesToExtraction() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         let dueDateContainer = app.otherElements["paymentHint.dueDate.container"]
         XCTAssertTrue(dueDateContainer.waitForExistence(timeout: 10),
@@ -254,7 +258,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testDueDateCancelTransferReturnsToMain() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForDueDateSheet())
         paymentHintScreen.dueDateCancelButton.tap()
@@ -272,7 +276,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testScheduleCTAFiresScheduleCallback() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForScheduleSheet())
         paymentHintScreen.scheduleButton.tap()
@@ -289,7 +293,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testScheduleProceedAnywayContinuesToExtractionWithoutAlert() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         let scheduleContainer = app.otherElements["paymentHint.schedule.container"]
         XCTAssertTrue(scheduleContainer.waitForExistence(timeout: 10),
@@ -308,7 +312,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testBackdropTapDoesNotDismissDueDate() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForDueDateSheet())
 
@@ -326,7 +330,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     func testBackdropTapDoesNotDismissSchedule() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForScheduleSheet())
 
@@ -342,40 +346,55 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
 
     // MARK: - R12: Capture-suggestions banner suppressed while sheet is up
 
+    /// Localized titles of `CaptureSuggestionsView` (EN + DE). Kept in sync with
+    /// `ginicapture.analysis.suggestion.{1..5}` in `GiniCaptureSDK/Resources/*.lproj`.
+    private static let captureSuggestionTitles: [String] = [
+        "Good lighting", "Flatten the page", "Position in the frame", "Parallel", "Multiple pages",
+        "Gute Lichtverhältnisse", "Flach ausrichten", "Im Rahmen positionieren", "Mehrere Seiten"
+    ]
+
+    private func assertNoCaptureSuggestionHittable() {
+        for title in Self.captureSuggestionTitles {
+            XCTAssertFalse(app.staticTexts[title].isHittable,
+                           "Capture-suggestion \"\(title)\" must not be hittable while the sheet is up")
+        }
+    }
+
     func testCaptureSuggestionsSuppressedWhileDueDateSheetVisible() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
-        XCTAssertTrue(paymentHintScreen.waitForDueDateSheet())
-        /// The capture-suggestions banner appears after 4 s on the Analysis
-        /// screen; wait past that window before asserting non-presence.
+        XCTAssertTrue(paymentHintScreen.waitForDueDateSheet(),
+                      "Due Date sheet did not appear within 60 s of tapping Process. "
+                      + "Check that `invoice_future_due.jpeg` still extracts "
+                      + "`paymentDueDate = 2028-09-01` on this device/OS combo, and "
+                      + "that the `-paymentDueHintThresholdDaysOverride 5` launch arg "
+                      + "reached `GiniBankConfiguration.shared`.")
+        /// Banner appears after 4 s on Analysis; wait past that window.
         Thread.sleep(forTimeInterval: 5)
 
         XCTAssertTrue(paymentHintScreen.dueDateContainer.exists,
                       "Due Date container must still be up when this assertion runs")
-        let suggestions = app.otherElements
-            .matching(NSPredicate(format: "identifier CONTAINS[c] 'analysisHint'"))
-            .firstMatch
-        XCTAssertFalse(suggestions.isHittable,
-                       "Capture-suggestions banner must not be hittable while the Due Date sheet is up")
+        assertNoCaptureSuggestionHittable()
     }
 
     func testCaptureSuggestionsSuppressedWhileScheduleSheetVisible() throws {
         relaunchApp(thresholdOverride: 5)
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
-        XCTAssertTrue(paymentHintScreen.waitForScheduleSheet())
+        XCTAssertTrue(paymentHintScreen.waitForScheduleSheet(),
+                      "Schedule sheet did not appear within 60 s of tapping Process. "
+                      + "Check that `invoice_future_due.jpeg` still extracts "
+                      + "`paymentDueDate = 2028-09-01` on this device/OS combo, and "
+                      + "that the `-paymentDueHintThresholdDaysOverride 5` launch arg "
+                      + "reached `GiniBankConfiguration.shared`.")
         Thread.sleep(forTimeInterval: 5)
 
         XCTAssertTrue(paymentHintScreen.scheduleContainer.exists,
                       "Schedule container must still be up when this assertion runs")
-        let suggestions = app.otherElements
-            .matching(NSPredicate(format: "identifier CONTAINS[c] 'analysisHint'"))
-            .firstMatch
-        XCTAssertFalse(suggestions.isHittable,
-                       "Capture-suggestions banner must not be hittable while the Schedule sheet is up")
+        assertNoCaptureSuggestionHittable()
     }
 
     // MARK: - R13: Dynamic Type AXXXL does not truncate the sheet
@@ -388,11 +407,12 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         relaunch()
 
         setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForDueDateSheet())
         assertNoTruncation(container: paymentHintScreen.dueDateContainer,
                            title: paymentHintScreen.dueDateTitle,
+                           description: paymentHintScreen.dueDateDescription,
                            primary: paymentHintScreen.dueDateProceedButton,
                            secondary: paymentHintScreen.dueDateCancelButton)
     }
@@ -405,24 +425,29 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         relaunch()
 
         setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(photoOffset: 0)
+        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
 
         XCTAssertTrue(paymentHintScreen.waitForScheduleSheet())
         assertNoTruncation(container: paymentHintScreen.scheduleContainer,
                            title: paymentHintScreen.scheduleTitle,
+                           description: paymentHintScreen.scheduleDescription,
                            primary: paymentHintScreen.scheduleButton,
                            secondary: paymentHintScreen.scheduleProceedButton)
     }
 
+    /**
+     Asserts every sheet element stays in the a11y tree at AXXXL. Hittability
+     is intentionally not asserted — the sheet's `contentScrollView` overflows
+     by design at Accessibility sizes and requires scrolling.
+     */
     private func assertNoTruncation(container: XCUIElement,
                                     title: XCUIElement,
+                                    description: XCUIElement,
                                     primary: XCUIElement,
                                     secondary: XCUIElement) {
-        // At AXXXL the sheet's content overflows the viewport by design and requires scrolling.
-        // Verify that nothing is dropped from the accessibility tree — labels and both CTAs must
-        // be present. Hittability of the pinned CTAs depends on sheet detent behavior at large
-        // Dynamic Type sizes and is intentionally not asserted here.
+        XCTAssertTrue(container.exists, "Sheet container must exist at AXXXL")
         XCTAssertTrue(title.exists, "Title label must exist at AXXXL")
+        XCTAssertTrue(description.exists, "Description label must exist at AXXXL")
         XCTAssertTrue(primary.exists, "Primary button must exist at AXXXL")
         XCTAssertTrue(secondary.exists, "Secondary button must exist at AXXXL")
     }
@@ -431,19 +456,12 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
 // MARK: - XCUIElement helpers
 
 private extension XCUIElement {
-    /// Complement to `waitForExistence(timeout:)`; returns `true` if the element disappears in time.
+    /**
+     Complement to `waitForExistence(timeout:)` — returns `true` if the element disappears in time.
+     */
     func waitForNonExistence(timeout: TimeInterval) -> Bool {
         let gonePredicate = NSPredicate(format: "exists == false")
         let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: self)
-        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
-    }
-
-    /// Returns `true` once the element is hittable, polling up to `timeout`. Fast-paths when
-    /// already hittable so the common case is cheap.
-    func waitUntilHittable(timeout: TimeInterval) -> Bool {
-        if isHittable { return true }
-        let hittablePredicate = NSPredicate(format: "isHittable == true")
-        let expectation = XCTNSPredicateExpectation(predicate: hittablePredicate, object: self)
         return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
     }
 }

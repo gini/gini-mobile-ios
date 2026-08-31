@@ -50,22 +50,18 @@ class PaymentHintScreen {
     }
 
     /**
-     Wait for the Due Date Hint sheet to appear. Returns `true` when
-     `dueDateContainer` becomes visible within `timeout` seconds. Default 180 s
-     accommodates the Gini API extraction tail seen on some BS device slots.
+     Waits for the Due Date Hint sheet to appear. Default 60 s per PP-3302 R1.
      */
     @discardableResult
-    func waitForDueDateSheet(timeout: TimeInterval = 180) -> Bool {
+    func waitForDueDateSheet(timeout: TimeInterval = 60) -> Bool {
         dueDateContainer.waitForExistence(timeout: timeout)
     }
 
     /**
-     Wait for the Schedule Payment sheet to appear. Returns `true` when
-     `scheduleContainer` becomes visible within `timeout` seconds. Default 180 s
-     accommodates the Gini API extraction tail seen on some BS device slots.
+     Waits for the Schedule Payment sheet to appear. Default 60 s per PP-3302 R2.
      */
     @discardableResult
-    func waitForScheduleSheet(timeout: TimeInterval = 180) -> Bool {
+    func waitForScheduleSheet(timeout: TimeInterval = 60) -> Bool {
         scheduleContainer.waitForExistence(timeout: timeout)
     }
 }
