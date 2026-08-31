@@ -64,6 +64,12 @@ echo "  invoice_no_due_date.pdf:       $INVOICE_NO_DUE_DATE_URL"
 echo "  invoice_future_due.pdf:        $INVOICE_FUTURE_DUE_URL"
 
 # ── Trigger test run ───────────────────────────────────────────────────────────
+# Cover the latest iPhone on each currently-supported major iOS (17 / 18 / 26).
+# BS auto-picks the minor version from its pool.
+DEVICE_IPHONE_17_IOS_26="iPhone 17-26"
+DEVICE_IPHONE_16_IOS_18="iPhone 16-18"
+DEVICE_IPHONE_15_IOS_17="iPhone 15-17"
+
 echo ""
 echo "Triggering BrowserStack test run..."
 # --fail-with-body: exit non-zero on HTTP 4xx/5xx (print body first).
@@ -71,7 +77,7 @@ BUILD_RESPONSE=$(curl --fail-with-body -sS -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\"],
+    \"devices\": [\"$DEVICE_IPHONE_17_IOS_26\", \"$DEVICE_IPHONE_16_IOS_18\", \"$DEVICE_IPHONE_15_IOS_17\"],
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,

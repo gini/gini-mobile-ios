@@ -244,27 +244,28 @@ capture flow begins.
     `BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/Scripts/bs_run_payment_hint.sh`,
     then the script sources `bs_shared.sh`, calls `bs_build`, uploads
     the IPA and test runner via `bs_upload_app_and_suite`, uploads the
-    `invoice_future_due.jpeg` and `invoice_no_due_date.jpeg` fixtures
-    via `upload_media`, and triggers a BrowserStack build restricted
-    to `only-testing == ["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]`
-    on `$DEVICE_1`. The script exits non-zero on any curl failure or
-    missing `media_url`/`app_url`/`test_suite_url`, matching the error
+    `invoice_future_due.pdf` and `invoice_no_due_date.pdf` fixtures
+    via `upload_media` (with `custom_id` matching the exact file base
+    name so the fixtures appear in Files.app "Custom_Files" under
+    those names), and triggers a BrowserStack build restricted to
+    `only-testing == ["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]`
+    across three devices — `iPhone 17-26`, `iPhone 16-18`,
+    `iPhone 15-17` — with `singleRunnerInvocation: "true"`. The script
+    exits non-zero on any curl failure or missing
+    `media_url`/`app_url`/`test_suite_url`, matching the error
     contract in `bs_shared.sh`.
 
 16. **R15 (SHOULD, async — no flaky tests left enabled):** Given the
     new tests are merged onto `release/GiniBankSDK-4.5`, when
     `bs_run_payment_hint.sh` is executed 5 times against the same
     commit, then every test in `PaymentHintFlowUITests` passes on
-    `$DEVICE_1` (iPhone 17-26) in every run (no `.disabled` or
-    `.skip` annotations left in the file, no unrelated `XCTSkipIf`
-    on the happy paths — only the R3/R4 midnight-skip guards are
-    permitted). `$DEVICE_2` (iPhone 16-18.x) coverage is deferred:
-    that BS pool consistently hit Gini API extraction latency spikes
-    and session timeouts unrelated to the SDK. Re-enable once the
-    slot's stability improves. Any case that cannot meet the
-    single-device bar is deleted from this PR and refiled as a
-    follow-up ticket — an enabled flaky test would violate the
-    ticket's second AC.
+    every device in the matrix (iPhone 17-26, iPhone 16-18,
+    iPhone 15-17) — no `.disabled` or `.skip` annotations left in
+    the file, no unrelated `XCTSkipIf` on the happy paths, only the
+    R3/R4 midnight-skip guards are permitted. Any case that cannot
+    meet this bar is deleted from this PR and refiled as a follow-up
+    ticket — an enabled flaky test would violate the ticket's second
+    AC.
 
 ## Affected modules
 
@@ -497,15 +498,18 @@ TestFixtures.Files.invoiceFutureDue)`.
 **Fixtures reused from Android PP-3301** (single source of truth
 across platforms; identical backend guarantees identical extraction):
 
-- `invoice_future_due.jpeg` (182 KB) — anonymized synthetic invoice
+- `invoice_future_due.pdf` (~186 KB) — anonymized synthetic invoice
   that extracts `paymentDueDate = 2028-09-01` and `paymentState =
   ToBePaid`. Validated against the real Gini API on 2026-08-17 with
-  the `gini-mobile-test` client. Source:
-  `gini-mobile-android@release/bank-sdk-4.5:bank-sdk/example-app/src/androidTest/assets/invoice_future_due.jpeg`.
-- `invoice_no_due_date.jpeg` (168 KB) — anonymized synthetic
+  the `gini-mobile-test` client. Wrapped from the Android PP-3301
+  JPEG source (`gini-mobile-android@release/bank-sdk-4.5:bank-sdk/
+  example-app/src/androidTest/assets/invoice_future_due.jpeg`) into
+  PDF so BrowserStack's `uploadMedia` surfaces it in Files.app
+  Custom_Files; extraction is unchanged.
+- `invoice_no_due_date.pdf` (~172 KB) — anonymized synthetic
   invoice that extracts **no** `paymentDueDate` (still `paymentState
-  = ToBePaid`). Source:
-  `gini-mobile-android@release/bank-sdk-4.5:bank-sdk/example-app/src/androidTest/assets/invoice_no_due_date.jpeg`.
+  = ToBePaid`). Same PDF-wrap of the Android source
+  `invoice_no_due_date.jpeg`.
 
 Both fixtures are downloaded into
 `BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS/`.
@@ -572,17 +576,22 @@ modeled 1:1 on `bs_run_smoke_tests.sh:1-77`. Differences:
 
 - `ONLY_TESTING = '["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]'`
 - `buildName = "Payment Hints PP-3302"`
-- Uploads two media files:
-  `SAMPLES_DIR/invoice_no_due_date.jpeg` and
-  `SAMPLES_DIR/invoice_future_due.jpeg`. Upload order defines the
-  gallery offset the tests select — `invoice_no_due_date` first
-  (offset 1, used by R6), `invoice_future_due` second (offset 0, used
-  by R1–R5 and R7–R13). See `PaymentHintFlowUITests.swift` header.
-- Runs on `[\"$DEVICE_1\"]` (iPhone 17-26 only). The `$DEVICE_2`
-  (iPhone 16-18.x) pool was evaluated and dropped — it consistently
-  hit Gini API extraction latency spikes and session timeouts
-  unrelated to the SDK. Re-enable once BS pool stability for that
-  slot improves.
+- `singleRunnerInvocation = "true"` — one `xcodebuild` invocation
+  covers the whole class per device, avoiding per-test setup overhead.
+- Uploads two PDF fixtures:
+  `SAMPLES_DIR/invoice_no_due_date.pdf` and
+  `SAMPLES_DIR/invoice_future_due.pdf`. PDFs are used (not JPEGs)
+  because BrowserStack surfaces PDF `uploadMedia` files in Files.app
+  "Custom_Files" — the tests select them by exact file name via
+  `MainScreen.tapFileFromBestAvailableSource(fileName:)`. Each
+  `upload_media` call passes the base name as `custom_id` so the
+  display name in Custom_Files matches what the tests search for. No
+  gallery-offset semantics.
+- Runs across the latest iPhone on each currently-supported iOS
+  major:
+  `[\"iPhone 17-26\", \"iPhone 16-18\", \"iPhone 15-17\"]`. BS
+  parallel cap is 2, so 2 devices run concurrently and the third
+  queues.
 
 Small update to `bs_shared.sh:33-41`: add
 `bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;` to the case
@@ -742,14 +751,14 @@ statement so build artifacts get a meaningful label.
 ## Open questions
 
 1. **~~Fixture validation~~ — RESOLVED.** Reused Android
-   PP-3301's `invoice_future_due.jpeg` fixture (already validated
+   PP-3301's `invoice_future_due.pdf` fixture (already validated
    against the real Gini API on 2026-08-17 with the
    `gini-mobile-test` client). `FIXTURE_DUE_DATE = 2028-09-01`,
    `paymentState = ToBePaid`. Same backend guarantees identical
    extraction on iOS.
 
 2. **~~Empty-`paymentDueDate` fixture~~ — RESOLVED.** Reused
-   Android PP-3301's `invoice_no_due_date.jpeg` fixture (validated
+   Android PP-3301's `invoice_no_due_date.pdf` fixture (validated
    as extracting *without* `paymentDueDate` on 2026-08-17). R6 is
    in scope with this fixture.
 
@@ -766,7 +775,7 @@ statement so build artifacts get a meaningful label.
 ## Implementation plan
 
 - [x] 1. Download Android fixtures into iOS repo
-      (`invoice_future_due.jpeg`, `invoice_no_due_date.jpeg` into
+      (`invoice_future_due.pdf`, `invoice_no_due_date.pdf` into
       `TestSamples/TestSamplesForBS/`).
       Blocks every test-writing step. (R1–R6)
 - [x] 2. **SDK:** widen access on two subview declarations in
