@@ -52,6 +52,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var manuallyCreatedDocument: Document?
 	private var extractedResults: [Extraction] = []
     private var enablePinningSDK: Bool = false
+    /**
+     Retains the UI-test mock backend for scenario-driven mock-backend runs.
+     */
+    private var uiTestMockBackend: UITestMockBackend?
 
 	// {extraction name} : {entity name}
 	private let editableSpecificExtractions = ["paymentRecipient" : "companyname",
@@ -82,7 +86,18 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     func start() {
         let viewController: UIViewController
 
-        if enablePinningSDK {
+        if let mockBackend = UITestMockBackend.fromLaunchArguments() {
+            // UI-test mock backend: custom networking with a scenario-selected canned
+            // analysis outcome and launch-argument-controlled client configuration flags.
+            uiTestMockBackend = mockBackend
+            viewController = GiniBank.viewController(importedDocuments: visionDocuments,
+                                                     configuration: configuration,
+                                                     resultsDelegate: self,
+                                                     documentMetadata: documentMetadata,
+                                                     trackingDelegate: trackingDelegate,
+                                                     networkingService: mockBackend,
+                                                     configurationService: mockBackend)
+        } else if enablePinningSDK {
             // Screen API with default networking with Pinning certificates
             // In order to be able to test with pinning, please comment the initialization of `viewController` above
             // and uncomment the following code snippet.

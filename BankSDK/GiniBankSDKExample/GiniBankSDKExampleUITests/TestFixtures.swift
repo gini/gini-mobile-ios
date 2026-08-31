@@ -63,6 +63,12 @@ enum TestFixtures {
         /// Invoice with an expired Skonto discount date.
         static let skontoPast = "skonto_past"
 
+        // MARK: Credit Note
+
+        /// Credit note document — the backend classifies it as `businessDocType == "creditnote"`,
+        /// which triggers the Credit Note Warning bottom sheet.
+        static let creditNote = "credit_note"
+
         // MARK: Return Assistant
 
         /// Invoice with line items that trigger the Return Assistant flow.

@@ -55,9 +55,10 @@ class ReturnAssistantScreen {
         default:
             fatalError("Locale \(locale) is not supported")
         }
-        nameTextField = app.textFields.element(boundBy: 2)
-        priceTextField = app.textFields.element(boundBy: 3)
-        quantityTextField = app.textFields.element(boundBy: 4)
-        
+        /// Identifier-driven (set in the SDK's EditLineItemView components) — positional
+        /// indices broke whenever a hierarchy change shifted the text field order.
+        nameTextField = app.textFields[EditLineItemAccessibilityIdentifiers.nameTextField.rawValue]
+        priceTextField = app.textFields[EditLineItemAccessibilityIdentifiers.priceTextField.rawValue]
+        quantityTextField = app.textFields[EditLineItemAccessibilityIdentifiers.quantityTextField.rawValue]
     }
 }

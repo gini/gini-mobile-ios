@@ -379,7 +379,7 @@ class GiniCXCaptureFlowTests: GiniBankSDKExampleUITests {
         XCTAssertFalse(transactionSummaryScreen.doneButton.exists,
                        "Transfer Summary should not appear when there are no CX extractions.")
 
-        noResultsScreen.backToCameraButton.tap()
+        noResultsScreen.goBackToCamera()
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10),
                       "Camera capture screen should appear after tapping Back to camera from No-Results.")
     }
@@ -408,7 +408,7 @@ class GiniCXCaptureFlowTests: GiniBankSDKExampleUITests {
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30),
                       "No-Results screen should be shown when CX analysis returns no crossBorderPayment extractions.")
 
-        noResultsScreen.backToCameraButton.tap()
+        noResultsScreen.goBackToCamera()
 
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 10),
                       "Camera capture screen should appear after tapping Back to camera from No-Results.")

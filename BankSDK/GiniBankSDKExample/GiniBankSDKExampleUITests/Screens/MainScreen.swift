@@ -164,18 +164,25 @@ class MainScreen {
         
     }
     
+    /**
+     Clears a text field's content, leaving the field focused so callers can type
+     the replacement text directly. Focuses the field with a tap, moves the cursor
+     to the end of the text, then deletes the current value — the previous
+     long-press approach opened the edit context menu and lost keyboard focus.
+     - Parameters:
+       - element: The text field to clear.
+     */
     func clearInputField(element: XCUIElement) {
-
         guard let stringValue = element.value as? String else {
             XCTFail("Tried to clear non string value")
             return
         }
-        let lowerRightCorner = element.coordinate(withNormalizedOffset: CGVectorMake(0.9, 0.9))
-        lowerRightCorner.press(forDuration: 2)
-        
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "Text field to clear not found")
+        /// Focus the field, then place the cursor after the last character.
+        element.tap()
+        element.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        guard !stringValue.isEmpty else { return }
         let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-        element.typeText(deleteString)
-        lowerRightCorner.tap()
         element.typeText(deleteString)
     }
     
