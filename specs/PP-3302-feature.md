@@ -224,6 +224,16 @@ capture flow begins.
     such element is `isHittable`. Same assertion for R2's schedule
     sheet.
 
+    > **Automation deferred.** The `PaymentHintFlowUITests` suite imports
+    > PDFs (Files.app → Custom_Files) and `AnalysisViewController` only
+    > creates `CaptureSuggestionsView` for `GiniImageDocument`, so the
+    > banner never appears via this flow and the assertion would pass
+    > vacuously. Additionally, the SDK does not attach a stable
+    > accessibility identifier to the suggestions container. R12 remains
+    > covered by manual test; automation requires (a) a stable identifier
+    > on the suggestions container and (b) an image-import path in the
+    > fixture pipeline. Tracked as a follow-up.
+
 **Accessibility**
 
 14. **R13 (MUST, happy — Dynamic Type largest AX size):** Given the
@@ -624,13 +634,13 @@ statement so build artifacts get a meaningful label.
   | `testScheduleProceedAnywayContinuesToExtractionWithoutAlert` | R10 |
   | `testBackdropTapDoesNotDismissDueDate` | R11 (Due Date) |
   | `testBackdropTapDoesNotDismissSchedule` | R11 (Schedule) |
-  | `testCaptureSuggestionsSuppressedWhileDueDateSheetVisible` | R12 (Due Date) |
-  | `testCaptureSuggestionsSuppressedWhileScheduleSheetVisible` | R12 (Schedule) |
+  | *(R12 automation deferred — see requirement note)* | R12 |
   | `testAXXXLDoesNotTruncateDueDateSheet` | R13 (Due Date) |
   | `testAXXXLDoesNotTruncateScheduleSheet` | R13 (Schedule) |
 
-  Actual method count: **17** (R6 is conditional — 16 if the empty-
-  due-date fixture cannot be confirmed). Justification for count > 12:
+  Actual method count: **15** (R6 is conditional — 14 if the empty-
+  due-date fixture cannot be confirmed). R12 is manual-only for now
+  (see the requirement note in R12). Justification for count > 12:
   each requirement pins a distinct observable behavior on real
   hardware and cannot be collapsed — R7/R10 look similar but cover
   different sheet states and different negative assertions; the R11

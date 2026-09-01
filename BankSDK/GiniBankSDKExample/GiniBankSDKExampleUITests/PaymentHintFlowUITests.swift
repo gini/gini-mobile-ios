@@ -11,11 +11,14 @@ import XCTest
  BrowserStack UI-automation for the payment-hint bottom sheet — see
  `specs/PP-3302-feature.md` for the requirement→test mapping.
 
- Fixtures (shared 1:1 with Android PP-3301, uploaded by `Scripts/bs_run_payment_hint.sh`):
- `invoice_future_due.jpeg` (offset 0) → `paymentDueDate = 2028-09-01`;
- `invoice_no_due_date.jpeg` (offset 1) → no `paymentDueDate`. Regenerate
- from `gini-mobile-android@release/bank-sdk-4.5` before mid-2028 and
- update `FIXTURE_DUE_DATE`.
+ Fixtures (shared 1:1 with Android PP-3301, uploaded by `Scripts/bs_run_payment_hint.sh`
+ as PDFs so they land in Files.app "Custom_Files" and can be selected by
+ `MainScreen.tapFileFromBestAvailableSource(fileName:)`):
+ `invoice_future_due.pdf` → `paymentDueDate = 2028-09-01`;
+ `invoice_no_due_date.pdf` → no `paymentDueDate`. The PDFs are wrapped from the
+ Android JPEG sources; extraction is unchanged. Regenerate from
+ `gini-mobile-android@release/bank-sdk-4.5` before mid-2028 and update
+ `FIXTURE_DUE_DATE`.
 
  Show / no-show cases are driven by varying `-paymentDueHintThresholdDaysOverride`,
  not by refreshing the invoice.
@@ -25,7 +28,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     // MARK: - Fixture
 
     /**
-     Encoded on `invoice_future_due.jpeg` — validated against the real Gini API 2026-08-17.
+     Encoded on `invoice_future_due.pdf` — validated against the real Gini API 2026-08-17.
      Parses in the device's default timezone so `remainingDays()` matches the SDK's
      `Date.isDueSoon(within:)` on UTC-configured BS devices.
      */
@@ -98,8 +101,11 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     }
 
     /**
-     Runs the Photopayment flow up to (but not through) the payment-hint sheet.
-     `offset` 0 → `invoice_future_due`, 1 → `invoice_no_due_date`.
+     Runs the Photopayment flow up to (but not through) the payment-hint sheet by
+     importing a PDF from Files.app. `fileName` is looked up by exact-name substring
+     in Files.app "Custom_Files" (BS) or On-My-iPhone → GiniBankSDKExample (local).
+     Selecting the PDF advances straight to analysis — no ReviewViewController /
+     Process button step.
      */
     private func runFlowToAnalysis(fileName: String) {
         mainScreen.photoPaymentButton.tap()
@@ -344,58 +350,16 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
                       "Schedule container should still be visible 3 s after a backdrop tap")
     }
 
-    // MARK: - R12: Capture-suggestions banner suppressed while sheet is up
-
-    /// Localized titles of `CaptureSuggestionsView` (EN + DE). Kept in sync with
-    /// `ginicapture.analysis.suggestion.{1..5}` in `GiniCaptureSDK/Resources/*.lproj`.
-    private static let captureSuggestionTitles: [String] = [
-        "Good lighting", "Flatten the page", "Position in the frame", "Parallel", "Multiple pages",
-        "Gute Lichtverhältnisse", "Flach ausrichten", "Im Rahmen positionieren", "Mehrere Seiten"
-    ]
-
-    private func assertNoCaptureSuggestionHittable() {
-        for title in Self.captureSuggestionTitles {
-            XCTAssertFalse(app.staticTexts[title].isHittable,
-                           "Capture-suggestion \"\(title)\" must not be hittable while the sheet is up")
-        }
-    }
-
-    func testCaptureSuggestionsSuppressedWhileDueDateSheetVisible() throws {
-        relaunchApp(thresholdOverride: 5)
-        setPaymentHintFlags(dueDate: true, schedule: false)
-        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
-
-        XCTAssertTrue(paymentHintScreen.waitForDueDateSheet(),
-                      "Due Date sheet did not appear within 60 s of tapping Process. "
-                      + "Check that `invoice_future_due.jpeg` still extracts "
-                      + "`paymentDueDate = 2028-09-01` on this device/OS combo, and "
-                      + "that the `-paymentDueHintThresholdDaysOverride 5` launch arg "
-                      + "reached `GiniBankConfiguration.shared`.")
-        /// Banner appears after 4 s on Analysis; wait past that window.
-        Thread.sleep(forTimeInterval: 5)
-
-        XCTAssertTrue(paymentHintScreen.dueDateContainer.exists,
-                      "Due Date container must still be up when this assertion runs")
-        assertNoCaptureSuggestionHittable()
-    }
-
-    func testCaptureSuggestionsSuppressedWhileScheduleSheetVisible() throws {
-        relaunchApp(thresholdOverride: 5)
-        setPaymentHintFlags(dueDate: true, schedule: true)
-        runFlowToAnalysis(fileName: TestFixtures.Files.invoiceFutureDue)
-
-        XCTAssertTrue(paymentHintScreen.waitForScheduleSheet(),
-                      "Schedule sheet did not appear within 60 s of tapping Process. "
-                      + "Check that `invoice_future_due.jpeg` still extracts "
-                      + "`paymentDueDate = 2028-09-01` on this device/OS combo, and "
-                      + "that the `-paymentDueHintThresholdDaysOverride 5` launch arg "
-                      + "reached `GiniBankConfiguration.shared`.")
-        Thread.sleep(forTimeInterval: 5)
-
-        XCTAssertTrue(paymentHintScreen.scheduleContainer.exists,
-                      "Schedule container must still be up when this assertion runs")
-        assertNoCaptureSuggestionHittable()
-    }
+    // MARK: - R12: Capture-suggestions banner suppression — descoped
+    //
+    // The two `testCaptureSuggestions…` tests were removed. They could not verify R12
+    // through this flow: (1) `CaptureSuggestionsView` is only created when
+    // `document is GiniImageDocument` (`AnalysisViewController.swift:161-163`), and
+    // this suite imports PDFs; (2) the SDK does not attach a stable accessibility
+    // identifier to the suggestions container, so any XCUIElement query would match
+    // nothing and pass vacuously. R12 remains covered by manual test until an
+    // image-import fixture path and a stable identifier are added — tracked as a
+    // follow-up.
 
     // MARK: - R13: Dynamic Type AXXXL does not truncate the sheet
 
