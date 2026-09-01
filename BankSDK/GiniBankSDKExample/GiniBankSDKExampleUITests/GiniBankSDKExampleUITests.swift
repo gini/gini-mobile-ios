@@ -27,18 +27,27 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
-    /// Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
+
+    /**
+     Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
+     */
     var additionalLaunchArguments: [String] { [] }
 
-    /// Per-test launch args. Assign before `relaunch()`; cleared in tearDown.
+    /**
+     Per-test launch args. Assign before `relaunch()`; cleared in tearDown.
+     */
     var extraLaunchArguments: [String] = []
 
-    /// Base + class-level + per-test.
+    /**
+     Base + class-level + per-test launch arguments.
+     */
     private var currentLaunchArguments: [String] {
         ["-StartFromCleanState", "YES"] + additionalLaunchArguments + extraLaunchArguments
     }
 
-    /// Terminate + launch with `currentLaunchArguments`.
+    /**
+     Terminates the app and re-launches it with `currentLaunchArguments`.
+     */
     func relaunch() {
         app.terminate()
         app.launchArguments = currentLaunchArguments
@@ -108,8 +117,10 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    /// Picker's confirm button — text "Done"/"Fertig" on iOS < 26, checkmark on iOS 26+.
-    /// Tries nav-bar first, then any button, across known labels. `\u{0010}Done` legacy included.
+    /**
+     Picker's confirm button — text "Done"/"Fertig" on iOS < 26, checkmark on iOS 26+.
+     Tries nav-bar first, then any button, across known labels. `\u{0010}Done` legacy included.
+     */
     func galleryConfirmButton() -> XCUIElement? {
         let candidates = ["\u{0010}Done", "Done", "Fertig", "Choose", "Auswählen", "checkmark"]
         for label in candidates {
@@ -138,14 +149,17 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    /// Copies all PDFs from TestSamples/TestSamplesForBS/ into the tested app's Documents folder,
-    /// so the Files picker in UI tests can select them under "On My iPhone → GiniBankSDKExample".
-    ///
-    /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
-    ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
-    /// Going one level up reaches the shared Application/ directory where all app containers
-    /// for this test device live — including the tested app's container, which we identify by
-    /// its MCMMetadataIdentifier plist entry.
+    /**
+     Copies all PDFs from `TestSamples/TestSamplesForBS/` into the tested app's `Documents/`
+     folder, so the Files picker in UI tests can select them under
+     "On My iPhone → GiniBankSDKExample".
+
+     Xcode 15+ runs the test runner inside `XCTestDevices`, so `NSHomeDirectory()` returns
+     `.../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}`. Going one
+     level up reaches the shared `Application/` directory where all app containers for this
+     test device live — including the tested app's container, which we identify by its
+     `MCMMetadataIdentifier` plist entry.
+     */
     private func copyFixturesToSimulator() {
         let fileManager = FileManager.default
 

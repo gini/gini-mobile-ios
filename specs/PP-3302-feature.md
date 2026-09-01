@@ -680,11 +680,12 @@ statement so build artifacts get a meaningful label.
   devices.
 - **R15:** operator re-runs the same script four more times against
   the same commit (5 runs total) before merging. All tests must pass
-  on both `DEVICE_1` and `DEVICE_2` in every run (except R3/R4 tests
-  that legitimately skipped near local midnight — those count as
-  passes). Any method that flakes across the 5 runs is deleted from
-  this PR before merge (or removed + refiled as follow-up — the
-  ticket's AC forbids merging enabled flaky tests).
+  on every device in the matrix (`iPhone 17-26`, `iPhone 16-18`,
+  `iPhone 15-17`) in every run (except R3/R4 tests that legitimately
+  skipped near local midnight — those count as passes). Any method
+  that flakes across the 5 runs is deleted from this PR before merge
+  (or removed + refiled as follow-up — the ticket's AC forbids
+  merging enabled flaky tests).
 
 ### Not tested
 
@@ -738,9 +739,9 @@ statement so build artifacts get a meaningful label.
 - **Fixture-refresh automation.** With the threshold-override
   strategy, `sepa_due_date` never needs periodic refresh — its date
   only matters as long as it stays in the future (many years for a
-  mid-decade-target fixture). A one-time regeneration during
-  /gini-build if the current fixture encodes an inadequate date is
-  in scope; recurring automated refresh is not.
+  mid-decade-target fixture). A one-time regeneration is in scope
+  only if the current fixture encodes an inadequate date; recurring
+  automated refresh is not.
 - **Mocking `paymentDueDate` via a Charles-style proxy** or an
   extraction-injection seam. Rejected — the threshold override
   achieves the same test flexibility without adding an SDK test

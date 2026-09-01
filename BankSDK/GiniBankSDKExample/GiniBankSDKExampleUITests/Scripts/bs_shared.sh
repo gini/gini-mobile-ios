@@ -48,7 +48,7 @@ DEVICE_1="iPhone 17-26"
 DEVICE_2="iPhone 16-18"
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-BS_PROJECT="GiniBankSDK-iOS-PaymentHints-4.5.0"
+BS_PROJECT="GiniBankSDK-LiquidGlass-4.3.0"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a

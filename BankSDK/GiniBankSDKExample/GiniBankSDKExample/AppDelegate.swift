@@ -21,9 +21,9 @@ import Firebase
 #if DEBUG
         applyUITestCleanStateLaunchArguments()
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil { return true }
-        // UI tests: XCTestConfigurationFilePath isn't set in the app-under-test process, so
-        // reuse -StartFromCleanState to skip Firebase — committed GoogleService-Info.plist
-        // has API_KEY="" and would trip FIRInstallations validateAPIKey: on launch.
+        /// UI tests: `XCTestConfigurationFilePath` isn't set in the app-under-test process, so
+        /// reuse `-StartFromCleanState` to skip Firebase — the committed `GoogleService-Info.plist`
+        /// has `API_KEY=""` and would trip `FIRInstallations validateAPIKey:` on launch.
         let skipFirebase = CommandLine.arguments.contains("-StartFromCleanState")
 #else
         let skipFirebase = false
