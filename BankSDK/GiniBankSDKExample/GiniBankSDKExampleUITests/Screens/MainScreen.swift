@@ -195,7 +195,7 @@ class MainScreen {
 
         // Open the app folder.
         let appFolder = app.staticTexts["GiniBankSDKExample"].firstMatch
-        XCTAssertTrue(appFolder.waitForExistence(timeout: 10),
+        XCTAssertTrue(appFolder.waitForExistence(timeout: 5),
                       "GiniBankSDKExample folder not found. Ensure PDFs exist in GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS.")
         appFolder.tap()
 
