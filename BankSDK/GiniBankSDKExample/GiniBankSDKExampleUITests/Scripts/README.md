@@ -135,10 +135,14 @@ Regenerate before mid-2028 by pulling the current generator scripts from the And
 re-wrapping with `sips -s format pdf <in.jpeg> --out <out.pdf>`, then update `FIXTURE_DUE_DATE`
 in `PaymentHintFlowUITests.swift`.
 
-The script targets **three devices** (latest iPhone on each currently-supported iOS major):
-`iPhone 17-26`, `iPhone 16-18`, `iPhone 15-17`. BS parallel cap is 2, so 2 devices run
-concurrently and the third queues. `singleRunnerInvocation: "true"` keeps the per-test
-setup overhead paid once.
+The script targets **two devices** (latest iPhone on each iOS major we can run on BS today):
+`iPhone 17-26` and `iPhone 16-18`. Both run in parallel under the BS 2-slot cap.
+`singleRunnerInvocation: "true"` keeps the per-test setup overhead paid once.
+
+iOS 17 was evaluated (`iPhone 15-17`) and excluded — an XCUITest runner built with Xcode 26
+references `_OBJC_CLASS_$_XCTCommandLineToolHelper`, which iOS 17.x devices' XCTest doesn't
+export, so the runner crashes at launch before any test executes. Re-add once we can build
+with an SDK compatible with iOS 17's XCTest.
 
 ---
 

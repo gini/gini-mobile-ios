@@ -112,18 +112,39 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
-        // "Upload files" opens the Files-app picker (not the Photos picker), which is what
-        // `tapFileFromBestAvailableSource` expects — Files can be selected by exact name from
-        // BS Custom_Files or from the local On-My-iPhone GiniBankSDKExample folder.
+        /// "Upload files" opens the Files-app picker (not the Photos picker), which is what
+        /// `tapFileFromBestAvailableSource` expects — Files can be selected by exact name from
+        /// BS Custom_Files or from the local On-My-iPhone GiniBankSDKExample folder.
         captureScreen.uploadFilesButton.tap()
-        // Tap Due date document
+        /// Tap Due date document.
         mainScreen.tapFileFromBestAvailableSource(fileName: fileName)
-        // "Open" button appears on some iOS versions/flows; safe to skip if absent.
-        // Selecting a PDF here goes straight into Analysis — no ReviewViewController /
-        // Process button step (matches the Skonto Files flow in GiniSkontoScreenUITests).
+        /// "Open" button appears on some iOS versions/flows; safe to skip if absent.
+        /// Selecting a PDF here goes straight into Analysis — no ReviewViewController /
+        /// Process button step (matches the Skonto Files flow in GiniSkontoScreenUITests).
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
         }
+    }
+
+    /**
+     Runs the Photopayment flow via the Photos-picker path, picking the most-recently-uploaded
+     image (`offset: 0` → `invoice_future_due.jpeg`). Complements `runFlowToAnalysis(fileName:)`,
+     which uses Files.app. Used by the one gallery-smoke test that keeps the Photos code path
+     exercised end-to-end without duplicating every R1–R13 scenario.
+     */
+    private func runFlowToAnalysisViaGallery() {
+        mainScreen.photoPaymentButton.tap()
+        mainScreen.handleCameraPermission(answer: true)
+        onboadingScreen.skipOnboardingScreens()
+        captureScreen.filesButton.tap()
+        captureScreen.uploadPhotoButton.tap()
+        mainScreen.handlePhotoPermission(answer: true)
+        uploadLatestPhotoFromGallery(offset: 0)
+
+        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 60),
+                      "Process button should appear on the review screen (gallery path)")
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton, timeout: 15)
+        reviewScreen.processButton.tap()
     }
 
     private var extractionDoneButton: XCUIElement { app.navigationBars.buttons["Done"] }
@@ -414,6 +435,22 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(description.exists, "Description label must exist at AXXXL")
         XCTAssertTrue(primary.exists, "Primary button must exist at AXXXL")
         XCTAssertTrue(secondary.exists, "Secondary button must exist at AXXXL")
+    }
+
+    // MARK: - Gallery smoke — Photos-picker code path
+
+    /**
+     Verifies the Photos-picker + review-screen import path still reaches the payment-hint
+     sheet end-to-end. Not R1–R13 coverage — those already run via the Files.app path across
+     all 15 tests. This single smoke keeps the alternate import path from silently rotting.
+     */
+    func testDueDateSheetAppearsViaGallery() throws {
+        relaunchApp(thresholdOverride: 5)
+        setPaymentHintFlags(dueDate: true, schedule: false)
+        runFlowToAnalysisViaGallery()
+
+        XCTAssertTrue(paymentHintScreen.waitForDueDateSheet(),
+                      "Due Date Hint container should appear within 60 s (gallery path)")
     }
 }
 

@@ -259,21 +259,24 @@ capture flow begins.
     name so the fixtures appear in Files.app "Custom_Files" under
     those names), and triggers a BrowserStack build restricted to
     `only-testing == ["GiniBankSDKExampleUITests/PaymentHintFlowUITests"]`
-    across three devices — `iPhone 17-26`, `iPhone 16-18`,
-    `iPhone 15-17` — with `singleRunnerInvocation: "true"`. The script
-    exits non-zero on any curl failure or missing
-    `media_url`/`app_url`/`test_suite_url`, matching the error
-    contract in `bs_shared.sh`.
+    across the two-device matrix — `iPhone 17-26` and `iPhone 16-18`
+    — with `singleRunnerInvocation: "true"`. iOS 17 (`iPhone 15-17`)
+    is currently excluded: a runner built with Xcode 26 links against
+    an XCTest that references `_OBJC_CLASS_$_XCTCommandLineToolHelper`,
+    which iOS 17.x devices' XCTest doesn't export, so the runner
+    crashes at launch. The script exits non-zero on any curl failure
+    or missing `media_url`/`app_url`/`test_suite_url`, matching the
+    error contract in `bs_shared.sh`.
 
 16. **R15 (SHOULD, async — no flaky tests left enabled):** Given the
     new tests are merged onto `release/GiniBankSDK-4.5`, when
     `bs_run_payment_hint.sh` is executed 5 times against the same
     commit, then every test in `PaymentHintFlowUITests` passes on
-    every device in the matrix (iPhone 17-26, iPhone 16-18,
-    iPhone 15-17) — no `.disabled` or `.skip` annotations left in
-    the file, no unrelated `XCTSkipIf` on the happy paths, only the
-    R3/R4 midnight-skip guards are permitted. Any case that cannot
-    meet this bar is deleted from this PR and refiled as a follow-up
+    every device in the matrix (`iPhone 17-26`, `iPhone 16-18`) —
+    no `.disabled` or `.skip` annotations left in the file, no
+    unrelated `XCTSkipIf` on the happy paths, only the R3/R4
+    midnight-skip guards are permitted. Any case that cannot meet
+    this bar is deleted from this PR and refiled as a follow-up
     ticket — an enabled flaky test would violate the ticket's second
     AC.
 
@@ -597,11 +600,11 @@ modeled 1:1 on `bs_run_smoke_tests.sh:1-77`. Differences:
   `upload_media` call passes the base name as `custom_id` so the
   display name in Custom_Files matches what the tests search for. No
   gallery-offset semantics.
-- Runs across the latest iPhone on each currently-supported iOS
-  major:
-  `[\"iPhone 17-26\", \"iPhone 16-18\", \"iPhone 15-17\"]`. BS
-  parallel cap is 2, so 2 devices run concurrently and the third
-  queues.
+- Runs across the two-device matrix
+  `[\"iPhone 17-26\", \"iPhone 16-18\"]` — both run concurrently
+  under BS's 2-slot parallel cap. iOS 17 (`iPhone 15-17`) is
+  excluded due to an XCTest symbol mismatch (Xcode-26-built runner
+  vs iOS 17.x XCTest); tracked as a follow-up.
 
 Small update to `bs_shared.sh:33-41`: add
 `bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;` to the case
@@ -680,12 +683,12 @@ statement so build artifacts get a meaningful label.
   devices.
 - **R15:** operator re-runs the same script four more times against
   the same commit (5 runs total) before merging. All tests must pass
-  on every device in the matrix (`iPhone 17-26`, `iPhone 16-18`,
-  `iPhone 15-17`) in every run (except R3/R4 tests that legitimately
-  skipped near local midnight — those count as passes). Any method
-  that flakes across the 5 runs is deleted from this PR before merge
-  (or removed + refiled as follow-up — the ticket's AC forbids
-  merging enabled flaky tests).
+  on every device in the matrix (`iPhone 17-26`, `iPhone 16-18`) in
+  every run (except R3/R4 tests that legitimately skipped near local
+  midnight — those count as passes). Any method that flakes across
+  the 5 runs is deleted from this PR before merge (or removed +
+  refiled as follow-up — the ticket's AC forbids merging enabled
+  flaky tests).
 
 ### Not tested
 

@@ -277,6 +277,7 @@
 		28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */; };
 		28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B3 /* invoice_future_due.pdf */; };
 		28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B4 /* invoice_no_due_date.pdf */; };
+		28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B5 /* invoice_future_due.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -599,6 +600,7 @@
 		28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintFlowUITests.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B3 /* invoice_future_due.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_future_due.pdf; sourceTree = "<group>"; };
 		28C0330200000000000000B4 /* invoice_no_due_date.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_no_due_date.pdf; sourceTree = "<group>"; };
+		28C0330200000000000000B5 /* invoice_future_due.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice_future_due.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -926,6 +928,7 @@
 				28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */,
 				28C0330200000000000000B3 /* invoice_future_due.pdf */,
 				28C0330200000000000000B4 /* invoice_no_due_date.pdf */,
+				28C0330200000000000000B5 /* invoice_future_due.jpeg */,
 			);
 			path = TestSamplesForBS;
 			sourceTree = "<group>";
@@ -1734,6 +1737,7 @@
 				28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */,
 				28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */,
 				28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */,
+				28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
