@@ -84,19 +84,17 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
         let primaryButton: String
         let secondaryButton: String
 
-        static let dueDate = StateIdentifiers(
-            container: AccessibilityIdentifiers.DueDate.container,
-            title: AccessibilityIdentifiers.DueDate.title,
-            description: AccessibilityIdentifiers.DueDate.description,
-            primaryButton: AccessibilityIdentifiers.DueDate.proceedButton,
-            secondaryButton: AccessibilityIdentifiers.DueDate.cancelButton)
+        static let dueDate = StateIdentifiers(container: AccessibilityIdentifiers.DueDate.container,
+                                              title: AccessibilityIdentifiers.DueDate.title,
+                                              description: AccessibilityIdentifiers.DueDate.description,
+                                              primaryButton: AccessibilityIdentifiers.DueDate.proceedButton,
+                                              secondaryButton: AccessibilityIdentifiers.DueDate.cancelButton)
 
-        static let schedulePayment = StateIdentifiers(
-            container: AccessibilityIdentifiers.Schedule.container,
-            title: AccessibilityIdentifiers.Schedule.title,
-            description: AccessibilityIdentifiers.Schedule.description,
-            primaryButton: AccessibilityIdentifiers.Schedule.scheduleButton,
-            secondaryButton: AccessibilityIdentifiers.Schedule.proceedButton)
+        static let schedulePayment = StateIdentifiers(container: AccessibilityIdentifiers.Schedule.container,
+                                                      title: AccessibilityIdentifiers.Schedule.title,
+                                                      description: AccessibilityIdentifiers.Schedule.description,
+                                                      primaryButton: AccessibilityIdentifiers.Schedule.scheduleButton,
+                                                      secondaryButton: AccessibilityIdentifiers.Schedule.proceedButton)
     }
 
     private static func makeViewModels(for state: PaymentHintState) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {

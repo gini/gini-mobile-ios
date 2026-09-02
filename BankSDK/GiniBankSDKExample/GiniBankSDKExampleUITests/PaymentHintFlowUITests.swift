@@ -36,7 +36,10 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.date(from: "2028-09-01")!
+        guard let date = formatter.date(from: "2028-09-01") else {
+            preconditionFailure("FIXTURE_DUE_DATE literal must be a valid yyyy-MM-dd string")
+        }
+        return date
     }()
 
     /**

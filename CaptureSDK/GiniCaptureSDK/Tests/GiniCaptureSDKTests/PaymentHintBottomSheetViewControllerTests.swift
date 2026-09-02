@@ -78,11 +78,9 @@ struct PaymentHintDueDateStateTests {
 
     @Test("Container view carries the Due Date accessibility identifier")
     @MainActor func containerCarriesDueDateAccessibilityIdentifier() {
-        let sut = PaymentHintBottomSheetViewController(
-            state: .dueDate(formattedDueDate: "13.08.2026",
-                            onProceed: {},
-                            onCancel: {})
-        )
+        let sut = PaymentHintBottomSheetViewController(state: .dueDate(formattedDueDate: "13.08.2026",
+                                                                       onProceed: {},
+                                                                       onCancel: {}))
         _ = sut.view
         #expect(sut.view.accessibilityIdentifier == PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.container,
                 "Container view must carry the .dueDate container identifier")
@@ -90,11 +88,9 @@ struct PaymentHintDueDateStateTests {
 
     @Test("Title, description, primary and secondary carry Due Date identifiers")
     @MainActor func labelsAndButtonsCarryDueDateAccessibilityIdentifiers() {
-        let sut = PaymentHintBottomSheetViewController(
-            state: .dueDate(formattedDueDate: "13.08.2026",
-                            onProceed: {},
-                            onCancel: {})
-        )
+        let sut = PaymentHintBottomSheetViewController(state: .dueDate(formattedDueDate: "13.08.2026",
+                                                                       onProceed: {},
+                                                                       onCancel: {}))
         _ = sut.view
 
         let titleIDs = allLabels(in: sut.view).compactMap(\.accessibilityIdentifier)
@@ -217,11 +213,9 @@ struct PaymentHintScheduleStateTests {
 
     @Test("Container view carries the Schedule accessibility identifier")
     @MainActor func containerCarriesScheduleAccessibilityIdentifier() {
-        let sut = PaymentHintBottomSheetViewController(
-            state: .schedulePayment(formattedDueDate: "13.08.2026",
-                                    onSchedule: {},
-                                    onProceed: {})
-        )
+        let sut = PaymentHintBottomSheetViewController(state: .schedulePayment(formattedDueDate: "13.08.2026",
+                                                                               onSchedule: {},
+                                                                               onProceed: {}))
         _ = sut.view
         #expect(sut.view.accessibilityIdentifier == PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.container,
                 "Container view must carry the .schedulePayment container identifier")
@@ -229,11 +223,9 @@ struct PaymentHintScheduleStateTests {
 
     @Test("Title, description, primary and secondary carry Schedule identifiers")
     @MainActor func labelsAndButtonsCarryScheduleAccessibilityIdentifiers() {
-        let sut = PaymentHintBottomSheetViewController(
-            state: .schedulePayment(formattedDueDate: "13.08.2026",
-                                    onSchedule: {},
-                                    onProceed: {})
-        )
+        let sut = PaymentHintBottomSheetViewController(state: .schedulePayment(formattedDueDate: "13.08.2026",
+                                                                               onSchedule: {},
+                                                                               onProceed: {}))
         _ = sut.view
 
         let titleIDs = allLabels(in: sut.view).compactMap(\.accessibilityIdentifier)
