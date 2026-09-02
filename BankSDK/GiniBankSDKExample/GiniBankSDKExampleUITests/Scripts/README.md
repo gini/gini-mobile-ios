@@ -15,6 +15,7 @@ The original monolithic script has been split into scenario-focused scripts that
 | `bs_run_cx_no_results.sh` | `GiniCXNoResultsUITests`, `GiniReturnAssistantScreenUITests/testReturnAssistantBS`, `GiniSkontoScreenUITests` | `cx_no_results_invoice.pdf`, `skonto_past.pdf`, `return_asistant.pdf` |
 | `bs_run_ra.sh` | `GiniReturnAssistantScreenUITests/testReturnAssistantBS` | `return_asistant.pdf` |
 | `bs_run_skonto.sh` | `GiniSkontoScreenUITests` | `skonto_past.pdf`, `skonot_valid.pdf` |
+| `bs_run_payment_hint.sh` | `PaymentHintFlowUITests` — Due Date Hint + Schedule Payment bottom sheet | `invoice_no_due_date.pdf`, `invoice_future_due.pdf` |
 | `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 
 > ⚠️ `bs_run_cx_no_results.sh` and `bs_run_skonto.sh` require `GiniCXNoResultsUITests` and `GiniSkontoScreenUITests` to be updated to use `tapFileWithNameFromBSCustomFiles()` instead of `tapFileWithName()` before they will pass on BrowserStack.
@@ -64,6 +65,9 @@ Run from the `Scripts/` directory:
 
 # Skonto only (past + valid invoices)
 ./bs_run_skonto.sh
+
+# Payment-Hint bottom sheet — Due Date Hint + Schedule Payment
+./bs_run_payment_hint.sh
 ```
 
 ---
@@ -107,6 +111,38 @@ Upload order matters because `uploadLatestPhotoFromGallery()` picks by recency:
 |---|---|---|---|
 | 1st | `multi_page_invoice_CX_page1.png` | Second-to-last | `uploadLatestPhotoFromGallery(offset: 1)` |
 | 2nd | `multi_page_invoice_CX_page2.png` | Last (most recent) | `uploadLatestPhotoFromGallery(offset: 0)` |
+
+---
+
+## bs_run_payment_hint.sh — fixtures and device matrix
+
+Fixtures are uploaded as PDFs so BrowserStack surfaces them in Files.app "Custom_Files";
+`PaymentHintFlowUITests` selects each by exact filename via
+`MainScreen.tapFileFromBestAvailableSource(fileName:)` — no gallery-offset semantics.
+
+| File | Used by |
+|---|---|
+| `invoice_no_due_date.pdf` | R6 only (`testNoSheetWhenPaymentDueDateExtractionEmpty`) |
+| `invoice_future_due.pdf`  | R1–R5, R7–R13 |
+
+Both PDFs are wrapped from the Android JPEG sources
+(`gini-mobile-android@release/bank-sdk-4.5:bank-sdk/example-app/src/androidTest/assets/`);
+the Gini API extraction is unchanged:
+- `invoice_future_due.pdf` extracts `paymentDueDate = 2028-09-01`, `paymentState = ToBePaid`.
+- `invoice_no_due_date.pdf` extracts no `paymentDueDate`.
+
+Regenerate before mid-2028 by pulling the current generator scripts from the Android repo and
+re-wrapping with `sips -s format pdf <in.jpeg> --out <out.pdf>`, then update `FIXTURE_DUE_DATE`
+in `PaymentHintFlowUITests.swift`.
+
+The script targets **two devices** (latest iPhone on each iOS major we can run on BS today):
+`iPhone 17-26` and `iPhone 16-18`. Both run in parallel under the BS 2-slot cap.
+`singleRunnerInvocation: "true"` keeps the per-test setup overhead paid once.
+
+iOS 17 was evaluated (`iPhone 15-17`) and excluded — an XCUITest runner built with Xcode 26
+references `_OBJC_CLASS_$_XCTCommandLineToolHelper`, which iOS 17.x devices' XCTest doesn't
+export, so the runner crashes at launch before any test executes. Re-add once we can build
+with an SDK compatible with iOS 17's XCTest.
 
 ---
 

@@ -13,4 +13,6 @@ public enum SettingScreenAccessibilityIdentifiers: String {
     case multiPageSwitch = "multipageSwitch"
     case flashToggleSwitch = "flashToggleSwitchIdentifier"
     case productTagSegmentedControl = "productTagSegmentedControlIdentifier"
+    case paymentDueHintSwitch = "paymentDueHintSwitchIdentifier"
+    case paymentScheduleHintSwitch = "paymentScheduleHintSwitchIdentifier"
 }
