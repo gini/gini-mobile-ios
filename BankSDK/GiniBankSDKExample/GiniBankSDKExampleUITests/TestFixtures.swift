@@ -47,9 +47,6 @@ enum TestFixtures {
         /// SEPA invoice that triggers the AlreadyPaid warning.
         static let sepaAlreadyPaid = "sepa_already_paid"
 
-        /// SEPA invoice with a future payment due date (triggers the Due Date hint).
-        static let sepaDueDate = "sepa_due_date"
-
         /**
          Synthetic invoice extracting `paymentDueDate = 2028-09-01` + `paymentState = ToBePaid`.
          Refresh before mid-2028 and update `PaymentHintFlowUITests.FIXTURE_DUE_DATE`.
