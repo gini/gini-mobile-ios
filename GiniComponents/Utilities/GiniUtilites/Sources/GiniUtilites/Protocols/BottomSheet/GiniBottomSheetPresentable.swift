@@ -109,7 +109,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             
             if #available(iOS 16, *) {
                 let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
-                    self.view.bounds.height / 2
+                    context.maximumDetentValue / 2
                 }
                 // In landscape mode, control whether the sheet should use a partial-height
                 // or a full-height detent based on the current configuration.
