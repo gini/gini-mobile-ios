@@ -14,12 +14,18 @@ import XCTest
 class NoResultsScreen {
 
     let app: XCUIApplication
-    /// The primary button that navigates back to the camera screen.
-    /// Only present for camera-captured documents — file imports have nothing to retake.
+    /**
+     The primary button that navigates back to the camera screen.
+     Only present for camera-captured documents — file imports have nothing to retake.
+     */
     let retakeImagesButton: XCUIElement
-    /// The nav-bar back button (matched by value; the SDK sets it as the button's value).
+    /**
+     The nav-bar back button (matched by value; the SDK sets it as the button's value).
+     */
     let navBackButton: XCUIElement
-    /// The secondary button that lets the user enter payment data manually.
+    /**
+     The secondary button that lets the user enter payment data manually.
+     */
     let enterManuallyButton: XCUIElement
 
     init(app: XCUIApplication, locale: String) {

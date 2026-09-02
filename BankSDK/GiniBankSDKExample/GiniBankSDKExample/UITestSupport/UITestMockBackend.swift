@@ -43,15 +43,21 @@ import GiniCaptureSDK
  */
 enum UITestMockScenario: String {
 
-    /// A credit note: filled payment fields plus the `businessDocType == "creditnote"`
-    /// marker the SDK's credit note gate checks.
+    /**
+     A credit note: filled payment fields plus the `businessDocType == "creditnote"`
+     marker the SDK's credit note gate checks.
+     */
     case creditNote
 
-    /// A plain invoice: same payment fields, no document-type marker, no feature
-    /// screens (no line items, no discounts).
+    /**
+     A plain invoice: same payment fields, no document-type marker, no feature
+     screens (no line items, no discounts).
+     */
     case invoice
 
-    /// The analysis request fails — drives the SDK's error screen deterministically.
+    /**
+     The analysis request fails — drives the SDK's error screen deterministically.
+     */
     case analysisError
 
     /**
@@ -74,13 +80,19 @@ enum UITestMockScenario: String {
  */
 final class UITestMockBackend {
 
-    /// The scenario whose canned outcome `analyse` delivers.
+    /**
+     The scenario whose canned outcome `analyse` delivers.
+     */
     private let scenario: UITestMockScenario
 
-    /// Flag overrides applied over the all-false baseline `ClientConfiguration`.
+    /**
+     Flag overrides applied over the all-false baseline `ClientConfiguration`.
+     */
     private let clientConfigurationOverrides: [String: Bool]
 
-    /// The single fake API document handed back for every upload/analysis.
+    /**
+     The single fake API document handed back for every upload/analysis.
+     */
     private let mockDocument: Document?
 
     init(scenario: UITestMockScenario,
@@ -122,7 +134,9 @@ final class UITestMockBackend {
 
     // MARK: - Client configuration assembly
 
-    /// Every overridable `ClientConfiguration` flag key.
+    /**
+     Every overridable `ClientConfiguration` flag key.
+     */
     private static let knownConfigurationFlags: Set<String> = [
         "userJourneyAnalyticsEnabled",
         "skontoEnabled",
