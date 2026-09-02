@@ -34,7 +34,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
         return digitalInvoiceViewController
     }
 
-    internal var navigationController: UINavigationController
+    var navigationController: UINavigationController
 
     func start() {
         navigationController.pushViewController(rootViewController, animated: true)
