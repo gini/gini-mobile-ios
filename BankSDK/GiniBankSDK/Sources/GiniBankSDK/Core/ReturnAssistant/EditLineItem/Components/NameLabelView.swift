@@ -43,7 +43,7 @@ final class NameLabelView: UIView, GiniInputAccessoryViewPresentable {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         textField.adjustsFontForContentSizeCategory = true
-        textField.accessibilityIdentifier = "editLineItemNameTextFieldIdentifier"
+        textField.accessibilityIdentifier = EditLineItemAccessibilityIdentifiers.nameTextField
         return textField
     }()
 

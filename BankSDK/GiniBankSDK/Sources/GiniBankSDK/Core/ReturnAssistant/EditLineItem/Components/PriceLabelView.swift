@@ -35,7 +35,7 @@ final class PriceLabelView: UIView, GiniInputAccessoryViewPresentable {
         textField.delegate = self
         textField.keyboardType = .numberPad
         textField.adjustsFontForContentSizeCategory = true
-        textField.accessibilityIdentifier = "editLineItemPriceTextFieldIdentifier"
+        textField.accessibilityIdentifier = EditLineItemAccessibilityIdentifiers.priceTextField
         return textField
     }()
 

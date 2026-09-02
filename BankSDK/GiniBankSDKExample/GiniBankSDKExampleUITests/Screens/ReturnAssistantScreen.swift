@@ -57,8 +57,8 @@ class ReturnAssistantScreen {
         }
         /// Identifier-driven (set in the SDK's EditLineItemView components) — positional
         /// indices broke whenever a hierarchy change shifted the text field order.
-        nameTextField = app.textFields[EditLineItemAccessibilityIdentifiers.nameTextField.rawValue]
-        priceTextField = app.textFields[EditLineItemAccessibilityIdentifiers.priceTextField.rawValue]
-        quantityTextField = app.textFields[EditLineItemAccessibilityIdentifiers.quantityTextField.rawValue]
+        nameTextField = app.textFields[EditLineItemAccessibilityIdentifiers.nameTextField]
+        priceTextField = app.textFields[EditLineItemAccessibilityIdentifiers.priceTextField]
+        quantityTextField = app.textFields[EditLineItemAccessibilityIdentifiers.quantityTextField]
     }
 }

@@ -4,14 +4,11 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
-import Foundation
-
 /**
- Accessibility identifiers exposed by the Return Assistant "Edit article" sheet
- (`EditLineItemView` components in `GiniBankSDK`). Values must stay byte-identical
- to the SDK's `EditLineItemAccessibilityIdentifiers` struct
- (`BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/EditLineItem/EditLineItemAccessibilityIdentifiers.swift`)
- — duplication is intentional because the UITest target cannot import the SDK.
+ Stable accessibility identifiers applied to the Return Assistant "Edit article"
+ sheet's text fields for UI automation. Values are duplicated in the
+ `GiniBankSDKExampleUITests` target as `EditLineItemAccessibilityIdentifiers` —
+ keep both sides in sync.
  */
 struct EditLineItemAccessibilityIdentifiers {
     private init() {
