@@ -13,6 +13,12 @@ private struct DueDateContent: InfoBottomSheetViewModel {
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.dueDateDescription
     var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
+
+    var containerAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.container
+    var titleAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.title
+    var descriptionAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.description
+    var primaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.proceedButton
+    var secondaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.cancelButton
 }
 
 private struct ScheduleContent: InfoBottomSheetViewModel {
@@ -22,6 +28,12 @@ private struct ScheduleContent: InfoBottomSheetViewModel {
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.scheduleDescription
     var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
+
+    var containerAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.container
+    var titleAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.title
+    var descriptionAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.description
+    var primaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.scheduleButton
+    var secondaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.proceedButton
 }
 
 /**
@@ -41,8 +53,6 @@ private struct ScheduleContent: InfoBottomSheetViewModel {
  */
 public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewController {
 
-    private let state: PaymentHintState
-
     /**
      Creates a payment-hint bottom sheet for the given state. The state's
      associated values drive title interpolation, description copy, and both
@@ -50,51 +60,12 @@ public final class PaymentHintBottomSheetViewController: InfoBottomSheetViewCont
      - Parameter state: The state the sheet should render.
      */
     public init(state: PaymentHintState) {
-        self.state = state
         let (contentViewModel, buttonsViewModel) = Self.makeViewModels(for: state)
         super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
     }
 
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        applyAccessibilityIdentifiers()
-    }
-
-    private func applyAccessibilityIdentifiers() {
-        let ids: StateIdentifiers
-        switch state {
-        case .dueDate:         ids = .dueDate
-        case .schedulePayment: ids = .schedulePayment
-        }
-        view.accessibilityIdentifier = ids.container
-        headerLabel.accessibilityIdentifier = ids.title
-        descriptionLabel.accessibilityIdentifier = ids.description
-        buttonsViewContainer.primaryButton.accessibilityIdentifier = ids.primaryButton
-        buttonsViewContainer.secondaryButton.accessibilityIdentifier = ids.secondaryButton
-    }
-
-    private struct StateIdentifiers {
-        let container: String
-        let title: String
-        let description: String
-        let primaryButton: String
-        let secondaryButton: String
-
-        static let dueDate = StateIdentifiers(container: AccessibilityIdentifiers.DueDate.container,
-                                              title: AccessibilityIdentifiers.DueDate.title,
-                                              description: AccessibilityIdentifiers.DueDate.description,
-                                              primaryButton: AccessibilityIdentifiers.DueDate.proceedButton,
-                                              secondaryButton: AccessibilityIdentifiers.DueDate.cancelButton)
-
-        static let schedulePayment = StateIdentifiers(container: AccessibilityIdentifiers.Schedule.container,
-                                                      title: AccessibilityIdentifiers.Schedule.title,
-                                                      description: AccessibilityIdentifiers.Schedule.description,
-                                                      primaryButton: AccessibilityIdentifiers.Schedule.scheduleButton,
-                                                      secondaryButton: AccessibilityIdentifiers.Schedule.proceedButton)
     }
 
     private static func makeViewModels(for state: PaymentHintState) -> (InfoBottomSheetViewModel, InfoBottomSheetButtonsViewModel) {
@@ -187,8 +158,11 @@ extension PaymentHintBottomSheetViewController {
      `GiniBankSDKExampleUITests` target as
      `PaymentHintScreenAccessibilityIdentifiers` — keep both sides in sync.
      */
-    enum AccessibilityIdentifiers {
-        enum DueDate {
+    struct AccessibilityIdentifiers {
+        private init() {}
+
+        struct DueDate {
+            private init() {}
             static let container = "paymentHint.dueDate.container"
             static let title = "paymentHint.dueDate.title"
             static let description = "paymentHint.dueDate.description"
@@ -196,7 +170,8 @@ extension PaymentHintBottomSheetViewController {
             static let cancelButton = "paymentHint.dueDate.cancelButton"
         }
 
-        enum Schedule {
+        struct Schedule {
+            private init() {}
             static let container = "paymentHint.schedule.container"
             static let title = "paymentHint.schedule.title"
             static let description = "paymentHint.schedule.description"

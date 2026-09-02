@@ -10,13 +10,16 @@ import Foundation
  Accessibility identifiers exposed by
  `PaymentHintBottomSheetViewController` in `GiniCaptureSDK`. Values must
  stay byte-identical to the SDK's
- `PaymentHintBottomSheetViewController.AccessibilityIdentifiers` enum
+ `PaymentHintBottomSheetViewController.AccessibilityIdentifiers` struct
  (`CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/PaymentHint/PaymentHintBottomSheetViewController.swift`)
  — duplication is intentional because the UITest target cannot import
  the SDK.
  */
-public enum PaymentHintScreenAccessibilityIdentifiers {
-    public enum DueDate {
+public struct PaymentHintScreenAccessibilityIdentifiers {
+    private init() {}
+
+    public struct DueDate {
+        private init() {}
         public static let container = "paymentHint.dueDate.container"
         public static let title = "paymentHint.dueDate.title"
         public static let description = "paymentHint.dueDate.description"
@@ -24,7 +27,8 @@ public enum PaymentHintScreenAccessibilityIdentifiers {
         public static let cancelButton = "paymentHint.dueDate.cancelButton"
     }
 
-    public enum Schedule {
+    public struct Schedule {
+        private init() {}
         public static let container = "paymentHint.schedule.container"
         public static let title = "paymentHint.schedule.title"
         public static let description = "paymentHint.schedule.description"
