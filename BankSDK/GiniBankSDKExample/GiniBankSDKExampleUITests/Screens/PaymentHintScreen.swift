@@ -50,7 +50,7 @@ class PaymentHintScreen {
     }
 
     /**
-     Waits for the Due Date Hint sheet to appear. Default 60 s per PP-3302 R1.
+     Waits for the Due Date Hint sheet to appear.
      */
     @discardableResult
     func waitForDueDateSheet(timeout: TimeInterval = 60) -> Bool {
@@ -58,7 +58,7 @@ class PaymentHintScreen {
     }
 
     /**
-     Waits for the Schedule Payment sheet to appear. Default 60 s per PP-3302 R2.
+     Waits for the Schedule Payment sheet to appear.
      */
     @discardableResult
     func waitForScheduleSheet(timeout: TimeInterval = 60) -> Bool {
