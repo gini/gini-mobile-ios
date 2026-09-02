@@ -146,6 +146,10 @@ struct SwitchOptionModel {
 				return SettingScreenAccessibilityIdentifiers.multiPageSwitch.rawValue
 			case .flashToggle:
 				return SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue
+			case .paymentDueHintEnabled:
+				return SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue
+			case .paymentScheduleHintEnabled:
+				return SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue
 			default:
 				return nil
 			}

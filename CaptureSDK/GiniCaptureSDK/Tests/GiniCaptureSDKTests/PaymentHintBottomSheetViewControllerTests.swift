@@ -75,6 +75,35 @@ struct PaymentHintDueDateStateTests {
         #expect(!sut.shouldShowDragIndicator,
                 "Payment Hint sheet must not show a drag indicator — dismissal is CTA-driven only")
     }
+
+    @Test("Container view carries the Due Date accessibility identifier")
+    @MainActor func containerCarriesDueDateAccessibilityIdentifier() {
+        let sut = PaymentHintBottomSheetViewController(state: .dueDate(formattedDueDate: "13.08.2026",
+                                                                       onProceed: {},
+                                                                       onCancel: {}))
+        _ = sut.view
+        #expect(sut.view.accessibilityIdentifier == PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.container,
+                "Container view must carry the .dueDate container identifier")
+    }
+
+    @Test("Title, description, primary and secondary carry Due Date identifiers")
+    @MainActor func labelsAndButtonsCarryDueDateAccessibilityIdentifiers() {
+        let sut = PaymentHintBottomSheetViewController(state: .dueDate(formattedDueDate: "13.08.2026",
+                                                                       onProceed: {},
+                                                                       onCancel: {}))
+        _ = sut.view
+
+        let titleIDs = allLabels(in: sut.view).compactMap(\.accessibilityIdentifier)
+        let buttonIDs = allButtons(in: sut.view).compactMap(\.accessibilityIdentifier)
+        #expect(titleIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.title),
+                "Title label must carry paymentHint.dueDate.title")
+        #expect(titleIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.description),
+                "Description label must carry paymentHint.dueDate.description")
+        #expect(buttonIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.proceedButton),
+                "Primary button must carry paymentHint.dueDate.proceedButton")
+        #expect(buttonIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.cancelButton),
+                "Secondary button must carry paymentHint.dueDate.cancelButton")
+    }
 }
 
 // MARK: - Schedule Payment state
@@ -180,6 +209,35 @@ struct PaymentHintScheduleStateTests {
         )
         #expect(!sut.shouldShowDragIndicator,
                 "Payment Hint sheet must not show a drag indicator — dismissal is CTA-driven only")
+    }
+
+    @Test("Container view carries the Schedule accessibility identifier")
+    @MainActor func containerCarriesScheduleAccessibilityIdentifier() {
+        let sut = PaymentHintBottomSheetViewController(state: .schedulePayment(formattedDueDate: "13.08.2026",
+                                                                               onSchedule: {},
+                                                                               onProceed: {}))
+        _ = sut.view
+        #expect(sut.view.accessibilityIdentifier == PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.container,
+                "Container view must carry the .schedulePayment container identifier")
+    }
+
+    @Test("Title, description, primary and secondary carry Schedule identifiers")
+    @MainActor func labelsAndButtonsCarryScheduleAccessibilityIdentifiers() {
+        let sut = PaymentHintBottomSheetViewController(state: .schedulePayment(formattedDueDate: "13.08.2026",
+                                                                               onSchedule: {},
+                                                                               onProceed: {}))
+        _ = sut.view
+
+        let titleIDs = allLabels(in: sut.view).compactMap(\.accessibilityIdentifier)
+        let buttonIDs = allButtons(in: sut.view).compactMap(\.accessibilityIdentifier)
+        #expect(titleIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.title),
+                "Title label must carry paymentHint.schedule.title")
+        #expect(titleIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.description),
+                "Description label must carry paymentHint.schedule.description")
+        #expect(buttonIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.scheduleButton),
+                "Primary button must carry paymentHint.schedule.scheduleButton")
+        #expect(buttonIDs.contains(PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.proceedButton),
+                "Secondary button must carry paymentHint.schedule.proceedButton")
     }
 }
 

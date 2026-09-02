@@ -74,7 +74,7 @@ public protocol GiniBottomSheetPresentable {
      This method creates a custom detent with the specified height and applies it to the
      sheet presentation controller. The custom detent becomes the selected detent.
      
-     - Parameters
+     - Parameters:
         - height: The desired height for the bottom sheet in points.
 
      - Note: Custom detents are only available on iOS 16.0 and later.
@@ -109,7 +109,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             
             if #available(iOS 16, *) {
                 let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
-                    self.view.bounds.height / 2
+                    context.maximumDetentValue / 2
                 }
                 // In landscape mode, control whether the sheet should use a partial-height
                 // or a full-height detent based on the current configuration.

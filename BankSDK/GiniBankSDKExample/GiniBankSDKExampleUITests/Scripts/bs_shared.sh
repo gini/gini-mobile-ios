@@ -47,6 +47,7 @@ case "$SCRIPT_NAME" in
     bs_run_skonto)       BUILD_LABEL="Skonto" ;;
     bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
     bs_run_credit_note)  BUILD_LABEL="CreditNote" ;;
+    bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;
     *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
 esac
 IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"

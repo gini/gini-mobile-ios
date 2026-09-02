@@ -13,6 +13,12 @@ private struct DueDateContent: InfoBottomSheetViewModel {
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.dueDateDescription
     var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
+
+    var containerAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.container
+    var titleAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.title
+    var descriptionAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.description
+    var primaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.proceedButton
+    var secondaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.DueDate.cancelButton
 }
 
 private struct ScheduleContent: InfoBottomSheetViewModel {
@@ -22,6 +28,12 @@ private struct ScheduleContent: InfoBottomSheetViewModel {
     let title: String
     var description: String = PaymentHintBottomSheetViewController.Strings.scheduleDescription
     var imageBackgroundColor: UIColor? = PaymentHintBottomSheetViewController.Colors.imageBGColor
+
+    var containerAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.container
+    var titleAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.title
+    var descriptionAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.description
+    var primaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.scheduleButton
+    var secondaryButtonAccessibilityID: String? = PaymentHintBottomSheetViewController.AccessibilityIdentifiers.Schedule.proceedButton
 }
 
 /**
@@ -136,6 +148,41 @@ extension PaymentHintBottomSheetViewController {
     struct Colors {
         static var imageBGColor: UIColor {
             GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        }
+    }
+
+    // MARK: - Accessibility Identifiers
+    /**
+     Stable, state-scoped accessibility identifiers applied to the sheet
+     for UI-automation. Values are duplicated in the
+     `GiniBankSDKExampleUITests` target as
+     `PaymentHintScreenAccessibilityIdentifiers` — keep both sides in sync.
+     */
+    struct AccessibilityIdentifiers {
+        private init() {
+            // Namespace-only; instantiation is disabled.
+        }
+
+        struct DueDate {
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
+            static let container = "paymentHint.dueDate.container"
+            static let title = "paymentHint.dueDate.title"
+            static let description = "paymentHint.dueDate.description"
+            static let proceedButton = "paymentHint.dueDate.proceedButton"
+            static let cancelButton = "paymentHint.dueDate.cancelButton"
+        }
+
+        struct Schedule {
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
+            static let container = "paymentHint.schedule.container"
+            static let title = "paymentHint.schedule.title"
+            static let description = "paymentHint.schedule.description"
+            static let scheduleButton = "paymentHint.schedule.scheduleButton"
+            static let proceedButton = "paymentHint.schedule.proceedButton"
         }
     }
 }

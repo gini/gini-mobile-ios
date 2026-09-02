@@ -6,18 +6,13 @@
 //
 
 /**
- Central registry of all document fixtures used across UI tests.
+ Central registry of document fixtures used across UI tests. Add new fixtures here
+ instead of hard-coding filenames in individual tests.
 
- Add new fixtures here when introducing new test invoices or images.
- Never hard-code filenames in individual test files.
-
- - `Files`: filenames **without** extension — imported via the system Files app.
- Place these on device: **On My iPhone → Downloads** (or any Files-accessible location).
-
- - `Camera`: filenames **with** `.png` extension — injected via BrowserStack camera,
- or used as the lookup key when falling back to Files import locally
- (extension is stripped automatically by `provideImageAndReachReviewScreen`).
- Place BS media in `TestSamples/TestSamplesForBS/` and upload via `bs_build_and_upload.sh`.
+ - `Files`: names without extension — imported via the Files app (On My iPhone → Downloads).
+ - `Camera`: names with `.png` — injected via BrowserStack camera, or used as the Files-import
+   lookup key locally (extension stripped by `provideImageAndReachReviewScreen`). Place BS media
+   in `TestSamples/TestSamplesForBS/` and upload via `bs_build_and_upload.sh`.
  */
 enum TestFixtures {
 
@@ -67,9 +62,16 @@ enum TestFixtures {
         static let sepaAlreadyPaid = "sepa_already_paid"
 
         /**
-         SEPA invoice with a future payment due date (triggers the Due Date hint).
+         Synthetic invoice extracting `paymentDueDate = 2028-09-01` + `paymentState = ToBePaid`.
+         Refresh before mid-2028 and update `PaymentHintFlowUITests.FIXTURE_DUE_DATE`.
          */
-        static let sepaDueDate = "sepa_due_date"
+        static let invoiceFutureDue = "invoice_future_due"
+
+        /**
+         Synthetic invoice with no `paymentDueDate` (still `paymentState = ToBePaid`).
+         Used to verify sheet suppression.
+         */
+        static let invoiceNoDueDate = "invoice_no_due_date"
 
         // MARK: Skonto
 

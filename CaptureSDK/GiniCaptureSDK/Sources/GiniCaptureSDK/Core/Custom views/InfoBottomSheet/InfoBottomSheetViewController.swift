@@ -118,6 +118,21 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        applyAccessibilityIdentifiersFromViewModel()
+    }
+
+    /**
+     Reads any accessibility identifiers the view model provides and
+     applies them to the corresponding sheet elements. Conformers that
+     don't need UI-automation hooks leave the properties at their `nil`
+     default and no identifiers are set.
+     */
+    private func applyAccessibilityIdentifiersFromViewModel() {
+        view.accessibilityIdentifier = viewModel.containerAccessibilityID
+        headerLabel.accessibilityIdentifier = viewModel.titleAccessibilityID
+        descriptionLabel.accessibilityIdentifier = viewModel.descriptionAccessibilityID
+        buttonsViewContainer.primaryButton.accessibilityIdentifier = viewModel.primaryButtonAccessibilityID
+        buttonsViewContainer.secondaryButton.accessibilityIdentifier = viewModel.secondaryButtonAccessibilityID
     }
 
     public override func viewDidLayoutSubviews() {

@@ -50,6 +50,11 @@ import Firebase
         if CommandLine.arguments.contains("-DisableReturnAssistant") {
             GiniBankConfiguration.shared.returnAssistantEnabled = false
         }
+        if let idx = CommandLine.arguments.firstIndex(of: "-paymentDueHintThresholdDaysOverride"),
+           idx + 1 < CommandLine.arguments.count,
+           let value = Int(CommandLine.arguments[idx + 1]) {
+            GiniBankConfiguration.shared.paymentDueHintThresholdDays = value
+        }
     }
 
     func application(_ app: UIApplication,
