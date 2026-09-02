@@ -15,24 +15,20 @@ import Foundation
  — duplication is intentional because the UITest target cannot import
  the SDK.
  */
-public struct PaymentHintScreenAccessibilityIdentifiers {
-    private init() {}
-
-    public struct DueDate {
-        private init() {}
-        public static let container = "paymentHint.dueDate.container"
-        public static let title = "paymentHint.dueDate.title"
-        public static let description = "paymentHint.dueDate.description"
-        public static let proceedButton = "paymentHint.dueDate.proceedButton"
-        public static let cancelButton = "paymentHint.dueDate.cancelButton"
+struct PaymentHintScreenAccessibilityIdentifiers {
+    struct DueDate {
+        static let container = "paymentHint.dueDate.container"
+        static let title = "paymentHint.dueDate.title"
+        static let description = "paymentHint.dueDate.description"
+        static let proceedButton = "paymentHint.dueDate.proceedButton"
+        static let cancelButton = "paymentHint.dueDate.cancelButton"
     }
 
-    public struct Schedule {
-        private init() {}
-        public static let container = "paymentHint.schedule.container"
-        public static let title = "paymentHint.schedule.title"
-        public static let description = "paymentHint.schedule.description"
-        public static let scheduleButton = "paymentHint.schedule.scheduleButton"
-        public static let proceedButton = "paymentHint.schedule.proceedButton"
+    struct Schedule {
+        static let container = "paymentHint.schedule.container"
+        static let title = "paymentHint.schedule.title"
+        static let description = "paymentHint.schedule.description"
+        static let scheduleButton = "paymentHint.schedule.scheduleButton"
+        static let proceedButton = "paymentHint.schedule.proceedButton"
     }
 }

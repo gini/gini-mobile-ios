@@ -14,11 +14,8 @@ import Foundation
  — duplication is intentional because the UITest target cannot import the SDK.
  */
 struct EditLineItemAccessibilityIdentifiers {
-    private init() {
-        /// Namespace-only; instantiation is disabled.
-    }
 
-    static let nameTextField = "editLineItemNameTextFieldIdentifier"
-    static let priceTextField = "editLineItemPriceTextFieldIdentifier"
-    static let quantityTextField = "editLineItemQuantityTextFieldIdentifier"
+    static let nameTextField = "editLineItem.nameTextField"
+    static let priceTextField = "editLineItem.priceTextField"
+    static let quantityTextField = "editLineItem.quantityTextField"
 }
