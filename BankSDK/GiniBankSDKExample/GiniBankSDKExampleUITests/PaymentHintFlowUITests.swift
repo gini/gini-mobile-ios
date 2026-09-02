@@ -450,15 +450,3 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
     }
 }
 
-// MARK: - XCUIElement helpers
-
-private extension XCUIElement {
-    /**
-     Complement to `waitForExistence(timeout:)` — returns `true` if the element disappears in time.
-     */
-    func waitForNonExistence(timeout: TimeInterval) -> Bool {
-        let gonePredicate = NSPredicate(format: "exists == false")
-        let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: self)
-        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
-    }
-}
