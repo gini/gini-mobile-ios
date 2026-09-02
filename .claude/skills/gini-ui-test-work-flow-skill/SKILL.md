@@ -1,5 +1,5 @@
 ---
-name: gini-test-skill
+name: gini-ui-test-work-flow-skill
 description: Xray manual test case tooling. Two opposite jobs — EXPORT the cases of an existing Xray Test Set to CSV, with their step text (Xray Cloud itself cannot do this), or GENERATE brand new manual test cases from a ticket, spec or acceptance criteria as a CSV ready to import into Xray. Use when asked to "export the test cases", "get the Xray test cases as CSV", "make a CSV of the <feature> test cases", "generate/create/write Xray test cases", or anything else involving Xray test cases and a CSV.
 ---
 
@@ -26,7 +26,7 @@ Xray Cloud has no CSV export that carries step text, so the API is the only rout
 Run the script — never hand-write or reconstruct the file:
 
 ```bash
-python3 .claude/skills/gini-test-skill/xray_export_testset_csv.py \
+python3 .claude/skills/gini-ui-test-work-flow-skill/xray_export_testset_csv.py \
   --test-set <TEST-SET-KEY> --prefix <feature> --out-dir <dir>
 ```
 
