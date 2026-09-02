@@ -241,3 +241,42 @@ class GiniCreditNoteDynamicTypeUITests: GiniBankSDKExampleUITests {
         attachScreenshot(named: "credit-note-extractions-200-percent-font")
     }
 }
+
+/**
+ Largest-accessibility-size variant: renders the warning at AXXXL (~310% of the
+ default body size) and asserts every sheet element stays in the accessibility
+ tree. Hittability is intentionally not asserted — the sheet's content scrolls
+ by design at accessibility sizes, so buttons may sit off-screen until scrolled.
+ The screen carries no accessibility identifiers yet, so element presence is
+ checked through the page object's localized-label lookups.
+ */
+class GiniCreditNoteMaxDynamicTypeUITests: GiniBankSDKExampleUITests {
+
+    override var additionalLaunchArguments: [String] {
+        ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+    }
+
+    /**
+     Attaches a screenshot that survives a passing run, for visual review on BrowserStack.
+     */
+    private func attachScreenshot(named name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    func testAXXXLDoesNotTruncateCreditNoteWarning() {
+        uploadDocumentViaFilesAndAwaitAnalysis(fileName: TestFixtures.Files.creditNote)
+
+        XCTAssertTrue(creditNoteWarningScreen.waitForDialog(timeout: 15),
+                      "Credit Note Warning sheet should appear at AXXXL")
+        XCTAssertTrue(creditNoteWarningScreen.title.exists,
+                      "Title must stay in the accessibility tree at AXXXL")
+        XCTAssertTrue(creditNoteWarningScreen.cancelTransferButton.exists,
+                      "Cancel transfer button must stay in the accessibility tree at AXXXL")
+        XCTAssertTrue(creditNoteWarningScreen.proceedAnywayButton.exists,
+                      "Proceed anyway button must stay in the accessibility tree at AXXXL")
+        attachScreenshot(named: "credit-note-warning-axxxl")
+    }
+}

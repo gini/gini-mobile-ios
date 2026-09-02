@@ -28,22 +28,47 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
     var creditNoteWarningScreen: CreditNoteWarningScreen!
+    var paymentHintScreen: PaymentHintScreen!
+
+
     /**
-     Override in a subclass to inject extra launch arguments before the app launches.
-     The base argument `-StartFromCleanState YES` is always included.
+     Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
      */
     var additionalLaunchArguments: [String] { [] }
 
+    /**
+     Per-test launch args. Assign before `relaunch()`; cleared in tearDown.
+     */
+    var extraLaunchArguments: [String] = []
+
+    /**
+     Base + class-level + per-test launch arguments.
+     */
+    private var currentLaunchArguments: [String] {
+        ["-StartFromCleanState", "YES"] + additionalLaunchArguments + extraLaunchArguments
+    }
+
+    /**
+     Terminates the app and re-launches it with `currentLaunchArguments`.
+     */
+    func relaunch() {
+        app.terminate()
+        app.launchArguments = currentLaunchArguments
+        app.launch()
+    }
+
     override func setUpWithError() throws {
-    #if targetEnvironment(simulator)
-        throw XCTSkip("Skipping test on simulator")
-    #endif
+        // Simulator skip disabled so the suite runs on BrowserStack — re-enable to
+        // guard local simulator runs again.
+         #if targetEnvironment(simulator)
+             throw XCTSkip("Skipping test on simulator")
+         #endif
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
         app.resetAuthorizationStatus(for: .photos)
-        app.launchArguments = ["-StartFromCleanState", "YES"] + additionalLaunchArguments
+        app.launchArguments = currentLaunchArguments
         app.launch()
         //Initialize Identifiers based on current locale
         let currentLocale = Locale.current.languageCode ?? "en"
@@ -62,6 +87,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         noResultsScreen = NoResultsScreen(app: app, locale: currentLocale)
         cxExtractionScreen = CXExtractionScreen(app: app)
         creditNoteWarningScreen = CreditNoteWarningScreen(app: app, locale: currentLocale)
+        paymentHintScreen = PaymentHintScreen(app: app)
     }
     
     override func tearDownWithError() throws  {
@@ -74,6 +100,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         add(attachment)
         app.terminate()
     #endif // !targetEnvironment(simulator)
+        extraLaunchArguments = []
     }
 
     var galleryTitle: String {
@@ -97,18 +124,21 @@ class GiniBankSDKExampleUITests: XCTestCase {
         }
     }
 
-    var galleryDoneButtonTitle: String {
-        switch Locale.current.languageCode ?? "en" {
-        case "de": return "Fertig"
-        default:   return "\u{0010}Done"
+    /**
+     Picker's confirm button — text "Done"/"Fertig" on iOS < 26, checkmark on iOS 26+.
+     Tries nav-bar first, then any button, across known labels. `\u{0010}Done` legacy included.
+     */
+    func galleryConfirmButton() -> XCUIElement? {
+        let candidates = ["\u{0010}Done", "Done", "Fertig", "Choose", "Auswählen", "checkmark"]
+        for label in candidates {
+            let inNavBar = app.navigationBars.buttons[label].firstMatch
+            if inNavBar.waitForExistence(timeout: 1) { return inNavBar }
         }
-    }
-
-    func tapDoneInAnyKnownContext() {
-        switch Locale.current.languageCode ?? "en" {
-        case "de": app.buttons["Fertig"].firstMatch.tap()
-        default:   app.buttons["\u{0010}Done"].firstMatch.tap()
+        for label in candidates {
+            let anywhere = app.buttons[label].firstMatch
+            if anywhere.waitForExistence(timeout: 1) { return anywhere }
         }
+        return nil
     }
 
     func waitForAnalysisIfNeeded() {
@@ -133,14 +163,17 @@ class GiniBankSDKExampleUITests: XCTestCase {
         XCTFail("Analysis screen did not disappear within timeout")
     }
 
-    /// Copies all PDFs from TestSamples/TestSamplesForBS/ into the tested app's Documents folder,
-    /// so the Files picker in UI tests can select them under "On My iPhone → GiniBankSDKExample".
-    ///
-    /// Xcode 15+ runs the test runner inside XCTestDevices, so NSHomeDirectory() returns:
-    ///   .../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}
-    /// Going one level up reaches the shared Application/ directory where all app containers
-    /// for this test device live — including the tested app's container, which we identify by
-    /// its MCMMetadataIdentifier plist entry.
+    /**
+     Copies all PDFs from `TestSamples/TestSamplesForBS/` into the tested app's `Documents/`
+     folder, so the Files picker in UI tests can select them under
+     "On My iPhone → GiniBankSDKExample".
+
+     Xcode 15+ runs the test runner inside `XCTestDevices`, so `NSHomeDirectory()` returns
+     `.../XCTestDevices/{UDID}/data/Containers/Data/Application/{runner-UUID}`. Going one
+     level up reaches the shared `Application/` directory where all app containers for this
+     test device live — including the tested app's container, which we identify by its
+     `MCMMetadataIdentifier` plist entry.
+     */
     private func copyFixturesToSimulator() {
         let fileManager = FileManager.default
 
@@ -212,5 +245,18 @@ class GiniBankSDKExampleUITests: XCTestCase {
             if reviewScreen.processButton.exists { return }
         }
         XCTFail("Gallery confirm button not found and the review screen did not appear.")
+    }
+}
+
+// MARK: - XCUIElement helpers
+
+extension XCUIElement {
+    /**
+     Complement to `waitForExistence(timeout:)` — returns `true` if the element disappears in time.
+     */
+    func waitForNonExistence(timeout: TimeInterval) -> Bool {
+        let gonePredicate = NSPredicate(format: "exists == false")
+        let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: self)
+        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
     }
 }

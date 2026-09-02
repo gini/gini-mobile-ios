@@ -716,7 +716,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      Feature-flag gate for the Schedule Payment state. Both
      `GiniBankConfiguration` and the client configuration must opt in.
      */
-    func determineIfPaymentScheduleHintEnabled(for _: ExtractionResult) -> Bool {
+    func determineIfPaymentScheduleHintEnabled() -> Bool {
         guard !isCrossBorderPayment() else { return false }
         let globalScheduleHintEnabled = giniBankConfiguration.paymentScheduleHintEnabled
         let clientScheduleHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
@@ -730,7 +730,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      Payment state.
      */
     func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
-        guard !determineIfPaymentScheduleHintEnabled(for: extractionResult),
+        guard !determineIfPaymentScheduleHintEnabled(),
               determineIfPaymentDueHintEnabled(for: extractionResult),
               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
               !shouldShowReturnAssistant(for: extractionResult),
@@ -746,7 +746,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
      `determineIfPaymentScheduleHintEnabled`.
      */
     func shouldPresentSchedulePaymentHint(for extractionResult: ExtractionResult) -> Bool {
-        guard determineIfPaymentScheduleHintEnabled(for: extractionResult),
+        guard determineIfPaymentScheduleHintEnabled(),
               let dueDate = getDocumentPaymentDueDate(for: extractionResult),
               !shouldShowReturnAssistant(for: extractionResult),
               !shouldShowSkonto(for: extractionResult) else {

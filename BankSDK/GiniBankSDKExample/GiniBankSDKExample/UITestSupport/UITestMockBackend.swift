@@ -8,6 +8,10 @@ import Foundation
 import GiniBankAPILibrary
 import GiniCaptureSDK
 
+/// Test scaffolding must never ship in the production binary; UI test runs
+/// (locally and on BrowserStack) always build the Debug configuration.
+#if DEBUG
+
 /**
  UI-test-only mock backend replacing the Gini API for deterministic UI tests.
 
@@ -24,7 +28,8 @@ import GiniCaptureSDK
 
  `ScreenAPICoordinator` picks it up via `fromLaunchArguments()`. Never active in
  normal app runs. Unknown scenario names or flag keys fail loudly with
- `assertionFailure` — a typo must not silently test the wrong behaviour.
+ `preconditionFailure` — a typo must fail loudly in every build configuration
+ and never silently test the wrong behaviour.
 
  Extending: add a case to `UITestMockScenario` with its payload (or error).
  The client configuration needs no extension — every flag is overridable via
@@ -42,15 +47,21 @@ import GiniCaptureSDK
  */
 enum UITestMockScenario: String {
 
-    /// A credit note: filled payment fields plus the `businessDocType == "creditnote"`
-    /// marker the SDK's credit note gate checks.
+    /**
+     A credit note: filled payment fields plus the `businessDocType == "creditnote"`
+     marker the SDK's credit note gate checks.
+     */
     case creditNote
 
-    /// A plain invoice: same payment fields, no document-type marker, no feature
-    /// screens (no line items, no discounts).
+    /**
+     A plain invoice: same payment fields, no document-type marker, no feature
+     screens (no line items, no discounts).
+     */
     case invoice
 
-    /// The analysis request fails — drives the SDK's error screen deterministically.
+    /**
+     The analysis request fails — drives the SDK's error screen deterministically.
+     */
     case analysisError
 
     /**
@@ -73,30 +84,35 @@ enum UITestMockScenario: String {
  */
 final class UITestMockBackend {
 
-    /// The scenario whose canned outcome `analyse` delivers.
+    /**
+     The scenario whose canned outcome `analyse` delivers.
+     */
     private let scenario: UITestMockScenario
 
-    /// Flag overrides applied over the all-false baseline `ClientConfiguration`.
+    /**
+     Flag overrides applied over the all-false baseline `ClientConfiguration`.
+     */
     private let clientConfigurationOverrides: [String: Bool]
 
-    /// The single fake API document handed back for every upload/analysis.
-    private let mockDocument: Document?
+    /**
+     The single fake API document handed back for every upload/analysis.
+     */
+    private let mockDocument: Document
 
     init(scenario: UITestMockScenario,
          clientConfigurationOverrides: [String: Bool]) {
         self.scenario = scenario
         self.clientConfigurationOverrides = clientConfigurationOverrides
 
-        if let url = URL(string: "https://pay-api.gini.net/documents/ui-test-mock-0000") {
-            let links = Document.Links(giniAPIDocumentURL: url)
-            mockDocument = Document(creationDate: Date(),
-                                    id: "ui-test-mock-0000",
-                                    name: "uiTestMockDocument",
-                                    links: links,
-                                    sourceClassification: .scanned)
-        } else {
-            mockDocument = nil
-        }
+        /// The literal is known-valid; force-unwrap so any future breakage fails
+        /// loudly instead of silently rerouting tests to a `.noResponse` fallback.
+        let url = URL(string: "https://pay-api.gini.net/documents/ui-test-mock-0000")!
+        let links = Document.Links(giniAPIDocumentURL: url)
+        mockDocument = Document(creationDate: Date(),
+                                id: "ui-test-mock-0000",
+                                name: "uiTestMockDocument",
+                                links: links,
+                                sourceClassification: .scanned)
     }
 
     /**
@@ -109,20 +125,18 @@ final class UITestMockBackend {
         }
         guard let scenario = UITestMockScenario(rawValue: scenarioName) else {
             /// A typo'd scenario would otherwise silently test the wrong behaviour.
-            assertionFailure("Unknown UITestMockScenario: \(scenarioName)")
-            return nil
+            preconditionFailure("Unknown UITestMockScenario: \(scenarioName)")
         }
         let overridesString = UserDefaults.standard.string(forKey: "UITestMockClientConfig")
-        guard let overrides = parseClientConfigurationOverrides(from: overridesString) else {
-            return nil
-        }
         return UITestMockBackend(scenario: scenario,
-                                 clientConfigurationOverrides: overrides)
+                                 clientConfigurationOverrides: parseClientConfigurationOverrides(from: overridesString))
     }
 
     // MARK: - Client configuration assembly
 
-    /// Every overridable `ClientConfiguration` flag key.
+    /**
+     Every overridable `ClientConfiguration` flag key.
+     */
     private static let knownConfigurationFlags: Set<String> = [
         "userJourneyAnalyticsEnabled",
         "skontoEnabled",
@@ -144,9 +158,9 @@ final class UITestMockBackend {
      and value against the known `ClientConfiguration` flags.
      - Parameters:
        - string: The raw launch-argument value; `nil` or empty yields no overrides.
-     - Returns: The parsed overrides, or `nil` when an entry is invalid.
+     - Returns: The parsed overrides; an invalid entry traps via `preconditionFailure`.
      */
-    private static func parseClientConfigurationOverrides(from string: String?) -> [String: Bool]? {
+    private static func parseClientConfigurationOverrides(from string: String?) -> [String: Bool] {
         guard let string, !string.isEmpty else { return [:] }
         var overrides: [String: Bool] = [:]
         for entry in string.split(separator: ",") {
@@ -157,8 +171,7 @@ final class UITestMockBackend {
                   knownConfigurationFlags.contains(pair[0]),
                   let value = Bool(pair[1]) else {
                 /// A typo'd flag would otherwise silently test the wrong configuration.
-                assertionFailure("Invalid UITestMockClientConfig entry: \(entry)")
-                return nil
+                preconditionFailure("Invalid UITestMockClientConfig entry: \(entry)")
             }
             overrides[pair[0]] = value
         }
@@ -229,11 +242,7 @@ extension UITestMockBackend: GiniCaptureNetworkService {
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion) {
         print("🧪 UI test mock backend - upload")
-        if let mockDocument {
-            completion(.success(mockDocument))
-        } else {
-            completion(.failure(.noResponse))
-        }
+        completion(.success(mockDocument))
     }
 
     func analyse(partialDocuments: [PartialDocumentInfo],
@@ -243,11 +252,7 @@ extension UITestMockBackend: GiniCaptureNetworkService {
         print("🧪 UI test mock backend - analyse (scenario: \(scenario.rawValue))")
         switch scenario.analysisOutcome {
         case .success(let extractionResult):
-            if let mockDocument {
-                completion(.success((document: mockDocument, extractionResult: extractionResult)))
-            } else {
-                completion(.failure(.noResponse))
-            }
+            completion(.success((document: mockDocument, extractionResult: extractionResult)))
         case .failure(let error):
             completion(.failure(error))
         }
@@ -301,3 +306,5 @@ extension UITestMockBackend: ClientConfigurationServiceProtocol {
         completion(.success(configuration))
     }
 }
+
+#endif

@@ -21,9 +21,8 @@ set -e
 #   skonto_past.pdf — regular invoice used by the flag-off regression test
 #
 # Preconditions:
-#   - The fixtures exist in TestSamples/TestSamplesForBS/ (credit_note.pdf/.png
-#     are NOT in the repo yet — the backend must classify them as
-#     businessDocType == "creditnote").
+#   - The credit_note.pdf/.png fixtures in TestSamples/TestSamplesForBS/ must be
+#     documents the backend classifies as businessDocType == "creditnote".
 #   - The backend client configuration flag creditNoteHintEnabled is enabled
 #     for the test client credentials.
 #
@@ -59,6 +58,7 @@ else
     ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniCreditNoteScreenUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteDynamicTypeUITests",
+  "GiniBankSDKExampleUITests/GiniCreditNoteMaxDynamicTypeUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOffUITests"
 ]'
@@ -96,7 +96,7 @@ echo "  skonto invoice:   $SKONTO_PAST_URL"
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
 echo "Triggering BrowserStack test run..."
-BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{

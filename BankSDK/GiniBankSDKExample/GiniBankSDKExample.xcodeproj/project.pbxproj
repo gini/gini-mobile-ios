@@ -281,6 +281,12 @@
 		F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */; };
 		F4E0218827BD349A0042D000 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E0218727BD349A0042D000 /* Amount.swift */; };
 		F4FAF7E12C64D1CB005E1587 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4FAF7E02C64D1CB005E1587 /* GiniBankSDK */; };
+		28C0330200000000000000A0 /* PaymentHintScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */; };
+		28C0330200000000000000A1 /* PaymentHintScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B1 /* PaymentHintScreen.swift */; };
+		28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */; };
+		28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B3 /* invoice_future_due.pdf */; };
+		28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B4 /* invoice_no_due_date.pdf */; };
+		28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B5 /* invoice_future_due.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -607,6 +613,12 @@
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F4F9AA2C29E99CB1001C69A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		28C0330200000000000000B1 /* PaymentHintScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreen.swift; sourceTree = "<group>"; };
+		28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintFlowUITests.swift; sourceTree = "<group>"; };
+		28C0330200000000000000B3 /* invoice_future_due.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_future_due.pdf; sourceTree = "<group>"; };
+		28C0330200000000000000B4 /* invoice_no_due_date.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_no_due_date.pdf; sourceTree = "<group>"; };
+		28C0330200000000000000B5 /* invoice_future_due.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice_future_due.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -934,6 +946,9 @@
 				28EB9C4E303F4BB300043D48 /* credit_note.png */,
 				28D35CAF2F83D933000339B4 /* Photopayment_Invoice1.png */,
 				28D35CB02F83D933000339B4 /* Swift_AccNo_routing_DOLL.png */,
+				28C0330200000000000000B3 /* invoice_future_due.pdf */,
+				28C0330200000000000000B4 /* invoice_no_due_date.pdf */,
+				28C0330200000000000000B5 /* invoice_future_due.jpeg */,
 			);
 			path = TestSamplesForBS;
 			sourceTree = "<group>";
@@ -1092,6 +1107,7 @@
 				28DAF4842CD293140035A1FF /* HelpScreen.swift */,
 				28DAF4852CD293140035A1FF /* MainScreen.swift */,
 				28DAF4862CD293140035A1FF /* OnboardingScreen.swift */,
+				28C0330200000000000000B1 /* PaymentHintScreen.swift */,
 				28DAF4872CD293140035A1FF /* ReturnAssistantScreen.swift */,
 				28DAF4882CD293140035A1FF /* ReviewScreen.swift */,
 				28DAF4892CD293140035A1FF /* SettingScreen.swift */,
@@ -1108,6 +1124,7 @@
 			children = (
 				28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */,
 				CE000000000000110000001A /* EditLineItemAccessibilityIdentifiers.swift */,
+				28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */,
 				28DAF4922CD293140035A1FF /* SettingScreenAccessibilityIdentifiers.swift */,
 			);
 			path = AccessibilityIdentifiers;
@@ -1250,6 +1267,7 @@
 				28DAF4932CD293140035A1FF /* AccessibilityIdentifiers */,
 				28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */,
 				28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */,
+				28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */,
 				28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */,
 				28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */,
 				28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */,
@@ -1762,6 +1780,9 @@
 				28D35CB62F83D933000339B4 /* Photopayment_Invoice1.png in Resources */,
 				28EB9C4F303F4BB300043D48 /* credit_note.png in Resources */,
 				28EB9C51303F4BB800043D48 /* credit_note.pdf in Resources */,
+				28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */,
+				28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */,
+				28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2049,6 +2070,9 @@
 				CX000001000000040000001A /* GiniCXCameraUITests.swift in Sources */,
 				CX000001000000050000001A /* GiniCXFeatureFlagsUITests.swift in Sources */,
 				28D35CB82F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift in Sources */,
+				28C0330200000000000000A0 /* PaymentHintScreenAccessibilityIdentifiers.swift in Sources */,
+				28C0330200000000000000A1 /* PaymentHintScreen.swift in Sources */,
+				28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */,
 				28D35CBA2F83F685000339B4 /* GiniCXCaptureFlowTests.swift in Sources */,
 				CX000001000000060000001A /* GiniCXTransactionSummaryUITests.swift in Sources */,
 				CX000001000000070000001A /* GiniCXNoResultsUITests.swift in Sources */,

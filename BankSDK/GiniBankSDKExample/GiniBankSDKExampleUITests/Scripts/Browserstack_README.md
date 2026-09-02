@@ -16,6 +16,7 @@ The original monolithic script has been split into scenario-focused scripts that
 | `bs_run_ra.sh` | `GiniReturnAssistantScreenUITests/testReturnAssistantBS` | `return_asistant.pdf` |
 | `bs_run_skonto.sh` | `GiniSkontoScreenUITests` | `skonto_past.pdf`, `skonot_valid.pdf` |
 | `bs_run_credit_note.sh` | `GiniCreditNoteScreenUITests`, `GiniCreditNoteDynamicTypeUITests`, `GiniCreditNoteMockBackendFlagOnUITests`, `GiniCreditNoteMockBackendFlagOffUITests` | `credit_note.pdf`, `credit_note.png`, `skonto_past.pdf`, `test_image.pdf` |
+| `bs_run_payment_hint.sh` | `PaymentHintFlowUITests` — Due Date Hint + Schedule Payment bottom sheet | `invoice_no_due_date.pdf`, `invoice_future_due.pdf` |
 | `bs_run_all.sh` | every scenario above — builds/uploads once, triggers one build per scenario, named `<scenario>_<release>` (e.g. `smoke_tests_4.5.0`, version taken from `BS_PROJECT`) | all media files |
 | `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 
@@ -69,6 +70,9 @@ Run from the `Scripts/` directory:
 
 # Credit Note Warning — English run; add BS_LANGUAGE="de" for the German case
 ./bs_run_credit_note.sh
+
+# Payment-Hint bottom sheet — Due Date Hint + Schedule Payment
+./bs_run_payment_hint.sh
 ```
 
 > ⚠️ `bs_run_credit_note.sh` needs `credit_note.pdf` and `credit_note.png` in
@@ -89,7 +93,7 @@ Every `bs_run_*.sh` script follows the same steps:
 | 3 | Zips the UI test runner |
 | 4 | Uploads scenario-specific media files to BrowserStack |
 | 5 | Uploads the `.ipa` and test runner zip |
-| 6 | Triggers the test run on `iPhone 16-18` and `iPhone 13 Pro Max-18` |
+| 6 | Triggers the test run on `iPhone 17-26` and `iPhone 16-18` |
 | 7 | Removes local `.ipa` and `.zip` artifacts |
 
 Results appear in the **BrowserStack App Automate dashboard**.
@@ -139,6 +143,38 @@ Upload order matters because `uploadLatestPhotoFromGallery()` picks by recency:
 |---|---|---|---|
 | 1st | `multi_page_invoice_CX_page1.png` | Second-to-last | `uploadLatestPhotoFromGallery(offset: 1)` |
 | 2nd | `multi_page_invoice_CX_page2.png` | Last (most recent) | `uploadLatestPhotoFromGallery(offset: 0)` |
+
+---
+
+## bs_run_payment_hint.sh — fixtures and device matrix
+
+Fixtures are uploaded as PDFs so BrowserStack surfaces them in Files.app "Custom_Files";
+`PaymentHintFlowUITests` selects each by exact filename via
+`MainScreen.tapFileFromBestAvailableSource(fileName:)` — no gallery-offset semantics.
+
+| File | Used by |
+|---|---|
+| `invoice_no_due_date.pdf` | R6 only (`testNoSheetWhenPaymentDueDateExtractionEmpty`) |
+| `invoice_future_due.pdf`  | R1–R5, R7–R13 |
+
+Both PDFs are wrapped from the Android JPEG sources
+(`gini-mobile-android@release/bank-sdk-4.5:bank-sdk/example-app/src/androidTest/assets/`);
+the Gini API extraction is unchanged:
+- `invoice_future_due.pdf` extracts `paymentDueDate = 2028-09-01`, `paymentState = ToBePaid`.
+- `invoice_no_due_date.pdf` extracts no `paymentDueDate`.
+
+Regenerate before mid-2028 by pulling the current generator scripts from the Android repo and
+re-wrapping with `sips -s format pdf <in.jpeg> --out <out.pdf>`, then update `FIXTURE_DUE_DATE`
+in `PaymentHintFlowUITests.swift`.
+
+The script targets **two devices** (latest iPhone on each iOS major we can run on BS today):
+`iPhone 17-26` and `iPhone 16-18`. Both run in parallel under the BS 2-slot cap.
+`singleRunnerInvocation: "true"` keeps the per-test setup overhead paid once.
+
+iOS 17 was evaluated (`iPhone 15-17`) and excluded — an XCUITest runner built with Xcode 26
+references `_OBJC_CLASS_$_XCTCommandLineToolHelper`, which iOS 17.x devices' XCTest doesn't
+export, so the runner crashes at launch before any test executes. Re-add once we can build
+with an SDK compatible with iOS 17's XCTest.
 
 ---
 
@@ -203,7 +239,7 @@ curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d '{
-    "devices": ["iPhone 16-18", "iPhone 13 Pro Max-18"],
+    "devices": ["iPhone 17-26", "iPhone 16-18"],
     "app": "APP_URL",
     "testSuite": "TEST_SUITE_URL",
     "only-testing": ["GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS"],

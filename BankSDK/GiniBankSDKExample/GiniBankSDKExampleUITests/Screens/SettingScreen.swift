@@ -8,7 +8,7 @@ import Foundation
 import XCTest
 
 class SettingScreen {
-    
+
     let app: XCUIApplication
     let closeButton: XCUIElement
     let qrCodeScanSwitch: XCUIElement
@@ -18,11 +18,16 @@ class SettingScreen {
     let onboardingEveryLaunchSwitch: String
     let onboardingAtFirstLaunchSwitch: String
     let productTagSegmentedControl: XCUIElement
-    /// Row title of the credit note hint feature toggle — the example-app settings UI
-    /// is English-only, so no locale switch is needed. The switch itself carries no
-    /// accessibility identifier yet, so it is located through its cell text.
+    let paymentDueHintSwitch: XCUIElement
+    let paymentScheduleHintSwitch: XCUIElement
+    /**
+     Row title of the credit note hint feature toggle — the example-app settings UI
+     is English-only, so no locale switch is needed. The switch itself carries no
+     accessibility identifier yet, so it is located through its cell text.
+     */
     let creditNoteHintCellText = "Credit note hint feature"
-    
+
+
     init(app: XCUIApplication, locale: String) {
         self.app = app
         closeButton = app.buttons[SettingScreenAccessibilityIdentifiers.closeButton.rawValue]
@@ -33,6 +38,8 @@ class SettingScreen {
         onboardingEveryLaunchSwitch = "Onboarding screens at every launch"
         onboardingAtFirstLaunchSwitch = "Onboarding screens at first launch"
         productTagSegmentedControl = app.segmentedControls[SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue]
+        paymentDueHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue]
+        paymentScheduleHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue]
     }
     
     public func tapFlashToggleSwitch(){
@@ -73,7 +80,10 @@ class SettingScreen {
             swipeCount += 1
         }
         XCTAssertTrue(cell.waitForExistence(timeout: 3), "Cell containing text '\(text)' not found in Settings")
-        return cell.switches.firstMatch
+        let switchElement = cell.switches.firstMatch
+        XCTAssertTrue(switchElement.waitForExistence(timeout: 3),
+                      "Switch in the cell containing text '\(text)' not found in Settings")
+        return switchElement
     }
 
     /**
@@ -102,6 +112,37 @@ class SettingScreen {
         let segment = productTagSegmentedControl.buttons.element(boundBy: index)
         if segment.isHittable {
             segment.tap()
+        }
+    }
+
+    /**
+     Sets `paymentDueHintEnabled` / `paymentScheduleHintEnabled` via Settings.
+     Scrolls to the Feature-toggles section if either switch is offscreen.
+     */
+    public func setPaymentHintFlags(dueDate: Bool,
+                                    schedule: Bool) {
+        setSwitch(paymentDueHintSwitch, to: dueDate)
+        setSwitch(paymentScheduleHintSwitch, to: schedule)
+    }
+
+    /**
+     Scrolls up to six swipes until the switch is hittable, then sets it.
+     Fails explicitly if the switch never becomes hittable.
+     */
+    private func setSwitch(_ switchElement: XCUIElement,
+                           to on: Bool) {
+        var attempts = 0
+        while !switchElement.isHittable && attempts < 6 {
+            app.swipeUp()
+            attempts += 1
+        }
+        guard switchElement.isHittable else {
+            XCTFail("Could not scroll \(switchElement) into view within \(attempts) swipes")
+            return
+        }
+        let currentlyOn = switchElement.value as? String == "1"
+        if currentlyOn != on {
+            switchElement.tap()
         }
     }
 }

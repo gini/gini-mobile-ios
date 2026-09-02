@@ -82,7 +82,7 @@ upload_media CREDIT_NOTE_PNG_URL  "$SAMPLES_DIR/credit_note.png"                
 # derives the build display name from the uploaded IPA filename, so each scenario
 # uploads the same binary under its own name to stay distinguishable.
 echo "Uploading test suite..."
-TEST_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+TEST_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
     -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/test-suite" \
     -F "file=@$TEST_SUITE_OUTPUT")
 echo "  Test suite response: $TEST_RESPONSE"
@@ -131,6 +131,13 @@ refresh_active_builds() {
 ## Blocks until at least `needed` licenses are free (BS_PARALLELS - active sessions).
 wait_for_capacity() {
     local needed="$1"
+    ## A build needing more sessions than the license count can never be satisfied —
+    ## without this guard the loop below would sleep forever.
+    if [ "$needed" -gt "$BS_PARALLELS" ]; then
+        echo "ERROR: scenario needs $needed parallel sessions but BS_PARALLELS=$BS_PARALLELS." >&2
+        echo "       Raise BS_PARALLELS or reduce the device list (BS_DEVICE)." >&2
+        exit 1
+    fi
     while true; do
         refresh_active_builds
         if [ $((ACTIVE_TOTAL + needed)) -le "$BS_PARALLELS" ]; then
@@ -179,7 +186,7 @@ trigger_scenario() {
     local scenario_ipa="$SCRIPT_DIR/${build_name}.ipa"
     cp "$IPA_OUTPUT" "$scenario_ipa"
     local app_response
-    app_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    app_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/app" \
         -F "file=@$scenario_ipa")
     rm -f "$scenario_ipa"
@@ -199,7 +206,7 @@ trigger_scenario() {
     local build_id=""
     local response=""
     while [ $attempts -lt 8 ]; do
-        response=$(curl -s -u "$BS_USER:$BS_KEY" \
+        response=$(bs_curl -u "$BS_USER:$BS_KEY" \
           -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
           -H "Content-Type: application/json" \
           -d "{
@@ -288,6 +295,7 @@ trigger_scenario "skonto_${RELEASE_VERSION}" '[
 trigger_scenario "credit_note_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCreditNoteScreenUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteDynamicTypeUITests",
+  "GiniBankSDKExampleUITests/GiniCreditNoteMaxDynamicTypeUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOffUITests"
 ]' "[\"$CREDIT_NOTE_PDF_URL\", \"$CREDIT_NOTE_PNG_URL\", \"$SKONTO_PAST_URL\", \"$TEST_IMAGE_PDF_URL\"]"

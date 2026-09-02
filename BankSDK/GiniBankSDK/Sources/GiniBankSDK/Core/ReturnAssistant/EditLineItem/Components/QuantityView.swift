@@ -29,6 +29,7 @@ final class QuantityView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.adjustsFontForContentSizeCategory = true
         textField.accessibilityTraits = .staticText
+        textField.accessibilityIdentifier = EditLineItemAccessibilityIdentifiers.quantityTextField
         return textField
     }()
 
