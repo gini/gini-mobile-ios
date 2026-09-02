@@ -159,10 +159,14 @@ extension PaymentHintBottomSheetViewController {
      `PaymentHintScreenAccessibilityIdentifiers` — keep both sides in sync.
      */
     struct AccessibilityIdentifiers {
-        private init() {}
+        private init() {
+            // Namespace-only; instantiation is disabled.
+        }
 
         struct DueDate {
-            private init() {}
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
             static let container = "paymentHint.dueDate.container"
             static let title = "paymentHint.dueDate.title"
             static let description = "paymentHint.dueDate.description"
@@ -171,7 +175,9 @@ extension PaymentHintBottomSheetViewController {
         }
 
         struct Schedule {
-            private init() {}
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
             static let container = "paymentHint.schedule.container"
             static let title = "paymentHint.schedule.title"
             static let description = "paymentHint.schedule.description"
