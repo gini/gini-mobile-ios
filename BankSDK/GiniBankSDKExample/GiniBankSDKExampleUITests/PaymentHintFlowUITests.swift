@@ -55,13 +55,6 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
 
     // MARK: - Helpers
 
-    private var paymentHintScreen: PaymentHintScreen!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        paymentHintScreen = PaymentHintScreen(app: app)
-    }
-
     /**
      Days between today and `FIXTURE_DUE_DATE`, computed like `Date.isDueSoon(within:)`.
      */

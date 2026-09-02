@@ -27,6 +27,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
+    var paymentHintScreen: PaymentHintScreen!
 
     /**
      Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
@@ -81,6 +82,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         transactionSummaryScreen = TransactionSummaryScreen(app: app, locale: currentLocale)
         noResultsScreen = NoResultsScreen(app: app, locale: currentLocale)
         cxExtractionScreen = CXExtractionScreen(app: app)
+        paymentHintScreen = PaymentHintScreen(app: app)
     }
     
     override func tearDownWithError() throws  {
