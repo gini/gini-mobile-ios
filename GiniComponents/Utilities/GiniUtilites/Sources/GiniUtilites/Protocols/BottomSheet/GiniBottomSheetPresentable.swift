@@ -74,7 +74,7 @@ public protocol GiniBottomSheetPresentable {
      This method creates a custom detent with the specified height and applies it to the
      sheet presentation controller. The custom detent becomes the selected detent.
      
-     - Parameters
+     - Parameters:
         - height: The desired height for the bottom sheet in points.
 
      - Note: Custom detents are only available on iOS 16.0 and later.
