@@ -58,6 +58,7 @@ else
     ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniCreditNoteScreenUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteDynamicTypeUITests",
+  "GiniBankSDKExampleUITests/GiniCreditNoteMaxDynamicTypeUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOffUITests"
 ]'

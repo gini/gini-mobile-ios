@@ -295,6 +295,7 @@ trigger_scenario "skonto_${RELEASE_VERSION}" '[
 trigger_scenario "credit_note_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCreditNoteScreenUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteDynamicTypeUITests",
+  "GiniBankSDKExampleUITests/GiniCreditNoteMaxDynamicTypeUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniCreditNoteMockBackendFlagOffUITests"
 ]' "[\"$CREDIT_NOTE_PDF_URL\", \"$CREDIT_NOTE_PNG_URL\", \"$SKONTO_PAST_URL\", \"$TEST_IMAGE_PDF_URL\"]"
