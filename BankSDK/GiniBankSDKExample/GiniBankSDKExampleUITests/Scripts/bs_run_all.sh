@@ -131,6 +131,13 @@ refresh_active_builds() {
 ## Blocks until at least `needed` licenses are free (BS_PARALLELS - active sessions).
 wait_for_capacity() {
     local needed="$1"
+    ## A build needing more sessions than the license count can never be satisfied —
+    ## without this guard the loop below would sleep forever.
+    if [ "$needed" -gt "$BS_PARALLELS" ]; then
+        echo "ERROR: scenario needs $needed parallel sessions but BS_PARALLELS=$BS_PARALLELS." >&2
+        echo "       Raise BS_PARALLELS or reduce the device list (BS_DEVICE)." >&2
+        exit 1
+    fi
     while true; do
         refresh_active_builds
         if [ $((ACTIVE_TOTAL + needed)) -le "$BS_PARALLELS" ]; then
