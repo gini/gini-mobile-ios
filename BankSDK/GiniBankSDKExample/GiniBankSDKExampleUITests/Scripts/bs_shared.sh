@@ -11,7 +11,16 @@
 #   Variables : BS_USER, BS_KEY, BS_PROJECT, REPO_ROOT, WORKSPACE, SCHEME, DERIVED_DATA,
 #               BUILD_PRODUCTS, SIGNING_CONFIG, SAMPLES_DIR, IPA_OUTPUT,
 #               TEST_SUITE_OUTPUT, DEVICE_1, DEVICE_2
-#   Functions : upload_media, bs_build, bs_upload_app_and_suite, bs_cleanup
+#   Functions : bs_curl, upload_media, bs_build, bs_upload_app_and_suite, bs_cleanup
+
+# ── HTTP helper ───────────────────────────────────────────────────────────────
+# curl wrapper for BrowserStack API calls: fails on HTTP 4xx/5xx while keeping the
+# error body (--fail-with-body), reports transport errors on stderr (-S), and never
+# aborts the calling script under `set -e` — every call site checks the parsed
+# response and reports its own actionable error.
+bs_curl() {
+    curl -sS --fail-with-body "$@" || true
+}
 
 # ── Credentials ───────────────────────────────────────────────────────────────
 # Override via environment variables:
@@ -84,7 +93,7 @@ upload_media() {
     fi
     echo "  Uploading $label..."
     local response
-    response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
         -F "file=@$file_path" \
         -F "custom_id=$custom_id")
@@ -186,7 +195,7 @@ XCCONFIG
 bs_upload_app_and_suite() {
     echo "  Uploading app IPA..."
     local app_response
-    app_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    app_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/app" \
         -F "file=@$IPA_OUTPUT")
     echo "  App response: $app_response"
@@ -195,7 +204,7 @@ bs_upload_app_and_suite() {
 
     echo "  Uploading test suite..."
     local test_response
-    test_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    test_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/test-suite" \
         -F "file=@$TEST_SUITE_OUTPUT")
     echo "  Test suite response: $test_response"

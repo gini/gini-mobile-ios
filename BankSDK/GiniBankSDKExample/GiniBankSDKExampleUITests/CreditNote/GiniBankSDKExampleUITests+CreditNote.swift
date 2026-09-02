@@ -55,6 +55,10 @@ extension GiniBankSDKExampleUITests {
         mainScreen.configurationButton.tap()
         settingScreen.setSwitch(nextTo: settingScreen.creditNoteHintCellText, enabled: false)
         settingScreen.closeButton.tap()
+        /// Anchor on the main screen so slow dismiss animations (BrowserStack devices)
+        /// cannot race the next step.
+        XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5),
+                      "Main screen did not reappear after closing the settings screen.")
     }
 
     /**

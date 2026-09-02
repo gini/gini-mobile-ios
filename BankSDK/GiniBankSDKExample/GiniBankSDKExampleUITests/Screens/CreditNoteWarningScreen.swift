@@ -49,13 +49,18 @@ class CreditNoteWarningScreen {
 
     /**
      Waits for the warning sheet to be fully presented — title and both buttons.
+     The timeout is a shared budget across all three waits, so a title that appears
+     late still leaves the buttons time to finish animating in (minimum 1 s each).
      - Parameter timeout: Maximum time to wait for the sheet to appear.
      - Returns: `true` when the title and both buttons exist.
      */
     func waitForDialog(timeout: TimeInterval = 10) -> Bool {
-        return title.waitForExistence(timeout: timeout)
-            && cancelTransferButton.waitForExistence(timeout: 2)
-            && proceedAnywayButton.waitForExistence(timeout: 2)
+        let deadline = Date(timeIntervalSinceNow: timeout)
+        for element in [title, cancelTransferButton, proceedAnywayButton] {
+            let remaining = max(1, deadline.timeIntervalSinceNow)
+            guard element.waitForExistence(timeout: remaining) else { return false }
+        }
+        return true
     }
 
     /**

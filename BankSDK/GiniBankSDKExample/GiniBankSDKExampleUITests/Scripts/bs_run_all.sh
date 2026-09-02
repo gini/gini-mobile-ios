@@ -82,7 +82,7 @@ upload_media CREDIT_NOTE_PNG_URL  "$SAMPLES_DIR/credit_note.png"                
 # derives the build display name from the uploaded IPA filename, so each scenario
 # uploads the same binary under its own name to stay distinguishable.
 echo "Uploading test suite..."
-TEST_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+TEST_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
     -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/test-suite" \
     -F "file=@$TEST_SUITE_OUTPUT")
 echo "  Test suite response: $TEST_RESPONSE"
@@ -186,7 +186,7 @@ trigger_scenario() {
     local scenario_ipa="$SCRIPT_DIR/${build_name}.ipa"
     cp "$IPA_OUTPUT" "$scenario_ipa"
     local app_response
-    app_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    app_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/app" \
         -F "file=@$scenario_ipa")
     rm -f "$scenario_ipa"
@@ -206,7 +206,7 @@ trigger_scenario() {
     local build_id=""
     local response=""
     while [ $attempts -lt 8 ]; do
-        response=$(curl -s -u "$BS_USER:$BS_KEY" \
+        response=$(bs_curl -u "$BS_USER:$BS_KEY" \
           -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
           -H "Content-Type: application/json" \
           -d "{

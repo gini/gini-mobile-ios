@@ -8,6 +8,10 @@ import Foundation
 import GiniBankAPILibrary
 import GiniCaptureSDK
 
+/// Test scaffolding must never ship in the production binary; UI test runs
+/// (locally and on BrowserStack) always build the Debug configuration.
+#if DEBUG
+
 /**
  UI-test-only mock backend replacing the Gini API for deterministic UI tests.
 
@@ -93,23 +97,22 @@ final class UITestMockBackend {
     /**
      The single fake API document handed back for every upload/analysis.
      */
-    private let mockDocument: Document?
+    private let mockDocument: Document
 
     init(scenario: UITestMockScenario,
          clientConfigurationOverrides: [String: Bool]) {
         self.scenario = scenario
         self.clientConfigurationOverrides = clientConfigurationOverrides
 
-        if let url = URL(string: "https://pay-api.gini.net/documents/ui-test-mock-0000") {
-            let links = Document.Links(giniAPIDocumentURL: url)
-            mockDocument = Document(creationDate: Date(),
-                                    id: "ui-test-mock-0000",
-                                    name: "uiTestMockDocument",
-                                    links: links,
-                                    sourceClassification: .scanned)
-        } else {
-            mockDocument = nil
-        }
+        /// The literal is known-valid; force-unwrap so any future breakage fails
+        /// loudly instead of silently rerouting tests to a `.noResponse` fallback.
+        let url = URL(string: "https://pay-api.gini.net/documents/ui-test-mock-0000")!
+        let links = Document.Links(giniAPIDocumentURL: url)
+        mockDocument = Document(creationDate: Date(),
+                                id: "ui-test-mock-0000",
+                                name: "uiTestMockDocument",
+                                links: links,
+                                sourceClassification: .scanned)
     }
 
     /**
@@ -125,11 +128,8 @@ final class UITestMockBackend {
             preconditionFailure("Unknown UITestMockScenario: \(scenarioName)")
         }
         let overridesString = UserDefaults.standard.string(forKey: "UITestMockClientConfig")
-        guard let overrides = parseClientConfigurationOverrides(from: overridesString) else {
-            return nil
-        }
         return UITestMockBackend(scenario: scenario,
-                                 clientConfigurationOverrides: overrides)
+                                 clientConfigurationOverrides: parseClientConfigurationOverrides(from: overridesString))
     }
 
     // MARK: - Client configuration assembly
@@ -158,9 +158,9 @@ final class UITestMockBackend {
      and value against the known `ClientConfiguration` flags.
      - Parameters:
        - string: The raw launch-argument value; `nil` or empty yields no overrides.
-     - Returns: The parsed overrides, or `nil` when an entry is invalid.
+     - Returns: The parsed overrides; an invalid entry traps via `preconditionFailure`.
      */
-    private static func parseClientConfigurationOverrides(from string: String?) -> [String: Bool]? {
+    private static func parseClientConfigurationOverrides(from string: String?) -> [String: Bool] {
         guard let string, !string.isEmpty else { return [:] }
         var overrides: [String: Bool] = [:]
         for entry in string.split(separator: ",") {
@@ -242,11 +242,7 @@ extension UITestMockBackend: GiniCaptureNetworkService {
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion) {
         print("🧪 UI test mock backend - upload")
-        if let mockDocument {
-            completion(.success(mockDocument))
-        } else {
-            completion(.failure(.noResponse))
-        }
+        completion(.success(mockDocument))
     }
 
     func analyse(partialDocuments: [PartialDocumentInfo],
@@ -256,11 +252,7 @@ extension UITestMockBackend: GiniCaptureNetworkService {
         print("🧪 UI test mock backend - analyse (scenario: \(scenario.rawValue))")
         switch scenario.analysisOutcome {
         case .success(let extractionResult):
-            if let mockDocument {
-                completion(.success((document: mockDocument, extractionResult: extractionResult)))
-            } else {
-                completion(.failure(.noResponse))
-            }
+            completion(.success((document: mockDocument, extractionResult: extractionResult)))
         case .failure(let error):
             completion(.failure(error))
         }
@@ -314,3 +306,5 @@ extension UITestMockBackend: ClientConfigurationServiceProtocol {
         completion(.success(configuration))
     }
 }
+
+#endif

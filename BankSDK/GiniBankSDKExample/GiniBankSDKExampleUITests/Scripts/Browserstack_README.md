@@ -89,7 +89,7 @@ Every `bs_run_*.sh` script follows the same steps:
 | 3 | Zips the UI test runner |
 | 4 | Uploads scenario-specific media files to BrowserStack |
 | 5 | Uploads the `.ipa` and test runner zip |
-| 6 | Triggers the test run on `iPhone 16-18` and `iPhone 13 Pro Max-18` |
+| 6 | Triggers the test run on `iPhone 17-26` and `iPhone 16-18` |
 | 7 | Removes local `.ipa` and `.zip` artifacts |
 
 Results appear in the **BrowserStack App Automate dashboard**.
@@ -203,7 +203,7 @@ curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d '{
-    "devices": ["iPhone 16-18", "iPhone 13 Pro Max-18"],
+    "devices": ["iPhone 17-26", "iPhone 16-18"],
     "app": "APP_URL",
     "testSuite": "TEST_SUITE_URL",
     "only-testing": ["GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS"],
