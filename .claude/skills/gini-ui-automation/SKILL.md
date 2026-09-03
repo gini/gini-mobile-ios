@@ -89,7 +89,7 @@ These tests **skip on the simulator by design.** The base class opens with:
 #endif
 ```
 
-So a green local run may mean nothing ran. Never report a simulator run as a pass. Real execution happens on a device or through the BrowserStack scripts in `GiniBankSDKExampleUITests/Scripts/` (`bs_run_smoke_journeys.sh`, `bs_run_smoke_screens.sh`, `bs_run_skonto.sh`, `bs_run_cx_*.sh`, and so on) — read `Scripts/README.md` before invoking one, and don't launch a paid BrowserStack run without the user asking.
+So a green local run may mean nothing ran. Never report a simulator run as a pass. Real execution happens on a device or through the BrowserStack scripts in `GiniBankSDKExampleUITests/Scripts/` (`bs_run_smoke_tests.sh`, `bs_run_skonto.sh`, `bs_run_cx_*.sh`, and so on) — read `Scripts/README.md` before invoking one, and don't launch a paid BrowserStack run without the user asking.
 
 This constraint shapes how to work: you cannot iterate quickly by running the suite. Get the code right by reading the accessibility tree and the existing page objects, and treat each real run as expensive.
 

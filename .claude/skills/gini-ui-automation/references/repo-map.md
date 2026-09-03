@@ -84,8 +84,7 @@ So migrating one of these screens off localised strings is a two-part change: ad
 
 Real runs go through the scripts in `Scripts/`:
 
-- `bs_run_smoke_journeys.sh`
-- `bs_run_smoke_screens.sh`
+- `bs_run_smoke_tests.sh`
 - `bs_run_skonto.sh`
 - `bs_run_ra.sh` (return assistant)
 - `bs_run_cx_normal.sh`, `bs_run_cx_multipage.sh`, `bs_run_cx_no_results.sh`
