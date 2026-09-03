@@ -11,7 +11,7 @@ import GiniBankAPILibrary
 /**
  The GiniCaptureResultsDelegate protocol defines methods that allow you to handle the analysis result.
  */
-@objc public protocol GiniCaptureResultsDelegate: AnyObject {
+public protocol GiniCaptureResultsDelegate: AnyObject {
     
     /**
      Called when the analysis finished with results
@@ -42,6 +42,19 @@ import GiniBankAPILibrary
        the one delivered to `giniCaptureAnalysisDidFinishWith(result:)`.
      */
     func giniCaptureDidRequestSchedulePayment(result: AnalysisResult)
+}
+
+public extension GiniCaptureResultsDelegate {
+    /// Default no-op — restores source compatibility for integrators
+    /// upgrading from 4.4.x to 4.5.1 without adopting the Schedule
+    /// Payment flow. Integrators SHOULD override this method to route
+    /// the user to their own scheduled-transfer screen, carrying the
+    /// extractions over from `result`. Not emitted into the
+    /// Objective-C protocol descriptor — Objective-C conformers must
+    /// still implement it themselves.
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        // No-op.
+    }
 }
 
 public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {

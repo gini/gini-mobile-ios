@@ -1,8 +1,27 @@
 # PP-3497: [iOS] `GiniCaptureResultsDelegate.giniCaptureDidRequestSchedulePayment` is a source-breaking new required method in 4.5.0
 
-Status: draft
+Status: implemented
 Ticket: https://ginis.atlassian.net/browse/PP-3497
 Fix versions: iOS Gini Bank SDK 4.5.1, iOS Gini Capture SDK 4.5.1
+
+## Implementation note — spec deviation on `@objc` protocol
+
+Build proved that R7's claim ("Swift permits `public extension` default
+impls on `@objc` protocols and they satisfy the Swift protocol
+requirement") is factually wrong: the Swift compiler rejects the
+conformance with
+`non-'@objc' method '…' does not satisfy requirement of '@objc' protocol`.
+Verified with a minimal repro against Swift 6.x / Xcode 26.2.
+
+To make the extension default impl actually satisfy the requirement, the
+`@objc` attribute was dropped from the `GiniCaptureResultsDelegate`
+protocol declaration. This is the minimal change that lets the extension
+work; it strictly widens the tradeoff R7 already accepted (Objective-C
+conformers cannot inherit the default) to the whole protocol losing
+Objective-C-descriptor visibility. Verified in-repo that every conformer
+is Swift (`grep` over `.h`/`.m` finds nothing) and every Swift conformer
+either inherits from `NSObject` (still fine) or is a plain Swift class
+(fine). No caller change needed.
 
 ## Problem
 
@@ -360,3 +379,34 @@ extraction content. No new file under `Tests/GiniCaptureSDKTests/Resources/`.
 
 None. The ticket answers everything the spec needs and no LOW-confidence
 markers remain.
+
+## Implementation plan
+
+- [x] 1. Add `GiniCaptureResultsDelegateDefaultImplTests.swift` under
+      `CaptureSDK/GiniCaptureSDK/Tests/GiniCaptureSDKTests/` — declares a
+      private class conforming to `GiniCaptureResultsDelegate` with only
+      the three pre-4.5 methods, exercises the default no-op
+      implementation. Written first; fails to compile until step 2 lands.
+      (requirements R1, R2)
+- [x] 2. Append `public extension GiniCaptureResultsDelegate` with a
+      default no-op `giniCaptureDidRequestSchedulePayment(result:)` in
+      `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift`
+      under the protocol declaration (currently ends line 45), carrying
+      the `///` comment required by R6. Also drop `@objc` from the
+      protocol declaration itself — see "Implementation note" above.
+      (requirements R1, R2, R6, R7)
+- [x] 3. Bump `GiniCaptureSDKVersion` string from `"4.5.0"` to `"4.5.1"`
+      in
+      `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift`.
+      Spec drift note: it currently reads `"4.5.0"`, not `"4.4.0"` — the
+      target `"4.5.1"` is unchanged. (requirement R4)
+- [x] 4. Bump `GiniBankSDKVersion` string from `"4.5.0"` to `"4.5.1"` in
+      `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift`,
+      and bump the `GiniCaptureSDK` pin in
+      `BankSDK/GiniBankSDK/Package-release.swift` from `.exact("4.5.0")`
+      to `.exact("4.5.1")`. Spec drift note: both currently read
+      `"4.5.0"`, not `"4.4.0"`. (requirements R4, R5)
+- [x] 5. Re-run the existing
+      `NetworkingScreenApiCoordinatorTests+SchedulePaymentHint` suite
+      unchanged — it verifies the overriding path continues to fire.
+      (requirement R3)
