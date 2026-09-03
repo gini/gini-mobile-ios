@@ -62,16 +62,18 @@ echo "  Return Assistant invoice: $RA_URL"
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
 echo "Triggering BrowserStack test run..."
-BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],
+    \"devices\": $DEVICES_JSON,
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
     \"project\": \"$BS_PROJECT\",
     \"buildName\": \"bs_run_cx_no_results\",
+    \"timeout\": 7200,
+    \"singleRunnerInvocation\": \"true\",
     \"uploadMedia\": [\"$CX_NO_RESULTS_URL\", \"$SKONTO_PAST_URL\", \"$RA_URL\"],
     \"resignApp\": \"true\"
   }")

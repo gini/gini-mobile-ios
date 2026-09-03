@@ -8,17 +8,11 @@
 import XCTest
 
 /**
- BrowserStack UI-automation for the payment-hint bottom sheet — see
- `specs/PP-3302-feature.md` for the requirement→test mapping.
+ BrowserStack UI-automation for the payment-hint bottom sheet
 
- Fixtures (shared 1:1 with Android PP-3301, uploaded by `Scripts/bs_run_payment_hint.sh`
- as PDFs so they land in Files.app "Custom_Files" and can be selected by
- `MainScreen.tapFileFromBestAvailableSource(fileName:)`):
+ Fixtures:
  `invoice_future_due.pdf` → `paymentDueDate = 2028-09-01`;
- `invoice_no_due_date.pdf` → no `paymentDueDate`. The PDFs are wrapped from the
- Android JPEG sources; extraction is unchanged. Regenerate from
- `gini-mobile-android@release/bank-sdk-4.5` before mid-2028 and update
- `FIXTURE_DUE_DATE`.
+ `invoice_no_due_date.pdf` → no `paymentDueDate`.
 
  Show / no-show cases are driven by varying `-paymentDueHintThresholdDaysOverride`,
  not by refreshing the invoice.
@@ -67,7 +61,7 @@ final class PaymentHintFlowUITests: GiniBankSDKExampleUITests {
 
     /**
      `true` within 30 min of midnight. Skips boundary-threshold tests to avoid
-     date-rollover flips (mirrors Android PP-3301).
+     date-rollover flips.
      */
     private var isNearMidnight: Bool {
         let calendar = Calendar.current

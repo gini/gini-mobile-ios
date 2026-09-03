@@ -27,7 +27,9 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var transactionSummaryScreen: TransactionSummaryScreen!
     var noResultsScreen: NoResultsScreen!
     var cxExtractionScreen: CXExtractionScreen!
+    var creditNoteWarningScreen: CreditNoteWarningScreen!
     var paymentHintScreen: PaymentHintScreen!
+
 
     /**
      Class-level launch args, added on setUp and every `relaunch()`. Override in subclasses.
@@ -56,9 +58,11 @@ class GiniBankSDKExampleUITests: XCTestCase {
     }
 
     override func setUpWithError() throws {
-    #if targetEnvironment(simulator)
-        throw XCTSkip("Skipping test on simulator")
-    #endif
+        // Simulator skip disabled so the suite runs on BrowserStack — re-enable to
+        // guard local simulator runs again.
+         #if targetEnvironment(simulator)
+             throw XCTSkip("Skipping test on simulator")
+         #endif
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()
@@ -82,6 +86,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         transactionSummaryScreen = TransactionSummaryScreen(app: app, locale: currentLocale)
         noResultsScreen = NoResultsScreen(app: app, locale: currentLocale)
         cxExtractionScreen = CXExtractionScreen(app: app)
+        creditNoteWarningScreen = CreditNoteWarningScreen(app: app, locale: currentLocale)
         paymentHintScreen = PaymentHintScreen(app: app)
     }
     
@@ -143,12 +148,19 @@ class GiniBankSDKExampleUITests: XCTestCase {
             app.staticTexts[analysisScreenTitle]
         ]
         if !analysisIndicators.contains(where: { $0.waitForExistence(timeout: 2) }) { return }
-        for indicator in analysisIndicators where indicator.exists {
-            let gonePredicate = NSPredicate(format: "exists == false")
-            let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: indicator)
-            let result = XCTWaiter().wait(for: [expectation], timeout: 30)
-            if result != .completed { XCTFail("Analysis screen did not disappear within timeout") }
+        /// Overlays the SDK presents on top of the analysis screen once processing is done:
+        /// the transaction docs alert, or a bottom sheet (credit note warning, already-paid,
+        /// due-date/schedule payment hint). Analysis is finished as soon as one is visible,
+        /// even though the analysis navigation bar is still in the tree — waiting for it to
+        /// disappear would deadlock against the overlay.
+        let proceedTitles = ["Proceed anyway", "Proceed Anyway", "Trotzdem fortfahren"]
+        let overlayProceedButton = app.buttons.matching(NSPredicate(format: "label IN %@", proceedTitles)).firstMatch
+        for _ in 0..<30 {
+            if analysisIndicators.allSatisfy({ !$0.exists }) { return }
+            if transactionDocsScreen.onlyForThisTransaction.exists { return }
+            if overlayProceedButton.waitForExistence(timeout: 1) { return }
         }
+        XCTFail("Analysis screen did not disappear within timeout")
     }
 
     /**
@@ -209,11 +221,30 @@ class GiniBankSDKExampleUITests: XCTestCase {
             return
         }
         allCells[targetIndex].tap()
-        guard let confirm = galleryConfirmButton() else {
-            XCTFail("Gallery confirm button (Done / Fertig / checkmark) not found after selecting photo")
-            return
+        confirmGallerySelectionIfNeeded()
+    }
+
+    /**
+     Confirms the gallery selection when the picker requires it.
+
+     The confirm button title varies by iOS version and locale ("\u{0010}Done" on older
+     pickers, plain "Done" on iOS 18, "Fertig"/"Add"/"Hinzufügen" elsewhere), and when
+     multipage is disabled the SDK gallery advances straight to the review screen with
+     no confirm step — so a missing button is only a failure if the review screen never
+     appears either.
+     */
+    private func confirmGallerySelectionIfNeeded() {
+        let titles = ["\u{0010}Done", "Done", "Fertig", "Add", "Hinzufügen"]
+        let confirmButton = app.buttons.matching(NSPredicate(format: "label IN %@", titles)).firstMatch
+        for _ in 0..<10 {
+            if confirmButton.waitForExistence(timeout: 1), confirmButton.isHittable {
+                confirmButton.tap()
+                return
+            }
+            /// Multipage off — the picker already advanced to the review screen.
+            if reviewScreen.processButton.exists { return }
         }
-        confirm.tap()
+        XCTFail("Gallery confirm button not found and the review screen did not appear.")
     }
 }
 

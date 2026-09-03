@@ -54,16 +54,18 @@ echo "  test_image.png:  $TEST_IMAGE_URL"
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
 echo "Triggering BrowserStack test run..."
-BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\"],
+    \"devices\": $DEVICES_JSON,
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
     \"project\": \"$BS_PROJECT\",
     \"buildName\": \"bs_run_smoke_tests\",
+    \"timeout\": 7200,
+    \"singleRunnerInvocation\": \"true\",
     \"uploadMedia\": [\"$TEST_IMAGE_URL\"],
     \"resignApp\": \"true\"
   }")

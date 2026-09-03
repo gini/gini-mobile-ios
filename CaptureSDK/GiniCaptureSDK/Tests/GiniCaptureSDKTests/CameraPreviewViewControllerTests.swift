@@ -85,7 +85,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         XCTAssertNotEqual(defaultFlashState, camera.isFlashOn, "camera flash state should change it after toggle it")
     }
 
-    // MARK: - Camera frame color across rotation (PP-3305)
+    // MARK: - Camera frame color across rotation 
 
     func testCameraFrameKeepsColorAfterOrientationUpdate() {
         _ = cameraPreviewViewController.view

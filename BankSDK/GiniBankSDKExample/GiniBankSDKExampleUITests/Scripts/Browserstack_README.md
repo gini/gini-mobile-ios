@@ -15,7 +15,9 @@ The original monolithic script has been split into scenario-focused scripts that
 | `bs_run_cx_no_results.sh` | `GiniCXNoResultsUITests`, `GiniReturnAssistantScreenUITests/testReturnAssistantBS`, `GiniSkontoScreenUITests` | `cx_no_results_invoice.pdf`, `skonto_past.pdf`, `return_asistant.pdf` |
 | `bs_run_ra.sh` | `GiniReturnAssistantScreenUITests/testReturnAssistantBS` | `return_asistant.pdf` |
 | `bs_run_skonto.sh` | `GiniSkontoScreenUITests` | `skonto_past.pdf`, `skonot_valid.pdf` |
+| `bs_run_credit_note.sh` | `GiniCreditNoteScreenUITests`, `GiniCreditNoteDynamicTypeUITests`, `GiniCreditNoteMockBackendFlagOnUITests`, `GiniCreditNoteMockBackendFlagOffUITests` | `credit_note.pdf`, `credit_note.png`, `skonto_past.pdf`, `test_image.pdf` |
 | `bs_run_payment_hint.sh` | `PaymentHintFlowUITests` — Due Date Hint + Schedule Payment bottom sheet | `invoice_no_due_date.pdf`, `invoice_future_due.pdf` |
+| `bs_run_all.sh` | every scenario above — builds/uploads once, triggers one build per scenario, named `<scenario>_<release>` (e.g. `smoke_tests_4.5.0`, version taken from `BS_PROJECT`) | all media files |
 | `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 
 > ⚠️ `bs_run_cx_no_results.sh` and `bs_run_skonto.sh` require `GiniCXNoResultsUITests` and `GiniSkontoScreenUITests` to be updated to use `tapFileWithNameFromBSCustomFiles()` instead of `tapFileWithName()` before they will pass on BrowserStack.
@@ -66,9 +68,17 @@ Run from the `Scripts/` directory:
 # Skonto only (past + valid invoices)
 ./bs_run_skonto.sh
 
+# Credit Note Warning — English run; add BS_LANGUAGE="de" for the German case
+./bs_run_credit_note.sh
+
 # Payment-Hint bottom sheet — Due Date Hint + Schedule Payment
 ./bs_run_payment_hint.sh
 ```
+
+> ⚠️ `bs_run_credit_note.sh` needs `credit_note.pdf` and `credit_note.png` in
+> `TestSamples/TestSamplesForBS/` — documents the Gini backend classifies as
+> `businessDocType == "creditnote"`. The backend client-configuration flag
+> `creditNoteHintEnabled` must also be enabled for the test client.
 
 ---
 
@@ -83,10 +93,32 @@ Every `bs_run_*.sh` script follows the same steps:
 | 3 | Zips the UI test runner |
 | 4 | Uploads scenario-specific media files to BrowserStack |
 | 5 | Uploads the `.ipa` and test runner zip |
-| 6 | Triggers the test run on `iPhone 16-18` and `iPhone 13 Pro Max-18` |
+| 6 | Triggers the test run on `iPhone 17-26` and `iPhone 16-18` |
 | 7 | Removes local `.ipa` and `.zip` artifacts |
 
 Results appear in the **BrowserStack App Automate dashboard**.
+
+---
+
+## Execution strategy & scaling
+
+Our account has **2 parallel-test licenses** (override per run with `BS_PARALLELS` when the plan changes), and every run covers the **standard 2-device pair** (`DEVICE_1`/`DEVICE_2` in `bs_shared.sh`). Every *session* consumes one license: an unsharded build uses one session **per device**, so each build takes exactly the full 2-license budget → **builds run strictly one at a time**.
+
+Three BrowserStack facts drive the strategy:
+
+1. **Queued jobs are canceled after 15 minutes of waiting.** Our scenario builds run 10–40 minutes, so any build waiting in the queue behind them dies. Never fire more sessions than licenses — `bs_run_all.sh` enforces this by polling its own builds and waiting for free licenses before each trigger (license-aware pacing).
+2. **`singleRunnerInvocation: "true"`** (set in every script) runs all tests of a session in one runner process instead of one per test — saves ~30–60 s per test. Trade-off: the retry-failed-tests API doesn't work in this mode.
+3. **Sharding gives no speedup on the current plan.** With 2 licenses and mandatory 2-device coverage there is no headroom: `deviceSelection: "any"` runs each shard on one random device (coverage lost), `"all"` needs shards × 2 licenses (overflow queues and dies). Sharding becomes useful once **licenses ≥ shards × devices** — i.e. a plan upgrade to 4+ parallels unlocks 2-way sharding. `trigger_scenario` in `bs_run_all.sh` already supports it (pass `"-"` as the test filter, a `shards` block as the 4th argument, shard count as the 5th).
+
+### Scaling as the suite grows
+
+| Lever | When | How |
+|---|---|---|
+| Raise `BS_PARALLELS` | Plan upgraded | `BS_PARALLELS=4 ./bs_run_all.sh` — pacing adapts; two builds then run side by side |
+| Shard heavy scenarios | Plan ≥ shards × 2 devices (e.g. 4 parallels) | Convert the `trigger_scenario` call to a `shards` block with `deviceSelection: "all"` for full device coverage |
+| Split a scenario | `uploadMedia` would exceed 5 files | Two builds, each with its own media |
+
+Rule of thumb: keep each build under ~30 minutes; with sequential builds the full sweep is the sum of all builds, so the cheapest speedup is trimming slow tests, the structural one is more licenses.
 
 ---
 
@@ -207,7 +239,7 @@ curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d '{
-    "devices": ["iPhone 16-18", "iPhone 13 Pro Max-18"],
+    "devices": ["iPhone 17-26", "iPhone 16-18"],
     "app": "APP_URL",
     "testSuite": "TEST_SUITE_URL",
     "only-testing": ["GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS"],
