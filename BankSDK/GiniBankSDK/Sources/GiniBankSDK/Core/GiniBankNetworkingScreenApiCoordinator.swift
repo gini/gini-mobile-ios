@@ -852,7 +852,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                             document: documentService.document,
                                             candidates: extractionResult.candidates)
         sendAnalyticsEventSDKClose()
-        resultsDelegate?.giniCaptureDidRequestSchedulePayment(result: analysisResult)
+        resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: analysisResult)
         documentService.resetToInitialState()
     }
 
