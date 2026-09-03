@@ -117,7 +117,10 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
     
-    func testSkontoSwitch() {
+    /// Named so no other test shares the name as a prefix — BrowserStack's
+    /// `only-testing` matches by prefix, and `testSkontoSwitch` also pulled in the
+    /// `testSkontoSwitchEnabledForValidDiscount`/`...DisabledForExpiredDiscount` variants.
+    func testSkontoToggleSwitch() {
         // Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         // Handle Camera access pop up

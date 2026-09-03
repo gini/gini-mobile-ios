@@ -12,11 +12,13 @@ The original monolithic script has been split into scenario-focused scripts that
 |---|---|---|
 | `bs_run_cx_normal.sh` | `GiniCaptureFlowUITestsUsingBS`, `GiniCXFeatureFlagsUITests` | `Swift_AccNo_routing_DOLL.png`, `Photopayment_Invoice1.png`, `cx_invoice.png`, `cx_invoice.pdf` |
 | `bs_run_cx_multipage.sh` | `GiniCXMultiPageUITests/testCXMultiPageInvoiceFlowTwoSeparatePNGPages` | `multi_page_invoice_CX_page1.png`, `multi_page_invoice_CX_page2.png` |
-| `bs_run_cx_no_results.sh` | `GiniCXNoResultsUITests`, `GiniReturnAssistantScreenUITests/testReturnAssistantBS`, `GiniSkontoScreenUITests` | `cx_no_results_invoice.pdf`, `skonto_past.pdf`, `return_asistant.pdf` |
+| `bs_run_cx_no_results.sh` | `GiniCXNoResultsUITests`, `GiniReturnAssistantScreenUITests/testReturnAssistantBS`, `GiniSkontoScreenUITests` | `no_results_invoice.pdf`, `skonto_past.pdf`, `return_asistant.pdf` |
 | `bs_run_ra.sh` | `GiniReturnAssistantScreenUITests/testReturnAssistantBS` | `return_asistant.pdf` |
 | `bs_run_skonto.sh` | `GiniSkontoScreenUITests` | `skonto_past.pdf`, `skonot_valid.pdf` |
 | `bs_run_credit_note.sh` | `GiniCreditNoteScreenUITests`, `GiniCreditNoteDynamicTypeUITests`, `GiniCreditNoteMockBackendFlagOnUITests`, `GiniCreditNoteMockBackendFlagOffUITests` | `credit_note.pdf`, `credit_note.png`, `skonto_past.pdf`, `test_image.pdf` |
 | `bs_run_payment_hint.sh` | `PaymentHintFlowUITests` — Due Date Hint + Schedule Payment bottom sheet | `invoice_no_due_date.pdf`, `invoice_future_due.pdf` |
+| `bs_run_smoke_journeys.sh` | curated journey smoke methods: onboarding walk, `GiniSmokeUITests` (SEPA PDF/picture extractions, No-Results), RA full flow + edit name, Skonto flow + toggle | `sepa_invoice.pdf`, `sepa_invoice.png`, `no_results_invoice.pdf`, `return_asistant.pdf`, `skonto_past.pdf` |
+| `bs_run_smoke_screens.sh` | per-screen smoke checks: `GiniMainScreenUITests`, `GiniErrorScreenUITests`, `GiniCaptureScreenUITests`, `GiniCameraAccessScreenUITests`, `GiniReviewScreenUITests` | `test_image.png`, `test_image.pdf` |
 | `bs_run_all.sh` | every scenario above — builds/uploads once, triggers one build per scenario, named `<scenario>_<release>` (e.g. `smoke_tests_4.5.0`, version taken from `BS_PROJECT`) | all media files |
 | `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 

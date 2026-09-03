@@ -26,6 +26,16 @@ class SettingScreen {
      accessibility identifier yet, so it is located through its cell text.
      */
     let creditNoteHintCellText = "Credit note hint feature"
+    /**
+     Row title of the Return Assistant feature toggle (located through its cell
+     text — see `creditNoteHintCellText`).
+     */
+    let returnAssistantCellText = "Return Assistant feature"
+    /**
+     Row title of the Skonto feature toggle (located through its cell
+     text — see `creditNoteHintCellText`).
+     */
+    let skontoCellText = "Skonto feature"
 
 
     init(app: XCUIApplication, locale: String) {

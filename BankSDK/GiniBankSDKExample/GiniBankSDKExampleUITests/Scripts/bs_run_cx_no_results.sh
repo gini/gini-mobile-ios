@@ -8,7 +8,7 @@ set -e
 # BrowserStack. Groups covered:
 #
 #   GiniCXNoResultsUITests              — E1/E2: No-Results screen when CX backend
-#                                         returns no extractions (cx_no_results_invoice.pdf)
+#                                         returns no extractions (no_results_invoice.pdf)
 #   GiniReturnAssistantScreenUITests    — testReturnAssistantBS only (return_asistant.pdf)
 #   GiniSkontoScreenUITests             — past Skonto invoice (skonto_past.pdf)
 #
@@ -27,7 +27,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/bs_shared.sh"
 
 # ── Media files ────────────────────────────────────────────────────────────────
-CX_NO_RESULTS_FILE="$SAMPLES_DIR/cx_no_results_invoice.pdf"  # → Custom_Files
+NO_RESULTS_FILE="$SAMPLES_DIR/no_results_invoice.pdf"  # → Custom_Files
 SKONTO_PAST_FILE="$SAMPLES_DIR/skonto_past.pdf"              # → Custom_Files
 RA_FILE="$SAMPLES_DIR/return_asistant.pdf"                   # → Custom_Files
 
@@ -43,7 +43,7 @@ bs_build
 
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
-upload_media CX_NO_RESULTS_URL "$CX_NO_RESULTS_FILE" "CXNoResultsInvoice"   "cx_no_results_invoice.pdf"
+upload_media NO_RESULTS_URL "$NO_RESULTS_FILE" "NoResultsInvoice"   "no_results_invoice.pdf"
 upload_media SKONTO_PAST_URL   "$SKONTO_PAST_FILE"   "SkontoPastInvoice"    "skonto_past.pdf"
 upload_media RA_URL            "$RA_FILE"            "ReturnAssistantInvoice" "return_asistant.pdf"
 
@@ -55,7 +55,7 @@ echo ""
 echo "Uploaded URLs:"
 echo "  app_url:                  $APP_URL"
 echo "  test_suite_url:           $TEST_URL"
-echo "  CX no-results invoice:    $CX_NO_RESULTS_URL"
+echo "  CX no-results invoice:    $NO_RESULTS_URL"
 echo "  Skonto past invoice:      $SKONTO_PAST_URL"
 echo "  Return Assistant invoice: $RA_URL"
 
@@ -74,7 +74,7 @@ BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
     \"buildName\": \"bs_run_cx_no_results\",
     \"timeout\": 7200,
     \"singleRunnerInvocation\": \"true\",
-    \"uploadMedia\": [\"$CX_NO_RESULTS_URL\", \"$SKONTO_PAST_URL\", \"$RA_URL\"],
+    \"uploadMedia\": [\"$NO_RESULTS_URL\", \"$SKONTO_PAST_URL\", \"$RA_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"

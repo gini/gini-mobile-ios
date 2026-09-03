@@ -32,7 +32,7 @@ enum TestFixtures {
          Document that produces no `crossBorderPayment` extractions in CX mode.
          Used in No-Results screen tests.
          */
-        static let cxNoResultsInvoice = "cx_no_results_invoice"
+        static let noResultsInvoice = "no_results_invoice"
 
         /**
          Multi-page CX invoice PDF.

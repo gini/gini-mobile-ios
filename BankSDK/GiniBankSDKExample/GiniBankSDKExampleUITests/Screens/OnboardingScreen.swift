@@ -33,7 +33,11 @@ class OnboardingScreen {
     }
     
     func skipOnboardingScreens() {
-        if skipButton.exists {
+        /// waitForExistence instead of bare `exists`: right after launch/permission
+        /// alerts the app is still settling, and a single-snapshot `exists` query can
+        /// stall ("Timed out while evaluating UI query") or return a premature false
+        /// that silently skips the tap.
+        if skipButton.waitForExistence(timeout: 5) {
             skipButton.tap()
         }
     }
