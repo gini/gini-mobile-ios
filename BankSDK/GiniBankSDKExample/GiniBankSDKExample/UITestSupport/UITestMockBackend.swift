@@ -8,8 +8,8 @@ import Foundation
 import GiniBankAPILibrary
 import GiniCaptureSDK
 
-/// Test scaffolding must never ship in the production binary; UI test runs
-/// (locally and on BrowserStack) always build the Debug configuration.
+// Test scaffolding must never ship in the production binary; UI test runs
+// (locally and on BrowserStack) always build the Debug configuration.
 #if DEBUG
 
 /**

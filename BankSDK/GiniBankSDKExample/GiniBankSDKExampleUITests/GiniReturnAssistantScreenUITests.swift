@@ -52,9 +52,11 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable, "Photopayment button should be hittable after completing the flow")
     }
 
-    /// Named so no other test shares the name as a prefix — BrowserStack's
-    /// `only-testing` matches by prefix, and `testReturnAssistant` pulled in the
-    /// entire class (every RA test name starts with it).
+    /**
+     Named so no other test shares the name as a prefix — BrowserStack's
+     `only-testing` matches by prefix, and `testReturnAssistant` pulled in the
+     entire class (every RA test name starts with it).
+     */
     func testReturnAssistantFullFlow() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
