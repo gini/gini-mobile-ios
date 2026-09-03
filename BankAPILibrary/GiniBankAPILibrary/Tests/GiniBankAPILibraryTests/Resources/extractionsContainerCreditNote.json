@@ -1,0 +1,109 @@
+{
+  "extractions": {
+    "docType": {
+      "entity": "doctype",
+      "value": "Invoice"
+    },
+    "businessDocType": {
+      "entity": "businessdoctype",
+      "value": "CreditNote"
+    },
+    "iban": {
+      "entity": "iban",
+      "value": "DE16700202700005713153",
+      "box": {
+        "top": 3371.9,
+        "left": 1622.9,
+        "width": 361.0,
+        "height": 32.0,
+        "page": 1
+      },
+      "candidates": "ibans"
+    },
+    "paymentPurpose": {
+      "entity": "text",
+      "value": "ReNr 1191832864/04, KdNr 33038783"
+    },
+    "instantPayment": {
+      "entity": "text",
+      "value": "false"
+    },
+    "bic": {
+      "entity": "bic",
+      "value": "HYVEDEMMXXX",
+      "box": {
+        "top": 3371.9,
+        "left": 2124.9,
+        "width": 231.0,
+        "height": 32.0,
+        "page": 1
+      },
+      "candidates": "bics"
+    },
+    "amountToPay": {
+      "entity": "amount",
+      "value": "12.75:EUR",
+      "candidates": "amounts"
+    },
+    "paymentRecipient": {
+      "entity": "companyname",
+      "value": "TELEFÓNICA GERMANY GMBH & CO. OHG",
+      "candidates": "paymentRecipients"
+    }
+  },
+  "candidates": {
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "12.75:EUR"
+      }
+    ],
+    "bics": [
+      {
+        "entity": "bic",
+        "value": "HYVEDEMMXXX",
+        "box": {
+          "top": 3371.9,
+          "left": 2124.9,
+          "width": 231.0,
+          "height": 32.0,
+          "page": 1
+        }
+      }
+    ],
+    "ibans": [
+      {
+        "entity": "iban",
+        "value": "DE16700202700005713153",
+        "box": {
+          "top": 3371.9,
+          "left": 1622.9,
+          "width": 361.0,
+          "height": 32.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE16700202700005713153"
+      }
+    ],
+    "paymentRecipients": [
+      {
+        "entity": "companyname",
+        "value": "TELEFÓNICA GERMANY GMBH & CO. OHG"
+      },
+      {
+        "entity": "companyname",
+        "value": "Telefónica Germany GmbH & Co. OHG",
+        "box": {
+          "top": 559.5,
+          "left": 283.5,
+          "width": 448.0,
+          "height": 35.0,
+          "page": 1
+        }
+      }
+    ]
+  }
+}

@@ -13,6 +13,7 @@ protocol GiniBankSDKDelegate: AnyObject {
     func captureAnalysisDidFinishWithResults()
     func captureAnalysisDidFinishWithoutResults()
     func captureCanceled()
+    func captureRequestedSchedulePayment(result: AnalysisResult)
 }
 
 final class GiniBankSDKModel: NSObject {
@@ -68,6 +69,10 @@ extension GiniBankSDKModel: GiniCaptureResultsDelegate {
 
     func giniCaptureDidEnterManually() {
         delegate?.captureCanceled()
+    }
+
+    func giniCaptureDidRequestSchedulePayment(result: GiniCaptureSDK.AnalysisResult) {
+        delegate?.captureRequestedSchedulePayment(result: result)
     }
 }
 

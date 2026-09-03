@@ -82,8 +82,8 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         }
         // Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
-        //Tap Back to camera button
-        noResultsScreen.backToCameraButton.tap()
+        //Navigate back to the camera (retake button when present, nav back otherwise)
+        noResultsScreen.goBackToCamera()
         //Assert camera capture screen is shown again
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
         XCTAssertTrue(captureScreen.captureButton.isHittable)

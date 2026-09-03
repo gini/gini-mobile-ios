@@ -21,8 +21,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/bs_shared.sh"
 
 # ── Media files ────────────────────────────────────────────────────────────────
-SKONTO_PAST_FILE="$SAMPLES_DIR/skonto_past.pdf"   # → Custom_Files
-SKONTO_VALID_FILE="$SAMPLES_DIR/skonto_valid.pdf" # → Custom_Files
+SKONTO_PAST_FILE="$SAMPLES_DIR/skonto_past.pdf"          # → Custom_Files
+SKONTO_VALID_FILE="$SAMPLES_DIR/skonto_valid.pdf"        # → Custom_Files
+SKONTO_GALLERY_FILE="$SAMPLES_DIR/skonto_valid.png"      # → Photos gallery (testSkontoFullFlowWithDiscountViaGallery picks the latest photo)
 
 # ── Test suites ────────────────────────────────────────────────────────────────
 # NOTE: These tests require tapFileWithNameFromBSCustomFiles adaptation (see ⚠️ above).
@@ -35,8 +36,9 @@ bs_build
 
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
-upload_media SKONTO_PAST_URL  "$SKONTO_PAST_FILE"  "SkontoPastInvoice"  "skonto_past.pdf (expired discount)"
-upload_media SKONTO_VALID_URL "$SKONTO_VALID_FILE" "SkontoValidInvoice" "skonto_valid.pdf (future/valid discount)"
+upload_media SKONTO_PAST_URL    "$SKONTO_PAST_FILE"    "SkontoPastInvoice"    "skonto_past.pdf (expired discount)"
+upload_media SKONTO_VALID_URL   "$SKONTO_VALID_FILE"   "SkontoValidInvoice"   "skonto_valid.pdf (future/valid discount)"
+upload_media SKONTO_GALLERY_URL "$SKONTO_GALLERY_FILE" "SkontoGalleryImage"   "skonto_valid.png (Photos gallery)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -52,17 +54,19 @@ echo "  Skonto valid invoice: $SKONTO_VALID_URL"
 # ── Trigger test run ───────────────────────────────────────────────────────────
 echo ""
 echo "Triggering BrowserStack test run..."
-BUILD_RESPONSE=$(curl -s -u "$BS_USER:$BS_KEY" \
+BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/build" \
   -H "Content-Type: application/json" \
   -d "{
-    \"devices\": [\"$DEVICE_1\", \"$DEVICE_2\"],
+    \"devices\": $DEVICES_JSON,
     \"app\": \"$APP_URL\",
     \"testSuite\": \"$TEST_URL\",
     \"only-testing\": $ONLY_TESTING,
     \"project\": \"$BS_PROJECT\",
     \"buildName\": \"bs_run_skonto\",
-    \"uploadMedia\": [\"$SKONTO_PAST_URL\", \"$SKONTO_VALID_URL\"],
+    \"timeout\": 7200,
+    \"singleRunnerInvocation\": \"true\",
+    \"uploadMedia\": [\"$SKONTO_PAST_URL\", \"$SKONTO_VALID_URL\", \"$SKONTO_GALLERY_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"

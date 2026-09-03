@@ -52,6 +52,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var manuallyCreatedDocument: Document?
 	private var extractedResults: [Extraction] = []
     private var enablePinningSDK: Bool = false
+    #if DEBUG
+    /**
+     Retains the UI-test mock backend for scenario-driven mock-backend runs.
+     */
+    private var uiTestMockBackend: UITestMockBackend?
+    #endif
 
 	// {extraction name} : {entity name}
 	private let editableSpecificExtractions = ["paymentRecipient" : "companyname",
@@ -82,7 +88,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     func start() {
         let viewController: UIViewController
 
-        if enablePinningSDK {
+        if let mockViewController = makeUITestMockViewControllerIfRequested() {
+            viewController = mockViewController
+        } else if enablePinningSDK {
             // Screen API with default networking with Pinning certificates
             // In order to be able to test with pinning, please comment the initialization of `viewController` above
             // and uncomment the following code snippet.
@@ -138,7 +146,33 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
     }
-    
+
+    /**
+     UI-test only: builds the SDK entry point backed by `UITestMockBackend` when the
+     `-UITestMockScenario` launch argument is present. Returns `nil` in normal runs
+     and is compiled out of Release builds entirely.
+
+     Note: this branch intentionally bypasses the `withClient:`/`api:`/`userApi:`/
+     pinning wiring of the production branches in `start()` — any new production
+     wiring added there must be mirrored here, or mock-backend runs will silently
+     miss it.
+     */
+    private func makeUITestMockViewControllerIfRequested() -> UIViewController? {
+        #if DEBUG
+        guard let mockBackend = UITestMockBackend.fromLaunchArguments() else { return nil }
+        uiTestMockBackend = mockBackend
+        return GiniBank.viewController(importedDocuments: visionDocuments,
+                                       configuration: configuration,
+                                       resultsDelegate: self,
+                                       documentMetadata: documentMetadata,
+                                       trackingDelegate: trackingDelegate,
+                                       networkingService: mockBackend,
+                                       configurationService: mockBackend)
+        #else
+        return nil
+        #endif
+    }
+
     fileprivate func showResultsScreen(results: [Extraction], document: Document?, isCrossBorderPayment: Bool) {
         if let document = document {
             print("🧾 Showing results for Gini Bank API document id: \(document.id)")
@@ -286,6 +320,21 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
 
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
+    }
+
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        /// The host app would open its own scheduled-transfer screen carrying the
+        /// extractions from `result`. Here we just surface the count and close the
+        /// capture flow, matching Android's example-app behaviour (visible toast +
+        /// logged extraction count).
+        let alert = UIAlertController(title: "Schedule Payment requested",
+                                      message: "Schedule payment requested with \(result.extractions.count) extractions.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            guard let self else { return }
+            self.delegate?.screenAPI(coordinator: self, didFinish: ())
+        })
+        rootViewController.present(alert, animated: true)
     }
 }
 

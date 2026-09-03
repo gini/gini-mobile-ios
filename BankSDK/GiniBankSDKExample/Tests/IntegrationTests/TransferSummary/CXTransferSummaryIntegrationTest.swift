@@ -96,6 +96,8 @@ class CXTransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            /// A callback surviving a timed-out test must not run into the next test.
+            guard !testCase.isTestFinished else { return }
             guard let fixtureContainer = testCase.loadFixtureExtractionsContainer(from: fixtureResultName) else {
                 return
             }
@@ -112,6 +114,9 @@ class CXTransferSummaryIntegrationTest: BaseIntegrationTest {
                     }
                 } ?? [:]
 
+                /// Re-pin the shared document service to this test's own service so the
+                /// feedback can never target another test's document.
+                GiniBankConfiguration.shared.documentService = testCase.giniHelper.giniCaptureSDKDocumentService
                 GiniBankConfiguration.shared.sendTransferSummary(extractions: cxFields)
                 testCase.updateAndVerifyCXTransferSummary(result: result, expect: expect)
             } else {
@@ -124,6 +129,10 @@ class CXTransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         func giniCaptureDidEnterManually() {
+            // This method will remain empty; no implementation is needed.
+        }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
             // This method will remain empty; no implementation is needed.
         }
     }

@@ -17,6 +17,10 @@ final class CredentialsManager {
         return fetchClient(idKey: "cx_client_id", passwordKey: "cx_client_password")
     }
 
+    class func fetchStageClientFromBundle() -> Client {
+        return fetchClient(idKey: "stage_client_id", passwordKey: "stage_client_password")
+    }
+
     private class func fetchClient(idKey: String, passwordKey: String) -> Client {
         let clientEmailDomain = "client_domain"
         let credentialsPlistPath = Bundle.main.path(forResource: "Credentials", ofType: "plist")

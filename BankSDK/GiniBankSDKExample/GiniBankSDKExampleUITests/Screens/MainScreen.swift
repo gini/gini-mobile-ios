@@ -89,26 +89,22 @@ class MainScreen {
      */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let allowFullAccess = springboard.buttons["Allow Full Access"]
-        let allowFullAccessDE = springboard.buttons["Zugriff auf alle Fotos erlauben"]
-        let dontAllowButton = springboard.buttons["Don’t Allow"]
-        let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
+        /// The full-access button title varies by iOS version:
+        /// iOS 17+ "Allow Full Access", iOS 15/16 "Allow Access to All Photos".
+        let allowTitles = ["Allow Full Access",
+                           "Allow Access to All Photos",
+                           "Zugriff auf alle Fotos erlauben"]
+        let allowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", allowTitles)).firstMatch
+        /// "Don't Allow" uses U+2019 on iOS < 26 and U+0027 on iOS 26+.
+        let dontAllowTitles = ["Don’t Allow", "Don't Allow", "Nicht erlauben"]
+        let dontAllowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", dontAllowTitles)).firstMatch
 
-        let buttonToTap: XCUIElement
-        if answer {
-            /// Wait for the dialog to actually appear before checking which button is present.
-            if allowFullAccess.waitForExistence(timeout: 5) {
-                buttonToTap = allowFullAccess
-            } else if allowFullAccessDE.waitForExistence(timeout: 1) {
-                buttonToTap = allowFullAccessDE
-            } else {
-                return
-            }
-        } else {
-            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
-        }
-
-        if buttonToTap.exists {
+        let buttonToTap = answer ? allowButton : dontAllowButton
+        /// Wait for the dialog to actually appear; it may legitimately be absent when
+        /// the permission was already granted in a previous launch.
+        if buttonToTap.waitForExistence(timeout: 5), buttonToTap.isHittable {
             buttonToTap.tap()
         }
     }
@@ -164,18 +160,25 @@ class MainScreen {
         
     }
     
+    /**
+     Clears a text field's content, leaving the field focused so callers can type
+     the replacement text directly. Focuses the field with a tap, moves the cursor
+     to the end of the text, then deletes the current value — the previous
+     long-press approach opened the edit context menu and lost keyboard focus.
+     - Parameters:
+       - element: The text field to clear.
+     */
     func clearInputField(element: XCUIElement) {
-
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "Text field to clear not found")
         guard let stringValue = element.value as? String else {
             XCTFail("Tried to clear non string value")
             return
         }
-        let lowerRightCorner = element.coordinate(withNormalizedOffset: CGVectorMake(0.9, 0.9))
-        lowerRightCorner.press(forDuration: 2)
-        
+        /// Focus the field, then place the cursor after the last character.
+        element.tap()
+        element.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        guard !stringValue.isEmpty else { return }
         let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-        element.typeText(deleteString)
-        lowerRightCorner.tap()
         element.typeText(deleteString)
     }
     

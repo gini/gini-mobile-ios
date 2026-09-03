@@ -10,6 +10,14 @@ import XCTest
 @testable import GiniCaptureSDK
 @testable import GiniBankSDK
 
+/**
+ Polling cadence for waiting on the backend to process transfer summary feedback.
+ */
+private enum Constants {
+    static let pollInterval: TimeInterval = 2
+    static let maxPollAttempts = 30
+}
+
 extension BaseIntegrationTest {
 
     // Method to handle updating and verifying feedback
@@ -20,21 +28,57 @@ extension BaseIntegrationTest {
         // Assuming the user updated the amountToPay to "950.00:EUR"
         result.extractions["amountToPay"]?.value = "950.00:EUR"
 
-        if result.extractions["amountToPay"] != nil {
-            // Delay to simulate feedback update process
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                // 5. Verify that the extractions were updated after feedback
-                self.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
-                    switch updatedResult {
-                        case let .success(extractionResult):
-                            self.handleSuccessfulTransferSummaryUpdate(extractionResult: extractionResult,
-                                                                       mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
-                                                                       expect: expect,
-                                                                       result: result,
-                                                                       verifyInstantPayment: verifyInstantPayment)
-                        case let .failure(error):
-                            XCTFail("Error updating transfer summary: \(error)")
-                    }
+        guard result.extractions["amountToPay"] != nil else { return }
+        guard let document = result.document else {
+            XCTFail("Analysis result has no document to verify the transfer summary against")
+            return
+        }
+
+        /// The fed-back `amountToPay` appearing in the fetched extractions signals
+        /// that the backend has processed the transfer summary.
+        pollUpdatedExtractions(for: document,
+                               expectedAmountToPay: "950.00:EUR") { extractionResult in
+            self.handleSuccessfulTransferSummaryUpdate(extractionResult: extractionResult,
+                                                       mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
+                                                       expect: expect,
+                                                       result: result,
+                                                       verifyInstantPayment: verifyInstantPayment)
+        }
+    }
+
+    /**
+     Polls the updated extractions for `document` until the fed-back `amountToPay`
+     value becomes visible or the attempts are exhausted, then calls `completion`
+     on the main queue with the last fetched result.
+
+     Replaces the previous fixed 10-second delay: on a slow backend the delay
+     expired before the feedback was processed and the assertions compared stale
+     values. Exhausting the attempts still calls `completion` so the assertions
+     produce a readable failure instead of a bare timeout.
+     */
+    func pollUpdatedExtractions(for document: Document,
+                                expectedAmountToPay: String,
+                                attemptsLeft: Int = Constants.maxPollAttempts,
+                                completion: @escaping (ExtractionResult) -> Void) {
+        getUpdatedExtractionsFromGiniBankSDK(for: document) { updatedResult in
+            DispatchQueue.main.async {
+                guard !self.isTestFinished else { return }
+                switch updatedResult {
+                    case let .success(extractionResult):
+                        let amountToPay = extractionResult.extractions.first(where: { $0.name == "amountToPay" })?.value
+                        if amountToPay == expectedAmountToPay || attemptsLeft <= 1 {
+                            completion(extractionResult)
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.pollInterval) {
+                                guard !self.isTestFinished else { return }
+                                self.pollUpdatedExtractions(for: document,
+                                                            expectedAmountToPay: expectedAmountToPay,
+                                                            attemptsLeft: attemptsLeft - 1,
+                                                            completion: completion)
+                            }
+                        }
+                    case let .failure(error):
+                        XCTFail("Error updating transfer summary: \(error)")
                 }
             }
         }

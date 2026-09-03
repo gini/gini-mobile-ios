@@ -78,7 +78,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     func giniCaptureDidEnterManually() {
         screenAPIViewController.dismiss(animated: true)
     }
-    
+
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        // Health example does not surface a schedule-payment flow; dismiss like cancel.
+        screenAPIViewController.dismiss(animated: true)
+    }
+
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         captureExtractedResults = result.extractions.map { $0.value }
 

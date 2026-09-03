@@ -7,6 +7,12 @@
 import UIKit
 import Combine
 
+/**
+ A scroll view container that provides a content view for adding subviews and publishes size changes.
+
+ This class wraps a `UIScrollView` with a content view and automatically handles layout constraints.
+ It publishes content size changes through a `@Published` property for reactive programming.
+ */
 public final class EmptyScrollView: UIScrollView {
 
     private let contentView: UIView = {

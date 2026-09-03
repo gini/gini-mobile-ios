@@ -14,4 +14,4 @@
 
 /* iOS photo library permissions */
 
- "NSPhotoLibraryAddUsageDescription" = "For getting payment data from your photos we need access to your photos.";
+ "NSPhotoLibraryAddUsageDescription" = "We save invoice photos to your photo library so you can access them later.";

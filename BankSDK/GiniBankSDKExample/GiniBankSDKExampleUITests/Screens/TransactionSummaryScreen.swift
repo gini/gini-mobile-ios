@@ -53,4 +53,38 @@ class TransactionSummaryScreen {
         XCTAssertTrue(doneButton.waitForExistence(timeout: 10))
         doneButton.tap()
     }
+
+    /**
+     Returns the extraction row cell whose title label matches the raw extraction name
+     (the demo app renders `extraction.name` verbatim as the row title, e.g. `iban`,
+     `amountToPay`, `paymentRecipient`). Scrolls the table until the row is on screen,
+     because off-screen table view cells do not exist for XCUITest queries.
+     - Parameters:
+       - name: Raw extraction name used as the row title.
+     - Returns: The matching cell.
+     */
+    func extractionRow(named name: String) -> XCUIElement {
+        let cell = app.cells.containing(.staticText, identifier: name).firstMatch
+        var swipeCount = 0
+        while !cell.exists && swipeCount < 5 {
+            app.swipeUp()
+            swipeCount += 1
+        }
+        XCTAssertTrue(cell.waitForExistence(timeout: 5),
+                      "Extraction row '\(name)' not found in the Transfer Summary screen.")
+        return cell
+    }
+
+    /**
+     Reads the editable value of an extraction row.
+     - Parameters:
+       - name: Raw extraction name used as the row title.
+     - Returns: The text field content, or an empty string when the field is empty.
+     */
+    func extractionValue(named name: String) -> String {
+        let field = extractionRow(named: name).textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5),
+                      "Value text field for extraction '\(name)' not found.")
+        return (field.value as? String) ?? ""
+    }
 }

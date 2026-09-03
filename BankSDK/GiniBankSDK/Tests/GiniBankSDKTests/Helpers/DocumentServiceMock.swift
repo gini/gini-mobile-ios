@@ -20,6 +20,13 @@ final class DocumentServiceMock: DocumentServiceProtocol {
     private(set) var capturedCompoundExtractions: [String: [[Extraction]]]?
     private(set) var sendFeedbackCallCount = 0
 
+    private(set) var capturedSkontoFlatExtractions: [Extraction]?
+    private(set) var capturedSkontoCompoundExtractions: [String: [[Extraction]]]?
+    private(set) var capturedSkontoRetryCount: Int?
+    private(set) var sendSkontoFeedbackCallCount = 0
+
+    private(set) var resetToInitialStateCallCount = 0
+
     // MARK: - DocumentServiceProtocol stubs
 
     var document: Document?
@@ -33,6 +40,15 @@ final class DocumentServiceMock: DocumentServiceProtocol {
         capturedCompoundExtractions = updatedCompoundExtractions
     }
 
+    func sendSkontoFeedback(with updatedExtractions: [Extraction],
+                            updatedCompoundExtractions: [String: [[Extraction]]]?,
+                            retryCount: Int) {
+        sendSkontoFeedbackCallCount += 1
+        capturedSkontoFlatExtractions = updatedExtractions
+        capturedSkontoCompoundExtractions = updatedCompoundExtractions
+        capturedSkontoRetryCount = retryCount
+    }
+
     func cancelAnalysis() {
         // This method will remain empty; no implementation is needed.
     }
@@ -42,7 +58,7 @@ final class DocumentServiceMock: DocumentServiceProtocol {
     }
 
     func resetToInitialState() {
-        // This method will remain empty; no implementation is needed.
+        resetToInitialStateCallCount += 1
     }
 
     func startAnalysis(completion: @escaping AnalysisCompletion) {

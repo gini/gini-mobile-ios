@@ -4,7 +4,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import Foundation
 
 /**
@@ -27,6 +26,8 @@ public struct ClientConfiguration: Codable {
     public let savePhotosLocallyEnabled: Bool
     public let alreadyPaidHintEnabled: Bool
     public let paymentDueHintEnabled: Bool
+    public let creditNoteHintEnabled: Bool
+    public let paymentScheduleHintEnabled: Bool
     public let unsupportedQRCodeWarningEnabled: Bool
 
     /**
@@ -44,6 +45,8 @@ public struct ClientConfiguration: Codable {
      - savePhotosLocallyEnabled: A flag indicating whether saving photos locally is enabled.
      - alreadyPaidHintEnabled: A flag indicating whether hints for already paid invoices are enabled.
      - paymentDueHintEnabled: A flag indicating whether hints for upcoming payment due date is enabled.
+     - creditNoteHintEnabled: A flag indicating whether credit note hint for documents is enabled.
+     - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the payment-hint bottom sheet is enabled.
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      */
     public init(clientID: String,
@@ -57,6 +60,8 @@ public struct ClientConfiguration: Codable {
                 savePhotosLocallyEnabled: Bool,
                 alreadyPaidHintEnabled: Bool,
                 paymentDueHintEnabled: Bool,
+                creditNoteHintEnabled: Bool,
+                paymentScheduleHintEnabled: Bool,
                 unsupportedQRCodeWarningEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
@@ -69,6 +74,8 @@ public struct ClientConfiguration: Codable {
         self.savePhotosLocallyEnabled = savePhotosLocallyEnabled
         self.alreadyPaidHintEnabled = alreadyPaidHintEnabled
         self.paymentDueHintEnabled = paymentDueHintEnabled
+        self.creditNoteHintEnabled = creditNoteHintEnabled
+        self.paymentScheduleHintEnabled = paymentScheduleHintEnabled
         self.unsupportedQRCodeWarningEnabled = unsupportedQRCodeWarningEnabled
     }
 }

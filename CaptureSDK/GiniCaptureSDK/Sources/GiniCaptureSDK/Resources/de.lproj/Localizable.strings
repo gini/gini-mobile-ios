@@ -241,7 +241,27 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Zugriff erteilen";
 
-// MARK: - Document has payment due date
+// MARK: - Due date and scheduled payment hints
+"ginicapture.payment.hint.title" = "Deine Rechnung ist am %@ fällig.";
+"ginicapture.payment.hint.duedate.description" = "Du könntest sie als Terminüberweisung anlegen.";
+"ginicapture.payment.hint.duedate.proceedButtonTitle" = "Trotzdem fortfahren";
+"ginicapture.payment.hint.duedate.cancelButtonTitle" = "Überweisung abbrechen";
+"ginicapture.payment.hint.schedule.description" = "Du könntest diese Überweisung jetzt ausführen oder für einen späteren Zeitpunkt terminieren.";
+"ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Terminüberweisung";
+"ginicapture.payment.hint.schedule.proceedButtonTitle" = "Trotzdem fortfahren";
+
+// DEPRECATED — do not use in new integrations.
+// These legacy keys are kept only so existing customer overrides keep
+// resolving to their previous default values. Use the new keys under
+// `ginicapture.payment.hint.*` above instead.
+// Will be removed in a future major version.
 "ginicapture.payment.due.hint.prefix" = "Tipp:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Deine Rechnung ist am %@ fällig. Du könntest sie als Terminüberweisung anlegen.";
 "ginicapture.dismiss.message.title" = "Hinweis schließen";
+// END DEPRECATED
+
+// MARK: - Document marked as credit note
+"ginicapture.creditNote.warning.title" = "Achtung: Gutschrift hochgeladen";
+"ginicapture.creditNote.warning.description" = "Anscheinend haben Sie eine Gutschrift statt einer Rechnung hochgeladen. Bitte überprüfen Sie Ihr Dokument auf den Begriff „Gutschrift“ oder ob der Betrag negativ ist.";
+"ginicapture.creditNote.warning.proceedButtonTitle" = "Trotzdem fortfahren";
+"ginicapture.creditNote.warning.cancelButtonTitle" = "Überweisung abbrechen";
