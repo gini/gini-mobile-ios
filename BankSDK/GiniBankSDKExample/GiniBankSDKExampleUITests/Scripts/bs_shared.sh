@@ -40,7 +40,8 @@ SAMPLES_DIR="$SCRIPT_DIR/../TestSamples/TestSamplesForBS"
 
 SCRIPT_NAME="$(basename "$0" .sh)"
 case "$SCRIPT_NAME" in
-    bs_run_smoke_tests)  BUILD_LABEL="SmokeTests" ;;
+    bs_run_smoke_journeys) BUILD_LABEL="SmokeJourneys" ;;
+    bs_run_smoke_screens)  BUILD_LABEL="SmokeScreens" ;;
     bs_run_cx_normal)    BUILD_LABEL="Capture-Normal" ;;
     bs_run_cx_multipage) BUILD_LABEL="Capture-Multipage" ;;
     bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;

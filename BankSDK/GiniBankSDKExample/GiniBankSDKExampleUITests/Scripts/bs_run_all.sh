@@ -12,7 +12,8 @@ set -e
 #
 # Scenario builds triggered (buildName gets the release version appended, taken
 # from BS_PROJECT — e.g. smoke_tests_4.5.0):
-#   smoke_tests_<v>   — Main/Error/Capture/CameraAccess/Review screens
+#   smoke_journeys_<v> — curated smoke journeys (smoke tests.csv mapping)
+#   smoke_screens_<v>  — Main/Error/Capture/CameraAccess/Review screen checks
 #   cx_normal_<v>     — CX capture flows, feature flags, product tag, onboarding,
 #                       camera, transaction summary (camera injection enabled)
 #   cx_multipage_<v>  — CX multi-page invoice (disabled — see below)
@@ -60,11 +61,13 @@ bs_build
 echo "Uploading media files..."
 upload_media TEST_IMAGE_PNG_URL   "$SAMPLES_DIR/test_image.png"                  "TestImage"               "test_image.png (gallery)"
 upload_media TEST_IMAGE_PDF_URL   "$SAMPLES_DIR/test_image.pdf"                  "TestImagePDF"            "test_image.pdf (Custom_Files)"
+upload_media SEPA_PDF_URL         "$SAMPLES_DIR/sepa_invoice.pdf"                "SepaInvoicePDF"          "sepa_invoice.pdf (Custom_Files)"
+upload_media SEPA_PNG_URL         "$SAMPLES_DIR/sepa_invoice.png"                "SepaInvoicePNG"          "sepa_invoice.png (gallery)"
 upload_media CX_CAMERA_URL        "$SAMPLES_DIR/Swift_AccNo_routing_DOLL.png"    "CXCameraInjection"       "Swift_AccNo_routing_DOLL.png (camera injection)"
 upload_media PP_CAMERA_URL        "$SAMPLES_DIR/Photopayment_Invoice1.png"       "PPCameraInjection"       "Photopayment_Invoice1.png (camera injection)"
 upload_media CX_GALLERY_URL       "$SAMPLES_DIR/cx_invoice.png"                  "CXGalleryImage"          "cx_invoice.png (gallery)"
 upload_media CX_PDF_URL           "$SAMPLES_DIR/cx_invoice.pdf"                  "CXInvoicePDF"            "cx_invoice.pdf (Custom_Files)"
-upload_media CX_NO_RESULTS_URL    "$SAMPLES_DIR/cx_no_results_invoice.pdf"       "CXNoResultsInvoice"      "cx_no_results_invoice.pdf (Custom_Files)"
+upload_media NO_RESULTS_URL    "$SAMPLES_DIR/no_results_invoice.pdf"       "NoResultsInvoice"      "no_results_invoice.pdf (Custom_Files)"
 # Multipage media parked with the all_cx_multipage scenario (see below):
 # upload_media CX_MULTI_PDF_URL     "$SAMPLES_DIR/cx_invoice_multi_page.pdf"       "CXMultiPageInvoicePDF"   "cx_invoice_multi_page.pdf (Custom_Files)"
 # upload_media CX_PAGE1_URL         "$SAMPLES_DIR/multi_page_invoice_CX_page1.png" "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.png (gallery, first)"
@@ -254,13 +257,28 @@ trigger_scenario() {
 # No sharding: with 2 parallel licenses and both devices covered per build,
 # every build already consumes the full license budget (1 session per device).
 # Sharding only pays off once licenses >= shards × devices — see the README.
-trigger_scenario "smoke_tests_${RELEASE_VERSION}" '[
+# Smoke is split into two builds: the merged single build needed 6 media files
+# (over the 5-file uploadMedia cap) and mixed two gallery PNGs, breaking the
+# latest-photo assumption. journeys = curated smoke test set (see
+# bs_run_smoke_journeys.sh for the smoke-case mapping); screens = per-screen checks.
+trigger_scenario "smoke_journeys_${RELEASE_VERSION}" '[
+  "GiniBankSDKExampleUITests/GiniOnboardingScreenUITest/testOnboardingGetStartedButton",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPDFSEPAInvoiceShowsExtractions",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPictureSEPAInvoiceShowsExtractions",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPDFNoResultsScreen",
+  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantFullFlow",
+  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantEditName",
+  "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoFullFlowWithDiscountViaFiles",
+  "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoToggleSwitch"
+]' "[\"$SEPA_PDF_URL\", \"$SEPA_PNG_URL\", \"$NO_RESULTS_URL\", \"$RA_URL\", \"$SKONTO_PAST_URL\"]"
+
+trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniMainScreenUITests",
   "GiniBankSDKExampleUITests/GiniErrorScreenUITests",
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
   "GiniBankSDKExampleUITests/GiniReviewScreenUITests"
-]' "[\"$TEST_IMAGE_PNG_URL\"]"
+]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\"]"
 
 trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
@@ -282,7 +300,7 @@ trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
 
 trigger_scenario "cx_no_results_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCXNoResultsUITests"
-]' "[\"$CX_NO_RESULTS_URL\"]"
+]' "[\"$NO_RESULTS_URL\"]"
 
 trigger_scenario "ra_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests"

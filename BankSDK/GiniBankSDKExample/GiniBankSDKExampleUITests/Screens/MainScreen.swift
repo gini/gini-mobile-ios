@@ -294,7 +294,18 @@ class MainScreen {
             }
         }
 
-        if customFilesAny.waitForExistence(timeout: 15) {
+        // On iOS 15/16 the picker's Browse level shows only the locations list —
+        // Custom_Files lives under "On My iPhone" there instead of at the top level.
+        if !customFilesAny.waitForExistence(timeout: 15) {
+            _ = onMyPhoneButton.waitForExistence(timeout: 3) || onMyPhoneText.waitForExistence(timeout: 2)
+            if onMyPhoneButton.exists {
+                onMyPhoneButton.tap()
+            } else if onMyPhoneText.exists {
+                onMyPhoneText.tap()
+            }
+        }
+
+        if customFilesAny.waitForExistence(timeout: 5) {
             // BrowserStack: Custom_Files is visible — navigate into it and pick the file.
             tapFileWithNameFromBSCustomFiles(fileName: fileName)
         } else {
