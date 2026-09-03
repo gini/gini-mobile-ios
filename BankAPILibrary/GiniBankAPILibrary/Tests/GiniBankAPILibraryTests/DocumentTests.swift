@@ -22,6 +22,8 @@ final class GiniDocumentTests: XCTestCase {
         return giniDocument!
     }()
     
+    let expectedValue = "k1=v1,k2=v2"
+
     func testDocumentDecoding() {
         XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: documentJson))
     }
@@ -111,6 +113,146 @@ final class GiniDocumentTests: XCTestCase {
                        "additionalValue",
                        "additional header should match")
     }
-    
+    func testUploadMetadata() {
+        let metadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        let expectedComment = Document.UploadMetadata.constructComment(
+            osVersion: "ios 99",
+            giniVersion: "99.99.99",
+            contentId: "",
+            source: "source",
+            entryPoint: "unit-test",
+            importMethod: "import",
+            deviceOrientation: "deviceOrientation",
+            rotation: ""
+        )
+        XCTAssertEqual(
+            metadata.userComment,
+            expectedComment,
+            "Upload metadata(userComment) should match; expected \"\(expectedComment)\", got \"\(metadata.userComment)\""
+        )
+    }
+    func testAddUploadMetadata() {
+        var metadata = Document.Metadata()
+        let uploadMetadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        metadata.addUploadMetadata(uploadMetadata)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
+    }
+    func testInitWithUploadMetadata() {
+        let uploadMetadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        let metadata = Document.Metadata(uploadMetadata: uploadMetadata)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
+    }
+
+    // MARK: - Product Tag Header Tests
+
+    func testProductTagHeaderKeyConstant() {
+        let fullKey = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(fullKey, "X-Document-Metadata-product-tag",
+                       "Full product tag header key must match the backend contract")
+    }
+
+    func testAddProductTagSetsSepaHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("sepaExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "sepaExtractions",
+                       "Product tag header must be sepaExtractions")
+    }
+
+    func testAddProductTagSetsCXHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("cxExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "cxExtractions",
+                       "Product tag header must be cxExtractions")
+    }
+
+    func testAddProductTagSetsAutoDetectHeader() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("autoDetectExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "autoDetectExtractions",
+                       "Product tag header must be autoDetectExtractions")
+    }
+
+    func testAddProductTagDoesNotAffectOtherHeaders() {
+        var metadata = Document.Metadata(branchId: "my-branch",
+                                         additionalHeaders: ["customKey": "customValue"])
+        metadata.addProductTag("sepaExtractions")
+        let branchKey = Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey
+        XCTAssertEqual(metadata.headers[branchKey], "my-branch",
+                       "Existing branchId header must not be affected by addProductTag")
+        XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)customKey"], "customValue",
+                       "Existing additional header must not be affected by addProductTag")
+    }
+
+    func testAddProductTagOverwritesPreviousValue() {
+        var metadata = Document.Metadata()
+        metadata.addProductTag("sepaExtractions")
+        metadata.addProductTag("cxExtractions")
+        let key = Document.Metadata.headerKeyPrefix + Document.Metadata.productTagHeaderKey
+        XCTAssertEqual(metadata.headers[key], "cxExtractions",
+                       "Second call to addProductTag must overwrite the first value")
+    }
+
+    func testUploadMetadataUserCommentCreationTest() {
+        let data = [
+            ("k1", "v1"),
+            ("k2", "v2"),
+            ("k3", ""), // invalid value
+            ("", "v4"), // invalid key
+            ("", "") // invalid everything
+        ]
+        XCTAssertEqual(Document.UploadMetadata.userComment(createFrom: data), expectedValue, "The string should be in correct format")
+    }
+
+    func testUploadMetadaUserCommentKeyExistence() {
+        XCTAssertTrue(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "k1"), "The key should exist")
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "k1"), "v1", "The values should be equal")
+
+        XCTAssertFalse(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "v1"), "The value should not be treated as key")
+        XCTAssertNil(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "v1"), "The value should not be treated as key and shall not exist")
+
+        XCTAssertFalse(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The key should not exist")
+        XCTAssertNil(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The value should not exist")
+    }
+
+    func testUploadMetadataUserCommentKeyAddingIfNotPresent() {
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, addingIfNotPresent: "v3", forKey: "k1"), expectedValue, "The data should not be changed")
+
+        let expectedData = "k1=v1,k2=v2,k3=v3"
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, addingIfNotPresent: "v3", forKey: "k3"), expectedData, "The data should be changed")
+    }
 }
 

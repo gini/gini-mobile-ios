@@ -2,7 +2,7 @@
 //  GiniBank.swift
 //  GiniBank
 //
-//  Created by Nadya Karaban on 18.02.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -11,21 +11,31 @@ import GiniCaptureSDK
 import GiniBankAPILibrary
 extension GiniBank {
     /**
+     Terminates the current GiniBankSDK session and releases associated resources.
+     Use this method to programmatically close the SDK session when it is no longer needed.
+     */
+    public class func closeCurrentSDK() {
+        GiniBankNetworkingScreenApiCoordinator.closeSDK()
+    }
+
+    // MARK: - Screen API with Default Networking - Initializers for 'UIViewController'
+
+    /**
      Returns a view controller which will handle the analysis process.
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - parameter client: `GiniClient` with the information needed to enable document analysis
-     - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - parameter configuration: The configuration to set.
-     - parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - client: The Gini client with the information needed to enable document analysis
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - trackingDelegate: A delegate object to receive user events.
 
-     - note: Screen API only.
-
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(withClient client: Client,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
@@ -36,43 +46,119 @@ extension GiniBank {
                                      userApi: UserDomain = .default,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(client: client,
-                                                                          resultsDelegate: resultsDelegate,
-                                                                          configuration: configuration,
-                                                                          documentMetadata: documentMetadata,
-                                                                          api: api,
-                                                                          userApi: userApi,
-                                                                          trackingDelegate: trackingDelegate)
-        return screenCoordinator.start(withDocuments: importedDocuments)
+                                                                       resultsDelegate: resultsDelegate,
+                                                                       configuration: configuration,
+                                                                       documentMetadata: documentMetadata,
+                                                                       api: api,
+                                                                       userApi: userApi,
+                                                                       trackingDelegate: trackingDelegate)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
-    
+
+    /**
+     Returns a view controller which will handle the analysis process.
+     It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
+     all screens and transitions out of the box, including the networking.
+
+     - Parameters:
+        - tokenSource: Alternative token source
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - trackingDelegate: A delegate object to receive user events.
+
+     - Returns: A presentable view controller.
+     */
+    public class func viewController(withAlternativeTokenSource tokenSource: AlternativeTokenSource,
+                                     importedDocuments: [GiniCaptureDocument]? = nil,
+                                     configuration: GiniBankConfiguration,
+                                     resultsDelegate: GiniCaptureResultsDelegate,
+                                     documentMetadata: Document.Metadata? = nil,
+                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+        let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: tokenSource,
+                                                                       resultsDelegate: resultsDelegate,
+                                                                       configuration: configuration,
+                                                                       documentMetadata: documentMetadata,
+                                                                       trackingDelegate: trackingDelegate)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
+    }
+
+    // MARK: - Screen API with Default Networking with Pinning Certificates - Initializers for 'UIViewController'
+
+    /**
+     Returns a view controller which will handle the analysis process.
+     It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
+     all screens and transitions out of the box, including the networking.
+
+     - Parameters:
+        - client: The Gini client with the information needed to enable document analysis
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - trackingDelegate: A delegate object to receive user events.
+
+     - Returns: A presentable view controller.
+     */
+    public class func viewController(withClient client: Client,
+                                     importedDocuments: [GiniCaptureDocument]? = nil,
+                                     configuration: GiniBankConfiguration,
+                                     resultsDelegate: GiniCaptureResultsDelegate,
+                                     pinningConfig: [String: [String]],
+                                     documentMetadata: Document.Metadata? = nil,
+                                     api: APIDomain = .default,
+                                     userApi: UserDomain = .default,
+                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+        let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(client: client,
+                                                                       resultsDelegate: resultsDelegate,
+                                                                       configuration: configuration,
+                                                                       pinningConfig: pinningConfig,
+                                                                       documentMetadata: documentMetadata,
+                                                                       api: api,
+                                                                       userApi: userApi,
+                                                                       trackingDelegate: trackingDelegate)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
+    }
+
+    // MARK: - Screen API with Custom Networking - Initializers for 'UIViewController'
+
     /**
      Returns a view controller which will handle the analysis process.
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box with the custom networking.
      
-     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - parameter configuration: The gini bank configuration to set.
-     - parameter documentMetadata: Additional HTTP headers to send when uploading documents.
-     - parameter trackingDelegate: A delegate object to receive user events.
-     - parameter networkingService: A delegate object which implement protocol for the document processing events.
+     - Parameters:
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The gini bank configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: A delegate object to receive user events.
+        - networkingService: A delegate object which implement protocol for the document processing events.
+        - configurationService: A delegate object which implement protocol for the customer configuration.
 
-     - note: Screen API with custom networking only.
+     - Note: Screen API with custom networking only.
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniBankConfiguration,
                                      resultsDelegate: GiniCaptureResultsDelegate,
                                      documentMetadata: Document.Metadata? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil,
-                                     networkingService: GiniCaptureNetworkService) -> UIViewController {
+                                     networkingService: GiniCaptureNetworkService,
+                                     configurationService: ClientConfigurationServiceProtocol? = nil)
+    -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
                                                                        trackingDelegate: trackingDelegate,
-                                                                       captureNetworkService: networkingService)
-        return screenCoordinator.start(withDocuments: importedDocuments)
+                                                                       captureNetworkService: networkingService,
+                                                                       configurationService: configurationService)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     public class func removeStoredCredentials(for client: Client) throws {

@@ -1,8 +1,7 @@
 //
-//  APIResource.swift
-//  GiniExampleTests
+//  APIResourceTests.swift
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 1/18/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
@@ -12,10 +11,12 @@ import XCTest
 final class APIResourceTests: XCTestCase {
     
     let baseAPIURLString = "https://health-api.gini.net"
-    
+    let versionAPI = 5
+
     func testDocumentsResource() {
         let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
-                                               apiDomain: .default,
+                                               apiDomain: .default, 
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -25,6 +26,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentsWithLimitResource() {
         let resource = APIResource<[Document]>(method: .documents(limit: 1, offset: nil),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -34,6 +36,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentsWithOffsetResource() {
         let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: 2),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -43,6 +46,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentsWithLimitAndOffsetResource() {
         let resource = APIResource<[Document]>(method: .documents(limit: 1, offset: 2),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/documents/?limit=1&offset=2",
@@ -52,6 +56,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentByIdResource() {
         let resource = APIResource<[Document]>(method: .document(id: "c292af40-d06a-11e2-9a2f-000000000000"),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
@@ -61,9 +66,10 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreation() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
                                                                        docType: .invoice,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
@@ -73,9 +79,10 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutFilename() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: .invoice,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
@@ -85,9 +92,10 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutDoctype() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
@@ -97,9 +105,10 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutQueryParameters() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString +
@@ -109,40 +118,44 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationContentTypeV3() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: nil),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
-        XCTAssertEqual(contentType, "application/vnd.gini.v3+jpeg", "content type should match")
+        let contentType = resource.defaultHeaders["Content-Type"]
+        XCTAssertEqual(contentType, "application/vnd.gini.v5+jpeg", "content type should match")
     }
     
     func testDocumentCreationContentTypeV3Partial() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
-        XCTAssertEqual(contentType, "application/vnd.gini.v3.partial+jpeg", "content type should match")
+        let contentType = resource.defaultHeaders["Content-Type"]
+        XCTAssertEqual(contentType, "application/vnd.gini.v5.partial+jpeg", "content type should match")
     }
     
     func testDocumentCreationContentTypeV3Composite() {
         let compositeDocumentInfo = CompositeDocumentInfo(partialDocuments: [])
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .composite(compositeDocumentInfo)),
                                                apiDomain: .default,
+                                               apiVersion: versionAPI,
                                                httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
-        XCTAssertEqual(contentType, "application/vnd.gini.v3.composite+jpeg", "content type should match")
+        let contentType = resource.defaultHeaders["Content-Type"]
+        XCTAssertEqual(contentType, "application/vnd.gini.v5.composite+jpeg", "content type should match")
     }
     
     func testExtractionsForDocumentIDResource() {
         let resource = APIResource<Token>(method: .extractions(forDocumentId: "c292af40-d06a-11e2-9a2f-000000000000"),
                                           apiDomain: .default,
+                                          apiVersion: versionAPI,
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -154,6 +167,7 @@ final class APIResourceTests: XCTestCase {
         let resource = APIResource<Token>(method: .extraction(withLabel: "amountToPay",
                                                               documentId: "c292af40-d06a-11e2-9a2f-000000000000"),
                                           apiDomain: .default,
+                                          apiVersion: versionAPI,
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -165,6 +179,7 @@ final class APIResourceTests: XCTestCase {
     func testPagesForDocumentIDResource() {
         let resource = APIResource<Token>(method: .pages(forDocumentId: "c292af40-d06a-11e2-9a2f-000000000000"),
                                           apiDomain: .default,
+                                          apiVersion: versionAPI,
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -175,6 +190,7 @@ final class APIResourceTests: XCTestCase {
     func testLayoutForDocumentIDResource() {
         let resource = APIResource<Token>(method: .layout(forDocumentId: "c292af40-d06a-11e2-9a2f-000000000000"),
                                           apiDomain: .default,
+                                          apiVersion: versionAPI,
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -185,6 +201,7 @@ final class APIResourceTests: XCTestCase {
     func testProcessedDocumentWithIdResource() {
         let resource = APIResource<Token>(method: .processedDocument(withId: "c292af40-d06a-11e2-9a2f-000000000000"),
                                           apiDomain: .default,
+                                          apiVersion: versionAPI,
                                           httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -199,6 +216,7 @@ final class APIResourceTests: XCTestCase {
                                                     summary: nil,
                                                     description: nil),
                                apiDomain: .default,
+                               apiVersion: versionAPI,
                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -213,6 +231,7 @@ final class APIResourceTests: XCTestCase {
                                                     summary: "Extractions Empty",
                                                     description: nil),
                                apiDomain: .default,
+                               apiVersion: versionAPI,
                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -228,6 +247,7 @@ final class APIResourceTests: XCTestCase {
                                                     summary: nil,
                                                     description: "Despite the submitted remittance slip"),
                                apiDomain: .default,
+                               apiVersion: versionAPI,
                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -243,6 +263,7 @@ final class APIResourceTests: XCTestCase {
                                                     summary: "Extractions Empty",
                                                     description: "Despite the submitted remittance slip"),
                                apiDomain: .default,
+                               apiVersion: versionAPI,
                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString
@@ -255,6 +276,7 @@ final class APIResourceTests: XCTestCase {
     func testCustomApiDomain() {
         let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
                                                apiDomain: .custom(domain: "custom.domain.com", tokenSource: nil),
+                                               apiVersion: versionAPI,
                                                httpMethod: .get)
         
         let urlString = resource.url.absoluteString

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cameraFocus.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

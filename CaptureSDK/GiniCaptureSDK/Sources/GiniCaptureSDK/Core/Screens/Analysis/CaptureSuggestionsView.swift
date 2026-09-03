@@ -9,134 +9,144 @@
 import UIKit
 
 final class CaptureSuggestionsView: UIView {
-    
-    fileprivate enum CaptureSuggestionsState {
+
+    private enum CaptureSuggestionsState {
         case shown
         case hidden
     }
-    
-    fileprivate let suggestionIcon: UIImageView
-    fileprivate let suggestionText: UILabel
-    fileprivate let suggestionContainer: UIView
-    fileprivate let suggestionTitle: UILabel
-    fileprivate let containerHeight: CGFloat = 135
-    fileprivate let suggestionTitleHeight: CGFloat = 20
-    fileprivate var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    fileprivate var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    fileprivate let repeatInterval: TimeInterval = 5
-    fileprivate let superViewBottomAnchor: NSLayoutYAxisAnchor
-    fileprivate let suggestionIconImage = UIImage(named: "analysisSuggestionsIcon",
-                                                  in: giniCaptureBundle(), compatibleWith: nil)
-    fileprivate var suggestionTexts: [String] = [
-        .localized(resource: AnalysisStrings.suggestion1Text),
-        .localized(resource: AnalysisStrings.suggestion2Text),
-        .localized(resource: AnalysisStrings.suggestion3Text),
-        .localized(resource: AnalysisStrings.suggestion4Text)
+
+    private let suggestionContainer: CaptureSuggestionsViewContainer?
+    private var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var leadingiPhoneConstraint = NSLayoutConstraint()
+    private var trailingiPhoneConstraint = NSLayoutConstraint()
+    private let superViewBottomAnchor: NSLayoutYAxisAnchor
+
+    private var suggestionIconImages = [
+        UIImageNamedPreferred(named: "captureSuggestion1"),
+        UIImageNamedPreferred(named: "captureSuggestion2"),
+        UIImageNamedPreferred(named: "captureSuggestion3"),
+        UIImageNamedPreferred(named: "captureSuggestion4")
     ]
-    
-    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor, font: UIFont) {
-        suggestionContainer = UIView()
-        suggestionTitle = UILabel()
-        suggestionText = UILabel()
+
+    private var suggestionTitle: [String] = [
+        Strings.suggestionTitle1,
+        Strings.suggestionTitle2,
+        Strings.suggestionTitle3,
+        Strings.suggestionTitle4
+    ]
+
+    private var suggestionDescription: [String] = [
+        Strings.suggestionDescription1,
+        Strings.suggestionDescription2,
+        Strings.suggestionDescription3,
+        Strings.suggestionDescription4
+    ]
+
+    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor) {
+        if GiniConfiguration.shared.multipageEnabled {
+            suggestionIconImages.append(UIImageNamedPreferred(named: "captureSuggestion5"))
+            suggestionTitle.append(Strings.suggestionTitle5)
+            suggestionDescription.append(Strings.suggestionDescription5)
+        }
+
+        suggestionContainer = CaptureSuggestionsViewContainer().loadNib() as? CaptureSuggestionsViewContainer
+
         superViewBottomAnchor = bottomAnchor
 
-        suggestionIcon = UIImageView(image: suggestionIconImage)
-        suggestionIcon.contentMode = .scaleAspectFit
-        
-        suggestionTitle.textColor = .white
-        suggestionTitle.font = font
-        suggestionTitle.numberOfLines = 1
-        suggestionTitle.text = .localized(resource: AnalysisStrings.suggestionHeader)
-        suggestionTitle.textAlignment = .center
-        suggestionTitle.adjustsFontSizeToFitWidth = true
-        suggestionTitle.minimumScaleFactor = 14/16
-        
-        suggestionText.textColor = .white
-        suggestionText.font = font
-        suggestionText.numberOfLines = 0
-        suggestionTexts.shuffle()
-        suggestionText.text = suggestionTexts.first!
-        
+        let randomIndex = Int.random(in: 0...suggestionTitle.count - 1)
+        suggestionContainer?.configureContent(with: suggestionIconImages[randomIndex],
+                                              title: suggestionTitle[randomIndex],
+                                              description: suggestionDescription[randomIndex])
         super.init(frame: .zero)
         alpha = 0
-        
-        suggestionContainer.addSubview(suggestionIcon)
-        suggestionContainer.addSubview(suggestionText)
+        guard let suggestionContainer = suggestionContainer else { return }
+
         self.addSubview(suggestionContainer)
-        self.addSubview(suggestionTitle)
         superView.addSubview(self)
-        
+
         translatesAutoresizingMaskIntoConstraints = false
         suggestionContainer.translatesAutoresizingMaskIntoConstraints = false
-        suggestionTitle.translatesAutoresizingMaskIntoConstraints = false
-        suggestionIcon.translatesAutoresizingMaskIntoConstraints = false
-        suggestionText.translatesAutoresizingMaskIntoConstraints = false
-        
+
         addConstraints()
         layoutIfNeeded()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("You should use init() initializer")
     }
-    
-    fileprivate func addConstraints() {
-        guard let superview = superview else { return }
-        
+
+    private func addConstraints() {
+        guard let superview = superview, let suggestionContainer = suggestionContainer else { return }
+
         // self
-        bottomConstraint = self.bottomAnchor.constraint(equalTo: superViewBottomAnchor, constant: containerHeight)
-        Constraints.active(item: self, attr: .leading, relatedBy: .equal, to: superview, attr: .leading)
-        Constraints.active(item: self, attr: .trailing, relatedBy: .equal, to: superview, attr: .trailing)
-        Constraints.active(item: self, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                          constant: containerHeight)
+        bottomConstraint = bottomAnchor.constraint(equalTo: superViewBottomAnchor,
+                                                   constant: Constants.containerHeight)
+        Constraints.active(item: self,
+                           attr: .leading,
+                           relatedBy: .equal,
+                           to: superview,
+                           attr: .leading)
+
+        Constraints.active(item: self,
+                           attr: .trailing,
+                           relatedBy: .equal,
+                           to: superview,
+                           attr: .trailing)
+
+        Constraints.active(item: self,
+                           attr: .height,
+                           relatedBy: .greaterThanOrEqual,
+                           to: nil,
+                           attr: .notAnAttribute,
+                           constant: Constants.containerHeight,
+                           priority: 250)
+
         Constraints.active(constraint: bottomConstraint)
 
-        // suggestionTitle
-        Constraints.active(item: suggestionTitle, attr: .top, relatedBy: .equal, to: self, attr: .top)
-        Constraints.active(item: suggestionTitle, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
-                          constant: 8)
-        Constraints.active(item: suggestionTitle, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
-                          constant: -8, priority: 999)
-        Constraints.active(item: suggestionTitle, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                          constant: suggestionTitleHeight)
-
         // suggestionContainer
-        itemSeparationConstraint = NSLayoutConstraint(item: suggestionContainer, attribute: .top, relatedBy: .equal,
-                                                      toItem: suggestionTitle, attribute: .bottom, multiplier: 1,
+        itemSeparationConstraint = NSLayoutConstraint(item: suggestionContainer,
+                                                      attribute: .bottom,
+                                                      relatedBy: .equal,
+                                                      toItem: self,
+                                                      attribute: .bottom,
+                                                      multiplier: 1,
                                                       constant: 0)
-        Constraints.active(item: suggestionContainer, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                          constant: containerHeight - suggestionTitleHeight)
+        Constraints.active(item: suggestionContainer,
+                           attr: .height,
+                           relatedBy: .greaterThanOrEqual,
+                           to: nil,
+                           attr: .notAnAttribute,
+                           constant: Constants.containerHeight)
+        
         Constraints.active(constraint: itemSeparationConstraint)
-        
-        // suggestionIcon
-        Constraints.active(item: suggestionIcon, attr: .leading, relatedBy: .equal, to: suggestionContainer,
-                          attr: .leading)
-        Constraints.active(item: suggestionIcon, attr: .height, relatedBy: .lessThanOrEqual, to: nil,
-                          attr: .notAnAttribute, constant: 48)
-        Constraints.active(item: suggestionIcon, attr: .width, relatedBy: .equal, to: suggestionIcon, attr: .height)
-        Constraints.active(item: suggestionIcon, attr: .centerY, relatedBy: .equal, to: suggestionContainer,
-                          attr: .centerY)
-        Constraints.active(item: suggestionIcon, attr: .trailing, relatedBy: .equal, to: suggestionText, attr: .leading,
-                          constant: -16)
-        
-        // suggestionText
-        Constraints.active(item: suggestionText, attr: .top, relatedBy: .equal, to: suggestionContainer, attr: .top,
-                          constant: 16, priority: 999)
-        Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: suggestionContainer,
-                          attr: .trailing, priority: 999)
-        Constraints.active(item: suggestionText, attr: .bottom, relatedBy: .equal, to: suggestionContainer,
-                          attr: .bottom, constant: -16, priority: 999)
-        
+
         // Center on align to margins depending on device
         if UIDevice.current.isIpad {
-            Constraints.active(item: suggestionContainer, attr: .width, relatedBy: .lessThanOrEqual, to: self,
-                              attr: .width, multiplier: 0.9)
-            Constraints.active(item: suggestionText, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
+            Constraints.active(item: suggestionContainer,
+                               attr: .width,
+                               relatedBy: .equal,
+                               to: self,
+                              attr: .width,
+                               multiplier: 0.7)
+            Constraints.active(item: suggestionContainer,
+                               attr: .centerX,
+                               relatedBy: .equal,
+                               to: self,
+                               attr: .centerX)
         } else {
-            Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
-                              constant: 20)
-            Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
-                              constant: -20, priority: 999)
+            leadingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                         attr: .leading,
+                                                         relatedBy: .equal,
+                                                         to: self.safeAreaLayoutGuide,
+                                                         attr: .leading,
+                                                         constant: Constants.horizontalMargin)
+            trailingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                          attr: .trailing,
+                                                          relatedBy: .equal,
+                                                          to: self.safeAreaLayoutGuide,
+                                                          attr: .trailing,
+                                                          constant: -Constants.horizontalMargin)
         }
     }
 }
@@ -144,61 +154,139 @@ final class CaptureSuggestionsView: UIView {
 // MARK: Animations
 
 extension CaptureSuggestionsView {
-    
+
     func start(after seconds: TimeInterval = 4) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
             guard let self = self, let superview = self.superview else { return }
-            self.bottomConstraint.constant = 0
-            self.alpha = 1
-            UIView.animate(withDuration: 0.5, animations: {
+
+            if let parentVC = self.parentViewController,
+               parentVC.presentedViewController != nil {
+                // Skipping suggestions - modal is presented
+                return
+            }
+
+            bottomConstraint.constant = Constants.bottomConstraint
+            alpha = 1
+            UIView.animate(withDuration: Constants.animationDuration,
+                           animations: { [weak self] in
                 superview.layoutIfNeeded()
-            }, completion: { _ in
-                self.changeView(toState: .hidden)
+
+                if let title = self?.suggestionContainer?.titleLabel.text,
+                    let description = self?.suggestionContainer?.descriptionLabel.text {
+                    UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+                }
+            }, completion: { [weak self] _ in
+                self?.changeView(toState: .hidden)
             })
         })
     }
-    
-    fileprivate func changeView(toState state: CaptureSuggestionsState) {
+
+    private func changeView(toState state: CaptureSuggestionsState) {
         let delay: TimeInterval
         let nextState: CaptureSuggestionsState
-        
+
         if state == .shown {
             delay = 0
             nextState = .hidden
             changeSuggestionText()
-            suggestionContainer.layoutIfNeeded()
+            suggestionContainer?.layoutIfNeeded()
         } else {
-            delay = repeatInterval
+            delay = Constants.repeatInterval
             nextState = .shown
         }
-        
+
         updatePosition(withState: state)
 
-        UIView.animate(withDuration: 0.5, delay: delay, options: [UIView.AnimationOptions.curveEaseInOut], animations: {
+        UIView.animate(withDuration: Constants.animationDuration,
+                       delay: delay,
+                       options: [UIView.AnimationOptions.curveEaseInOut], animations: {
             self.layoutIfNeeded()
         }, completion: {[weak self] _ in
             guard let self = self else { return }
             self.changeView(toState: nextState)
         })
     }
-    
-    fileprivate func changeSuggestionText() {
-        if let currentText = suggestionText.text, let currentIndex = suggestionTexts.firstIndex(of: currentText) {
+
+    private func changeSuggestionText() {
+        if let currentTitle = suggestionContainer?.titleLabel.text,
+            let currentIndex = suggestionTitle.firstIndex(of: currentTitle) {
             let nextIndex: Int
-            if suggestionTexts.index(after: currentIndex) < suggestionTexts.endIndex {
-                nextIndex = suggestionTexts.index(after: currentIndex)
+            if suggestionTitle.index(after: currentIndex) < suggestionTitle.endIndex {
+                nextIndex = suggestionTitle.index(after: currentIndex)
             } else {
                 nextIndex = 0
             }
-            suggestionText.text = suggestionTexts[nextIndex]
+
+            let title = suggestionTitle[nextIndex]
+            let description = suggestionDescription[nextIndex]
+
+            suggestionContainer?.configureContent(with: suggestionIconImages[nextIndex],
+                                                  title: title,
+                                                  description: description)
+
+            // Only announce if no modal is presented
+            if parentViewController?.presentedViewController == nil {
+                UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+            }
         }
     }
-    
-    fileprivate func updatePosition(withState state: CaptureSuggestionsState) {
+
+    private func updatePosition(withState state: CaptureSuggestionsState) {
         if state == .shown {
             self.itemSeparationConstraint.constant = 0
         } else {
-            self.itemSeparationConstraint.constant = containerHeight
+            self.itemSeparationConstraint.constant = 2 * Constants.containerHeight
         }
+    }
+}
+
+private extension CaptureSuggestionsView {
+    private struct Constants {
+        static let animationDuration: TimeInterval = 0.5
+        static let bottomConstraint: CGFloat = UIDevice.current.isIpad ? -28 : -24
+        static let horizontalMargin: CGFloat = 20
+        static let repeatInterval: TimeInterval = 5
+        static let containerHeight: CGFloat = 96
+    }
+
+    private struct Strings {
+
+        // MARK: - Suggestion Titles
+
+        static let suggestionTitle1Key = "ginicapture.analysis.suggestion.1"
+        static let suggestionTitle2Key = "ginicapture.analysis.suggestion.2"
+        static let suggestionTitle3Key = "ginicapture.analysis.suggestion.3"
+        static let suggestionTitle4Key = "ginicapture.analysis.suggestion.4"
+        static let suggestionTitle5Key = "ginicapture.analysis.suggestion.5"
+
+        static let suggestionTitle1 = NSLocalizedStringPreferredFormat(suggestionTitle1Key,
+                                                                       comment: "First suggestion title for analysis screen")
+        static let suggestionTitle2 = NSLocalizedStringPreferredFormat(suggestionTitle2Key,
+                                                                       comment: "Second suggestion title for analysis screen")
+        static let suggestionTitle3 = NSLocalizedStringPreferredFormat(suggestionTitle3Key,
+                                                                       comment: "Third suggestion title for analysis screen")
+        static let suggestionTitle4 = NSLocalizedStringPreferredFormat(suggestionTitle4Key,
+                                                                       comment: "Fourth suggestion title for analysis screen")
+        static let suggestionTitle5 = NSLocalizedStringPreferredFormat(suggestionTitle5Key,
+                                                                       comment: "Fifth suggestion title for analysis screen")
+
+        // MARK: - Suggestion Descriptions
+
+        static let suggestionDescription1Key = "ginicapture.analysis.suggestion.1.details"
+        static let suggestionDescription2Key = "ginicapture.analysis.suggestion.2.details"
+        static let suggestionDescription3Key = "ginicapture.analysis.suggestion.3.details"
+        static let suggestionDescription4Key = "ginicapture.analysis.suggestion.4.details"
+        static let suggestionDescription5Key = "ginicapture.analysis.suggestion.5.details"
+
+        static let suggestionDescription1 = NSLocalizedStringPreferredFormat(suggestionDescription1Key,
+                                                                             comment: "First suggestion description for analysis screen")
+        static let suggestionDescription2 = NSLocalizedStringPreferredFormat(suggestionDescription2Key,
+                                                                             comment: "Second suggestion description for analysis screen")
+        static let suggestionDescription3 = NSLocalizedStringPreferredFormat(suggestionDescription3Key,
+                                                                             comment: "Third suggestion description for analysis screen")
+        static let suggestionDescription4 = NSLocalizedStringPreferredFormat(suggestionDescription4Key,
+                                                                             comment: "Fourth suggestion description for analysis screen")
+        static let suggestionDescription5 = NSLocalizedStringPreferredFormat(suggestionDescription5Key,
+                                                                             comment: "Fifth suggestion description for analysis screen")
     }
 }

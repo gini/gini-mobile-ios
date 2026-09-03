@@ -6,26 +6,29 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
 
-/// The Gini Health API Library
+/**
+ The Gini Health API Library
+ */
 public final class GiniHealthAPI {
     
-    private let docService: DocumentService!
-    private let payService: PaymentService?
+    private var docService: DocumentService!
+    private var payService: PaymentService?
+    private var configurationService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
+    /** The session delegate used for custom URL session handling, such as certificate pinning. */
+    public var sessionDelegate: URLSessionDelegate? = nil
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
+    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, clientConfigurationService: ClientConfigurationServiceProtocol?)
     {
         self.docService = documentService
         self.payService = paymentService
+        self.configurationService = clientConfigurationService
     }
     
     /**
-     * The instance of a `DocumentService` that is used by the Gini Health API Library. The `DocumentService` allows the interaction with
-     * the Gini Health API.
+     The instance of a `DocumentService` that is used by the Gini Health API Library. The `DocumentService` allows the interaction with
+     the Gini Health API.
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
@@ -37,14 +40,22 @@ public final class GiniHealthAPI {
     }
     
     /**
-     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
-     *
+     The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
+
      */
-    public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
+    public func paymentService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> PaymentService {
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
     }
     
-    /// Removes the user stored credentials. Recommended when logging a different user in your app.
+    /**
+     The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
+
+     */
+    public func clientConfigurationService() -> ClientConfigurationServiceProtocol? {
+        return configurationService
+    }
+    
+    /** Removes the user stored credentials. Recommended when logging a different user in your app. */
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
         try keychainStore.remove(service: .auth, key: .userAccessToken)
@@ -56,42 +67,110 @@ public final class GiniHealthAPI {
 // MARK: - Builder
 
 extension GiniHealthAPI {
-    /// Builds a Gini Health API Library
+    /** Builds a Gini Health API Library */
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
+        let apiVersion: Int
         var userApi: UserDomain = .default
         var logLevel: LogLevel
+        /** The session delegate used for custom URL session handling, such as certificate pinning. */
+        public var sessionDelegate: URLSessionDelegate? = nil
         
         /**
-         *  Creates a Gini Health API Library
-         *
-         * - Parameter client:            The Gini Health API client credentials
-         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         Creates a Gini Health API Library.
+
+         - Parameters:
+           - client: The Gini Health API client credentials.
+           - api: The Gini Health API domain that the library interacts with. `APIDomain.default` by default.
+           - userApi: The Gini User API domain that the library interacts with. `UserDomain.default` by default.
+           - logLevel: The log level. `LogLevel.none` by default.
+           - sessionDelegate: The `URLSessionDelegate` used for certificate pinning, if any.
          */
         public init(client: Client,
                     api: APIDomain = .default,
                     userApi: UserDomain = .default,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = client
             self.api = api
             self.userApi = userApi
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
+            self.apiVersion = client.apiVersion
         }
         
         /**
-         * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source.
+         Creates a Gini Health API Library for use with a transparent proxy and a custom API access token source.
+
+         - Parameters:
+           - customApiDomain: A custom API domain string.
+           - alternativeTokenSource: A custom API access token source.
+           - apiVersion: The API version to use.
+           - logLevel: The log level. `LogLevel.none` by default.
+           - sessionDelegate: The `URLSessionDelegate` used for certificate pinning, if any.
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,
-                    logLevel: LogLevel = .none) {
+                    apiVersion: Int,
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
+            self.apiVersion = apiVersion
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
         }
 
+        /**
+         Creates a Gini Health API Library with certificate pinning configuration.
+
+         - Parameters:
+           - client: The Gini Health API client credentials.
+           - api: The Gini Health API domain that the library interacts with. `APIDomain.default` by default.
+           - userApi: The Gini User API domain that the library interacts with. `UserDomain.default` by default.
+           - pinningConfig: Certificate pinning configuration. Format: `["PinnedDomains": ["PublicKeyHashes"]]`.
+           - logLevel: The log level. `LogLevel.none` by default.
+         */
+        public init(client: Client,
+                    api: APIDomain = .default,
+                    userApi: UserDomain = .default,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(client: client,
+                      api: api,
+                      userApi: userApi,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+        
+        /**
+         Creates a Gini Health API Library for use with a transparent proxy, a custom API access token source, and certificate pinning.
+
+         - Parameters:
+           - customApiDomain: A custom API domain string.
+           - alternativeTokenSource: A custom API access token source.
+           - apiVersion: The API version to use.
+           - pinningConfig: Certificate pinning configuration. Format: `["PinnedDomains": ["PublicKeyHashes"]]`.
+           - logLevel: The log level. `LogLevel.none` by default.
+         */
+        public init(customApiDomain: String,
+                    alternativeTokenSource: AlternativeTokenSource,
+                    apiVersion: Int,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(customApiDomain: customApiDomain,
+                      alternativeTokenSource: alternativeTokenSource,
+                      apiVersion: apiVersion,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+
+        /**
+         Builds and returns a configured `GiniHealthAPI` instance.
+
+         - Returns: A fully initialized `GiniHealthAPI` ready for use.
+         */
         public func build() -> GiniHealthAPI {
             // Save client information
             save(client)
@@ -102,23 +181,32 @@ extension GiniHealthAPI {
             // Initialize GiniHealthAPILib
             switch api {
             case .default:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
-            case .custom(_, let tokenSource):
-                var sessionManager : SessionManager
-                if let tokenSource = tokenSource {
-                     sessionManager = SessionManager(alternativeTokenSource: tokenSource)
-                } else {
-                    sessionManager = SessionManager(userDomain: userApi)
-                }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
-            case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager:
-                                                                            sessionManager), paymentService: PaymentService(sessionManager: sessionManager))
+                return createHealthAPI()
+            case let .custom(_, tokenSource):
+                return createHealthAPI(tokenSource: tokenSource)
             }
         }
-        
+
+        private func createHealthAPI(tokenSource: AlternativeTokenSource? = nil) -> GiniHealthAPI {
+            var sessionManager: SessionManager
+            if let tokenSource = tokenSource {
+                sessionManager = SessionManager(alternativeTokenSource: tokenSource,
+                                                sessionDelegate: self.sessionDelegate)
+            } else {
+                sessionManager = SessionManager(userDomain: userApi,
+                                                sessionDelegate: self.sessionDelegate)
+            }
+            return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,
+                                                                         apiDomain: api,
+                                                                         apiVersion: apiVersion),
+                                 paymentService: PaymentService(sessionManager: sessionManager,
+                                                                apiDomain: api,
+                                                                apiVersion: apiVersion),
+                                 clientConfigurationService: ClientConfigurationService(sessionManager: sessionManager,
+                                                                                        apiDomain: api,
+                                                                                        apiVersion: apiVersion))
+        }
+
         private func save(_ client: Client) {
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,
@@ -135,5 +223,13 @@ extension GiniHealthAPI {
                     "Check that the Keychain capability is enabled in your project")
             }
         }
+    }
+}
+
+extension GiniHealthAPI {
+    /** Constants used by the Gini Health API Library. */
+    public enum Constants {
+        /** The default API version used when no version is specified. */
+        public static let defaultVersionAPI = 5
     }
 }

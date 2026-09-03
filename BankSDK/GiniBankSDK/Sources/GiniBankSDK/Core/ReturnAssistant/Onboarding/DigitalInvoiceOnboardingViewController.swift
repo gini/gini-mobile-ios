@@ -1,91 +1,280 @@
 //
 //  OnboardingDigitalInvoiceViewController.swift
-// GiniBank
 //
-//  Created by Nadya Karaban on 21.10.20.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 import GiniCaptureSDK
 
 protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
-    func didDismissViewController()
+    func dismissViewController()
 }
+
 final class DigitalInvoiceOnboardingViewController: UIViewController {
-    var returnAssistantConfiguration = ReturnAssistantConfiguration()
+    @IBOutlet private weak var contentView: UIView!
+    @IBOutlet private weak var topImageView: OnboardingImageView!
+    @IBOutlet private weak var firstLabel: UILabel!
+    @IBOutlet private weak var secondLabel: UILabel!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var doneButton: MultilineTitleButton!
+    @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem { [weak self] in
+        self?.doneAction(nil)
+    }
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
-    
-    @IBOutlet var topImageView: UIImageView!
-    @IBOutlet var firstLabel: UILabel!
-    @IBOutlet var secondLabel: UILabel!
-    @IBOutlet var doneButton: UIButton!
-    @IBOutlet var hideButton: UIButton!
-    
-    fileprivate var topImage: UIImage {
+    private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
+
+    private var widthMultiplier: CGFloat = 0.6
+
+    private var topPadding: CGFloat {
+        return view.frame.width > view.frame.height ? 40 : 104
+    }
+
+    private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
+    private var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
-    
-    fileprivate var firstLabelText: String {
-        return
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
+
+    private var firstLabelText: String {
+        return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1",
+                                                         comment: "title for digital invoice onboarding screen")
     }
-    
-    fileprivate var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
+
+    private var secondLabelText: String {
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
+                                                        comment: "title for digital invoice onboarding screen")
     }
-    
-    fileprivate var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
+
+    private var doneButtonTitle: String {
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
+                                                        comment: "title for digital invoice onboarding screen")
     }
-    
-    fileprivate var hideButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.hidebutton", comment: "title for the hide button on the digital invoice onboarding screen")
-    }
-    
+
+    private var doneButtonTapped: Bool = false
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        GiniAnalyticsManager.trackScreenShown(screenName: .onboardingReturnAssistant)
     }
-    
-    fileprivate func configureUI() {
-        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        view.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor)
-        
-        topImageView.image = topImage
-        
-        firstLabel.text = firstLabelText
-        firstLabel.font = returnAssistantConfiguration.digitalInvoiceOnboardingFirstLabelTextFont
-        firstLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingTextColor)
-        
-        secondLabel.text = secondLabelText
-        secondLabel.font = returnAssistantConfiguration.digitalInvoiceOnboardingSecondLabelTextFont
-        secondLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingTextColor)
-        
-        doneButton.layer.cornerRadius = 7.0
-        doneButton.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonBackgroundColor)
-        doneButton.tintColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextColor)
-        doneButton.setTitle(doneButtonTitle, for: .normal)
-        doneButton.titleLabel?.font = returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextFont
-        doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
-        
-        hideButton.setTitle(hideButtonTitle, for: .normal)
-        hideButton.titleLabel?.font = returnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextFont
-        hideButton.tintColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextColor)
-        hideButton.addTarget(self, action: #selector(hideAction(_:)), for: .touchUpInside)
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let configuration = GiniBankConfiguration.shared
+        configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidAppear()
+        notifyLayoutChangedAfterPresentingOnboarding()
     }
-    
-    @objc func doneAction(_ sender: UIButton!) {
-        dismissViewController()
-    }
-    
-    @objc func hideAction(_ sender: UIButton!) {
-        UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceOnboardingShowed")
-        dismissViewController()
-    }
-    
-    func dismissViewController() {
-        dismiss(animated: true) {
-            self.delegate?.didDismissViewController()
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        let configuration = GiniBankConfiguration.shared
+        configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidDisappear()
+
+        // this screen can be dismissed by tapping on the getStarted button or
+        // can be dismissed by dragging the screen from top to bottom.
+
+        if doneButtonTapped {
+            GiniAnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
+        } else {
+            GiniAnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+                view.addSubview(horizontalItem)
+                horizontalItem.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    horizontalItem.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    horizontalItem.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    horizontalItem.topAnchor.constraint(equalTo: view.topAnchor),
+                    horizontalItem.bottomAnchor.constraint(equalTo: getBottomAnchorForLandscapeView())
+                ])
+            } else {
+                horizontalItem.removeFromSuperview()
+            }
+        }
+    }
+
+    private func configureUI() {
+        let configuration = GiniBankConfiguration.shared
+
+        /// This is needed to avoid that VoiceOver reads the elements behind the onboarding screen.
+        view.accessibilityViewIsModal = true
+        view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+        contentView.backgroundColor = .clear
+
+        setupTopImageView(with: configuration)
+        setupFirstLabel(with: configuration)
+        setupSecondLabel(with: configuration)
+        setupDoneButton(with: configuration)
+
+        configureConstraints()
+    }
+
+    private func setupTopImageView(with configuration: GiniBankConfiguration) {
+        if let adapter = configuration.digitalInvoiceOnboardingIllustrationAdapter {
+            topImageView.illustrationAdapter = adapter
+        } else {
+            topImageView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
+            topImageView.icon = topImage
+        }
+        topImageView.isAccessibilityElement = true
+        topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
+        topImageView.setupView()
+    }
+
+    private func setupFirstLabel(with configuration: GiniBankConfiguration) {
+        firstLabel.text = firstLabelText
+        firstLabel.font = configuration.textStyleFonts[.title2Bold]
+        firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        firstLabel.adjustsFontForContentSizeCategory = true
+    }
+
+    private func setupSecondLabel(with configuration: GiniBankConfiguration) {
+        secondLabel.text = secondLabelText
+        secondLabel.font = configuration.textStyleFonts[.subheadline]
+        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        secondLabel.adjustsFontForContentSizeCategory = true
+    }
+
+    private func setupDoneButton(with configuration: GiniBankConfiguration) {
+        doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
+        doneButton.setTitle(doneButtonTitle, for: .normal)
+        doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        doneButton.configure(with: configuration.primaryButtonConfiguration)
+
+        if configuration.bottomNavigationBarEnabled {
+            doneButton.isHidden = !(UIDevice.current.isIpad && view.currentInterfaceOrientation.isLandscape)
+
+            NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
+
+            if let bottomBarAdapter = configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
+                self?.doneButtonTapped = true
+                self?.dismissViewController()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                navigationBarHeightConstraint = navigationBar.heightAnchor
+                    .constraint(equalToConstant: getBottomBarHeight())
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                    navigationBarHeightConstraint
+                ])
+            }
+        }
+
+    }
+
+    private func configureConstraints() {
+        if UIDevice.current.isIpad {
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
+
+            scrollViewTopConstraint.constant = topPadding
+            scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                                      multiplier: widthMultiplier)
+            scrollViewWidthAnchor.isActive = true
+        }
+    }
+
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
+        updateAccessibilityElements()
+
+        guard UIDevice.current.isIpad else { return }
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self = self else { return }
+            self.scrollViewTopConstraint.constant = self.topPadding
+
+            self.scrollViewWidthAnchor.isActive = false
+            self.scrollViewWidthAnchor = self.scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor,
+                                                                                multiplier: self.widthMultiplier)
+            self.scrollViewWidthAnchor.isActive = true
+        })
+    }
+
+    private func updateAccessibilityElements() {
+        let device = UIDevice.current
+
+        switch (device.isIphone, device.isLandscape) {
+        case (true, true):  // iPhone landscape
+            view.accessibilityElements = [horizontalItem]
+        case (true, false), (false, _):  // iPhone portrait or iPad
+            view.accessibilityElements = [topImageView, firstLabel, secondLabel, doneButton].compactMap { $0 }
+        }
+    }
+
+    @objc func doneAction(_ sender: UIButton!) {
+        doneButtonTapped = true
+        dismissViewController()
+    }
+
+    private func dismissViewController() {
+        dismiss(animated: true) {
+            self.delegate?.dismissViewController()
+        }
+    }
+
+    /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notifyLayoutChangedAfterPresentingOnboarding() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIAccessibility.post(notification: .layoutChanged, argument: self.view)
+        }
+    }
+}
+
+extension DigitalInvoiceOnboardingViewController {
+    private enum Constants {
+        static let bottomBarHeightPortrait: CGFloat = 110
+        static let bottomBarHeightLandscape: CGFloat = 64
+    }
+
+    private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
+        if GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil {
+            return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
+        } else {
+            return view.bottomAnchor
+        }
+    }
+
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.bottomBarHeightLandscape
+        }
+        return Constants.bottomBarHeightPortrait
+    }
+
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }

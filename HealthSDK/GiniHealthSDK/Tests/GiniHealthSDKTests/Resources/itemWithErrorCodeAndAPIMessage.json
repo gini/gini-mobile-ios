@@ -1,0 +1,10 @@
+{
+    "message": "Documents could not be deleted due to authorization issues",
+    "items": [
+        {
+            "code": "2013",
+            "object": ["doc-1", "doc-2"]
+        }
+    ],
+    "requestId": "test-request-123"
+}

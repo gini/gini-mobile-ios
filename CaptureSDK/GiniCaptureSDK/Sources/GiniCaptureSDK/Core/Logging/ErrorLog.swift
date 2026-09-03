@@ -7,12 +7,11 @@
 
 import UIKit
 public struct ErrorLog {
-    
+
     public var deviceModel: String = UIDevice.current.model
     public var osName: String = UIDevice.current.systemName
     public var osVersion: String = UIDevice.current.systemVersion
     public var captureVersion: String = GiniCapture.versionString
     public var description: String
-    public var error: Error? = nil
-
+    public var error: Error?
 }

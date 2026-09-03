@@ -1,0 +1,17 @@
+{
+    "items": [
+        {
+            "code": "2013",
+            "object": ["doc-1", "doc-2"]
+        },
+        {
+            "code": "2014",
+            "object": ["doc-3"]
+        },
+        {
+            "code": "2013",
+            "object": ["doc-4", "doc-5"]
+        }
+    ],
+    "requestId": "test-id"
+}

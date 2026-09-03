@@ -6,16 +6,22 @@
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 import AVFoundation
 import Photos
+import Vision
+import GiniUtilites
 
 protocol CameraProtocol: AnyObject {
     var session: AVCaptureSession { get }
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
+    var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)? { get set }
+    var didDetectIBANs: (([String]) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
+    var hasInitialized: Bool { get }
 
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void)
     func focus(withMode mode: AVCaptureDevice.FocusMode,
@@ -23,35 +29,63 @@ protocol CameraProtocol: AnyObject {
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool)
     func setup(completion: @escaping ((CameraError?) -> Void))
-    func setupQRScanningOutput()
+    func switchTo(newVideoDevice: AVCaptureDevice)
+    func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func pauseQRDetection()
+    func resumeQRDetection()
+
+    // IBAN detection
+    func startOCR()
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform)
 }
 
 final class Camera: NSObject, CameraProtocol {
-    
+
     // Callbacks
     var didDetectQR: ((GiniQRCodeDocument) -> Void)?
+    var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)?
     var didCaptureImageHandler: ((Data?, CameraError?) -> Void)?
-    
+    var didDetectIBANs: (([String]) -> Void)?
+
     // Session management
     var giniConfiguration: GiniConfiguration
     var isFlashOn: Bool
     var photoOutput: AVCapturePhotoOutput?
     var session: AVCaptureSession = AVCaptureSession()
+    let sessionQueue = DispatchQueue(label: "session queue")
     var videoDeviceInput: AVCaptureDeviceInput?
+    var videoDataOutput = AVCaptureVideoDataOutput()
+    let videoDataOutputQueue = DispatchQueue(label: "ocr queue")
+    var hasInitialized: Bool { !session.inputs.isEmpty }
 
     lazy var isFlashSupported: Bool = {
         #if targetEnvironment(simulator)
         return true
         #else
-        return videoDeviceInput?.device.hasFlash ?? false
+        return videoDeviceInput?.device.hasFlash ?? AVCaptureDevice.default(
+            .builtInWideAngleCamera,
+            for: .video,
+            position: .back)?.hasFlash == true
         #endif
     }()
-    
+
     fileprivate let application: UIApplication
-    fileprivate let sessionQueue = DispatchQueue(label: "session queue")
-    
+
+    // QR detection
+    private(set) var qrMetadataOutput: AVCaptureMetadataOutput?
+
+    // IBAN detection
+    private var request: VNImageBasedRequest?
+    private var textOrientation = CGImagePropertyOrientation.up
+    private var regionOfInterest: CGRect?
+    private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    private var visionToAVFTransform: CGAffineTransform = .identity
+
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
         self.application = application
@@ -59,57 +93,118 @@ final class Camera: NSObject, CameraProtocol {
         self.isFlashOn = giniConfiguration.flashOnByDefault
         super.init()
     }
-    
-    fileprivate func configureSession() {
-        self.session.beginConfiguration()
-        self.setupInput()
-        self.setupPhotoCaptureOutput()
-        if giniConfiguration.qrCodeScanningEnabled {
-            self.setupQRScanningOutput()
-        }
-        self.session.commitConfiguration()
+
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform) {
+
+        self.textOrientation = textOrientation
+        self.regionOfInterest = regionOfInterest
+        self.videoPreviewLayer = videoPreviewLayer
+        self.visionToAVFTransform = visionToAVFTransform
     }
-    
+
+    fileprivate func configureSession(completion: @escaping ((CameraError?) -> Void)) {
+        session.beginConfiguration()
+        setupInput()
+        setupPhotoCaptureOutput()
+        configureVideoDataOutput()
+        session.commitConfiguration()
+        setupQRScanningOutput(completion: completion)
+    }
+
+    // MARK: - Text detection
+    func startOCR() {
+        request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+    }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+        guard let videoInput = videoDeviceInput else { return }
+
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            var newInput: AVCaptureDeviceInput
+
+            do {
+                newInput = try AVCaptureDeviceInput(device: newVideoDevice)
+            } catch {
+                return
+            }
+
+            self.session.beginConfiguration()
+            self.session.removeInput(videoInput)
+
+            if self.session.canAddInput(newInput) {
+                self.session.addInput(newInput)
+                self.videoDeviceInput = newInput
+            } else {
+                // Could not add the new input, so readding the old one.
+                self.session.addInput(videoInput)
+            }
+
+            self.session.commitConfiguration()
+        }
+    }
+
+    private func applyZoomForSmallText(captureDevice: AVCaptureDevice) {
+        // Set zoom and autofocus to help focus on very small text.
+        do {
+            try captureDevice.lockForConfiguration()
+            captureDevice.videoZoomFactor = 2
+            captureDevice.autoFocusRangeRestriction = .near
+            captureDevice.unlockForConfiguration()
+        } catch {
+            Log("Could not lock device for configuration", event: .error)
+            return
+        }
+    }
+
     func setup(completion: @escaping ((CameraError?) -> Void)) {
-        
+        // Set up vision request before letting ViewController set up the camera
+        // so that it exists when the first buffer is received.
         setupCaptureDevice { [weak self] result in
-            
             guard let self = self else { return }
-            
             switch result {
             case .failure(let cameraError):
-                
                 completion(cameraError)
-                
             case .success(let captureDevice):
-                
+                // NOTE:
+                // Requesting 4k buffers allows recognition of smaller text but will
+                // consume more power. Use the smallest buffer size necessary to keep
+                // down battery usage.
+                if captureDevice.supportsSessionPreset(.hd4K3840x2160) {
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
+                } else {
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd1920x1080
+                }
+
                 do {
                     self.videoDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
+                    self.applyZoomForSmallText(captureDevice: captureDevice)
                 } catch {
                     completion(.notAuthorizedToUseDevice) // shouldn't happen
                 }
-                
+
                 self.sessionQueue.async {
-                    self.configureSession()
+                    self.configureSession(completion: completion)
                 }
-                
-                completion(nil)
             }
         }
     }
-    
+
     func start() {
         sessionQueue.async {
             self.session.startRunning()
         }
     }
-    
+
     func stop() {
         sessionQueue.async {
             self.session.stopRunning()
         }
     }
-    
+
     func focus(withMode mode: AVCaptureDevice.FocusMode,
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
@@ -117,29 +212,29 @@ final class Camera: NSObject, CameraProtocol {
         sessionQueue.async {
             guard let device = self.videoDeviceInput?.device else { return }
             guard case .some = try? device.lockForConfiguration() else {
-                Log(message: "Could not lock device for configuration", event: .error)
+                Log("Could not lock device for configuration", event: .error)
                 return
             }
-            
+
             if device.isFocusPointOfInterestSupported && device.isFocusModeSupported(mode) {
                 device.focusPointOfInterest = point
                 device.focusMode = mode
             }
-            
+
             if device.isExposurePointOfInterestSupported && device.isExposureModeSupported(exposureMode) {
                 device.exposurePointOfInterest = point
                 device.exposureMode = exposureMode
             }
-            
+
             device.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
             device.unlockForConfiguration()
         }
     }
-    
+
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
-        
+
         // Reuse safely settings for multiple captures. Use init(from:) initializer if you want to use previous captureSettings.
-        
+
         let capturePhotoSettings = AVCapturePhotoSettings.init(from: self.captureSettings)
 
         sessionQueue.async {
@@ -147,11 +242,10 @@ final class Camera: NSObject, CameraProtocol {
             guard let connection = self.photoOutput?.connection(with: .video) else {
                 return completion(nil, .noInputDevice)
             }
-            
+
             // Set the orientation according to the current orientation of the interface
-            DispatchQueue.main.sync { [weak self] in
-                guard let self = self else { return }
-                connection.videoOrientation = AVCaptureVideoOrientation(self.application.statusBarOrientation)
+            DispatchQueue.main.sync {
+                connection.videoOrientation = AVCaptureVideoOrientation(Device.orientation)
             }
 
             // Trigger photo capturing
@@ -159,10 +253,13 @@ final class Camera: NSObject, CameraProtocol {
             self.photoOutput?.capturePhoto(with: capturePhotoSettings, delegate: self)
         }
     }
-    
-    func setupQRScanningOutput() {
+
+    func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void)) {
         sessionQueue.async {
             self.configureQROutput()
+            DispatchQueue.main.async {
+                completion(nil)
+            }
         }
     }
 
@@ -177,29 +274,53 @@ final class Camera: NSObject, CameraProtocol {
         }
         session.addOutput(qrOutput)
         qrOutput.setMetadataObjectsDelegate(self, queue: sessionQueue)
-        if qrOutput.availableMetadataObjectTypes.contains(.qr) {
-            qrOutput.metadataObjectTypes = [.qr]
+        // Scan QR and PDF417: HUB3 (Croatian) payment codes are carried as PDF417 barcodes,
+        // whereas every other supported payment format is a QR code. Enable only the types
+        // the current device actually reports as available.
+        let desiredTypes: [AVMetadataObject.ObjectType] = [.qr, .pdf417]
+        qrOutput.metadataObjectTypes = desiredTypes.filter {
+            qrOutput.availableMetadataObjectTypes.contains($0)
         }
+        qrMetadataOutput = qrOutput
         session.commitConfiguration()
     }
+
+    func pauseQRDetection() {
+        sessionQueue.async { [weak self] in
+            self?.qrMetadataOutput?.metadataObjectTypes = []
+        }
+    }
+
+    func resumeQRDetection() {
+        sessionQueue.async { [weak self] in
+            guard let self = self,
+                  let output = self.qrMetadataOutput,
+                  output.availableMetadataObjectTypes.contains(.qr) else { return }
+            output.metadataObjectTypes = [.qr]
+        }
+    }
+
+    #if DEBUG
+    // Intended for unit tests only — injects a metadata output without going
+    // through full session setup, which is unstable on CI simulators.
+    func setQRMetadataOutputForTesting(_ output: AVCaptureMetadataOutput?) {
+        qrMetadataOutput = output
+    }
+    #endif
 }
 
 // MARK: - Fileprivate
 
 fileprivate extension Camera {
-    
+
     var captureSettings: AVCapturePhotoSettings {
-        var captureSettings: AVCapturePhotoSettings
-        if #available(iOS 11.0, *) {
-            captureSettings = AVCapturePhotoSettings(rawPixelFormatType: 0,
-                                                         rawFileType: nil,
-                                                         processedFormat: nil,
-                                                         processedFileType: AVFileType.jpg)
-        } else {
-            captureSettings = AVCapturePhotoSettings()
-        }
+        let captureSettings = AVCapturePhotoSettings(rawPixelFormatType: 0,
+                                                     rawFileType: nil,
+                                                     processedFormat: nil,
+                                                     processedFileType: AVFileType.jpg)
+
         guard let device = self.videoDeviceInput?.device else { return captureSettings }
-        
+
         #if !targetEnvironment(simulator)
         let flashMode: AVCaptureDevice.FlashMode = self.isFlashOn ? .on : .off
         if let imageOuput = self.photoOutput, imageOuput.supportedFlashModes.contains(flashMode) &&
@@ -207,46 +328,41 @@ fileprivate extension Camera {
             captureSettings.flashMode = flashMode
         }
         #endif
-        
+
         return captureSettings
     }
-    
+
     private func setupCaptureDevice(completion: @escaping (Result<AVCaptureDevice, CameraError>) -> Void) {
-        
         guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                         for: .video,
                                                         position: .back) else {
-                                                            
+
                                                             completion(.failure(.noInputDevice))
                                                             return
         }
-        
+
         switch AVCaptureDevice.authorizationStatus(for: .video) {
-            
         case .authorized:
             completion(.success(videoDevice))
-            
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
-                
+                GiniAnalyticsManager.track(event: .cameraPermissionShown, screenName: .cameraPermissionView)
+                let permissionStatus: GiniCameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
+                let eventProperties = [GiniAnalyticsProperty(key: .permissionStatus, value: permissionStatus.rawValue)]
+                GiniAnalyticsManager.track(event: .cameraPermissionTapped,
+                                           screenName: .cameraPermissionView,
+                                           properties: eventProperties)
                 DispatchQueue.main.async {
-                    
-                    if granted {
-                        completion(.success(videoDevice))
-                    } else {
-                        completion(.failure(.notAuthorizedToUseDevice))
-                    }
+                    completion(granted ? .success(videoDevice) : .failure(.notAuthorizedToUseDevice))
                 }
             }
-            
         case .denied, .restricted:
             completion(.failure(.notAuthorizedToUseDevice))
-            
         @unknown default:
             completion(.failure(.notAuthorizedToUseDevice))
         }
     }
-    
+
     func setupInput() {
         // Specify that we are capturing a photo, this will reset the format to be 4:3
         self.session.sessionPreset = .photo
@@ -259,7 +375,7 @@ fileprivate extension Camera {
             session.addInput(input)
         }
     }
-    
+
     func setupPhotoCaptureOutput() {
         let output = AVCapturePhotoOutput()
 
@@ -270,6 +386,136 @@ fileprivate extension Camera {
         }
         session.addOutput(output)
         photoOutput = output
+    }
+
+    func configureVideoDataOutput() {
+        // Configure video data output.
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        let videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        videoDataOutput.videoSettings = videoSettings
+        if !session.canAddOutput(videoDataOutput) {
+            for output in session.outputs {
+                session.removeOutput(output)
+            }
+        }
+        session.addOutput(videoDataOutput)
+    }
+
+    // MARK: - Text recognition
+
+    // Vision recognition handler.
+    func recognizeTextHandler(request: VNRequest, error: Error?) {
+        if let error = error as NSError? {
+            Log("Error while recognizing IBAN in text due to error \(error.localizedDescription)",
+                event: .error)
+            return
+        }
+
+        guard let results = request.results as? [VNRecognizedTextObservation] else {
+            Log("The observations are of an unexpected type.",
+                event: .error)
+            return
+        }
+
+        var ibans = Set<String>()
+        let maximumCandidates = 1
+
+        for visionResult in results {
+            // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
+            guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
+            for result in extractIBANS(string: candidate.string) {
+                let ibanRectTransformed = visionResult.boundingBox.applying(visionToAVFTransform)
+                if let videoPreviewLayer = videoPreviewLayer, let regionOfInterest = regionOfInterest {
+                    let newRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
+                    if regionOfInterest.contains(newRect) {
+                        ibans.insert(result)
+                    }
+                }
+            }
+        }
+
+        // Found a definite number.
+        // Stop the camera synchronously to ensure that no further buffers are
+        // received. Then update the number view asynchronously.
+        sessionQueue.sync {
+            DispatchQueue.main.async {
+                self.didDetectIBANs!(Array(ibans))
+            }
+        }
+    }
+
+    // AVFoundation's stringValue truncates at the first 0x00 byte, losing IBAN and all
+    // subsequent EPC fields. CIQRCodeDescriptor.errorCorrectedPayload is the raw QR
+    // data-codeword bit stream; we parse it directly to recover the full content.
+    func qrCodeString(from metadataObj: AVMetadataMachineReadableCodeObject) -> String? {
+        Camera.resolveQRString(descriptor: metadataObj.descriptor as? CIQRCodeDescriptor,
+                               fallbackStringValue: metadataObj.stringValue)
+    }
+
+    internal static func resolveQRString(descriptor: CIQRCodeDescriptor?,
+                                         fallbackStringValue: String?) -> String? {
+        guard let descriptor else { return fallbackStringValue }
+        return resolveQRString(payload: descriptor.errorCorrectedPayload,
+                               version: descriptor.symbolVersion,
+                               fallbackStringValue: fallbackStringValue)
+    }
+
+    internal static func resolveQRString(payload: Data,
+                                         version: Int,
+                                         fallbackStringValue: String?) -> String? {
+        guard let contentData = unpackByteModePayload(payload, version: version),
+              contentData.contains(0x00) else { return fallbackStringValue }
+        let cleanData = contentData.filter { $0 != 0x00 }
+        // Try UTF-8 first (EPC character set "1"). Latin-1 never returns nil (every
+        // byte 0x00–0xFF is valid), so it is a safe final fallback for character set "2".
+        return String(data: cleanData, encoding: .utf8)
+            ?? String(data: cleanData, encoding: .isoLatin1)
+    }
+
+    // Extracts content bytes from a QR byte-mode data-codeword bit stream.
+    //
+    // QR byte-mode bit layout (MSB first):
+    //   bits  0– 3 : mode indicator (0b0100 = byte mode)
+    //   bits  4–19 : 16-bit character count  (version 10–40)
+    //   bits  4–11 :  8-bit character count  (version  1– 9)
+    //   bits 20/12+: content bytes, one per 8 bits
+    //
+    // Content bytes always start at a half-byte (4-bit) offset, so each byte =
+    // low nibble of payload[b] OR'd with high nibble of payload[b+1].
+    // (payload[b] << 4 in UInt8 naturally discards the high nibble via overflow.)
+    // Returns nil for non-byte-mode streams or when the declared count exceeds the data.
+    internal static func unpackByteModePayload(_ data: Data, version: Int) -> Data? {
+        let bytes = Array(data)
+        guard bytes.count >= 2, bytes[0] >> 4 == 0b0100 else { return nil }
+
+        let uses16BitCount = version >= 10
+        let dataStart = uses16BitCount ? 2 : 1
+
+        let charCount: Int
+        if uses16BitCount {
+            guard bytes.count >= 3 else { return nil }
+            charCount = (Int(bytes[0] & 0x0F) << 12) | (Int(bytes[1]) << 4) | Int(bytes[2] >> 4)
+        } else {
+            charCount = (Int(bytes[0] & 0x0F) << 4) | Int(bytes[1] >> 4)
+        }
+
+        guard charCount > 0, bytes.count > dataStart + charCount else { return nil }
+
+        var result = Data(capacity: charCount)
+        for i in 0..<charCount {
+            let b = dataStart + i
+            result.append((bytes[b] << 4) | (bytes[b + 1] >> 4))
+        }
+        return result
+    }
+
+    func generateUploadMetadata() -> Document.UploadMetadata {
+        Document.UploadMetadata(
+            deviceOrientation: UIDevice.current.orientation,
+            documentSource: .camera,
+            importMethod: nil
+        )
     }
 }
 
@@ -283,19 +529,25 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-           metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
-            let qrDocument = GiniQRCodeDocument(scannedString: metaString)
-            do {
-                try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectQR?(qrDocument)
-                }
-            } catch DocumentValidationError.qrCodeFormatNotValid {
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectQR?(qrDocument)
-                }
-            } catch {}
+        // Pick the first machine-readable QR/PDF417 object rather than blindly the first
+        // metadata object, so a frame containing a mix still surfaces the intended code.
+        if let metadataObj = metadataObjects
+            .compactMap({ $0 as? AVMetadataMachineReadableCodeObject })
+            .first(where: { $0.type == .qr || $0.type == .pdf417 }),
+           let metaString = qrCodeString(from: metadataObj) {
+            let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
+            if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {
+                do {
+                    try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectQR?(qrDocument)
+                    }
+                } catch DocumentValidationError.qrCodeFormatNotValid {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectInvalidQR?(qrDocument)
+                    }
+                } catch {}
+            }
         }
     }
 }
@@ -303,26 +555,9 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
 // MARK: - AVCapturePhotoCaptureDelegate
 
 extension Camera: AVCapturePhotoCaptureDelegate {
-    //swiftlint:disable function_parameter_count
     func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?,
-                     previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
-                     resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     bracketSettings: AVCaptureBracketedStillImageSettings?,
+                     didFinishProcessingPhoto photo: AVCapturePhoto,
                      error: Error?) {
-        guard let buffer = photoSampleBuffer,
-            let imageData = AVCapturePhotoOutput
-                .jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer,
-                                             previewPhotoSampleBuffer: previewPhotoSampleBuffer),
-            error == nil else {
-                didCaptureImageHandler?(nil, .captureFailed)
-                return
-        }
-        
-        didCaptureImageHandler?(imageData, nil)
-    }
-    
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?){
         if error != nil {
             didCaptureImageHandler?(nil, .captureFailed)
             return
@@ -332,4 +567,31 @@ extension Camera: AVCapturePhotoCaptureDelegate {
         }
     }
 
+}
+
+// MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
+
+extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
+
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        guard let request = request as? VNRecognizeTextRequest else { return }
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            // Configure for running in real-time.
+            request.recognitionLevel = .accurate
+            request.usesLanguageCorrection = false
+
+            let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
+                                                       orientation: textOrientation,
+                                                       options: [:])
+            do {
+                try requestHandler.perform([request])
+            } catch {
+                Log("Could not perform ocr request due to error \(error.localizedDescription)",
+                    event: .error)
+                return
+            }
+        }
+    }
 }

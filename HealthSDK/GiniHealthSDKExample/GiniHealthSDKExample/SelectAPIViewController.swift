@@ -14,6 +14,10 @@ protocol SelectAPIViewControllerDelegate: AnyObject {
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType)
 }
 
+protocol DebugMenuPresenter: AnyObject {
+    func presentDebugMenu()
+}
+
 /**
  Integration options for Gini Capture SDK.
  */
@@ -21,6 +25,8 @@ enum GiniCaptureAPIType {
     case screen
     case component
     case paymentReview
+    case invoicesList
+    case ordersList
 }
 
 /**
@@ -29,13 +35,16 @@ enum GiniCaptureAPIType {
  */
 final class SelectAPIViewController: UIViewController {
     
-    @IBOutlet weak var metaInformationButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var startWithTestDocumentButton: UIButton!
-    @IBOutlet weak var startWithGiniCaptureButton: UIButton!
-    
+    @IBOutlet private weak var metaInformationButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var startWithTestDocumentButton: UIButton!
+    @IBOutlet private weak var startWithGiniCaptureButton: UIButton!
+    @IBOutlet private weak var invoicesListButton: UIButton!
+    @IBOutlet private weak var ordersListButton: UIButton!
+
     weak var delegate: SelectAPIViewControllerDelegate?
-        
+    weak var debugMenuPresenter: DebugMenuPresenter?
+    
     var clientId: String?
     
     // MARK: View life cycle
@@ -44,16 +53,35 @@ final class SelectAPIViewController: UIViewController {
                 
         let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
         metaInformationButton.setTitle(metaTitle, for: .normal)
+        metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
+    
+        if #available(iOS 13.0, *) {
+            activityIndicator.style = .large
+        } else {
+            activityIndicator.style = .whiteLarge
+        }
     }
     
     // MARK: User interaction
 
-    @IBAction func launchComponentAPI(_ sender: Any) {
-        delegate?.selectAPI(viewController: self, didSelectApi: .component)
+    @IBAction func launchScreentAPI(_ sender: Any) {
+        delegate?.selectAPI(viewController: self, didSelectApi: .screen)
     }
     
     @IBAction func launchPaymentReview(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .paymentReview)
+    }
+    
+    @IBAction func launchInvoicesList(_ sender: Any) {
+        delegate?.selectAPI(viewController: self, didSelectApi: .invoicesList)
+    }
+    
+    @IBAction func launchOrdersList(_ sender: Any) {
+        delegate?.selectAPI(viewController: self, didSelectApi: .ordersList)
+    }
+    
+    @objc private func showDebugMenu() {
+        debugMenuPresenter?.presentDebugMenu()
     }
     
     func showActivityIndicator() {

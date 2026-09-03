@@ -13,13 +13,13 @@ extension IndexPath {
         var indexes: [IndexPath] = []
         let maxInt: Int = Swift.max(first.row, second.row)
         let minInt: Int = Swift.min(first.row, second.row)
-        
+
         if maxInt > minInt {
             for index in (minInt + 1) ..< maxInt {
                 indexes.append(IndexPath(row: index, section: section))
             }
         }
-        
+
         return indexes
     }
 }

@@ -5,8 +5,8 @@ import PackageDescription
 
 let package = Package(
     name: "GiniCaptureSDK",
-    defaultLocalization: "en",
-    platforms: [.iOS(.v11)],
+    defaultLocalization: "de",
+    platforms: [.iOS(.v15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -16,7 +16,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniBankAPILibrary", url: "https://github.com/gini/bank-api-library-ios.git", .exact("1.1.1")),
+        .package(name: "GiniBankAPILibrary", url: "https://github.com/gini/bank-api-library-ios.git", .exact("4.5.0")),
+        .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("2.6.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -24,7 +25,7 @@ let package = Package(
         
         .target(
             name: "GiniCaptureSDK",
-            dependencies: ["GiniBankAPILibrary"]),
+            dependencies: ["GiniBankAPILibrary", "GiniUtilites"]),
         .testTarget(
             name: "GiniCaptureSDKTests",
             dependencies: ["GiniCaptureSDK"],

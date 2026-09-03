@@ -6,6 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 
 /**
@@ -14,6 +15,7 @@ import UIKit
 
 @objc public protocol GiniCaptureDocument: AnyObject {
     var type: GiniCaptureDocumentType { get }
+    var uploadMetadata: Document.UploadMetadata? { get }
     var data: Data { get }
     var id: String { get }
     var previewImage: UIImage? { get }
@@ -27,6 +29,7 @@ import UIKit
     case pdf = 0
     case image = 1
     case qrcode = 2
+    case xml = 3
 }
 
 // MARK: GiniCaptureDocumentBuilder
@@ -50,11 +53,11 @@ import UIKit
  ```
  */
 public class GiniCaptureDocumentBuilder: NSObject {
-    
+
     var documentSource: DocumentSource
     public var deviceOrientation: UIInterfaceOrientation?
     public var importMethod: DocumentImportMethod = .picker
-    
+
     /**
      Initializes a `GiniCaptureDocumentBuilder` with the document source.
      This method is only accesible in Swift projects.
@@ -65,63 +68,81 @@ public class GiniCaptureDocumentBuilder: NSObject {
     public init(documentSource: DocumentSource) {
         self.documentSource = documentSource
     }
-    
+
     /**
      Builds a `GiniCaptureDocument`
      
      - Returns: A `GiniCaptureDocument` if `data` has a valid type or `nil` if it hasn't.
      
      */
-    public func build(with data: Data) -> GiniCaptureDocument? {
+    public func build(with data: Data, fileName: String?) -> GiniCaptureDocument? {
         if data.isPDF {
-            return GiniPDFDocument(data: data)
+            return GiniPDFDocument(data: data, fileName: fileName, uploadMetadata: generateUploadMetadata())
         } else if data.isImage {
             return GiniImageDocument(data: data,
                                      imageSource: documentSource,
                                      imageImportMethod: importMethod,
-                                     deviceOrientation: deviceOrientation)
+                                     deviceOrientation: deviceOrientation,
+                                     uploadMetadata: generateUploadMetadata())
+        } else if data.isXML {
+            return GiniXMLDocument(data: data, fileName: fileName, uploadMetadata: generateUploadMetadata())
         }
         return nil
     }
-    
+
     /**
      Builds a `GiniCaptureDocument` from an incoming file url. The completion handler
      delivers the document or `nil` if it couldn't be read.
      
      */
     public func build(with openURL: URL, completion: @escaping (GiniCaptureDocument?) -> Void) {
-        
         let inputDocument = InputDocument(fileURL: openURL)
-        
+
         inputDocument.open { (success) in
-                        
+
             guard let data = inputDocument.data, success else {
                 completion(nil)
                 return
             }
-            
-            completion(self.build(with: data))
+
+            completion(self.build(with: data, fileName: openURL.lastPathComponent))
         }
+    }
+
+    public func generateUploadMetadata() -> Document.UploadMetadata {
+        return Document.UploadMetadata(
+            interfaceOrientation: deviceOrientation ?? .portrait,
+            documentSource: documentSource,
+            importMethod: importMethod
+        )
     }
 }
 
 private extension GiniCaptureDocumentBuilder {
-    
+    enum DocumentError: Error {
+        case unrecognizedContent
+    }
+
     final class InputDocument: UIDocument {
-        
         public var data: Data?
-        
-        enum DocumentError: Error {
-            case unrecognizedContent
-        }
-        
-        override public func load(fromContents contents: Any, ofType typeName: String?) throws {
-            
+
+        override func load(fromContents contents: Any, ofType typeName: String?) throws {
+
             guard let data = contents as? Data else {
                 throw DocumentError.unrecognizedContent
             }
-            
+
             self.data = data
+        }
+
+        override func writeContents(_ contents: Any,
+                                    to url: URL,
+                                    for saveOperation: UIDocument.SaveOperation,
+                                    originalContentsURL: URL?) throws {
+            if (contents as? Data) == nil, (contents as? FileWrapper) == nil {
+                throw DocumentError.unrecognizedContent
+            }
+            try super.writeContents(contents, to: url, for: saveOperation, originalContentsURL: originalContentsURL)
         }
     }
 }

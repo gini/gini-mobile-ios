@@ -9,12 +9,11 @@
 import UIKit
 
 extension UILabel {
-    
     func textHeight(forWidth width: CGFloat) -> CGFloat {
         guard let text = self.text, let font = font else {
             return 0
         }
-        
+
         let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         return text.boundingRect(with: maxSize,
                                  options: .usesLineFragmentOrigin,

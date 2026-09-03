@@ -1,16 +1,16 @@
 /* 
   Localizable.strings
-  GiniCapture
+  GiniBankExample
 
-  Created by Peter Pult on 16/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 02/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
 /*
- Gini Capture SDK
+ Gini Bank SDK
  ===================
  
- To easily customize texts in the Gini Capture SDK overwrite keys by your own definitions.
+ To easily customize texts in the Gini Bank SDK overwrite keys by your own definitions.
  For example to change the title of the camera add:
  ```
  "ginicapture.navigationbar.camera.title" = "Fotoüberweisung";
@@ -20,8 +20,158 @@
  or on [Github](https://github.com/gini/gini-capture-sdk-ios/blob/master/GiniCapture/Assets/Localizable.strings).
 */
 
-"next" = "Weiter";
-"close" = "Close";
-"newDocument" = "New document";
-"help" = "Help";
-"analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
+//"ginicapture.analysis.error.analysis" = "CM Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
+//"ginicapture.camera.popupTitleImportPDF" = "CM PDF importieren";
+//"ginicapture.camera.popupOptionPhotos" = "CM Fotos";
+//"ginicapture.camera.popupOptionFiles" = "CM Dokumente";
+//"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Fotos oder PDF importieren";
+//"ginicapture.camera.popupCancel" = "CM Abbrechen";
+//"ginicapture.camera.capturedImagesStackLabel" = "CM Erfasste Dokumente";
+
+//"ginicapture.imagepicker.openbutton" = "CM Öffnen";
+
+//"ginicapture.multipagereview.addButtonLabel" = "CM Seiten hinzufügen";
+//"ginicapture.multipagereview.title" = "CM %d von %d";
+//"ginicapture.multipagereview.dragAndDropTip" = "CM Drag & Drop zum Sortieren";
+//"ginicapture.multipagereview.error.retakeAction" = "CM Wiederholung";
+//"ginicapture.multipagereview.error.retryAction" = "CM Wiederholen";
+//
+//"ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1";
+//"ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2";
+//"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";
+//
+//"ginicapture.albums.title" = "CM Alben";
+
+//"ginicapture.noresults.collection.header" = "CM Tipps für beste Ergebnisse:";
+//"ginicapture.noresults.warning" = "CM Es konnten keine Daten ausgelesen werden. Bitte Aufnahme wiederholen.";
+//"ginicapture.noresults.gotocamera" = "CM Zur Kamera";
+//"ginicapture.noresults.title" = "CM Tipps für Fotos";
+//"ginicapture.noresults.warningHelpMenu" = "CM Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
+
+//"ginicapture.help.supportedFormats.title" = "CM Unterstützte Formate";
+//"ginicapture.help.supportedFormats.section.1.title" = "CM Folgende Formate werden unterstützt:";
+//"ginicapture.help.supportedFormats.section.1.item.1" = "CM Computer-erstellte Überweisungsträger und Rechnungen";
+//"ginicapture.help.supportedFormats.section.1.item.2" = "CM Einseitige Bilder im jpg, png, gif oder tiff Format";
+//"ginicapture.help.supportedFormats.section.1.item.3" = "CM PDF Dokumente von bis zu 10 Seiten";
+//"ginicapture.help.supportedFormats.section.1.item.4" = "CM QR Codes";
+//"ginicapture.help.supportedFormats.section.2.title" = "CM Was nicht analysiert wird:";
+//"ginicapture.help.supportedFormats.section.2.item.1" = "CM Handschrift";
+//"ginicapture.help.supportedFormats.section.2.item.2" = "CM Fotos von Bildschirmen";
+//
+//"ginicapture.help.menu.title" = "CM Hilfe";
+//"ginicapture.help.menu.tips" = "CM Tipps für beste Ergebnisse aus Fotos";
+//"ginicapture.help.menu.import" = "CM Dokumente aus anderen Apps öffnen";
+//"ginicapture.help.menu.formats" = "CM Unterstützte Formate";
+//
+//"ginibank.digitalinvoice.info.text1" = "Was ist das?";
+//"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch  neu berechnet.";
+//"ginibank.digitalinvoice.info.hidebutton" = "Schließen";
+//
+//"ginicapture.help.openWithTutorial.title" = "CM Dokumente aus anderen Apps öffnen";
+"close" = "Schließen";
+"results.sendfeedback.button.title" = "Feedback senden und schließen";
+
+"import.data.title" = "Importierte Datei";
+"import.data.description" = "Möchten Sie die importierte Datei mit dem GiniBankSDKExample verwenden?";
+
+"import.data.error.title" = "Ungültiges Dokument";
+"import.data.error.description" = "Dies ist kein gültiges Dokument";
+"import.startButtonTitle" = "Ja";
+"import.cancelButtonTitle" = "Nein";
+
+"transaction.list.title" = "Fotozahlungsverlauf";
+"transaction.details.title" = "Transaktionsdetails";
+
+"transaction.details.date" = "Transaktionsdatum";
+"transaction.details.amount" = "Betrag";
+"transaction.details.purpose" = "Verwendungszweck";
+"transaction.details.recipient" = "Empfänger";
+"transaction.details.iban" = "IBAN";
+"transaction.details.reference" = "Referenz";
+
+
+//
+//"ginibank.digitalinvoice.backbutton" = "CM Schließen";
+//"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Bezahlen %d/%d";
+//
+//"ginibank.help.menu.fourthItem" = "CM Der neue Retourenassistent";
+//
+//"ginibank.help.menu.returnAssistant.title" = "CM Retourenassistent";
+//"ginibank.help.menu.returnAssistant.section1.title" = "CM Der neue Retourenassistent";
+//"ginibank.help.menu.returnAssistant.section1.body1" = "CM Nachdem Sie eine Rechnung abfotografiert haben, können Sie nun Rechnungsposten abwählen die Sie nicht möchten. Sie bezahlen nur für die Dinge die Sie behalten und können den Rest retournieren.";
+//"ginibank.help.menu.returnAssistant.section1.body2" = "CM Wenn Sie auf die Edit Schaltfläche des Rechnungspostens drücken, können Sie die Anzahl verändern, sowie den Preis korrigieren.";
+//
+//"ginibank.help.menu.returnAssistant.section2.title" = "CM Anzahl ändern";
+//"ginibank.help.menu.returnAssistant.section2.body" = "CM Wenn Sie auf die Edit Schaltfläche des Rechnungspostens drücken, können Sie die Anzahl verändern, sowie den Preis korrigieren.";
+//
+//"ginibank.help.menu.returnAssistant.section3.title" = "CM Preis korrigieren";
+//"ginibank.help.menu.returnAssistant.section3.body" = "CM Sollte der Preis mal nicht perfekt ausgelesen worden sein, können Sie diesen einfach manuell korrigieren. Der Gesamtpreis aktualisiert sich automatisch.";
+//"ginibank.help.menu.returnAssistant.backButton.title" = "CM Zurück";
+//
+//"ginibank.digitalinvoice.screentitle" = "CM Digitale Rechnung";
+//"ginibank.digitalinvoice.paybutton.title" = "CM Weiter";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Bezahlen %d/%d";
+//"ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "CM Bezahlen %d von %d";
+//"ginibank.digitalinvoice.cancelButtonTitle" = "CM Abbrechen";
+//"ginibank.digitalinvoice.skipbuttontitle" = "CM Funktion überspringen";
+//"ginibank.digitalinvoice.items" = "CM Artikel %d/%d";
+//"ginibank.digitalinvoice.items.accessibilitylabel" = "CM %d von %d Artikel";
+//"ginibank.digitalinvoice.lineitem.quantity" = "CM %dx";
+//"ginibank.digitalinvoice.lineitem.editbutton" = "CM Bearbeiten";
+//"ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "CM Artikel abwählen";
+//"ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "CM Artikel wählen";
+//"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "CM Der Grund der Rücksendung";
+//"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "CM Abbrechen";
+//"ginibank.digitalinvoice.headermessage.primary" = "CM Scan war erfolgreich!";
+//"ginibank.digitalinvoice.headermessage.secondary" = "CM Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
+//"ginibank.digitalinvoice.total.addArticleButtonTitle" = "CM Artikel hinzufügen";
+//"ginibank.digitalinvoice.total.accessibilitylabel" = "CM Total: %@";
+//
+//"ginibank.digitalinvoice.edit.unitPrice" = "CM Einzelpreis";
+//"ginibank.digitalinvoice.edit.name" = "CM Name";
+//"ginibank.digitalinvoice.edit.quantity" = "CM Anzahl";
+//"ginibank.digitalinvoice.edit.title" = "CM Artikel bearbeiten";
+//"ginibank.digitalinvoice.edit.minus.button.accessibility" = "CM Anzahl verringern";
+//"ginibank.digitalinvoice.edit.plus.button.accessibility" = "CM Anzahl erhöhen";
+//
+//"ginibank.digitalinvoice.footermessage" = "CM Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
+//"ginibank.digitalinvoice.totalcaptionlabeltext" = "CM Gesamt";
+//"ginibank.digitalinvoice.totalexplanationlabeltext" = "CM Inkl. Versandkosten, Rabatt usw.";
+//"ginibank.digitalinvoice.lineitem.title" = "CM Artikel";
+//"ginibank.digitalinvoice.lineitem.notitle" = "CM Sonstiges";
+//"ginibank.digitalinvoice.lineitem.savebutton" = "CM Speichern";
+//"ginibank.digitalinvoice.lineitem.unitTitle" = "CM pro Stück";
+//"ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "CM Artikelname";
+//"ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "CM Anzahl";
+//"ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "CM Artikelpreis";
+//"ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "CM mal";
+//"ginibank.digitalinvoice.lineitem.totalpricetitle" = "CM Total";
+//"ginibank.digitalinvoice.lineitem.includevattitle" = "CM Inkl. MwSt.";
+//
+//"ginibank.digitalinvoice.addonname.discount" = "CM Rabatt";
+//"ginibank.digitalinvoice.addonname.giftcard" = "CM Gutschein";
+//"ginibank.digitalinvoice.addonname.otherdiscounts" = "CM Weitere Abzüge";
+//"ginibank.digitalinvoice.addonname.othercharges" = "CM Weitere Kosten";
+//"ginibank.digitalinvoice.addonname.shipment" = "CM Versandkosten";
+//"ginibank.digitalinvoice.onboarding.text1" = "CM Digitale Rechnung";
+//"ginibank.digitalinvoice.onboarding.text2" = "CM Wählen Sie die Artikel ab, die Sie zurücksenden wollen, wir berechnen den neuen Preis für Sie.";
+//"ginibank.digitalinvoice.onboarding.getStartedButton" = "CM Los geht’s";
+//"ginibank.digitalinvoice.onboarding.hidebutton" = "CM Bitte nicht mehr anzeigen";
+//"ginibank.digitalinvoice.backbutton" = "CM Zurück";
+//
+//"ginibank.digitalinvoice.help.screenTitle" = "CM Hilfe";
+//"ginibank.digitalinvoice.help.backToInvoice" = "CM Digitale Rechnung";
+//"ginibank.digitalinvoice.help.title1" = "CM 1. Wie funktioniert die Digitale Rechnung?";
+//"ginibank.digitalinvoice.help.description1" = "CM Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
+//"ginibank.digitalinvoice.help.title2" = "CM 2. Wie kann ich Artikel bearbeiten";
+//"ginibank.digitalinvoice.help.description2" = "CM Mit einem Klick auf “Bearbeiten” neben dem entsprechenden Artikel haben Sie anschließend die Möglichkeit die Beschreibung, Anzahl und Preis zu bearbeiten. Bitte beachten Sie, dass der Preis pro Stück die Mehrwertsteuer bereits enthält. ";
+//"ginibank.digitalinvoice.help.title3" = "CM 3. Welche Onlineshops werden unterstützt?";
+//"ginibank.digitalinvoice.help.description3" = "CM Wir bieten die Funktion moment für die fünf größten Onlineshops im Markt an. Weitere Shops werden in naher Zukunft hinzukommen.";
+//"ginibank.digitalinvoice.info.hidebutton" = "CM Schließen";
+//
+//"ginibank.digitalinvoice.edit.name.error" = "CM Bitte geben Sie den Artikelnamen ein.";
+//"ginibank.digitalinvoice.edit.price.error" = "CM Bitte geben Sie den Artikelpreis ein.";
+//

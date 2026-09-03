@@ -11,13 +11,11 @@ import XCTest
 class PaymentServiceTests: XCTestCase {
         var sessionManagerMock: SessionManagerMock!
         var defaultDocumentService: DefaultDocumentService!
-        var accountingDocumentService: AccountingDocumentService!
         var paymentService: PaymentService!
 
         override func setUp() {
             sessionManagerMock = SessionManagerMock()
             defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-            accountingDocumentService = AccountingDocumentService(sessionManager: sessionManagerMock)
             paymentService = PaymentService(sessionManager: sessionManagerMock)
         }
 
@@ -26,8 +24,8 @@ class PaymentServiceTests: XCTestCase {
         paymentService.paymentRequest(id:SessionManagerMock.paymentRequestId){ result in
             switch result {
             case .success(let request):
-                let requestID = String(request.links?.linksSelf?.split(separator: "/").last ?? "")
-                XCTAssertEqual(requestID,
+                let requestId = String(request.links?.linksSelf?.split(separator: "/").last ?? "")
+                XCTAssertEqual(requestId,
                                SessionManagerMock.paymentRequestId,
                                "payment request ids should match")
                 expect.fulfill()
@@ -61,8 +59,8 @@ class PaymentServiceTests: XCTestCase {
         paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86"){ result in
             switch result {
             case .success(let payment):
-                let requestID = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
-                XCTAssertEqual(requestID,
+                let requestId = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
+                XCTAssertEqual(requestId,
                                SessionManagerMock.paymentID,
                                "payment request ids should match")
                 expect.fulfill()

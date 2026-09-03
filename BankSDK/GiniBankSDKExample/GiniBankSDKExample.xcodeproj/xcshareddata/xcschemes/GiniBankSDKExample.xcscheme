@@ -20,6 +20,34 @@
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
+               BuildableName = "GiniBankSDKExampleTests.xctest"
+               BlueprintName = "GiniBankSDKExampleTests"
+               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7E50A5E2C32D0AD004C1CBF"
+               BuildableName = "GiniBankSDKExampleUITests.xctest"
+               BlueprintName = "GiniBankSDKExampleUITests"
+               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,6 +56,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
+               BuildableName = "GiniBankSDKExampleTests.xctest"
+               BlueprintName = "GiniBankSDKExampleTests"
+               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

@@ -3,69 +3,167 @@ Customization guide
 
 The Gini Health SDK components can be customized either through the `GiniHealthConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
-- [Generic components](#generic-components)
+- [Overview of the UI customization options](#overview-of-the-ui-customization-options)
+- [Payment Component](#payment-component)
+- [Bank Selection Bottom Sheet](#bank-selection-bottom-sheet)
+- [Payment Feature Info Screen](#payment-feature-info-screen)
 - [Payment Review screen](#payment-review-screen)
 
 
-## Supporting dark mode
+## Overview of the UI customization options
 
-Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. The text colors should also be set in contrast to the background colors.
+### Colors
 
-## Generic components
+We provide a global color palette `GiniColors.xcassets` which you are free to override. 
+For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
+The custom colors are then applied to all screens.
 
-##### 1. Gini Capture font
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=17116-10662&t=QIIdMD5XVFcf24hv-1)).
 
-- Font &#8594;  `GiniHealthConfiguration.customFont`
+### Images
+
+Customizing of images is done via overriding of image sets. 
+If you want to override specific SDK images:
+1. Create an asset catalog for images called `GiniImages.xcassets` in your app.
+2. Add your own images to `GiniImages.xcassets` using the image names from the SDK's UI customization guide. It is important to name the images you wish to override exactly as shown in the UI customization guide, otherwise overriding won’t work.
+
+### Typography
+
+We provide global typography based on text appearance styles from UIFont.TextStyle.
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=17116-10470&t=QIIdMD5XVFcf24hv-1)).
+
+In the example below you can see to override a font for `.body1`
+
+```swift
+let configuration = GiniHealthConfiguration()
+
+configuration.updateFont(UIFont(name: "Impact", size: 15)!, for: .body1)     
+health.setConfiguration(configuration)
+```
+
+#### Dynamic Type
+
+The SDK fully supports Dynamic Type. Built-in Gini fonts scale automatically with the user's Accessibility font size setting.
+
+If you provide a custom font via `updateFont(_:for:)`, you are responsible for pre-scaling it so it also responds to Dynamic Type. Use `UIFontMetrics` to do this:
+
+```swift
+let myFont = UIFont(name: "MyBrandFont-Regular", size: 16)!
+let scaledFont = UIFontMetrics(forTextStyle: .body).scaledFont(for: myFont)
+
+configuration.updateFont(scaledFont, for: .body1)
+```
+
+Alternatively, use the Gini utility method:
+
+```swift
+let scaledFont = UIFont.scaledFont(myFont, textStyle: .body)
+configuration.updateFont(scaledFont, for: .body1)
+```
+
+A custom font passed without scaling will render at a fixed size and will **not** grow or shrink when the user changes the font size in Settings → Accessibility → Display & Text Size.
+
+### Text
+
+Text customization is done via overriding of string resources.
+For example you would like to customize pay invoice button label in the Payment Review screen:
+
+1. Find a string key for a text that you would like to customize.
+   For the [To the banking app button label](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-27247&t=QIIdMD5XVFcf24hv-1) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
+2. Add the string key with a desired value to `Localizable.strings` in your app.
+    2.1 For German informal tone, you must add a key with `.informal` suffix to `Localizable.strings` in your app. For example, `gini.health.paymentcomponent.to.banking.app.label.informal`.
+
+### Supporting dark mode
+
+We support dark mode in our SDK. If you decide to customize the color palette, please ensure that the text colors are also set in contrast to the background colors.
+
+## Payment Component
+ 
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&t=Q07UvHyFl3LftADO-4).
+
+For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
+
+```swift
+let giniConfiguration = GiniHealthConfiguration()
+// Ensure the height of the payment component buttons meets the [iOS minimum standard](https://developer.apple.com/design/human-interface-guidelines/buttons).
+// If the specified height is less than 44.0 points, it will be reset to 44.0 points.
+config.paymentComponentButtonsHeight =  45.0
+healthSDK.setConfiguration(config)
+```
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7576&embed-host=share" allowfullscreen></iframe>
+
+## Bank Selection Bottom Sheet
+
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&t=Q07UvHyFl3LftADO-4).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7577&embed-host=share" allowfullscreen></iframe>
+
+## Payment Feature Info Screen
+
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&t=Q07UvHyFl3LftADO-4).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7578&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
+ 
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&t=Q07UvHyFl3LftADO-4).
 
-<br>
-<center><img src="img/Customization guide/PaymentReview.PNG" height="500"/></center>
-</br>
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-##### 1. Background color
-- Background color &#8594; `GiniHealthConfiguration.paymentScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=22147-7579&embed-host=share" allowfullscreen></iframe>
 
-##### 2. Input fields container
-- Background color &#8594; `GiniHealthConfiguration.inputFieldsContainerBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
-##### 3. Input field
-- Background color &#8594; `GiniHealthConfiguration.paymentInputFieldBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Text color &#8594; `GiniHealthConfiguration.paymentInputFieldTextColor` using `GiniColor` with dark mode and light mode colors
-- Font &#8594; `GiniHealthConfiguration.paymentInputFieldFont`
-- Corner radius &#8594; `GiniHealthConfiguration.paymentInputFieldCornerRadius`
-- Border width &#8594; `GiniHealthConfiguration.paymentInputFieldBorderWidth`
+> **Note:** 
+> - PaymentReviewViewController contains the following configuration options:
+> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
 
-<br>
-<center><img src="img/Customization guide/SelectionStyle.jpeg" height="500"/></center>
-</br>
-- Error selection style border color and error label text color &#8594; `GiniHealthConfiguration.paymentInputFieldErrorStyleColor` using `UIColor`
-- Focus selection style border color &#8594; `GiniHealthConfiguration.paymentInputFieldSelectionStyleColor` using `UIColor`
-- Focus selection style background color &#8594; `GiniHealthConfiguration.paymentInputFieldSelectionBackgroundColor` using `UIColor`
-- Placeholder text color &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderTextColor` using `GiniColor` with dark mode and light mode colors
-- Placeholder font &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderFont`
-- Recipient placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.recipient.placeholder*</span> localized string
-- IBAN placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.iban.placeholder*</span> localized string
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
+### iOS 26 Liquid Glass adaptations
 
-- Recipient error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.recipient.non.empty.check*</span> localized string
-- IBAN error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.non.empty.check*</span> localized string
-- IBAN validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.validation.check*</span> localized string
-- Amount error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.amount.non.empty.check*</span> localized string
-- Purpose error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.purpose.non.empty.check*</span> localized string
-- Default validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.default.textfield.validation.check*</span> localized string
+All screens with Liquid Glass adaptation can be found [here](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-16041&t=QIIdMD5XVFcf24hv-1)
+On iOS 26+ the Payment Review screen adopts system Liquid Glass automatically — no host-app configuration is required. 
+The three customization hooks below were introduced alongside the adaptation and are available on all supported iOS versions:
 
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
+#### Navigation bar title
 
-##### 4. Pay button
-- Text color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
-- Background color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
-- Font &#8594; `GiniHealthConfiguration.payButtonTextFont`
-- Corner radius &#8594; `GiniHealthConfiguration.payButtonCornerRadius`
+The [screen](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21903-16255&t=QIIdMD5XVFcf24hv-1) supports a navigation bar title, set via a localized string. The default is empty (no title shown), preserving existing behavior.
 
-##### 5. Loading indicator
-- Color &#8594; `GiniHealthConfiguration.loadingIndicatorColor` using `GiniColor` with dark mode and light mode colors
-- Indicator Style &#8594; `GiniHealthConfiguration.loadingIndicatorStyle` using `UIActivityIndicatorView.Style` 
-- Scale factor &#8594; `GiniHealthConfiguration.loadingIndicatorScale`
+To display a title, add the key to your `Localizable.strings`:
+
+```swift
+"gini.health.reviewscreen.title" = "Your Invoice";
+```
+
+For German informal tone, add the `.informal` variant:
+
+```swift
+"gini.health.reviewscreen.title.informal" = "Ihre Rechnung";
+```
+
+#### Keyboard "Done" button
+
+The amount field's numeric keyboard shows a Done accessory that dismisses the keyboard. On iOS 26+ the system renders it as a Liquid Glass pill; on earlier iOS versions it renders as a labeled bar button.
+
+- **Label** — override via `Localizable.strings`:
+
+  ```swift
+  "gini.health.reviewscreen.keyboard.done.button.title" = "Done";
+  ```
+
+  A `.informal` variant is also supported for the German informal tone.
+
+- **Tint color** — follows the accent color used across the SDK, which resolves through the `Accent01Dark` (light mode) and `Accent01Light` (dark mode) color assets. To override, add `Accent01Dark.colorset` and `Accent01Light.colorset` to your main bundle. See [Colors](#colors).
+
+#### Page indicator colors
+
+The [document carousel's page indicators](https://www.figma.com/design/LQIQPGarYngG9QQUbgr5j9/iOS-Gini-Health-SDK-6.1.0?node-id=21909-17450&t=QIIdMD5XVFcf24hv-1) use the standard foreground color, which resolves through the `Dark01` (light mode) and `Light01` (dark mode) color assets. The current-page dot renders at full opacity; other dots at 45% alpha. To override, add `Dark01.colorset` and `Light01.colorset` to your main bundle.

@@ -19,14 +19,18 @@ enum KeychainService: String {
 }
 
 enum KeychainKey: String {
-    case clientAccessToken
     case clientDomain
     case clientId
     case clientSecret
-    case expirationDate
-    case userAccessToken
     case userEmail
     case userPassword
+
+    /* `userAccessToken` and `clientAccessToken` should be kept here since in all previous SDK versions
+     were stored them in Keychain, and in this current one we need to check if exist and remove them.
+     `userAccessToken` and `clientAccessToken` should be safely removed from Token object in the next SDK version
+     */
+    case userAccessToken
+    case clientAccessToken
 }
 
 struct KeychainManagerItem {

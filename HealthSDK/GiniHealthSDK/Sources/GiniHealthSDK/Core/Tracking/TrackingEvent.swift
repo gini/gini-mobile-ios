@@ -2,7 +2,7 @@
 //  GiniHealthTrackingDelegate.swift
 //
 //
-//  Created by Nadya Karaban on 05.01.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation

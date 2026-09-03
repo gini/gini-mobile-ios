@@ -1,33 +1,18 @@
 # Gini Bank SDK XCFrameworks for iOS
 
-1. Navigate to the ` cd GiniBankSDK` directory and run `swift create-xcframework`
+1. Navigate to the `cd GiniBankSDK` directory 
 
-2. In terminal open the newly generated project `open .build/swift-create-xcframework/GiniBankSDK.xcodeproj`
+2. In terminal, run `./build-GiniBankSDK-XCFrameworks.sh `. If it says `Permission denied`, try running `chmod +x build-GiniBankSDK-XCFrameworks.sh` to add permission to execute
+**Note: running this will cleanup all intermediates and artefacts from the previous run, unless you specify `--no-cleanup` in arguments. You can run `./build-GiniBankSDK-XCFrameworks.sh  --help` for more info about how to use the script**
 
-3. In `Project` -> `Build Settings` set `Base SDK` parameter to `iOS`
+2. After the script from the step above has finished, there should be `GiniBankSDK.xcframework`, `GiniBankAPILibrary.xcframework`, `GiniCaptureSDK.xcframework`, and `GiniUtilites.xcframework` available.
 
-4. In `Project` -> `Info` -> `Deployment Target` set `iOS Deployment Target` to `13`
+## Using XCFrameworks in a testing project
 
-5. For each dependency target in `Build Settings` set `Base SDK` parameter to `iOS`
+1. Add all XCFrameworks to your Xcode project. Typically, this is done by creating a group called `Frameworks` somewhere in the project, and then drag-and-dropping XCFrameworks there.
 
-6. For each dependency target in `General` -> `Deployment Info` select `iPad` and deselect `Mac Catalyst`
+2. Go to your target settings, scroll down to `Frameworks, Libraries, and Embedded Content`.
 
-7. For each dependency target in `Build Settings` -> `Build Options` set `Build Libraries for Distribution` to `Yes`
+3. Click the `+` icon, select all XCFrameworks, and then click `Add`.
 
-8. For each dependency target in `Build Settings` -> `Deployment` set `Skip install` parameter to `No`
-
-9. For each dependency target in `Build Phases` -> `Compile Sources` add Resources and check that the target is checked the `Target Membership` in info tab.
-
-10. Create archives for GiniBankSDK for device and simulator:
-
-xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphonesimulator -configuration Release -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphoneos -configuration Release -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-11. Create XCFrameworks for GiniBankSDK and dependant packages:
-
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -output GiniBankAPILibrary.xcframework
-
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework
-
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework
+4. In the same section from step 2, make sure that `Embed` status of all XCFrameworks is `Embed & Sign`, otherwise your app may crash on launch, because XCFrameworks weren't embed in the app bundle. Additionally, make sure all XCFrameworks are present in `Build Phases -> Link Binary With Libraries`

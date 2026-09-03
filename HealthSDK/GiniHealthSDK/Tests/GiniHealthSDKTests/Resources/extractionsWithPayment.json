@@ -1,0 +1,546 @@
+{
+    "extractions": {
+        "amount_to_pay": {
+            "entity": "amount",
+            "value": "30.27:EUR",
+            "box": {
+                "top": 860.6,
+                "left": 1106.6,
+                "width": 48.799999999999955,
+                "height": 16.0,
+                "page": 1
+            },
+            "candidates": "amounts"
+        },
+        "document_date": {
+            "entity": "date",
+            "value": "2020-09-23",
+            "box": {
+                "top": 135.85,
+                "left": 418.85,
+                "width": 82.30000000000001,
+                "height": 13.0,
+                "page": 1
+            },
+            "candidates": "dates"
+        },
+        "gross_amount": {
+            "entity": "amount",
+            "value": "30.27:EUR",
+            "box": {
+                "top": 860.6,
+                "left": 1106.6,
+                "width": 48.799999999999955,
+                "height": 16.0,
+                "page": 1
+            },
+            "candidates": "gross_amounts"
+        },
+        "doc_type": {
+            "entity": "doctype",
+            "value": "Invoice"
+        },
+        "language": {
+            "entity": "language",
+            "value": "de"
+        },
+        "payment_state": {
+            "entity": "paymentstate",
+            "value": "ToBePaid"
+        },
+        "invoice_id": {
+            "entity": "invoiceid",
+            "value": "3963757910434",
+            "box": {
+                "top": 116.7,
+                "left": 368.7,
+                "width": 132.0,
+                "height": 11.999999999999986,
+                "page": 1
+            },
+            "candidates": "invoice_ids"
+        }
+    },
+    "compoundExtractions": {
+        "line_items": [
+            {
+                "quantity": {
+                    "entity": "numeric",
+                    "value": "1",
+                    "box": {
+                        "top": 595.15,
+                        "left": 721.15,
+                        "width": 11.700000000000045,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                },
+                "description": {
+                    "entity": "text",
+                    "value": "Damen Yoga Leggings Fitness Hose Gym Fit- ness Sport bequeme Hose mit Tasche",
+                    "box": {
+                        "top": 593.45,
+                        "left": 283.15,
+                        "width": 333.30000000000007,
+                        "height": 31.699999999999932,
+                        "page": 1
+                    }
+                },
+                "amount": {
+                    "entity": "amount",
+                    "value": "4.73:EUR",
+                    "box": {
+                        "top": 597.3,
+                        "left": 1120.3,
+                        "width": 36.40000000000009,
+                        "height": 15.0,
+                        "page": 1
+                    }
+                },
+                "fee_schedule_number": {
+                    "entity": "text",
+                    "value": "4341",
+                    "box": {
+                        "top": 609.3,
+                        "left": 82.3,
+                        "width": 38.39999999999999,
+                        "height": 15.0,
+                        "page": 1
+                    }
+                }
+            },
+            {
+                "quantity": {
+                    "entity": "numeric",
+                    "value": "1",
+                    "box": {
+                        "top": 635.15,
+                        "left": 721.15,
+                        "width": 11.700000000000045,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                },
+                "description": {
+                    "entity": "text",
+                    "value": "Lässige Leggings mit Totenkopf- und Blu-",
+                    "box": {
+                        "top": 634.0,
+                        "left": 283.0,
+                        "width": 303.0,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                },
+                "amount": {
+                    "entity": "amount",
+                    "value": "5.00:EUR",
+                    "box": {
+                        "top": 635.75,
+                        "left": 1119.75,
+                        "width": 35.5,
+                        "height": 17.0,
+                        "page": 1
+                    }
+                }
+            },
+            {
+                "quantity": {
+                    "entity": "numeric",
+                    "value": "1",
+                    "box": {
+                        "top": 674.7,
+                        "left": 721.7,
+                        "width": 9.600000000000023,
+                        "height": 12.0,
+                        "page": 1
+                    }
+                },
+                "description": {
+                    "entity": "text",
+                    "value": "Eng anliegende Anti-Cellulite Kompression Slim Yogahose für Damen Sport schneil trocknende Hose mit hohem Bund",
+                    "box": {
+                        "top": 672.3,
+                        "left": 282.15,
+                        "width": 347.15,
+                        "height": 47.85000000000002,
+                        "page": 1
+                    }
+                },
+                "amount": {
+                    "entity": "amount",
+                    "value": "5.54:EUR",
+                    "box": {
+                        "top": 673.6,
+                        "left": 808.6,
+                        "width": 33.799999999999955,
+                        "height": 16.0,
+                        "page": 1
+                    }
+                }
+            },
+            {
+                "amount": {
+                    "entity": "amount",
+                    "value": "5.00:EUR",
+                    "box": {
+                        "top": 775.45,
+                        "left": 1120.45,
+                        "width": 34.09999999999991,
+                        "height": 16.0,
+                        "page": 1
+                    }
+                }
+            }
+        ],
+        "invoice_sender": [
+            {
+                "website": {
+                    "entity": "url",
+                    "value": "www.klana.de",
+                    "box": {
+                        "top": 880.5,
+                        "left": 818.5,
+                        "width": 79.0,
+                        "height": 21.0,
+                        "page": 1
+                    }
+                },
+                "name": {
+                    "entity": "text",
+                    "value": "Kundenservice Klana",
+                    "box": {
+                        "top": 1027.0,
+                        "left": 69.0,
+                        "width": 407.0,
+                        "height": 24.0,
+                        "page": 1
+                    }
+                },
+                "bic": {
+                    "entity": "bic",
+                    "value": "DEUTDEMM760",
+                    "box": {
+                        "top": 363.6,
+                        "left": 656.6,
+                        "width": 494.94999999999993,
+                        "height": 16.849999999999966,
+                        "page": 1
+                    }
+                },
+                "vat_reg_number": {
+                    "entity": "vat",
+                    "value": "SE556737043101",
+                    "box": {
+                        "top": 1067.85,
+                        "left": 713.85,
+                        "width": 99.29999999999995,
+                        "height": 13.0,
+                        "page": 1
+                    }
+                },
+                "iban": {
+                    "entity": "iban",
+                    "value": "DE13760700120500154000",
+                    "box": {
+                        "top": 344.0,
+                        "left": 946.0,
+                        "width": 206.0,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                }
+            }
+        ],
+        "payment": [
+            {
+                "amount_to_pay": {
+                    "entity": "amount",
+                    "value": "30.27:EUR",
+                    "box": {
+                        "top": 860.6,
+                        "left": 1106.6,
+                        "width": 48.799999999999955,
+                        "height": 16.0,
+                        "page": 1
+                    }
+                },
+                "bic": {
+                    "entity": "bic",
+                    "value": "DEUTDEMM760",
+                    "box": {
+                        "top": 1331.5,
+                        "left": 403.5,
+                        "width": 306.0,
+                        "height": 21.0,
+                        "page": 1
+                    }
+                },
+                "payment_reference": {
+                    "entity": "text",
+                    "value": "3963757910434",
+                    "box": {
+                        "top": 1473.2,
+                        "left": 404.2,
+                        "width": 364.00000000000006,
+                        "height": 19.0,
+                        "page": 1
+                    }
+                },
+                "payment_recipient": {
+                    "entity": "text",
+                    "value": "KLARNA"
+                },
+                "payment_purpose": {
+                    "entity": "text",
+                    "value": "39 63 75 79 10 43 4",
+                    "box": {
+                        "top": 1473.2,
+                        "left": 404.2,
+                        "width": 364.00000000000006,
+                        "height": 19.0,
+                        "page": 1
+                    }
+                },
+                "iban": {
+                    "entity": "iban",
+                    "value": "DE13760700120500154000",
+                    "box": {
+                        "top": 1282.2,
+                        "left": 403.2,
+                        "width": 499.00000000000006,
+                        "height": 19.0,
+                        "page": 1
+                    }
+                }
+            }
+        ]
+    },
+    "candidates": {
+        "ibans": [
+            {
+                "entity": "iban",
+                "value": "DE13760700120500154000",
+                "box": {
+                    "top": 344.0,
+                    "left": 946.0,
+                    "width": 206.0,
+                    "height": 14.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "iban",
+                "value": "DE13760700120500154000",
+                "box": {
+                    "top": 1056.85,
+                    "left": 954.85,
+                    "width": 192.9999999999999,
+                    "height": 13.0,
+                    "page": 1
+                }
+            }
+        ],
+        "gross_amounts": [
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 388.15,
+                    "left": 1070.15,
+                    "width": 84.0,
+                    "height": 14.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "5.00:EUR",
+                "box": {
+                    "top": 798.6,
+                    "left": 1120.6,
+                    "width": 33.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 860.6,
+                    "left": 1106.6,
+                    "width": 48.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 860.6,
+                    "left": 1106.6,
+                    "width": 48.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 860.6,
+                    "left": 1106.6,
+                    "width": 48.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            }
+        ],
+        "bics": [
+            {
+                "entity": "bic",
+                "value": "DEUTDEMM760",
+                "box": {
+                    "top": 1070.4,
+                    "left": 955.4,
+                    "width": 121.00000000000011,
+                    "height": 11.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "bic",
+                "value": "DEUTDEMM760",
+                "box": {
+                    "top": 363.6,
+                    "left": 656.6,
+                    "width": 494.94999999999993,
+                    "height": 16.849999999999966,
+                    "page": 1
+                }
+            }
+        ],
+        "websites": [
+            {
+                "entity": "url",
+                "value": "www.klana.de",
+                "box": {
+                    "top": 880.5,
+                    "left": 818.5,
+                    "width": 79.0,
+                    "height": 21.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "url",
+                "value": "www.klarna.de",
+                "box": {
+                    "top": 1040.0,
+                    "left": 438.0,
+                    "width": 163.0,
+                    "height": 14.0,
+                    "page": 1
+                }
+            }
+        ],
+        "dates": [
+            {
+                "entity": "date",
+                "value": "2020-09-23",
+                "box": {
+                    "top": 135.85,
+                    "left": 418.85,
+                    "width": 82.30000000000001,
+                    "height": 13.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-07-24",
+                "box": {
+                    "top": 173.85,
+                    "left": 417.85,
+                    "width": 83.30000000000001,
+                    "height": 13.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-10-07",
+                "box": {
+                    "top": 298.3,
+                    "left": 1069.3,
+                    "width": 83.40000000000009,
+                    "height": 15.0,
+                    "page": 1
+                }
+            }
+        ],
+        "vat_reg_numbers": [
+            {
+                "entity": "vat",
+                "value": "SE556737043101",
+                "box": {
+                    "top": 1067.85,
+                    "left": 713.85,
+                    "width": 99.29999999999995,
+                    "height": 13.0,
+                    "page": 1
+                }
+            }
+        ],
+        "invoice_ids": [
+            {
+                "entity": "invoiceid",
+                "value": "3963757910434",
+                "box": {
+                    "top": 116.7,
+                    "left": 368.7,
+                    "width": 132.0,
+                    "height": 11.999999999999986,
+                    "page": 1
+                }
+            }
+        ],
+        "amounts": [
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 860.6,
+                    "left": 1106.6,
+                    "width": 48.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 860.6,
+                    "left": 1106.6,
+                    "width": 48.799999999999955,
+                    "height": 16.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "amount",
+                "value": "30.27:EUR",
+                "box": {
+                    "top": 388.15,
+                    "left": 1070.15,
+                    "width": 84.0,
+                    "height": 14.0,
+                    "page": 1
+                }
+            }
+        ]
+    }
+}

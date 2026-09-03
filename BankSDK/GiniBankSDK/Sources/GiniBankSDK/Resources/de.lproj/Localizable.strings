@@ -1,15 +1,11 @@
-/* 
+/*
   Localizable.strings
   GiniBank
 
-  Created by Peter Pult on 08/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 04/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
-"ginibank.help.menu.title" = "Hilfe";
-"ginibank.help.menu.firstItem" = "Tipps für beste Ergebnisse aus Fotos";
-"ginibank.help.menu.secondItem" = "Dokumente aus anderen Apps öffnen";
-"ginibank.help.menu.thirdItem" = "Unterstützte Formate";
 "ginibank.help.menu.fourthItem" = "Der neue Retourenassistent";
 
 "ginibank.help.menu.returnAssistant.title" = "Retourenassistent";
@@ -25,50 +21,135 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Bezahlen";
+"ginibank.digitalinvoice.paybutton.title" = "Bestätigen und weiter";
+"ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Überspringen";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "Diese neue Funktion kann Fehler enthalten. Bitte überprüfe noch einmal die Artikel und den Gesamtbetrag und bearbeite diese gegebenenfalls. ";
-"ginibank.digitalinvoice.warningbottomtext" = "Du kannst die neue Funktion jederzeit überspringen.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Abbrechen";
 "ginibank.digitalinvoice.skipbuttontitle" = "Funktion überspringen";
 "ginibank.digitalinvoice.items" = "Artikel %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "%d von %d Artikel";
-"ginibank.digitalinvoice.whatisthisactionsheet.title" = "Was ist das?";
-"ginibank.digitalinvoice.whatisthisactionsheet.message" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch neu berechnet.";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Ja, das ist hilfreich";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "Nein, nicht mehr angezeigen";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
 "ginibank.digitalinvoice.lineitem.quantity" = "%dx";
 "ginibank.digitalinvoice.lineitem.editbutton" = "Bearbeiten";
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Artikel wählen";
 "ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Der Grund der Rücksendung";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
+"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Abbrechen";
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
-"ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+"ginibank.digitalinvoice.total.accessibilitylabel" = "Gesamtpreis: %@";
+
+"ginibank.digitalinvoice.edit.unitPrice" = "Einzelpreis";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Anzahl";
+"ginibank.digitalinvoice.edit.title" = "Artikel bearbeiten";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Anzahl verringern";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Anzahl erhöhen";
+
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
+"ginibank.digitalinvoice.lineitem.title" = "Artikel";
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";
 "ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "mal";
-"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total:";
+"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Gesamtpreis";
+"ginibank.digitalinvoice.lineitem.includevattitle" = "Inkl. MwSt.";
 
 "ginibank.digitalinvoice.addonname.discount" = "Rabatt";
 "ginibank.digitalinvoice.addonname.giftcard" = "Gutschein";
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Weitere Abzüge";
 "ginibank.digitalinvoice.addonname.othercharges" = "Weitere Kosten";
 "ginibank.digitalinvoice.addonname.shipment" = "Versandkosten";
-"ginibank.digitalinvoice.onboarding.text1" = "Dein neuer Retouren Assistent!";
-"ginibank.digitalinvoice.onboarding.text2" = "Du kannst jetzt Artikel abwählen, die du zurückschicken möchtest.
-Bezahle nur, was du behälst.";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Weiter";
+"ginibank.digitalinvoice.onboarding.text1" = "Digitale Rechnung";
+"ginibank.digitalinvoice.onboarding.text2" = "Wählen Sie die Artikel ab, die Sie zurücksenden wollen, wir berechnen den neuen Preis für Sie.";
+"ginibank.digitalinvoice.onboarding.getStartedButton" = "Los geht’s";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Bitte nicht mehr anzeigen";
+"ginibank.digitalinvoice.backbutton" = "Zurück";
+
+"ginibank.digitalinvoice.help.screenTitle" = "Hilfe";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digitale Rechnung";
+"ginibank.digitalinvoice.help.title1" = "1. Wie funktioniert die Digitale Rechnung?";
+"ginibank.digitalinvoice.help.description1" = "Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
+"ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten?";
+"ginibank.digitalinvoice.help.description2" = "Mit einem Klick auf “Bearbeiten” neben dem entsprechenden Artikel haben Sie anschließend die Möglichkeit die Beschreibung, Anzahl und Preis zu bearbeiten. Bitte beachten Sie, dass der Preis pro Stück die Mehrwertsteuer bereits enthält. ";
+"ginibank.digitalinvoice.help.title3" = "3. Welche Onlineshops werden unterstützt?";
+"ginibank.digitalinvoice.help.description3" = "Wir konzentrieren uns derzeit auf die beliebtesten Online-Händler auf dem Markt. Weitere Einzelhändler werden in Zukunft hinzukommen.";
+"ginibank.digitalinvoice.info.hidebutton" = "Schließen";
+
+"ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
+"ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";
+
+// MARK: - Skonto
+
+"ginibank.skonto.screen.title" = "Skonto";
+"ginibank.skonto.backbutton.title" = "Kamera";
+"ginibank.skonto.active" = "• Aktiviert";
+"ginibank.skonto.proceedbutton.title" = "Bestätigen und weiter";
+
+"ginibank.skonto.withdiscount.title" = "Mit Skonto";
+"ginibank.skonto.withdiscount.price.title" = "Betrag nach Abzug";
+"ginibank.skonto.withdiscount.expirydate.title" = "Ablaufdatum Skonto";
+
+"ginibank.skonto.withoutdiscount.title" = "Ohne Skonto";
+"ginibank.skonto.withoutdiscount.price.title" = "Betrag ohne Abzug";
+
+"ginibank.skonto.withdiscount.validation" = "Der Betrag mit Skonto darf nicht höher sein als ohne";
+"ginibank.skonto.withoutdiscount.validation" = "Ihr Überweisungslimit wurde überschritten: %@";
+
+"ginibank.skonto.total.title" = "Gesamtpreis";
+"ginibank.skonto.total.savings" = "%@ sparen";
+"ginibank.skonto.total.skontopercentage" = "%@ Skonto";
+
+"ginibank.skonto.infobanner.default.message" = "Zahlung in %@: %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.today.message" = "Zahlung heute: %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.cash.message" = "Zahlen Sie diese Rechnung innerhalb von %@ in bar und Sie erhalten %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.cash.today.message" = "Zahlen Sie heute bar und erhalten Sie %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.expired.message" = "Die %@ Skonto sind abgelaufen";
+
+"ginibank.skonto.infobanner.edgecase.today.alert.title" = "Von dieser Rechnung kann ein Skontobetrag abgezogen werden – die Frist läuft heute ab.";
+"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "Von dieser Rechnung können Sie einen Skontobetrag abziehen, wenn Sie diese in bar bezahlen.";
+"ginibank.skonto.infobanner.edgecase.expired.alert.title" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
+"ginibank.skonto.alert.ok" = "Verstanden";
+"ginibank.skonto.invoice.title" = "Rechnung";
+"ginibank.skonto.invoice.subtitle" = "Zur Ansicht hier tippen";
+
+"ginibank.skonto.help.screen.title" = "Hilfe";
+"ginibank.skonto.help.header.title" = "Skonto: Geld sparen durch schnelles Bezahlen";
+"ginibank.skonto.help.header.subtitle" = "Skonto ist ein Rabatt, der für die frühzeitige Bezahlung von Rechnungen gewährt wird. Mit unserer neuen Funktion können Sie jetzt:";
+"ginibank.skonto.help.content.item1" = "Skonto-Rechnungen mit Ihrer Kamera erfassen";
+"ginibank.skonto.help.content.item2" = "Rabattierte Beträge und das Ablaufdatum des Skontos sofort erkennen";
+"ginibank.skonto.help.content.item3" = "Zahlungsdetails genehmigen oder anpassen";
+"ginibank.skonto.help.content.item4" = "Geld sparen durch schnelles Bezahlen";
+"ginibank.skonto.help.footer.title" = "Machen Sie einfach ein Foto der Rechnung und die App erkennt automatisch die Rabatte. Überprüfen Sie die Details, bestätigen Sie und sparen Sie mit den Rabatten!";
+"ginibank.skonto.help.back" = "Skonto";
+
+"ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
+"ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Versuch's nochmal";
+"ginibank.skonto.editableField.accessibility" = "Zum Bearbeiten Doppeltippen";
+
+// MARK: - Transaction Docs feature
+"ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
+"ginibank.transactionDocs.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Immer anhängen";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Nur für diese Transaktion";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Nicht anhängen";
+
+"ginibank.transactionDocs.componentView.title" = "Anhänge";
+"ginibank.transactionDocs.document.accessibilitylabel" = "Zur Ansicht hier tippen %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Optionen";
+
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";
+"ginibank.transactionDocs.preview.amountToPay" = "Betrag zu zahlen";
+"ginibank.transactionDocs.preview.iban" = "IBAN";
+"ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Versuch's nochmal";
+
+// MARK: - Transaction Docs feature -  Transaction Details
+"ginibank.transactionDocs.preview.amount" = "Betrag";

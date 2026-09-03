@@ -21,10 +21,10 @@ import Foundation
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
 
-    /// The line item compound extractions.
+    /// The invoice sender compound extractions.
     public var invoiceSender: [[Extraction]]?
-        
-    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?, invoiceSender: [[Extraction]]?) {
+
+    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?, invoiceSender: [[Extraction]]? = nil) {
         self.extractions = extractions
         self.payment = payment
         self.lineItems = lineItems

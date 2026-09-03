@@ -5,7 +5,7 @@ xcodebuild_arguments:
 - "-scheme"
 - GiniHealthSDK
 - "-destination"
-- platform=iOS Simulator,OS=15.0,name=iPhone 13
+- platform=iOS Simulator,OS=26.2,name=iPhone 17
 author: Gini GmbH
 author_url: https://gini.net
 module: GiniHealthSDK
@@ -22,6 +22,7 @@ custom_categories:
   - Installation
   - Integration
   - Customization guide
+  - Accessibility guide
   - Migration guide
   - Event tracking guide
   - Testing

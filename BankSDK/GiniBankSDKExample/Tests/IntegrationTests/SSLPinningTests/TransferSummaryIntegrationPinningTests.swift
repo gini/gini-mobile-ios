@@ -1,0 +1,87 @@
+//
+//  TransferSummaryIntegrationPinningTests.swift
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+import XCTest
+
+@testable import GiniBankAPILibrary
+@testable import GiniCaptureSDK
+@testable import GiniBankSDK
+
+class TransferSummaryIntegrationPinningTests: BaseIntegrationTest {
+
+   override func setUp() {
+       giniHelper.setupWithPinningCertificates()
+   }
+
+    func testSendTransferSummaryFeedback() {
+        let mockedInvoiceName = "Gini_invoice_example_payment_reference"
+        let expect = expectation(description: "Transfer summary was correctly sent and extractions were updated")
+        let delegate = CaptureResultsDelegateForTransferSummaryTest(testCase: self,
+                                                                    mockedInvoiceResultName: "result_Gini_invoice_example_payment_reference",
+                                                                    mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_payment_reference_after_feedback",
+                                                                    expect: expect)
+        uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
+                                 delegate: delegate)
+        wait(for: [expect], timeout: 30)
+    }
+
+    class CaptureResultsDelegateForTransferSummaryTest: GiniCaptureResultsDelegate {
+        let testCase: TransferSummaryIntegrationPinningTests
+        let mockedInvoiceResultName: String
+        let mockedInvoiceResultAfterFeedbackName: String
+        let expect: XCTestExpectation
+
+        init(testCase: TransferSummaryIntegrationPinningTests,
+             mockedInvoiceResultName: String,
+             mockedInvoiceResultAfterFeedbackName: String,
+             expect: XCTestExpectation) {
+            self.testCase = testCase
+            self.mockedInvoiceResultName = mockedInvoiceResultName
+            self.mockedInvoiceResultAfterFeedbackName = mockedInvoiceResultAfterFeedbackName
+            self.expect = expect
+        }
+
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            /// A callback surviving a timed-out test must not run into the next test.
+            guard !testCase.isTestFinished else { return }
+            var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
+                dict[pair.key] = pair.value.value
+            }
+            /// Override `amountToPay` with the confirmed test value to guarantee the "value:currency" format.
+            extractions["amountToPay"] = ExtractionAmount(value: 950.00, currency: .EUR).formattedString()
+            /// Re-pin the shared document service to this test's own service so the
+            /// feedback can never target another test's document.
+            GiniBankConfiguration.shared.documentService = testCase.giniHelper.giniCaptureSDKDocumentService
+            GiniBankConfiguration.shared.sendTransferSummary(extractions: extractions)
+
+            let mockedInvoice = mockedInvoiceResultName
+            // Use the helper method to load the fixture extractions container
+            guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoice) else {
+                return
+            }
+
+            // Verify the extractions
+            testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
+
+            // Call the updateAndVerifyTransferSummary method to handle the transfer summary update
+            testCase.updateAndVerifyTransferSummary(result: result,
+                                                    mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName,
+                                                    expect: expect)
+        }
+
+        func giniCaptureDidCancelAnalysis() {
+            // nothing to test here
+        }
+
+        func giniCaptureDidEnterManually() {
+            // nothing to test heretestCase
+        }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+            // nothing to test here
+        }
+    }
+}

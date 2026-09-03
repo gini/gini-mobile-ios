@@ -1,0 +1,101 @@
+//
+//  GiniHealthColors.swift
+//  GiniHealthSDK
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+import UIKit
+import GiniUtilites
+import SwiftUI
+
+enum GiniHealthColorPalette: String {
+    case accent1 = "Accent01"
+    case accent2 = "Accent02"
+    case accent3 = "Accent03"
+    case accent4 = "Accent04"
+    case accent5 = "Accent05"
+
+    case dark1 = "Dark01"
+    case dark2 = "Dark02"
+    case dark3 = "Dark03"
+    case dark4 = "Dark04"
+    case dark5 = "Dark05"
+    case dark6 = "Dark06"
+    case dark7 = "Dark07"
+    case dark8 = "Dark08"
+
+    case light1 = "Light01"
+    case light2 = "Light02"
+    case light3 = "Light03"
+    case light4 = "Light04"
+    case light5 = "Light05"
+    case light6 = "Light06"
+    case light7 = "Light07"
+    case light8 = "Light08"
+
+    case feedback1 = "Feedback01"
+    case feedback2 = "Feedback02"
+    case feedback3 = "Feedback03"
+    case feedback4 = "Feedback04"
+
+    case darkSuccess1 = "Success01Dark"
+    case lightSuccess1 = "Success01Light"
+    
+    case success2 = "Success02"
+    case success3 = "Success03"
+    case success4 = "Success04"
+    
+    case darkAccent1 = "Accent01Dark"
+    case lightAccent1 = "Accent01Light"
+}
+
+extension GiniHealthColorPalette {
+    func preferredColor() -> UIColor {
+        let name = self.rawValue
+        if let mainBundleColor = UIColor(named: name, in: Bundle.main, compatibleWith: nil) {
+            return mainBundleColor
+        }
+        guard let color = UIColor(named: name, in: giniHealthBundleResource(), compatibleWith: nil) else {
+            fatalError("The color named '\(name)' does not exist.")
+        }
+        return color
+    }
+    
+    func preferredColor() -> Color {
+        let uiColor: UIColor = preferredColor()
+        
+        return Color(uiColor)
+    }
+}
+
+extension GiniColor {
+    static let standard1 = GiniColor(lightModeColorName: .dark1, darkModeColorName: .light1)
+    static let standard2 = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light2)
+    static let standard3 = GiniColor(lightModeColorName: .dark3, darkModeColorName: .light3)
+    static let standard4 = GiniColor(lightModeColorName: .dark4, darkModeColorName: .light4)
+    static let standard5 = GiniColor(lightModeColorName: .dark5, darkModeColorName: .light5)
+    static let standard6 = GiniColor(lightModeColorName: .dark6, darkModeColorName: .light6)
+    static let standard7 = GiniColor(lightModeColorName: .dark7, darkModeColorName: .light7)
+    static let standard8 = GiniColor(lightModeColorName: .dark8, darkModeColorName: .light8)
+
+    static let accent1 = GiniColor(lightModeColorName: .darkAccent1, darkModeColorName: .lightAccent1)
+
+    static let feedback1 = GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1)
+    
+    static let success1 = GiniColor(lightModeColorName: .darkSuccess1, darkModeColorName: .lightSuccess1)
+}
+
+extension GiniColor {
+    /**
+     Creates a GiniColor with the color names for the light and dark modes
+
+     - parameter lightModeColorName: color name for the light mode
+     - parameter darkModeColorName: color name for the dark mode
+     */
+    convenience init(lightModeColorName: GiniHealthColorPalette, darkModeColorName: GiniHealthColorPalette) {
+        let lightColor: UIColor = lightModeColorName.preferredColor()
+        let darkColor: UIColor = darkModeColorName.preferredColor()
+        self.init(lightModeColor: lightColor, darkModeColor: darkColor)
+    }
+}

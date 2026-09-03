@@ -1,4 +1,27 @@
 ##
+# Configures a temporary git credential helper that reads GH_TOKEN from the environment,
+# yields to the given block, then cleans up the helper and git config on exit.
+#
+# Keeps the token out of command lines and process listings.
+#
+def with_git_token_auth
+  credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
+  begin
+    File.write(credential_helper, <<~SCRIPT)
+      #!/bin/bash
+      echo "username=x-access-token"
+      echo "password=${GH_TOKEN}"
+    SCRIPT
+    sh("chmod +x #{credential_helper}")
+    sh("git config --global credential.helper '#{credential_helper}'")
+    yield
+  ensure
+    sh("git config --global --unset credential.helper || true")
+    sh("rm -f #{credential_helper}")
+  end
+end
+
+##
 # Configure git on CI machines.
 #
 # Usually CI machines start with a "clean slate" and we need to set
@@ -7,6 +30,26 @@
 def configure_git_on_ci_machines(user_name, user_email)
   sh("git config --global user.email '#{user_email}'")
   sh("git config --global user.name '#{user_name}'")
+end
+
+##
+# Pushes the branch to origin. 
+# 
+# If it fails due to being out-of-date it will do a pull and
+# will retry the push.
+#
+def git_push_with_retry(branch, ui)
+  sh("git push origin #{branch}") do |status, result, command|
+    if status.success? == false 
+      if result.include?("fetch first")
+        ui.message "Pulling changes from remote and retrying the push"
+        sh("git pull")
+        sh(command)
+      else
+        ui.abort_with_message! "Push failed: #{result}"
+      end 
+    end
+  end
 end
 
 ##
@@ -21,6 +64,27 @@ end
 #
 def git_create_tag(tag)
   sh("git tag -a '#{tag}' -m '#{tag}'")
+end
+
+##
+# Returns 'true' if the release tag exists.
+#
+def git_has_release_tag(project_id, version)
+  git_has_tag("#{project_id};#{version}")
+end
+
+##
+# Returns 'true' if the tag exists.
+#
+def git_has_tag(tag)
+  sh("git rev-parse -q --verify '#{tag}'", log: false) do |status, result|
+    case status.exitstatus
+    when 0
+      true
+    else
+      false
+    end
+  end
 end
 
 ##
@@ -59,4 +123,22 @@ def did_folder_change_since_last_release(project_id, folder, ui)
         ui.abort_with_message! "Failed to check if folder changed: #{result}"
       end
     end
+end
+
+##
+# Creates a fresh clone of a Git repository. If the target folder already exists it will be deleted.
+#
+# Returns the relative path to the release repo.
+#
+def clone_repo(release_repo_url, depth = 0, target_dir = "")
+  repo_dir = if target_dir != ""
+    target_dir
+  else
+    release_repo_url.split("/").last.delete_suffix(".git")
+  end
+
+  sh("rm -rf #{repo_dir}")
+  sh("git clone #{if depth > 0 then "--depth #{depth}" end} #{release_repo_url} #{target_dir}")
+
+  repo_dir
 end

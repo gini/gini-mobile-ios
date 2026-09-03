@@ -6,21 +6,31 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
+
+/**
+Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
+- note: Internal usage only.
+**/
+var _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE: Bool = false
 
 /// The Gini Bank API Library
 public final class GiniBankAPI {
     
     private let docService: DocumentService!
     private let payService: PaymentService?
+    private let configService: ClientConfigurationServiceProtocol?
+    private let analyticsService: AnalyticsServiceProtocol?
+    
     static var logLevel: LogLevel = .none
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
-    {
+    init<T: DocumentService>(documentService: T,
+                             paymentService: PaymentService?,
+                             configurationService: ClientConfigurationServiceProtocol?,
+                             analyticsService: AnalyticsServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
+        self.configService = configurationService
+        self.analyticsService = analyticsService
     }
     
     /**
@@ -44,6 +54,14 @@ public final class GiniBankAPI {
         return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
     }
     
+    public func configurationService() -> ClientConfigurationServiceProtocol? {
+        return configService
+    }
+    
+    public func analyticService() -> AnalyticsServiceProtocol? {
+        return analyticsService
+    }
+
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
@@ -62,34 +80,104 @@ extension GiniBankAPI {
         var api: APIDomain = .default
         var userApi: UserDomain = .default
         var logLevel: LogLevel
+        public var sessionDelegate: URLSessionDelegate? = nil
+        var customNetworkProvider: GiniNetworkProvider? = nil
         
         /**
-         *  Creates a Gini Bank API Library
+         *  Initializes a Gini Bank API Library instance.
          *
-         * - Parameter client:            The Gini Bank API client credentials
-         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
+         *   - sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
                     userApi: UserDomain = .default,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = client
             self.api = api
             self.userApi = userApi
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
         }
-        
+
         /**
-         * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source.
+         *
+         * - Parameters:
+         *  - customApiDomain:          A custom api domain string.
+         *  - alternativeTokenSource:   A protocol for using custom api access token
+         *  - logLevel:                 The desired log level. Defaults to `LogLevel.none`.
+         *  - sessionDelegate:          The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
-        public init(customApiDomain: String,
+        public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
+        }
+
+        /**
+         *  Initializes a Gini Bank API Library instance configured with a certificate pinning configuration.
+         *
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - pinningConfig:     A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
+         */
+        public init(client: Client,
+                    api: APIDomain = .default,
+                    userApi: UserDomain = .default,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(client: client,
+                      api: api,
+                      userApi: userApi,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+
+        /**
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source and certificate pinning configuration.
+         *
+         * - Parameters:
+         *  - customApiDomain:        A custom api domain string.
+         *  - alternativeTokenSource: A protocol-conforming instance used to provide a custom API access token.
+         *  - pinningConfig:          A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *  - logLevel:               The desired log level. Defaults to `LogLevel.none`.
+         */
+        public init(customApiDomain: String = APIDomain.default.domainString,
+                    alternativeTokenSource: AlternativeTokenSource,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(customApiDomain: customApiDomain,
+                      alternativeTokenSource: alternativeTokenSource,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+        
+        /**
+         * Sets a custom network provider for all HTTP requests.
+         *
+         * Allows you to provide a custom HTTP client for all network requests made by the SDK.
+         * Use this for corporate proxy configuration, custom TLS requirements, or specialized logging.
+         *
+         * - Parameter provider: The custom network provider, or nil to use default implementation
+         * - Returns: Updated builder instance
+         */
+        public func setCustomNetworkProvider(_ provider: GiniNetworkProvider?) -> Builder {
+            var builder = self
+            builder.customNetworkProvider = provider
+            return builder
         }
 
         public func build() -> GiniBankAPI {
@@ -100,25 +188,37 @@ extension GiniBankAPI {
             GiniBankAPI.logLevel = logLevel
 
             // Initialize GiniBankAPI
+            let sessionManager = createSessionManager()
+            let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
+            let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
+            let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
+            let analyticsService = AnalyticsService(sessionManager: sessionManager, apiDomain: api)
+            
+            return GiniBankAPI(documentService: documentService,
+                               paymentService: paymentService,
+                               configurationService: configurationService,
+                               analyticsService: analyticsService)
+        }
+        
+        private func createSessionManager() -> SessionManager {
+            // Extract custom HTTP client if provider exists
+            let httpClient = customNetworkProvider?.httpClient()
+            
             switch api {
-            case .accounting:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniBankAPI(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
             case .default:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
-            case .custom(_, let tokenSource):
-                var sessionManager : SessionManager
-                if let tokenSource = tokenSource {
-                     sessionManager = SessionManager(alternativeTokenSource: tokenSource)
-                } else {
-                    sessionManager = SessionManager(userDomain: userApi)
-                }
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
-            case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource)
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager:
-                                                                            sessionManager), paymentService: PaymentService(sessionManager: sessionManager))
+                return SessionManager(userDomain: userApi,
+                                      sessionDelegate: sessionDelegate,
+                                      customHTTPClient: httpClient)
+                case .custom(_, _, let tokenSource):
+                    if let tokenSource = tokenSource {
+                        return SessionManager(alternativeTokenSource: tokenSource,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    } else {
+                        return SessionManager(userDomain: userApi,
+                                              sessionDelegate: sessionDelegate,
+                                              customHTTPClient: httpClient)
+                    }
             }
         }
         
@@ -134,8 +234,10 @@ extension GiniBankAPI {
                                                                    value: client.domain,
                                                                    service: .auth))
             } catch {
-                preconditionFailure("There was an error using the Keychain. " +
-                    "Check that the Keychain capability is enabled in your project")
+                if !_GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE {
+                    preconditionFailure("There was an error using the Keychain. " +
+                                        "Check that the Keychain capability is enabled in your project")
+                }
             }
         }
     }

@@ -1,0 +1,338 @@
+//
+//  DefaultDocumentService.swift
+//  GiniHealthSDK
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+import Foundation
+import GiniHealthAPILibrary
+
+/**
+ The default document service. By default interacts with the `APIDomain.default` api.
+ */
+public final class DefaultDocumentService {
+
+    private let docService: GiniHealthAPILibrary.DefaultDocumentService
+
+    init(docService: GiniHealthAPILibrary.DefaultDocumentService) {
+        self.docService = docService
+        self.docService.apiDomain = .default
+        self.docService.apiVersion = GiniHealth.Constants.defaultVersionAPI
+    }
+
+    /**
+     Creates a partial document from a given image `Data` or a composite document for given partial documents.
+
+     - Parameters:
+       - fileName: The document's filename.
+       - docType: The document's doc type.
+       - type: The V2 document type. Either partial or composite.
+       - metadata: The document's metadata.
+       - completion: A completion callback, returning the created document on success.
+     */
+    public func createDocument(fileName: String?,
+                               docType: Document.DocType?,
+                               type: Document.TypeV2,
+                               metadata: Document.Metadata?,
+                               completion: @escaping CompletionResult<Document>) {
+        docService.createDocument(fileName: fileName,
+                                  docType: GiniHealthAPILibrary.Document.DocType(rawValue: docType?.rawValue ?? ""),
+                                  type: type.toHealthType(),
+                                  metadata: metadata?.healthMeta,
+                                  completion: { result in
+            switch result {
+            case .success(let document):
+                completion(.success(Document(healthDocument: document)))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+
+    }
+
+    /**
+     Deletes a document.
+
+     - Parameters:
+       - document: The document to be deleted.
+       - completion: A completion callback.
+     */
+    public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
+        docService.delete(document.toHealthDocument(),
+                          completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Fetches the user documents, with the possibility to retrieve them paginated.
+
+     - Parameters:
+       - limit: Maximum number of documents to retrieve.
+       - offset: The document offset for pagination.
+       - completion: A completion callback, returning the document list on success.
+     */
+    public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
+        docService.documents(limit: limit,
+                             offset: offset,
+                             completion: { result in
+            switch result {
+            case .success(let documents):
+                completion(.success(documents.compactMap { Document(healthDocument: $0) }))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Retrieves a document for a given document id.
+
+     - Parameters:
+       - id: The document's unique identifier.
+       - completion: A completion callback, returning the requested document on success.
+     */
+    public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
+        docService.fetchDocument(with: id,
+                                 completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(Document(healthDocument: item)))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Retrieves the extractions for a given document.
+
+     - Parameters:
+       - document: The document to get extractions for.
+       - cancellationToken: Token used to cancel the analysis when the user cancels.
+       - completion: A completion callback, returning the extraction list on success.
+     */
+    public func extractions(for document: Document,
+                            cancellationToken: CancellationToken,
+                            completion: @escaping CompletionResult<ExtractionResult>) {
+        docService.extractions(for: document.toHealthDocument(),
+                               cancellationToken: cancellationToken.healthToken,
+                               completion: { result in
+            switch result {
+            case .success(let healthExtractionResult):
+                completion(.success(ExtractionResult(healthExtractionResult: healthExtractionResult)))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Retrieves the layout of a given document.
+
+     - Parameters:
+       - document: The document to retrieve the layout for.
+       - completion: A completion callback, returning the document layout on success.
+     */
+    public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
+        docService.layout(for: document.toHealthDocument(),
+                          completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(Document.Layout(healthLayout: item)))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Retrieves the pages of a given document.
+
+     - Parameters:
+       - document: The document to retrieve pages for.
+       - completion: A completion callback, returning the document pages on success.
+     */
+    public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
+        docService.pages(in: document.toHealthDocument(),
+                        completion: { result in
+           switch result {
+           case .success(let pages):
+               completion(.success(pages.compactMap { Document.Page(healthPage: $0) }))
+           case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+           }
+       })
+    }
+
+    /**
+     Handles feedback submission for a document using its ID.
+
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions, if any.
+       - completion: A completion callback.
+     */
+    private func submitFeedback(documentId: String,
+                                extractions: [Extraction],
+                                compoundExtractions: [String: [[Extraction]]]? = nil,
+                                completion: @escaping CompletionResult<Void>) {
+        let healthExtractions = extractions.map { $0.toHealthExtraction() }
+        let healthCompoundExtractions = compoundExtractions?.mapValues { mapCompoundExtraction($0) } ?? [:]
+        
+        docService.submitFeedback(for: documentId,
+                                  with: healthExtractions,
+                                  and: healthCompoundExtractions,
+                                  completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+                }
+            }
+        )
+    }
+
+    /**
+     Submits the analysis feedback for a given document.
+
+     - Parameters:
+       - document: The document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - completion: A completion callback.
+     */
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: document.id,
+                       extractions: extractions,
+                       completion: completion)
+    }
+
+    /**
+     Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
+
+     - Parameters:
+       - document: The document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions.
+       - completion: A completion callback.
+     */
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: document.id,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
+    }
+
+    /**
+     Submits the analysis feedback for a document using only its ID.
+
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - completion: A completion callback.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: documentId,
+                       extractions: extractions,
+                       completion: completion)
+    }
+
+    /**
+     Submits the analysis feedback with compound extractions for a document using only its ID.
+
+     - Parameters:
+       - documentId: The ID of the document for which feedback should be sent.
+       - extractions: The document's updated extractions.
+       - compoundExtractions: The document's updated compound extractions.
+       - completion: A completion callback.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: documentId,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
+    }
+
+
+    private func mapCompoundExtraction(_ compoundExtraction: [[Extraction]]) -> [[GiniHealthAPILibrary.Extraction]] {
+        return compoundExtraction.map { $0.map { $0.toHealthExtraction() } }
+    }
+
+    /**
+     Retrieves the page preview of a document for a given page.
+
+     - Parameters:
+       - documentId: The document id to get the preview for.
+       - pageNumber: The document's page number, starting from 1.
+       - completion: A completion callback, returning the requested page preview as `Data` on success.
+     */
+    public func preview(for documentId: String,
+                            pageNumber: Int,
+                            completion: @escaping CompletionResult<Data>) {
+        docService.preview(for: documentId,
+                           pageNumber: pageNumber,
+                           completion: { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        })
+    }
+
+    /**
+     Downloads a file from the given URL string.
+
+     - Parameters:
+       - urlString: The URL string of the file to download.
+       - completion: A completion callback returning the file data on success, or an error on failure.
+     */
+    public func file(urlString: String, completion: @escaping CompletionResult<Data>){
+        docService.file(urlString: urlString,
+                        completion: { result in
+                switch result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
+                    completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+                }
+            })
+    }
+
+    /**
+     Deletes a batch of documents by their IDs.
+
+     - Parameters:
+       - documentIds: An array of document IDs to delete.
+       - completion: A completion callback returning a success message on success, or an error on failure.
+     */
+    public func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>) {
+        docService.deleteDocuments(documentIds) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(GiniError.toGiniHealthSDKError(error: error)))
+            }
+        }
+    }
+}

@@ -11,33 +11,10 @@ import UIKit
 final class DocumentServicesTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
-    var accountingDocumentService: AccountingDocumentService!
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()
         defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-        accountingDocumentService = AccountingDocumentService(sessionManager: sessionManagerMock)
-    }
-
-    func testV1DocumentCreation() {
-        let expect = expectation(description: "it returns a document")
-
-        accountingDocumentService.createDocument(with: Data(count: 1),
-                                                 fileName: "",
-                                                 docType: nil,
-                                                 metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.v1DocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-        }
-
-        wait(for: [expect], timeout: 1)
     }
 
     func testPartialDocumentCreation() {
@@ -73,23 +50,6 @@ final class DocumentServicesTests: XCTestCase {
                 XCTAssertEqual(document.id,
                                SessionManagerMock.compositeDocumentId,
                                "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-        }
-
-        wait(for: [expect], timeout: 1)
-    }
-
-    func testV1DocumentDeletion() {
-        let expect = expectation(description: "it deletes a document")
-        sessionManagerMock.initializeWithV1MockedDocuments()
-        let document: Document = loadDocument(fileName: "document", type: "json")
-        accountingDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
                 expect.fulfill()
             case .failure:
                 break
@@ -170,7 +130,7 @@ final class DocumentServicesTests: XCTestCase {
             let amountToPay = amountToPayExtraction?.value ?? ""
 
             if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
+                if let lineItems = compoundExtractions.lineItems {
                     let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
 
                     let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
@@ -219,7 +179,7 @@ final class DocumentServicesTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: "1.1.1",
+                                    apiLibVersion: "4.3.0",
                                     description: "Error logging test",
                                     documentId: "1234",
                                     originalRequestId: "5678")

@@ -1,0 +1,35 @@
+name: Release Gini Utilites
+permissions:
+  contents: write
+on:
+  push:
+    tags:
+      - 'GiniUtilites;[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
+  check:
+    needs: get-config
+    uses: ./.github/workflows/utilites.check.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
+  release:
+    needs: [get-config, check]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sdk.release.yml
+    with:
+      project_folder: 'GiniComponents/Utilities'
+      package_folder: 'GiniUtilites'
+      version_file_path: 'GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/GiniUtilitesVersion.swift'
+      git_tag: ${{ github.ref }}
+      repo_url: 'https://github.com/gini/utilites-ios.git'
+      xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+      ruby-version: ${{ needs.get-config.outputs.ruby-version }}
+    secrets:
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}

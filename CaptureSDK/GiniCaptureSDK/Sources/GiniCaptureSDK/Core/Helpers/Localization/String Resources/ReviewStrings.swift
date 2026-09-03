@@ -1,51 +1,91 @@
 //
 //  ReviewStrings.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 7/31/18.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
 enum ReviewStrings: LocalizableStringResource {
-    
-    case bottomText, documentImageTitle, rotateButton, topText, unknownErrorMessage
-    
+    case screenTitle
+    case tipTitle
+    case processButtonTitle
+    case addPagesButtonTitle
+    case addPagesAccessibility
+    case photoLibraryAccessDenied
+    case photoLibraryAccessDeniedCancelButton
+    case photoLibraryAccessDeniedGrantAccessButton
+
     var tableName: String {
-        return "review"
+        switch self {
+        case .screenTitle,
+             .tipTitle,
+             .processButtonTitle,
+             .addPagesButtonTitle,
+             .addPagesAccessibility:
+            return "multipagereview"
+        case .photoLibraryAccessDenied,
+             .photoLibraryAccessDeniedCancelButton,
+             .photoLibraryAccessDeniedGrantAccessButton:
+            return "saveinvoice"
+        }
     }
-    
+
     var tableEntry: LocalizationEntry {
         switch self {
-        case .bottomText:
-            return ("bottom", "Text at the bottom of the review screen encouraging the " +
-                "user to check sharpness by double-tapping the image")
-        case .documentImageTitle:
-            return ("documentImageTitle",
-                    "Title for document image in review screen will be used exclusively for accessibility label")
-        case .rotateButton:
-            return ("rotateButton",
-                    "Title for rotate button in review screen will be used exclusively for accessibility label")
-        case .topText:
-            return ("top", "Text at the top of the review screen asking the user if " +
-                    "the full document is sharp and in the correct orientation")
-        case .unknownErrorMessage:
-            return ("unknownError", "This message is shown when Photo library permission is denied")
+        case .screenTitle:
+            return ("title",
+                    "Screen title")
+        case .tipTitle:
+            return ("description",
+                    "Tip on review screen")
+        case .processButtonTitle:
+            return ("mainButtonTitle",
+                    "Process button title")
+        case .addPagesButtonTitle:
+            return ("secondaryButtonTitle",
+                    "Add pages button title")
+        case .addPagesAccessibility:
+            return ("secondaryButton.accessibility",
+                    "Add pages")
+        case .photoLibraryAccessDenied:
+            return ("photoLibraryAccessDenied",
+                    "Message shown when photo library access is denied")
+        case .photoLibraryAccessDeniedCancelButton:
+            return ("photoLibraryAccessDenied.errorPopup.cancelButton",
+                    "Cancel button title in photo library access denied alert")
+        case .photoLibraryAccessDeniedGrantAccessButton:
+            return ("photoLibraryAccessDenied.errorPopup.grantAccessButton",
+                    "Grant access button title in photo library access denied alert")
         }
     }
-    
+
     var isCustomizable: Bool {
-        switch self {
-        case .bottomText, .documentImageTitle, .rotateButton, .topText, .unknownErrorMessage:
-            return true
-        }
+        return true
     }
-    
+
     var fallbackTableEntry: String {
         switch self {
-        default:
-            return ""
+        case .screenTitle:
+            return "title"
+        case .tipTitle:
+            return "description"
+        case .processButtonTitle:
+            return "mainButtonTitle"
+        case .addPagesButtonTitle:
+            return "secondaryButtonTitle"
+        case .addPagesAccessibility:
+            return "secondaryButton.accessibility"
+        case .photoLibraryAccessDenied:
+            return "photoLibraryAccessDenied"
+        case .photoLibraryAccessDeniedCancelButton:
+            return "photoLibraryAccessDenied.errorPopup.cancelButton"
+        case .photoLibraryAccessDeniedGrantAccessButton:
+            return "photoLibraryAccessDenied.errorPopup.grantAccessButton"
         }
     }
-    
+
+    var localized: String {
+        return localizedFormat
+    }
 }

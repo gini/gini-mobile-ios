@@ -25,10 +25,10 @@ extension Array where Element: Diffable {
                 firstElement.primaryKey == secondElement.primaryKey && !firstElement.isUpdated(to: secondElement)
             }
         }
-        
+
         return (updated: updated, removed: removed, inserted: inserted)
     }
-    
+
     func diffIndexes(with second: [Element]) -> DiffResultsIndexes {
         let diff = self.diff(with: second)
         let updatedIndexes = diff.updated
@@ -46,6 +46,5 @@ extension Array where Element: Diffable {
 
 public protocol Diffable {
     var primaryKey: String { get }
-    
     func isUpdated(to element: Self) -> Bool
 }

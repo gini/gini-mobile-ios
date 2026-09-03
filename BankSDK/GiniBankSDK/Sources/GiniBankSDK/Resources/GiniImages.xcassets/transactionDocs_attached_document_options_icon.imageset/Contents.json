@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "transactionDocs_attached_document_options_icon_light.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "transactionDocs_attached_document_options_icon-dark.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

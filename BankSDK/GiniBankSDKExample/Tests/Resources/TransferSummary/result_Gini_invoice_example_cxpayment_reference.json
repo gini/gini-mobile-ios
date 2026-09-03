@@ -1,0 +1,85 @@
+{
+    "extractions": {
+        "paymentState": {
+            "entity": "paymentstate",
+            "value": "ToBePaid"
+        },
+        "instantPayment": {
+            "entity": "text",
+            "value": "false"
+        },
+        "amountToPay": {
+            "entity": "amount",
+            "value": "1200.00:EUR",
+            "candidates": "amounts"
+        },
+        "docType": {
+            "entity": "doctype",
+            "value": "PaymentQRCode"
+        },
+        "paymentPurpose": {
+            "entity": "text",
+            "value": "Rechnung Nr R2021-1"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "AT611904300234573201",
+            "candidates": "ibans"
+        },
+        "paymentDueDate": {
+            "entity": "date",
+            "value": "2024-08-31"
+        },
+        "paymentRecipient": {
+            "entity": "companyname",
+            "value": "Parker Management LLC",
+            "candidates": "paymentRecipients"
+        }
+    },
+    "compoundExtractions": {
+        "crossBorderPayment": [
+            {
+                "creditorAccountNumber": {
+                    "entity": "text",
+                    "value": "485010419989"
+                },
+                "instructedAmount": {
+                    "entity": "amount",
+                    "value": "2000.00:USD"
+                },
+                "creditorName": {
+                    "entity": "text",
+                    "value": "Parker Management LLC"
+                },
+                "currency": {
+                    "entity": "currency",
+                    "value": "USD"
+                },
+                "creditorCountry": {
+                    "entity": "text",
+                    "value": "US"
+                }
+            }
+        ]
+    },
+    "candidates": {
+        "amounts": [
+            {
+                "entity": "amount",
+                "value": "1200.00:EUR"
+            }
+        ],
+        "ibans": [
+            {
+                "entity": "iban",
+                "value": "AT611904300234573201"
+            }
+        ],
+        "paymentRecipients": [
+            {
+                "entity": "companyname",
+                "value": "Max Mustermann"
+            }
+        ]
+    }
+}

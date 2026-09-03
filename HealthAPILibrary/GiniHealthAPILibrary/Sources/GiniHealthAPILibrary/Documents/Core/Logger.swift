@@ -8,7 +8,7 @@
 import Foundation
 import os
 
-enum LogEvent {
+public enum LogEvent {
     case error
     case success
     case warning
@@ -29,7 +29,7 @@ public enum LogLevel {
     case debug
 }
 
-func Log(_ message: String,
+public func Log(_ message: String,
          event: LogEvent) {
     guard case .debug = GiniHealthAPI.logLevel else { return }
     

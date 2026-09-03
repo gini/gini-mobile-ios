@@ -32,18 +32,10 @@ extension SessionManager: SessionAuthenticationProtocol {
         let saveTokenAndComplete: (Result<Token, GiniError>) -> Void = { result in
             
             switch result {
-            case .failure: break
+            case .failure:
+                self.removeUserAccessToken()
             case .success(let token):
-                
-                do {
-                    try self.keyStore.save(item: KeychainManagerItem(key: .userAccessToken,
-                                                                     value: token.accessToken,
-                                                                     service: .auth))
-                    
-                } catch {
-                    assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
-                        "Enable the 'Keychain Sharing' entitlement in your app")
-                }
+                self.userAccessToken = token.accessToken
             }
             
             completion(result)
@@ -55,8 +47,27 @@ extension SessionManager: SessionAuthenticationProtocol {
             
             if let user = user {
                 
-                fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
-                
+                fetchUserAccessToken(for: user) { result in
+                    switch result {
+                        case .success:
+                            saveTokenAndComplete(result)
+                        case .failure(let error):
+                            if case .unauthorized = error {
+                                self.removeCurrentUserInfo()
+                                self.createUser { result in
+                                    switch result {
+                                        case .success(let user):
+                                            self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                                        case .failure(let error):
+                                            completion(.failure(error))
+                                    }
+                                }
+                            } else {
+                                completion(.failure(error))
+                            }
+                    }
+                }
+
             } else {
                 createUser { result in
                     switch result {
@@ -70,8 +81,49 @@ extension SessionManager: SessionAuthenticationProtocol {
         }
     }
     
-    func logOut() {
+    func logOut() {       
+        // Remove current user info from SessionManager
+        userAccessToken = nil
+        clientAccessToken = nil
+
+        // Remove current user info from Keychain
         keyStore.removeAll()
+    }
+
+    private func removeUserAccessToken() {
+        // Remove current userAccessToken from SessionManager
+        userAccessToken = nil
+
+        // removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        do {
+            try KeychainStore().remove(service: .auth, key: .userAccessToken)
+        } catch {
+            preconditionFailure("Gini couldn't remove the `userAccessToken` from Keychain.")
+        }
+    }
+
+    private func removeClientAccessToken() {
+        // Remove current clientAccessToken from SessionManager
+        clientAccessToken = nil
+
+        // removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        do {
+            try KeychainStore().remove(service: .auth, key: .clientAccessToken)
+        } catch {
+            preconditionFailure("Gini couldn't remove the `clientAccessToken` from Keychain.")
+        }
+    }
+
+    private func removeCurrentUserInfo() {
+        removeUserAccessToken()
+        removeClientAccessToken()
+
+        do {
+            try self.keyStore.remove(service: .auth, key: .userEmail)
+            try self.keyStore.remove(service: .auth, key: .userPassword)
+        } catch {
+            preconditionFailure("Gini couldn't remove current user info from the Keychain.")
+        }
     }
 }
 
@@ -81,7 +133,8 @@ fileprivate extension SessionManager {
     func createUser(completion: @escaping CompletionResult<User>) {
         fetchClientAccessToken { result in
             switch result {
-            case .success:
+            case .success(let token):
+                self.clientAccessToken = token.accessToken
                 let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) ?? "no-domain-specified"
                 let user = AuthHelper.generateUser(with: domain)
                 
@@ -93,18 +146,8 @@ fileprivate extension SessionManager {
                 self.data(resource: resource) { result in
                     switch result {
                     case .success:
-                        do {
-                            try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
-                                                                             value: user.email,
-                                                                             service: .auth))
-                            try self.keyStore.save(item: KeychainManagerItem(key: .userPassword,
-                                                                             value: user.password,
-                                                                             service: .auth))
-                            completion(.success((user)))
-                        } catch {
-                            assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
-                                "Enable the 'Keychain Sharing' entitlement in your app")
-                        }
+                        self.storeUserCredentials(for: user,
+                                                  completion: completion)
                     case .failure(let error):
                         completion(.failure(error))
                     }
@@ -129,26 +172,26 @@ fileprivate extension SessionManager {
         data(resource: resource, completion: completion)
     }
     
-    func fetchClientAccessToken(completion: @escaping CompletionResult<Void>) {
+    func fetchClientAccessToken(completion: @escaping CompletionResult<Token>) {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: self.userDomain,
                                            httpMethod: .get)
-        data(resource: resource) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let token):
-                do {
-                    try self.keyStore.save(item: KeychainManagerItem(key: .clientAccessToken,
-                                                                     value: token.accessToken,
-                                                                     service: .auth))
-                    completion(.success(()))
-                } catch {
-                    assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
-                        "Enable the 'Keychain Sharing' entitlement in your app")
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        data(resource: resource, completion: completion)
+    }
+
+    private func storeUserCredentials(for user: User,
+                                      completion: @escaping CompletionResult<User>) {
+        do {
+            try self.keyStore.save(item: KeychainManagerItem(key: .userEmail,
+                                                             value: user.email,
+                                                             service: .auth))
+            try self.keyStore.save(item: KeychainManagerItem(key: .userPassword,
+                                                             value: user.password,
+                                                             service: .auth))
+            completion(.success((user)))
+        } catch {
+            preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                                "Enable the 'Keychain Sharing' entitlement in your app")
         }
     }
 }

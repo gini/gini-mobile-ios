@@ -1,16 +1,19 @@
 //
 //  GiniHealthConfiguration.swift
-//  GiniHealth
+//  GiniHealthSDK
 //
-//  Created by Nadya Karaban on 30.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
+import GiniUtilites
+import GiniInternalPaymentSDK
+import GiniHealthAPILibrary
 
 /**
  The `GiniHealthConfiguration` class allows customizations to the look of the Gini Health SDK.
  If there are limitations regarding which API can be used, this is clearly stated for the specific attribute.
- 
+
  - note: Text can also be set by using the appropriate keys in a `Localizable.strings` file in the projects bundle.
          The library will prefer whatever value is set in the following order: attribute in configuration,
          key in strings file in project bundle, key in strings file in `GiniHealth` bundle.
@@ -19,233 +22,194 @@ import UIKit
          in project bundle, asset file in `GiniHealth` bundle. See the avalible images for overriding in `GiniImages.xcassets`.
  */
 public final class GiniHealthConfiguration: NSObject {
-    
+    private let fontProvider = FontProvider()
+
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Health SDK.
      */
-    static var shared = GiniHealthConfiguration()
-    
+    public static var shared = GiniHealthConfiguration()
+
     /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Health SDK.
-     
+
      - returns: Instance of `GiniHealthConfiguration`.
      */
-    public override init() {}
-    
+    public override init() {
+        super.init()
+    }
+
+    // MARK: - Payment component view
+
+    /**
+     Set to `true` to use the payment component view as bottom view
+     */
+    public var useBottomPaymentComponentView = true
+
+    /**
+    Height of the buttons from the Payment Component View
+     */
+    public var paymentComponentButtonsHeight: CGFloat = Constants.defaultButtonsHeight {
+        didSet {
+            if paymentComponentButtonsHeight < Constants.minimumButtonsHeight {
+                paymentComponentButtonsHeight = Constants.minimumButtonsHeight
+            }
+        }
+    }
+
     // MARK: - Payment review screen
+
+    /**
+     Set to `false` to hide the payment review screen and jump straight to payment
+     */
+    public var showPaymentReviewScreen = true
+
+    /**
+     Set to `false` to hide close button on the payment review screen
+     */
+    public var showPaymentReviewCloseButton = true
     
     /**
-     Sets the backgroundColor on the payment review screen
+     Sets the duration of the payment review popup on the payment review screen.
+     - The value must be between `0` and `10` seconds.
+     - If a value greater than `10` is set, it will be clamped to `10`.
+     - If a negative value is set, it defaults to `3`.
+     - The default duration is `3` seconds.
      */
-    @objc public var paymentScreenBackgroundColor = GiniColor(lightModeColor: UIColor.black, darkModeColor: UIColor.black)
-    
-    /**
-     Sets the backgroundColor on the payment review screen for input fields container
-     */
-    @objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
-    /**
-     Sets the backgroundColor on the payment review screen for pay button when it's disabled
-     */
-    @objc public var payButtonDisabledBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xCCCFDB), darkModeColor: UIColor.from(hex:0xCCCFDB))
-    
-    /**
-     Sets the textColor on the payment review screen for pay button when it's disabled
-     */
-    @objc public var payButtonDisabledTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the corner radius of the pay button on the payment review screen
-     */
-    @objc public var payButtonCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the font of the pay button title on the payment review screen
-     */
-    @objc public var payButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14,
-                                                                    weight: .bold)
-    /**
-     Sets the corner radius of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the border width of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldBorderWidth: CGFloat = 0.0
-    
-    /**
-     Sets the border width of the payment input field with selection style on the payment review screen
-     */
-    @objc public var paymentInputFieldSelectionStyleBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the border width of the payment input field with error style on the payment review screen
-     */
-    @objc public var paymentInputFieldErrorStyleBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the error style color and error text color for the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldErrorStyleColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
-    
-    /**
-     Sets the selection style color for the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldSelectionStyleColor = GiniColor(lightModeColor: .blue, darkModeColor: .blue)
-    
-    /**
-     Sets the selection background color for the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldSelectionBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the background color of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0xF2F3F6), darkModeColor: UIColor.from(hex: 0xF2F3F6))
-    
-    /**
-     Sets the text color of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x33406F), darkModeColor: UIColor.from(hex: 0x33406F))
-    
-    /**
-     Sets the placeholder text color of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldPlaceholderTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x999FB7), darkModeColor: UIColor.from(hex: 0x999FB7))
-    
-    /**
-     Sets the text color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x33406F), darkModeColor: UIColor.from(hex: 0x33406F))
-    
-    /**
-     Sets the background color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the border width of the the bank button on the payment review screen
-     */
-    @objc public var bankButtonBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the border color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonBorderColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
-    
-    /**
-     Sets the corner radius of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the edit icon color  of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonEditIconColor = GiniColor(lightModeColor: UIColor.from(hex: 0x222222), darkModeColor: UIColor.from(hex: 0x222222))
-        
-    /**
-     Sets the current page indicator on the review screen to the specified color.
-     */
-    @objc public var currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
-    /**
-     Sets the page indicator on the review screen to the specified color.
-     */
-    @objc public var pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.lightGray, darkModeColor: UIColor.lightGray)
-    
-    /**
-     Set to `true` to show a close button on the payment review screen.
-     */
-    @objc public var showPaymentReviewCloseButton = false
-    
+    public var popupDurationPaymentReview: TimeInterval = 3.0 {
+        didSet {
+            if popupDurationPaymentReview > 10 {
+                popupDurationPaymentReview = 10
+            } else if popupDurationPaymentReview < 0 {
+                popupDurationPaymentReview = 3
+            }
+        }
+    }
+
     /**
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
      */
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
-    
-    // MARK: - Bank selection screen
-    
+
+    // MARK: - Button configuration options
     /**
-     Sets the backgroundColor on the bank selection screen.
+     A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor(),
+                                                                     borderColor: .clear,
+                                                                     titleColor: .white,
+                                                                     titleFont: font(for: .button),
+                                                                     shadowColor: .clear,
+                                                                     cornerRadius: 12,
+                                                                     borderWidth: 0,
+                                                                     shadowRadius: 0,
+                                                                     withBlurEffect: false)
     /**
-     Sets the backgroundColor of the dimmend overlay on the bank selection screen.
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View.
      */
-    @objc public var bankSelectionDimmedOverlayBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4), darkModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4))
-    
-    /**
-     Sets the color of the scroll down view on the bank selection screen.
-     */
-    @objc public var bankSelectionScrollDownIndicatorViewColor = GiniColor(lightModeColor: UIColor.from(hex: 0xCCCFDB), darkModeColor: UIColor.from(hex: 0xCCCFDB))
-    
-    /**
-     Sets the text color of the title on the bank selection screen.
-     */
-    @objc public var bankSelectionTitleTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
-    
-    /**
-     Sets the color of the cells separator view on the bank selection screen.
-     */
-    @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
-    
-    /**
-     Sets the text color of the cells on the bank selection screen.
-     */
-    @objc public var bankSelectionCellTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
-    
-    /**
-     Sets the corner radius of the bank icons on the bank selection screen.
-     */
-    @objc public var bankSelectionCellIconCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the text color of the info bar on the payment review screen.
-     */
-    @objc public var infoBarTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the background color of the info bar on the payment review screen.
-     */
-    @objc public var infoBarBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x7263D0), darkModeColor: UIColor.from(hex: 0x7263D0))
-    
-    /**
-     Sets the corner radius of the info bar on the payment review screen.
-     */
-    @objc public var infoBarCornerRadius: CGFloat = 12.0
-    
-    
+    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                       borderColor: GiniColor.standard5.uiColor(),
+                                                                       titleColor: GiniColor.standard1.uiColor(),
+                                                                       titleFont: font(for: .input),
+                                                                       shadowColor: .clear,
+                                                                       cornerRadius: 12,
+                                                                       borderWidth: 1,
+                                                                       shadowRadius: 0,
+                                                                       withBlurEffect: true)
+
     // MARK: - Shared properties
-    
+
     /**
-     Sets the font used in the screens by default.
+     A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    
-    @objc public lazy var customFont = GiniFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
+    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                                 borderColor: GiniColor.standard6.uiColor(),
+                                                                                 textColor: GiniColor.standard1.uiColor(),
+                                                                                 textFont: font(for: .captions2),
+                                                                                 cornerRadius: 12.0,
+                                                                                 borderWidth: 1.0,
+                                                                                 placeholderForegroundColor: GiniColor.standard4.uiColor())
+
     /**
-     Sets the color of the loading indicator to the specified color.
+     A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    @objc public var loadingIndicatorColor = GiniColor(lightModeColor: .orange, darkModeColor: .orange)
-    
+    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                               borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
+                                                                               textColor: GiniColor.standard1.uiColor(),
+                                                                               textFont: font(for: .captions2),
+                                                                               cornerRadius: 12.0,
+                                                                               borderWidth: 1.0,
+                                                                               placeholderForegroundColor: GiniColor.standard4.uiColor())
+
     /**
-     Sets the style of the loading indicator.
+     A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
-    
+    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                                   borderColor: GiniColor.accent1.uiColor(),
+                                                                                   textColor: GiniColor.standard1.uiColor(),
+                                                                                   textFont: font(for: .captions2),
+                                                                                   cornerRadius: 12.0,
+                                                                                   borderWidth: 1.0,
+                                                                                   placeholderForegroundColor: GiniColor.standard4.uiColor())
+
+    // MARK: - Update to custom font
     /**
-     Sets the scale of the loading indicator.
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
-    @objc public var loadingIndicatorScale: CGFloat = 1.0
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
+        fontProvider.updateFont(font, for: textStyle)
+    }
+
+    public func font(for textStyle: UIFont.TextStyle) -> UIFont {
+        return fontProvider.font(for: textStyle)
+    }
+
+    // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniHealthSDK
+    public var useInvoiceWithoutDocument: Bool = true
+
+    /**
+    Custom localization configuration for localizable strings.
+    */
+    public var customLocalization: GiniLocalization?
+
+    /**
+     Client's configuration provided from the server
+     */
+    var clientConfiguration: ClientConfiguration?
     
+    lazy var defaultFileName = NSLocalizedStringPreferredFormat(Constants.shareWithFileName, comment: "")
+        
+    /**
+     Custom name for the file, provided through the Share With flow.
+      Customization rules:
+       - Number of characters for the file name: 25
+       - Limit characters to letters, numbers, underscore and dash
+     */
+    public var shareWithFileName: String? {
+        didSet {
+            // If the custom file name does not comply with the customization rules, the default value will be used.
+            if let shareWithFileName, !isValidPDFFilename(shareWithFileName) {
+                self.shareWithFileName = defaultFileName
+            }
+        }
+    }
+}
+
+extension GiniHealthConfiguration {
+    private func isValidPDFFilename(_ fileName: String) -> Bool {
+        let regex = "^[a-zA-Z0-9_-]{1,25}$" // Allows letters, numbers, underscore, and dash, max 25 characters
+        let response = NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: fileName)
+        return response
+    }
+}
+
+extension GiniHealthConfiguration {
+    private enum Constants {
+        static let defaultButtonsHeight = 56.0
+        static let minimumButtonsHeight = 44.0
+        static let shareWithFileName = "gini.health.paymentcomponent.share.invoice.pdf.filename.default"
+    }
 }

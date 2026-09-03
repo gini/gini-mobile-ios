@@ -1,8 +1,7 @@
 //
 //  Extraction.swift
-//  GiniBankAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -62,12 +61,6 @@ import Foundation
     }
     
 }
-
-// MARK: - Decodable
-
-//extension Extraction: Decodable {}
-//extension Extraction.Box: Decodable {}
-//extension Extraction.Candidate: Decodable {}
 
 // MARK: - isEqual
 

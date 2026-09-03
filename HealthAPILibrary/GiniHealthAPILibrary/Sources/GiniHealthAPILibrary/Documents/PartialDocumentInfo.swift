@@ -8,7 +8,7 @@
 import Foundation
 
 /// Partial document info used to create a composite document
-public struct PartialDocumentInfo {
+public struct PartialDocumentInfo: Codable {
     /// Partial document url
     public var document: URL?
     /// Partial document rotation delta [0-360º].
@@ -29,15 +29,10 @@ public struct PartialDocumentInfo {
         self.document = document
         self.rotationDelta = rotationDelta
     }
-}
 
-// MARK: - Decodable
-
-extension PartialDocumentInfo: Codable {
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        document = try container.decode(URL.self, forKey: .document)
+        document = try container.decodeIfPresent(URL.self, forKey: .document)
         rotationDelta = try container.decodeIfPresent(Int.self, forKey: .rotationDelta) ?? 0
     }
 }

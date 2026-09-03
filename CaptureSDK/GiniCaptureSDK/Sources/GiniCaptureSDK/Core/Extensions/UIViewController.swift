@@ -2,46 +2,71 @@
 //  UIViewController.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 2/20/18.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
+extension UIViewController {
 
-public extension UIViewController {
-    
-    enum NavBarItemPosition {
-        case left, right
-    }
-    
-    func setupNavigationItem(usingResources preferredResources: PreferredButtonResource,
-                             selector: Selector,
-                             position: NavBarItemPosition,
-                             target: AnyObject?) {
-        
-        let buttonText = preferredResources.preferredText ?? ""
-        
-        if !buttonText.isEmpty || preferredResources.preferredImage != nil {
-            let navButton = GiniBarButtonItem(
-                image: preferredResources.preferredImage,
-                title: preferredResources.preferredText,
-                style: .plain,
-                target: target,
-                action: selector
-            )
-            switch position {
-            case .right:
-                navigationItem.setRightBarButton(navButton, animated: false)
-            case .left:
-                navigationItem.setLeftBarButton(navButton, animated: false)
-            }
+    // MARK: - Generic Error Alert
+
+    /**
+     A generic UIViewController extension that shows an error alert with customizable title, message, and actions.
+
+     - parameter message: The error message to display
+     - parameter title: Optional title for the alert (default: nil)
+     - parameter cancelButtonTitle: Title for the cancel button
+     - parameter confirmButtonTitle: Optional title for the confirm button
+     - parameter confirmAction: Optional closure to be executed when confirm button is tapped
+     */
+    func giniShowErrorAlert(message: String,
+                            title: String? = nil,
+                            cancelButtonTitle: String,
+                            confirmButtonTitle: String? = nil,
+                            confirmAction: (() -> Void)? = nil) {
+        let alertViewController = UIAlertController(title: title,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+
+        alertViewController.view.tintColor = .GiniCapture.accent1
+
+        // Cancel action
+        let cancelAction = UIAlertAction(title: cancelButtonTitle,
+                                         style: .cancel,
+                                         handler: { _ in
+            alertViewController.dismiss(animated: true)
+        })
+        alertViewController.addAction(cancelAction)
+
+        // Confirm action (if provided)
+        if let confirmButtonTitle = confirmButtonTitle, let confirmAction = confirmAction {
+            let confirmationAction = UIAlertAction(title: confirmButtonTitle,
+                                                   style: .default,
+                                                   handler: { _ in
+                confirmAction()
+            })
+            alertViewController.addAction(confirmationAction)
+            // preferredAction must be set after addAction
+            alertViewController.preferredAction = confirmationAction
         }
+
+        present(alertViewController, animated: true)
     }
-    
-    func showErrorDialog(for error: Error, positiveAction: (() -> Void)?) {
+
+    // MARK: - Camera-Specific Error Dialog
+
+    /**
+     Shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
+     Use this when drag and dropping files into the SDK.
+
+     - parameter error: The error to be shown
+     - parameter positiveAction: The closure to be executed. If nil, the extra option won't be added.
+     */
+    public func showErrorDialog(for error: Error, positiveAction: (() -> Void)?) {
         let message: String
         var cancelActionTitle: String = .localized(resource: CameraStrings.errorPopupCancelButton)
         var confirmActionTitle: String? = .localized(resource: CameraStrings.errorPopupPickAnotherFileButton)
-        
+
         switch error {
         case let validationError as DocumentValidationError:
             message = validationError.message
@@ -59,41 +84,46 @@ public extension UIViewController {
                 confirmActionTitle = .localized(resource: CameraStrings.mixedArraysPopupUsePhotosButton)
             case .failedToOpenDocument:
                 break
+            case .multiplePdfsUnsupported:
+                confirmActionTitle = .localized(resource: CameraStrings.errorConfirmButton)
             }
         default:
             message = DocumentValidationError.unknown.message
         }
-        
-        let dialog = errorDialog(withMessage: message,
-                                 cancelActionTitle: cancelActionTitle,
-                                 confirmActionTitle: confirmActionTitle,
-                                 confirmAction: positiveAction)
-        
-        present(dialog, animated: true, completion: nil)
+
+        // Track analytics for camera errors
+        GiniAnalyticsManager.track(event: .errorDialogShown,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .errorMessage, value: message)])
+
+        // Show the generic error alert
+        giniShowErrorAlert(message: message,
+                           cancelButtonTitle: cancelActionTitle,
+                           confirmButtonTitle: confirmActionTitle,
+                           confirmAction: positiveAction)
     }
-    
-    fileprivate func errorDialog(withMessage message: String,
-                                 title: String? = nil,
-                                 cancelActionTitle: String,
-                                 confirmActionTitle: String? = nil,
-                                 confirmAction: (() -> Void)? = nil) -> UIAlertController {
-        
-        let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: cancelActionTitle,
-                                                    style: .cancel,
-                                                    handler: { _ in
-                                                        alertViewController.dismiss(animated: true, completion: nil)
-        }))
-        
-        if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
-            alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
-                                                        style: .default,
-                                                        handler: { _ in
-                                                            confirmAction()
-            }))
+}
+
+extension UIViewController {
+
+    func add(asChildViewController viewController: UIViewController, sendToBackIfNeeded: Bool = false) {
+        add(childViewController: viewController, to: view, sendToBackIfNeeded: sendToBackIfNeeded)
+    }
+
+    private func add(childViewController: UIViewController, to view: UIView, sendToBackIfNeeded: Bool) {
+        // Add Child View Controller
+        addChild(childViewController)
+        // Add Child View as Subview
+        view.addSubview(childViewController.view)
+        // Notify Child View Controller
+        childViewController.didMove(toParent: self)
+
+        if sendToBackIfNeeded {
+            view.sendSubviewToBack(childViewController.view)
         }
-        
-        return alertViewController
     }
+}
+
+extension UIViewController {
+    var currentInterfaceOrientation: UIInterfaceOrientation { view.currentInterfaceOrientation }
 }

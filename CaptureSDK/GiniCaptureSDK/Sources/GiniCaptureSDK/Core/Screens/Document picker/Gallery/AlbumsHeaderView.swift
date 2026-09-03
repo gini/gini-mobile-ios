@@ -2,13 +2,15 @@
 //  AlbumsHeaderView.swift
 //  GiniCapture
 //
-//  Created by Nadya Karaban on 20.08.21.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
 final class AlbumsHeaderView: UITableViewHeaderFooterView {
-    var didTapSelectButton: (() -> Void) = {}
+    var didTapSelectButton: (() -> Void) = {
+        // This closure will remain empty; no implementation is needed.
+    }
     @IBOutlet var selectPhotosButton: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -19,10 +21,14 @@ final class AlbumsHeaderView: UITableViewHeaderFooterView {
         let configuration = GiniConfiguration.shared
         let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.albums.selectMorePhotosButton",
                                                            comment: "Title for select more photos button")
-        selectPhotosButton.titleLabel?.font = configuration.customFont.with(weight: .regular, size: 16, style: .footnote)
+        selectPhotosButton.titleLabel?.font = configuration.textStyleFonts[.footnote]
         selectPhotosButton.setTitle(buttonTitle, for: .normal)
-        selectPhotosButton.setTitleColor(configuration.navigationBarTintColor, for: .normal)
+        selectPhotosButton.titleLabel?.isAccessibilityElement = true
+        selectPhotosButton.titleLabel?.accessibilityValue = buttonTitle
+        selectPhotosButton.setTitleColor(.GiniCapture.accent1, for: .normal)
         selectPhotosButton.sizeToFit()
+        selectPhotosButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        selectPhotosButton.isExclusiveTouch = true
     }
 
     override init(reuseIdentifier: String?) {

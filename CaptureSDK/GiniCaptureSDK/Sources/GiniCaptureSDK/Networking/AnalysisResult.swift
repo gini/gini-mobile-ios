@@ -18,16 +18,26 @@ import GiniBankAPILibrary
      *  Specific extractions obtained in the analysis.
      *
      *  Besides the list of extractions that can be found
-     *  [here](http://developer.gini.net/gini-api/html/document_extractions.html#available-specific-extractions),
+     *  [here](https://pay-api.gini.net/documentation/#specific-extractions),
      *  it can also return the epsPaymentQRCodeUrl extraction, obtained from a EPS QR code.
      */
-    public let extractions: [String: Extraction]
-
+    public var extractions: [String: Extraction]
+    
     /**
      *  Line item compound extractions obtained in the analysis.
      */
     public let lineItems: [[Extraction]]?
+
+    /**
+     *  Skonto extractions obtained in the analysis.
+     */
+    public let skontoDiscounts: [[Extraction]]?
     
+    /**
+     *   Cross-border payment compound extractions obtained in the analysis.
+     */
+    public let crossBorderPayment: [[Extraction]]?
+
     /**
      *  The analyzed Gini Bank API document.
      *
@@ -36,10 +46,26 @@ import GiniBankAPILibrary
      */
     public let document: Document?
     
-    public init(extractions: [String: Extraction], lineItems: [[Extraction]]? = nil, images: [UIImage], document: Document? = nil) {
+    /*
+     *  Extraction candidates dictionary. To get the candidates for an extraction look for the
+     *  `Extraction.candidates` name in the dictionary. For example the IBAN extraction's `candidates` field
+     *  contains `"ibans"` and if you search for that in this dictionary, then you'll get all the IBAN candidates.
+     */
+    public let candidates: [String: [Extraction.Candidate]]
+    
+    public init(extractions: [String: Extraction],
+                lineItems: [[Extraction]]? = nil,
+                skontoDiscounts: [[Extraction]]? = nil,
+                crossBorderPayment: [[Extraction]]? = nil,
+                images: [UIImage],
+                document: Document? = nil,
+                candidates: [String: [Extraction.Candidate]]) {
         self.images = images
         self.extractions = extractions
         self.lineItems = lineItems
+        self.skontoDiscounts = skontoDiscounts
+        self.crossBorderPayment = crossBorderPayment
         self.document = document
+        self.candidates = candidates
     }
 }

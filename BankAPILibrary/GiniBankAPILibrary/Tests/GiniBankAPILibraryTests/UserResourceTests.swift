@@ -19,7 +19,7 @@ class UserResourceTests: XCTestCase {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: .default,
                                            httpMethod: .get)
-        let urlString: String = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=client_credentials")
     }
     
@@ -27,7 +27,7 @@ class UserResourceTests: XCTestCase {
         let resource = UserResource<Token>(method: .token(grantType: .password),
                                            userDomain: .default,
                                            httpMethod: .get)
-        let urlString: String = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/oauth/token?grant_type=password")
     }
     
@@ -35,7 +35,7 @@ class UserResourceTests: XCTestCase {
         let resource = UserResource<Token>(method: .users,
                                            userDomain: .default,
                                            httpMethod: .post)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseUserCenterAPIURLString + "/api/users")
     }
     
@@ -43,8 +43,15 @@ class UserResourceTests: XCTestCase {
         let resource = UserResource<Token>(method: .users,
                                            userDomain: .custom(domain: "custom.domain.com"),
                                            httpMethod: .post)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, "https://custom.domain.com/api/users")
     }
     
+    func testCustomUserDomainWithPath() {
+        let resource = UserResource<Token>(method: .users,
+                                           userDomain: .custom(domain: "custom.domain.com", path:"/custom/path"),
+                                           httpMethod: .post)
+        let urlString = resource.url?.absoluteString
+        XCTAssertEqual(urlString, "https://custom.domain.com/custom/path/api/users")
+    }
 }

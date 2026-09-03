@@ -27,8 +27,8 @@ final class SessionManagerMock: SessionManagerProtocol {
 
 
     init(keyStore: KeyStore = KeychainStore(),
-         urlSession: URLSession = URLSession()) {
-        
+         urlSession: URLSession = URLSession(configuration: .default)) {
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func initializeWithV1MockedDocuments() {
@@ -49,11 +49,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func logOut() {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     //swiftlint:disable all
@@ -97,10 +97,10 @@ final class SessionManagerMock: SessionManagerProtocol {
                 let payment: Payment = loadPayment()
                 completion(.success(payment as! T.ResponseType))
             case .feedback(_):
-                extractionFeedbackBody = resource.request.httpBody ?? nil
+                extractionFeedbackBody = resource.request?.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
             case .logErrorEvent:
-                logErrorEventBody = resource.request.httpBody ?? nil
+                logErrorEventBody = resource.request?.httpBody ?? nil
                 completion(.success("Logged" as! T.ResponseType))
             default: break
             }
@@ -110,7 +110,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func upload<T: Resource>(resource: T,

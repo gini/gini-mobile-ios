@@ -13,12 +13,14 @@ extension Document.Page: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let pageNumber = try container.decode(Int.self, forKey: .number)
         let images = try container.decode([String: String].self, forKey: .images)
-        
+
         let imagesFormatted: [(size: Size, url: URL)] = images.compactMap { image in
-            guard let imageSize = Size(rawValue: image.key) else {
+            guard let imageSize = Size(rawValue: image.key),
+                    let url = URL(string: image.value) else {
                 return nil
             }
-            return (imageSize, URL(string: image.value)!)
+
+            return (imageSize, url)
         }
         
         self.init(number: pageNumber, images: imagesFormatted)

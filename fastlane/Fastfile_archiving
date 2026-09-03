@@ -1,0 +1,92 @@
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc <<~DOC
+    Build the app for ad-hoc distribution.
+
+    Parameters:
+      distribution_type - Set to "adhoc" for ad-hoc provisioning profile.
+      export_method     - Set to "ad-hoc" for ad-hoc export.
+      configuration     - Build configuration to use. Default: "Release".
+
+    Behavior:
+      - Builds the app using the ad-hoc provisioning profile.
+      - Exports the IPA with ad-hoc distribution method.
+      - Uses the Release build configuration.
+      - Delegates to build_app_with_provisioning lane with ad-hoc parameters.
+  DOC
+  lane :build_app_adhoc do
+    build_app_with_provisioning(distribution_type: "adhoc", export_method: "ad-hoc", configuration: "Release")
+  end
+
+  desc <<~DOC
+    Complete build process for app distribution.
+  
+    This lane combines provisioning setup and app building into a single workflow.
+    It first sets up the necessary code signing certificates and provisioning profiles,
+    then builds and exports the app as an IPA ready for distribution.
+  
+    Parameters:
+      distribution_type - Type of distribution for provisioning: "adhoc" or "development" (default: "adhoc")
+      export_method     - Export method for build: "ad-hoc" or "development" (default: "ad-hoc")
+      configuration     - The configuration from the Xcode project setup: "Release", "Debug"
+  
+    Environment Variables:
+      APP_IDENTIFIER    - Bundle identifier for the app
+      APP_SCHEME        - Xcode scheme to build
+      IPA_FILE          - Output name for the generated IPA file (without extension)
+      MATCH_GIT_URL     - Git URL for the match certificates repository
+  DOC
+  private_lane :build_app_with_provisioning do |options|
+    distribution_type = options[:distribution_type]
+    export_method = options[:export_method]
+    configuration = options[:configuration]
+  
+    download_profiles
+    build_app_match(export_method: export_method, configuration: configuration)
+  ensure
+    # Always clean up
+    delete_temp_keychain
+  end
+
+  desc <<~DOC
+    Build and export app as an IPA.
+  
+    This lane compiles the specified app scheme, archives it, and exports it as an IPA file 
+    ready for distribution. The build includes cleaning and detailed logging for debugging.
+  
+    Parameters:
+      export_method - Export method: "ad-hoc" or "development" (default: "ad-hoc")
+      configuration - The configuration from the Xcode project setup: "Release", "Debug"
+  
+    Environment Variables:
+      APP_SCHEME    - Xcode scheme to build
+      IPA_FILE      - Output name for the generated IPA file (without extension)
+  DOC
+  private_lane :build_app_match do |options|
+    scheme = ENV["APP_SCHEME"]
+    ipaFile = ENV["IPA_FILE"]
+    export_method = options[:export_method]
+    configuration = options[:configuration]
+
+    # Skip confirmation for development builds in CI
+    if export_method == "development"
+      ENV["FASTLANE_SKIP_WAITING_FOR_BUILD_PROCESSING"] = "true"
+      puts "⚠️  Skipping waiting for build processing (development build)"
+    end
+    gym(
+      scheme: scheme,
+      export_method: export_method,
+      configuration: configuration,
+      silent: false,
+      clean: true,
+      export_options: { 
+        manageAppVersionAndBuildNumber: false 
+      },
+      export_team_id: "JA825X8F7Z",
+      output_name: ipaFile
+    )
+  end
+end

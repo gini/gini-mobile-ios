@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F466A5D9270F26C300FB1364 /* GiniHealthAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */; };
-		F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */; };
+		3A54ED2D2C917D5500EB5EED /* GiniHealthAPILibrary in Resources */ = {isa = PBXBuildFile; fileRef = 3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */; };
+		3AC048EE2C9061A5007C81FE /* GiniHealthAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */; };
 		F46DE04C2705FC21002F7420 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04B2705FC21002F7420 /* AppDelegate.swift */; };
 		F46DE04E2705FC21002F7420 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04D2705FC21002F7420 /* SceneDelegate.swift */; };
 		F46DE0502705FC21002F7420 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04F2705FC21002F7420 /* ViewController.swift */; };
@@ -30,7 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
+		3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthAPILibrary; path = ../GiniHealthAPILibrary; sourceTree = "<group>"; };
 		F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,13 +46,16 @@
 		F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F4E9532D2F4DF8AB00DABCD8 /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F46DE0452705FC21002F7420 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */,
-				F466A5D9270F26C300FB1364 /* GiniHealthAPILibraryPinning in Frameworks */,
+				3AC048EE2C9061A5007C81FE /* GiniHealthAPILibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,10 +69,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A54ED2B2C917D2F00EB5EED /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		F46DE03F2705FC21002F7420 = {
 			isa = PBXGroup;
 			children = (
-				F46DE05F2705FCAC002F7420 /* Packages */,
+				3A54ED2B2C917D2F00EB5EED /* Packages */,
 				F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */,
 				F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */,
 				F46DE0492705FC21002F7420 /* Products */,
@@ -101,14 +112,6 @@
 			path = GiniHealthAPILibraryExample;
 			sourceTree = "<group>";
 		};
-		F46DE05F2705FCAC002F7420 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		F46DE0622705FEF4002F7420 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +123,7 @@
 		F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				F4E9532D2F4DF8AB00DABCD8 /* Resources */,
 				F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */,
 				F4FD4877270F204A007F1EFA /* IntegrationTests.swift */,
 			);
@@ -143,7 +147,7 @@
 			);
 			name = GiniHealthAPILibraryExample;
 			packageProductDependencies = (
-				F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */,
+				3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */,
 			);
 			productName = HealthAPILibraryExample;
 			productReference = F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */;
@@ -161,6 +165,9 @@
 			);
 			dependencies = (
 				F4FD4873270F1F7D007F1EFA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F4E9532D2F4DF8AB00DABCD8 /* Resources */,
 			);
 			name = GiniHealthAPILibraryExampleTests;
 			productName = HealthAPILibraryExampleTests;
@@ -210,6 +217,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A54ED2D2C917D5500EB5EED /* GiniHealthAPILibrary in Resources */,
 				F46DE0582705FC22002F7420 /* LaunchScreen.storyboard in Resources */,
 				F46DE0552705FC22002F7420 /* Assets.xcassets in Resources */,
 				F46DE0532705FC21002F7420 /* Main.storyboard in Resources */,
@@ -326,7 +334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -381,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -396,10 +404,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = GiniHealthAPILibraryExample/HealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniHealthAPILibraryExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -412,8 +420,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ios.healthhapi.HealthAPILibraryExample;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthapilibrary.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -425,10 +437,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = GiniHealthAPILibraryExample/HealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniHealthAPILibraryExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -441,8 +453,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ios.healthhapi.HealthAPILibraryExample;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthapilibrary.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -455,7 +471,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,6 +481,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthAPILibraryExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -478,7 +498,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -488,6 +508,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthAPILibraryExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -528,9 +552,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */ = {
+		3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = GiniHealthAPILibraryPinning;
+			productName = GiniHealthAPILibrary;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -10,6 +10,33 @@ import Foundation
  Struct for payment response
  */
 public struct Payment {
+    /**
+     An initializer for a `Payment` structure
+
+     - parameter paidAt: ISO 8601 date string defining point in time when the payment request was resolved.
+     - parameter recipient: the recipient of the payment.
+     - parameter iban: the iban (international bank account number) of the payment recipient.
+     - parameter bic: the bic (bank identifier code) for the payment.
+     - parameter purpose: the purpose of the payment, e.g. the invoice or customer identifier.
+     - parameter links: object with links to other resources e.g. document and paymentRequest.
+     */
+
+    public init(paidAt: String,
+                recipient: String,
+                iban: String,
+                bic: String? = nil,
+                amount: String,
+                purpose: String,
+                links: PaymentLinks? = nil) {
+        self.paidAt = paidAt
+        self.recipient = recipient
+        self.iban = iban
+        self.bic = bic
+        self.amount = amount
+        self.purpose = purpose
+        self.links = links
+    }
+    
     public var paidAt, recipient, iban: String
     public var bic: String?
     public var amount, purpose: String

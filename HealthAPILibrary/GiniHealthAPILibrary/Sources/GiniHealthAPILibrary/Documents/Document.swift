@@ -1,15 +1,14 @@
 //
 //  Document.swift
-//  Pods-GiniExample
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
 /// Data model that represents a Document entity
-public struct Document {
-    
+public struct Document: Decodable {
     /// (Optional) Array containing the path of every composite document
     public let compositeDocuments: [CompositeDocument]?
     /// The document's creation date.
@@ -32,7 +31,9 @@ public struct Document {
     public let progress: Progress
     /// The document's source classification.
     public let sourceClassification: SourceClassification
-    
+    /// The document's expiration date.
+    public let expirationDate: Date?
+
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
         case creationDate
@@ -45,6 +46,52 @@ public struct Document {
         case partialDocuments
         case progress
         case sourceClassification
+        case expirationDate
+    }
+
+    init(compositeDocuments: [CompositeDocument]? = nil, creationDate: Date, id: String, name: String, origin: Document.Origin, pageCount: Int, pages: [Document.Page]? = nil, links: Document.Links, partialDocuments: [PartialDocumentInfo]? = nil, progress: Document.Progress, sourceClassification: Document.SourceClassification, expirationDate: Date? = nil) {
+        self.compositeDocuments = compositeDocuments
+        self.creationDate = creationDate
+        self.id = id
+        self.name = name
+        self.origin = origin
+        self.pageCount = pageCount
+        self.pages = pages
+        self.links = links
+        self.partialDocuments = partialDocuments
+        self.progress = progress
+        self.sourceClassification = sourceClassification
+        self.expirationDate = expirationDate
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        let compositeDocuments = try container.decodeIfPresent([CompositeDocument].self, forKey: .compositeDocuments)
+        let creationDate = try container.decode(Date.self, forKey: .creationDate)
+        let id = try container.decode(String.self, forKey: .id)
+        let name = try container.decode(String.self, forKey: .name)
+        let origin = try container.decode(Origin.self, forKey: .origin)
+        let pageCount = try container.decode(Int.self, forKey: .pageCount)
+        let pages = try container.decodeIfPresent([Page].self, forKey: .pages)
+        let links = try container.decode(Links.self, forKey: .links)
+        let partialDocuments = try container.decodeIfPresent([PartialDocumentInfo].self, forKey: .partialDocuments)
+        let progress = try container.decode(Progress.self, forKey: .progress)
+        let sourceClassification = try container.decode(SourceClassification.self,
+                                                        forKey: .sourceClassification)
+        let expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
+
+        self.init(compositeDocuments: compositeDocuments,
+                  creationDate: creationDate,
+                  id: id,
+                  name: name,
+                  origin: origin,
+                  pageCount: pageCount,
+                  pages: pages,
+                  links: links,
+                  partialDocuments: partialDocuments,
+                  progress: progress,
+                  sourceClassification: sourceClassification,
+                  expirationDate: expirationDate)
     }
 }
 
@@ -105,6 +152,22 @@ extension Document {
     
     /// Links to related resources, such as extractions, document, processed or layout.
     public struct Links {
+        /**
+         An initializer for a `Links` structure if you are receiving a customized JSON structure from your proxy backend.
+         For this particular case all links will be pointed to the document's link.
+         
+         - parameter giniAPIDocumentURL: The document's link received from the Gini  API. This must be the same URL that you received in the `Location` header from the Gini API. For example "https://pay-api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000".
+         
+         - note: Custom networking only.
+         */
+        public init(giniAPIDocumentURL: URL) {
+            self.extractions = giniAPIDocumentURL
+            self.layout = giniAPIDocumentURL
+            self.processed = giniAPIDocumentURL
+            self.document = giniAPIDocumentURL
+            self.pages = nil
+        }
+        
         public let extractions: URL
         public let layout: URL
         public let processed: URL
@@ -119,7 +182,7 @@ extension Document {
     }
     
     /// A document's page, consisting of an array of number and its page number
-    public struct Page {
+    public struct Page: Decodable {
         /// Page number
         public let number: Int
         /// Page image urls array, along with their sizes
@@ -139,7 +202,24 @@ extension Document {
             /// 1280x1810
             case big = "1280x1810"
         }
-        
+        init(number: Int, images: [(size: Document.Page.Size, url: URL)]) {
+            self.number = number
+            self.images = images
+        }
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let pageNumber = try container.decode(Int.self, forKey: .number)
+            let images = try container.decode([String: String].self, forKey: .images)
+
+            let imagesFormatted: [(size: Size, url: URL)] = images.compactMap { image in
+                guard let imageSize = Size(rawValue: image.key) else {
+                    return nil
+                }
+                return (imageSize, URL(string: image.value)!)
+            }
+
+            self.init(number: pageNumber, images: imagesFormatted)
+        }
     }
     
     /// The V2 document's type. Used when creating documents in multipage mode.
@@ -189,34 +269,39 @@ extension Document {
 
 // MARK: - Decodable
 
-extension Document: Decodable {
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: Keys.self)
-        let compositeDocuments = try container.decodeIfPresent([CompositeDocument].self, forKey: .compositeDocuments)
-        let creationDate = try container.decode(Date.self, forKey: .creationDate)
-        let id = try container.decode(String.self, forKey: .id)
-        let name = try container.decode(String.self, forKey: .name)
-        let origin = try container.decode(Origin.self, forKey: .origin)
-        let pageCount = try container.decode(Int.self, forKey: .pageCount)
-        let pages = try container.decodeIfPresent([Page].self, forKey: .pages)
-        let links = try container.decode(Links.self, forKey: .links)
-        let partialDocuments = try container.decodeIfPresent([PartialDocumentInfo].self, forKey: .partialDocuments)
-        let progress = try container.decode(Progress.self, forKey: .progress)
-        let sourceClassification = try container.decode(SourceClassification.self,
-                                                        forKey: .sourceClassification)
-        
-        self.init(compositeDocuments: compositeDocuments,
+extension Document {
+    /**
+     It's the easiest way to initialize a `Document` if you are receiving a customized JSON structure from your proxy backend.
+     
+     - parameter creationDate: The document's creation date.
+     - parameter id: The document's unique identifier.
+     - parameter name: The document's file name.
+     - parameter links: Links to related resources, such as extractions, document, processed, layout or pages.
+     - parameter pageCount: The document's number of pages.
+     - parameter sourceClassification: The document's source classification. We recommend to use `scanned` or `composite`.
+     - parameter expirationDate: The document's expiration date.
+
+     - note: Custom networking only.
+     */
+    public init(creationDate: Date,
+                id: String,
+                name: String,
+                links: Links,
+                pageCount: Int,
+                sourceClassification: SourceClassification,
+                expirationDate: Date?) {
+        self.init(compositeDocuments: [],
                   creationDate: creationDate,
                   id: id,
                   name: name,
-                  origin: origin,
+                  origin: .upload,
                   pageCount: pageCount,
-                  pages: pages,
+                  pages: [],
                   links: links,
-                  partialDocuments: partialDocuments,
-                  progress: progress,
-                  sourceClassification: sourceClassification)
+                  partialDocuments: [],
+                  progress: .completed,
+                  sourceClassification: sourceClassification,
+                  expirationDate: expirationDate)
     }
 }
 
@@ -226,4 +311,10 @@ extension Document.Links: Decodable {
 
 extension Document.Layout: Decodable {
     
+}
+
+extension Document: Equatable {
+    public static func == (lhs: Document, rhs: Document) -> Bool {
+        lhs.id == rhs.id
+    }    
 }

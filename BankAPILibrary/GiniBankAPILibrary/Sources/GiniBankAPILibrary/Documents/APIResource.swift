@@ -10,20 +10,20 @@ import Foundation
 public enum APIDomain {
     /// The default one, which points to https://pay-api.gini.net
     case `default`
-    /// The accounting API, which points to https://accounting-api.gini.net/
-    case accounting
-    /// The GYM API, which points to https://gym.gini.net/
-    case gym(tokenSource: AlternativeTokenSource)
-    /// A custom domain with optional custom token source
-    case custom(domain: String, tokenSource: AlternativeTokenSource?)
+    /// A custom domain with optional path and custom token source
+    case custom(domain: String, path: String? = nil, tokenSource: AlternativeTokenSource?)
     
-    var domainString: String {
-        
+    public var domainString: String {
         switch self {
         case .default: return "pay-api.gini.net"
-        case .accounting: return "accounting-api.gini.net"
-        case .gym: return "gym.gini.net"
-        case .custom(let domain, _): return domain
+        case .custom(let domain, _, _): return domain
+        }
+    }
+    
+    var path: String {
+        switch self {
+        case .custom(_, let path, _): return path ?? ""
+        default: return ""
         }
     }
 }
@@ -48,8 +48,7 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default, .gym, .custom: return 2
-        case .accounting: return 1
+        case .default, .custom: return 2
         }
     }
     
@@ -68,12 +67,17 @@ struct APIResource<T: Decodable>: Resource {
                     URLQueryItem(name: "doctype", itemValue: docType?.rawValue)
             ]
         case .paymentRequests(let limit, let offset):
-            return [URLQueryItem(name: "offset", itemValue: offset),URLQueryItem(name: "limit", itemValue: limit)]
+            return [URLQueryItem(name: "offset", itemValue: offset),
+                    URLQueryItem(name: "limit", itemValue: limit)]
         default: return nil
         }
     }
     
     var path: String {
+        return "\(domain.path)\(methodPath)"
+    }
+    
+    private var methodPath: String {
         switch method {
         case .composite:
             return "/documents/composite"
@@ -101,6 +105,8 @@ struct APIResource<T: Decodable>: Resource {
             }
         case .pagePreview(let id, let number):
             return "/documents/\(id)/pages/\(number)/large"
+        case .documentPage(let id, let number, let sizeType):
+            return "/documents/\(id)/pages/\(number)/\(sizeType)"
         case .partial:
             return "/documents/partial"
         case .processedDocument(let id):
@@ -115,33 +121,46 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)/payment"
         case .logErrorEvent:
             return "/events/error"
+        case .configurations:
+            return "/configurations"
+        case .analyticsEvent:
+            return "/events/batch"
         }
     }
     
     var defaultHeaders: HTTPHeaders {
+        let acceptHeaderKey = "Accept"
+        let contentTypeHeaderKey = "Content-Type"
+        
+        let jsonAcceptValue = ContentType.content(version: apiVersion, 
+                                                  subtype: nil,
+                                                  mimeSubtype: "json").value
+        let jsonContentTypeValue = ContentType.content(version: apiVersion, 
+                                                       subtype: nil,
+                                                       mimeSubtype: "json").value
+        let amplitudeEventsValue = "application/vnd.gini.v1.events.amplitude"
+        
         switch method {
         case .createDocument(_, _, let mimeSubType, let documentType):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
-            ]
-        case .page, .pagePreview(_, _):
+            let dynamicContentType = ContentType.content(version: apiVersion, 
+                                                         subtype: documentType?.name,
+                                                         mimeSubtype: mimeSubType).value
+            return [acceptHeaderKey: jsonAcceptValue, 
+               contentTypeHeaderKey: dynamicContentType]
+
+        case .page, .pagePreview, .documentPage:
             return [:]
-        case .paymentRequests(_, _) :
-        return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "json").value]
+            
+        case .paymentRequests:
+            return [acceptHeaderKey: jsonAcceptValue]
+            
+        case .analyticsEvent:
+            return [acceptHeaderKey: ContentType.json.value, 
+               contentTypeHeaderKey: amplitudeEventsValue]
+
         default:
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                         subtype: nil,
-                                                         mimeSubtype: "json").value
-            ]
+            return [acceptHeaderKey: jsonAcceptValue, 
+               contentTypeHeaderKey: jsonContentTypeValue]
         }
     }
     
@@ -151,10 +170,12 @@ struct APIResource<T: Decodable>: Resource {
          additionalHeaders: HTTPHeaders = [:],
          body: Data? = nil) {
         self.method = method
-        self.domain = apiDomain
-        self.params = RequestParameters(method: httpMethod,
+        domain = apiDomain
+        params = RequestParameters(method: httpMethod,
                                         body: body)
-        self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
+        params.headers = defaultHeaders.merging(additionalHeaders) {
+            (current, _ ) in current
+        }
     }
     
     func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType {
@@ -170,7 +191,9 @@ struct APIResource<T: Decodable>: Resource {
             if let string = string as? ResponseType {
                 return string
             } else {
-                throw GiniError.parseError(message: "Invalid string response", response: response, data: data)
+                throw GiniError.parseError(message: "Invalid string response",
+                                           response: response,
+                                           data: data)
             }
         }
         

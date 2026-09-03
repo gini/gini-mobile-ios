@@ -49,3 +49,6 @@
 "ginipaybank.paymentconfirmationscreen.date" = "Datum";
 "ginipaybank.paymentconfirmationscreen.transactionid" = "Transaktions-ID";
 "ginipaybank.paymentconfirmationscreen.amount" = "Betrag";
+
+"ginipaybank.reviewscreen.payButton.title" = "Zahlen";
+"ginipaybank.reviewscreen.backToInitialApp.title" = "Zurück";

@@ -151,11 +151,23 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     cancellationToken: cancellationToken,
                     completion: completion)
     }
-    
+    /**
+     *  Retrieves the extractions for a given documentId.
+     *
+     * - Parameter documentId:          Document id from which to get the extractions for
+     * - Parameter completion:          A completion callback, returning the extraction list on success
+     */
+    public func extractions(for documentId: String,
+                            completion: @escaping CompletionResult<ExtractionResult>) {
+        fetchDocumentExtractions(resourceHandler: sessionManager.data,
+                                 for: documentId,
+                                 completion: completion)
+    }
+
     /**
      *  Retrieves the layout of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the layout
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
@@ -165,13 +177,23 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /**
      *  Retrieves the pages of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the pages
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
         pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }
-    
+
+    /**
+     *  Retrieves the pages of a given document id
+     *
+     * - Parameter documentId:          Document id from which to retrieve the pages
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    public func pages(for documentId: String, completion: @escaping CompletionResult<[Document.Page]>) {
+        pages(resourceHandler: sessionManager.data, for: documentId, completion: completion)
+    }
+
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
@@ -190,7 +212,62 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     size: size,
                     completion: completion)
     }
-    
+
+    /**
+     *  Retrieves the page preview of a document for a given page
+     *
+     * - Parameter documentId:          Document id to get the preview for
+     * - Parameter pageNumber:          The document's page number starting from 1
+     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
+     */
+    public func preview(for documentId: String,
+                        pageNumber: Int,
+                        completion: @escaping CompletionResult<Data>) {
+
+        preview(resourceHandler: sessionManager.download,
+                with: documentId,
+                pageNumber: pageNumber,
+                completion: completion)
+    }
+
+    /**
+     *  Retrieves the page data of a document for a given page number and size
+     *
+     * - Parameter documentId:          Document id to get the preview for
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
+     */
+    public func documentPage(for documentId: String,
+                             pageNumber: Int,
+                             size: Document.Page.Size,
+                             completion: @escaping CompletionResult<Data>) {
+        documentPage(resourceHandler: sessionManager.download,
+                     in: documentId,
+                     pageNumber: pageNumber,
+                     size: size,
+                     completion: completion)
+    }
+
+    /**
+     *  Retrieves the page data of a document for a given page number and size
+     *
+     * - Parameter document:            The document from which to retrieve the page data
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
+     */
+    public func documentPage(for document: Document,
+                             pageNumber: Int,
+                             size: Document.Page.Size,
+                             completion: @escaping CompletionResult<Data>) {
+        documentPage(resourceHandler: sessionManager.download,
+                     in: document,
+                     pageNumber: pageNumber,
+                     size: size,
+                     completion: completion)
+    }
+
     /**
      *  Submits the analysis feedback for a given document.
      *
@@ -201,7 +278,10 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, completion: completion)
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: document.id,
+                       with: extractions,
+                       completion: completion)
     }
     
     /**
@@ -216,26 +296,54 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                with extractions: [Extraction],
                                and compoundExtractions: [String: [[Extraction]]],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, and: compoundExtractions, completion: completion)
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: document.id,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
     }
     
     /**
-     *  Retrieves the page preview of a document for a given page
+     *  Submits the analysis feedback for a given document id.
      *
-     * - Parameter documentId:          Document id to get the preview for
-     * - Parameter pageNumber:          The document's page number starting from 1
-     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions
+     * - Parameter completion:          A completion callback
+     *
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:completion:)`,
+     *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
      */
-    public func preview(for documentId: String,
-                            pageNumber: Int,
-                            completion: @escaping CompletionResult<Data>) {
-
-        preview(resourceHandler: sessionManager.download,
-                    with: documentId,
-                    pageNumber: pageNumber,
-                    completion: completion)
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: documentId,
+                       with: extractions,
+                       completion: completion)
     }
     
+    /**
+     *  Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
+     *
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions
+     * - Parameter compoundExtractions: The document's updated compound extractions
+     * - Parameter completion:          A completion callback
+     *
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: documentId,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
+    }
+
     /**
      * Logs an error event.
      *

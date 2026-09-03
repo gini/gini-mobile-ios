@@ -10,6 +10,28 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
+    func pauseQRDetection() {
+        // This method will remain empty; no implementation is needed.
+    }
+    
+    func resumeQRDetection() {
+        // This method will remain empty; no implementation is needed.
+    }
+    
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform) {
+        // This method will remain empty; no implementation is needed.
+    }
+    
+    var didDetectIBANs: (([String]) -> Void)?
+
+    func startOCR() {
+        // This method will remain empty; no implementation is needed.
+    }
+
+    var didDetectInvalidQR: ((GiniCaptureSDK.GiniQRCodeDocument) -> Void)?
     
     enum CameraAuthState {
         case authorized
@@ -22,23 +44,28 @@ final class CameraMock: CameraProtocol {
     let state: CameraAuthState
     var isFlashOn: Bool = true
     var isFlashSupported: Bool = true
-    
+    var hasInitialized: Bool = true
+
     init(state: CameraAuthState) {
         self.state = state
     }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+        // This method will remain empty; no implementation is needed.
+    }
     
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func focus(withMode mode: AVCaptureDevice.FocusMode,
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool) {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
-    func setup(completion: ((CameraError?) -> Void)) {
+    func setup(completion: @escaping ((CameraError?) -> Void)) {
         switch state {
         case .authorized:
             completion(nil)
@@ -47,15 +74,15 @@ final class CameraMock: CameraProtocol {
         }
     }
     
-    func setupQRScanningOutput() {
-        
+    func setupQRScanningOutput(completion: @escaping ((GiniCaptureSDK.CameraError?) -> Void)) {
+        // This method will remain empty; no implementation is needed.
     }
     
     func start() {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func stop() {
-        
+        // This method will remain empty; no implementation is needed.
     }
 }

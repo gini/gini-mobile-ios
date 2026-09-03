@@ -2,1417 +2,929 @@
 // GiniBankConfiguration.swift
 // GiniBank
 //
-//  Created by Nadya Karaban on 11.03.21.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankAPILibrary
+import GiniUtilites
 
 public final class GiniBankConfiguration: NSObject {
-    
+
+    // MARK: - Accessing the shared configuration
     /**
-     Singleton to make configuration internally accessible in all classes of the Gini Pay Bank SDK.
+     Singleton to make configuration internally accessible in all classes of the Gini Bank SDK.
      */
     public static var shared = GiniBankConfiguration()
-    
-    /**
-     Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
-     the user will be presented with a digital representation of their invoice where they
-     can see individual line items and are able to amend them or choose to not to pay for them.
-    */
-    
-    @objc public var returnAssistantEnabled = true
-    
+
+    // MARK: - Initializer
     /**
      Returns a `GiniBankConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Bank SDK.
-     
+
      - returns: Instance of `GiniBankConfiguration`.
      */
-    public override init() {}
-    
-    // MARK: General options
-    
-    /**
-     Sets custom validations that can be done apart from the default ones (file size, file type...).
-     It should throw a `CustomDocumentValidationError` error.
-     */
-    @objc public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
-        return CustomDocumentValidationResult.success()
+    override init() {
+        // This initializer is intentionally left empty because no custom setup is required at initialization.
     }
-    
-    /**
-     Can be turned on during development to unlock extra information and to save captured images to camera roll.
-     
-     - warning: Should never be used outside of a development enviroment.
-     */
-    @objc public var debugModeOn = false
-    
-    /**
-     Used to handle all the logging messages in order to log them in a different way.
-     */
 
-    @objc public var logger: GiniLogger = GiniConfiguration().logger
-    
+    // MARK: - General options
+    /**
+     The appearance of the status bar in the Gini Bank SDK.
+     */
+    public var statusBarStyle = UIStatusBarStyle.lightContent
+
+    /**
+     Should be set if the default name "Localizable.strings" is not used.
+     */
+    public var localizedStringsTableName: String?
+
+    /**
+     Bottom navigation bar is no longer supported. Setting this property has no effect.
+     */
+    internal let bottomNavigationBarEnabled: Bool = false
+
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
      multiple pages can be processed, showing a different review screen when capturing.
      */
-    @objc public var multipageEnabled = false
-    
-    /**
-     Sets the tint color of the navigation bar in all screens of the Gini Pay Bank SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? Colors.Gini.raspberry
-    
-    /**
-     Sets the tint color of all navigation items in all screens of the Gini Pay Bank SDK to
-     the globally specified color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemTintColor = UINavigationBar.appearance().tintColor
-    
-    /**
-     Sets the font of all navigation items in all screens of the Gini Pay Bank SDK to
-     the globally specified font or a default font.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemFont = UIBarButtonItem.appearance()
-        .titleTextAttributes(for: .normal).dictionary?[NSAttributedString.Key.font.rawValue] as? UIFont ??
-        UIFont.systemFont(ofSize: 16, weight: .bold)
-    
-    /**
-     Sets the title color in the navigation bar in all screens of the Gini Pay Bank SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleColor = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .white
-    
-    /**
-     Sets the title font in the navigation bar in all screens of the Gini Pay Bank SDK to
-     the globally specified font or to a default font.
+    public var multipageEnabled = false
 
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleFont = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.font] as? UIFont ?? UIFont.systemFont(ofSize: 16, weight: .regular)
-    
     /**
-     Sets the tint color of the UIDocumentPickerViewController navigation bar.
+     Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
+     */
+    public var customNavigationController: UINavigationController?
+
+    /**
+     Sets custom validations that can be done apart from the default ones (file size, file type...).
+     It should throw a `CustomDocumentValidationError` error.
+     */
+    public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
+        return CustomDocumentValidationResult.success()
+    }
+
+    /**
+     Should be set if the main app's bundle is not used.
+     */
+    public var customResourceBundle: Bundle?
+
+    /**
+     Enables the customization of resources to override the default Gini resources. The change will affect all screens.
+
+     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations,
+     such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`,
+     `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
+     */
+    public var customResourceProvider: CustomResourceProvider?
+
+    /**
+     Custom network provider for HTTP requests.
      
-     - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
-     - note: Only iOS >= 11.0
+     Allows you to provide a custom HTTP client implementation for all network requests.
+     This gives you full control over transport, headers, logging, TLS configuration, and proxies.
+
+     **Example Usage:**
+     ```swift
+     let configuration = GiniBankConfiguration.shared
+     configuration.customNetworkProvider = MyNetworkProvider()
+     ```
+     
+     - Note: If this property is set to nil (default), the SDK will use its built-in secure networking implementation,
+     including certificate pinning where applicable.
+     - Note: This configuration is passed through to `GiniConfiguration` and flows to the API layer.
      */
-    @objc public var documentPickerNavigationBarTintColor: UIColor?
-    
+    public var customNetworkProvider: GiniNetworkProvider?
+
+    // MARK: - Button configuration options
     /**
-     Sets the background color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
+     A configuration that defines the appearance of the primary button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different
+     screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
      */
-    @objc public var noticeInformationBackgroundColor = UIColor.black
-    
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.accent1,
+                                                                     borderColor: .clear,
+                                                                     titleColor: .GiniBank.light1,
+                                                                     shadowColor: .clear,
+                                                                     cornerRadius: 16,
+                                                                     borderWidth: 0,
+                                                                     shadowRadius: 0,
+                                                                     withBlurEffect: false)
     /**
-     Sets the text color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `No Results`, `Error`.
      */
-    @objc public var noticeInformationTextColor = UIColor.white
-    
+    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.dark4,
+                                                                       borderColor: GiniColor(light: .GiniBank.light6,
+                                                                                              dark: .clear).uiColor(),
+                                                                       titleColor: GiniColor(light: .GiniBank.dark6,
+                                                                                             dark: .GiniBank.light1)
+                                                                        .uiColor(),
+                                                                       shadowColor: .clear,
+                                                                       cornerRadius: 16,
+                                                                       borderWidth: 2,
+                                                                       shadowRadius: 14,
+                                                                       withBlurEffect: true)
     /**
-     Sets the background color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
+     A configuration that defines the appearance of the transparent button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Onboarding` screen in the bottom navigation bar.
      */
-    @objc public var noticeErrorBackgroundColor = UIColor.red
-    
+    public lazy var transparentButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
+                                                                         borderColor: .clear,
+                                                                         titleColor: .GiniBank.accent1,
+                                                                         shadowColor: .clear,
+                                                                         cornerRadius: 16,
+                                                                         borderWidth: 0,
+                                                                         shadowRadius: 0,
+                                                                         withBlurEffect: false)
     /**
-     Sets the text color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
+     A configuration that defines the appearance of the camera buttons, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for `Browse` and `Flash` buttons on `Camera` screen.
      */
-    @objc public var noticeErrorTextColor = UIColor.white
-    
+    public lazy var cameraControlButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
+                                                                           borderColor: .clear,
+                                                                           titleColor: .GiniBank.light1,
+                                                                           shadowColor: .clear,
+                                                                           cornerRadius: 0,
+                                                                           borderWidth: 0,
+                                                                           shadowRadius: 0,
+                                                                           withBlurEffect: false)
     /**
-     Indicates whether the open with feature is enabled or not. In case of `true`,
-     a new option with the open with tutorial wil be shown in the Help menu
+     A configuration that defines the appearance of the "Add Page" button, including its background color, border color, title color,
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Review `screen.
      */
-    @objc public var openWithEnabled = false
-    
+    public lazy var addPageButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
+                                                                     borderColor: .clear,
+                                                                     titleColor: GiniColor(light: .GiniBank.dark2,
+                                                                                           dark: .GiniBank.light2)
+                                                                        .uiColor(),
+                                                                     shadowColor: .clear,
+                                                                     cornerRadius: 0,
+                                                                     borderWidth: 0,
+                                                                     shadowRadius: 0,
+                                                                     withBlurEffect: false)
+
+    // MARK: - Loading indicators
+    /**
+     Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
+     */
+    public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
+
+    /**
+     Set an adapter implementation to show a custom loading indicator on the document analysis screen.
+     */
+    public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
+
+    // MARK: - QR code options
     /**
      Indicates whether the QR Code scanning feature is enabled or not.
      */
-    @objc public var qrCodeScanningEnabled = false
-    
+    public var qrCodeScanningEnabled = false
+
     /**
-     Indicates the status bar style in the Gini Pay Bank SDK.
-     
-     - note: If `UIViewControllerBasedStatusBarAppearance` is set to `false` in the `Info.plist`,
-     it may not work in future versions of iOS since the `UIApplication.setStatusBarStyle` method was
-     deprecated on iOS 9.0
+     Indicates whether only the QR Code scanning feature is enabled or not.
      */
-    @objc public var statusBarStyle = UIStatusBarStyle.lightContent
-    
-    // MARK: Camera options
-    
+    public var onlyQRCodeScanningEnabled = false
+
+    // MARK: - Camera screen
     /**
-     Sets the text color of the descriptional text when camera access was denied.
+     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
-    @objc public var cameraNotAuthorizedTextColor = UIColor.white
-    
-    /**
-     Sets the text color of the button title when camera access was denied.
-     */
-    @objc public var cameraNotAuthorizedButtonTitleColor = UIColor.white
-    
-    /**
-     Sets the color of camera preview corner guides
-     */
-    @objc public var cameraPreviewCornerGuidesColor = UIColor.white
-    
-    /**
-     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default
-     
-     */
-    @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
-    
-    /**
-     Sets the background color of the new file import button hint
-     */
-    @objc public var fileImportToolTipBackgroundColor = UIColor.white
-    
-    /**
-     Sets the text color of the new file import button hint
-     */
-    @objc public var fileImportToolTipTextColor = UIColor.black
-    
-    /**
-     Sets the text color of the new file import button hint
-     */
-    @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
-    
-    /**
-     Sets the background style when the tooltip is shown
-     */
-    public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
-        
-        set {
-            _toolTipOpaqueBackgroundStyle = newValue
-        }
-        
-        get {
-            
-            if let setValue = _toolTipOpaqueBackgroundStyle {
-                return setValue
-            } else {
-                
-                if #available(iOS 13.0, *) {
-                    return .blurred(style: .regular)
-                } else {
-                    return .blurred(style: .dark)
-                }
-            }
-        }
-    }
-    
-    private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
-    
-    /**
-     Sets the text color of the item selected background check
-     */
-    @objc public var galleryPickerItemSelectedBackgroundCheckColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color for gallery screen.
-     */
-    
-    @objc public var galleryScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
-    
+    public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
+
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
-     
      */
-    @objc public var flashToggleEnabled = false
-    
-    /**
-     When the flash toggle is enabled, this flag indicates if the flash is on by default.
-     */
-    @objc public var flashOnByDefault = true
-    
-    /**
-     Sets the color of the captured images stack indicator label
-     */
-    @objc public var imagesStackIndicatorLabelTextcolor: UIColor = Colors.Gini.blue
-    
-    /**
-     Sets the close button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarCameraTitleCloseButton = ""
-    
-    /**
-     Sets the help button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarCameraTitleHelpButton = ""
-    
-    /**
-     Sets the text color of the QR Code popup button
-     */
-    @objc public var qrCodePopupButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the QR Code popup label
-     */
-    @objc public var qrCodePopupTextColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
-    
-    /**
-     Sets the text color of the QR Code popup background
-     */
-    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
-    
-    // MARK: Onboarding screens
+    public var flashToggleEnabled = false
 
     /**
-     Sets the continue button text in the navigation bar on the onboarding screen.
-     
-     - note: Screen API only.
+     Set whether the camera flash should be on or off when the SDK starts. The flash is off by default.
      */
-    @objc public var navigationBarOnboardingTitleContinueButton = ""
-    
+    public var flashOnByDefault = false
+
     /**
-     Sets the color of the page controller's page indicator items.
+     Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var onboardingPageIndicatorColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
+    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
+
+    // MARK: - Onboarding screens
     /**
-     Sets the color of the page controller's current page indicator item.
+     Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
-    @objc public var onboardingCurrentPageIndicatorColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets alpha to the color of the page controller's current page indicator item.
-     */
-    @objc public var onboardingCurrentPageIndicatorAlpha: CGFloat = 0.2
-    
-    /**
-     Indicates whether the onboarding screen should be presented at each start of the Gini Pay Bank SDK.
-     
-     - note: Screen API only.
-     */
-    @objc public var onboardingShowAtLaunch = false
-    
+    public var onboardingShowAtLaunch = false
+
     /**
      Indicates whether the onboarding screen should be presented at the first
-     start of the Gini Pay Bank SDK. It is advised to do so.
-     
+     start of the Gini Bank SDK. It is advised to do so.
+
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
-     - note: Screen API only.
      */
-    @objc public var onboardingShowAtFirstLaunch = true
-    
-    /**
-     Sets the color ot the text for all onboarding pages.
-     */
-    @objc public var onboardingTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the background color for all onboarding pages.
-     */
-        
-    @objc public var onboardingScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
-    
-    /**
-     All onboarding pages which will be presented in a horizontal scroll view to the user.
-     By default the Gini Pay Bank SDK comes with three pages advising the user to keep the
-     document flat, hold the device parallel and capture the whole document.
-     
-     - note: Any array of views can be passed, but for your convenience we provide the `GINIOnboardingPage` class.
-     */
-    @objc public var onboardingPages: [UIView] {
-        get {
-            if let pages = onboardingCustomPages {
-                return pages
-            }
-            guard let page1 = OnboardingPage(imageNamed: "onboardingPage1",
-                                             text: .localized(resource: OnboardingStrings.onboardingFirstPageText),
-                                             rotateImageInLandscape: true),
-                let page2 = OnboardingPage(imageNamed: "onboardingPage2",
-                                           text: .localized(resource: OnboardingStrings.onboardingSecondPageText)),
-                let page3 = OnboardingPage(imageNamed: "onboardingPage3",
-                                           text: .localized(resource: OnboardingStrings.onboardingThirdPageText)),
-                let page4 = OnboardingPage(imageNamed: "onboardingPage5",
-                                           text: .localized(resource: OnboardingStrings.onboardingFifthPageText)) else {
-                    return [UIView]()
-            }
-            
-            onboardingCustomPages = [page1, page2, page3, page4]
-            if let ipadTipPage = OnboardingPage(imageNamed: "onboardingPage4",
-                                                text: .localized(resource: OnboardingStrings.onboardingFourthPageText)),
-                UIDevice.current.isIpad {
-                onboardingCustomPages?.insert(ipadTipPage, at: 0)
-            }
-            return onboardingCustomPages!
-        }
-        set {
-            self.onboardingCustomPages = newValue
-        }
-    }
-    fileprivate var onboardingCustomPages: [UIView]?
-    
-    /**
-     Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarReviewTitleBackButton = ""
-    
-    /**
-     Sets the close button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarReviewTitleCloseButton = ""
-    
-    /**
-     Sets the continue button text in the navigation bar on the review screen.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarReviewTitleContinueButton = ""
-    
-    /**
-     Sets the background color of the bottom section on the review screen containing the rotation button.
-     
-     - note: Background will have a 20% transparency, to have enough space for the document image on smaller devices.
-     */
-    @objc public var reviewBottomViewBackgroundColor = UIColor.black
-    
-    /**
-     Sets the font of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomFont = UIFont.systemFont(ofSize: 12, weight: .thin)
-    
-    /**
-     Sets the color of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomColor = UIColor.white
-    
-    // MARK: Multipage options
-    
-    /**
-     Sets the color of the pages container and toolbar
-     */
-    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
-    
-    @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
-    
-    /**
-     Sets the color of the circle indicator
-     */
-    @objc public var indicatorCircleColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: .lightGray)
-    
-    /**
-     Sets the tint color of the toolbar items
-     */
-    @objc public var multipageToolbarItemsColor = Colors.Gini.blue
-    
-    /**
-     Sets the tint color of the page indicator
-     */
-    @objc public var multipagePageIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color of the page selected indicator
-     */
-    @objc public var multipagePageSelectedIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color of the page background
-     */
-    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
-    
-    @objc private var _multipagePageBackgroundColor: UIColor?
-    
-    /**
-     Sets the tint color of the draggable icon in the page collection cell
-     */
-    @objc public var multipageDraggableIconColor = Colors.Gini.veryLightGray
+    public var onboardingShowAtFirstLaunch = true
 
     /**
-     Sets the background style when the tooltip is shown in the multipage screen
+     Set custom onboarding pages
+     - note: For your convenience we provide the `OnboardingPage` struct.
      */
-    public var multipageToolTipOpaqueBackgroundStyle: OpaqueViewStyle = .blurred(style: .light)
-    
-    // MARK: Analysis options
-    
+    public var customOnboardingPages: [OnboardingPage]?
+
     /**
-     Sets the color of the loading indicator on the analysis screen to the specified color.
+     Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var analysisLoadingIndicatorColor = Colors.Gini.blue
-    
+    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
+
     /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
+     Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
      */
-    @objc public var analysisPDFInformationBackgroundColor = Colors.Gini.bluishGreen
-    
+    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
+
     /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
+     Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
      */
-    @objc public var analysisPDFInformationTextColor = UIColor.white
-    
+    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
+
     /**
-     Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
+     Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
      */
-    @objc public var navigationBarAnalysisTitleBackButton = ""
-    
-    // MARK: Help screens
-    
+    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
+
     /**
-     Sets the background color for all help screens.
+     Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
      */
-    
-    @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
+    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    // MARK: - Review screen
     /**
-     Sets the background color for the cells on help screen.
+     Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
+    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
+
+    // MARK: - Gallery screen
     /**
-     Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
+     Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
-    
+    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
+
+    // MARK: - Help screens
     /**
-     Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
+     Indicates whether the open with feature is enabled or not. In case of `true`,
+     a new option with the `Open with` tutorial will be shown on the Help menu.
      */
-    @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
-    
+    public var openWithEnabled = false
+    /**
+     Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
+     */
+    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
+
+    /**
+     Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen.
+     By selecting the cell the user will be redirected to the page, which represented by viewController provided
+     by customer during the `HelpMenuViewController.Item` initialization.
+     */
+    public var customMenuItems: [HelpMenuItem] = []
+
     /**
      Indicates whether the supported format screens should be shown. In case of `false`,
      the option won't be shown in the Help menu.
      */
-    @objc public var shouldShowSupportedFormatsScreen = true
-    
-    // MARK: Supported formats
-    
-    /**
-     Sets the color of the unsupported formats icon background to the specified color.
-     */
-    @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
-    
-    /**
-     Sets the color of the supported formats icon background to the specified color.
-     */
-    @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
-    
-    // MARK: Open with tutorial options
-    
-    /**
-     Sets the text of the app name for the Open with tutorial texts
-     
-     */
-    @objc public var openWithAppNameForTexts = Bundle.main.appName
-    
-    /**
-     Sets the color of the step indicator for the Open with tutorial
-     
-     */
-    @objc public var stepIndicatorColor = Colors.Gini.blue
-    
-    // MARK: No results options
-    
-    /**
-     Sets the color of the bottom button to the specified color
-     */
-    @objc public var noResultsBottomButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the color of the warning container background to the specified color
-     */
-    @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
-    
-    /**
-     Sets if the Drag&Drop step should be shown in the "Open with" tutorial
-     */
-    @objc public var shouldShowDragAndDropTutorial = true
-    
-    // Undocumented--Xamarin only
-    @objc public var closeButtonResource: PreferredButtonResource?
-    @objc public var helpButtonResource: PreferredButtonResource?
-    @objc public var backToCameraButtonResource: PreferredButtonResource?
-    @objc public var backToMenuButtonResource: PreferredButtonResource?
-    @objc public var nextButtonResource: PreferredButtonResource?
-    @objc public var cancelButtonResource: PreferredButtonResource?
-    
-    // MARK: Return Assistant
-    
-    /**
-     Sets the background color for the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
-    
-    /**
-     Sets the text color for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
-    
-    /**
-     Sets the font for the page title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenPageTitleFont =  UIFont.systemFont(ofSize: 28, weight: .semibold)
-    
-    /**
-     Sets the font for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleFont =  UIFont.systemFont(ofSize: 28, weight: .bold)
-    
-    /**
-     Sets the text color for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(lightModeColor: .black, darkModeColor:.white)
-    
-    /**
-     Sets the font for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
-    
-    /**
-     Sets the background color for the back button on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonColor =  Colors.Gini.blue
+    public var shouldShowSupportedFormatsScreen = true
 
     /**
-     Sets the title color for the back button on the return assistant help screen.
+     Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
+     - note: Available just for iPad
      */
-    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
-    
-    /**
-     Sets the font for the back button title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonTitleFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
-
-        
-    // MARK: Digital invoice
+    public var shouldShowDragAndDropTutorial = true
 
     /**
-     Sets the color of the active elements on the digital invoice line item cells to the specified color
+     Sets the text of the app name for the Open with tutorial texts.
      */
-    @objc public var lineItemTintColor = Colors.Gini.blue
-    
+    public var openWithAppNameForTexts = Bundle.main.appName
+
+    // MARK: - Error screens
     /**
-     Sets the color of the active elements on the digital invoice line item count label to the specified color
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var lineItemCountLabelColor = UIColor.lightGray
-    
+    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
+
+    // MARK: - No results screen
     /**
-     Sets the font of the line item name on the digital invoice  line item count label to the specified font.
+     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var lineItemCountLabelFont = UIFont.systemFont(ofSize: 16)
-    
-    /**
-     Sets the font of the line item name on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceLineItemNameFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-    
-    /**
-     Sets the font of the line item edit button title on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceLineItemEditButtonTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-    
-    /**
-     Sets the font of the line item label that displays the quantity on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceLineItemQuantityFont = UIFont.systemFont(ofSize: 32, weight: .bold)
-    
-    /**
-     Sets the color of  the line item label that  displays the quantity on the digital invoice line item cells to the specified color
-     */
-    @objc public var digitalInvoiceLineItemQuantityColor =  GiniColor(lightModeColor: .black, darkModeColor: .white)
-    
-    /**
-     Sets the font of the main currency unit of the price on the line item
-     of the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceLineItemPriceMainUnitFont = UIFont.systemFont(ofSize: 32, weight: .bold)
-    
-    /**
-    Sets the font of the fractional currency unit of the price on the line item
-    of the digital invoice screen to the specified font.
-    */
-    @objc public var digitalInvoiceLineItemPriceFractionalUnitFont = UIFont.systemFont(ofSize: 18, weight: .bold)
-    
-    /**
-     Sets the font of the secondary informational message on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceSecondaryMessageTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    
-    /**
-     Sets the color of the secondary message label on the digital invoice line item cells to the specified color
-     */
-    @objc public var digitalInvoiceSecondaryMessageTextColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color for digital invoice screen.
-     */
-    @objc public var digitalInvoiceBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
-    
-    /**
-     Sets the background color for the line items on the digital invoice screen.
-     */
-    @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
-    
-    /**
-     Sets the font of the footer message on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceFooterMessageTextFont = UIFont.systemFont(ofSize: 14)
-    
-    /**
-     Sets the add article button tint color of the footer section on the digital invoice screen.
-     */
-    @objc public var digitalInvoiceFooterAddArticleButtonTintColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the footer message on the digital invoice screen.
-     */
-    @objc public var digitalInvoiceFooterMessageTextColor = GiniColor(lightModeColor: .darkGray, darkModeColor:.white)
-    
-    /**
-     Sets the text color of the items section header on the digital invoice screen.
-     */
-    @objc public var digitalInvoiceItemsSectionHeaderTextColor = GiniColor(lightModeColor: .gray, darkModeColor:.white)
+    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
+
+    // MARK: - Digital Invoice
 
     /**
-     Sets the font of the items section header on the digital invoice screen to the specified font.
+     Set an adapter implementation to show a custom illustration on the return assistant onboarding page.
      */
-    @objc public var digitalInvoiceItemsSectionHeaderTextFont = UIFont.systemFont(ofSize: 12)
-    
-    /**
-     Sets the background color of the digital invoice pay button to the specified color
-     */
-    @objc public var payButtonBackgroundColor = Colors.Gini.blue
-    
-    /**
-     Sets the title text color of the digital invoice pay button to the specified color
-     */
-    @objc public var payButtonTitleTextColor = UIColor.white
-    
-    /**
-     Sets the title text font of the digital invoice pay button to the specified font
-     */
-    @objc public var payButtonTitleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    
-    /**
-     Sets the background color of the digital invoice skip button to the specified color
-     */
-    @objc public var skipButtonBackgroundColor = UIColor.white
-    
-    /**
-     Sets the title text color of the digital invoice skip button to the specified color
-     */
-    @objc public var skipButtonTitleTextColor = Colors.Gini.blue
-    
-    /**
-     Sets the layer border color of the digital invoice skip button to the specified color
-     */
-    @objc public var skipButtonBorderColor = Colors.Gini.blue
-    
-    /**
-     Sets the title text font of the digital invoice skip button to the specified font
-     */
-    @objc public var skipButtonTitleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    
-    /**
-     Sets the font of the addon labels on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceAddonLabelFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-    
-    /**
-     Sets the font of the total caption label on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceTotalCaptionLabelFont = UIFont.systemFont(ofSize: 32, weight: .semibold)
-    
-    /**
-     Sets the font of the total explanation label on the digital invoice screen to the specified font.
-     */
-    @objc public var digitalInvoiceTotalExplanationLabelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-    
-    /**
-     Sets the text color of the explanation label on the digital invoice screen.
-     */
-    @objc public var digitalInvoiceTotalExplanationLabelTextColor = GiniColor(lightModeColor: .lightGray, darkModeColor: .lightGray)
-    
-    /**
-     Sets the font of the main unit of the addon price labels to the specified font
-     */
-    @objc public var digitalInvoiceAddonPriceMainUnitFont = UIFont.systemFont(ofSize: 16, weight: .bold)
-    
-    /**
-     Sets the font of the fractional unit of the addon price labels to the specified font
-     */
-    @objc public var digitalInvoiceAddonPriceFractionalUnitFont = UIFont.systemFont(ofSize: 9, weight: .bold)
-    
-    /**
-     Sets the color of the addon price labels in the digital invoice screen to the specified color
-     */
-    @objc public var digitalInvoiceAddonPriceColor: UIColor {
-        
-        set {
-            _digitalInvoiceAddonPriceColor = newValue
-        }
-
-        get {
-
-            if let setValue = _digitalInvoiceAddonPriceColor {
-                return setValue
-            } else {
-
-                if #available(iOS 13.0, *) {
-
-                    return .label
-
-                } else {
-                    return .black
-                }
-            }
-        }
-    }
-    
-    @objc private var _digitalInvoiceAddonPriceColor: UIColor?
-    
-    /**
-     Sets the color of the total price label in the digital invoice screen to the specified color
-     */
-    @objc public var digitalInvoiceTotalPriceColor: UIColor {
-        
-        set {
-            _digitalInvoiceTotalPriceColor = newValue
-        }
-
-        get {
-
-            if let setValue = _digitalInvoiceTotalPriceColor {
-                return setValue
-            } else {
-
-                if #available(iOS 13.0, *) {
-
-                    return .label
-
-                } else {
-                    return .black
-                }
-            }
-        }
-    }
-    
-    @objc private var _digitalInvoiceTotalPriceColor: UIColor?
-    
-    /**
-     Sets the font of the digital invoice main unit of the total price label to the specified font
-     */
-    @objc public var digitalInvoiceTotalPriceMainUnitFont = UIFont.systemFont(ofSize: 32, weight: .bold)
-    
-    /**
-     Sets the font of the digital invoice fractional unit of the total price label to the specified font
-     */
-    @objc public var digitalInvoiceTotalPriceFractionalUnitFont = UIFont.systemFont(ofSize: 18, weight: .bold)
-    
-    /**
-     Sets the font of the content description labels in the line item details view controller to the specified font
-     */
-    @objc public var lineItemDetailsDescriptionLabelFont = UIFont.systemFont(ofSize: 12)
-    
-    /**
-     Sets the color of the content description labels in the line item details view controller to the specified color
-     */
-    
-    @objc public var lineItemDetailsDescriptionLabelColor: UIColor {
-        
-        set {
-            _lineItemDetailsDescriptionLabelColor = newValue
-        }
-
-        get {
-
-            if let setValue = _lineItemDetailsDescriptionLabelColor {
-                return setValue
-            } else {
-
-                if #available(iOS 13.0, *) {
-
-                    return .secondaryLabel
-
-                } else {
-                    return .gray
-                }
-            }
-        }
-    }
-    
-    /**
-     Sets the background color for  the line item details view.
-     */
-    @objc public var lineItemDetailsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
-    
-    @objc private var _lineItemDetailsDescriptionLabelColor: UIColor?
-    
-    /**
-     Sets the font of the content labels in the line item details view controller to the specified font
-     */
-    @objc public var lineItemDetailsContentLabelFont = UIFont.systemFont(ofSize: 15, weight: .medium)
-    
-    /**
-     Sets the color of the content labels in the line item details view controller to the specified color
-     */
-    @objc public var lineItemDetailsContentLabelColor: UIColor {
-        
-        set {
-            _lineItemDetailsContentLabelColor = newValue
-        }
-
-        get {
-
-            if let setValue = _lineItemDetailsContentLabelColor {
-                return setValue
-            } else {
-
-                if #available(iOS 13.0, *) {
-
-                    return .label
-
-                } else {
-                    return .black
-                }
-            }
-        }
-    }
-    
-    @objc private var _lineItemDetailsContentLabelColor: UIColor?
-    
-    /**
-     Sets the font of the line item details screen main unit of the total price label to the specified font
-     */
-    @objc public var lineItemDetailsTotalPriceMainUnitFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-    
-    /**
-     Sets the font of the line item details screen fractional unit of the total price label to the specified font
-     */
-    @objc public var lineItemDetailsTotalPriceFractionalUnitFont = UIFont.systemFont(ofSize: 12, weight: .bold)
-    
-    /**
-     Sets the backgroundColor on the digital invoice onboarding screen
-     */
-    @objc public var digitalInvoiceOnboardingBackgroundColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
-    
-    /**
-     Sets the color on the digital invoice onboarding screen for text labels
-     */
-    @objc public var digitalInvoiceOnboardingTextColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
 
     /**
-     Sets the font of the first text label on the digital invoice onboarding screen
+     Indicates whether the Return Assistant feature is enabled or not. In the case of `true`,
+     the user will be presented with a digital representation of their invoice where they
+     can see individual line items and are able to amend them or choose not to pay for them.
      */
-    @objc public var digitalInvoiceOnboardingFirstLabelTextFont = UIFont.systemFont(ofSize: 32, weight: .semibold)
-    
+    public var returnAssistantEnabled = true
+
     /**
-     Sets the font of the second text label on the digital invoice onboarding screen
+     Custom bottom navigation adapters (like `DigitalInvoiceHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceOnboardingSecondLabelTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    
+    internal let digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter? = nil
+
     /**
-     Sets the backgroundColor  on the digital invoice onboarding screen for done button
+     Custom bottom navigation adapters (like `DigitalInvoiceOnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceOnboardingDoneButtonBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
+    internal let digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter? = nil
+
     /**
-     Sets the font of the done button on the digital invoice onboarding screen
+     Custom bottom navigation adapters (like `DigitalInvoiceNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceOnboardingDoneButtonTextFont = UIFont.systemFont(ofSize: 16, weight: .bold)
-    
+    internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
+
     /**
-     Sets the font of the hide button on the digital invoice onboarding screen
+     `Return Reasons` feature is no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceOnboardingHideButtonTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    
+    internal let enableReturnReasons: Bool = false
+
     /**
-     Sets the text color of the done button on the digital invoice onboarding screen
+     Custom bottom navigation adapters (like `DigitalInvoiceSkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceOnboardingDoneButtonTextColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
-    
+    internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil
+
+    // MARK: - Skonto feature
+
     /**
-     Sets the text color of the done button on the digital invoice onboarding screen
+     Indicates whether the Skonto feature is enabled. If `true`,
+     the user will be presented with a screen where they can choose
+     to pay the invoice with or without applying Skonto.
      */
-    @objc public var digitalInvoiceOnboardingHideButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
+    public var skontoEnabled: Bool = true
+
     /**
-     Sets the background color of the warning info view on the digital invoice screen
+     Custom bottom navigation adapters (like `SkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var digitalInvoiceInfoViewBackgroundColor = Colors.Gini.blue
-    
+    internal let skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter? = nil
+
     /**
-     Sets the  chevron image tint color of the warning info view on the digital invoice screen
+     Custom bottom navigation adapters (like `SkontoHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
-    @objc public var  digitalInvoiceInfoViewChevronImageViewTintColor = UIColor.white
-    
+    internal let skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter? = nil
+
+    // MARK: - Transaction Docs feature
     /**
-     Sets the text color for the warning info view warning labels on the digital invoice screen
+     Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
+     the user will be presented with an alert dialog in the photo payment flow to choose
+     whether to attach images or PDFs to the transaction.
      */
-    @objc public var digitalInvoiceInfoViewWarningLabelsTextColor = UIColor.white
-    
+    public var transactionDocsEnabled: Bool = true
+
     /**
-     Sets the font for the warning info view top label on the digital invoice screen
+     A coordinator that manages the state of transaction documents in the photo payment flow.
+     It conforms to `TransactionDocsDataProtocol` and is responsible for tracking,
+     modifying, and handling the state related to attaching documents to a transaction.
+
+     This instance is initialized with a default `TransactionDocsDataCoordinator` object
+     that implements the protocol.
      */
-    @objc public var digitalInvoiceInfoViewTopLabelFont = UIFont.systemFont(ofSize: 17, weight: .regular)
-    
+    public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
+
+    // MARK: - Save Photos Locally
     /**
-     Sets the font for the warning info view middle label on the digital invoice screen
+     Indicates whether the Save Photos Locally feature is enabled or not. If set to `true`,
+     photos captured during the payment flow will be automatically saved to the device's
+     local photo library.
      */
-    @objc public var digitalInvoiceInfoViewMiddleLabelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-    
+    public var savePhotosLocallyEnabled: Bool = true
+
+    // MARK: - Payment Due Hint
     /**
-     Sets the font for the warning info view bottom label on the digital invoice screen
+     Indicates the number of days before the invoice due date within which (inclusive of today) the invoice due date falls, for a payment hint to be shown..
+
+     Based on the `paymentDueDate` received from the backend, app checks if the due date is within the next
+     `paymentDueHintThresholdDays` days (including today). The default threshold is **5 days**, but bank clients
+     can change this value as needed.
      */
-    @objc public var digitalInvoiceInfoViewBottomLabelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-    
+    public var paymentDueHintThresholdDays: Int = 5
+
     /**
-     Sets the background color for the warning info left button on the digital invoice screen
+     Indicates whether the Payment Due Hint feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to remind
+     the user about the upcoming payment due date.
      */
-    @objc public var digitalInvoiceInfoViewLeftButtonBackgroundColor = UIColor.white
-    
+    public var paymentDueHintEnabled: Bool = true
+
+    // MARK: - Payment Schedule Hint
     /**
-     Sets the border color for the warning info left button on the digital invoice screen
+     Indicates whether the Schedule Payment state of the payment-hint bottom
+     sheet is enabled. Takes priority over the Due Date Hint state.
      */
-    @objc public var digitalInvoiceInfoViewLeftButtonBorderColor = UIColor.white
-    
+    public var paymentScheduleHintEnabled: Bool = true
+
+    // MARK: - Already Paid
     /**
-     Sets the title color for the warning info left button on the digital invoice screen
+     Indicates whether the Already Paid Hint feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to inform
+     the user that the invoice appears to have already been paid.
      */
-    @objc public var digitalInvoiceInfoViewLeftkButtonTitleColor = Colors.Gini.blue
-    
+    public var alreadyPaidHintEnabled: Bool = true
+
+    // MARK: - Credit Note
     /**
-     Sets the background color for the warning info right button on the digital invoice screen
+     Indicates whether the Credit Note feature is enabled or not.
+     If set to `true`, a hint will be displayed in the payment flow to inform
+     the user that the invoice appears to be a credit note.
      */
-    @objc public var digitalInvoiceInfoViewRightButtonBackgroundColor = UIColor.clear
-    
+    public var creditNoteHintEnabled: Bool = true
+
     /**
-     Sets the border color for the warning info right button on the digital invoice screen
+     Set the entry point used for launching the Gini Bank SDK.
+     Default value is `GiniEntryPoint.button`.
      */
-    @objc public var digitalInvoiceInfoViewRightButtonBorderColor = UIColor.white
-    
+    public var entryPoint = GiniConfiguration.GiniEntryPoint.button
+
+    // MARK: - Product Tag
     /**
-     Sets the title color for the warning info right button on the digital invoice screen
+     Set the product tag used for document extraction routing.
+
+     This determines which extraction pipeline processes uploaded documents:
+     - `sepaExtractions` (default): Standard SEPA payment extractions.
+     - `cxExtractions`: Cross-border (CX) payment extractions.
+     - `otherProductTag(String)`: Custom product tag value.
+
+     This configuration is set once at SDK initialization time and applies
+     to all documents uploaded during the session.
      */
-    @objc public var digitalInvoiceInfoViewRightButtonTitleColor = UIColor.white
-    
+    public var productTag: GiniProductTag? = .sepaExtractions
+
+    // MARK: - Error Logger
     /**
-     Sets the font for the warning info buttons on the digital invoice screen
-     */
-    @objc public var digitalInvoiceInfoViewButtonsFont = UIFont.systemFont(ofSize: 16)
-    
-    /**
-     Sets the font used in the Return Assistant screens by default.
-     */
-    
-    @objc public lazy var customFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
-    /**
-     Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
-    */
-    public var customMenuItems: [HelpMenuViewController.Item] = []
-    
-    /**
-     Sets if the default error logging implementation is on
+     Sets if the default error logging implementation is on.
      */
     public var giniErrorLoggerIsOn: Bool = true
-    
+
     /**
-     Should sets if the custom error logging is implemented
+     Used to handle all the logging messages in order to log them in a different way.
      */
-    public var customGiniErrorLoggerDelegate : GiniCaptureErrorLoggerDelegate?
-    
+    public var logger: GiniLogger = DefaultLogger(prefix: "[GiniBank SDK]")
+
     /**
-     Should be set if the default name "Localizable.strings" are not used
+     Should be set if the custom error logging is implemented.
      */
-    public var localizedStringsTableName: String?
-    
+    public var customGiniErrorLoggerDelegate: GiniCaptureErrorLoggerDelegate?
+
+    // MARK: - Development Debug
+    /**
+     Can be turned on during development to unlock extra information and to save captured images to the camera roll.
+
+     - warning: Should never be used outside of a development enviroment.
+     */
+    public var debugModeOn = false
+
+    // MARK: - Configuration Methods
+
+    /**
+      This method is used to capture the GiniBankConfiguration settings and apply them to
+      the `GiniConfiguration` part of the Gini Capture SDK.
+     */
     public func captureConfiguration() -> GiniConfiguration {
-     let configuration = GiniConfiguration()
-        
-        configuration.customDocumentValidations = self.customDocumentValidations
-        
-        configuration.customFont = self.customFont
-        
-        configuration.debugModeOn = self.debugModeOn
-        
-        configuration.logger = self.logger
-        
-        configuration.multipageEnabled = self.multipageEnabled
-
-        configuration.navigationBarTintColor = self.navigationBarTintColor
-        configuration.navigationBarItemTintColor = self.navigationBarItemTintColor
-        configuration.navigationBarItemFont = self.navigationBarItemFont
-        configuration.navigationBarTitleColor = self.navigationBarTitleColor
-        configuration.navigationBarTitleFont = self.navigationBarTitleFont
-        
-        configuration.documentPickerNavigationBarTintColor = self.documentPickerNavigationBarTintColor
-
-        configuration.noticeInformationBackgroundColor = self.noticeInformationBackgroundColor
-        
-        configuration.noticeInformationTextColor = self.noticeInformationTextColor
-        configuration.noticeErrorBackgroundColor = self.noticeErrorBackgroundColor
-        configuration.noticeErrorTextColor = self.noticeErrorTextColor
-        
-        configuration.openWithEnabled = self.openWithEnabled
-        
-        configuration.qrCodeScanningEnabled = self.qrCodeScanningEnabled
-        
-        configuration.statusBarStyle = self.statusBarStyle
-        
-        configuration.cameraNotAuthorizedTextColor = self.cameraNotAuthorizedTextColor
-        configuration.cameraNotAuthorizedButtonTitleColor = self.cameraNotAuthorizedButtonTitleColor
-        configuration.cameraPreviewCornerGuidesColor = self.cameraPreviewCornerGuidesColor
-        
-        configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
-        configuration.fileImportToolTipBackgroundColor = self.fileImportToolTipBackgroundColor
-        configuration.fileImportToolTipTextColor = self.fileImportToolTipTextColor
-        configuration.fileImportToolTipCloseButtonColor = self.fileImportToolTipCloseButtonColor
-        
-        configuration.toolTipOpaqueBackgroundStyle = self.toolTipOpaqueBackgroundStyle
-
-        configuration.galleryPickerItemSelectedBackgroundCheckColor = self.galleryPickerItemSelectedBackgroundCheckColor
-        configuration.galleryScreenBackgroundColor = self.galleryScreenBackgroundColor
-        
-        configuration.flashToggleEnabled = self.flashToggleEnabled
-        configuration.flashOnByDefault = self.flashOnByDefault
-        
-        configuration.imagesStackIndicatorLabelTextcolor = self.imagesStackIndicatorLabelTextcolor
-        
-        configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
-        configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton
-        
-        configuration.qrCodePopupButtonColor = self.qrCodePopupButtonColor
-        configuration.qrCodePopupTextColor = self.qrCodePopupTextColor
-        configuration.qrCodePopupBackgroundColor = self.qrCodePopupBackgroundColor
-        
-        configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
-        
-        configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor
-        configuration.onboardingCurrentPageIndicatorColor = self.onboardingCurrentPageIndicatorColor
-        configuration.onboardingCurrentPageIndicatorAlpha = self.onboardingCurrentPageIndicatorAlpha
-        configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
-        configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
-        configuration.onboardingTextColor = self.onboardingTextColor
-        configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
-        configuration.onboardingPages = self.onboardingPages
-        
-        configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
-        configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
-        configuration.navigationBarReviewTitleContinueButton = self.navigationBarReviewTitleContinueButton
-        
-        configuration.reviewBottomViewBackgroundColor = self.reviewBottomViewBackgroundColor
-        configuration.reviewTextBottomFont = self.reviewTextBottomFont
-        configuration.reviewTextBottomColor = self.reviewTextBottomColor
-        
-        configuration.indicatorCircleColor = self.indicatorCircleColor
-        
-        configuration.multipagePagesContainerAndToolBarColor = self.multipagePagesContainerAndToolBarColor
-        configuration.multipageToolbarItemsColor = self.multipageToolbarItemsColor
-        configuration.multipagePageIndicatorColor = self.multipagePageIndicatorColor
-        configuration.multipagePageSelectedIndicatorColor = self.multipagePageSelectedIndicatorColor
-        configuration.multipagePageBackgroundColor = self.multipagePageBackgroundColor
-        configuration.multipageDraggableIconColor = self.multipageDraggableIconColor
-        configuration.multipageToolTipOpaqueBackgroundStyle = self.multipageToolTipOpaqueBackgroundStyle
-        
-        configuration.analysisLoadingIndicatorColor = self.analysisLoadingIndicatorColor
-        configuration.analysisPDFInformationBackgroundColor = self.analysisPDFInformationBackgroundColor
-        configuration.analysisPDFInformationTextColor = self.analysisPDFInformationTextColor
-        
-        configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
-        
-        configuration.helpScreenBackgroundColor = self.helpScreenBackgroundColor
-        configuration.helpScreenCellsBackgroundColor = self.helpScreenCellsBackgroundColor
-        
-        configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
-        configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
-        
-        configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
-        
-        configuration.nonSupportedFormatsIconColor = self.nonSupportedFormatsIconColor
-        
-        configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
-        
-        configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
-        
-        configuration.stepIndicatorColor = self.stepIndicatorColor
-        
-        configuration.noResultsBottomButtonColor = self.noResultsBottomButtonColor
-        
-        configuration.noResultsWarningContainerIconColor = self.noResultsWarningContainerIconColor
-        
-        configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
-        
-        configuration.customMenuItems = self.customMenuItems
-        
-        configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
-        configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
-        
-        // Undocumented--Xamarin only
-        configuration.closeButtonResource = self.closeButtonResource
-        configuration.helpButtonResource = self.helpButtonResource
-        configuration.backToCameraButtonResource = self.helpButtonResource
-        configuration.backToMenuButtonResource = self.backToMenuButtonResource
-        configuration.nextButtonResource = self.nextButtonResource
-        configuration.cancelButtonResource = self.cancelButtonResource
-        configuration.localizedStringsTableName = self.localizedStringsTableName
-        
+        let configuration = GiniConfiguration.shared
+        applyCaptureConfiguration(to: configuration)
         GiniCapture.setConfiguration(configuration)
         return configuration
     }
-    
-    public func returnAssistantConfiguration() -> ReturnAssistantConfiguration {
-     let configuration = ReturnAssistantConfiguration()
-        
-        configuration.helpReturnAssistantScreenBackgroundColor = self.helpReturnAssistantScreenBackgroundColor
-        configuration.helpReturnAssistantScreenSectionTitleColor = self.helpReturnAssistantScreenSectionTitleColor
-        configuration.helpReturnAssistantScreenPageTitleFont = self.helpReturnAssistantScreenPageTitleFont
-        configuration.helpReturnAssistantScreenSectionTitleFont = self.helpReturnAssistantScreenSectionTitleFont
-        configuration.helpReturnAssistantScreenInstructionColor = self.helpReturnAssistantScreenInstructionColor
-        configuration.helpReturnAssistantScreenInstructionFont = self.helpReturnAssistantScreenInstructionFont
-        configuration.helpReturnAssistantScreenBackButtonColor = self.helpReturnAssistantScreenBackButtonColor
-        configuration.helpReturnAssistantScreenBackButtonTitleColor = self.helpReturnAssistantScreenBackButtonTitleColor
-        configuration.helpReturnAssistantScreenBackButtonTitleFont = self.helpReturnAssistantScreenBackButtonTitleFont
 
-        configuration.lineItemTintColor = self.lineItemTintColor
-        configuration.lineItemCountLabelColor = self.lineItemCountLabelColor
-        configuration.lineItemCountLabelFont = self.lineItemCountLabelFont
-        
-        configuration.digitalInvoiceLineItemNameFont = self.digitalInvoiceLineItemNameFont
-        configuration.digitalInvoiceLineItemEditButtonTitleFont = self.digitalInvoiceLineItemEditButtonTitleFont
-        configuration.digitalInvoiceLineItemQuantityFont = self.digitalInvoiceLineItemQuantityFont
-        configuration.digitalInvoiceLineItemQuantityColor = self.digitalInvoiceLineItemQuantityColor
-        configuration.digitalInvoiceLineItemPriceMainUnitFont = self.digitalInvoiceLineItemPriceMainUnitFont
-        configuration.digitalInvoiceLineItemPriceFractionalUnitFont = self.digitalInvoiceLineItemPriceFractionalUnitFont
-        
-        configuration.digitalInvoiceSecondaryMessageTextFont = self.digitalInvoiceSecondaryMessageTextFont
-        configuration.digitalInvoiceSecondaryMessageTextColor = self.digitalInvoiceSecondaryMessageTextColor
-        configuration.digitalInvoiceBackgroundColor = self.digitalInvoiceBackgroundColor
-        configuration.digitalInvoiceLineItemsBackgroundColor = self.digitalInvoiceLineItemsBackgroundColor
-        configuration.digitalInvoiceFooterAddArticleButtonTintColor = self.digitalInvoiceFooterAddArticleButtonTintColor
-        configuration.digitalInvoiceFooterMessageTextFont = self.digitalInvoiceFooterMessageTextFont
-        configuration.digitalInvoiceFooterMessageTextColor = self.digitalInvoiceFooterMessageTextColor
-        
-        configuration.digitalInvoiceItemsSectionHeaderTextFont = self.digitalInvoiceItemsSectionHeaderTextFont
-        configuration.digitalInvoiceItemsSectionHeaderTextColor = self.digitalInvoiceItemsSectionHeaderTextColor
-        
-        configuration.payButtonBackgroundColor = self.payButtonBackgroundColor
-        configuration.payButtonTitleTextColor = self.payButtonTitleTextColor
-        configuration.payButtonTitleFont = self.payButtonTitleFont
-        
-        configuration.skipButtonBackgroundColor = self.skipButtonBackgroundColor
-        configuration.skipButtonTitleTextColor = self.skipButtonTitleTextColor
-        configuration.skipButtonBorderColor = self.skipButtonBorderColor
-        configuration.skipButtonTitleFont = self.skipButtonTitleFont
-        
-        configuration.digitalInvoiceInfoViewBackgroundColor = self.digitalInvoiceInfoViewBackgroundColor
-        configuration.digitalInvoiceInfoViewChevronImageViewTintColor = self.digitalInvoiceInfoViewChevronImageViewTintColor
-        configuration.digitalInvoiceInfoViewWarningLabelsTextColor = self.digitalInvoiceInfoViewWarningLabelsTextColor
-        configuration.digitalInvoiceInfoViewTopLabelFont = self.digitalInvoiceInfoViewTopLabelFont
-        configuration.digitalInvoiceInfoViewMiddleLabelFont = self.digitalInvoiceInfoViewMiddleLabelFont
-        configuration.digitalInvoiceInfoViewBottomLabelFont = self.digitalInvoiceInfoViewBottomLabelFont
-        configuration.digitalInvoiceInfoViewLeftButtonBackgroundColor = self.digitalInvoiceInfoViewLeftButtonBackgroundColor
-        configuration.digitalInvoiceInfoViewLeftButtonBorderColor = self.digitalInvoiceInfoViewLeftButtonBorderColor
-        configuration.digitalInvoiceInfoViewLeftkButtonTitleColor = self.digitalInvoiceInfoViewLeftkButtonTitleColor
-        configuration.digitalInvoiceInfoViewRightButtonBackgroundColor = self.digitalInvoiceInfoViewRightButtonBackgroundColor
-        configuration.digitalInvoiceInfoViewRightButtonBorderColor = self.digitalInvoiceInfoViewRightButtonBorderColor
-        configuration.digitalInvoiceInfoViewRightButtonTitleColor = self.digitalInvoiceInfoViewRightButtonTitleColor
-        configuration.digitalInvoiceInfoViewButtonsFont = self.digitalInvoiceInfoViewButtonsFont
-        
-        configuration.digitalInvoiceAddonLabelFont = self.digitalInvoiceAddonLabelFont
-        configuration.digitalInvoiceTotalCaptionLabelFont = self.digitalInvoiceTotalCaptionLabelFont
-        configuration.digitalInvoiceTotalExplanationLabelFont = self.digitalInvoiceTotalExplanationLabelFont
-        configuration.digitalInvoiceTotalExplanationLabelTextColor = self.digitalInvoiceTotalExplanationLabelTextColor
-        configuration.digitalInvoiceAddonPriceMainUnitFont = self.digitalInvoiceAddonPriceMainUnitFont
-        configuration.digitalInvoiceAddonPriceFractionalUnitFont = self.digitalInvoiceAddonPriceFractionalUnitFont
-        configuration.digitalInvoiceAddonPriceColor = self.digitalInvoiceAddonPriceColor
-        configuration.digitalInvoiceTotalPriceColor = self.digitalInvoiceTotalPriceColor
-        
+    /**
+     Copies the bank-side flags onto the given `GiniConfiguration`.
+     Testable seam for `captureConfiguration()`, which mutates `GiniConfiguration.shared`
+     and would otherwise race with any parallel test.
+     */
+    func applyCaptureConfiguration(to configuration: GiniConfiguration) {
+        configuration.customDocumentValidations = self.customDocumentValidations
 
-        configuration.digitalInvoiceTotalPriceMainUnitFont = self.digitalInvoiceTotalPriceMainUnitFont
-        configuration.digitalInvoiceTotalPriceFractionalUnitFont = self.digitalInvoiceTotalPriceFractionalUnitFont
-        
-        configuration.lineItemDetailsDescriptionLabelFont = self.lineItemDetailsDescriptionLabelFont
-        configuration.lineItemDetailsDescriptionLabelColor = self.lineItemDetailsDescriptionLabelColor
-        configuration.lineItemDetailsBackgroundColor = self.lineItemDetailsBackgroundColor
-        configuration.lineItemDetailsContentLabelFont = self.lineItemDetailsContentLabelFont
-        configuration.lineItemDetailsContentLabelColor = self.lineItemDetailsContentLabelColor
-        configuration.lineItemDetailsTotalPriceMainUnitFont = self.lineItemDetailsTotalPriceMainUnitFont
-        configuration.lineItemDetailsTotalPriceFractionalUnitFont = self.lineItemDetailsTotalPriceFractionalUnitFont
-        
-        configuration.digitalInvoiceOnboardingBackgroundColor = self.digitalInvoiceOnboardingBackgroundColor
-        configuration.digitalInvoiceOnboardingTextColor = self.digitalInvoiceOnboardingTextColor
-        configuration.digitalInvoiceOnboardingFirstLabelTextFont = self.digitalInvoiceOnboardingFirstLabelTextFont
-        configuration.digitalInvoiceOnboardingSecondLabelTextFont = self.digitalInvoiceOnboardingSecondLabelTextFont
-        configuration.digitalInvoiceOnboardingDoneButtonBackgroundColor = self.digitalInvoiceOnboardingDoneButtonBackgroundColor
-        configuration.digitalInvoiceOnboardingDoneButtonTextFont = self.digitalInvoiceOnboardingDoneButtonTextFont
-        configuration.digitalInvoiceOnboardingHideButtonTextFont = self.digitalInvoiceOnboardingHideButtonTextFont
-        configuration.digitalInvoiceOnboardingDoneButtonTextColor = self.digitalInvoiceOnboardingDoneButtonTextColor
-        configuration.digitalInvoiceOnboardingHideButtonTextColor = self.digitalInvoiceOnboardingHideButtonTextColor
-        configuration.customFont = self.customFont
-        
-        // TODO! Add for Xamarin colors
-        
-     return configuration
+        configuration.debugModeOn = self.debugModeOn
+
+        configuration.logger = self.logger
+
+        configuration.multipageEnabled = self.multipageEnabled
+        configuration.customNavigationController = self.customNavigationController
+
+        configuration.openWithEnabled = self.openWithEnabled
+
+        configuration.qrCodeScanningEnabled = self.qrCodeScanningEnabled
+        configuration.onlyQRCodeScanningEnabled = self.onlyQRCodeScanningEnabled
+
+        configuration.statusBarStyle = self.statusBarStyle
+
+        configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
+
+        configuration.flashToggleEnabled = self.flashToggleEnabled
+        configuration.flashOnByDefault = self.flashOnByDefault
+
+        configuration.customOnboardingPages = self.customOnboardingPages
+
+        configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
+        configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
+        configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
+        configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
+        configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
+
+        configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
+
+        configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
+
+        configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
+
+        configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
+
+        configuration.customMenuItems = self.customMenuItems
+        configuration.transactionDocsEnabled = self.transactionDocsEnabled
+
+        configuration.productTag = self.productTag
+
+        configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
+        configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
+
+        configuration.customLoadingIndicator = self.customLoadingIndicator
+
+        configuration.localizedStringsTableName = self.localizedStringsTableName
+
+        for textStyle in UIFont.TextStyle.allCases {
+            if let newFont = textStyleFonts[textStyle] {
+                configuration.updateFont(newFont, for: textStyle)
+            }
+        }
+        configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
+        configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
+        configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
+        configuration.addPageButtonConfiguration = self.addPageButtonConfiguration
+        configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
+
+        configuration.entryPoint = self.entryPoint
+        configuration.customResourceBundle = self.customResourceBundle
+        configuration.customResourceProvider = self.customResourceProvider
+        configuration.customNetworkProvider = self.customNetworkProvider
+
+        configuration.savePhotosLocallyEnabled = self.savePhotosLocallyEnabled
     }
-    
+
+    /**
+     Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
+     */
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
+
         let giniBankConfiguration = GiniBankConfiguration.shared
-        giniBankConfiguration.customDocumentValidations = configuration.customDocumentValidations
-        
-        giniBankConfiguration.customFont = configuration.customFont
-        
-        giniBankConfiguration.debugModeOn = configuration.debugModeOn
-        
-        giniBankConfiguration.logger = configuration.logger
-        
+        giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
+
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
 
-        giniBankConfiguration.navigationBarTintColor = configuration.navigationBarTintColor
-        giniBankConfiguration.navigationBarItemTintColor = configuration.navigationBarTintColor
-        giniBankConfiguration.navigationBarItemFont = configuration.navigationBarItemFont
-        giniBankConfiguration.navigationBarTitleColor = configuration.navigationBarTitleColor
-        giniBankConfiguration.navigationBarTitleFont = configuration.navigationBarTitleFont
-        
-        giniBankConfiguration.documentPickerNavigationBarTintColor = configuration.documentPickerNavigationBarTintColor
-
-        giniBankConfiguration.noticeInformationBackgroundColor = configuration.noticeInformationBackgroundColor
-        
-        giniBankConfiguration.noticeInformationTextColor = configuration.noticeInformationTextColor
-        giniBankConfiguration.noticeErrorBackgroundColor = configuration.noticeErrorBackgroundColor
-        giniBankConfiguration.noticeErrorTextColor = configuration.noticeErrorTextColor
-        
         giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
-        
-        giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
-        
-        giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
-        
-        giniBankConfiguration.cameraNotAuthorizedTextColor = configuration.cameraNotAuthorizedTextColor
-        giniBankConfiguration.cameraNotAuthorizedButtonTitleColor = configuration.cameraNotAuthorizedButtonTitleColor
-        giniBankConfiguration.cameraPreviewCornerGuidesColor = configuration.cameraPreviewCornerGuidesColor
-        
-        giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
-        giniBankConfiguration.fileImportToolTipBackgroundColor = configuration.fileImportToolTipBackgroundColor
-        giniBankConfiguration.fileImportToolTipTextColor = configuration.fileImportToolTipTextColor
-        giniBankConfiguration.fileImportToolTipCloseButtonColor = configuration.fileImportToolTipCloseButtonColor
-        
-        giniBankConfiguration.toolTipOpaqueBackgroundStyle = configuration.toolTipOpaqueBackgroundStyle
 
-        giniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor = configuration.galleryPickerItemSelectedBackgroundCheckColor
-        giniBankConfiguration.galleryScreenBackgroundColor = configuration.galleryScreenBackgroundColor
-        
+        giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
+
+        giniBankConfiguration.onlyQRCodeScanningEnabled = configuration.onlyQRCodeScanningEnabled
+
+        giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
+
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
-        
-        giniBankConfiguration.imagesStackIndicatorLabelTextcolor = configuration.imagesStackIndicatorLabelTextcolor
-        
-        giniBankConfiguration.navigationBarCameraTitleCloseButton = configuration.navigationBarCameraTitleCloseButton
-        giniBankConfiguration.navigationBarCameraTitleHelpButton = configuration.navigationBarCameraTitleHelpButton
-        
-        giniBankConfiguration.qrCodePopupButtonColor = configuration.qrCodePopupButtonColor
-        giniBankConfiguration.qrCodePopupTextColor = configuration.qrCodePopupTextColor
-        giniBankConfiguration.qrCodePopupBackgroundColor = configuration.qrCodePopupBackgroundColor
-        
-        giniBankConfiguration.navigationBarOnboardingTitleContinueButton = configuration.navigationBarOnboardingTitleContinueButton
-        
-        giniBankConfiguration.onboardingPageIndicatorColor = configuration.onboardingPageIndicatorColor
-        giniBankConfiguration.onboardingCurrentPageIndicatorColor = configuration.onboardingCurrentPageIndicatorColor
-        giniBankConfiguration.onboardingCurrentPageIndicatorAlpha = configuration.onboardingCurrentPageIndicatorAlpha
+
+        giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
-        giniBankConfiguration.onboardingTextColor = configuration.onboardingTextColor
-        giniBankConfiguration.onboardingScreenBackgroundColor = configuration.onboardingScreenBackgroundColor
-        giniBankConfiguration.onboardingPages = configuration.onboardingPages
-        
-        giniBankConfiguration.navigationBarReviewTitleBackButton = configuration.navigationBarReviewTitleBackButton
-        giniBankConfiguration.navigationBarReviewTitleCloseButton = configuration.navigationBarReviewTitleCloseButton
-        giniBankConfiguration.navigationBarReviewTitleContinueButton = configuration.navigationBarReviewTitleContinueButton
-        
-        giniBankConfiguration.reviewBottomViewBackgroundColor = configuration.reviewBottomViewBackgroundColor
-        giniBankConfiguration.reviewTextBottomFont = configuration.reviewTextBottomFont
-        giniBankConfiguration.reviewTextBottomColor = configuration.reviewTextBottomColor
-        
-        giniBankConfiguration.indicatorCircleColor = configuration.indicatorCircleColor
-        
-        giniBankConfiguration.multipagePagesContainerAndToolBarColor = configuration.multipagePagesContainerAndToolBarColor
-        giniBankConfiguration.multipageToolbarItemsColor = configuration.multipageToolbarItemsColor
-        giniBankConfiguration.multipagePageIndicatorColor = configuration.multipagePageIndicatorColor
-        giniBankConfiguration.multipagePageSelectedIndicatorColor = configuration.multipagePageSelectedIndicatorColor
-        giniBankConfiguration.multipagePageBackgroundColor = configuration.multipagePageBackgroundColor
-        giniBankConfiguration.multipageDraggableIconColor = configuration.multipageDraggableIconColor
-        giniBankConfiguration.multipageToolTipOpaqueBackgroundStyle = configuration.multipageToolTipOpaqueBackgroundStyle
-        
-        giniBankConfiguration.analysisLoadingIndicatorColor = configuration.analysisLoadingIndicatorColor
-        giniBankConfiguration.analysisPDFInformationBackgroundColor = configuration.analysisPDFInformationBackgroundColor
-        giniBankConfiguration.analysisPDFInformationTextColor = configuration.analysisPDFInformationTextColor
-        
-        giniBankConfiguration.navigationBarAnalysisTitleBackButton = configuration.navigationBarAnalysisTitleBackButton
-        
-        giniBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
-        giniBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
-        
-        giniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
-        giniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
-        
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
-        
-        giniBankConfiguration.nonSupportedFormatsIconColor = configuration.nonSupportedFormatsIconColor
-        
-        giniBankConfiguration.supportedFormatsIconColor = configuration.supportedFormatsIconColor
-        
-        giniBankConfiguration.openWithAppNameForTexts = configuration.openWithAppNameForTexts
-        
-        giniBankConfiguration.stepIndicatorColor = configuration.stepIndicatorColor
-        
-        giniBankConfiguration.noResultsBottomButtonColor = configuration.noResultsBottomButtonColor
-        
-        giniBankConfiguration.noResultsWarningContainerIconColor = configuration.noResultsWarningContainerIconColor
-        
+
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
-        
+
+        giniBankConfiguration.primaryButtonConfiguration = configuration.primaryButtonConfiguration
+        giniBankConfiguration.secondaryButtonConfiguration = configuration.secondaryButtonConfiguration
+        giniBankConfiguration.transparentButtonConfiguration = configuration.transparentButtonConfiguration
+        giniBankConfiguration.cameraControlButtonConfiguration = configuration.cameraControlButtonConfiguration
+        giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
+
+        giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
+        giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
         giniBankConfiguration.customMenuItems = configuration.customMenuItems
-        
+
+        giniBankConfiguration.transactionDocsEnabled = configuration.transactionDocsEnabled
+
+        giniBankConfiguration.customNavigationController = configuration.customNavigationController
+
+        giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
+        giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
+        giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
+        giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
+
+        giniBankConfiguration.entryPoint = configuration.entryPoint
+        giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
+
+        giniBankConfiguration.debugModeOn = configuration.debugModeOn
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
-        giniBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
-        giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
-        
-        // Undocumented--Xamarin only
-        giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
-        giniBankConfiguration.helpButtonResource = configuration.helpButtonResource
-        giniBankConfiguration.backToCameraButtonResource = configuration.helpButtonResource
-        giniBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
-        giniBankConfiguration.nextButtonResource = configuration.nextButtonResource
-        giniBankConfiguration.cancelButtonResource = configuration.cancelButtonResource
+        giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
+        giniBankConfiguration.customResourceProvider = configuration.customResourceProvider
+        giniBankConfiguration.customNetworkProvider = configuration.customNetworkProvider
+
+        giniBankConfiguration.productTag = configuration.productTag
     }
+
+    // MARK: - Update to custom font
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our
+     util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts.
+     Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+     */
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
+        textStyleFonts[textStyle] = font
+    }
+
+    // MARK: - Transfer summary sending and cleanup
+    /**
+     Function for clean up
+     - Parameters:
+        - paymentRecipient: paymentRecipient description
+        - paymentReference: paymentReference description
+        - iban: iban description
+        - bic: bic description
+        - amountToPay: amountToPay description
+     */
+
+    // swiftlint:disable function_parameter_count
+    public func cleanup(paymentRecipient: String,
+                        paymentReference: String,
+                        paymentPurpose: String,
+                        iban: String,
+                        bic: String,
+                        amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
+                                                          paymentReference: paymentReference,
+                                                          paymentPurpose: paymentPurpose,
+                                                          iban: iban,
+                                                          bic: bic,
+                                                          amountToPayString: amountToPay.formattedString())
+
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
+
+        documentService.resetToInitialState()
+        self.documentService = nil
+        self.lineItems = nil
+    }
+    // swiftlint:enable function_parameter_count
+    /**
+     Sends the confirmed SEPA transfer summary to Gini.
+     Call this method after the user has approved the SEPA payment values, before calling `cleanup()`.
+     Provide the final values approved by the user, including fields that were not originally extracted.
+
+     Example usage:
+     ```swift
+     configuration.sendTransferSummary(
+         paymentRecipient: "Acme GmbH",
+         paymentReference: "REF-2024-001",
+         paymentPurpose:   "Invoice March",
+         iban:             "DE89370400440532013000",
+         bic:              "COBADEFFXXX",
+         amountToPay:      ExtractionAmount(value: 99.99, currency: .EUR),
+         instantPayment:   false
+     )
+     ```
+
+     For cross-border (CX) payments use `sendTransferSummary(extractions:)` instead.
+
+     - Parameters:
+       - paymentRecipient: The name of the recipient to whom the payment is being made.
+       - paymentReference: A reference string used to identify the payment transaction.
+       - paymentPurpose: A brief description of the purpose of the payment.
+       - iban: The International Bank Account Number of the recipient.
+       - bic: The Bank Identifier Code associated with the recipient's bank.
+       - amountToPay: The amount to be transferred, including currency information.
+       - instantPayment: Specifies whether the payment should be processed as an instant payment.
+     */
+    // swiftlint:disable function_parameter_count
+    public func sendTransferSummary(paymentRecipient: String,
+                                    paymentReference: String,
+                                    paymentPurpose: String,
+                                    iban: String,
+                                    bic: String,
+                                    amountToPay: ExtractionAmount,
+                                    instantPayment: Bool? = nil) {
+        let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
+                                                          paymentReference: paymentReference,
+                                                          paymentPurpose: paymentPurpose,
+                                                          iban: iban,
+                                                          bic: bic,
+                                                          amountToPayString: amountToPay.formattedString(),
+                                                          instantPayment: instantPayment)
+        sendTransferSummary(updatedExtractions: updatedExtractions)
+    }
+
+    private func sendTransferSummary(updatedExtractions: [Extraction]) {
+        let updatedCompoundExtractions = addLineItems(to: [:])
+        documentService?.sendFeedback(with: updatedExtractions,
+                                      updatedCompoundExtractions: updatedCompoundExtractions)
+    }
+
+    /**
+     Sends the confirmed transfer summary to Gini for any payment type.
+     Call this method after the user has approved the extracted values, before calling `cleanup()`.
+     The SDK routes the confirmed values to the correct backend structure based on the configured `productTag`.
+
+     **SEPA payments** (`productTag == .sepaExtractions`)
+     
+      Pass the confirmed values directly. When providing `amountToPay`,
+     use the `"value:currency"` format (e.g. `"950.00:EUR"`):
+     ```swift
+     configuration.sendTransferSummary(extractions: [
+         "iban":        "DE89370400440532013000",
+         "bic":         "COBADEFFXXX",
+         "amountToPay": "950.00:EUR"
+     ])
+     ```
+
+     **Cross-border (CX) payments** (`productTag == .cxExtractions`)
+
+     Pass the confirmed CX field names and values exactly as received in
+     `AnalysisResult.crossBorderPayment`. The SDK automatically wraps them
+     under `compoundExtractions["crossBorderPayment"]`:
+     ```swift
+     configuration.sendTransferSummary(
+         extractions: [
+             "iban":     "GB29NWBK60161331926819",
+             "bic":      "NWBKGB2L",
+             "currency": "GBP"
+         ])
+     ```
+
+     - Parameters:
+        - extractions: Confirmed field names and their values for the active `productTag`.
+         Field names must match the extraction names returned by the backend.
+
+    - Note: When providing `amountToPay`, use the `"value:currency"` format (e.g. `"950.00:EUR"`).
+
+     */
+    public func sendTransferSummary(extractions: [String: String]) {
+        let extractionList = extractions.map { name, value in
+            Extraction(box: nil,
+                       candidates: nil,
+                       entity: name,
+                       value: value,
+                       name: name)
+        }
+
+        if productTag == .cxExtractions {
+            let compoundExtractions = ["crossBorderPayment": [extractionList]]
+            documentService?.sendFeedback(with: [],
+                                          updatedCompoundExtractions: compoundExtractions)
+        } else {
+            documentService?.sendFeedback(with: extractionList,
+                                          updatedCompoundExtractions: addLineItems(to: [:]))
+        }
+    }
+
+    internal func generateBasicExtractions(paymentRecipient: String,
+                                           paymentReference: String,
+                                           paymentPurpose: String,
+                                           iban: String,
+                                           bic: String,
+                                           amountToPayString: String,
+                                           instantPayment: Bool? = nil) -> [Extraction] {
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "companyname",
+                                                    value: paymentRecipient,
+                                                    name: "paymentRecipient")
+        let paymentReferenceExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "reference",
+                                                    value: paymentReference,
+                                                    name: "paymentReference")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "text",
+                                                  value: paymentPurpose,
+                                                  name: "paymentPurpose")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: iban,
+                                        name: "iban")
+        let bicExtraction = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "bic",
+                                       value: bic,
+                                       name: "bic")
+        let amountExtraction = Extraction(box: nil,
+                                          candidates: nil,
+                                          entity: "amount",
+                                          value: amountToPayString,
+                                          name: "amountToPay")
+
+        var extractions = [paymentRecipientExtraction,
+                           paymentReferenceExtraction,
+                           paymentPurposeExtraction,
+                           ibanExtraction,
+                           bicExtraction,
+                           amountExtraction]
+
+        if let instantPayment {
+            let instantPaymentString = instantPayment ? "true" : "false"
+            let instantPaymentExtraction = Extraction(box: nil,
+                                                      candidates: nil,
+                                                      entity: "instantPayment",
+                                                      value: instantPaymentString,
+                                                      name: "instantPayment")
+
+            extractions.append(instantPaymentExtraction)
+        }
+
+        return extractions
+    }
+    // swiftlint:enable function_parameter_count
+
+    func sendTransferSummaryWithSkonto(amountToPayExtraction: Extraction, amountToPayString: String) {
+        // The following guard ensures that a Skonto discount is actually applied before proceeding.
+        guard let skontoDiscounts = skontoDiscounts?.first, skontoDiscounts.contains(where: {
+            $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString
+        }) else { return }
+
+        sendSkontoTransferSummary(updatedExtractions: [amountToPayExtraction],
+                                  amountToPayString: amountToPayString,
+                                  retryCount: 3)
+    }
+
+    private func sendSkontoTransferSummary(updatedExtractions: [Extraction],
+                                           amountToPayString: String,
+                                           retryCount: Int) {
+        var updatedCompoundExtractions = addSkontoDiscounts(to: updatedExtractions,
+                                                            amountToPayString: amountToPayString)
+        updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
+        documentService?.sendSkontoFeedback(with: updatedExtractions,
+                                            updatedCompoundExtractions: updatedCompoundExtractions,
+                                            retryCount: retryCount)
+    }
+
+    private func addSkontoDiscounts(to extractions: [Extraction],
+                                    amountToPayString: String) -> [String: [[Extraction]]]? {
+        guard let skontoDiscounts = skontoDiscounts?.first else { return nil }
+
+        let filteredDiscounts = skontoDiscounts.filter {
+            $0.name == "skontoAmountToPayCalculated" ||
+            $0.name == "skontoPercentageDiscountedCalculated" ||
+            $0.name == "skontoDueDateCalculated"
+        }
+        return filteredDiscounts.isEmpty ? nil : ["skontoDiscounts": [filteredDiscounts]]
+    }
+
+    private func addLineItems(to compoundExtractions: [String: [[Extraction]]]?) -> [String: [[Extraction]]]? {
+        guard let lineItems = lineItems else { return compoundExtractions }
+        var updatedCompoundExtractions = compoundExtractions ?? [:]
+        updatedCompoundExtractions["lineItems"] = lineItems
+        return updatedCompoundExtractions
+    }
+
+    /**
+     Frees up resources used by the capture flow.
+     */
+    public func cleanup() {
+        guard let documentService = documentService else { return }
+        documentService.resetToInitialState()
+        self.documentService = nil
+        lineItems = nil
+        skontoDiscounts = nil
+    }
+
+    // MARK: - Internal usage
+    var documentService: DocumentServiceProtocol?
+    var lineItems: [[Extraction]]?
+    var skontoDiscounts: [[Extraction]]?
+
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+        .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
+        .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
+        .title1Bold: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.boldSystemFont(ofSize: 28)),
+        .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
+        .title2Bold: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.boldSystemFont(ofSize: 22)),
+        .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
+        .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+        .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+        .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+        .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
+        .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+        .bodyBold: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.boldSystemFont(ofSize: 17)),
+        .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+        .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
+        .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+        .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
+    ]
 }

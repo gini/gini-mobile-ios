@@ -1,0 +1,159 @@
+{
+    "extractions": {
+        "paymentRecipient": {
+            "entity": "companyname",
+            "value": "Max Mustermann",
+            "box": {
+                "top": 1033.4,
+                "left": 96.4,
+                "width": 164.99999999999997,
+                "height": 11.0,
+                "page": 1
+            },
+            "candidates": "paymentRecipients"
+        },
+        "paymentPurpose": {
+            "entity": "reference",
+            "value": "ReNr R2022-8"
+        },
+        "bic": {
+            "entity": "bic",
+            "value": "COBADEFFXXX",
+            "candidates": "bics"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE89370400440532013000",
+            "box": {
+                "top": 1050.4,
+                "left": 137.4,
+                "width": 190.99999999999997,
+                "height": 11.0,
+                "page": 1
+            },
+            "candidates": "ibans"
+        },
+        "docType": {
+            "entity": "doctype",
+            "value": "Invoice"
+        },
+        "amountToPay": {
+            "entity": "amount",
+            "value": "2380.00:EUR",
+            "box": {
+                "top": 860.55,
+                "left": 812.55,
+                "width": 54.89999999999998,
+                "height": 11.0,
+                "page": 1
+            },
+            "candidates": "amounts"
+        }
+    },
+    "compoundExtractions": {
+        "skontoDiscounts": [
+            {
+                "skontoRemainingDays": {
+                    "entity": "numeric",
+                    "value": "-63"
+                },
+                "skontoPaymentMethod": {
+                    "entity": "text",
+                    "value": "Unspecified"
+                },
+                "skontoAmountToPayCalculated": {
+                    "entity": "amount",
+                    "value": "2261.00:EUR"
+                },
+                "skontoDuePeriod": {
+                    "entity": "timeperiod",
+                    "value": "7:day",
+                    "box": {
+                        "top": 938.0,
+                        "left": 718.0,
+                        "width": 48.0,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                },
+                "skontoAmountDiscountedCalculated": {
+                    "entity": "amount",
+                    "value": "119.00:EUR"
+                },
+                "skontoPercentageDiscounted": {
+                    "entity": "numeric",
+                    "value": "5.0",
+                    "box": {
+                        "top": 938.0,
+                        "left": 772.0,
+                        "width": 68.0,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                },
+                "skontoDueDateCalculated": {
+                    "entity": "date",
+                    "value": "2024-08-08"
+                },
+                "skontoPercentageDiscountedCalculated": {
+                    "entity": "numeric",
+                    "value": "5.0",
+                    "box": {
+                        "top": 938.0,
+                        "left": 772.0,
+                        "width": 68.0,
+                        "height": 14.0,
+                        "page": 1
+                    }
+                }
+            }
+        ]
+    },
+    "candidates": {
+        "ibans": [
+            {
+                "entity": "iban",
+                "value": "DE89370400440532013000",
+                "box": {
+                    "top": 1050.4,
+                    "left": 137.4,
+                    "width": 190.99999999999997,
+                    "height": 11.0,
+                    "page": 1
+                }
+            }
+        ],
+        "paymentRecipients": [
+            {
+                "entity": "companyname",
+                "value": "Max Mustermann",
+                "box": {
+                    "top": 1033.4,
+                    "left": 96.4,
+                    "width": 164.99999999999997,
+                    "height": 11.0,
+                    "page": 1
+                }
+            }
+        ],
+        "amounts": [
+            {
+                "entity": "amount",
+                "value": "2380.00:EUR",
+                "box": {
+                    "top": 860.55,
+                    "left": 812.55,
+                    "width": 54.89999999999998,
+                    "height": 11.0,
+                    "page": 1
+                }
+            }
+        ],
+        "bics": [
+            {
+                "entity": "bic",
+                "value": "COBADEFFXXX"
+            }
+        ]
+    }
+}

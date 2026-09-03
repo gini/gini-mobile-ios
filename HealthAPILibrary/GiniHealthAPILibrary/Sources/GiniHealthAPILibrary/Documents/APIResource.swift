@@ -2,7 +2,7 @@
 //  APIResource.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/18/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -10,19 +10,23 @@ import Foundation
 public enum APIDomain {
     /// The default one, which points to https://health-api.gini.net
     case `default`
-    /// The GYM API, which points to https://gym.gini.net/
-    case gym(tokenSource: AlternativeTokenSource)
     /// A custom domain with optional custom token source
     case custom(domain: String, tokenSource: AlternativeTokenSource?)
-    
     var domainString: String {
         
         switch self {
         case .default: return "health-api.gini.net"
-        case .gym: return "gym.gini.net"
         case .custom(let domain, _): return domain
         }
     }
+    
+}
+
+enum MimeSubtype: String {
+    case pdf = "qr+pdf"
+    case png = "qr+png"
+    case json = "json"
+    case jpeg = "jpeg"
 }
 
 struct APIResource<T: Decodable>: Resource {
@@ -32,6 +36,7 @@ struct APIResource<T: Decodable>: Resource {
     typealias ResponseType = T
     
     var domain: APIDomain
+    let apiVersion: Int
     var params: RequestParameters
     var method: APIMethod
     var authServiceType: AuthServiceType? = .apiService
@@ -42,14 +47,6 @@ struct APIResource<T: Decodable>: Resource {
     
     var scheme: URLScheme {
         return .https
-    }
-    
-    var apiVersion: Int {
-        switch domain {
-        case .default: return 3
-        case .gym: return 2
-        case .custom: return 3
-        }
     }
     
     var queryItems: [URLQueryItem?]? {
@@ -108,43 +105,70 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests"
         case .file(urlString: let urlString):
             return urlString
+        case .payment(let id):
+            return "/paymentRequests/\(id)/payment"
+        case .pdfWithQRCode(let paymentRequestId, _):
+            return "/paymentRequests/\(paymentRequestId)"
+        case .configurations:
+            return "/configurations"
         }
     }
     
     var defaultHeaders: HTTPHeaders {
+        // Define common headers
+        let acceptHeader = ["Accept": ContentType.content(
+            version: apiVersion,
+            subtype: nil,
+            mimeSubtype: MimeSubtype.json.rawValue
+        ).value]
+
+        // Helper method to construct Content-Type header
+        func contentTypeHeader(subtype: String?, mimeSubtype: String) -> HTTPHeaders {
+            return ["Content-Type": ContentType.content(
+                version: apiVersion,
+                subtype: subtype,
+                mimeSubtype: mimeSubtype
+            ).value]
+        }
+
         switch method {
-        case .createDocument(_, _, let mimeSubType, let documentType):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
-            ]
-        case .file(_):
-            return [:]
-        case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
-        return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "json").value]
-        default:
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                         subtype: nil,
-                                                         mimeSubtype: "json").value
-            ]
+            case .createDocument(_, _, let mimeSubType, let documentType):
+                return acceptHeader.merging(contentTypeHeader(
+                    subtype: documentType?.name,
+                    mimeSubtype: mimeSubType.rawValue
+                )) { _, new in new }
+
+            case .file(_):
+                return [:]
+
+            case .paymentProviders, .paymentProvider(_):
+                return acceptHeader
+
+            case .pdfWithQRCode(_, let mimeSubtype):
+                return ["Accept": ContentType.content(
+                    version: apiVersion,
+                    subtype: nil,
+                    mimeSubtype: mimeSubtype.rawValue
+                ).value]
+
+            default:
+                // Default headers for other cases
+                return acceptHeader.merging(contentTypeHeader(
+                    subtype: nil,
+                    mimeSubtype: MimeSubtype.json.rawValue
+                )) { _, new in new }
         }
     }
     
     init(method: APIMethod,
          apiDomain: APIDomain,
+         apiVersion: Int,
          httpMethod: HTTPMethod,
          additionalHeaders: HTTPHeaders = [:],
          body: Data? = nil) {
         self.method = method
         self.domain = apiDomain
+        self.apiVersion = apiVersion
         self.params = RequestParameters(method: httpMethod,
                                         body: body)
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }

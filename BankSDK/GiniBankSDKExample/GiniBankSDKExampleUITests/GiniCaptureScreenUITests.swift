@@ -1,0 +1,111 @@
+//
+//  GiniCaptureScreenUITests.swift
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
+
+import Foundation
+import XCTest
+
+class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
+    
+    func testCancelButtonInMenu() throws {
+
+        //No Cancel button on iPad
+        if UIDevice.current.userInterfaceIdiom == .pad {
+               throw XCTSkip("Skipping test on iPad")
+           }
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button
+        captureScreen.filesButton.tap()
+
+        //Wait for the sheet to appear (Upload files is one of its actions)
+        XCTAssertTrue(captureScreen.uploadFilesButton.waitForExistence(timeout: 5),
+                      "Files menu did not appear")
+
+        if #available(iOS 26.0, *) {
+            //iOS 26: the sheet's Cancel action is drawn visually at the bottom of the sheet
+            //but is not exposed to accessibility. Tap its screen position directly.
+            captureScreen.app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.96)).tap()
+        } else {
+            //iOS < 26: tap the sheet's Cancel button as before.
+            captureScreen.cancelButtonInMenu.tap()
+        }
+
+        //Assert the sheet was dismissed by verifying a sheet-only action is no longer hittable
+        XCTAssertFalse(captureScreen.uploadFilesButton.isHittable)
+    }
+    
+    func testUploadFilesButtonInMenu() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button
+        captureScreen.filesButton.tap()
+        //Tap Upload files button
+        captureScreen.uploadFilesButton.tap()
+        //Assert Cancel button isn't displayed
+        XCTAssertFalse(captureScreen.cancelButtonInMenu.isHittable)
+    }
+    
+    func testUploadPhotosButtonInMenu() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Files button
+        captureScreen.filesButton.tap()
+        //Tap Upload photo button
+        captureScreen.uploadPhotoButton.tap()
+        //Handle photo permission so it doesn't pollute subsequent tests
+        mainScreen.handlePhotoPermission(answer: true)
+        //Assert Capture button isn't displayed
+        //XCTAssertFalse(captureScreen.captureButton.isHittable)
+    }
+    
+    func testFlashButton() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Flash Off button
+        captureScreen.flashOFFButton.tap()
+        //Assert Flash Off button isn't displayed
+        XCTAssertFalse(captureScreen.flashOFFButton.isHittable)
+        //Tap Flash On button
+        captureScreen.flashONButton.tap()
+        //Assert Flash On button isn't displayed
+        XCTAssertFalse(captureScreen.flashONButton.isHittable)
+    }
+    
+    func testCancelNavigationButton() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Cancel button
+        captureScreen.cancelButtonNavigation.tap()
+        //Assert Photopayment button is displayed
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+    }
+}
+

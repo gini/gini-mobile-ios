@@ -17,7 +17,7 @@ final class PaymentTests: XCTestCase {
         let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: "7e72441c-32f8-11eb-b611-c3190574373c"),
                                                apiDomain: .default,
                                                httpMethod: .get)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/7e72441c-32f8-11eb-b611-c3190574373c", "path should match")
     }
     
@@ -25,7 +25,7 @@ final class PaymentTests: XCTestCase {
         let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: 20, offset: 0),
                                                apiDomain: .default,
                                                httpMethod: .get)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests"+"?offset=0&limit=20", "path should match")
     }
     
@@ -40,7 +40,7 @@ final class PaymentTests: XCTestCase {
                                                apiDomain: .default,
                                                httpMethod: .post,
                                                body: jsonData)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
     }
     
@@ -48,7 +48,7 @@ final class PaymentTests: XCTestCase {
         let resource = APIResource<Payment>(method: .payment(id: "d8b46793-31b4-49d5-8f81-554e9e13f3f5"),
                                                apiDomain: .default,
                                                httpMethod: .get)
-        let urlString = resource.url.absoluteString
+        let urlString = resource.url?.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
     }
     

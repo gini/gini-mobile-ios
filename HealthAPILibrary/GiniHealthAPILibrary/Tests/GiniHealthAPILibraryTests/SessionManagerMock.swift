@@ -1,8 +1,8 @@
 //
 //  SessionManagerMock.swift
-//  GiniHealthAPI-Unit-Tests
+//  GiniHealthAPILibraryTests
 //
-//  Created by Enrique del Pozo Gómez on 3/26/19.
+//  Copyright © 2019 Gini. All rights reserved.
 //
 
 import Foundation
@@ -12,8 +12,8 @@ import XCTest
 final class SessionManagerMock: SessionManagerProtocol {
     
     static let v3DocumentId = "626626a0-749f-11e2-bfd6-000000000000"
-    static let partialDocumentId = "726626a0-749f-11e2-bfd6-000000000000"
-    static let compositeDocumentId = "826626a0-749f-11e2-bfd6-000000000000"
+    static let partialDocumentId = "5e06e343-9dff-4924-99ac-7d5b3abf592c"
+    static let compositeDocumentId = "8d0c628d-95e8-4cf2-b4ea-d2daf03d8a32"
     static let paymentProviderId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     static let paymentRequestId = "118edf41-102a-4b40-8753-df2f0634cb86"
     static let paymentRequesterUri = "ginipay-test://paymentRequester"
@@ -22,14 +22,14 @@ final class SessionManagerMock: SessionManagerProtocol {
     static let paymentID = "b4bd3e80-7bd1-11e4-95ab-000000000000"
     var documents: [Document] = []
     var providersResponse: [PaymentProviderResponse] = []
-    var providerResponse: PaymentProviderResponse =  loadProviderResponse()
+    var providerResponse: PaymentProviderResponse = load(fromFile: "provider", type: "json")
     var paymentRequests: [PaymentRequest] = []
     var extractionFeedbackBody: Data?
 
 
     init(keyStore: KeyStore = KeychainStore(),
-         urlSession: URLSession = URLSession()) {
-        
+         urlSession: URLSession = URLSession(configuration: .default)) {
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func initializeWithV3MockedDocuments() {
@@ -39,11 +39,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func initializeWithPaymentProvidersResponse() {
-        providersResponse = loadProvidersResponse()
+        providersResponse = load(fromFile: "providers", type: "json")
     }
     
     func initializeWithPaymentRequests() {
-        paymentRequests = loadPaymentRequests()
+        paymentRequests = load(fromFile: "paymentRequests", type: "json")
     }
     
     func initializeWithV2MockedDocuments() {
@@ -54,11 +54,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     func logOut() {
-        
+        // This method will remain empty; mock implementation does not perform login
     }
     
     //swiftlint:disable all
@@ -95,17 +95,29 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .createPaymentRequest:
                 completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
-                let providerResponse: PaymentProviderResponse = loadProviderResponse()
+                let providerResponse: PaymentProviderResponse = load(fromFile: "provider", type: "json")
                 completion(.success(providerResponse as! T.ResponseType))
             case .paymentProviders:
-                let paymentProvidersResponse: [PaymentProviderResponse] = loadProvidersResponse()
+                let paymentProvidersResponse: [PaymentProviderResponse] = load(fromFile: "providers", type: "json")
                 completion(.success(paymentProvidersResponse as! T.ResponseType))
             case .paymentRequest(_):
-                let paymentRequest: PaymentRequest = loadPaymentRequest()
-                completion(.success(paymentRequest as! T.ResponseType))
+                if resource.params.method == .delete {
+                    completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
+                } else {
+                    let paymentRequest: PaymentRequest = load(fromFile: "paymentRequest", type: "json")
+                    completion(.success(paymentRequest as! T.ResponseType))
+                }
+            case .paymentRequests(_, _):
+                completion(.success(paymentRequests as! T.ResponseType))
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
+            case .payment(_):
+                let payment: Payment = load(fromFile: "payment", type: "json")
+                completion(.success(payment as! T.ResponseType))
+            case .pdfWithQRCode(_,_):
+                let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
+                completion(.success(pdfData as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
@@ -119,7 +131,8 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let apiMethod = resource.method as? APIMethod {
             switch apiMethod {
             case .file(_):
-                let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+                let imageData = UIImage(named: "Gini-Test-Payment-Provider",
+                                        in: Bundle.module, compatibleWith: nil)?.pngData()
                 completion(.success(imageData as! T.ResponseType))
             default:
                 break

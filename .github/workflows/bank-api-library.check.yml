@@ -1,67 +1,95 @@
 name: Check Bank API Library
+permissions:
+  contents: read
 on:
-  push:
-   paths:
-      - 'BankAPILibrary/**'
-   tags-ignore:
-      - '**'
   pull_request:
-   paths:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
       - 'BankAPILibrary/**'
+
+  # Analyze the main branch in SonarCloud after every merge so PR quality gates
+  # have a new-code baseline to compare against.
+  push:
+    branches: [main]
+    paths:
+      - 'BankAPILibrary/**'
+
   workflow_call:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
-  
+      SONAR_TOKEN:
+        required: false
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-check
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+ 
 jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
   check:
-    runs-on: macOS-11
+    needs: get-config
+    runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniBankAPILibrary, GiniBankAPILibraryPinning]
-        destination: ['platform=iOS Simulator,OS=15.0,name=iPhone 13', 'platform=iOS Simulator,OS=13.7,name=iPhone 11']
+        target: [GiniBankAPILibrary]
+        destination: ['${{ needs.get-config.outputs.ios-simulator-destination }}']
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1
+    - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
       with:
-        xcode-version: '13.0'
+        xcode-version: ${{ needs.get-config.outputs.xcode-version }}
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Check package GiniBankAPILibrary
+      if: ${{ matrix.target == 'GiniBankAPILibrary' }}
       run: |
            cd BankAPILibrary/GiniBankAPILibrary
            swift package update
 
-    - name: Check package GiniBankAPILibraryPinning
-      run: |
-           cd BankAPILibrary/GiniBankAPILibraryPinning
-           swift package update
+    # Setup ruby to run unit tests for the GiniBankAPILibrary
+    - name: Setup ruby
+      uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+      with:
+        ruby-version: ${{ needs.get-config.outputs.ruby-version }}
+        bundler-cache: true
 
-    - name: Link to 13.7 Simulators
-      if: matrix.destination == 'platform=iOS Simulator,OS=13.7,name=iPhone 11'
-      run: |
-        echo "Creating Runtimes folder if needed..."
-        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        echo "Creating symlink of the iOS 13.7 runtime..."
-        sudo ln -s /Applications/Xcode_11.7.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 13.7.simruntime
+    - name: Build and run tests for "${{ matrix.target }}"
+      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+      with:
+        lane: 'run_unit_tests'
+        options: >
+            {
+              "target": "${{ matrix.target }}",
+              "destination": "${{ matrix.destination }}",
+              "result_bundle_path": "sonar-coverage.xcresult"
+            }
 
-    - name: Build sdk targets
+    - name: Convert coverage to SonarQube generic format
+      if: ${{ matrix.target == 'GiniBankAPILibrary' }}
       run: |
-        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        bash scripts/xccov-to-sonarqube-generic.sh sonar-coverage.xcresult \
+          | sed 's|path="[^"]*/BankAPILibrary/|path="|g' \
+          > BankAPILibrary/coverage.xml
 
-    - name: Run unit tests
-      run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-   
-    - name: Build example app and run integration tests
-      run: >
-        xcodebuild clean test
-        -project BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExample.xcodeproj
-        -scheme "GiniBankAPILibraryExampleTests"
-        -destination "${{ matrix.destination }}"
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+    - name: Upload coverage report
+      if: ${{ matrix.target == 'GiniBankAPILibrary' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonar-coverage-bank-api-library
+        path: BankAPILibrary/coverage.xml
+        retention-days: 1
+
+  sonarqube:
+    name: SonarQube
+    needs: check
+    uses: ./.github/workflows/sonarqube.yml
+    with:
+      project_base_dir: BankAPILibrary
+      coverage_artifact_name: sonar-coverage-bank-api-library
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

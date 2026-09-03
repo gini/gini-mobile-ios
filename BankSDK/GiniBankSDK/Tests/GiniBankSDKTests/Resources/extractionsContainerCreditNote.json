@@ -1,0 +1,72 @@
+{
+  "extractions": {
+    "businessDocType": {
+      "entity": "businessdoctype",
+      "value": "CreditNote"
+    },
+    "amountToPay": {
+      "entity": "amount",
+      "value": "12.75:EUR",
+      "candidates": "amounts"
+    },
+    "iban": {
+      "entity": "iban",
+      "value": "DE16700202700005713153",
+      "candidates": "ibans"
+    },
+    "paymentRecipient": {
+      "entity": "companyname",
+      "value": "TELEFÓNICA GERMANY GMBH & CO. OHG"
+    },
+    "paymentPurpose": {
+      "entity": "text",
+      "value": "ReNr 1191832864/04, KdNr 33038783"
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "description": {
+          "entity": "text",
+          "value": "Shoe, black, 40"
+        },
+        "quantity": {
+          "entity": "number",
+          "value": "1"
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "76.01:EUR"
+        }
+      },
+      {
+        "description": {
+          "entity": "text",
+          "value": "Trainers, white, 41"
+        },
+        "quantity": {
+          "entity": "number",
+          "value": "2"
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "34.99:EUR"
+        }
+      }
+    ]
+  },
+  "candidates": {
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "12.75:EUR"
+      }
+    ],
+    "ibans": [
+      {
+        "entity": "iban",
+        "value": "DE16700202700005713153"
+      }
+    ]
+  }
+}

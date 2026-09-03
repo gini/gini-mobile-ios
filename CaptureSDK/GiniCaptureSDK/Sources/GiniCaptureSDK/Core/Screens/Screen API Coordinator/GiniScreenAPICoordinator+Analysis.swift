@@ -1,8 +1,7 @@
 //
 //  GiniScreenAPICoordinator+Analysis.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -10,84 +9,128 @@ import Foundation
 // MARK: - Analysis Screen
 
 extension GiniScreenAPICoordinator {
-    func createAnalysisScreen(withDocument document: GiniCaptureDocument) -> AnalysisViewController {
+    func createAnalysisScreen(withDocument document: GiniCaptureDocument,
+                              shouldSaveToGallery: Bool = false) -> AnalysisViewController {
         let viewController = AnalysisViewController(document: document)
-        viewController.setupNavigationItem(usingResources: self.cancelButtonResource,
-                                           selector: #selector(back),
-                                           position: .left,
-                                           target: self)
+        viewController.shouldSaveToGallery = shouldSaveToGallery
+
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(back))
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            viewController.navigationItem.setHidesBackButton(true, animated: false)
+            viewController.navigationItem.rightBarButtonItem = cancelButton.barButton
+        } else {
+            viewController.navigationItem.leftBarButtonItem = cancelButton.barButton
+        }
+
         return viewController
     }
 }
 
 // MARK: - ImageAnalysisNoResults screen
-
+typealias NoResultType = NoResultScreenViewController.NoResultType
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
-        let imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController
-        let isCameraViewControllerLoaded: Bool = {
-            guard let cameraViewController = cameraViewController else {
-                return false
+    func createImageAnalysisNoResultsScreen(type: NoResultType) -> NoResultScreenViewController {
+            let viewModel: BottomButtonsViewModel
+            let viewController: NoResultScreenViewController
+            switch type {
+            case .qrCode:
+                viewModel = createRetakeAndEnterManuallyButtonsViewModel()
+            case .image:
+                if pages.contains(where: { $0.document.isImported == false }) {
+                    // if there is a photo captured with camera
+                    viewModel = createRetakeAndEnterManuallyButtonsViewModel()
+                } else {
+                    viewModel = createDefaultButtonsViewModel()
+                }
+            default:
+                viewModel = createDefaultButtonsViewModel()
             }
-            return screenAPINavigationController.viewControllers.contains(cameraViewController)
-        }()
-        
-        if isCameraViewControllerLoaded {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: backButtonResource,
-                                                                     selector: #selector(backToCamera),
-                                                                     position: .left,
-                                                                     target: self)
-        } else {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil,
-                                                                                        bottomButtonIcon: nil)
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: closeButtonResource,
-                                                                     selector: #selector(closeScreenApi),
-                                                                     position: .left,
-                                                                     target: self)
+            viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration,
+                                                          type: type,
+                                                          viewModel: viewModel)
+            return viewController
         }
-        
-        imageAnalysisNoResultsViewController.didTapBottomButton = { [weak self] in
-            self?.backToCamera()
-        }
-        
-        return imageAnalysisNoResultsViewController
+
+    private func createDefaultButtonsViewModel() -> BottomButtonsViewModel {
+        BottomButtonsViewModel(
+            manuallyPressed: { [weak self] in
+                self?.finishWithEnterManually()
+            },
+            backPressed: { [weak self] in
+                self?.finishWithRetake()
+        })
+    }
+
+    private func createRetakeAndEnterManuallyButtonsViewModel() -> BottomButtonsViewModel {
+        return BottomButtonsViewModel(
+            retakeBlock: { [weak self] in
+                self?.finishWithRetake()
+            },
+            manuallyPressed: { [weak self] in
+                self?.finishWithEnterManually()
+            },
+            backPressed: { [weak self] in
+                self?.finishWithRetake()
+        })
     }
 }
 
 // MARK: - AnalysisDelegate
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
-    public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self,
-                let message = message,
-                let action = action else { return }
-            
-            if let analysisViewController = self.analysisViewController {
-                analysisViewController.showError(with: message, action: { [weak self] in
-                    guard let self = self else { return }
-                    self.analysisErrorAndAction = nil
-                    action()
-                })
-            } else {
-                self.analysisErrorAndAction = (message, action)
-            }
 
+    public func displayError(errorType: ErrorType, animated: Bool) {
+        let viewModel: BottomButtonsViewModel
+        switch pages.type {
+        case .image:
+            if self.pages.contains(where: { $0.document.isImported == false }) {
+                // if there is a photo captured with camera
+                viewModel = createRetakeAndEnterManuallyButtonsViewModel()
+            } else {
+                viewModel = createDefaultButtonsViewModel()
+            }
+        default:
+                viewModel = createDefaultButtonsViewModel()
+        }
+
+        self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
+        let viewController = ErrorScreenViewController(giniConfiguration: giniConfiguration,
+                                                       type: errorType,
+                                                       viewModel: viewModel)
+
+        screenAPINavigationController.pushViewController(viewController, animated: animated)
+    }
+
+    public func tryDisplayNoResultsScreen() {
+        var shouldDisplay = false
+        var noResultType: NoResultScreenViewController.NoResultType?
+        switch pages.type {
+        case .image:
+            noResultType = .image
+            shouldDisplay = true
+        case .pdf:
+            noResultType = .pdf
+            shouldDisplay = true
+        case .qrcode:
+            noResultType = .qrCode
+            shouldDisplay = true
+        case .xml:
+            noResultType = .xml
+            shouldDisplay = true
+        default:
+            shouldDisplay = false
+        }
+
+        if shouldDisplay, let type = noResultType {
+            let noResultsScreen = self.createImageAnalysisNoResultsScreen(type: type)
+            DispatchQueue.main.async {
+                self.noResultsViewController = noResultsScreen
+                self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .noResults))
+                self.screenAPINavigationController.pushViewController(
+                    noResultsScreen, animated: true)
+            }
         }
     }
-    
-    public func tryDisplayNoResultsScreen() -> Bool {
-        if pages.type == .image {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen()
-                self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
-                                                                      animated: true)
-            }
-            
-            return true
-        }
-        return false
-    }    
 }

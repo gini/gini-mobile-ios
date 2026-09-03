@@ -1,0 +1,68 @@
+{
+  "extractions": {
+    "businessDocType": {
+      "entity": "businessdoctype",
+      "value": "Invoice"
+    },
+    "amountToPay": {
+      "entity": "amount",
+      "value": "145.99:EUR",
+      "candidates": "amounts"
+    },
+    "iban": {
+      "entity": "iban",
+      "value": "DE16700202700005713153",
+      "candidates": "ibans"
+    },
+    "paymentRecipient": {
+      "entity": "companyname",
+      "value": "ZALANDO SE"
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "description": {
+          "entity": "text",
+          "value": "Nike Sportswear Air Max 97 - Sneaker"
+        },
+        "quantity": {
+          "entity": "number",
+          "value": "2"
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "10.99:EUR"
+        }
+      },
+      {
+        "description": {
+          "entity": "text",
+          "value": "Cotton T-Shirt, white, M"
+        },
+        "quantity": {
+          "entity": "number",
+          "value": "1"
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "124.01:EUR"
+        }
+      }
+    ]
+  },
+  "candidates": {
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "145.99:EUR"
+      }
+    ],
+    "ibans": [
+      {
+        "entity": "iban",
+        "value": "DE16700202700005713153"
+      }
+    ]
+  }
+}

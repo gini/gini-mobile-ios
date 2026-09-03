@@ -14,7 +14,8 @@ typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
 public protocol DocumentService: AnyObject {
     
     var apiDomain: APIDomain { get }
-    
+    var apiVersion: Int { get }
+
     /**
      *  Deletes a document
      *
@@ -93,6 +94,16 @@ public protocol DocumentService: AnyObject {
      */
     
     func file(urlString: String, completion: @escaping CompletionResult<Data>)
+
+    /**
+     *  Deletes a batch of documents
+     *
+     * - Parameter documentIds:         An array of document ids to be deleted
+     * - Parameter completion:          An action for deleting a batch of documents. Result is a value that represents either a success or a failure, including an associated value in each case.
+                                        In success it includes a success message
+                                        In case of failure error from the server side.
+     */
+    func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>)
 }
 
 protocol V2DocumentService: AnyObject {
@@ -118,7 +129,8 @@ extension DocumentService {
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>) {
         let resource = APIResource<DocumentList>(method: .documents(limit: limit, offset: offset),
-                                                 apiDomain: apiDomain,
+                                                 apiDomain: apiDomain, 
+                                                 apiVersion: apiVersion,
                                                  httpMethod: .get)
         resourceHandler(resource, { result in
             switch result {
@@ -135,6 +147,7 @@ extension DocumentService {
                         completion: @escaping CompletionResult<String>) {
         let resource = APIResource<String>(method: .document(id: id),
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .delete)
         
         resourceHandler(resource, { result in
@@ -146,7 +159,31 @@ extension DocumentService {
             }
         })
     }
-    
+
+    func deleteDocuments(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                         with ids: [String],
+                         completion: @escaping CompletionResult<String>) {
+        guard let json = try? JSONEncoder().encode(ids) else {
+            assertionFailure("The document ids provided cannot be encoded")
+            return
+        }
+
+        let resource = APIResource<String>(method: .documents(limit: nil, offset: nil),
+                                           apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
+                                           httpMethod: .delete,
+                                           body: json)
+
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let string):
+                completion(.success(string))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+
     func extractions(resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
                      documentResourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
                      for document: Document,
@@ -159,6 +196,7 @@ extension DocumentService {
                 case .success:
                     let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
                                                                      apiDomain: self.apiDomain,
+                                                                     apiVersion: self.apiVersion,
                                                                      httpMethod: .get)
                     
                     resourceHandler(resource, cancellationToken, { result in
@@ -181,6 +219,7 @@ extension DocumentService {
                        completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<Document>(method: .document(id: id),
                                              apiDomain: apiDomain,
+                                             apiVersion: apiVersion,
                                              httpMethod: .get)
         
         resourceHandler(resource, cancellationToken, { result in
@@ -202,6 +241,7 @@ extension DocumentService {
                 completion: @escaping CompletionResult<Document.Layout>) {
         let resource = APIResource<Document.Layout>(method: .layout(forDocumentId: document.id),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -219,6 +259,7 @@ extension DocumentService {
                completion: @escaping CompletionResult<[Document.Page]>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: document.id),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -236,6 +277,7 @@ extension DocumentService {
                completion: @escaping CompletionResult<[Document.Page]>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -254,6 +296,7 @@ extension DocumentService {
                  completion: @escaping CompletionResult<Data>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: self.apiDomain,
+                                                    apiVersion: self.apiVersion,
                                                     httpMethod: .get)
         resourceHandler(resource) { result in
             switch result {
@@ -319,7 +362,10 @@ extension DocumentService {
     func file(urlString: String,
                           resourceHandler: ResourceDataHandler<APIResource<Data>>,
                           completion: @escaping CompletionResult<Data>) {
-        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: .default, httpMethod: .get)
+        var resource = APIResource<Data>(method: .file(urlString: urlString), 
+                                         apiDomain: apiDomain,
+                                         apiVersion: apiVersion,
+                                         httpMethod: .get)
         resource.fullUrlString = urlString
         resourceHandler(resource) { result in
             switch result {
@@ -338,29 +384,47 @@ extension DocumentService {
         return width * height
     }
     
-    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                        for document: Document,
-                        with extractions: [Extraction],
-                        completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
+    private func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                                documentId: String,
+                                extractions: [Extraction],
+                                compoundExtractions: [String: [[Extraction]]]? = nil,
+                                completion: @escaping CompletionResult<Void>) {
+        let feedbackData: Encodable
+        if let compoundExtractions = compoundExtractions {
+            feedbackData = CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions)
+        } else {
+            feedbackData = ExtractionsFeedback(feedback: extractions)
+        }
+        
+        guard let json = try? JSONEncoder().encode(feedbackData) else {
             assertionFailure("The extractions provided cannot be encoded")
             return
         }
         
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+        let resource = APIResource<String>(method: .feedback(forDocumentId: documentId),
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .post,
                                            body: json)
         
-        resourceHandler(resource, { result in
+        resourceHandler(resource) { result in
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
-            
-        })
+        }
+    }
+    
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: resourceHandler,
+                       documentId: document.id,
+                       extractions: extractions,
+                       completion: completion)
     }
     
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
@@ -368,29 +432,34 @@ extension DocumentService {
                         with extractions: [Extraction],
                         and compoundExtractions: [String: [[Extraction]]],
                         completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(
-            CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions)
-            ) else {
-                assertionFailure("The extractions provided cannot be encoded")
-                return
-        }
-        
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: json)
-        
-        resourceHandler(resource, { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-            
-        })
+        submitFeedback(resourceHandler: resourceHandler,
+                       documentId: document.id,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
     }
     
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        documentId: String,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: resourceHandler,
+                       documentId: documentId,
+                       extractions: extractions,
+                       completion: completion)
+    }
+    
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        documentId: String,
+                        with extractions: [Extraction],
+                        and compoundExtractions: [String: [[Extraction]]],
+                        completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: resourceHandler,
+                       documentId: documentId,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
+    }
 }
 
 // MARK: - Fileprivate

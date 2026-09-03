@@ -6,13 +6,30 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniInternalPaymentSDK
+import GiniUtilites
 
 final class AppCoordinator: Coordinator {
+    
+    /**
+     * Determines whether to use the pre-existing navigation controller (`false`)
+     * or create a new `UINavigationController` for alternative navigation (`true`).
+     *
+     * Default value is `false`.
+     */
+    private var shouldUseAlternativeNavigation = false
+
+    /**
+     * Determines whether `GiniHealthError` instances should be handled internally by the SDK (`true`)
+     * or forwarded to the consumer app for custom handling (`false`).
+     *
+     * Default value is `true`.
+     */
+    private var handleErrorsInternally = true
     
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
@@ -21,22 +38,21 @@ final class AppCoordinator: Coordinator {
         return selectAPIViewController
     }
     lazy var selectAPIViewController: SelectAPIViewController = {
-        let selectAPIViewController = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "selectAPIViewController") as? SelectAPIViewController)!
+        let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
-        selectAPIViewController.clientId = self.client.id
+        selectAPIViewController.debugMenuPresenter = self
+        selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
     
     lazy var giniConfiguration: GiniConfiguration = {
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         giniConfiguration.debugModeOn = true
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         giniConfiguration.openWithEnabled = true
         giniConfiguration.qrCodeScanningEnabled = true
         giniConfiguration.multipageEnabled = true
         giniConfiguration.flashToggleEnabled = true
-        giniConfiguration.navigationBarItemTintColor = .white
         giniConfiguration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
             let maxFileSize = 10 * 1024 * 1024
@@ -48,22 +64,29 @@ final class AppCoordinator: Coordinator {
         }
         return giniConfiguration
     }()
-    
-    private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
-    lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
-    lazy var health = GiniHealth(with: apiLib)
 
-    private var documentMetadata: Document.Metadata?
+    private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
+
+    private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
+        let configuration = GiniHealthConfiguration()
+        // Show the close button to dismiss the payment review screen
+        configuration.paymentReviewStatusBarStyle = .lightContent
+        return configuration
+    }()
+
+    private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
+
+    private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol = HardcodedInvoicesController()
 
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-            "      - Client id:  \(client.id)\n",
-            "      - Client email domain:  \(client.domain)",
-            "\n\n------------------------------------\n")
+              "      - Client id:  \(clientID)\n",
+              "      - Client email domain:  \(clientDomain)",
+              "\n\n------------------------------------\n")
     }
     
     func start() {
@@ -88,7 +111,7 @@ final class AppCoordinator: Coordinator {
             if let document = document {
                 do {
                     try GiniCapture.validate(document,
-                                            withConfig: self.giniConfiguration)
+                                             withConfig: self.giniConfiguration)
                     self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
                 } catch {
                     self.showExternalDocumentNotValidDialog()
@@ -97,155 +120,181 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    func processBankUrl() {
-            self.popToRootViewControllerIfNeeded()
-            showReturnMessage()
+    func processBankUrl(url: URL) {
+        if let invoicesListCoordinator = childCoordinators.last as? InvoicesListCoordinator {
+            invoicesListCoordinator.invoicesListNavigationController.popViewController(animated: true)
+        } else if let orderListCoordinator = childCoordinators.last as? OrderListCoordinator {
+            orderListCoordinator.orderListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                orderListCoordinator.orderListNavigationController.popViewController(animated: true)
+            })
         }
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+        
+        if let queryItems = components.queryItems {
+            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
+                selectAPIViewController.showActivityIndicator()
+                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                    DispatchQueue.main.async {
+                        self?.selectAPIViewController.hideActivityIndicator()
+                    }
+                    switch result {
+                    case .success(let paymentRequest):
+                        GiniUtilites.Log("Successfully obtained payment request", event: .success)
+                        DispatchQueue.main.async {
+                            self?.showReturnMessage(message: self?.messageFor(status: PaymentStatus(rawValue: paymentRequest.status)) ?? "")
+                        }
+                    case .failure(let error):
+                        GiniUtilites.Log("Failed to retrieve payment request: \(error.localizedDescription)", event: .error)
+                    }
+                }
+            }
+        }
+    }
+    
+    private enum PaymentStatus: String {
+        case paid
+        case paidAdjusted = "paid_adjusted"
+    }
+
+    private func messageFor(status: PaymentStatus?) -> String {
+        switch status {
+        case .paid:
+            return "Payment was successful 🎉"
+        case .paidAdjusted:
+            return "Payment was successful 🎉 with adjusted amount"
+        default:
+            return "Payment was unsuccessful 😢"
+        }
+    }
     
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
     }
     
-    
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                                  configuration: self.giniConfiguration,
-                                                                  documentService: self.componentAPIDocumentService(),
-                                                                  giniHealth: self.health)
-            componentAPICoordinator.delegate = self
-            componentAPICoordinator.start()
-            self.add(childCoordinator: componentAPICoordinator)
+    fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
+        let metadata = GiniHealthAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
+                                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
 
-            self.rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-        }
-    }
-    
-    private var testDocument: Document?
-    private var testDocumentExtractions: [Extraction]?
-    
-    fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController, completion: @escaping () -> Void) {
-        health.checkIfAnyPaymentProviderAvailable { result in
-            switch(result) {
-            case .success(_):
-                completion()
-            case .failure(_):
-                let alertViewController = UIAlertController(title: "",
-                                                            message: "We didn't find any banking apps installed",
-                                                            preferredStyle: .alert)
-                
-                alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    alertViewController.dismiss(animated: true, completion: nil)
-                })
-                viewController.present(alertViewController, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    fileprivate func showPaymentReviewWithTestDocument() {
-        let configuration = GiniHealthConfiguration()
-        // Font configuration
-        let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
-        let boldFont = UIFont(name: "Avenir Heavy", size: 14) ?? UIFont.systemFont(ofSize: 15)
-        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont)
-        // Pay button configuration
-        configuration.payButtonTitleFont = boldFont
-        // Uncomment to test disabled state
-        //configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .yellow, darkModeColor: .yellow)
-        //configuration.payButtonDisabledBackgroundColor =  GiniColor(lightModeColor: .red, darkModeColor: .red)
-        // Page indicator color configuration
-        configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
-        configuration.pageIndicatorTintColor = GiniColor(lightModeColor: .darkGray, darkModeColor: .darkGray)
+        let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
+                                                        importedDocuments: pages?.map { $0.document },
+                                                        client: GiniHealthAPILibrary.Client(id: clientID,
+                                                                                            secret: clientPassword,
+                                                                                            domain: clientDomain),
+                                                                                            documentMetadata: metadata,
+                                                        hardcodedInvoicesController: hardcodedInvoicesController)
         
-        // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
-        configuration.paymentReviewStatusBarStyle = .lightContent
+        screenAPICoordinator.delegate = self
         
         health.delegate = self
-        health.setConfiguration(configuration)
+        screenAPICoordinator.giniHealth = health
         
-        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            if let document = self.testDocument {
-                self.selectAPIViewController.showActivityIndicator()
-                
-                self.health.fetchDataForReview(documentId: document.id) { result in
-                    switch result {
-                    case .success(let data):
-                        let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
-                        self.rootViewController.present(vc, animated: true)
-                    case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
+        let apiLib = health.giniApiLib
+        screenAPICoordinator.start(healthAPI: apiLib)
+        add(childCoordinator: screenAPICoordinator)
+        
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
+    }
+    
+    private var testDocument: GiniHealthSDK.Document?
+    private var testDocumentExtractions: [GiniHealthSDK.Extraction]?
+
+    fileprivate func showPaymentReviewWithTestDocument() {
+        health.delegate = self
+        health.setConfiguration(giniHealthConfiguration)
+
+        if let document = self.testDocument {
+            self.selectAPIViewController.showActivityIndicator()
+            
+            self.health.fetchDataForReview(documentId: document.id) { result in
+                switch result {
+                case .success(let data):
+                    self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
+                        switch result {
+                        case let .success(extractionResult):
+                            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
+                            let invoice = DocumentWithExtractions(documentId: document.id,
+                                                                  extractionResult: extractionResult)
+                            self?.showInvoicesList(invoices: [invoice])
+                        case let .failure(error):
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                             event: .error)
+                        }
                     }
+                case .failure(let error):
+                    GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
-            } else {
-                // Upload the test document image
-                let testDocumentImage = UIImage(named: "testDocument")!
-                let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
-                
-                self.selectAPIViewController.showActivityIndicator()
-                
-                self.health.documentService.createDocument(fileName: nil,
-                                                        docType: nil,
-                                                        type: .partial(testDocumentData),
-                                                        metadata: nil) { result in
-                    switch result {
-                    case .success(let createdDocument):
-                        let partialDocInfo = PartialDocumentInfo(document: createdDocument.links.document)
-                        self.health.documentService.createDocument(fileName: nil,
-                                                                docType: nil,
-                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                                metadata: nil) { result in
-                            switch result {
-                            case .success(let compositeDocument):
-                                self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
-                                    switch result {
-                                    case .success(let extractions):
-                                        self.testDocument = compositeDocument
-                                        self.testDocumentExtractions = extractions
-                                        
-                                        // Show the payment review screen
-                                        let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions, trackingDelegate: self)
-                                        self.rootViewController.present(vc, animated: true)
-                                    case .failure(let error):
-                                        print("❌ Setting document for review failed: \(String(describing: error))")
+            }
+        } else {
+            // Upload the test document image
+            let testDocumentImage = UIImage(named: "testDocument")!
+            let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
+            
+            self.selectAPIViewController.showActivityIndicator()
+            
+            self.health.documentService.createDocument(fileName: nil,
+                                                       docType: nil,
+                                                       type: .partial(testDocumentData),
+                                                       metadata: nil) { result in
+                switch result {
+                case .success(let createdDocument):
+                    let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: createdDocument.links.document)
+                    self.health.documentService.createDocument(fileName: nil,
+                                                               docType: nil,
+                                                               type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                                               metadata: nil) { [weak self] result in
+                        switch result {
+                        case .success(let compositeDocument):
+                            self?.health.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
+                                switch result {
+                                case .success(let extractions):
+                                    self?.testDocument = compositeDocument
+                                    self?.testDocumentExtractions = extractions
+
+                                    self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
+                                        switch result {
+                                        case let .success(extractionResult):
+                                            GiniUtilites.Log("Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
+                                            let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
+                                                                                  extractionResult: extractionResult)
+                                            self?.showInvoicesList(invoices: [invoice])
+                                        case let .failure(error):
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
+                                                             event: .error)
+                                        }
                                     }
-                                    self.selectAPIViewController.hideActivityIndicator()
+                                case .failure(let error):
+                                    GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
+                                    self?.selectAPIViewController.hideActivityIndicator()
                                 }
-                            case .failure(let error):
-                                print("❌ Document creation failed: \(String(describing: error))")
-                                self.selectAPIViewController.hideActivityIndicator()
                             }
+                        case .failure(let error):
+                            GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                            self?.selectAPIViewController.hideActivityIndicator()
                         }
-                    case .failure(let error):
-                        print("❌ Document creation failed: \(String(describing: error))")
-                        self.selectAPIViewController.hideActivityIndicator()
                     }
+                case .failure(let error):
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
+                    self.selectAPIViewController.hideActivityIndicator()
                 }
             }
         }
     }
-    
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: apiLib, documentMetadata: documentMetadata)
-    }
-    
     
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-            "ScreenAPI oder ComponentAPI verwenden?",
+                                                    "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
-               
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
-        })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default) { [weak self] _ in
+            self?.showScreenAPI(with: pages)
+        }
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func showExternalDocumentNotValidDialog() {
@@ -253,84 +302,234 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
-        })
-        
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
+        rootViewController.present(alertViewController, animated: true)
     }
-    
-    fileprivate func showReturnMessage() {
+
+    fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
-                                                    message: "Payment was successful 🎉",
+                                                    message: message,
                                                     preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
-        })
-        
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
-            coordinator.rootViewController.dismiss(animated: true, completion: nil)
+            coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
+    }
+    
+    fileprivate func showInvoicesList(invoices: [DocumentWithExtractions]? = nil) {
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = false
+        health.setConfiguration(giniHealthConfiguration)
+        health.delegate = self
+
+        let invoicesListCoordinator = InvoicesListCoordinator()
+        invoicesListCoordinator.parentCoordinator = self
+        DispatchQueue.main.async {
+            invoicesListCoordinator.start(documentService: self.health.documentService,
+                                          hardcodedInvoicesController: self.hardcodedInvoicesController,
+                                          health: self.health,
+                                          invoices: invoices,
+                                          shouldUseAlternativeNavigation: self.shouldUseAlternativeNavigation)
+            self.add(childCoordinator: invoicesListCoordinator)
+            self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+        }
+    }
+
+    fileprivate func showOrdersList(orders: [Order]? = nil) {
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = true
+        health.setConfiguration(giniHealthConfiguration)
+        health.delegate = self
+        
+        let orderListCoordinator = OrderListCoordinator()
+        orderListCoordinator.start(documentService: health.documentService,
+                                   hardcodedOrdersController: HardcodedOrdersController(),
+                                   health: health,
+                                   orders: orders,
+                                   shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
+        add(childCoordinator: orderListCoordinator)
+        rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
 }
 
 // MARK: SelectAPIViewControllerDelegate
 
 extension AppCoordinator: SelectAPIViewControllerDelegate {
-    
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType) {
         switch api {
         case .screen:
-            break
+            showScreenAPI()
         case .component:
-            showComponentAPI()
+            break
         case .paymentReview:
             showPaymentReviewWithTestDocument()
+        case .invoicesList:
+            showInvoicesList()
+        case .ordersList:
+            showOrdersList()
+        }
+    }
+}
+
+// MARK: ScreenAPICoordinatorDelegate
+
+extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func presentError(title: String, message: String) {
+        if let presentedVC = rootViewController.presentedViewController {
+            presentedVC.showError(title, message: message)
+        } else {
+            rootViewController.showError(title, message: message)
         }
     }
     
-}
-
-// MARK: ComponentAPICoordinatorDelegate
-
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
+        coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
+    }
+    
+    func presentInvoicesList(invoices: [DocumentWithExtractions]?) {
+        self.showInvoicesList(invoices: invoices)
     }
 }
 
 // MARK: GiniHealthDelegate
 
+@MainActor
 extension AppCoordinator: GiniHealthDelegate {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
-        return true
+        let handleInternally = handleErrorsInternally
+        if !handleInternally {
+            presentHealthError(error)
+        }
+        return handleInternally
+    }
+
+    private func presentHealthError(_ error: GiniHealthError) {
+        let message: String
+        switch error {
+        case .noInstalledApps:
+            message = "No supported banking app is installed to complete the payment."
+        case .noPaymentDataExtracted:
+            message = "The document does not contain valid payment data."
+        case .apiError(let apiError):
+            message = apiError.detailedDescription
+        }
+        presentError(title: "Error", message: message)
     }
     
-    func didCreatePaymentRequest(paymentRequestID: String) {
-        print("✅ Created payment request with id \(paymentRequestID)")
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
     }
-}
-
-// MARK: GiniHealthTrackingDelegate
-
-extension AppCoordinator: GiniHealthTrackingDelegate {
-    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
-        switch event.type {
-        case .onNextButtonClicked:
-            print("📝 Next button was tapped,\(String(describing: event.info))")
-        case .onCloseButtonClicked:
-            print("📝 Close screen was triggered")
-        case .onCloseKeyboardButtonClicked:
-            print("📝 Close keyboard was triggered")
-        case .onBankSelectionButtonClicked:
-            print("📝 Bank selection button was tapped,\(String(describing: event.info))")
+    
+    func didDismissHealthSDK() {
+        if shouldUseAlternativeNavigation {
+            rootViewController.presentedViewController?.dismiss(animated: true)
         }
     }
 }
+
+//MARK: - DebugMenuPresenterDelegate
+
+extension AppCoordinator: DebugMenuPresenter {
+    func presentDebugMenu() {
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
+                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
+                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
+                                                              popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
+                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
+                                                              handleErrorsInternally: handleErrorsInternally,
+                                                              ingredientBrandType: health.clientConfiguration?.ingredientBrandType ?? .invisible)
+        debugMenuViewController.delegate = self
+        rootViewController.present(debugMenuViewController, animated: true)
+    }
+}
+
+//MARK: - DebugMenuDelegate
+extension AppCoordinator: DebugMenuDelegate {
+    func didChangeSwitchValue(type: SwitchType, isOn: Bool) {
+        switch type {
+        case .showReviewScreen:
+            giniHealthConfiguration.showPaymentReviewScreen = isOn
+        case .useBottomPaymentComponent:
+            giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        case .showPaymentCloseButton:
+            giniHealthConfiguration.showPaymentReviewCloseButton = isOn
+        case .useAlternativeNavigation:
+            shouldUseAlternativeNavigation = isOn
+        case .handleErrorsInternally:
+            handleErrorsInternally = isOn
+        }
+    }
+
+    func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        if health.clientConfiguration == nil {
+            health.clientConfiguration = ClientConfiguration()
+        }
+        health.clientConfiguration?.ingredientBrandType = type
+    }
+
+    func didPickNewLocalization(localization: GiniLocalization) {
+        giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
+    }
+    
+    func didChangeSliderValue(value: Float) {
+        giniHealthConfiguration.popupDurationPaymentReview = TimeInterval(value)
+    }
+
+    func didCustomizeShareWithFilename(filename: String) {
+        giniHealthConfiguration.shareWithFileName = filename
+        health.setConfiguration(giniHealthConfiguration)
+    }
+    
+    func didTapOnBulkDelete() {
+        let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
+            .map { $0.documentId }
+            .prefix(Constants.numberOfDocumentsToBeDeleted)) // Number of documents to delete
+
+        health.deleteDocuments(documentIds: documentsToDeleteIds) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
+                let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
+                GiniUtilites.Log(successMessage, event: .success)
+                self?.presentError(title: "Success", message: successMessage)
+            case .failure(let error):
+                // Use the convenience helper for detailed logging
+                GiniUtilites.Log(error.detailedDescription, event: .error)
+                
+                // Display user-friendly error message
+                self?.presentError(title: "Error",
+                                   message: error.detailedDescription)
+
+                // Optional: Handle specific error codes if needed
+                if let errorItems = error.items, !errorItems.isEmpty {
+                    GiniUtilites.Log("⚠️ Error items: \(errorItems)", event: .warning)
+                }
+            }
+        }
+    }
+}
+
+extension AppCoordinator {
+    enum Constants {
+        static let numberOfDocumentsToBeDeleted = 2
+    }
+}
+

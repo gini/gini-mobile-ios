@@ -22,21 +22,35 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     fileprivate let footerHeight: CGFloat = 50.0
     fileprivate let headerIdentifier = "AlbumsHeaderView"
 
+    var tableViewContentHeight: CGFloat {
+        albumsTableView.layoutIfNeeded()
+
+        var height = albumsTableView.contentSize.height
+        height += Constants.padding * 2 // adding the content inset
+        return height
+    }
+
+    private lazy var tableViewHeightAnchor =
+        albumsTableView.heightAnchor.constraint(equalToConstant: tableViewContentHeight)
+    private lazy var tableViewLeadingConstraint =
+        albumsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2)
+    private lazy var tableViewTrailingConstraint =
+        albumsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2)
+
     // MARK: - Views
 
     lazy var albumsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.bounces = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-
-        if #available(iOS 13.0, *) {
-            tableView.backgroundColor = Colors.Gini.dynamicPearl
-        } else {
-            tableView.backgroundColor = Colors.Gini.pearl
-        }
+        tableView.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         tableView.register(AlbumsPickerTableViewCell.self,
                            forCellReuseIdentifier: AlbumsPickerTableViewCell.identifier)
+        tableView.layer.cornerRadius = Constants.cornerRadius
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.padding, right: 0)
+        tableView.separatorColor = GiniColor(light: .GiniCapture.light4, dark: .GiniCapture.dark6).uiColor()
         return tableView
     }()
 
@@ -57,16 +71,25 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
     override func loadView() {
         super.loadView()
-        title = .localized(resource: GalleryStrings.albumsTitle)
+        title = NSLocalizedStringPreferredFormat("ginicapture.albums.title", comment: "Albums")
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
         setupTableView()
     }
 
     func setupTableView() {
-        if #available(iOS 15.0, *) {
-             albumsTableView.sectionHeaderTopPadding = 0
-         }
+        albumsTableView.sectionHeaderTopPadding = 0
         view.addSubview(albumsTableView)
-        Constraints.pin(view: albumsTableView, toSuperView: view)
+
+        tableViewHeightAnchor.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            albumsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding * 2),
+            tableViewLeadingConstraint,
+            tableViewTrailingConstraint,
+            albumsTableView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                    constant: -Constants.padding * 2),
+            tableViewHeightAnchor
+        ])
     }
 
     func reloadAlbums() {
@@ -74,46 +97,49 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     func showLimitedLibraryPicker() {
-        if #available(iOS 14.0, *) {
-            library.presentLimitedLibraryPicker(from: self)
-        }
-        if #available(iOS 15.0, *) {
-            library.presentLimitedLibraryPicker(from: self) { _ in
-                DispatchQueue.main.async {
-                    self.galleryManager.reloadAlbums()
-                    self.reloadAlbums()
-                }
+        library.presentLimitedLibraryPicker(from: self) { _ in
+            DispatchQueue.main.async {
+                self.galleryManager.reloadAlbums()
+                self.reloadAlbums()
             }
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 14.0, *) {
-            library.register(self)
-            if galleryManager.isGalleryAccessLimited {
-                let footerView = AlbumsFooterView()
-                albumsTableView.tableFooterView = footerView
-            }
+        library.register(self)
+        if galleryManager.isGalleryAccessLimited {
+            let footerView = AlbumsFooterView()
+            albumsTableView.tableFooterView = footerView
         }
+
+        edgesForExtendedLayout = []
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if #available(iOS 14.0, *) {
-            if galleryManager.isGalleryAccessLimited {
-                self.updateLayoutForFooter()
-            }
+
+        if galleryManager.isGalleryAccessLimited {
+            self.updateLayoutForFooter()
         }
+        tableViewHeightAnchor.constant = tableViewContentHeight
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            let padding = isLandscape ? Constants.paddingHorizontal * 2 : Constants.padding * 2
+            tableViewLeadingConstraint.constant = padding
+            tableViewTrailingConstraint.constant = -padding
+        }
+        view.layoutIfNeeded()
     }
-    
-    fileprivate func updateLayoutForFooter(){
+
+    fileprivate func updateLayoutForFooter() {
         guard let footerView = albumsTableView.tableFooterView else {
             return
         }
 
         let width = albumsTableView.bounds.size.width
-        let size = footerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+        let size = footerView.systemLayoutSizeFitting(CGSize(width: width,
+                                                             height: UIView.layoutFittingCompressedSize.height))
 
         if footerView.frame.size.height != size.height {
             footerView.frame.size.height = size.height
@@ -129,9 +155,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     deinit {
-        if #available(iOS 14.0, *) {
-            library.unregisterChangeObserver(self)
-        }
+        library.unregisterChangeObserver(self)
     }
 }
 
@@ -149,33 +173,27 @@ extension AlbumsPickerViewController: UITableViewDataSource {
         cell?.setUp(with: album,
                     giniConfiguration: giniConfiguration,
                     galleryManager: galleryManager)
+        if indexPath.row == galleryManager.albums.count - 1 {
+            cell?.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        }
         return cell!
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if #available(iOS 14.0, *) {
-            if galleryManager.isGalleryAccessLimited && section == 0 {
-                let headerView = AlbumsHeaderView().loadNib() as? AlbumsHeaderView
-                headerView?.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
-
-                headerView?.didTapSelectButton = {
-                    self.showLimitedLibraryPicker()
-                }
-                return headerView
-            } else {
-                return nil
-            }
-        } else {
+        guard galleryManager.isGalleryAccessLimited && section == 0 else {
             return nil
         }
+        let headerView = AlbumsHeaderView().loadNib() as? AlbumsHeaderView
+        headerView?.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
+
+        headerView?.didTapSelectButton = {
+            self.showLimitedLibraryPicker()
+        }
+        return headerView
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if #available(iOS 14.0, *) {
-            return galleryManager.isGalleryAccessLimited && section == 0 ? headerHeight : 0.0
-        } else {
-            return 0.0
-        }
+        galleryManager.isGalleryAccessLimited && section == 0 ? headerHeight : 0.0
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -190,8 +208,12 @@ extension AlbumsPickerViewController: UITableViewDelegate {
         delegate?.albumsPicker(self, didSelectAlbum: galleryManager.albums[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return AlbumsPickerTableViewCell.height
+extension AlbumsPickerViewController {
+    private enum Constants {
+        static let padding: CGFloat = 8
+        static let paddingHorizontal: CGFloat = 28
+        static let cornerRadius: CGFloat = 16
     }
 }

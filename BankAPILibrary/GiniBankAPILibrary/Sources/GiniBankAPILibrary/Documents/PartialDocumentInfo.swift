@@ -37,7 +37,7 @@ extension PartialDocumentInfo: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        document = try container.decode(URL.self, forKey: .document)
+        document = try container.decodeIfPresent(URL.self, forKey: .document)
         rotationDelta = try container.decodeIfPresent(Int.self, forKey: .rotationDelta) ?? 0
     }
 }

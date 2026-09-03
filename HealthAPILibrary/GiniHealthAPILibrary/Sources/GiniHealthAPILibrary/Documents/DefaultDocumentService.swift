@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias DefaultDocumentServiceProtocol = DocumentService & V2DocumentService
 
@@ -15,10 +16,12 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     let sessionManager: SessionManagerProtocol
     
     public var apiDomain: APIDomain
-    
-    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default) {
+    public var apiVersion: Int
+
+    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default, apiVersion: Int) {
         self.sessionManager = sessionManager
         self.apiDomain = apiDomain
+        self.apiVersion = apiVersion
     }
     
     /**
@@ -53,9 +56,10 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         case .composite(let compositeDocumentInfo):
             let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
                                                                             docType: docType,
-                                                                            mimeSubType: "json",
+                                                                            mimeSubType: .json,
                                                                             documentType: type),
-                                                    apiDomain: apiDomain,
+                                                    apiDomain: apiDomain, 
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .post,
                                                     additionalHeaders: metadata?.headers ?? [:],
                                                     body: try? JSONEncoder().encode(compositeDocumentInfo))
@@ -63,16 +67,50 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         case .partial(let data):
             let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
                                                                             docType: docType,
-                                                                            mimeSubType: "json",
+                                                                            mimeSubType: .json,
                                                                             documentType: type),
-                                                    apiDomain: apiDomain,
+                                                    apiDomain: apiDomain, 
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .post,
                                                     additionalHeaders: metadata?.headers ?? [:])
-            sessionManager.upload(resource: resource, data: data, completion: completionResult)
+            guard let processedData = processDataIfNeeded(data: data) else {
+                completion(.failure(.parseError(message: "Couldn't process data received.", response: nil, data: nil)))
+                return
+            }
+            sessionManager.upload(resource: resource, data: processedData, completion: completionResult)
         }
-        
     }
-    
+
+    func processDataIfNeeded(data: Data) -> Data? {
+        // Check if data received is image. Otherwise, pass back the data
+        guard data.isImage() else {
+            return data
+        }
+        // Check if image should be compressed
+        guard data.isImageSizeBiggerThan(maximumSizeInMB: Constants.maximumImageSizeInMB) else {
+            return data
+        }
+        // Compress image to needed size
+        guard let compressedData = compressImageToMax(imageData: data, mb: Constants.maximumImageSizeInMB) else {
+            return data
+        }
+        return compressedData
+    }
+
+    private func compressImageToMax(imageData: Data, mb: Double) -> Data? {
+        let maxFileSize: Double = mb * 1024 * 1024 // 10 MB in bytes
+        let image = UIImage(data: imageData)
+        guard let initialData = image?.jpegData(compressionQuality: 1.0) else { return nil }
+        let initialSize = Double(initialData.count)
+        if initialSize <= maxFileSize {
+            return initialData // Already below given MB
+        }
+        // Calculate the required compression quality so that image size will be under given MB
+        let compressionQuality: CGFloat = CGFloat(maxFileSize / initialSize)
+        let compressedImageData = image?.jpegData(compressionQuality: compressionQuality)
+        return compressedImageData
+    }
+
     /**
      *  Deletes a document
      *
@@ -173,31 +211,74 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     /**
-     *  Submits the analysis feedback for a given document.
+     * Submits the analysis feedback for a given document ID.
      *
-     * - Parameter document:            The document for which feedback should be sent
-     * - Parameter extractions:         The document's updated extractions
-     * - Parameter completion:          A completion callback
+     * - Parameter documentId:      The ID of the document for which feedback should be sent.
+     * - Parameter extractions:     The document's updated extractions.
+     * - Parameter completion:      A completion callback.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       documentId: documentId,
+                       with: extractions,
+                       completion: completion)
+    }
+
+    /**
+     * Submits the analysis feedback with compound extractions (e.g., "line items") for a given document ID.
+     *
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions.
+     * - Parameter compoundExtractions: The document's updated compound extractions.
+     * - Parameter completion:          A completion callback.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       documentId: documentId,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
+    }
+
+    /**
+     * Submits the analysis feedback for a given document.
+     *
+     * - Parameter document:        The document for which feedback should be sent.
+     * - Parameter extractions:     The document's updated extractions.
+     * - Parameter completion:      A completion callback.
      */
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, completion: completion)
+        submitFeedback(
+            resourceHandler: sessionManager.data,
+            documentId: document.id,
+            with: extractions,
+            completion: completion)
     }
-    
+
     /**
-     *  Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
+     * Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
      *
-     * - Parameter document:            The document for which feedback should be sent
-     * - Parameter extractions:         The document's updated extractions
-     * - Parameter compoundExtractions: The document's updated compound extractions
-     * - Parameter completion:          A completion callback
+     * - Parameter document:            The document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions.
+     * - Parameter compoundExtractions: The document's updated compound extractions.
+     * - Parameter completion:          A completion callback.
      */
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                and compoundExtractions: [String: [[Extraction]]],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, and: compoundExtractions, completion: completion)
+        submitFeedback(resourceHandler: sessionManager.data,
+                       documentId: document.id,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
     }
     
     /**
@@ -219,5 +300,23 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
         file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
+    }
+
+    /**
+     *  Deletes a batch of documents
+     *
+     * - Parameter documentIds:         An array of document ids to be deleted
+     * - Parameter completion:          An action for deleting a batch of documents. Result is a value that represents either a success or a failure, including an associated value in each case.
+                                        In success it includes a success message
+                                        In case of failure error from the server side.
+     */
+    public func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>) {
+        deleteDocuments(resourceHandler: sessionManager.data, with: documentIds, completion: completion)
+    }
+}
+
+extension DefaultDocumentService {
+    enum Constants {
+        static let maximumImageSizeInMB = 10.0
     }
 }

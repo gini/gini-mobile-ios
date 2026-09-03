@@ -1,0 +1,215 @@
+//
+//  Copyright © 2025 Gini GmbH. All rights reserved.
+//
+
+import UIKit
+import GiniCaptureSDK
+
+class DigitalInvoiceOnboardingHorizontalItem: UIView {
+    private let onDone: () -> Void
+    private let topImageView: OnboardingImageView
+    private let firstLabel: UILabel
+    private let secondLabel: UILabel
+    private let doneButton: MultilineTitleButton
+    private lazy var configuration: GiniBankConfiguration = GiniBankConfiguration.shared
+
+    private lazy var infoStackView: UIStackView = {
+        let stack = UIStackView(
+            arrangedSubviews: [
+                firstLabel,
+                secondLabel
+            ]
+        )
+        stack.spacing = Constants.verticalSpacingStackView
+        stack.axis = .vertical
+        stack.alignment = .center
+        return stack
+    }()
+
+    private lazy var rightStackView: UIStackView = {
+        let stack = UIStackView(
+            arrangedSubviews: [
+                infoStackView,
+                doneButton
+            ]
+        )
+        stack.spacing = Constants.stackViewItemSpacing
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stack.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.stackViewWidth),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth),
+            doneButton.heightAnchor.constraint(equalToConstant: Constants.doneButtonHeight)
+        ])
+        return stack
+    }()
+
+    private lazy var rightStackViewContainerScrollable: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = true
+
+        scrollView.addSubview(rightStackView)
+
+        NSLayoutConstraint.activate([
+            rightStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                                constant: Constants.topMarginStackView),
+            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
+        ])
+
+        return scrollView
+    }()
+
+    private var topImage: UIImage {
+        return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
+    }
+
+    private var firstLabelText: String {
+        return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1",
+                                                         comment: "title for digital invoice onboarding screen")
+    }
+
+    private var secondLabelText: String {
+        let key = "ginibank.digitalinvoice.onboarding.text2"
+        let comment = "second label title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
+    }
+
+    private var doneButtonTitle: String {
+        let key = "ginibank.digitalinvoice.onboarding.getStartedButton"
+        let comment = "get started button title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
+    }
+
+    init(frame: CGRect = .zero, onDone: @escaping () -> Void) {
+        topImageView = .init()
+
+        firstLabel = .init()
+        firstLabel.numberOfLines = 0
+        firstLabel.textAlignment = .center
+
+        secondLabel = .init()
+        secondLabel.numberOfLines = 0
+        secondLabel.textAlignment = .center
+
+        doneButton = .init()
+        self.onDone = onDone
+        super.init(frame: frame)
+        // image
+        if let adapter = configuration.digitalInvoiceOnboardingIllustrationAdapter {
+            topImageView.illustrationAdapter = adapter
+        } else {
+            topImageView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
+            topImageView.icon = topImage
+        }
+        topImageView.isAccessibilityElement = true
+        topImageView.accessibilityValue = firstLabelText
+        topImageView.accessibilityTraits = .image
+        topImageView.setupView()
+
+        // title
+        firstLabel.text = firstLabelText
+        firstLabel.font = configuration.textStyleFonts[.title2Bold]
+        firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        firstLabel.adjustsFontForContentSizeCategory = true
+
+        // description
+        secondLabel.text = secondLabelText
+        secondLabel.font = configuration.textStyleFonts[.subheadline]
+        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        secondLabel.adjustsFontForContentSizeCategory = true
+
+        // done button
+        doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
+        doneButton.setTitle(doneButtonTitle, for: .normal)
+        doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        doneButton.configure(with: configuration.primaryButtonConfiguration)
+        doneButton.isHidden = shouldHideButton()
+
+        setupView()
+        setupConstraints()
+    }
+
+    private func setupView() {
+        backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+
+        addSubview(topImageView)
+        addSubview(rightStackViewContainerScrollable)
+        
+        updateTopImageViewVisibility()
+    }
+
+    private func setupConstraints() {
+        let safeArea = safeAreaLayoutGuide
+        topImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
+            topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
+            topImageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor,
+                                                  constant: Constants.paddingLarge),
+            topImageView.widthAnchor.constraint(equalToConstant: topImageViewLayoutWidth()),
+
+            // Constraints for the scroll view itself
+            rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
+            rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: scrollViewLeadingAnchor(),
+                                                                       constant: scrollViewLeadingConstant()),
+            rightStackViewContainerScrollable.trailingAnchor.constraint(greaterThanOrEqualTo: safeArea.trailingAnchor)
+        ])
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func doneAction(_ sender: UIButton!) {
+        onDone()
+    }
+
+    // Returns the width for the top image view depending on the device
+    private func topImageViewLayoutWidth() -> CGFloat {
+        // Return 0 if non-notch small screen, else 220
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        return isSmallDevice ? 0 : Constants.topImageWidth
+    }
+
+    // Returns the leading anchor for the scroll view depending on the device.
+    private func scrollViewLeadingAnchor() -> NSLayoutXAxisAnchor {
+        let isSmallDevice = UIDevice.current.isNonNotchSmallScreen()
+        return isSmallDevice ? safeAreaLayoutGuide.leadingAnchor : topImageView.trailingAnchor
+    }
+
+    // Returns the leading constant for the scroll view depending on the device.
+    private func scrollViewLeadingConstant() -> CGFloat {
+        return UIDevice.current.isNonNotchSmallScreen() ? 0 : Constants.horizontalSpacingBetweenImageViewAndText
+    }
+    
+    // Updates the visibility of the topImageView depending on the device
+    private func updateTopImageViewVisibility() {
+        topImageView.isHidden = UIDevice.current.isNonNotchSmallScreen()
+    }
+}
+
+private extension DigitalInvoiceOnboardingHorizontalItem {
+    enum Constants {
+        static let paddingLarge: CGFloat = 56
+        static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
+        static let stackViewWidth: CGFloat = 400
+        static let stackViewItemSpacing: CGFloat = 40
+        static let doneButtonMinWidth: CGFloat = 170
+        static let doneButtonHeight: CGFloat = 50
+        static let trailingPadding: CGFloat = 16
+        static let topMarginStackView: CGFloat = 60
+        static let topImageWidth: CGFloat = 220
+        static let verticalSpacingStackView: CGFloat = 12
+    }
+
+    func shouldHideButton() -> Bool {
+        return (GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)
+    }
+}

@@ -1,0 +1,76 @@
+name: Build HealthSDK XCFrameworks
+permissions:
+  contents: read
+on:
+  push:
+    tags:
+      - 'GiniHealthSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
+      - 'GiniHealthSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      BUILD_CERTIFICATE_BASE64:
+        required: true
+      P12_PASSWORD:
+        required: true
+      BUILD_PROVISION_PROFILE_BASE64:
+        required: true
+      KEYCHAIN_PASSWORD:
+        required: true
+jobs:
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
+  prepare-frameworks:
+    needs: get-config
+    name: Create Release
+    runs-on: macos-latest
+    steps:
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: ${{ needs.get-config.outputs.xcode-version }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
+        with:
+          ruby-version: ${{ needs.get-config.outputs.ruby-version }}
+          bundler-cache: true
+
+      - name: Archiving project and creating XCFrameworks
+        run: |
+          ./build-healthsdk.sh
+
+      - name: Download profiles
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
+        env:
+          APP_IDENTIFIER: ${{ vars.HEALTH_BUNDLE_ID }}
+          DISTRIBUTION_TYPE: adhoc
+          GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        with:
+          lane: 'download_profiles'
+      
+      - name: Sign the XCFrameworks
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # sign xcframeworks
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibrary.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniInternalPaymentSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
+
+      - name: archive frameworks GiniHealthAPILibrary
+        uses: actions/upload-artifact@v4
+        with:
+          name: GiniHealthSDKFramework
+          path: |
+            GiniHealthAPILibrary.xcframework
+            GiniHealthSDK.xcframework
+            GiniInternalPaymentSDK.xcframework
+            GiniUtilites.xcframework
+

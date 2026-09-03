@@ -1,0 +1,9 @@
+{
+    "items": [
+        {
+            "code": "2501",
+            "message": "Document b4bd3e80-7bd1-11e4-95ab-000000000000 does not exist"
+        }
+    ],
+    "requestId": "req-123456"
+}

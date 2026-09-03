@@ -12,8 +12,6 @@ import UIKit
 /**
  The CameraViewControllerDelegate protocol defines methods that allow you to handle picked documents from both
  Gallery and Files Explorer.
-
- - note: Component API only.
  */
 public protocol DocumentPickerCoordinatorDelegate: AnyObject {
     /**
@@ -49,6 +47,9 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
 
     /// File explorer picker
     case explorer
+
+    /// E-Invoice file picker (XML and PDF support)
+    case eInvoice
 }
 
 /**
@@ -57,11 +58,8 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
  the `delegate` property.
  When using multipage and having imported/captured images, you have to update the `isPDFSelectionAllowed`
  property before showing the File explorer in order to filter out PDFs.
-
- - note: Component API only.
  */
 
-// swiftlint:disable file_length
 public final class DocumentPickerCoordinator: NSObject {
     /**
      The object that acts as the delegate of the document picker coordinator.
@@ -99,11 +97,6 @@ public final class DocumentPickerCoordinator: NSObject {
     let galleryCoordinator: GalleryCoordinator
     let giniConfiguration: GiniConfiguration
 
-    fileprivate lazy var navigationBarAppearance: UINavigationBar = .init()
-    fileprivate lazy var searchBarAppearance: UISearchBar = .init()
-    fileprivate lazy var barButtonItemAppearance: UIBarButtonItem = .init()
-    fileprivate lazy var barButtonItemAppearanceInSearchBar: UIBarButtonItem = .init()
-
     fileprivate var acceptedDocumentTypes: [String] {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
@@ -115,6 +108,11 @@ public final class DocumentPickerCoordinator: NSObject {
         case .none:
             return []
         }
+    }
+
+    fileprivate var acceptedEInvoiceTypes: [String] {
+        let acceptedPDFTypes = isPDFSelectionAllowed ? GiniPDFDocument.acceptedPDFTypes : []
+        return GiniXMLDocument.acceptedXMLTypes + acceptedPDFTypes
     }
 
     /**
@@ -150,62 +148,62 @@ public final class DocumentPickerCoordinator: NSObject {
     /**
      Shows the Gallery picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - parameter viewController: View controller which presents the gallery picker
      */
     public func showGalleryPicker(from viewController: UIViewController) {
-        galleryCoordinator.checkGalleryAccessPermission(deniedHandler: { error in
-            if let error = error as? FilePickerError, error == FilePickerError.photoLibraryAccessDenied {
-                viewController.showErrorDialog(for: error, positiveAction: UIApplication.shared.openAppSettings)
-            }
-        }, authorizedHandler: {
-            DispatchQueue.main.async {
-                self.galleryCoordinator.delegate = self
-                self.currentPickerDismissesAutomatically = false
-                self.currentPickerViewController = self.galleryCoordinator.rootViewController
-                self.galleryCoordinator.galleryManager.reloadAlbums()
+        Task { @MainActor in
+            do {
+                try await galleryCoordinator.checkGalleryAccessPermission()
 
-                viewController.present(self.galleryCoordinator.rootViewController, animated: true, completion: nil)
+                galleryCoordinator.delegate = self
+                currentPickerDismissesAutomatically = false
+                currentPickerViewController = galleryCoordinator.rootViewController
+                galleryCoordinator.galleryManager.reloadAlbums()
+
+                viewController.present(galleryCoordinator.rootViewController, animated: true)
+            } catch {
+                if let error = error as? FilePickerError, error == .photoLibraryAccessDenied {
+                    viewController.showErrorDialog(for: error, positiveAction: UIApplication.shared.openAppSettings)
+                }
             }
-        })
+        }
     }
 
     /**
      Shows the File explorer picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - Parameters:
+        - viewController: View controller which presents the gallery picker
      */
-    public func showDocumentPicker(from viewController: UIViewController,
-                                   device: UIDevice = UIDevice.current) {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
-
+    func showDocumentPicker(from viewController: UIViewController) {
+        let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
         documentPicker.delegate = self
 
         documentPicker.allowsMultipleSelection = giniConfiguration.multipageEnabled
-
-        if let tintColor = giniConfiguration.documentPickerNavigationBarTintColor {
-            // Starting with iOS 11.0, the UIDocumentPickerViewController navigation bar almost can't be customized,
-            // only being possible to customize the tint color. To avoid issues with custom UIAppearance styles,
-            // this is reset to default, saving the current state in order to restore it during dismissal.
-            saveCurrentNavBarAppearance()
-            applyDefaultNavBarAppearance()
-
-            UINavigationBar.appearance().tintColor = tintColor
-            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-                .setTitleTextAttributes([.foregroundColor: tintColor],
-                                        for: .normal)
-        }
-
-        // This is needed since the UIDocumentPickerViewController on iPad is presented over the current view controller
-        // without covering the previous screen. This causes that the `viewWillAppear` method is not being called
-        // in the current view controller.
-        if !device.isIpad {
-            setStatusBarStyle(to: .default)
-        }
-
+        documentPicker.view.tintColor = .GiniCapture.accent1
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 
-        viewController.present(documentPicker, animated: true, completion: nil)
+        viewController.present(documentPicker, animated: true)
+    }
+
+    /**
+     Shows the E-Invoice file picker from a given view controller.
+
+     - Parameters:
+        - viewController: The view controller that presents the E-Invoice picker.
+     */
+    func showEInvoicePicker(from viewController: UIViewController) {
+        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes,
+                                                              in: .import)
+        eInvoicePicker.delegate = self
+        eInvoicePicker.allowsMultipleSelection = true
+        eInvoicePicker.view.tintColor = .GiniCapture.accent1
+
+        currentPickerDismissesAutomatically = true
+        currentPickerViewController = eInvoicePicker
+
+        viewController.present(eInvoicePicker, animated: true)
     }
 
     /**
@@ -226,76 +224,51 @@ public final class DocumentPickerCoordinator: NSObject {
 
 // MARK: - Fileprivate methods
 
+/// A UIDocumentPickerViewController that sets navigation bar buttons' tint color to a correct one, instead of using the accent color specified by app
+private class GiniDocumentPickerViewController: UIDocumentPickerViewController {
+    var initialTintColor: UIColor? = navBarInstance.tintColor
+    var initialButtonTintColor: UIColor? = barButtonInstance.tintColor
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Self.navBarInstance.tintColor = .GiniCapture.accent1
+        Self.barButtonInstance.tintColor = .GiniCapture.accent1
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // make sure to revert the tint color, otherwise it will affect document pickers/browsers from the host app
+        Self.navBarInstance.tintColor = initialTintColor ?? UINavigationBar.appearance().tintColor
+        Self.barButtonInstance.tintColor = initialButtonTintColor ?? UIBarButtonItem.appearance().tintColor
+    }
+    static var navBarInstance: UINavigationBar {
+        UINavigationBar.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+    }
+
+    static var barButtonInstance: UIBarButtonItem {
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+    }
+}
+
 fileprivate extension DocumentPickerCoordinator {
-    func createDocument(fromData data: Data) -> GiniCaptureDocument? {
+    func createDocument(fromData dataDictionary: (Data?, String?)) -> GiniCaptureDocument? {
+        guard let data = dataDictionary.0 else { return nil }
         let documentBuilder = GiniCaptureDocumentBuilder(documentSource: .external)
         documentBuilder.importMethod = .picker
 
-        return documentBuilder.build(with: data)
+        return documentBuilder.build(with: data, fileName: dataDictionary.1)
     }
 
-    func data(fromUrl url: URL) -> Data? {
+    func data(fromUrl url: URL) -> (Data?, String?) {
         do {
             _ = url.startAccessingSecurityScopedResource()
             let data = try Data(contentsOf: url)
             url.stopAccessingSecurityScopedResource()
-            return data
+            return (data, url.lastPathComponent)
         } catch {
             url.stopAccessingSecurityScopedResource()
         }
 
-        return nil
-    }
-
-    func saveCurrentNavBarAppearance() {
-        update(navigationBarAppearance, with: UINavigationBar.appearance())
-        update(searchBarAppearance, with: UISearchBar.appearance())
-        update(barButtonItemAppearance, with: UIBarButtonItem.appearance())
-        update(barButtonItemAppearanceInSearchBar,
-               with: UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]))
-    }
-
-    func applyDefaultNavBarAppearance() {
-        update(UINavigationBar.appearance(), with: nil)
-        update(UISearchBar.appearance(), with: nil)
-        update(UIBarButtonItem.appearance(), with: nil)
-        update(UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]),
-               with: nil)
-    }
-
-    func restoreSavedNavBarAppearance() {
-        update(UINavigationBar.appearance(), with: navigationBarAppearance)
-        update(UISearchBar.appearance(), with: searchBarAppearance)
-        update(UIBarButtonItem.appearance(), with: barButtonItemAppearance)
-        update(UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]),
-               with: barButtonItemAppearance)
-    }
-
-    func update(_ currentNavigationBar: UINavigationBar, with navigationBar: UINavigationBar?) {
-        currentNavigationBar.barTintColor = navigationBar?.barTintColor
-        currentNavigationBar.tintColor = navigationBar?.tintColor
-        currentNavigationBar.backgroundColor = navigationBar?.backgroundColor
-        currentNavigationBar.isTranslucent = navigationBar?.isTranslucent ?? true
-        currentNavigationBar.barStyle = navigationBar?.barStyle ?? .default
-        currentNavigationBar.shadowImage = navigationBar?.shadowImage
-        currentNavigationBar.setBackgroundImage(navigationBar?.backIndicatorImage, for: .default)
-    }
-
-    func update(_ currentSearchBar: UISearchBar, with searchBar: UISearchBar?) {
-        currentSearchBar.backgroundColor = searchBar?.backgroundColor
-        currentSearchBar.barTintColor = searchBar?.barTintColor
-        currentSearchBar.tintColor = searchBar?.tintColor
-        currentSearchBar.searchBarStyle = searchBar?.searchBarStyle ?? .default
-        currentSearchBar.setImage(searchBar?.image(for: .search, state: .normal), for: .search, state: .normal)
-    }
-
-    func update(_ currentBarButtonItem: UIBarButtonItem, with barButtonItem: UIBarButtonItem?) {
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .normal),
-                                                    for: .normal)
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .highlighted),
-                                                    for: .highlighted)
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .selected),
-                                                    for: .selected)
+        return (nil, nil)
     }
 }
 
@@ -325,10 +298,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
             return
         }
 
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         delegate?.documentPicker(self, didPick: documents)
     }
 
@@ -337,10 +306,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
     }
 
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         controller.dismiss(animated: false, completion: nil)
     }
 }
@@ -349,7 +314,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        guard isPDFDropSelectionAllowed(forSession: session) else {
+        guard isDropSelectionAllowed(forSession: session) else {
             return false
         }
 
@@ -357,9 +322,11 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
             return (session.canLoadObjects(ofClass: GiniImageDocument.self) ||
-                session.canLoadObjects(ofClass: GiniPDFDocument.self)) && isMultipleItemsSelectionAllowed
+                    session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .pdf:
-            return session.canLoadObjects(ofClass: GiniPDFDocument.self) && isMultipleItemsSelectionAllowed
+            return (session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .none:
             return false
         }
@@ -386,6 +353,12 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
             }
         }
 
+        loadDocuments(ofClass: GiniXMLDocument.self, from: session, in: dispatchGroup) { xmlItems in
+            if let xmls = xmlItems {
+                documents.append(contentsOf: xmls as [GiniCaptureDocument])
+            }
+        }
+
         dispatchGroup.notify(queue: DispatchQueue.main) {
             self.currentPickerDismissesAutomatically = true
             self.delegate?.documentPicker(self, didPick: documents)
@@ -407,16 +380,41 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         }
     }
 
-    private func isPDFDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
-        if session.hasItemsConforming(toTypeIdentifiers: GiniPDFDocument.acceptedPDFTypes) {
-            let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes[0]
-            let pdfItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(pdfIdentifier) }
+    private func isDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
+        let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
+        let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes.first
+        let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes.first
+        let identifiers = eInvoiceEnabled ? [pdfIdentifier, xmlIdentifier] : [pdfIdentifier]
 
-            if pdfItems.count > 1 || !isPDFSelectionAllowed {
-                return false
+        let itemProviders = session.items.map { $0.itemProvider }
+
+        let pdfConformingProviders: [NSItemProvider] = {
+            guard let pdfIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(pdfIdentifier)
             }
+        }()
+
+        let xmlConformingProviders: [NSItemProvider] = {
+            guard let xmlIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(xmlIdentifier)
+            }
+        }()
+
+        let pdfCount = pdfConformingProviders.count
+        let xmlCount = xmlConformingProviders.count
+        let totalItems = pdfCount + xmlCount
+
+        let hasInvalidXmlState = !eInvoiceEnabled && xmlCount > 0
+        guard !hasInvalidXmlState else {
+            return false
         }
 
-        return true
+        guard session.hasItemsConforming(toTypeIdentifiers: identifiers.compactMap { $0 }) else {
+            return true
+        }
+
+        return totalItems <= 1 && isPDFSelectionAllowed
     }
 }

@@ -14,14 +14,10 @@ The Gini Bank API Library for iOS encapsulates the Gini Bank API to allow you to
 
 The Gini Bank API provides an information extraction service for analyzing Bank invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients.
 
-## Documentation
-
-Further documentation with information about how install and integrate it can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/index.html).
-
 ## Requirements
 
-- iOS 11+
-- Xcode 12+
+- iOS 15+
+- Xcode 26+
 
 ## Author
 

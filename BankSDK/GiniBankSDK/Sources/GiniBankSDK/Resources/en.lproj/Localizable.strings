@@ -1,14 +1,11 @@
 /* 
   Localizable.strings
-  GiniVision
+  GiniBank
 
-  Created by Peter Pult on 08/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 04/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
-"ginibank.help.menu.title" = "Help";
-"ginibank.help.menu.firstItem" = "Tips for best results from photos";
-"ginibank.help.menu.secondItem" = "Open document from other apps";
-"ginibank.help.menu.thirdItem" = "Supported formats";
+
 "ginibank.help.menu.fourthItem" = "The new return assistant";
 
 "ginibank.help.menu.returnAssistant.title" = "Return Assistant";
@@ -23,41 +20,17 @@
 "ginibank.help.menu.returnAssistant.section3.body" = "If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
-"ginibank.albums.title" = "Albums";
-"ginibank.imagepicker.openbutton" = "Open";
-
-"ginibank.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
-"ginibank.multipagereview.addButtonLabel" = "Add a page";
-"ginibank.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
-"ginibank.multipagereview.title" = "%d of %d";
-"ginibank.multipagereview.error.retakeAction" = "Retake";
-"ginibank.multipagereview.error.retryAction" = "Retry";
-
-"ginibank.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
-"ginibank.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
-"ginibank.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
-
-"ginibank.digitalinvoice.screentitle" = "Digital Invoice";
-"ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Pay";
+"ginibank.digitalinvoice.screentitle" = "Digital invoice";
+"ginibank.digitalinvoice.paybutton.title" = "Confirm and proceed";
+"ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
-
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Skip";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "This new feature may contain some bugs. Please double check the articles and the total amount. If necessay you can edit them.";
-"ginibank.digitalinvoice.warningbottomtext" = "If you don’t like to use this feature, you can simply skip it.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Cancel";
 
 "ginibank.digitalinvoice.skipbuttontitle" = "Skip feature";
 
 "ginibank.digitalinvoice.items" = "Article %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "Items %d out of %d";
-
-"ginibank.digitalinvoice.whatisthisactionsheet.title" = "What is this?";
-"ginibank.digitalinvoice.whatisthisactionsheet.message" = "We extracted the detailed items from your invoice. If you would like to return some items or partially pay the invoice, you can deselect them and the amount to pay will be recalculated.";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Yes, that's helpful";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "No, I don't want to see it again";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
 
 "ginibank.digitalinvoice.lineitem.quantity" = "%dx";
 "ginibank.digitalinvoice.lineitem.editbutton" = "Edit";
@@ -74,24 +47,116 @@
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Add article";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
 
+"ginibank.digitalinvoice.edit.unitPrice" = "Unit price";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Quantity";
+"ginibank.digitalinvoice.edit.title" = "Edit article";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Decrease quantity";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Increase quantity";
+
 "ginibank.digitalinvoice.footermessage" = "Please double check if the amount is correct and add further articles if necessary";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
 
+"ginibank.digitalinvoice.lineitem.title" = "Articles";
 "ginibank.digitalinvoice.lineitem.notitle" = "Additional";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Save";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "per unit";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
 "ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "times";
-"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total:";
+"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total";
+"ginibank.digitalinvoice.lineitem.includevattitle" = "Incl. tax";
 
 "ginibank.digitalinvoice.addonname.discount" = "Discount";
-"ginibank.digitalinvoice.addonname.giftcard" = "Giftcard";
+"ginibank.digitalinvoice.addonname.giftcard" = "Gift card";
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
 "ginibank.digitalinvoice.addonname.othercharges" = "Other charges";
 "ginibank.digitalinvoice.addonname.shipment" = "Shipment";
-"ginibank.digitalinvoice.onboarding.text1" = "Your new return assistant!";
-"ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Next";
+"ginibank.digitalinvoice.onboarding.text1" = "Digital invoice";
+"ginibank.digitalinvoice.onboarding.text2" = "Deselect the products you want to return and we will recalculate the price for you.";
+"ginibank.digitalinvoice.onboarding.getStartedButton" = "Get started";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
+"ginibank.digitalinvoice.backbutton" = "Back";
+
+"ginibank.digitalinvoice.help.screenTitle" = "Help";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digital invoice";
+"ginibank.digitalinvoice.help.title1" = "1. How does a digital invoice work?";
+"ginibank.digitalinvoice.help.description1" = "We extracted all articles from your invoice and listed them for you. In case you want to return an ordered article or just partly pay your invoice, you simply deselect the article and the new total will be calculated automatically. ";
+"ginibank.digitalinvoice.help.title2" = "2. How can I edit an article?";
+"ginibank.digitalinvoice.help.description2" = "By clicking an article, you are able to edit its description, quantity and price per item. Please note that the price per item needs to include tax.";
+"ginibank.digitalinvoice.help.title3" = "3. Which online shops are supported?";
+"ginibank.digitalinvoice.help.description3" = "We are currently focused on the most popular online merchants in the market. More retailers will be added in the future.";
+"ginibank.digitalinvoice.info.hidebutton" = "Close";
+
+"ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
+"ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
+
+// MARK: - Skonto
+"ginibank.skonto.screen.title" = "Skonto discount";
+"ginibank.skonto.backbutton.title" = "Camera";
+"ginibank.skonto.active" = "• Active";
+"ginibank.skonto.proceedbutton.title" = "Confirm and proceed";
+
+"ginibank.skonto.withdiscount.title" = "With Skonto discount";
+"ginibank.skonto.withdiscount.price.title" = "Final amount";
+"ginibank.skonto.withdiscount.expirydate.title" = "Expiry date";
+
+"ginibank.skonto.withoutdiscount.title" = "Without Skonto discount";
+"ginibank.skonto.withoutdiscount.price.title" = "Full amount";
+
+"ginibank.skonto.withdiscount.validation" = "Discounted value cannot exceed initial value";
+"ginibank.skonto.withoutdiscount.validation" = "Your transfer limit has been exceeded: %@";
+
+"ginibank.skonto.total.title" = "Total";
+"ginibank.skonto.total.savings" = "Save %@";
+"ginibank.skonto.total.skontopercentage" = "%@ Skonto";
+
+"ginibank.skonto.infobanner.default.message" = "Pay in %@: receive %@ Skonto discount";
+"ginibank.skonto.infobanner.edgecase.today.message" = "Pay today: receive %@ Skonto discount";
+"ginibank.skonto.infobanner.edgecase.cash.message" = "Pay in cash within the next %@ and receive a %@ Skonto discount";
+"ginibank.skonto.infobanner.edgecase.cash.today.message" = "Pay in cash today and receive a %@ Skonto discount";
+"ginibank.skonto.infobanner.edgecase.expired.message" = "The %@ Skonto discount has expired";
+
+"ginibank.skonto.infobanner.edgecase.today.alert.title" = "A Skonto discount can be applied to this invoice, it will expire after today.";
+"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "A Skonto discount can be applied to this invoice, exclusively for payments in cash.";
+"ginibank.skonto.infobanner.edgecase.expired.alert.title" = "This invoice contained a discount period which has unfortunately expired.";
+"ginibank.skonto.alert.ok" = "Understood";
+"ginibank.skonto.invoice.title" = "Invoice";
+"ginibank.skonto.invoice.subtitle" = "Tap to view";
+
+"ginibank.skonto.help.screen.title" = "Help";
+"ginibank.skonto.help.header.title" = "Save money by paying promptly";
+"ginibank.skonto.help.header.subtitle" = "Many companies offer Skonto discounts, which are discounts for paying bills within a specified time frame. With our new feature, you can now:";
+"ginibank.skonto.help.content.item1" = "Use your camera to capture invoices with Skonto discounts";
+"ginibank.skonto.help.content.item2" = "Immediately identify discounted amounts and due dates";
+"ginibank.skonto.help.content.item3" = "Approve or adjust payment details";
+"ginibank.skonto.help.content.item4" = "Save money by paying promptly";
+"ginibank.skonto.help.footer.title" = "Take a photo of your invoice and the app will automatically calculate the Skonto discount. Just review the details, confirm, and enjoy the savings!";
+"ginibank.skonto.help.back" = "Skonto discount";
+
+"ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
+"ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Try again";
+"ginibank.skonto.editableField.accessibility" = "Double tap to edit";
+
+// MARK: - Transaction Docs feature
+"ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";
+"ginibank.transactionDocs.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Always attach";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Only for this transaction";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Don't attach";
+
+"ginibank.transactionDocs.componentView.title" = "Attachments";
+"ginibank.transactionDocs.document.accessibilitylabel" = "Tap to view %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Options";
+
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Delete";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Cancel";
+"ginibank.transactionDocs.preview.amountToPay" = "Amount to Pay";
+"ginibank.transactionDocs.preview.iban" = "IBAN";
+"ginibank.transactionDocs.preview.expiryDate" = "Invoice Due Date";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Try again";
+
+// MARK: - Transaction Docs feature -  Transaction Details
+"ginibank.transactionDocs.preview.amount" = "Amount";

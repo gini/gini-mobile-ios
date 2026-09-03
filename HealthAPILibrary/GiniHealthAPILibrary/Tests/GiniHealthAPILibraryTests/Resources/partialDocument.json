@@ -1,29 +1,22 @@
 {
-    "id": "726626a0-749f-11e2-bfd6-000000000000",
-    "creationDate": 1360623867402,
-    "name": "scanned.jpg",
+    "id": "5e06e343-9dff-4924-99ac-7d5b3abf592c",
+    "name": "Document",
+    "pageCount": 1,
+    "creationDate": 1718292477480,
+    "expirationDate": 1720711677480,
     "progress": "COMPLETED",
     "origin": "UPLOAD",
     "sourceClassification": "SCANNED",
-    "pageCount": 1,
-    "pages" : [
-        {
-            "images" : {
-                "750x900" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/pages/1/750x900",
-                "1280x1810" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/pages/1/1280x1810"
-            },
-            "pageNumber" : 1
-        }
-    ],
+    "uploadMediaType": "application/vnd.gini.v4.partial+jpeg",
     "_links": {
-        "extractions": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
-        "layout": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/layout",
-        "document": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000",
-        "processed": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed"
+        "document": "https://health-api.gini.net/documents/5e06e343-9dff-4924-99ac-7d5b3abf592c",
+        "extractions": "https://health-api.gini.net/documents/5e06e343-9dff-4924-99ac-7d5b3abf592c/extractions",
+        "layout": "https://health-api.gini.net/documents/5e06e343-9dff-4924-99ac-7d5b3abf592c/layout",
+        "processed": "https://health-api.gini.net/documents/5e06e343-9dff-4924-99ac-7d5b3abf592c/processed"
     },
     "compositeDocuments": [
         {
-            "document": "https://api.gini.net/documents/826626a0-749f-11e2-bfd6-000000000000"
+            "document": "https://health-api.gini.net/documents/8d0c628d-95e8-4cf2-b4ea-d2daf03d8a32"
         }
     ]
 }

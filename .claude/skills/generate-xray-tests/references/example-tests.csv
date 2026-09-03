@@ -1,0 +1,30 @@
+Issue Id,Summary,Test Type,Step,Data,Expected Result
+TC-001,Review Screen - Navigate to review after capture or upload,Manual,Launch the Banking app,,The Banking app is launched
+TC-001,,Manual,Scan / Upload a document,pdf/image,The document is successfully captured.
+TC-001,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,,User is navigated to review screen
+TC-002,Review Screen - Full screen via pinch-to-zoom,Manual,Launch the Banking app,,The Banking app is launched
+TC-002,,Manual,Scan / Upload a document,pdf/image,The document is successfully captured.
+TC-002,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,,User is navigated to review screen
+TC-002,,Manual,Tap on the page to view it in full screen with pinch-to-zoom ability,,The invoice will be zoomed
+TC-003,Review Screen - Close (x) option on full screen,Manual,Launch the Banking app,,The Banking app is launched
+TC-003,,Manual,Scan / Upload a document,,The document is successfully captured.
+TC-003,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,,User is navigated to review screen
+TC-003,,Manual,Tap the close (x) option for the screen,,User is navigated to the review screen with zoom-out or actual size of invoice
+TC-004,Review Screen - Cancel the uploaded/captured invoice,Manual,Launch the Banking app,,The Banking app is launched
+TC-004,,Manual,Upload a document,pdf/image,The document is successfully captured.
+TC-004,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,,User is navigated to review screen
+TC-004,,Manual,Click on the cancel button,,"User is landed on ""gini main"" screen"
+TC-005,Review Screen - Delete the invoice,Manual,Launch the Banking app,,The Banking app is launched
+TC-005,,Manual,Scan / Upload a document,,The document is successfully captured.
+TC-005,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,pdf/image,User is navigated to review screen
+TC-005,,Manual,Tap on the delete icon,,- Uploaded/captured img/pdf will be deleted - User is landed on the camera screen
+TC-006,Review Screen - Add more pages,Manual,Launch the Banking app,,The Banking app is launched
+TC-006,,Manual,Scan / Upload a document,,The document is successfully captured.
+TC-006,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,pdf/image,User is navigated to review screen
+TC-006,,Manual,"Tap on the ""+"" icon to add more pages",,"- User is navigated to ""scan invoice"" screen to add more pages of the invoice - User can perform both capture and upload functions here"
+TC-007,"Already paid Feature Flag ON > “Already paid hint"" bottom sheet is displayed",Manual,Launch the Banking app,,The Banking app is launched
+,,Manual,Make sure that the already paid feature flag is ON; Go to Settings/Configuration screen,,The already paid feature flag is ON
+TC-007,,Manual,Scan / Upload a document,pdf/image,The document is successfully captured.
+TC-007,,Manual,Process the image/pdf successfully OR upload the image/pdf successfully,,User is navigated to review screen
+TC-007,,Manual,Wait for data extraction to complete,,"Observe if the UI for Already paid feature is visible.
+Figma link <if exists>"

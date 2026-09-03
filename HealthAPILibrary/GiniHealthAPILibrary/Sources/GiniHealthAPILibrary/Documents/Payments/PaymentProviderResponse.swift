@@ -2,7 +2,7 @@
 //  PaymentProvider.swift
 //  GiniHealthAPI
 //
-//  Created by Nadya Karaban on 15.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -20,7 +20,7 @@ public struct MinAppVersions: Codable {
 }
 
 /**
- Struct for MinAppVersions in payment provider response
+ Struct for payment provider colors in payment provider response
  */
 public struct ProviderColors: Codable {
     public var background: String
@@ -30,6 +30,14 @@ public struct ProviderColors: Codable {
         self.text = text
     }
 }
+
+/**
+ Enum for platforms supported by payment providers. We now support iOS and Android
+ */
+public enum PlatformSupported: String, Codable {
+    case ios
+    case android
+}
 /**
  Struct for payment provider response
  */
@@ -38,15 +46,25 @@ public struct PaymentProviderResponse: Codable {
     public var name: String
     public var appSchemeIOS: String
     public var colors: ProviderColors
-    var minAppVersion: MinAppVersions?
+    public var minAppVersion: MinAppVersions?
     public var iconLocation: String
+    public var appStoreUrlIOS: String?
+    public var universalLinkIOS: String
+    public var index: Int?
+    public var gpcSupportedPlatforms: [PlatformSupported]
+    public var openWithSupportedPlatforms: [PlatformSupported]
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?, gpcSupportedPlatforms: [PlatformSupported], openWithSupportedPlatforms: [PlatformSupported]) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
         self.minAppVersion = minAppVersion
         self.colors = colors
         self.iconLocation = iconLocation
+        self.appStoreUrlIOS = appStoreUrlIOS
+        self.universalLinkIOS = universalLinkIOS
+        self.index = index
+        self.gpcSupportedPlatforms = gpcSupportedPlatforms
+        self.openWithSupportedPlatforms = openWithSupportedPlatforms
     }
 }
