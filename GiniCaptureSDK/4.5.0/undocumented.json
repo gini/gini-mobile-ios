@@ -3950,49 +3950,49 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 47,
+      "line": 49,
       "symbol": "GiniNetworkingScreenAPICoordinator",
       "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 48,
+      "line": 50,
       "symbol": "GiniNetworkingScreenAPICoordinator.resultsDelegate",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 49,
+      "line": 51,
       "symbol": "GiniNetworkingScreenAPICoordinator.documentService",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 51,
+      "line": 53,
       "symbol": "GiniNetworkingScreenAPICoordinator.init(client:resultsDelegate:giniConfiguration:documentMetadata:api:trackingDelegate:lib:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 69,
+      "line": 71,
       "symbol": "GiniNetworkingScreenAPICoordinator.init(resultsDelegate:giniConfiguration:documentMetadata:trackingDelegate:captureNetworkService:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 107,
+      "line": 109,
       "symbol": "GiniNetworkingScreenAPICoordinator.deliver(result:and:to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
-      "line": 182,
+      "line": 184,
       "symbol": "GiniNetworkingScreenAPICoordinator",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"

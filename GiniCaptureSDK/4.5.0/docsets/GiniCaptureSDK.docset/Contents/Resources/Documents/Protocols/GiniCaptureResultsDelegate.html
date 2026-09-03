@@ -665,19 +665,22 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called when the user chose to schedule the payment instead of paying now.</p>
+                        <p>Optional. Called when the user chose to schedule the payment instead of
+paying now.</p>
 
-<p>Terminal callback — in the same class as
-<code><a href="../Protocols/GiniCaptureResultsDelegate.html#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureResultsDelegate(im)giniCaptureAnalysisDidFinishWithResult:">giniCaptureAnalysisDidFinishWith(result:)</a></code> and
-<code><a href="../Protocols/GiniCaptureResultsDelegate.html#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureResultsDelegate(im)giniCaptureDidCancelAnalysis">giniCaptureDidCancelAnalysis()</a></code>. The host app should present its own
-scheduled-transfer screen and carry over the extractions from <code>result</code>.</p>
+<p>Added in 4.5.0 as an <code>@objc optional</code> requirement so integrators
+upgrading from 4.4.x keep compiling without changes. Implement it to
+route the user to your own scheduled-transfer screen, carrying the
+extractions over from <code>result</code>. If unimplemented, the SDK simply does
+not deliver the callback.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">giniCaptureDidRequestSchedulePayment</span><span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnalysisResult.html">AnalysisResult</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">optional</span> <span class="kd">func</span> <span class="nf">giniCaptureDidRequestSchedulePayment</span><span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt"><a href="../Classes/AnalysisResult.html">AnalysisResult</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
