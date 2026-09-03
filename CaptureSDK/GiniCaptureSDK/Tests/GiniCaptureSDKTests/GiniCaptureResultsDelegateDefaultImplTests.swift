@@ -9,54 +9,64 @@ import XCTest
 import GiniBankAPILibrary
 @testable import GiniCaptureSDK
 
-/// Guards the source-compatibility default implementation of
-/// `GiniCaptureResultsDelegate.giniCaptureDidRequestSchedulePayment(result:)`
-/// added in 4.5.1 (PP-3497). Integrators upgrading 4.4.x → 4.5.1 whose
-/// conformers implement only the three pre-4.5 methods must keep
-/// compiling and get a no-op callback.
+/**
+ Guards the `@objc optional` contract on `giniCaptureDidRequestSchedulePayment(result:)`
+ added in 4.5.0 (PP-3497): pre-4.5 conformers keep compiling; optional dispatch no-ops
+ when unimplemented and invokes the method when present.
+ */
 final class GiniCaptureResultsDelegateDefaultImplTests: XCTestCase {
 
-    /// R1 — the fact that this file compiles IS the assertion: the
-    /// private `Pre45CaptureResultsDelegate` below conforms to
-    /// `GiniCaptureResultsDelegate` while implementing only the three
-    /// pre-4.5 methods. If the default extension regresses, this file
-    /// stops building. The `XCTAssertTrue(true)` line is intentional and
-    /// documents that intent.
-    func test_defaultImplementation_compilesOnConformer_withOnlyPre45Methods() {
+    /** R1 — if the fourth method loses `@objc optional`, this file fails to build. */
+    func test_optionalRequirement_compilesOnConformer_withOnlyPre45Methods() {
         let sut: GiniCaptureResultsDelegate = Pre45CaptureResultsDelegate()
-        XCTAssertNotNil(sut, "The pre-4.5 conformer must instantiate as GiniCaptureResultsDelegate")
-        // Compile-time assertion: if the default extension is missing,
-        // Pre45CaptureResultsDelegate no longer conforms and this file
-        // fails to build.
-        XCTAssertTrue(true)
+        XCTAssertNotNil(sut)
     }
 
-    /// R2 — the default implementation is a no-op: calling it on a
-    /// conformer that does NOT override the method leaves the
-    /// observable state (`didReceiveSchedule`) untouched and does not
-    /// crash.
-    func test_defaultImplementation_isNoOp_whenNotOverridden() {
-        let sut = Pre45CaptureResultsDelegate()
-        let fixture = AnalysisResult(extractions: [:],
-                                     lineItems: nil,
-                                     images: [],
-                                     document: nil,
-                                     candidates: [:])
+    /** R2 — an unimplemented optional method resolves to `nil` at the call site. */
+    func test_optionalDispatch_isNil_whenNotImplemented() {
+        let sut: GiniCaptureResultsDelegate = Pre45CaptureResultsDelegate()
+        let fixture = makeFixture()
 
-        sut.giniCaptureDidRequestSchedulePayment(result: fixture)
+        let dispatched: Void? = sut.giniCaptureDidRequestSchedulePayment?(result: fixture)
 
-        XCTAssertFalse(sut.didReceiveSchedule,
-                       "Default no-op must not touch conformer state")
+        XCTAssertNil(dispatched)
+    }
+
+    /** R3 — an implementing conformer receives the callback via optional dispatch. */
+    func test_optionalDispatch_invokesImplementation_whenPresent() {
+        let sut = SchedulePaymentAwareDelegate()
+        let delegate: GiniCaptureResultsDelegate = sut
+        let fixture = makeFixture()
+
+        delegate.giniCaptureDidRequestSchedulePayment?(result: fixture)
+
+        XCTAssertTrue(sut.didReceiveSchedule)
+    }
+
+    private func makeFixture() -> AnalysisResult {
+        AnalysisResult(extractions: [:],
+                       lineItems: nil,
+                       images: [],
+                       document: nil,
+                       candidates: [:])
     }
 }
 
-/// Private test double that mirrors an integrator's 4.4.x conformer: it
-/// implements ONLY the three pre-4.5 protocol methods and relies on the
-/// default extension for `giniCaptureDidRequestSchedulePayment(result:)`.
+/** Test double: 4.4.x-shape conformer — implements only the three pre-4.5 methods. */
 private final class Pre45CaptureResultsDelegate: NSObject, GiniCaptureResultsDelegate {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {}
+    func giniCaptureDidCancelAnalysis() {}
+    func giniCaptureDidEnterManually() {}
+}
+
+/** Test double: Schedule-Payment adopter — implements all four methods. */
+private final class SchedulePaymentAwareDelegate: NSObject, GiniCaptureResultsDelegate {
     private(set) var didReceiveSchedule = false
 
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {}
     func giniCaptureDidCancelAnalysis() {}
     func giniCaptureDidEnterManually() {}
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        didReceiveSchedule = true
+    }
 }

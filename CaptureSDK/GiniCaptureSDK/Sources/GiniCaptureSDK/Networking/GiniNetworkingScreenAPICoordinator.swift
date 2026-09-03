@@ -11,11 +11,11 @@ import GiniBankAPILibrary
 /**
  The GiniCaptureResultsDelegate protocol defines methods that allow you to handle the analysis result.
  */
-public protocol GiniCaptureResultsDelegate: AnyObject {
-    
+@objc public protocol GiniCaptureResultsDelegate: AnyObject {
+
     /**
      Called when the analysis finished with results
-     
+
      - parameter result: Contains the analysis result
      */
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
@@ -31,30 +31,19 @@ public protocol GiniCaptureResultsDelegate: AnyObject {
     func giniCaptureDidEnterManually()
 
     /**
-     Called when the user chose to schedule the payment instead of paying now.
+     Optional. Called when the user chose to schedule the payment instead of
+     paying now.
 
-     Terminal callback — in the same class as
-     `giniCaptureAnalysisDidFinishWith(result:)` and
-     `giniCaptureDidCancelAnalysis()`. The host app should present its own
-     scheduled-transfer screen and carry over the extractions from `result`.
+     Added in 4.5.0 as an `@objc optional` requirement so integrators
+     upgrading from 4.4.x keep compiling without changes. Implement it to
+     route the user to your own scheduled-transfer screen, carrying the
+     extractions over from `result`. If unimplemented, the SDK simply does
+     not deliver the callback.
 
      - Parameter result: The analysis result — same shape and construction as
        the one delivered to `giniCaptureAnalysisDidFinishWith(result:)`.
      */
-    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult)
-}
-
-public extension GiniCaptureResultsDelegate {
-    /// Default no-op — restores source compatibility for integrators
-    /// upgrading from 4.4.x to 4.5.1 without adopting the Schedule
-    /// Payment flow. Integrators SHOULD override this method to route
-    /// the user to their own scheduled-transfer screen, carrying the
-    /// extractions over from `result`. Not emitted into the
-    /// Objective-C protocol descriptor — Objective-C conformers must
-    /// still implement it themselves.
-    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
-        // No-op.
-    }
+    @objc optional func giniCaptureDidRequestSchedulePayment(result: AnalysisResult)
 }
 
 public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {

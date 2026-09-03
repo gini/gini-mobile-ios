@@ -1,27 +1,58 @@
 # PP-3497: [iOS] `GiniCaptureResultsDelegate.giniCaptureDidRequestSchedulePayment` is a source-breaking new required method in 4.5.0
 
-Status: implemented
+Status: implemented (Option C — swapped from Option A)
 Ticket: https://ginis.atlassian.net/browse/PP-3497
-Fix versions: iOS Gini Bank SDK 4.5.1, iOS Gini Capture SDK 4.5.1
+Fix versions: iOS Gini Bank SDK 4.5.0, iOS Gini Capture SDK 4.5.0
 
-## Implementation note — spec deviation on `@objc` protocol
+## Update — swapped to Option C after review (2026-09-03)
 
-Build proved that R7's claim ("Swift permits `public extension` default
-impls on `@objc` protocols and they satisfy the Swift protocol
-requirement") is factually wrong: the Swift compiler rejects the
-conformance with
-`non-'@objc' method '…' does not satisfy requirement of '@objc' protocol`.
-Verified with a minimal repro against Swift 6.x / Xcode 26.2.
+Review of Option A (Swift `public extension` default impl + `@objc` drop)
+surfaced that dropping `@objc` removes an API capability
+(Objective-C conformance to `GiniCaptureResultsDelegate`) that is not
+strictly necessary to lose. `AnalysisResult` is
+`@objcMembers public class AnalysisResult: NSObject`, so the `@objc` on
+the delegate protocol was load-bearing for real Obj-C bridging, not
+decorative.
 
-To make the extension default impl actually satisfy the requirement, the
-`@objc` attribute was dropped from the `GiniCaptureResultsDelegate`
-protocol declaration. This is the minimal change that lets the extension
-work; it strictly widens the tradeoff R7 already accepted (Objective-C
-conformers cannot inherit the default) to the whole protocol losing
-Objective-C-descriptor visibility. Verified in-repo that every conformer
-is Swift (`grep` over `.h`/`.m` finds nothing) and every Swift conformer
-either inherits from `NSObject` (still fine) or is a plain Swift class
-(fine). No caller change needed.
+**Option C** — the well-known UIKit-idiomatic approach — restores source
+compatibility without the Obj-C loss: keep `@objc` on the protocol and
+mark just the new method `@objc optional`. Existing Swift conformers
+compile unchanged; the SDK dispatches through Obj-C optional-method
+resolution and silently no-ops when the method is not implemented. Same
+observable behavior as Option A for Swift integrators, plus Obj-C
+conformability preserved.
+
+The two implementation-note-worthy details of this swap:
+
+1. The protocol declaration is now `@objc public protocol
+   GiniCaptureResultsDelegate: AnyObject { … @objc optional func … }` —
+   `@objc` restored on the protocol, `@objc optional` on the fourth
+   method only.
+2. The single SDK-internal call site
+   (`GiniBankNetworkingScreenApiCoordinator.swift:855`) now uses
+   optional-method syntax: `resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: analysisResult)`.
+   The extra `?` after the method name is the standard Swift syntax for
+   invoking an `@objc optional` protocol method.
+
+Consequences for the earlier sections of this spec:
+
+- **R7 supersedes**: the `@objc` trade-off no longer applies; Objective-C
+  conformance is preserved. The former paragraph documenting the `@objc`
+  drop is replaced by this section.
+- **R2 supersedes**: the "default extension is invoked, it is a no-op"
+  wording no longer matches implementation. The mechanism is now "optional
+  method resolves to `nil` at the call site so the SDK silently skips the
+  call". Observable behavior is identical.
+- **Design § 1 (The extension)**: superseded — there is no extension.
+  The optional-method annotation on the protocol replaces it.
+- **Public API impact**: no new symbol at all (Option A added an
+  extension method; Option C adds only an `@objc optional` attribute on
+  an existing requirement).
+- **Release note**: softer than Option A's `⚠️ Migration from 4.4`
+  block. Now a plain bullet noting the callback is optional.
+
+R1, R3, R4, R5, R6, and the rest of the technical-conventions and
+version-bump sections continue to apply as written.
 
 ## Problem
 
@@ -40,8 +71,8 @@ a source-breaking change that shipped in a minor version, discovered by
 Valentina while upgrading the demo app and mitigated only in the 4.5.0
 release notes' `Migration from 4.4` block and a draft Confluence page.
 
-We need a same-day 4.5.1 patch that restores source compatibility so
-integrators can bump 4.4.x → 4.5.1 without a code change, without
+We need a same-day 4.5.0 patch that restores source compatibility so
+integrators can bump 4.4.x → 4.5.0 without a code change, without
 reshaping the API. Integrators who genuinely want to handle Schedule
 Payment still can — they override the default. Discoverability moves from
 "compiler error" to "release note + docs", which is the accepted trade-off
@@ -58,7 +89,7 @@ R1 (MUST, entry): Given an integrator whose 4.4.x code conforms to
 methods (`giniCaptureAnalysisDidFinishWith(result:)`,
 `giniCaptureDidCancelAnalysis()`, `giniCaptureDidEnterManually()`), when
 they update their `Package.swift` / SPM pin from `GiniBankSDK` 4.4.x (or
-`GiniCaptureSDK` 4.4.x) to 4.5.1 and rebuild, then the project compiles
+`GiniCaptureSDK` 4.4.x) to 4.5.0 and rebuild, then the project compiles
 without adding
 `giniCaptureDidRequestSchedulePayment(result:)`.
 
@@ -89,10 +120,10 @@ in the release process — see
 `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift`
 and
 `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift`), when
-the 4.5.1 hotfix branch is prepared, then both constants are updated to
-`"4.5.1"` and
+the 4.5.0 hotfix branch is prepared, then both constants are updated to
+`"4.5.0"` and
 `BankSDK/GiniBankSDK/Package-release.swift`'s pin on `GiniCaptureSDK` is
-updated from `.exact("4.4.0")` to `.exact("4.5.1")`.
+updated from `.exact("4.4.0")` to `.exact("4.5.0")`.
 
 R5 (MUST, entry): Given the release plan excludes `GiniBankAPILibrary`
 and `GiniUtilites`, when the hotfix branch is prepared, then neither
@@ -102,7 +133,7 @@ and `GiniUtilites`, when the hotfix branch is prepared, then neither
 R6 (SHOULD, happy path): Given the default implementation is a no-op,
 when the extension is added, then it carries a `///` inline comment
 explaining that (a) it exists to preserve source compatibility from 4.4.x
-to 4.5.1 and (b) integrators SHOULD override it to route the user to
+to 4.5.0 and (b) integrators SHOULD override it to route the user to
 their scheduled-transfer flow. The comment is the only in-code
 discoverability path for the callback.
 
@@ -114,16 +145,16 @@ NOT emitted into the Objective-C protocol descriptor, so an Objective-C
 class conforming to the protocol still gets a "does not conform" runtime
 error unless it implements the method itself. All in-repo conformers are
 Swift; no known integrator uses the SDK from Objective-C for this
-callback surface. This is accepted for 4.5.1 and called out in the
+callback surface. This is accepted for 4.5.0 and called out in the
 release note (see Design > Release note snippet).
 
 ## Affected modules
 
 - `GiniCaptureSDK` — protocol declaration lives here; the default
-  implementation is added here. Version constant bumped 4.4.0 → 4.5.1.
+  implementation is added here. Version constant bumped 4.4.0 → 4.5.0.
 - `GiniBankSDK` — no source change; version constant bumped 4.4.0 →
-  4.5.1 and `Package-release.swift`'s `GiniCaptureSDK` pin bumped 4.4.0
-  → 4.5.1.
+  4.5.0 and `Package-release.swift`'s `GiniCaptureSDK` pin bumped 4.4.0
+  → 4.5.0.
 - `GiniBankAPILibrary`, `GiniUtilites`, `GiniHealthAPILibrary`,
   `GiniHealthSDK`, `GiniInternalPaymentSDK` — unaffected. No version
   bump, no `Package-release.swift` change.
@@ -183,11 +214,11 @@ sites in `GiniBankSDK`):
    B in 4.6.
 8. **Version-bump convention** — bump both
    `GiniCaptureSDKVersion.swift` and `GiniBankSDKVersion.swift` string
-   constants from `"4.4.0"` to `"4.5.1"` (they are currently stale on
+   constants from `"4.4.0"` to `"4.5.0"` (they are currently stale on
    `main` — the 4.5.0 release shipped from tags without landing a
    version-constant bump on main). Bump the `GiniCaptureSDK` pin in
    `BankSDK/GiniBankSDK/Package-release.swift` from `.exact("4.4.0")` to
-   `.exact("4.5.1")`. Do NOT touch
+   `.exact("4.5.0")`. Do NOT touch
    `BankAPILibrary/.../GiniBankAPILibraryVersion.swift`,
    `GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/GiniUtilitesVersion.swift`,
    `HealthAPILibrary/...`, `HealthSDK/...`, or
@@ -211,7 +242,7 @@ Exact shape:
 ```swift
 public extension GiniCaptureResultsDelegate {
     /// Default no-op — restores source compatibility for integrators
-    /// upgrading from 4.4.x to 4.5.1 without adopting the Schedule
+    /// upgrading from 4.4.x to 4.5.0 without adopting the Schedule
     /// Payment flow. Integrators SHOULD override this method to route
     /// the user to their own scheduled-transfer screen, carrying the
     /// extractions over from `result`. Not emitted into the
@@ -242,16 +273,16 @@ the callback, unchanged.
 Three files, one-line changes each:
 
 - `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift`
-  — change `"4.4.0"` → `"4.5.1"`.
+  — change `"4.4.0"` → `"4.5.0"`.
 - `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift`
-  — change `"4.4.0"` → `"4.5.1"`.
+  — change `"4.4.0"` → `"4.5.0"`.
 - `BankSDK/GiniBankSDK/Package-release.swift` line 19 — change
   `.package(name: "GiniCaptureSDK", url: "https://github.com/gini/capture-sdk-ios.git", .exact("4.4.0"))`
-  → `.exact("4.5.1")`.
+  → `.exact("4.5.0")`.
 
 ### 4. Release note snippet (for the release-notes step, not this PR)
 
-The 4.5.1 note (to be drafted separately via `/gini-release-notes`) must
+The 4.5.0 note (to be drafted separately via `/gini-release-notes`) must
 record:
 
 - What it fixes: source compatibility for integrators upgrading 4.4.x →
@@ -263,7 +294,7 @@ record:
   conformers still get a "does not conform" error unless they implement
   the method themselves.
 - Confluence migration page needs a follow-up note that jumping
-  4.4.x → 4.5.1 no longer requires a code change.
+  4.4.x → 4.5.0 no longer requires a code change.
 
 ### 5. Confidence
 
@@ -344,7 +375,7 @@ extraction content. No new file under `Tests/GiniCaptureSDKTests/Resources/`.
 
 ### Not tested
 
-- The 4.4.x → 4.5.1 SPM bump path for external integrators is not
+- The 4.4.x → 4.5.0 SPM bump path for external integrators is not
   simulated in this repo — R1's compile-time evidence inside
   `GiniCaptureSDK`'s test target is the closest faithful proxy, and the
   release note carries the human-visible confirmation.
@@ -352,7 +383,7 @@ extraction content. No new file under `Tests/GiniCaptureSDKTests/Resources/`.
 - The Schedule Payment UI flow itself (payment-hint bottom sheet CTA →
   delegate call) is already covered by `PP-3263`'s existing tests and
   is not re-tested here.
-- Manual QA: install `4.5.1` in a demo integrator project that only
+- Manual QA: install `4.5.0` in a demo integrator project that only
   implements the pre-4.5 delegate methods and confirm the build
   succeeds.
 
@@ -395,16 +426,16 @@ markers remain.
       the `///` comment required by R6. Also drop `@objc` from the
       protocol declaration itself — see "Implementation note" above.
       (requirements R1, R2, R6, R7)
-- [x] 3. Bump `GiniCaptureSDKVersion` string from `"4.5.0"` to `"4.5.1"`
+- [x] 3. Bump `GiniCaptureSDKVersion` string from `"4.5.0"` to `"4.5.0"`
       in
       `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift`.
       Spec drift note: it currently reads `"4.5.0"`, not `"4.4.0"` — the
-      target `"4.5.1"` is unchanged. (requirement R4)
-- [x] 4. Bump `GiniBankSDKVersion` string from `"4.5.0"` to `"4.5.1"` in
+      target `"4.5.0"` is unchanged. (requirement R4)
+- [x] 4. Bump `GiniBankSDKVersion` string from `"4.5.0"` to `"4.5.0"` in
       `BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift`,
       and bump the `GiniCaptureSDK` pin in
       `BankSDK/GiniBankSDK/Package-release.swift` from `.exact("4.5.0")`
-      to `.exact("4.5.1")`. Spec drift note: both currently read
+      to `.exact("4.5.0")`. Spec drift note: both currently read
       `"4.5.0"`, not `"4.4.0"`. (requirements R4, R5)
 - [x] 5. Re-run the existing
       `NetworkingScreenApiCoordinatorTests+SchedulePaymentHint` suite
