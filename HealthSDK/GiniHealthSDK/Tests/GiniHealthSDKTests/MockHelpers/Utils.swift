@@ -43,3 +43,9 @@ func load<T: Decodable>(fromFile named: String, type: String = "json") -> T? {
     
     return try? JSONDecoder().decode(T.self, from: jsonData)
 }
+
+/// Helper function to decode body
+func decodeBody(from body: Data?) -> [String]? {
+    guard let body = body else { return nil }
+    return try? JSONDecoder().decode([String].self, from: body)
+}
