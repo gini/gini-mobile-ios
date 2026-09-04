@@ -12,10 +12,10 @@ import GiniBankAPILibrary
  The GiniCaptureResultsDelegate protocol defines methods that allow you to handle the analysis result.
  */
 @objc public protocol GiniCaptureResultsDelegate: AnyObject {
-    
+
     /**
      Called when the analysis finished with results
-     
+
      - parameter result: Contains the analysis result
      */
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
@@ -31,17 +31,19 @@ import GiniBankAPILibrary
     func giniCaptureDidEnterManually()
 
     /**
-     Called when the user chose to schedule the payment instead of paying now.
+     Optional. Called when the user chose to schedule the payment instead of
+     paying now.
 
-     Terminal callback — in the same class as
-     `giniCaptureAnalysisDidFinishWith(result:)` and
-     `giniCaptureDidCancelAnalysis()`. The host app should present its own
-     scheduled-transfer screen and carry over the extractions from `result`.
+     Added in 4.5.0 as an `@objc optional` requirement so integrators
+     upgrading from 4.4.x keep compiling without changes. Implement it to
+     route the user to your own scheduled-transfer screen, carrying the
+     extractions over from `result`. If unimplemented, the SDK simply does
+     not deliver the callback.
 
      - Parameter result: The analysis result — same shape and construction as
        the one delivered to `giniCaptureAnalysisDidFinishWith(result:)`.
      */
-    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult)
+    @objc optional func giniCaptureDidRequestSchedulePayment(result: AnalysisResult)
 }
 
 public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
