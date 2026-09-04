@@ -275,7 +275,7 @@ See the [GiniBankSDK 3.0.0 release](https://github.com/gini/gini-mobile-ios/rele
 
 For each pushed `<Package>;<X.Y.Z>` tag, create a **draft** GitHub release. Do not publish yet — the user reviews drafts before anything goes live.
 
-> **Release-notes content** — this skill covers the release *flow*. Per-repo release-notes templates and the Jira → GitHub notes translation are owned by the (planned) `/gini-release-notes` skill. Until it exists, use the previous release as a template per the pattern below.
+> **Release-notes content** — this skill covers the release *flow*. Per-repo release-notes templates **and a worked Jira → GitHub example** are owned by the (planned) `/gini-release-notes` skill. Until it exists, use the previous release as a template per the pattern below.
 
 Destinations per pushed tag:
 
