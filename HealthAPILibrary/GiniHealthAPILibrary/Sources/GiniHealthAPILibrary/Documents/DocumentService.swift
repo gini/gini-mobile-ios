@@ -192,24 +192,38 @@ extension DocumentService {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
-                switch result {
-                case .success:
-                    let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
-                                                                     apiDomain: self.apiDomain,
-                                                                     apiVersion: self.apiVersion,
-                                                                     httpMethod: .get)
-                    
-                    resourceHandler(resource, cancellationToken, { result in
-                        switch result {
-                        case .success(let extractionsContainer):
-                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    })
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+            self.handlePollResult(result, document: document, resourceHandler: resourceHandler, cancellationToken: cancellationToken, completion: completion)
+            
+        }
+    }
+
+    private func handlePollResult(_ result: Result<Void, GiniError>,
+                                  document: Document,
+                                  resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
+                                  cancellationToken: CancellationToken?,
+                                  completion: @escaping CompletionResult<ExtractionResult>) {
+        switch result {
+        case .success:
+            let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
+                                                             apiDomain: self.apiDomain,
+                                                             apiVersion: self.apiVersion,
+                                                             httpMethod: .get)
+            
+            resourceHandler(resource, cancellationToken, { result in
+                self.handleExtractionsResult(result, completion: completion)
+            })
+        case .failure(let error):
+            completion(.failure(error))
+        }
+        
+    }
+    private func handleExtractionsResult(_ result: Result<ExtractionsContainer, GiniError>,
+                                         completion: @escaping CompletionResult<ExtractionResult>) {
+        switch result {
+        case .success(let extractionsContainer):
+            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+        case .failure(let error):
+            completion(.failure(error))
         }
     }
     
@@ -301,34 +315,51 @@ extension DocumentService {
         resourceHandler(resource) { result in
             switch result {
             case let .success(pages):
-                let page = pages.first {
-                    $0.number == pageNumber
-                }
-                if let page = page, page.images.count > 0 {
-                    let urlString = self.urlStringForHighestResolutionPreview(page: page)
-                    let url = "https://" + self.apiDomain.domainString + urlString
-                    self.file(urlString: url) { result in
-                        switch result {
-                        case let .success(imageData):
-                            completion(.success(imageData))
-                        case let .failure(error):
-                            completion(.failure(error))
-                        }
-                    }
-                } else {
-                    completion(.failure(.notFound()))
-                }
+                self.handlePreviewPages(pages, pageNumber: pageNumber, completion: completion)
+            
             case let .failure(error):
-                if case .notFound = error {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.preview(resourceHandler: resourceHandler,
-                                     with: documentId,
-                                     pageNumber: pageNumber,
-                                     completion: completion)
-                    }
-                }
+                self.retryPreviewIfNeeded(error: error, resourceHandler: resourceHandler, documentId: documentId, pageNumber: pageNumber, completion: completion)
             }
         }
+    }
+    
+    private func handlePreviewPages(_ pages: [Document.Page],
+                                    pageNumber: Int,
+                                    completion: @escaping CompletionResult<Data>) {
+        
+        let page = pages.first {
+            $0.number == pageNumber
+        }
+        if let page = page, page.images.count > 0 {
+            let urlString = self.urlStringForHighestResolutionPreview(page: page)
+            let url = "https://" + self.apiDomain.domainString + urlString
+            self.file(urlString: url) { result in
+                self.handleFileResult(result, completion: completion)
+            }
+        } else {
+            completion(.failure(.notFound()))
+        }
+    }
+
+    private func retryPreviewIfNeeded(error: GiniError,
+                                      resourceHandler: @escaping ResourceDataHandler<APIResource<[Document.Page]>>,
+                                      documentId: String,
+                                      pageNumber: Int,
+                                      completion: @escaping CompletionResult<Data>) {
+        
+        if case .notFound = error {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.preview(resourceHandler: resourceHandler,
+                             with: documentId,
+                             pageNumber: pageNumber,
+                             completion: completion)
+            }
+        }
+    }
+
+    private func handleFileResult(_ result: Result<Data, GiniError>,
+                                  completion: @escaping CompletionResult<Data>) {
+        completion(result)
     }
     
     func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
