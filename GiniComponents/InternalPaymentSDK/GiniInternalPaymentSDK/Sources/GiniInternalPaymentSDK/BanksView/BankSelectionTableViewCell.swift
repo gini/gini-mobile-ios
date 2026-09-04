@@ -1,6 +1,6 @@
 //
 //  BankSelectionTableViewCell.swift
-//  GiniMerchantSDK
+//  GiniInternalPaymentSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -17,6 +17,7 @@ class BankSelectionTableViewCell: UITableViewCell, ReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     

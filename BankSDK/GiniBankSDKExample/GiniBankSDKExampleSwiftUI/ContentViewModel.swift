@@ -4,6 +4,7 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
+import GiniCaptureSDK
 import SwiftUI
 
 class ContentViewModel {
@@ -35,6 +36,10 @@ extension ContentViewModel: GiniBankSDKDelegate {
     }
 
     func captureCanceled() {
+        modalController?.dismiss(animated: true)
+    }
+
+    func captureRequestedSchedulePayment(result: AnalysisResult) {
         modalController?.dismiss(animated: true)
     }
 }

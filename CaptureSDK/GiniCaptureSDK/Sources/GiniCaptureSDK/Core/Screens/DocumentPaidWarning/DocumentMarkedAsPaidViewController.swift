@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import Combine
 
 private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
     var image: UIImage? = UIImageNamedPreferred(named: "infoMessageIcon")
@@ -13,6 +12,7 @@ private struct DocumentMarkedAsPaidContentViewModel: InfoBottomSheetViewModel {
                                              dark: .GiniCapture.warning2).uiColor()
     var title: String = DocumentMarkedAsPaidViewController.Strings.title
     var description: String = DocumentMarkedAsPaidViewController.Strings.description
+    var imageBackgroundColor: UIColor? = DocumentMarkedAsPaidViewController.Colors.imageBGColor
 }
 
 /**
@@ -32,7 +32,9 @@ public final class DocumentMarkedAsPaidViewController: InfoBottomSheetViewContro
 
         let buttonsViewModel = InfoBottomSheetButtonsViewModel(primaryButton, secondaryButton)
 
-        super.init(viewModel: contentViewModel, buttonsViewModel: buttonsViewModel)
+        super.init(viewModel: contentViewModel,
+                   buttonsViewModel: buttonsViewModel,
+                   buttonOrder: [.primary, .secondary])
     }
 
     required init?(coder: NSCoder) {
@@ -61,6 +63,13 @@ extension DocumentMarkedAsPaidViewController {
         static let proceedButtonComment = "Proceed anyway"
         static let proceedButton = NSLocalizedStringPreferredFormat(proceedButtonKey,
                                                                     comment: proceedButtonComment)
+    }
+    
+    // MARK: - Colors
+    struct Colors {
+        static var imageBGColor: UIColor {
+            GiniColor(light: .GiniCapture.warning5, dark: .GiniCapture.warning5).uiColor()
+        }
     }
 }
 

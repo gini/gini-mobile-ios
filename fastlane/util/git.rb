@@ -1,4 +1,27 @@
 ##
+# Configures a temporary git credential helper that reads GH_TOKEN from the environment,
+# yields to the given block, then cleans up the helper and git config on exit.
+#
+# Keeps the token out of command lines and process listings.
+#
+def with_git_token_auth
+  credential_helper = "/tmp/git-credential-helper-#{Process.pid}.sh"
+  begin
+    File.write(credential_helper, <<~SCRIPT)
+      #!/bin/bash
+      echo "username=x-access-token"
+      echo "password=${GH_TOKEN}"
+    SCRIPT
+    sh("chmod +x #{credential_helper}")
+    sh("git config --global credential.helper '#{credential_helper}'")
+    yield
+  ensure
+    sh("git config --global --unset credential.helper || true")
+    sh("rm -f #{credential_helper}")
+  end
+end
+
+##
 # Configure git on CI machines.
 #
 # Usually CI machines start with a "clean slate" and we need to set
@@ -104,10 +127,10 @@ end
 
 ##
 # Creates a fresh clone of a Git repository. If the target folder already exists it will be deleted.
-# 
+#
 # Returns the relative path to the release repo.
 #
-def clone_repo(release_repo_url, repo_user, repo_password, depth = 0, target_dir = "")
+def clone_repo(release_repo_url, depth = 0, target_dir = "")
   repo_dir = if target_dir != ""
     target_dir
   else
@@ -115,8 +138,7 @@ def clone_repo(release_repo_url, repo_user, repo_password, depth = 0, target_dir
   end
 
   sh("rm -rf #{repo_dir}")
-  release_repo_url["://"] = "://#{repo_user}:#{repo_password}@"
   sh("git clone #{if depth > 0 then "--depth #{depth}" end} #{release_repo_url} #{target_dir}")
-  
+
   repo_dir
 end

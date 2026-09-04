@@ -9,10 +9,12 @@ import Foundation
 struct CompoundExtractions: Decodable {
     var lineItems: [[Extraction]]?
     var skontoDiscounts: [[Extraction]]?
+    var crossBorderPayment: [[Extraction]]?
 
     enum CodingKeys: String, CodingKey {
         case lineItems
         case skontoDiscounts
+        case crossBorderPayment
     }
 
     init(from decoder: Decoder) throws {
@@ -30,6 +32,13 @@ struct CompoundExtractions: Decodable {
             skontoDiscounts = mapExtractions(input: skontoDiscountArray)
         } else {
             skontoDiscounts = nil
+        }
+        
+        if let crossBorderPaymentArray = try container.decodeIfPresent([[String: Extraction]].self,
+                                                                       forKey: .crossBorderPayment) {
+            crossBorderPayment = mapExtractions(input: crossBorderPaymentArray)
+        } else {
+            crossBorderPayment = nil
         }
     }
 

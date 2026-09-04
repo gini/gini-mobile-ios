@@ -10,6 +10,6 @@ Once you have your Swift package set up, adding `GiniHealthAPILibrary` as a depe
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/health-api-library-ios.git", .exact("5.4.0"))
+    .package(url: "https://github.com/gini/health-api-library-ios.git", .exact("6.0.0"))
 ]
 ```

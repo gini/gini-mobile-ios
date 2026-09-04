@@ -1,0 +1,239 @@
+<!--
+  SHARED FILE — platform-neutral by design. Meant to stay byte-identical to
+  .claude/skills/gini-review/references/comment-style.md in gini-mobile-android.
+  Change it in one repo and open a paired PR in the other.
+  Anything naming a language, linter, framework or module belongs in
+  ../platform.md, never here.
+  Mirror enforcement status and the current path divergence between the two
+  repos: general-rules.md §"How the two copies are kept in sync".
+-->
+
+# Comment format
+
+**Reference for `/gini-review`** — read at **§5**, before writing any comment. Used on every review.
+
+**Purpose:** word a finding so the author can act on it in one read, and keep improvements distinct
+from defects.
+
+**The three rules that matter most:**
+
+1. **Stay inside the length budget.** A long comment is not a more thorough comment; it is a comment
+   that gets skimmed. See §"Length budget" — it is a hard cap, not a target.
+2. **Open a posted comment with its category** — `[Request]`, `[Suggestion]` or `[Clarification]`.
+   The author needs to know what is being asked of them before reading the finding.
+3. **No other internal machinery in a comment a human reads** — no confidence scores, no dimension
+   names, no severity words beyond the three categories.
+
+**Supports:**
+
+- **Length budget** — the hard cap, how to compress into it, what to drop first
+- **Inline comment format** — the category prefix and the three-part shape (fact → consequence →
+  concrete fix)
+- **Writing rules** — third person, no inline praise, present tense, always actionable
+- **Summary review** — overview paragraph, changes grouped by behaviour, `Reviewed X out of Y`,
+  per-file table in `<details>`
+- **Improvements** — the five categories and how to frame one as deferrable so it gets adopted
+- **GitHub suggestion blocks** — when a one-click fix is safe to attach
+
+**Does not cover:** what to look for → `../SKILL.md` §3 plus `../platform.md` · deciding whether a
+finding is real → `../SKILL.md` §4
+
+## The three categories
+
+Every comment posted to a PR opens with exactly one of these, in square brackets. It is the first thing
+the author reads, and it is the convention for every comment this skill posts. Whether human reviewers on
+a given repo already use the prefixes varies, so do not present it to an author as a rule they were
+already breaking:
+
+| Prefix | Means | The author should |
+|---|---|---|
+| `[Request]` | Must be resolved before merge. | Change something, or explain why it is fine. |
+| `[Suggestion]` | Optional and deferrable; the PR is mergeable without it. | Take it now, or open a follow-up. |
+| `[Clarification]` | The finding depends on an answer only the author has; no fix is being asked for yet. | Answer. |
+
+Rules that follow:
+
+- **One prefix per comment.** A finding that is half a request and half a question is two findings, or
+  it is a `[Clarification]` until the answer makes it a `[Request]`.
+- **The prefix does not count against the 400-character prose budget**, but it does replace other
+  hedging: do not also write "Optional:", "Small nit:" or "Blocking:" in the prose. `[Suggestion]`
+  already says deferrable, and `[Request]` already says blocking.
+- **Terminal-report headings carry the same three categories** — `### Requests`, `### Suggestions`,
+  `### Clarifications` — so the prefix is redundant there. Prefix only what gets posted.
+- **Nothing else internal goes in a comment** — no confidence scores, no dimension names, no `issue:`
+  prefixes, no severity words beyond the three above.
+
+## Length budget
+
+**Inline comment: 3–4 rendered lines. Two sentences. 400 characters, hard cap.**
+
+Count before posting. A code block attached as a `suggestion` does not count — the prose above it does,
+and neither does the category prefix.
+
+The budget is not a style preference. An inline comment appears in a narrow column beside the diff, and
+the author reads it while holding the code in their head. Past about four lines they stop reading the
+sentences and start scanning for the ask, so the *fix* is the only part that lands — a long comment
+loses exactly the reasoning it spent its length on.
+
+**How to compress, in order:**
+
+1. **Fuse fact and consequence into one sentence.** "X happens, so Y breaks" is one sentence doing two
+   jobs. This alone usually gets you inside the cap.
+2. **Cut the mechanism to its result.** The author does not need the derivation, only enough to check
+   your work. "Teardown removes the registration rather than restoring it" replaces a paragraph about
+   how the container is keyed.
+3. **Drop the corroboration.** A second piece of evidence for a claim the author can verify in ten
+   seconds is padding. One is enough.
+4. **Drop the alternatives.** Give the fix you would take. Offering a second option is idiomatic only
+   when both are genuinely equal and the choice is the author's.
+5. **Still over?** The mechanism is too complex for the margin. Post the claim and the fix inline and
+   leave the explanation out; the author will ask. Never solve a too-long comment by writing more.
+
+Worked example — the same finding, over budget and inside it:
+
+> **832 characters.** The teardown step removes the test's overriding registration from the shared
+> container, but the container's remove operation is implemented as a deletion keyed by registration
+> order rather than as a restore of the factory that was registered before it, which means the
+> production instance the test overrode is dropped from the container instead of being reinstated, and
+> because that container is a process-wide object shared by every test case in the same process, any
+> later test that resolves that type fails with a resolution error depending on the order the test cases
+> happen to run in, which is exactly the order-dependence the teardown was added to prevent. Consider
+> either registering the production instance again afterwards, or re-declaring it, or restructuring the
+> test so it does not need to override the container at all.
+
+> **311 characters.** `[Request]` Teardown only removes the overriding registration — it does not restore
+> the production instance, so the shared container is left without one for the rest of the process and a
+> later test that resolves it fails depending on case order. Register the production instance again after
+> removing the override.
+
+Same finding, same actionability. The second one gets read.
+
+**The summary body has its own, separate budget** — three paragraphs, under 1500 characters, with its
+own cut list. It is in `../SKILL.md` §6.
+
+## Inline comments
+
+The structure, every time:
+
+0. **Open with the category**, in square brackets: `[Request]`, `[Suggestion]` or `[Clarification]`.
+1. **State what the code does, as fact.** Name the exact symbol, file, or setting in backticks.
+   "`pinnedValue` is written on init" — not "there may be an issue with initialisation".
+2. **State the consequence.** What goes wrong for whom — the user, the consumer, the next maintainer.
+   This is the clause that justifies the comment existing.
+3. **Give a concrete fix.** Name the API, file, or pattern. For a `[Clarification]`, this is the
+   question instead — one question, answerable in a sentence.
+
+Three comments in this shape, as a calibration target. They are deliberately language-neutral — this
+file is shared across repositories, so anything that names a language, a linter or a framework belongs in
+that repo's `platform.md`, not here:
+
+> `[Request]` `configure()` assigns `baseURL` after the request queue has already started, so the first
+> call goes to the default host instead of the configured one. Assign it before the queue starts, or hold
+> requests until configuration completes.
+
+> `[Suggestion]` `formatIban()` here duplicates the helper in `IbanUtils`, which already handles the
+> spacing and the empty case. Calling it instead drops ~20 lines and keeps one definition of the format.
+
+> `[Clarification]` The retry loop stops after three attempts but the timeout is unbounded, so a hung
+> request never reaches attempt two. Is the timeout meant to be per-attempt here?
+
+Rules that follow from the format:
+
+- **Impersonal and third-person.** "The snippet uses…", "This produces…". Never "you", never "why did
+  you".
+- **No praise comments inline.** They add noise to a PR thread. Keep anything positive to the
+  acknowledgement clause in the summary body.
+- **Present tense, declarative.** No hedging stacks ("might possibly perhaps"), no exclamation marks, no
+  emoji.
+- **Every comment ends with something actionable** — a fix for `[Request]` and `[Suggestion]`, a
+  question for `[Clarification]`. A comment that only describes a problem makes the author do the work
+  twice.
+
+## Summary review
+
+Review bodies follow this shape — mirror it:
+
+```markdown
+## Pull request overview
+
+<one paragraph: what this PR does and why, in the reviewer's own words>
+
+**Changes:**
+- <grouped change, not a file list>
+- <grouped change>
+
+### Reviewed changes
+
+Reviewed <X> out of <Y> changed files and generated <N> comments.
+
+<details>
+<summary>Show a summary per file</summary>
+
+| File | Description |
+| ---- | ----------- |
+| `<path/to/NewInterceptor>` | New request interceptor for session-backed auth injection |
+| `<path/to/dependency-manifest>` | Adds validator plugin + test-server dependency entry |
+
+</details>
+```
+
+Notes:
+
+- The **"reviewed X out of Y"** line is the coverage ledger — it is what makes the review trustworthy.
+  State the real numbers and, when X < Y, say which files were not reviewed and why.
+- The per-file table goes in `<details>` so it does not dominate the thread.
+- **Changes** groups by behaviour, not by file. "Add the session interceptor and update
+  builders/repositories to rely on transport-layer auth" — one line covering many files.
+- **No category prefix in the summary body.** The prefixes belong on the individual findings; the body
+  is prose.
+
+**This full shape is the terminal report.** What gets *posted* is much shorter — see `../SKILL.md` §6
+§"The summary body comes first". The per-file table, the coverage count and the section headings never go
+on the PR.
+
+## Improvements, not just defects
+
+Findings say what is wrong; improvements say what would be better. Keep them separate from defects so
+the must-fix list stays short, and use the same three-part shape and the same length budget. An
+improvement is always a `[Suggestion]`, never a `[Request]`.
+
+What is worth raising:
+
+- **Reuse** — duplicates something that exists, or is generic enough to belong in a shared file. Name
+  the destination file and the neighbouring function.
+- **Simplification** — a standard-library or framework one-liner replaces hand-rolled code. Name the API
+  and confirm it is already available in this target.
+- **Robustness** — correct today but fragile under a plausible change. Say plainly that nothing is
+  broken now.
+- **Clarity** — code that reads as if it does something other than what it does.
+- **Test coverage** — name the specific untested path, never "add more tests".
+
+Framing, because it decides whether an improvement gets adopted:
+
+- **Default to deferrable.** Reviewers actively avoid widening an open PR. Phrase improvements so they
+  can be taken as a follow-up, and say when that is the better option.
+- **Say when an improvement is not worth it.** If a cleaner shape exists but the churn outweighs it, say
+  so rather than raising it.
+- **Cap the list.** A handful at most. A long optional list reads as noise and buries the requests.
+
+## Posting to GitHub
+
+For mechanical changes, attach a suggestion block so the author gets one-click apply:
+
+````markdown
+[Request] The link to the setup page points at `/docs/integration`, which has returned 404 since that
+page moved, so the guide's first step dead-ends. Point it at `/docs/getting-started`.
+
+```suggestion
+[setup guide](/docs/getting-started)
+```
+````
+
+Only where you are confident it compiles or renders **as written** — check that every symbol it uses is
+already imported or in scope in that file, since a suggestion cannot add an import on another line. Keep
+the span small and self-contained. A suggestion block that does not work is worse than prose.
+
+When a fix needs a change in two places (an import plus a call site), do not split it across two
+suggestion comments on one finding. Either write the suggestion so it needs no second edit — a
+fully-qualified reference, or a form using only what is already in scope — or drop the suggestion and
+describe the change in prose.

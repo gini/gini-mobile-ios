@@ -1,0 +1,19 @@
+Copyright (c) 2025, Gini GmbH
+All rights reserved.
+
+The Gini Internal Payment SDK is licensed through Gini GmbH ("Gini") and may not be
+used, altered or copied in any way without explicit permission by Gini. The
+terms of usage are defined in a separate usage agreement between Gini and the
+licensee, where the licensee can gain access to a non-exclusive,
+non-transferable usage right which is restricted for the time of a contractual
+relationship between Gini and the licensee.
+
+For license related inquiries contact Gini via the email address
+technical-support@gini.net.
+
+The Gini Internal Payment SDK uses code from the following libraries:
+
+| Module | License |
+|--------|---------|
+| Gini Health API Library | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/8686dca6aee8768d63dd825f2a1bbe08dd0eec67/HealthAPILibrary/GiniHealthAPILibrary/LICENSE) |
+| Gini Utilities | [LICENSE](https://github.com/gini/gini-mobile-ios/blob/743a4cd19f4eac03a982c2cfd7f7732feb335a06/GiniComponents/Utilities/LICENSE) |

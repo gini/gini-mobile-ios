@@ -23,12 +23,19 @@ extension UIFont.TextStyle {
 }
 
 extension UIFont {
-    
+
+    /**
+     Returns a version of the font capped at `fontSizeLimit`, but only when the user has enabled
+     an accessibility text size (AX1–AX5 via Settings → Accessibility → Display & Text Size).
+     At regular text sizes the font is returned unchanged.
+     - Parameters:
+       - fontSizeLimit: The maximum point size to allow under accessibility text sizes.
+     - Returns: The capped font when an accessibility category is active; otherwise the original font.
+     */
     public func limitingFontSize(to fontSizeLimit: CGFloat) -> UIFont {
-        if self.pointSize > fontSizeLimit {
-            return self.withSize(fontSizeLimit)
-        } else {
+        guard UITraitCollection.current.preferredContentSizeCategory.isAccessibilityCategory else {
             return self
         }
+        return self.pointSize > fontSizeLimit ? self.withSize(fontSizeLimit) : self
     }
 }

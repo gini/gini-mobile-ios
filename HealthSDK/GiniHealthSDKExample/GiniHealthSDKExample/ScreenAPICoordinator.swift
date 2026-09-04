@@ -39,7 +39,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     private var hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
     
     // {extraction name} : {entity name}
-    private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
+    private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "amountToPay" : "amount"]
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -78,7 +78,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     func giniCaptureDidEnterManually() {
         screenAPIViewController.dismiss(animated: true)
     }
-    
+
+    func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+        // Health example does not surface a schedule-payment flow; dismiss like cancel.
+        screenAPIViewController.dismiss(animated: true)
+    }
+
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         captureExtractedResults = result.extractions.map { $0.value }
 
@@ -192,6 +197,7 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
         if fromVC is PaymentReviewViewController {
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
+        
         return nil
     }
 }

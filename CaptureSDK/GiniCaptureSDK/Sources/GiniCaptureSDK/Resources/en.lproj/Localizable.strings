@@ -7,15 +7,7 @@
 */
 
 "ginicapture.navigationbar.camera.title"        = "Scan";
-"ginicapture.navigationbar.onboarding.title"    = "Instructions";
-"ginicapture.navigationbar.review.title"        = "Check photo quality";
-"ginicapture.navigationbar.analysis.title"      = "Be patient, analysing photo";
-"ginicapture.navigationbar.camera.close"        = "";
 "ginicapture.navigationbar.camera.help"         = "Help";
-"ginicapture.navigationbar.onboarding.continue" = "Next";
-"ginicapture.navigationbar.review.back"         = "";
-"ginicapture.navigationbar.review.close"        = "";
-"ginicapture.navigationbar.review.continue"     = "Next";
 "ginicapture.navigationbar.analysis.back"       = "Cancel";
 "ginicapture.navigationbar.help.backToCamera"   = "Camera";
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
@@ -159,6 +151,11 @@
 "ginicapture.help.supportedFormats.qrcode.item.3" = "Stuzza (AT)";
 "ginicapture.help.supportedFormats.qrcode.item.4" = "Girocode (DE)";
 "ginicapture.help.supportedFormats.qrcode.item.5" = "QR by Gini";
+"ginicapture.help.supportedFormats.qrcode.item.6" = "Swiss QR Code (CH)";
+"ginicapture.help.supportedFormats.qrcode.item.7" = "SPD (CZ)";
+"ginicapture.help.supportedFormats.qrcode.item.8" = "Pay by Square (SK)";
+"ginicapture.help.supportedFormats.qrcode.item.9" = "UPN QR (SI)";
+"ginicapture.help.supportedFormats.qrcode.item.10" = "HUB3 (HR)";
 
 "ginicapture.help.menu.title" = "Help";
 "ginicapture.help.menu.tips" = "Tips for best results from photos";
@@ -166,7 +163,7 @@
 "ginicapture.help.menu.import" = "Import documents from other apps";
 
 "ginicapture.albums.title" = "Albums";
-"ginicapture.imagepicker.openbutton" = "Done";
+"ginicapture.imagepicker.openbutton" = "Done";
 
 "ginicapture.multipagereview.title" = "Review";
 "ginicapture.multipagereview.description" = "Make sure the payment details are visible";
@@ -217,6 +214,9 @@
 "ginicapture.QRscanning.correct" = "QR code detected";
 "ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
+"ginicapture.QRscanning.alert.title" = "This is not a payment QR code";
+"ginicapture.QRscanning.alert.scanAnother" = "Scan another QR code";
+"ginicapture.QRscanning.alert.takePhoto" = "Take photo of document";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
 "ginicapture.QRscanning.education.loading.captureTip" = "You can take photos of receipts or remittance slips – even without a QR code";
 
@@ -238,7 +238,27 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Cancel";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Grant permission";
 
-// MARK: - Document has payment due date
+// MARK: - Due date and scheduled payment hints
+"ginicapture.payment.hint.title" = "Your invoice is due on %@.";
+"ginicapture.payment.hint.duedate.description" = "You could set it up as a scheduled transfer.";
+"ginicapture.payment.hint.duedate.proceedButtonTitle" = "Proceed Anyway";
+"ginicapture.payment.hint.duedate.cancelButtonTitle" = "Cancel Transfer";
+"ginicapture.payment.hint.schedule.description" = "You can proceed with this Transaction now or schedule it for a future execution.";
+"ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Schedule Payment";
+"ginicapture.payment.hint.schedule.proceedButtonTitle" = "Proceed Anyway";
+
+// DEPRECATED — do not use in new integrations.
+// These legacy keys are kept only so existing customer overrides keep
+// resolving to their previous default values. Use the new keys under
+// `ginicapture.payment.hint.*` above instead.
+// Will be removed in a future major version.
 "ginicapture.payment.due.hint.prefix" = "Tip:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Your invoice is due on %@. You could set it up as a scheduled transfer.";
 "ginicapture.dismiss.message.title" = "Dismiss Message";
+// END DEPRECATED
+
+// MARK: - Document marked as credit note
+"ginicapture.creditNote.warning.title" = "Credit Note Warning";
+"ginicapture.creditNote.warning.description" = "It seems you submitted a credit note instead of a regular invoice. You might want to check your document mentioning “Gutschrift” or if the amount is negative.";
+"ginicapture.creditNote.warning.proceedButtonTitle" = "Proceed anyway";
+"ginicapture.creditNote.warning.cancelButtonTitle" = "Cancel transfer";

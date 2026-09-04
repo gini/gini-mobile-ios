@@ -17,23 +17,26 @@ class MainScreen {
     let cameraIconButton: XCUIElement
     let deleteButton: XCUIElement
     let sendFeedbackButton: XCUIElement
-    let recentsButton: XCUIElement
-    let recentsText: XCUIElement
-    
+    let onMyPhoneButton: XCUIElement
+    let onMyPhoneText: XCUIElement
+    let browseButton: XCUIElement
+
     init(app: XCUIApplication, locale: String) {
         self.app = app
-        
+
         switch locale {
         case "en":
             deleteButton = app.buttons["Delete"]
-            sendFeedbackButton = app.navigationBars.buttons["Send feedback and close"]
-            recentsButton = app.buttons["Recents"].firstMatch
-            recentsText = app.staticTexts["Recents"].firstMatch
+            sendFeedbackButton = app.navigationBars.buttons["Done"]
+            onMyPhoneButton = app.buttons["On My iPhone"].firstMatch
+            onMyPhoneText   = app.staticTexts["On My iPhone"].firstMatch
+            browseButton    = app.buttons["Browse"].firstMatch
         case "de":
             deleteButton = app.buttons["Löschen"]
-            sendFeedbackButton = app.navigationBars.buttons["Feedback senden und schließen"]
-            recentsButton = app.buttons["Verlauf"].firstMatch
-            recentsText = app.staticTexts["Verlauf"].firstMatch
+            sendFeedbackButton = app.navigationBars.buttons["Done"]
+            onMyPhoneButton = app.buttons["Auf meinem iPhone"].firstMatch
+            onMyPhoneText   = app.staticTexts["Auf meinem iPhone"].firstMatch
+            browseButton    = app.buttons["Durchsuchen"].firstMatch
         default:
             fatalError("Locale \(locale) is not supported")
         }
@@ -51,16 +54,27 @@ class MainScreen {
         let _ = springboard.waitForExistence(timeout: 5)
         let allowButton = springboard.buttons["Allow"]
         let allowButtonDE = springboard.buttons["OK"]
-        let dontAllowButton = springboard.buttons["Don’t Allow"]
+        let dontAllowButton = springboard.buttons["Don’t Allow"]          //U+2019 (iOS < 26)
+        let dontAllowButtonStraight = springboard.buttons["Don't Allow"]  //U+0027 (iOS 26+)
         let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
         let buttonToTap: XCUIElement
-        
-        if answer {
-            buttonToTap = allowButton.exists ? allowButton : allowButtonDE
+
+        if answer, allowButton.waitForExistence(timeout: 3) {
+            buttonToTap = allowButton
+        } else if answer, allowButtonDE.waitForExistence(timeout: 3) {
+            buttonToTap = allowButtonDE
+        } else if answer {
+            buttonToTap = allowButton
+        } else if dontAllowButton.waitForExistence(timeout: 3) {
+            buttonToTap = dontAllowButton
+        } else if dontAllowButtonStraight.waitForExistence(timeout: 3) {
+            buttonToTap = dontAllowButtonStraight
+        } else if dontAllowButtonDE.waitForExistence(timeout: 3) {
+            buttonToTap = dontAllowButtonDE
         } else {
-            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
+            buttonToTap = dontAllowButton
         }
-        
+
         if buttonToTap.exists {
             buttonToTap.tap()
         }
@@ -75,23 +89,24 @@ class MainScreen {
      */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let _ = springboard.waitForExistence(timeout: 5)
-        let allowFullAccess =  springboard.buttons["Allow Full Access"]
-        let allowFullAccessDE =  springboard.buttons["Zugriff auf alle Fotos erlauben"]
-        let dontAllowButton = springboard.buttons["Don’t Allow"]
-        let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
-        let buttonToTap: XCUIElement
-        
-        if answer {
-            buttonToTap = allowFullAccess.exists ? allowFullAccess : allowFullAccessDE
-        } else {
-            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
-        }
-        
-        if buttonToTap.exists {
+        /// The full-access button title varies by iOS version:
+        /// iOS 17+ "Allow Full Access", iOS 15/16 "Allow Access to All Photos".
+        let allowTitles = ["Allow Full Access",
+                           "Allow Access to All Photos",
+                           "Zugriff auf alle Fotos erlauben"]
+        let allowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", allowTitles)).firstMatch
+        /// "Don't Allow" uses U+2019 on iOS < 26 and U+0027 on iOS 26+.
+        let dontAllowTitles = ["Don’t Allow", "Don't Allow", "Nicht erlauben"]
+        let dontAllowButton = springboard.buttons
+            .matching(NSPredicate(format: "label IN %@", dontAllowTitles)).firstMatch
+
+        let buttonToTap = answer ? allowButton : dontAllowButton
+        /// Wait for the dialog to actually appear; it may legitimately be absent when
+        /// the permission was already granted in a previous launch.
+        if buttonToTap.waitForExistence(timeout: 5), buttonToTap.isHittable {
             buttonToTap.tap()
         }
-        
     }
 
     func swipeToElement(element: XCUIElement, direction: String) {
@@ -136,7 +151,7 @@ class MainScreen {
         let cell = app.cells.containing(.staticText, identifier: text).element
         XCTAssertTrue(cell.exists, "Cell containing text '\(text)' does not exist")
         // Locate the switch within the found cell
-        var switchElement = cell.switches.element
+        let switchElement = cell.switches.element
         XCTAssertTrue(switchElement.exists, "Switch next to text '\(text)' does not exist")
         // Scroll to switch
         switchElement.tap()
@@ -145,48 +160,149 @@ class MainScreen {
         
     }
     
+    /**
+     Clears a text field's content, leaving the field focused so callers can type
+     the replacement text directly. Focuses the field with a tap, moves the cursor
+     to the end of the text, then deletes the current value — the previous
+     long-press approach opened the edit context menu and lost keyboard focus.
+     - Parameters:
+       - element: The text field to clear.
+     */
     func clearInputField(element: XCUIElement) {
-
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "Text field to clear not found")
         guard let stringValue = element.value as? String else {
             XCTFail("Tried to clear non string value")
             return
         }
-        let lowerRightCorner = element.coordinate(withNormalizedOffset: CGVectorMake(0.9, 0.9))
-        lowerRightCorner.press(forDuration: 2)
-        
+        /// Focus the field, then place the cursor after the last character.
+        element.tap()
+        element.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        guard !stringValue.isEmpty else { return }
         let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-        element.typeText(deleteString)
-        lowerRightCorner.tap()
         element.typeText(deleteString)
     }
     
     func tapFileWithName(fileName: String) {
+        // If the picker opened in Recents/grid view, tap Browse to reach the sidebar.
+        if browseButton.waitForExistence(timeout: 3) {
+            browseButton.tap()
+        }
+
+        // Navigate to On My iPhone.
+        _ = onMyPhoneButton.waitForExistence(timeout: 5) || onMyPhoneText.waitForExistence(timeout: 5)
+        if onMyPhoneButton.exists {
+            onMyPhoneButton.tap()
+        } else if onMyPhoneText.exists {
+            onMyPhoneText.tap()
+        }
+
+        // Open the app folder.
+        let appFolder = app.staticTexts["GiniBankSDKExample"].firstMatch
+        XCTAssertTrue(appFolder.waitForExistence(timeout: 5),
+                      "GiniBankSDKExample folder not found. Ensure PDFs exist in GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS.")
+        appFolder.tap()
+
         sleep(1)
 
-        if recentsButton.exists {
-            recentsButton.tap()
-        } else if recentsText.exists {
-            recentsText.tap()
+        // Cells must be tried before staticTexts: tapping a staticText (the filename label)
+        // in the Files picker opens a full-screen preview and stays in Files app.
+        // Tapping the cell row properly selects the file for the document picker.
+        func findFileElement() -> XCUIElement? {
+            let byCell = app.cells.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byCell.exists { return byCell }
+
+            let byStaticText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byStaticText.exists { return byStaticText }
+
+            let byButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byButton.exists { return byButton }
+
+            return nil
         }
 
-        var fileElement = app.staticTexts[fileName].firstMatch
         var swipeAttempts = 0
-
-        while !fileElement.exists && swipeAttempts < 4 {
-            
-            XCUIDevice.shared.orientation = .portrait
+        while findFileElement() == nil && swipeAttempts < 5 {
             app.swipeUp()
             swipeAttempts += 1
-            sleep(1) 
-            fileElement = app.staticTexts[fileName].firstMatch
+            sleep(1)
         }
 
-        XCTAssertTrue(fileElement.waitForExistence(timeout: 3),
-                      "Please add file with file name '\(fileName)' to the device before launching the test.")
-        
+        guard let fileElement = findFileElement() else {
+            XCTFail("File '\(fileName)' not found. Ensure it exists in GiniBankSDKExampleUITests/TestSamples/TestSamplesForBS.")
+            return
+        }
+
         fileElement.tap()
+
+        // After selecting a file from a folder in "On My iPhone", the document picker
+        // shows an "Open" button in the navigation bar to confirm the selection.
+        // Tap it here so callers do not need a separate openGalleryButton.tap() call.
+        let openButton = app.buttons["Open"].firstMatch
+        let openButtonDE = app.buttons["Öffnen"].firstMatch
+        if openButton.waitForExistence(timeout: 3) {
+            openButton.tap()
+        } else if openButtonDE.waitForExistence(timeout: 1) {
+            openButtonDE.tap()
+        }
     }
     
+    /// Navigates the document picker to the BrowserStack-supplied `Custom_Files` folder and taps the file.
+    ///
+    /// BrowserStack places non-media files directly at:
+    /// **Browse → Custom_Files → <file>**
+    ///
+    /// - Parameter fileName: File name without extension (matched with CONTAINS[c]).
+    func tapFileWithNameFromBSCustomFiles(fileName: String) {
+        let customFilesFolder = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+
+        // Only tap Browse if Custom_Files is not already visible (i.e. we're still on Recents).
+        if !customFilesFolder.exists {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+            }
+        }
+
+        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5), "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test")
+        customFilesFolder.tap()
+
+        // Tap the target file
+        let fileElement = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 5), "File '\(fileName)' not found in Custom_Files folder")
+        fileElement.tap()
+    }
+
+    /**
+     Picks a file by name from the document picker, automatically routing to BrowserStack's
+     `Custom_Files` folder when running on BrowserStack, or to Recents when running locally.
+     - Parameters:
+       - fileName: File name without extension (matched with CONTAINS[c]).
+     */
+    func tapFileFromBestAvailableSource(fileName: String) {
+        let customFilesAny = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+
+        // Check if Custom_Files is already visible before tapping Browse.
+        // When the Files picker opens on the Browse locations screen (not Recents), Custom_Files
+        // is already in the list — tapping Browse again navigates to a different level and breaks detection.
+        if !customFilesAny.waitForExistence(timeout: 3) {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+                sleep(5) // Give the Files app time to render the Browse location list (BrowserStack can be slow)
+            }
+        }
+
+        if customFilesAny.waitForExistence(timeout: 15) {
+            // BrowserStack: Custom_Files is visible — navigate into it and pick the file.
+            tapFileWithNameFromBSCustomFiles(fileName: fileName)
+        } else {
+            // Local: fall back to Recents-based lookup.
+            tapFileWithName(fileName: fileName)
+        }
+    }
+
     func assertTextIsDisplayedInAnyStaticText(expectedText: String) {
         
         // Get all static text elements
@@ -202,6 +318,5 @@ class MainScreen {
         // If the text was not found in any static text element
         XCTFail("The text '\(expectedText)' was not found in any static text element.")
     }
-
 }
 

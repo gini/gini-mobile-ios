@@ -39,7 +39,6 @@ enum PhotoLibraryAccessLevel {
 
      - Returns: The corresponding PHAccessLevel value
      */
-    @available(iOS 14, *)
     var phAccessLevel: PHAccessLevel {
         switch self {
         case .addOnly:
@@ -54,8 +53,7 @@ enum PhotoLibraryAccessLevel {
  Manages photo library permission requests and status checks.
 
  This singleton class provides a centralized interface for checking and requesting
- photo library permissions with support for different access levels. It handles both
- iOS 14+ access levels and iOS 13 fallback behavior.
+ photo library permissions with support for different access levels.
  */
 class PhotoLibraryPermissionManager {
 
@@ -70,21 +68,13 @@ class PhotoLibraryPermissionManager {
      Returns the current authorization status for the specified access level.
 
      This method checks the current permission state without prompting the user.
-     On iOS 14 and later, it supports checking for specific access levels. On iOS 13,
-     it falls back to the basic authorization status.
 
      - Parameter accessLevel: The level of access to check (defaults to `.readWrite`)
      - Returns: The current permission status as a `PhotoLibraryPermissionStatus`
      */
     func currentStatus(for accessLevel: PhotoLibraryAccessLevel = .readWrite) -> PhotoLibraryPermissionStatus {
-        if #available(iOS 14, *) {
-            let status = PHPhotoLibrary.authorizationStatus(for: accessLevel.phAccessLevel)
-            return mapStatus(status)
-        } else {
-            // iOS 13 fallback - only has basic authorization
-            let status = PHPhotoLibrary.authorizationStatus()
-            return mapStatus(status)
-        }
+        let status = PHPhotoLibrary.authorizationStatus(for: accessLevel.phAccessLevel)
+        return mapStatus(status)
     }
 
     // MARK: - Request Permission (Async/Await)
@@ -94,8 +84,7 @@ class PhotoLibraryPermissionManager {
      This method prompts the user for photo library access if permission has not yet been determined.
      If permission was previously granted or denied, it returns the current status without showing a prompt.
 
-     The method uses async/await for modern Swift concurrency and automatically handles iOS version differences,
-     falling back to the basic authorization request on iOS 13.
+     The method uses async/await for modern Swift concurrency.
 
      - Parameter accessLevel: The level of access to request (defaults to `.readWrite`)
      - Returns: The resulting permission status after the request
@@ -105,17 +94,8 @@ class PhotoLibraryPermissionManager {
 
      */
     func requestPermission(for accessLevel: PhotoLibraryAccessLevel = .readWrite) async -> PhotoLibraryPermissionStatus {
-        if #available(iOS 14, *) {
-            let status = await PHPhotoLibrary.requestAuthorization(for: accessLevel.phAccessLevel)
-            return mapStatus(status)
-        } else {
-            // iOS 13 fallback
-            return await withCheckedContinuation { continuation in
-                PHPhotoLibrary.requestAuthorization { status in
-                    continuation.resume(returning: self.mapStatus(status))
-                }
-            }
-        }
+        let status = await PHPhotoLibrary.requestAuthorization(for: accessLevel.phAccessLevel)
+        return mapStatus(status)
     }
 
     // MARK: - Private Helpers

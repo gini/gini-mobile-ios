@@ -12,26 +12,11 @@ protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
 
-/// Defines how a view can show and hide a payment due date message.
-public protocol PaymentDueDateProtocol: AnyObject {
-
-    /// Show the payment due date text
-    /// - Parameters:
-    /// dueDate: The payment due date string to show
-    func handlePaymentDueDate(_ dueDate: String)
-
-    /// Hide the payment due date
-    /// - Parameters:
-    /// timeout:   a delay (in seconds)
-    func clearPaymentDueDate(after timeout: TimeInterval) async
-}
-
 open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     var rootViewController: UIViewController {
         return screenAPINavigationController
     }
-    public weak var paymentDueDateHandler: PaymentDueDateProtocol?
 
     public lazy var screenAPINavigationController: UINavigationController = {
         var navigationController: UINavigationController
@@ -63,36 +48,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public var giniConfiguration: GiniConfiguration
     public var pages: [GiniCapturePage] = []
     public weak var visionDelegate: GiniCaptureDelegate?
-    // Resources
-    fileprivate(set) lazy var cancelButtonResource =
-        giniConfiguration.cancelButtonResource ??
-            GiniPreferredButtonResource(image: "navigationAnalysisBack",
-                                        title: "ginicapture.navigationbar.analysis.back",
-                                        comment: "Button title in the navigation bar for" +
-                "the back button on the analysis screen",
-                                        configEntry: self.giniConfiguration.navigationBarAnalysisTitleBackButton)
-    fileprivate(set) lazy var closeButtonResource =
-        giniConfiguration.closeButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationCameraClose",
-                title: "ginicapture.navigationbar.camera.close",
-                comment: "Button title in the navigation bar for the close button on the camera screen",
-                configEntry: giniConfiguration.navigationBarCameraTitleCloseButton)
-    fileprivate(set) lazy var helpButtonResource =
-        giniConfiguration.helpButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationCameraHelp",
-                title: "ginicapture.navigationbar.camera.help",
-                comment: "Button title in the navigation bar for the help button on the camera screen",
-                configEntry: giniConfiguration.navigationBarCameraTitleHelpButton)
-    fileprivate(set) lazy var nextButtonResource =
-        giniConfiguration.nextButtonResource ??
-            GiniPreferredButtonResource(
-                image: "navigationReviewContinue",
-                title: "ginicapture.navigationbar.review.continue",
-                comment: "Button title in the navigation bar for " +
-                "the continue button on the review screen",
-                configEntry: giniConfiguration.navigationBarReviewTitleContinueButton)
 
     public init(withDelegate delegate: GiniCaptureDelegate?,
                 giniConfiguration: GiniConfiguration) {

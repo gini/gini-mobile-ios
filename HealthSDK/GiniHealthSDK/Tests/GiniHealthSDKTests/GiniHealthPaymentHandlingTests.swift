@@ -12,40 +12,49 @@ import XCTest
 @testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
-final class GiniHealthPaymentHandlingTests: XCTestCase {
-    
-    var giniHealthAPI: GiniHealthAPI!
-    var giniHealth: GiniHealth!
-    private let versionAPI = 4
+final class GiniHealthPaymentHandlingTests: GiniHealthTestCase {
 
-    
-    override func setUp() {
-        let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        GiniHealthConfiguration.shared.clientConfiguration = nil
-        giniHealthAPI = GiniHealthAPI(documentService: documentService,
-                                      paymentService: paymentService,
-                                      clientConfigurationService: clientConfigurationService)
-        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
-    }
-    
-    override func tearDown() {
-        giniHealthAPI = nil
-        giniHealth = nil
-        super.tearDown()
-    }
-    
     func testCreatePaymentRequestSuccess() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        let documentLink = "https://health-api.gini.net/documents/f4f77c2f-2d8b-4eb2-abbe-daa8b2b9c657"
+        let fileName = "wish_receipt_extractions"
+        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+        let documentFileName = "wish_receipt"
+
+        guard let healthDocument: GiniHealthAPILibrary.Document = GiniHealthSDKTests.load(fromFile: documentFileName) else {
+            XCTFail("Cannot load file `\(documentFileName).json")
+            return
+        }
+        
+        let expectedDocument: GiniHealthSDK.Document? = GiniHealthSDK.Document(healthDocument: healthDocument)
+
+        guard let expectedDocument else {
+            XCTFail("Error loading file: `\(documentFileName).json`")
+            return
+        }
+        let expectedDataForReview = DataForReview(document: expectedDocument,
+                                                  extractions: expectedExtractions)
+        let expectedDocumentLink = expectedDocument.links.document.absoluteString
+        let extractions = expectedDataForReview.extractions
 
         // When
         let expectation = self.expectation(description: "Creating payment request")
         var receivedRequestId: String?
-        let paymentInfo = GiniHealthSDK.PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: PaymentInfo(paymentComponentsInfo: paymentInfo), completion: { result in
+        let paymentInfo = PaymentInfo(sourceDocumentLocation: expectedDocumentLink,
+            recipient: extractions.first(where: {$0.name == "payment_recipient"})?.value ?? "",
+                                                    iban: extractions.first(where: {$0.name == "iban"})?.value.uppercased() ?? "",
+                                                    amount: extractions.first(where: {$0.name == "amount_to_pay"})?.value ?? "",
+                                                    purpose: extractions.first(where: {$0.name == "payment_purpose"})?.value ?? "",
+                                                    paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                    paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo,
+                                        completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
@@ -57,8 +66,41 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        XCTAssertNotNil(expectedDocumentLink, "Expected document link should not be nil")
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
+        XCTAssertEqual(documentLink, expectedDocumentLink, "Document link should match the expected document link")
+    }
+    
+    func testCreatePaymentRequestSuccessWithDocument() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+        
+        // When
+        let expectation = self.expectation(description: "Creating payment request")
+        var receivedRequestId: String?
+        var paymentInfo = GiniInternalPaymentSDK.PaymentInfo(sourceDocumentLocation: "https://health-api.gini.net/documents/bb385cf9-21b7-4990-93f7-4cfcfa626436",
+                                                             recipient: "Uno Flüchtlingshilfe",
+                                                             iban: "DE78370501980020008850",
+                                                             amount: "1.00:EUR",
+                                                             purpose: "ReNr 12345",
+                                                             paymentUniversalLink: "ginipay-test://paymentRequester",
+                                                             paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo,
+                                        completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
     }
     
     func testDeletePaymentRequestSuccess() {
@@ -69,7 +111,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         let expectation = self.expectation(description: "Deleting payment request")
         var receivedRequestId: String?
         
-        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID, completion: { result in
+        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID,
+                                        completion: { result in
             switch result {
             case .success(let requestId):
                 receivedRequestId = requestId
@@ -82,8 +125,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+        XCTAssertNotNil(receivedRequestId, "Received request ID should not be nil")
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID, "Received request ID should match the expected payment request ID")
     }
     
     func testFetchPaymentRequestWithExpirationDate() {
@@ -105,8 +148,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertEqual(receivedPaymentRequest?.expirationDate, expectedExpirationDate)
+        XCTAssertNotNil(receivedPaymentRequest, "Payment request should not be nil")
+        XCTAssertEqual(receivedPaymentRequest?.expirationDate, expectedExpirationDate, "Expiration date should match")
     }
 
     func testFetchPaymentRequestWithMissingExpirationDate() {
@@ -125,8 +168,8 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         }
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertNil(receivedPaymentRequest?.expirationDate)
+        XCTAssertNotNil(receivedPaymentRequest, "Payment request should not be nil")
+        XCTAssertNil(receivedPaymentRequest?.expirationDate, "Expiration date should be nil when not provided")
     }
     
     func testGettingPaymentSuccess() {
@@ -149,7 +192,129 @@ final class GiniHealthPaymentHandlingTests: XCTestCase {
         
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertNotNil(receivedPayment)
-        XCTAssertEqual(receivedPayment?.iban, expectedIBAN)
+        XCTAssertNotNil(receivedPayment, "Received payment should not be nil")
+        XCTAssertEqual(receivedPayment?.iban, expectedIBAN, "Payment IBAN should match")
+    }
+    
+    // MARK: - Bulk Payment Request Deletion Tests
+
+    @discardableResult
+    private func deletePaymentRequestsExpectingError(ids: [String],
+                                                     description: String) -> GiniHealthSDK.GiniError? {
+        let exp = expectation(description: description)
+        var receivedError: GiniHealthSDK.GiniError?
+
+        giniHealth.paymentService.deletePaymentRequests(ids) { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error but got success")
+            case .failure(let error):
+                receivedError = GiniHealthSDK.GiniError.toGiniHealthSDKError(error: error)
+            }
+            exp.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+        XCTAssertNotNil(receivedError, "Error should not be nil when deletion fails")
+        return receivedError
+    }
+
+    func testDeletePaymentRequests_Unauthorized() {
+        let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
+        let receivedError = deletePaymentRequestsExpectingError(ids: unauthorizedIds,
+                                                               description: "Deleting payment requests with unauthorized error")
+        XCTAssertEqual(receivedError?.items?.first?.code, "2016", "Error code should be 2016 for unauthorized")
+        XCTAssertEqual(receivedError?.items?.first?.object, unauthorizedIds, "Error objects should match unauthorized IDs")
+        XCTAssertEqual(receivedError?.requestId, "b608-02bb-c7g1-dd28-54e4-87b9", "Request ID should match")
+    }
+    
+    func testDeletePaymentRequests_NotFound() {
+        let notFoundIds = MockTestData.BulkDeletePaymentRequests.notFound
+        let receivedError = deletePaymentRequestsExpectingError(ids: notFoundIds,
+                                                               description: "Deleting payment requests with not found error")
+        XCTAssertEqual(receivedError?.items?.first?.code, "2017", "Error code should be 2017 for not found")
+        XCTAssertEqual(receivedError?.items?.first?.object, notFoundIds, "Error objects should match not-found IDs")
+    }
+    
+    func testDeletePaymentRequests_Mixed() {
+        let mixedIds = MockTestData.BulkDeletePaymentRequests.mixed
+        let receivedError = deletePaymentRequestsExpectingError(ids: mixedIds,
+                                                               description: "Deleting payment requests with mixed errors")
+        XCTAssertEqual(receivedError?.items?.count, 2, "There should be 2 error items for mixed errors")
+
+        // Verify both error codes are present
+        let errorCodes = receivedError?.items?.map { $0.code } ?? []
+        XCTAssertTrue(errorCodes.contains("2016"), "Error codes should contain 2016 for unauthorized")
+        XCTAssertTrue(errorCodes.contains("2017"), "Error codes should contain 2017 for not found")
+
+        // Verify objects are correctly assigned to each error code
+        let unauthorizedObjects = receivedError?.objectsWithCode("2016") ?? []
+        let notFoundObjects = receivedError?.objectsWithCode("2017") ?? []
+        XCTAssertEqual(unauthorizedObjects, ["8d5h7630-8f16-11ec-bd63-31f9d04e200e", "92de6fec-4a7f-4376-b5d5-5155adf8adca"], "Unauthorized objects should match")
+        XCTAssertEqual(notFoundObjects, ["bfb74b1b-567e-471e-ac5d-9e4494d0d049"], "Not-found objects should match")
+    }
+
+    // MARK: - Get Payment Request
+
+    func testGetPaymentRequestSuccess() {
+        // Given
+        let expectedExpirationDate = "2020-12-08T15:50:23"
+
+        // When
+        let result = waitForResult {
+            giniHealth.getPaymentRequest(by: MockSessionManager.paymentRequestIdWithExpirationDate,
+                                         completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success(let paymentRequest):
+            XCTAssertEqual(paymentRequest.expirationDate, expectedExpirationDate, "Expiration date should match")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
+    // MARK: - Bulk Delete Payment Requests via GiniHealth
+
+    func testDeletePaymentRequestsGiniHealthSuccess() {
+        // When
+        let result = waitForResult {
+            giniHealth.deletePaymentRequests(ids: [""],
+                                             completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success(let deletedIds):
+            XCTAssertNotNil(deletedIds, "Deleted IDs should not be nil on success")
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
+    }
+
+    func testDeletePaymentRequestsGiniHealthUnauthorizedFailure() {
+        // Given
+        let unauthorizedIds = MockTestData.BulkDeletePaymentRequests.unauthorized
+
+        // When
+        let result = waitForResult {
+            giniHealth.deletePaymentRequests(ids: unauthorizedIds,
+                                             completion: $0)
+        }
+
+        // Then
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil for unauthorized deletion")
+        case nil:
+            XCTFail("Expected result but got nil")
+        }
     }
 }

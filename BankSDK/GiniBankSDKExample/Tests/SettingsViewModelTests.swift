@@ -88,8 +88,7 @@ final class SettingsViewModelTests: XCTestCase {
     
 	override func setUp() {
 		super.setUp()
-        viewModel = SettingsViewModel(apiEnvironment: .production,
-                                      giniConfiguration: configuration,
+        viewModel = SettingsViewModel(giniConfiguration: configuration,
                                       settingsButtonStates: settingsButtonStates,
                                       documentValidationsState: documentValidationsState)
 	}
@@ -132,6 +131,20 @@ final class SettingsViewModelTests: XCTestCase {
         for (sectionIndex, section) in contentData.enumerated() {
             if let rowIndex = section.items.firstIndex(where: {
                 guard case .segmentedOption = $0 else {
+                    return false
+                }
+                return true
+            }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
+        return nil
+    }
+
+    private func getSegmentedOptionIndex<T: SegmentedOptionModelProtocol>(ofType type: T.Type) -> IndexPath? {
+        for (sectionIndex, section) in contentData.enumerated() {
+            if let rowIndex = section.items.firstIndex(where: {
+                guard case .segmentedOption(let data) = $0, data is T else {
                     return false
                 }
                 return true
@@ -2104,6 +2117,46 @@ extension SettingsViewModelTests {
         }
     }
 
+	// MARK: - Product Tag
+
+	func testProductTagSectionExists() {
+		let index = getSegmentedOptionIndex(ofType: ProductTagSegmentedOptionModel.self)
+		XCTAssertNotNil(index, "Product Tag segmented option should exist in settings")
+	}
+
+	func testProductTagDefaultIsSepa() {
+		guard let index = getSegmentedOptionIndex(ofType: ProductTagSegmentedOptionModel.self) else {
+			XCTFail("`productTag` option not found in sectionData")
+			return
+		}
+		guard case .segmentedOption(let data) = contentData[index.section].items[index.row] else {
+			XCTFail("Expected segmentedOption cell type")
+			return
+		}
+		XCTAssertEqual(data.selectedIndex, 0,
+					   "default productTag should be SEPA (index 0)")
+		XCTAssertEqual(configuration.productTag, .sepaExtractions,
+					   "default productTag should be sepaExtractions")
+	}
+
+	func testProductTagSelectCxExtractions() {
+		viewModel?.handleProductTagOption(selectedIndex: 1)
+		XCTAssertEqual(configuration.productTag, .cxExtractions,
+					   "productTag should be cxExtractions after selecting index 1")
+	}
+
+	func testProductTagSelectAutoDetect() {
+		viewModel?.handleProductTagOption(selectedIndex: 2)
+		XCTAssertEqual(configuration.productTag, .autoDetectExtractions,
+					   "productTag should be autoDetectExtractions after selecting index 2")
+	}
+
+	func testProductTagSelectSepa() {
+		viewModel?.handleProductTagOption(selectedIndex: 1)
+		viewModel?.handleProductTagOption(selectedIndex: 0)
+		XCTAssertEqual(configuration.productTag, .sepaExtractions,
+					   "productTag should be sepaExtractions after selecting index 0")
+	}
 }
 
 extension SettingsViewModelTests: GiniCaptureErrorLoggerDelegate {

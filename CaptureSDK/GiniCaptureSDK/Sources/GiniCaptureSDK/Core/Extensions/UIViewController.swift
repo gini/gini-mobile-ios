@@ -46,6 +46,8 @@ extension UIViewController {
                 confirmAction()
             })
             alertViewController.addAction(confirmationAction)
+            // preferredAction must be set after addAction
+            alertViewController.preferredAction = confirmationAction
         }
 
         present(alertViewController, animated: true)

@@ -7,15 +7,7 @@
 */
 
 "ginicapture.navigationbar.camera.title"        = "Aufnahme";
-"ginicapture.navigationbar.onboarding.title"    = "Anleitung";
-"ginicapture.navigationbar.review.title"        = "Überprüfen";
-"ginicapture.navigationbar.analysis.title"      = "Etwas Geduld, analysiere Foto";
-"ginicapture.navigationbar.camera.close"        = "";
 "ginicapture.navigationbar.camera.help"         = "Hilfe";
-"ginicapture.navigationbar.onboarding.continue" = "Weiter";
-"ginicapture.navigationbar.review.back"         = "";
-"ginicapture.navigationbar.review.close"        = "";
-"ginicapture.navigationbar.review.continue"     = "Weiter";
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
 "ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
@@ -193,6 +185,11 @@
 "ginicapture.help.supportedFormats.qrcode.item.3" = "Stuzza (AT)";
 "ginicapture.help.supportedFormats.qrcode.item.4" = "Girocode (DE)";
 "ginicapture.help.supportedFormats.qrcode.item.5" = "QR by Gini";
+"ginicapture.help.supportedFormats.qrcode.item.6" = "Swiss QR Code (CH)";
+"ginicapture.help.supportedFormats.qrcode.item.7" = "SPD (CZ)";
+"ginicapture.help.supportedFormats.qrcode.item.8" = "Pay by Square (SK)";
+"ginicapture.help.supportedFormats.qrcode.item.9" = "UPN QR (SI)";
+"ginicapture.help.supportedFormats.qrcode.item.10" = "HUB3 (HR)";
 
 "ginicapture.help.menu.title" = "Hilfe";
 "ginicapture.help.menu.tips" = "Tipps für bessere Ergebnisse";
@@ -220,6 +217,9 @@
 "ginicapture.QRscanning.correct" = "QR-Code erkannt";
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
+"ginicapture.QRscanning.alert.title" = "Dieser QR-Code ist kein Zahlungs-QR-Code";
+"ginicapture.QRscanning.alert.scanAnother" = "Anderen QR-Code scannen";
+"ginicapture.QRscanning.alert.takePhoto" = "Dokument fotografieren";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
 "ginicapture.QRscanning.education.loading.captureTip" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 
@@ -241,7 +241,27 @@
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.saveinvoice.photoLibraryAccessDenied.errorPopup.grantAccessButton" = "Zugriff erteilen";
 
-// MARK: - Document has payment due date
+// MARK: - Due date and scheduled payment hints
+"ginicapture.payment.hint.title" = "Deine Rechnung ist am %@ fällig.";
+"ginicapture.payment.hint.duedate.description" = "Du könntest sie als Terminüberweisung anlegen.";
+"ginicapture.payment.hint.duedate.proceedButtonTitle" = "Trotzdem fortfahren";
+"ginicapture.payment.hint.duedate.cancelButtonTitle" = "Überweisung abbrechen";
+"ginicapture.payment.hint.schedule.description" = "Du könntest diese Überweisung jetzt ausführen oder für einen späteren Zeitpunkt terminieren.";
+"ginicapture.payment.hint.schedule.scheduleButtonTitle" = "Terminüberweisung";
+"ginicapture.payment.hint.schedule.proceedButtonTitle" = "Trotzdem fortfahren";
+
+// DEPRECATED — do not use in new integrations.
+// These legacy keys are kept only so existing customer overrides keep
+// resolving to their previous default values. Use the new keys under
+// `ginicapture.payment.hint.*` above instead.
+// Will be removed in a future major version.
 "ginicapture.payment.due.hint.prefix" = "Tipp:";
 "ginicapture.payment.due.hint.suggestion" = "%@ Deine Rechnung ist am %@ fällig. Du könntest sie als Terminüberweisung anlegen.";
 "ginicapture.dismiss.message.title" = "Hinweis schließen";
+// END DEPRECATED
+
+// MARK: - Document marked as credit note
+"ginicapture.creditNote.warning.title" = "Achtung: Gutschrift hochgeladen";
+"ginicapture.creditNote.warning.description" = "Anscheinend haben Sie eine Gutschrift statt einer Rechnung hochgeladen. Bitte überprüfen Sie Ihr Dokument auf den Begriff „Gutschrift“ oder ob der Betrag negativ ist.";
+"ginicapture.creditNote.warning.proceedButtonTitle" = "Trotzdem fortfahren";
+"ginicapture.creditNote.warning.cancelButtonTitle" = "Überweisung abbrechen";

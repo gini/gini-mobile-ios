@@ -43,5 +43,9 @@ class DigitalInvoiceIntegrationTests: BaseIntegrationTest {
         func giniCaptureDidEnterManually() {
             // nothing to test here
         }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+            // nothing to test here
+        }
     }
 }

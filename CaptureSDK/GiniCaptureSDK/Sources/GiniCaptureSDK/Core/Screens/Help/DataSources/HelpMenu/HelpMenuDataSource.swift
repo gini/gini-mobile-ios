@@ -67,6 +67,9 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
 
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Clear the row's selection state so VoiceOver doesn't announce
+        // "selected" when the user navigates back to the Help menu.
+        tableView.deselectRow(at: indexPath, animated: false)
         self.delegate?.didSelectHelpItem(at: indexPath.row)
     }
 

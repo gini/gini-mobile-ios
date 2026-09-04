@@ -97,11 +97,11 @@ class QRCodesExtractorTests: XCTestCase {
         XCTAssertTrue(parameters.isEmpty, "When format is nil, should return empty dictionary")
     }
 
-    // MARK: - Test extractParameters(fromBezhalCodeString:)
+    // MARK: - Test extractParameters(fromBezahlCodeString:)
 
     func testExtractParametersFromBezahlCodeWithAllFields() {
         let bezahlString = "bank://singlepaymentsepa?bic=DEUTDEFF&name=Max%20Mustermann&iban=DE89370400440532013000&reason=Rechnung%20123&amount=EUR50.00&currency=EUR"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertEqual(parameters["bic"],
                        "DEUTDEFF",
@@ -126,7 +126,7 @@ class QRCodesExtractorTests: XCTestCase {
 
     func testExtractParametersFromBezahlCodeWithMissingFields() {
         let bezahlString = "bank://singlepaymentsepa?iban=DE89370400440532013000"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertNil(parameters["bic"], "Missing BIC should not be in parameters dictionary")
         XCTAssertNil(parameters["paymentRecipient"], "Missing name should not be in parameters dictionary")
@@ -137,7 +137,7 @@ class QRCodesExtractorTests: XCTestCase {
 
     func testExtractParametersFromBezahlCodeWithInvalidIBAN() {
         let bezahlString = "bank://singlepaymentsepa?iban=INVALID_IBAN"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertNil(parameters["iban"], "Invalid IBAN should not be added to parameters after validation fails")
     }
@@ -146,7 +146,7 @@ class QRCodesExtractorTests: XCTestCase {
         // Note: Due to a bug in the implementation, reason1 is checked in queryParameters
         // instead of queryParametersDecoded, so percent-encoded values won't work properly
         let bezahlString = "bank://singlepaymentsepa?reason1=AlternativeReason"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertEqual(parameters["paymentReference"],
                        "AlternativeReason",
@@ -155,7 +155,7 @@ class QRCodesExtractorTests: XCTestCase {
 
     func testExtractParametersFromBezahlCodeWithSpecialCharacters() {
         let bezahlString = "bank://singlepaymentsepa?name=Test%20%26%20Co.&reason=50%25%20discount"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertEqual(parameters["paymentRecipient"],
                        "Test & Co.",
@@ -353,7 +353,7 @@ class QRCodesExtractorTests: XCTestCase {
 
     func testNormalizeAmountWithExplicitCurrency() {
         let bezahlString = "bank://singlepaymentsepa?amount=100&currency=CHF"
-        let parameters = QRCodesExtractor.extractParameters(fromBezhalCodeString: bezahlString)
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
 
         XCTAssertEqual(parameters["amountToPay"],
                        "100:CHF",

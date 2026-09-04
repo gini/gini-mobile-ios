@@ -109,11 +109,13 @@ extension UIViewController {
         }))
 
         if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
-            alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
-                                                        style: .default,
-                                                        handler: { _ in
-                                                            confirmAction()
-            }))
+            let confirmAlertAction = UIAlertAction(title: confirmActionTitle,
+                                                   style: .default,
+                                                   handler: { _ in
+                                                       confirmAction()
+            })
+            alertViewController.addAction(confirmAlertAction)
+            alertViewController.preferredAction = confirmAlertAction
         }
 
         return alertViewController

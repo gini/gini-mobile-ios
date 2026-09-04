@@ -4,6 +4,7 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 import UIKit
+import GiniUtilites
 
 /**
  A bottom sheet view controller that displays informational content with an icon, title, description, and action buttons.
@@ -16,6 +17,7 @@ import UIKit
 public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private let viewModel: InfoBottomSheetViewModel
     private let buttonsViewModel: InfoBottomSheetButtonsViewModel
+    private let buttonOrder: [ButtonsView.ButtonType]
 
     private lazy var configuration = GiniConfiguration.shared
 
@@ -33,8 +35,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     private let imageRoundContainer: UIView = {
         let imageContainerView = UIView()
-        imageContainerView.backgroundColor = GiniColor(light: .GiniCapture.warning5,
-                                                       dark: .GiniCapture.warning5).uiColor()
         imageContainerView.round(radius: Constants.imageContainerSize / 2)
         return imageContainerView
     }()
@@ -81,7 +81,8 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     lazy var buttonsViewContainer: ButtonsView = {
         let view = ButtonsView(secondaryButtonTitle: buttonsViewModel.secondaryTitle ?? "",
-                               primaryButtonTitle: buttonsViewModel.primaryTitle ?? "")
+                               primaryButtonTitle: buttonsViewModel.primaryTitle ?? "",
+                               buttonOrder: buttonOrder)
         view.secondaryButton.isHidden = buttonsViewModel.secondaryTitle == nil
         view.primaryButton.isHidden = buttonsViewModel.primaryTitle == nil
 
@@ -102,9 +103,11 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     // MARK: - View Lifecycle
 
     init(viewModel: InfoBottomSheetViewModel,
-         buttonsViewModel: InfoBottomSheetButtonsViewModel) {
+         buttonsViewModel: InfoBottomSheetButtonsViewModel,
+         buttonOrder: [ButtonsView.ButtonType] = [.primary, .secondary]) {
         self.viewModel = viewModel
         self.buttonsViewModel = buttonsViewModel
+        self.buttonOrder = buttonOrder
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -115,13 +118,28 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        applyAccessibilityIdentifiersFromViewModel()
+    }
+
+    /**
+     Reads any accessibility identifiers the view model provides and
+     applies them to the corresponding sheet elements. Conformers that
+     don't need UI-automation hooks leave the properties at their `nil`
+     default and no identifiers are set.
+     */
+    private func applyAccessibilityIdentifiersFromViewModel() {
+        view.accessibilityIdentifier = viewModel.containerAccessibilityID
+        headerLabel.accessibilityIdentifier = viewModel.titleAccessibilityID
+        descriptionLabel.accessibilityIdentifier = viewModel.descriptionAccessibilityID
+        buttonsViewContainer.primaryButton.accessibilityIdentifier = viewModel.primaryButtonAccessibilityID
+        buttonsViewContainer.secondaryButton.accessibilityIdentifier = viewModel.secondaryButtonAccessibilityID
     }
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         if UIDevice.current.isIpad && !GiniAccessibility.isFontSizeAtLeastAccessibilityMedium {
-            updateBottomSheetHeight(to: Constants.bottomSheetHeightIPad)
+            updateBottomSheetHeight(Constants.bottomSheetHeightIPad)
         }
     }
 
@@ -203,6 +221,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         iconImageView.tintColor = viewModel.imageTintColor
         headerLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
+        imageRoundContainer.backgroundColor = viewModel.imageBackgroundColor
 
         view.addSubview(contentScrollView)
         view.addSubview(buttonsViewContainer)
@@ -350,12 +369,16 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let isIphoneAndLandscape = UIDevice.current.isIphoneAndLandscape
         // Set explicit VoiceOver navigation order
         var elements: [Any] = isIphoneAndLandscape ? [] : [iconImageView]
-        elements += [
-            headerLabel,
-            descriptionLabel,
-            buttonsViewContainer.primaryButton,
-            buttonsViewContainer.secondaryButton
-        ]
+
+        // Add header and description
+        elements.append(headerLabel)
+        elements.append(descriptionLabel)
+
+        // Add buttons in the correct order
+        elements += buttonOrder.map {
+            $0 == .primary ? buttonsViewContainer.primaryButton : buttonsViewContainer.secondaryButton
+        }
+
         view.accessibilityElements = elements.compactMap { $0 }
     }
 }

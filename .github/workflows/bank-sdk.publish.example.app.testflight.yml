@@ -1,0 +1,55 @@
+name: Upload GiniBankSDKExample to TestFlight
+
+permissions:
+  contents: read 
+on:
+  schedule:
+    - cron: '0 9 * 2,5,8,11 1'  # Every Monday in Feb, May, Aug, Nov at 09:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
+
+jobs:
+  check-schedule:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - id: check
+        run: |
+          day=$(date +%d | sed 's/^0//')
+          if [ "$day" -ge 8 ] && [ "$day" -le 14 ]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+
+  get-config:
+    uses: ./.github/workflows/shared-config.yml
+
+  upload-testflight:
+    needs: [check-schedule, get-config]
+    if: needs.check-schedule.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/publish.example.app.testflight.yml
+    with:
+      xcode_version: ${{ needs.get-config.outputs.xcode-version }}
+      project_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj'
+      scheme: 'GiniBankSDKExample'
+      bundle_identifier: 'net.gini.banksdk.example'
+      bundle_identifier_extension: 'net.gini.banksdk.example.ShareExtension'
+      ipa_name: 'GiniBankSDKExample'
+      credentials_plist_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist'
+      google_services_plist_path: 'BankSDK/GiniBankSDKExample/GoogleService-Info.plist'
+    secrets:
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64}}
+      APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      APP_STORE_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
+      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+      GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}

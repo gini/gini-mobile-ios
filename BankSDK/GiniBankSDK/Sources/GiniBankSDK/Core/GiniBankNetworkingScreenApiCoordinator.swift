@@ -15,9 +15,11 @@ protocol Coordinator: AnyObject {
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
-    /// PaymentStatus: Used internally to represent “paid” and “toBePaid”.
-    /// It does not affect how payment states are parsed.
-   internal enum PaymentStatus: String {
+    /**
+     Represents the payment state of a document.
+     Used internally to distinguish between already-paid and pending-payment states.
+     */
+    internal enum PaymentStatus: String {
         case paid
         case toBePaid = "tobepaid"
     }
@@ -68,6 +70,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        applyProductTagOverrides()
     }
 
     /**
@@ -94,12 +98,15 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
         super.init(withDelegate: nil,
                    giniConfiguration: captureConfiguration)
+
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        applyProductTagOverrides()
     }
 
     /**
@@ -280,10 +287,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     This method first attempts to fetch configuration settings using the `configurationService`.
-     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
-     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
-     SDK with the provided documents.
+     Starts the SDK, optionally with pre-loaded documents.
+     Fetches remote configuration and initialises analytics before presenting the capture flow.
+     - Parameters:
+       - documents: Optional documents to pre-load into the capture flow.
+       - animated: Specifies whether the initial screen transition is animated.
+     - Returns: The root `UIViewController` of the SDK capture flow.
      */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         Self.currentCoordinator = self
@@ -297,6 +306,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
                     GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
                     GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled = configuration.savePhotosLocallyEnabled
+                    GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
+                        configuration.unsupportedQRCodeWarningEnabled
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -362,7 +373,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             if !document.isReviewable {
                 uploadAndStartAnalysisWithReturnAssistant(document: document,
                                                           networkDelegate: networkDelegate,
-                                                          uploadDidFail: {
+                                                          uploadDidFail:{
                     self.didCapture(document: document, networkDelegate: networkDelegate)
                 })
             } else if giniConfiguration.multipageEnabled {
@@ -424,10 +435,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func setupAnalytics(withDocuments documents: [GiniCaptureDocument]?) {
         // Clean the GiniAnalyticsManager properties and events queue between SDK sessions.
-        /// The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
-        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
-        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
-        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        // The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
+        // are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        // the `openWith` flow after it has already been opened for the first time. Without this reset,
+        // residual properties and events from the previous session could lead to incorrect analytics data.
         GiniAnalyticsManager.cleanManager()
 
         // Set new sessionId every time the SDK is initialized
@@ -507,7 +518,15 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        /// Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transcation docs).
+        // Cross border flow: if no crossBorderPayment extractions were returned, show
+        // the no-results screen instead of delivering anything to the bank.
+        if shouldShowNoResultsForCrossBorder(for: extractionResult) {
+            delegate.tryDisplayNoResultsScreen()
+            documentService.resetToInitialState()
+            return
+        }
+
+        // Runs the feature-specific navigation flow (Return Assistant, Skonto, or Transaction docs).
         let continueWithFeatureFlow: () -> Void = { [weak self] in
             guard let self else { return }
 
@@ -525,17 +544,27 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                         delegate: delegate)
         }
 
-        /// Step:  Check document status for multiple states
+        /// Check document status for 'Credit Note'
+        if shouldProceedWithCreditNote(extractionResult) {
+            presentDocumentMarkedAsCreditNoteBottomSheet(extractionResult) { [weak self] in
+                guard let self else { return }
+                self.presentTransactionDocsAlert(extractionResult: self.creditNoteDeliveryResult(from: extractionResult),
+                                                 delegate: delegate)
+            }
+            return
+        }
+
+        /// Check document status for other states if the document is not a 'Credit Note'
         let documentPaymentStatus = getDocumentPaymentState(for: extractionResult)
 
         switch documentPaymentStatus {
         case .paid:
-            /// show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
+            // show pop up for paid invoice if determineIfAlreadyPaidHintEnabled returns true
             handlePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .toBePaid:
             handleSavingPhotos(for: extractionResult)
-            /// Show payment due date hint if available
+            // Show payment due date hint if available
             handleToBePaidCase(extractionResult, continueWithFeatureFlow)
 
         case .none:
@@ -544,28 +573,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    @MainActor
-    private func handleToBePaidCase(_ extractionResult: ExtractionResult,
-                                    _ continueWithFeatureFlow: @escaping () -> Void) {
-        guard determineIfPaymentDueHintEnabled(for: extractionResult),
-              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
-              let handler = paymentDueDateHandler,
-              !shouldShowReturnAssistant(for: extractionResult),
-              !shouldShowSkonto(for: extractionResult) else {
-            continueWithFeatureFlow()
-            return
-        }
-
-        let threshold = giniBankConfiguration.paymentDueHintThresholdDays
-        if dueDate.isDueSoon(within: threshold) {
-            Task {
-                handler.handlePaymentDueDate(dueDate.toDisplayString())
-                await handler.clearPaymentDueDate(after: 5)
-                continueWithFeatureFlow()
-            }
-        } else {
-            continueWithFeatureFlow()
-        }
+    private func shouldProceedWithCreditNote(_ result: ExtractionResult) -> Bool {
+        isDocumentMarkedAsCreditNote(from: result) && determineIfCreditNoteHintEnabled()
     }
 
     private func handlePaidCase(_ extractionResult: ExtractionResult,
@@ -605,19 +614,22 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
-                let result = AnalysisResult(extractions: extractions,
-                                            lineItems: result.lineItems,
-                                            skontoDiscounts: result.skontoDiscounts,
+                let result = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
+                                            lineItems: isCrossBorderPayment() ? nil : result.lineItems,
+                                            skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
+                                            crossBorderPayment: result.crossBorderPayment,
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
                 sendAnalyticsEventSDKClose()
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                self.giniBankConfiguration.lineItems = result.lineItems
-                if let skontoDiscounts = result.skontoDiscounts {
-                    self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                    self.sendSkontoTransferSummary(extractions: extractions)
+                if !isCrossBorderPayment() {
+                    self.giniBankConfiguration.lineItems = result.lineItems
+                    if let skontoDiscounts = result.skontoDiscounts {
+                        self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                        self.sendSkontoTransferSummary(extractions: extractions)
+                    }
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -678,6 +690,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 internal extension GiniBankNetworkingScreenApiCoordinator {
 
     func determineIfAlreadyPaidHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        guard !isCrossBorderPayment() else { return false }
         let globalAlreadyPaidHintEnabled = giniBankConfiguration.alreadyPaidHintEnabled
         let clientAlreadyPaidHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
             .alreadyPaidHintEnabled ?? false
@@ -685,24 +698,188 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     func determineIfPaymentDueHintEnabled(for extractionResult: ExtractionResult) -> Bool {
+        guard !isCrossBorderPayment() else { return false }
         let globalPaymentHintsEnabled = giniBankConfiguration.paymentDueHintEnabled
-        let clientPaymentHintsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.paymentDueHintEnabled ?? false
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientPaymentHintsEnabled = clientConfiguration?.paymentDueHintEnabled ?? false
         return globalPaymentHintsEnabled && clientPaymentHintsEnabled
     }
 
-    /// Returns the payment state of the document, if available
-    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
-        guard let paymentState = extractionResult.extractions
-            .first(where: { $0.name == "paymentState" })?
-            .value else {
-            return nil
+    func determineIfCreditNoteHintEnabled() -> Bool {
+        let globalCreditNoteHintEnabled = giniBankConfiguration.creditNoteHintEnabled
+        let clientConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let clientCreditNoteHintEnabled = clientConfiguration?.creditNoteHintEnabled ?? false
+        return globalCreditNoteHintEnabled && clientCreditNoteHintEnabled
+    }
+
+    /**
+     Feature-flag gate for the Schedule Payment state. Both
+     `GiniBankConfiguration` and the client configuration must opt in.
+     */
+    func determineIfPaymentScheduleHintEnabled() -> Bool {
+        guard !isCrossBorderPayment() else { return false }
+        let globalScheduleHintEnabled = giniBankConfiguration.paymentScheduleHintEnabled
+        let clientScheduleHintEnabled = GiniBankUserDefaultsStorage.clientConfiguration?
+            .paymentScheduleHintEnabled ?? false
+        return globalScheduleHintEnabled && clientScheduleHintEnabled
+    }
+
+    /**
+     Combines the feature-flag / Return-Assistant / Skonto gates with the
+     `Date.isDueSoon(within: threshold)` check. Suppressed by the Schedule
+     Payment state.
+     */
+    func shouldPresentDueDateHint(for extractionResult: ExtractionResult) -> Bool {
+        guard !determineIfPaymentScheduleHintEnabled(),
+              determineIfPaymentDueHintEnabled(for: extractionResult),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            return false
         }
+
+        return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
+    }
+
+    /**
+     Same eligibility as `shouldPresentDueDateHint`, gated on
+     `determineIfPaymentScheduleHintEnabled`.
+     */
+    func shouldPresentSchedulePaymentHint(for extractionResult: ExtractionResult) -> Bool {
+        guard determineIfPaymentScheduleHintEnabled(),
+              let dueDate = getDocumentPaymentDueDate(for: extractionResult),
+              !shouldShowReturnAssistant(for: extractionResult),
+              !shouldShowSkonto(for: extractionResult) else {
+            return false
+        }
+
+        return dueDate.isDueSoon(within: giniBankConfiguration.paymentDueHintThresholdDays)
+    }
+
+    @MainActor
+    func handleToBePaidCase(_ extractionResult: ExtractionResult,
+                            _ continueWithFeatureFlow: @escaping () -> Void) {
+        if shouldPresentSchedulePaymentHint(for: extractionResult),
+           let dueDate = getDocumentPaymentDueDate(for: extractionResult) {
+            presentPaymentHintBottomSheet(
+                state: .schedulePayment(formattedDueDate: dueDate.toDisplayString(),
+                                        onSchedule: { [weak self] in
+                                            self?.finishWithSchedulePayment(extractionResult: extractionResult)
+                                        },
+                                        onProceed: continueWithFeatureFlow)
+            )
+            return
+        }
+
+        if shouldPresentDueDateHint(for: extractionResult),
+           let dueDate = getDocumentPaymentDueDate(for: extractionResult) {
+            presentPaymentHintBottomSheet(
+                state: .dueDate(formattedDueDate: dueDate.toDisplayString(),
+                                onProceed: continueWithFeatureFlow,
+                                onCancel: { [weak self] in self?.didCancelCapturing() })
+            )
+            return
+        }
+
+        continueWithFeatureFlow()
+    }
+
+    @MainActor
+    func presentPaymentHintBottomSheet(state: PaymentHintState) {
+        /// Cancel the capture-suggestions banner to avoid a VoiceOver collision.
+        let analysisViewController = screenAPINavigationController.children.last as? AnalysisViewController
+        analysisViewController?.removeCaptureSuggestions()
+
+        let sheet = PaymentHintBottomSheetViewController(state: wrapStateForDismissal(state))
+        sheet.isModalInPresentation = true
+        sheet.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    /**
+     Wraps the state's CTA closures with the dismiss + a11y-restore steps.
+     */
+    private func wrapStateForDismissal(_ state: PaymentHintState) -> PaymentHintState {
+        switch state {
+        case let .dueDate(formattedDueDate, onProceed, onCancel):
+            return .dueDate(formattedDueDate: formattedDueDate,
+                            onProceed: dismissSheet(then: onProceed),
+                            onCancel: dismissSheet(then: onCancel))
+        case let .schedulePayment(formattedDueDate, onSchedule, onProceed):
+            return .schedulePayment(formattedDueDate: formattedDueDate,
+                                    onSchedule: dismissSheet(then: onSchedule),
+                                    onProceed: dismissSheet(then: onProceed))
+        }
+    }
+
+    /**
+     Returns a closure that restores presenter accessibility, starts the
+     sheet dismissal animation, and invokes `callback` synchronously.
+     Matches Android's `WarningBottomSheet.Listener` ordering
+     (`onPrimaryAction()` before `dismissAllowingStateLoss()`) and avoids the
+     CI-simulator stall observed when depending on
+     `dismiss(animated: true) { completion }` in this presentation flow.
+     */
+    @MainActor
+    private func dismissSheet(then callback: @escaping () -> Void) -> () -> Void {
+        return { [weak self] in
+            self?.screenAPINavigationController.view.accessibilityElementsHidden = false
+            self?.screenAPINavigationController.dismiss(animated: true)
+            callback()
+        }
+    }
+
+    /**
+     Terminates the capture flow with the Schedule Payment hand-off. Builds
+     the same `AnalysisResult` as `deliverWithReturnAssistant`, sends the
+     SDK-close analytics event, invokes
+     `giniCaptureDidRequestSchedulePayment(result:)`, and resets the document
+     service.
+     */
+    @MainActor
+    private func finishWithSchedulePayment(extractionResult: ExtractionResult) {
+        let extractions: [String: Extraction] = Dictionary(
+            uniqueKeysWithValues: extractionResult.extractions.compactMap {
+                guard let name = $0.name else { return nil }
+                return (name, $0)
+            }
+        )
+        let images = pages.compactMap { $0.document.previewImage }
+        let analysisResult = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
+                                            lineItems: isCrossBorderPayment() ? nil : extractionResult.lineItems,
+                                            skontoDiscounts: isCrossBorderPayment() ? nil : extractionResult.skontoDiscounts,
+                                            crossBorderPayment: nil,
+                                            images: images,
+                                            document: documentService.document,
+                                            candidates: extractionResult.candidates)
+        sendAnalyticsEventSDKClose()
+        resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: analysisResult)
+        documentService.resetToInitialState()
+    }
+
+    /**
+     Returns the payment state of the document, if available.
+     - Parameters:
+       - extractionResult: The extraction result to inspect.
+     - Returns: The `PaymentStatus` parsed from the `paymentState` extraction, or `nil` if absent.
+     */
+    func getDocumentPaymentState(for extractionResult: ExtractionResult) -> PaymentStatus? {
+        let paymentStateValue = extractionResult.extractions
+            .first(where: { $0.name == "paymentState" })?
+            .value
+
+        guard let paymentState = paymentStateValue else { return nil }
+
         return PaymentStatus(rawValue: paymentState.lowercased())
     }
 
-    /// Returns the due date  of the document, if available
+    /**
+     Returns the payment due date of the document, if available.
+     - Parameters:
+       - extractionResult: The extraction result to inspect.
+     - Returns: The due date parsed from the `paymentDueDate` extraction, or `nil` if absent or unparseable.
+     */
     func getDocumentPaymentDueDate(for extractionResult: ExtractionResult) -> Date? {
-        /// Try to find the extraction with the key "paymentDueDate"
+        // Searches for the extraction keyed `paymentDueDate` and parses its value as a `Date`.
         guard let dueDate = extractionResult.extractions
                 .first(where: { $0.name == "paymentDueDate" })?
                 .value,
@@ -713,14 +890,94 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         return Date.date(from: dueDate)
     }
 
+    /// Returns true if the document is marked as a Credit Note
+    func isDocumentMarkedAsCreditNote(from extractionResult: ExtractionResult) -> Bool {
+        /// Try to get the business document type from extractions
+        let businessDocTypeValue = extractionResult.extractions
+            .first(where: { $0.name == "businessDocType" })?
+            .value
+
+        guard let businessDocType = businessDocTypeValue, !businessDocType.isEmpty else {
+            return false
+        }
+
+        return businessDocType.lowercased() == "creditnote"
+    }
+
     func shouldShowReturnAssistant(for result: ExtractionResult) -> Bool {
+        !isCrossBorderPayment() &&
         giniBankConfiguration.returnAssistantEnabled &&
         !(result.lineItems?.isEmpty ?? true)
     }
 
     func shouldShowSkonto(for result: ExtractionResult) -> Bool {
+        !isCrossBorderPayment() &&
         giniBankConfiguration.skontoEnabled &&
         !(result.skontoDiscounts?.isEmpty ?? true)
+    }
+
+    func excludingAmountToPay(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let filteredExtractions = extractionResult.extractions.filter { $0.name != "amountToPay" }
+        return ExtractionResult(extractions: filteredExtractions,
+                                lineItems: extractionResult.lineItems,
+                                returnReasons: extractionResult.returnReasons,
+                                skontoDiscounts: extractionResult.skontoDiscounts,
+                                candidates: extractionResult.candidates)
+    }
+
+    /**
+     Returns a copy of the extraction result with the compound extractions
+     (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
+     */
+    func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
+        return ExtractionResult(extractions: extractionResult.extractions,
+                                lineItems: nil,
+                                returnReasons: nil,
+                                skontoDiscounts: nil,
+                                candidates: extractionResult.candidates)
+    }
+
+    /**
+     Builds the extraction result delivered for a confirmed credit-note document:
+     compound extractions (`lineItems`, `skontoDiscounts`, `returnReasons`) are stripped so
+     the Return Assistant and Skonto flows are never triggered, and `amountToPay` is removed
+     so the host app does not pre-fill a payment amount for a credit note.
+     */
+    func creditNoteDeliveryResult(from extractionResult: ExtractionResult) -> ExtractionResult {
+        let strippedResult = excludingCompoundExtractions(from: extractionResult)
+        return excludingAmountToPay(from: strippedResult)
+    }
+
+    /**
+     Returns true when the active product tag indicates a cross-border payment flow.
+     Used to suppress SEPA-specific features (Return Assistant, Skonto, payment hints, etc).
+     */
+    func isCrossBorderPayment() -> Bool {
+        giniBankConfiguration.productTag == .cxExtractions
+    }
+
+    /**
+     Returns `true` when the active product tag is `cxExtractions` and the backend returned
+     no cross-border payment extractions (nil or empty).  In this case the SDK
+     must show the no-results screen and must **not** forward any extractions to
+     the host app.
+     */
+    func shouldShowNoResultsForCrossBorder(for result: ExtractionResult) -> Bool {
+        guard isCrossBorderPayment() else { return false }
+        return result.crossBorderPayment == nil || result.crossBorderPayment?.isEmpty == true
+    }
+
+    /**
+     Applies product-tag-driven overrides to both configuration objects after full SDK initialization.
+     Must be called last in every coordinator init, after `GiniBank.setConfiguration` has run,
+     to prevent `captureConfiguration()` from overwriting these values.
+     */
+    private func applyProductTagOverrides() {
+        guard isCrossBorderPayment() else { return }
+        giniBankConfiguration.qrCodeScanningEnabled = false
+        giniBankConfiguration.onlyQRCodeScanningEnabled = false
+        GiniConfiguration.shared.qrCodeScanningEnabled = false
+        GiniConfiguration.shared.onlyQRCodeScanningEnabled = false
     }
 
     func presentTransactionDocsAlert(extractionResult: ExtractionResult,
@@ -732,8 +989,7 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                    deliveryFunction: { [weak self] result in
             guard let self else { return }
             self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-        }
-        )
+        })
     }
 }
 
@@ -922,6 +1178,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     private func presentDocumentMarkedAsPaidBottomSheet(_ extractionResult: ExtractionResult,
                                                         onProceedTapped: @escaping () -> Void) {
         let documentWarningViewController = DocumentMarkedAsPaidViewController(onCancel: { [weak self] in
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                self?.didCancelCapturing()
+            }
+        }, onProceed: { [weak self] in
+            self?.handleSavingPhotos(for: extractionResult)
+            self?.screenAPINavigationController.dismiss(animated: true) {
+                onProceedTapped()
+            }
+        })
+
+        documentWarningViewController.isModalInPresentation = true
+
+        documentWarningViewController.presentAsBottomSheet(from: screenAPINavigationController)
+    }
+
+    private func presentDocumentMarkedAsCreditNoteBottomSheet(_ extractionResult: ExtractionResult,
+                                                              onProceedTapped: @escaping () -> Void) {
+        let documentWarningViewController = CreditNoteWarningViewController(onCancel: { [weak self] in
             self?.screenAPINavigationController.dismiss(animated: true) {
                 self?.didCancelCapturing()
             }

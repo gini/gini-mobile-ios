@@ -83,7 +83,9 @@ final class AppCoordinator: Coordinator {
        return configuration
     }()
     
-    private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
+    private lazy var client: Client = apiEnvironment == .stage
+        ? CredentialsManager.fetchStageClientFromBundle()
+        : CredentialsManager.fetchClientFromBundle()
     private var documentMetadata: Document.Metadata?
     private let documentMetadataBranchId = "GVLExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
@@ -91,7 +93,7 @@ final class AppCoordinator: Coordinator {
     private let imageDataKey = "imageData"
 	private var settingsButtonStates: SettingsButtonStates?
 	private var documentValidationsState: DocumentValidationsState?
-    private var apiEnvironment: APIEnvironment = .production
+    private var apiEnvironment: APIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
     private var enablePinningSDK: Bool = ExampleAppUserDefaultsStorage.enablePinningSDK
 
     init(window: UIWindow) {
@@ -175,11 +177,13 @@ final class AppCoordinator: Coordinator {
 									  message: "`Open with` feature is currently disabled. \n If you want to test this, please enable it in Gini configuration!",
 									  preferredStyle: .alert)
 		
-		let ok = UIAlertAction(title: "OK", style: .default) { _ in
+		let ok = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default) { _ in
 			self.rootViewController.dismiss(animated: true)
 		}
 
 		alert.addAction(ok)
+		// preferredAction must be set after addAction
+		alert.preferredAction = ok
 		rootViewController.present(alert, animated: true)
 	}
 	
@@ -252,29 +256,22 @@ final class AppCoordinator: Coordinator {
     }
 
     fileprivate func requestTrackingPermission(completion: @escaping (Bool) -> Void) {
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                switch status {
-                    case .authorized:
-                        completion(true)
-                    case .denied, .restricted, .notDetermined:
-                        completion(false)
-                    @unknown default:
-                        completion(false)
-                }
+        ATTrackingManager.requestTrackingAuthorization { status in
+            switch status {
+                case .authorized:
+                    completion(true)
+                case .denied, .restricted, .notDetermined:
+                    completion(false)
+                @unknown default:
+                    completion(false)
             }
-        } else {
-            // Tracking is enabled by default on earlier iOS versions
-            completion(true)
         }
     }
 
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
-                                                            enablePinningSDK: enablePinningSDK,
-                                                            client: client,
+        let settingsViewController = SettingsViewController(enablePinningSDK: enablePinningSDK,
                                                             giniConfiguration: configuration,
                                                             settingsButtonStates: settingsButtonStates,
                                                             documentValidationsState: documentValidationsState)
@@ -294,13 +291,15 @@ final class AppCoordinator: Coordinator {
                                                                  comment: "No")
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
 
-        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
+        let startAction = UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
+        }
+        alertViewController.addAction(startAction)
         alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
             alertViewController.dismiss(animated: true)
         })
-
+        // preferredAction must be set after addAction
+        alertViewController.preferredAction = startAction
 
         rootViewController.present(alertViewController, animated: true)
     }
@@ -311,10 +310,13 @@ final class AppCoordinator: Coordinator {
                                                            comment: "Import error description")
 
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        let okAction = UIAlertAction(title: DemoScreenStrings.alertOk.localized, style: .default) { _ in
             alertViewController.dismiss(animated: true)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        // preferredAction must be set after addAction
+        alertViewController.preferredAction = okAction
+
         rootViewController.present(alertViewController, animated: true)
     }
     
@@ -378,6 +380,12 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func didRequestRescan(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: false)
+        self.remove(childCoordinator: coordinator as Coordinator)
+        showScreenAPI()
+    }
+    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()

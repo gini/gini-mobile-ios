@@ -23,6 +23,9 @@ final class SettingsViewModel {
     private var documentValidationsState: DocumentValidationsState
     private(set) var contentData: [SettingsSection] = []
 
+    private var selectedCredentialsSetIndex: Int = 0
+    private var currentAPIEnvironment: APIEnvironment = .production
+    private let enablePinningSDK: Bool
     weak var delegate: SettingsViewModelDelegate?
     
     private var flashToggleSettingEnabled: Bool = {
@@ -32,29 +35,28 @@ final class SettingsViewModel {
             return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)?.hasFlash ?? false
         #endif
     }()
-    
-    init(apiEnvironment: APIEnvironment,
-         enablePinningSDK: Bool,
-         client: Client? = nil,
+
+    init(enablePinningSDK: Bool,
          giniConfiguration: GiniBankConfiguration,
          settingsButtonStates: SettingsButtonStates,
          documentValidationsState: DocumentValidationsState) {
         self.giniConfiguration = giniConfiguration
         self.settingsButtonStates = settingsButtonStates
         self.documentValidationsState = documentValidationsState
-        setupContentData(apiEnvironment: apiEnvironment,
-                         enablePinningSDK: enablePinningSDK,
-                         client: client)
+        self.enablePinningSDK = enablePinningSDK
+        self.selectedCredentialsSetIndex = ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex
+        self.currentAPIEnvironment = ExampleAppUserDefaultsStorage.currentAPIEnvironment
+
+        setupContentData()
     }
 
-    private func setupContentData(apiEnvironment: APIEnvironment,
-                                  enablePinningSDK: Bool,
-                                  client: Client? = nil) {
+    private func setupContentData() {
         var sections: [SettingsSection] = []
         
         sections.append(setupDefaultConfigSection())
-        sections.append(setupCredentialsSection(apiEnvironment: apiEnvironment, client: client))
         sections.append(setupSDKTypeSection(enablePinningSDK: enablePinningSDK))
+        sections.append(setupCredentialsSection())
+        sections.append(setupProductTagSection())
         sections.append(setupFeatureTogglesSection())
         sections.append(setupOnboardingSection())
         
@@ -77,18 +79,53 @@ final class SettingsViewModel {
         return defaultConfigSection
     }
 
-    private func setupCredentialsSection(apiEnvironment: APIEnvironment, client: Client? = nil) -> SettingsSection {
+    private func setupCredentialsSection() -> SettingsSection {
         var credentialsSection = SettingsSection(title: "Credentials", items: [])
-        credentialsSection.items.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
+
+        // Credentials Set selector
+        credentialsSection.items.append(.segmentedOption(data: CredentialsSetSegmentedOptionModel(selectedIndex: selectedCredentialsSetIndex)))
+
+        // Credentials input fields
+        let currentCredentials = credentialsForSelectedSet()
+        credentialsSection.items.append(.credentials(data: .init(clientId: currentCredentials.clientId,
+                                                                 secretId: currentCredentials.clientSecret)))
+
+        // API Environment selector
         var selectedAPISegmentIndex = 0
-        switch apiEnvironment {
+        switch currentAPIEnvironment {
         case .production:
             selectedAPISegmentIndex = 0
         case .stage:
             selectedAPISegmentIndex = 1
         }
         credentialsSection.items.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
+
         return credentialsSection
+    }
+
+    func handleCredentialsSetSelection(credentialsIndex: Int) {
+        selectedCredentialsSetIndex = credentialsIndex
+        ExampleAppUserDefaultsStorage.selectedCredentialsSetIndex = credentialsIndex
+
+        setupContentData()
+        delegate?.contentDataUpdated()
+    }
+
+    func handleAPIEnvironmentSelection(environment: APIEnvironment) {
+        currentAPIEnvironment = environment
+        ExampleAppUserDefaultsStorage.currentAPIEnvironment = environment
+
+        setupContentData()
+        delegate?.contentDataUpdated()
+    }
+
+    /**
+     Returns the credentials matching the selected credentials set and the
+     current API environment (set A resolves to its staging variant on stage).
+     */
+    func credentialsForSelectedSet() -> (clientId: String, clientSecret: String) {
+        return CredentialsSet.credentials(for: selectedCredentialsSetIndex,
+                                          environment: currentAPIEnvironment)
     }
 
     private func setupSDKTypeSection(enablePinningSDK: Bool) -> SettingsSection {
@@ -96,6 +133,40 @@ final class SettingsViewModel {
         let selectedSegmentIndex = enablePinningSDK ? 1 : 0
         credentialsSection.items.append(.segmentedOption(data: SDKTypeSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
         return credentialsSection
+    }
+
+    private func setupProductTagSection() -> SettingsSection {
+        var productTagSection = SettingsSection(title: "Product Tag", items: [])
+        let selectedIndex: Int
+        if let productTag = giniConfiguration.productTag {
+            switch productTag {
+            case .sepaExtractions:
+                selectedIndex = 0
+            case .cxExtractions:
+                selectedIndex = 1
+            case .autoDetectExtractions:
+                selectedIndex = 2
+            default:
+                selectedIndex = 0
+            }
+        } else {
+            selectedIndex = 0
+        }
+        productTagSection.items.append(.segmentedOption(data: ProductTagSegmentedOptionModel(selectedIndex: selectedIndex)))
+        return productTagSection
+    }
+
+    func handleProductTagOption(selectedIndex: Int) {
+        switch selectedIndex {
+        case 0:
+            giniConfiguration.productTag = .sepaExtractions
+        case 1:
+            giniConfiguration.productTag = .cxExtractions
+        case 2:
+            giniConfiguration.productTag = .autoDetectExtractions
+        default:
+            giniConfiguration.productTag = .sepaExtractions
+        }
     }
 
     private func setupFeatureTogglesSection() -> SettingsSection {
@@ -131,6 +202,10 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.savePhotosLocallyEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentDueHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentDueHintEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .creditNoteHintEnabled,
+                                                                     isSwitchOn: giniConfiguration.creditNoteHintEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentScheduleHintEnabled,
+                                                                     isSwitchOn: giniConfiguration.paymentScheduleHintEnabled)))
         return featureTogglesSection
     }
 
@@ -299,6 +374,10 @@ final class SettingsViewModel {
             giniConfiguration.alreadyPaidHintEnabled = data.isSwitchOn
         case .paymentDueHintEnabled:
             giniConfiguration.paymentDueHintEnabled = data.isSwitchOn
+        case .creditNoteHintEnabled:
+            giniConfiguration.creditNoteHintEnabled = data.isSwitchOn
+        case .paymentScheduleHintEnabled:
+            giniConfiguration.paymentScheduleHintEnabled = data.isSwitchOn
         case .savePhotosLocallyEnabled:
             giniConfiguration.savePhotosLocallyEnabled = data.isSwitchOn
         case .giniErrorLoggerIsOn:
