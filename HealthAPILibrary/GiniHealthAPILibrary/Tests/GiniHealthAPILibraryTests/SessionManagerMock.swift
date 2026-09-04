@@ -66,30 +66,9 @@ final class SessionManagerMock: SessionManagerProtocol {
                            cancellationToken: CancellationToken?,
                            completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
         if let apiMethod = resource.method as? APIMethod {
-            switch apiMethod {                
+            switch apiMethod {
             case .document(let id):
-                switch (id, resource.params.method) {
-                case (SessionManagerMock.v3DocumentId, .get):
-                    let document: Document = load(fromFile: "document", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.v3DocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                case (SessionManagerMock.partialDocumentId, .get):
-                    let document: Document = load(fromFile: "partialDocument", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.partialDocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                case (SessionManagerMock.compositeDocumentId, .get):
-                    let document: Document = load(fromFile: "compositeDocument", type: "json")
-                    completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.compositeDocumentId, .delete):
-                    documents.removeAll(where: { $0.id == id })
-                    completion(.success("Deleted" as! T.ResponseType))
-                default:
-                    fatalError("Document id not found in tests")
-                }
+                handleDocument(id: id, method: resource.params.method, completion: completion)
             case .createDocument(_, _, _, _):
                 completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
             case .createPaymentRequest:
@@ -124,7 +103,34 @@ final class SessionManagerMock: SessionManagerProtocol {
             }
         }
     }
-    
+
+    private func handleDocument<T>(id: String, method: HTTPMethod,
+                                   completion: @escaping CompletionResult<T>) {
+
+        switch (id, method) {
+        case (SessionManagerMock.v3DocumentId, .get):
+            let document: Document = load(fromFile: "document", type: "json")
+            completion(.success(document as! T))
+        case (SessionManagerMock.v3DocumentId, .delete):
+            documents.removeAll(where: { $0.id == id })
+            completion(.success("Deleted" as! T))
+        case (SessionManagerMock.partialDocumentId, .get):
+            let document: Document = load(fromFile: "partialDocument", type: "json")
+            completion(.success(document as! T))
+        case (SessionManagerMock.partialDocumentId, .delete):
+            documents.removeAll(where: { $0.id == id })
+            completion(.success("Deleted" as! T))
+        case (SessionManagerMock.compositeDocumentId, .get):
+            let document: Document = load(fromFile: "compositeDocument", type: "json")
+            completion(.success(document as! T))
+        case (SessionManagerMock.compositeDocumentId, .delete):
+            documents.removeAll(where: { $0.id == id })
+            completion(.success("Deleted" as! T))
+        default:
+            fatalError("Document id not found in tests")
+        }
+    }
+
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
@@ -132,30 +138,45 @@ final class SessionManagerMock: SessionManagerProtocol {
             switch apiMethod {
             case .file(_):
                 let imageData = UIImage(named: "Gini-Test-Payment-Provider",
-                                        in: Bundle.module, compatibleWith: nil)?.pngData()
+                                        in: Bundle.module,
+                                        compatibleWith: nil)?.pngData()
                 completion(.success(imageData as! T.ResponseType))
             default:
                 break
             }
         }
     }
-    
+
     func upload<T: Resource>(resource: T,
                              data: Data,
                              cancellationToken: CancellationToken?,
                              completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        if let apiMethod = resource.method as? APIMethod {
-            switch apiMethod {
-            case .createDocument(_, _, _, let documentType):
-                switch documentType {
-                case .none:
-                    completion(.success(SessionManagerMock.v3DocumentId as! T.ResponseType))
-                case .some:
-                    completion(.success(SessionManagerMock.partialDocumentId as! T.ResponseType))
-                }
-            default: break
-                
+        guard let apiMethod = resource.method as? APIMethod else {
+            return
+        }
+
+        switch apiMethod {
+        case .createDocument(_, _, _, let documentType):
+            let mockId = mockIdForDocumentType(documentType)
+
+            guard let typedResponse = mockId as? T.ResponseType else {
+                assertionFailure("Mock response type mismatch")
+                return
             }
+
+            completion(.success(typedResponse))
+
+        default:
+            break
+        }
+    }
+
+    private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> Any {
+        switch documentType {
+        case .none:
+            return SessionManagerMock.v3DocumentId
+        case .some:
+            return SessionManagerMock.partialDocumentId
         }
     }
 }
