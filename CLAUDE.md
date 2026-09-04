@@ -263,14 +263,16 @@ Migrates the Figma design links on the iOS Gini Bank SDK "Figma Links in public 
 - **Skill prompt:** `.claude/skills/update-figma-links/SKILL.md`
 - **Helper script:** `.claude/skills/update-figma-links/transform_links.py`
 
-### `/generate-feature-docs`
+### `/gini-doc`
 
-Generates a plain Markdown feature documentation page for Confluence from GiniBankSDK code changes on the current branch. Output is written to `docs/[feature-slug]/` in this repository.
+Generates a plain Markdown feature documentation page for Confluence from GiniBankSDK code changes on the current branch. Output is written to `docs/[platform]/features/[feature-slug]/` in this repository. The skill is mirrored with gini-mobile-android: `SKILL.md` and `templates/` are byte-identical in both repos (enforced by `shared-skills.check.yml` via `.github/mirrored-skills.txt`); iOS-specific conventions live in `platform.md`.
 
-- **Skill prompt:** `.claude/skills/generate-feature-docs/SKILL.md`
-- **Usage:** `/generate-feature-docs --feature-slug <slug> [--note "..."]`
+- **Skill prompt:** `.claude/skills/gini-doc/SKILL.md`
+- **Platform conventions:** `.claude/skills/gini-doc/platform.md` (iOS-specific, not mirrored)
+- **Templates:** `.claude/skills/gini-doc/templates/` (mirrored)
+- **Usage:** `/gini-doc --platform ios --feature-slug <slug> [--note "..."]`
 
 Example:
 ```
-/generate-feature-docs --feature-slug cross-border-payments
+/gini-doc --platform ios --feature-slug cross-border-payments
 ```
