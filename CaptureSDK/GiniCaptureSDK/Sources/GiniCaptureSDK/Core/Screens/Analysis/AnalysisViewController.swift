@@ -435,7 +435,7 @@ import Photos
 }
 
 private extension AnalysisViewController {
-    enum Constants {
+    struct Constants {
         static let padding: CGFloat = 16
         static let educationLoadingViewPadding: CGFloat = 28
         static let loadingIndicatorContainerHeight: CGFloat = 60
