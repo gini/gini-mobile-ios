@@ -92,6 +92,8 @@ Once versions exist, assign them as `fixVersions` on all work tickets in the rel
 
 Add **release notes in markdown** to each release description. These notes are reused verbatim on GitHub releases (step 7) — copy from the previous release and update.
 
+**Do not create next-cycle `UNRELEASED` placeholders here.** They're created at the very end, in step 11, after publishing — noted here so you don't set them up alongside these fix versions.
+
 ### 2b. RC ticket
 
 Create when the Firebase build from the release branch is ready — one ticket per side.
@@ -110,7 +112,7 @@ Fetch both results with `description`, `labels`, and `fixVersions`. Where the ti
 - **Description** — three sections:
   1. `**Issue Summary**` — the line "Here is the list of tickets for the release." then one `https://ginis.atlassian.net/browse/<TICKET>` link per ticket in the release. Find them with `fixVersion in ("<version-name>", …)`.
   2. `**Listed Releases**` — one Jira release-report link per fix version: `https://ginis.atlassian.net/projects/<KEY>/versions/<id>/tab/release-report-all-issues`
-  3. `**Attachments**:` — "Build for testing can be found here:" plus the Firebase App Distribution console link and the tester-app link for the example app. **Ask the user** — these come from the CI/Firebase build.
+  3. `**Attachments**:` — "Build for testing can be found here:" plus the Firebase App Distribution console link and the tester-app link for the example app. **Ask the user** — these come from the CI/Firebase build. Also attach a **QR code of the tester-app link** as an image (LLMs can generate one on request); QA can scan it directly from the ticket to install the build without typing the URL.
 
 Set the same `fixVersions` on the RC ticket. Put it in the **active sprint**: fetch a ticket in `sprint in openSprints()` with `expand: names`, find the `Sprint` custom field, set the entry whose `state` is `active`.
 
@@ -125,6 +127,25 @@ Report the RC ticket key — it goes in the final release commit.
 **Always release from a `release/<theme>` branch, never from `main`.** Feature PRs for the release merge into this branch; the theme usually matches the Jira fix versions suffix (`release/qr-code-improvements`, `release/liquid_glass_bank_sdk`, `release/bank_sdk_release_4.2.2`). Ask which branch this release ships from — do not assume.
 
 Confirm the branch is up to date with `main` before proceeding.
+
+## 3b. Dispatch the XCFramework build on the release branch
+
+Kick off the XCFramework build against the release branch **before** creating the RC ticket. Two reasons:
+
+- Catches XCFramework-side compile issues before QA — a red build here means QA won't have a shipping build even if the Firebase example app works.
+- Gives QA a reference build to point at if the RC ticket needs an XCFramework artifact.
+
+Trigger via `workflow_dispatch` — the workflows don't auto-run on branch push:
+
+- `Build BankSDK XCFrameworks` — if the release includes `GiniBankSDK`.
+- `Build HealthSDK XCFrameworks` — if the release includes `GiniHealthSDK`.
+
+```bash
+gh workflow run "Build BankSDK XCFrameworks" --ref release/<theme> --repo gini/gini-mobile-ios
+gh workflow run "Build HealthSDK XCFrameworks" --ref release/<theme> --repo gini/gini-mobile-ios
+```
+
+Wait until the applicable runs finish green before proceeding to step 4. Step 6 later triggers the **same** workflows via a `<Package>;<X.Y.Z>;xcframeworks` tag push on `main` — that tag-triggered run is what produces the archives attached to the drafts.
 
 ## 4. Wait for QA — hard gate
 
@@ -149,16 +170,7 @@ git pull --ff-only
 
 Confirm `git log -1` points at the release merge commit — `create_release_tags` tags the current `HEAD`, so an out-of-date `main` tags the wrong commit.
 
-### 5b. Verify the XCFramework build prerequisite
-
-Verify the branch-triggered XCFramework build workflow run for the release branch that just merged into `main` is green:
-
-- `bank-sdk.build.xcframeworks` — if the release includes `GiniBankSDK`.
-- `health-sdk.build.xcframeworks` — if the release includes `GiniHealthSDK`.
-
-Do not proceed before the applicable workflows are green. (Step 6 later triggers a separate tag-triggered run of these same workflows to produce the archives attached to the drafts.)
-
-### 5c. Bump versions in dependency order
+### 5b. Bump versions in dependency order
 
 For each package in `RELEASE-ORDER.md` order, edit **up to four** places. Missing any of the last three is how iOS releases break silently:
 
@@ -181,7 +193,7 @@ For each package in `RELEASE-ORDER.md` order, edit **up to four** places. Missin
    grep -rEn 'iOS-Gini-Health-SDK-[0-9.]+' HealthSDK/GiniHealthSDK/Documentation/
    ```
 
-### 5d. Validate the bumps
+### 5c. Validate the bumps
 
 Compile each affected package via the `AGENTS.md` gate:
 
@@ -197,7 +209,7 @@ swiftlint --fix BankSDK/GiniBankSDK/Sources
 
 Also run unit tests for the touched packages.
 
-### 5e. Commit and push
+### 5d. Commit and push
 
 One commit per package, in release order:
 
@@ -211,7 +223,7 @@ feat(<Package>): Bump version to <x.y.z>
 
 Push `main`.
 
-### 5f. Create and push release tags
+### 5e. Create and push release tags
 
 From the repo root:
 
@@ -262,6 +274,8 @@ See the [GiniBankSDK 3.0.0 release](https://github.com/gini/gini-mobile-ios/rele
 ## 7. Draft the GitHub releases
 
 For each pushed `<Package>;<X.Y.Z>` tag, create a **draft** GitHub release. Do not publish yet — the user reviews drafts before anything goes live.
+
+> **Release-notes content** — this skill covers the release *flow*. Per-repo release-notes templates and the Jira → GitHub notes translation are owned by the (planned) `/gini-release-notes` skill. Until it exists, use the previous release as a template per the pattern below.
 
 Destinations per pushed tag:
 
