@@ -156,7 +156,7 @@ final class CaptureSuggestionsView: UIView {
 extension CaptureSuggestionsView {
 
     func start(after seconds: TimeInterval = 4) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
             guard let self = self, let superview = self.superview, self.window != nil else { return }
 
             if let parentVC = self.parentViewController,
@@ -179,7 +179,7 @@ extension CaptureSuggestionsView {
                 guard let self, self.window != nil else { return }
                 self.changeView(toState: .hidden)
             })
-        })
+        }
     }
 
     private func changeView(toState state: CaptureSuggestionsState) {
