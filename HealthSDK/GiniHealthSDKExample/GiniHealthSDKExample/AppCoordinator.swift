@@ -22,6 +22,14 @@ final class AppCoordinator: Coordinator {
      * Default value is `false`.
      */
     private var shouldUseAlternativeNavigation = false
+
+    /**
+     * Determines whether `GiniHealthError` instances should be handled internally by the SDK (`true`)
+     * or forwarded to the consumer app for custom handling (`false`).
+     *
+     * Default value is `true`.
+     */
+    private var handleErrorsInternally = true
     
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
@@ -281,10 +289,11 @@ final class AppCoordinator: Coordinator {
                                                     "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
-        
+        }
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
     
@@ -293,22 +302,20 @@ final class AppCoordinator: Coordinator {
                                                     message: "Dies ist kein gültiges Dokument",
                                                     preferredStyle: .alert)
         
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        })
-        
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
-    
+
     fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
                                                     message: message,
                                                     preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true)
-        })
-        
+
+        let okAction = UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""), style: .default)
+        alertViewController.addAction(okAction)
+        alertViewController.preferredAction = okAction
         rootViewController.present(alertViewController, animated: true)
     }
     
@@ -329,6 +336,7 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
+        invoicesListCoordinator.parentCoordinator = self
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: self.hardcodedInvoicesController,
@@ -402,9 +410,27 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
 
 // MARK: GiniHealthDelegate
 
+@MainActor
 extension AppCoordinator: GiniHealthDelegate {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
-        return true
+        let handleInternally = handleErrorsInternally
+        if !handleInternally {
+            presentHealthError(error)
+        }
+        return handleInternally
+    }
+
+    private func presentHealthError(_ error: GiniHealthError) {
+        let message: String
+        switch error {
+        case .noInstalledApps:
+            message = "No supported banking app is installed to complete the payment."
+        case .noPaymentDataExtracted:
+            message = "The document does not contain valid payment data."
+        case .apiError(let apiError):
+            message = apiError.detailedDescription
+        }
+        presentError(title: "Error", message: message)
     }
     
     func didCreatePaymentRequest(paymentRequestId: String) {
@@ -424,10 +450,11 @@ extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
                                                               popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
-                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
+                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation,
+                                                              handleErrorsInternally: handleErrorsInternally,
+                                                              ingredientBrandType: health.clientConfiguration?.ingredientBrandType ?? .invisible)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -439,15 +466,22 @@ extension AppCoordinator: DebugMenuDelegate {
         switch type {
         case .showReviewScreen:
             giniHealthConfiguration.showPaymentReviewScreen = isOn
-        case .showBrandedView:
-            health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
         case .useBottomPaymentComponent:
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
         case .showPaymentCloseButton:
             giniHealthConfiguration.showPaymentReviewCloseButton = isOn
         case .useAlternativeNavigation:
             shouldUseAlternativeNavigation = isOn
+        case .handleErrorsInternally:
+            handleErrorsInternally = isOn
         }
+    }
+
+    func didChangeIngredientBrandType(_ type: GiniHealthAPILibrary.IngredientBrandTypeEnum) {
+        if health.clientConfiguration == nil {
+            health.clientConfiguration = ClientConfiguration()
+        }
+        health.clientConfiguration?.ingredientBrandType = type
     }
 
     func didPickNewLocalization(localization: GiniLocalization) {
@@ -476,9 +510,18 @@ extension AppCoordinator: DebugMenuDelegate {
                 let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
                 GiniUtilites.Log(successMessage, event: .success)
                 self?.presentError(title: "Success", message: successMessage)
-            case .failure(let failure):
-                GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
-                self?.presentError(title: "Error", message: failure.message)
+            case .failure(let error):
+                // Use the convenience helper for detailed logging
+                GiniUtilites.Log(error.detailedDescription, event: .error)
+                
+                // Display user-friendly error message
+                self?.presentError(title: "Error",
+                                   message: error.detailedDescription)
+
+                // Optional: Handle specific error codes if needed
+                if let errorItems = error.items, !errorItems.isEmpty {
+                    GiniUtilites.Log("⚠️ Error items: \(errorItems)", event: .warning)
+                }
             }
         }
     }
@@ -489,3 +532,4 @@ extension AppCoordinator {
         static let numberOfDocumentsToBeDeleted = 2
     }
 }
+

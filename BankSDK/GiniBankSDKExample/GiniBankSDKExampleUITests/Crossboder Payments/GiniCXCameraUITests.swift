@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-
 /**
 Tests that verify the camera hint label changes based on the active product tag.
 

@@ -37,7 +37,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4EC38D3273C21E6007045DC"
+               BlueprintIdentifier = "F484E8F32F4F555300547A9B"
                BuildableName = "GiniHealthSDKExampleTests.xctest"
                BlueprintName = "GiniHealthSDKExampleTests"
                ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">

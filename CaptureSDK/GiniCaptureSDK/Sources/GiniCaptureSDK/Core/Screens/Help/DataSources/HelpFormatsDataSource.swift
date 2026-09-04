@@ -27,6 +27,16 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
               NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.4",
                                                 comment: "QR code type"),
               NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.5",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.6",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.7",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.8",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.9",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.10",
                                                comment: "QR code type")],
             UIImageNamedPreferred(named: "supportedFormatsIcon"))
         ]
@@ -107,13 +117,6 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         super.init()
     }
 
-    private func configureCellAccessibility(
-        cell: HelpFormatCell,
-        title: String) {
-        cell.iconImageView?.accessibilityTraits = .image
-        cell.iconImageView.accessibilityLabel = title
-    }
-
     override func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
         let section = items[indexPath.section]
         let item = section.formats[indexPath.row]
@@ -129,7 +132,7 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         cell.separatorView.backgroundColor = GiniColor(
             light: UIColor.GiniCapture.light3,
             dark: UIColor.GiniCapture.dark4).uiColor()
-        configureCellAccessibility(cell: cell, title: section.title.uppercased())
+        cell.accessibilityLabel = item
         if indexPath.row == items[indexPath.section].formats.count - 1 {
             cell.separatorView.isHidden = true
         } else {

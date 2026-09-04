@@ -16,15 +16,7 @@ Commit Message Format
 
 Type
 
-<type> must be one of the following:
-
-feat: New or modified features (including UI, public API changes, tests and documentation of the new feature)
-
-fix: Bug fixes
-
-refactor: Code changes without public breaking changes (no public API or UI modifications) or Maintenance changes (dependency updates, lint fixes, warnings, etc.)
-
-ci: CI/CD, build scripts, or automation config changes
+The commit template at `.git-stuff/commit-msg-template.txt` is the single source of truth for the allowed `<type>` values and what each covers. Read it there rather than relying on a list duplicated in this document.
 
 Project
 

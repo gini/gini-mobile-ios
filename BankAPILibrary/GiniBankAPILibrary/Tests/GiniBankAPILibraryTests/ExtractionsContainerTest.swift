@@ -53,6 +53,21 @@ final class ExtractionsContainerTest: XCTestCase {
         XCTAssertTrue(group.contains(ibanExtraction), "Group should contain the expected IBAN extraction with name set")
     }
 
+    func testCreditNoteExtractionsDecoding() throws {
+        let json = loadFile(withName: "extractionsContainerCreditNote", ofType: "json")
+        let container = try JSONDecoder().decode(ExtractionsContainer.self, from: json)
+
+        XCTAssertEqual(container.extractions.count, 8)
+        XCTAssertEqual(container.extractions.first(where: { $0.name == "businessDocType" })?.value,
+                       "CreditNote")
+        XCTAssertEqual(container.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                       "12.75:EUR")
+        XCTAssertNil(container.compoundExtractions, "Credit note payload carries no compound extractions")
+        XCTAssertNil(container.returnReasons)
+        XCTAssertEqual(container.candidates.count, 4)
+        XCTAssertEqual(container.candidates["ibans"]?.count, 2)
+    }
+
     func testExtractionsContainerDecoding() throws {
         
         let container = try JSONDecoder().decode(ExtractionsContainer.self, from: extractionsContainerJson)

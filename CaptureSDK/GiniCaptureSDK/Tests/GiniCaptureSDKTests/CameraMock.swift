@@ -10,6 +10,14 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
+    func pauseQRDetection() {
+        // This method will remain empty; no implementation is needed.
+    }
+    
+    func resumeQRDetection() {
+        // This method will remain empty; no implementation is needed.
+    }
+    
     func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
                             regionOfInterest: CGRect?,
                             videoPreviewLayer: AVCaptureVideoPreviewLayer?,
@@ -57,7 +65,7 @@ final class CameraMock: CameraProtocol {
         // This method will remain empty; no implementation is needed.
     }
     
-    func setup(completion: ((CameraError?) -> Void)) {
+    func setup(completion: @escaping ((CameraError?) -> Void)) {
         switch state {
         case .authorized:
             completion(nil)

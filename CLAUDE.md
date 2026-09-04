@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Monorepo containing Gini's iOS SDKs for document capture, bank integration, health insurance, and merchant payment processing. All SDKs are Swift Packages managed through a single Xcode workspace (`GiniMobile.xcworkspace`).
+Monorepo containing Gini's iOS SDKs for document capture, bank integration, and health insurance. All SDKs are Swift Packages managed through a single Xcode workspace (`GiniMobile.xcworkspace`).
 
 ## Build & Test Commands
 
@@ -20,7 +20,7 @@ open GiniMobile.xcworkspace
 xcodebuild clean test \
   -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
   -scheme "GiniBankSDKExampleTests" \
-  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.5" \
+  -destination "platform=iOS Simulator,name=iPhone 16,OS=26.2" \
   CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 ```
 
@@ -48,8 +48,7 @@ GiniBankAPILibrary ──┐
 GiniUtilites ────────┼──→ GiniCaptureSDK ──→ GiniBankSDK
                      │
 GiniHealthAPILibrary─┤
-GiniUtilites ────────┼──→ GiniInternalPaymentSDK ──┬──→ GiniHealthSDK
-                     │                              └──→ GiniMerchantSDK
+GiniUtilites ────────┼──→ GiniInternalPaymentSDK ──→ GiniHealthSDK
 ```
 
 When modifying a lower-level package, changes propagate to all dependents. Release order must follow this dependency chain (see `RELEASE-ORDER.md`).
@@ -74,7 +73,6 @@ Each SDK follows this structure:
 - `BankAPILibrary/` and `HealthAPILibrary/` — Low-level REST API clients
 - `CaptureSDK/` — Document capture, review, and image analysis
 - `BankSDK/` and `HealthSDK/` — Full-featured SDKs with UI components
-- `MerchantSDK/` — Merchant payment processing
 - `GiniComponents/GiniUtilites/` — Shared utilities (logging, networking)
 - `GiniComponents/GiniInternalPaymentSDK/` — Shared payment logic
 
@@ -89,7 +87,7 @@ Follow Conventional Commits with this structure:
 <ticket-id>
 ```
 
-- **Types:** `feat`, `fix`, `refactor`, `ci`
+- **Types:** see `.git-stuff/commit-msg-template.txt` — it is the source of truth for the allowed `type` values and what each covers; don't rely on a list duplicated here.
 - **Project:** Module name (e.g., `GiniBankSDK`). Omit parentheses for multi-module changes.
 - **Subject:** Imperative mood, no period
 - **Ticket ID:** Required on last line (e.g., `PP-4102`)
@@ -113,11 +111,40 @@ PP-4102
 
 ## CI Environment
 
-- **Xcode:** 16.4
-- **Simulator:** iPhone 16, iOS 18.5
+- **Xcode:** 26.2
+- **Simulator:** iPhone 16, iOS 26.2
 - **Runner:** macOS latest
-- **Minimum deployment target:** iOS 13+ (HealthAPILibrary: iOS 12+)
+- **Minimum deployment target:** iOS 15+ (HealthSDK & HealthAPILibrary: iOS 17+)
 
+## Working on All Tasks
+
+**Before making any code changes, always explain your approach first:**
+
+For **all requests** — whether new features, bug fixes, refactors, or code review comments:
+
+1. **Explain the problem/request** — Clarify what needs to be done and why
+   - What is the issue, missing feature, or requested change?
+   - Where in the code does it occur (file paths, line numbers)?
+   - Why is it happening or why is it needed?
+
+2. **Present 2–3 options** with trade-offs for each approach
+   - Brief description of each option
+   - Pros and cons / when to use each one
+   - Recommendation if one is clearly better
+
+3. **Wait for feedback** — Let the user confirm the approach before implementing
+   - This prevents silent fixes and ensures alignment
+   - User can ask for a different option or clarification
+   - Creates a decision record in the conversation
+
+**Then implement** once the user approves or after reasonable silence (implies approval).
+
+4. **Run tests only after confirmation** — Do not run tests by default after changes
+   - After implementation, ask if the user wants tests run
+   - Or wait for the user to request test runs
+   - This gives the user control over CI and avoids unnecessary test runs
+
+Keep explanations concise — 2–3 sentences per option. For very simple tasks (typo fixes, obvious one-liners), brief mention of what you're doing is fine, but default to explaining first for any non-trivial change.
 
 # MyApp Standards
 
@@ -204,10 +231,11 @@ init(compositeDocuments: [CompositeDocument]?,
   - Builders and factory methods
 
 
-# Pull Request Description Generation
-Refer to AGENTS.md for PR description generation and repository conventions.
+# Repository & Agent Conventions
 
-Always follow AGENTS.md instructions when generating pull request descriptions.
+Follow **AGENTS.md** for all repository and agent conventions in this repo — including the **graphify** knowledge-graph workflow (`## graphify`), the optional `code-review-graph` MCP tools, pull request description generation, and the Swift documentation style. Always follow AGENTS.md instructions when working here.
+
+Use the repository PR template at `.github/pull_request_template.md` (the file GitHub pre-fills for new PRs) as the canonical structure for PR descriptions.
 
 
 
@@ -227,6 +255,13 @@ Generates manual test cases from a Jira ticket, local spec file, or pasted text,
 - **Skill prompt:** `.claude/skills/generate-xray-tests/SKILL.md`
 - **Usage & arguments:** `.claude/skills/generate-xray-tests.md`
 - **GitHub Copilot Chat equivalent:** `.github/instructions/generate-xray-tests.instructions.md` · `.github/instructions/generate-xray-tests.md`
+
+### `/update-figma-links`
+
+Migrates the Figma design links on the iOS Gini Bank SDK "Figma Links in public documentation" Confluence page from one SDK version's UI-customisation guide to a newer one (e.g. 4.3 → 4.4). Verifies each node-id resolves to the correct screen, standardises links to live embed previews, and writes back safely with a post-write diff.
+
+- **Skill prompt:** `.claude/skills/update-figma-links/SKILL.md`
+- **Helper script:** `.claude/skills/update-figma-links/transform_links.py`
 
 ### `/generate-feature-docs`
 

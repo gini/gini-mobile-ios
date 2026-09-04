@@ -45,11 +45,16 @@ class TransferSummaryIntegrationPinningTests: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            /// A callback surviving a timed-out test must not run into the next test.
+            guard !testCase.isTestFinished else { return }
             var extractions = result.extractions.reduce(into: [String: String]()) { dict, pair in
                 dict[pair.key] = pair.value.value
             }
             /// Override `amountToPay` with the confirmed test value to guarantee the "value:currency" format.
             extractions["amountToPay"] = ExtractionAmount(value: 950.00, currency: .EUR).formattedString()
+            /// Re-pin the shared document service to this test's own service so the
+            /// feedback can never target another test's document.
+            GiniBankConfiguration.shared.documentService = testCase.giniHelper.giniCaptureSDKDocumentService
             GiniBankConfiguration.shared.sendTransferSummary(extractions: extractions)
 
             let mockedInvoice = mockedInvoiceResultName
@@ -73,6 +78,10 @@ class TransferSummaryIntegrationPinningTests: BaseIntegrationTest {
 
         func giniCaptureDidEnterManually() {
             // nothing to test heretestCase
+        }
+
+        func giniCaptureDidRequestSchedulePayment(result: AnalysisResult) {
+            // nothing to test here
         }
     }
 }

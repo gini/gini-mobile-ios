@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require a physical device.
-// Please remove the prefix if you want to test locally on a simulator.
-//
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings.
 // 2. Upload to device: "cx_no_results_invoice" — a document that produces no CX extractions
@@ -62,31 +59,31 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
     // MARK: - E2
 
     func testCXNoResultsScreenRetryAction() {
-        //Select Cross-border product tag
+        // Select Cross-border product tag
         mainScreen.configurationButton.tap()
         mainScreen.swipeToElement(element: settingScreen.productTagSegmentedControl, direction: "up")
         settingScreen.selectProductTag(index: 1)
-        //Close settings
+        // Close settings
         settingScreen.closeButton.tap()
-        //Launch scanning flow
+        // Launch scanning flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
         mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
-        //Open button appears on some iOS versions/flows; safe to skip if absent.
+        // Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
         }
-        //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        // Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
         if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
-        //Wait for No-Results screen
+        // Wait for No-Results screen
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30))
-        //Tap Back to camera button
-        noResultsScreen.backToCameraButton.tap()
+        //Navigate back to the camera (retake button when present, nav back otherwise)
+        noResultsScreen.goBackToCamera()
         //Assert camera capture screen is shown again
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
         XCTAssertTrue(captureScreen.captureButton.isHittable)

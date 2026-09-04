@@ -16,7 +16,17 @@ struct CredentialsSet {
         return (clientId: client.id, clientSecret: client.secret)
     }
 
-    static func credentials(for index: Int) -> (clientId: String, clientSecret: String) {
-        return index == 0 ? setA : setB
+    /**
+     Provides the staging counterpart of `setA`; `setB` (CX) has no staging variant.
+     */
+    static var stageSetA: (clientId: String, clientSecret: String) {
+        let client = CredentialsManager.fetchStageClientFromBundle()
+        return (clientId: client.id, clientSecret: client.secret)
+    }
+
+    static func credentials(for index: Int,
+                            environment: APIEnvironment) -> (clientId: String, clientSecret: String) {
+        guard index == 0 else { return setB }
+        return environment == .stage ? stageSetA : setA
     }
 }

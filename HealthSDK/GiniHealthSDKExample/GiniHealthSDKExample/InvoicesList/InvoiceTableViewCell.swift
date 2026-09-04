@@ -55,22 +55,26 @@ final class InvoiceTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        cellViewModel = nil
+        action = nil
         removeAllViews(from: rightStackView)
     }
 
     private func addTrustMarkersView() {
-        if let bankLogosToShow = cellViewModel?.bankLogosToShow {
-            for bankLogo in bankLogosToShow {
-                let logoImageView = createLogoImageView(data: bankLogo)
-                rightStackView.addArrangedSubview(logoImageView)
-            }
+        guard let cellViewModel else { return }
+        
+        let bankLogosToShow = cellViewModel.bankLogosToShow
+        for bankLogo in bankLogosToShow {
+            let logoImageView = createLogoImageView(data: bankLogo)
+            rightStackView.addArrangedSubview(logoImageView)
         }
-        if let additionalBankNumberToShow = cellViewModel?.additionalBankNumberToShow {
+        
+        if let additionalBankNumberToShow = cellViewModel.additionalBankNumberToShow {
             let badgeView = createBadgeView(withNumber: additionalBankNumberToShow)
             rightStackView.addArrangedSubview(badgeView)
         }
 
-        if cellViewModel?.bankLogosToShow?.count ?? 0 > 0 {
+        if cellViewModel.bankLogosToShow.count > 0 {
             contentView.addSubview(rightStackView)
             NSLayoutConstraint.activate([
                 rightStackView.centerYAnchor.constraint(equalTo: ctaButton.centerYAnchor),

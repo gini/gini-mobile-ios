@@ -53,12 +53,12 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "CLIENT_SECRET"
-            value = "wT4o4kXPAYtDknnOYwWf4w5s"
+            value = ""
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "CLIENT_ID"
-            value = "gini-mobile-test"
+            value = ""
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

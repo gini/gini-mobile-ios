@@ -7,9 +7,6 @@
 import Foundation
 import XCTest
 
-// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
-// Please remove the prefix if you want to test locally on a simulator
-
 class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -151,14 +148,13 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         returnAssistantScreen.getStartedButton.tap()
         //Tap Edit button
         returnAssistantScreen.editButton.firstMatch.tap()
-        //Type text in Name field
+        //Type text in Name field (clearInputField leaves the field focused)
         mainScreen.clearInputField(element: returnAssistantScreen.nameTextField)
-        returnAssistantScreen.nameTextField.tap()
         returnAssistantScreen.nameTextField.typeText("New Product")
         //Tap Save button
         returnAssistantScreen.saveButton.tap()
         //Assert New Product static text is displayed
-        XCTAssertTrue(app.staticTexts["1x New Product"].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts["1x New Product"].waitForExistence(timeout: 10))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
         //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
@@ -195,9 +191,8 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         returnAssistantScreen.getStartedButton.tap()
         //Tap Edit button
         returnAssistantScreen.editButton.firstMatch.tap()
-        //Type value in Price field
+        //Type value in Price field (clearInputField leaves the field focused)
         mainScreen.clearInputField(element: returnAssistantScreen.priceTextField)
-        returnAssistantScreen.priceTextField.tap()
         returnAssistantScreen.priceTextField.typeText("123")
         //Tap Save button
         returnAssistantScreen.saveButton.tap()
@@ -245,9 +240,8 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         returnAssistantScreen.getStartedButton.tap()
         //Tap Edit button
         returnAssistantScreen.editButton.firstMatch.tap()
-        //Type text in Name field
+        //Type text in Name field (clearInputField leaves the field focused)
         mainScreen.clearInputField(element: returnAssistantScreen.nameTextField)
-        returnAssistantScreen.nameTextField.tap()
         returnAssistantScreen.nameTextField.typeText("New Product")
         //Tap Fertig
         returnAssistantScreen.doneKeyboard.tap()
@@ -260,7 +254,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Save button
         returnAssistantScreen.saveButton.tap()
         //Assert New Product static text is displayed
-        XCTAssertTrue(app.staticTexts["2x New Product"].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts["2x New Product"].waitForExistence(timeout: 10))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
         //Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.

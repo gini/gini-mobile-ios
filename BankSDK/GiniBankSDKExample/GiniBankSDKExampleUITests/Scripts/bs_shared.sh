@@ -11,7 +11,16 @@
 #   Variables : BS_USER, BS_KEY, BS_PROJECT, REPO_ROOT, WORKSPACE, SCHEME, DERIVED_DATA,
 #               BUILD_PRODUCTS, SIGNING_CONFIG, SAMPLES_DIR, IPA_OUTPUT,
 #               TEST_SUITE_OUTPUT, DEVICE_1, DEVICE_2
-#   Functions : upload_media, bs_build, bs_upload_app_and_suite, bs_cleanup
+#   Functions : bs_curl, upload_media, bs_build, bs_upload_app_and_suite, bs_cleanup
+
+# ── HTTP helper ───────────────────────────────────────────────────────────────
+# curl wrapper for BrowserStack API calls: fails on HTTP 4xx/5xx while keeping the
+# error body (--fail-with-body), reports transport errors on stderr (-S), and never
+# aborts the calling script under `set -e` — every call site checks the parsed
+# response and reports its own actionable error.
+bs_curl() {
+    curl -sS --fail-with-body "$@" || true
+}
 
 # ── Credentials ───────────────────────────────────────────────────────────────
 # Override via environment variables:
@@ -29,15 +38,40 @@ BUILD_PRODUCTS="$DERIVED_DATA/Build/Products/Debug-iphoneos"
 SIGNING_CONFIG="$DERIVED_DATA/BrowserStackSigning.xcconfig"
 SAMPLES_DIR="$SCRIPT_DIR/../TestSamples/TestSamplesForBS"
 
-IPA_OUTPUT="$SCRIPT_DIR/GiniBankSDKExample.ipa"
-TEST_SUITE_OUTPUT="$SCRIPT_DIR/GiniBankSDKExampleUITests.zip"
+SCRIPT_NAME="$(basename "$0" .sh)"
+case "$SCRIPT_NAME" in
+    bs_run_smoke_tests)  BUILD_LABEL="SmokeTests" ;;
+    bs_run_cx_normal)    BUILD_LABEL="Capture-Normal" ;;
+    bs_run_cx_multipage) BUILD_LABEL="Capture-Multipage" ;;
+    bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;
+    bs_run_skonto)       BUILD_LABEL="Skonto" ;;
+    bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
+    bs_run_credit_note)  BUILD_LABEL="CreditNote" ;;
+    bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;
+    *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
+esac
+IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"
+TEST_SUITE_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}-Tests.zip"
 
 # ── Devices ───────────────────────────────────────────────────────────────────
-DEVICE_1="iPhone 16-18"
-DEVICE_2="iPhone 13 Pro Max-18"
+DEVICE_1="iPhone 17-26"
+DEVICE_2="iPhone 16-18"
+
+# BS_DEVICE overrides the default pair with one device or a comma-separated list,
+# e.g. BS_DEVICE="iPhone 13 Pro-15" or BS_DEVICE="iPhone 17-26,iPhone 13 Pro-15".
+# Scripts use $DEVICES_JSON in the build request; $DEVICE_COUNT feeds license pacing.
+if [ -n "${BS_DEVICE:-}" ]; then
+    DEVICES_JSON=$(python3 -c "import sys, json; print(json.dumps([d.strip() for d in sys.argv[1].split(',') if d.strip()]))" "$BS_DEVICE")
+    DEVICE_COUNT=$(python3 -c "import sys; print(len([d for d in sys.argv[1].split(',') if d.strip()]))" "$BS_DEVICE")
+else
+    DEVICES_JSON="[\"$DEVICE_1\", \"$DEVICE_2\"]"
+    DEVICE_COUNT=2
+fi
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-BS_PROJECT="GiniBankSDK-CX-Payment-4.2.0"
+# Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
+# release; override per run via the BS_PROJECT environment variable.
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.0}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
@@ -60,7 +94,7 @@ upload_media() {
     fi
     echo "  Uploading $label..."
     local response
-    response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/upload-media" \
         -F "file=@$file_path" \
         -F "custom_id=$custom_id")
@@ -117,6 +151,39 @@ XCCONFIG
         echo "ERROR: GiniBankSDKExampleUITests-Runner.app not found"
         exit 1
     fi
+
+    # Xcode embeds Swift Testing's Testing.framework into every runner (XCTestCore and
+    # libXCTestSwiftSupport hard-link the Swift Testing stack, so it cannot be removed),
+    # but does NOT embed its back-deployment dependencies. iOS 17+ resolves them from
+    # the OS; iOS 15/16 devices don't have them and the runner crashes at launch (dyld
+    # abort: lib_TestingInterop.dylib, _Testing_Foundation.framework, ...). Bundle the
+    # device-arch copies from the Xcode toolchain into the runner. Xcode path resolved
+    # via xcode-select so non-standard installs (Xcode-beta) work; missing files are a
+    # hard error — skipping them would just recreate the iOS 15 crash.
+    if [ -d "$runner_app/Frameworks/Testing.framework" ]; then
+        local xcode_dev
+        xcode_dev="$(xcode-select -p)"
+        local platform_dir="$xcode_dev/Platforms/iPhoneOS.platform/Developer"
+
+        local interop_dylib="$platform_dir/usr/lib/lib_TestingInterop.dylib"
+        if [ ! -f "$interop_dylib" ]; then
+            echo "ERROR: $interop_dylib not found — cannot make the runner iOS 15/16 compatible"
+            exit 1
+        fi
+        cp "$interop_dylib" "$runner_app/Frameworks/"
+
+        local fw
+        for fw in _Testing_Foundation _Testing_UIKit _Testing_CoreGraphics _Testing_CoreImage; do
+            local fw_path="$platform_dir/Library/Frameworks/$fw.framework"
+            if [ ! -d "$fw_path" ]; then
+                echo "ERROR: $fw_path not found — cannot make the runner iOS 15/16 compatible"
+                exit 1
+            fi
+            rm -rf "$runner_app/Frameworks/$fw.framework"
+            cp -R "$fw_path" "$runner_app/Frameworks/"
+        done
+        echo "Bundled Swift Testing back-deployment libraries into runner (iOS 15/16 compatibility)"
+    fi
     pushd "$(dirname "$runner_app")" > /dev/null
     zip -r "$TEST_SUITE_OUTPUT" "GiniBankSDKExampleUITests-Runner.app" -q
     popd > /dev/null
@@ -129,7 +196,7 @@ XCCONFIG
 bs_upload_app_and_suite() {
     echo "  Uploading app IPA..."
     local app_response
-    app_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    app_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/app" \
         -F "file=@$IPA_OUTPUT")
     echo "  App response: $app_response"
@@ -138,7 +205,7 @@ bs_upload_app_and_suite() {
 
     echo "  Uploading test suite..."
     local test_response
-    test_response=$(curl -s -u "$BS_USER:$BS_KEY" \
+    test_response=$(bs_curl -u "$BS_USER:$BS_KEY" \
         -X POST "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/test-suite" \
         -F "file=@$TEST_SUITE_OUTPUT")
     echo "  Test suite response: $test_response"

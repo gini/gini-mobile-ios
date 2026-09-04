@@ -13,9 +13,6 @@ extension GiniScreenAPICoordinator {
                               shouldSaveToGallery: Bool = false) -> AnalysisViewController {
         let viewController = AnalysisViewController(document: document)
         viewController.shouldSaveToGallery = shouldSaveToGallery
-       
-        /// Set the handler responsible for showing the due-date message
-        paymentDueDateHandler = viewController
 
         let cancelButton = GiniBarButton(ofType: .cancel)
         cancelButton.addAction(self, #selector(back))

@@ -219,10 +219,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = true
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -237,10 +235,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: false
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: false)
 
         let extractionResult = createExtractionResult(paymentState: "tobepaid")
 
@@ -255,16 +251,109 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         coordinator.giniBankConfiguration.productTag = .sepaExtractions
         coordinator.giniBankConfiguration.paymentDueHintEnabled = false
 
-        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(
-            alreadyPaidHintEnabled: false,
-            paymentDueHintEnabled: true
-        )
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(alreadyPaidHintEnabled: false,
+                                                                              paymentDueHintEnabled: true)
 
         let extractionResult = createExtractionResult(paymentDueDate: "tobepaid")
 
         let result = coordinator.determineIfAlreadyPaidHintEnabled(for: extractionResult)
 
         XCTAssertFalse(result)
+    }
+
+    // MARK: - isDocumentMarkedAsCreditNote Tests
+
+    func testIsDocumentMarkedAsCreditNoteReturnsTrueForCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "creditnote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true when businessDocType is 'creditnote'")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteReturnsFalseForNonCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "Invoice")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when businessDocType is not 'CreditNote'")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteReturnsFalseWhenMissing() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertFalse(result, "Should return false when businessDocType is missing or empty")
+    }
+
+    func testIsDocumentMarkedAsCreditNoteIsCaseInsensitive() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(businessDocType: "CreditNote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true regardless of case")
+    }
+
+    // MARK: - determineIfCreditNoteHintEnabled
+
+    func testDetermineIfCreditNoteHintEnabledReturnsTrueWhenEnabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertTrue(result, "Should return true when both global and client flags are enabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenGlobalDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = false
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: true)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertFalse(result, "Should return false when global flag is disabled")
+    }
+
+    func testDetermineIfCreditNoteHintEnabledReturnsFalseWhenClientDisabled() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.creditNoteHintEnabled = true
+
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(creditNoteHintEnabled: false)
+
+        let result = coordinator.determineIfCreditNoteHintEnabled()
+
+        XCTAssertFalse(result, "Should return false when client credit note hint is disabled")
+    }
+
+    func testExcludingAmountToPayExtractionResultCreditNote() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00", businessDocType: "creditnote")
+
+        let result = coordinator.isDocumentMarkedAsCreditNote(from: extractionResult)
+
+        XCTAssertTrue(result, "Should return true when businessDocType is 'creditnote'")
+
+        let endResult = coordinator.excludingAmountToPay(from: extractionResult)
+
+        let hasAmountToPay = endResult.extractions.contains { $0.name == "amountToPay" }
+        XCTAssertFalse(hasAmountToPay, "amountToPay should be excluded from extractions")
     }
 
     // MARK: - shouldShowReturnAssistant Tests
@@ -346,12 +435,174 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         XCTAssertFalse(result)
     }
+
+    // MARK: - excludingCompoundExtractions Tests
+
+    func testExcludingCompoundExtractionsRemovesLineItemsSkontoDiscountsAndReturnReasons() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts(),
+                                                      returnReasons: createMockReturnReasons())
+
+        let result = coordinator.excludingCompoundExtractions(from: extractionResult)
+
+        XCTAssertNil(result.lineItems, "lineItems should be removed for credit-note documents")
+        XCTAssertNil(result.skontoDiscounts, "skontoDiscounts should be removed for credit-note documents")
+        XCTAssertNil(result.returnReasons, "returnReasons should be removed for credit-note documents")
+    }
+
+    func testExcludingCompoundExtractionsKeepsExtractionsAndCandidates() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts(),
+                                                      candidates: createMockCandidates())
+
+        let result = coordinator.excludingCompoundExtractions(from: extractionResult)
+
+        XCTAssertEqual(result.extractions.count,
+                       extractionResult.extractions.count,
+                       "Flat extractions should not be filtered")
+        XCTAssertEqual(result.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                       "100.00",
+                       "amountToPay should survive compound stripping")
+        XCTAssertEqual(result.extractions.first(where: { $0.name == "businessDocType" })?.value,
+                       "creditnote",
+                       "businessDocType should survive compound stripping")
+        XCTAssertEqual(result.candidates["amounts"]?.first?.value,
+                       "100.00:EUR",
+                       "Candidates should be carried over unchanged")
+    }
+
+    func testShouldShowReturnAssistantFalseAfterExcludingCompoundExtractions() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        let extractionResult = createExtractionResult(businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems())
+
+        XCTAssertTrue(coordinator.shouldShowReturnAssistant(for: extractionResult),
+                      "Precondition: RA gate should be true before stripping")
+
+        let stripped = coordinator.excludingCompoundExtractions(from: extractionResult)
+
+        XCTAssertFalse(coordinator.shouldShowReturnAssistant(for: stripped),
+                       "RA gate should be false on a stripped credit-note result")
+    }
+
+    func testShouldShowSkontoFalseAfterExcludingCompoundExtractions() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        let extractionResult = createExtractionResult(businessDocType: "creditnote",
+                                                      skontoDiscounts: createMockSkontoDiscounts())
+
+        XCTAssertTrue(coordinator.shouldShowSkonto(for: extractionResult),
+                      "Precondition: Skonto gate should be true before stripping")
+
+        let stripped = coordinator.excludingCompoundExtractions(from: extractionResult)
+
+        XCTAssertFalse(coordinator.shouldShowSkonto(for: stripped),
+                       "Skonto gate should be false on a stripped credit-note result")
+    }
+
+    func testExcludingAmountToPayOnStrippedResultRemovesAmountToPay() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts(),
+                                                      returnReasons: createMockReturnReasons())
+
+        let stripped = coordinator.excludingCompoundExtractions(from: extractionResult)
+        let filtered = coordinator.excludingAmountToPay(from: stripped)
+
+        XCTAssertFalse(filtered.extractions.contains { $0.name == "amountToPay" },
+                       "amountToPay should be excluded after chaining both helpers")
+        XCTAssertEqual(filtered.extractions.first(where: { $0.name == "businessDocType" })?.value,
+                       "creditnote",
+                       "businessDocType should still be delivered")
+        XCTAssertNil(filtered.lineItems, "lineItems should stay removed after amountToPay filtering")
+        XCTAssertNil(filtered.skontoDiscounts, "skontoDiscounts should stay removed after amountToPay filtering")
+        XCTAssertNil(filtered.returnReasons, "returnReasons should stay removed after amountToPay filtering")
+    }
+
+    func testNonCreditNoteResultKeepsCompoundExtractions() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        coordinator.giniBankConfiguration.productTag = .sepaExtractions
+        coordinator.giniBankConfiguration.returnAssistantEnabled = true
+        coordinator.giniBankConfiguration.skontoEnabled = true
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "invoice",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts())
+
+        XCTAssertFalse(coordinator.isDocumentMarkedAsCreditNote(from: extractionResult),
+                       "An invoice must not be detected as a credit note, so the flow never strips it")
+        XCTAssertTrue(coordinator.shouldShowReturnAssistant(for: extractionResult),
+                      "A non-credit-note document should keep its Return Assistant eligibility")
+        XCTAssertTrue(coordinator.shouldShowSkonto(for: extractionResult),
+                      "A non-credit-note document should keep its Skonto eligibility")
+    }
+
+    // MARK: - creditNoteDeliveryResult Tests
+
+    func testCreditNoteDeliveryResultStripsCompoundExtractionsAndAmountToPay() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      skontoDiscounts: createMockSkontoDiscounts(),
+                                                      returnReasons: createMockReturnReasons())
+
+        let delivered = coordinator.creditNoteDeliveryResult(from: extractionResult)
+
+        XCTAssertNil(delivered.lineItems, "lineItems should be removed from the delivered credit-note result")
+        XCTAssertNil(delivered.skontoDiscounts, "skontoDiscounts should be removed from the delivered credit-note result")
+        XCTAssertNil(delivered.returnReasons, "returnReasons should be removed from the delivered credit-note result")
+        XCTAssertFalse(delivered.extractions.contains { $0.name == "amountToPay" },
+                       "amountToPay should be removed from the delivered credit-note result")
+    }
+
+    func testCreditNoteDeliveryResultKeepsRemainingFlatExtractionsAndCandidates() throws {
+        let (coordinator, _) = try makeCoordinatorAndService()
+
+        let extractionResult = createExtractionResult(amountToPay: "100.00",
+                                                      businessDocType: "creditnote",
+                                                      lineItems: createMockLineItems(),
+                                                      candidates: createMockCandidates())
+
+        let delivered = coordinator.creditNoteDeliveryResult(from: extractionResult)
+
+        XCTAssertEqual(delivered.extractions.first(where: { $0.name == "businessDocType" })?.value,
+                       "creditnote",
+                       "businessDocType should still be delivered for a credit note")
+        XCTAssertEqual(delivered.extractions.count,
+                       extractionResult.extractions.count - 1,
+                       "Only amountToPay should be filtered from the flat extractions")
+        XCTAssertEqual(delivered.candidates["amounts"]?.first?.value,
+                       "100.00:EUR",
+                       "Candidates should be carried over unchanged")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
 
 extension ClientConfiguration {
-    init(alreadyPaidHintEnabled: Bool, paymentDueHintEnabled: Bool = false) {
+    init(alreadyPaidHintEnabled: Bool = false,
+         paymentDueHintEnabled: Bool = false,
+         creditNoteHintEnabled: Bool = false,
+         paymentScheduleHintEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -362,6 +613,9 @@ extension ClientConfiguration {
                   eInvoiceEnabled: false,
                   savePhotosLocallyEnabled: false,
                   alreadyPaidHintEnabled: alreadyPaidHintEnabled,
-                  paymentDueHintEnabled: paymentDueHintEnabled)
+                  paymentDueHintEnabled: paymentDueHintEnabled,
+                  creditNoteHintEnabled: creditNoteHintEnabled,
+                  paymentScheduleHintEnabled: paymentScheduleHintEnabled,
+                  unsupportedQRCodeWarningEnabled: false)
     }
 }

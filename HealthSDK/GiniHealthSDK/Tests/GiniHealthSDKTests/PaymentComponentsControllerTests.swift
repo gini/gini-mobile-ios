@@ -16,14 +16,18 @@ final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealth: GiniHealth!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
-    private let versionAPI = 4
+    private let versionAPI = 5
 
     override func setUp() {
         super.setUp()
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService, clientConfigurationService: nil)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock,
+                                                     apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock,
+                                            apiVersion: versionAPI)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService,
+                                      paymentService: paymentService,
+                                      clientConfigurationService: nil)
         giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealth: giniHealth)
     }
@@ -33,124 +37,83 @@ final class PaymentComponentsControllerTests: XCTestCase {
         mockPaymentComponentsController = nil
         super.tearDown()
     }
+
+    // MARK: - Helpers
+
+    private func assertPayableResult(docId: String, expected: Result<Bool, GiniHealthError>) {
+        var receivedResult: Result<Bool, GiniHealthError>?
+        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: docId) { result in
+            receivedResult = result
+        }
+        XCTAssertEqual(receivedResult, expected, "Payable result should match expected value")
+    }
+
+    private func assertAndCast<T>(_ value: Any?,
+                                   as type: T.Type,
+                                   file: StaticString = #file,
+                                   line: UInt = #line) throws -> T {
+        XCTAssertTrue(value is T, "Expected \(T.self)", file: file, line: line)
+        return try XCTUnwrap(value as? T, "Error finding correct view.", file: file, line: line)
+    }
     
-    func testLoadPaymentProviders_Success() {
+    func testLoadPaymentProvidersSuccess() {
         // When
         mockPaymentComponentsController.loadPaymentProviders()
 
         // Then
-        XCTAssertFalse(mockPaymentComponentsController.isLoading)
-        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
+        XCTAssertFalse(mockPaymentComponentsController.isLoading, "Loading state should be false after providers are loaded")
+        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider, "Selected payment provider should be nil initially")
     }
 
-    func testCheckIfDocumentIsPayable_Success() {
-        let expectedResult: Result<Bool, GiniHealthError> = .success(true)
-        // When
-        var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.payableDocumentID) { result in
-            receivedResult = result
-        }
-
-        // Then
-        XCTAssertEqual(receivedResult, expectedResult)
+    func testCheckIfDocumentIsPayableSuccess() {
+        assertPayableResult(docId: MockSessionManager.payableDocumentID, expected: .success(true))
     }
 
-    func testCheckIfDocumentIsPayable_NotPayable() {
-        let expectedResult: Result<Bool, GiniHealthError> = .success(false)
-        // When
-        var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.notPayableDocumentID) { result in
-            receivedResult = result
-        }
-
-        // Then
-        XCTAssertEqual(receivedResult, expectedResult)
+    func testCheckIfDocumentIsPayableNotPayable() {
+        assertPayableResult(docId: MockSessionManager.notPayableDocumentID, expected: .success(false))
     }
 
-    func testCheckIfDocumentIsPayable_Failure() {
-        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.decorator(.noResponse)))
-        // When
-        var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in
-            receivedResult = result
-        }
-
-        // Then
-        XCTAssertEqual(receivedResult, expectedResult)
+    func testCheckIfDocumentIsPayableFailure() {
+        assertPayableResult(
+            docId: MockSessionManager.missingDocumentID,
+            expected: .failure(.apiError(GiniError.toGiniHealthSDKError(error: .noResponse)))
+        )
     }
 
-    func testPaymentView_ReturnsView() {
-        // Given
-        let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil,
-                                                          primaryButtonConfiguration: giniHealth.primaryButtonConfiguration,
-                                                          secondaryButtonConfiguration: giniHealth.secondaryButtonConfiguration,
-                                                          configuration: giniHealth.paymentComponentsConfiguration,
-                                                          strings: giniHealth.paymentComponentsStrings,
-                                                          poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
-                                                          poweredByGiniStrings: giniHealth.poweredByGiniStrings,
-                                                          moreInformationConfiguration: giniHealth.moreInformationConfiguration,
-                                                          moreInformationStrings: giniHealth.moreInformationStrings,
-                                                          minimumButtonsHeight: giniHealth.paymentComponentButtonsHeight,
-                                                          paymentComponentConfiguration: giniHealth.paymentComponentConfiguration,
-                                                          clientConfiguration: giniHealth.clientConfiguration)
-
-        let expectedView = PaymentComponentView(viewModel: expectedViewModel)
-        expectedViewModel.documentId = documentId
-        // When
+    func testPaymentViewReturnsView() throws {
         let view = mockPaymentComponentsController.paymentView()
-
-        // Then
-        XCTAssertTrue(view is PaymentComponentView)
-        guard let view = view as? PaymentComponentView else {
-            XCTFail("Error finding correct view.")
-            return
-        }
+        let _ = try assertAndCast(view, as: PaymentComponentView.self)
     }
-    
-    func testBankSelectionBottomSheet_ReturnsViewController() {
-        // When
+
+    func testBankSelectionBottomSheetReturnsViewController() throws {
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
-
-        // Then
-        XCTAssertTrue(viewController is BanksBottomView)
-        guard let bottomSheet = viewController as? BanksBottomView else {
-            XCTFail("Error finding correct viewController.")
-            return
-        }
-        XCTAssertNotNil(bottomSheet.viewModel)
+        let bottomSheet = try assertAndCast(viewController, as: BanksBottomView.self)
+        XCTAssertNotNil(bottomSheet.viewModel, "Bottom sheet view model should not be nil")
     }
     
-    func testLoadPaymentReviewScreenFor_Success() {
+    func testLoadPaymentReviewScreenForSuccess() {
         // Given
         let documentId = MockSessionManager.payableDocumentID
 
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil, previousPaymentComponentScreenType: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil,
+                                                                   previousPaymentComponentScreenType: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
 
         // Then
-        XCTAssertNil(receivedError)
-        XCTAssertNotNil(receivedViewController)
+        XCTAssertNil(receivedError, "Error should be nil for a successful payment review screen load")
+        XCTAssertNotNil(receivedViewController, "View controller should not be nil for a successful load")
     }
     
-    func testPaymentInfoViewController_ReturnsCorrectViewController() {
-        // When
+    func testPaymentInfoViewControllerReturnsCorrectViewController() throws {
         let viewController = mockPaymentComponentsController.paymentInfoViewController()
-
-        // Then
-        XCTAssertTrue(viewController is PaymentInfoViewController)
-        guard let paymentInfoVC = viewController as? PaymentInfoViewController else {
-            XCTFail("Error finding correct viewController.")
-            return
-        }
-        XCTAssertNotNil(paymentInfoVC.viewModel)
-        let paymentInfoViewModel = paymentInfoVC.viewModel
-        XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
+        let paymentInfoVC = try assertAndCast(viewController, as: PaymentInfoViewController.self)
+        XCTAssertNotNil(paymentInfoVC.viewModel, "Payment info view model should not be nil")
+        XCTAssertEqual(paymentInfoVC.viewModel.paymentProviders, [], "Payment providers should be empty initially")
     }
     
     func testPaymentProvidersSorting() {
@@ -176,7 +139,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    clientConfiguration: giniHealth.clientConfiguration)
 
 
-        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
-        XCTAssertEqual(bottomViewModel.paymentProviders.map { PaymentProvider(healthPaymentProvider: $0.paymentProvider) }, expectedPaymentProviders)
+        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11, "Providers count should be 11")
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { PaymentProvider(healthPaymentProvider: $0.paymentProvider) }, expectedPaymentProviders, "Providers should be sorted as expected")
     }
 }

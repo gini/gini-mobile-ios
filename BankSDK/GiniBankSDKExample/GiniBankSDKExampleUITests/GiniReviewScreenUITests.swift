@@ -9,8 +9,6 @@ import XCTest
 
 
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
-    // All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
-    // Please remove the prefix if you want to test locally on a simulator
     /*
      To launch these tests and closely mimic real user behavior
      Please upload to device:

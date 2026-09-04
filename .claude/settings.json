@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat <<'HOOK_OUTPUT'\nINSTRUCTION: GINI AGENTS CHECK\nIf this task involves Swift, UIKit, SwiftUI, async/await, actors, Keychain,\nnetworking, testing, App Store submission, or any Gini SDK code:\n\n1. Delegate to the gini-orchestrator agent.\n2. gini-orchestrator decides which specialists review: uikit, swiftui, accessibility, testing.\n   Architecture, design-system, localization, concurrency, security, performance, and\n   background-execution standards still apply and are enforced inline (specialists paused).\n3. Do NOT write UI code without mobile-a11y-specialist review.\n4. Ensure concurrency safety (data races, actor isolation, @MainActor) — enforced inline.\n5. Follow CLAUDE.md and AGENTS.md standards: MVVM + Coordinator, design-system\n   namespaces (UIColor.GiniBank/GiniCapture, GiniColor, textStyleFonts, Constants),\n   3-level localization with typed LocalizableStringResource, /** */ and /// doc\n   style, one-parameter-per-line initializers.\n6. NEVER create placeholder or stub implementations in production code. Use built-in\n   features. Test mocks ARE allowed and required per CLAUDE.md: manual protocol\n   conformances, test data from JSON fixtures in Tests/Resources/.\n7. Shared rule set: .claude/rules/mandatory-rules.md.\n\nIf the task does not involve Swift or Apple platform code, proceed normally.\nHOOK_OUTPUT"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat <<'HOOK_OUTPUT'\nVALIDATION: Before presenting specialist output to the user:\n- Check for conflicts between specialist recommendations\n- Verify accessibility was reviewed for user-facing UI code\n- Verify design-system and localization rules were applied to UI code\n- Reject placeholder or stub implementations in production code (test mocks as\n  manual protocol conformances per CLAUDE.md are allowed and expected)\nHOOK_OUTPUT"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -47,6 +47,8 @@ struct SwitchOptionModel {
         case alreadyPaidHintEnabled
         case savePhotosLocallyEnabled
         case paymentDueHintEnabled
+        case creditNoteHintEnabled
+        case paymentScheduleHintEnabled
         case closeSDK
 
 		var title: String {
@@ -112,9 +114,13 @@ struct SwitchOptionModel {
             case .transactionDocsEnabled:
                 return "Transaction docs feature"
             case .alreadyPaidHintEnabled:
-                return "User payment warnings feature"
+                return "Already paid hint feature"
             case .paymentDueHintEnabled:
                 return "Payment due hint feature"
+            case .creditNoteHintEnabled:
+                return "Credit note hint feature"
+            case .paymentScheduleHintEnabled:
+                return "Payment schedule hint feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
@@ -140,6 +146,10 @@ struct SwitchOptionModel {
 				return SettingScreenAccessibilityIdentifiers.multiPageSwitch.rawValue
 			case .flashToggle:
 				return SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue
+			case .paymentDueHintEnabled:
+				return SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue
+			case .paymentScheduleHintEnabled:
+				return SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue
 			default:
 				return nil
 			}
@@ -195,6 +205,7 @@ struct SwitchOptionModel {
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
+
             case .alreadyPaidHintEnabled:
                 return "Features included under this flag paid state"
             case .closeSDK:
