@@ -66,7 +66,7 @@ public final class QRCodesExtractor {
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
     public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
 
-    class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
+    static func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):
             return extractParameters(fromBezahlCodeString: string)
@@ -91,7 +91,7 @@ public final class QRCodesExtractor {
         }
     }
 
-    class func extractParameters(fromBezahlCodeString string: String) -> [String: String] {
+    static func extractParameters(fromBezahlCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
 
         if let encodedString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -128,56 +128,42 @@ public final class QRCodesExtractor {
         return parameters
     }
 
-    class func extractParameters(fromEPC06912CodeString string: String) -> [String: String] {
+    static func extractParameters(fromEPC06912CodeString string: String) -> [String: String] {
         let lines = string.splitlines
+
+        // Get value at index or empty string
+        // Helper that safely accesses lines array
+        // Captures 'lines' from outer scope to avoid passing it repeatedly.
+        func getValue(_ index: Int) -> String {
+            lines.indices.contains(index) ? lines[index] : ""
+        }
+
         var parameters: [String: String] = [:]
 
-        if lines.indices.contains(4) && !lines[4].isEmpty {
-            parameters["bic"] = lines[4]
-        } else {
-            parameters["bic"] = ""
-        }
+        parameters["bic"] = getValue(4)
 
-        if lines.indices.contains(5) && !lines[5].isEmpty {
-            // Sparkasse and similar generators pad the name with trailing spaces (and null bytes
-            // that Camera.swift strips before reaching here). Trim only this field.
-            parameters["paymentRecipient"] = lines[5].trimmingCharacters(in: .whitespaces)
-        } else {
-            parameters["paymentRecipient"] = ""
-        }
+        // Sparkasse and similar generators pad the name with trailing spaces (and null bytes
+        // that Camera.swift strips before reaching here). Trim only this field.
+        parameters["paymentRecipient"] = getValue(5).trimmingCharacters(in: .whitespaces)
 
         // Field 9 (index 9) is the structured creditor reference; field 10 (index 10) is the
         // unstructured remittance info. Some generators leave 9 empty and use 10 instead.
-        if lines.indices.contains(9) && !lines[9].isEmpty {
-            parameters["paymentReference"] = lines[9]
-        } else if lines.indices.contains(10) && !lines[10].isEmpty {
-            parameters["paymentReference"] = lines[10]
-        } else {
-            parameters["paymentReference"] = ""
-        }
+        let structuredReference = getValue(9)
+        parameters["paymentReference"] = structuredReference.isEmpty ? getValue(10) : structuredReference
 
-        if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
-            parameters["iban"] = lines[6]
-        } else {
-            parameters["iban"] = ""
-        }
+        // IBAN with validation
+        let iban = getValue(6)
+        parameters["iban"] = IBANValidator().isValid(iban: iban) ? iban : ""
 
-        if lines.indices.contains(7) {
-            if let amountToPay = normalize(amount: lines[7], currency: nil) {
-                parameters["amountToPay"] = amountToPay
-            } else {
-                parameters["amountToPay"] = ""
-            }
-        } else {
-            parameters["amountToPay"] = ""
-        }
+        // Amount with normalization
+        parameters["amountToPay"] = normalize(amount: getValue(7), currency: nil) ?? ""
 
         return parameters
     }
 
     // MARK: - SPC (Swiss Payment Code / QR-bill)
 
-    class func extractParameters(fromSPCCodeString string: String) -> [String: String] {
+    static func extractParameters(fromSPCCodeString string: String) -> [String: String] {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
@@ -218,7 +204,7 @@ public final class QRCodesExtractor {
 
     // MARK: - SPD (Czech/Slovak Payment Descriptor)
 
-    class func extractParameters(fromSPDCodeString string: String) -> [String: String] {
+    static func extractParameters(fromSPDCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
         let segments = string.components(separatedBy: "*").dropFirst(2) // skip "SPD" and version
 
@@ -254,7 +240,7 @@ public final class QRCodesExtractor {
 
     // MARK: - Pay by Square (Slovak compressed QR)
 
-    class func extractParameters(fromPayBySquareString string: String) -> [String: String] {
+    static func extractParameters(fromPayBySquareString string: String) -> [String: String] {
         guard let decoded = PayBySquareDecoder.decode(string) else { return [:] }
         var parameters: [String: String] = [:]
 
@@ -275,7 +261,7 @@ public final class QRCodesExtractor {
 
     // MARK: - UPNQR (Slovenian UPN QR)
 
-    class func extractParameters(fromUPNQRCodeString string: String) -> [String: String] {
+    static func extractParameters(fromUPNQRCodeString string: String) -> [String: String] {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
@@ -304,7 +290,7 @@ public final class QRCodesExtractor {
 
     // MARK: - HUB3 (Croatian PDF417)
 
-    class func extractParameters(fromHUB3CodeString string: String) -> [String: String] {
+    static func extractParameters(fromHUB3CodeString string: String) -> [String: String] {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
 
@@ -329,7 +315,7 @@ public final class QRCodesExtractor {
         return parameters
     }
 
-    fileprivate class func normalize(amount: String, currency: String?) -> String? {
+    fileprivate static func normalize(amount: String, currency: String?) -> String? {
         let regexCurrency = try? NSRegularExpression(pattern: "[aA-zZ]", options: [])
         let length = amount.count < 3 ? amount.count : 3
 

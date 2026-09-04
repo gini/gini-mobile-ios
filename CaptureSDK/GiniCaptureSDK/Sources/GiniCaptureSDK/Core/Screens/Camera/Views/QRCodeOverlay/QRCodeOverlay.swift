@@ -1,129 +1,11 @@
 //
 //  QRCodeOverlay.swift
 //  
-//
-//  Created by David Vizaknai on 01.11.2022.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 import GiniUtilites
-
-final class CorrectQRCodeTextContainer: UIView {
-    private let configuration = GiniConfiguration.shared
-
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.caption2]
-        label.textAlignment = .center
-        label.textColor = .GiniCapture.light1
-        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct",
-                                                      comment: "QR Detected")
-        label.enableScaling()
-        return label
-    }()
-
-    init() {
-        super.init(frame: .zero)
-        backgroundColor = .GiniCapture.success2
-        addSubview(titleLabel)
-        setupConstraints()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing / 2),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing)
-        ])
-    }
-}
-
-final class IncorrectQRCodeTextContainer: UIView {
-    private let configuration = GiniConfiguration.shared
-
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .GiniCapture.dark1
-        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title",
-                                                      comment: "Unknown QR")
-        label.enableScaling()
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .GiniCapture.dark1
-        label.numberOfLines = 0
-        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.description",
-                                                      comment: "No content")
-        label.enableScaling()
-        return label
-    }()
-
-    private lazy var textStackView: UIStackView = {
-        let textStackView = UIStackView()
-        configureTextStackView(textStackView)
-        return textStackView
-    }()
-
-    private func configureTextStackView(_ stackView: UIStackView) {
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = Constants.spacing
-        stackView.backgroundColor = .GiniCapture.warning3
-        stackView.layer.cornerRadius = Constants.cornerRadius
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = Constants.stackViewMargins
-    }
-
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-
-    init() {
-        super.init(frame: .zero)
-
-        backgroundColor = .clear
-        addSubview(scrollView)
-        scrollView.addSubview(textStackView)
-        textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(descriptionLabel)
-        setupConstraints()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-            // textStackView inside scrollView
-            textStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            textStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            textStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
-    }
-}
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
@@ -161,7 +43,7 @@ final class QRCodeOverlay: UIView {
 
     private lazy var checkMarkImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImageNamedPreferred(named: "greenCheckMark")
+        imageView.image = Images.checkMark
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isHidden = true
         return imageView
@@ -183,8 +65,7 @@ final class QRCodeOverlay: UIView {
         loadingIndicatorText.textColor = .GiniCapture.light1
         loadingIndicatorText.isAccessibilityElement = true
         loadingIndicatorText.numberOfLines = 0
-        loadingIndicatorText.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.loading",
-                                                                     comment: "Retrievenig invoice")
+        loadingIndicatorText.text = Strings.loadingIndicatorText
         return loadingIndicatorText
     }()
 
@@ -425,19 +306,28 @@ final class QRCodeOverlay: UIView {
             }
         }
     }
-}
 
-private enum Constants {
-    static let spacing: CGFloat = 8
-    static let cornerRadius: CGFloat = 8
-    static let educationLoadingViewPadding: CGFloat = 28
-    static let educationLoadingViewTopPadding: CGFloat = 6
-    static let topSpacing: CGFloat = 2
-    static let expandedSpacing: CGFloat = 16
-    static let iconSize = CGSize(width: 56, height: 56)
-    static let educationLoadingHorizontalPadding: CGFloat = 56
-    static let stackViewMargins = UIEdgeInsets(top: expandedSpacing,
-                                               left: expandedSpacing,
-                                               bottom: expandedSpacing,
-                                               right: expandedSpacing)
+    private struct Constants {
+        static let spacing: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
+        static let educationLoadingViewPadding: CGFloat = 28
+        static let educationLoadingViewTopPadding: CGFloat = 6
+        static let topSpacing: CGFloat = 2
+        static let expandedSpacing: CGFloat = 16
+        static let iconSize = CGSize(width: 56, height: 56)
+        static let educationLoadingHorizontalPadding: CGFloat = 56
+        static let stackViewMargins = UIEdgeInsets(top: expandedSpacing,
+                                                   left: expandedSpacing,
+                                                   bottom: expandedSpacing,
+                                                   right: expandedSpacing)
+    }
+
+    private struct Strings {
+        static let loadingIndicatorText = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.loading",
+                                                                           comment: "Retrievenig invoice")
+    }
+
+    private struct Images {
+        static let checkMark = UIImageNamedPreferred(named: "greenCheckMark")
+    }
 }
