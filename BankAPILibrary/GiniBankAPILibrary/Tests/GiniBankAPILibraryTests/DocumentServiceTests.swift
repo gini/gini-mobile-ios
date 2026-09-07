@@ -113,7 +113,7 @@ final class DocumentServicesTests: XCTestCase {
         let document: Document = loadDocument(fileName: "compositeDocument", type: "json")
         let extractionResult = loadExtractionResults(fileName: "feedbackExtractions", type: "json")
 
-        // Initialize variable to store the expected amount from feedback file
+        /// Initialize variable to store the expected amount from feedback file
         var amountToPayFromLoadedFeedbackValue = ""
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
@@ -124,13 +124,13 @@ final class DocumentServicesTests: XCTestCase {
             amountToPayFromLoadedFeedbackValue = value
         }
 
-        // Extract amount to pay from the extraction result that will be submitted
+        /// Extract amount to pay from the extraction result that will be submitted
         let amountToPayExtraction = extractionResult.extractions.first {
             $0.name == "amountToPay"
         }
         let amountToPay = amountToPayExtraction?.value ?? ""
 
-        // Submit the feedback and verify the results
+        /// Submit the feedback and verify the results
         submitFeedbackWithCompoundExtractions(document: document,
                                               extractionResult: extractionResult,
                                               amountToPay: amountToPay,

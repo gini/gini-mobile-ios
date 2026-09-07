@@ -122,7 +122,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         if let typed = value as? Response {
             completion(.success(typed))
         } else {
-            // Avoids force-casting
+            /// Avoids force-casting
             fatalError("Type mismatch: expected \(Response.self), got \(type(of: value)) at \(file):\(line)")
         }
     }
