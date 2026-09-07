@@ -176,6 +176,7 @@ extension CaptureSuggestionsView {
                     UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
                 }
             }, completion: { [weak self] _ in
+                // View detached from window (analysis screen dismissed) — stop the announcement loop.
                 guard let self, self.window != nil else { return }
                 self.changeView(toState: .hidden)
             })
