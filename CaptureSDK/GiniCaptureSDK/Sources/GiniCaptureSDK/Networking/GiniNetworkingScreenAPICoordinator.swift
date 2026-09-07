@@ -203,7 +203,7 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
                            value: $0.value,
                            name: QRCodesExtractor.epsCodeUrlKey)
                 }
-            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [], candidates: [:])
+            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], candidates: [:])
             
             self.deliver(result: extractionResult, to: networkDelegate)
             return
