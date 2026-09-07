@@ -27,7 +27,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     
     init(keyStore: KeyStore = KeychainStore(),
          urlSession: URLSession = URLSession(configuration: .default)) {
-        // This method will remain empty; mock implementation does not perform login
+        /// This method will remain empty; mock implementation does not perform login
     }
     
     func initializeWithV1MockedDocuments() {
@@ -44,11 +44,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     }
     
     func logIn(completion: @escaping (Result<Token, GiniError>) -> Void) {
-        // This method will remain empty; mock implementation does not perform login
+        /// This method will remain empty; mock implementation does not perform login
     }
     
     func logOut() {
-        // This method will remain empty; mock implementation does not perform login
+        /// This method will remain empty; mock implementation does not perform login
     }
     
     func data<T: Resource>(resource: T,
@@ -130,7 +130,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     func download<T: Resource>(resource: T,
                                cancellationToken: CancellationToken?,
                                completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        // This method will remain empty; mock implementation does not perform login
+        /// This method will remain empty; mock implementation does not perform login
     }
     
     func upload<T: Resource>(resource: T,

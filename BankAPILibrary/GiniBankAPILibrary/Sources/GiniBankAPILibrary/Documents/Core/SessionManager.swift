@@ -78,7 +78,7 @@ final class SessionManager: NSObject {
         self.alternativeTokenSource = alternativeTokenSource
         self.userDomain = userDomain
 
-        // Use custom client or create default
+        /// Use custom client or create default
         if let customClient = customHTTPClient {
             self.httpClient = customClient
         } else {

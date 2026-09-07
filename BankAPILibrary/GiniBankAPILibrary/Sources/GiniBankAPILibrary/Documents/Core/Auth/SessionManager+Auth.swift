@@ -42,19 +42,19 @@ extension SessionManager: SessionAuthenticationProtocol {
     }
 
     func logOut() {
-        // Remove current user info from SessionManager
+        /// Remove current user info from SessionManager
         userAccessToken = nil
         clientAccessToken = nil
 
-        // Remove current user info from Keychain
+        /// Remove current user info from Keychain
         keyStore.removeAll()
     }
 
     private func removeUserAccessToken() {
-        // Remove current userAccessToken from SessionManager
+        /// Remove current userAccessToken from SessionManager
         userAccessToken = nil
 
-        // removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
         do {
             try KeychainStore().remove(service: .auth, key: .userAccessToken)
         } catch {
@@ -63,10 +63,10 @@ extension SessionManager: SessionAuthenticationProtocol {
     }
 
     private func removeClientAccessToken() {
-        // Remove current clientAccessToken from SessionManager
+        /// Remove current clientAccessToken from SessionManager
         clientAccessToken = nil
 
-        // removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
         do {
             try KeychainStore().remove(service: .auth, key: .clientAccessToken)
         } catch {

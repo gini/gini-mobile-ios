@@ -94,7 +94,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     private func handleFetchedDocument(_ result: Result<Document, GiniError>, completion: @escaping CompletionResult<String>) {
         switch result {
         case .success(let document):
-            // Before removing the partial document, all its composite documents must be deleted
+            /// Before removing the partial document, all its composite documents must be deleted
             let dispatchGroup = DispatchGroup()
             document.compositeDocuments?.forEach { compositeDocument in
                 guard let id = compositeDocument.id else { return }
@@ -106,7 +106,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                 }
             }
 
-            // Once all composite documents are deleted, it proceeds with the partial document
+            /// Once all composite documents are deleted, it proceeds with the partial document
             dispatchGroup.notify(queue: DispatchQueue.global()) {
                 self.deleteDocument(resourceHandler: self.sessionManager.data,
                                     with: document.id,
