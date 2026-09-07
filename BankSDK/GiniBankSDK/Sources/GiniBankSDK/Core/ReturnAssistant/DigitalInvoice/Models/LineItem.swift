@@ -11,7 +11,7 @@ import GiniBankAPILibrary
 extension DigitalInvoice {
     enum SelectedState: Equatable {
         case selected
-        case deselected(reason: ReturnReason?)
+        case deselected
     }
 
     private enum ExtractedLineItemKey: String {
@@ -77,7 +77,7 @@ extension DigitalInvoice {
 
         var extractions: [Extraction] {
 
-            var modifiedExtractions: [Extraction] = _extractions.map { extraction in
+            let modifiedExtractions: [Extraction] = _extractions.map { extraction in
 
                 guard let extractionName = extraction.name,
                     let key = ExtractedLineItemKey(rawValue: extractionName) else {
@@ -103,18 +103,6 @@ extension DigitalInvoice {
                 return extraction
             }
 
-            switch selectedState {
-            case .deselected(let returnReason):
-                if let returnReason = returnReason {
-                    modifiedExtractions.append(Extraction(box: nil,
-                                                          candidates: nil,
-                                                          entity: "",
-                                                          value: returnReason.id,
-                                                          name: "returnReason"))
-                }
-            case .selected: break
-            }
-
             return modifiedExtractions
         }
 
@@ -126,12 +114,5 @@ extension DigitalInvoice {
             return (try? totalPrice - (origPrice * origQuantity)) ??
                         Price(value: 0, currencyCode: totalPrice.currencyCode)
         }
-    }
-}
-
-extension ReturnReason {
-    var labelInLocalLanguageOrGerman: String {
-        let currentLanguageCode = Locale.current.languageCode ?? "de"
-        return localizedLabels[currentLanguageCode] ?? localizedLabels["de"] ?? ""
     }
 }
