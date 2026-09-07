@@ -18,7 +18,6 @@ final class CameraViewController: UIViewController {
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var cameraNeedsInitializing: Bool { !cameraPreviewViewController.hasInitialized }
     var shouldShowHelp: Bool { isPresentedOnScreen && !validQRCodeProcessing }
-    var topNavBarAnchor: NSLayoutYAxisAnchor? { bottomNavigationBar?.topAnchor }
 
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
@@ -77,8 +76,6 @@ final class CameraViewController: UIViewController {
     @IBOutlet weak var cameraPaneHorizontal: CameraPane!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
-    private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
-    private var bottomNavigationBar: UIView?
     private let cameraLensSwitcherView: CameraLensSwitcherView
 
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
@@ -137,7 +134,7 @@ final class CameraViewController: UIViewController {
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
         }
-        cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
+        cameraPaneHorizontal?.setupTitlesHidden(isHidden: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -218,14 +215,9 @@ final class CameraViewController: UIViewController {
         if qrCodeScanningOnlyEnabled {
             cameraPane.alpha = 0
             cameraPaneHorizontal?.alpha = 0
-            if giniConfiguration.bottomNavigationBarEnabled {
-                configureCustomTopNavigationBar(containsImage: false)
-            } else {
-                navigationItem.rightBarButtonItem = nil
-            }
+            navigationItem.rightBarButtonItem = nil
         } else {
             configureCameraPaneButtons()
-            configureBottomNavigationBar()
         }
     }
 
@@ -252,89 +244,6 @@ final class CameraViewController: UIViewController {
         }
 
         return availableLenses
-    }
-
-    private func configureCustomTopNavigationBar(containsImage: Bool) {
-        navigationItem.leftBarButtonItem = nil
-        navigationItem.hidesBackButton = true
-        if !containsImage {
-            let cancelBarButton = GiniBarButton(ofType: .cancel)
-            cancelBarButton.addAction(cameraButtonsViewModel, #selector(cameraButtonsViewModel.cancelPressed))
-            navigationItem.rightBarButtonItem = cancelBarButton.barButton
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-
-    private func updateCustomNavigationBars(containsImage: Bool) {
-        guard let bottomNavigationBar = bottomNavigationBar else {
-            return
-        }
-        configureCustomTopNavigationBar(containsImage: containsImage)
-        if containsImage {
-            navigationBarBottomAdapter?.showButtons(
-                navigationBar: bottomNavigationBar,
-                navigationButtons: [.help, .back])
-        } else {
-            navigationBarBottomAdapter?.showButtons(
-                navigationBar: bottomNavigationBar,
-                navigationButtons: [.help])
-        }
-    }
-
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = giniConfiguration.cameraNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
-            }
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.helpAction?()
-            }
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.backButtonAction?()
-            }
-
-            if let bar =
-                navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = bar
-                view.addSubview(bar)
-                layoutBottomNavigationBar(bar)
-            }
-            updateCustomNavigationBars(
-                containsImage: cameraButtonsViewModel.images.count > 0)
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        if UIDevice.current.isIpad {
-            view.removeConstraints([cameraPreviewBottomContraint, iPadBottomPaneConstraint])
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(navigationBar)
-            NSLayoutConstraint.activate([
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
-                cameraPane.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
-                cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: navigationBar.topAnchor)
-            ])
-        } else {
-            view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(navigationBar)
-            cameraPaneHorizontalBottomConstraint.constant = CameraBottomNavigationBar.Constants.heightLandscape
-            NSLayoutConstraint.activate([
-                navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                cameraPane.leftButtonsStack.bottomAnchor.constraint(equalTo: cameraPane.bottomAnchor)
-            ])
-        }
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
     }
 
     private func configureCameraPaneButtons() {
@@ -390,9 +299,6 @@ final class CameraViewController: UIViewController {
             } else {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
                 self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
-            }
-            if self?.giniConfiguration.bottomNavigationBarEnabled == true {
-                self?.updateCustomNavigationBars(containsImage: images.last != nil)
             }
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)

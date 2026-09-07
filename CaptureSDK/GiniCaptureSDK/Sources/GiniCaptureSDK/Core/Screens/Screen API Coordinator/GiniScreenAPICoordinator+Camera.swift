@@ -67,7 +67,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
-        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
+        let bottomAnchor = viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera(bottomAnchor: bottomAnchor)
@@ -114,23 +114,21 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             }
         }
 
-        if !giniConfiguration.bottomNavigationBarEnabled {
-            if pages.count > 0 {
-                let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
-                                                                   comment: "Review")
-                let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-                backButton.addAction(self, #selector(popBackToReview))
-                cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
-            } else {
-                let cancelButton = GiniBarButton(ofType: .cancel)
-                cancelButton.addAction(self, #selector(back))
-                cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
-            }
-
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(showHelpMenuScreen))
-            cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
+        if pages.count > 0 {
+            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                               comment: "Review")
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(popBackToReview))
+            cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
+        } else {
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(back))
+            cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
         }
+
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(showHelpMenuScreen))
+        cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
 
         if giniConfiguration.fileImportSupportedTypes != .none {
             documentPickerCoordinator.delegate = self

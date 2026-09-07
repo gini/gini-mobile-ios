@@ -54,8 +54,6 @@ final class SkontoHelpViewController: UIViewController {
     }()
 
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-    private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
-    private var navigationBarHeightConstraint: NSLayoutConstraint?
 
     private let viewModel = SkontoHelpViewModel()
 
@@ -63,7 +61,6 @@ final class SkontoHelpViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupConstraints()
-        configureBottomNavigationBar()
     }
 
     required init?(coder: NSCoder) {
@@ -109,77 +106,6 @@ final class SkontoHelpViewController: UIViewController {
         ])
     }
 
-    private func configureBottomNavigationBar() {
-        let configuration = GiniBankConfiguration.shared
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBar = configuration.skontoHelpNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
-            } else {
-                navigationBarBottomAdapter = DefaultSkontoHelpNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.dismissViewController()
-            }
-
-            navigationItem.setHidesBackButton(true, animated: false)
-            navigationItem.leftBarButtonItem = nil
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(navigationBar)
-
-                layoutBottomNavigationBar(navigationBar)
-            }
-        }
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-            guard let self = self,
-                  let heightConstraint = self.navigationBarHeightConstraint else { return }
-
-            let newHeight = self.calculatedNavigationBarHeight(for: UIDevice.current.orientation)
-            heightConstraint.constant = newHeight
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        let navigationBarHeight = calculatedNavigationBarHeight(for: UIDevice.current.orientation)
-
-        scrollViewBottomConstraint.isActive = false
-
-        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: navigationBarHeight)
-        navigationBarHeightConstraint = heightConstraint
-
-        NSLayoutConstraint.activate([
-            scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            heightConstraint
-        ])
-
-        view.bringSubviewToFront(navigationBar)
-    }
-
-    private func calculatedNavigationBarHeight(for orientation: UIDeviceOrientation) -> CGFloat {
-        let isLandscape = orientation.isLandscape
-
-        let baseHeight: CGFloat
-        if isLandscape {
-            baseHeight = Constants.navigationBarHeightLandscape
-        } else {
-            baseHeight = Constants.navigationBarHeightPortrait
-        }
-
-        let safeAreaBottomInset = isLandscape ? view.safeAreaInsets.bottom : 0
-        return baseHeight + safeAreaBottomInset
-    }
-
     @objc private func dismissViewController() {
         navigationController?.popViewController(animated: true)
     }
@@ -189,7 +115,5 @@ private extension SkontoHelpViewController {
     enum Constants {
         static let padding: CGFloat = 16
         static let spacing: CGFloat = 32
-        static let navigationBarHeightPortrait: CGFloat = UIDevice.current.isSmallIphone ? 72 : 114
-        static let navigationBarHeightLandscape: CGFloat = UIDevice.current.isSmallIphone ? 40 : 62
     }
 }

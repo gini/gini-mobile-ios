@@ -35,7 +35,6 @@ final class DigitalInvoiceHelpViewController: UIViewController {
     private lazy var scrollViewBottomConstraint =
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                constant: -Constants.padding)
-    private var navigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
 
     private let viewModel: DigitalInvoiceHelpViewModel
 
@@ -44,7 +43,6 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupConstraints()
-        configureBottomNavigationBar()
     }
 
     required init?(coder: NSCoder) {
@@ -104,48 +102,6 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         }
     }
 
-    private func configureBottomNavigationBar() {
-        let configuration = GiniBankConfiguration.shared
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBar = configuration.digitalInvoiceHelpNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
-            } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceHelpNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.dismissViewController()
-            }
-
-            navigationItem.setHidesBackButton(true, animated: false)
-            navigationItem.leftBarButtonItem = nil
-
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(navigationBar)
-
-                layoutBottomNavigationBar(navigationBar)
-            }
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(navigationBar)
-
-        scrollViewBottomConstraint.isActive = false
-        NSLayoutConstraint.activate([
-            scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
-        ])
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
-    }
-
     @objc
     private func dismissViewController() {
         navigationController?.popViewController(animated: true)
@@ -156,6 +112,5 @@ private extension DigitalInvoiceHelpViewController {
     enum Constants {
         static let padding: CGFloat = 24
         static let spacing: CGFloat = 36
-        static let navigationBarHeight: CGFloat = 114
     }
 }

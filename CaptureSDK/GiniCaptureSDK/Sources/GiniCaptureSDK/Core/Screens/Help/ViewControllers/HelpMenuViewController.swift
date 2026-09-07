@@ -19,15 +19,12 @@ protocol HelpMenuViewControllerDelegate: AnyObject {
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
  */
 
-final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
+final class HelpMenuViewController: UIViewController {
 
     weak var delegate: HelpMenuViewControllerDelegate?
     private(set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    var bottomNavigationBar: UIView?
-    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
@@ -97,7 +94,6 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateBottomBarHeightBasedOnOrientation()
         tableView.reloadData()
     }
 
@@ -110,15 +106,10 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
-        configureBottomNavigationBar(
-            configuration: giniConfiguration,
-            under: tableView)
     }
 
     private func configureConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
-        }
+        NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])

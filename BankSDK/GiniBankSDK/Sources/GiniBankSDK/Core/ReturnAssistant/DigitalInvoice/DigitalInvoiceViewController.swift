@@ -41,13 +41,10 @@ final class DigitalInvoiceViewController: UIViewController {
         return containerView
     }()
 
-    private lazy var landscapeBottomNavBarContainer: UIView = UIView()
+    private lazy var landscapeProceedViewContainer: UIView = UIView()
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
-
-    private var navigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
 
     private lazy var proceedViewConstraints: [NSLayoutConstraint] = [
         proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -56,18 +53,6 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
-
-    private lazy var bottomNavigationBarConstraints: [NSLayoutConstraint] = {
-        guard let bottomNavigationBar else {
-            return []
-        }
-        return [
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
-        ]
-    }()
 
     private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -87,20 +72,14 @@ final class DigitalInvoiceViewController: UIViewController {
                                                          comment: "Digital invoice")
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
-        if configuration.bottomNavigationBarEnabled {
-            let cancelButton = GiniBarButton(ofType: .cancel)
-            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.rightBarButtonItem = cancelButton.barButton
-            navigationItem.hidesBackButton = true
-        } else {
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped))
-            navigationItem.rightBarButtonItem = helpButton.barButton
 
-            let cancelButton = GiniBarButton(ofType: .cancel)
-            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.leftBarButtonItem = cancelButton.barButton
-        }
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(helpButtonTapped))
+        navigationItem.rightBarButtonItem = helpButton.barButton
+
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+        navigationItem.leftBarButtonItem = cancelButton.barButton
 
         view.addSubview(tableView)
         view.addSubview(proceedView)
@@ -108,8 +87,6 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.proceedAction = { [weak self] in
             self?.viewModel.didTapPay()
         }
-
-        setupBottomNavigationBar()
     }
 
     private func setupConstraints() {
@@ -137,36 +114,6 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    private func setupBottomNavigationBar() {
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = configuration.digitalInvoiceNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-                self?.payButtonTapped()
-            }
-
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.helpButtonTapped()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-                NSLayoutConstraint.activate(bottomNavigationBarConstraints)
-            }
-
-            proceedView.isHidden = true
-            updateValues()
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -187,71 +134,46 @@ final class DigitalInvoiceViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        configureBottomNavBarForiPhone()
+        configureProceedViewForiPhone()
     }
 
-    private func configureBottomNavBarForiPhone() {
+    private func configureProceedViewForiPhone() {
         guard UIDevice.current.isIphone else { return }
 
         let isLandscape = UIDevice.current.isLandscape
 
         if isLandscape {
-            configureBottomNavBarForLandscape()
+            configureProceedViewForLandscape()
         } else {
-            configureBottomNavBarForPortrait()
+            configureProceedViewForPortrait()
         }
     }
 
-    private func configureBottomNavBarForLandscape() {
+    private func configureProceedViewForLandscape() {
         NSLayoutConstraint.deactivate(proceedViewConstraints)
         proceedView.removeFromSuperview()
 
-        setupLandscapeBottomNavigation()
-
-        if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarConstraints.last?.isActive = false
-        }
+        setupProceedViewInLandscape()
 
         NSLayoutConstraint.activate(proceedViewTableConstraints)
 
         proceedView.isHidden = false
-        bottomNavigationBar?.isHidden = true
     }
 
-    private func configureBottomNavBarForPortrait() {
+    private func configureProceedViewForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
         tableView.tableFooterView = nil
-
-        if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarConstraints.last?.isActive = true
-        }
 
         proceedViewTableConstraints.last?.isActive = false
 
         view.addSubview(proceedView)
         NSLayoutConstraint.activate(proceedViewConstraints)
 
-        proceedView.isHidden = configuration.bottomNavigationBarEnabled
-        bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
-    }
-
-    @objc func payButtonTapped() {
-        viewModel.didTapPay()
+        proceedView.isHidden = false
     }
 
     func updateValues() {
-        if configuration.bottomNavigationBarEnabled {
-            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice?.string)
-            navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
-            if let skontoViewModel = viewModel.skontoViewModel {
-                let isSkontoApplied = skontoViewModel.isSkontoApplied
-                navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
-                navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: skontoViewModel.skontoPercentageString)
-                navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: skontoViewModel.savingsAmountString)
-                navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
-            }
-        }
         // Reconfigure visible cells in place instead of dequeueing new ones so
         // the iOS 26 Liquid Glass UISwitch isn't animated on unrelated rows
         // when the table reloads after a tap.
@@ -282,16 +204,16 @@ final class DigitalInvoiceViewController: UIViewController {
 
     }
 
-    // MARK: - Bottom Navigation Setup for Landscape
-    private func setupLandscapeBottomNavigation() {
-        landscapeBottomNavBarContainer.addSubview(proceedView)
-        constraintProceedViewInBottomNavBarContainer()
-        applyBottomNavBarContainerHeightAndAssign()
+    // MARK: - Proceed View Setup for Landscape
+    private func setupProceedViewInLandscape() {
+        landscapeProceedViewContainer.addSubview(proceedView)
+        constraintProceedViewInLandscapeContainer()
+        applyLandscapeContainerHeightAndAssign()
     }
 
-    private func constraintProceedViewInBottomNavBarContainer() {
+    private func constraintProceedViewInLandscapeContainer() {
         // Setup internal constraints
-        let safeArea = landscapeBottomNavBarContainer.safeAreaLayoutGuide
+        let safeArea = landscapeProceedViewContainer.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
             proceedView.topAnchor.constraint(equalTo: safeArea.topAnchor,
@@ -302,7 +224,7 @@ final class DigitalInvoiceViewController: UIViewController {
         ])
     }
 
-    private func applyBottomNavBarContainerHeightAndAssign() {
+    private func applyLandscapeContainerHeightAndAssign() {
         let targetWidth = view.bounds.width
         let targetSize = CGSize(width: targetWidth,
                                 height: UIView.layoutFittingCompressedSize.height)
@@ -312,8 +234,8 @@ final class DigitalInvoiceViewController: UIViewController {
                                                               withHorizontalFittingPriority: .required,
                                                               verticalFittingPriority: .fittingSizeLevel)
 
-        landscapeBottomNavBarContainer.frame.size.height = fittingSize.height
-        tableView.tableFooterView = landscapeBottomNavBarContainer
+        landscapeProceedViewContainer.frame.size.height = fittingSize.height
+        tableView.tableFooterView = landscapeProceedViewContainer
     }
 }
 

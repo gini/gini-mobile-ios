@@ -39,7 +39,7 @@ final class ReviewViewControllerTests: XCTestCase {
                 multiplier = 0.65 // ipadLandscapeHeightMultiplierWithoutSaveToGallery
             } else {
                 // Portrait - assuming saveToGalleryView is not shown
-                multiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.62 : 0.75
+                multiplier = 0.75
             }
 
             let height = reviewViewController.view.bounds.height * multiplier
@@ -62,7 +62,7 @@ final class ReviewViewControllerTests: XCTestCase {
             if isLandscape {
                 return 0.5
             } else {
-                return giniConfiguration.bottomNavigationBarEnabled ? 0.35 : 0.45
+                return 0.45
             }
         } else if isLandscape {
             return 0.55
@@ -71,10 +71,10 @@ final class ReviewViewControllerTests: XCTestCase {
             let baseMultiplier: CGFloat
             if reviewViewController.view.safeAreaInsets.bottom > 0 {
                 // Device with safe area (notch)
-                baseMultiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.52 : 0.58
+                baseMultiplier = 0.58
             } else {
                 // Device without safe area
-                baseMultiplier = giniConfiguration.bottomNavigationBarEnabled ? 0.42 : 0.5
+                baseMultiplier = 0.5
             }
             return baseMultiplier
         }

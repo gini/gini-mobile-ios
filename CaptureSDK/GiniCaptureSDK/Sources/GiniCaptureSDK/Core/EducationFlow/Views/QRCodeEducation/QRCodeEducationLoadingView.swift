@@ -112,23 +112,12 @@ final class QRCodeEducationLoadingView: UIView {
 
     private func configureImageViewVisibility() {
         // Hide image view on devices without notch and 200% font size enabled
-        // Hide image view on landscape iPhone with bottom navigation bar enabled and 200% font size enabled
-        let navigationBottomBarEnabled = giniConfiguration.bottomNavigationBarEnabled
-        let isLandscapeWithBottomBar = navigationBottomBarEnabled && UIDevice.current.isIphoneAndLandscape
-        let shouldHideImageView = isAccessibilityDeviceWithoutNotch || isLandscapeWithBottomBar
-        || (isAccessibilityDeviceWithoutNotch && navigationBottomBarEnabled)
-
-        imageView.isHidden = shouldHideImageView
+        imageView.isHidden = isAccessibilityDeviceWithoutNotch
     }
 
     private func configureWithoutNotchConstraints() {
-        if isAccessibilityDeviceWithoutNotch && giniConfiguration.bottomNavigationBarEnabled {
-            // Allow vertical compression so the label doesn't push other UI elements in compact layouts
-            textLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        } else {
-            // Prevent compression to ensure the label remains fully visible when layout space allows
-            textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        }
+        // Prevent compression to ensure the label remains fully visible when layout space allows
+        textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
         NSLayoutConstraint.activate([
             // Text label positioned at top (where image would be)
