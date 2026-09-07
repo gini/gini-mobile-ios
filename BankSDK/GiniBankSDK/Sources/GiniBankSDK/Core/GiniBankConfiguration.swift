@@ -341,11 +341,6 @@ public final class GiniBankConfiguration: NSObject {
     internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
 
     /**
-     `Return Reasons` feature is no longer supported. Setting this property has no effect.
-     */
-    internal let enableReturnReasons: Bool = false
-
-    /**
      Custom bottom navigation adapters (like `DigitalInvoiceSkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
      */
     internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil

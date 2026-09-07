@@ -345,7 +345,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
             let extractions = createExtractions(for: key, from: document)
             let extractionResult = ExtractionResult(extractions: extractions,
                                                     lineItems: [],
-                                                    returnReasons: [],
                                                     candidates: [:])
             deliver(result: extractionResult, analysisDelegate: networkDelegate)
         }
@@ -458,7 +457,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                                 userJourneyAnalyticsEnabled: analyticsEnabled)
 
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
                                                   .bankSDKVersion: GiniBankSDKVersion,
                                                   .instantPaymentEnabled: configuration.instantPaymentEnabled])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration,
@@ -920,26 +918,24 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let filteredExtractions = extractionResult.extractions.filter { $0.name != "amountToPay" }
         return ExtractionResult(extractions: filteredExtractions,
                                 lineItems: extractionResult.lineItems,
-                                returnReasons: extractionResult.returnReasons,
                                 skontoDiscounts: extractionResult.skontoDiscounts,
                                 candidates: extractionResult.candidates)
     }
 
     /**
      Returns a copy of the extraction result with the compound extractions
-     (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
+     (`lineItems`, `skontoDiscounts`) removed.
      */
     func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
         return ExtractionResult(extractions: extractionResult.extractions,
                                 lineItems: nil,
-                                returnReasons: nil,
                                 skontoDiscounts: nil,
                                 candidates: extractionResult.candidates)
     }
 
     /**
      Builds the extraction result delivered for a confirmed credit-note document:
-     compound extractions (`lineItems`, `skontoDiscounts`, `returnReasons`) are stripped so
+     compound extractions (`lineItems`, `skontoDiscounts`) are stripped so
      the Return Assistant and Skonto flows are never triggered, and `amountToPay` is removed
      so the host app does not pre-fill a payment amount for a credit note.
      */
