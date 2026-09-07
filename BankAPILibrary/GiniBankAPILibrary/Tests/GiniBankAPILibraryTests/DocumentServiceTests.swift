@@ -117,7 +117,6 @@ final class DocumentServicesTests: XCTestCase {
         var amountToPayFromLoadedFeedbackValue = ""
         let feedbackData = loadFile(withName: "feedbackToSend", ofType: "json")
 
-        // Fix: Parse as nested dictionaries [String: [String: [String: String]]]
         if let json = try? JSONSerialization.jsonObject(with: feedbackData, options: []) as? [String: Any],
            let extractions = json["extractions"] as? [String: [String: String]],
            let amountToPay = extractions["amountToPay"],
@@ -198,8 +197,9 @@ private extension DocumentServicesTests {
                     self.verifySuccessfulSubmission(amountToPay: amountToPay,
                                                     amountToPayFromLoadedFeedback: amountToPayFromLoadedFeedback,
                                                     expectation: expectation)
-                case .failure:
-                    break
+                case .failure(let error):
+                    XCTFail("submitFeedback failed: \(error)")
+                    expectation.fulfill()
             }
         }
         wait(for: [expectation], timeout: 1)

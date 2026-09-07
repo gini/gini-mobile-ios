@@ -277,6 +277,7 @@ private extension SessionManager {
             completion(.failure(.unknown(response: response, data: data)))
         }
     }
+
     private func handleSuccess<T: Resource>(resource: T,
                                             request: URLRequest,
                                             response: HTTPURLResponse,
