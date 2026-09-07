@@ -118,7 +118,8 @@ final class SessionManagerMock: SessionManagerProtocol {
     
     private func deliver<Response>(_ value: Any,
                                    to completion: @escaping (Result<Response, GiniError>) -> Void,
-                                   file: StaticString = #file, line: UInt = #line) {
+                                   file: StaticString = #file,
+                                   line: UInt = #line) {
         if let typed = value as? Response {
             completion(.success(typed))
         } else {

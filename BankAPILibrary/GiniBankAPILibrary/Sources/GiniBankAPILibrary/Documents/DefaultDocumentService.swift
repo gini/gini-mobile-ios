@@ -91,7 +91,8 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         }
     }
 
-    private func handleFetchedDocument(_ result: Result<Document, GiniError>, completion: @escaping CompletionResult<String>) {
+    private func handleFetchedDocument(_ result: Result<Document, GiniError>,
+                                       completion: @escaping CompletionResult<String>) {
         switch result {
         case .success(let document):
             /// Before removing the partial document, all its composite documents must be deleted
