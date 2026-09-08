@@ -54,7 +54,11 @@ final class SessionManagerMock: SessionManagerProtocol {
     func data<T: Resource>(resource: T,
                            cancellationToken: CancellationToken?,
                            completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        guard let apiMethod = resource.method as? APIMethod else { return }
+        guard let apiMethod = resource.method as? APIMethod else {
+            failFast(description: "Unexpected resource.method \(resource.method) in mock data(...)",
+                     completion: completion)
+            return
+        }
         
         switch apiMethod {
             
@@ -141,25 +145,42 @@ final class SessionManagerMock: SessionManagerProtocol {
                              data: Data,
                              cancellationToken: CancellationToken?,
                              completion: @escaping (Result<T.ResponseType, GiniError>) -> Void) {
-        
+
         guard let apiMethod = resource.method as? APIMethod else {
+            failFast(description: "Unexpected resource.method \(resource.method) in mock upload(...)",
+                     completion: completion)
             return
         }
-        
+
         switch apiMethod {
         case .createDocument(_, _, _, let documentType):
             let mockId = mockIdForDocumentType(documentType)
-            
+
             guard let typedResponse = mockId as? T.ResponseType else {
-                assertionFailure("Mock response type mismatch")
+                let mismatch = "SessionManagerMock upload: expected \(T.ResponseType.self), got \(type(of: mockId))"
+                XCTFail(mismatch)
+                completion(.failure(.parseError(message: mismatch, response: nil, data: nil)))
                 return
             }
-            
+
             completion(.success(typedResponse))
-            
+
         default:
             break
         }
+    }
+
+    /**
+     Records an XCTFail so unexpected mock inputs surface immediately, then
+     completes with `.unknown` so callers awaiting the completion aren't left
+     hanging (previously a bare `return` here would silently drop the request).
+     */
+    private func failFast<T>(description: String,
+                             completion: @escaping (Result<T, GiniError>) -> Void,
+                             file: StaticString = #file,
+                             line: UInt = #line) {
+        XCTFail(description, file: file, line: line)
+        completion(.failure(.unknown(response: nil, data: nil)))
     }
     
     private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> Any {
