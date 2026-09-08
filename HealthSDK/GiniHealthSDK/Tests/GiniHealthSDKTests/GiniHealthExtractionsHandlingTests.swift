@@ -372,4 +372,98 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNotNil(receivedDoctorExtraction, "Doctor name extraction should not be nil")
         XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName, "Doctor name extraction value should match expected name")
     }
+
+    // MARK: - Silent-drop regression tests (PR #1260)
+    //
+    // The two tests below prove that dropping the strong reference to `GiniHealth`
+    // between the `fetchDocument` completion and the `extractions` completion does
+    // not silently drop the caller's `completion`. Before PR #1260, the inner
+    // extractions closures in `checkIfDocumentContainsMultipleInvoices` and
+    // `fetchExtractions` (used by `getExtractions`) captured `[weak self]` and
+    // called `self?.handleXxxExtractionResult(...)` — when `self` was nil, the
+    // method call became a no-op and `completion` was never invoked. The fix
+    // switched the inner captures to strong `self`, so the closure keeps the
+    // SDK alive until the callback runs.
+    //
+    // These tests use `DelayableMockSessionManager` to introduce a 100ms window
+    // between the (synchronous) `fetchDocument` return and the extractions
+    // callback firing. The test then drops its strong reference to `GiniHealth`
+    // during that window. Any regression that re-introduces `[weak self]` on the
+    // inner closures makes the completion silently drop and the test time out.
+
+    /// Regression test — `getExtractions` completion must fire even when the
+    /// caller releases `GiniHealth` between the request start and the response.
+    func testGetExtractionsFiresCompletionWhenSDKReleasedMidRequest() {
+        let sessionManager = DelayableMockSessionManager(extractionsDelay: 0.1)
+        let documentService = DefaultDocumentService(sessionManager: sessionManager,
+                                                     apiVersion: 5)
+        let paymentService = PaymentService(sessionManager: sessionManager,
+                                            apiVersion: 5)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManager,
+                                                                    apiVersion: 5)
+        let api = GiniHealthAPI(documentService: documentService,
+                                paymentService: paymentService,
+                                clientConfigurationService: clientConfigurationService)
+        var sut: GiniHealth? = GiniHealth(giniApiLib: api)
+        weak var weakSut = sut
+
+        let expectation = self.expectation(description: "Completion fires after SDK is released")
+        var receivedResult: Result<[GiniHealthSDK.Extraction], GiniHealthError>?
+
+        sut?.getExtractions(docId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+            receivedResult = result
+            expectation.fulfill()
+        }
+
+        // Drop the caller's strong reference before the extractions callback fires.
+        // Only the pending closure keeps `sut` alive from here on.
+        sut = nil
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertNotNil(receivedResult,
+                        "Completion must fire even when the SDK is released mid-request")
+        if case .failure(let error) = receivedResult {
+            XCTFail("Expected success from the extractionsWithPayment fixture, got failure: \(error)")
+        }
+        XCTAssertNil(weakSut,
+                     "SDK should be deallocated after completion fires — no permanent retain cycle")
+    }
+
+    /// Regression test — `checkIfDocumentContainsMultipleInvoices` completion
+    /// must fire even when the caller releases `GiniHealth` mid-request.
+    func testCheckIfDocumentContainsMultipleInvoicesFiresCompletionWhenSDKReleasedMidRequest() {
+        let sessionManager = DelayableMockSessionManager(extractionsDelay: 0.1)
+        let documentService = DefaultDocumentService(sessionManager: sessionManager,
+                                                     apiVersion: 5)
+        let paymentService = PaymentService(sessionManager: sessionManager,
+                                            apiVersion: 5)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManager,
+                                                                    apiVersion: 5)
+        let api = GiniHealthAPI(documentService: documentService,
+                                paymentService: paymentService,
+                                clientConfigurationService: clientConfigurationService)
+        var sut: GiniHealth? = GiniHealth(giniApiLib: api)
+        weak var weakSut = sut
+
+        let expectation = self.expectation(description: "Completion fires after SDK is released")
+        var receivedResult: Result<Bool, GiniHealthError>?
+
+        sut?.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.notPayableDocumentID) { result in
+            receivedResult = result
+            expectation.fulfill()
+        }
+
+        sut = nil
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertNotNil(receivedResult,
+                        "Completion must fire even when the SDK is released mid-request")
+        if case .failure(let error) = receivedResult {
+            XCTFail("Expected success from the extractionResultWithoutIBAN fixture, got failure: \(error)")
+        }
+        XCTAssertNil(weakSut,
+                     "SDK should be deallocated after completion fires — no permanent retain cycle")
+    }
 }
