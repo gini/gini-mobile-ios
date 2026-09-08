@@ -317,16 +317,16 @@ class QRCodesExtractorTests: XCTestCase {
     // MARK: - Test QRCodesFormat prefix URLs
 
     func testQRCodesFormatPrefixURLs() {
-        XCTAssertEqual(QRCodesFormat.epc06912.prefixURL,
+        XCTAssertEqual(QRCodesFormat.epc06912.formatMarker,
                        "BCD",
                        "EPC06912 format should have BCD prefix")
-        XCTAssertEqual(QRCodesFormat.eps4mobile.prefixURL,
+        XCTAssertEqual(QRCodesFormat.eps4mobile.formatMarker,
                        "epspayment://",
                        "EPS4Mobile format should have epspayment:// prefix")
-        XCTAssertEqual(QRCodesFormat.bezahl.prefixURL,
+        XCTAssertEqual(QRCodesFormat.bezahl.formatMarker,
                        "bank://",
                        "Bezahl format should have bank:// prefix")
-        XCTAssertEqual(QRCodesFormat.giniQRCode.prefixURL,
+        XCTAssertEqual(QRCodesFormat.giniQRCode.formatMarker,
                        "https://pay.gini.net/",
                        "Gini QR code format should have https://pay.gini.net/ prefix")
     }
