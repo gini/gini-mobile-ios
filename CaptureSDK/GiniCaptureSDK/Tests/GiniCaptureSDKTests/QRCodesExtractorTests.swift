@@ -314,12 +314,12 @@ class QRCodesExtractorTests: XCTestCase {
                        "Empty input should return empty string for amount")
     }
 
-    // MARK: - Test QRCodesFormat prefix URLs
+    // MARK: - Test QRCodesFormat format markers
 
-    func testQRCodesFormatPrefixURLs() {
+    func testQRCodesFormatMarkers() {
         XCTAssertEqual(QRCodesFormat.epc06912.formatMarker,
                        "BCD",
-                       "EPC06912 format should have BCD prefix")
+                       "EPC06912 format should have BCD marker")
         XCTAssertEqual(QRCodesFormat.eps4mobile.formatMarker,
                        "epspayment://",
                        "EPS4Mobile format should have epspayment:// prefix")
