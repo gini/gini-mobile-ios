@@ -140,11 +140,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         return cameraViewController
     }
 
-    fileprivate func didCaptureAndValidate(_ document: GiniCaptureDocument) {
+    func didCaptureAndValidate(_ document: GiniCaptureDocument) {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
 
-    private func shouldShowOnboarding() -> Bool {
+    func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !GiniCaptureUserDefaultsStorage.onboardingShowed {
             GiniCaptureUserDefaultsStorage.onboardingShowed = true
@@ -262,7 +262,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
             }
         }
 
-    fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
+    func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
         view.addInteraction(dropInteraction)
     }
@@ -272,8 +272,8 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
 extension GiniScreenAPICoordinator {
 
-    fileprivate func validate(_ documents: [GiniCaptureDocument],
-                              completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
+    func validate(_ documents: [GiniCaptureDocument],
+                  completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
         var documentsToValidate = documents + pages.map { $0.document }
 
         for document in documentsToValidate where document.type == .qrcode {
@@ -310,8 +310,8 @@ extension GiniScreenAPICoordinator {
         }
     }
 
-    private func validate(importedDocuments documents: [GiniCaptureDocument],
-                          completion: @escaping ([GiniCapturePage]) -> Void) {
+    func validate(importedDocuments documents: [GiniCaptureDocument],
+                  completion: @escaping ([GiniCapturePage]) -> Void) {
         DispatchQueue.global().async {
             var pages: [GiniCapturePage] = []
             documents.forEach { document in
