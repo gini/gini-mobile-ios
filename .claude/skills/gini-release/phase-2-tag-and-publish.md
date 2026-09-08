@@ -72,20 +72,20 @@ For each package in `RELEASE-ORDER.md` order, edit **up to five** places. Missin
    grep -rEn 'iOS-Gini-Health-SDK-[0-9.]+' HealthSDK/GiniHealthSDK/Documentation/
    ```
 
-5. **Doc URLs with tag paths, and hardcoded version strings in tests** — READMEs and Jazzy docs link into GitHub with `<Package>;<x.y.z>` in the path, and a few tests hardcode the current library version. Both are easy to miss and only fail when someone follows the link or reads the assertion.
+5. **Doc URLs with tag paths, and hardcoded version strings in tests** — READMEs, Jazzy docs and example-app links point into GitHub with `<Package>;<x.y.z>` in the path, and a few tests hardcode the current library version. Both are easy to miss and only fail when someone follows the link or reads the assertion. Some of these have been drifting for major releases — `BankSDK/GiniBankSDK/README.md` still points at `GiniBankSDK;3.3.0` — so this step needs a real grep, not a checklist.
 
-   First, run a package-scoped grep for the **previous** version to catch every mention:
+   Run a package-scoped grep for the **current** version *before* you bump the version file — the tag-path links use the version being released, not the previous one, so grep the current value and update per hit:
 
    ```bash
-   git grep -nE '<previous-x.y.z>' -- <package-root>/
+   git grep -nE '(%3B|;)<current-x.y.z>' -- <package-root>/ ':(exclude)*.pbxproj'
+   git grep -nE '"<current-x.y.z>"' -- <package-root>/'*.swift'
    ```
 
-   Known spots to double-check:
+   Known spots to double-check (non-exhaustive — grep is the source of truth):
 
-   - `BankAPILibrary/GiniBankAPILibrary/README.md` and Jazzy docs — links of the form `.../gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B<x.y.z>/...`.
-   - `BankAPILibrary/GiniBankAPILibrary/Tests/…/DocumentServiceTests.swift` — `apiLibVersion: "<x.y.z>"` inside `testLogErrorEvent`.
-
-   Grep first, update per hit; do not rely on this list being exhaustive.
+   - `BankAPILibrary/GiniBankAPILibrary/Documentation/source/Getting started.md` — sample-test-case link of the form `.../gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B<x.y.z>/...`.
+   - `BankSDK/GiniBankSDK/README.md` — example-app + `Credentials.plist` links of the form `.../GiniBankSDK%3B<x.y.z>/...` (this file has drifted several majors in the past — verify it moves).
+   - `BankAPILibrary/GiniBankAPILibrary/Tests/GiniBankAPILibraryTests/DocumentServiceTests.swift` — `apiLibVersion: "<x.y.z>"` inside `testLogErrorEvent`.
 
 ## 3. Validate the bumps
 
