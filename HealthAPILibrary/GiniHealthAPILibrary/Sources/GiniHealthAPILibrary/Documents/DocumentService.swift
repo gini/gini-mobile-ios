@@ -192,8 +192,11 @@ extension DocumentService {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
-            self.handlePollResult(result, document: document, resourceHandler: resourceHandler, cancellationToken: cancellationToken, completion: completion)
-            
+            self.handlePollResult(result,
+                                  document: document,
+                                  resourceHandler: resourceHandler,
+                                  cancellationToken: cancellationToken,
+                                  completion: completion)
         }
     }
 
@@ -315,10 +318,16 @@ extension DocumentService {
         resourceHandler(resource) { result in
             switch result {
             case let .success(pages):
-                self.handlePreviewPages(pages, pageNumber: pageNumber, completion: completion)
-            
+                self.handlePreviewPages(pages,
+                                        pageNumber: pageNumber,
+                                        completion: completion)
+
             case let .failure(error):
-                self.retryPreviewIfNeeded(error: error, resourceHandler: resourceHandler, documentId: documentId, pageNumber: pageNumber, completion: completion)
+                self.retryPreviewIfNeeded(error: error,
+                                          resourceHandler: resourceHandler,
+                                          documentId: documentId,
+                                          pageNumber: pageNumber,
+                                          completion: completion)
             }
         }
     }
@@ -346,7 +355,6 @@ extension DocumentService {
                                       documentId: String,
                                       pageNumber: Int,
                                       completion: @escaping CompletionResult<Data>) {
-        
         if case .notFound = error {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.preview(resourceHandler: resourceHandler,
@@ -354,6 +362,9 @@ extension DocumentService {
                              pageNumber: pageNumber,
                              completion: completion)
             }
+        } else {
+            /// Non-`.notFound` errors must be forwarded so callers don't wait indefinitely.
+            completion(.failure(error))
         }
     }
 

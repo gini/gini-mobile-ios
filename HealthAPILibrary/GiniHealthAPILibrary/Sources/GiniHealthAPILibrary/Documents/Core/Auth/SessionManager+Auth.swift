@@ -8,7 +8,7 @@
 import Foundation
 
 extension SessionManager: SessionAuthenticationProtocol {
-    
+
     var client: Client {
         if let id = self.keyStore.fetch(service: .auth, key: .clientId),
            let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
@@ -19,11 +19,11 @@ extension SessionManager: SessionAuthenticationProtocol {
             return Client(id: "", secret: "", domain: "")
         }
     }
-    
+
     var user: User? {
         guard let email = self.keyStore.fetch(service: .auth, key: .userEmail),
             let password = self.keyStore.fetch(service: .auth, key: .userPassword) else { return nil }
-        
+
         return User(email: email, password: password)
     }
 
@@ -36,40 +36,43 @@ extension SessionManager: SessionAuthenticationProtocol {
         }
 
         if let user = user {
-            handleExistingUser(user: user, completion: completion, saveTokenAndComplete: saveTokenAndComplete)
+            handleExistingUser(user: user,
+                               completion: completion,
+                               saveTokenAndComplete: saveTokenAndComplete)
         } else {
-            createUserAndFetchToken(completion: completion, saveTokenAndComplete: saveTokenAndComplete)
+            createUserAndFetchToken(completion: completion,
+                                    saveTokenAndComplete: saveTokenAndComplete)
         }
     }
 
-    func logOut() {       
-        // Remove current user info from SessionManager
+    func logOut() {
+        /// Remove current user info from SessionManager
         userAccessToken = nil
         clientAccessToken = nil
 
-        // Remove current user info from Keychain
+        /// Remove current user info from Keychain
         keyStore.removeAll()
     }
 
     private func removeUserAccessToken() {
-        // Remove current userAccessToken from SessionManager
+        /// Remove current userAccessToken from SessionManager
         userAccessToken = nil
 
-        // removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
         do {
-            try KeychainStore().remove(service: .auth, key: .userAccessToken)
+            try self.keyStore.remove(service: .auth, key: .userAccessToken)
         } catch {
             preconditionFailure("Gini couldn't remove the `userAccessToken` from Keychain.")
         }
     }
 
     private func removeClientAccessToken() {
-        // Remove current clientAccessToken from SessionManager
+        /// Remove current clientAccessToken from SessionManager
         clientAccessToken = nil
 
-        // removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
         do {
-            try KeychainStore().remove(service: .auth, key: .clientAccessToken)
+            try self.keyStore.remove(service: .auth, key: .clientAccessToken)
         } catch {
             preconditionFailure("Gini couldn't remove the `clientAccessToken` from Keychain.")
         }
@@ -92,7 +95,7 @@ extension SessionManager: SessionAuthenticationProtocol {
 
 fileprivate extension SessionManager {
 
-   func createTokenCompletionHandler(completion: @escaping CompletionResult<Token>) -> (Result<Token, GiniError>) -> Void {
+    func createTokenCompletionHandler(completion: @escaping CompletionResult<Token>) -> (Result<Token, GiniError>) -> Void {
         return { [weak self] result in
             switch result {
                 case .failure:
@@ -105,17 +108,17 @@ fileprivate extension SessionManager {
     }
 
     func handleExistingUser(user: User,
-                                    completion: @escaping CompletionResult<Token>,
-                                    saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        fetchUserAccessToken(for: user) { [weak self] result in
+                            completion: @escaping CompletionResult<Token>,
+                            saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
+        fetchUserAccessToken(for: user) { result in
             switch result {
                 case .success:
                     saveTokenAndComplete(result)
                 case .failure(let error):
                     if case .unauthorized = error {
-                        self?.removeCurrentUserInfo()
-                        self?.createUserAndFetchToken(completion: completion,
-                                                      saveTokenAndComplete: saveTokenAndComplete)
+                        self.removeCurrentUserInfo()
+                        self.createUserAndFetchToken(completion: completion,
+                                                     saveTokenAndComplete: saveTokenAndComplete)
                     } else {
                         completion(.failure(error))
                     }
@@ -124,11 +127,11 @@ fileprivate extension SessionManager {
     }
 
     func createUserAndFetchToken(completion: @escaping CompletionResult<Token>,
-                                         saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        createUser { [weak self] result in
+                                 saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
+        createUser { result in
             switch result {
                 case .success(let user):
-                    self?.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                    self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
                 case .failure(let error):
                     completion(.failure(error))
             }
@@ -169,20 +172,21 @@ fileprivate extension SessionManager {
             }
         }
     }
+
     func fetchUserAccessToken(for user: User,
                               completion: @escaping CompletionResult<Token>) {
         let body = "username=\(user.email)&password=\(user.password)"
             .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)?
             .data(using: .utf8)
-        
+
         let resource = UserResource<Token>(method: .token(grantType: .password),
                                            userDomain: self.userDomain,
                                            httpMethod: .post,
                                            body: body)
-        
+
         data(resource: resource, completion: completion)
     }
-    
+
     func fetchClientAccessToken(completion: @escaping CompletionResult<Token>) {
         let resource = UserResource<Token>(method: .token(grantType: .clientCredentials),
                                            userDomain: self.userDomain,

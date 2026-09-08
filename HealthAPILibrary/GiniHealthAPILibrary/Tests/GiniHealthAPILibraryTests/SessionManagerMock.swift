@@ -160,7 +160,10 @@ final class SessionManagerMock: SessionManagerProtocol {
             let mockId = mockIdForDocumentType(documentType)
 
             guard let typedResponse = mockId as? T.ResponseType else {
-                assertionFailure("Mock response type mismatch")
+                /// Fail fast so async tests surface the mismatch instead of hanging on completion.
+                let mismatch = "SessionManagerMock: expected T.ResponseType == String, got \(T.ResponseType.self)"
+                XCTFail(mismatch)
+                completion(.failure(.parseError(message: mismatch, response: nil, data: nil)))
                 return
             }
 
@@ -171,7 +174,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         }
     }
 
-    private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> Any {
+    private func mockIdForDocumentType(_ documentType: Document.TypeV2?) -> String {
         switch documentType {
         case .none:
             return SessionManagerMock.v3DocumentId
