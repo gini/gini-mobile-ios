@@ -41,7 +41,7 @@ final class CorrectQRCodeTextContainer: UIView {
         ])
     }
 
-    private struct Constants {
+    private enum Constants {
         static let spacing: CGFloat = 8
     }
 

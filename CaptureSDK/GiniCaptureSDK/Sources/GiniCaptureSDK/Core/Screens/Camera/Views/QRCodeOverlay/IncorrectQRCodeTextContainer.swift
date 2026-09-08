@@ -85,7 +85,7 @@ final class IncorrectQRCodeTextContainer: UIView {
         ])
     }
 
-    private struct Constants {
+    private enum Constants {
         static let spacing: CGFloat = 8
         static let cornerRadius: CGFloat = 8
         static let expandedSpacing: CGFloat = 16
