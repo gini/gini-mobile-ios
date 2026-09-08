@@ -135,7 +135,8 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                 guard let self = self else { return }
                 switch result {
                 case let .success(createdDocument):
-                    self.fetchExtractionsAndComplete(for: createdDocument, completion: completion)
+                    self.fetchExtractionsAndComplete(for: createdDocument,
+                                                     completion: completion)
                 case let .failure(error):
                     completion(.failure(.unknown(response: error.response, data: error.data)))
                 }

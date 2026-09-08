@@ -106,7 +106,8 @@ final class AppCoordinator: Coordinator {
             // 2. Validate the document
             if let document = document {
                 do {
-                    try GiniCapture.validate(document, withConfig: self.giniConfiguration)
+                    try GiniCapture.validate(document,
+                                             withConfig: self.giniConfiguration)
                     self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
                 } catch {
                     self.showExternalDocumentNotValidDialog()
