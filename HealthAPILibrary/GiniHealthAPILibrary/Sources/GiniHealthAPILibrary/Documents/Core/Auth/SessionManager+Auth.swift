@@ -96,12 +96,12 @@ extension SessionManager: SessionAuthenticationProtocol {
 fileprivate extension SessionManager {
 
     func createTokenCompletionHandler(completion: @escaping CompletionResult<Token>) -> (Result<Token, GiniError>) -> Void {
-        return { [weak self] result in
+        return { result in
             switch result {
                 case .failure:
-                    self?.removeUserAccessToken()
+                    self.removeUserAccessToken()
                 case .success(let token):
-                    self?.userAccessToken = token.accessToken
+                    self.userAccessToken = token.accessToken
             }
             completion(result)
         }

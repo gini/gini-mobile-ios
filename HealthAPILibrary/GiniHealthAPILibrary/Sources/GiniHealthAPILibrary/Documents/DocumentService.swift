@@ -218,8 +218,8 @@ extension DocumentService {
         case .failure(let error):
             completion(.failure(error))
         }
-        
     }
+
     private func handleExtractionsResult(_ result: Result<ExtractionsContainer, GiniError>,
                                          completion: @escaping CompletionResult<ExtractionResult>) {
         switch result {
