@@ -419,4 +419,35 @@ struct SessionManagerHTTPTests {
             }
         }
     }
+
+    @Test("URLError other than notConnectedToInternet maps to .noResponse")
+    func nonNoInternetURLErrorMapsToNoResponse() async {
+        defer {
+            URLProtocolMock.handler = nil
+            URLProtocolMock.errorHandler = nil
+        }
+        /// Any URLError code that isn't `.notConnectedToInternet` — falls through
+        /// `handleNetworkError`'s guard (covers the else branch), then URLSession
+        /// delivers a nil response so the `httpResponse as? HTTPURLResponse` guard
+        /// completes with `.noResponse`.
+        URLProtocolMock.errorHandler = { _ in
+            URLError(.timedOut)
+        }
+
+        let sut = Self.makeResponseSut()
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource()) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success")
+        case .failure(let error):
+            if case .noResponse = error {
+                break
+            } else {
+                Issue.record("Expected .noResponse, got \(error)")
+            }
+        }
+    }
 }
