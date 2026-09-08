@@ -597,7 +597,8 @@ public struct DataForReview {
         }
     }
 
-    private func handleFetchDataForReviewResult(document: Document, result: Result<ExtractionResult, GiniError>,
+    private func handleFetchDataForReviewResult(document: Document,
+                                                result: Result<ExtractionResult, GiniError>,
                                                 completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void) {
 
         switch result {
