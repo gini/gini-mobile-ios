@@ -175,7 +175,7 @@ struct GiniCaptureDocumentValidatorSwiftTests {
     }
 
     @Test("PDF with 11 pages throws .pdfPageLengthExceeded")
-    func test_validate_pdf_with_eleven_pages_throws_page_length_exceeded() throws {
+    func testPdfExceedingMaxPagesFails() throws {
         let pdfData = renderPDF(pageCount: 11)
         let document = GiniPDFDocument(data: pdfData, fileName: nil)
 
@@ -186,7 +186,7 @@ struct GiniCaptureDocumentValidatorSwiftTests {
     }
 
     @Test("PDF wrapper around JPEG bytes throws .fileFormatNotValid")
-    func test_validate_pdf_with_non_pdf_bytes_throws_file_format_not_valid() throws {
+    func testNonPdfDataInPdfWrapperFails() throws {
         let image = GiniCaptureTestsHelper.loadImage(named: "invoice")
         let jpegData = try #require(image.jpegData(compressionQuality: 0.2))
         let document = GiniPDFDocument(data: jpegData, fileName: nil)
@@ -198,7 +198,7 @@ struct GiniCaptureDocumentValidatorSwiftTests {
     }
 
     @Test("Image wrapper around WebP-signature bytes throws .imageFormatNotValid")
-    func test_validate_image_with_webp_bytes_throws_image_format_not_valid() throws {
+    func testUnsupportedImageFormatFails() throws {
         let webpData = makeWebPSignatureData()
         let document = GiniImageDocument(data: webpData, imageSource: .external)
 
