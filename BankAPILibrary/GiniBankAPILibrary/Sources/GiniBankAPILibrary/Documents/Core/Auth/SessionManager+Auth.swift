@@ -54,9 +54,10 @@ extension SessionManager: SessionAuthenticationProtocol {
         /// Remove current userAccessToken from SessionManager
         userAccessToken = nil
 
-        /// removing `userAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing `userAccessToken` from the injected key store cleans up legacy
+        /// Keychain entries from older SDK versions where tokens were persisted.
         do {
-            try KeychainStore().remove(service: .auth, key: .userAccessToken)
+            try self.keyStore.remove(service: .auth, key: .userAccessToken)
         } catch {
             preconditionFailure("Gini couldn't remove the `userAccessToken` from Keychain.")
         }
@@ -66,9 +67,10 @@ extension SessionManager: SessionAuthenticationProtocol {
         /// Remove current clientAccessToken from SessionManager
         clientAccessToken = nil
 
-        /// removing  `clientAccessToken` from Keychain is part of the old implementation where it was saved in Keychain
+        /// removing `clientAccessToken` from the injected key store cleans up legacy
+        /// Keychain entries from older SDK versions where tokens were persisted.
         do {
-            try KeychainStore().remove(service: .auth, key: .clientAccessToken)
+            try self.keyStore.remove(service: .auth, key: .clientAccessToken)
         } catch {
             preconditionFailure("Gini couldn't remove the `clientAccessToken` from Keychain.")
         }
