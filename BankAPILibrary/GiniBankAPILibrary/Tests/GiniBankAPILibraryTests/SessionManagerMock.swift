@@ -108,6 +108,9 @@ final class SessionManagerMock: SessionManagerProtocol {
             deliver(document, to: completion)
             
         case .delete:
+            guard fileById[id] != nil else {
+                fatalError("Document id \(id) not found in tests")
+            }
             documents.removeAll { $0.id == id }
             deliver("Deleted", to: completion)
             
