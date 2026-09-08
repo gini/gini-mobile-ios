@@ -246,7 +246,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         if let error = error as? FilePickerError {
             switch error {
             case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
-                if self.pages.isNotEmpty {
+                if hasExistingPages {
                     positiveAction = {
                         coordinator.dismissCurrentPicker {
                             self.showReview()
