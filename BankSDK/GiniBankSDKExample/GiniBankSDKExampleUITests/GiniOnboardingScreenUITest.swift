@@ -92,6 +92,38 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
 
+    /// PP-2273: the top-navigation Skip control must be the only skip path;
+    /// no `skipBottomBar*` / `bottomNavigation*` element may render.
+    func testOnboardingSkipButtonIsTopNavOnly() throws {
+    //Preconditions
+        //Open settings screen
+        mainScreen.configurationButton.tap()
+        //Enable Onboarding at every launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
+        //Disable Onboarding at first launch switch
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
+        settingScreen.closeButton.tap()
+
+    //Test Case
+        //Tap Photopaymen button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Tap Next button
+        onboadingScreen.nextButton.tap()
+
+        //Assert the top-nav Skip button is hittable
+        XCTAssertTrue(onboadingScreen.skipButton.isHittable,
+                      "Top-nav Skip button must remain the sole skip control after PP-2273")
+
+        //Assert no bottom-nav / skipBottomBar element rendered
+        let bottomNavPredicate = NSPredicate(format:
+            "identifier CONTAINS[c] 'bottomNav' OR identifier CONTAINS[c] 'skipBottomBar'")
+        XCTAssertEqual(app.buttons.matching(bottomNavPredicate).count,
+                       0,
+                       "No element whose identifier contains 'bottomNav' or 'skipBottomBar' may exist — the bottom-nav surface was removed in PP-2273")
+    }
+
     func testOnboardingSwipePages() throws {
         //Preconditions
         //Open settings screen

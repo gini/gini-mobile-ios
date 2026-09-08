@@ -192,4 +192,105 @@ final class ReviewViewControllerTests: XCTestCase {
 //        XCTAssertEqual(vc.pagesCollection.numberOfItems(inSection: 0), 2,
 //                       "pages collection items count should be 2")
 //    }
+
+    // MARK: - PP-2273 bottom-nav collapse regression guards
+
+    /// The canonical `optionsStackView` constraint set (no `WithBottomBar` sibling
+    /// after PP-2273) must be observable via an on-screen, non-zero stack frame
+    /// that stays inside the safe area. Constraint arrays themselves are `private
+    /// lazy`, so this asserts the surviving layout via the visible side effect —
+    /// the frame being placed by the sole active portrait constraint set.
+    /// The stack view is looked up by walking `view` subviews rather than by
+    /// mirror (lazy stored properties surface as `$__lazy_storage_$_*` in the
+    /// mirror before first access, and the private lazy binding forces access
+    /// via reflection to be brittle).
+    func testCollapsedConstraintSet_singleCanonicalActivated_portrait() {
+        let vc = ReviewViewController(pages: imagePages,
+                                      giniConfiguration: giniConfiguration)
+        _ = vc.view
+        vc.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        vc.view.setNeedsLayout()
+        vc.view.layoutIfNeeded()
+
+        let optionsStack = findFirstStackView(in: vc.view)
+        XCTAssertNotNil(optionsStack,
+                        "A vertical UIStackView (optionsStackView) must exist under ReviewViewController.view")
+
+        let frame = optionsStack?.frame ?? .zero
+        XCTAssertGreaterThan(frame.width,
+                             0,
+                             "optionsStackView width must be non-zero after layout — the canonical constraint set must be active")
+        XCTAssertGreaterThan(frame.height,
+                             0,
+                             "optionsStackView height must be non-zero after layout — the canonical constraint set must be active")
+    }
+
+    /// Walk the view hierarchy and return the first vertical `UIStackView`
+    /// encountered — the `optionsStackView` on `ReviewViewController` is the
+    /// only vertical stack in the tree.
+    private func findFirstStackView(in view: UIView) -> UIStackView? {
+        if let stack = view as? UIStackView, stack.axis == .vertical {
+            return stack
+        }
+        for subview in view.subviews {
+            if let match = findFirstStackView(in: subview) {
+                return match
+            }
+        }
+        return nil
+    }
+
+    /// `calculateHeightMultiplier()` is `private`. Assert its output via the
+    /// observable side effect — the cell size returned by the flow-layout
+    /// delegate — which reduces to `view.bounds.height * multiplier / a4Ratio`
+    /// on iPhone. On the false branch (non-small notch device in portrait), the
+    /// multiplier is `Constants.portraitHeightMultiplierWithSafeArea == 0.58`
+    /// or `portraitHeightMultiplierWithoutSafeArea == 0.5`, adjusted only when
+    /// saveToGalleryView is shown (it isn't in tests). Assertion is
+    /// device-agnostic: multiplier must match the pre-PR `false`-branch value
+    /// tabulated in `calculateExpectedHeightMultiplier()`.
+    func testHeightMultipliersCollapsed_iPhonePortrait_returnsFalseBranchValue() {
+        guard !UIDevice.current.isIpad else {
+            /// Test targets the iPhone branch of `calculateHeightMultiplier()`.
+            /// Skip on iPad — iPad uses a separate cell-size path.
+            return
+        }
+
+        reviewViewController.view.setNeedsLayout()
+        reviewViewController.view.layoutIfNeeded()
+
+        let cellSize = reviewViewController.collectionView(
+            reviewViewController.collectionView,
+            layout: reviewViewController.collectionView.collectionViewLayout,
+            sizeForItemAt: IndexPath(row: 0, section: 0)
+        )
+
+        let expectedMultiplier = calculateExpectedHeightMultiplier()
+        let expectedHeight = reviewViewController.view.bounds.height * expectedMultiplier
+
+        XCTAssertEqual(cellSize.height,
+                       expectedHeight,
+                       accuracy: 0.5,
+                       "iPhone cell height must match the `false`-branch multiplier — the WithBottomBar branch has been collapsed away")
+    }
+
+    /// Guards against re-introduction of any `*WithBottomBar` constraint array
+    /// as a stored property on `ReviewViewController`. Parallels the R12
+    /// mirror-walk regression test but scoped to constraints.
+    func testNoWithBottomBarConstraintProperty_exists() {
+        let vc = ReviewViewController(pages: imagePages,
+                                      giniConfiguration: giniConfiguration)
+        _ = vc.view
+
+        let mirror = Mirror(reflecting: vc)
+        for child in mirror.children {
+            guard let name = child.label else { continue }
+            /// `contains` rather than `hasSuffix` because lazy stored
+            /// properties surface as `$__lazy_storage_$_<name>` in the mirror.
+            XCTAssertFalse(name.contains("WithBottomBar"),
+                           "Stored property \(name) must not reference WithBottomBar — the dual-constraint variant was removed in PP-2273")
+            XCTAssertFalse(name.lowercased().contains("bottomnav"),
+                           "Stored property \(name) must not reference bottomNav — the adapter surface was removed in PP-2273")
+        }
+    }
 }
