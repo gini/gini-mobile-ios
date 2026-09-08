@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import Testing
+import UIKit
 @testable import GiniCaptureSDK
 final class GiniScreenAPICoordinatorTests: XCTestCase {
     
@@ -223,5 +225,131 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertTrue(errorScreen?.errorHeader.text == ErrorType.outage.title(), "Error title should match server error type")
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.outage.content(), "Error content should match server error type")
 
+    }
+}
+
+// MARK: - Swift Testing coverage for document-picker failure handling
+
+@Suite("GiniScreenAPICoordinator handleFailure via documentPicker", .serialized)
+@MainActor
+struct GiniScreenAPICoordinatorFailureTests {
+
+    /// Manual, minimal `GiniCaptureDelegate` conformance for the coordinator under test.
+    /// `GiniCaptureDelegate` is an `@objc` protocol, so the stub must subclass `NSObject`.
+    private final class DelegateStub: NSObject, GiniCaptureDelegate {
+        func didPressEnterManually() {}
+        func didCapture(document: GiniCaptureDocument,
+                        networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didReview(documents: [GiniCaptureDocument],
+                       networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didCancelCapturing() {}
+        func didCancelReview(for document: GiniCaptureDocument) {}
+        func didCancelAnalysis() {}
+    }
+
+    /// Loads 11 image documents so `documentsToValidate.count > maxPagesCount`, tripping the
+    /// `.maxFilesPickedCountExceeded` guard in `GiniScreenAPICoordinator.validate`.
+    private func loadElevenImageDocuments() -> [GiniCaptureDocument] {
+        return (0..<11).map { _ in
+            GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        }
+    }
+
+    /// Builds a coordinator, installs its `cameraScreen` in a live window, optionally
+    /// seeding it with a captured image page so `pages.isNotEmpty` when the failure hits,
+    /// and returns the pieces the tests need to observe results. Always starts via
+    /// `start(withDocuments: nil)` because that path is the one that creates `cameraScreen`;
+    /// initial pages are then injected through `addToDocuments`.
+    private func makeCoordinatorInWindow(seededImagePage seed: GiniCapturePage?)
+    -> (coordinator: GiniScreenAPICoordinator, window: UIWindow) {
+        let configuration = GiniConfiguration()
+        configuration.openWithEnabled = true
+        configuration.multipageEnabled = true
+
+        let delegate = DelegateStub()
+        let coordinator = GiniScreenAPICoordinator(withDelegate: delegate,
+                                                   giniConfiguration: configuration)
+
+        let root = coordinator.start(withDocuments: nil)
+        _ = root.view
+
+        if let seed = seed {
+            coordinator.addToDocuments(new: [seed])
+        }
+
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = root
+        window.makeKeyAndVisible()
+
+        return (coordinator, window)
+    }
+
+    /// Runs the main run loop briefly so UIKit can settle presentation/dismissal transitions
+    /// and the validate pipeline's `DispatchQueue.main.async` completion can fire.
+    private func spinRunLoop(times: Int = 20) async {
+        for _ in 0..<times {
+            await Task.yield()
+            RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+        }
+    }
+
+    /// Presents (then immediately dismisses) the file document picker to force
+    /// `DocumentPickerCoordinator.currentPickerDismissesAutomatically` to `true`. The state
+    /// flag is `private(set)`, so exercising the real code path is the only way to set it
+    /// without production changes.
+    private func primePickerDismissesAutomatically(coordinator: GiniScreenAPICoordinator) async {
+        guard let cameraScreen = coordinator.cameraScreen else { return }
+        coordinator.documentPickerCoordinator.showDocumentPicker(from: cameraScreen)
+        await spinRunLoop()
+        cameraScreen.dismiss(animated: false)
+        await spinRunLoop()
+    }
+
+    @Test(
+        "maxFilesPickedCountExceeded with existing pages shows alert with cancel + positive action",
+        .timeLimit(.minutes(1))
+    )
+    func test_documentPicker_maxFilesPickedCountExceeded_withExistingPages_showsErrorWithPositiveAction() async throws {
+        /// Seed one existing image page so `pages.isNotEmpty` is true when the failure hits.
+        let seed = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
+        let context = makeCoordinatorInWindow(seededImagePage: seed)
+        let coordinator = context.coordinator
+        defer { context.window.isHidden = true }
+
+        await primePickerDismissesAutomatically(coordinator: coordinator)
+        try #require(coordinator.pages.isNotEmpty)
+
+        let picker = coordinator.documentPickerCoordinator
+        coordinator.documentPicker(picker, didPick: loadElevenImageDocuments())
+        await spinRunLoop()
+
+        let cameraScreen = try #require(coordinator.cameraScreen)
+        let alert = try #require(cameraScreen.presentedViewController as? UIAlertController)
+        #expect(alert.actions.count == 2, "Expected cancel + positive review action")
+        #expect(alert.actions.contains { $0.style == .cancel })
+        #expect(alert.preferredAction != nil, "Preferred (positive) action should be set when pages exist")
+    }
+
+    @Test(
+        "maxFilesPickedCountExceeded with no existing pages shows alert with cancel only",
+        .timeLimit(.minutes(1))
+    )
+    func test_documentPicker_maxFilesPickedCountExceeded_noExistingPages_showsErrorWithoutPositiveAction() async throws {
+        let context = makeCoordinatorInWindow(seededImagePage: nil)
+        let coordinator = context.coordinator
+        defer { context.window.isHidden = true }
+
+        await primePickerDismissesAutomatically(coordinator: coordinator)
+        try #require(coordinator.pages.isEmpty)
+
+        let picker = coordinator.documentPickerCoordinator
+        coordinator.documentPicker(picker, didPick: loadElevenImageDocuments())
+        await spinRunLoop()
+
+        let cameraScreen = try #require(coordinator.cameraScreen)
+        let alert = try #require(cameraScreen.presentedViewController as? UIAlertController)
+        #expect(alert.actions.count == 1, "Expected only the cancel action when there are no existing pages")
+        #expect(alert.actions.first?.style == .cancel)
+        #expect(alert.preferredAction == nil, "Preferred (positive) action must be absent when pages are empty")
     }
 }
