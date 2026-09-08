@@ -241,23 +241,30 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
     private func handleFailure(for error: Error,
                                hasExistingPages: Bool,
                                coordinator: DocumentPickerCoordinator) {
-        var positiveAction: (() -> Void)?
+        let action = positiveAction(for: error,
+                                    hasExistingPages: hasExistingPages,
+                                    coordinator: coordinator)
+        presentError(error, positiveAction: action, coordinator: coordinator)
+    }
 
-        if let error = error as? FilePickerError {
-            switch error {
-            case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
-                if hasExistingPages {
-                    positiveAction = {
-                        coordinator.dismissCurrentPicker {
-                            self.showReview()
-                        }
-                    }
+    func positiveAction(for error: Error,
+                        hasExistingPages: Bool,
+                        coordinator: DocumentPickerCoordinator) -> (() -> Void)? {
+        guard let error = error as? FilePickerError else { return nil }
+        switch error {
+        case .maxFilesPickedCountExceeded,
+             .mixedDocumentsUnsupported,
+             .multiplePdfsUnsupported:
+            guard hasExistingPages else { return nil }
+            return { [weak self, weak coordinator] in
+                coordinator?.dismissCurrentPicker {
+                    self?.showReview()
                 }
-            case .photoLibraryAccessDenied, .failedToOpenDocument:
-                break
             }
+        case .photoLibraryAccessDenied,
+             .failedToOpenDocument:
+            return nil
         }
-        presentError(error, positiveAction: positiveAction, coordinator: coordinator)
     }
 
     private func presentError(_ error: Error,
