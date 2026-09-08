@@ -278,10 +278,13 @@ public struct DataForReview {
             }
             switch result {
             case let .success(createdDocument):
+                // Strong self on the inner extractions closure keeps `self` alive until
+                // `completion` fires — `[weak self]` here would silently drop the callback
+                // if the caller released `GiniHealth` mid-request.
                 self.documentService.extractions(for: createdDocument,
-                                                 cancellationToken: CancellationToken()) { [weak self] result in
+                                                 cancellationToken: CancellationToken()) { result in
                     DispatchQueue.main.async {
-                        self?.handleMultipleDocsExtractionResult(result, completion: completion)
+                        self.handleMultipleDocsExtractionResult(result, completion: completion)
                     }
                 }
             case .failure(let error):
@@ -356,9 +359,12 @@ public struct DataForReview {
     
     private func fetchExtractions(for document: Document,
                                   completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        // Strong self capture keeps `GiniHealth` alive until `completion` fires — a
+        // `[weak self]` here would silently drop the callback if the caller released
+        // the SDK between initiating the request and its response.
         documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
-            DispatchQueue.main.async { [weak self] in
-                self?.handlePaymentExtractionResult(result, completion: completion)
+            DispatchQueue.main.async {
+                self.handlePaymentExtractionResult(result, completion: completion)
             }
         }
     }

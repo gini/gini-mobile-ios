@@ -679,25 +679,27 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
 
     private func handleExternalPaymentFlow() {
-        guard let paymentInfo = paymentInfo else { return }
-
         if supportsOpenWith() {
-            handleOpenWithPayment(paymentInfo: paymentInfo)
+            handleOpenWithPayment()
         } else if supportsGPC() {
-            handleGPCPayment(paymentInfo: paymentInfo)
+            handleGPCPayment()
         }
     }
 
-    private func handleOpenWithPayment(paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    private func handleOpenWithPayment() {
+        guard let paymentInfo else { return }
         createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             self?.handlePaymentRequestResult(result)
         }
     }
 
-    private func handleGPCPayment(paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+    private func handleGPCPayment() {
         if canOpenPaymentProviderApp() {
+            guard let paymentInfo else { return }
             processPaymentRequest(paymentInfo: paymentInfo)
         } else {
+            // The install-app sheet must remain reachable when `paymentInfo` is nil —
+            // do not hoist a `guard let paymentInfo` above this branch.
             presentInstallAppBottomSheet()
         }
     }
