@@ -111,17 +111,17 @@ This matters for step 5 (fix versions) and step 6 (placeholders). Only these pac
 
 Don't take this table on faith if the release looks unusual: the project's Releases page (step 5) is the source of truth for which products have versions.
 
-## 5. Create the Jira Releases (fix versions)
+## 5. Verify the Jira Releases (fix versions) exist
 
 Atlassian tenant: `ginis.atlassian.net`. Bank releases live in project **PP**, Health releases in project **HEAL**. A release spanning both sides needs entries in **both** projects. Fix versions are project-scoped — a ticket in one project cannot carry the other's version.
 
 Naming convention: **`iOS Gini <Product> <version>`**, optionally with the release theme appended (`iOS Gini Bank SDK 4.4.0 QR code improvements`). The `iOS` prefix is what stops the two platforms' releases colliding — keep it.
 
-Create one Jira release per **customer-facing product owning notes** — for a bank release that's `iOS Gini Bank SDK`, `iOS Gini Capture SDK`, `iOS Gini Bank API Library`. Skip `GiniUtilites` and `GiniInternalPaymentSDK` (step 4).
+There is one Jira release per **customer-facing product owning notes** — for a bank release that's `iOS Gini Bank SDK`, `iOS Gini Capture SDK`, `iOS Gini Bank API Library`. Skip `GiniUtilites` and `GiniInternalPaymentSDK` (step 4).
 
-**The Atlassian connector cannot list or create Jira release versions** — it has no version API at all, only `fixVersions` on an issue. So read the page and create anything missing **in the browser**. Jira also rejects an unknown `fixVersions` name (`Version name '…' is not valid`) instead of auto-creating it, so the version must exist first.
+**These are normally created at release planning, not here.** By this step, every product's release version should already exist in Jira and the release's tickets should already carry the `fixVersion`. This step is a **safety check** that confirms the versions exist and their tickets are correctly tagged — it only creates a version as a fallback when one is missing, and never assigns `fixVersion` on tickets in bulk.
 
-Open the project's Releases page:
+**Verify the versions exist.** Open the project's Releases page:
 
 ```
 https://ginis.atlassian.net/projects/<KEY>?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=all
@@ -129,11 +129,17 @@ https://ginis.atlassian.net/projects/<KEY>?selectedItem=com.atlassian.jira.jira-
 
 `status=all` matters — the default filter hides released versions. Match on **name**; permanent `UNRELEASED` placeholders are kept for parking tickets (step 6), so never take the last row.
 
-In the `Create release` dialog: fill Release name and Description, and **clear the prefilled Release date** (defaults to today, wrong for an unshipped version — click field, `cmd+a`, `Backspace`, dismiss picker; setting an empty string via `form_input` does not work). After saving, **reload the page** — the table doesn't refresh, so success looks like failure. Don't click `Create release` twice either; the second click closes the dialog. Read each version's numeric id off its table link (`/projects/<KEY>/versions/<id>/tab/…`).
+**Verify each release already has tickets tagged.** For every release version, run:
 
-Once versions exist, assign them as `fixVersions` on all work tickets in the release using `editJiraIssue` (names work here). Without fix versions the release report is empty.
+```
+project = <KEY> AND fixVersion = "<version-name>"
+```
 
-Add **release notes in markdown** to each release description. These notes are reused verbatim on GitHub releases in phase 2 — the per-repo templates and a worked Jira → GitHub example are owned by the (planned) `/gini-release-notes` skill; until it exists, copy the previous release and update.
+An empty result or a clearly short list means someone forgot to set `fixVersion` on the release's tickets during the sprint. **Flag this back to the user** with the version name and the count — the skill does not batch-assign `fixVersion`, because deciding which tickets belong in the release is a planning decision, not a release-time one. Without fix versions the release report (used by the RC ticket in step 7 and the GitHub release drafts in phase 2) is empty.
+
+**Only create a version if it is missing.** The Atlassian connector has no version API — only `fixVersions` on an issue — and Jira rejects an unknown `fixVersions` name (`Version name '…' is not valid`) instead of auto-creating it, so any missing version must be created **in the browser**. In the `Create release` dialog: fill Release name and Description, and **clear the prefilled Release date** (defaults to today, wrong for an unshipped version — click field, `cmd+a`, `Backspace`, dismiss picker; setting an empty string via `form_input` does not work). After saving, **reload the page** — the table doesn't refresh, so success looks like failure. Don't click `Create release` twice either; the second click closes the dialog. Read each version's numeric id off its table link (`/projects/<KEY>/versions/<id>/tab/…`).
+
+Confirm each release has **release notes in markdown** in its description. These notes are reused verbatim on GitHub releases in phase 2 — the per-repo templates and a worked Jira → GitHub example are owned by the (planned) `/gini-release-notes` skill; until it exists, copy the previous release and update.
 
 ## 6. Create the `x.x` placeholder versions for the next release
 
@@ -194,7 +200,8 @@ Summarize:
 - the RC ticket key(s) created, with links — **they go into every bump commit in phase 2**
 - the release branch the RC is for
 - packages released, old → new
-- which Jira Releases already existed and which you created, with their release-report links
+- which Jira Releases already existed and which you created as a fallback, with their release-report links
+- any release versions whose tickets were missing `fixVersion` — surfaced for the user to fix, not batch-assigned
 - which `x.x` placeholders already existed and which you created
 - the XCFramework workflow runs (green) and their links
 - the sprint and status the ticket is now in

@@ -51,7 +51,7 @@ git checkout release/<theme>
 git pull --ff-only
 ```
 
-For each package in `RELEASE-ORDER.md` order, edit **up to four** places. Missing any of the last three is how iOS releases break silently:
+For each package in `RELEASE-ORDER.md` order, edit **up to five** places. Missing any of the last four is how iOS releases break silently:
 
 1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from phase 1's table.
 2. **Every dependent's `Package-release.swift`** — bump the `.exact("<x.y.z>")` pin. PR checks only resolve `Package.swift`, not `Package-release.swift`, so a missed pin lands silently:
@@ -72,6 +72,21 @@ For each package in `RELEASE-ORDER.md` order, edit **up to four** places. Missin
    grep -rEn 'iOS-Gini-Health-SDK-[0-9.]+' HealthSDK/GiniHealthSDK/Documentation/
    ```
 
+5. **Doc URLs with tag paths, and hardcoded version strings in tests** — READMEs and Jazzy docs link into GitHub with `<Package>;<x.y.z>` in the path, and a few tests hardcode the current library version. Both are easy to miss and only fail when someone follows the link or reads the assertion.
+
+   First, run a package-scoped grep for the **previous** version to catch every mention:
+
+   ```bash
+   git grep -nE '<previous-x.y.z>' -- <package-root>/
+   ```
+
+   Known spots to double-check:
+
+   - `BankAPILibrary/GiniBankAPILibrary/README.md` and Jazzy docs — links of the form `.../gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B<x.y.z>/...`.
+   - `BankAPILibrary/GiniBankAPILibrary/Tests/…/DocumentServiceTests.swift` — `apiLibVersion: "<x.y.z>"` inside `testLogErrorEvent`.
+
+   Grep first, update per hit; do not rely on this list being exhaustive.
+
 ## 3. Validate the bumps
 
 Compile each affected package via the `AGENTS.md` gate:
@@ -80,13 +95,7 @@ Compile each affected package via the `AGENTS.md` gate:
 make lint scheme=GiniBankSDK      # or GiniCaptureSDK, GiniHealthSDK, etc.
 ```
 
-`make lint` validates **compilation only**, not style. Run swiftlint separately if there are style concerns:
-
-```bash
-swiftlint --fix BankSDK/GiniBankSDK/Sources
-```
-
-Also run unit tests for the touched packages.
+`make lint` validates **compilation only**, not style. Lint and unit tests run on the bump PR (step 4) — do not run them here.
 
 ## 4. Commit, push and open the bump PR
 
@@ -104,7 +113,7 @@ Push the release branch (no tags yet), then open a PR from it (or from an RC bra
 
 **Ask the user which reviewer to assign** — do not guess. The bump is not self-reviewed; approval on this PR is one of the two gates in step 1.
 
-Wait for approval before step 5.
+**Then stop and exit.** There is no background waiting or polling — report the open PR link plus what's still pending (bump PR approval, QA sign-off if still open), and end the session. The user resumes phase 2 by re-invoking the skill (`/gini-release <RC-ticket>`) once the PR is approved; on resume, re-confirm both gates in step 1 before continuing to step 5.
 
 ## 5. Create and push release tags — from the release branch
 
