@@ -420,6 +420,34 @@ struct SessionManagerHTTPTests {
         }
     }
 
+    @Test("Cancelled token surfaces .requestCancelled instead of the response")
+    func cancelledTokenSurfacesRequestCancelled() async {
+        defer { URLProtocolMock.handler = nil }
+        URLProtocolMock.handler = { request in
+            (Self.okResponse(for: request), Self.tokenResponseData())
+        }
+
+        let token = CancellationToken()
+        token.cancel()
+
+        let sut = Self.makeResponseSut()
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource(),
+                     cancellationToken: token) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success — cancelled token should short-circuit")
+        case .failure(let error):
+            if case .requestCancelled = error {
+                break
+            } else {
+                Issue.record("Expected .requestCancelled, got \(error)")
+            }
+        }
+    }
+
     @Test("URLError other than notConnectedToInternet maps to .noResponse")
     func nonNoInternetURLErrorMapsToNoResponse() async {
         defer {
