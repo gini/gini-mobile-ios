@@ -193,13 +193,13 @@ final class ReviewViewControllerTests: XCTestCase {
 //                       "pages collection items count should be 2")
 //    }
 
-    // MARK: - PP-2273 bottom-nav collapse regression guards
+    // MARK: - Bottom-nav collapse regression guards
 
-    /// The canonical `optionsStackView` constraint set (no `WithBottomBar` sibling
-    /// after PP-2273) must be observable via an on-screen, non-zero stack frame
-    /// that stays inside the safe area. Constraint arrays themselves are `private
-    /// lazy`, so this asserts the surviving layout via the visible side effect —
-    /// the frame being placed by the sole active portrait constraint set.
+    /// The canonical `optionsStackView` constraint set must be observable via
+    /// an on-screen, non-zero stack frame that stays inside the safe area.
+    /// Constraint arrays themselves are `private lazy`, so this asserts the
+    /// surviving layout via the visible side effect — the frame being placed
+    /// by the sole active portrait constraint set.
     /// The stack view is looked up by walking `view` subviews rather than by
     /// mirror (lazy stored properties surface as `$__lazy_storage_$_*` in the
     /// mirror before first access, and the private lazy binding forces access
@@ -288,9 +288,9 @@ final class ReviewViewControllerTests: XCTestCase {
             /// `contains` rather than `hasSuffix` because lazy stored
             /// properties surface as `$__lazy_storage_$_<name>` in the mirror.
             XCTAssertFalse(name.contains("WithBottomBar"),
-                           "Stored property \(name) must not reference WithBottomBar — the dual-constraint variant was removed in PP-2273")
+                           "Stored property \(name) must not reference WithBottomBar — the dual-constraint variant is not supported")
             XCTAssertFalse(name.lowercased().contains("bottomnav"),
-                           "Stored property \(name) must not reference bottomNav — the adapter surface was removed in PP-2273")
+                           "Stored property \(name) must not reference bottomNav — the adapter surface is not supported")
         }
     }
 }

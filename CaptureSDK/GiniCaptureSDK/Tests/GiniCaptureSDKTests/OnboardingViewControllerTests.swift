@@ -64,10 +64,9 @@ struct OnboardingViewControllerTests {
     }
 
     /**
-     The `skipBottomBarButton` outlet was removed in PP-2273; the top-nav
-     `skipButton` (a `GiniBarButton`) is the sole skip control. Mirror-walk
-     the VC and assert no stored property named `skipBottomBarButton`
-     exists.
+     The top-nav `skipButton` (a `GiniBarButton`) is the sole skip control.
+     Mirror-walk the VC and assert no stored property named
+     `skipBottomBarButton` exists.
      */
     @Test func skipButtonIsTheTopNavSkipControl() {
         let vc = OnboardingViewController()

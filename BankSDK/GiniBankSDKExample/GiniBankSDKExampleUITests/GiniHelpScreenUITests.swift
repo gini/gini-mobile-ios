@@ -63,7 +63,7 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
     }
 
-    /// PP-2273: no bottom-navigation view may render on the help screen.
+    /// No bottom-navigation view may render on the help screen.
     func testHelpScreenHasNoBottomNavigation() {
 
         //Tap Photopaymen button
@@ -80,7 +80,7 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
             "identifier CONTAINS[c] 'bottomNav' OR label CONTAINS[c] 'BottomNavigation'")
         XCTAssertEqual(app.otherElements.matching(bottomNavPredicate).count,
                        0,
-                       "No bottom-navigation view may render on the help screen after PP-2273")
+                       "No bottom-navigation view may render on the help screen")
     }
 }
 

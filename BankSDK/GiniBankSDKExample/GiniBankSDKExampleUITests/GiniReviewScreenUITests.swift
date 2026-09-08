@@ -89,7 +89,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5))
     }
     
-    /// PP-2273: no bottom-navigation view may render on the review screen.
+    /// No bottom-navigation view may render on the review screen.
     /// Manual test — mirrors `manualTestProcessButton`'s setup because it
     /// requires the same PDF upload precondition documented at the top of
     /// this suite.
@@ -116,7 +116,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
             "identifier CONTAINS[c] 'bottomNav' OR label CONTAINS[c] 'BottomNavigation'")
         XCTAssertEqual(app.otherElements.matching(bottomNavPredicate).count,
                        0,
-                       "No bottom-navigation view may render on the review screen after PP-2273")
+                       "No bottom-navigation view may render on the review screen")
     }
 
     func manualTestDeleteButton() {
