@@ -24,10 +24,22 @@ import Foundation
 final class URLProtocolMock: URLProtocol {
     static var handler: ((URLRequest) -> (HTTPURLResponse, Data?))?
 
+    /**
+     Optional error injector. When set, takes precedence over `handler` and
+     surfaces the returned `Error` via `URLProtocolClient.urlProtocol(_:didFailWithError:)`
+     — the same pathway URLSession uses for real network errors like
+     `NSURLErrorNotConnectedToInternet`.
+     */
+    static var errorHandler: ((URLRequest) -> Error)?
+
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
+        if let errorHandler = URLProtocolMock.errorHandler {
+            client?.urlProtocol(self, didFailWithError: errorHandler(request))
+            return
+        }
         guard let handler = URLProtocolMock.handler else {
             fatalError("URLProtocolMock.handler is not set.")
         }

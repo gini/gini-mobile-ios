@@ -335,4 +335,88 @@ struct SessionManagerHTTPTests {
             }
         }
     }
+
+    @Test("URLSession no-internet error maps to .noInternetConnection")
+    func noInternetErrorMapsToGiniError() async {
+        defer {
+            URLProtocolMock.handler = nil
+            URLProtocolMock.errorHandler = nil
+        }
+        URLProtocolMock.errorHandler = { _ in
+            URLError(.notConnectedToInternet)
+        }
+
+        let sut = Self.makeResponseSut()
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource()) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success")
+        case .failure(let error):
+            if case .noInternetConnection = error {
+                break
+            } else {
+                Issue.record("Expected .noInternetConnection, got \(error)")
+            }
+        }
+    }
+
+    @Test("Status code outside 200–599 maps to .unknown")
+    func outOfRangeStatusCodeMapsToUnknown() async {
+        defer { URLProtocolMock.handler = nil }
+        URLProtocolMock.handler = { request in
+            /// 100 falls through both `200..<400` and `400...599`, hitting `handleResponse`'s default arm.
+            (URLProtocolMock.makeResponse(for: request, statusCode: 100), Data())
+        }
+
+        let sut = Self.makeResponseSut()
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource()) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success")
+        case .failure(let error):
+            if case .unknown = error {
+                break
+            } else {
+                Issue.record("Expected .unknown, got \(error)")
+            }
+        }
+    }
+
+    @Test("Existing user rejected as non-.unauthorized error propagates without recreation")
+    func existingUserNonUnauthorizedErrorPropagates() async {
+        defer { URLProtocolMock.handler = nil }
+        let keychain = Self.seededKeychain(withUser: true)
+
+        URLProtocolMock.handler = { request in
+            /// 500 → GiniError.outage — `handleExistingUser`'s `if case .unauthorized` misses,
+            /// so the else-branch calls `completion(.failure(error))` without recreating the user.
+            (URLProtocolMock.makeResponse(for: request, statusCode: 500), Data())
+        }
+
+        let sut = SessionManager(keyStore: keychain,
+                                 urlSessionConfiguration: Self.makeConfiguration())
+
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.logIn { continuation.resume(returning: $0) }
+        }
+
+        #expect(keychain.fetch(service: .auth, key: .userEmail) == "old@user.gini",
+                "user credentials should NOT have been rotated when the error is not .unauthorized")
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success")
+        case .failure(let error):
+            if case .outage = error {
+                break
+            } else {
+                Issue.record("Expected .outage from a 500 response, got \(error)")
+            }
+        }
+    }
 }
