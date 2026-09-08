@@ -120,17 +120,17 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
  This is a convenience wrapper around `NSLocalizedStringPreferredFormat`
  to simplify localization calls throughout the app.
 
- - parameter key:          The key to search for in the strings file.
- - parameter fallback:     An optional fallback key to use if the primary key is not found. Default is empty string.
- - parameter comment:      The corresponding comment describing the usage context.
- - parameter customizable: Whether to check client bundles for custom localizations. Default is true.
-
- - returns: Localized string resource for the given key.
+ - Parameters:
+   - key: The key to search for in the strings file.
+   - fallback: An optional fallback key to use if the primary key is not found. Default is empty string.
+   - comment: The corresponding comment describing the usage context.
+   - customizable: Whether to check client bundles for custom localizations. Default is true.
+ - Returns: Localized string resource for the given key.
 
  ## Example Usage:
  ```swift
- let text = localized("ginibank.digitalinvoice.onboarding.text1",
- comment: "RA onboarding screen first label")
+ let text = giniLocalized("ginibank.digitalinvoice.onboarding.text1",
+                          comment: "RA onboarding screen first label")
  ```
  */
 internal func giniLocalized(_ key: String,

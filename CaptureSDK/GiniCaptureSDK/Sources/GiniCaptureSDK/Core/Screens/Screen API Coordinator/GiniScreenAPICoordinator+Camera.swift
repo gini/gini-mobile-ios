@@ -280,7 +280,8 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
 
-    public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
+    public func documentPicker(_ coordinator: DocumentPickerCoordinator,
+                               failedToPickDocumentsAt urls: [URL]) {
         let error = FilePickerError.failedToOpenDocument
         if coordinator.currentPickerDismissesAutomatically {
             self.cameraScreen?.showErrorDialog(for: error,
