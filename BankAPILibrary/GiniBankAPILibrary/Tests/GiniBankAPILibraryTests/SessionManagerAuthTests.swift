@@ -14,7 +14,9 @@ import Foundation
 @Suite("SessionManager.logIn — alternative token source")
 struct SessionManagerAlternativeTokenTests {
 
-    /// Manual `AlternativeTokenSource` conformance that returns a fixed result.
+    /**
+     Manual `AlternativeTokenSource` conformance that returns a fixed result.
+     */
     private final class StubAlternativeTokenSource: AlternativeTokenSource {
         let result: Result<Token, GiniError>
 
@@ -78,15 +80,19 @@ struct SessionManagerAlternativeTokenTests {
 
 // MARK: - HTTP-driven paths (login + response handling)
 
-/// Serialized because `URLProtocolMock.handler` is a shared static; every test in
-/// this suite mutates it and would otherwise clobber a sibling running in parallel.
-/// Both the login-flow tests and the response-shape tests live in the same suite
-/// for that reason — tests split across sibling `.serialized` suites are still
-/// eligible to run concurrently in Swift Testing.
+/**
+ Serialized because `URLProtocolMock.handler` is a shared static; every test in
+ this suite mutates it and would otherwise clobber a sibling running in parallel.
+ Both the login-flow tests and the response-shape tests live in the same suite
+ for that reason — tests split across sibling `.serialized` suites are still
+ eligible to run concurrently in Swift Testing.
+ */
 @Suite("SessionManager HTTP interactions", .serialized)
 struct SessionManagerHTTPTests {
 
-    /// Mutable call counter for tests that need to route responses by request order.
+    /**
+     Mutable call counter for tests that need to route responses by request order.
+     */
     private final class CallCounter { var count = 0 }
 
     // MARK: Fixtures

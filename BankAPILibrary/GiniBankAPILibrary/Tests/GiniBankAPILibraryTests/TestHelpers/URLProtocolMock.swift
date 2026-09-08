@@ -7,18 +7,20 @@
 
 import Foundation
 
-/// URLProtocol stub whose per-request behaviour is defined by `handler`.
-///
-/// Register with an `URLSessionConfiguration`:
-///
-///     let config = URLSessionConfiguration.ephemeral
-///     config.protocolClasses = [URLProtocolMock.self]
-///     URLProtocolMock.handler = { request in
-///         (URLProtocolMock.makeResponse(for: request, statusCode: 200), Data())
-///     }
-///
-/// Ported from the equivalent helper in the sister `GiniHealthAPILibrary`
-/// test target so the two API libraries can converge on the same pattern.
+/**
+ URLProtocol stub whose per-request behaviour is defined by `handler`.
+
+ Register with an `URLSessionConfiguration`:
+
+     let config = URLSessionConfiguration.ephemeral
+     config.protocolClasses = [URLProtocolMock.self]
+     URLProtocolMock.handler = { request in
+         (URLProtocolMock.makeResponse(for: request, statusCode: 200), Data())
+     }
+
+ Ported from the equivalent helper in the sister `GiniHealthAPILibrary`
+ test target so the two API libraries can converge on the same pattern.
+ */
 final class URLProtocolMock: URLProtocol {
     static var handler: ((URLRequest) -> (HTTPURLResponse, Data?))?
 
@@ -44,9 +46,11 @@ final class URLProtocolMock: URLProtocol {
 
     // MARK: - Helpers
 
-    /// Fallback URL for the rare case where a `URLRequest` arrives without one —
-    /// the returned `HTTPURLResponse` needs a non-optional URL, so we lean on this
-    /// known-good constant instead of force-unwrapping at every call site.
+    /**
+     Fallback URL for the rare case where a `URLRequest` arrives without one —
+     the returned `HTTPURLResponse` needs a non-optional URL, so we lean on this
+     known-good constant instead of force-unwrapping at every call site.
+     */
     static let fallbackURL: URL = {
         guard let url = URL(string: "https://user.gini.net") else {
             fatalError("URLProtocolMock.fallbackURL literal is malformed")
@@ -54,9 +58,11 @@ final class URLProtocolMock: URLProtocol {
         return url
     }()
 
-    /// Build an `HTTPURLResponse` with the requested status code — the initializer
-    /// is optional, so callers would otherwise force-unwrap; this helper wraps the
-    /// invariant in one place.
+    /**
+     Build an `HTTPURLResponse` with the requested status code — the initializer
+     is optional, so callers would otherwise force-unwrap; this helper wraps the
+     invariant in one place.
+     */
     static func makeResponse(for request: URLRequest,
                              statusCode: Int,
                              headers: [String: String]? = nil) -> HTTPURLResponse {
