@@ -255,15 +255,18 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         case .maxFilesPickedCountExceeded,
              .mixedDocumentsUnsupported,
              .multiplePdfsUnsupported:
-            guard hasExistingPages else { return nil }
-            return { [weak self, weak coordinator] in
-                coordinator?.dismissCurrentPicker {
-                    self?.showReview()
-                }
-            }
+            return hasExistingPages ? reviewAction(coordinator: coordinator) : nil
         case .photoLibraryAccessDenied,
              .failedToOpenDocument:
             return nil
+        }
+    }
+
+    private func reviewAction(coordinator: DocumentPickerCoordinator) -> () -> Void {
+        return { [weak self, weak coordinator] in
+            coordinator?.dismissCurrentPicker {
+                self?.showReview()
+            }
         }
     }
 
