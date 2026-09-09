@@ -113,13 +113,25 @@ refresh_active_builds() {
     ACTIVE_IDS=()
     ACTIVE_WEIGHTS=()
     ACTIVE_TOTAL=0
-    local i status
+    local i status attempt
     for i in "${!ids[@]}"; do
-        status=$(curl -s -u "$BS_USER:$BS_KEY" \
-            "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${ids[$i]}" \
-            | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || true)
+        ## An unreadable status must not count as "still running" — an auth or API
+        ## error would otherwise keep the license wait loop spinning forever. Retry
+        ## a few times for transient failures, then fail fast.
+        status=""
+        for attempt in 1 2 3; do
+            status=$(bs_curl -u "$BS_USER:$BS_KEY" \
+                "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${ids[$i]}" \
+                | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || true)
+            [ -n "$status" ] && break
+            sleep 10
+        done
+        if [ -z "$status" ]; then
+            echo "ERROR: could not read status of build ${ids[$i]} after 3 attempts — check BS_USER/BS_KEY and the BrowserStack API." >&2
+            exit 1
+        fi
         case "$status" in
-            running|queued|"")
+            running|queued)
                 ACTIVE_IDS+=("${ids[$i]}")
                 ACTIVE_WEIGHTS+=("${weights[$i]}")
                 ACTIVE_TOTAL=$((ACTIVE_TOTAL + weights[i]))
