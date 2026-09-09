@@ -15,19 +15,21 @@ import UIKit
  Swift Testing coverage for the payment-invoice tap routing changes introduced
  in PR #1260 on `PaymentComponentsController+Helpers.swift`.
 
- Covers `didTapOnPayInvoice(documentId:)` and the routing it does through the
- four private helpers (`shouldShowPaymentReviewScreen`, `handlePaymentReviewFlow`,
- `handleExternalPaymentFlow`, `handleOpenWithPayment`, `handleGPCPayment`), plus
- the three public predicates the external flow branches on (`supportsOpenWith`,
- `supportsGPC`, `canOpenPaymentProviderApp`).
+ Covers `didTapOnPayInvoice(documentId:)`, `didTapOnBankPicker(documentId:)`,
+ the routing done through the four private helpers (`shouldShowPaymentReviewScreen`,
+ `handlePaymentReviewFlow`, `handleExternalPaymentFlow`, `handleOpenWithPayment`,
+ `handleGPCPayment`), the three public predicates the external flow branches
+ on (`supportsOpenWith`, `supportsGPC`, `canOpenPaymentProviderApp`), and the
+ payment-provider persistence helpers (`storeDefaultPaymentProvider`,
+ `savedPaymentProvider`).
 
  The private helpers cannot be invoked directly, so they are covered by driving
  `didTapOnPayInvoice(documentId:)` with the state that routes into each branch
  and observing side effects on the spy `UINavigationController` and the delegate.
 
- The suite is `.serialized` because tests mutate `GiniHealthConfiguration.shared`.
- The class-based suite saves and restores the two toggled flags in `init`/`deinit`
- so tests are order-independent.
+ The suite is `.serialized` because tests mutate `GiniHealthConfiguration.shared`
+ and `UserDefaults.standard`. The class-based suite saves and restores all
+ mutated global state in `init`/`deinit` so tests are order-independent.
  */
 @Suite("Payment invoice tap routing (PR #1260)", .serialized)
 @MainActor
@@ -40,9 +42,14 @@ final class PaymentInvoiceRoutingTests {
     private let sut: PaymentComponentsController
     private let spyNavigationController: SpyNavigationController
     private let delegateSpy: PaymentComponentsControllerDelegateSpy
+    private let healthDelegateSpy: GiniHealthDelegateSpy
 
     private let savedShowPaymentReviewScreen: Bool
     private let savedUseInvoiceWithoutDocument: Bool
+    private let savedUseBottomPaymentComponentView: Bool
+    private let savedDefaultPaymentProviderData: Data?
+
+    private static let defaultPaymentProviderKey = "defaultPaymentProvider"
 
     init() {
         let sessionManager = MockSessionManager()
@@ -64,22 +71,31 @@ final class PaymentInvoiceRoutingTests {
         delegateSpy = PaymentComponentsControllerDelegateSpy()
         sut.delegate = delegateSpy
 
+        healthDelegateSpy = GiniHealthDelegateSpy()
+        giniHealth.delegate = healthDelegateSpy
+
         savedShowPaymentReviewScreen = GiniHealthConfiguration.shared.showPaymentReviewScreen
         savedUseInvoiceWithoutDocument = GiniHealthConfiguration.shared.useInvoiceWithoutDocument
+        savedUseBottomPaymentComponentView = GiniHealthConfiguration.shared.useBottomPaymentComponentView
+        savedDefaultPaymentProviderData = UserDefaults.standard.data(forKey: Self.defaultPaymentProviderKey)
+        UserDefaults.standard.removeObject(forKey: Self.defaultPaymentProviderKey)
     }
 
     deinit {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = savedShowPaymentReviewScreen
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = savedUseInvoiceWithoutDocument
+        GiniHealthConfiguration.shared.useBottomPaymentComponentView = savedUseBottomPaymentComponentView
+        if let savedDefaultPaymentProviderData {
+            UserDefaults.standard.set(savedDefaultPaymentProviderData, forKey: Self.defaultPaymentProviderKey)
+        } else {
+            UserDefaults.standard.removeObject(forKey: Self.defaultPaymentProviderKey)
+        }
     }
 
     // MARK: - `didTapOnPayInvoice` config-based routing
 
     @Test("Review flow is routed to when `useInvoiceWithoutDocument` is false (isLoading toggles)")
-    func routesToReviewFlow_whenUseInvoiceWithoutDocumentIsFalse() throws {
-        // Route into `handlePaymentReviewFlow` → `loadPaymentReviewScreenFor` which
-        // sets `isLoading = true` on the `!useInvoiceWithoutDocument` branch when
-        // a document id is set. That toggle is observable through the delegate.
+    func routesToReviewFlowWhenUseInvoiceWithoutDocumentIsFalse() throws {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = false
         sut.documentId = MockSessionManager.payableDocumentID
@@ -91,18 +107,16 @@ final class PaymentInvoiceRoutingTests {
     }
 
     @Test("External flow (no-op branches) is routed to when both flags favor external")
-    func routesToExternalFlow_whenBothFlagsFalse() throws {
+    func routesToExternalFlowWhenBothFlagsFalse() throws {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
 
-        // A provider that supports neither openWith nor GPC means `handleExternalPaymentFlow`
-        // falls through both branches. No navigation event is emitted, and no `isLoading`
-        // toggle fires — proof that `shouldShowPaymentReviewScreen` returned false.
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: false)
         sut.paymentInfo = nil
 
-        // The initial `loadPaymentProviders()` call fired from PCC init settles
+        // The initial `loadPaymentProviders()` fired from PCC init settles
         // asynchronously on main; clear its `isLoading = false` echo before acting.
+        drainMainRunLoop()
         delegateSpy.loadingStateChanges.removeAll()
 
         sut.didTapOnPayInvoice(documentId: nil)
@@ -116,8 +130,7 @@ final class PaymentInvoiceRoutingTests {
     // MARK: - GPC branch — the key PR #1260 regression
 
     @Test("Install-app sheet is reachable via GPC when `paymentInfo` is nil (PR #1260 regression)")
-    func installAppSheet_isPresented_onGPCPath_whenPaymentInfoIsNil() throws {
-        // Route into `handleExternalPaymentFlow`
+    func installAppSheetIsPresentedOnGPCPathWhenPaymentInfoIsNil() throws {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
 
@@ -126,8 +139,6 @@ final class PaymentInvoiceRoutingTests {
         // `defaultInstalledPaymentProvider()`.
         drainMainRunLoop()
 
-        // A GPC-supporting provider whose scheme cannot be opened → `canOpenPaymentProviderApp`
-        // returns false → the else branch of `handleGPCPayment` runs.
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: true,
                                                          openWithOnIOS: false,
                                                          scheme: "unopenable-scheme-\(UUID().uuidString)")
@@ -143,7 +154,7 @@ final class PaymentInvoiceRoutingTests {
     }
 
     @Test("Install-app sheet is reachable via GPC when `paymentInfo` is present too")
-    func installAppSheet_isPresented_onGPCPath_whenPaymentInfoIsPresent() throws {
+    func installAppSheetIsPresentedOnGPCPathWhenPaymentInfoIsPresent() throws {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
 
@@ -161,20 +172,18 @@ final class PaymentInvoiceRoutingTests {
         #expect(presentedView is InstallAppBottomView)
     }
 
-    // MARK: - `handleOpenWithPayment` guard
+    // MARK: - `handleOpenWithPayment`
 
     @Test("Open-with branch is a no-op when `paymentInfo` is nil")
-    func openWithBranch_isNoOp_whenPaymentInfoIsNil() throws {
+    func openWithBranchIsNoOpWhenPaymentInfoIsNil() throws {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
+
+        drainMainRunLoop()
 
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: true)
         sut.paymentInfo = nil
 
-        // Drain the pending `loadPaymentProviders()` main-queue callback that PCC's
-        // init fires — otherwise it may race with `didTapOnPayInvoice` and overwrite
-        // `selectedPaymentProvider` with `defaultInstalledPaymentProvider()` (nil).
-        drainMainRunLoop()
         delegateSpy.loadingStateChanges.removeAll()
 
         sut.didTapOnPayInvoice(documentId: nil)
@@ -186,10 +195,87 @@ final class PaymentInvoiceRoutingTests {
         #expect(delegateSpy.loadingStateChanges.isEmpty)
     }
 
+    @Test("Open-with branch drives payment request creation when `paymentInfo` is present")
+    func openWithBranchCreatesPaymentRequestWhenPaymentInfoIsPresent() async throws {
+        GiniHealthConfiguration.shared.showPaymentReviewScreen = false
+        GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
+
+        try await settleMainQueue()
+
+        sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: true)
+        sut.paymentInfo = Self.makePaymentInfo()
+
+        sut.didTapOnPayInvoice(documentId: nil)
+
+        // `handleOpenWithPayment` → PCC.createPaymentRequest → giniSDK.createPaymentRequest
+        // → mock returns success synchronously → PCC completes with paymentRequestId and
+        // fires `giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId:)`. Yield the
+        // main actor so any main-queue hops in the chain settle before asserting.
+        try await settleMainQueue(hops: 6)
+
+        #expect(!healthDelegateSpy.createdPaymentRequestIds.isEmpty,
+                "handleOpenWithPayment should reach PCC.createPaymentRequest and fire didCreatePaymentRequest on the health delegate")
+        #expect(!spyNavigationController.presented.contains { $0.viewController is InstallAppBottomView },
+                "OpenWith branch must not present the install-app sheet")
+    }
+
+    // MARK: - Bank picker
+
+    @Test("Bank picker presents the bank selection bottom sheet when bottom view is enabled")
+    func bankPickerPresentsBankSelectionSheetWhenBottomViewEnabled() throws {
+        GiniHealthConfiguration.shared.useBottomPaymentComponentView = true
+
+        drainMainRunLoop()
+
+        sut.didTapOnBankPicker(documentId: nil)
+
+        #expect(spyNavigationController.presented.count == 1)
+        let presented = try #require(spyNavigationController.presented.first?.viewController)
+        #expect(presented is BanksBottomView,
+                "Presented view controller should be the bank selection bottom sheet")
+    }
+
+    @Test("Bank picker does nothing when bottom view is disabled")
+    func bankPickerIsNoOpWhenBottomViewDisabled() throws {
+        GiniHealthConfiguration.shared.useBottomPaymentComponentView = false
+
+        drainMainRunLoop()
+
+        sut.didTapOnBankPicker(documentId: nil)
+
+        #expect(spyNavigationController.presented.isEmpty)
+    }
+
+    // MARK: - Review flow error branch
+
+    @Test("Review flow surfaces error via handleError when data-for-review fails")
+    func reviewFlowSurfacesErrorWhenDataForReviewFails() async throws {
+        GiniHealthConfiguration.shared.showPaymentReviewScreen = false
+        GiniHealthConfiguration.shared.useInvoiceWithoutDocument = false
+        sut.documentId = MockSessionManager.failurePayableDocumentID
+
+        try await settleMainQueue()
+        delegateSpy.loadingStateChanges.removeAll()
+
+        sut.didTapOnPayInvoice(documentId: nil)
+
+        // Chain: `handlePaymentReviewFlow` → `loadPaymentReviewScreenFor` calls
+        // `fetchDataForReview` (mock returns extractions failure) → completion fires
+        // with `error != nil` → `handleError(error)` → `showErrorsIfAny` dispatches
+        // to main.async → `showErrorAlertView` → presents the alert on the spy nav.
+        // Multi-hop chain — yield the main actor several times to let it settle.
+        try await settleMainQueue(hops: 6)
+
+        #expect(delegateSpy.loadingStateChanges.contains(false),
+                "handleError should toggle isLoading back to false via the delegate")
+        #expect(spyNavigationController.presented.contains(where: { $0.viewController is UIAlertController }),
+                "handleError should surface an alert to the user")
+    }
+
     // MARK: - Public predicates
 
     @Test("`supportsOpenWith` reflects the selected provider's iOS support")
-    func supportsOpenWith_reflectsProviderPlatforms() {
+    func supportsOpenWithReflectsProviderPlatforms() {
         sut.selectedPaymentProvider = nil
         #expect(sut.supportsOpenWith() == false)
 
@@ -201,7 +287,7 @@ final class PaymentInvoiceRoutingTests {
     }
 
     @Test("`supportsGPC` reflects the selected provider's iOS support")
-    func supportsGPC_reflectsProviderPlatforms() {
+    func supportsGPCReflectsProviderPlatforms() {
         sut.selectedPaymentProvider = nil
         #expect(sut.supportsGPC() == false)
 
@@ -213,28 +299,83 @@ final class PaymentInvoiceRoutingTests {
     }
 
     @Test("`canOpenPaymentProviderApp` is false when GPC is not supported")
-    func canOpenPaymentProviderApp_isFalse_whenGPCUnsupported() {
+    func canOpenPaymentProviderAppIsFalseWhenGPCUnsupported() {
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: false)
         #expect(sut.canOpenPaymentProviderApp() == false)
     }
 
     @Test("`canOpenPaymentProviderApp` is false when scheme cannot be opened")
-    func canOpenPaymentProviderApp_isFalse_whenSchemeUnopenable() {
+    func canOpenPaymentProviderAppIsFalseWhenSchemeUnopenable() {
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: true,
                                                          openWithOnIOS: false,
                                                          scheme: "unopenable-scheme-\(UUID().uuidString)")
-        // GPC is supported but the scheme cannot be opened by the simulator.
         #expect(sut.canOpenPaymentProviderApp() == false)
+    }
+
+    // MARK: - Payment-provider persistence
+
+    @Test("`storeDefaultPaymentProvider` persists an encoded provider to UserDefaults")
+    func storeDefaultPaymentProviderPersistsToUserDefaults() throws {
+        let provider = Self.makeProvider(gpcOnIOS: true, openWithOnIOS: false)
+
+        sut.storeDefaultPaymentProvider(paymentProvider: provider)
+
+        let storedData = try #require(UserDefaults.standard.data(forKey: Self.defaultPaymentProviderKey),
+                                        "Encoded provider should be stored under the default-payment-provider key")
+        let decoded = try JSONDecoder().decode(GiniHealthSDK.PaymentProvider.self, from: storedData)
+        #expect(decoded.id == provider.id)
+        #expect(decoded.name == provider.name)
+    }
+
+    @Test("`savedPaymentProvider` returns the stored provider when its id is in the known providers list")
+    func savedPaymentProviderReturnsStoredProviderWhenIdIsKnown() throws {
+        let provider = Self.makeProvider(gpcOnIOS: true, openWithOnIOS: false)
+        sut.storeDefaultPaymentProvider(paymentProvider: provider)
+
+        // `savedPaymentProvider` only returns the decoded provider if its id is in
+        // `paymentProviders`. Preload the SDK's known list with the same id.
+        sut.paymentProviders = [provider.toHealthPaymentProvider()]
+
+        let saved = try #require(sut.savedPaymentProvider(),
+                                  "Saved provider should be returned when its id is in the known providers list")
+        #expect(saved.id == provider.id)
+    }
+
+    @Test("`savedPaymentProvider` returns nil when the stored provider's id is not in the known list")
+    func savedPaymentProviderReturnsNilWhenIdIsUnknown() throws {
+        let stored = Self.makeProvider(gpcOnIOS: true, openWithOnIOS: false)
+        sut.storeDefaultPaymentProvider(paymentProvider: stored)
+
+        // Populate the known providers with a DIFFERENT id so the stored one won't match.
+        let unrelated = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: true)
+        sut.paymentProviders = [unrelated.toHealthPaymentProvider()]
+
+        #expect(sut.savedPaymentProvider() == nil,
+                "Stored provider is discarded when its id is not among the known providers")
+    }
+
+    @Test("`savedPaymentProvider` returns nil when nothing has been stored")
+    func savedPaymentProviderReturnsNilWhenNothingStored() {
+        #expect(sut.savedPaymentProvider() == nil)
     }
 
     // MARK: - Helpers
 
     /// Pumps the main run loop for a brief window so `DispatchQueue.main.async`
     /// blocks scheduled from `loadPaymentProviders()` (fired inside PCC init) can
-    /// settle before the test drives the SUT. Without this, the async callback
-    /// resets `selectedPaymentProvider` mid-test and the assertion becomes flaky.
+    /// settle before the test drives the SUT.
     private func drainMainRunLoop() {
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
+    }
+
+    /// Yields the main actor for `hops` iterations, each sleeping for a short
+    /// window so `DispatchQueue.main.async` blocks scheduled by the SDK chain
+    /// can settle. Unlike `RunLoop.main.run(until:)`, this actually suspends
+    /// the current `@MainActor` context and lets other main-queue work run.
+    private func settleMainQueue(hops: Int = 3) async throws {
+        for _ in 0..<hops {
+            try await Task.sleep(nanoseconds: 20_000_000) // 20 ms per hop
+        }
     }
 
     // MARK: - Fixture builders
@@ -299,6 +440,31 @@ private final class SpyNavigationController: UINavigationController {
  and (for `isLoadingStateChanged`) with which value, without depending on
  the real host-app plumbing.
  */
+/**
+ Records `didCreatePaymentRequest` calls on `GiniHealthDelegate`. Used as an
+ observable signal for payment-request success in tests that would otherwise
+ rely on downstream side effects (like presenting a share-invoice sheet)
+ that the shared mock cannot reliably drive.
+ */
+private final class GiniHealthDelegateSpy: GiniHealthDelegate {
+    var createdPaymentRequestIds: [String] = []
+    var dismissedCount = 0
+    var errorsAskedToHandleInternally: [GiniHealthError] = []
+
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        createdPaymentRequestIds.append(paymentRequestId)
+    }
+
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool {
+        errorsAskedToHandleInternally.append(error)
+        return true
+    }
+
+    func didDismissHealthSDK() {
+        dismissedCount += 1
+    }
+}
+
 private final class PaymentComponentsControllerDelegateSpy: PaymentComponentsControllerProtocol {
     var loadingStateChanges: [Bool] = []
     var didFetchedPaymentProvidersCallCount = 0
