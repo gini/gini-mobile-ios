@@ -213,19 +213,19 @@ final class PaymentInvoiceRoutingTests {
 
     private static func makeProvider(gpcOnIOS: Bool,
                                      openWithOnIOS: Bool,
-                                     scheme: String = "test-scheme") -> PaymentProvider {
-        PaymentProvider(id: "test-provider-\(UUID().uuidString)",
-                        name: "Test Bank",
-                        appSchemeIOS: scheme,
-                        minAppVersion: nil,
-                        colors: ProviderColors(background: "#FFFFFF",
-                                                text: "#000000"),
-                        iconData: Data(),
-                        appStoreUrlIOS: "https://apps.apple.com/test",
-                        universalLinkIOS: "https://example.com/pay",
-                        index: 0,
-                        gpcSupportedPlatforms: gpcOnIOS ? [.ios] : [],
-                        openWithSupportedPlatforms: openWithOnIOS ? [.ios] : [])
+                                     scheme: String = "test-scheme") -> GiniHealthSDK.PaymentProvider {
+        GiniHealthSDK.PaymentProvider(id: "test-provider-\(UUID().uuidString)",
+                                       name: "Test Bank",
+                                       appSchemeIOS: scheme,
+                                       minAppVersion: nil,
+                                       colors: GiniHealthSDK.ProviderColors(background: "#FFFFFF",
+                                                                             text: "#000000"),
+                                       iconData: Data(),
+                                       appStoreUrlIOS: "https://apps.apple.com/test",
+                                       universalLinkIOS: "https://example.com/pay",
+                                       index: 0,
+                                       gpcSupportedPlatforms: gpcOnIOS ? [.ios] : [],
+                                       openWithSupportedPlatforms: openWithOnIOS ? [.ios] : [])
     }
 
     private static func makePaymentInfo() -> GiniInternalPaymentSDK.PaymentInfo {
