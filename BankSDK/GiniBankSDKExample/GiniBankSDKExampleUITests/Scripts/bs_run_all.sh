@@ -11,7 +11,7 @@ set -e
 # tests need their own media channel).
 #
 # Scenario builds triggered (buildName gets the release version appended, taken
-# from BS_PROJECT — e.g. smoke_tests_4.5.0):
+# from BS_PROJECT — e.g. smoke_journeys_4.5.0):
 #   smoke_journeys_<v> — curated smoke journeys (smoke tests.csv mapping)
 #   smoke_screens_<v>  — Main/Error/Capture/CameraAccess/Review screen checks
 #   cx_normal_<v>     — CX capture flows, feature flags, product tag, onboarding,
@@ -44,7 +44,7 @@ BS_PARALLELS="${BS_PARALLELS:-2}"
 
 # ── Release suffix for build names ─────────────────────────────────────────────
 # Build names carry the release version (from BS_PROJECT, e.g. GiniBankSDK-iOS-4.5.0
-# → smoke_tests_4.5.0) so runs of different releases are distinguishable at a glance.
+# → smoke_journeys_4.5.0) so runs of different releases are distinguishable at a glance.
 RELEASE_VERSION="${BS_PROJECT##*-}"
 
 
@@ -165,9 +165,13 @@ wait_for_capacity() {
 
 # ── trigger_scenario ───────────────────────────────────────────────────────────
 # Triggers one BrowserStack build and records its build_id for the end summary.
-# Usage: trigger_scenario BUILD_NAME ONLY_TESTING_JSON UPLOAD_MEDIA_JSON [EXTRA_FIELDS] [SHARD_COUNT]
-#   EXTRA_FIELDS — optional raw JSON fields appended to the request (must end with a comma)
-#   SHARD_COUNT  — number of shards in EXTRA_FIELDS (default 1); used for license pacing
+# Usage: trigger_scenario BUILD_NAME ONLY_TESTING_JSON UPLOAD_MEDIA_JSON [EXTRA_FIELDS] [SHARD_COUNT] [SINGLE_RUNNER]
+#   EXTRA_FIELDS  — optional raw JSON fields appended to the request (must end with a comma)
+#   SHARD_COUNT   — number of shards in EXTRA_FIELDS (default 1); used for license pacing
+#   SINGLE_RUNNER — singleRunnerInvocation value (default "true"). MUST be "false"
+#                   for scenarios whose only-testing selection is method-level:
+#                   BrowserStack ignores method filters in single-runner mode and
+#                   runs the whole class (see bs_run_smoke_journeys.sh).
 TRIGGERED_SUMMARY=""
 trigger_scenario() {
     local build_name="$1"
@@ -175,6 +179,7 @@ trigger_scenario() {
     local upload_media="$3"
     local extra_fields="${4:-}"
     local shard_count="${5:-1}"
+    local single_runner="${6:-true}"
 
     ## Pass "-" as ONLY_TESTING_JSON to omit the top-level only-testing filter —
     ## used when the scenario selects tests through a shards mapping instead.
@@ -233,7 +238,7 @@ trigger_scenario() {
             \"buildName\": \"$build_name\",
             \"buildTag\": \"$build_name\",
             \"timeout\": 7200,
-            \"singleRunnerInvocation\": \"true\",
+            \"singleRunnerInvocation\": \"$single_runner\",
             $LANGUAGE_FIELD
             $extra_fields
             \"uploadMedia\": $upload_media,
@@ -282,7 +287,8 @@ trigger_scenario "smoke_journeys_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantEditName",
   "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoFullFlowWithDiscountViaFiles",
   "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoToggleSwitch"
-]' "[\"$SEPA_PDF_URL\", \"$SEPA_PNG_URL\", \"$NO_RESULTS_URL\", \"$RA_URL\", \"$SKONTO_PAST_URL\"]"
+]' "[\"$SEPA_PDF_URL\", \"$SEPA_PNG_URL\", \"$NO_RESULTS_URL\", \"$RA_URL\", \"$SKONTO_PAST_URL\"]" \
+   "" 1 "false"
 
 trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniMainScreenUITests",
