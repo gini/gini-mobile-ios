@@ -478,4 +478,74 @@ struct SessionManagerHTTPTests {
             }
         }
     }
+
+    // MARK: - MockHTTPClient-driven tests
+    //
+    // Routes SessionManager through a custom `GiniHTTPClient` (bypassing URLSession
+    // entirely) to hit branches URLProtocolMock cannot reach — specifically the
+    // `guard let jsonData = data else` arm in `handleResponse`, which needs a nil
+    // data payload URLSession never actually delivers.
+
+    private static func makeSutWithMockClient(_ mock: MockHTTPClient) -> SessionManager {
+        let sut = SessionManager(keyStore: Self.seededKeychain(withUser: false),
+                                 customHTTPClient: mock)
+        /// Bypass login for these response-shape tests.
+        sut.clientAccessToken = "dummy-client-token"
+        sut.userAccessToken = "dummy-user-token"
+        return sut
+    }
+
+    private static func httpResponse(statusCode: Int) -> HTTPURLResponse {
+        URLProtocolMock.makeResponse(for: URLRequest(url: URLProtocolMock.fallbackURL),
+                                     statusCode: statusCode)
+    }
+
+    @Test("2xx response with nil data body maps to .unknown")
+    func success2xxWithNilDataMapsToUnknown() async {
+        let mock = MockHTTPClient()
+        mock.dataResponse = (nil, Self.httpResponse(statusCode: 200), nil)
+
+        let sut = Self.makeSutWithMockClient(mock)
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource()) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success:
+            Issue.record("Expected .failure, got .success")
+        case .failure(let error):
+            if case .unknown = error {
+                break
+            } else {
+                Issue.record("Expected .unknown from 2xx + nil data, got \(error)")
+            }
+        }
+    }
+
+    @Test("Non-cancelled token passes through and delivers the response")
+    func nonCancelledTokenPassesThrough() async {
+        let mock = MockHTTPClient()
+        mock.dataResponse = (Self.tokenResponseData(),
+                             Self.httpResponse(statusCode: 200),
+                             nil)
+
+        /// Fresh token, never cancelled — covers the branch where
+        /// `cancellationToken != nil AND isCancelled == false` (the existing
+        /// cancellation test only hits `isCancelled == true`, and all other
+        /// tests pass `nil` for the token).
+        let token = CancellationToken()
+
+        let sut = Self.makeSutWithMockClient(mock)
+        let result: Result<Token, GiniError> = await withCheckedContinuation { continuation in
+            sut.data(resource: Self.tokenResource(),
+                     cancellationToken: token) { continuation.resume(returning: $0) }
+        }
+
+        switch result {
+        case .success(let received):
+            #expect(received.accessToken == "test-access-token")
+        case .failure(let error):
+            Issue.record("Expected .success with a live token, got .failure(\(error))")
+        }
+    }
 }
