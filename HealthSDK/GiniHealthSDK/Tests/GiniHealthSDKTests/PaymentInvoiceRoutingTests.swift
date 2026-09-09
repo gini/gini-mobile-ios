@@ -30,6 +30,7 @@ import UIKit
  so tests are order-independent.
  */
 @Suite("Payment invoice tap routing (PR #1260)", .serialized)
+@MainActor
 final class PaymentInvoiceRoutingTests {
 
     // MARK: - Test fixtures
@@ -100,6 +101,10 @@ final class PaymentInvoiceRoutingTests {
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: false)
         sut.paymentInfo = nil
 
+        // The initial `loadPaymentProviders()` call fired from PCC init settles
+        // asynchronously on main; clear its `isLoading = false` echo before acting.
+        delegateSpy.loadingStateChanges.removeAll()
+
         sut.didTapOnPayInvoice(documentId: nil)
 
         #expect(spyNavigationController.presented.isEmpty)
@@ -115,6 +120,11 @@ final class PaymentInvoiceRoutingTests {
         // Route into `handleExternalPaymentFlow`
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
+
+        // Drain PCC's `loadPaymentProviders()` before setting our provider, otherwise
+        // its main-queue callback overwrites `selectedPaymentProvider` with the (nil)
+        // `defaultInstalledPaymentProvider()`.
+        drainMainRunLoop()
 
         // A GPC-supporting provider whose scheme cannot be opened → `canOpenPaymentProviderApp`
         // returns false → the else branch of `handleGPCPayment` runs.
@@ -137,6 +147,8 @@ final class PaymentInvoiceRoutingTests {
         GiniHealthConfiguration.shared.showPaymentReviewScreen = false
         GiniHealthConfiguration.shared.useInvoiceWithoutDocument = true
 
+        drainMainRunLoop()
+
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: true,
                                                          openWithOnIOS: false,
                                                          scheme: "unopenable-scheme-\(UUID().uuidString)")
@@ -158,6 +170,12 @@ final class PaymentInvoiceRoutingTests {
 
         sut.selectedPaymentProvider = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: true)
         sut.paymentInfo = nil
+
+        // Drain the pending `loadPaymentProviders()` main-queue callback that PCC's
+        // init fires — otherwise it may race with `didTapOnPayInvoice` and overwrite
+        // `selectedPaymentProvider` with `defaultInstalledPaymentProvider()` (nil).
+        drainMainRunLoop()
+        delegateSpy.loadingStateChanges.removeAll()
 
         sut.didTapOnPayInvoice(documentId: nil)
 
@@ -207,6 +225,16 @@ final class PaymentInvoiceRoutingTests {
                                                          scheme: "unopenable-scheme-\(UUID().uuidString)")
         // GPC is supported but the scheme cannot be opened by the simulator.
         #expect(sut.canOpenPaymentProviderApp() == false)
+    }
+
+    // MARK: - Helpers
+
+    /// Pumps the main run loop for a brief window so `DispatchQueue.main.async`
+    /// blocks scheduled from `loadPaymentProviders()` (fired inside PCC init) can
+    /// settle before the test drives the SUT. Without this, the async callback
+    /// resets `selectedPaymentProvider` mid-test and the assertion becomes flaky.
+    private func drainMainRunLoop() {
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
     }
 
     // MARK: - Fixture builders
