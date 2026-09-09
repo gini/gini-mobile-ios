@@ -20,23 +20,14 @@ class SettingScreen {
     let productTagSegmentedControl: XCUIElement
     let paymentDueHintSwitch: XCUIElement
     let paymentScheduleHintSwitch: XCUIElement
+    let returnAssistantSwitch: XCUIElement
+    let skontoSwitch: XCUIElement
     /**
      Row title of the credit note hint feature toggle — the example-app settings UI
      is English-only, so no locale switch is needed. The switch itself carries no
      accessibility identifier yet, so it is located through its cell text.
      */
     let creditNoteHintCellText = "Credit note hint feature"
-    /**
-     Row title of the Return Assistant feature toggle (located through its cell
-     text — see `creditNoteHintCellText`).
-     */
-    let returnAssistantCellText = "Return Assistant feature"
-    /**
-     Row title of the Skonto feature toggle (located through its cell
-     text — see `creditNoteHintCellText`).
-     */
-    let skontoCellText = "Skonto feature"
-
 
     init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -50,6 +41,8 @@ class SettingScreen {
         productTagSegmentedControl = app.segmentedControls[SettingScreenAccessibilityIdentifiers.productTagSegmentedControl.rawValue]
         paymentDueHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue]
         paymentScheduleHintSwitch = app.switches[SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue]
+        returnAssistantSwitch = app.switches[SettingScreenAccessibilityIdentifiers.returnAssistantSwitch.rawValue]
+        skontoSwitch = app.switches[SettingScreenAccessibilityIdentifiers.skontoSwitch.rawValue]
     }
     
     public func tapFlashToggleSwitch(){
@@ -111,6 +104,22 @@ class SettingScreen {
         }
         XCTAssertEqual(switchElement.value as? String, enabled ? "1" : "0",
                        "Switch next to '\(text)' did not reach state \(enabled).")
+    }
+
+    /**
+     Sets a settings switch located by its accessibility identifier to the requested state.
+     Waits for the settings screen to appear, scrolls until the switch is hittable,
+     toggles it if needed, and asserts the final state.
+     - Parameters:
+       - switchElement: The identifier-based switch element to set.
+       - enabled: Desired switch state.
+     */
+    public func setSwitch(_ switchElement: XCUIElement,
+                          enabled: Bool) {
+        XCTAssertTrue(closeButton.waitForExistence(timeout: 5), "Settings screen did not appear")
+        setSwitch(switchElement, to: enabled)
+        XCTAssertEqual(switchElement.value as? String, enabled ? "1" : "0",
+                       "Switch \(switchElement) did not reach state \(enabled).")
     }
 
     /**

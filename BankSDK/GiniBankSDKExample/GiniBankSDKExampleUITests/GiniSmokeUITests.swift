@@ -24,8 +24,8 @@ class GiniSmokeUITests: GiniBankSDKExampleUITests {
      */
     private func disableReturnAssistantAndSkonto() {
         mainScreen.configurationButton.tap()
-        settingScreen.setSwitch(nextTo: settingScreen.returnAssistantCellText, enabled: false)
-        settingScreen.setSwitch(nextTo: settingScreen.skontoCellText, enabled: false)
+        settingScreen.setSwitch(settingScreen.returnAssistantSwitch, enabled: false)
+        settingScreen.setSwitch(settingScreen.skontoSwitch, enabled: false)
         settingScreen.closeButton.tap()
         /// Anchor on the main screen so slow dismiss animations (BrowserStack devices)
         /// cannot race the next step.
