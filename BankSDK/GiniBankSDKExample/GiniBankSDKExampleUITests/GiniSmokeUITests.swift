@@ -41,19 +41,19 @@ class GiniSmokeUITests: GiniBankSDKExampleUITests {
      the Return Assistant or Skonto screens instead of the plain extraction screen.
      */
     func testUploadPDFSEPAInvoiceShowsExtractions() {
-        // Route the invoice directly to the extraction screen
+        /// Route the invoice directly to the extraction screen
         disableReturnAssistantAndSkonto()
-        // Start the photo payment flow and upload the SEPA invoice PDF
+        /// Start the photo payment flow and upload the SEPA invoice PDF
         uploadDocumentViaFilesAndAwaitAnalysis(fileName: TestFixtures.Files.sepaInvoice)
-        // Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        /// Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
         if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
-        // Assert the extraction screen is displayed with the IBAN filled in
+        /// Assert the extraction screen is displayed with the IBAN filled in
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         XCTAssertFalse(transactionSummaryScreen.extractionValue(named: "iban").isEmpty,
                        "Expected the IBAN extraction to be filled in for a valid SEPA invoice.")
-        // Close the SDK and assert the host app is back
+        /// Close the SDK and assert the host app is back
         transactionSummaryScreen.tapDoneButton()
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 10))
     }
@@ -68,27 +68,27 @@ class GiniSmokeUITests: GiniBankSDKExampleUITests {
      Pre-condition: the SEPA invoice PNG must be the most recently added photo.
      */
     func testUploadPictureSEPAInvoiceShowsExtractions() {
-        // Route the invoice directly to the extraction screen
+        /// Route the invoice directly to the extraction screen
         disableReturnAssistantAndSkonto()
-        // Start the photo payment flow
+        /// Start the photo payment flow
         mainScreen.photoPaymentButton.tap()
         mainScreen.handleCameraPermission(answer: true)
         onboadingScreen.skipOnboardingScreens()
-        // Import the SEPA invoice image from the photo gallery
+        /// Import the SEPA invoice image from the photo gallery
         captureScreen.filesButton.tap()
         captureScreen.uploadPhotoButton.tap()
         mainScreen.handlePhotoPermission(answer: true)
         uploadLatestPhotoFromGallery()
-        // Process the imported image
+        /// Process the imported image
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
         reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
         reviewScreen.processButton.tap()
         waitForAnalysisIfNeeded()
-        // Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
+        /// Transaction docs screen is optional — shown on BrowserStack, may be skipped locally.
         if transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 10) {
             transactionDocsScreen.onlyForThisTransaction.tap()
         }
-        // Assert the extraction screen is displayed with the IBAN filled in
+        /// Assert the extraction screen is displayed with the IBAN filled in
         transactionSummaryScreen.assertExtractionsAreDisplayed()
         XCTAssertFalse(transactionSummaryScreen.extractionValue(named: "iban").isEmpty,
                        "Expected the IBAN extraction to be filled in for a valid SEPA invoice.")
@@ -99,9 +99,9 @@ class GiniSmokeUITests: GiniBankSDKExampleUITests {
      "Enter manually" action.
      */
     func testUploadPDFNoResultsScreen() {
-        // Start the photo payment flow and upload a non-invoice PDF
+        /// Start the photo payment flow and upload a non-invoice PDF
         uploadDocumentViaFilesAndAwaitAnalysis(fileName: TestFixtures.Files.noResultsInvoice)
-        // Assert the No-Results screen is displayed with the Enter manually action
+        /// Assert the No-Results screen is displayed with the Enter manually action
         XCTAssertTrue(noResultsScreen.waitForExistence(timeout: 30),
                       "No-Results screen should be displayed for a document without extractions.")
         XCTAssertTrue(noResultsScreen.enterManuallyButton.isHittable)

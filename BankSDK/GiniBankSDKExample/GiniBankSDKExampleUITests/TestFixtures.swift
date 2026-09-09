@@ -29,8 +29,10 @@ enum TestFixtures {
         static let cxInvoice = "cx_invoice"
 
         /**
-         Document that produces no `crossBorderPayment` extractions in CX mode.
-         Used in No-Results screen tests.
+         Non-invoice document that produces no payment extractions — neither
+         `crossBorderPayment` extractions in CX mode nor SEPA extractions in the
+         default flow. Used in the CX No-Results screen tests and the SEPA
+         No-Results smoke journey.
          */
         static let noResultsInvoice = "no_results_invoice"
 
