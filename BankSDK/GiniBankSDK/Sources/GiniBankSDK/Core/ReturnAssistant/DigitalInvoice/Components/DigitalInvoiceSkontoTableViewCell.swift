@@ -13,6 +13,8 @@ protocol DigitalInvoiceSkontoTableViewCellDelegate: AnyObject {
 }
 
 class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "DigitalInvoiceSkontoTableViewCell"
+
     private var viewModel: SkontoViewModel?
 
     weak var delegate: DigitalInvoiceSkontoTableViewCellDelegate?

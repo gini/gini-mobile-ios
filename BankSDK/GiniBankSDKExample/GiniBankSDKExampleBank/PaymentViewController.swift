@@ -258,12 +258,27 @@ extension PaymentViewController: UITextFieldDelegate {
     private struct AmountInput {
         static let maxDigits = 7
 
-        static func digitsOnlyCapped(_ s: String) -> String {
-            String(s.unicodeScalars.filter(CharacterSet.decimalDigits.contains).prefix(maxDigits))
+        /**
+         Returns the first `maxDigits` decimal digits from `input`, dropping every
+         other character (separators, letters, whitespace, punctuation).
+
+         Filtering runs over `unicodeScalars` because `CharacterSet.contains(_:)`
+         is defined on `Unicode.Scalar`; wrapping the filtered scalars back into
+         a `String` yields a plain digit sequence we can hand to `Decimal(string:)`.
+         */
+        static func digitsOnlyCapped(_ input: String) -> String {
+            let digitScalars = input.unicodeScalars.filter { CharacterSet.decimalDigits.contains($0) }
+            let cappedScalars = digitScalars.prefix(maxDigits)
+            return String(String.UnicodeScalarView(cappedScalars))
         }
 
-        static func amount(fromCentsDigits s: String) -> Decimal? {
-            Decimal(string: s).map { $0 / 100 }
+        /**
+         Interprets `digits` as a cents value and returns the corresponding decimal
+         amount (e.g. `"5"` → `0.05`, `"12345"` → `123.45`). Returns `nil` when
+         `digits` is empty or otherwise not parseable as a `Decimal`.
+         */
+        static func amount(fromCentsDigits digits: String) -> Decimal? {
+            Decimal(string: digits).map { $0 / 100 }
         }
     }
 }

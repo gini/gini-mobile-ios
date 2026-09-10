@@ -26,7 +26,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.register(DigitalInvoiceAddOnListCell.self,
                            forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
         tableView.register(DigitalInvoiceSkontoTableViewCell.self,
-                           forCellReuseIdentifier: "DigitalInvoiceSkontoTableViewCell")
+                           forCellReuseIdentifier: DigitalInvoiceSkontoTableViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -420,7 +420,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return UITableViewCell()
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
+        let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceSkontoTableViewCell.reuseIdentifier,
                                                  for: indexPath)
         guard let skontoCell = cell as? DigitalInvoiceSkontoTableViewCell else {
             assertionFailure("SkontoTableViewCell could not be reused")
