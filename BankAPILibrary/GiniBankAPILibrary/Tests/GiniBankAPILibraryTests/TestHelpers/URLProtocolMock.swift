@@ -1,12 +1,11 @@
 //
 //  URLProtocolMock.swift
-//  GiniHealthAPILibraryTests
+//  GiniBankAPILibraryTests
 //
-//  Copyright © 2026 Gini. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import Foundation
-import XCTest
 
 /**
  URLProtocol stub whose per-request behaviour is defined by `handler`.
@@ -18,8 +17,11 @@ import XCTest
      URLProtocolMock.handler = { request in
          (URLProtocolMock.makeResponse(for: request, statusCode: 200), Data())
      }
+
+ Ported from the equivalent helper in the sister `GiniHealthAPILibrary`
+ test target so the two API libraries can converge on the same pattern.
  */
-class URLProtocolMock: URLProtocol {
+final class URLProtocolMock: URLProtocol {
     static var handler: ((URLRequest) -> (HTTPURLResponse, Data?))?
 
     /**
@@ -30,13 +32,8 @@ class URLProtocolMock: URLProtocol {
      */
     static var errorHandler: ((URLRequest) -> Error)?
 
-    override class func canInit(with request: URLRequest) -> Bool {
-        true
-    }
-
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        request
-    }
+    override class func canInit(with request: URLRequest) -> Bool { true }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
         if let errorHandler = URLProtocolMock.errorHandler {
@@ -44,7 +41,7 @@ class URLProtocolMock: URLProtocol {
             return
         }
         guard let handler = URLProtocolMock.handler else {
-            fatalError("Handler is not set.")
+            fatalError("URLProtocolMock.handler is not set.")
         }
 
         let (response, data) = handler(request)

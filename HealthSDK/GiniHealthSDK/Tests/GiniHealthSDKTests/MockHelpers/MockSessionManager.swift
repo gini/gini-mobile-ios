@@ -271,12 +271,6 @@ final class MockSessionManager: SessionManagerProtocol {
         }
     }
 
-    /// Helper function to decode body
-    private func decodeBody(from body: Data?) -> [String]? {
-        guard let body = body else { return nil }
-        return try? JSONDecoder().decode([String].self, from: body)
-    }
-
     /// Helper function to handle extraction results
     private func handleExtractionResults<ResponseType>(fromFile fileName: String,
                                                        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>) {
