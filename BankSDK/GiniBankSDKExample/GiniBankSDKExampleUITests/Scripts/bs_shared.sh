@@ -71,7 +71,7 @@ fi
 # ── BrowserStack project ──────────────────────────────────────────────────────
 # Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
 # release; override per run via the BS_PROJECT environment variable.
-BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.0}"
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.1}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a
