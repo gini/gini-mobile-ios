@@ -30,7 +30,7 @@ extension GiniConfigurationSharedStateSuite {
 
             // NOTE: Update this value whenever you add or remove a stored property.
             let propertyCount = mirror.children.count
-            let expectedCount = 67 // Current number of stored properties in GiniBankConfiguration
+            let expectedCount = 54 // Current number of stored properties in GiniBankConfiguration
             #expect(propertyCount == expectedCount,
                  "A new property was added to GiniBankConfiguration. Please update feature flag tests accordingly.")
         }
@@ -41,7 +41,6 @@ extension GiniConfigurationSharedStateSuite {
         func defaultFlagValues() {
             let configuration = GiniBankConfiguration()
 
-            #expect(!configuration.bottomNavigationBarEnabled, "Expected bottomNavigationBarEnabled to be false by default")
             #expect(!configuration.multipageEnabled, "Expected multipageEnabled to be false by default")
             #expect(!configuration.qrCodeScanningEnabled, "Expected qrCodeScanningEnabled to be false by default")
             #expect(!configuration.onlyQRCodeScanningEnabled, "Expected onlyQRCodeScanningEnabled to be false by default")

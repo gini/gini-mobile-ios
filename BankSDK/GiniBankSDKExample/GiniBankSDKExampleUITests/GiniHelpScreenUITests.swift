@@ -46,7 +46,7 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
     }
     
     func testHelpScreenImportDocumentsButton() {
-        
+
         //Tap Photopaymen button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -61,6 +61,26 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
         helpScreen.helpBackButton.tap()
         //Assert that Help screen is displayed
         XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
+    }
+
+    /// No bottom-navigation view may render on the help screen.
+    func testHelpScreenHasNoBottomNavigation() {
+
+        //Tap Photopaymen button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Help button
+        captureScreen.helpButton.tap()
+
+        //Assert no bottom-navigation view rendered on the help screen
+        let bottomNavPredicate = NSPredicate(format:
+            "identifier CONTAINS[c] 'bottomNav' OR label CONTAINS[c] 'BottomNavigation'")
+        XCTAssertEqual(app.otherElements.matching(bottomNavPredicate).count,
+                       0,
+                       "No bottom-navigation view may render on the help screen")
     }
 }
 

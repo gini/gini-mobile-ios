@@ -176,37 +176,17 @@
 		736C98AF2D687EBE000115B0 /* SettingScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4922CD293140035A1FF /* SettingScreenAccessibilityIdentifiers.swift */; };
 		736C98B02D687EBE000115B0 /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
-		76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */; };
-		76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BE8298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */; };
-		76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BE7298D5447004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */; };
-		768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768100362996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift */; };
-		76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76810038299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift */; };
 		768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */; };
-		76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */; };
-		76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */; };
 		8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EC28F9AD7000285599 /* cameraAnimation.json */; };
 		8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EE28F9AD7700285599 /* magicAnimation.json */; };
 		8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4F028F9AD7C00285599 /* uploadAnimation.json */; };
-		833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */; };
-		833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */; };
-		8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */; };
 		834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834735F22940999500C3B5F3 /* CustomAnalysisError.swift */; };
-		837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */; };
-		837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */; };
-		837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */; };
-		83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */; };
-		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
-		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
 		84364E982DA51E2600098A13 /* MockFailingConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84364E972DA51E2500098A13 /* MockFailingConfigurationService.swift */; };
-		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
-		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
 		848F0A3C2DA3213B00AFF3EF /* ClientConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */; };
 		84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */; };
 		84C5D65C2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */ = {isa = PBXBuildFile; fileRef = 84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */; };
 		84C5D65D2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */ = {isa = PBXBuildFile; fileRef = 84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */; };
-		84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */; };
-		84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */; };
 		84DB5EA22D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DB5EA12D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift */; };
 		84F2FD142CD0FABC00DAE5B4 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */; };
 		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
@@ -505,36 +485,16 @@
 		5DCC9EA02C769A0800C1B76A /* CredentialsSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSet.swift; sourceTree = "<group>"; };
 		5DCC9FA02C769A0900C1B76A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomReviewScreenBottomNavigationBar.xib; sourceTree = "<group>"; };
-		76610BE7298D5447004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		76610BE8298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBar.swift; sourceTree = "<group>"; };
-		768100362996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		76810038299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
 		768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoadingIndicator.swift; sourceTree = "<group>"; };
-		76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOverviewBottomNavigationBar.swift; sourceTree = "<group>"; };
-		76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		8303F4EC28F9AD7000285599 /* cameraAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraAnimation.json; sourceTree = "<group>"; };
 		8303F4EE28F9AD7700285599 /* magicAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicAnimation.json; sourceTree = "<group>"; };
 		8303F4F028F9AD7C00285599 /* uploadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadAnimation.json; sourceTree = "<group>"; };
-		833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomBottomNavigationBar.xib; sourceTree = "<group>"; };
-		8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBar.swift; sourceTree = "<group>"; };
 		834735F22940999500C3B5F3 /* CustomAnalysisError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnalysisError.swift; sourceTree = "<group>"; };
-		837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCameraBottomNavigationBar.xib; sourceTree = "<group>"; };
-		837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBar.swift; sourceTree = "<group>"; };
-		837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
-		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
 		84364E972DA51E2500098A13 /* MockFailingConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFailingConfigurationService.swift; sourceTree = "<group>"; };
-		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
-		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientConfigurationTests.swift; sourceTree = "<group>"; };
 		84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewCell.swift; sourceTree = "<group>"; };
 		84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto_after_transfer_summary.json; sourceTree = "<group>"; };
-		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
-		84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		84DB5EA12D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkontoTransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
 		84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
@@ -1167,64 +1127,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		76610BE4298D5403004C1ECB /* ReviewBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				76610BE8298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */,
-				76610BE7298D5447004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */,
-				76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */,
-			);
-			path = ReviewBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		768100352996951E00C52F87 /* DigitalInvoiceOnboardingBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				768100362996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift */,
-				76810038299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift */,
-			);
-			path = DigitalInvoiceOnboardingBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		76EFD4D229B0C4B300C26279 /* DigitalInvoiceOverviewBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */,
-				76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */,
-			);
-			path = DigitalInvoiceOverviewBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */,
-				833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */,
-				8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */,
-			);
-			path = HelpBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		837EEFAF291D692900DB781F /* CameraBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */,
-				837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */,
-				837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */,
-			);
-			path = CameraBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */,
-				83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */,
-				83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */,
-			);
-			path = OnboardingBottomNavigationBar;
-			sourceTree = "<group>";
-		};
 		84364E942DA4165100098A13 /* ClientConfiguration */ = {
 			isa = PBXGroup;
 			children = (
@@ -1232,24 +1134,6 @@
 				848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */,
 			);
 			path = ClientConfiguration;
-			sourceTree = "<group>";
-		};
-		847B68C82C4009D700544050 /* SkontoBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */,
-				847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */,
-			);
-			path = SkontoBottomNavigationBar;
-			sourceTree = "<group>";
-		};
-		84CD074B2C7DB501004DF1DE /* DigitalInvoiceSkontoBottomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */,
-				84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */,
-			);
-			path = DigitalInvoiceSkontoBottomNavigationBar;
 			sourceTree = "<group>";
 		};
 		CE000000000000090000001A /* UITestSupport */ = {
@@ -1451,14 +1335,6 @@
 				CE000000000000090000001A /* UITestSupport */,
 				28BB82022C91D4D9003C8389 /* TransactionSummary */,
 				5DCC9FA32C779BC000C1B76A /* Models */,
-				84CD074B2C7DB501004DF1DE /* DigitalInvoiceSkontoBottomNavigationBar */,
-				847B68C82C4009D700544050 /* SkontoBottomNavigationBar */,
-				76EFD4D229B0C4B300C26279 /* DigitalInvoiceOverviewBottomNavigationBar */,
-				768100352996951E00C52F87 /* DigitalInvoiceOnboardingBottomNavigationBar */,
-				76610BE4298D5403004C1ECB /* ReviewBottomNavigationBar */,
-				837EEFAF291D692900DB781F /* CameraBottomNavigationBar */,
-				83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */,
-				8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */,
 				4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */,
 				F441DC9325E53A6F00AAB09A /* Extensions */,
 				28B5873A2A37270F008CB210 /* Utils */,
@@ -1806,13 +1682,11 @@
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				281417F02DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf in Resources */,
 				5D5328862C63F59C00DEA203 /* CredentialsTableViewCell.xib in Resources */,
-				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
 				281417EA2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */,
 				281417EB2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */,
 				287068432CB950D700D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */,
 				289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */,
 				28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */,
-				837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */,
 				28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */,
 				28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
@@ -1821,14 +1695,12 @@
 				289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */,
 				84C5D65C2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */,
 				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
-				83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
 				28F62F992AB1C2CA00D47866 /* DemoViewController.xib in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				28D77C502CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference.json in Resources */,
 				28D77C4C2CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
-				76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */,
 				28D77C522CBE99FC00F815DB /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
 				8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
@@ -2097,11 +1969,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
-				847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */,
-				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
@@ -2110,14 +1979,11 @@
 				288E78BE2D318856004ACB9B /* TransactionListTableViewHeader.swift in Sources */,
 				84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */,
 				28A53CAC2F4F44BE0004D557 /* ExampleHTTPClientProvider.swift in Sources */,
-				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
-				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				28A570072D41326300A97EBC /* Optional+Required.swift in Sources */,
 				28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
-				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
 				285FFC002F72EC39002C964A /* TransactionSummaryViewModel.swift in Sources */,
 				285FFC012F72EC39002C964A /* ExtractionViewData.swift in Sources */,
 				288E78B32D316219004ACB9B /* Transaction.swift in Sources */,
@@ -2136,12 +2002,9 @@
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,
 				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
-				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
-				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
 				28A570052D4131FF00A97EBC /* ImageAsset.swift in Sources */,
 				28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */,
-				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				28A5700D2D41550D00A97EBC /* String+Acronym.swift in Sources */,
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,
 				28A570152D428D8700A97EBC /* TransactionInfo.swift in Sources */,
@@ -2149,18 +2012,13 @@
 				5DCC9FA12C769A0900C1B76A /* APIEnvironment.swift in Sources */,
 				28A570132D427CF200A97EBC /* TransactionDetailCell.swift in Sources */,
 				5D5328882C63F71100DEA203 /* CredentialsTableViewCell.swift in Sources */,
-				76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
-				847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */,
-				84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				28C1114F2F101158007C255F /* ExampleAppUserDefaultsStorage.swift in Sources */,
-				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
 				84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */,
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
 				736C98AF2D687EBE000115B0 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
 				736C98B02D687EBE000115B0 /* MainScreenAccessibilityIdentifiers.swift in Sources */,
-				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
 				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
 				284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */,
@@ -2169,8 +2027,6 @@
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				28A3D7652F0FC97900E1E787 /* OnButtonLoading.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,
-				84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */,
-				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28A570102D4276EB00A97EBC /* TransactionDetailsViewController.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
 				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,

@@ -14,10 +14,7 @@ import UIKit
  suggestions when there is no results when analysing an image.
  */
 
-final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
-    var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
+final class HelpTipsViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         var tableView: UITableView
@@ -47,7 +44,6 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateBottomBarHeightBasedOnOrientation()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
         tableView.reloadData()
     }
@@ -63,9 +59,6 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
         tableView.bounces = false
-        configureBottomNavigationBar(
-            configuration: giniConfiguration,
-            under: tableView)
     }
 
     private func configureTableView() {
@@ -99,9 +92,7 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
     }
 
     private func configureConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
-        }
+        NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])

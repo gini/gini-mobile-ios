@@ -26,7 +26,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.register(DigitalInvoiceAddOnListCell.self,
                            forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
         tableView.register(DigitalInvoiceSkontoTableViewCell.self,
-                           forCellReuseIdentifier: "DigitalInvoiceSkontoTableViewCell")
+                           forCellReuseIdentifier: DigitalInvoiceSkontoTableViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -41,13 +41,10 @@ final class DigitalInvoiceViewController: UIViewController {
         return containerView
     }()
 
-    private lazy var landscapeBottomNavBarContainer: UIView = UIView()
+    private lazy var landscapeProceedViewContainer: UIView = UIView()
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
-
-    private var navigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
 
     private lazy var proceedViewConstraints: [NSLayoutConstraint] = [
         proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -56,18 +53,6 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
-
-    private lazy var bottomNavigationBarConstraints: [NSLayoutConstraint] = {
-        guard let bottomNavigationBar else {
-            return []
-        }
-        return [
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
-        ]
-    }()
 
     private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -87,20 +72,14 @@ final class DigitalInvoiceViewController: UIViewController {
                                                          comment: "Digital invoice")
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
-        if configuration.bottomNavigationBarEnabled {
-            let cancelButton = GiniBarButton(ofType: .cancel)
-            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.rightBarButtonItem = cancelButton.barButton
-            navigationItem.hidesBackButton = true
-        } else {
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped))
-            navigationItem.rightBarButtonItem = helpButton.barButton
 
-            let cancelButton = GiniBarButton(ofType: .cancel)
-            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.leftBarButtonItem = cancelButton.barButton
-        }
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(helpButtonTapped))
+        navigationItem.rightBarButtonItem = helpButton.barButton
+
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+        navigationItem.leftBarButtonItem = cancelButton.barButton
 
         view.addSubview(tableView)
         view.addSubview(proceedView)
@@ -108,8 +87,6 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.proceedAction = { [weak self] in
             self?.viewModel.didTapPay()
         }
-
-        setupBottomNavigationBar()
     }
 
     private func setupConstraints() {
@@ -137,36 +114,6 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    private func setupBottomNavigationBar() {
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = configuration.digitalInvoiceNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-                self?.payButtonTapped()
-            }
-
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.helpButtonTapped()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-                NSLayoutConstraint.activate(bottomNavigationBarConstraints)
-            }
-
-            proceedView.isHidden = true
-            updateValues()
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -187,71 +134,46 @@ final class DigitalInvoiceViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        configureBottomNavBarForiPhone()
+        configureProceedViewForiPhone()
     }
 
-    private func configureBottomNavBarForiPhone() {
+    private func configureProceedViewForiPhone() {
         guard UIDevice.current.isIphone else { return }
 
         let isLandscape = UIDevice.current.isLandscape
 
         if isLandscape {
-            configureBottomNavBarForLandscape()
+            configureProceedViewForLandscape()
         } else {
-            configureBottomNavBarForPortrait()
+            configureProceedViewForPortrait()
         }
     }
 
-    private func configureBottomNavBarForLandscape() {
+    private func configureProceedViewForLandscape() {
         NSLayoutConstraint.deactivate(proceedViewConstraints)
         proceedView.removeFromSuperview()
 
-        setupLandscapeBottomNavigation()
-
-        if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarConstraints.last?.isActive = false
-        }
+        setupProceedViewInLandscape()
 
         NSLayoutConstraint.activate(proceedViewTableConstraints)
 
         proceedView.isHidden = false
-        bottomNavigationBar?.isHidden = true
     }
 
-    private func configureBottomNavBarForPortrait() {
+    private func configureProceedViewForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
         tableView.tableFooterView = nil
-
-        if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarConstraints.last?.isActive = true
-        }
 
         proceedViewTableConstraints.last?.isActive = false
 
         view.addSubview(proceedView)
         NSLayoutConstraint.activate(proceedViewConstraints)
 
-        proceedView.isHidden = configuration.bottomNavigationBarEnabled
-        bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
-    }
-
-    @objc func payButtonTapped() {
-        viewModel.didTapPay()
+        proceedView.isHidden = false
     }
 
     func updateValues() {
-        if configuration.bottomNavigationBarEnabled {
-            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice?.string)
-            navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
-            if let skontoViewModel = viewModel.skontoViewModel {
-                let isSkontoApplied = skontoViewModel.isSkontoApplied
-                navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
-                navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: skontoViewModel.skontoPercentageString)
-                navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: skontoViewModel.savingsAmountString)
-                navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
-            }
-        }
         // Reconfigure visible cells in place instead of dequeueing new ones so
         // the iOS 26 Liquid Glass UISwitch isn't animated on unrelated rows
         // when the table reloads after a tap.
@@ -282,16 +204,16 @@ final class DigitalInvoiceViewController: UIViewController {
 
     }
 
-    // MARK: - Bottom Navigation Setup for Landscape
-    private func setupLandscapeBottomNavigation() {
-        landscapeBottomNavBarContainer.addSubview(proceedView)
-        constraintProceedViewInBottomNavBarContainer()
-        applyBottomNavBarContainerHeightAndAssign()
+    // MARK: - Proceed View Setup for Landscape
+    private func setupProceedViewInLandscape() {
+        landscapeProceedViewContainer.addSubview(proceedView)
+        constraintProceedViewInLandscapeContainer()
+        applyLandscapeContainerHeightAndAssign()
     }
 
-    private func constraintProceedViewInBottomNavBarContainer() {
+    private func constraintProceedViewInLandscapeContainer() {
         // Setup internal constraints
-        let safeArea = landscapeBottomNavBarContainer.safeAreaLayoutGuide
+        let safeArea = landscapeProceedViewContainer.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
             proceedView.topAnchor.constraint(equalTo: safeArea.topAnchor,
@@ -302,7 +224,7 @@ final class DigitalInvoiceViewController: UIViewController {
         ])
     }
 
-    private func applyBottomNavBarContainerHeightAndAssign() {
+    private func applyLandscapeContainerHeightAndAssign() {
         let targetWidth = view.bounds.width
         let targetSize = CGSize(width: targetWidth,
                                 height: UIView.layoutFittingCompressedSize.height)
@@ -312,8 +234,8 @@ final class DigitalInvoiceViewController: UIViewController {
                                                               withHorizontalFittingPriority: .required,
                                                               verticalFittingPriority: .fittingSizeLevel)
 
-        landscapeBottomNavBarContainer.frame.size.height = fittingSize.height
-        tableView.tableFooterView = landscapeBottomNavBarContainer
+        landscapeProceedViewContainer.frame.size.height = fittingSize.height
+        tableView.tableFooterView = landscapeProceedViewContainer
     }
 }
 
@@ -333,67 +255,103 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section) {
-        case .titleCell: return 1
-        case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
-        case .addOns: return 1
-        case .skonto: return viewModel.hasSkonto ? 1 : 0
-        default: fatalError()
+        guard let sectionType = Section(rawValue: section) else {
+            assertionFailure("Unexpected section index \(section)")
+            return 0
+        }
+        switch sectionType {
+        case .titleCell, .addOns:
+            return 1
+        case .lineItems:
+            return viewModel.invoice?.lineItems.count ?? 0
+        case .skonto:
+            return viewModel.hasSkonto ? 1 : 0
         }
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch Section(rawValue: indexPath.section) {
-        case .titleCell:
-            let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
-            if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
-                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
-                return cell
-            }
+        guard let sectionType = Section(rawValue: indexPath.section) else {
+            assertionFailure("Unexpected section index \(indexPath.section)")
             return UITableViewCell()
-        case .lineItems:
-
-            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
-                                                        for: indexPath) as? DigitalLineItemTableViewCell {
-                if let invoice = viewModel.invoice {
-                    let maxCharactersCount = Constants.nameMaxCharactersCount
-                    cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
-                                                                           indexPath: indexPath,
-                                                                           invoiceNumTotal: invoice.numTotal,
-                                                                           invoiceLineItemsCount:
-                                                                           invoice.lineItems.count,
-                                                                           nameMaxCharactersCount: maxCharactersCount)
-                }
-                cell.delegate = self
-                return cell
-            }
-            assertionFailure("DigitalLineItemTableViewCell could not been reused")
-            return UITableViewCell()
-        case .addOns:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
-                                                        for: indexPath) as? DigitalInvoiceAddOnListCell {
-                cell.addOns = viewModel.invoice?.addons
-                if viewModel.skontoViewModel == nil {
-                    cell.configureAsBottomTableCell()
-                }
-                return cell
-            }
-            assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
-            return UITableViewCell()
-        case .skonto:
-            guard let skontoViewModel = viewModel.skontoViewModel else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
-                                                     for: indexPath)
-            if let cell = cell as? DigitalInvoiceSkontoTableViewCell {
-                cell.delegate = self
-                cell.configure(with: skontoViewModel)
-                return cell
-            }
-            assertionFailure("SkontoTableViewCell could not been reused")
-            return UITableViewCell()
-        default: fatalError()
         }
+
+        switch sectionType {
+        case .titleCell:
+            return configureTitleCell(tableView: tableView, indexPath: indexPath)
+        case .lineItems:
+            return configureLineItemCell(tableView: tableView, indexPath: indexPath)
+        case .addOns:
+            return configureAddOnCell(tableView: tableView, indexPath: indexPath)
+        case .skonto:
+            return configureSkontoCell(tableView: tableView, indexPath: indexPath)
+        }
+    }
+
+    // MARK: - Cell Configuration Methods
+
+    private func configureTitleCell(tableView: UITableView,
+                                    indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
+                                                       for: indexPath) as? DigitalInvoiceTableViewTitleCell else {
+            assertionFailure("DigitalInvoiceTableViewTitleCell could not be reused")
+            return UITableViewCell()
+        }
+        return cell
+    }
+
+    private func configureLineItemCell(tableView: UITableView,
+                                       indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? DigitalLineItemTableViewCell else {
+            assertionFailure("DigitalLineItemTableViewCell could not be reused")
+            return UITableViewCell()
+        }
+
+        if let invoice = viewModel.invoice {
+            let maxCharactersCount = Constants.nameMaxCharactersCount
+            cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
+                                                                   indexPath: indexPath,
+                                                                   invoiceNumTotal: invoice.numTotal,
+                                                                   invoiceLineItemsCount: invoice.lineItems.count,
+                                                                   nameMaxCharactersCount: maxCharactersCount)
+        }
+        cell.delegate = self
+        return cell
+    }
+
+    private func configureAddOnCell(tableView: UITableView,
+                                    indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
+                                                       for: indexPath) as? DigitalInvoiceAddOnListCell else {
+            assertionFailure("DigitalInvoiceAddOnListCell could not be reused")
+            return UITableViewCell()
+        }
+
+        cell.addOns = viewModel.invoice?.addons
+        if viewModel.skontoViewModel == nil {
+            cell.configureAsBottomTableCell()
+        }
+        return cell
+    }
+
+    private func configureSkontoCell(tableView: UITableView,
+                                     indexPath: IndexPath) -> UITableViewCell {
+        guard let skontoViewModel = viewModel.skontoViewModel else {
+            return UITableViewCell()
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceSkontoTableViewCell.reuseIdentifier,
+                                                 for: indexPath)
+        guard let skontoCell = cell as? DigitalInvoiceSkontoTableViewCell else {
+            assertionFailure("SkontoTableViewCell could not be reused")
+            return UITableViewCell()
+        }
+
+        skontoCell.delegate = self
+        skontoCell.configure(with: skontoViewModel)
+        return skontoCell
     }
 }
 
