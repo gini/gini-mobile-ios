@@ -84,10 +84,13 @@ So migrating one of these screens off localised strings is a two-part change: ad
 
 Real runs go through the scripts in `Scripts/`:
 
+- `bs_run_all.sh` (runs every scenario below, one BrowserStack build per scenario)
 - `bs_run_smoke_journeys.sh` (curated smoke journeys), `bs_run_smoke_screens.sh` (per-screen smoke checks)
 - `bs_run_skonto.sh`
 - `bs_run_ra.sh` (return assistant)
 - `bs_run_cx_normal.sh`, `bs_run_cx_multipage.sh`, `bs_run_cx_no_results.sh`
+- `bs_run_credit_note.sh` (credit note warning)
+- `bs_run_payment_hint.sh` (payment hint flow)
 - `bs_shared.sh` (shared setup)
 - `setup_test_fixtures.sh`
 
