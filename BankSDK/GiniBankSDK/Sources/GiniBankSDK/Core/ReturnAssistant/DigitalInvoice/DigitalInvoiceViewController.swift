@@ -368,19 +368,22 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
 
     // MARK: - Cell Configuration Methods
 
-    private func configureTitleCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureTitleCell(tableView: UITableView,
+                                    indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell else {
+            assertionFailure("DigitalInvoiceTableViewTitleCell could not be reused")
             return UITableViewCell()
         }
         return cell
     }
 
-    private func configureLineItemCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureLineItemCell(tableView: UITableView,
+                                       indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
                                                        for: indexPath) as? DigitalLineItemTableViewCell else {
-            assertionFailure("DigitalLineItemTableViewCell could not been reused")
+            assertionFailure("DigitalLineItemTableViewCell could not be reused")
             return UITableViewCell()
         }
 
@@ -396,10 +399,11 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         return cell
     }
 
-    private func configureAddOnCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureAddOnCell(tableView: UITableView,
+                                    indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
                                                        for: indexPath) as? DigitalInvoiceAddOnListCell else {
-            assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
+            assertionFailure("DigitalInvoiceAddOnListCell could not be reused")
             return UITableViewCell()
         }
 
@@ -410,7 +414,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         return cell
     }
 
-    private func configureSkontoCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureSkontoCell(tableView: UITableView,
+                                     indexPath: IndexPath) -> UITableViewCell {
         guard let skontoViewModel = viewModel.skontoViewModel else {
             return UITableViewCell()
         }
@@ -418,7 +423,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
                                                  for: indexPath)
         guard let skontoCell = cell as? DigitalInvoiceSkontoTableViewCell else {
-            assertionFailure("SkontoTableViewCell could not been reused")
+            assertionFailure("SkontoTableViewCell could not be reused")
             return UITableViewCell()
         }
 

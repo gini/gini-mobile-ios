@@ -161,23 +161,23 @@ extension PriceLabelView: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
 
-        // Ensure the updated string can build
+        /// Ensure the updated string can build
         guard let text = textField.text,
               let textRange = Range(range, in: text) else {
             return true
         }
 
-        // Build updated raw text and normalize to (max 7) digits only
+        /// Build updated raw text and normalize to (max 7) digits only
         let updated = text.replacingCharacters(in: textRange, with: string)
         let digits = AmountInput.digitsOnlyCapped(updated)
 
-        // Format as price (xx -> 0.xx, 12345 -> 123.45)
+        /// Format as price (xx -> 0.xx, 12345 -> 123.45)
         guard let formatted = AmountInput.format(digits) else {
-            // Block the change if it can't format
+            /// Block the change if it can't format
             return false
         }
 
-        // Preserve cursor relative position after replacing text
+        /// Preserve cursor relative position after replacing text
         let priorSelection = textField.selectedTextRange
         textField.text = formatted
         delegate?.priceLabelViewTextFieldDidChange(on: self)
