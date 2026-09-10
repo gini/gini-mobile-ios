@@ -177,11 +177,11 @@ struct SwitchOptionModel {
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
 				return "Overwrites `Onboarding screens at every launch` for the first launch."
-            case .customOnboardingPages,
-                    .onboardingAlignCornersIllustrationAdapter,
-                    .onboardingLightingIllustrationAdapter,
-                    .onboardingQRCodeIllustrationAdapter,
-                    .onboardingMultiPageIllustrationAdapter :
+			case .customOnboardingPages,
+					.onboardingAlignCornersIllustrationAdapter,
+					.onboardingLightingIllustrationAdapter,
+					.onboardingQRCodeIllustrationAdapter,
+					.onboardingMultiPageIllustrationAdapter:
 				return "This will work if the `Onboarding show at every launch` switch is also enabled."
 			case .primaryButtonConfiguration:
 				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."

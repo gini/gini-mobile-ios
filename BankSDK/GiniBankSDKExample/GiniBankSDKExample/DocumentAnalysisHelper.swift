@@ -42,11 +42,11 @@ extension DocumentAnalysisHelper {
     }
 
     private func handleAnalysisError(_ error: GiniError) {
-           switch error {
-           case .requestCancelled:
-               print("❌ Cancelled analysis process")
-           default:
-               print("❌ Finished analysis process with error: \(error)")
-           }
-       }
+        switch error {
+        case .requestCancelled:
+            print("❌ Cancelled analysis process")
+        default:
+            print("❌ Finished analysis process with error: \(error)")
+        }
+    }
 }

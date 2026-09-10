@@ -224,24 +224,24 @@ extension PaymentViewController: UITextFieldDelegate {
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
-        // Only handle the amount field
+        /// Only handle the amount field
         guard TextFieldType(rawValue: textField.tag) == .amountFieldTag else { return true }
 
-        // Ensure we can build the updated string
+        /// Ensure we can build the updated string
         guard let oldText = textField.text,
               let textRange = Range(range, in: oldText) else { return true }
 
-        // Normalize to (max 7) digits
+        /// Normalize to (max 7) digits
         let updated = oldText.replacingCharacters(in: textRange, with: string)
         let digits = AmountInput.digitsOnlyCapped(updated)
 
-        // Format (xx -> 0.xx, 12345 -> 123.45)
+        /// Format (xx -> 0.xx, 12345 -> 123.45)
         guard let amount = AmountInput.amount(fromCentsDigits: digits),
               let formatted = amountToPay?
             .stringWithoutSymbol(from: amount)?
             .trimmingCharacters(in: .whitespaces) else { return false }
 
-        // Update UI + model and keep caret position reasonable
+        /// Update UI + model and keep caret position reasonable
         let priorSelection = textField.selectedTextRange
         textField.text = formatted
         amountToPay?.value = amount
@@ -304,7 +304,8 @@ extension PaymentViewController {
         }
     }
 
-    private func validateIBAN(_ textField: UITextField, _ field: TextFieldType) {
+    private func validateIBAN(_ textField: UITextField,
+                              _ field: TextFieldType) {
         guard textField.hasText, let iban = textField.text else {
             showErrorLabel(textFieldTag: field)
             return
@@ -331,7 +332,8 @@ extension PaymentViewController {
         }
     }
 
-    private func validateNonEmpty(_ textField: UITextField, _ field: TextFieldType) {
+    private func validateNonEmpty(_ textField: UITextField,
+                                  _ field: TextFieldType) {
         if textField.hasText && !textField.isReallyEmpty {
             hideErrorLabel(textFieldTag: field)
         } else {
