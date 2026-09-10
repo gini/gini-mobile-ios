@@ -12,7 +12,6 @@ final class CorrectQRCodeTextContainer: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.caption2]
         label.textAlignment = .center
         label.textColor = .GiniCapture.light1
@@ -33,12 +32,12 @@ final class CorrectQRCodeTextContainer: UIView {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing / 2),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing)
-        ])
+        titleLabel.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview().constant(Constants.spacing / 2)
+            $0.leading.equalToSuperview().constant(Constants.spacing)
+        }
     }
 
     private enum Constants {

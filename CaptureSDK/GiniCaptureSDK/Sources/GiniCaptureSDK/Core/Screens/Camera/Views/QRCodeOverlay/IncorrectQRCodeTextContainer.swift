@@ -42,16 +42,13 @@ final class IncorrectQRCodeTextContainer: UIView {
         stackView.spacing = Constants.spacing
         stackView.backgroundColor = .GiniCapture.warning3
         stackView.layer.cornerRadius = Constants.cornerRadius
-        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = Constants.stackViewMargins
     }
 
     private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
+        UIScrollView()
     }()
 
     init() {
@@ -70,19 +67,17 @@ final class IncorrectQRCodeTextContainer: UIView {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        scrollView.giniMakeConstraints {
+            $0.edges.equalToSuperview()
+        }
 
-            // textStackView inside scrollView
-            textStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            textStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            textStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
+        textStackView.giniMakeConstraints {
+            $0.top.equalTo(scrollView.contentLayoutGuide)
+            $0.leading.equalTo(scrollView.contentLayoutGuide)
+            $0.trailing.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView)
+        }
     }
 
     private enum Constants {
