@@ -15,19 +15,21 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     // MARK: - Properties
 
     lazy var qrCodeItemSections: [HelpFormatsCollectionSection] = {
-        var sections: [HelpFormatsCollectionSection] = [
-            (Strings.section1Title,
-             [Strings.qrcodeItem1,
-              Strings.qrcodeItem2,
-              Strings.qrcodeItem3,
-              Strings.qrcodeItem4,
-              Strings.qrcodeItem5,
-              Strings.qrcodeItem6,
-              Strings.qrcodeItem7,
-              Strings.qrcodeItem8,
-              Strings.qrcodeItem9,
-              Strings.qrcodeItem10],
-             Images.supportedFormatsIcon)
+        let sections: [HelpFormatsCollectionSection] = [
+            (title: Strings.section1Title,
+             formats: [
+                Strings.qrcodeItem1,
+                Strings.qrcodeItem2,
+                Strings.qrcodeItem3,
+                Strings.qrcodeItem4,
+                Strings.qrcodeItem5,
+                Strings.qrcodeItem6,
+                Strings.qrcodeItem7,
+                Strings.qrcodeItem8,
+                Strings.qrcodeItem9,
+                Strings.qrcodeItem10
+             ],
+             formatsImage: Images.supportedFormatsIcon)
         ]
 
         return sections
@@ -35,12 +37,12 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
 
     lazy var pdfItemSections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] = [
-            (Strings.section1Title,
-             [Strings.section1Item1],
-             Images.supportedFormatsIcon),
-            (Strings.section2Title,
-             [Strings.section2Item1],
-             Images.nonSupportedFormatsIcon)
+            (title: Strings.section1Title,
+             formats: [Strings.section1Item1],
+             formatsImage: Images.supportedFormatsIcon),
+            (title: Strings.section2Title,
+             formats: [Strings.section2Item1],
+             formatsImage: Images.nonSupportedFormatsIcon)
         ]
 
         if giniConfiguration.fileImportSupportedTypes != .none {

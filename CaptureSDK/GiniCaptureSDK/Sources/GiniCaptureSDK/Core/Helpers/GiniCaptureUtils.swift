@@ -133,10 +133,10 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                           comment: "RA onboarding screen first label")
  ```
  */
-internal func giniLocalized(_ key: String,
-                            fallback: String = "",
-                            comment: String = "",
-                            customizable: Bool = true) -> String {
+func giniLocalized(_ key: String,
+                   fallback: String = "",
+                   comment: String = "",
+                   customizable: Bool = true) -> String {
     return NSLocalizedStringPreferredFormat(key,
                                             fallbackKey: fallback,
                                             comment: comment,

@@ -356,7 +356,7 @@ final class CameraViewController: UIViewController {
             }
         }
         cameraButtonsViewModel.imagesUpdated = { [weak self] images in
-            self?.handleImagesUpdated(images)
+            self?.handleUpdatedImages(images)
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)
         cameraPane.thumbnailView
@@ -398,7 +398,7 @@ final class CameraViewController: UIViewController {
         }
     }
 
-    private func handleImagesUpdated(_ images: [UIImage]) {
+    private func handleUpdatedImages(_ images: [UIImage]) {
         if let lastImage = images.last {
             let filledState = ThumbnailView.State.filled(count: images.count, lastImage: lastImage)
             cameraPane.thumbnailView.updateStackStatus(to: filledState)
