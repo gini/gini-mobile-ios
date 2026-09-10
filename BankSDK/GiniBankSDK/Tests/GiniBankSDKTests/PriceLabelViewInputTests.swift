@@ -26,7 +26,7 @@ extension GiniConfigurationSharedStateSuite {
         // MARK: - Insertion
 
         @Test("A single digit typed into an empty field is formatted as one cent and blocks the system update")
-        func singleDigitInsertsAsCents() {
+        func singleDigitInsertsAsCents() throws {
             let (view, textField, spy) = makeView(withText: "")
 
             let handled = view.textField(textField,
@@ -34,29 +34,29 @@ extension GiniConfigurationSharedStateSuite {
                                          replacementString: "1")
 
             #expect(handled == false, "The delegate handled the change itself, so it must block the system update")
-            #expect(textField.text == format(Decimal(string: "0.01")!))
+            #expect(textField.text == (try format("0.01")))
             #expect(spy.changeCount == 1)
         }
 
         @Test("Typing five digits builds up as 123.45")
-        func multipleDigitsBuildUpAsCents() {
+        func multipleDigitsBuildUpAsCents() throws {
             let (view, textField, spy) = makeView(withText: "")
 
             simulateInput("12345", on: view, into: textField)
 
-            #expect(textField.text == format(Decimal(string: "123.45")!))
+            #expect(textField.text == (try format("123.45")))
             #expect(spy.changeCount == 5)
         }
 
         // MARK: - Seven-digit cap
 
         @Test("Digits beyond the seven-digit cap are silently dropped")
-        func capsAtSevenDigits() {
+        func capsAtSevenDigits() throws {
             let (view, textField, spy) = makeView(withText: "")
 
             simulateInput("99999999", on: view, into: textField)
 
-            #expect(textField.text == format(Decimal(string: "99999.99")!),
+            #expect(textField.text == (try format("99999.99")),
                     "Only the first seven digits should shape the amount")
             #expect(spy.changeCount == 8,
                     "Every attempted change still notifies the delegate, even when the formatted value is unchanged")
@@ -65,12 +65,12 @@ extension GiniConfigurationSharedStateSuite {
         // MARK: - Invalid input
 
         @Test("Non-digit characters are stripped before formatting")
-        func nonDigitsAreFilteredOut() {
+        func nonDigitsAreFilteredOut() throws {
             let (view, textField, _) = makeView(withText: "")
 
             simulateInput("1a2b3c", on: view, into: textField)
 
-            #expect(textField.text == format(Decimal(string: "1.23")!))
+            #expect(textField.text == (try format("1.23")))
         }
 
         // MARK: - Deletion
@@ -86,14 +86,14 @@ extension GiniConfigurationSharedStateSuite {
                                shouldChangeCharactersIn: range,
                                replacementString: "")
 
-            #expect(textField.text == format(Decimal(string: "12.34")!))
+            #expect(textField.text == (try format("12.34")))
         }
 
         // MARK: - Delegate callback count
 
         @Test("The delegate is notified exactly once per accepted change")
-        func delegateFiresOncePerAcceptedChange() {
-            let (view, textField, spy) = makeView(withText: format(Decimal(string: "0.01")!))
+        func delegateFiresOncePerAcceptedChange() throws {
+            let (view, textField, spy) = makeView(withText: try format("0.01"))
 
             let currentText = textField.text ?? ""
             _ = view.textField(textField,
@@ -128,8 +128,11 @@ extension GiniConfigurationSharedStateSuite {
             }
         }
 
-        private func format(_ value: Decimal) -> String {
-            Price.stringWithoutSymbol(from: value) ?? ""
+        private func format(_ decimalString: String) throws -> String {
+            let value = try #require(Decimal(string: decimalString),
+                                     "Test fixture '\(decimalString)' is not a valid Decimal")
+            return try #require(Price.stringWithoutSymbol(from: value),
+                                "Price.stringWithoutSymbol should format the fixture")
         }
     }
 }
