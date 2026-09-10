@@ -101,6 +101,8 @@ final class AppCoordinator: Coordinator {
 
         documentBuilder.build(with: url) { [weak self] document in
             guard let self = self else { return }
+            // When a document is imported with "Open with", a dialog allowing to choose between both APIs
+            // is shown in the main screen. Therefore it needs to go to the main screen if it is not there yet.
             self.popToRootViewControllerIfNeeded()
 
             // 2. Validate the document

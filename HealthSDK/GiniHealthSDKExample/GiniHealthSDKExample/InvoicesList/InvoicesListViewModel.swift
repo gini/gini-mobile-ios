@@ -94,8 +94,8 @@ final class InvoicesListViewModel {
         self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
-                /// Success is handled in `handleFetchDocumentResponse` via table view reload.
-                self?.handleFetchDocumentResponse(document)
+                /// Success is handled in `fetchExtractions(for:)` via table view reload.
+                self?.fetchExtractions(for: document)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
@@ -103,7 +103,7 @@ final class InvoicesListViewModel {
         }
     }
 
-    private func handleFetchDocumentResponse(_ document: GiniHealthSDK.Document) {
+    private func fetchExtractions(for document: GiniHealthSDK.Document) {
         self.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] resultExtractions in
             switch resultExtractions {
             case .success(let extractions):

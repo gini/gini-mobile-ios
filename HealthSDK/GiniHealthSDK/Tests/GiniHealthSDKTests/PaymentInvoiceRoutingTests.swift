@@ -436,11 +436,6 @@ private final class SpyNavigationController: UINavigationController {
 }
 
 /**
- Records every delegate callback so tests can assert both what was called
- and (for `isLoadingStateChanged`) with which value, without depending on
- the real host-app plumbing.
- */
-/**
  Records `didCreatePaymentRequest` calls on `GiniHealthDelegate`. Used as an
  observable signal for payment-request success in tests that would otherwise
  rely on downstream side effects (like presenting a share-invoice sheet)
@@ -465,6 +460,11 @@ private final class GiniHealthDelegateSpy: GiniHealthDelegate {
     }
 }
 
+/**
+ Records every delegate callback so tests can assert both what was called
+ and (for `isLoadingStateChanged`) with which value, without depending on
+ the real host-app plumbing.
+ */
 private final class PaymentComponentsControllerDelegateSpy: PaymentComponentsControllerProtocol {
     var loadingStateChanges: [Bool] = []
     var didFetchedPaymentProvidersCallCount = 0

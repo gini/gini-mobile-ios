@@ -60,7 +60,6 @@ extension UIViewController {
         present(dialog, animated: true, completion: nil)
     }
 
-
     private func filePickerErrorTitles(for pickerError: FilePickerError,
                                        defaultCancel: String,
                                        defaultConfirm: String?) -> (cancel: String, confirm: String?) {

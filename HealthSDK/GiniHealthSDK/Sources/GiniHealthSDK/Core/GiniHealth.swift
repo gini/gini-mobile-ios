@@ -250,8 +250,7 @@ public struct DataForReview {
    }
 
     private func handleExtractionResult(_ result: Result<ExtractionResult, GiniError>,
-                                        completion: @escaping (Result<Bool, GiniHealthError>) -> Void)  {
-
+                                        completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         switch result {
         case let .success(extractionResult):
             if let paymentStateExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value, paymentStateExtraction == PaymentState.payable.rawValue {
@@ -422,7 +421,6 @@ public struct DataForReview {
             completion(.failure(.apiError(error)))
         }
     }
-
 
     /**
      Submits extraction feedback for the specified document.
@@ -612,7 +610,6 @@ public struct DataForReview {
         case let .failure(error):
             completion(.failure(.apiError(error)))
         }
-
     }
 
     /**
