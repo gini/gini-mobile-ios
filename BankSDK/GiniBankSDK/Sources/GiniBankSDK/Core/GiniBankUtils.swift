@@ -55,8 +55,8 @@ func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
 
  ## Example Usage:
  ```swift
- let text = localized("ginibank.digitalinvoice.onboarding.text1",
- comment: "RA onboarding screen first label")
+ let text = giniLocalized("ginibank.digitalinvoice.onboarding.text1",
+                          comment: "RA onboarding screen first label")
  ```
  */
 internal func giniLocalized(_ key: String,
