@@ -4,359 +4,233 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
-import XCTest
+import Foundation
+import Testing
 @testable import GiniCaptureSDK
 
-class QRCodesExtractorTests: XCTestCase {
+/**
+ Swift Testing suite for `QRCodesExtractor`.
 
-    // MARK: - Test extractParameters(from:withFormat:)
+ Every test case is driven by a single consolidated JSON fixture at
+ `Tests/GiniCaptureSDKTests/Resources/qrCodesExtractorFixtures.json`.
+ The root of that file is a `[String: QRCodeFixture]` map keyed by a
+ stable id (e.g. `"bezahl_all_fields"`); each entry carries the raw QR
+ input string and the expected extracted key/value pairs.
 
-    func testExtractParametersWithBezahlFormat() {
-        let bezahlString = "bank://singlepaymentsepa?bic=TESTBIC123&name=John%20Doe&iban=DE89370400440532013000&reason=Test%20Payment&amount=EUR100.50"
-        let parameters = QRCodesExtractor.extractParameters(from: bezahlString, withFormat: .bezahl)
+ `expected` uses optional string values so a fixture can express the
+ three distinct outcomes the extractor produces:
+ - a real value (`String`) — key must be present with that exact value,
+ - an empty string (`""`) — key must be present with an empty string,
+ - an absent key (`null`) — key must be missing from the result.
+ */
+@Suite("QRCodesExtractor")
+struct QRCodesExtractorTests {
 
-        XCTAssertEqual(parameters["bic"],
-                       "TESTBIC123",
-                       "BIC should be extracted from Bezahl QR code")
+    private static let fixtures: [String: QRCodeFixture] = {
+        guard let data = GiniCaptureTestsHelper.fileData(named: "qrCodesExtractorFixtures",
+                                                         fileExtension: "json") else {
+            fatalError("Missing qrCodesExtractorFixtures.json in tests")
+        }
+        do {
+            return try JSONDecoder().decode([String: QRCodeFixture].self, from: data)
+        } catch {
+            fatalError("Could not decode qrCodesExtractorFixtures.json: \(error)")
+        }
+    }()
 
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "John Doe",
-                       "Payment recipient name should be URL decoded from 'name' parameter")
-
-        XCTAssertEqual(parameters["iban"],
-                       "DE89370400440532013000",
-                       "Valid IBAN should be extracted from Bezahl QR code")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "Test Payment",
-                       "Payment reference should be URL decoded from 'reason' parameter")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "100.50:EUR",
-                       "Amount should be normalized with currency prefix")
+    private func fixture(_ id: String,
+                         sourceLocation: SourceLocation = #_sourceLocation) throws -> QRCodeFixture {
+        try #require(Self.fixtures[id],
+                     "Missing fixture id: \(id)",
+                     sourceLocation: sourceLocation)
     }
 
-    func testExtractParametersWithEPC06912Format() {
-        let epc06912String = """
-        BCD
-        002
-        1
-        SCT
-        TESTBIC123
-        John Doe
-        DE89370400440532013000
-        EUR100.50
-        
-        Test Payment
-        
-        """
+    /**
+     Compares the actual `[String: String]` extraction result against the
+     fixture's `expected` map.
 
-        let parameters = QRCodesExtractor.extractParameters(from: epc06912String, withFormat: .epc06912)
-
-        XCTAssertEqual(parameters["bic"],
-                       "TESTBIC123",
-                       "BIC should be extracted from line 4 (index 4) of EPC06912 format")
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "John Doe",
-                       "Payment recipient should be extracted from line 5 of EPC06912 format")
-
-        XCTAssertEqual(parameters["iban"],
-                       "DE89370400440532013000",
-                       "Valid IBAN should be extracted from line 6 of EPC06912 format")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "Test Payment",
-                       "Payment reference should be extracted from line 9 of EPC06912 format")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "100.50:EUR",
-                       "Amount should be normalized from line 7 with currency prefix")
+     - A non-nil expected value asserts that the actual dictionary contains
+       that exact string for the key (including `""` when the extractor is
+       documented to emit an empty string).
+     - A `nil` expected value asserts that the key is absent from the
+       dictionary — mirroring the original `XCTAssertNil(parameters[key])`
+       assertions from the XCTest suite.
+     */
+    private func assertMatches(_ actual: [String: String],
+                               _ expected: [String: String?],
+                               sourceLocation: SourceLocation = #_sourceLocation) {
+        for (key, expectedValue) in expected {
+            if let expectedValue {
+                #expect(actual[key] == expectedValue,
+                        "Key \"\(key)\" expected \"\(expectedValue)\", got \"\(actual[key] ?? "nil")\"",
+                        sourceLocation: sourceLocation)
+            } else {
+                #expect(actual[key] == nil,
+                        "Key \"\(key)\" expected absent, got \"\(actual[key] ?? "nil")\"",
+                        sourceLocation: sourceLocation)
+            }
+        }
     }
 
-    func testExtractParametersWithEPS4MobileFormat() {
-        let epsString = "epspayment://qr.eps-payment.at/public/qrcode/12345"
-        let parameters = QRCodesExtractor.extractParameters(from: epsString, withFormat: .eps4mobile)
+    // MARK: - extractParameters(from:withFormat:)
 
-        XCTAssertEqual(parameters[QRCodesExtractor.epsCodeUrlKey],
-                       epsString,
-                       "EPS4Mobile format should return the entire URL string as epsPaymentQRCodeUrl")
+    @Test("Bezahl format is dispatched through the format-based extractor")
+    func extractsBezahlViaFormatDispatcher() throws {
+        let f = try fixture("bezahl_dispatcher")
+        let parameters = QRCodesExtractor.extractParameters(from: f.input,
+                                                            withFormat: .bezahl)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersWithGiniQRCodeFormat() {
-        let giniString = "https://pay.gini.net/payment/12345"
-        let parameters = QRCodesExtractor.extractParameters(from: giniString, withFormat: .giniQRCode)
-
-        XCTAssertEqual(parameters[QRCodesExtractor.giniCodeUrlKey],
-                       giniString,
-                       "Gini QR code format should return the entire URL string as giniPaymentQRCodeUrl")
+    @Test("EPC06912 format is dispatched through the format-based extractor")
+    func extractsEPC06912ViaFormatDispatcher() throws {
+        let f = try fixture("epc06912_dispatcher")
+        let parameters = QRCodesExtractor.extractParameters(from: f.input,
+                                                            withFormat: .epc06912)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersWithNoFormat() {
-        let parameters = QRCodesExtractor.extractParameters(from: "any string", withFormat: nil)
-        XCTAssertTrue(parameters.isEmpty, "When format is nil, should return empty dictionary")
+    @Test("EPS4Mobile format returns the raw URL under epsCodeUrlKey")
+    func extractsEPS4MobileViaFormatDispatcher() throws {
+        let f = try fixture("eps4mobile_url")
+        let parameters = QRCodesExtractor.extractParameters(from: f.input,
+                                                            withFormat: .eps4mobile)
+        assertMatches(parameters, f.expected)
     }
 
-    // MARK: - Test extractParameters(fromBezahlCodeString:)
-
-    func testExtractParametersFromBezahlCodeWithAllFields() {
-        let bezahlString = "bank://singlepaymentsepa?bic=DEUTDEFF&name=Max%20Mustermann&iban=DE89370400440532013000&reason=Rechnung%20123&amount=EUR50.00&currency=EUR"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
-
-        XCTAssertEqual(parameters["bic"],
-                       "DEUTDEFF",
-                       "BIC should be extracted from query parameters")
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "Max Mustermann",
-                       "Name should be URL decoded and mapped to paymentRecipient")
-
-        XCTAssertEqual(parameters["iban"],
-                       "DE89370400440532013000",
-                       "Valid IBAN should be extracted and validated")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "Rechnung 123",
-                       "Reason should be URL decoded and mapped to paymentReference")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "50.00:EUR",
-                       "Amount should be normalized using currency from amount string")
+    @Test("Gini QR code format returns the raw URL under giniCodeUrlKey")
+    func extractsGiniQRCodeViaFormatDispatcher() throws {
+        let f = try fixture("giniqrcode_url")
+        let parameters = QRCodesExtractor.extractParameters(from: f.input,
+                                                            withFormat: .giniQRCode)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromBezahlCodeWithMissingFields() {
-        let bezahlString = "bank://singlepaymentsepa?iban=DE89370400440532013000"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
-
-        XCTAssertNil(parameters["bic"], "Missing BIC should not be in parameters dictionary")
-        XCTAssertNil(parameters["paymentRecipient"], "Missing name should not be in parameters dictionary")
-        XCTAssertEqual(parameters["iban"], "DE89370400440532013000", "IBAN should still be extracted when other fields are missing")
-        XCTAssertNil(parameters["paymentReference"], "Missing reason should not be in parameters dictionary")
-        XCTAssertNil(parameters["amountToPay"], "Missing amount should not be in parameters dictionary")
+    @Test("Nil format returns an empty dictionary")
+    func nilFormatReturnsEmpty() {
+        let parameters = QRCodesExtractor.extractParameters(from: "any string",
+                                                            withFormat: nil)
+        #expect(parameters.isEmpty, "When format is nil, should return empty dictionary")
     }
 
-    func testExtractParametersFromBezahlCodeWithInvalidIBAN() {
-        let bezahlString = "bank://singlepaymentsepa?iban=INVALID_IBAN"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
+    // MARK: - extractParameters(fromBezahlCodeString:)
 
-        XCTAssertNil(parameters["iban"], "Invalid IBAN should not be added to parameters after validation fails")
+    @Test("Bezahl code with every field populated is fully extracted")
+    func bezahlAllFields() throws {
+        let f = try fixture("bezahl_all_fields")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromBezahlCodeWithReason1() {
-        // Note: Due to a bug in the implementation, reason1 is checked in queryParameters
-        // instead of queryParametersDecoded, so percent-encoded values won't work properly
-        let bezahlString = "bank://singlepaymentsepa?reason1=AlternativeReason"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "AlternativeReason",
-                       "Should fall back to reason1 when reason is not present")
+    @Test("Bezahl code with only IBAN omits every other key")
+    func bezahlMissingFields() throws {
+        let f = try fixture("bezahl_missing_fields")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromBezahlCodeWithSpecialCharacters() {
-        let bezahlString = "bank://singlepaymentsepa?name=Test%20%26%20Co.&reason=50%25%20discount"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "Test & Co.",
-                       "Special characters should be properly URL decoded in name")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "50% discount",
-                       "Special characters should be properly URL decoded in reason")
+    @Test("Bezahl code with invalid IBAN drops the iban key after validation")
+    func bezahlInvalidIBAN() throws {
+        let f = try fixture("bezahl_invalid_iban")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    // MARK: - Test extractParameters(fromEPC06912CodeString:)
-
-    func testExtractParametersFromEPC06912WithAllFields() {
-        let epc06912String = """
-        BCD
-        002
-        1
-        SCT
-        DEUTDEFF500
-        Max Mustermann
-        DE89370400440532013000
-        EUR123.45
-        
-        Invoice 12345
-        
-        Additional info
-        """
-
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: epc06912String)
-
-        XCTAssertEqual(parameters["bic"],
-                       "DEUTDEFF500",
-                       "BIC should be extracted from line 4 of EPC06912 format")
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "Max Mustermann",
-                       "Payment recipient should be extracted from line 5")
-
-        XCTAssertEqual(parameters["iban"],
-                       "DE89370400440532013000",
-                       "Valid IBAN should be extracted from line 6")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "Invoice 12345",
-                       "Payment reference should be extracted from line 9")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "123.45:EUR",
-                       "Amount with currency prefix should be normalized from line 7")
+    @Test("Bezahl code falls back to reason1 when reason is absent")
+    func bezahlReason1Fallback() throws {
+        /// Reason1 is intentionally read from the raw `queryParameters`, so
+        /// percent-encoded values won't be decoded — see the extractor for
+        /// the known behaviour this fixture mirrors.
+        let f = try fixture("bezahl_reason1_fallback")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromEPC06912WithMinimalFields() {
-        let epc06912String = """
-        BCD
-        002
-        """
-
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: epc06912String)
-
-        XCTAssertEqual(parameters["bic"],
-                       "",
-                       "Missing BIC line should return empty string")
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "",
-                       "Missing payment recipient line should return empty string")
-        XCTAssertEqual(parameters["iban"],
-                       "",
-                       "Missing IBAN line should return empty string after validation")
-        XCTAssertEqual(parameters["paymentReference"],
-                       "",
-                       "Missing payment reference line should return empty string")
-        XCTAssertEqual(parameters["amountToPay"],
-                       "",
-                       "Missing amount line should return empty string")
+    @Test("Bezahl code URL-decodes special characters in name and reason")
+    func bezahlSpecialCharacters() throws {
+        let f = try fixture("bezahl_special_characters")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromEPC06912WithEmptyAmount() {
-        let epc06912String = """
-        BCD
-        002
-        1
-        SCT
-        DEUTDEFF
-        Test Company
-        DE89370400440532013000
-        
-        
-        Payment for services
-        """
+    // MARK: - extractParameters(fromEPC06912CodeString:)
 
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: epc06912String)
-
-        XCTAssertEqual(parameters["bic"],
-                       "DEUTDEFF",
-                       "BIC should be extracted even when amount is empty")
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "Test Company",
-                       "Payment recipient should be extracted even when amount is empty")
-
-        XCTAssertEqual(parameters["iban"],
-                       "DE89370400440532013000",
-                       "Valid IBAN should be extracted even when amount is empty")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "Payment for services",
-                       "Payment reference should be extracted even when amount is empty")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "",
-                       "Empty amount line should result in empty amountToPay after normalization fails")
+    @Test("EPC06912 code with every field populated is fully extracted")
+    func epc06912AllFields() throws {
+        let f = try fixture("epc06912_all_fields")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromEPC06912WithInvalidIBAN() {
-        let epc06912String = """
-        BCD
-        002
-        1
-        SCT
-        DEUTDEFF
-        Test Company
-        INVALID_IBAN_12345
-        EUR50.00
-        
-        Payment
-        """
-
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: epc06912String)
-
-        XCTAssertEqual(parameters["iban"],
-                       "",
-                       "Invalid IBAN should return empty string after validation fails")
+    @Test("EPC06912 code with only the first two lines returns empty strings for every field")
+    func epc06912MinimalFields() throws {
+        let f = try fixture("epc06912_minimal_fields")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testExtractParametersFromEPC06912EmptyString() {
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: "")
-
-        XCTAssertEqual(parameters["bic"],
-                       "",
-                       "Empty input should return empty string for BIC")
-
-        XCTAssertEqual(parameters["paymentRecipient"],
-                       "",
-                       "Empty input should return empty string for payment recipient")
-
-        XCTAssertEqual(parameters["iban"],
-                       "",
-                       "Empty input should return empty string for IBAN")
-
-        XCTAssertEqual(parameters["paymentReference"],
-                       "",
-                       "Empty input should return empty string for payment reference")
-
-        XCTAssertEqual(parameters["amountToPay"],
-                       "",
-                       "Empty input should return empty string for amount")
+    @Test("EPC06912 code with an empty amount line still extracts every other field")
+    func epc06912EmptyAmount() throws {
+        let f = try fixture("epc06912_empty_amount")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    // MARK: - Test QRCodesFormat format markers
-
-    func testQRCodesFormatMarkers() {
-        XCTAssertEqual(QRCodesFormat.epc06912.formatMarker,
-                       "BCD",
-                       "EPC06912 format should have BCD marker")
-        XCTAssertEqual(QRCodesFormat.eps4mobile.formatMarker,
-                       "epspayment://",
-                       "EPS4Mobile format should have epspayment:// prefix")
-        XCTAssertEqual(QRCodesFormat.bezahl.formatMarker,
-                       "bank://",
-                       "Bezahl format should have bank:// prefix")
-        XCTAssertEqual(QRCodesFormat.giniQRCode.formatMarker,
-                       "https://pay.gini.net/",
-                       "Gini QR code format should have https://pay.gini.net/ prefix")
+    @Test("EPC06912 code with an invalid IBAN returns an empty IBAN string")
+    func epc06912InvalidIBAN() throws {
+        let f = try fixture("epc06912_invalid_iban")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    // MARK: - Test normalize(amount:currency:) indirectly through public methods
-
-    func testNormalizeAmountWithCurrencyPrefix() {
-        let epc06912String = """
-        BCD
-        002
-        1
-        SCT
-        BIC
-        Name
-        DE89370400440532013000
-        USD100.50
-        """
-
-        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: epc06912String)
-        XCTAssertEqual(parameters["amountToPay"],
-                       "100.50:USD",
-                       "Amount starting with 3 letter currency code should be normalized to amount:currency format")
+    @Test("EPC06912 code from an empty string returns empty strings for every field")
+    func epc06912EmptyString() throws {
+        let f = try fixture("epc06912_empty_string")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
     }
 
-    func testNormalizeAmountWithExplicitCurrency() {
-        let bezahlString = "bank://singlepaymentsepa?amount=100&currency=CHF"
-        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: bezahlString)
+    // MARK: - QRCodesFormat markers
 
-        XCTAssertEqual(parameters["amountToPay"],
-                       "100:CHF",
-                       "Amount with separate currency parameter should be normalized to amount:currency format")
+    @Test("QRCodesFormat markers match their expected prefixes")
+    func formatMarkersMatchPrefixes() {
+        #expect(QRCodesFormat.epc06912.formatMarker == "BCD",
+                "EPC06912 format should have BCD marker")
+        #expect(QRCodesFormat.eps4mobile.formatMarker == "epspayment://",
+                "EPS4Mobile format should have epspayment:// prefix")
+        #expect(QRCodesFormat.bezahl.formatMarker == "bank://",
+                "Bezahl format should have bank:// prefix")
+        #expect(QRCodesFormat.giniQRCode.formatMarker == "https://pay.gini.net/",
+                "Gini QR code format should have https://pay.gini.net/ prefix")
     }
+
+    // MARK: - normalize(amount:currency:) exercised through public methods
+
+    @Test("Amount prefixed with a three-letter currency code is normalized to amount:currency")
+    func normalizeAmountWithCurrencyPrefix() throws {
+        let f = try fixture("epc06912_currency_prefix")
+        let parameters = QRCodesExtractor.extractParameters(fromEPC06912CodeString: f.input)
+        assertMatches(parameters, f.expected)
+    }
+
+    @Test("Amount paired with an explicit currency parameter is normalized to amount:currency")
+    func normalizeAmountWithExplicitCurrency() throws {
+        let f = try fixture("bezahl_explicit_currency")
+        let parameters = QRCodesExtractor.extractParameters(fromBezahlCodeString: f.input)
+        assertMatches(parameters, f.expected)
+    }
+}
+
+// MARK: - Fixture support
+
+/**
+ Uniform shape of each entry in `qrCodesExtractorFixtures.json`.
+
+ `expected` uses optional string values so a fixture can express the
+ three distinct outcomes the extractor produces — see the suite doc
+ comment above for the exact semantics.
+ */
+private struct QRCodeFixture: Decodable {
+    let input: String
+    let expected: [String: String?]
 }
