@@ -155,17 +155,23 @@ lazy var giniBankConfiguration: GiniBankConfiguration = {
 ```swift
 extension YourViewController: GiniCaptureResultsDelegate {
 
-    /// Called when the analysis finished with results.
+    /**
+     Called when the analysis finished with results.
+     */
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         handleExtractions(result.extractions)
     }
 
-    /// Called when the analysis was cancelled.
+    /**
+     Called when the analysis was cancelled.
+     */
     func giniCaptureDidCancelAnalysis() {
         handleCancellation()
     }
 
-    /// Called when "Enter Manually" was tapped on the No Results or Error screen.
+    /**
+     Called when "Enter Manually" was tapped on the No Results or Error screen.
+     */
     func giniCaptureDidEnterManually() {
         handleEnterManually()
     }

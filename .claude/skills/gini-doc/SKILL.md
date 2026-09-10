@@ -65,13 +65,14 @@ Apply these rules to all output. They are authoritative over any default behavio
 
 ### Audience
 
-Documentation serves three audiences simultaneously:
+Documentation serves four audiences simultaneously:
 
 | Audience | What they need |
 |---|---|
 | **Developers** | Precise inputs, outputs, conditions, dependencies, edge cases, and implementation examples |
 | **QA engineers** | Expected behavior, validation rules, failure cases, and edge cases specific enough to derive test scenarios |
 | **Product Managers / Product Owners** | Business intent, user outcomes, workflow, and scope — without unnecessary implementation detail |
+| **Customer Support / Customer Experience** | User-visible behaviour, known limitations, error messages the user might report, and troubleshooting steps — enough to answer integrator questions without reading source |
 
 - Define business intent before technical detail.
 - Make behavior, rules, and outcomes explicit enough for both engineering and QA use.
