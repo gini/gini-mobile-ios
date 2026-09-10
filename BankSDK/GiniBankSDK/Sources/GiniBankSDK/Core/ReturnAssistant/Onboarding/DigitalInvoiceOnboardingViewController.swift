@@ -20,7 +20,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
-    private var navigationBarHeightConstraint: NSLayoutConstraint!
     private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem { [weak self] in
         self?.doneAction(nil)
     }
@@ -32,9 +31,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     private var topPadding: CGFloat {
         return view.frame.width > view.frame.height ? 40 : 104
     }
-
-    private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
 
     private var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
@@ -139,41 +135,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
-
-        if configuration.bottomNavigationBarEnabled {
-            doneButton.isHidden = !(UIDevice.current.isIpad && view.currentInterfaceOrientation.isLandscape)
-
-            NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
-
-            if let bottomBarAdapter = configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
-                self?.doneButtonTapped = true
-                self?.dismissViewController()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                navigationBarHeightConstraint = navigationBar.heightAnchor
-                    .constraint(equalToConstant: getBottomBarHeight())
-
-                NSLayoutConstraint.activate([
-                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                    navigationBarHeightConstraint
-                ])
-            }
-        }
-
     }
 
     private func configureConstraints() {
@@ -190,9 +151,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
-            navigationBarHeightConstraint.constant = getBottomBarHeight()
-        }
         updateAccessibilityElements()
 
         guard UIDevice.current.isIpad else { return }
@@ -239,28 +197,8 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 }
 
 extension DigitalInvoiceOnboardingViewController {
-    private enum Constants {
-        static let bottomBarHeightPortrait: CGFloat = 110
-        static let bottomBarHeightLandscape: CGFloat = 64
-    }
-
     private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
-        if GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil {
-            return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
-        } else {
-            return view.bottomAnchor
-        }
-    }
-
-    func getBottomBarHeight() -> CGFloat {
-        if isiPhoneAndLandscape() {
-            return Constants.bottomBarHeightLandscape
-        }
-        return Constants.bottomBarHeightPortrait
-    }
-
-    func isiPhoneAndLandscape() -> Bool {
-        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
+        return view.bottomAnchor
     }
 }
 

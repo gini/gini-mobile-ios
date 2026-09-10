@@ -17,12 +17,7 @@ extension GiniScreenAPICoordinator {
         let cancelButton = GiniBarButton(ofType: .cancel)
         cancelButton.addAction(self, #selector(back))
 
-        if giniConfiguration.bottomNavigationBarEnabled {
-            viewController.navigationItem.setHidesBackButton(true, animated: false)
-            viewController.navigationItem.rightBarButtonItem = cancelButton.barButton
-        } else {
-            viewController.navigationItem.leftBarButtonItem = cancelButton.barButton
-        }
+        viewController.navigationItem.leftBarButtonItem = cancelButton.barButton
 
         return viewController
     }

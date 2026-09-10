@@ -90,8 +90,6 @@ final class SkontoViewController: UIViewController {
         return stackView
     }()
 
-    private var landscapeBottomBarContentView: UIView?
-
     private lazy var stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                                                                  constant: contentStackViewWidth)
     private lazy var proceedContainerConstraints = [
@@ -114,9 +112,6 @@ final class SkontoViewController: UIViewController {
     private let viewModel: SkontoViewModel
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
-
-    private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
 
     private var firstAppearance = true
 
@@ -200,7 +195,6 @@ final class SkontoViewController: UIViewController {
         withoutDiscountContainerView.addSubview(withoutDiscountView)
         view.addSubview(proceedContainerView)
 
-        setupBottomNavigationBar()
         setupTapGesture()
         bindViewModel()
     }
@@ -216,11 +210,6 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupTopBarButtonsIfNeeded() {
-        guard !configuration.bottomNavigationBarEnabled else {
-            navigationItem.hidesBackButton = true
-            return
-        }
-
         let helpButton = GiniBarButton(ofType: .help)
         helpButton.addAction(self, #selector(helpButtonTapped))
         navigationItem.rightBarButtonItem = helpButton.barButton
@@ -251,58 +240,11 @@ final class SkontoViewController: UIViewController {
     private func setupLandscapeLayout() {
         removeExistingBottomComponents()
 
-        if configuration.bottomNavigationBarEnabled {
-            if bottomNavigationBar is DefaultSkontoBottomNavigationBar {
-                setupBottomNavigationBarInLandscape()
-            } else {
-                setupCustomBottomNavigationBarInLandscape()
-            }
-        } else {
-            setupProceedContainerInLandscape()
-        }
+        setupProceedContainerInLandscape()
     }
 
     private func removeExistingBottomComponents() {
         proceedContainerView.removeFromSuperview()
-        bottomNavigationBar?.removeFromSuperview()
-
-        removeLandscapeBottomBarContentView()
-    }
-
-    private func removeLandscapeBottomBarContentView() {
-        if let lastView = landscapeBottomBarContentView {
-            mainStackView.removeArrangedSubview(lastView)
-            lastView.removeFromSuperview()
-            landscapeBottomBarContentView = nil
-        }
-    }
-
-    private func setupBottomNavigationBarInLandscape() {
-        guard let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar else {
-            setupBottomNavigationBar()
-            return
-        }
-
-        let contentView = defaultBar.contentBarView
-        let navigationBarView = defaultBar.navigationBarView
-        landscapeBottomBarContentView = contentView
-
-        mainStackView.addArrangedSubview(contentView)
-
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        navigationBarView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(navigationBarView)
-
-        NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            navigationBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBarView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBarView.heightAnchor.constraint(equalToConstant: Constants.navigationBarViewDefaultHeight)
-        ])
-
-        updateScrollViewBottomToViewConstraint(to: navigationBarView.topAnchor)
     }
 
     private func setupProceedContainerInLandscape() {
@@ -341,29 +283,15 @@ final class SkontoViewController: UIViewController {
 
     // MARK: - Portrait specific layout
     private func setupPortraitLayout() {
-        // Cleanup landscape-specific layout
-        if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
-            defaultBar.navigationBarView.removeFromSuperview()
-            defaultBar.contentBarView.removeFromSuperview()
-
-            removeLandscapeBottomBarContentView()
-        // Attach correct bottom element and apply correct constraint
-            pinToBottom(defaultBar, to: view)
-            updateScrollViewBottomToViewConstraint(to: defaultBar.topAnchor)
-        } else if let customBar = bottomNavigationBar {
-            pinToBottom(customBar, to: view)
-            updateScrollViewBottomToViewConstraint(to: customBar.topAnchor)
-        } else {
-            if mainStackView.arrangedSubviews.contains(proceedContainerView) {
-                mainStackView.removeArrangedSubview(proceedContainerView)
-                proceedContainerView.removeFromSuperview()
-            }
-            attachProceedContainerViewIfNeeded()
-
-            scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
-                .constraint(equalTo: proceedContainerView.topAnchor)
-            scrollViewBottomToProceedViewTop.isActive = true
+        if mainStackView.arrangedSubviews.contains(proceedContainerView) {
+            mainStackView.removeArrangedSubview(proceedContainerView)
+            proceedContainerView.removeFromSuperview()
         }
+        attachProceedContainerViewIfNeeded()
+
+        scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
+            .constraint(equalTo: proceedContainerView.topAnchor)
+        scrollViewBottomToProceedViewTop.isActive = true
 
         scrollView.contentInset = Constants.scrollViewDefaultContentInset
         scrollView.contentInsetAdjustmentBehavior = .automatic
@@ -464,43 +392,6 @@ final class SkontoViewController: UIViewController {
         scrollViewBottomToViewConstraint.isActive = true
     }
 
-    // MARK: - Bottom Navigation Bar Handling
-
-    private func setupBottomNavigationBar() {
-        guard configuration.bottomNavigationBarEnabled else { return }
-        if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
-            navigationBarBottomAdapter = bottomBarAdapter
-        } else {
-            navigationBarBottomAdapter = DefaultSkontoNavigationBarBottomAdapter()
-        }
-
-        navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.proceedButtonTapped()
-        }
-
-        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-            self?.helpButtonTapped()
-        }
-
-        navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-            self?.backButtonTapped()
-        }
-
-        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-            bottomNavigationBar = navigationBar
-            pinToBottom(navigationBar, to: view)
-        }
-
-        proceedContainerView.isHidden = true
-    }
-
-    private func setupCustomBottomNavigationBarInLandscape() {
-        guard let customBar = bottomNavigationBar else { return }
-
-        pinToBottom(customBar, to: view)
-        updateScrollViewBottomToViewConstraint(to: customBar.topAnchor)
-    }
-
     private func bindViewModel() {
         configure()
         viewModel.addStateChangeHandler { [weak self] in
@@ -514,12 +405,6 @@ final class SkontoViewController: UIViewController {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
-        navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: viewModel.skontoPercentageString)
-        navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: viewModel.savingsAmountString)
-        navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
-        let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
-        navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
         setupInputAccessoryView(isSkontoApplied: isSkontoApplied)
     }
 
@@ -551,10 +436,6 @@ final class SkontoViewController: UIViewController {
     @objc private func backButtonTapped() {
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .skonto)
         viewModel.backButtonTapped()
-    }
-
-    @objc private func proceedButtonTapped() {
-        viewModel.proceedButtonTapped()
     }
 
     private func setupTapGesture() {
@@ -669,7 +550,6 @@ private extension SkontoViewController {
         // This multiplier was chosen to accommodate 200% text scaling on iPads,
         // ensuring proper layout and readability for Dynamic Type support.
         static let tabletWidthMultiplier: CGFloat = 0.71
-        static let navigationBarViewDefaultHeight: CGFloat = 62
         static let landscapeHorizontalPadding: CGFloat = 16
 
         static var scrollViewLandscapeContentInsets: UIEdgeInsets {

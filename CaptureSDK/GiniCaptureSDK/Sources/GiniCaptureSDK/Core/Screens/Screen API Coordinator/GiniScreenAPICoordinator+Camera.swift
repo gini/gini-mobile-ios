@@ -67,7 +67,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
-        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
+        let bottomAnchor = viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera(bottomAnchor: bottomAnchor)
@@ -114,23 +114,21 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             }
         }
 
-        if !giniConfiguration.bottomNavigationBarEnabled {
-            if pages.count > 0 {
-                let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
-                                                                   comment: "Review")
-                let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-                backButton.addAction(self, #selector(popBackToReview))
-                cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
-            } else {
-                let cancelButton = GiniBarButton(ofType: .cancel)
-                cancelButton.addAction(self, #selector(back))
-                cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
-            }
-
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(showHelpMenuScreen))
-            cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
+        if pages.count > 0 {
+            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                               comment: "Review")
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(popBackToReview))
+            cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
+        } else {
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(back))
+            cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
         }
+
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(showHelpMenuScreen))
+        cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
 
         if giniConfiguration.fileImportSupportedTypes != .none {
             documentPickerCoordinator.delegate = self
@@ -142,11 +140,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         return cameraViewController
     }
 
-    fileprivate func didCaptureAndValidate(_ document: GiniCaptureDocument) {
+    func didCaptureAndValidate(_ document: GiniCaptureDocument) {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
 
-    private func shouldShowOnboarding() -> Bool {
+    func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !GiniCaptureUserDefaultsStorage.onboardingShowed {
             GiniCaptureUserDefaultsStorage.onboardingShowed = true
@@ -292,7 +290,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
 
-    fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
+    func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
         view.addInteraction(dropInteraction)
     }
@@ -302,8 +300,8 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
 extension GiniScreenAPICoordinator {
 
-    fileprivate func validate(_ documents: [GiniCaptureDocument],
-                              completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
+    func validate(_ documents: [GiniCaptureDocument],
+                  completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
         var documentsToValidate = documents + pages.map { $0.document }
 
         for document in documentsToValidate where document.type == .qrcode {
@@ -340,8 +338,8 @@ extension GiniScreenAPICoordinator {
         }
     }
 
-    private func validate(importedDocuments documents: [GiniCaptureDocument],
-                          completion: @escaping ([GiniCapturePage]) -> Void) {
+    func validate(importedDocuments documents: [GiniCaptureDocument],
+                  completion: @escaping ([GiniCapturePage]) -> Void) {
         DispatchQueue.global().async {
             var pages: [GiniCapturePage] = []
             documents.forEach { document in
