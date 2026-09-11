@@ -29,6 +29,7 @@ public struct ClientConfiguration: Codable {
     public let creditNoteHintEnabled: Bool
     public let paymentScheduleHintEnabled: Bool
     public let unsupportedQRCodeWarningEnabled: Bool
+    public let ingredientBrandScreens: [String]
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -48,6 +49,7 @@ public struct ClientConfiguration: Codable {
      - creditNoteHintEnabled: A flag indicating whether credit note hint for documents is enabled.
      - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the payment-hint bottom sheet is enabled.
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
+     - ingredientBrandScreens: Screen names on which the "Powered by Gini" ingredient brand should be shown. An empty array disables it everywhere. Currently only `"Analysis"` is supported by the backend.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -62,7 +64,8 @@ public struct ClientConfiguration: Codable {
                 paymentDueHintEnabled: Bool,
                 creditNoteHintEnabled: Bool,
                 paymentScheduleHintEnabled: Bool,
-                unsupportedQRCodeWarningEnabled: Bool) {
+                unsupportedQRCodeWarningEnabled: Bool,
+                ingredientBrandScreens: [String] = []) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
@@ -77,5 +80,6 @@ public struct ClientConfiguration: Codable {
         self.creditNoteHintEnabled = creditNoteHintEnabled
         self.paymentScheduleHintEnabled = paymentScheduleHintEnabled
         self.unsupportedQRCodeWarningEnabled = unsupportedQRCodeWarningEnabled
+        self.ingredientBrandScreens = ingredientBrandScreens
     }
 }
