@@ -1,6 +1,6 @@
 # PP-2570: Ingredient Brand — "Powered by Gini" component on Analysis screen (iOS)
 
-Status: draft
+Status: implemented
 Ticket: https://ginis.atlassian.net/browse/PP-2570
 Related: PP-2572 (backend feature flag, blocks this), PP-2569 (design spec, in progress), PP-2571 (Android sibling)
 
@@ -146,11 +146,7 @@ Add ~5 new XCTest methods (bringing the class to a multi-path component ~9–10 
 4. `test_analysis_hidesBadge_whenIngredientBrandScreensIsNil` — storage nil (fresh install, no `/configurations` fetched yet), no badge (R3).
 5. `test_analysis_badgeStaysWhenCaptureSuggestionsRemoved` — storage `["Analysis"]`, image doc → capture suggestions banner shown → `removeCaptureSuggestions()` → badge still present (R8 tail).
 
-**GiniCaptureSDKTests / `GiniCaptureUserDefaultsStorageTests.swift`** (extends existing XCTest file if present, else new)
-
-Add ~2 tests:
-1. `test_ingredientBrandScreens_persistsArrayAcrossReads` — set `["Analysis"]`, read back, assert equal.
-2. `test_ingredientBrandScreens_nilByDefault` — clean UserDefaults, read returns nil.
+**No dedicated `GiniCaptureUserDefaultsStorageTests` for `ingredientBrandScreens`.** Every sibling `@GiniUserDefault` flag on `GiniCaptureUserDefaultsStorage` (`qrCodeEducationEnabled`, `unsupportedQRCodeWarningEnabled`, `eInvoiceEnabled`, `savePhotosLocallyEnabled`, `onboardingShowed`, `userSettingsSavePhotosSwitchOn`) is covered at its writer/reader, not by a per-flag wrapper-plumbing test — the `@GiniUserDefault` property wrapper itself has no test file either. Writer coverage for `ingredientBrandScreens` lives in `RemoteConfigPropagationTests` below; reader coverage (nil / empty / `"Analysis"` / `"analysis"`) lives in `AnalysisViewControllerTests` above.
 
 **GiniBankSDKTests / `GiniBankNetworkingScreenApiCoordinatorTests.swift`** (extends existing XCTest file if present)
 
@@ -180,3 +176,13 @@ Add ~1 test:
 ## Open questions
 
 None. All decisions from the clarifying rounds are folded into the requirements and Technical conventions.
+
+## Implementation plan
+- [x] 1. Add `ingredientBrandScreens: [String]` to `ClientConfiguration` (property + `init` parameter, default `[]` for source-compat) and add Swift Testing cases + a `clientConfigurationWithIngredientBrand.json` fixture in `GiniBankAPILibraryTests`. Neighboring `ClientConfigurationTests.swift` already uses Swift Testing, so extend it there (deviation from spec's `ClientConfigurationServiceTests.swift`/XCTest wording — matches `platform.md` "match neighboring test file"). (R9, R10)
+- [x] 2. Add `PoweredByGiniBadgeView` (public final `UIView`) in `GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/Brand/`. Add `PoweredByGiniBadgeViewTests.swift` using Swift Testing. (R2, R4, R5, R11)
+- [x] 3. Add `resources: [.process("Resources")]` to the `GiniUtilites` target in both `Package.swift` and `Package-release.swift` so the badge PDF ships in both manifests. (R2)
+- [x] 4. Add `@GiniUserDefault("ginicapture.defaults.clientConfigurations.ingredientBrandScreens", defaultValue: nil) public static var ingredientBrandScreens: [String]?` in `GiniCaptureUserDefaultsStorage`. Add a new XCTest file `GiniCaptureUserDefaultsStorageTests.swift` covering persistence + nil-default. (R1)
+- [x] 5. Extend `GiniBankNetworkingScreenApiCoordinator.startSDK` `/configurations` success block with the mirror line `GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens`. Extend `RemoteConfigPropagationTests` (Swift Testing) with a case asserting the value lands (deviation from spec's `GiniBankNetworkingScreenApiCoordinatorTests.swift` — `RemoteConfigPropagationTests.swift` is the propagation-mirror precedent). (R1)
+- [x] 6. In `AnalysisViewController`: add a private `poweredByGiniBadgeView` subview created only when `GiniCaptureUserDefaultsStorage.ingredientBrandScreens` case-insensitively contains `"Analysis"`; pin centered X and bottom to safe-area with `Constants.badgeBottomInset`; adjust `showCaptureSuggestions` so the banner pins to `poweredByGiniBadgeView?.topAnchor ?? view.safeAreaLayoutGuide.bottomAnchor` minus `Constants.badgeSuggestionsGap`. Extend `AnalysisViewControllerTests` (XCTest) with the five cases from the test plan. (R2, R3, R6, R7, R8)
+- [x] 7. Run `make lint scheme=GiniBankSDK` and `make lint scheme=GiniCaptureSDK`; run the affected module unit tests (BankAPI, Utilites, Capture, Bank). Fix any regressions.
+
