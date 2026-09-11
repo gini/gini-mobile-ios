@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import GiniUtilites
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -113,6 +114,7 @@ import Photos
 
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
 
     var pages: [GiniCapturePage]?
 
@@ -223,6 +225,31 @@ import Photos
 
         configureLoadingIndicator()
         addOverlay()
+        addPoweredByGiniBadgeIfEnabled()
+    }
+
+    /**
+     Adds the "Powered by Gini" ingredient-brand badge when the remote
+     configuration flag `ingredientBrandScreens` case-insensitively contains
+     `"Analysis"`. Called once from `setupView()` after the overlay has been
+     inserted so the badge sits above the overlay in the view hierarchy.
+
+     No-op when the flag is nil, empty, or does not contain `"Analysis"` —
+     the Analysis screen is byte-identical to today's rendering in that case.
+     */
+    private func addPoweredByGiniBadgeIfEnabled() {
+        let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
+        let hasAnalysis = screens.contains { $0.caseInsensitiveCompare("Analysis") == .orderedSame }
+        guard hasAnalysis else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        view.addSubview(badge)
+        NSLayoutConstraint.activate([
+            badge.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            badge.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                          constant: -Constants.badgeBottomInset)
+        ])
+        poweredByGiniBadgeView = badge
     }
 
     private func addImageView() {
@@ -417,9 +444,33 @@ import Photos
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
+        let bottomAnchor = suggestionsBannerBottomAnchor()
         captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+                                                    bottomAnchor: bottomAnchor)
         captureSuggestions?.start()
+    }
+
+    /**
+     Returns the anchor the capture-suggestions banner should pin its bottom
+     to. When the ingredient-brand badge is present, a zero-height layout
+     guide is placed `Constants.badgeSuggestionsGap` above the badge so the
+     banner never occludes the badge; otherwise the banner falls back to the
+     safe-area bottom, matching the pre-PP-2570 layout.
+     */
+    private func suggestionsBannerBottomAnchor() -> NSLayoutYAxisAnchor {
+        guard let badge = poweredByGiniBadgeView else {
+            return view.safeAreaLayoutGuide.bottomAnchor
+        }
+        let guide = UILayoutGuide()
+        view.addLayoutGuide(guide)
+        NSLayoutConstraint.activate([
+            guide.bottomAnchor.constraint(equalTo: badge.topAnchor,
+                                          constant: -Constants.badgeSuggestionsGap),
+            guide.heightAnchor.constraint(equalToConstant: 0),
+            guide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            guide.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        return guide.bottomAnchor
     }
 
     /**
@@ -441,6 +492,8 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+        static let badgeBottomInset: CGFloat = 16
+        static let badgeSuggestionsGap: CGFloat = 8
     }
 
     struct Strings {
