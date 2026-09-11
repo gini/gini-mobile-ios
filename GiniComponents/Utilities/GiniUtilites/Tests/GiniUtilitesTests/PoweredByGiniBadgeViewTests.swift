@@ -56,4 +56,19 @@ struct PoweredByGiniBadgeViewTests {
         #expect(imageView?.image != nil,
                 "Expected the poweredByGiniBadge PDF to be loaded from the GiniUtilites module bundle")
     }
+
+    @Test("isHidden also flips accessibilityElementsHidden so VoiceOver skips the badge")
+    func isHiddenMirrorsAccessibilityElementsHidden() {
+        let view = PoweredByGiniBadgeView()
+        #expect(view.accessibilityElementsHidden == false,
+                "Expected the badge to be a11y-visible by default")
+
+        view.isHidden = true
+        #expect(view.accessibilityElementsHidden == true,
+                "Expected accessibilityElementsHidden to follow isHidden = true so VoiceOver skips the hidden badge")
+
+        view.isHidden = false
+        #expect(view.accessibilityElementsHidden == false,
+                "Expected accessibilityElementsHidden to follow isHidden = false when the badge becomes visible again")
+    }
 }
