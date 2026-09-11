@@ -131,12 +131,7 @@ final class AnalysisViewControllerTests: XCTestCase {
     }
 
     func testAnalysisBadgeIsVisibleInitiallyEvenForImageDocs() {
-        // For image docs, `CaptureSuggestionsView.start()` waits 4 seconds
-        // before animating the banner in. During that initial delay — and
-        // in every gap between banner cycles — the badge should be visible
-        // (Figma frame "6.1.1 iOS-ph-analyzePhoto"). Only when the banner
-        // actually appears (`onBannerVisibilityChange(true)`) does the badge
-        // hide (Figma frame "6.3.x iOS-ph-analyzeTipps").
+        // The banner has a 4s pre-appearance delay; the badge is visible until then.
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = AnalysisViewController(document: makeCameraImageDocument(),
                                          giniConfiguration: sepaExtractionsConfig())

@@ -229,16 +229,11 @@ struct ClientConfigurationTests {
                 "Expected ingredientBrandScreens to decode as an empty array")
     }
 
-    /**
-     Backend contract PP-2572 mandates presence of the key. Matches the
-     existing "no silent defaults" behavior for every other required flag —
-     see `decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent`.
-     */
+    /// Pins the "no silent defaults" behavior: the key is required, and decoding
+    /// throws `DecodingError.keyNotFound` when it is absent.
     @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
     func decodingFailsWhenIngredientBrandScreensKeyIsAbsent() {
-        // The `clientConfigurationMissingCreditNoteHint` fixture already omits
-        // `ingredientBrandScreens`; feed a fixture that has every other flag
-        // present so `ingredientBrandScreens` is the missing key reported.
+        // Every other flag present so `ingredientBrandScreens` is the missing key reported.
         let json = """
         {
             "clientID": "test-client",

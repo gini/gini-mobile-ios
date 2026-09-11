@@ -9,12 +9,8 @@ import XCTest
 @testable import GiniCaptureSDK
 @testable import GiniUtilites
 
-/**
- Covers the PP-2570 ingredient-brand badge integration on `QRCodeOverlay`
- (Figma flow "5.2 QR code flow"). The rest of the overlay's behavior
- (education flow, correct/incorrect QR feedback, layout) has no test file
- yet — this suite is intentionally scoped to the badge.
- */
+/// Covers the "Powered by Gini" badge integration on `QRCodeOverlay`. Other overlay
+/// behavior (education flow, feedback, layout) is not covered here.
 final class QRCodeOverlayTests: XCTestCase {
 
     override func setUp() {

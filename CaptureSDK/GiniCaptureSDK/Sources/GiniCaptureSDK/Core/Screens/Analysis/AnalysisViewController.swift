@@ -229,13 +229,9 @@ import GiniUtilites
     }
 
     /**
-     Adds the "Powered by Gini" ingredient-brand badge when the remote
-     configuration flag `ingredientBrandScreens` case-insensitively contains
-     `"Analysis"`. Called once from `setupView()` after the overlay has been
-     inserted so the badge sits above the overlay in the view hierarchy.
-
-     No-op when the flag is nil, empty, or does not contain `"Analysis"` —
-     the Analysis screen is byte-identical to today's rendering in that case.
+     Adds the "Powered by Gini" badge when `GiniCaptureUserDefaultsStorage.ingredientBrandScreens`
+     contains `"Analysis"` (case-insensitive), pinned centered above the safe-area bottom.
+     No-op otherwise.
      */
     private func addPoweredByGiniBadgeIfEnabled() {
         let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
@@ -446,14 +442,8 @@ import GiniUtilites
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let suggestions = CaptureSuggestionsView(superView: view,
                                                  bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        // One-way transition: badge stays visible during the initial 4s
-        // delay (Figma frame "6.1.1 iOS-ph-analyzePhoto" — badge alone),
-        // then hides the moment the banner first appears (Figma frame
-        // "6.3.x iOS-ph-analyzeTipps" — banner alone) and stays hidden
-        // for the rest of the Analysis session. Ignoring the "banner
-        // becoming hidden" transitions avoids the badge flickering back
-        // into view between banner cycles right before the next one
-        // starts sliding up.
+        // Hide the badge on the first banner appearance and keep it hidden — ignoring
+        // banner-hidden transitions avoids re-showing the badge between banner cycles.
         suggestions.onBannerVisibilityChange = { [weak self] isBannerVisible in
             guard isBannerVisible else { return }
             self?.poweredByGiniBadgeView?.isHidden = true
@@ -470,9 +460,7 @@ import GiniUtilites
     public func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
-        // If the screen is dismissed mid-cycle (banner in its shown phase),
-        // the callback has left the badge hidden — restore it so the badge
-        // is in a clean state if the view controller is re-presented.
+        // Restore visibility in case the badge was hidden by the banner-visibility callback.
         poweredByGiniBadgeView?.isHidden = false
     }
 

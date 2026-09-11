@@ -8,16 +8,8 @@
 import UIKit
 
 /**
- A self-contained "Powered by Gini" ingredient-brand badge.
-
- Wraps the `poweredByGiniBadge` PDF asset shipped inside `GiniUtilites` as a
- fixed-size, theme-agnostic view (white pill background with the pink `gini`
- wordmark). The badge is not localized and does not scale with Dynamic Type —
- it is a brand mark, not text.
-
- The view groups itself as a single accessibility element that VoiceOver
- announces as `"Powered by Gini"`; the inner image is intentionally excluded
- from focus.
+ Fixed 90×23pt "Powered by Gini" badge backed by the `poweredByGiniBadge` PDF asset
+ in `GiniUtilites`. A single accessibility element with the label `"Powered by Gini"`.
  */
 public final class PoweredByGiniBadgeView: UIView {
 
@@ -56,22 +48,8 @@ public final class PoweredByGiniBadgeView: UIView {
         Constants.badgeSize
     }
 
-    /**
-     Two-part VoiceOver hardening for `isHidden`:
-
-     1. Mirror `isHidden` into `accessibilityElementsHidden` so the badge
-        subtree is explicitly excluded from the a11y tree — UIKit's default
-        is to exclude hidden views, but VoiceOver can read a cached label
-        mid-swipe when the state flips underneath it.
-     2. Post a `layoutChanged` notification so VoiceOver drops its stale
-        focus cursor (which may still be pointing at the badge from a prior
-        swipe) and re-scans the current a11y hierarchy. Without this,
-        swiping after the badge hides can still announce "Powered by Gini"
-        because VoiceOver's cursor position hasn't been invalidated.
-
-     Both effects are gated on actual state change so cycling banners that
-     re-assign `isHidden = true` repeatedly don't spam VoiceOver.
-     */
+    /// On visibility change, mirrors `accessibilityElementsHidden` and posts a
+    /// `layoutChanged` notification so VoiceOver drops any stale focus on the badge.
     public override var isHidden: Bool {
         didSet {
             guard isHidden != oldValue else { return }

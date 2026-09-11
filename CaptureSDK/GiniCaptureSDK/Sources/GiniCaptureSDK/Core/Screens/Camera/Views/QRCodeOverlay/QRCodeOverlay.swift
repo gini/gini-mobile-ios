@@ -126,11 +126,9 @@ final class QRCodeOverlay: UIView {
     }
 
     /**
-     Adds the "Powered by Gini" ingredient-brand badge when the remote
-     configuration flag `ingredientBrandScreens` case-insensitively contains
-     `"Analysis"`. The badge is inserted hidden and only becomes visible on
-     the valid-QR overlay state (see `configureQrCodeOverlay`). Matches the
-     Figma flow "5.2 QR code flow" (frames `35002:12174` et al.).
+     Adds the "Powered by Gini" badge when `GiniCaptureUserDefaultsStorage.ingredientBrandScreens`
+     contains `"Analysis"` (case-insensitive), inserted hidden. Visibility is toggled by
+     `configureQrCodeOverlay(withCorrectQrCode:)`.
      */
     private func addPoweredByGiniBadgeIfEnabled() {
         let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
@@ -282,9 +280,7 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
-        // Badge only makes visual sense on the dark full-overlay (correct QR)
-        // state — on the clear background the white pill would float on the
-        // camera preview, which is not how Figma frame 5.2.x specifies it.
+        // Badge is only shown on the dark full-overlay state; hidden on the clear background.
         poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
     }
 

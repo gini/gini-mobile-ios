@@ -23,14 +23,9 @@ final class CaptureSuggestionsView: UIView {
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
     /**
-     Called each time the banner transitions between shown and hidden phases.
-     The parameter is `true` when the banner is becoming visible, `false`
-     when it is becoming hidden. Owners can use it to keep other bottom-area
-     content (e.g. the "Powered by Gini" ingredient-brand badge on the
-     Analysis screen — PP-2570) in sync so the two never appear at the same
-     time, matching Figma frames "6.1.1" (badge alone) and "6.3.x" (banner
-     alone). Fires inside the animation block, so any change made in the
-     handler animates alongside the banner.
+     Fires inside each banner show/hide animation block. `true` when the banner is
+     becoming visible, `false` when it is becoming hidden. Changes made in the handler
+     animate alongside the banner.
      */
     var onBannerVisibilityChange: ((_ isVisible: Bool) -> Void)?
 

@@ -37,8 +37,7 @@ public struct GiniCaptureUserDefaultsStorage {
                      defaultValue: nil)
     public static var unsupportedQRCodeWarningEnabled: Bool?
 
-    // Screens on which the "Powered by Gini" ingredient brand should be shown.
-    // Currently only `"Analysis"` is supported by the backend feature flag.
+    // Screens on which the "Powered by Gini" ingredient brand is shown.
     @GiniUserDefault("ginicapture.defaults.clientConfigurations.ingredientBrandScreens",
                      defaultValue: nil)
     public static var ingredientBrandScreens: [String]?

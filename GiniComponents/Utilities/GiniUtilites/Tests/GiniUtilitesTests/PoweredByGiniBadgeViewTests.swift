@@ -13,7 +13,7 @@ import UIKit
 @MainActor
 struct PoweredByGiniBadgeViewTests {
 
-    @Test("intrinsicContentSize matches the Figma badge size (90x23)")
+    @Test("intrinsicContentSize is 90x23")
     func intrinsicContentSizeMatchesDesign() {
         let view = PoweredByGiniBadgeView()
 
@@ -42,12 +42,8 @@ struct PoweredByGiniBadgeViewTests {
                 "Expected the badge to expose the .image trait")
     }
 
-    /**
-     Regression guard for resource-bundle wiring: if the `GiniUtilites`
-     target loses `resources: [.process("Resources")]` in either
-     `Package.swift` or `Package-release.swift`, `UIImage(named:in:with:)`
-     silently returns nil and the badge renders blank in production.
-     */
+    /// Fails if `resources: [.process("Resources")]` is missing from either GiniUtilites
+    /// manifest — `UIImage(named:in:.module)` returns nil and the badge renders blank.
     @Test("The badge image loads from the GiniUtilites .module bundle")
     func imageLoadsFromModuleBundle() {
         let view = PoweredByGiniBadgeView()
