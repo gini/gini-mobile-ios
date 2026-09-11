@@ -34,13 +34,15 @@ The feature must not visually regress any existing Analysis-screen state (origin
 
 **R11 (SHOULD, happy):** Given the badge is added to any container view (Analysis screen or a future consumer), when the container measures the badge via `intrinsicContentSize`, then the badge returns a size of `Constants.badgeSize` (90 × 23 pt, matching the Figma component) so parent stacks/constraints size it deterministically without hard-coded literals at every call site.
 
+**R12 (MUST, happy — scope extension per Figma):** Given `GiniCaptureUserDefaultsStorage.ingredientBrandScreens` case-insensitively contains `"Analysis"` AND a valid SEPA QR code has been detected on the Camera screen (`QRCodeOverlay.configureQrCodeOverlay(withCorrectQrCode: true)` has run), when the overlay is visible with its dark 0.8-alpha background, then a `PoweredByGiniBadgeView` is shown inside the overlay, centered horizontally with its bottom pinned `Constants.badgeBottomInset` above the overlay's `safeAreaLayoutGuide.bottomAnchor`. On the invalid-QR state (`configureQrCodeOverlay(withCorrectQrCode: false)` — clear background) the badge is hidden. This matches the Figma flow "5.2 QR code flow" (frames `35002:12174` et al.) where the badge is documented across the whole analyze user journey including the camera+QR detection moment; per PP-2570 review with the PO, the string `"Analysis"` gates the whole analyze flow, not just `AnalysisViewController`.
+
 ## Affected modules
 
 Named by SPM product (per `platform.md`):
 
 - **GiniBankAPILibrary** — add `ingredientBrandScreens` field to `ClientConfiguration`. iOS 15+.
 - **GiniUtilites** — new `PoweredByGiniBadgeView` UIKit component + a new resource bundle (`GiniBrand.xcassets`) hosting the badge PDF. iOS 15+.
-- **GiniCaptureSDK** — propagate the flag from the client-config snapshot into `GiniCaptureUserDefaultsStorage`; render the badge in `AnalysisViewController`. iOS 15+.
+- **GiniCaptureSDK** — propagate the flag from the client-config snapshot into `GiniCaptureUserDefaultsStorage`; render the badge in `AnalysisViewController` **and** in `QRCodeOverlay` when a valid QR code is detected (per R12). iOS 15+.
 - **GiniBankSDK** — extend `GiniBankNetworkingScreenApiCoordinator` to write the propagated flag after `/configurations` succeeds (parallel to the existing `qrCodeEducationEnabled` propagation). iOS 15+.
 
 Dependency chain: `GiniBankAPILibrary` (data model change) → `GiniBankSDK` (propagation); `GiniUtilites` (badge component + asset) → `GiniCaptureSDK` (Analysis screen integration). `GiniBankSDK` already depends on both `GiniCaptureSDK` and `GiniBankAPILibrary`.
@@ -164,7 +166,7 @@ Add ~1 test:
 
 ## Out of scope
 
-- Rendering the badge on any screen other than Analysis (PP-2570 only lists `"Analysis"` as the currently valid value per PP-2572 AC).
+- Rendering the badge on screens outside the analyze user journey (Review, Onboarding, Help, Error, NoResults, etc.). Per PO decision the string `"Analysis"` gates the whole analyze flow — currently covering `AnalysisViewController` (R2) and the valid-QR state of `QRCodeOverlay` (R12) — but not screens outside that journey.
 - Any change to the `qrCodeEducationEnabled` or `captureInvoice`/`qrCode` education flows (behavior, counters, gating).
 - Extracting `PoweredByGiniView` from `GiniInternalPaymentSDK` for reuse or unification with the new `PoweredByGiniBadgeView` — the two serve different design specs (composite badge vs. inline label+logo) and live on different dependency chains.
 - Health SDK (`GiniHealthSDK`) integration — no Analysis screen equivalent; Health has its own `ingredientBrandType` mechanism in `GiniHealthAPILibrary` (out of PP-2570's scope).
