@@ -9,7 +9,7 @@ import XCTest
 
 // To launch these tests and closely mimic real user behaviour:
 // 1. Set "Credentials Set" to "Cross border client" in Settings.
-// 2. Upload to device: "cx_no_results_invoice" — a document that produces no CX extractions
+// 2. Upload to device: "no_results_invoice" — a document that produces no CX extractions
 //    (e.g. a blank page or an image irrelevant to cross-border payments).
 
 /**
@@ -21,7 +21,7 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
     /*
      To launch these tests and closely mimic real user behaviour
      Please upload to device:
-         "cx_no_results_invoice" — a document the CX backend cannot extract payments from
+         "no_results_invoice" — a document the CX backend cannot extract payments from
      */
 
     // MARK: - E1
@@ -39,7 +39,7 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.noResultsInvoice)
         //Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
@@ -71,7 +71,7 @@ class GiniCXNoResultsUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         captureScreen.filesButton.tap()
         captureScreen.uploadFilesButton.tap()
-        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.cxNoResultsInvoice)
+        mainScreen.tapFileFromBestAvailableSource(fileName: TestFixtures.Files.noResultsInvoice)
         // Open button appears on some iOS versions/flows; safe to skip if absent.
         if captureScreen.openGalleryButton.waitForExistence(timeout: 3) {
             captureScreen.openGalleryButton.tap()
