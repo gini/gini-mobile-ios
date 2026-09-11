@@ -48,8 +48,10 @@ public final class PoweredByGiniBadgeView: UIView {
         Constants.badgeSize
     }
 
-    /// On visibility change, mirrors `accessibilityElementsHidden` and posts a
-    /// `layoutChanged` notification so VoiceOver drops any stale focus on the badge.
+    /**
+     On visibility change, mirrors `accessibilityElementsHidden` and posts a
+     `layoutChanged` notification so VoiceOver drops any stale focus on the badge.
+     */
     public override var isHidden: Bool {
         didSet {
             guard isHidden != oldValue else { return }
