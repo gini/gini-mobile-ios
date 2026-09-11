@@ -444,33 +444,22 @@ import GiniUtilites
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let bottomAnchor = suggestionsBannerBottomAnchor()
-        captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                    bottomAnchor: bottomAnchor)
-        captureSuggestions?.start()
-    }
-
-    /**
-     Returns the anchor the capture-suggestions banner should pin its bottom
-     to. When the ingredient-brand badge is present, a zero-height layout
-     guide is placed `Constants.badgeSuggestionsGap` above the badge so the
-     banner never occludes the badge; otherwise the banner falls back to the
-     safe-area bottom, matching the pre-PP-2570 layout.
-     */
-    private func suggestionsBannerBottomAnchor() -> NSLayoutYAxisAnchor {
-        guard let badge = poweredByGiniBadgeView else {
-            return view.safeAreaLayoutGuide.bottomAnchor
+        let suggestions = CaptureSuggestionsView(superView: view,
+                                                 bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        // One-way transition: badge stays visible during the initial 4s
+        // delay (Figma frame "6.1.1 iOS-ph-analyzePhoto" — badge alone),
+        // then hides the moment the banner first appears (Figma frame
+        // "6.3.x iOS-ph-analyzeTipps" — banner alone) and stays hidden
+        // for the rest of the Analysis session. Ignoring the "banner
+        // becoming hidden" transitions avoids the badge flickering back
+        // into view between banner cycles right before the next one
+        // starts sliding up.
+        suggestions.onBannerVisibilityChange = { [weak self] isBannerVisible in
+            guard isBannerVisible else { return }
+            self?.poweredByGiniBadgeView?.isHidden = true
         }
-        let guide = UILayoutGuide()
-        view.addLayoutGuide(guide)
-        NSLayoutConstraint.activate([
-            guide.bottomAnchor.constraint(equalTo: badge.topAnchor,
-                                          constant: -Constants.badgeSuggestionsGap),
-            guide.heightAnchor.constraint(equalToConstant: 0),
-            guide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            guide.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        return guide.bottomAnchor
+        captureSuggestions = suggestions
+        suggestions.start()
     }
 
     /**
@@ -481,6 +470,10 @@ import GiniUtilites
     public func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
+        // If the screen is dismissed mid-cycle (banner in its shown phase),
+        // the callback has left the badge hidden — restore it so the badge
+        // is in a clean state if the view controller is re-presented.
+        poweredByGiniBadgeView?.isHidden = false
     }
 
 }
@@ -493,7 +486,6 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
         static let badgeBottomInset: CGFloat = 16
-        static let badgeSuggestionsGap: CGFloat = 8
     }
 
     struct Strings {

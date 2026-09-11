@@ -130,6 +130,25 @@ final class AnalysisViewControllerTests: XCTestCase {
                      "Expected no PoweredByGiniBadgeView when ingredientBrandScreens is nil (no /configurations fetch yet)")
     }
 
+    func testAnalysisBadgeIsVisibleInitiallyEvenForImageDocs() {
+        // For image docs, `CaptureSuggestionsView.start()` waits 4 seconds
+        // before animating the banner in. During that initial delay — and
+        // in every gap between banner cycles — the badge should be visible
+        // (Figma frame "6.1.1 iOS-ph-analyzePhoto"). Only when the banner
+        // actually appears (`onBannerVisibilityChange(true)`) does the badge
+        // hide (Figma frame "6.3.x iOS-ph-analyzeTipps").
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge, "Badge should be present in the view tree for image docs when the flag is set")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Expected badge to be visible immediately — the banner has not appeared yet (4s delay)")
+    }
+
     func testAnalysisBadgeStaysWhenCaptureSuggestionsRemoved() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = AnalysisViewController(document: makeCameraImageDocument(),
@@ -139,8 +158,12 @@ final class AnalysisViewControllerTests: XCTestCase {
 
         XCTAssertNotNil(findBadge(in: sut.view), "Badge should be present initially")
         sut.removeCaptureSuggestions()
-        XCTAssertNotNil(findBadge(in: sut.view),
-                        "Badge should remain after the capture-suggestions banner is removed")
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge,
+                        "Badge should remain in the view tree after the banner is removed")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Expected badge to be visible after removeCaptureSuggestions — the screen is dismissing and the badge should be in a clean visible state for any re-presentation")
     }
 
     // MARK: - Helpers
