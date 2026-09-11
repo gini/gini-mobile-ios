@@ -438,20 +438,18 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
     // MARK: - excludingCompoundExtractions Tests
 
-    func testExcludingCompoundExtractionsRemovesLineItemsSkontoDiscountsAndReturnReasons() throws {
+    func testExcludingCompoundExtractionsRemovesLineItemsAndSkontoDiscounts() throws {
         let (coordinator, _) = try makeCoordinatorAndService()
 
         let extractionResult = createExtractionResult(amountToPay: "100.00",
                                                       businessDocType: "creditnote",
                                                       lineItems: createMockLineItems(),
-                                                      skontoDiscounts: createMockSkontoDiscounts(),
-                                                      returnReasons: createMockReturnReasons())
+                                                      skontoDiscounts: createMockSkontoDiscounts())
 
         let result = coordinator.excludingCompoundExtractions(from: extractionResult)
 
         XCTAssertNil(result.lineItems, "lineItems should be removed for credit-note documents")
         XCTAssertNil(result.skontoDiscounts, "skontoDiscounts should be removed for credit-note documents")
-        XCTAssertNil(result.returnReasons, "returnReasons should be removed for credit-note documents")
     }
 
     func testExcludingCompoundExtractionsKeepsExtractionsAndCandidates() throws {
@@ -519,8 +517,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         let extractionResult = createExtractionResult(amountToPay: "100.00",
                                                       businessDocType: "creditnote",
                                                       lineItems: createMockLineItems(),
-                                                      skontoDiscounts: createMockSkontoDiscounts(),
-                                                      returnReasons: createMockReturnReasons())
+                                                      skontoDiscounts: createMockSkontoDiscounts())
 
         let stripped = coordinator.excludingCompoundExtractions(from: extractionResult)
         let filtered = coordinator.excludingAmountToPay(from: stripped)
@@ -532,7 +529,6 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
                        "businessDocType should still be delivered")
         XCTAssertNil(filtered.lineItems, "lineItems should stay removed after amountToPay filtering")
         XCTAssertNil(filtered.skontoDiscounts, "skontoDiscounts should stay removed after amountToPay filtering")
-        XCTAssertNil(filtered.returnReasons, "returnReasons should stay removed after amountToPay filtering")
     }
 
     func testNonCreditNoteResultKeepsCompoundExtractions() throws {
@@ -562,14 +558,12 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         let extractionResult = createExtractionResult(amountToPay: "100.00",
                                                       businessDocType: "creditnote",
                                                       lineItems: createMockLineItems(),
-                                                      skontoDiscounts: createMockSkontoDiscounts(),
-                                                      returnReasons: createMockReturnReasons())
+                                                      skontoDiscounts: createMockSkontoDiscounts())
 
         let delivered = coordinator.creditNoteDeliveryResult(from: extractionResult)
 
         XCTAssertNil(delivered.lineItems, "lineItems should be removed from the delivered credit-note result")
         XCTAssertNil(delivered.skontoDiscounts, "skontoDiscounts should be removed from the delivered credit-note result")
-        XCTAssertNil(delivered.returnReasons, "returnReasons should be removed from the delivered credit-note result")
         XCTAssertFalse(delivered.extractions.contains { $0.name == "amountToPay" },
                        "amountToPay should be removed from the delivered credit-note result")
     }

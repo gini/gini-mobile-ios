@@ -364,15 +364,8 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         var isLineItemSelected = true
         switch selectedLineItem.selectedState {
         case .selected:
-            if let returnReasons = self.viewModel.invoice?.returnReasons, configuration.enableReturnReasons {
-                presentReturnReasonActionSheet(for: lineItemViewModel.index,
-                                               source: cell.modeSwitch,
-                                               with: returnReasons,
-                                               isLineItemSelected: &isLineItemSelected)
-            } else {
-                self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
-                isLineItemSelected = false
-            }
+            self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected
+            isLineItemSelected = false
         case .deselected:
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
             isLineItemSelected = true
@@ -388,32 +381,6 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
         GiniAnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         viewModel.didTapEdit(on: lineItemViewModel)
-    }
-}
-
-extension DigitalInvoiceViewController {
-    private func presentReturnReasonActionSheet(for index: Int,
-                                                source: UIView,
-                                                with returnReasons: [ReturnReason],
-                                                isLineItemSelected: inout Bool) {
-        var isSelected = isLineItemSelected
-        DeselectLineItemActionSheet().present(from: self,
-                                              source: source,
-                                              returnReasons: returnReasons) { [weak self] selectedState in
-            guard let self = self else { return }
-            switch selectedState {
-            case .selected:
-                self.viewModel.invoice?.lineItems[index].selectedState = .selected
-                isSelected = true
-            case .deselected(let reason):
-                self.viewModel.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
-                isSelected = false
-            }
-            DispatchQueue.main.async {
-                self.updateValues()
-            }
-        }
-        isLineItemSelected = isSelected
     }
 }
 

@@ -50,7 +50,6 @@ extension GiniConfigurationSharedStateSuite {
             #expect(configuration.onboardingShowAtFirstLaunch, "Expected onboardingShowAtFirstLaunch to be true by default")
             #expect(!configuration.openWithEnabled, "Expected openWithEnabled to be false by default")
             #expect(configuration.returnAssistantEnabled, "Expected returnAssistantEnabled to be true by default")
-            #expect(!configuration.enableReturnReasons, "Expected enableReturnReasons to be false by default")
             #expect(configuration.skontoEnabled, "Expected skontoEnabled to be true by default")
             #expect(configuration.transactionDocsEnabled, "Expected transactionDocsEnabled to be true by default")
             #expect(configuration.alreadyPaidHintEnabled, "Expected alreadyPaidHintEnabled to be true by default")

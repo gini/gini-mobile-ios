@@ -95,7 +95,6 @@ class HealthNetworkingService: GiniCaptureNetworkService {
         let candidates = ["" : [GiniBankAPILibrary.Extraction.Candidate.init(box: nil, entity: "", value: "")]]
         return GiniBankAPILibrary.ExtractionResult(extractions: extractions,
                                                    lineItems: lineItems,
-                                                   returnReasons: nil,
                                                    candidates: candidates)
     }
     
