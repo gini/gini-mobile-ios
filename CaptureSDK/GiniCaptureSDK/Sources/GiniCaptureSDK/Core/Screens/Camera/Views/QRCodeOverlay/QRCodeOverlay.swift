@@ -79,6 +79,8 @@ final class QRCodeOverlay: UIView {
         return textStackView
     }()
 
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
+
     init() {
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
@@ -86,6 +88,7 @@ final class QRCodeOverlay: UIView {
         addSubview(incorrectQRFeedback)
 
         addLoadingView()
+        addPoweredByGiniBadgeIfEnabled()
     }
 
     required init?(coder: NSCoder) {
@@ -120,6 +123,29 @@ final class QRCodeOverlay: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         educationLoadingView = view
         addSubview(view)
+    }
+
+    /**
+     Adds the "Powered by Gini" ingredient-brand badge when the remote
+     configuration flag `ingredientBrandScreens` case-insensitively contains
+     `"Analysis"`. The badge is inserted hidden and only becomes visible on
+     the valid-QR overlay state (see `configureQrCodeOverlay`). Matches the
+     Figma flow "5.2 QR code flow" (frames `35002:12174` et al.).
+     */
+    private func addPoweredByGiniBadgeIfEnabled() {
+        let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
+        let hasAnalysis = screens.contains { $0.caseInsensitiveCompare("Analysis") == .orderedSame }
+        guard hasAnalysis else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        badge.isHidden = true
+        addSubview(badge)
+        NSLayoutConstraint.activate([
+            badge.centerXAnchor.constraint(equalTo: centerXAnchor),
+            badge.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+                                          constant: -Constants.badgeBottomInset)
+        ])
+        poweredByGiniBadgeView = badge
     }
 
     private func addOriginalLoadingView() {
@@ -256,6 +282,10 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
+        // Badge only makes visual sense on the dark full-overlay (correct QR)
+        // state — on the clear background the white pill would float on the
+        // camera preview, which is not how Figma frame 5.2.x specifies it.
+        poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
     }
 
     func viewWillDisappear() {
@@ -315,6 +345,7 @@ final class QRCodeOverlay: UIView {
                                                    left: expandedSpacing,
                                                    bottom: expandedSpacing,
                                                    right: expandedSpacing)
+        static let badgeBottomInset: CGFloat = 16
     }
 
     private struct Strings {
