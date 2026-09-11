@@ -8,9 +8,20 @@
 
 import XCTest
 @testable import GiniCaptureSDK
+@testable import GiniUtilites
 
 final class AnalysisViewControllerTests: XCTestCase {
-    
+
+    override func setUp() {
+        super.setUp()
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
+    }
+
+    override func tearDown() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
+        super.tearDown()
+    }
+
     func testPDFPagesCountLocalizedString() {
         let key = "ginicapture.analysis.pdfpages"
         let localizedStringFormat = NSLocalizedStringPreferredFormat(key,
@@ -73,7 +84,99 @@ final class AnalysisViewControllerTests: XCTestCase {
                        "Education flow should not be displayed when all conditions are false")
     }
 
+    // MARK: - Powered by Gini badge (ingredient brand)
+
+    func testAnalysisShowsPoweredByBadgeWhenIngredientBrandScreensContainsAnalysis() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findBadge(in: sut.view),
+                        "Expected PoweredByGiniBadgeView to be added when storage contains \"Analysis\"")
+    }
+
+    func testAnalysisShowsBadgeWhenScreenNameIsLowercase() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findBadge(in: sut.view),
+                        "Expected badge match to be case-insensitive")
+    }
+
+    func testAnalysisHidesBadgeWhenIngredientBrandScreensIsEmpty() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = []
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNil(findBadge(in: sut.view),
+                     "Expected no PoweredByGiniBadgeView when ingredientBrandScreens is empty")
+    }
+
+    func testAnalysisHidesBadgeWhenIngredientBrandScreensIsNil() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNil(findBadge(in: sut.view),
+                     "Expected no PoweredByGiniBadgeView when ingredientBrandScreens is nil (no /configurations fetch yet)")
+    }
+
+    func testAnalysisBadgeIsVisibleInitiallyEvenForImageDocs() {
+        // The banner has a 4s pre-appearance delay; the badge is visible until then.
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge, "Badge should be present in the view tree for image docs when the flag is set")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Expected badge to be visible immediately — the banner has not appeared yet (4s delay)")
+    }
+
+    func testAnalysisBadgeStaysWhenCaptureSuggestionsRemoved() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findBadge(in: sut.view), "Badge should be present initially")
+        sut.removeCaptureSuggestions()
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge,
+                        "Badge should remain in the view tree after the banner is removed")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Expected badge to be visible after removeCaptureSuggestions — the screen is dismissing and the badge should be in a clean visible state for any re-presentation")
+    }
+
     // MARK: - Helpers
+
+    private func sepaExtractionsConfig() -> GiniConfiguration {
+        let config = GiniConfiguration()
+        config.productTag = .sepaExtractions
+        config.fileImportSupportedTypes = .pdf
+        return config
+    }
+
+    private func findBadge(in view: UIView) -> PoweredByGiniBadgeView? {
+        if let badge = view as? PoweredByGiniBadgeView { return badge }
+        for subview in view.subviews {
+            if let badge = findBadge(in: subview) { return badge }
+        }
+        return nil
+    }
 
     private func makeCameraImageDocument() -> GiniImageDocument {
         let image = GiniCaptureTestsHelper.loadImage(named: "invoice")

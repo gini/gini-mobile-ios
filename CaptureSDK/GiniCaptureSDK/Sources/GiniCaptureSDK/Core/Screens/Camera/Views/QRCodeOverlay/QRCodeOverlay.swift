@@ -79,6 +79,8 @@ final class QRCodeOverlay: UIView {
         return textStackView
     }()
 
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
+
     init() {
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
@@ -86,6 +88,7 @@ final class QRCodeOverlay: UIView {
         addSubview(incorrectQRFeedback)
 
         addLoadingView()
+        addPoweredByGiniBadgeIfEnabled()
     }
 
     required init?(coder: NSCoder) {
@@ -120,6 +123,27 @@ final class QRCodeOverlay: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         educationLoadingView = view
         addSubview(view)
+    }
+
+    /**
+     Adds the "Powered by Gini" badge when `GiniCaptureUserDefaultsStorage.ingredientBrandScreens`
+     contains `"Analysis"` (case-insensitive), inserted hidden. Visibility is toggled by
+     `configureQrCodeOverlay(withCorrectQrCode:)`.
+     */
+    private func addPoweredByGiniBadgeIfEnabled() {
+        let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
+        let hasAnalysis = screens.contains { $0.caseInsensitiveCompare("Analysis") == .orderedSame }
+        guard hasAnalysis else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        badge.isHidden = true
+        addSubview(badge)
+        NSLayoutConstraint.activate([
+            badge.centerXAnchor.constraint(equalTo: centerXAnchor),
+            badge.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+                                          constant: -Constants.badgeBottomInset)
+        ])
+        poweredByGiniBadgeView = badge
     }
 
     private func addOriginalLoadingView() {
@@ -256,6 +280,8 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
+        // Badge is only shown on the dark full-overlay state; hidden on the clear background.
+        poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
     }
 
     func viewWillDisappear() {
@@ -315,6 +341,7 @@ final class QRCodeOverlay: UIView {
                                                    left: expandedSpacing,
                                                    bottom: expandedSpacing,
                                                    right: expandedSpacing)
+        static let badgeBottomInset: CGFloat = 16
     }
 
     private struct Strings {

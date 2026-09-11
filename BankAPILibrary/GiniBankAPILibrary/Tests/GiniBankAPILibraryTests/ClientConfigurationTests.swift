@@ -207,6 +207,64 @@ struct ClientConfigurationTests {
                 "Expected unsupportedQRCodeWarningEnabled to be preserved")
     }
 
+    // MARK: - ingredientBrandScreens Tests
+
+    @Test("ingredientBrandScreens decodes the array from JSON")
+    func ingredientBrandScreensDecodesArrayFromJSON() throws {
+        let data = loadFile(withName: "clientConfigurationWithIngredientBrand", ofType: "json")
+
+        let config = try JSONDecoder().decode(ClientConfiguration.self, from: data)
+
+        #expect(config.ingredientBrandScreens == ["Analysis"],
+                "Expected ingredientBrandScreens to decode as [\"Analysis\"]")
+    }
+
+    @Test("ingredientBrandScreens decodes an empty array from JSON")
+    func ingredientBrandScreensDecodesEmptyArray() throws {
+        let data = loadFile(withName: "clientConfigurationWithEmptyIngredientBrand", ofType: "json")
+
+        let config = try JSONDecoder().decode(ClientConfiguration.self, from: data)
+
+        #expect(config.ingredientBrandScreens == [],
+                "Expected ingredientBrandScreens to decode as an empty array")
+    }
+
+    /// Pins the "no silent defaults" behavior: the key is required, and decoding
+    /// throws `DecodingError.keyNotFound` when it is absent.
+    @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
+    func decodingFailsWhenIngredientBrandScreensKeyIsAbsent() {
+        // Every other flag present so `ingredientBrandScreens` is the missing key reported.
+        let json = """
+        {
+            "clientID": "test-client",
+            "userJourneyAnalyticsEnabled": true,
+            "skontoEnabled": true,
+            "returnAssistantEnabled": true,
+            "transactionDocsEnabled": false,
+            "instantPaymentEnabled": false,
+            "qrCodeEducationEnabled": false,
+            "eInvoiceEnabled": false,
+            "savePhotosLocallyEnabled": false,
+            "alreadyPaidHintEnabled": false,
+            "paymentDueHintEnabled": false,
+            "creditNoteHintEnabled": true,
+            "paymentScheduleHintEnabled": true,
+            "unsupportedQRCodeWarningEnabled": false
+        }
+        """.data(using: .utf8)!
+
+        let error = #expect(throws: DecodingError.self) {
+            try JSONDecoder().decode(ClientConfiguration.self, from: json)
+        }
+
+        guard case .keyNotFound(let missingKey, _)? = error else {
+            Issue.record("Expected DecodingError.keyNotFound for `ingredientBrandScreens`, got \(String(describing: error))")
+            return
+        }
+        #expect(missingKey.stringValue == "ingredientBrandScreens",
+                "Expected the missing key to be `ingredientBrandScreens`, got `\(missingKey.stringValue)`")
+    }
+
     // MARK: - Property Combinations Tests
 
     @Test("Mixed enabled and disabled flags work correctly")

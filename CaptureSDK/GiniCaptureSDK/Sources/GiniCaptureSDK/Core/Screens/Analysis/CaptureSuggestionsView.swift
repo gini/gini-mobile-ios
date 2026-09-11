@@ -22,6 +22,13 @@ final class CaptureSuggestionsView: UIView {
     private var trailingiPhoneConstraint = NSLayoutConstraint()
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
+    /**
+     Fires inside each banner show/hide animation block. `true` when the banner is
+     becoming visible, `false` when it is becoming hidden. Changes made in the handler
+     animate alongside the banner.
+     */
+    var onBannerVisibilityChange: ((_ isVisible: Bool) -> Void)?
+
     private var suggestionIconImages = [
         UIImageNamedPreferred(named: "captureSuggestion1"),
         UIImageNamedPreferred(named: "captureSuggestion2"),
@@ -169,6 +176,7 @@ extension CaptureSuggestionsView {
             alpha = 1
             UIView.animate(withDuration: Constants.animationDuration,
                            animations: { [weak self] in
+                self?.onBannerVisibilityChange?(true)
                 superview.layoutIfNeeded()
 
                 if let title = self?.suggestionContainer?.titleLabel.text,
@@ -201,8 +209,9 @@ extension CaptureSuggestionsView {
 
         UIView.animate(withDuration: Constants.animationDuration,
                        delay: delay,
-                       options: [UIView.AnimationOptions.curveEaseInOut], animations: {
-            self.layoutIfNeeded()
+                       options: [UIView.AnimationOptions.curveEaseInOut], animations: { [weak self] in
+            self?.onBannerVisibilityChange?(state == .shown)
+            self?.layoutIfNeeded()
         }, completion: {[weak self] _ in
             guard let self = self, self.window != nil else { return }
             self.changeView(toState: nextState)
