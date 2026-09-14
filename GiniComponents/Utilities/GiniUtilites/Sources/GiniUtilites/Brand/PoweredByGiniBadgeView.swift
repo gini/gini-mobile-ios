@@ -41,7 +41,7 @@ public final class PoweredByGiniBadgeView: UIView {
         ])
 
         isAccessibilityElement = true
-        accessibilityLabel = "Powered by Gini"
+        accessibilityLabel = Strings.accessibilityLabel
         accessibilityTraits = .image
     }
 
@@ -55,13 +55,16 @@ public final class PoweredByGiniBadgeView: UIView {
     }
 
     /**
-     On visibility change, mirrors `accessibilityElementsHidden` and posts a
-     `layoutChanged` notification so VoiceOver drops any stale focus on the badge.
+     On visibility change, mirrors `accessibilityElementsHidden`. When the badge
+     transitions to hidden, posts a `layoutChanged` notification so VoiceOver drops
+     any stale focus that was on the badge. No notification is posted on show, to
+     avoid moving VoiceOver focus while the screen is appearing or being restored.
      */
     public override var isHidden: Bool {
         didSet {
             guard isHidden != oldValue else { return }
             accessibilityElementsHidden = isHidden
+            guard isHidden else { return }
             UIAccessibility.post(notification: .layoutChanged, argument: nil)
         }
     }
@@ -70,5 +73,10 @@ public final class PoweredByGiniBadgeView: UIView {
 private extension PoweredByGiniBadgeView {
     enum Constants {
         static let badgeSize = CGSize(width: 90, height: 23)
+    }
+
+    enum Strings {
+        /// Brand mark — intentionally not localized (PP-2570 spec R11).
+        static let accessibilityLabel = "Powered by Gini"
     }
 }
