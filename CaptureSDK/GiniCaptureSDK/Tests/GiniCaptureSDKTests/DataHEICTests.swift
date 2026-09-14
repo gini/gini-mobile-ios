@@ -13,23 +13,18 @@ import MobileCoreServices
 @testable import GiniCaptureSDK
 
 /**
- Regression coverage for HEIC image handling. HEIC files (ISO/IEC 23008-12)
- are ISO Base Media containers whose first bytes are the box size, followed
- by "ftyp" and a brand identifier. The five HEIF brands the SDK should
- accept are `heic`, `heix`, `heif`, `mif1`, and `msf1`.
+ HEIC (ISO/IEC 23008-12) detection + transcode regression coverage.
+ Accepted HEIF brands: `heic`, `heix`, `heif`, `mif1`, `msf1`.
  */
 @Suite("Data extension — HEIC detection")
 struct DataHEICTests {
 
-    /**
-     Bytes that mimic a valid HEIC file header, brand-parameterized.
-     Layout: 4-byte box size · "ftyp" · 4-byte brand · 4-byte padding.
-     */
+    /** 4-byte box size · "ftyp" · 4-byte brand · 4-byte padding. */
     private static func heicSignatureBytes(brand: [UInt8]) -> [UInt8] {
-        [0x00, 0x00, 0x00, 0x20,          // box size (0x20 = 32)
-         0x66, 0x74, 0x79, 0x70]           // "ftyp"
+        [0x00, 0x00, 0x00, 0x20,
+         0x66, 0x74, 0x79, 0x70]
         + brand
-        + [0x00, 0x00, 0x00, 0x00]         // minor version / padding
+        + [0x00, 0x00, 0x00, 0x00]
     }
 
     private static let heicBrand: [UInt8] = [0x68, 0x65, 0x69, 0x63]  // "heic"
@@ -42,21 +37,17 @@ struct DataHEICTests {
           arguments: [heicBrand, heixBrand, heifBrand, mif1Brand, msf1Brand])
     func dataIsImageIsTrueForHEIC(brand: [UInt8]) {
         let data = Data(Self.heicSignatureBytes(brand: brand))
-        #expect(data.isImage,
-                "isImage must recognise HEIC — first-byte magic table misses `ftyp <brand>` at offset 4")
+        #expect(data.isImage, "isImage must recognise HEIC")
     }
 
     @Test("`Data.isImage` still returns false for a plain octet-stream blob")
     func dataIsImageIsFalseForNonImage() {
-        // Random bytes that don't match any image signature.
         let data = Data([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07])
-        #expect(!data.isImage,
-                "isImage must not regress: non-image binary blobs stay rejected")
+        #expect(!data.isImage)
     }
 
     @Test("`Data.isImage` still returns true for JPEG bytes (existing behaviour)")
     func dataIsImageIsTrueForJPEG() {
-        // JPEG magic bytes.
         let data = Data([0xFF, 0xD8, 0xFF, 0xE0])
         #expect(data.isImage)
     }
@@ -67,8 +58,7 @@ struct DataHEICTests {
         let builder = GiniCaptureDocumentBuilder(documentSource: .external)
         let document = builder.build(with: data, fileName: "test.heic")
 
-        let imageDocument = try #require(document as? GiniImageDocument,
-                                          "Builder must produce a GiniImageDocument for HEIC input")
+        let imageDocument = try #require(document as? GiniImageDocument)
         #expect(imageDocument.type == .image)
     }
 
@@ -77,132 +67,96 @@ struct DataHEICTests {
     @Test("`jpegDataPreservingMetadata` returns nil for non-image bytes")
     func jpegDataPreservingMetadataReturnsNilForNonImage() {
         let data = Data([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07])
-        #expect(data.jpegDataPreservingMetadata() == nil,
-                "Helper must refuse non-image input rather than silently emitting empty JPEG bytes")
+        #expect(data.jpegDataPreservingMetadata() == nil)
     }
 
     @Test("`jpegDataPreservingMetadata` preserves a planted EXIF field across the transcode")
     func jpegDataPreservingMetadataKeepsEXIF() throws {
         let expectedLens = "gini-capture-heic-exif-lens-test"
-        let heicData = try #require(
-            Self.makeRealHEICData(exifLensModel: expectedLens),
-            "Simulator lacks HEIC encoder — skipping EXIF-preservation proof"
-        )
+        let heicData = try #require(Self.makeRealHEICData(exifLensModel: expectedLens))
+        let jpegData = try #require(heicData.jpegDataPreservingMetadata())
 
-        let jpegData = try #require(heicData.jpegDataPreservingMetadata(),
-                                     "HEIC → JPEG transcode must produce data for a valid image")
-
-        let source = try #require(CGImageSourceCreateWithData(jpegData as CFData, nil),
-                                    "Transcoded JPEG must decode as an image")
+        let source = try #require(CGImageSourceCreateWithData(jpegData as CFData, nil))
         let properties = try #require(
             CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
         )
-        let exif = try #require(properties[kCGImagePropertyExifDictionary] as? [CFString: Any],
-                                  "EXIF dictionary must survive the transcode")
-        let lensModel = try #require(exif[kCGImagePropertyExifLensModel] as? String,
-                                       "EXIF LensModel must survive the transcode")
+        let exif = try #require(properties[kCGImagePropertyExifDictionary] as? [CFString: Any])
+        let lensModel = try #require(exif[kCGImagePropertyExifLensModel] as? String)
         #expect(lensModel == expectedLens)
     }
 
     @Test("`jpegDataPreservingMetadata` is idempotent on JPEG input (helper is not HEIC-only)")
     func jpegDataPreservingMetadataAcceptsJPEG() throws {
-        // A tiny CGImage → JPEG blob. Nothing special about the metadata; the
-        // point is that the helper accepts JPEG input and returns valid JPEG.
-        let jpegBytes = try #require(Self.makeRealJPEGData(),
-                                       "Simulator lacks JPEG encoder — skipping idempotency proof")
-        try #require(jpegBytes.isJPEG,
-                     "Fixture precondition: makeRealJPEGData must emit valid JPEG bytes")
+        let jpegBytes = try #require(Self.makeRealJPEGData())
+        try #require(jpegBytes.isJPEG)
 
-        let roundTripped = try #require(jpegBytes.jpegDataPreservingMetadata(),
-                                          "Helper must accept JPEG input and produce JPEG output")
-        #expect(roundTripped.isJPEG,
-                "Roundtripped output must still be JPEG")
+        let roundTripped = try #require(jpegBytes.jpegDataPreservingMetadata())
+        #expect(roundTripped.isJPEG)
     }
 
     // MARK: - Backend expects JPEG, not HEIC
 
     /**
-     End-to-end proof: a real HEIC-encoded `UIImage` reaches `GiniImageDocument`
-     and its stored `data` is JPEG on the way out — matching what the Gallery
-     path produces and what the Gini backend accepts.
-
-     A synthetic 16-byte HEIC header (used by the tests above for `isImage`
-     detection) is not actually a decodable image, so `UIImage(data:)` cannot
-     re-encode it. This test builds a real HEIC by round-tripping a 1×1 pixel
-     through `CGImageDestination` with the HEIC UTI.
+     Real HEIC through `GiniImageDocument` — stored `data` must be JPEG.
+     Synthetic 16-byte headers aren't decodable, so build via `CGImageDestination`.
      */
     @Test("`GiniImageDocument` stores JPEG bytes when initialised from real HEIC data")
     func giniImageDocumentNormalisesRealHEICToJPEG() throws {
-        let heicData = try #require(Self.makeRealHEICData(),
-                                     "Simulator lacks HEIC encoder — skipping the transcode proof")
-        try #require(heicData.isHEIC,
-                     "Fixture precondition: makeRealHEICData must encode as HEIC")
+        let heicData = try #require(Self.makeRealHEICData())
+        try #require(heicData.isHEIC)
 
         let document = GiniImageDocument(data: heicData,
-                                          imageSource: .external,
-                                          imageImportMethod: .openWith,
-                                          deviceOrientation: nil)
+                                         imageSource: .external,
+                                         imageImportMethod: .openWith,
+                                         deviceOrientation: nil)
 
-        #expect(document.data.isJPEG,
-                "GiniImageDocument.data must be JPEG so the backend accepts it")
-        #expect(!document.data.isHEIC,
-                "GiniImageDocument.data must not retain the HEIC container")
+        #expect(document.data.isJPEG)
+        #expect(!document.data.isHEIC)
     }
 
     /**
-     Real-HEIC round-trip that plants a known TIFF `Software` tag in the
-     source, transcodes via `GiniImageDocument`, and reads the JPEG's
-     properties back — proving that embedded metadata survives the
-     `CGImageDestination`-based transcode instead of being dropped like
-     `UIImage.jpegData` would drop it.
+     Plants a TIFF `Software` tag in the source and reads it off the
+     transcoded JPEG — proves `CGImageDestination` preserves metadata.
      */
     @Test("`GiniImageDocument.data` preserves EXIF/TIFF metadata across the HEIC → JPEG transcode")
     func giniImageDocumentPreservesTIFFMetadataAcrossTranscode() throws {
         let expectedSoftwareTag = "gini-capture-heic-metadata-test"
-        let heicData = try #require(Self.makeRealHEICData(softwareTag: expectedSoftwareTag),
-                                     "Simulator lacks HEIC encoder — skipping the metadata proof")
+        let heicData = try #require(Self.makeRealHEICData(softwareTag: expectedSoftwareTag))
 
         let document = GiniImageDocument(data: heicData,
-                                          imageSource: .external,
-                                          imageImportMethod: .openWith,
-                                          deviceOrientation: nil)
+                                         imageSource: .external,
+                                         imageImportMethod: .openWith,
+                                         deviceOrientation: nil)
 
-        let source = try #require(CGImageSourceCreateWithData(document.data as CFData, nil),
-                                    "GiniImageDocument.data must decode as an image")
+        let source = try #require(CGImageSourceCreateWithData(document.data as CFData, nil))
         let properties = try #require(
-            CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
-            "The transcoded JPEG must expose image properties"
+            CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
         )
-        let tiff = try #require(properties[kCGImagePropertyTIFFDictionary] as? [CFString: Any],
-                                  "TIFF dictionary must survive the transcode")
-        let software = try #require(tiff[kCGImagePropertyTIFFSoftware] as? String,
-                                      "TIFF Software tag must survive the transcode")
+        let tiff = try #require(properties[kCGImagePropertyTIFFDictionary] as? [CFString: Any])
+        let software = try #require(tiff[kCGImagePropertyTIFFSoftware] as? String)
         #expect(software == expectedSoftwareTag)
     }
 
     /**
-     Build a real HEIC-encoded image blob by writing a 1×1 pixel through
-     `CGImageDestination` with the HEIC UTI. Optionally embeds a TIFF
-     `Software` tag and/or an EXIF `LensModel` tag so the caller can
-     verify metadata preservation later. Returns nil on platforms where
-     the encoder is unavailable — the caller should skip the test.
+     Encodes a 1×1 pixel as HEIC via `CGImageDestination`, optionally embedding
+     a TIFF `Software` and/or EXIF `LensModel` tag. Returns nil when unavailable.
      */
     private static func makeRealHEICData(softwareTag: String? = nil,
-                                          exifLensModel: String? = nil) -> Data? {
+                                         exifLensModel: String? = nil) -> Data? {
         var rgba: [UInt8] = [255, 0, 0, 255]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let provider = CGDataProvider(data: Data(bytes: &rgba, count: rgba.count) as CFData),
               let cgImage = CGImage(width: 1,
-                                     height: 1,
-                                     bitsPerComponent: 8,
-                                     bitsPerPixel: 32,
-                                     bytesPerRow: 4,
-                                     space: colorSpace,
-                                     bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
-                                     provider: provider,
-                                     decode: nil,
-                                     shouldInterpolate: false,
-                                     intent: .defaultIntent)
+                                    height: 1,
+                                    bitsPerComponent: 8,
+                                    bitsPerPixel: 32,
+                                    bytesPerRow: 4,
+                                    space: colorSpace,
+                                    bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+                                    provider: provider,
+                                    decode: nil,
+                                    shouldInterpolate: false,
+                                    intent: .defaultIntent)
         else {
             return nil
         }
@@ -225,8 +179,8 @@ struct DataHEICTests {
             ] as CFDictionary
         }
         CGImageDestinationAddImage(destination,
-                                    cgImage,
-                                    properties.isEmpty ? nil : properties as CFDictionary)
+                                   cgImage,
+                                   properties.isEmpty ? nil : properties as CFDictionary)
 
         guard CGImageDestinationFinalize(destination) else { return nil }
         return target as Data
@@ -235,27 +189,18 @@ struct DataHEICTests {
     // MARK: - Real-file import (Files-app "Open with" path)
 
     /**
-     End-to-end proof against a real iPhone-captured HEIC file. This mirrors
-     the Files-app "Open with" flow the customer reported: the URL-based
-     `GiniCaptureDocumentBuilder.build(with openURL:completion:)` overload
-     reads the raw bytes off disk, hands them to the data-based path, and
-     should produce a `GiniImageDocument` whose stored data is JPEG.
-
-     Fixture: `iphone-heic-photo.heic` (bundled in `Tests/Resources/`),
-     a native iPhone Camera capture — `ftyp heic` with compatible brands
-     `mif1`/`MiHB`/`MiHA`/`heix`.
+     End-to-end against a real iPhone HEIC via the URL-based builder overload
+     — mirrors the customer's Files-app "Open with" flow.
+     Fixture: `iphone-heic-photo.heic` in `Tests/Resources/`.
      */
     @Test("`GiniCaptureDocumentBuilder.build(with openURL:)` imports a real iPhone HEIC and produces JPEG bytes")
     func buildFromRealHEICFileURL() async throws {
         let fixtureURL = try #require(
-            Bundle.module.url(forResource: "iphone-heic-photo", withExtension: "heic"),
-            "iphone-heic-photo.heic fixture must be present in the test bundle Resources"
+            Bundle.module.url(forResource: "iphone-heic-photo", withExtension: "heic")
         )
 
-        // Sanity-check the fixture itself before running the SUT.
         let fileBytes = try Data(contentsOf: fixtureURL)
-        try #require(fileBytes.isHEIC,
-                     "Fixture precondition: iphone-heic-photo.heic must be a HEIF/HEIC container")
+        try #require(fileBytes.isHEIC)
 
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "com.gini.tests"))
         builder.importMethod = .openWith
@@ -266,36 +211,29 @@ struct DataHEICTests {
             }
         }
 
-        let imageDocument = try #require(document as? GiniImageDocument,
-                                          "Files-app import must produce a GiniImageDocument")
+        let imageDocument = try #require(document as? GiniImageDocument)
         #expect(imageDocument.type == .image)
-        #expect(imageDocument.data.isJPEG,
-                "Backend expects JPEG bytes — HEIC must be transcoded end-to-end")
-        #expect(!imageDocument.data.isHEIC,
-                "GiniImageDocument.data must not retain the HEIC container")
-        #expect(imageDocument.isFromOtherApp,
-                "documentSource .appName means the document is imported from another app")
+        #expect(imageDocument.data.isJPEG)
+        #expect(!imageDocument.data.isHEIC)
+        #expect(imageDocument.isFromOtherApp)
     }
 
-    /**
-     Build a tiny real JPEG-encoded image blob for the idempotency test.
-     Returns nil on platforms where the encoder is unavailable.
-     */
+    /** Encodes a 1×1 pixel as JPEG via `CGImageDestination`. Nil when unavailable. */
     private static func makeRealJPEGData() -> Data? {
         var rgba: [UInt8] = [0, 255, 0, 255]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let provider = CGDataProvider(data: Data(bytes: &rgba, count: rgba.count) as CFData),
               let cgImage = CGImage(width: 1,
-                                     height: 1,
-                                     bitsPerComponent: 8,
-                                     bitsPerPixel: 32,
-                                     bytesPerRow: 4,
-                                     space: colorSpace,
-                                     bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
-                                     provider: provider,
-                                     decode: nil,
-                                     shouldInterpolate: false,
-                                     intent: .defaultIntent)
+                                    height: 1,
+                                    bitsPerComponent: 8,
+                                    bitsPerPixel: 32,
+                                    bytesPerRow: 4,
+                                    space: colorSpace,
+                                    bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+                                    provider: provider,
+                                    decode: nil,
+                                    shouldInterpolate: false,
+                                    intent: .defaultIntent)
         else {
             return nil
         }
