@@ -43,7 +43,7 @@ QA-failure paths:
 
 ## 2. Bump versions on the release branch, in dependency order
 
-**Do the bumps on the release branch, not on `main`.** The release branch is where a failing release can be fixed without touching main; `create_release_tags` will run from here in step 5. Merging into main happens in step 12, after the release ships.
+**Do the bumps on the release branch, not on `main`.** The release branch is where a failing release can be fixed without touching main; `create_release_tags` will run from here in step 5. Merging into main happens in step 13, after the release ships.
 
 ```bash
 git fetch origin
@@ -267,11 +267,27 @@ The lane rewrites `spec.version` from the latest release tag and pushes to `gini
 2. Move the RC ticket(s) to `Done`.
 3. The `<major>.x.x` placeholder versions created in phase 1 stay `UNRELEASED` — **never publish those**. They only get retired when a new major line starts.
 
-## 12. Merge the release branch back and post to Slack
+## 12. Upload the example app(s) to TestFlight
+
+The Slack announcement in step 13 links to a TestFlight build. Both example-app upload workflows run on a quarterly cron (2nd Monday of Feb, May, Aug, Nov at 09:00 UTC), but that cadence rarely lines up with a release — so trigger them manually now to make sure the announcement points at a build that actually contains the version you just shipped. Both workflows accept `workflow_dispatch`:
+
+- [`bank-sdk.publish.example.app.testflight.yml`](https://github.com/gini/gini-mobile-ios/actions/workflows/bank-sdk.publish.example.app.testflight.yml) — uploads `GiniBankSDKExample`. Skip if `GiniBankSDK` isn't in this release.
+- [`health-sdk.publish.example.app.testflight.yml`](https://github.com/gini/gini-mobile-ios/actions/workflows/health-sdk.publish.example.app.testflight.yml) — uploads `GiniHealthSDKExample`. Skip if `GiniHealthSDK` isn't in this release.
+
+Trigger from `main` (or the branch being announced), then wait for both applicable runs to finish green under GitHub Actions before announcing:
+
+```bash
+gh workflow run bank-sdk.publish.example.app.testflight.yml --ref main --repo gini/gini-mobile-ios
+gh workflow run health-sdk.publish.example.app.testflight.yml --ref main --repo gini/gini-mobile-ios
+```
+
+Apple's TestFlight processing takes a few extra minutes on their side after the workflow completes; the tester-facing URL is stable across builds, so it's safe to include it in the announcement even if the new build hasn't fully processed yet — testers will see it as soon as processing finishes.
+
+## 13. Merge the release branch back and post to Slack
 
 1. Merge the release branch into `main` (or the version branch it was cut from), following the repo's normal PR flow.
-2. Announce the successful release in `#mobile-releases`: which SDKs shipped, a short summary of the changes, and the TestFlight link for the example app.
+2. Announce the successful release in `#mobile-releases`: which SDKs shipped, a short summary of the changes, and the TestFlight link for the example app you just triggered in step 12.
 
-## 13. Report
+## 14. Report
 
 At the end — or when stopping at the QA gate — summarize: packages bumped with old → new versions, every `Package-release.swift` and doc file touched, Jira releases and RC ticket(s) closed, commits made, lint/test results, and what checklist steps remain. **State explicitly whether any tags were pushed.**
