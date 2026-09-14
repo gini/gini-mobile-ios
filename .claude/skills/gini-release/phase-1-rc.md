@@ -209,4 +209,4 @@ Summarize:
 - the sprint and status the ticket is now in
 - what's attached to the RC ticket (Firebase console link, tester-app link, QR code, XCFramework run link) and what's still missing
 
-Then state the next step explicitly: **once QA signs off and the version-bump PR is approved, run `/gini-release` (phase 2) with this RC ticket** to bump versions and push the release tags.
+Then state the next step explicitly: **once QA signs off, run `/gini-release` (phase 2) with this RC ticket** — phase 2 opens the bump PR and pushes the release tags after that PR is approved.
