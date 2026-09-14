@@ -60,7 +60,7 @@ git pull --ff-only
 
 For each package in `RELEASE-ORDER.md` order, edit **up to five** places. Missing any of the last four is how iOS releases break silently:
 
-1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from phase 1's table.
+1. **The version file** — `public let <Package>Version = "<x.y.z>"` in the path from phase 1's step 1 packages table (Package / Version file / Release repo).
 2. **Every dependent's `Package-release.swift`** — bump the `.exact("<x.y.z>")` pin. PR checks only resolve `Package.swift`, not `Package-release.swift`, so a missed pin lands silently:
 
    ```bash
