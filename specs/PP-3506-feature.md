@@ -8,7 +8,7 @@ Parent epic: PP-2568 · Depends on PP-2570 (iOS Powered by Gini component, this 
 
 PP-3506's original AC5 — "field missing from the response → treated as empty" — was **dropped after re-examining PP-2572** (backend Done, in prod as of 2026-09-11). PP-2572's own AC pins the field as **mandatory**: "The presence of the `ingredientBrandScreens` object is mandatory in the `/configurations` response". Silently defending against a missing key on iOS would also hide a real backend-contract violation (the whole `/configurations` decode failing with `keyNotFound` is louder — and therefore more useful — than a coerced `[]`). AC5 to be reworded or struck on the ticket by the assignee.
 
-Result: **no production code change ships in this PR.** Everything else — forward-compatibility with unknown screen names, loud failure on a non-array value, and the two consumer-side badge tests — remains in scope and passes against Swift's auto-synthesized `Codable` decoder.
+Result: **no production code change ships in this PR.** Everything else — forward-compatibility with unknown screen names, loud failure on a non-array value, and the two consumer-side badge tests — remains in scope and passes against Swift's auto-synthesized `Codable` decoder. The strict-loud behaviour on a missing key is pinned by `decodingFailsWhenIngredientBrandScreensKeyIsAbsent`, mirroring the pre-existing `decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent` — so a future defensive-decoding change to any single flag now trips an explicit test instead of an incidental one.
 
 ## Problem
 
@@ -85,7 +85,8 @@ The dropped R3 (missing key → empty) was the only requirement that would have 
 
 - **Combined R1 + R4 into one test:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` (renamed from `ingredientBrandScreensDecodesArrayFromJSON`). Reads the `valid` sub-object of the two-variant `clientConfigurationWithIngredientBrand.json` via the `ingredientBrandFixture(variant:)` helper. Assertion `#expect(config.ingredientBrandScreens == ["Analysis", "Foo", "UNKNOWN"])`.
 - **New test:** `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray`. Reads the `malformed` sub-object via the same helper. Assertion: `#expect(throws: DecodingError.self) { … }`, then `case .typeMismatch` match. Covers R5.
-- **New helper:** `ingredientBrandFixture(variant: String) throws -> Data` — uses `JSONSerialization` to extract the requested sub-object from the envelope fixture and re-serializes it as top-level JSON `Data` for `JSONDecoder`.
+- **New helper:** `ingredientBrandFixture(variant: String) throws -> Data` — uses `JSONSerialization` to extract the requested sub-object (`valid`, `malformed`, or `missing`) from the envelope fixture and re-serializes it as top-level JSON `Data` for `JSONDecoder`.
+- **Missing-key pin:** `decodingFailsWhenIngredientBrandScreensKeyIsAbsent`. Reads the `missing` sub-object. Assertion: `#expect(throws: DecodingError.self) { … }`, then `case .keyNotFound` match on `ingredientBrandScreens`. Mirrors the pre-existing `decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent`.
 
 ### 3. `AnalysisViewControllerTests.swift` — two new consumer tests
 
@@ -100,7 +101,7 @@ Both extend the existing XCTest class (per platform.md §6, "adding a case to an
 
 **Zero new fixture files.** Both remaining PP-3506 requirements reuse an existing fixture:
 
-- **R4 (unknown values) and R5 (wrong type)**: restructure the existing `clientConfigurationWithIngredientBrand.json` into a two-variant envelope with `valid` (`["Analysis", "Foo", "UNKNOWN"]`) and `malformed` (`"notAnArray"`) sub-objects. Both cases live in the same file; the `ingredientBrandFixture(variant:)` helper extracts each sub-object. R1 and R4 collapse into one test on the `valid` variant.
+- **R4 (unknown values), R5 (wrong type), and the missing-key pin**: restructure the existing `clientConfigurationWithIngredientBrand.json` into a three-variant envelope with `valid` (`["Analysis", "Foo", "UNKNOWN"]`), `malformed` (`"notAnArray"`), and `missing` (no `ingredientBrandScreens` key) sub-objects. All three cases live in the same file; the `ingredientBrandFixture(variant:)` helper extracts each sub-object. R1 and R4 collapse into one test on the `valid` variant.
 - `clientConfiguration.json` and `clientConfigurationWithEmptyIngredientBrand.json` stay as-is.
 
 ## Test plan
@@ -113,9 +114,11 @@ Every MUST requirement maps to at least one named test.
 
 **Merged R1 + R4:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` — renamed from `ingredientBrandScreensDecodesArrayFromJSON`, now reads the widened `valid` variant of the two-variant fixture.
 
-**New test:** `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray` (R5), reads the `malformed` variant of the two-variant fixture.
+**New tests:**
+- `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray` (R5), reads the `malformed` variant of the fixture.
+- `decodingFailsWhenIngredientBrandScreensKeyIsAbsent`, reads the `missing` variant of the fixture. Mirrors `decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent` — pins the strict-loud contract from the scope-decision explicitly, so a future defensive-decoding change to this key requires updating the test.
 
-Rough count: 3 total in the ingredient-brand section of this file (was 3; unchanged net).
+Rough count: 4 total in the ingredient-brand section of this file (was 3).
 
 ### `CaptureSDK/GiniCaptureSDK/Tests/GiniCaptureSDKTests/AnalysisViewControllerTests.swift` (XCTest, extends existing suite)
 
