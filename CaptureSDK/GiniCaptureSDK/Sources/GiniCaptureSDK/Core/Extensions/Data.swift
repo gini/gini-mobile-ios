@@ -7,6 +7,7 @@
 //
 
 import MobileCoreServices
+import ImageIO
 import UIKit
 
 extension Data {
@@ -48,10 +49,46 @@ extension Data {
     }
 
     var isImage: Bool {
+        if isHEIC { return true }
         if let uti = self.utiFromMimeType {
             return UTTypeConformsTo(uti.takeRetainedValue(), kUTTypeImage)
         }
         return false
+    }
+
+    /**
+     Whether `self` looks like a HEIF/HEIC container.
+
+     `Data.mimeType` matches on the first byte only; HEIC files start with the
+     ISO Base Media box size (typically `0x00 0x00 0x00 0x20`) which collides
+     with `application/octet-stream`. Detect HEIC by looking for the `ftyp`
+     box marker at offset 4 and one of the five HEIF brands at offset 8:
+     `heic`, `heix`, `heif`, `mif1`, or `msf1`.
+     */
+    var isHEIC: Bool {
+        guard count >= 12 else { return false }
+
+        let ftyp: [UInt8] = [0x66, 0x74, 0x79, 0x70]
+        let heifBrands: [[UInt8]] = [
+            [0x68, 0x65, 0x69, 0x63], // "heic"
+            [0x68, 0x65, 0x69, 0x78], // "heix"
+            [0x68, 0x65, 0x69, 0x66], // "heif"
+            [0x6D, 0x69, 0x66, 0x31], // "mif1"
+            [0x6D, 0x73, 0x66, 0x31]  // "msf1"
+        ]
+
+        return withUnsafeBytes { raw -> Bool in
+            let bytes = raw.bindMemory(to: UInt8.self)
+            for offset in 0..<4 where bytes[4 + offset] != ftyp[offset] {
+                return false
+            }
+            return heifBrands.contains { brand in
+                for offset in 0..<4 where bytes[8 + offset] != brand[offset] {
+                    return false
+                }
+                return true
+            }
+        }
     }
 
     var isPNG: Bool {
@@ -82,4 +119,28 @@ extension Data {
         return false
     }
 
+    /**
+     Transcodes the receiver to JPEG bytes, preserving embedded EXIF, TIFF,
+     and GPS properties. Returns `nil` when the receiver cannot be decoded
+     as an image.
+
+     Uses `CGImageSource` → `CGImageDestination`, so metadata survives —
+     unlike `UIImage(data:).jpegData(compressionQuality:)`, which drops it.
+     */
+    func jpegDataPreservingMetadata(compressionQuality: CGFloat = 1.0) -> Data? {
+        guard let source = CGImageSourceCreateWithData(self as CFData, nil) else { return nil }
+        let target = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(target, kUTTypeJPEG, 1, nil) else {
+            return nil
+        }
+        let options: [CFString: Any] = [
+            kCGImageDestinationLossyCompressionQuality: compressionQuality
+        ]
+        CGImageDestinationSetProperties(destination, options as CFDictionary)
+        // A nil per-image properties dict copies the source's properties
+        // (EXIF, TIFF, GPS) as-is.
+        CGImageDestinationAddImageFromSource(destination, source, 0, nil)
+        guard CGImageDestinationFinalize(destination) else { return nil }
+        return target as Data
+    }
 }
