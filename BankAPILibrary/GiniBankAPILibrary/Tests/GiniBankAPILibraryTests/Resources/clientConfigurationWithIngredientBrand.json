@@ -32,5 +32,21 @@
         "paymentScheduleHintEnabled": true,
         "unsupportedQRCodeWarningEnabled": false,
         "ingredientBrandScreens": "notAnArray"
+    },
+    "missing": {
+        "clientID": "test-client",
+        "userJourneyAnalyticsEnabled": true,
+        "skontoEnabled": true,
+        "returnAssistantEnabled": true,
+        "transactionDocsEnabled": false,
+        "instantPaymentEnabled": false,
+        "qrCodeEducationEnabled": false,
+        "eInvoiceEnabled": false,
+        "savePhotosLocallyEnabled": false,
+        "alreadyPaidHintEnabled": false,
+        "paymentDueHintEnabled": false,
+        "creditNoteHintEnabled": true,
+        "paymentScheduleHintEnabled": true,
+        "unsupportedQRCodeWarningEnabled": false
     }
 }

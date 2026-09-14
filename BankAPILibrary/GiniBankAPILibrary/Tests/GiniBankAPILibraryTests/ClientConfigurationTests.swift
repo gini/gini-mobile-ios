@@ -243,10 +243,26 @@ struct ClientConfigurationTests {
         }
     }
 
+    @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
+    func decodingFailsWhenIngredientBrandScreensKeyIsAbsent() throws {
+        let data = try ingredientBrandFixture(variant: "missing")
+
+        let error = #expect(throws: DecodingError.self) {
+            try JSONDecoder().decode(ClientConfiguration.self, from: data)
+        }
+
+        guard case .keyNotFound(let missingKey, _)? = error else {
+            Issue.record("Expected DecodingError.keyNotFound for `ingredientBrandScreens`, got \(String(describing: error))")
+            return
+        }
+        #expect(missingKey.stringValue == "ingredientBrandScreens",
+                "Expected the missing key to be `ingredientBrandScreens`, got `\(missingKey.stringValue)`")
+    }
+
     // MARK: - Fixture helpers
 
     /**
-     Extracts a named sub-object (`valid`, `malformed`) from
+     Extracts a named sub-object (`valid`, `malformed`, `missing`) from
      `clientConfigurationWithIngredientBrand.json` and re-serializes it as the
      top-level JSON `Data` a `ClientConfiguration` decode expects.
      */
