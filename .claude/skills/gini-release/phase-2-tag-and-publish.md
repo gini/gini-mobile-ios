@@ -269,8 +269,6 @@ The lane rewrites `spec.version` from the latest release tag and pushes to `gini
 
 ## 12. Upload the example app(s) to TestFlight
 
-**iOS only.** TestFlight is Apple's tester distribution channel and doesn't exist on Android — Android's paired phase-2 skill has its own tester-build step (typically Firebase App Distribution). Skip this step entirely when running an Android release.
-
 The Slack announcement in step 13 links to a TestFlight build. Both example-app upload workflows run on a quarterly cron (2nd Monday of Feb, May, Aug, Nov at 09:00 UTC), but that cadence rarely lines up with a release — so trigger them manually now to make sure the announcement points at a build that actually contains the version you just shipped. Both workflows accept `workflow_dispatch`:
 
 - [`bank-sdk.publish.example.app.testflight.yml`](https://github.com/gini/gini-mobile-ios/actions/workflows/bank-sdk.publish.example.app.testflight.yml) — uploads `GiniBankSDKExample`. Skip if `GiniBankSDK` isn't in this release.
