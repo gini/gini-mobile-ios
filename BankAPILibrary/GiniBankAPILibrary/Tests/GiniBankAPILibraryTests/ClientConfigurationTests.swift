@@ -209,14 +209,14 @@ struct ClientConfigurationTests {
 
     // MARK: - ingredientBrandScreens Tests
 
-    @Test("ingredientBrandScreens decodes the array from JSON")
-    func ingredientBrandScreensDecodesArrayFromJSON() throws {
-        let data = loadFile(withName: "clientConfigurationWithIngredientBrand", ofType: "json")
+    @Test("ingredientBrandScreens decodes the array verbatim, preserving unknown screen names")
+    func ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames() throws {
+        let data = try ingredientBrandFixture(variant: "valid")
 
         let config = try JSONDecoder().decode(ClientConfiguration.self, from: data)
 
-        #expect(config.ingredientBrandScreens == ["Analysis"],
-                "Expected ingredientBrandScreens to decode as [\"Analysis\"]")
+        #expect(config.ingredientBrandScreens == ["Analysis", "Foo", "UNKNOWN"],
+                "Expected ingredientBrandScreens to decode verbatim, including unknown values")
     }
 
     @Test("ingredientBrandScreens decodes an empty array from JSON")
@@ -229,42 +229,35 @@ struct ClientConfigurationTests {
                 "Expected ingredientBrandScreens to decode as an empty array")
     }
 
-    /**
-     Pins the "no silent defaults" behavior: the key is required, and decoding
-     throws `DecodingError.keyNotFound` when it is absent.
-     */
-    @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
-    func decodingFailsWhenIngredientBrandScreensKeyIsAbsent() {
-        /// Every other flag present so `ingredientBrandScreens` is the missing key reported.
-        let json = """
-        {
-            "clientID": "test-client",
-            "userJourneyAnalyticsEnabled": true,
-            "skontoEnabled": true,
-            "returnAssistantEnabled": true,
-            "transactionDocsEnabled": false,
-            "instantPaymentEnabled": false,
-            "qrCodeEducationEnabled": false,
-            "eInvoiceEnabled": false,
-            "savePhotosLocallyEnabled": false,
-            "alreadyPaidHintEnabled": false,
-            "paymentDueHintEnabled": false,
-            "creditNoteHintEnabled": true,
-            "paymentScheduleHintEnabled": true,
-            "unsupportedQRCodeWarningEnabled": false
-        }
-        """.data(using: .utf8)!
+    @Test("Decoding throws typeMismatch when ingredientBrandScreens is not an array")
+    func throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray() throws {
+        let data = try ingredientBrandFixture(variant: "malformed")
 
         let error = #expect(throws: DecodingError.self) {
-            try JSONDecoder().decode(ClientConfiguration.self, from: json)
+            try JSONDecoder().decode(ClientConfiguration.self, from: data)
         }
 
-        guard case .keyNotFound(let missingKey, _)? = error else {
-            Issue.record("Expected DecodingError.keyNotFound for `ingredientBrandScreens`, got \(String(describing: error))")
+        guard case .typeMismatch? = error else {
+            Issue.record("Expected DecodingError.typeMismatch for `ingredientBrandScreens`, got \(String(describing: error))")
             return
         }
-        #expect(missingKey.stringValue == "ingredientBrandScreens",
-                "Expected the missing key to be `ingredientBrandScreens`, got `\(missingKey.stringValue)`")
+    }
+
+    // MARK: - Fixture helpers
+
+    /**
+     Extracts a named sub-object (`valid`, `malformed`) from
+     `clientConfigurationWithIngredientBrand.json` and re-serializes it as the
+     top-level JSON `Data` a `ClientConfiguration` decode expects.
+     */
+    private func ingredientBrandFixture(variant: String) throws -> Data {
+        let root = loadFile(withName: "clientConfigurationWithIngredientBrand", ofType: "json")
+        let parsed = try JSONSerialization.jsonObject(with: root)
+        guard let container = parsed as? [String: Any], let object = container[variant] else {
+            struct MissingFixtureVariant: Error { let variant: String }
+            throw MissingFixtureVariant(variant: variant)
+        }
+        return try JSONSerialization.data(withJSONObject: object)
     }
 
     // MARK: - Property Combinations Tests
