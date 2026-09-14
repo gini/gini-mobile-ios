@@ -442,8 +442,8 @@ import GiniUtilites
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let suggestions = CaptureSuggestionsView(superView: view,
                                                  bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        // Hide the badge on the first banner appearance and keep it hidden — ignoring
-        // banner-hidden transitions avoids re-showing the badge between banner cycles.
+        /// Hide the badge on the first banner appearance and keep it hidden — ignoring
+        /// banner-hidden transitions avoids re-showing the badge between banner cycles.
         suggestions.onBannerVisibilityChange = { [weak self] isBannerVisible in
             guard isBannerVisible else { return }
             self?.poweredByGiniBadgeView?.isHidden = true
@@ -460,7 +460,7 @@ import GiniUtilites
     public func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
-        // Restore visibility in case the badge was hidden by the banner-visibility callback.
+        /// Restore visibility in case the badge was hidden by the banner-visibility callback.
         poweredByGiniBadgeView?.isHidden = false
     }
 

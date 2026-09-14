@@ -42,8 +42,10 @@ struct PoweredByGiniBadgeViewTests {
                 "Expected the badge to expose the .image trait")
     }
 
-    /// Fails if `resources: [.process("Resources")]` is missing from either GiniUtilites
-    /// manifest — `UIImage(named:in:.module)` returns nil and the badge renders blank.
+    /**
+     Fails if `resources: [.process("Resources")]` is missing from either GiniUtilites
+     manifest — `UIImage(named:in:.module)` returns nil and the badge renders blank.
+     */
     @Test("The badge image loads from the GiniUtilites .module bundle")
     func imageLoadsFromModuleBundle() {
         let view = PoweredByGiniBadgeView()

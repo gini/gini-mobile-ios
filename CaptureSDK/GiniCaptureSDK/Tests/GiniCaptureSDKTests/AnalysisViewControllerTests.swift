@@ -131,7 +131,7 @@ final class AnalysisViewControllerTests: XCTestCase {
     }
 
     func testAnalysisBadgeIsVisibleInitiallyEvenForImageDocs() {
-        // The banner has a 4s pre-appearance delay; the badge is visible until then.
+        /// The banner has a 4s pre-appearance delay; the badge is visible until then.
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = AnalysisViewController(document: makeCameraImageDocument(),
                                          giniConfiguration: sepaExtractionsConfig())

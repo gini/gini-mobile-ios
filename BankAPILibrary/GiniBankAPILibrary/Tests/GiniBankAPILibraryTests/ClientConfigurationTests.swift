@@ -229,11 +229,13 @@ struct ClientConfigurationTests {
                 "Expected ingredientBrandScreens to decode as an empty array")
     }
 
-    /// Pins the "no silent defaults" behavior: the key is required, and decoding
-    /// throws `DecodingError.keyNotFound` when it is absent.
+    /**
+     Pins the "no silent defaults" behavior: the key is required, and decoding
+     throws `DecodingError.keyNotFound` when it is absent.
+     */
     @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
     func decodingFailsWhenIngredientBrandScreensKeyIsAbsent() {
-        // Every other flag present so `ingredientBrandScreens` is the missing key reported.
+        /// Every other flag present so `ingredientBrandScreens` is the missing key reported.
         let json = """
         {
             "clientID": "test-client",

@@ -280,7 +280,7 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
-        // Badge is only shown on the dark full-overlay state; hidden on the clear background.
+        /// Badge is only shown on the dark full-overlay state; hidden on the clear background.
         poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
     }
 

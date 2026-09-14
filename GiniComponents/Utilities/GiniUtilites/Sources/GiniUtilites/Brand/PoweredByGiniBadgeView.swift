@@ -8,8 +8,10 @@
 import UIKit
 
 /**
- Fixed 90×23pt "Powered by Gini" badge backed by the `poweredByGiniBadge` PDF asset
- in `GiniUtilites`. A single accessibility element with the label `"Powered by Gini"`.
+ A fixed 90×23pt "Powered by Gini" ingredient-brand badge backed by the
+ `poweredByGiniBadge` PDF asset shipped in `GiniUtilites`. The view exposes
+ itself as a single accessibility element labelled `"Powered by Gini"` with
+ the `.image` trait.
  */
 public final class PoweredByGiniBadgeView: UIView {
 
@@ -22,6 +24,10 @@ public final class PoweredByGiniBadgeView: UIView {
         return imageView
     }()
 
+    /**
+     Creates a new `PoweredByGiniBadgeView` sized to its 90×23pt intrinsic content
+     size, with the badge image already installed and accessibility configured.
+     */
     public init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
