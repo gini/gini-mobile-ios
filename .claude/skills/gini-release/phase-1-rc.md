@@ -157,7 +157,9 @@ Rules:
 - **Create only if missing.** The placeholder lives for the whole major line and is *not* recreated every release. If `iOS Gini Bank SDK 4.x.x` already exists, leave it alone.
 - `UNRELEASED`, no release date, no description needed. Created in the browser, same dialog and same gotchas as step 5.
 - When a new major line starts (e.g. the first 5.0.0 release), the new placeholder is `5.x.x`; the old `4.x.x` stays until its remaining tickets are moved.
-- **Do not touch** the existing `BAC - placeholder bugs` / `CVIE placeholder bugs` per-customer bug-parking versions. Different mechanism, different purpose — they are not per-product next-version placeholders and must not be renamed, reused or created by this skill.
+- **Do not touch** the existing bug-parking versions — they are not per-product next-version placeholders and must not be renamed, reused or created by this skill:
+  - **`iOS Unknown Fix Version`** in PP (and the equivalent in HEAL if one exists) — the platform-wide catch-all for iOS bugs that aren't yet slotted into a specific release. `Android Unknown Fix Version` is the Android sibling; leave both alone.
+  - **`BAC - placeholder bugs`** and **`CVIE placeholder bugs`** — per-customer bug-parking versions.
 
 Report which placeholders already existed and which you created.
 
