@@ -286,7 +286,39 @@ Apple's TestFlight processing takes a few extra minutes on their side after the 
 ## 13. Merge the release branch back and post to Slack
 
 1. Merge the release branch into `main` (or the version branch it was cut from), following the repo's normal PR flow.
-2. Announce the successful release in `#mobile-releases`: which SDKs shipped, a short summary of the changes, and the TestFlight link for the example app you just triggered in step 12.
+2. Announce the successful release in `#mobile-releases`. Follow the template below — derived from the Bank SDK 4.5.0 announcement — so the message stays scannable and consistent with prior releases.
+
+**Slack message template**
+
+Fill every angle-bracketed slot from the release. The TestFlight join URL is stable across builds, so include it even if Apple's TestFlight processing hasn't finished yet — testers see the new build the moment processing completes.
+
+```
+Happy <day of week>! :<light-celebratory-emoji>:
+<platform> <SDK product name> <version> is live
+
+ What's new
+
+ • <Feature 1 name> — <one sentence: what it does + why + opt-in / default-on / default-off>.
+<Confluence deep link to that feature's section>
+ • <Feature 2 name> — <one sentence>.
+<Confluence deep link>
+ • <Bug fix or infra note — no link needed if there's no dedicated page>.
+
+ Docs — <top-level Confluence overview URL for this SDK's space>
+ Release notes — <release-repo tag URL for customer-facing SDK #1> · <release-repo tag URL for customer-facing SDK #2>
+<install-tester-build sentence — see platform-specific guidance below>
+```
+
+**How to fill it**
+
+- **`<platform>`:** `iOS` when this skill runs — because this file lives in the iOS repo. The Android release skill mirrors this template with `Android` in the same slot; posting in `#mobile-releases` needs the prefix so readers know which platform they're seeing.
+- **Feature bullets:** source from the GitHub release notes for the top-level SDK; each bullet is a rephrased single-sentence version, not a copy-paste. Always name the opt-in/default state — that is the single most important piece for integrators.
+- **Confluence deep links:** pull from the Jira release description, or from the per-feature Jira tickets under Documentation. Skip the link when the bullet is a bug fix.
+- **Release notes:** one GitHub tag URL per **customer-facing** SDK that shipped (not `GiniUtilites` or `GiniInternalPaymentSDK`). Separate multiple URLs with ` · `.
+- **Install-tester-build sentence — iOS:** `Testflight build <TestFlight join URL> to play with it` followed on a new line by `or directly scan the QR code.` The TestFlight join URL is per-example-app and stable across releases — reuse the value from the previous announcement rather than searching for a new one; you triggered the actual build in step 12.
+- **QR code:** generate a QR image encoding the same TestFlight join URL and attach it to the Slack message so readers can install without copy-pasting on device. Any LLM can produce the image on request.
+
+**Both-side releases:** if both Bank and Health SDKs shipped, post two separate messages (one per SDK) rather than merging them — each has its own TestFlight app, docs space and release-notes URLs, and readers subscribe by product.
 
 ## 14. Report
 
