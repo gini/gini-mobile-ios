@@ -144,6 +144,39 @@ final class AnalysisViewControllerTests: XCTestCase {
                        "Expected badge to be visible immediately — the banner has not appeared yet (4s delay)")
     }
 
+    func testAnalysisBadgeHidesOnFirstBannerAppearanceAndStaysHidden() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge,
+                        "Precondition: badge should be inserted for image docs when the flag is set")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Precondition: badge should be visible before the banner appears")
+
+        let banner = findCaptureSuggestions(in: sut.view)
+        XCTAssertNotNil(banner,
+                        "Precondition: showCaptureSuggestions should install the banner for image docs")
+
+        /// First banner appearance — badge hides alongside the banner animation.
+        banner?.onBannerVisibilityChange?(true)
+        XCTAssertTrue(badge?.isHidden == true,
+                      "Expected badge to hide on the first banner appearance")
+
+        /// Banner cycles to hidden — badge stays hidden (Figma alternation is one-way once the banner has shown).
+        banner?.onBannerVisibilityChange?(false)
+        XCTAssertTrue(badge?.isHidden == true,
+                      "Expected badge to stay hidden after the banner cycles to hidden")
+
+        /// A later banner appearance — badge remains hidden, not toggled back on.
+        banner?.onBannerVisibilityChange?(true)
+        XCTAssertTrue(badge?.isHidden == true,
+                      "Expected badge to stay hidden on subsequent banner appearances")
+    }
+
     func testAnalysisBadgeStaysWhenCaptureSuggestionsRemoved() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = AnalysisViewController(document: makeCameraImageDocument(),
@@ -174,6 +207,14 @@ final class AnalysisViewControllerTests: XCTestCase {
         if let badge = view as? PoweredByGiniBadgeView { return badge }
         for subview in view.subviews {
             if let badge = findBadge(in: subview) { return badge }
+        }
+        return nil
+    }
+
+    private func findCaptureSuggestions(in view: UIView) -> CaptureSuggestionsView? {
+        if let banner = view as? CaptureSuggestionsView { return banner }
+        for subview in view.subviews {
+            if let banner = findCaptureSuggestions(in: subview) { return banner }
         }
         return nil
     }
