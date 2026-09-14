@@ -108,7 +108,8 @@ struct DataHEICTests {
         // point is that the helper accepts JPEG input and returns valid JPEG.
         let jpegBytes = try #require(Self.makeRealJPEGData(),
                                        "Simulator lacks JPEG encoder — skipping idempotency proof")
-        #expect(jpegBytes.isJPEG)
+        try #require(jpegBytes.isJPEG,
+                     "Fixture precondition: makeRealJPEGData must emit valid JPEG bytes")
 
         let roundTripped = try #require(jpegBytes.jpegDataPreservingMetadata(),
                                           "Helper must accept JPEG input and produce JPEG output")
@@ -130,7 +131,8 @@ struct DataHEICTests {
     func giniImageDocumentNormalisesRealHEICToJPEG() throws {
         let heicData = try #require(Self.makeRealHEICData(),
                                      "Simulator lacks HEIC encoder — skipping the transcode proof")
-        #expect(heicData.isHEIC, "Fixture should encode as HEIC")
+        try #require(heicData.isHEIC,
+                     "Fixture precondition: makeRealHEICData must encode as HEIC")
 
         let document = GiniImageDocument(data: heicData,
                                           imageSource: .external,
@@ -242,7 +244,8 @@ struct DataHEICTests {
 
         // Sanity-check the fixture itself before running the SUT.
         let fileBytes = try Data(contentsOf: fixtureURL)
-        #expect(fileBytes.isHEIC, "Fixture must be a HEIF/HEIC container")
+        try #require(fileBytes.isHEIC,
+                     "Fixture precondition: iphone-heic-photo.heic must be a HEIF/HEIC container")
 
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "com.gini.tests"))
         builder.importMethod = .openWith
