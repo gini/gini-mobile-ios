@@ -45,8 +45,8 @@ For "both" releases (bank + health) with two RC tickets, run the check on each t
 
 QA-failure paths:
 
-- **Showstopper** — release is postponed. Add repro steps, device/iOS version and any screenshots to the **RC ticket** so the paper trail sits in one place, then stop this phase-2 run. Resume only after the underlying bug is fixed on the release branch and QA re-tests.
-- **Minor** — release still ships. Create one **new Jira bug ticket per issue** (not on the RC ticket) with `affectedVersion` set to the version being shipped now, so future triage can trace which release exposed it. Leave `fixVersion` empty; the ticket lands in `iOS Unknown Fix Version` until it's scheduled into a specific release. **Do not wait** — proceed to the bump PR.
+- **Showstopper:** release postponed. Add details to the RC ticket and stop.
+- **Minor:** release not postponed. Create bug tickets with the release version set as `affectedVersion` and proceed once fixed.
 
 ## 2. Bump versions on the release branch, in dependency order
 
