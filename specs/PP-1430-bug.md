@@ -28,8 +28,8 @@ func testDataIsImage_returnsFalse_forHEICBytes() {
     ]
     let data = Data(heicSignature)
 
-    // Before the fix this asserts true (the bug); after it must assert false.
-    XCTAssertFalse(data.isImage, "isImage misses HEIC and returns false")
+    // Fails before the fix (isImage returns false for HEIC); passes after.
+    XCTAssertTrue(data.isImage, "isImage should recognise HEIC bytes")
 }
 ```
 
@@ -134,7 +134,6 @@ Optional (skip if flaky): a UI test in `GiniBankSDKExampleUITests` driving the F
 
 - **Fixing other magic-byte gaps** — BMP, RIFF-based WEBP, non-first-byte formats. File a separate follow-up ticket if we want the full sweep.
 - **Adding HEIC to the file picker's accepted types** (`GiniImageDocument.acceptedImageTypes` + `DocumentPickerCoordinator`). That's a product decision — surfaces HEIC in the *picker*, not just in "Open with". Do that under a fresh ticket if the team wants it.
-- **HEIC→JPEG conversion on the client** if `ImageMetaInformationManager` doesn't already normalise. If verification (Open questions) shows it doesn't, this becomes in-scope but under a different sub-task.
 
 ## Open questions
 

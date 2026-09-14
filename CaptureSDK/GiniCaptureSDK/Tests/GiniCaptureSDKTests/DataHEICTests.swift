@@ -19,7 +19,12 @@ import MobileCoreServices
 @Suite("Data extension — HEIC detection")
 struct DataHEICTests {
 
-    /** 4-byte box size · "ftyp" · 4-byte brand · 4-byte padding. */
+    /**
+     Builds a minimal HEIF `ftyp` box: `size · "ftyp" · brand · padding`.
+
+     - Parameter brand: 4-byte HEIF brand identifier (e.g. `"heic"` bytes).
+     - Returns: 16-byte signature suitable for magic-byte detection tests.
+     */
     private static func heicSignatureBytes(brand: [UInt8]) -> [UInt8] {
         [0x00, 0x00, 0x00, 0x20,
          0x66, 0x74, 0x79, 0x70]
@@ -139,7 +144,13 @@ struct DataHEICTests {
 
     /**
      Encodes a 1×1 pixel as HEIC via `CGImageDestination`, optionally embedding
-     a TIFF `Software` and/or EXIF `LensModel` tag. Returns nil when unavailable.
+     a TIFF `Software` and/or EXIF `LensModel` tag.
+
+     - Parameters:
+       - softwareTag: Optional TIFF `Software` tag to plant in the source.
+       - exifLensModel: Optional EXIF `LensModel` tag to plant in the source.
+     - Returns: HEIC bytes on success, or `nil` when the HEIC encoder is
+       unavailable on the current platform.
      */
     private static func makeRealHEICData(softwareTag: String? = nil,
                                          exifLensModel: String? = nil) -> Data? {
@@ -218,7 +229,12 @@ struct DataHEICTests {
         #expect(imageDocument.isFromOtherApp)
     }
 
-    /** Encodes a 1×1 pixel as JPEG via `CGImageDestination`. Nil when unavailable. */
+    /**
+     Encodes a 1×1 pixel as JPEG via `CGImageDestination`.
+
+     - Returns: JPEG bytes on success, or `nil` when the JPEG encoder is
+       unavailable on the current platform.
+     */
     private static func makeRealJPEGData() -> Data? {
         var rgba: [UInt8] = [0, 255, 0, 255]
         let colorSpace = CGColorSpaceCreateDeviceRGB()

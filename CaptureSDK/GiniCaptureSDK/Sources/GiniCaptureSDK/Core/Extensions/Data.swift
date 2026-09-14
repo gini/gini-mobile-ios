@@ -121,11 +121,15 @@ extension Data {
 
     /**
      Transcodes the receiver to JPEG bytes, preserving embedded EXIF, TIFF,
-     and GPS properties. Returns `nil` when the receiver cannot be decoded
-     as an image.
+     and GPS properties.
 
      Uses `CGImageSource` → `CGImageDestination`, so metadata survives —
      unlike `UIImage(data:).jpegData(compressionQuality:)`, which drops it.
+
+     - Parameter compressionQuality: JPEG quality in the range `0.0`…`1.0`.
+       Defaults to `1.0` (lossless-ish re-encode).
+     - Returns: JPEG bytes on success, or `nil` when the receiver cannot be
+       decoded as an image.
      */
     func jpegDataPreservingMetadata(compressionQuality: CGFloat = 1.0) -> Data? {
         guard let source = CGImageSourceCreateWithData(self as CFData, nil) else { return nil }
@@ -133,13 +137,14 @@ extension Data {
         guard let destination = CGImageDestinationCreateWithData(target, kUTTypeJPEG, 1, nil) else {
             return nil
         }
+        /// `kCGImageDestinationLossyCompressionQuality` is a per-image option:
+        /// setting it on the destination is silently ignored. Pass it in the
+        /// properties dict of `AddImageFromSource`, which merges with — rather
+        /// than replaces — the source's EXIF/TIFF/GPS properties.
         let options: [CFString: Any] = [
             kCGImageDestinationLossyCompressionQuality: compressionQuality
         ]
-        CGImageDestinationSetProperties(destination, options as CFDictionary)
-        // A nil per-image properties dict copies the source's properties
-        // (EXIF, TIFF, GPS) as-is.
-        CGImageDestinationAddImageFromSource(destination, source, 0, nil)
+        CGImageDestinationAddImageFromSource(destination, source, 0, options as CFDictionary)
         guard CGImageDestinationFinalize(destination) else { return nil }
         return target as Data
     }

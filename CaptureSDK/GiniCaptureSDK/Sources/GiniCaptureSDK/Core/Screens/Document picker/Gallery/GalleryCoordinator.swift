@@ -251,8 +251,8 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
         var data = data
 
         // Some pictures have a wrong bytes structure and are not processed as images.
-        // Transcode via `CGImageDestination` so EXIF/TIFF/GPS survive — earlier
-        // versions used `UIImage.jpegData`, which drops all embedded metadata.
+        /// Transcode via `CGImageDestination` so EXIF/TIFF/GPS survive — earlier
+        /// versions used `UIImage.jpegData`, which drops all embedded metadata.
         if !data.isImage {
             if let imageData = data.jpegDataPreservingMetadata() {
                 data = imageData
