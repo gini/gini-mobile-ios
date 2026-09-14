@@ -5,7 +5,7 @@ A release runs in two phases:
 | Phase | File | What it does |
 |---|---|---|
 | 1 | **this file** | Jira only: release-branch build, Jira Releases, `x.x` placeholders, RC ticket, sprint. Gets the release ready for QA testing. |
-| 2 | [`phase-2-tag-and-publish.md`](phase-2-tag-and-publish.md) | Git: bumps on the release branch, `create_release_tags`, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, Slack. |
+| 2 | [`phase-2-tag-and-publish.md`](phase-2-tag-and-publish.md) | Git: bumps on the release branch, `create_release_tags`, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, TestFlight upload, Slack. |
 
 They are days apart — the RC exists so QA can start; bumps, tags and publishing only happen once QA (and the bump PR review) are done. The iOS split mirrors [Mozhgan's Android PR #984](https://github.com/gini/gini-mobile-android/pull/984); phase 1 stays close to the Android version, phase 2 is iOS-specific.
 

@@ -10,7 +10,7 @@ Follows the [Mobile Release Process](https://ginis.atlassian.net/wiki/spaces/PLM
 | Phase | File | What it does | Invoke |
 |---|---|---|---|
 | 1 | [`phase-1-rc.md`](phase-1-rc.md) | **Jira only.** Confirm the release branch, dispatch the XCFramework build against it, create the Jira Releases + `x.x` placeholders, create the RC ticket with the QA build (Firebase link + QR code), sprint + hand to QA. Gets the release ready for testing. | `/gini-release rc` |
-| 2 | [`phase-2-tag-and-publish.md`](phase-2-tag-and-publish.md) | **Git.** Bumps on the release branch, bump PR, then (behind QA + review gate) `create_release_tags` from the release branch, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, merge back to main, Slack. | `/gini-release`, or `/gini-release release` |
+| 2 | [`phase-2-tag-and-publish.md`](phase-2-tag-and-publish.md) | **Git.** Bumps on the release branch, bump PR, then (behind QA + review gate) `create_release_tags` from the release branch, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, TestFlight upload, merge back to main, Slack. | `/gini-release`, or `/gini-release release` |
 
 The same two-phase split is used on Android — see [PR #984](https://github.com/gini/gini-mobile-android/pull/984). Phase 1 stays close to the Android version; phase 2 is iOS-specific (XCFrameworks, podspec, `Package-release.swift` pin bumps).
 

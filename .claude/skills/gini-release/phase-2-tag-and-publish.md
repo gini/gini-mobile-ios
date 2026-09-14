@@ -5,7 +5,7 @@ A release runs in two phases:
 | Phase | File | What it does |
 |---|---|---|
 | 1 | [`phase-1-rc.md`](phase-1-rc.md) | Jira only: release-branch build, Jira Releases, `x.x` placeholders, RC ticket, sprint. Gets the release ready for QA testing. |
-| 2 | **this file** | Git: bumps on the release branch, `create_release_tags`, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, Slack. |
+| 2 | **this file** | Git: bumps on the release branch, `create_release_tags`, XCFrameworks, draft GitHub releases, user-review gate, publish, podspec, Jira, TestFlight upload, Slack. |
 
 This phase is iOS-specific (Android's phase 2 uses `gradle.properties` and Sonatype instead).
 
