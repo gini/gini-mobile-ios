@@ -21,8 +21,10 @@ import MobileCoreServices
 @Suite("Data extension — HEIC detection")
 struct DataHEICTests {
 
-    /// Bytes that mimic a valid HEIC file header, brand-parameterized.
-    /// Layout: 4-byte box size · "ftyp" · 4-byte brand · 4-byte padding.
+    /**
+     Bytes that mimic a valid HEIC file header, brand-parameterized.
+     Layout: 4-byte box size · "ftyp" · 4-byte brand · 4-byte padding.
+     */
     private static func heicSignatureBytes(brand: [UInt8]) -> [UInt8] {
         [0x00, 0x00, 0x00, 0x20,          // box size (0x20 = 32)
          0x66, 0x74, 0x79, 0x70]           // "ftyp"
@@ -119,14 +121,16 @@ struct DataHEICTests {
 
     // MARK: - Backend expects JPEG, not HEIC
 
-    /// End-to-end proof: a real HEIC-encoded `UIImage` reaches `GiniImageDocument`
-    /// and its stored `data` is JPEG on the way out — matching what the Gallery
-    /// path produces and what the Gini backend accepts.
-    ///
-    /// A synthetic 16-byte HEIC header (used by the tests above for `isImage`
-    /// detection) is not actually a decodable image, so `UIImage(data:)` cannot
-    /// re-encode it. This test builds a real HEIC by round-tripping a 1×1 pixel
-    /// through `CGImageDestination` with the HEIC UTI.
+    /**
+     End-to-end proof: a real HEIC-encoded `UIImage` reaches `GiniImageDocument`
+     and its stored `data` is JPEG on the way out — matching what the Gallery
+     path produces and what the Gini backend accepts.
+
+     A synthetic 16-byte HEIC header (used by the tests above for `isImage`
+     detection) is not actually a decodable image, so `UIImage(data:)` cannot
+     re-encode it. This test builds a real HEIC by round-tripping a 1×1 pixel
+     through `CGImageDestination` with the HEIC UTI.
+     */
     @Test("`GiniImageDocument` stores JPEG bytes when initialised from real HEIC data")
     func giniImageDocumentNormalisesRealHEICToJPEG() throws {
         let heicData = try #require(Self.makeRealHEICData(),
@@ -145,11 +149,13 @@ struct DataHEICTests {
                 "GiniImageDocument.data must not retain the HEIC container")
     }
 
-    /// Real-HEIC round-trip that plants a known TIFF `Software` tag in the
-    /// source, transcodes via `GiniImageDocument`, and reads the JPEG's
-    /// properties back — proving that embedded metadata survives the
-    /// `CGImageDestination`-based transcode instead of being dropped like
-    /// `UIImage.jpegData` would drop it.
+    /**
+     Real-HEIC round-trip that plants a known TIFF `Software` tag in the
+     source, transcodes via `GiniImageDocument`, and reads the JPEG's
+     properties back — proving that embedded metadata survives the
+     `CGImageDestination`-based transcode instead of being dropped like
+     `UIImage.jpegData` would drop it.
+     */
     @Test("`GiniImageDocument.data` preserves EXIF/TIFF metadata across the HEIC → JPEG transcode")
     func giniImageDocumentPreservesTIFFMetadataAcrossTranscode() throws {
         let expectedSoftwareTag = "gini-capture-heic-metadata-test"
@@ -174,11 +180,13 @@ struct DataHEICTests {
         #expect(software == expectedSoftwareTag)
     }
 
-    /// Build a real HEIC-encoded image blob by writing a 1×1 pixel through
-    /// `CGImageDestination` with the HEIC UTI. Optionally embeds a TIFF
-    /// `Software` tag and/or an EXIF `LensModel` tag so the caller can
-    /// verify metadata preservation later. Returns nil on platforms where
-    /// the encoder is unavailable — the caller should skip the test.
+    /**
+     Build a real HEIC-encoded image blob by writing a 1×1 pixel through
+     `CGImageDestination` with the HEIC UTI. Optionally embeds a TIFF
+     `Software` tag and/or an EXIF `LensModel` tag so the caller can
+     verify metadata preservation later. Returns nil on platforms where
+     the encoder is unavailable — the caller should skip the test.
+     */
     private static func makeRealHEICData(softwareTag: String? = nil,
                                           exifLensModel: String? = nil) -> Data? {
         var rgba: [UInt8] = [255, 0, 0, 255]
@@ -226,15 +234,17 @@ struct DataHEICTests {
 
     // MARK: - Real-file import (Files-app "Open with" path)
 
-    /// End-to-end proof against a real iPhone-captured HEIC file. This mirrors
-    /// the Files-app "Open with" flow the customer reported: the URL-based
-    /// `GiniCaptureDocumentBuilder.build(with openURL:completion:)` overload
-    /// reads the raw bytes off disk, hands them to the data-based path, and
-    /// should produce a `GiniImageDocument` whose stored data is JPEG.
-    ///
-    /// Fixture: `iphone-heic-photo.heic` (bundled in `Tests/Resources/`),
-    /// a native iPhone Camera capture — `ftyp heic` with compatible brands
-    /// `mif1`/`MiHB`/`MiHA`/`heix`.
+    /**
+     End-to-end proof against a real iPhone-captured HEIC file. This mirrors
+     the Files-app "Open with" flow the customer reported: the URL-based
+     `GiniCaptureDocumentBuilder.build(with openURL:completion:)` overload
+     reads the raw bytes off disk, hands them to the data-based path, and
+     should produce a `GiniImageDocument` whose stored data is JPEG.
+
+     Fixture: `iphone-heic-photo.heic` (bundled in `Tests/Resources/`),
+     a native iPhone Camera capture — `ftyp heic` with compatible brands
+     `mif1`/`MiHB`/`MiHA`/`heix`.
+     */
     @Test("`GiniCaptureDocumentBuilder.build(with openURL:)` imports a real iPhone HEIC and produces JPEG bytes")
     func buildFromRealHEICFileURL() async throws {
         let fixtureURL = try #require(
@@ -267,8 +277,10 @@ struct DataHEICTests {
                 "documentSource .appName means the document is imported from another app")
     }
 
-    /// Build a tiny real JPEG-encoded image blob for the idempotency test.
-    /// Returns nil on platforms where the encoder is unavailable.
+    /**
+     Build a tiny real JPEG-encoded image blob for the idempotency test.
+     Returns nil on platforms where the encoder is unavailable.
+     */
     private static func makeRealJPEGData() -> Data? {
         var rgba: [UInt8] = [0, 255, 0, 255]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
