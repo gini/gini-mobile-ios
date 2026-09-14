@@ -34,12 +34,19 @@ Stop. Tags may only be created once **both**:
 
 If the bump PR hasn't been opened yet, treat this as two sub-gates: QA sign-off before starting the bumps, then reviewer approval before pushing tags.
 
-Ask the user to confirm each; **never infer**. A tag pushed early triggers a real release.
+**Pre-check the RC ticket status in Jira** before asking the user to confirm QA. Fetch the ticket from step 0 with the Atlassian connector's `getJiraIssue` and read `fields.status.name`:
+
+- Status is `In QA` or `Done` → QA has picked up (or finished) the ticket. Surface as: *"Jira says RC ticket `<KEY>` is `<status>` — confirm QA signed off with no showstoppers? (y/n)"*
+- Any other status (`To Do`, `In Progress`, `Waiting for QA`, …) → QA has not started or is still preparing. Surface as: *"Jira says RC ticket `<KEY>` is still `<status>`, so QA may not have finished. Are you sure you want to proceed? (y/n)"*
+
+The Jira status is a hint, not the gate — **always ask the user to confirm explicitly**, and **never infer** from the status alone. A tag pushed early triggers a real release.
+
+For "both" releases (bank + health) with two RC tickets, run the check on each ticket and surface both in the prompt.
 
 QA-failure paths:
 
-- **Showstopper:** release postponed. Add details to the RC ticket and stop.
-- **Minor:** release not postponed. Create bug tickets with the release version set as `affectedVersion` and proceed once fixed.
+- **Showstopper** — release is postponed. Add repro steps, device/iOS version and any screenshots to the **RC ticket** so the paper trail sits in one place, then stop this phase-2 run. Resume only after the underlying bug is fixed on the release branch and QA re-tests.
+- **Minor** — release still ships. Create one **new Jira bug ticket per issue** (not on the RC ticket) with `affectedVersion` set to the version being shipped now, so future triage can trace which release exposed it. Leave `fixVersion` empty; the ticket lands in `iOS Unknown Fix Version` until it's scheduled into a specific release. **Do not wait** — proceed to the bump PR.
 
 ## 2. Bump versions on the release branch, in dependency order
 
