@@ -58,10 +58,12 @@ and passed to the SDK entry point
 
 Infer `Info.plist` requirements from OS APIs used in source:
 
-- `PHPhotoLibrary` (add-only access) → `NSPhotoLibraryAddUsageDescription`
-  required
-- `PHPickerViewController` / full photo library access →
+- `PHPhotoLibrary` (add-only access, `.addOnly`) →
+  `NSPhotoLibraryAddUsageDescription` required
+- `PHPhotoLibrary` (full library access, `.readWrite`) →
   `NSPhotoLibraryUsageDescription` required
+- `PHPickerViewController` → **no `Info.plist` permission key required**
+  (runs out-of-process; the app never gains direct photo-library access)
 - `AVCaptureDevice` / camera capture → `NSCameraUsageDescription` required
 
 Without the matching usage-description key, iOS prevents the permission

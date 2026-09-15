@@ -22,8 +22,10 @@
 You will see the [fieldName] extraction inside the specific extractions of `[term: success-result-case]`:
 
 ```json
-[Example extraction payload showing the new field among existing ones, copied from verified source or the Gini Bank API documentation. Mark the new field with a comment.]
+[Example extraction payload showing the new field among existing ones, copied from verified source or the Gini Bank API documentation. Keep the JSON valid — no inline comments.]
 ```
+
+Below the payload, name the new field in prose (for example: *"The `[fieldName]` entry is the new field added by this feature; it holds …"*), so readers can copy or lint the JSON as-is.
 
 For more information about the document's extractions, see the Gini Bank API's [Document Extractions documentation](https://gini.atlassian.net/wiki/spaces/PA1/pages/36831473/Document+Extractions).
 
