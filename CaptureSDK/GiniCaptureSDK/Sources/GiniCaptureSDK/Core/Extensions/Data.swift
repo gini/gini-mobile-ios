@@ -65,24 +65,24 @@ extension Data {
      box marker at offset 4 and one of the five HEIF brands at offset 8:
      `heic`, `heix`, `heif`, `mif1`, or `msf1`.
      */
+    private static let ftypMarker: [UInt8] = [0x66, 0x74, 0x79, 0x70]
+    private static let heifBrands: [[UInt8]] = [
+        [0x68, 0x65, 0x69, 0x63], // "heic"
+        [0x68, 0x65, 0x69, 0x78], // "heix"
+        [0x68, 0x65, 0x69, 0x66], // "heif"
+        [0x6D, 0x69, 0x66, 0x31], // "mif1"
+        [0x6D, 0x73, 0x66, 0x31]  // "msf1"
+    ]
+
     var isHEIC: Bool {
         guard count >= 12 else { return false }
 
-        let ftyp: [UInt8] = [0x66, 0x74, 0x79, 0x70]
-        let heifBrands: [[UInt8]] = [
-            [0x68, 0x65, 0x69, 0x63], // "heic"
-            [0x68, 0x65, 0x69, 0x78], // "heix"
-            [0x68, 0x65, 0x69, 0x66], // "heif"
-            [0x6D, 0x69, 0x66, 0x31], // "mif1"
-            [0x6D, 0x73, 0x66, 0x31]  // "msf1"
-        ]
-
         return withUnsafeBytes { raw -> Bool in
             let bytes = raw.bindMemory(to: UInt8.self)
-            for offset in 0..<4 where bytes[4 + offset] != ftyp[offset] {
+            for offset in 0..<4 where bytes[4 + offset] != Data.ftypMarker[offset] {
                 return false
             }
-            return heifBrands.contains { brand in
+            return Data.heifBrands.contains { brand in
                 for offset in 0..<4 where bytes[8 + offset] != brand[offset] {
                     return false
                 }

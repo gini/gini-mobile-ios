@@ -26,10 +26,10 @@ struct DataHEICTests {
      - Returns: 16-byte signature suitable for magic-byte detection tests.
      */
     private static func heicSignatureBytes(brand: [UInt8]) -> [UInt8] {
-        [0x00, 0x00, 0x00, 0x20,
-         0x66, 0x74, 0x79, 0x70]
-        + brand
-        + [0x00, 0x00, 0x00, 0x00]
+        let boxSize: [UInt8] = [0x00, 0x00, 0x00, 0x20]
+        let ftypBox: [UInt8] = [0x66, 0x74, 0x79, 0x70]
+        let padding: [UInt8] = [0x00, 0x00, 0x00, 0x00]
+        return boxSize + ftypBox + brand + padding
     }
 
     private static let heicBrand: [UInt8] = [0x68, 0x65, 0x69, 0x63]  // "heic"
@@ -154,23 +154,7 @@ struct DataHEICTests {
      */
     private static func makeRealHEICData(softwareTag: String? = nil,
                                          exifLensModel: String? = nil) -> Data? {
-        var rgba: [UInt8] = [255, 0, 0, 255]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        guard let provider = CGDataProvider(data: Data(bytes: &rgba, count: rgba.count) as CFData),
-              let cgImage = CGImage(width: 1,
-                                    height: 1,
-                                    bitsPerComponent: 8,
-                                    bitsPerPixel: 32,
-                                    bytesPerRow: 4,
-                                    space: colorSpace,
-                                    bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
-                                    provider: provider,
-                                    decode: nil,
-                                    shouldInterpolate: false,
-                                    intent: .defaultIntent)
-        else {
-            return nil
-        }
+        guard let cgImage = makeCGImage(rgba: [255, 0, 0, 255]) else { return nil }
 
         let target = NSMutableData()
         let heicUTI = "public.heic" as CFString
@@ -236,23 +220,7 @@ struct DataHEICTests {
        unavailable on the current platform.
      */
     private static func makeRealJPEGData() -> Data? {
-        var rgba: [UInt8] = [0, 255, 0, 255]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        guard let provider = CGDataProvider(data: Data(bytes: &rgba, count: rgba.count) as CFData),
-              let cgImage = CGImage(width: 1,
-                                    height: 1,
-                                    bitsPerComponent: 8,
-                                    bitsPerPixel: 32,
-                                    bytesPerRow: 4,
-                                    space: colorSpace,
-                                    bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
-                                    provider: provider,
-                                    decode: nil,
-                                    shouldInterpolate: false,
-                                    intent: .defaultIntent)
-        else {
-            return nil
-        }
+        guard let cgImage = makeCGImage(rgba: [0, 255, 0, 255]) else { return nil }
 
         let target = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(target, kUTTypeJPEG, 1, nil) else {
@@ -261,5 +229,31 @@ struct DataHEICTests {
         CGImageDestinationAddImage(destination, cgImage, nil)
         guard CGImageDestinationFinalize(destination) else { return nil }
         return target as Data
+    }
+
+    /**
+     Builds a 1×1 `CGImage` (premultiplied-last RGBA) from raw pixel bytes.
+     Shared boilerplate for `makeRealHEICData` and `makeRealJPEGData`.
+
+     - Parameter rgba: Exactly 4 bytes: red, green, blue, alpha.
+     - Returns: A 1×1 `CGImage`, or `nil` when construction fails.
+     */
+    private static func makeCGImage(rgba: [UInt8]) -> CGImage? {
+        var rgba = rgba
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        guard let provider = CGDataProvider(data: Data(bytes: &rgba, count: rgba.count) as CFData) else {
+            return nil
+        }
+        return CGImage(width: 1,
+                       height: 1,
+                       bitsPerComponent: 8,
+                       bitsPerPixel: 32,
+                       bytesPerRow: 4,
+                       space: colorSpace,
+                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+                       provider: provider,
+                       decode: nil,
+                       shouldInterpolate: false,
+                       intent: .defaultIntent)
     }
 }
