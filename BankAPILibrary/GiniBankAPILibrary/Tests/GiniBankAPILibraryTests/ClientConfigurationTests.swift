@@ -237,10 +237,12 @@ struct ClientConfigurationTests {
             try JSONDecoder().decode(ClientConfiguration.self, from: data)
         }
 
-        guard case .typeMismatch? = error else {
+        guard case .typeMismatch(_, let context)? = error else {
             Issue.record("Expected DecodingError.typeMismatch for `ingredientBrandScreens`, got \(String(describing: error))")
             return
         }
+        #expect(context.codingPath.last?.stringValue == "ingredientBrandScreens",
+                "Expected type mismatch on ingredientBrandScreens, got path \(context.codingPath)")
     }
 
     @Test("Decoding fails when the ingredientBrandScreens key is absent from JSON")
