@@ -27,8 +27,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/bs_shared.sh"
 
 # Override bs_shared.sh's default project — keeps payment-hint runs in a
-# dedicated BS bucket, separate from smoke / RA / Skonto / CX.
-BS_PROJECT="GiniBankSDK-iOS-PaymentHints-4.5.0"
+# dedicated BS bucket, separate from smoke / RA / Skonto / CX. Version comes
+# from SDK_VERSION set in bs_shared.sh so a single release bump updates both.
+BS_PROJECT="GiniBankSDK-iOS-PaymentHints-$SDK_VERSION"
 
 # ── Media files ────────────────────────────────────────────────────────────────
 # PDFs are uploaded so BrowserStack surfaces them in Files.app "Custom_Files"; the
