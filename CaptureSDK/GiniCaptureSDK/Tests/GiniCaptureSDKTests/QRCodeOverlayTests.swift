@@ -28,7 +28,7 @@ struct QRCodeOverlayTests {
     // MARK: - Insertion gating (ingredientBrandScreens)
 
     @Test("Ingredient brand is inserted (initially hidden) when the screens list contains \"Analysis\"")
-    func testIngredientBrandIsInsertedHiddenWhenScreensListContainsAnalysis() {
+    func ingredientBrandIsInsertedHiddenWhenScreensListContainsAnalysis() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
 
         let sut = QRCodeOverlay()
@@ -41,7 +41,7 @@ struct QRCodeOverlayTests {
     }
 
     @Test("Ingredient brand screens list match is case-insensitive")
-    func testIngredientBrandMatchesScreensListCaseInsensitively() {
+    func ingredientBrandMatchesScreensListCaseInsensitively() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["analysis"]
 
         let sut = QRCodeOverlay()
@@ -51,7 +51,7 @@ struct QRCodeOverlayTests {
     }
 
     @Test("Ingredient brand is omitted when the screens list is empty")
-    func testIngredientBrandIsOmittedWhenScreensListIsEmpty() {
+    func ingredientBrandIsOmittedWhenScreensListIsEmpty() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = []
 
         let sut = QRCodeOverlay()
@@ -61,7 +61,7 @@ struct QRCodeOverlayTests {
     }
 
     @Test("Ingredient brand is omitted before /configurations has been fetched")
-    func testIngredientBrandIsOmittedBeforeConfigurationsFetch() {
+    func ingredientBrandIsOmittedBeforeConfigurationsFetch() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
 
         let sut = QRCodeOverlay()
@@ -73,7 +73,7 @@ struct QRCodeOverlayTests {
     // MARK: - Visibility gating (correct-QR state)
 
     @Test("Ingredient brand shows on the correct-QR (dark full-overlay) state")
-    func testIngredientBrandShowsOnValidQRState() {
+    func ingredientBrandShowsOnValidQRState() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = QRCodeOverlay()
 
@@ -84,7 +84,7 @@ struct QRCodeOverlayTests {
     }
 
     @Test("Ingredient brand stays hidden on the incorrect-QR (clear-background) state")
-    func testIngredientBrandStaysHiddenOnInvalidQRState() {
+    func ingredientBrandStaysHiddenOnInvalidQRState() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = QRCodeOverlay()
 
@@ -95,7 +95,7 @@ struct QRCodeOverlayTests {
     }
 
     @Test("Ingredient brand appears on invalid → valid QR transition")
-    func testIngredientBrandAppearsOnInvalidToValidQRTransition() {
+    func ingredientBrandAppearsOnInvalidToValidQRTransition() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
         let sut = QRCodeOverlay()
 
