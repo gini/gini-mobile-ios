@@ -261,8 +261,8 @@ public class PaymentReviewModel {
 
         isImagesLoading = true
 
-        // withTaskGroup yields child results in completion order, so route each result back to
-        // its originating page index and write into a pre-sized buffer to preserve page order.
+        /// withTaskGroup yields child results in completion order, so route each result back to
+        /// its originating page index and write into a pre-sized buffer to preserve page order.
         var buffer: [PageCollectionCellViewModel?] = Array(repeating: nil, count: document.pageCount)
 
         await withTaskGroup(of: (Int, PageCollectionCellViewModel?).self) { group in

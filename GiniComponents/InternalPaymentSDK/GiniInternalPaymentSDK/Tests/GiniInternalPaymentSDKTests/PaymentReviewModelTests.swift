@@ -429,7 +429,7 @@ struct PaymentReviewModelTests {
     func fetchImagesPreservesPageOrder() async {
         let pageCount = 4
         let delegate = MockPaymentReviewDelegate()
-        // Invert order: page 1 slowest, page N fastest. Completion order will be N, N-1, …, 1.
+        /// Invert order: page 1 slowest, page N fastest. Completion order will be N, N-1, …, 1.
         for page in 1...pageCount {
             let delayMs = (pageCount - page + 1) * 25
             delegate.previewDelaysByPage[page] = TimeInterval(delayMs) / 1000
@@ -447,8 +447,10 @@ struct PaymentReviewModelTests {
         }
     }
 
-    /// Encode the page number into the PNG's pixel size so the test can identify which
-    /// page each decoded `UIImage` came from without needing pixel readback.
+    /**
+     Encode the page number into the PNG's pixel size so the test can identify which
+     page each decoded `UIImage` came from without needing pixel readback.
+     */
     private static func identifiablePNG(pageNumber: Int) -> Data {
         let size = CGSize(width: pageNumber, height: pageNumber)
         let format = UIGraphicsImageRendererFormat()
