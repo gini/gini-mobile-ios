@@ -79,6 +79,8 @@ final class QRCodeOverlay: UIView {
         return textStackView
     }()
 
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
+
     init() {
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
@@ -86,6 +88,7 @@ final class QRCodeOverlay: UIView {
         addSubview(incorrectQRFeedback)
 
         addLoadingView()
+        addPoweredByGiniBadgeIfEnabled()
     }
 
     required init?(coder: NSCoder) {
@@ -120,6 +123,24 @@ final class QRCodeOverlay: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         educationLoadingView = view
         addSubview(view)
+    }
+
+    /**
+     Adds the "Powered by Gini" badge if the Analysis screen is enabled, inserted hidden.
+     Visibility is toggled by `configureQrCodeOverlay(withCorrectQrCode:)`.
+     */
+    private func addPoweredByGiniBadgeIfEnabled() {
+        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
+                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        badge.isHidden = true
+        addSubview(badge)
+        badge.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(safeBottom).constant(-Constants.badgeBottomInset)
+        }
+        poweredByGiniBadgeView = badge
     }
 
     private func addOriginalLoadingView() {
@@ -256,6 +277,8 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
+        /// Badge is only shown on the dark full-overlay state; hidden on the clear background.
+        poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
     }
 
     func viewWillDisappear() {
@@ -315,6 +338,7 @@ final class QRCodeOverlay: UIView {
                                                    left: expandedSpacing,
                                                    bottom: expandedSpacing,
                                                    right: expandedSpacing)
+        static let badgeBottomInset: CGFloat = 16
     }
 
     private struct Strings {
