@@ -265,6 +265,12 @@ struct ClientConfigurationTests {
      Extracts a named sub-object (`valid`, `malformed`, `missing`) from
      `clientConfigurationWithIngredientBrand.json` and re-serializes it as the
      top-level JSON `Data` a `ClientConfiguration` decode expects.
+
+     - Parameter variant: Name of the sub-object to extract; one of `"valid"`,
+       `"malformed"`, or `"missing"`.
+     - Returns: The extracted sub-object serialized as top-level JSON `Data`.
+     - Throws: `MissingFixtureVariant` when the fixture does not contain a key
+       matching `variant`; rethrows any `JSONSerialization` decoding error.
      */
     private func ingredientBrandFixture(variant: String) throws -> Data {
         let root = loadFile(withName: "clientConfigurationWithIngredientBrand", ofType: "json")

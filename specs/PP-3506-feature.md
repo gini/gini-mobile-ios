@@ -40,8 +40,8 @@ PP-2570 shipped the Powered by Gini badge and wired `ingredientBrandScreens` end
 ## Affected modules
 
 - **GiniBankAPILibrary production** — no change. Auto-synthesized `Codable` handles both remaining decoding requirements correctly.
-- **GiniBankAPILibrary tests** — `ClientConfigurationTests.swift`: merged R1/R4 test on the two-variant fixture, plus a new R5 typeMismatch test; a small `ingredientBrandFixture(variant:)` helper extracts each sub-object.
-- **GiniBankAPILibrary fixtures** — `clientConfigurationWithIngredientBrand.json` restructured to a `{ valid, malformed }` envelope covering R1/R4/R5. `clientConfiguration.json` unchanged.
+- **GiniBankAPILibrary tests** — `ClientConfigurationTests.swift`: merged R1/R4 test on the three-variant fixture, plus a new R5 typeMismatch test and a missing-key pin; a small `ingredientBrandFixture(variant:)` helper extracts each sub-object.
+- **GiniBankAPILibrary fixtures** — `clientConfigurationWithIngredientBrand.json` restructured to a `{ valid, malformed, missing }` envelope covering R1/R4/R5 and the missing-key pin. `clientConfiguration.json` unchanged.
 - **GiniCaptureSDK tests** — `AnalysisViewControllerTests.swift`: two new consumer-side tests (unknown-values-with-Analysis, only-unknown-values).
 
 No production source in `GiniCaptureSDK` or `GiniBankSDK` changes — the consumer code (`AnalysisViewController.addPoweredByGiniBadgeIfEnabled` and `QRCodeOverlay.addPoweredByGiniBadgeIfEnabled`) is already `[String].contains { caseInsensitiveCompare("Analysis") }`, which is already forward-compatible with unknown values. The tests pin that behavior; the code stays as-is.
@@ -54,7 +54,7 @@ No production source in `GiniCaptureSDK` or `GiniBankSDK` changes — the consum
 
 ## Technical conventions
 
-1. **Language & access control:** Swift, `internal` by default. No new symbols in production. Doc-comment style per `.claude/rules/mandatory-rules.md` (gini-orchestrator-enforced).
+1. **Language & access control:** Swift, `internal` by default. No new symbols in production. Doc-comment style per `.claude/rules/mandatory-rules.md`.
 
 2. **UI:** No UI changes.
 
@@ -83,7 +83,7 @@ The dropped R3 (missing key → empty) was the only requirement that would have 
 
 ### 2. `ClientConfigurationTests.swift` — one merged test, one new test, one helper
 
-- **Combined R1 + R4 into one test:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` (renamed from `ingredientBrandScreensDecodesArrayFromJSON`). Reads the `valid` sub-object of the two-variant `clientConfigurationWithIngredientBrand.json` via the `ingredientBrandFixture(variant:)` helper. Assertion `#expect(config.ingredientBrandScreens == ["Analysis", "Foo", "UNKNOWN"])`.
+- **Combined R1 + R4 into one test:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` (renamed from `ingredientBrandScreensDecodesArrayFromJSON`). Reads the `valid` sub-object of the three-variant `clientConfigurationWithIngredientBrand.json` via the `ingredientBrandFixture(variant:)` helper. Assertion `#expect(config.ingredientBrandScreens == ["Analysis", "Foo", "UNKNOWN"])`.
 - **New test:** `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray`. Reads the `malformed` sub-object via the same helper. Assertion: `#expect(throws: DecodingError.self) { … }`, then `case .typeMismatch` match. Covers R5.
 - **New helper:** `ingredientBrandFixture(variant: String) throws -> Data` — uses `JSONSerialization` to extract the requested sub-object (`valid`, `malformed`, or `missing`) from the envelope fixture and re-serializes it as top-level JSON `Data` for `JSONDecoder`.
 - **Missing-key pin:** `decodingFailsWhenIngredientBrandScreensKeyIsAbsent`. Reads the `missing` sub-object. Assertion: `#expect(throws: DecodingError.self) { … }`, then `case .keyNotFound` match on `ingredientBrandScreens`. Mirrors the pre-existing `decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent`.
@@ -112,7 +112,7 @@ Every MUST requirement maps to at least one named test.
 
 **Existing test kept:** `ingredientBrandScreensDecodesEmptyArray` (R2). No change.
 
-**Merged R1 + R4:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` — renamed from `ingredientBrandScreensDecodesArrayFromJSON`, now reads the widened `valid` variant of the two-variant fixture.
+**Merged R1 + R4:** `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` — renamed from `ingredientBrandScreensDecodesArrayFromJSON`, now reads the widened `valid` variant of the three-variant fixture.
 
 **New tests:**
 - `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray` (R5), reads the `malformed` variant of the fixture.
@@ -142,7 +142,7 @@ None required. All PP-3506 behavior is unit-testable end-to-end at the decoding 
 ## Out of scope
 
 - **QR overlay.** PP-3506 says "Analysis screen"; per user decision, `QRCodeOverlay` and `QRCodeOverlayTests` are not touched.
-- **Async config race** (Copilot review comment on PP-2570). Repo-wide behavior of `GiniBankNetworkingScreenApiCoordinator.startSDK` — every sibling flag has the same "first-session-may-miss" timing. Separate ticket if ever prioritised.
+- **Async config race** in `GiniBankNetworkingScreenApiCoordinator.startSDK`. Repo-wide behavior — every sibling flag has the same "first-session-may-miss" timing. Separate ticket if ever prioritised.
 - **Backfilling docs / property comments on `ClientConfiguration`'s 14 sibling properties.** PP-2570 review deliberately kept these bare to match file convention.
 - **Localisation of "Powered by Gini".** Brand mark, pinned as non-localised under PP-2570 spec R11.
 
@@ -151,7 +151,7 @@ None required. All PP-3506 behavior is unit-testable end-to-end at the decoding 
 None. All three ambiguities from the clarifying-questions round (AC5 direction, AC4 test-scope layers, QR-overlay inclusion) have been resolved and folded into the requirements and the test plan.
 
 ## Implementation plan
-- [x] 1. Restructure `clientConfigurationWithIngredientBrand.json` into a `valid` / `malformed` two-variant envelope so R1/R4 (merged) and R5 both read from a single fixture via a small `ingredientBrandFixture(variant:)` helper
+- [x] 1. Restructure `clientConfigurationWithIngredientBrand.json` into a `valid` / `malformed` / `missing` three-variant envelope so R1/R4 (merged), R5, and the missing-key pin all read from a single fixture via a small `ingredientBrandFixture(variant:)` helper
 - [x] 2. Merge R1 + R4 into `ingredientBrandScreensDecodesArrayVerbatimIncludingUnknownScreenNames` and add `throwsTypeMismatchWhenIngredientBrandScreensIsNotAnArray` (R5) in `ClientConfigurationTests.swift`
 - [x] 3. Add `testAnalysisShowsBadgeWhenScreensListContainsAnalysisMixedWithUnknownValues` (R6) and `testAnalysisHidesBadgeWhenScreensListContainsOnlyUnknownValues` (R7) to `AnalysisViewControllerTests.swift`
 - [x] 4. **Scope-decision revert:** drop the custom `init(from:)` in `ClientConfiguration.swift` and the `decodesAsEmptyArrayWhenIngredientBrandScreensKeyIsAbsent` test — see "Scope decision" above. AC5 to be reworded/struck on the ticket.
