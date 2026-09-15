@@ -30,6 +30,8 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
     var lastClosedScreenType: PaymentComponentScreenType?
     var presentShareInvoiceCalled = false
     var previewResult: Result<Data, GiniError> = .success(Data())
+    var previewDataByPage: [Int: Data] = [:]
+    var previewDelaysByPage: [Int: TimeInterval] = [:]
 
     // PaymentReviewAPIProtocol
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
@@ -47,7 +49,15 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
         submitFeedbackCalled = true
     }
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniError>) -> Void) {
-        completion(previewResult)
+        let payload: Result<Data, GiniError> = previewDataByPage[pageNumber].map { .success($0) } ?? previewResult
+        guard let delay = previewDelaysByPage[pageNumber], delay > 0 else {
+            completion(payload)
+            return
+        }
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+            completion(payload)
+        }
     }
     func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {
         // This method will remain empty; no implementation is needed.

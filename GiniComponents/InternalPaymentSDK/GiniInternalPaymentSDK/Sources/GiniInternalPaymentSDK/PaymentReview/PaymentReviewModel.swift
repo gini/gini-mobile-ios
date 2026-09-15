@@ -258,25 +258,29 @@ public class PaymentReviewModel {
     */
     func fetchImages() async {
         guard let document, let documentId else { return }
-        
+
         isImagesLoading = true
-        
-        let viewModels = await withTaskGroup(of: PageCollectionCellViewModel?.self) { group in
+
+        // withTaskGroup yields child results in completion order, so route each result back to
+        // its originating page index and write into a pre-sized buffer to preserve page order.
+        var buffer: [PageCollectionCellViewModel?] = Array(repeating: nil, count: document.pageCount)
+
+        await withTaskGroup(of: (Int, PageCollectionCellViewModel?).self) { group in
             for page in 1 ... document.pageCount {
                 group.addTask {
-                    await self.buildCellViewModel(documentId: documentId, pageNumber: page)
+                    let cellViewModel = await self.buildCellViewModel(documentId: documentId,
+                                                                      pageNumber: page)
+                    return (page - 1, cellViewModel)
                 }
             }
-            
-            // Collect all the non nil results.
-            return await group.reduce(into: [PageCollectionCellViewModel]()) { result, cellViewModel in
-                guard let cellViewModel else { return }
-                result.append(cellViewModel)
+
+            for await (index, cellViewModel) in group {
+                buffer[index] = cellViewModel
             }
         }
-        
+
         isImagesLoading = false
-        cellViewModels.append(contentsOf: viewModels)
+        cellViewModels.append(contentsOf: buffer.compactMap { $0 })
         onPreviewImagesFetched?()
     }
     
