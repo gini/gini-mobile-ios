@@ -228,15 +228,10 @@ import GiniUtilites
         addPoweredByGiniBadgeIfEnabled()
     }
 
-    /**
-     Adds the "Powered by Gini" badge when `GiniCaptureUserDefaultsStorage.ingredientBrandScreens`
-     contains `"Analysis"` (case-insensitive), pinned centered above the safe-area bottom.
-     No-op otherwise.
-     */
+    /// Adds the "Powered by Gini" badge if the Analysis screen is enabled. No-op otherwise.
     private func addPoweredByGiniBadgeIfEnabled() {
-        let screens = GiniCaptureUserDefaultsStorage.ingredientBrandScreens ?? []
-        let hasAnalysis = screens.contains { $0.caseInsensitiveCompare("Analysis") == .orderedSame }
-        guard hasAnalysis else { return }
+        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
+                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else { return }
 
         let badge = PoweredByGiniBadgeView()
         view.addSubview(badge)
