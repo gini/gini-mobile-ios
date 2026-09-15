@@ -47,6 +47,13 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
          imageImportMethod: DocumentImportMethod? = nil,
          deviceOrientation: UIInterfaceOrientation? = nil,
          uploadMetadata: Document.UploadMetadata? = nil) {
+        /// Normalise HEIC input to JPEG — the backend does not accept HEIC
+        /// bytes, so every entry point must re-encode before the metadata
+        /// pipeline runs. The CGImageDestination-based helper preserves EXIF,
+        /// TIFF and GPS properties across the transcode.
+        let data = data.isHEIC
+            ? (data.jpegDataPreservingMetadata() ?? data)
+            : data
         self.previewImage = UIImage(data: processedImageData ?? data)
         self.isReviewable = true
         self.id = UUID().uuidString
