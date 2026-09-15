@@ -32,7 +32,7 @@ struct QRCodeOverlayTests {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
 
         let sut = QRCodeOverlay()
-        let ingredientBrand = findIngredientBrand(in: sut)
+        let ingredientBrand = findBadge(in: sut)
 
         #expect(ingredientBrand != nil,
                 "Expected the ingredient brand to be inserted when the flag lists Analysis")
@@ -46,7 +46,7 @@ struct QRCodeOverlayTests {
 
         let sut = QRCodeOverlay()
 
-        #expect(findIngredientBrand(in: sut) != nil,
+        #expect(findBadge(in: sut) != nil,
                 "Expected the ingredientBrandScreens match to be case-insensitive")
     }
 
@@ -56,7 +56,7 @@ struct QRCodeOverlayTests {
 
         let sut = QRCodeOverlay()
 
-        #expect(findIngredientBrand(in: sut) == nil,
+        #expect(findBadge(in: sut) == nil,
                 "Expected no ingredient brand when the flag is an empty array")
     }
 
@@ -66,7 +66,7 @@ struct QRCodeOverlayTests {
 
         let sut = QRCodeOverlay()
 
-        #expect(findIngredientBrand(in: sut) == nil,
+        #expect(findBadge(in: sut) == nil,
                 "Expected no ingredient brand when the flag is nil (fresh install, no /configurations fetched yet)")
     }
 
@@ -79,7 +79,7 @@ struct QRCodeOverlayTests {
 
         sut.configureQrCodeOverlay(withCorrectQrCode: true)
 
-        #expect(findIngredientBrand(in: sut)?.isHidden == false,
+        #expect(findBadge(in: sut)?.isHidden == false,
                 "Expected the ingredient brand to be visible on the dark full-overlay valid-QR state")
     }
 
@@ -90,7 +90,7 @@ struct QRCodeOverlayTests {
 
         sut.configureQrCodeOverlay(withCorrectQrCode: false)
 
-        #expect(findIngredientBrand(in: sut)?.isHidden == true,
+        #expect(findBadge(in: sut)?.isHidden == true,
                 "Expected the ingredient brand to stay hidden on the clear-background invalid-QR state — a white pill on transparent camera preview would look wrong")
     }
 
@@ -100,20 +100,20 @@ struct QRCodeOverlayTests {
         let sut = QRCodeOverlay()
 
         sut.configureQrCodeOverlay(withCorrectQrCode: false)
-        #expect(findIngredientBrand(in: sut)?.isHidden == true,
+        #expect(findBadge(in: sut)?.isHidden == true,
                 "Expected the ingredient brand hidden on the invalid state before the transition")
 
         sut.configureQrCodeOverlay(withCorrectQrCode: true)
-        #expect(findIngredientBrand(in: sut)?.isHidden == false,
+        #expect(findBadge(in: sut)?.isHidden == false,
                 "Expected the ingredient brand to become visible when the overlay transitions from invalid to valid QR")
     }
 
     // MARK: - Helpers
 
-    private func findIngredientBrand(in view: UIView) -> PoweredByGiniBadgeView? {
+    private func findBadge(in view: UIView) -> PoweredByGiniBadgeView? {
         if let ingredientBrand = view as? PoweredByGiniBadgeView { return ingredientBrand }
         for subview in view.subviews {
-            if let ingredientBrand = findIngredientBrand(in: subview) { return ingredientBrand }
+            if let ingredientBrand = findBadge(in: subview) { return ingredientBrand }
         }
         return nil
     }
