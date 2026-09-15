@@ -55,7 +55,7 @@ final class MockPaymentReviewDelegate: PaymentReviewProtocol {
             return
         }
         Task {
-            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+            try? await Task.sleep(for: .seconds(delay))
             completion(payload)
         }
     }
