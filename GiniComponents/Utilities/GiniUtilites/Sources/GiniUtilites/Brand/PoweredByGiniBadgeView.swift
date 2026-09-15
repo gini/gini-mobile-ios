@@ -32,13 +32,7 @@ public final class PoweredByGiniBadgeView: UIView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ])
+        imageView.giniMakeConstraints { $0.edges.equalToSuperview() }
 
         isAccessibilityElement = true
         accessibilityLabel = Strings.accessibilityLabel

@@ -240,11 +240,10 @@ import GiniUtilites
 
         let badge = PoweredByGiniBadgeView()
         view.addSubview(badge)
-        NSLayoutConstraint.activate([
-            badge.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            badge.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                          constant: -Constants.badgeBottomInset)
-        ])
+        badge.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeBottom).constant(-Constants.badgeBottomInset)
+        }
         poweredByGiniBadgeView = badge
     }
 

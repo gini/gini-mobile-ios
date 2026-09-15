@@ -138,11 +138,10 @@ final class QRCodeOverlay: UIView {
         let badge = PoweredByGiniBadgeView()
         badge.isHidden = true
         addSubview(badge)
-        NSLayoutConstraint.activate([
-            badge.centerXAnchor.constraint(equalTo: centerXAnchor),
-            badge.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
-                                          constant: -Constants.badgeBottomInset)
-        ])
+        badge.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(safeBottom).constant(-Constants.badgeBottomInset)
+        }
         poweredByGiniBadgeView = badge
     }
 
