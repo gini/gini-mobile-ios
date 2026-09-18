@@ -184,27 +184,27 @@ struct DataHEICTests {
     // MARK: - Real-file import (Files-app "Open with" path)
 
     /**
-     End-to-end against a real iPhone HEIC via the URL-based builder overload
+     End-to-end against a real iPhone HEIC via the data-based builder overload
      — mirrors the customer's Files-app "Open with" flow.
      Fixture: `iphone-heic-photo.heic` in `Tests/Resources/`.
+
+     The URL overload wraps `UIDocument.open`, which requires a hosted
+     application run loop and hangs in the SPM test process. Load the
+     fixture bytes directly and drive the data overload — that's the code
+     path the URL variant delegates to once `UIDocument` returns.
      */
-    @Test("`GiniCaptureDocumentBuilder.build(with openURL:)` imports a real iPhone HEIC and produces JPEG bytes")
-    func buildFromRealHEICFileURL() async throws {
+    @Test("`GiniCaptureDocumentBuilder.build(with data:)` imports a real iPhone HEIC and produces JPEG bytes")
+    func buildFromRealHEICFile() throws {
         let fixtureURL = try #require(
             Bundle.module.url(forResource: "iphone-heic-photo", withExtension: "heic")
         )
-
         let fileBytes = try Data(contentsOf: fixtureURL)
         try #require(fileBytes.isHEIC)
 
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "com.gini.tests"))
         builder.importMethod = .openWith
 
-        let document = await withCheckedContinuation { continuation in
-            builder.build(with: fixtureURL) { document in
-                continuation.resume(returning: document)
-            }
-        }
+        let document = builder.build(with: fileBytes, fileName: fixtureURL.lastPathComponent)
 
         let imageDocument = try #require(document as? GiniImageDocument)
         #expect(imageDocument.type == .image)
