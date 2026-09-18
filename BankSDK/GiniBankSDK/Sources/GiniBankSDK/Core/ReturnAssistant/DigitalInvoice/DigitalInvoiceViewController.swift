@@ -356,7 +356,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
 }
 
 extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell,
+    func modeSwitchValueChanged(cell _: DigitalLineItemTableViewCell,
                                 lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
 
         guard let invoice = viewModel.invoice else { return }
