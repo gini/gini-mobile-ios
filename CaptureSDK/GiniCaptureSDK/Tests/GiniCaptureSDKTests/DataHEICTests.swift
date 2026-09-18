@@ -15,6 +15,11 @@ import MobileCoreServices
 /**
  HEIC (ISO/IEC 23008-12) detection + transcode regression coverage.
  Accepted HEIF brands: `heic`, `heix`, `heif`, `mif1`, `msf1`.
+
+ The iOS Simulator does not ship a HEIC encoder, so tests here never call
+ `CGImageDestinationCreateWithData` with a HEIC UTI — that call hangs the
+ Swift Testing cooperative pool and starves every other suite. Real HEIC
+ coverage is driven off the `iphone-heic-photo.heic` fixture instead.
  */
 @Suite("Data extension — HEIC detection")
 struct DataHEICTests {
@@ -75,21 +80,6 @@ struct DataHEICTests {
         #expect(data.jpegDataPreservingMetadata() == nil)
     }
 
-    @Test("`jpegDataPreservingMetadata` preserves a planted EXIF field across the transcode")
-    func jpegDataPreservingMetadataKeepsEXIF() throws {
-        let expectedLens = "gini-capture-heic-exif-lens-test"
-        let heicData = try #require(Self.makeRealHEICData(exifLensModel: expectedLens))
-        let jpegData = try #require(heicData.jpegDataPreservingMetadata())
-
-        let source = try #require(CGImageSourceCreateWithData(jpegData as CFData, nil))
-        let properties = try #require(
-            CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
-        )
-        let exif = try #require(properties[kCGImagePropertyExifDictionary] as? [CFString: Any])
-        let lensModel = try #require(exif[kCGImagePropertyExifLensModel] as? String)
-        #expect(lensModel == expectedLens)
-    }
-
     @Test("`jpegDataPreservingMetadata` is idempotent on JPEG input (helper is not HEIC-only)")
     func jpegDataPreservingMetadataAcceptsJPEG() throws {
         let jpegBytes = try #require(Self.makeRealJPEGData())
@@ -97,88 +87,6 @@ struct DataHEICTests {
 
         let roundTripped = try #require(jpegBytes.jpegDataPreservingMetadata())
         #expect(roundTripped.isJPEG)
-    }
-
-    // MARK: - Backend expects JPEG, not HEIC
-
-    /**
-     Real HEIC through `GiniImageDocument` — stored `data` must be JPEG.
-     Synthetic 16-byte headers aren't decodable, so build via `CGImageDestination`.
-     */
-    @Test("`GiniImageDocument` stores JPEG bytes when initialised from real HEIC data")
-    func giniImageDocumentNormalisesRealHEICToJPEG() throws {
-        let heicData = try #require(Self.makeRealHEICData())
-        try #require(heicData.isHEIC)
-
-        let document = GiniImageDocument(data: heicData,
-                                         imageSource: .external,
-                                         imageImportMethod: .openWith,
-                                         deviceOrientation: nil)
-
-        #expect(document.data.isJPEG)
-        #expect(!document.data.isHEIC)
-    }
-
-    /**
-     Plants a TIFF `Software` tag in the source and reads it off the
-     transcoded JPEG — proves `CGImageDestination` preserves metadata.
-     */
-    @Test("`GiniImageDocument.data` preserves EXIF/TIFF metadata across the HEIC → JPEG transcode")
-    func giniImageDocumentPreservesTIFFMetadataAcrossTranscode() throws {
-        let expectedSoftwareTag = "gini-capture-heic-metadata-test"
-        let heicData = try #require(Self.makeRealHEICData(softwareTag: expectedSoftwareTag))
-
-        let document = GiniImageDocument(data: heicData,
-                                         imageSource: .external,
-                                         imageImportMethod: .openWith,
-                                         deviceOrientation: nil)
-
-        let source = try #require(CGImageSourceCreateWithData(document.data as CFData, nil))
-        let properties = try #require(
-            CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
-        )
-        let tiff = try #require(properties[kCGImagePropertyTIFFDictionary] as? [CFString: Any])
-        let software = try #require(tiff[kCGImagePropertyTIFFSoftware] as? String)
-        #expect(software == expectedSoftwareTag)
-    }
-
-    /**
-     Encodes a 1×1 pixel as HEIC via `CGImageDestination`, optionally embedding
-     a TIFF `Software` and/or EXIF `LensModel` tag.
-
-     - Parameters:
-       - softwareTag: Optional TIFF `Software` tag to plant in the source.
-       - exifLensModel: Optional EXIF `LensModel` tag to plant in the source.
-     - Returns: HEIC bytes on success, or `nil` when the HEIC encoder is
-       unavailable on the current platform.
-     */
-    private static func makeRealHEICData(softwareTag: String? = nil,
-                                         exifLensModel: String? = nil) -> Data? {
-        guard let cgImage = makeCGImage(rgba: [255, 0, 0, 255]) else { return nil }
-
-        let target = NSMutableData()
-        let heicUTI = "public.heic" as CFString
-        guard let destination = CGImageDestinationCreateWithData(target, heicUTI, 1, nil) else {
-            return nil
-        }
-
-        var properties: [CFString: Any] = [:]
-        if let softwareTag {
-            properties[kCGImagePropertyTIFFDictionary] = [
-                kCGImagePropertyTIFFSoftware: softwareTag
-            ] as CFDictionary
-        }
-        if let exifLensModel {
-            properties[kCGImagePropertyExifDictionary] = [
-                kCGImagePropertyExifLensModel: exifLensModel
-            ] as CFDictionary
-        }
-        CGImageDestinationAddImage(destination,
-                                   cgImage,
-                                   properties.isEmpty ? nil : properties as CFDictionary)
-
-        guard CGImageDestinationFinalize(destination) else { return nil }
-        return target as Data
     }
 
     // MARK: - Real-file import (Files-app "Open with" path)
@@ -233,7 +141,6 @@ struct DataHEICTests {
 
     /**
      Builds a 1×1 `CGImage` (premultiplied-last RGBA) from raw pixel bytes.
-     Shared boilerplate for `makeRealHEICData` and `makeRealJPEGData`.
 
      - Parameter rgba: Exactly 4 bytes: red, green, blue, alpha.
      - Returns: A 1×1 `CGImage`, or `nil` when construction fails.
