@@ -116,6 +116,33 @@ import GiniUtilites
     private var centerYConstraint = NSLayoutConstraint()
     private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
 
+    /**
+     Animated Gini loading indicator shown when `ingredientBrandScreens` contains
+     `"Analysis"`. Nil when the flag is off or the GIF asset failed to decode — in
+     both cases the SDK falls back to the default `UIActivityIndicatorView` (or the
+     integrator's `CustomLoadingIndicatorAdapter`). Exposed as `internal` so tests
+     can pre-empt the lazy value to exercise the asset-missing fallback path (R7).
+     */
+    private var giniIndicatorRegularVerticalConstraints: [NSLayoutConstraint] = []
+    private var giniIndicatorCompactVerticalConstraints: [NSLayoutConstraint] = []
+    /**
+     `true` once the Gini indicator has been added as a persistent subview in
+     `setupView`. Guarantees the g mark stays anchored across the education →
+     standard-loading transition — only text elements change position, the mark
+     itself never moves. `showOriginalLoadingMessage` and
+     `showEducationLoadingMessage` both check this and skip re-adding the g.
+     */
+    private var giniIndicatorAddedPersistently: Bool = false
+
+    lazy var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView? = {
+        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
+                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else {
+            return nil
+        }
+        let indicator = PoweredByGiniLoadingIndicatorView()
+        return indicator.hasValidAsset ? indicator : nil
+    }()
+
     var pages: [GiniCapturePage]?
 
     /**
@@ -174,10 +201,22 @@ import GiniUtilites
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
     }
 
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        /// Resume the Gini loading indicator when returning to foreground while
+        /// analysis is still ongoing. `startAnimation()` is idempotent so this is
+        /// safe even on first appearance (already started in `showOriginalLoadingMessage`).
+        poweredByGiniLoadingIndicatorView?.startAnimation()
+    }
+
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         removeCaptureSuggestions()
+
+        /// Release the Gini indicator's animation loop while the screen is offscreen.
+        poweredByGiniLoadingIndicatorView?.stopAnimation()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -188,11 +227,20 @@ import GiniUtilites
         }
     }
 
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+            applyGiniIndicatorConstraintsForCurrentTraits()
+        }
+    }
+
     // MARK: Toggle animation
 
     /// Displays a loading activity indicator. Should be called when document analysis is started.
     public func showAnimation() {
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+        if let giniIndicator = poweredByGiniLoadingIndicatorView {
+            giniIndicator.startAnimation()
+        } else if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
             loadingIndicatorView.startAnimating()
@@ -201,7 +249,9 @@ import GiniUtilites
 
     /// Hides the loading activity indicator. Should be called when document analysis is finished.
     public func hideAnimation() {
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+        if let giniIndicator = poweredByGiniLoadingIndicatorView {
+            giniIndicator.stopAnimation()
+        } else if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
             loadingIndicatorView.stopAnimating()
@@ -223,9 +273,22 @@ import GiniUtilites
             imageView.image = document.previewImage
         }
 
+        addPersistentGiniIndicatorIfEnabled()
         configureLoadingIndicator()
         addOverlay()
         addPoweredByGiniBadgeIfEnabled()
+    }
+
+    /**
+     Adds the Gini loading indicator as a persistent subview BEFORE the loading
+     branch decides between education vs original flow. This guarantees the mark
+     stays visually anchored across the education → standard transition — only
+     text elements change, the g never jumps position.
+     */
+    private func addPersistentGiniIndicatorIfEnabled() {
+        guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
+        addGiniLoadingIndicator(giniIndicator)
+        giniIndicatorAddedPersistently = true
     }
 
     /// Adds the "Powered by Gini" badge if the Analysis screen is enabled. No-op otherwise.
@@ -286,43 +349,154 @@ import GiniUtilites
                                                dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
-        addLoadingContainer()
-        addLoadingView(intoContainer: loadingIndicatorContainer)
-
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            addLoadingText(below: loadingIndicator.injectedView())
-            loadingIndicator.startAnimation()
+        if let giniIndicator = poweredByGiniLoadingIndicatorView {
+            giniIndicator.accessibilityValue = loadingIndicatorText.text
+            if !giniIndicatorAddedPersistently {
+                addGiniLoadingIndicator(giniIndicator)
+            }
+            addGiniLoadingText(below: giniIndicator)
+            giniIndicator.startAnimation()
         } else {
-            addLoadingText(below: loadingIndicatorView)
-            loadingIndicatorView.startAnimating()
+            addLoadingContainer()
+            addLoadingView(intoContainer: loadingIndicatorContainer)
+
+            if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+                addLoadingText(below: loadingIndicator.injectedView())
+                loadingIndicator.startAnimation()
+            } else {
+                addLoadingText(below: loadingIndicatorView)
+                loadingIndicatorView.startAnimating()
+            }
         }
         // immediately mark animation complete
         animationCompletionContinuations.forEach { $0.resume() }
         animationCompletionContinuations.removeAll()
     }
 
+    /**
+     Adds the Gini loading indicator to the root view. The g mark renders at its
+     intrinsic Figma size (~135pt tall) in **both** orientations — only the vertical
+     center changes:
+     - **Regular vertical** (portrait iPhone, iPad): centerY at 40% of view height
+       from the top, matching Figma `top: calc(50% - 80.5px)` on the reference frame.
+     - **Compact vertical** (landscape iPhone): centerY at ~28% of view height from
+       the top, so the g mark + the loading text below it stay above the
+       capture-suggestions tip banner without shrinking the mark.
+
+     The two constraint sets are swapped in `traitCollectionDidChange` when the
+     vertical size class flips at runtime.
+     */
+    private func addGiniLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
+        view.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+
+        giniIndicatorRegularVerticalConstraints = [
+            NSLayoutConstraint(item: indicator,
+                               attribute: .centerY,
+                               relatedBy: .equal,
+                               toItem: view,
+                               attribute: .centerY,
+                               multiplier: Constants.giniIndicatorRegularVerticalCenterYMultiplier,
+                               constant: 0)
+        ]
+        giniIndicatorCompactVerticalConstraints = [
+            NSLayoutConstraint(item: indicator,
+                               attribute: .centerY,
+                               relatedBy: .equal,
+                               toItem: view,
+                               attribute: .centerY,
+                               multiplier: Constants.giniIndicatorCompactVerticalCenterYMultiplier,
+                               constant: 0)
+        ]
+
+        applyGiniIndicatorConstraintsForCurrentTraits()
+    }
+
+    /**
+     Activates the size-class-appropriate constraint set for the Gini indicator.
+     No-op when the Gini path isn't active (arrays are empty), so this is safe to
+     call from `traitCollectionDidChange` regardless of which loading path is running.
+     */
+    private func applyGiniIndicatorConstraintsForCurrentTraits() {
+        guard !giniIndicatorRegularVerticalConstraints.isEmpty else { return }
+        let isCompactVertical = traitCollection.verticalSizeClass == .compact
+        let toActivate = isCompactVertical
+            ? giniIndicatorCompactVerticalConstraints
+            : giniIndicatorRegularVerticalConstraints
+        let toDeactivate = isCompactVertical
+            ? giniIndicatorRegularVerticalConstraints
+            : giniIndicatorCompactVerticalConstraints
+        NSLayoutConstraint.deactivate(toDeactivate)
+        NSLayoutConstraint.activate(toActivate)
+    }
+
+    /**
+     Pins `loadingIndicatorText` directly to the root view (not the spinner container),
+     below the Gini indicator. Layout parallels `addLoadingText(below:)` but scopes the
+     text into the root view since the Gini path bypasses `loadingIndicatorContainer`.
+     */
+    private func addGiniLoadingText(below giniIndicator: UIView) {
+        view.addSubview(loadingIndicatorText)
+        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            loadingIndicatorText.topAnchor.constraint(equalTo: giniIndicator.bottomAnchor,
+                                                      constant: Constants.padding),
+            loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                         constant: -Constants.padding)])
+    }
+
     private func showEducationLoadingMessage() {
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
+        let ingredientBrandEnabled = IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
+                                                                     in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens)
+        /// When the persistent Gini indicator is active, tell the education view to
+        /// skip its own internal `imageView` — the g mark is already anchored to
+        /// the screen and the education carousel only needs to render text + suffix
+        /// below it. This is what keeps the g visually static across the transition.
+        let hideEducationImageView = giniIndicatorAddedPersistently
+        let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: ingredientBrandEnabled,
+                                                     hideImageView: hideEducationImageView)
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel, style: style)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
 
-        NSLayoutConstraint.activate([
+        var constraints: [NSLayoutConstraint] = [
             customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                        constant: Constants.educationLoadingViewPadding),
             customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
                                                         constant: -Constants.educationLoadingViewPadding)
-        ])
+        ]
+        if hideEducationImageView, let giniIndicator = poweredByGiniLoadingIndicatorView {
+            /// Persistent-g layout: anchor the education carousel's text stack directly
+            /// below the g mark's bottom. The g holds its position, only the text below it
+            /// swaps content between education and standard.
+            constraints.append(customLoadingView.topAnchor.constraint(equalTo: giniIndicator.bottomAnchor,
+                                                                       constant: Constants.padding))
+        } else {
+            /// Fallback layout (non-ingredient-brand): center the whole educationView
+            /// (with its own internal imageView) on the screen, as before.
+            constraints.append(customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor))
+        }
+        NSLayoutConstraint.activate(constraints)
 
         Task {
             await finalizeEducationAnimation(viewModel)
 
             ///  remove QRCodeEducationLoadingView once animation finished
             customLoadingView.removeFromSuperview()
+
+            /// Keep the Analysis screen populated while extraction continues in
+            /// the background — without this, removing the education view leaves
+            /// a blank screen for the remainder of the extraction request.
+            showOriginalLoadingMessage()
         }
     }
 
@@ -468,6 +642,17 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
         static let badgeBottomInset: CGFloat = 16
+        /// Places the Gini ingredient-brand loading indicator's centerY at 40% of
+        /// view height from the top — the fraction Figma's `top: calc(50% - 80.5px)`
+        /// resolves to on the 812pt reference screen. Used in regular vertical size
+        /// class (portrait iPhone, iPad).
+        static let giniIndicatorRegularVerticalCenterYMultiplier: CGFloat = 0.80
+        /// Places the Gini indicator at ~28% of view height from the top in compact
+        /// vertical size class (landscape iPhone) so the loading text below it stays
+        /// clear of the capture-suggestions tip banner. The indicator itself retains
+        /// its intrinsic Figma height (~135pt) — only the centerY changes between
+        /// orientations, not the mark's size.
+        static let giniIndicatorCompactVerticalCenterYMultiplier: CGFloat = 0.55
     }
 
     struct Strings {
