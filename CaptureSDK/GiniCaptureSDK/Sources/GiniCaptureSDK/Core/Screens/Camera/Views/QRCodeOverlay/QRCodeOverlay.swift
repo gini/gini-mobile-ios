@@ -197,6 +197,7 @@ final class QRCodeOverlay: UIView {
         if poweredByGiniLoadingIndicatorView != nil { return }
         guard let brandedIndicator = makeBrandedLoadingIndicatorIfEnabled() else { return }
         poweredByGiniLoadingIndicatorView = brandedIndicator
+        brandedIndicator.accessibilityLabel = loadingIndicatorText.text
         loadingContainer.removeArrangedSubview(loadingIndicatorView)
         loadingIndicatorView.removeFromSuperview()
         loadingContainer.insertArrangedSubview(brandedIndicator, at: 0)
