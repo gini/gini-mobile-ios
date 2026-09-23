@@ -6,6 +6,7 @@
 
 import UIKit
 import Combine
+import GiniUtilites
 
 final class QRCodeEducationLoadingView: UIView {
 
@@ -13,6 +14,22 @@ final class QRCodeEducationLoadingView: UIView {
         let textColor: UIColor
         let analysingTextColor: UIColor
         let useDarkAppearance: Bool
+        /**
+         When `true`, each carousel item's `imageView` renders the animated Gini "g"
+         mark from `PoweredByGiniLoadingIndicatorView.animatedImage()` instead of the
+         item's own `image`. Defaults to `false` so all existing call sites (QRCodeOverlay,
+         non-ingredient-brand Analysis) are behavior-identical.
+         */
+        let useIngredientBrandIndicator: Bool
+        /**
+         When `true`, the internal `imageView` is not added to the view hierarchy at
+         all and text/suffix elements are anchored to the top of `self` instead of the
+         imageView's bottom. Used by `AnalysisViewController`'s ingredient-brand path,
+         where the g mark is added as a persistent subview earlier in the view lifecycle
+         so it stays anchored across the education → standard transition. Defaults to
+         `false` for backwards compatibility with QRCodeOverlay.
+         */
+        let hideImageView: Bool
 
         private static let defaultTextColor = GiniColor(light: .GiniCapture.dark1,
                                                         dark: .GiniCapture.light1).uiColor()
@@ -21,10 +38,14 @@ final class QRCodeEducationLoadingView: UIView {
 
         init(textColor: UIColor = defaultTextColor,
              analysingTextColor: UIColor = defaultAnalysingTextColor,
-             useDarkAppearance: Bool = false) {
+             useDarkAppearance: Bool = false,
+             useIngredientBrandIndicator: Bool = false,
+             hideImageView: Bool = false) {
             self.textColor = textColor
             self.analysingTextColor = analysingTextColor
             self.useDarkAppearance = useDarkAppearance
+            self.useIngredientBrandIndicator = useIngredientBrandIndicator
+            self.hideImageView = hideImageView
         }
     }
 
@@ -92,12 +113,14 @@ final class QRCodeEducationLoadingView: UIView {
     private func setupViews() {
         configureImageViewVisibility()
 
-        addSubview(imageView)
+        if !style.hideImageView {
+            addSubview(imageView)
+        }
         addSubview(textLabel)
         addSubview(animatedSuffixLabelView)
         animatedSuffixLabelView.startAnimating()
 
-        if isAccessibilityDeviceWithoutNotch {
+        if style.hideImageView || isAccessibilityDeviceWithoutNotch {
             configureWithoutNotchConstraints()
         } else {
             configureStandardNotchConstraints()
@@ -176,7 +199,14 @@ final class QRCodeEducationLoadingView: UIView {
     }
 
     private func configure(with model: QRCodeEducationLoadingItem) {
-        imageView.image = model.image
+        if !style.hideImageView {
+            if style.useIngredientBrandIndicator,
+               let brandedImage = PoweredByGiniLoadingIndicatorView.animatedImage(for: traitCollection) {
+                imageView.image = brandedImage
+            } else {
+                imageView.image = model.image
+            }
+        }
         textLabel.text = model.text
         let announcementArgument = model.text + "\n" + Strings.loadingAccessibilityText
         UIAccessibility.post(notification: .announcement, argument: announcementArgument)
