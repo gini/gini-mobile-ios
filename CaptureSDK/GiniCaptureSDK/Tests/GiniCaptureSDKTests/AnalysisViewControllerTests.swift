@@ -194,6 +194,77 @@ final class AnalysisViewControllerTests: XCTestCase {
                        "Expected badge to be visible after removeCaptureSuggestions — the screen is dismissing and the badge should be in a clean visible state for any re-presentation")
     }
 
+    // MARK: - Powered by Gini loading indicator (PP-3511, ingredient brand)
+
+    func testAnalysisShowsPoweredByGiniLoadingIndicatorWhenScreensListContainsAnalysis() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeImportImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findLoadingIndicator(in: sut.view),
+                        "Expected PoweredByGiniLoadingIndicatorView to be added when storage contains \"Analysis\"")
+        XCTAssertNil(findActivitySpinner(in: sut.view),
+                     "Expected default UIActivityIndicatorView to be omitted when Gini indicator is active")
+    }
+
+    func testAnalysisShowsPoweredByGiniLoadingIndicatorWhenScreenNameIsLowercase() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["analysis"]
+        let sut = AnalysisViewController(document: makeImportImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findLoadingIndicator(in: sut.view),
+                        "Expected loading-indicator match to be case-insensitive")
+    }
+
+    func testAnalysisHidesPoweredByGiniLoadingIndicatorWhenIngredientBrandScreensIsEmpty() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = []
+        let sut = AnalysisViewController(document: makeImportImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNil(findLoadingIndicator(in: sut.view),
+                     "Expected no PoweredByGiniLoadingIndicatorView when ingredientBrandScreens is empty")
+        XCTAssertNotNil(findActivitySpinner(in: sut.view),
+                        "Expected default UIActivityIndicatorView when flag is off")
+    }
+
+    func testAnalysisPoweredByGiniLoadingIndicatorOverridesCustomLoadingIndicator() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let config = sepaExtractionsConfig()
+        let stubAdapter = StubLoadingIndicatorAdapter()
+        config.customLoadingIndicator = stubAdapter
+        let sut = AnalysisViewController(document: makeImportImageDocument(),
+                                         giniConfiguration: config)
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNotNil(findLoadingIndicator(in: sut.view),
+                        "Expected Gini indicator to win over customLoadingIndicator when the flag is on")
+        XCTAssertFalse(stubAdapter.startAnimationCalled,
+                       "Expected customLoadingIndicator.startAnimation() to NOT be called when the Gini indicator is active")
+    }
+
+    func testAnalysisFallsBackToDefaultSpinnerWhenGiniIndicatorAssetIsUnavailable() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        let sut = AnalysisViewController(document: makeImportImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+        /// Pre-empt the lazy var so `showOriginalLoadingMessage` sees a nil indicator,
+        /// exercising the asset-missing fallback (R7) without touching the GIF bundle.
+        sut.poweredByGiniLoadingIndicatorView = nil
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNil(findLoadingIndicator(in: sut.view),
+                     "Expected no PoweredByGiniLoadingIndicatorView when the asset is unavailable")
+        XCTAssertNotNil(findActivitySpinner(in: sut.view),
+                        "Expected default UIActivityIndicatorView as R7 fallback")
+    }
+
     // MARK: - Helpers
 
     private func sepaExtractionsConfig() -> GiniConfiguration {
@@ -207,6 +278,22 @@ final class AnalysisViewControllerTests: XCTestCase {
         if let badge = view as? PoweredByGiniBadgeView { return badge }
         for subview in view.subviews {
             if let badge = findBadge(in: subview) { return badge }
+        }
+        return nil
+    }
+
+    private func findLoadingIndicator(in view: UIView) -> PoweredByGiniLoadingIndicatorView? {
+        if let indicator = view as? PoweredByGiniLoadingIndicatorView { return indicator }
+        for subview in view.subviews {
+            if let indicator = findLoadingIndicator(in: subview) { return indicator }
+        }
+        return nil
+    }
+
+    private func findActivitySpinner(in view: UIView) -> UIActivityIndicatorView? {
+        if let spinner = view as? UIActivityIndicatorView { return spinner }
+        for subview in view.subviews {
+            if let spinner = findActivitySpinner(in: subview) { return spinner }
         }
         return nil
     }
@@ -236,4 +323,15 @@ final class AnalysisViewControllerTests: XCTestCase {
         }
         return GiniImageDocument(data: imageData, imageSource: .external)
     }
+}
+
+private final class StubLoadingIndicatorAdapter: CustomLoadingIndicatorAdapter {
+    private(set) var startAnimationCalled = false
+    private(set) var stopAnimationCalled = false
+    private let hostedView = UIView()
+
+    func injectedView() -> UIView { hostedView }
+    func onDeinit() {}
+    func startAnimation() { startAnimationCalled = true }
+    func stopAnimation() { stopAnimationCalled = true }
 }
