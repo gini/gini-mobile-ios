@@ -69,6 +69,22 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
+     Re-decodes and swaps in the appearance-matched HEIC when the interface
+     style flips at runtime. The asset catalog's `luminosity` variants make
+     `NSDataAsset(name:bundle:)` return the light or dark HEIC based on the
+     current trait, so we just need to trigger the reload here.
+     */
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+        let wasAnimating = imageView.isAnimating
+        reloadAnimatedImage()
+        if wasAnimating {
+            imageView.startAnimating()
+        }
+    }
+
+    /**
      Starts the underlying `UIImageView` frame animation. Idempotent — safe
      to call when already animating. No-op when `hasValidAsset` is `false`.
      */
@@ -85,18 +101,22 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Returns the decoded animated `UIImage`, or `nil` if the HEIC asset
-     couldn't be loaded or decoded. Callers outside this view (e.g.
-     `QRCodeEducationLoadingView`) use this to render the same animated
-     mark without instantiating a full `PoweredByGiniLoadingIndicatorView`.
+     Returns the decoded animated `UIImage` for the given trait collection's
+     `userInterfaceStyle`, or `nil` if the HEIC asset couldn't be loaded or
+     decoded. Callers outside this view (e.g. `QRCodeEducationLoadingView`)
+     use this to render the same animated mark without instantiating a full
+     `PoweredByGiniLoadingIndicatorView`.
+
+     - Parameter traitCollection: Trait collection whose `userInterfaceStyle`
+       selects the light or dark HEIC variant. Defaults to `.current`.
      */
-    public static func animatedImage() -> UIImage? {
-        guard let extracted = decodeFrames() else { return nil }
+    public static func animatedImage(for traitCollection: UITraitCollection = .current) -> UIImage? {
+        guard let extracted = decodeFrames(for: traitCollection.userInterfaceStyle) else { return nil }
         return UIImage.animatedImage(with: extracted.frames, duration: extracted.duration)
     }
 
     private func reloadAnimatedImage() {
-        guard let extracted = Self.decodeFrames() else {
+        guard let extracted = Self.decodeFrames(for: traitCollection.userInterfaceStyle) else {
             imageView.animationImages = nil
             imageView.image = nil
             imageView.animationDuration = 0
@@ -116,8 +136,20 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         invalidateIntrinsicContentSize()
     }
 
-    static func decodeFrames() -> ExtractedFrames? {
-        guard let dataAsset = NSDataAsset(name: Constants.assetName, bundle: .module) else {
+    /**
+     Loads the HEIC data asset matching the given interface style from two
+     separate universal datasets — `gini_loading_indicator_light` and
+     `gini_loading_indicator_dark`. The two-dataset split (rather than a
+     single dataset with `luminosity` appearance variants) works around
+     Xcode's asset-catalog editor showing a spurious "unassigned child"
+     warning for `.dataset` appearance variants of animated payloads
+     (`actool` compiles either layout cleanly).
+     */
+    static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
+        let assetName = style == .dark
+            ? Constants.darkAssetName
+            : Constants.lightAssetName
+        guard let dataAsset = NSDataAsset(name: assetName, bundle: .module) else {
             return nil
         }
         return decodeFrames(from: dataAsset.data)
@@ -190,7 +222,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
 
 private extension PoweredByGiniLoadingIndicatorView {
     enum Constants {
-        static let assetName = "gini_loading_indicator"
+        static let lightAssetName = "gini_loading_indicator_light"
+        static let darkAssetName = "gini_loading_indicator_dark"
         static let fallbackFrameDelay: TimeInterval = 0.1
         /// Matches Figma's `Animation Gini` container height (`36375:182135`,
         /// `36375:182438` in the PP-3511 handoff). All decoded frames are
