@@ -89,7 +89,6 @@ final class QRCodeOverlay: UIView {
         addSubview(incorrectQRFeedback)
 
         addLoadingView()
-        addPoweredByGiniBadgeIfEnabled()
     }
 
     required init?(coder: NSCoder) {
@@ -158,9 +157,6 @@ final class QRCodeOverlay: UIView {
 
         if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
             loadingIndicator = customLoadingIndicator
-        } else if let brandedIndicator = makeBrandedLoadingIndicatorIfEnabled() {
-            poweredByGiniLoadingIndicatorView = brandedIndicator
-            loadingIndicator = brandedIndicator
         } else {
             loadingIndicator = loadingIndicatorView
         }
@@ -173,8 +169,7 @@ final class QRCodeOverlay: UIView {
     /**
      Builds the animated Gini "g" loading indicator when the Analysis screen is
      ingredient-branded and the HEIC asset decoded successfully. Returns `nil`
-     otherwise so `addOriginalLoadingView` can fall back to the standard
-     `UIActivityIndicatorView`.
+     otherwise so callers fall back to the standard `UIActivityIndicatorView`.
      */
     private func makeBrandedLoadingIndicatorIfEnabled() -> PoweredByGiniLoadingIndicatorView? {
         guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
@@ -188,6 +183,23 @@ final class QRCodeOverlay: UIView {
             return nil
         }
         return indicator
+    }
+
+    /**
+     On the first show where `ingredientBrandScreens` includes the Analysis
+     screen and no custom loading indicator is configured, swaps the standard
+     `UIActivityIndicatorView` for the branded `PoweredByGiniLoadingIndicatorView`
+     inside `loadingContainer`. Reads the flag on every call; no-op once the
+     branded indicator is installed.
+     */
+    private func installBrandedLoadingIndicatorIfNeeded() {
+        if configuration.customLoadingIndicator != nil { return }
+        if poweredByGiniLoadingIndicatorView != nil { return }
+        guard let brandedIndicator = makeBrandedLoadingIndicatorIfEnabled() else { return }
+        poweredByGiniLoadingIndicatorView = brandedIndicator
+        loadingContainer.removeArrangedSubview(loadingIndicatorView)
+        loadingIndicatorView.removeFromSuperview()
+        loadingContainer.insertArrangedSubview(brandedIndicator, at: 0)
     }
 
     func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
@@ -310,8 +322,19 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
+        addPoweredByGiniBadgeIfNeeded()
         /// Badge is only shown on the dark full-overlay state; hidden on the clear background.
         poweredByGiniBadgeView?.isHidden = !isQrCodeCorrect
+    }
+
+    /**
+     Adds the "Powered by Gini" badge on the first QR detection when the
+     Analysis screen is ingredient-branded. Reads the flag on every call;
+     no-op once the badge is added.
+     */
+    private func addPoweredByGiniBadgeIfNeeded() {
+        guard poweredByGiniBadgeView == nil else { return }
+        addPoweredByGiniBadgeIfEnabled()
     }
 
     func viewWillDisappear() {
@@ -332,6 +355,7 @@ final class QRCodeOverlay: UIView {
             }
             educationLoadingView?.isHidden = false
         } else {
+            installBrandedLoadingIndicatorIfNeeded()
             loadingContainer.isHidden = false
             if let loadingIndicator = configuration.customLoadingIndicator {
                 loadingIndicator.startAnimation()
