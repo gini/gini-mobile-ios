@@ -387,28 +387,21 @@ import GiniUtilites
      */
     private func addGiniLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
         view.addSubview(indicator)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.giniMakeConstraints { $0.centerX.equalTo(view.centerX) }
 
-        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-
-        giniIndicatorRegularVerticalConstraints = [
-            NSLayoutConstraint(item: indicator,
-                               attribute: .centerY,
-                               relatedBy: .equal,
-                               toItem: view,
-                               attribute: .centerY,
-                               multiplier: Constants.giniIndicatorRegularVerticalCenterYMultiplier,
-                               constant: 0)
-        ]
-        giniIndicatorCompactVerticalConstraints = [
-            NSLayoutConstraint(item: indicator,
-                               attribute: .centerY,
-                               relatedBy: .equal,
-                               toItem: view,
-                               attribute: .centerY,
-                               multiplier: Constants.giniIndicatorCompactVerticalCenterYMultiplier,
-                               constant: 0)
-        ]
+        giniIndicatorRegularVerticalConstraints = indicator.giniMakeConstraints {
+            $0.centerY.equalTo(view.centerY)
+                .multipliedBy(Constants.giniIndicatorRegularVerticalCenterYMultiplier)
+        }
+        giniIndicatorCompactVerticalConstraints = indicator.giniMakeConstraints {
+            $0.centerY.equalTo(view.centerY)
+                .multipliedBy(Constants.giniIndicatorCompactVerticalCenterYMultiplier)
+        }
+        /// Both size-class-specific centerY sets are activated on creation by the
+        /// DSL; deactivate them up front so `applyGiniIndicatorConstraintsForCurrentTraits`
+        /// installs only the one that matches the current vertical size class.
+        NSLayoutConstraint.deactivate(giniIndicatorRegularVerticalConstraints
+                                      + giniIndicatorCompactVerticalConstraints)
 
         applyGiniIndicatorConstraintsForCurrentTraits()
     }
