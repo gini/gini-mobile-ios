@@ -70,9 +70,9 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
 
     /**
      Re-decodes and swaps in the appearance-matched HEIC when the interface
-     style flips at runtime. The asset catalog's `luminosity` variants make
-     `NSDataAsset(name:bundle:)` return the light or dark HEIC based on the
-     current trait, so we just need to trigger the reload here.
+     style flips at runtime. `decodeFrames(for:)` picks between the
+     `gini_loading_indicator_light` and `gini_loading_indicator_dark` datasets
+     by name from the current `userInterfaceStyle`.
      */
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -102,13 +102,16 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
 
     /**
      Returns the decoded animated `UIImage` for the given trait collection's
-     `userInterfaceStyle`, or `nil` if the HEIC asset couldn't be loaded or
-     decoded. Callers outside this view (e.g. `QRCodeEducationLoadingView`)
-     use this to render the same animated mark without instantiating a full
-     `PoweredByGiniLoadingIndicatorView`.
+     `userInterfaceStyle`. Callers outside this view (e.g.
+     `QRCodeEducationLoadingView`) use this to render the same animated mark
+     without instantiating a full `PoweredByGiniLoadingIndicatorView`.
 
-     - Parameter traitCollection: Trait collection whose `userInterfaceStyle`
-       selects the light or dark HEIC variant. Defaults to `.current`.
+     - Parameters:
+       - traitCollection: Trait collection whose `userInterfaceStyle` selects
+         the light or dark HEIC variant. Defaults to `.current`.
+
+     - Returns: The decoded animated `UIImage`, or `nil` if the HEIC asset
+       could not be loaded or decoded.
      */
     public static func animatedImage(for traitCollection: UITraitCollection = .current) -> UIImage? {
         guard let extracted = decodeFrames(for: traitCollection.userInterfaceStyle) else { return nil }
