@@ -9,16 +9,16 @@ import UIKit
 import ImageIO
 
 /**
- Animated Gini "g" loading indicator shown on the Analysis screen when
- ingredient-brand mode is enabled. Loads a single animated HEIC (`HEICS`)
- asset from `GiniBrand.xcassets`, decodes the frames via `CGImageSource`,
- and renders them in a looping `UIImageView` scaled to Figma's `Animation
- Gini` container height (135pt).
-
- The asset is theme-agnostic — the Gini mark's brand color reads on both
- light and dark backgrounds — so a single dataset serves both interface
- styles. This replaces the earlier two-GIF (light + dark) layout and cuts
- the shipped resource payload by ~85%.
+ Animated Gini "g" loading indicator shown on the Analysis screen and QR
+ overlay when ingredient-brand mode is enabled. Loads one of two animated
+ HEIC (`HEICS`) assets from `GiniBrand.xcassets` —
+ `gini_loading_indicator_light.dataset` or
+ `gini_loading_indicator_dark.dataset` — picked by name from the current
+ `UIUserInterfaceStyle`, decodes the frames via `CGImageSource`, and
+ renders them in a looping `UIImageView` scaled to Figma's `Animation
+ Gini` container height (135pt). `traitCollectionDidChange` swaps the
+ decoded frame set when the appearance flips at runtime without recreating
+ the view.
 
  If the asset is missing or fails to decode, `hasValidAsset` is `false` and
  the view renders empty; callers should check the flag and fall back to
@@ -140,36 +140,51 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Loads the HEIC data asset matching the given interface style from two
-     separate universal datasets — `gini_loading_indicator_light` and
-     `gini_loading_indicator_dark`. The two-dataset split (rather than a
-     single dataset with `luminosity` appearance variants) works around
-     Xcode's asset-catalog editor showing a spurious "unassigned child"
-     warning for `.dataset` appearance variants of animated payloads
-     (`actool` compiles either layout cleanly).
+     Loads and decodes the HEIC data asset matching the given interface style
+     from one of two universal datasets — `gini_loading_indicator_light` and
+     `gini_loading_indicator_dark` — and returns the decoded frame set from
+     the process-wide cache when available so repeat callers (e.g. the
+     education carousel and the standalone view) don't re-decode. Main-thread
+     use only.
      */
     static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
+        if let cached = cachedFrames[style] { return cached }
         let assetName = style == .dark
             ? Constants.darkAssetName
             : Constants.lightAssetName
         guard let dataAsset = NSDataAsset(name: assetName, bundle: .module) else {
             return nil
         }
-        return decodeFrames(from: dataAsset.data)
+        guard let extracted = decodeFrames(from: dataAsset.data) else { return nil }
+        cachedFrames[style] = extracted
+        return extracted
     }
 
+    /**
+     Decodes each frame via `CGImageSourceCreateThumbnailAtIndex` capped at
+     `Constants.thumbnailMaxPixelSize` so the retained CGImage backing store
+     stays well below the source's exported pixel resolution while still
+     leaving headroom above the `@3x` device scale of the shipped 135pt
+     layout container. The returned per-frame `scale` keeps
+     `UIImage.size.height == Constants.targetPointHeight`; width scales
+     proportionally via `scaleAspectFit`.
+     */
     static func decodeFrames(from data: Data) -> ExtractedFrames? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             return nil
         }
         let count = CGImageSourceGetCount(source)
-        guard count > 0,
-              let firstCGImage = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
+        guard count > 0 else { return nil }
+        let thumbnailOptions: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: Constants.thumbnailMaxPixelSize
+        ]
+        guard let firstCGImage = CGImageSourceCreateThumbnailAtIndex(source,
+                                                                     0,
+                                                                     thumbnailOptions as CFDictionary) else {
             return nil
         }
-        /// Scale each frame so `UIImage.size.height == Constants.targetPointHeight`
-        /// regardless of the asset's exported pixel resolution. Width scales
-        /// proportionally via `scaleAspectFit`.
         let pixelHeight = CGFloat(firstCGImage.height)
         guard pixelHeight > 0 else { return nil }
         let scale = max(pixelHeight / Constants.targetPointHeight, 1)
@@ -177,7 +192,9 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         var frames: [UIImage] = [UIImage(cgImage: firstCGImage, scale: scale, orientation: .up)]
         var duration: TimeInterval = frameDelay(source: source, index: 0)
         for index in 1..<count {
-            guard let cgImage = CGImageSourceCreateImageAtIndex(source, index, nil) else { continue }
+            guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source,
+                                                                    index,
+                                                                    thumbnailOptions as CFDictionary) else { continue }
             frames.append(UIImage(cgImage: cgImage, scale: scale, orientation: .up))
             duration += frameDelay(source: source, index: index)
         }
@@ -186,6 +203,11 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
             : TimeInterval(frames.count) * Constants.fallbackFrameDelay
         return ExtractedFrames(frames: frames, duration: safeDuration)
     }
+
+    /// Process-wide cache of decoded frame sets, keyed by interface style.
+    /// At most two entries (light + dark). Populated lazily by
+    /// `decodeFrames(for:)`. Main-thread access only.
+    private static var cachedFrames: [UIUserInterfaceStyle: ExtractedFrames] = [:]
 
     struct ExtractedFrames {
         let frames: [UIImage]
@@ -232,6 +254,11 @@ private extension PoweredByGiniLoadingIndicatorView {
         /// scaled so `UIImage.size.height` == this value; width follows the
         /// exported aspect ratio.
         static let targetPointHeight: CGFloat = 135
+        /// Cap on decoded frame pixel dimensions, chosen to leave headroom above
+        /// the maximum `@3x` device pixel need (`targetPointHeight × 3 ≈ 405`) while
+        /// keeping the retained CGImage backing store far below the source HEIC's
+        /// exported resolution (~1006×1006 in the shipped asset).
+        static let thumbnailMaxPixelSize: Int = 512
     }
 
     enum Strings {
