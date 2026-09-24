@@ -349,7 +349,7 @@ import GiniUtilites
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
         if let giniIndicator = poweredByGiniLoadingIndicatorView {
-            giniIndicator.accessibilityValue = loadingIndicatorText.text
+            giniIndicator.accessibilityLabel = loadingIndicatorText.text
             if !giniIndicatorAddedPersistently {
                 addGiniLoadingIndicator(giniIndicator)
             }
