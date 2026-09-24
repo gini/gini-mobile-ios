@@ -155,6 +155,23 @@ struct QRCodeOverlayTests {
                 "Expected the integrator's startAnimation not to be called on the branded path")
     }
 
+    @Test("Branded g installs at show time when the gate flips on after the overlay was constructed")
+    func brandedLoaderInstallsAtShowTimeWhenGateFlipsOnAfterConstruction() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
+
+        let sut = QRCodeOverlay()
+        #expect(findLoadingIndicator(in: sut) == nil,
+                "Expected no branded indicator immediately after construction while the gate is off")
+
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
+        sut.showAnimation()
+
+        #expect(findLoadingIndicator(in: sut) != nil,
+                "Expected the branded indicator to install at show time once the flag arrived after construction")
+        #expect(findActivityIndicator(in: sut) == nil,
+                "Expected the standard UIActivityIndicatorView to be swapped out when the branded loader installs")
+    }
+
     @Test("Integrator's customLoadingIndicator is honored when the ingredient-brand gate is off")
     func integratorCustomLoaderUsedWhenGateOff() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil
