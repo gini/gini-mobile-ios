@@ -194,7 +194,7 @@ final class AnalysisViewControllerTests: XCTestCase {
                        "Expected badge to be visible after removeCaptureSuggestions — the screen is dismissing and the badge should be in a clean visible state for any re-presentation")
     }
 
-    // MARK: - Powered by Gini loading indicator (PP-3511, ingredient brand)
+    // MARK: - Powered by Gini loading indicator (ingredient brand)
 
     func testAnalysisShowsPoweredByGiniLoadingIndicatorWhenScreensListContainsAnalysis() {
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
@@ -254,7 +254,7 @@ final class AnalysisViewControllerTests: XCTestCase {
         let sut = AnalysisViewController(document: makeImportImageDocument(),
                                          giniConfiguration: sepaExtractionsConfig())
         /// Pre-empt the lazy var so `showOriginalLoadingMessage` sees a nil indicator,
-        /// exercising the asset-missing fallback (R7) without touching the GIF bundle.
+        /// exercising the asset-missing fallback without touching the asset bundle.
         sut.poweredByGiniLoadingIndicatorView = nil
 
         sut.loadViewIfNeeded()
@@ -262,7 +262,7 @@ final class AnalysisViewControllerTests: XCTestCase {
         XCTAssertNil(findLoadingIndicator(in: sut.view),
                      "Expected no PoweredByGiniLoadingIndicatorView when the asset is unavailable")
         XCTAssertNotNil(findActivitySpinner(in: sut.view),
-                        "Expected default UIActivityIndicatorView as R7 fallback")
+                        "Expected default UIActivityIndicatorView fallback when the branded asset is unavailable")
     }
 
     // MARK: - Helpers

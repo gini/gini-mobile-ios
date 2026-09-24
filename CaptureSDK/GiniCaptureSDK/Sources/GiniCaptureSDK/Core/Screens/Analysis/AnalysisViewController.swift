@@ -116,24 +116,23 @@ import GiniUtilites
     private var centerYConstraint = NSLayoutConstraint()
     private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
 
-    /**
-     Animated Gini loading indicator shown when `ingredientBrandScreens` contains
-     `"Analysis"`. Nil when the flag is off or the GIF asset failed to decode — in
-     both cases the SDK falls back to the default `UIActivityIndicatorView` (or the
-     integrator's `CustomLoadingIndicatorAdapter`). Exposed as `internal` so tests
-     can pre-empt the lazy value to exercise the asset-missing fallback path (R7).
-     */
     private var giniIndicatorRegularVerticalConstraints: [NSLayoutConstraint] = []
     private var giniIndicatorCompactVerticalConstraints: [NSLayoutConstraint] = []
+
     /**
      `true` once the Gini indicator has been added as a persistent subview in
-     `setupView`. Guarantees the g mark stays anchored across the education →
-     standard-loading transition — only text elements change position, the mark
-     itself never moves. `showOriginalLoadingMessage` and
-     `showEducationLoadingMessage` both check this and skip re-adding the g.
+     `setupView`. Guarantees the mark stays anchored across the education →
+     standard-loading transition — only text elements change position.
      */
     private var giniIndicatorAddedPersistently: Bool = false
 
+    /**
+     Animated Gini loading indicator shown when `ingredientBrandScreens` contains
+     `"Analysis"`. Nil when the flag is off or the asset failed to decode — in
+     both cases the SDK falls back to the default `UIActivityIndicatorView` (or
+     the integrator's `CustomLoadingIndicatorAdapter`). Exposed as `internal`
+     so tests can pre-empt the lazy value to exercise the fallback path.
+     */
     lazy var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView? = {
         guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
                                               in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else {
@@ -439,15 +438,12 @@ import GiniUtilites
      */
     private func addGiniLoadingText(below giniIndicator: UIView) {
         view.addSubview(loadingIndicatorText)
-        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            loadingIndicatorText.topAnchor.constraint(equalTo: giniIndicator.bottomAnchor,
-                                                      constant: Constants.padding),
-            loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                         constant: -Constants.padding)])
+        loadingIndicatorText.giniMakeConstraints {
+            $0.top.equalTo(giniIndicator.bottom).constant(Constants.padding)
+            $0.leading.equalTo(imageView.leading)
+            $0.centerX.equalTo(imageView.centerX)
+            $0.bottom.lessThanOrEqualTo(view.safeBottom).constant(-Constants.padding)
+        }
     }
 
     private func showEducationLoadingMessage() {
@@ -464,28 +460,22 @@ import GiniUtilites
         let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: ingredientBrandEnabled,
                                                      hideImageView: hideEducationImageView)
         let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel, style: style)
-        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
-
-        var constraints: [NSLayoutConstraint] = [
-            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                       constant: Constants.educationLoadingViewPadding),
-            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                        constant: -Constants.educationLoadingViewPadding)
-        ]
-        if hideEducationImageView, let giniIndicator = poweredByGiniLoadingIndicatorView {
-            /// Persistent-g layout: anchor the education carousel's text stack directly
-            /// below the g mark's bottom. The g holds its position, only the text below it
-            /// swaps content between education and standard.
-            constraints.append(customLoadingView.topAnchor.constraint(equalTo: giniIndicator.bottomAnchor,
-                                                                       constant: Constants.padding))
-        } else {
-            /// Fallback layout (non-ingredient-brand): center the whole educationView
-            /// (with its own internal imageView) on the screen, as before.
-            constraints.append(customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor))
+        customLoadingView.giniMakeConstraints {
+            $0.centerX.equalTo(view.centerX)
+            $0.leading.greaterThanOrEqualTo(view.leading).constant(Constants.educationLoadingViewPadding)
+            $0.trailing.lessThanOrEqualTo(view.trailing).constant(-Constants.educationLoadingViewPadding)
+            if hideEducationImageView, let giniIndicator = poweredByGiniLoadingIndicatorView {
+                /// Persistent-g layout: anchor the education carousel's text stack directly
+                /// below the g mark's bottom. The g holds its position, only the text below it
+                /// swaps content between education and standard.
+                $0.top.equalTo(giniIndicator.bottom).constant(Constants.padding)
+            } else {
+                /// Fallback layout (non-ingredient-brand): center the whole educationView
+                /// (with its own internal imageView) on the screen, as before.
+                $0.centerY.equalTo(view.centerY)
+            }
         }
-        NSLayoutConstraint.activate(constraints)
 
         Task {
             await finalizeEducationAnimation(viewModel)

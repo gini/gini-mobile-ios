@@ -225,8 +225,7 @@ private extension PoweredByGiniLoadingIndicatorView {
         static let lightAssetName = "gini_loading_indicator_light"
         static let darkAssetName = "gini_loading_indicator_dark"
         static let fallbackFrameDelay: TimeInterval = 0.1
-        /// Matches Figma's `Animation Gini` container height (`36375:182135`,
-        /// `36375:182438` in the PP-3511 handoff). All decoded frames are
+        /// Height of Figma's `Animation Gini` container. All decoded frames are
         /// scaled so `UIImage.size.height` == this value; width follows the
         /// exported aspect ratio.
         static let targetPointHeight: CGFloat = 135
