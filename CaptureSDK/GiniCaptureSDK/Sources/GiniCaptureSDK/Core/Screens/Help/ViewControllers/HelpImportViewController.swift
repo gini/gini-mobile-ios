@@ -8,11 +8,7 @@
 
 import UIKit
 
-final class HelpImportViewController: UIViewController, HelpBottomBarEnabledViewController {
-
-    var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
+final class HelpImportViewController: UIViewController {
 
     private enum HelpImportCellType {
         case selectInvoice
@@ -44,7 +40,6 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateBottomBarHeightBasedOnOrientation()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin * 2, right: 0)
     }
 
@@ -64,9 +59,6 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
         view.addSubview(tableView)
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
-        configureBottomNavigationBar(
-            configuration: giniConfiguration,
-            under: tableView)
     }
 
     private func configureTableView() {
@@ -87,10 +79,8 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
     }
 
     private func configureConstraints() {
-        if !giniConfiguration.bottomNavigationBarEnabled {
-            NSLayoutConstraint.activate([
-                tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
-        }
+        NSLayoutConstraint.activate([
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor)
         ])

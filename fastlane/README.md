@@ -269,7 +269,7 @@ Parameters:
 Environment Variables:
   APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
   APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
-  APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
+  APP_STORE_CONNECT_API_KEY         - App Store Connect API key content (base64-encoded .p8)
 
 
 ### ios publish_to_testflight
@@ -278,16 +278,16 @@ Environment Variables:
 [bundle exec] fastlane ios publish_to_testflight
 ```
 
-Upload an .ipa to TestFlight via xcrun altool.
+Upload an .ipa to TestFlight via the App Store Connect API.
 
 Parameters:
-  ipa_path - Path to the .ipa file (default: "./GiniBankSDKExample.ipa")
+  ipa_path - Path to the .ipa file, e.g. "./GiniBankSDKExample.ipa" or
+             "./GiniHealthSDKExample.ipa" (default: "./GiniBankSDKExample.ipa")
 
 Environment Variables:
   APP_STORE_CONNECT_API_KEY_ID      - App Store Connect API key ID
   APP_STORE_CONNECT_API_ISSUER_ID   - App Store Connect API issuer ID
-  APP_STORE_CONNECT_API_KEY_PATH    - Path to the .p8 API key file
-                                      (default: build_artifacts/AppStoreConnectAPIKey.p8)
+  APP_STORE_CONNECT_API_KEY         - App Store Connect API key content (base64-encoded .p8)
 
 
 ----

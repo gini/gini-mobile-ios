@@ -230,6 +230,46 @@ final class GiniHealthDocumentHandlingTests: GiniHealthTestCase {
             XCTAssertNotNil(error, "Error should not be nil when document is missing")
         }
     }
+
+    // MARK: - Submit Feedback
+
+    func testSubmitFeedbackReturnsSuccessWhenSuccessful() throws {
+        let extractionsContainer: GiniHealthSDK.ExtractionsContainer = try XCTUnwrap(
+            GiniHealthSDKTests.load(fromFile: "extractionResultWithIBAN"))
+        let updatedExtractions = GiniHealthSDK.ExtractionResult(extractionsContainer: extractionsContainer).extractions
+
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.submitFeedback(docId: MockSessionManager.payableDocumentID,
+                                      updatedExtractions: updatedExtractions,
+                                      completion: $0)
+        })
+
+        switch result {
+        case .success:
+            break // Expected
+        case .failure(let error):
+            XCTFail("Expected success but received error: \(error)")
+        }
+    }
+
+    func testSubmitFeedbackReturnsErrorWhenFailure() throws {
+        let extractionsContainer: GiniHealthSDK.ExtractionsContainer = try XCTUnwrap(
+            GiniHealthSDKTests.load(fromFile: "extractionResultWithIBAN"))
+        let updatedExtractions = GiniHealthSDK.ExtractionResult(extractionsContainer: extractionsContainer).extractions
+
+        let result = try XCTUnwrap(waitForResult {
+            giniHealth.submitFeedback(docId: MockSessionManager.failurePayableDocumentID,
+                                      updatedExtractions: updatedExtractions,
+                                      completion: $0)
+        })
+
+        switch result {
+        case .success:
+            XCTFail("Expected failure but received success")
+        case .failure(let error):
+            XCTAssertNotNil(error, "Error should not be nil when the feedback request fails")
+        }
+    }
 }
 
 

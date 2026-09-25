@@ -127,9 +127,6 @@
 //"ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "CM Deselect item";
 //"ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "CM Select item";
 //
-//"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "CM Your reasons to return this item";
-//"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "CM Cancel";
-//
 //"ginibank.digitalinvoice.headermessage.primary" = "CM Scan successful!";
 //"ginibank.digitalinvoice.headermessage.secondary" = "CM You can now deselect items you would like to return.";
 //

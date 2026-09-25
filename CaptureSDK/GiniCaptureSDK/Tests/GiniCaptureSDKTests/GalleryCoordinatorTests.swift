@@ -59,8 +59,8 @@ final class GalleryCoordinatorTests: XCTestCase {
                 self.selectImage(at: IndexPath(row: 1, section: 0), in: self.galleryManager.albums[2]) { _ in
                     self.coordinator.openImages()
 
-                    let expect = self.expectation(for: NSPredicate(value: true),
-                                                  evaluatedWith: delegate.didOpenImages,
+                    let expect = self.expectation(for: NSPredicate(block: { _, _ in delegate.didOpenImages }),
+                                                  evaluatedWith: NSNull(),
                                                   handler: nil)
                     self.wait(for: [expect], timeout: 10)
                     XCTAssertTrue(delegate.didOpenImages,

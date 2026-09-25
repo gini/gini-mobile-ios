@@ -110,4 +110,48 @@ final class HelpMenuViewControllerTests: XCTestCase {
                      "Row selection should be cleared so VoiceOver doesn't re-announce it")
     }
 
+    // MARK: - Bottom-nav collapse regression guards
+
+    /// `configureConstraints()` unconditionally pins the tableView's bottom
+    /// edge to `view.bottomAnchor`. Walk the view's constraints and assert
+    /// exactly one bottom-anchor constraint between the tableView and its
+    /// superview is active.
+    func testTableViewBottomAnchorAlwaysActive() {
+        let vc = HelpMenuViewController(giniConfiguration: .shared)
+        _ = vc.view
+        vc.view.setNeedsLayout()
+        vc.view.layoutIfNeeded()
+
+        let bottomConstraints = vc.view.constraints.filter { constraint in
+            guard constraint.isActive else { return false }
+            guard constraint.firstAttribute == .bottom,
+                  constraint.secondAttribute == .bottom else { return false }
+            let firstIsTable = constraint.firstItem === vc.tableView
+            let secondIsTable = constraint.secondItem === vc.tableView
+            let firstIsView = constraint.firstItem === vc.view
+            let secondIsView = constraint.secondItem === vc.view
+            return (firstIsTable && secondIsView) || (firstIsView && secondIsTable)
+        }
+
+        XCTAssertFalse(bottomConstraints.isEmpty,
+                       "tableView.bottomAnchor must be pinned to view.bottomAnchor unconditionally")
+    }
+
+    /// Regression guard: no stored property on `HelpMenuViewController` may
+    /// contain `bottomNav` or `bottomBar`. Parallels the mirror-walk
+    /// regression scoped to the help-menu VC.
+    func testNoBottomNavigationBarProperty() {
+        let vc = HelpMenuViewController(giniConfiguration: .shared)
+        _ = vc.view
+
+        let mirror = Mirror(reflecting: vc)
+        for child in mirror.children {
+            guard let name = child.label else { continue }
+            XCTAssertFalse(name.lowercased().contains("bottomnav"),
+                           "Stored property \(name) must not reference bottomNav — the adapter surface is not supported")
+            XCTAssertFalse(name.lowercased().contains("bottombar"),
+                           "Stored property \(name) must not reference bottomBar — the adapter surface is not supported")
+        }
+    }
+
 }

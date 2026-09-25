@@ -363,7 +363,6 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         let lineItem = [extractionQuantity, extractionsBaseGross, extractionDescription, extractionArtNumber]
         let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose, extractionAmountToPay, extractionIban, extractionPaymentRecipient],
                                                      lineItems: [lineItem, lineItem],
-                                                     returnReasons: [],
                                                      candidates: [:])
         if let doc = self.manuallyCreatedDocument {
             let result = (document: doc, extractionResult: extractionResult)

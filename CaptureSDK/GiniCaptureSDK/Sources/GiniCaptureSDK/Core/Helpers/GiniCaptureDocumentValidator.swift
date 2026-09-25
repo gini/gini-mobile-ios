@@ -58,37 +58,57 @@ fileprivate extension GiniCaptureDocumentValidator {
 
     class func validateType(for document: GiniCaptureDocument) throws {
         switch document {
-        case let document as GiniQRCodeDocument:
-            try validate(qrCode: document)
-        case let pdfDocument as GiniPDFDocument:
-            if pdfDocument.data.isPDF {
-                if let dataProvider = CGDataProvider(data: pdfDocument.data as CFData),
-                    let pdfDocument = CGPDFDocument(dataProvider) {
-                        if !pdfDocument.isUnlocked {
-                            throw DocumentValidationError.pdfPasswordProtected
-                        }
-                }
-                if case 1...maxPagesCount = pdfDocument.numberPages {
-                    return
-                } else {
-                    throw DocumentValidationError.pdfPageLengthExceeded
-                }
-            } else {
-                throw DocumentValidationError.fileFormatNotValid
-            }
-        case let imageDocument as GiniImageDocument:
-            if imageDocument.data.isImage {
-                if !(imageDocument.data.isJPEG ||
-                    imageDocument.data.isPNG ||
-                    imageDocument.data.isGIF ||
-                    imageDocument.data.isTIFF) {
-                    throw DocumentValidationError.imageFormatNotValid
-                }
-            } else {
-                throw DocumentValidationError.fileFormatNotValid
-            }
+        case let qr as GiniQRCodeDocument:
+            try validate(qrCode: qr)
+
+        case let pdf as GiniPDFDocument:
+            try validate(pdfDocument: pdf)
+
+        case let image as GiniImageDocument:
+            try validate(imageDocument: image)
+
         default:
             break
+        }
+    }
+
+    private class func validate(pdfDocument: GiniPDFDocument) throws {
+        guard pdfDocument.data.isPDF else {
+            throw DocumentValidationError.fileFormatNotValid
+        }
+
+        try ensurePDFUnlocked(pdfDocument)
+        try ensurePageCountValid(pdfDocument)
+    }
+
+    private class func ensurePDFUnlocked(_ pdfDocument: GiniPDFDocument) throws {
+        guard let provider = CGDataProvider(data: pdfDocument.data as CFData),
+              let cgPDF = CGPDFDocument(provider)
+        else {
+            return
+        }
+
+        if !cgPDF.isUnlocked {
+            throw DocumentValidationError.pdfPasswordProtected
+        }
+    }
+
+    private class func ensurePageCountValid(_ pdfDocument: GiniPDFDocument) throws {
+        guard (1...maxPagesCount).contains(pdfDocument.numberPages) else {
+            throw DocumentValidationError.pdfPageLengthExceeded
+        }
+    }
+
+    private class func validate(imageDocument: GiniImageDocument) throws {
+        guard imageDocument.data.isImage else {
+            throw DocumentValidationError.fileFormatNotValid
+        }
+
+        guard imageDocument.data.isJPEG ||
+                imageDocument.data.isPNG ||
+                imageDocument.data.isGIF ||
+                imageDocument.data.isTIFF else {
+            throw DocumentValidationError.imageFormatNotValid
         }
     }
 

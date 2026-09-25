@@ -424,4 +424,41 @@ struct PaymentReviewModelTests {
         #expect(previewFetchedCalled == true)
         #expect(model.isImagesLoading == false, "isImagesLoading must be false after fetch completes")
     }
+
+    @Test("fetchImages preserves page order regardless of preview completion timing")
+    func fetchImagesPreservesPageOrder() async {
+        let pageCount = 4
+        let delegate = MockPaymentReviewDelegate()
+        /// Invert order: page 1 slowest, page N fastest. Completion order will be N, N-1, …, 1.
+        for page in 1...pageCount {
+            let delayMs = (pageCount - page + 1) * 25
+            delegate.previewDelaysByPage[page] = TimeInterval(delayMs) / 1000
+            delegate.previewDataByPage[page] = Self.identifiablePNG(pageNumber: page)
+        }
+        let model = makePaymentReviewModelWithDocument(delegate: delegate,
+                                                       bottomSheetsProvider: MockBottomSheetsProvider(),
+                                                       document: .testDocument(pageCount: pageCount))
+        await model.fetchImages()
+        #expect(model.cellViewModels.count == pageCount)
+        for index in 0..<model.cellViewModels.count {
+            let expectedPage = index + 1
+            #expect(Int(model.cellViewModels[index].preview.size.width) == expectedPage,
+                    "cell at index \(index) must correspond to page \(expectedPage)")
+        }
+    }
+
+    /**
+     Encode the page number into the PNG's pixel size so the test can identify which
+     page each decoded `UIImage` came from without needing pixel readback.
+     */
+    private static func identifiablePNG(pageNumber: Int) -> Data {
+        let size = CGSize(width: pageNumber, height: pageNumber)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1.0
+        let renderer = UIGraphicsImageRenderer(size: size, format: format)
+        return renderer.pngData { ctx in
+            UIColor.red.setFill()
+            ctx.fill(CGRect(origin: .zero, size: size))
+        }
+    }
 }

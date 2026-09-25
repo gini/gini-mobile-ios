@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import GiniUtilites
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -113,6 +114,7 @@ import Photos
 
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
 
     var pages: [GiniCapturePage]?
 
@@ -223,6 +225,21 @@ import Photos
 
         configureLoadingIndicator()
         addOverlay()
+        addPoweredByGiniBadgeIfEnabled()
+    }
+
+    /// Adds the "Powered by Gini" badge if the Analysis screen is enabled. No-op otherwise.
+    private func addPoweredByGiniBadgeIfEnabled() {
+        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
+                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        view.addSubview(badge)
+        badge.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeBottom).constant(-Constants.badgeBottomInset)
+        }
+        poweredByGiniBadgeView = badge
     }
 
     private func addImageView() {
@@ -417,9 +434,16 @@ import Photos
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        captureSuggestions?.start()
+        let suggestions = CaptureSuggestionsView(superView: view,
+                                                 bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        /// Hide the badge on the first banner appearance and keep it hidden — ignoring
+        /// banner-hidden transitions avoids re-showing the badge between banner cycles.
+        suggestions.onBannerVisibilityChange = { [weak self] isBannerVisible in
+            guard isBannerVisible else { return }
+            self?.poweredByGiniBadgeView?.isHidden = true
+        }
+        captureSuggestions = suggestions
+        suggestions.start()
     }
 
     /**
@@ -430,6 +454,8 @@ import Photos
     public func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
+        /// Restore visibility in case the badge was hidden by the banner-visibility callback.
+        poweredByGiniBadgeView?.isHidden = false
     }
 
 }
@@ -441,6 +467,7 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+        static let badgeBottomInset: CGFloat = 16
     }
 
     struct Strings {

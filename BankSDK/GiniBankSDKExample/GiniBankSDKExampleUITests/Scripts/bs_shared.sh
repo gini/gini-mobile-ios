@@ -70,9 +70,13 @@ else
 fi
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-# Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
-# release; override per run via the BS_PROJECT environment variable.
-BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.1}"
+# Convention: GiniBankSDK-iOS-<release version>. Bump SDK_VERSION here once per
+# release — the default BS_PROJECT below picks it up, and scenario-specific
+# override scripts (e.g. bs_run_payment_hint.sh) reference the same constant so
+# every BrowserStack project the suite ships to lands under the same version.
+# Override per run via the BS_PROJECT environment variable.
+SDK_VERSION="4.6.0"
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-$SDK_VERSION}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a

@@ -128,7 +128,6 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
-        doneButton.isHidden = shouldHideButton()
 
         setupView()
         setupConstraints()
@@ -209,7 +208,4 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
         static let verticalSpacingStackView: CGFloat = 12
     }
 
-    func shouldHideButton() -> Bool {
-        return (GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)
-    }
 }

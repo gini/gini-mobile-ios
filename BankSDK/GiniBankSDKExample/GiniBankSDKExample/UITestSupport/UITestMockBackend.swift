@@ -229,7 +229,6 @@ final class UITestMockBackend {
         }
         return ExtractionResult(extractions: extractions,
                                 lineItems: [],
-                                returnReasons: [],
                                 candidates: [:])
     }
 }

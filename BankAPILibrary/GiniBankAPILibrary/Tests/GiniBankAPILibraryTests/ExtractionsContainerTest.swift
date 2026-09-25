@@ -63,7 +63,6 @@ final class ExtractionsContainerTest: XCTestCase {
         XCTAssertEqual(container.extractions.first(where: { $0.name == "amountToPay" })?.value,
                        "12.75:EUR")
         XCTAssertNil(container.compoundExtractions, "Credit note payload carries no compound extractions")
-        XCTAssertNil(container.returnReasons)
         XCTAssertEqual(container.candidates.count, 4)
         XCTAssertEqual(container.candidates["ibans"]?.count, 2)
     }
@@ -110,11 +109,5 @@ final class ExtractionsContainerTest: XCTestCase {
         
         XCTAssertEqual(container.candidates.count, 2)
         XCTAssertEqual(container.candidates["amounts"]!.first, candidate)
-        
-        let returnReason = ReturnReason(id: "r1", localizedLabels: ["de" : "Anderes Aussehen als angeboten"])
-        
-        XCTAssertEqual(container.returnReasons!.count, 4)
-        XCTAssertTrue(container.returnReasons!.contains(returnReason))
-        
     }
 }

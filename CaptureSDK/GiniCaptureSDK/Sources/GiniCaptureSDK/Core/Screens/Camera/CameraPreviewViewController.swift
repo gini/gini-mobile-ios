@@ -96,8 +96,7 @@ final class CameraPreviewViewController: UIViewController {
         }
     }
     private var bottomControlHeight: CGFloat {
-        return view.frame.height * Constants.bottomControlHeightMultiplier +
-        (giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightPortrait : 0)
+        return view.frame.height * Constants.bottomControlHeightMultiplier
     }
 
     var isAuthorized = false
@@ -281,7 +280,7 @@ final class CameraPreviewViewController: UIViewController {
 
             if UIDevice.current.isIphone {
                 cameraFrameViewBottomConstrant.constant = isLandscape
-                ? -(giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightLandscape : 0) - Constants.padding
+                ? -Constants.padding
                 : -bottomControlHeight-Constants.padding
             }
         }

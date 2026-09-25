@@ -8,11 +8,7 @@
 
 import UIKit
 
-final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledViewController {
-
-    var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
+final class HelpFormatsViewController: UIViewController {
 
     lazy var tableView: UITableView = {
         var tableView: UITableView
@@ -48,7 +44,6 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateBottomBarHeightBasedOnOrientation()
         if UIDevice.current.isIphone {
             let isLandscape = currentInterfaceOrientation.isLandscape
             let margin = isLandscape ? GiniMargins.horizontalMargin : GiniMargins.margin
@@ -72,9 +67,6 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
             comment: "Supported formats screen title")
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tableView)
-        configureBottomNavigationBar(
-            configuration: giniConfiguration,
-            under: tableView)
     }
 
     private func configureTableView() {
@@ -108,9 +100,7 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
     }
 
     private func configureConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
-        }
+        NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)

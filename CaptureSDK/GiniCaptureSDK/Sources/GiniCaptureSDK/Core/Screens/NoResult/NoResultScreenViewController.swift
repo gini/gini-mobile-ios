@@ -52,7 +52,6 @@ final class NoResultScreenViewController: UIViewController {
     private let type: NoResultType
     private let viewModel: BottomButtonsViewModel
     private var buttonsBottomConstraint: NSLayoutConstraint?
-    private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
 
     private var numberOfButtons: Int {
         [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
@@ -118,7 +117,7 @@ final class NoResultScreenViewController: UIViewController {
         configureTableView()
         configureConstraints()
         configureButtons()
-        configureCustomBottomNavigationBar()
+        configureBackButton()
         edgesForExtendedLayout = []
     }
 
@@ -135,48 +134,10 @@ final class NoResultScreenViewController: UIViewController {
         view.addSubview(buttonsView)
     }
 
-    private func configureCustomBottomNavigationBar() {
-        let buttonTitle = Strings.backToCameraTitle
-        if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.setHidesBackButton(true, animated: false)
-            navigationItem.leftBarButtonItem = nil
-
-            if let adapter = giniConfiguration.errorNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = adapter
-            } else {
-                navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.didPressBack()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(navigationBar)
-                layoutBottomNavigationBar(navigationBar)
-            }
-        } else {
-            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-            backButton.addAction(self, #selector(didPressBack))
-            navigationItem.leftBarButtonItem = backButton.barButton
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        buttonsBottomConstraint?.isActive = false
-
-        NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
-                                                constant: -GiniMargins.margin),
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
-        ])
-
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
+    private func configureBackButton() {
+        let backButton = GiniBarButton(ofType: .back(title: Strings.backToCameraTitle))
+        backButton.addAction(self, #selector(didPressBack))
+        navigationItem.leftBarButtonItem = backButton.barButton
     }
 
     private func configureTableView() {
@@ -274,14 +235,8 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtonsViewConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled,
-           let navBar = navigationBarBottomAdapter?.injectedView() {
-            buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: navBar.topAnchor)
-        } else {
-            buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                                          constant: -GiniMargins.margin)
-        }
-
+        buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                      constant: -GiniMargins.margin)
         buttonsBottomConstraint?.isActive = true
 
         if UIDevice.current.isIpad {
@@ -336,7 +291,6 @@ final class NoResultScreenViewController: UIViewController {
         static let contentHeight: CGFloat = 62
         static let contentHeightMultiplier: CGFloat = 0.3
         static let iPadWidthMultiplier: CGFloat = 0.7
-        static let navigationBarHeight: CGFloat = 114
         static let alertTriangleImageName: String = "alertTriangle"
     }
 

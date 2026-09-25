@@ -80,7 +80,6 @@ extension NetworkingScreenApiCoordinatorTests {
                                 lineItems: [[Extraction]]? = nil,
                                 skontoDiscounts: [[Extraction]]? = nil,
                                 crossBorderPayment: [[Extraction]]? = nil,
-                                returnReasons: [ReturnReason] = [],
                                 candidates: [String: [Extraction.Candidate]] = [:]) -> ExtractionResult {
         var extractions: [Extraction] = []
 
@@ -122,14 +121,9 @@ extension NetworkingScreenApiCoordinatorTests {
 
         return ExtractionResult(extractions: extractions,
                                 lineItems: lineItems,
-                                returnReasons: returnReasons,
                                 skontoDiscounts: skontoDiscounts,
                                 crossBorderPayment: crossBorderPayment,
                                 candidates: candidates)
-    }
-
-    func createMockReturnReasons() -> [ReturnReason] {
-        return [ReturnReason(id: "r1", localizedLabels: ["de": "Beschädigt"])]
     }
 
     func createMockCandidates() -> [String: [Extraction.Candidate]] {

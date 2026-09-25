@@ -647,38 +647,63 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             let bankSelectionBottomSheet = bankSelectionBottomSheet()
-            navigationControllerProvided?.giniTopMostViewController().present(bankSelectionBottomSheet, animated: true)
+            navigationControllerProvided?.giniTopMostViewController().present(bankSelectionBottomSheet,
+                                                                              animated: true)
         }
     }
     
     /// Handles the action when the pay invoice button is tapped on the payment component view, using the provided document ID.
     public func didTapOnPayInvoice(documentId: String?) {
         GiniUtilites.Log("Tapped on Pay Invoice on :\(documentId ?? "")", event: .success)
-        if GiniHealthConfiguration.shared.showPaymentReviewScreen || !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
-            loadPaymentReviewScreenFor(trackingDelegate: self) { [weak self] viewController, error in
-                if let error = error {
-                    self?.handleError(error)
-                } else if let viewController = viewController {
-                    self?.presentOrPushPaymentReviewScreen(viewController)
-                }
-            }
+
+        if shouldShowPaymentReviewScreen() {
+            handlePaymentReviewFlow()
         } else {
-            if supportsOpenWith() {
-                guard let paymentInfo else { return }
-                createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
-                    self?.handlePaymentRequestResult(result)
-                }
-            } else if supportsGPC() {
-                if canOpenPaymentProviderApp() {
-                    guard let paymentInfo else { return }
-                    processPaymentRequest(paymentInfo: paymentInfo)
-                } else {
-                    presentInstallAppBottomSheet()
-                }
+            handleExternalPaymentFlow()
+        }
+    }
+
+    private func shouldShowPaymentReviewScreen() -> Bool {
+        return GiniHealthConfiguration.shared.showPaymentReviewScreen ||
+        !GiniHealthConfiguration.shared.useInvoiceWithoutDocument
+    }
+
+    private func handlePaymentReviewFlow() {
+        loadPaymentReviewScreenFor(trackingDelegate: self) { [weak self] viewController, error in
+            if let error = error {
+                self?.handleError(error)
+            } else if let viewController = viewController {
+                self?.presentOrPushPaymentReviewScreen(viewController)
             }
         }
     }
-    
+
+    private func handleExternalPaymentFlow() {
+        if supportsOpenWith() {
+            handleOpenWithPayment()
+        } else if supportsGPC() {
+            handleGPCPayment()
+        }
+    }
+
+    private func handleOpenWithPayment() {
+        guard let paymentInfo else { return }
+        createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
+            self?.handlePaymentRequestResult(result)
+        }
+    }
+
+    private func handleGPCPayment() {
+        if canOpenPaymentProviderApp() {
+            guard let paymentInfo else { return }
+            processPaymentRequest(paymentInfo: paymentInfo)
+        } else {
+            // The install-app sheet must remain reachable when `paymentInfo` is nil —
+            // do not hoist a `guard let paymentInfo` above this branch.
+            presentInstallAppBottomSheet()
+        }
+    }
+
     public func didDismissPaymentComponent() {
         notifySDKWasDismissedIfNeeded()
     }
