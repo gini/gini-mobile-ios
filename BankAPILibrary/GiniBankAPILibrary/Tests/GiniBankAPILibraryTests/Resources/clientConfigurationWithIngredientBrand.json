@@ -13,5 +13,5 @@
     "creditNoteHintEnabled": true,
     "paymentScheduleHintEnabled": true,
     "unsupportedQRCodeWarningEnabled": false,
-    "ingredientBrandScreens": []
+    "ingredientBrandScreens": ["Analysis"]
 }
