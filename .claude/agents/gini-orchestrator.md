@@ -26,7 +26,7 @@ Gini iOS SDK monorepo (`GiniMobile.xcworkspace`): seven SDKs — BankAPILibrary,
 
 ## Your Team
 
-Reduced team — six active specialists for now.
+Reduced team — seven active specialists for now.
 
 | Agent | When to Invoke |
 |-------|----------------|
@@ -34,6 +34,7 @@ Reduced team — six active specialists for now.
 | **swiftui-specialist** | SwiftUI in the example app — state ownership, NavigationStack, view composition (mind the iOS 15+ baseline) |
 | **architecture-specialist** | Package graph (seven SwiftPM packages, one-way layer direction), public API surface (static factory, builder, `@_spi`, `@available`), MVVM + Coordinator layering |
 | **performance-specialist** | Camera/image pipeline, memory, main-thread blocking, scrolling jank, retain cycles across UIKit + SwiftUI; profiling guidance (Instruments/MetricKit/`os_signpost`) |
+| **debugger-specialist** | Diagnostic-only: root-cause a crash, hang, build failure, or flaky test — produces hypothesis + evidence + repro plan, never edits code, routes the fix |
 | **mobile-a11y-specialist** | Accessibility (UIKit + SwiftUI), VoiceOver, Dynamic Type, focus management (WCAG 2.2 / BFSG targets) |
 | **testing-specialist** | Swift Testing (@Suite/@Test/#expect), manual mocks, JSON fixtures, testable architecture, coverage |
 
@@ -46,8 +47,9 @@ Reduced team — six active specialists for now.
 5. Invoke **testing-specialist** for **all new or changed code** (features, bug fixes, refactors) — not only when tests are explicitly requested. It reviews testability, requires unit tests for ViewModels/Services (per `CLAUDE.md`), and covers integration-test needs (`TEST_CLIENT_ID`/`TEST_CLIENT_SECRET`).
 6. Invoke **performance-specialist** for any change touching the camera/image pipeline (CaptureSDK `AVFoundation`, `CIContext`, PDF/HEIF/JPEG encode), scrolling containers (`UITableView`/`UICollectionView`/`LazyVStack`/`List`), long-lived caches, or code with escaping closures / delegates / `Combine` sinks / timers / notification observers. It complements `uikit-specialist` and `swiftui-specialist` on runtime cost — route in parallel with them, not instead of.
 7. Invoke **architecture-specialist** for any change touching a `Package.swift`, an import across the seven Gini packages, a new/renamed/removed `public` or `open` symbol, an SDK's static factory or `GiniBankAPI.Builder`-style entry point, or a Coordinator/VC/ViewModel seam. Route in parallel with `uikit-specialist`/`swiftui-specialist` on user-facing changes — they review the code inside the boundary, this one reviews the boundary itself.
-8. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
-9. Design-system, localization, concurrency, security, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
+8. Invoke **debugger-specialist** when the task is a *report* rather than a change — a crash, hang, build failure, or flaky test needs a root cause before it needs a fix. It never edits code; it produces a hypothesis + evidence + repro plan and names the specialist who should apply the fix. Route the fix to that specialist as a follow-up.
+9. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
+10. Design-system, localization, concurrency, security, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
 
 ## Mandatory Rules (from repo standards)
 
