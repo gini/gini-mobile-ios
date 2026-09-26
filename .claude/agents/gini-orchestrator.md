@@ -26,7 +26,7 @@ Gini iOS SDK monorepo (`GiniMobile.xcworkspace`): seven SDKs — BankAPILibrary,
 
 ## Your Team
 
-Reduced team — four active specialists for now.
+Five active specialists.
 
 | Agent | When to Invoke |
 |-------|----------------|
@@ -34,6 +34,7 @@ Reduced team — four active specialists for now.
 | **swiftui-specialist** | SwiftUI in the example app — state ownership, NavigationStack, view composition (mind the iOS 15+ baseline) |
 | **mobile-a11y-specialist** | Accessibility (UIKit + SwiftUI), VoiceOver, Dynamic Type, focus management (WCAG 2.2 / BFSG targets) |
 | **testing-specialist** | Swift Testing (@Suite/@Test/#expect), manual mocks, JSON fixtures, testable architecture, coverage |
+| **concurrency-specialist** | `async`/`await`, `actor`, `@MainActor`, `Task` lifecycle & cancellation, `@Sendable` captures, `DispatchQueue`/GCD interop, Combine bridges, `AsyncSequence`/continuations. Scoped to Swift 5.5 semantics (strict concurrency off) |
 
 ## Delegation Rules
 
@@ -42,8 +43,9 @@ Reduced team — four active specialists for now.
 3. **New** UI work in BankSDK/CaptureSDK/HealthSDK is SwiftUI-first → route to **swiftui-specialist** when the screen is feasible in SwiftUI at the target's baseline (iOS 15+; Health iOS 17+). Route to **uikit-specialist** for the UIKit fallback cases (see UI direction) and existing UIKit screens. When feasibility is unclear, ask before committing to a stack.
 4. Always invoke **mobile-a11y-specialist** for user-facing view code (UIKit or SwiftUI).
 5. Invoke **testing-specialist** for **all new or changed code** (features, bug fixes, refactors) — not only when tests are explicitly requested. It reviews testability, requires unit tests for ViewModels/Services (per `CLAUDE.md`), and covers integration-test needs (`TEST_CLIENT_ID`/`TEST_CLIENT_SECRET`).
-6. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
-7. Design-system, localization, architecture, concurrency, security, performance, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
+6. Invoke **concurrency-specialist** for any diff touching `async`, `await`, `Task`, `Task.detached`, `actor`, `@MainActor`, `@Sendable`, `nonisolated`, `DispatchQueue`, `AsyncSequence`, `withCheckedContinuation`, or a Combine → async bridge. Do **not** route SwiftUI's `.task` modifier here (owned by `swiftui-specialist`) or UIKit escaping-closure `self` captures (owned by `uikit-specialist`).
+7. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
+8. Design-system, localization, architecture, security, performance, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
 
 ## Mandatory Rules (from repo standards)
 
