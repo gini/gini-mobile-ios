@@ -320,6 +320,11 @@ import GiniUtilites
     private func addPersistentGiniIndicatorIfEnabled() {
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
         addGiniLoadingIndicator(giniIndicator)
+        /// Enter with the localized loading string so VoiceOver announces German/English
+        /// text on both the education carousel (~4.5s) and the standard-loading paths.
+        /// `showBrandedLoadingIndicator` also sets this on the standard path — the
+        /// duplicate assignment is intentional and idempotent.
+        giniIndicator.accessibilityLabel = loadingIndicatorText.text
         giniIndicatorAddedPersistently = true
     }
 
