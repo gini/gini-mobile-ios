@@ -383,12 +383,7 @@ import GiniUtilites
 
         switch activeLoadingIndicator {
         case .branded(let indicator):
-            indicator.accessibilityLabel = loadingIndicatorText.text
-            if !giniIndicatorAddedPersistently {
-                addGiniLoadingIndicator(indicator)
-            }
-            addGiniLoadingText(below: indicator)
-            indicator.startAnimation()
+            showBrandedLoadingIndicator(indicator)
         case .custom(let indicator):
             addLoadingContainer()
             addLoadingView(intoContainer: loadingIndicatorContainer)
@@ -403,6 +398,15 @@ import GiniUtilites
         // immediately mark animation complete
         animationCompletionContinuations.forEach { $0.resume() }
         animationCompletionContinuations.removeAll()
+    }
+
+    private func showBrandedLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
+        indicator.accessibilityLabel = loadingIndicatorText.text
+        if !giniIndicatorAddedPersistently {
+            addGiniLoadingIndicator(indicator)
+        }
+        addGiniLoadingText(below: indicator)
+        indicator.startAnimation()
     }
 
     /**
