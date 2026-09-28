@@ -139,7 +139,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      use only.
      */
     static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
-        if let cached = cachedFrames[style] { return cached }
+        let key = NSNumber(value: style.rawValue)
+        if let box = cachedFrames.object(forKey: key) { return box.extracted }
         let assetName = style == .dark
             ? Constants.darkAssetName
             : Constants.lightAssetName
@@ -147,7 +148,11 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
             return nil
         }
         guard let extracted = decodeFrames(from: dataAsset.data) else { return nil }
-        cachedFrames[style] = extracted
+        /// Worst-case per-frame RGBA cost at the thumbnail cap. Slight over-estimate
+        /// for non-square sources, exact for the shipped square asset.
+        let bytesPerFrame = Constants.thumbnailMaxPixelSize * Constants.thumbnailMaxPixelSize * 4
+        let byteCost = extracted.frames.count * bytesPerFrame
+        cachedFrames.setObject(ExtractedFramesBox(extracted), forKey: key, cost: byteCost)
         return extracted
     }
 
@@ -191,14 +196,29 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         return ExtractedFrames(frames: frames, duration: safeDuration)
     }
 
-    /// Process-wide cache of decoded frame sets, keyed by interface style.
-    /// At most two entries (light + dark). Populated lazily by
-    /// `decodeFrames(for:)`. Main-thread access only.
-    private static var cachedFrames: [UIUserInterfaceStyle: ExtractedFrames] = [:]
+    /// Process-wide cache of decoded frame sets, keyed by `UIUserInterfaceStyle`
+    /// rawValue. `NSCache` bounds retention at `Constants.cacheTotalCostLimit` and
+    /// yields to iOS memory-pressure eviction; entries repopulate on next
+    /// `decodeFrames(for:)` call.
+    private static let cachedFrames: NSCache<NSNumber, ExtractedFramesBox> = {
+        let cache = NSCache<NSNumber, ExtractedFramesBox>()
+        cache.name = "PoweredByGiniLoadingIndicatorView.cachedFrames"
+        cache.totalCostLimit = Constants.cacheTotalCostLimit
+        return cache
+    }()
 
     struct ExtractedFrames {
         let frames: [UIImage]
         let duration: TimeInterval
+    }
+
+    /// Class wrapper so `ExtractedFrames` (a value type) can live inside `NSCache`,
+    /// which requires class-typed values.
+    final class ExtractedFramesBox {
+        let extracted: ExtractedFrames
+        init(_ extracted: ExtractedFrames) {
+            self.extracted = extracted
+        }
     }
 
     /**
@@ -241,11 +261,14 @@ private extension PoweredByGiniLoadingIndicatorView {
         /// scaled so `UIImage.size.height` == this value; width follows the
         /// exported aspect ratio.
         static let targetPointHeight: CGFloat = 135
-        /// Cap on decoded frame pixel dimensions, chosen to leave headroom above
-        /// the maximum `@3x` device pixel need (`targetPointHeight × 3 ≈ 405`) while
-        /// keeping the retained CGImage backing store far below the source HEIC's
-        /// exported resolution (~1006×1006 in the shipped asset).
-        static let thumbnailMaxPixelSize: Int = 512
+        /// Cap on decoded frame pixel dimensions, sized to the maximum `@3x` device
+        /// pixel need (`targetPointHeight × 3 = 405`). Any larger just retains bytes
+        /// iOS would downsample at display time.
+        static let thumbnailMaxPixelSize: Int = 405
+        /// Byte-cost ceiling for the process-wide frame cache. Comfortably fits both
+        /// light + dark cached frame sets (~50 MB each after the 405-px cap) while
+        /// still yielding to `NSCache` eviction under memory pressure.
+        static let cacheTotalCostLimit: Int = 128 * 1024 * 1024
     }
 
     enum Strings {
