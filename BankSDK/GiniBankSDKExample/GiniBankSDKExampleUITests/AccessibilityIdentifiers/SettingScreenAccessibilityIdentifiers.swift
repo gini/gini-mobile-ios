@@ -15,4 +15,6 @@ public enum SettingScreenAccessibilityIdentifiers: String {
     case productTagSegmentedControl = "productTagSegmentedControlIdentifier"
     case paymentDueHintSwitch = "paymentDueHintSwitchIdentifier"
     case paymentScheduleHintSwitch = "paymentScheduleHintSwitchIdentifier"
+    case returnAssistantSwitch = "returnAssistantSwitchIdentifier"
+    case skontoSwitch = "skontoSwitchIdentifier"
 }

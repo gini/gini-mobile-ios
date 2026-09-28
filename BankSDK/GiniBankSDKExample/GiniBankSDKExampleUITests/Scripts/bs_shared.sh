@@ -40,7 +40,8 @@ SAMPLES_DIR="$SCRIPT_DIR/../TestSamples/TestSamplesForBS"
 
 SCRIPT_NAME="$(basename "$0" .sh)"
 case "$SCRIPT_NAME" in
-    bs_run_smoke_tests)  BUILD_LABEL="SmokeTests" ;;
+    bs_run_smoke_journeys) BUILD_LABEL="SmokeJourneys" ;;
+    bs_run_smoke_screens)  BUILD_LABEL="SmokeScreens" ;;
     bs_run_cx_normal)    BUILD_LABEL="Capture-Normal" ;;
     bs_run_cx_multipage) BUILD_LABEL="Capture-Multipage" ;;
     bs_run_cx_no_results) BUILD_LABEL="Capture-NoResults" ;;
@@ -69,9 +70,13 @@ else
 fi
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-# Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
-# release; override per run via the BS_PROJECT environment variable.
-BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.1}"
+# Convention: GiniBankSDK-iOS-<release version>. Bump SDK_VERSION here once per
+# release — the default BS_PROJECT below picks it up, and scenario-specific
+# override scripts (e.g. bs_run_payment_hint.sh) reference the same constant so
+# every BrowserStack project the suite ships to lands under the same version.
+# Override per run via the BS_PROJECT environment variable.
+SDK_VERSION="4.6.0"
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-$SDK_VERSION}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a

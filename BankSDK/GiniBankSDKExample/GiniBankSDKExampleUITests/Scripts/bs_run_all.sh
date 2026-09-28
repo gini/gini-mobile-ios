@@ -11,8 +11,9 @@ set -e
 # tests need their own media channel).
 #
 # Scenario builds triggered (buildName gets the release version appended, taken
-# from BS_PROJECT — e.g. smoke_tests_4.5.0):
-#   smoke_tests_<v>   — Main/Error/Capture/CameraAccess/Review screens
+# from BS_PROJECT — e.g. smoke_journeys_4.5.0):
+#   smoke_journeys_<v> — curated smoke journeys (smoke tests.csv mapping)
+#   smoke_screens_<v>  — Main/Error/Capture/CameraAccess/Review screen checks
 #   cx_normal_<v>     — CX capture flows, feature flags, product tag, onboarding,
 #                       camera, transaction summary (camera injection enabled)
 #   cx_multipage_<v>  — CX multi-page invoice (disabled — see below)
@@ -43,7 +44,7 @@ BS_PARALLELS="${BS_PARALLELS:-2}"
 
 # ── Release suffix for build names ─────────────────────────────────────────────
 # Build names carry the release version (from BS_PROJECT, e.g. GiniBankSDK-iOS-4.5.0
-# → smoke_tests_4.5.0) so runs of different releases are distinguishable at a glance.
+# → smoke_journeys_4.5.0) so runs of different releases are distinguishable at a glance.
 RELEASE_VERSION="${BS_PROJECT##*-}"
 
 
@@ -60,11 +61,13 @@ bs_build
 echo "Uploading media files..."
 upload_media TEST_IMAGE_PNG_URL   "$SAMPLES_DIR/test_image.png"                  "TestImage"               "test_image.png (gallery)"
 upload_media TEST_IMAGE_PDF_URL   "$SAMPLES_DIR/test_image.pdf"                  "TestImagePDF"            "test_image.pdf (Custom_Files)"
+upload_media SEPA_PDF_URL         "$SAMPLES_DIR/sepa_invoice.pdf"                "SepaInvoicePDF"          "sepa_invoice.pdf (Custom_Files)"
+upload_media SEPA_PNG_URL         "$SAMPLES_DIR/sepa_invoice.png"                "SepaInvoicePNG"          "sepa_invoice.png (gallery)"
 upload_media CX_CAMERA_URL        "$SAMPLES_DIR/Swift_AccNo_routing_DOLL.png"    "CXCameraInjection"       "Swift_AccNo_routing_DOLL.png (camera injection)"
 upload_media PP_CAMERA_URL        "$SAMPLES_DIR/Photopayment_Invoice1.png"       "PPCameraInjection"       "Photopayment_Invoice1.png (camera injection)"
 upload_media CX_GALLERY_URL       "$SAMPLES_DIR/cx_invoice.png"                  "CXGalleryImage"          "cx_invoice.png (gallery)"
 upload_media CX_PDF_URL           "$SAMPLES_DIR/cx_invoice.pdf"                  "CXInvoicePDF"            "cx_invoice.pdf (Custom_Files)"
-upload_media CX_NO_RESULTS_URL    "$SAMPLES_DIR/cx_no_results_invoice.pdf"       "CXNoResultsInvoice"      "cx_no_results_invoice.pdf (Custom_Files)"
+upload_media NO_RESULTS_URL    "$SAMPLES_DIR/no_results_invoice.pdf"       "NoResultsInvoice"      "no_results_invoice.pdf (Custom_Files)"
 # Multipage media parked with the all_cx_multipage scenario (see below):
 # upload_media CX_MULTI_PDF_URL     "$SAMPLES_DIR/cx_invoice_multi_page.pdf"       "CXMultiPageInvoicePDF"   "cx_invoice_multi_page.pdf (Custom_Files)"
 # upload_media CX_PAGE1_URL         "$SAMPLES_DIR/multi_page_invoice_CX_page1.png" "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.png (gallery, first)"
@@ -110,13 +113,25 @@ refresh_active_builds() {
     ACTIVE_IDS=()
     ACTIVE_WEIGHTS=()
     ACTIVE_TOTAL=0
-    local i status
+    local i status attempt
     for i in "${!ids[@]}"; do
-        status=$(curl -s -u "$BS_USER:$BS_KEY" \
-            "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${ids[$i]}" \
-            | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || true)
+        ## An unreadable status must not count as "still running" — an auth or API
+        ## error would otherwise keep the license wait loop spinning forever. Retry
+        ## a few times for transient failures, then fail fast.
+        status=""
+        for attempt in 1 2 3; do
+            status=$(bs_curl -u "$BS_USER:$BS_KEY" \
+                "https://api-cloud.browserstack.com/app-automate/xcuitest/v2/builds/${ids[$i]}" \
+                | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || true)
+            [ -n "$status" ] && break
+            sleep 10
+        done
+        if [ -z "$status" ]; then
+            echo "ERROR: could not read status of build ${ids[$i]} after 3 attempts — check BS_USER/BS_KEY and the BrowserStack API." >&2
+            exit 1
+        fi
         case "$status" in
-            running|queued|"")
+            running|queued)
                 ACTIVE_IDS+=("${ids[$i]}")
                 ACTIVE_WEIGHTS+=("${weights[$i]}")
                 ACTIVE_TOTAL=$((ACTIVE_TOTAL + weights[i]))
@@ -150,9 +165,13 @@ wait_for_capacity() {
 
 # ── trigger_scenario ───────────────────────────────────────────────────────────
 # Triggers one BrowserStack build and records its build_id for the end summary.
-# Usage: trigger_scenario BUILD_NAME ONLY_TESTING_JSON UPLOAD_MEDIA_JSON [EXTRA_FIELDS] [SHARD_COUNT]
-#   EXTRA_FIELDS — optional raw JSON fields appended to the request (must end with a comma)
-#   SHARD_COUNT  — number of shards in EXTRA_FIELDS (default 1); used for license pacing
+# Usage: trigger_scenario BUILD_NAME ONLY_TESTING_JSON UPLOAD_MEDIA_JSON [EXTRA_FIELDS] [SHARD_COUNT] [SINGLE_RUNNER]
+#   EXTRA_FIELDS  — optional raw JSON fields appended to the request (must end with a comma)
+#   SHARD_COUNT   — number of shards in EXTRA_FIELDS (default 1); used for license pacing
+#   SINGLE_RUNNER — singleRunnerInvocation value (default "true"). MUST be "false"
+#                   for scenarios whose only-testing selection is method-level:
+#                   BrowserStack ignores method filters in single-runner mode and
+#                   runs the whole class (see bs_run_smoke_journeys.sh).
 TRIGGERED_SUMMARY=""
 trigger_scenario() {
     local build_name="$1"
@@ -160,6 +179,7 @@ trigger_scenario() {
     local upload_media="$3"
     local extra_fields="${4:-}"
     local shard_count="${5:-1}"
+    local single_runner="${6:-true}"
 
     ## Pass "-" as ONLY_TESTING_JSON to omit the top-level only-testing filter —
     ## used when the scenario selects tests through a shards mapping instead.
@@ -218,7 +238,7 @@ trigger_scenario() {
             \"buildName\": \"$build_name\",
             \"buildTag\": \"$build_name\",
             \"timeout\": 7200,
-            \"singleRunnerInvocation\": \"true\",
+            \"singleRunnerInvocation\": \"$single_runner\",
             $LANGUAGE_FIELD
             $extra_fields
             \"uploadMedia\": $upload_media,
@@ -254,13 +274,29 @@ trigger_scenario() {
 # No sharding: with 2 parallel licenses and both devices covered per build,
 # every build already consumes the full license budget (1 session per device).
 # Sharding only pays off once licenses >= shards × devices — see the README.
-trigger_scenario "smoke_tests_${RELEASE_VERSION}" '[
+# Smoke is split into two builds: the merged single build needed 6 media files
+# (over the 5-file uploadMedia cap) and mixed two gallery PNGs, breaking the
+# latest-photo assumption. journeys = curated smoke test set (see
+# bs_run_smoke_journeys.sh for the smoke-case mapping); screens = per-screen checks.
+trigger_scenario "smoke_journeys_${RELEASE_VERSION}" '[
+  "GiniBankSDKExampleUITests/GiniOnboardingScreenUITest/testOnboardingGetStartedButton",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPDFSEPAInvoiceShowsExtractions",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPictureSEPAInvoiceShowsExtractions",
+  "GiniBankSDKExampleUITests/GiniSmokeUITests/testUploadPDFNoResultsScreen",
+  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantFullFlow",
+  "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests/testReturnAssistantEditName",
+  "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoFullFlowWithDiscountViaFiles",
+  "GiniBankSDKExampleUITests/GiniSkontoScreenUITests/testSkontoToggleSwitch"
+]' "[\"$SEPA_PDF_URL\", \"$SEPA_PNG_URL\", \"$NO_RESULTS_URL\", \"$RA_URL\", \"$SKONTO_PAST_URL\"]" \
+   "" 1 "false"
+
+trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniMainScreenUITests",
   "GiniBankSDKExampleUITests/GiniErrorScreenUITests",
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
   "GiniBankSDKExampleUITests/GiniReviewScreenUITests"
-]' "[\"$TEST_IMAGE_PNG_URL\"]"
+]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\"]"
 
 trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
@@ -282,7 +318,7 @@ trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
 
 trigger_scenario "cx_no_results_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCXNoResultsUITests"
-]' "[\"$CX_NO_RESULTS_URL\"]"
+]' "[\"$NO_RESULTS_URL\"]"
 
 trigger_scenario "ra_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests"

@@ -150,6 +150,10 @@ struct SwitchOptionModel {
 				return SettingScreenAccessibilityIdentifiers.paymentDueHintSwitch.rawValue
 			case .paymentScheduleHintEnabled:
 				return SettingScreenAccessibilityIdentifiers.paymentScheduleHintSwitch.rawValue
+			case .returnAssistantEnabled:
+				return SettingScreenAccessibilityIdentifiers.returnAssistantSwitch.rawValue
+			case .skontoEnabled:
+				return SettingScreenAccessibilityIdentifiers.skontoSwitch.rawValue
 			default:
 				return nil
 			}

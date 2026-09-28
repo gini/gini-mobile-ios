@@ -130,6 +130,31 @@ final class AnalysisViewControllerTests: XCTestCase {
                      "Expected no PoweredByGiniBadgeView when ingredientBrandScreens is nil (no /configurations fetch yet)")
     }
 
+    func testAnalysisShowsBadgeWhenScreensListContainsAnalysisMixedWithUnknownValues() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis", "Foo", "UNKNOWN"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        let badge = findBadge(in: sut.view)
+        XCTAssertNotNil(badge,
+                        "Expected badge to be inserted when the storage list contains \"Analysis\" alongside unknown values")
+        XCTAssertFalse(badge?.isHidden ?? true,
+                       "Expected badge to be visible when \"Analysis\" is present in the storage list")
+    }
+
+    func testAnalysisHidesBadgeWhenScreensListContainsOnlyUnknownValues() {
+        GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Foo", "UNKNOWN"]
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertNil(findBadge(in: sut.view),
+                     "Expected no PoweredByGiniBadgeView when the storage list contains only unknown values")
+    }
+
     func testAnalysisBadgeIsVisibleInitiallyEvenForImageDocs() {
         /// The banner has a 4s pre-appearance delay; the badge is visible until then.
         GiniCaptureUserDefaultsStorage.ingredientBrandScreens = ["Analysis"]
