@@ -119,23 +119,22 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     private func reloadAnimatedImage() {
-        guard let extracted = Self.decodeFrames(for: traitCollection.userInterfaceStyle) else {
-            imageView.animationImages = nil
-            imageView.image = nil
-            imageView.animationDuration = 0
-            hasValidAsset = false
-            invalidateIntrinsicContentSize()
+        let extracted = Self.decodeFrames(for: traitCollection.userInterfaceStyle)
+        apply(frames: extracted)
+        if extracted == nil {
             Log("Gini ingredient-brand loading indicator asset failed to load", event: .error)
-            return
         }
+    }
+
+    private func apply(frames extracted: ExtractedFrames?) {
         /// `animationImages` (rather than an animated `UIImage`) is used here so that
         /// `imageView.startAnimating()`/`isAnimating` report reliably in unit tests and on
         /// screens where iOS's implicit-animation heuristics for animated `UIImage`s don't fire.
-        imageView.animationImages = extracted.frames
-        imageView.animationDuration = extracted.duration
+        imageView.animationImages = extracted?.frames
+        imageView.animationDuration = extracted?.duration ?? 0
         imageView.animationRepeatCount = 0
-        imageView.image = extracted.frames.first
-        hasValidAsset = true
+        imageView.image = extracted?.frames.first
+        hasValidAsset = (extracted != nil)
         invalidateIntrinsicContentSize()
     }
 
@@ -161,13 +160,9 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Decodes each frame via `CGImageSourceCreateThumbnailAtIndex` capped at
-     `Constants.thumbnailMaxPixelSize` so the retained CGImage backing store
-     stays well below the source's exported pixel resolution while still
-     leaving headroom above the `@3x` device scale of the shipped 135pt
-     layout container. The returned per-frame `scale` keeps
-     `UIImage.size.height == Constants.targetPointHeight`; width scales
-     proportionally via `scaleAspectFit`.
+     Decodes each frame via `CGImageSourceCreateThumbnailAtIndex`, downsampled
+     to `Constants.thumbnailMaxPixelSize`. Per-frame scale sets
+     `UIImage.size.height == Constants.targetPointHeight`.
      */
     static func decodeFrames(from data: Data) -> ExtractedFrames? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
@@ -262,9 +257,9 @@ private extension PoweredByGiniLoadingIndicatorView {
     }
 
     enum Strings {
-        /// Hardcoded English default; `AnalysisViewController` overlays the specific
-        /// loading text via `accessibilityValue` at the same call site that already
-        /// annotates the default `UIActivityIndicatorView`.
+        /// Fallback only — `AnalysisViewController` overrides `accessibilityLabel`
+        /// with the localized loading text at the callsite, so this English
+        /// string is never announced to users today.
         static let accessibilityLabel = "Loading"
     }
 }

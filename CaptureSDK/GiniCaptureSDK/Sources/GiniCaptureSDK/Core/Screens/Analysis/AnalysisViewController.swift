@@ -116,8 +116,18 @@ import GiniUtilites
     private var centerYConstraint = NSLayoutConstraint()
     private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
 
-    private var giniIndicatorRegularVerticalConstraints: [NSLayoutConstraint] = []
-    private var giniIndicatorCompactVerticalConstraints: [NSLayoutConstraint] = []
+    private struct SizeClassConstraints {
+        let regular: [NSLayoutConstraint]
+        let compact: [NSLayoutConstraint]
+
+        func apply(for sizeClass: UIUserInterfaceSizeClass) {
+            let (active, inactive) = sizeClass == .compact ? (compact, regular) : (regular, compact)
+            NSLayoutConstraint.deactivate(inactive)
+            NSLayoutConstraint.activate(active)
+        }
+    }
+
+    private var giniIndicatorConstraints: SizeClassConstraints?
 
     /**
      `true` once the Gini indicator has been added as a persistent subview in
@@ -235,24 +245,47 @@ import GiniUtilites
 
     // MARK: Toggle animation
 
+    private enum ActiveLoadingIndicator {
+        case branded(PoweredByGiniLoadingIndicatorView)
+        case custom(CustomLoadingIndicatorAdapter)
+        case standard
+    }
+
+    /**
+     Prioritized fallback chain: the branded Gini indicator (if the feature flag
+     is on and the asset decoded), else the integrator's custom indicator (if
+     configured), else the default `UIActivityIndicatorView`.
+     */
+    private var activeLoadingIndicator: ActiveLoadingIndicator {
+        if let giniIndicator = poweredByGiniLoadingIndicatorView {
+            return .branded(giniIndicator)
+        } else if let custom = giniConfiguration.customLoadingIndicator {
+            return .custom(custom)
+        } else {
+            return .standard
+        }
+    }
+
     /// Displays a loading activity indicator. Should be called when document analysis is started.
     public func showAnimation() {
-        if let giniIndicator = poweredByGiniLoadingIndicatorView {
-            giniIndicator.startAnimation()
-        } else if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            loadingIndicator.startAnimation()
-        } else {
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            indicator.startAnimation()
+        case .custom(let indicator):
+            indicator.startAnimation()
+        case .standard:
             loadingIndicatorView.startAnimating()
         }
     }
 
     /// Hides the loading activity indicator. Should be called when document analysis is finished.
     public func hideAnimation() {
-        if let giniIndicator = poweredByGiniLoadingIndicatorView {
-            giniIndicator.stopAnimation()
-        } else if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            loadingIndicator.stopAnimation()
-        } else {
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            indicator.stopAnimation()
+        case .custom(let indicator):
+            indicator.stopAnimation()
+        case .standard:
             loadingIndicatorView.stopAnimating()
         }
     }
@@ -348,24 +381,24 @@ import GiniUtilites
                                                dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
-        if let giniIndicator = poweredByGiniLoadingIndicatorView {
-            giniIndicator.accessibilityLabel = loadingIndicatorText.text
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            indicator.accessibilityLabel = loadingIndicatorText.text
             if !giniIndicatorAddedPersistently {
-                addGiniLoadingIndicator(giniIndicator)
+                addGiniLoadingIndicator(indicator)
             }
-            addGiniLoadingText(below: giniIndicator)
-            giniIndicator.startAnimation()
-        } else {
+            addGiniLoadingText(below: indicator)
+            indicator.startAnimation()
+        case .custom(let indicator):
             addLoadingContainer()
             addLoadingView(intoContainer: loadingIndicatorContainer)
-
-            if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-                addLoadingText(below: loadingIndicator.injectedView())
-                loadingIndicator.startAnimation()
-            } else {
-                addLoadingText(below: loadingIndicatorView)
-                loadingIndicatorView.startAnimating()
-            }
+            addLoadingText(below: indicator.injectedView())
+            indicator.startAnimation()
+        case .standard:
+            addLoadingContainer()
+            addLoadingView(intoContainer: loadingIndicatorContainer)
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
         }
         // immediately mark animation complete
         animationCompletionContinuations.forEach { $0.resume() }
@@ -389,39 +422,31 @@ import GiniUtilites
         view.addSubview(indicator)
         indicator.giniMakeConstraints { $0.centerX.equalTo(view.centerX) }
 
-        giniIndicatorRegularVerticalConstraints = indicator.giniMakeConstraints {
+        let regular = indicator.giniMakeConstraints {
             $0.centerY.equalTo(view.centerY)
                 .multipliedBy(Constants.giniIndicatorRegularVerticalCenterYMultiplier)
         }
-        giniIndicatorCompactVerticalConstraints = indicator.giniMakeConstraints {
+        let compact = indicator.giniMakeConstraints {
             $0.centerY.equalTo(view.centerY)
                 .multipliedBy(Constants.giniIndicatorCompactVerticalCenterYMultiplier)
         }
         /// Both size-class-specific centerY sets are activated on creation by the
         /// DSL; deactivate them up front so `applyGiniIndicatorConstraintsForCurrentTraits`
         /// installs only the one that matches the current vertical size class.
-        NSLayoutConstraint.deactivate(giniIndicatorRegularVerticalConstraints
-                                      + giniIndicatorCompactVerticalConstraints)
+        NSLayoutConstraint.deactivate(regular + compact)
+        giniIndicatorConstraints = SizeClassConstraints(regular: regular, compact: compact)
 
         applyGiniIndicatorConstraintsForCurrentTraits()
     }
 
     /**
      Activates the size-class-appropriate constraint set for the Gini indicator.
-     No-op when the Gini path isn't active (arrays are empty), so this is safe to
-     call from `traitCollectionDidChange` regardless of which loading path is running.
+     No-op when the Gini path isn't active (`giniIndicatorConstraints` is `nil`),
+     so this is safe to call from `traitCollectionDidChange` regardless of which
+     loading path is running.
      */
     private func applyGiniIndicatorConstraintsForCurrentTraits() {
-        guard !giniIndicatorRegularVerticalConstraints.isEmpty else { return }
-        let isCompactVertical = traitCollection.verticalSizeClass == .compact
-        let toActivate = isCompactVertical
-            ? giniIndicatorCompactVerticalConstraints
-            : giniIndicatorRegularVerticalConstraints
-        let toDeactivate = isCompactVertical
-            ? giniIndicatorRegularVerticalConstraints
-            : giniIndicatorCompactVerticalConstraints
-        NSLayoutConstraint.deactivate(toDeactivate)
-        NSLayoutConstraint.activate(toActivate)
+        giniIndicatorConstraints?.apply(for: traitCollection.verticalSizeClass)
     }
 
     /**
