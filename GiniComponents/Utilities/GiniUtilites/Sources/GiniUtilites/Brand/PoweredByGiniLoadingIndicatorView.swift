@@ -9,20 +9,12 @@ import UIKit
 import ImageIO
 
 /**
- Animated Gini "g" loading indicator shown on the Analysis screen and QR
- overlay when ingredient-brand mode is enabled. Loads one of two animated
- HEIC (`HEICS`) assets from `GiniBrand.xcassets` —
- `gini_loading_indicator_light.dataset` or
- `gini_loading_indicator_dark.dataset` — picked by name from the current
- `UIUserInterfaceStyle`, decodes the frames via `CGImageSource`, and
- renders them in a looping `UIImageView` scaled to Figma's `Animation
- Gini` container height (135pt). `traitCollectionDidChange` swaps the
- decoded frame set when the appearance flips at runtime without recreating
- the view.
+ Animated Gini "g" loading indicator for ingredient-brand clients. Picks
+ the light or dark HEIC dataset from `GiniBrand.xcassets` by the current
+ `UIUserInterfaceStyle` and swaps the frame set on appearance change.
 
- If the asset is missing or fails to decode, `hasValidAsset` is `false` and
- the view renders empty; callers should check the flag and fall back to
- `UIActivityIndicatorView` on `false`.
+ Check `hasValidAsset` before installing — falls back to
+ `UIActivityIndicatorView` when `false`.
  */
 public final class PoweredByGiniLoadingIndicatorView: UIView {
 

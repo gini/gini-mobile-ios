@@ -10,25 +10,21 @@ import GiniUtilites
 
 final class QRCodeEducationLoadingView: UIView {
 
+    /**
+     Presentation options for the education carousel. Ingredient-brand call sites
+     override the last two flags to embed the animated Gini `g` mark instead of the
+     per-item image.
+     */
     struct Style {
+        /// Primary carousel text color.
         let textColor: UIColor
+        /// "Analysing" secondary label color.
         let analysingTextColor: UIColor
+        /// Forces dark-appearance rendering regardless of the current trait collection.
         let useDarkAppearance: Bool
-        /**
-         When `true`, each carousel item's `imageView` renders the animated Gini "g"
-         mark from `PoweredByGiniLoadingIndicatorView.animatedImage()` instead of the
-         item's own `image`. Defaults to `false` so all existing call sites (QRCodeOverlay,
-         non-ingredient-brand Analysis) are behavior-identical.
-         */
+        /// Renders each carousel item's imageView with `PoweredByGiniLoadingIndicatorView.animatedImage()` instead of the item's own image.
         let useIngredientBrandIndicator: Bool
-        /**
-         When `true`, the internal `imageView` is not added to the view hierarchy at
-         all and text/suffix elements are anchored to the top of `self` instead of the
-         imageView's bottom. Used by `AnalysisViewController`'s ingredient-brand path,
-         where the g mark is added as a persistent subview earlier in the view lifecycle
-         so it stays anchored across the education → standard transition. Defaults to
-         `false` for backwards compatibility with QRCodeOverlay.
-         */
+        /// Drops the internal imageView from the hierarchy; text and suffix anchor to the top of `self` instead of the imageView's bottom.
         let hideImageView: Bool
 
         private static let defaultTextColor = GiniColor(light: .GiniCapture.dark1,
