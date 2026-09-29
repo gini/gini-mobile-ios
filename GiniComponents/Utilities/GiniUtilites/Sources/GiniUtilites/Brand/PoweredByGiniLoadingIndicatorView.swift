@@ -32,6 +32,11 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      */
     public private(set) var hasValidAsset: Bool = false
 
+    /// Caller intent to animate, kept separate from the actual `UIImageView.isAnimating`
+    /// state so that `UIAccessibility.isReduceMotionEnabled` can suppress the animation
+    /// without losing the caller's request across trait changes and live a11y toggles.
+    private var wantsAnimation: Bool = false
+
     /**
      Creates a new `PoweredByGiniLoadingIndicatorView`, decodes the HEIC
      asset, and installs it inside a `UIImageView` pinned to the view's
@@ -49,6 +54,17 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         accessibilityTraits = [.image, .updatesFrequently]
 
         reloadAnimatedImage()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reduceMotionStatusDidChange),
+            name: UIAccessibility.reduceMotionStatusDidChangeNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @available(*, unavailable)
@@ -69,19 +85,19 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        let wasAnimating = imageView.isAnimating
         reloadAnimatedImage()
-        if wasAnimating {
-            imageView.startAnimating()
-        }
+        applyReducedMotionAwareAnimationState()
     }
 
     /**
-     Starts the underlying `UIImageView` frame animation. Idempotent — safe
-     to call when already animating. No-op when `hasValidAsset` is `false`.
+     Starts the underlying `UIImageView` frame animation. When
+     `UIAccessibility.isReduceMotionEnabled` is `true`, the view stays on
+     the first frame statically instead. Idempotent — safe to call when
+     already animating. No-op when `hasValidAsset` is `false`.
      */
     public func startAnimation() {
-        imageView.startAnimating()
+        wantsAnimation = true
+        applyReducedMotionAwareAnimationState()
     }
 
     /**
@@ -89,7 +105,29 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      to call when already stopped.
      */
     public func stopAnimation() {
+        wantsAnimation = false
         imageView.stopAnimating()
+    }
+
+    /**
+     Applies `wantsAnimation` filtered through
+     `UIAccessibility.isReduceMotionEnabled`. Called from `startAnimation`,
+     `traitCollectionDidChange`, and the reduce-motion notification
+     observer.
+     */
+    private func applyReducedMotionAwareAnimationState() {
+        guard hasValidAsset, wantsAnimation else { return }
+        if UIAccessibility.isReduceMotionEnabled {
+            /// The first frame is already installed as `imageView.image` by
+            /// `apply(frames:)`, so stopping the animation reveals it as a static poster.
+            imageView.stopAnimating()
+        } else {
+            imageView.startAnimating()
+        }
+    }
+
+    @objc private func reduceMotionStatusDidChange() {
+        applyReducedMotionAwareAnimationState()
     }
 
     /**
