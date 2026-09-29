@@ -9,6 +9,7 @@ import GiniUtilites
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
+    private let viewModel: QRCodeOverlayViewModel
     private var educationViewModel: QRCodeEducationLoadingViewModel?
     private var educationLoadingView: QRCodeEducationLoadingView?
     private let useCustomLoadingView: Bool = true
@@ -82,7 +83,15 @@ final class QRCodeOverlay: UIView {
     private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
     private var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView?
 
-    init() {
+    /**
+     Creates a new overlay backed by `viewModel`. The default
+     `LiveQRCodeOverlayViewModel` reads
+     `GiniCaptureUserDefaultsStorage.ingredientBrandScreens` on demand,
+     preserving the previous production behavior; tests inject a stub to
+     control the flag without touching global storage.
+     */
+    init(viewModel: QRCodeOverlayViewModel = LiveQRCodeOverlayViewModel()) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
         addSubview(checkMarkImageView)
@@ -139,8 +148,7 @@ final class QRCodeOverlay: UIView {
      Visibility is toggled by `configureQrCodeOverlay(withCorrectQrCode:)`.
      */
     private func addPoweredByGiniBadgeIfEnabled() {
-        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
-                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else { return }
+        guard viewModel.isIngredientBrandEnabled else { return }
 
         let badge = PoweredByGiniBadgeView()
         badge.isHidden = true
@@ -172,8 +180,7 @@ final class QRCodeOverlay: UIView {
      otherwise so callers fall back to the standard `UIActivityIndicatorView`.
      */
     private func makeBrandedLoadingIndicatorIfEnabled() -> PoweredByGiniLoadingIndicatorView? {
-        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
-                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else {
+        guard viewModel.isIngredientBrandEnabled else {
             return nil
         }
         let indicator = PoweredByGiniLoadingIndicatorView()
