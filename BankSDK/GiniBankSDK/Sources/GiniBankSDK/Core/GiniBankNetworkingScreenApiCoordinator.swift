@@ -8,6 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
+import GiniUtilites
 
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
@@ -309,6 +310,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
                     GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
+                    /// Warm the branded loading-indicator HEIC cache off-main as soon as we know
+                    /// the flag is on, so the first Analysis / QR-overlay entry hits the cache
+                    /// synchronously and avoids the ~1.5–2 s main-thread decode stall.
+                    if !configuration.ingredientBrandScreens.isEmpty {
+                        Task { await PoweredByGiniLoadingIndicatorView.prewarm() }
+                    }
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
