@@ -310,12 +310,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
                     GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
-                    /// Warm the branded loading-indicator HEIC cache off-main as soon as we know
-                    /// the flag is on, so the first Analysis / QR-overlay entry hits the cache
-                    /// synchronously and avoids the ~1.5–2 s main-thread decode stall.
-                    if !configuration.ingredientBrandScreens.isEmpty {
-                        Task { await PoweredByGiniLoadingIndicatorView.prewarm() }
-                    }
+                    self.prewarmIngredientBrandIndicatorIfEnabled(for: configuration)
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -326,6 +321,18 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             }
         }
         return start(withDocuments: documents, animated: animated)
+    }
+
+    /**
+     Warms the branded loading-indicator HEIC cache off-main when
+     `ingredientBrandScreens` is non-empty, so the first Analysis / QR-overlay
+     entry hits the cache synchronously and avoids the ~1.5–2 s main-thread
+     decode stall. Extracted from `startSDK`'s config-fetch closure to keep
+     closure nesting under Sonar's S3087 limit (max 2 nested closures).
+     */
+    private func prewarmIngredientBrandIndicatorIfEnabled(for configuration: ClientConfiguration) {
+        guard !configuration.ingredientBrandScreens.isEmpty else { return }
+        Task { await PoweredByGiniLoadingIndicatorView.prewarm() }
     }
 
     public static func closeSDK() {
