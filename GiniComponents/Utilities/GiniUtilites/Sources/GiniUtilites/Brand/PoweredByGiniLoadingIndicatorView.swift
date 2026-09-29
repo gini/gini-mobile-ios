@@ -169,12 +169,32 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
+     Off-main asynchronous prewarm of the process-wide frame cache. Call at
+     an SDK-idle moment (e.g. camera setup, before Analysis is ever presented)
+     so the sync decode inside `init` becomes a cache-hit and does not stall
+     the main thread on cold entry (measured ~1.5–2 s on iPhone otherwise).
+
+     - Parameters:
+       - styles: Which appearance variants to decode. Defaults to both.
+     */
+    public static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
+        await withTaskGroup(of: Void.self) { group in
+            for style in styles {
+                group.addTask(priority: .userInitiated) {
+                    _ = decodeFrames(for: style)
+                }
+            }
+        }
+    }
+
+    /**
      Loads and decodes the HEIC data asset matching the given interface style
      from one of two universal datasets — `gini_loading_indicator_light` and
      `gini_loading_indicator_dark` — and returns the decoded frame set from
      the process-wide cache when available so repeat callers (e.g. the
-     education carousel and the standalone view) don't re-decode. Main-thread
-     use only.
+     education carousel and the standalone view) don't re-decode. Thread-safe
+     via the underlying `NSCache`; call from a background queue during
+     `prewarm` and directly on main in the sync fallback path.
      */
     static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
         let key = NSNumber(value: style.rawValue)

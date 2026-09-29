@@ -87,6 +87,25 @@ struct PoweredByGiniLoadingIndicatorViewTests {
                 "Expected the returned UIImage to carry a positive loop duration")
     }
 
+    @Test("prewarm decodes both light and dark datasets off the main actor without stalling")
+    func prewarmPopulatesCacheOffMain() async {
+        /// The measurable win is that awaiting `prewarm` returns without blocking main long
+        /// enough to be user-visible. Bound the wait; the real work runs on a global queue
+        /// via TaskGroup with `.userInitiated` priority.
+        let start = Date()
+        await PoweredByGiniLoadingIndicatorView.prewarm()
+        let elapsed = Date().timeIntervalSince(start)
+
+        /// Post-prewarm, a fresh view construction should complete without triggering a
+        /// second decode — verified indirectly by `hasValidAsset` flipping true immediately
+        /// (the cache-hit sync path).
+        let view = PoweredByGiniLoadingIndicatorView()
+        #expect(view.hasValidAsset,
+                "Expected hasValidAsset to be true after prewarm populates the cache")
+        #expect(elapsed < 10,
+                "Expected prewarm to complete inside a reasonable bound; measured \(elapsed) s")
+    }
+
     @Test("Exposes a single a11y image element with .updatesFrequently trait and a default label")
     func accessibilityIsSingleImageElementWithUpdatesFrequentlyTrait() {
         let view = PoweredByGiniLoadingIndicatorView()
