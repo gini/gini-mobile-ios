@@ -41,6 +41,7 @@ import GiniUtilites
 
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
+    private let screenViewModel: AnalysisViewModel
     private let useCustomLoadingView: Bool = true
     private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
@@ -144,8 +145,7 @@ import GiniUtilites
      so tests can pre-empt the lazy value to exercise the fallback path.
      */
     lazy var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView? = {
-        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
-                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else {
+        guard screenViewModel.isIngredientBrandEnabled else {
             return nil
         }
         let indicator = PoweredByGiniLoadingIndicatorView()
@@ -166,6 +166,7 @@ import GiniUtilites
                 giniConfiguration: GiniConfiguration) {
         self.document = document
         self.giniConfiguration = giniConfiguration
+        self.screenViewModel = LiveAnalysisViewModel()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -330,8 +331,7 @@ import GiniUtilites
 
     /// Adds the "Powered by Gini" badge if the Analysis screen is enabled. No-op otherwise.
     private func addPoweredByGiniBadgeIfEnabled() {
-        guard IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
-                                              in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens) else { return }
+        guard screenViewModel.isIngredientBrandEnabled else { return }
 
         let badge = PoweredByGiniBadgeView()
         view.addSubview(badge)
@@ -477,8 +477,7 @@ import GiniUtilites
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let ingredientBrandEnabled = IngredientBrandScreen.isEnabled(IngredientBrandScreen.analysis,
-                                                                     in: GiniCaptureUserDefaultsStorage.ingredientBrandScreens)
+        let ingredientBrandEnabled = screenViewModel.isIngredientBrandEnabled
         /// When the persistent Gini indicator is active, tell the education view to
         /// skip its own internal `imageView` — the g mark is already anchored to
         /// the screen and the education carousel only needs to render text + suffix
