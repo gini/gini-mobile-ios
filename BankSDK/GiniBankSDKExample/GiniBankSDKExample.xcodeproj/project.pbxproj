@@ -92,6 +92,9 @@
 		28C0330200000000000000A0 /* PaymentHintScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */; };
 		28C0330200000000000000A1 /* PaymentHintScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B1 /* PaymentHintScreen.swift */; };
 		28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */; };
+		28C0330300000000000000A0 /* IngredientBrandScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */; };
+		28C0330300000000000000A1 /* IngredientBrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B1 /* IngredientBrandScreen.swift */; };
+		28C0330300000000000000A2 /* IngredientBrandFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */; };
 		28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B3 /* invoice_future_due.pdf */; };
 		28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B4 /* invoice_no_due_date.pdf */; };
 		28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B5 /* invoice_future_due.jpeg */; };
@@ -406,6 +409,9 @@
 		28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B1 /* PaymentHintScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreen.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintFlowUITests.swift; sourceTree = "<group>"; };
+		28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		28C0330300000000000000B1 /* IngredientBrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreen.swift; sourceTree = "<group>"; };
+		28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandFlowUITests.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B3 /* invoice_future_due.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_future_due.pdf; sourceTree = "<group>"; };
 		28C0330200000000000000B4 /* invoice_no_due_date.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_no_due_date.pdf; sourceTree = "<group>"; };
 		28C0330200000000000000B5 /* invoice_future_due.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice_future_due.jpeg; sourceTree = "<group>"; };
@@ -1070,6 +1076,7 @@
 				28DAF4852CD293140035A1FF /* MainScreen.swift */,
 				28DAF4862CD293140035A1FF /* OnboardingScreen.swift */,
 				28C0330200000000000000B1 /* PaymentHintScreen.swift */,
+				28C0330300000000000000B1 /* IngredientBrandScreen.swift */,
 				28DAF4872CD293140035A1FF /* ReturnAssistantScreen.swift */,
 				28DAF4882CD293140035A1FF /* ReviewScreen.swift */,
 				28DAF4892CD293140035A1FF /* SettingScreen.swift */,
@@ -1087,6 +1094,7 @@
 				28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */,
 				CE000000000000110000001A /* EditLineItemAccessibilityIdentifiers.swift */,
 				28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */,
+				28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */,
 				28DAF4922CD293140035A1FF /* SettingScreenAccessibilityIdentifiers.swift */,
 			);
 			path = AccessibilityIdentifiers;
@@ -1154,6 +1162,7 @@
 				28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */,
 				28D35CB72F83DA62000339B4 /* GiniCaptureFlowUITestsUsingBS.swift */,
 				28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */,
+				28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */,
 				28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */,
 				28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */,
 				28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */,
@@ -1949,6 +1958,9 @@
 				28C0330200000000000000A0 /* PaymentHintScreenAccessibilityIdentifiers.swift in Sources */,
 				28C0330200000000000000A1 /* PaymentHintScreen.swift in Sources */,
 				28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */,
+				28C0330300000000000000A0 /* IngredientBrandScreenAccessibilityIdentifiers.swift in Sources */,
+				28C0330300000000000000A1 /* IngredientBrandScreen.swift in Sources */,
+				28C0330300000000000000A2 /* IngredientBrandFlowUITests.swift in Sources */,
 				28D35CBA2F83F685000339B4 /* GiniCXCaptureFlowTests.swift in Sources */,
 				CX000001000000060000001A /* GiniCXTransactionSummaryUITests.swift in Sources */,
 				CX000001000000070000001A /* GiniCXNoResultsUITests.swift in Sources */,
