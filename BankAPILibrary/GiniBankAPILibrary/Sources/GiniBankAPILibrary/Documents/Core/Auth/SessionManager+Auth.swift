@@ -107,14 +107,18 @@ fileprivate extension SessionManager {
     func handleExistingUser(user: User,
                             completion: @escaping CompletionResult<Token>,
                             saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        fetchUserAccessToken(for: user) { [weak self] result in
+        /// Strong `self` capture is deliberate: `SessionManager` owns the login flow and is
+        /// long-lived. A `[weak self]` capture would silently drop the outer `completion`
+        /// on the `.unauthorized` retry path if `self` deallocated mid-request, hanging
+        /// the caller of `logIn(completion:)` forever.
+        fetchUserAccessToken(for: user) { result in
             switch result {
                 case .success:
                     saveTokenAndComplete(result)
                 case .failure(let error):
                     if case .unauthorized = error {
-                        self?.removeCurrentUserInfo()
-                        self?.createUserAndFetchToken(completion: completion, saveTokenAndComplete: saveTokenAndComplete)
+                        self.removeCurrentUserInfo()
+                        self.createUserAndFetchToken(completion: completion, saveTokenAndComplete: saveTokenAndComplete)
                     } else {
                         completion(.failure(error))
                     }
@@ -124,10 +128,13 @@ fileprivate extension SessionManager {
 
     func createUserAndFetchToken(completion: @escaping CompletionResult<Token>,
                                  saveTokenAndComplete: @escaping (Result<Token, GiniError>) -> Void) {
-        createUser { [weak self] result in
+        /// Strong `self` capture is deliberate: see `handleExistingUser` above. A `[weak self]`
+        /// capture would drop `saveTokenAndComplete`/`completion` on the `.success` branch if
+        /// `self` deallocated between `createUser` returning and `fetchUserAccessToken` starting.
+        createUser { result in
             switch result {
                 case .success(let user):
-                    self?.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
+                    self.fetchUserAccessToken(for: user, completion: saveTokenAndComplete)
                 case .failure(let error):
                     completion(.failure(error))
             }

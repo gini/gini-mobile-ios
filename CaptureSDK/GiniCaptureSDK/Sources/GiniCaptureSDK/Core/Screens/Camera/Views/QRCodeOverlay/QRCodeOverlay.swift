@@ -356,6 +356,9 @@ final class QRCodeOverlay: UIView {
         if let educationViewModel {
             educationTask = Task { [weak self] in
                 await educationViewModel.start()
+                /// If the overlay was dismissed mid-animation (see `hideAnimation`),
+                /// the user did not actually see the message — do not flag it as shown.
+                guard !Task.isCancelled else { return }
                 self?.educationFlowController?.markMessageAsShown()
             }
             educationLoadingView?.isHidden = false
@@ -377,6 +380,12 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
+        /// Cancel the education flow task so its trailing `markMessageAsShown()`
+        /// does not fire when the user dismisses the camera before the animation
+        /// finished — otherwise the message is silently marked as seen and the
+        /// user never gets it again.
+        educationTask?.cancel()
+        educationTask = nil
         if let educationLoadingView {
             educationLoadingView.isHidden = true
         } else {

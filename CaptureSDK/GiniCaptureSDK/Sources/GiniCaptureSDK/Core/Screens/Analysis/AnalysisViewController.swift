@@ -49,6 +49,10 @@ import GiniUtilites
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
     private var educationAnimationFinished: Bool = false
+    /// Exposed to `@testable` consumers so cancellation coverage can observe the
+    /// task after `viewWillDisappear`. Matches the visibility of
+    /// `poweredByGiniLoadingIndicatorView` in this file.
+    private(set) var educationTask: Task<Void, Never>?
     private var shouldShowOriginalFlow: Bool {
         guard let state = educationFlowController?.nextState() else {
             return false
@@ -229,6 +233,13 @@ import GiniUtilites
 
         /// Release the Gini indicator's animation loop while the screen is offscreen.
         poweredByGiniLoadingIndicatorView?.stopAnimation()
+
+        /// Cancel the education flow task so its trailing `markMessageAsShown()`
+        /// does not fire when the user leaves the Analysis screen before the
+        /// animation finished — otherwise the message is silently marked as seen
+        /// and the user never gets it again.
+        educationTask?.cancel()
+        educationTask = nil
     }
 
     public override func viewDidLayoutSubviews() {
@@ -503,8 +514,13 @@ import GiniUtilites
             }
         }
 
-        Task {
-            await finalizeEducationAnimation(viewModel)
+        educationTask = Task { [weak self] in
+            await self?.finalizeEducationAnimation(viewModel)
+
+            /// If the VC was dismissed mid-animation, skip cleanup — the view is
+            /// already gone and `showOriginalLoadingMessage()` would touch stale
+            /// state on a screen the user has left.
+            guard let self, !Task.isCancelled else { return }
 
             ///  remove QRCodeEducationLoadingView once animation finished
             customLoadingView.removeFromSuperview()
@@ -512,23 +528,26 @@ import GiniUtilites
             /// Keep the Analysis screen populated while extraction continues in
             /// the background — without this, removing the education view leaves
             /// a blank screen for the remainder of the extraction request.
-            showOriginalLoadingMessage()
+            self.showOriginalLoadingMessage()
         }
     }
 
     /**
      Handles the finalization of the education animation sequence:
      - Starts the view model lifecycle.
-     - Resumes all pending animation completion continuations.
-     - Clears the continuation list to avoid memory leaks or duplicate calls.
+     - Resumes all pending animation completion continuations (always, even on
+       cancellation, so callers of `waitUntilAnimationCompleted()` do not hang).
      - Flags the animation as finished to update UI state.
-     - Marks the educational message as shown to prevent it from appearing again.
+     - Marks the educational message as shown, unless the surrounding task was
+       cancelled (screen dismissed mid-animation) — the user never saw the
+       message, so it should surface again on the next launch.
      */
     private func finalizeEducationAnimation(_ viewModel: QRCodeEducationLoadingViewModel) async {
         await viewModel.start()
         animationCompletionContinuations.forEach { $0.resume() }
         animationCompletionContinuations.removeAll()
         educationAnimationFinished = true
+        guard !Task.isCancelled else { return }
         educationFlowController?.markMessageAsShown()
     }
 
