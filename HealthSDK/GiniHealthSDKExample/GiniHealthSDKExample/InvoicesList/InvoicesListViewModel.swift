@@ -179,7 +179,7 @@ final class InvoicesListViewModel {
             }
         }
     }
-    
+
     private func handleExtractions(for createdDocument: GiniHealthSDK.Document) {
         self.documentService.extractions(for: createdDocument,
                                          cancellationToken: CancellationToken()) { [weak self] result in

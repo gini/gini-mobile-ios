@@ -211,7 +211,7 @@ extension DocumentService {
                                                              apiDomain: self.apiDomain,
                                                              apiVersion: self.apiVersion,
                                                              httpMethod: .get)
-            
+
             resourceHandler(resource, cancellationToken, { result in
                 self.handleExtractionsResult(result, completion: completion)
             })
@@ -331,11 +331,11 @@ extension DocumentService {
             }
         }
     }
-    
+
     private func handlePreviewPages(_ pages: [Document.Page],
                                     pageNumber: Int,
                                     completion: @escaping CompletionResult<Data>) {
-        
+
         let page = pages.first {
             $0.number == pageNumber
         }

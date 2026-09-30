@@ -355,7 +355,7 @@ public struct DataForReview {
             }
         }
     }
-    
+
     private func fetchExtractions(for document: Document,
                                   completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         // Strong self capture keeps `GiniHealth` alive until `completion` fires — a
@@ -367,7 +367,7 @@ public struct DataForReview {
             }
         }
     }
-    
+
     private func handlePaymentExtractionResult(_ result: Result<ExtractionResult, GiniError>,
                                                completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         switch result {
