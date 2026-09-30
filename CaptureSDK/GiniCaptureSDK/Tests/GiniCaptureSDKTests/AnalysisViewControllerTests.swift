@@ -290,6 +290,35 @@ final class AnalysisViewControllerTests: XCTestCase {
                         "Expected default UIActivityIndicatorView fallback when the branded asset is unavailable")
     }
 
+    // MARK: - Education task lifecycle
+
+    func testEducationTaskIsCancelledOnViewWillDisappear() {
+        /// Force the education flow to actually run: reset the display counter and
+        /// enable the QR-code education flag (both flows are gated by the same flag
+        /// via `EducationFlowController.captureInvoiceFlowController`).
+        let originalEducationEnabled = GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled
+        let originalDisplayCount = GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount
+        GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = true
+        GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount = 0
+        defer {
+            GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = originalEducationEnabled
+            GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount = originalDisplayCount
+        }
+
+        let sut = AnalysisViewController(document: makeCameraImageDocument(),
+                                         giniConfiguration: sepaExtractionsConfig())
+        sut.loadViewIfNeeded()
+
+        let task = sut.educationTask
+        XCTAssertNotNil(task,
+                        "Precondition: configureLoadingIndicator should spawn the education task on viewDidLoad when the flow returns .showMessage")
+
+        sut.viewWillDisappear(false)
+
+        XCTAssertTrue(task?.isCancelled ?? false,
+                      "Expected the education task to be cancelled on viewWillDisappear so the trailing markMessageAsShown() does not fire when the user dismissed the Analysis screen mid-animation")
+    }
+
     // MARK: - Helpers
 
     private func sepaExtractionsConfig() -> GiniConfiguration {

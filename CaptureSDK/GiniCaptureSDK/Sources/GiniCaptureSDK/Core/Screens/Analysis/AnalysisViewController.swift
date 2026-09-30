@@ -49,7 +49,10 @@ import GiniUtilites
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
     private var educationAnimationFinished: Bool = false
-    private var educationTask: Task<Void, Never>?
+    /// Exposed to `@testable` consumers so cancellation coverage can observe the
+    /// task after `viewWillDisappear`. Matches the visibility of
+    /// `poweredByGiniLoadingIndicatorView` in this file.
+    private(set) var educationTask: Task<Void, Never>?
     private var shouldShowOriginalFlow: Bool {
         guard let state = educationFlowController?.nextState() else {
             return false
