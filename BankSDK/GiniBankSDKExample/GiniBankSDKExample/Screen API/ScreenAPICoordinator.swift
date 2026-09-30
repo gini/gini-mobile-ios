@@ -289,6 +289,9 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+        #if DEBUG
+        UITestDelegateObservers.recordGiniCaptureAnalysisDidFinish()
+        #endif
         if let crossBorderPaymentExtractions = result.crossBorderPayment,
             !crossBorderPaymentExtractions.isEmpty {
             extractedResults = []
@@ -319,6 +322,10 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
 
     func giniCaptureDidCancelAnalysis() {
+        #if DEBUG
+        /// Default-networking cancels through this method; fire the same marker for a delegate-path-agnostic assertion.
+        UITestDelegateObservers.recordDidCancelCapturing()
+        #endif
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 
@@ -411,6 +418,9 @@ extension ScreenAPICoordinator: GiniCaptureDelegate {
     }
     
     func didCancelCapturing() {
+        #if DEBUG
+        UITestDelegateObservers.recordDidCancelCapturing()
+        #endif
         // Add your  implementation
     }
     

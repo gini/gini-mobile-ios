@@ -70,7 +70,9 @@ private extension PoweredByGiniBadgeView {
     }
 
     enum Strings {
-        /// Brand mark — intentionally not localized (PP-2570 spec R11).
+        /**
+         Brand mark — intentionally not localized.
+         */
         static let accessibilityLabel = "Powered by Gini"
     }
 }

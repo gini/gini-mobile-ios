@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniBankSDK
+import GiniCaptureSDK
 import Firebase
 
 @UIApplicationMain
@@ -54,6 +55,20 @@ import Firebase
            idx + 1 < CommandLine.arguments.count,
            let value = Int(CommandLine.arguments[idx + 1]) {
             GiniBankConfiguration.shared.paymentDueHintThresholdDays = value
+        }
+        if CommandLine.arguments.contains("-UITestMockResetEducationCount") {
+            /// Mirrors `GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount` (internal, so hard-coded).
+            UserDefaults.standard.removeObject(
+                forKey: "ginicapture.defaults.captureInvoice.educationMessageDisplayCount"
+            )
+            /// Education flow is gated by qrCodeEducationEnabled; turn it on for the test.
+            GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = true
+        }
+        if CommandLine.arguments.contains("-UITestInjectCustomLoadingIndicator") {
+            GiniBankConfiguration.shared.customLoadingIndicator = UITestCustomLoadingIndicator()
+        }
+        if CommandLine.arguments.contains("-UITestInstallDelegateObservers") {
+            UITestDelegateObservers.install()
         }
     }
 

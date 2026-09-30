@@ -29,6 +29,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var cxExtractionScreen: CXExtractionScreen!
     var creditNoteWarningScreen: CreditNoteWarningScreen!
     var paymentHintScreen: PaymentHintScreen!
+    var ingredientBrandScreen: IngredientBrandScreen!
 
 
     /**
@@ -88,6 +89,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         cxExtractionScreen = CXExtractionScreen(app: app)
         creditNoteWarningScreen = CreditNoteWarningScreen(app: app, locale: currentLocale)
         paymentHintScreen = PaymentHintScreen(app: app)
+        ingredientBrandScreen = IngredientBrandScreen(app: app)
     }
     
     override func tearDownWithError() throws  {

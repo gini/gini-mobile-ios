@@ -74,6 +74,7 @@ import GiniUtilites
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .large
         indicatorView.startAnimating()
+        indicatorView.accessibilityIdentifier = AccessibilityIdentifiers.defaultLoadingIndicator
         return indicatorView
     }()
 
@@ -149,6 +150,7 @@ import GiniUtilites
             return nil
         }
         let indicator = PoweredByGiniLoadingIndicatorView()
+        indicator.accessibilityIdentifier = AccessibilityIdentifiers.IngredientBrand.poweredByGiniLoadingIndicator
         return indicator.hasValidAsset ? indicator : nil
     }()
 
@@ -331,6 +333,7 @@ import GiniUtilites
         guard screenViewModel.isIngredientBrandEnabled else { return }
 
         let badge = PoweredByGiniBadgeView()
+        badge.accessibilityIdentifier = AccessibilityIdentifiers.IngredientBrand.poweredByGiniBadge
         view.addSubview(badge)
         badge.giniMakeConstraints {
             $0.centerX.equalToSuperview()
@@ -666,6 +669,30 @@ private extension AnalysisViewController {
         /// its intrinsic Figma height (~135pt) — only the centerY changes between
         /// orientations, not the mark's size.
         static let giniIndicatorCompactVerticalCenterYMultiplier: CGFloat = 0.55
+    }
+
+    /**
+     Stable accessibility identifiers applied to the Analysis screen for
+     UI-automation. Values are duplicated in the `GiniBankSDKExampleUITests`
+     target as `IngredientBrandScreenAccessibilityIdentifiers` — keep both
+     sides in sync.
+     */
+    struct AccessibilityIdentifiers {
+        private init() {
+            // Namespace-only; instantiation is disabled.
+        }
+
+        /// Default loading state (flag off / no branded indicator).
+        static let defaultLoadingIndicator = "analysis.defaultLoadingIndicator"
+
+        /// Ingredient-brand elements shown when `ingredientBrandScreens` contains "Analysis".
+        struct IngredientBrand {
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
+            static let poweredByGiniLoadingIndicator = "analysis.ingredientBrand.poweredByGiniLoadingIndicator"
+            static let poweredByGiniBadge = "analysis.ingredientBrand.poweredByGiniBadge"
+        }
     }
 
     struct Strings {
