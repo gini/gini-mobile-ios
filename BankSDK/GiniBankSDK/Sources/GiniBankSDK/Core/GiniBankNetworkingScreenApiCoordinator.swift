@@ -324,11 +324,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     Warms the branded loading-indicator HEIC cache off-main when
-     `ingredientBrandScreens` is non-empty, so the first Analysis / QR-overlay
-     entry hits the cache synchronously and avoids the ~1.5–2 s main-thread
-     decode stall. Extracted from `startSDK`'s config-fetch closure to keep
-     closure nesting under Sonar's S3087 limit (max 2 nested closures).
+     Warm the branded-indicator HEIC cache off-main so the first Analysis
+     / QR-overlay entry hits it synchronously (avoids a ~1.5–2 s stall).
      */
     private func prewarmIngredientBrandIndicatorIfEnabled(for configuration: ClientConfiguration) {
         guard !configuration.ingredientBrandScreens.isEmpty else { return }

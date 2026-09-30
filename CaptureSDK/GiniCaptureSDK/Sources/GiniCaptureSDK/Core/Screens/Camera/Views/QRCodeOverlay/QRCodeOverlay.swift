@@ -84,11 +84,8 @@ final class QRCodeOverlay: UIView {
     private var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView?
 
     /**
-     Creates a new overlay backed by `viewModel`. The default
-     `LiveQRCodeOverlayViewModel` reads
-     `GiniCaptureUserDefaultsStorage.ingredientBrandScreens` on demand,
-     preserving the previous production behavior; tests inject a stub to
-     control the flag without touching global storage.
+     Injectable VM defaulting to `LiveQRCodeOverlayViewModel` (production reads
+     `GiniCaptureUserDefaultsStorage.ingredientBrandScreens`); tests inject a stub.
      */
     init(viewModel: QRCodeOverlayViewModel = LiveQRCodeOverlayViewModel()) {
         self.viewModel = viewModel

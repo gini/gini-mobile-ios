@@ -9,12 +9,9 @@ import UIKit
 import ImageIO
 
 /**
- Animated Gini "g" loading indicator for ingredient-brand clients. Picks
- the light or dark HEIC dataset from `GiniBrand.xcassets` by the current
- `UIUserInterfaceStyle` and swaps the frame set on appearance change.
-
- Check `hasValidAsset` before installing — falls back to
- `UIActivityIndicatorView` when `false`.
+ Animated Gini "g" loading indicator for ingredient-brand clients. Loads the light
+ or dark HEIC dataset by `UIUserInterfaceStyle` and swaps on appearance change.
+ Check `hasValidAsset` before installing — falls back to `UIActivityIndicatorView`.
  */
 public final class PoweredByGiniLoadingIndicatorView: UIView {
 
@@ -32,9 +29,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      */
     public private(set) var hasValidAsset: Bool = false
 
-    /// Caller intent to animate, kept separate from the actual `UIImageView.isAnimating`
-    /// state so that `UIAccessibility.isReduceMotionEnabled` can suppress the animation
-    /// without losing the caller's request across trait changes and live a11y toggles.
+    /// Caller intent, kept separate from `isAnimating` so reduce-motion can gate playback without losing state.
     private var wantsAnimation: Bool = false
 
     /**
@@ -90,10 +85,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Starts the underlying `UIImageView` frame animation. When
-     `UIAccessibility.isReduceMotionEnabled` is `true`, the view stays on
-     the first frame statically instead. Idempotent — safe to call when
-     already animating. No-op when `hasValidAsset` is `false`.
+     Starts the frame animation. When `isReduceMotionEnabled` is true, stays on the first frame.
+     Idempotent; no-op when `hasValidAsset` is false.
      */
     public func startAnimation() {
         wantsAnimation = true
@@ -110,16 +103,12 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Applies `wantsAnimation` filtered through
-     `UIAccessibility.isReduceMotionEnabled`. Called from `startAnimation`,
-     `traitCollectionDidChange`, and the reduce-motion notification
-     observer.
+     Applies `wantsAnimation` filtered through `isReduceMotionEnabled`.
      */
     private func applyReducedMotionAwareAnimationState() {
         guard hasValidAsset, wantsAnimation else { return }
         if UIAccessibility.isReduceMotionEnabled {
-            /// The first frame is already installed as `imageView.image` by
-            /// `apply(frames:)`, so stopping the animation reveals it as a static poster.
+            /// First frame is already the poster on `imageView.image`, so stopping reveals it.
             imageView.stopAnimating()
         } else {
             imageView.startAnimating()
@@ -169,13 +158,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Off-main asynchronous prewarm of the process-wide frame cache. Call at
-     an SDK-idle moment (e.g. camera setup, before Analysis is ever presented)
-     so the sync decode inside `init` becomes a cache-hit and does not stall
-     the main thread on cold entry (measured ~1.5–2 s on iPhone otherwise).
-
-     - Parameters:
-       - styles: Which appearance variants to decode. Defaults to both.
+     Off-main prewarm of the frame cache; call at SDK idle so the first `init` decode is a cache hit.
+     - Parameter styles: Appearance variants to decode. Defaults to both.
      */
     public static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
         await withTaskGroup(of: Void.self) { group in
@@ -188,13 +172,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Loads and decodes the HEIC data asset matching the given interface style
-     from one of two universal datasets — `gini_loading_indicator_light` and
-     `gini_loading_indicator_dark` — and returns the decoded frame set from
-     the process-wide cache when available so repeat callers (e.g. the
-     education carousel and the standalone view) don't re-decode. Thread-safe
-     via the underlying `NSCache`; call from a background queue during
-     `prewarm` and directly on main in the sync fallback path.
+     Loads and decodes the HEIC dataset for `style` from the cache when possible.
+     Thread-safe via `NSCache` — safe from a background queue.
      */
     static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
         let key = NSNumber(value: style.rawValue)
@@ -206,8 +185,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
             return nil
         }
         guard let extracted = decodeFrames(from: dataAsset.data) else { return nil }
-        /// Worst-case per-frame RGBA cost at the thumbnail cap. Slight over-estimate
-        /// for non-square sources, exact for the shipped square asset.
+        /// Worst-case RGBA cost at the thumbnail cap — exact for the shipped square asset.
         let bytesPerFrame = Constants.thumbnailMaxPixelSize * Constants.thumbnailMaxPixelSize * 4
         let byteCost = extracted.frames.count * bytesPerFrame
         cachedFrames.setObject(ExtractedFramesBox(extracted), forKey: key, cost: byteCost)
@@ -254,10 +232,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         return ExtractedFrames(frames: frames, duration: safeDuration)
     }
 
-    /// Process-wide cache of decoded frame sets, keyed by `UIUserInterfaceStyle`
-    /// rawValue. `NSCache` bounds retention at `Constants.cacheTotalCostLimit` and
-    /// yields to iOS memory-pressure eviction; entries repopulate on next
-    /// `decodeFrames(for:)` call.
+    /// Process-wide cache keyed by `UIUserInterfaceStyle.rawValue`; bounded by
+    /// `cacheTotalCostLimit` and evictable under memory pressure.
     private static let cachedFrames: NSCache<NSNumber, ExtractedFramesBox> = {
         let cache = NSCache<NSNumber, ExtractedFramesBox>()
         cache.name = "PoweredByGiniLoadingIndicatorView.cachedFrames"
@@ -319,13 +295,9 @@ private extension PoweredByGiniLoadingIndicatorView {
         /// scaled so `UIImage.size.height` == this value; width follows the
         /// exported aspect ratio.
         static let targetPointHeight: CGFloat = 135
-        /// Cap on decoded frame pixel dimensions, sized to the maximum `@3x` device
-        /// pixel need (`targetPointHeight × 3 = 405`). Any larger just retains bytes
-        /// iOS would downsample at display time.
+        /// Max device pixel need at `@3x` (`targetPointHeight × 3`).
         static let thumbnailMaxPixelSize: Int = 405
-        /// Byte-cost ceiling for the process-wide frame cache. Comfortably fits both
-        /// light + dark cached frame sets (~50 MB each after the 405-px cap) while
-        /// still yielding to `NSCache` eviction under memory pressure.
+        /// Byte ceiling for the frame cache; fits both variants and yields under memory pressure.
         static let cacheTotalCostLimit: Int = 128 * 1024 * 1024
     }
 
