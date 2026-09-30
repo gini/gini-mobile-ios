@@ -343,12 +343,9 @@ extension UITestMockBackend: GiniCaptureNetworkService {
 // MARK: - UI-test helpers (custom loading indicator + delegate observers)
 
 /**
- UI-test only stand-in for an integrator-injected `CustomLoadingIndicatorAdapter`.
- Attached to `GiniBankConfiguration.shared.customLoadingIndicator` when the
- launch argument `-UITestInjectCustomLoadingIndicator` is present so tests can
- prove the branded Gini indicator wins over an integrator-provided one when the
- ingredient-brand flag is on. Manual protocol conformance — no third-party
- mocking framework, per the repository testing standard.
+ UI-test stand-in for `CustomLoadingIndicatorAdapter`. Attached when
+ `-UITestInjectCustomLoadingIndicator` is passed so tests can prove the branded Gini
+ indicator wins over an integrator-provided one when the flag is on.
  */
 final class UITestCustomLoadingIndicator: UIView, CustomLoadingIndicatorAdapter {
 
@@ -369,10 +366,7 @@ final class UITestCustomLoadingIndicator: UIView, CustomLoadingIndicatorAdapter 
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Non-zero intrinsic size so XCUITest can find the view. The SDK only
-    /// pins `centerX`/`centerY` to the loading container (no width/height
-    /// constraints), which leaves a plain `UIView` at 0x0 — and XCUITest
-    /// skips zero-sized `.other` elements from its accessibility snapshot.
+    /// Non-zero intrinsic size — XCUITest skips zero-sized `.other` elements from its accessibility snapshot.
     override var intrinsicContentSize: CGSize {
         CGSize(width: 44, height: 44)
     }
@@ -385,14 +379,9 @@ final class UITestCustomLoadingIndicator: UIView, CustomLoadingIndicatorAdapter 
 }
 
 /**
- UI-test bridge for observing SDK delegate callbacks from XCUITest. `install()`
- arms the bridge; when the corresponding `GiniCaptureResultsDelegate` /
- `GiniCaptureDelegate` method fires from `ScreenAPICoordinator`, a fresh 1x1
- marker view is attached to the key window under a known identifier. XCUITest
- resolves the transition via `waitForExistence(timeout:)`. Fresh (not
- pre-installed) so `waitForExistence` observes a real absent → present
- transition; `isHidden = true` on a pre-installed marker removes it from
- XCUITest's accessibility tree entirely.
+ UI-test bridge for observing SDK delegate callbacks. `install()` arms the bridge;
+ firings attach a fresh 1x1 marker view to the key window so XCUITest can resolve the
+ transition via `waitForExistence(timeout:)`.
  */
 enum UITestDelegateObservers {
 

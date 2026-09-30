@@ -323,9 +323,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
 
     func giniCaptureDidCancelAnalysis() {
         #if DEBUG
-        /// Default-networking flow routes cancellation through this results-delegate
-        /// method rather than `GiniCaptureDelegate.didCancelCapturing()`. Fire the
-        /// same observer marker so the UI test's assertion is delegate-path agnostic.
+        /// Default-networking cancels through this method; fire the same marker for a delegate-path-agnostic assertion.
         UITestDelegateObservers.recordDidCancelCapturing()
         #endif
         delegate?.screenAPI(coordinator: self, didFinish: ())

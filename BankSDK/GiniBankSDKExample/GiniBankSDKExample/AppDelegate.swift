@@ -57,16 +57,11 @@ import Firebase
             GiniBankConfiguration.shared.paymentDueHintThresholdDays = value
         }
         if CommandLine.arguments.contains("-UITestMockResetEducationCount") {
-            /// Mirrors the SDK-internal key
-            /// `GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount`
-            /// (`GiniCaptureUserDefaultsStorage.swift:53`). Duplicated as a raw
-            /// string because the storage property is `internal`; must stay in sync
-            /// with the SDK constant.
+            /// Mirrors `GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount` (internal, so hard-coded).
             UserDefaults.standard.removeObject(
                 forKey: "ginicapture.defaults.captureInvoice.educationMessageDisplayCount"
             )
-            /// captureInvoice education flow is gated by qrCodeEducationEnabled;
-            /// enable it so the education path can render for the test.
+            /// Education flow is gated by qrCodeEducationEnabled; turn it on for the test.
             GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = true
         }
         if CommandLine.arguments.contains("-UITestInjectCustomLoadingIndicator") {

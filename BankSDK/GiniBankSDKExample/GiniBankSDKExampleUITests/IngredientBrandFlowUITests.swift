@@ -9,21 +9,12 @@ import XCTest
 
 /**
  UI-automation for the Ingredient Brand feature on the Analysis screen.
-
- The backend's `ingredientBrandScreens` list toggles the "Powered by Gini"
- badge and the branded Gini loading indicator on `AnalysisViewController`.
- The mock backend (`UITestMockBackend`) serves the desired list without a
- real API call, and an analysis delay keeps the Analysis screen visible
- long enough for XCUITest to query the elements.
-
- Fixture: reuses `TestFixtures.Files.testImage` — the mock backend ignores
- the uploaded content and serves the `invoice` scenario payload regardless.
+ Mock backend serves the flag list; an analysis delay keeps the screen
+ visible long enough for XCUITest to query it.
  */
 final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
 
-    /// Seconds the mock backend delays analysis completion. Keeps the Analysis
-    /// screen in the view hierarchy long enough for the assertions below;
-    /// tightly bounded so the whole class stays fast on BrowserStack.
+    /// Analysis-completion delay in seconds; keeps the Analysis screen visible for XCUITest assertions.
     private static let analysisDelaySeconds = "8.0"
 
     /**
@@ -167,10 +158,7 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
                       "Powered-by-Gini badge should be visible in portrait before rotating")
 
         XCUIDevice.shared.orientation = .landscapeLeft
-        /// Guard against a silent no-op: if the example app's Info.plist or
-        /// `AnalysisViewController.supportedInterfaceOrientations` force-locks
-        /// portrait, the setter above is ignored and the rest of the assertions
-        /// pass trivially. Fail loudly so the root cause is obvious.
+        /// Fail loudly if portrait is force-locked (Info.plist / supportedInterfaceOrientations).
         XCTAssertTrue(XCUIDevice.shared.orientation.isLandscape,
                       "Device did not rotate to landscape — check Info.plist UISupportedInterfaceOrientations and Analysis screen orientation policy")
         XCTAssertTrue(ingredientBrandScreen.poweredByGiniLoadingIndicator.waitForExistence(timeout: 3),
@@ -226,11 +214,7 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
     // MARK: - VoiceOver label on the branded indicator
 
     /**
-     `AnalysisViewController.showBrandedLoadingIndicator(_:)` assigns
-     `indicator.accessibilityLabel = loadingIndicatorText.text`, so XCUITest's
-     `.label` on the branded indicator equals the localized analysis loading
-     text — verifies the VoiceOver announcement carries the same message as the
-     visible loading text.
+     VoiceOver announcement on the branded indicator carries the localized analysis loading text.
      */
     func testBrandedLoadingIndicatorAccessibilityLabelMatchesLoadingText() throws {
         extraLaunchArguments = ["-UITestMockIngredientBrandScreens", "Analysis"]
@@ -239,19 +223,12 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
 
         XCTAssertTrue(ingredientBrandScreen.waitForBrandedLoadingIndicator(),
                       "Branded indicator should be present before asserting its label")
-        /// `AnalysisViewController.showBrandedLoadingIndicator(_:)` sets the
-        /// label from `loadingIndicatorText.text`, which appends the current
-        /// document's filename on a new line (e.g. `"Analyzing\n<file>.pdf"`).
-        /// Assert the leading token instead of the full text so the check is
-        /// robust across fixture names and locales.
+        /// Assert the leading token so the check survives fixture names + locales.
         let leadingToken = analysisLoadingText.components(separatedBy: " ").first ?? analysisLoadingText
         let actualLabel = ingredientBrandScreen.poweredByGiniLoadingIndicator.label
         XCTAssertTrue(actualLabel.hasPrefix(leadingToken),
                       "Branded indicator's accessibility label should begin with the analysis loading token — got: \(actualLabel)")
-        /// iOS surfaces the document filename on a new line after the loading
-        /// token (e.g. `"Analyzing\ntest_image_….pdf"`). Asserting `.pdf` is
-        /// present proves the filename made it into the a11y label without
-        /// hard-coding the fixture's timestamped basename.
+        /// Filename is appended after the loading token; asserting `.pdf` without pinning the basename.
         XCTAssertTrue(actualLabel.lowercased().contains(".pdf"),
                       "Branded indicator's accessibility label should include the analyzed PDF filename — got: \(actualLabel)")
     }
@@ -302,11 +279,7 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
      visible alongside it.
      */
     func testFlagOnDuringEducationFlowKeepsBadgeVisible() throws {
-        /// `AnalysisViewController.shouldDisplayEducationFlow` requires
-        /// `!document.isImported`, so the files-import path used by
-        /// `runFlowToAnalysis` can never trigger the education flow. Skipping
-        /// until a camera-injection helper (mirror of
-        /// `GiniCaptureFlowUITestsUsingBS.injectImage`) exists.
+        /// Education flow requires `!document.isImported`; files-import can't trigger it (needs camera-injection helper).
         throw XCTSkip("Education flow requires camera path; iOS files-import fixture cannot trigger it")
     }
 
@@ -315,8 +288,7 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
      branded indicator or badge.
      */
     func testFlagOffDuringEducationFlowShowsNoBrand() throws {
-        /// See `testFlagOnDuringEducationFlowKeepsBadgeVisible` — same
-        /// constraint: education flow needs the camera path.
+        /// Same constraint as the flag-on twin — needs camera path.
         throw XCTSkip("Education flow requires camera path; iOS files-import fixture cannot trigger it")
     }
 
@@ -399,16 +371,12 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
         )
     }
 
-    // MARK: - Cancellation squelches in-flight completion (Android test10 parity)
+    // MARK: - Cancellation squelches in-flight completion
 
     /**
-     Cancel mid-analysis: after tapping Cancel while the mock backend's delayed
-     analysis is still in flight, `didCancelCapturing` must fire immediately and
-     `giniCaptureAnalysisDidFinishWith(result:)` must NEVER fire — the SDK is
-     expected to squelch the pending completion so the integrator never receives
-     a spurious success for an abandoned flow.
-
-     Ports Android `IngredientBrandTests.test10_closeDuringDelayedAnalysis_callbackNeverArrives`.
+     Cancel mid-analysis: `didCancelCapturing` fires and
+     `giniCaptureAnalysisDidFinishWith(result:)` must NEVER fire — the SDK squelches
+     the pending completion so no spurious success reaches the integrator.
      */
     func testCancelDuringDelayedAnalysisSquelchesCompletionCallback() throws {
         extraLaunchArguments = [
@@ -435,9 +403,7 @@ final class IngredientBrandFlowUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(ingredientBrandScreen.didCancelCapturingMarker.waitForExistence(timeout: 5),
                       "didCancelCapturing should fire on cancel")
 
-        /// Negative: wait past the 8s mock delay + a 4s buffer. The finish
-        /// marker must NEVER appear — if it does, the SDK failed to squelch
-        /// the in-flight completion after cancellation.
+        /// Negative: wait past the 8s mock delay + 4s buffer; the finish marker must never appear.
         XCTAssertFalse(
             ingredientBrandScreen.giniCaptureAnalysisDidFinishMarker.waitForExistence(timeout: 12),
             "giniCaptureAnalysisDidFinishWith(result:) must NOT fire after cancellation"

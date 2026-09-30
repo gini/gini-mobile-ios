@@ -7,11 +7,9 @@
 import Foundation
 
 /**
- Accessibility identifiers exposed by `AnalysisViewController` in `GiniCaptureSDK`
- for the Ingredient Brand feature. Values must stay byte-identical to the SDK's
- `AnalysisViewController.AccessibilityIdentifiers` struct
- (`CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift`)
- — duplication is intentional because the UITest target cannot import the SDK.
+ Ingredient Brand accessibility identifiers. Values must stay byte-identical to the SDK's
+ `AnalysisViewController.AccessibilityIdentifiers` — duplicated because the UITest target
+ cannot import the SDK.
  */
 struct IngredientBrandScreenAccessibilityIdentifiers {
 
