@@ -31,6 +31,12 @@ import Firebase
         return true
     }
 
+    #if DEBUG
+    /// The whole helper is UI-test scaffolding — its only caller is behind `#if DEBUG`
+    /// above, and it references `UITestCustomLoadingIndicator` /
+    /// `UITestDelegateObservers` which live in `UITestMockBackend.swift` (also `#if
+    /// DEBUG`-only). Gating the method body ensures Release / Archive builds do not
+    /// try to resolve those types.
     private func applyUITestCleanStateLaunchArguments() {
         if CommandLine.arguments.contains("-StartFromCleanState") {
             if let bundleID = Bundle.main.bundleIdentifier {
@@ -71,6 +77,7 @@ import Firebase
             UITestDelegateObservers.install()
         }
     }
+    #endif
 
     func application(_ app: UIApplication,
                      open url: URL,
