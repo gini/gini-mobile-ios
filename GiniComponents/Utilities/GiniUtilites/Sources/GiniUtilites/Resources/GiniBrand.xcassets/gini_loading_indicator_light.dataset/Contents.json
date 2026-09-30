@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "giniLoadingIndicator-light.heic",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.heics"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
