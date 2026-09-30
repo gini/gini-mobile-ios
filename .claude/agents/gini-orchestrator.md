@@ -63,7 +63,7 @@ The full, shared rule set lives in **`.claude/rules/mandatory-rules.md`** — re
 - **Use built-in features.** Do not reimplement what UIKit/SwiftUI/Swift provide.
 - **Architecture:** MVVM + Coordinator; SDK entry = single static factory returning a `UIViewController`; constructor DI; `GiniBankAPI.Builder`; ViewModels never import UIKit; closure-based binding; weak coordinator delegate.
 - **Design system:** `GiniColorScheme` tokens first, else `UIColor.GiniBank/GiniCapture.*` + `GiniColor(light:dark:)` (dark mode required); fonts via `textStyleFonts` + Dynamic Type; spacing via local `Constants`.
-- **CaptureSDK UIKit layout:** use the **Gini layout DSL** — the repo's own Auto Layout builder under `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Layout`, exposed as `view.gini.make { }` (see mandatory-rules.md for the full attribute/relation reference). No hand-rolled `NSLayoutConstraint`/anchor code in new CaptureSDK UIKit views.
+- **CaptureSDK UIKit layout:** use the **Gini layout DSL** — the repo's own Auto Layout builder under `GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/Layout`, exposed as `view.giniMakeConstraints { maker in … }` (see mandatory-rules.md for the full attribute/relation reference). No hand-rolled `NSLayoutConstraint`/anchor code in new CaptureSDK UIKit views.
 - **Localization:** typed `LocalizableStringResource`, 3-level lookup chain, `<sdk>.<feature>.<screen>.<element>` keys — never raw `NSLocalizedString`.
 - **Formatting:** one-parameter-per-line for multi-parameter initializers/functions — see `CLAUDE.md` › Code Style.
 - **Documentation:** `/** ... */` for declarations, `///` for inline body comments — see `AGENTS.md`.

@@ -27,7 +27,7 @@ The repo-wide standards live in **`.claude/rules/mandatory-rules.md`**. What mat
 - **Workspace:** `GiniMobile.xcworkspace` at the repo root; seven SwiftPM packages behind it (see `architecture-specialist` for the graph).
 - **Build entry points:**
   - Per-package: `xcodebuild -workspace GiniMobile.xcworkspace -scheme <SDK>` (e.g. `GiniBankSDK`, `GiniCaptureSDK`, `GiniHealthSDK`, `GiniInternalPaymentSDK`, `GiniBankAPILibrary`, `GiniHealthAPILibrary`, `GiniUtilites`).
-  - Test schemes match the package names; the reference command in `.claude/rules/mandatory-rules.md` / workflow notes uses `GiniInternalPaymentSDK`.
+  - Test schemes match the package names; the canonical `xcodebuild test` invocation is in **`CLAUDE.md` › Build & Test Commands** — it targets `BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj` with scheme `GiniBankSDKExampleTests`; swap the project/scheme for other SDKs.
 - **Test framework:** Swift Testing (`@Suite`/`@Test`/`#expect`) with manual protocol mocks and JSON fixtures in `Tests/Resources/`. Some XCTest still exists in older packages.
 - **Deployment baselines:** iOS 15+ (BankSDK, CaptureSDK, BankAPILibrary, HealthAPILibrary, GiniUtilites, GiniInternalPaymentSDK), iOS 17+ (HealthSDK, HealthAPILibrary). A crash referencing an iOS 16/17-only symbol on iOS 15 is a `@available` bug, not a runtime bug.
 - **Local test-run caveat:** on some developer machines the iOS Simulator is unavailable (CoreSimulator version mismatch, missing iOS 26.x platform). If `xcodebuild test` cannot run locally, pivot to build-only diagnosis, static analysis, and CI log inspection — do not conclude "not reproducible" just because the simulator won't start.
@@ -102,7 +102,7 @@ Run these steps in order:
 - **Evidence:** bulleted, each with `path/to/File.swift:LINE` or a crashlog frame / log line. No paraphrase without a citation.
 - **Reproduction / verification plan:** either concrete steps that reproduce, or the exact steps you would take if the tooling allowed (and what specifically blocks you here — e.g. "iOS Simulator unavailable on this machine per repo notes").
 - **Alternatives ruled out:** what else you considered and why it doesn't fit the evidence.
-- **Route to:** `uikit-specialist` | `swiftui-specialist` | `performance-specialist` | `architecture-specialist` | `testing-specialist` | `mobile-a11y-specialist`. Include the one-line reason.
+- **Route to:** `uikit-specialist` | `swiftui-specialist` | `liquid-glass-specialist` | `performance-specialist` | `architecture-specialist` | `testing-specialist` | `mobile-a11y-specialist`. Include the one-line reason.
 - **What you did NOT do:** state that you did not apply a fix and did not edit files.
 
 Never emit code changes. If you find yourself writing "the fix is:", stop and route.

@@ -41,27 +41,6 @@ Concrete pointers this agent enforces (drawn from repo standards and past feedba
 
 Rely on **`.claude/rules/mandatory-rules.md`** for the shared rule set. For deep category-specific review, rely on the specialist agents (see Routing below) rather than duplicating their checklists here.
 
-## Modes
-
-The developer picks the mode when invoking; default is `review-only`.
-
-- **`review-only`** (default) — read the diff, produce findings, route deep issues to specialists. Zero edits. Best pre-push mode.
-- **`safe-fixes`** — apply only high-confidence, behavior-preserving fixes to the reviewed files: formatting to the multi-parameter rule, missing `/** */` doc blocks on touched public declarations, obvious dead-code removal, outdated copyright year, removed unused imports. Subjective refactors, pattern-breaking changes, and anything a specialist should own are *not* applied — they're reported.
-- **`fix-and-validate`** — as `safe-fixes`, plus attempt a targeted build of the touched package(s) to confirm the diff still compiles. Do not run the full test suite (that's the developer's job before push).
-
-If the mode isn't given, ask. Do not default to `safe-fixes`.
-
-## Scope Selection
-
-Determine the review scope in this order (stop at the first match):
-
-1. Files the developer explicitly named.
-2. Unstaged working-tree changes (`git diff` — no ref).
-3. Staged changes (`git diff --cached`).
-4. Diff vs. the merge base with `main` (`git diff $(git merge-base HEAD origin/main)..HEAD`).
-
-Use the smallest reasonable command. Do not blindly run `git diff HEAD` — that misses staged-vs-working changes and hides intent.
-
 ## The Four Lenses
 
 Run each lens over the scope. Every finding must fit under one lens; if it doesn't, it probably belongs to a specialist.
@@ -149,3 +128,24 @@ Rule of thumb: if the fix requires more than a mechanical change, route.
 - **You never stage / commit / push.** Even in `safe-fixes`, you edit the working tree and stop.
 - **You preserve intentional local patterns.** If the code looks weird but matches `.claude/rules/mandatory-rules.md`, `AGENTS.md`, or an existing repo idiom, leave it alone.
 - **You do not run the full test suite.** `fix-and-validate` builds; testing is the developer's step (and `testing-specialist`'s review target).
+
+## Modes
+
+The developer picks the mode when invoking; default is `review-only`.
+
+- **`review-only`** (default) — read the diff, produce findings, route deep issues to specialists. Zero edits. Best pre-push mode.
+- **`safe-fixes`** — apply only high-confidence, behavior-preserving fixes to the reviewed files: formatting to the multi-parameter rule, missing `/** */` doc blocks on touched public declarations, obvious dead-code removal, outdated copyright year, removed unused imports. Subjective refactors, pattern-breaking changes, and anything a specialist should own are *not* applied — they're reported.
+- **`fix-and-validate`** — as `safe-fixes`, plus attempt a targeted build of the touched package(s) to confirm the diff still compiles. Do not run the full test suite (that's the developer's job before push).
+
+If the mode isn't given, ask. Do not default to `safe-fixes`.
+
+## Scope Selection
+
+Determine the review scope in this order (stop at the first match):
+
+1. Files the developer explicitly named.
+2. Unstaged working-tree changes (`git diff` — no ref).
+3. Staged changes (`git diff --cached`).
+4. Diff vs. the merge base with `main` (`git diff $(git merge-base HEAD origin/main)..HEAD`).
+
+Use the smallest reasonable command. Do not blindly run `git diff HEAD` — that misses staged-vs-working changes and hides intent.
