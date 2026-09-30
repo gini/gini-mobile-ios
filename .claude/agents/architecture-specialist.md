@@ -155,7 +155,7 @@ Run these checks in order:
 
 ## Boundaries & Handoffs
 
-- **UIKit layout/lifecycle/cell reuse, `view.gini.make { }` DSL correctness** → `uikit-specialist`.
+- **UIKit layout/lifecycle/cell reuse, `view.giniMakeConstraints { $0.… }` DSL correctness** → `uikit-specialist`.
 - **SwiftUI ownership, `@Observable` vs `ObservableObject`, deprecated APIs** → `swiftui-specialist`.
 - **Runtime cost (camera pipeline, memory, main-thread, scrolling, retain-cycle *cost*)** → `performance-specialist`. Overlap only when a layering violation is the *cause* of the perf issue.
 - **Testability of the ViewModel/Coordinator seam, mock protocols, integration tests** → `testing-specialist`.

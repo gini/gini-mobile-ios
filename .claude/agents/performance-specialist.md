@@ -127,6 +127,6 @@ Run these checks in order:
 ## Boundaries & Handoffs
 
 - **SwiftUI state ownership, `@Observable` vs `ObservableObject`, deprecated APIs** → `swiftui-specialist`. Overlap only when the ownership choice causes measurable over-recomputation.
-- **UIKit lifecycle, Auto Layout correctness, `view.gini.make { }` DSL** → `uikit-specialist`. This agent goes deeper on retain-cycle sites (Timer/DisplayLink/NotificationCenter/Combine) and on cell reuse *cost*, not correctness.
+- **UIKit lifecycle, Auto Layout correctness, `view.giniMakeConstraints { $0.… }` DSL** → `uikit-specialist`. This agent goes deeper on retain-cycle sites (Timer/DisplayLink/NotificationCenter/Combine) and on cell reuse *cost*, not correctness.
 - **Accessibility perf (Reduce Motion, VoiceOver rotor cost)** → `mobile-a11y-specialist`.
 - **Testability of the fix (mockable image pipeline, timing assertions)** → `testing-specialist`.

@@ -48,7 +48,7 @@ Run each lens over the scope. Every finding must fit under one lens; if it doesn
 ### 1) Reuse
 1. **Duplicated logic across files or packages.** A utility appearing in two SDKs belongs in `GiniUtilites` (or a `GiniComponents/` peer) — route to `architecture-specialist` for the placement, but flag the duplication here.
 2. **Reimplementing a built-in.** Custom `NSCache`-like structure, hand-rolled `Result` type, bespoke debouncer, custom `UIRefreshControl` — swap to the stdlib / framework equivalent.
-3. **Local helper that should be a repo idiom.** In CaptureSDK, hand-rolled `NSLayoutConstraint` where the `view.gini.make { }` DSL exists. Colors typed as raw `UIColor(red:...)` where a `GiniColorScheme` token exists.
+3. **Local helper that should be a repo idiom.** In CaptureSDK, hand-rolled `NSLayoutConstraint` where the `view.giniMakeConstraints { $0.… }` DSL exists. Colors typed as raw `UIColor(red:...)` where a `GiniColorScheme` token exists.
 4. **Fixture / test-helper duplication.** A JSON fixture copied instead of shared under `Tests/Resources/`.
 
 ### 2) Quality
@@ -78,7 +78,7 @@ Run each lens over the scope. Every finding must fit under one lens; if it doesn
 
 When a finding overlaps a specialist's domain, name the specialist in the finding and keep your write-up shallow. The specialists are:
 
-- **uikit-specialist** — UIKit lifecycle / cell reuse / Auto Layout / `view.gini.make { }` DSL / retain-cycle-free delegation.
+- **uikit-specialist** — UIKit lifecycle / cell reuse / Auto Layout / `view.giniMakeConstraints { $0.… }` DSL / retain-cycle-free delegation.
 - **swiftui-specialist** — SwiftUI ownership, `@Observable`/`ObservableObject`, deprecated APIs, `.task`, NavigationStack, view composition.
 - **architecture-specialist** — `Package.swift` edits, cross-package imports, new/renamed/removed `public` symbols, MVVM+Coordinator layering.
 - **performance-specialist** — camera/image pipeline, main-thread blocking, scrolling jank, retain cycles as *cost*, memory growth.
