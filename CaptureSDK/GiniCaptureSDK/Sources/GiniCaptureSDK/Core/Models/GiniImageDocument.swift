@@ -12,10 +12,16 @@ import MobileCoreServices
 
 final public class GiniImageDocument: NSObject, GiniCaptureDocument {
 
+    /// HEIC / HEIF are declared here so `UIDocumentPickerViewController` (see
+    /// `DocumentPickerCoordinator.acceptedDocumentTypes`) surfaces them as
+    /// selectable in the Files.app import flow. `init(data:)` transcodes HEIC
+    /// bytes to JPEG before they reach the backend, which does not accept HEIC.
     static let acceptedImageTypes: [String] = [kUTTypeJPEG as String,
                                                kUTTypePNG as String,
                                                kUTTypeGIF as String,
-                                               kUTTypeTIFF as String]
+                                               kUTTypeTIFF as String,
+                                               "public.heic",
+                                               "public.heif"]
 
     public var type: GiniCaptureDocumentType = .image
     public var id: String
