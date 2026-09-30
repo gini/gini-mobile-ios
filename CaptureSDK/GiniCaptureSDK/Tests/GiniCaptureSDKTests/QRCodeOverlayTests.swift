@@ -187,6 +187,47 @@ struct QRCodeOverlayTests {
                 "Expected no PoweredByGiniLoadingIndicatorView when the gate is off")
     }
 
+    // MARK: - Education task lifecycle
+
+    @Test("Education task is cancelled when the overlay is dismissed mid-animation")
+    func educationTaskIsCancelledOnHideAnimation() {
+        /// Force the education flow to actually run: enable QR scanning, keep it not
+        /// exclusive, allow file import, and reset the display counter so
+        /// `qrCodeFlowController(...).nextState()` returns `.showMessage`.
+        let config = GiniConfiguration.shared
+        let originalQRCodeScanning = config.qrCodeScanningEnabled
+        let originalOnlyQRCodeScanning = config.onlyQRCodeScanningEnabled
+        let originalFileImportTypes = config.fileImportSupportedTypes
+        let originalEducationEnabled = GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled
+        let originalDisplayCount = GiniCaptureUserDefaultsStorage.qrCodeEducationMessageDisplayCount
+
+        config.qrCodeScanningEnabled = true
+        config.onlyQRCodeScanningEnabled = false
+        config.fileImportSupportedTypes = .pdf
+        GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = true
+        GiniCaptureUserDefaultsStorage.qrCodeEducationMessageDisplayCount = 0
+
+        defer {
+            config.qrCodeScanningEnabled = originalQRCodeScanning
+            config.onlyQRCodeScanningEnabled = originalOnlyQRCodeScanning
+            config.fileImportSupportedTypes = originalFileImportTypes
+            GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = originalEducationEnabled
+            GiniCaptureUserDefaultsStorage.qrCodeEducationMessageDisplayCount = originalDisplayCount
+        }
+
+        let sut = QRCodeOverlay()
+        sut.showAnimation()
+
+        let task = sut.currentEducationTask
+        #expect(task != nil,
+                "Precondition: showAnimation() should spawn an education task when the flow controller returns .showMessage")
+
+        sut.hideAnimation()
+
+        #expect(task?.isCancelled == true,
+                "Expected the education task to be cancelled on hideAnimation() so the trailing markMessageAsShown() does not fire when the user dismissed the camera mid-animation")
+    }
+
     // MARK: - Helpers
 
     private func findBadge(in view: UIView) -> PoweredByGiniBadgeView? {
