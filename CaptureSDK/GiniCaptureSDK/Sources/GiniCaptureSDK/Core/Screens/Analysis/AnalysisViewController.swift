@@ -319,6 +319,9 @@ import GiniUtilites
             imageView.image = document.previewImage
         }
 
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
+
         addPersistentGiniIndicatorIfEnabled()
         configureLoadingIndicator()
         addOverlay()
@@ -333,6 +336,7 @@ import GiniUtilites
      */
     private func addPersistentGiniIndicatorIfEnabled() {
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
+        if case .showMessage = educationFlowController?.nextState() { return }
         addGiniLoadingIndicator(giniIndicator)
         /// Enter localized on both education and standard paths (standard also re-sets, idempotent).
         giniIndicator.accessibilityLabel = loadingIndicatorText.text
@@ -378,9 +382,6 @@ import GiniUtilites
 
     private func configureLoadingIndicator() {
         // For cross border Extractions we don't want to show the education flow, so we can skip directly to showing the original loading message
-        educationFlowController = EducationFlowController
-            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
-
         let nextState = educationFlowController?.nextState()
         switch nextState {
         case .showMessage:
@@ -488,13 +489,8 @@ import GiniUtilites
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let ingredientBrandEnabled = screenViewModel.isIngredientBrandEnabled
-        /// When the persistent Gini indicator is active, tell the education view to
-        /// skip its own internal `imageView` — the g mark is already anchored to
-        /// the screen and the education carousel only needs to render text + suffix
-        /// below it. This is what keeps the g visually static across the transition.
         let hideEducationImageView = giniIndicatorAddedPersistently
-        let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: ingredientBrandEnabled,
+        let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: false,
                                                      hideImageView: hideEducationImageView)
         let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel, style: style)
         view.addSubview(customLoadingView)
