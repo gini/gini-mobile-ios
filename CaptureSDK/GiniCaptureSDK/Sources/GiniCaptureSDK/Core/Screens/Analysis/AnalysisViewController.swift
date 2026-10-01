@@ -137,8 +137,9 @@ import GiniUtilites
 
     /**
      `true` once the Gini indicator has been added as a persistent subview in
-     `setupView`. Guarantees the mark stays anchored across the education →
-     standard-loading transition — only text elements change position.
+     `setupView`. Stays `false` while the education carousel is active; the
+     indicator is lazy-installed by `showBrandedLoadingIndicator(_:)` when the
+     standard loading state takes over.
      */
     private var giniIndicatorAddedPersistently: Bool = false
 
@@ -319,6 +320,9 @@ import GiniUtilites
             imageView.image = document.previewImage
         }
 
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
+
         addPersistentGiniIndicatorIfEnabled()
         configureLoadingIndicator()
         addOverlay()
@@ -326,15 +330,15 @@ import GiniUtilites
     }
 
     /**
-     Adds the Gini loading indicator as a persistent subview BEFORE the loading
-     branch decides between education vs original flow. This guarantees the mark
-     stays visually anchored across the education → standard transition — only
-     text elements change, the g never jumps position.
+     Installs the Gini loading indicator as a persistent subview for the
+     standard loading state. Skipped when the next education state is
+     `.showMessage`, in which case the indicator is lazy-installed later by
+     `showBrandedLoadingIndicator(_:)` once the carousel finishes.
      */
     private func addPersistentGiniIndicatorIfEnabled() {
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
+        if case .showMessage = educationFlowController?.nextState() { return }
         addGiniLoadingIndicator(giniIndicator)
-        /// Enter localized on both education and standard paths (standard also re-sets, idempotent).
         giniIndicator.accessibilityLabel = loadingIndicatorText.text
         giniIndicatorAddedPersistently = true
     }
@@ -378,9 +382,6 @@ import GiniUtilites
 
     private func configureLoadingIndicator() {
         // For cross border Extractions we don't want to show the education flow, so we can skip directly to showing the original loading message
-        educationFlowController = EducationFlowController
-            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
-
         let nextState = educationFlowController?.nextState()
         switch nextState {
         case .showMessage:
@@ -488,30 +489,13 @@ import GiniUtilites
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let ingredientBrandEnabled = screenViewModel.isIngredientBrandEnabled
-        /// When the persistent Gini indicator is active, tell the education view to
-        /// skip its own internal `imageView` — the g mark is already anchored to
-        /// the screen and the education carousel only needs to render text + suffix
-        /// below it. This is what keeps the g visually static across the transition.
-        let hideEducationImageView = giniIndicatorAddedPersistently
-        let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: ingredientBrandEnabled,
-                                                     hideImageView: hideEducationImageView)
-        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel, style: style)
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
         view.addSubview(customLoadingView)
         customLoadingView.giniMakeConstraints {
             $0.centerX.equalTo(view.centerX)
+            $0.centerY.equalTo(view.centerY)
             $0.leading.greaterThanOrEqualTo(view.leading).constant(Constants.educationLoadingViewPadding)
             $0.trailing.lessThanOrEqualTo(view.trailing).constant(-Constants.educationLoadingViewPadding)
-            if hideEducationImageView, let giniIndicator = poweredByGiniLoadingIndicatorView {
-                /// Persistent-g layout: anchor the education carousel's text stack directly
-                /// below the g mark's bottom. The g holds its position, only the text below it
-                /// swaps content between education and standard.
-                $0.top.equalTo(giniIndicator.bottom).constant(Constants.padding)
-            } else {
-                /// Fallback layout (non-ingredient-brand): center the whole educationView
-                /// (with its own internal imageView) on the screen, as before.
-                $0.centerY.equalTo(view.centerY)
-            }
         }
 
         educationTask = Task { [weak self] in
