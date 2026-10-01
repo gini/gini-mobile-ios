@@ -137,8 +137,9 @@ import GiniUtilites
 
     /**
      `true` once the Gini indicator has been added as a persistent subview in
-     `setupView`. Guarantees the mark stays anchored across the education →
-     standard-loading transition — only text elements change position.
+     `setupView`. Stays `false` while the education carousel is active; the
+     indicator is lazy-installed by `showBrandedLoadingIndicator(_:)` when the
+     standard loading state takes over.
      */
     private var giniIndicatorAddedPersistently: Bool = false
 
@@ -329,16 +330,15 @@ import GiniUtilites
     }
 
     /**
-     Adds the Gini loading indicator as a persistent subview BEFORE the loading
-     branch decides between education vs original flow. This guarantees the mark
-     stays visually anchored across the education → standard transition — only
-     text elements change, the g never jumps position.
+     Installs the Gini loading indicator as a persistent subview for the
+     standard loading state. Skipped when the next education state is
+     `.showMessage`, in which case the indicator is lazy-installed later by
+     `showBrandedLoadingIndicator(_:)` once the carousel finishes.
      */
     private func addPersistentGiniIndicatorIfEnabled() {
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
         if case .showMessage = educationFlowController?.nextState() { return }
         addGiniLoadingIndicator(giniIndicator)
-        /// Enter localized on both education and standard paths (standard also re-sets, idempotent).
         giniIndicator.accessibilityLabel = loadingIndicatorText.text
         giniIndicatorAddedPersistently = true
     }

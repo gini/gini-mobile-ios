@@ -10,7 +10,9 @@ import GiniUtilites
 
 final class QRCodeEducationLoadingView: UIView {
 
-    /// Presentation options for the education carousel.
+    /**
+     Presentation options for the education carousel.
+     */
     struct Style {
         /// Primary carousel text color.
         let textColor: UIColor
