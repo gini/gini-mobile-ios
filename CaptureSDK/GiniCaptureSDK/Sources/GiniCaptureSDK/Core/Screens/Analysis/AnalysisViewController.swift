@@ -489,25 +489,13 @@ import GiniUtilites
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let hideEducationImageView = giniIndicatorAddedPersistently
-        let style = QRCodeEducationLoadingView.Style(useIngredientBrandIndicator: false,
-                                                     hideImageView: hideEducationImageView)
-        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel, style: style)
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
         view.addSubview(customLoadingView)
         customLoadingView.giniMakeConstraints {
             $0.centerX.equalTo(view.centerX)
+            $0.centerY.equalTo(view.centerY)
             $0.leading.greaterThanOrEqualTo(view.leading).constant(Constants.educationLoadingViewPadding)
             $0.trailing.lessThanOrEqualTo(view.trailing).constant(-Constants.educationLoadingViewPadding)
-            if hideEducationImageView, let giniIndicator = poweredByGiniLoadingIndicatorView {
-                /// Persistent-g layout: anchor the education carousel's text stack directly
-                /// below the g mark's bottom. The g holds its position, only the text below it
-                /// swaps content between education and standard.
-                $0.top.equalTo(giniIndicator.bottom).constant(Constants.padding)
-            } else {
-                /// Fallback layout (non-ingredient-brand): center the whole educationView
-                /// (with its own internal imageView) on the screen, as before.
-                $0.centerY.equalTo(view.centerY)
-            }
         }
 
         educationTask = Task { [weak self] in
