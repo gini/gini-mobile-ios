@@ -339,7 +339,6 @@ import GiniUtilites
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
         if case .showMessage = educationFlowController?.nextState() { return }
         addGiniLoadingIndicator(giniIndicator)
-        giniIndicator.accessibilityLabel = loadingIndicatorText.text
         giniIndicatorAddedPersistently = true
     }
 
@@ -418,7 +417,6 @@ import GiniUtilites
     }
 
     private func showBrandedLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
-        indicator.accessibilityLabel = loadingIndicatorText.text
         if !giniIndicatorAddedPersistently {
             addGiniLoadingIndicator(indicator)
         }
