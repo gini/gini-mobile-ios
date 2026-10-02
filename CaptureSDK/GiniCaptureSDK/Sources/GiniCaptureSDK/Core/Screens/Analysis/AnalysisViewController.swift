@@ -339,11 +339,6 @@ import GiniUtilites
         guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
         if case .showMessage = educationFlowController?.nextState() { return }
         addGiniLoadingIndicator(giniIndicator)
-        giniIndicator.accessibilityLabel = Strings.loaderAccessibilityLabel
-        /// Hidden from VoiceOver when a preview is visible so iOS Text Recognition can't OCR invoice content inside the loader's focus rectangle.
-        if imageView.image != nil {
-            giniIndicator.isAccessibilityElement = false
-        }
         giniIndicatorAddedPersistently = true
     }
 
@@ -422,10 +417,6 @@ import GiniUtilites
     }
 
     private func showBrandedLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
-        indicator.accessibilityLabel = Strings.loaderAccessibilityLabel
-        if imageView.image != nil {
-            indicator.isAccessibilityElement = false
-        }
         if !giniIndicatorAddedPersistently {
             addGiniLoadingIndicator(indicator)
         }
@@ -717,10 +708,6 @@ private extension AnalysisViewController {
         static let analysisLoadingTextWithPhotoLibrary = NSLocalizedStringPreferredFormat(
             "ginicapture.analysis.loadingTextPhotoLibrary",
             comment: "loading base text with photo library"
-        )
-        static let loaderAccessibilityLabel = NSLocalizedStringPreferredFormat(
-            "ginicapture.analysis.education.loadingText",
-            comment: "VoiceOver label for the branded Gini loading indicator"
         )
     }
 }
