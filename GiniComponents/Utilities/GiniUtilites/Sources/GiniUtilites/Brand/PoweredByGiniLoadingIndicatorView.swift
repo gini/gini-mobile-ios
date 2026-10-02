@@ -301,10 +301,4 @@ private extension PoweredByGiniLoadingIndicatorView {
         static let cacheTotalCostLimit: Int = 128 * 1024 * 1024
     }
 
-    enum Strings {
-        /// Fallback only — `AnalysisViewController` overrides `accessibilityLabel`
-        /// with the localized loading text at the callsite, so this English
-        /// string is never announced to users today.
-        static let accessibilityLabel = "Loading"
-    }
 }
