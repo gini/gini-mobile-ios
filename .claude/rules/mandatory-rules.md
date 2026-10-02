@@ -29,8 +29,8 @@ Single shared source of truth for the repo's non-negotiable standards. Reference
 
 ## CaptureSDK UIKit layout — the Gini layout DSL
 
-- "Gini layout DSL" = the repo's own Auto Layout builder that lives under `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Layout`, exposed as `view.gini.make { }`:
-  `view.gini.make { $0.edges.equalToSuperview().constant(16) }`
+- "Gini layout DSL" = the repo's own Auto Layout builder that lives under `GiniComponents/Utilities/GiniUtilites/Sources/GiniUtilites/Layout`, exposed as `view.giniMakeConstraints { $0.… }`:
+  `view.giniMakeConstraints { $0.edges.equalToSuperview().constant(16) }`
   Attributes: top/bottom/leading/trailing/left/right/centerX/centerY/width/height, plus compound edges/center/size/horizontal/vertical; relations `.equalTo`/`.equalToSuperview()`/`.constant()`; `+`/`-` offset operators.
 - Do not hand-roll `NSLayoutConstraint`/anchor code in new CaptureSDK UIKit views.
 
