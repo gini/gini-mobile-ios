@@ -44,9 +44,9 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         addSubview(imageView)
         imageView.giniMakeConstraints { $0.edges.equalToSuperview() }
 
-        isAccessibilityElement = true
-        accessibilityLabel = Strings.accessibilityLabel
-        accessibilityTraits = [.image, .updatesFrequently]
+        /// Not a VoiceOver element (relying on UIView's default `isAccessibilityElement == false`):
+        /// iOS Text Recognition OCRs the pixel region inside the focus rectangle, which on
+        /// screens overlaying document previews leaks invoice content underneath the "g" asset.
 
         reloadAnimatedImage()
 
