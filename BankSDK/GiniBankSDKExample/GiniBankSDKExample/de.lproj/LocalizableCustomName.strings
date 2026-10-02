@@ -123,8 +123,6 @@
 //"ginibank.digitalinvoice.lineitem.editbutton" = "CM Bearbeiten";
 //"ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "CM Artikel abwählen";
 //"ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "CM Artikel wählen";
-//"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "CM Der Grund der Rücksendung";
-//"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "CM Abbrechen";
 //"ginibank.digitalinvoice.headermessage.primary" = "CM Scan war erfolgreich!";
 //"ginibank.digitalinvoice.headermessage.secondary" = "CM Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 //"ginibank.digitalinvoice.total.addArticleButtonTitle" = "CM Artikel hinzufügen";

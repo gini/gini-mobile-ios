@@ -2,7 +2,7 @@
 //  ExtractionsFeedbackTests.swift
 //  GiniBankAPI-Unit-Tests
 //
-//  Created by Enrique del Pozo Gómez on 3/22/19.
+//  Copyright © 2019 Gini GmbH. All rights reserved.
 //
 
 import XCTest

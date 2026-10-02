@@ -49,6 +49,7 @@ case "$SCRIPT_NAME" in
     bs_run_ra)           BUILD_LABEL="ReturnAssistant" ;;
     bs_run_credit_note)  BUILD_LABEL="CreditNote" ;;
     bs_run_payment_hint) BUILD_LABEL="PaymentHint" ;;
+    bs_run_ingredient_brand) BUILD_LABEL="IngredientBrand" ;;
     *)                   BUILD_LABEL="$SCRIPT_NAME" ;;
 esac
 IPA_OUTPUT="$SCRIPT_DIR/${BUILD_LABEL}.ipa"
@@ -70,9 +71,13 @@ else
 fi
 
 # ── BrowserStack project ──────────────────────────────────────────────────────
-# Convention: GiniBankSDK-iOS-<release version>. Update the default here once per
-# release; override per run via the BS_PROJECT environment variable.
-BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-4.5.1}"
+# Convention: GiniBankSDK-iOS-<release version>. Bump SDK_VERSION here once per
+# release — the default BS_PROJECT below picks it up, and scenario-specific
+# override scripts (e.g. bs_run_payment_hint.sh) reference the same constant so
+# every BrowserStack project the suite ships to lands under the same version.
+# Override per run via the BS_PROJECT environment variable.
+SDK_VERSION="4.6.0"
+BS_PROJECT="${BS_PROJECT:-GiniBankSDK-iOS-$SDK_VERSION}"
 
 # ── upload_media ──────────────────────────────────────────────────────────────
 # Uploads a media file to BrowserStack and stores the returned media_url in a

@@ -67,7 +67,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
-        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
+        let bottomAnchor = viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera(bottomAnchor: bottomAnchor)
@@ -114,23 +114,21 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             }
         }
 
-        if !giniConfiguration.bottomNavigationBarEnabled {
-            if pages.count > 0 {
-                let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
-                                                                   comment: "Review")
-                let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-                backButton.addAction(self, #selector(popBackToReview))
-                cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
-            } else {
-                let cancelButton = GiniBarButton(ofType: .cancel)
-                cancelButton.addAction(self, #selector(back))
-                cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
-            }
-
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(showHelpMenuScreen))
-            cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
+        if pages.count > 0 {
+            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                               comment: "Review")
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(popBackToReview))
+            cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
+        } else {
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(back))
+            cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
         }
+
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(showHelpMenuScreen))
+        cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
 
         if giniConfiguration.fileImportSupportedTypes != .none {
             documentPickerCoordinator.delegate = self
@@ -142,11 +140,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         return cameraViewController
     }
 
-    fileprivate func didCaptureAndValidate(_ document: GiniCaptureDocument) {
+    func didCaptureAndValidate(_ document: GiniCaptureDocument) {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
 
-    private func shouldShowOnboarding() -> Bool {
+    func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !GiniCaptureUserDefaultsStorage.onboardingShowed {
             GiniCaptureUserDefaultsStorage.onboardingShowed = true
@@ -208,63 +206,91 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
 extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
-    public func documentPicker(
-        _ coordinator: DocumentPickerCoordinator,
-        didPick documents: [GiniCaptureDocument]) {
+    public func documentPicker(_ coordinator: DocumentPickerCoordinator,
+                               didPick documents: [GiniCaptureDocument]) {
 
-        self.validate(documents) { result in
+        validate(documents) { result in
             switch result {
             case .success(let validatedDocuments):
-                coordinator.dismissCurrentPicker {
-                    self.addToDocuments(new: validatedDocuments)
-                    errorOccurred = false
-                    validatedDocuments.forEach { validatedDocument in
-                        if validatedDocument.error == nil {
-                            self.didCaptureAndValidate(validatedDocument.document)
-                        }
-                    }
-                    self.showNextScreenAfterPicking(pages: validatedDocuments)
-                }
-            case .failure(let error):
-                var positiveAction: (() -> Void)?
+                self.handlePickSuccess(coordinator: coordinator,
+                                        validatedDocuments: validatedDocuments)
 
-                if let error = error as? FilePickerError {
-                    switch error {
-                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
-                        if self.pages.isNotEmpty {
-                            positiveAction = {
-                                coordinator.dismissCurrentPicker {
-                                    self.showReview()
-                                }
-                            }
-                        }
-                    case .photoLibraryAccessDenied, .failedToOpenDocument:
-                        break
-                    }
-                }
-                if coordinator.currentPickerDismissesAutomatically {
-                    self.cameraScreen?.showErrorDialog(for: error,
-                                                       positiveAction: positiveAction)
-                } else {
-                    coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                             positiveAction: positiveAction)
-                }
+            case .failure(let error):
+                self.handleFailure(for: error,
+                                   hasExistingPages: self.pages.isNotEmpty,
+                                   coordinator: coordinator)
             }
         }
     }
 
-        public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
-            let error = FilePickerError.failedToOpenDocument
-            if coordinator.currentPickerDismissesAutomatically {
-                self.cameraScreen?.showErrorDialog(for: error,
-                                                   positiveAction: nil)
-            } else {
-                coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                         positiveAction: nil)
+    private func handlePickSuccess(coordinator: DocumentPickerCoordinator,
+                                   validatedDocuments: [GiniCapturePage]) {
+        coordinator.dismissCurrentPicker { [weak self] in
+            guard let self = self else { return }
+            self.addToDocuments(new: validatedDocuments)
+            errorOccurred = false
+            validatedDocuments
+                .filter { $0.error == nil }
+                .forEach { self.didCaptureAndValidate($0.document) }
+            self.showNextScreenAfterPicking(pages: validatedDocuments)
+        }
+    }
+
+    private func handleFailure(for error: Error,
+                               hasExistingPages: Bool,
+                               coordinator: DocumentPickerCoordinator) {
+        let action = positiveAction(for: error,
+                                    hasExistingPages: hasExistingPages,
+                                    coordinator: coordinator)
+        presentError(error, positiveAction: action, coordinator: coordinator)
+    }
+
+    func positiveAction(for error: Error,
+                        hasExistingPages: Bool,
+                        coordinator: DocumentPickerCoordinator) -> (() -> Void)? {
+        guard let error = error as? FilePickerError else { return nil }
+        switch error {
+        case .maxFilesPickedCountExceeded,
+             .mixedDocumentsUnsupported,
+             .multiplePdfsUnsupported:
+            return hasExistingPages ? reviewAction(coordinator: coordinator) : nil
+        case .photoLibraryAccessDenied,
+             .failedToOpenDocument:
+            return nil
+        }
+    }
+
+    private func reviewAction(coordinator: DocumentPickerCoordinator) -> () -> Void {
+        return { [weak self, weak coordinator] in
+            coordinator?.dismissCurrentPicker {
+                self?.showReview()
             }
         }
+    }
 
-    fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
+    private func presentError(_ error: Error,
+                              positiveAction: (() -> Void)?,
+                              coordinator: DocumentPickerCoordinator) {
+        if coordinator.currentPickerDismissesAutomatically {
+            cameraScreen?.showErrorDialog(for: error, positiveAction: positiveAction)
+        } else {
+            coordinator.currentPickerViewController?.showErrorDialog(for: error, positiveAction: positiveAction)
+        }
+    }
+
+    public func documentPicker(_ coordinator: DocumentPickerCoordinator,
+                               failedToPickDocumentsAt _: [URL]) {
+        let error = FilePickerError.failedToOpenDocument
+        if coordinator.currentPickerDismissesAutomatically {
+            self.cameraScreen?.showErrorDialog(for: error,
+                                               positiveAction: nil)
+        } else {
+            coordinator.currentPickerViewController?.showErrorDialog(for: error,
+                                                                     positiveAction: nil)
+        }
+    }
+
+    func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
         view.addInteraction(dropInteraction)
     }
@@ -274,8 +300,8 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
 extension GiniScreenAPICoordinator {
 
-    fileprivate func validate(_ documents: [GiniCaptureDocument],
-                              completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
+    func validate(_ documents: [GiniCaptureDocument],
+                  completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
         var documentsToValidate = documents + pages.map { $0.document }
 
         for document in documentsToValidate where document.type == .qrcode {
@@ -312,8 +338,8 @@ extension GiniScreenAPICoordinator {
         }
     }
 
-    private func validate(importedDocuments documents: [GiniCaptureDocument],
-                          completion: @escaping ([GiniCapturePage]) -> Void) {
+    func validate(importedDocuments documents: [GiniCaptureDocument],
+                  completion: @escaping ([GiniCapturePage]) -> Void) {
         DispatchQueue.global().async {
             var pages: [GiniCapturePage] = []
             documents.forEach { document in

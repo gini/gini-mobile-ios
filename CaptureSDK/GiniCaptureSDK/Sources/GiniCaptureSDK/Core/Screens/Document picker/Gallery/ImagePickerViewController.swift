@@ -25,7 +25,6 @@ final class ImagePickerViewController: UIViewController {
     fileprivate var indexesForSelectedCells: [IndexPath] = []
     fileprivate let galleryManager: GalleryManagerProtocol
     fileprivate let giniConfiguration: GiniConfiguration
-    private var navigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     // MARK: - Views
 
@@ -51,8 +50,6 @@ final class ImagePickerViewController: UIViewController {
         return contentView
     }()
 
-    private var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
-
     // MARK: - Initializers
 
     init(album: Album,
@@ -74,22 +71,14 @@ final class ImagePickerViewController: UIViewController {
         super.viewDidLoad()
 
         setupView()
-        configureBottomNavigationBar()
         setupConstraints()
 
         scrollToBottom()
     }
-    
+
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
-    }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if UIDevice.current.isIphone {
-            let isLandscape = Device.orientation.isLandscape
-            bottomNavigationBarHeightConstraint?.constant = isLandscape ? CameraBottomNavigationBar.Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
-        }
     }
 
     private func setupView() {
@@ -167,42 +156,6 @@ final class ImagePickerViewController: UIViewController {
         })
     }
 
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBar = giniConfiguration.imagePickerNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
-            } else {
-                navigationBarBottomAdapter = DefaultImagePickerBottomNavigationBarAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            }
-
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(navigationBar)
-
-                layoutBottomNavigationBar(navigationBar)
-            }
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(navigationBar)
-        bottomNavigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: CameraBottomNavigationBar.Constants.heightPortrait)
-        NSLayoutConstraint.activate([
-            contentView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBarHeightConstraint!
-        ])
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
-    }
 }
 
 // MARK: UICollectionViewDataSource

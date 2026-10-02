@@ -17,7 +17,6 @@
                 <outlet property="nextButton" destination="dqe-Kh-XtC" id="DN4-gq-JQi"/>
                 <outlet property="pageControl" destination="fzW-pg-Fy6" id="hrr-29-qQS"/>
                 <outlet property="pagesCollection" destination="r9F-HC-Y7G" id="hRS-Zh-TZf"/>
-                <outlet property="skipBottomBarButton" destination="Imh-nf-zzT" id="mga-BG-lgV"/>
                 <outlet property="view" destination="Nfe-ie-kjh" id="pkh-VV-OAN"/>
             </connections>
         </placeholder>
@@ -39,19 +38,6 @@
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q3o-O4-h6A">
                     <rect key="frame" x="287" y="1033" width="170" height="50"/>
                     <subviews>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Imh-nf-zzT" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="0.0" y="0.0" width="170" height="50"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Bzd-c2-lll"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="V4o-Vg-gd7"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" red="0.058823529411764705" green="0.61568627450980395" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-Kh-XtC" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
                             <rect key="frame" x="0.0" y="0.0" width="170" height="50"/>
                             <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

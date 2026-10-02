@@ -33,8 +33,6 @@
 "ginibank.digitalinvoice.lineitem.editbutton" = "Bearbeiten";
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Artikel wählen";
-"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Der Grund der Rücksendung";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Abbrechen";
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
