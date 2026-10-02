@@ -161,7 +161,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      Off-main prewarm of the frame cache; call at SDK idle so the first `init` decode is a cache hit.
      - Parameter styles: Appearance variants to decode. Defaults to both.
      */
-    public static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
+    public nonisolated static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
         await withTaskGroup(of: Void.self) { group in
             for style in styles {
                 group.addTask(priority: .userInitiated) {
@@ -175,9 +175,9 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      Loads and decodes the HEIC dataset for `style` from the cache when possible.
      Thread-safe via `NSCache` — safe from a background queue.
      */
-    static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
+    nonisolated static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
         let key = NSNumber(value: style.rawValue)
-        if let box = cachedFrames.object(forKey: key) { return box.extracted }
+        if let box = PoweredByGiniLoadingFrameCache.shared.object(forKey: key) { return box.extracted }
         let assetName = style == .dark
             ? Constants.darkAssetName
             : Constants.lightAssetName
@@ -188,7 +188,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         /// Worst-case RGBA cost at the thumbnail cap — exact for the shipped square asset.
         let bytesPerFrame = Constants.thumbnailMaxPixelSize * Constants.thumbnailMaxPixelSize * 4
         let byteCost = extracted.frames.count * bytesPerFrame
-        cachedFrames.setObject(ExtractedFramesBox(extracted), forKey: key, cost: byteCost)
+        PoweredByGiniLoadingFrameCache.shared.setObject(ExtractedFramesBox(extracted), forKey: key, cost: byteCost)
         return extracted
     }
 
@@ -197,7 +197,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      to `Constants.thumbnailMaxPixelSize`. Per-frame scale sets
      `UIImage.size.height == Constants.targetPointHeight`.
      */
-    static func decodeFrames(from data: Data) -> ExtractedFrames? {
+    nonisolated static func decodeFrames(from data: Data) -> ExtractedFrames? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             return nil
         }
@@ -232,15 +232,6 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         return ExtractedFrames(frames: frames, duration: safeDuration)
     }
 
-    /// Process-wide cache keyed by `UIUserInterfaceStyle.rawValue`; bounded by
-    /// `cacheTotalCostLimit` and evictable under memory pressure.
-    private static let cachedFrames: NSCache<NSNumber, ExtractedFramesBox> = {
-        let cache = NSCache<NSNumber, ExtractedFramesBox>()
-        cache.name = "PoweredByGiniLoadingIndicatorView.cachedFrames"
-        cache.totalCostLimit = Constants.cacheTotalCostLimit
-        return cache
-    }()
-
     struct ExtractedFrames {
         let frames: [UIImage]
         let duration: TimeInterval
@@ -261,8 +252,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      format); GIF is kept as a fallback so the same code path can decode a
      substitute GIF during development without an additional branch.
      */
-    private static func frameDelay(source: CGImageSource,
-                                   index: Int) -> TimeInterval {
+    private nonisolated static func frameDelay(source: CGImageSource,
+                                               index: Int) -> TimeInterval {
         guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any] else {
             return Constants.fallbackFrameDelay
         }
@@ -284,6 +275,19 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         }
         return Constants.fallbackFrameDelay
     }
+}
+
+/// Process-wide frame cache. Lives outside `PoweredByGiniLoadingIndicatorView` so
+/// it does not inherit the view's `@MainActor` isolation — `decodeFrames(for:)` /
+/// `prewarm(styles:)` are `nonisolated` and must be able to read/write the cache
+/// from off-main without hopping. `NSCache` is documented thread-safe.
+private enum PoweredByGiniLoadingFrameCache {
+    static let shared: NSCache<NSNumber, PoweredByGiniLoadingIndicatorView.ExtractedFramesBox> = {
+        let cache = NSCache<NSNumber, PoweredByGiniLoadingIndicatorView.ExtractedFramesBox>()
+        cache.name = "PoweredByGiniLoadingIndicatorView.cachedFrames"
+        cache.totalCostLimit = PoweredByGiniLoadingIndicatorView.Constants.cacheTotalCostLimit
+        return cache
+    }()
 }
 
 private extension PoweredByGiniLoadingIndicatorView {
