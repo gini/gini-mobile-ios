@@ -161,7 +161,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      Off-main prewarm of the frame cache; call at SDK idle so the first `init` decode is a cache hit.
      - Parameter styles: Appearance variants to decode. Defaults to both.
      */
-    public static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
+    public nonisolated static func prewarm(styles: [UIUserInterfaceStyle] = [.light, .dark]) async {
         await withTaskGroup(of: Void.self) { group in
             for style in styles {
                 group.addTask(priority: .userInitiated) {
@@ -175,7 +175,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      Loads and decodes the HEIC dataset for `style` from the cache when possible.
      Thread-safe via `NSCache` — safe from a background queue.
      */
-    static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
+    nonisolated static func decodeFrames(for style: UIUserInterfaceStyle) -> ExtractedFrames? {
         let key = NSNumber(value: style.rawValue)
         if let box = cachedFrames.object(forKey: key) { return box.extracted }
         let assetName = style == .dark
@@ -197,7 +197,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      to `Constants.thumbnailMaxPixelSize`. Per-frame scale sets
      `UIImage.size.height == Constants.targetPointHeight`.
      */
-    static func decodeFrames(from data: Data) -> ExtractedFrames? {
+    nonisolated static func decodeFrames(from data: Data) -> ExtractedFrames? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             return nil
         }
@@ -261,8 +261,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
      format); GIF is kept as a fallback so the same code path can decode a
      substitute GIF during development without an additional branch.
      */
-    private static func frameDelay(source: CGImageSource,
-                                   index: Int) -> TimeInterval {
+    private nonisolated static func frameDelay(source: CGImageSource,
+                                               index: Int) -> TimeInterval {
         guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any] else {
             return Constants.fallbackFrameDelay
         }
