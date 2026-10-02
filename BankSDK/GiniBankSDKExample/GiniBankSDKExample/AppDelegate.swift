@@ -31,6 +31,7 @@ import Firebase
         return true
     }
 
+#if DEBUG
     private func applyUITestCleanStateLaunchArguments() {
         if CommandLine.arguments.contains("-StartFromCleanState") {
             if let bundleID = Bundle.main.bundleIdentifier {
@@ -71,6 +72,7 @@ import Firebase
             UITestDelegateObservers.install()
         }
     }
+#endif
 
     func application(_ app: UIApplication,
                      open url: URL,
