@@ -101,19 +101,14 @@ struct PoweredByGiniLoadingIndicatorViewTests {
                 "Expected prewarm to complete inside a reasonable bound; measured \(elapsed) s")
     }
 
-    @Test("Exposes a single a11y image element with .updatesFrequently trait and a default label")
-    func accessibilityIsSingleImageElementWithUpdatesFrequentlyTrait() {
+    @Test("Loader is not a VoiceOver element so Text Recognition can't OCR adjacent content inside its focus rectangle")
+    func viewIsNotAnAccessibilityElement() {
         let view = PoweredByGiniLoadingIndicatorView()
         let imageView = view.subviews.compactMap { $0 as? UIImageView }.first
 
-        #expect(view.isAccessibilityElement, "Expected the view itself to be a single a11y element")
-        #expect(view.accessibilityLabel?.isEmpty == false,
-                "Expected a non-empty default accessibilityLabel (AnalysisViewController overrides accessibilityValue with the loading text)")
-        #expect(view.accessibilityTraits.contains(.image),
-                "Expected .image trait so VoiceOver announces it as a graphic")
-        #expect(view.accessibilityTraits.contains(.updatesFrequently),
-                "Expected .updatesFrequently trait so VoiceOver doesn't re-read the label every frame")
+        #expect(view.isAccessibilityElement == false,
+                "Expected the loader to be hidden from VoiceOver — focus rectangle on top of document previews would otherwise leak invoice content via iOS Text Recognition")
         #expect(imageView?.isAccessibilityElement == false,
-                "Expected the inner UIImageView to be excluded from VoiceOver focus (view is the a11y container)")
+                "Expected the inner UIImageView to be excluded from VoiceOver focus as well")
     }
 }
