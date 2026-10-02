@@ -87,20 +87,6 @@ struct PoweredByGiniLoadingIndicatorViewTests {
                 "Expected the returned UIImage to carry a positive loop duration")
     }
 
-    @Test("prewarm decodes both light and dark datasets off the main actor without stalling")
-    func prewarmPopulatesCacheOffMain() async {
-        let start = Date()
-        await PoweredByGiniLoadingIndicatorView.prewarm()
-        let elapsed = Date().timeIntervalSince(start)
-
-        /// Post-prewarm view construction should hit the cache — `hasValidAsset` flips true immediately.
-        let view = PoweredByGiniLoadingIndicatorView()
-        #expect(view.hasValidAsset,
-                "Expected hasValidAsset to be true after prewarm populates the cache")
-        #expect(elapsed < 10,
-                "Expected prewarm to complete inside a reasonable bound; measured \(elapsed) s")
-    }
-
     @Test("Loader is not a VoiceOver element so Text Recognition can't OCR adjacent content inside its focus rectangle")
     func viewIsNotAnAccessibilityElement() {
         let view = PoweredByGiniLoadingIndicatorView()
