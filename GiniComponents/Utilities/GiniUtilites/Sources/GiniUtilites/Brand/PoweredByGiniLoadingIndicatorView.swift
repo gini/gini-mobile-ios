@@ -193,9 +193,14 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
     }
 
     /**
-     Decodes each frame via `CGImageSourceCreateThumbnailAtIndex`, downsampled
-     to `Constants.thumbnailMaxPixelSize`. Per-frame scale sets
-     `UIImage.size.height == Constants.targetPointHeight`.
+     Decodes each frame downsampled to `Constants.thumbnailMaxPixelSize`.
+     Per-frame scale sets `UIImage.size.height == Constants.targetPointHeight`.
+
+     On iOS 16+ the hardware thumbnail path (`CGImageSourceCreateThumbnailAtIndex`)
+     preserves alpha for HEIC/HEICS inputs. On iOS 15 that same path flattens
+     alpha against black for HEIC with a non-opaque background, so the full
+     frame is decoded and manually downsampled through a `CGContext` configured
+     with premultiplied-last alpha to keep transparency intact.
      */
     static func decodeFrames(from data: Data) -> ExtractedFrames? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
@@ -203,14 +208,8 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         }
         let count = CGImageSourceGetCount(source)
         guard count > 0 else { return nil }
-        let thumbnailOptions: [CFString: Any] = [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: Constants.thumbnailMaxPixelSize
-        ]
-        guard let firstCGImage = CGImageSourceCreateThumbnailAtIndex(source,
-                                                                     0,
-                                                                     thumbnailOptions as CFDictionary) else {
+
+        guard let firstCGImage = decodeFrame(from: source, at: 0) else {
             return nil
         }
         let pixelHeight = CGFloat(firstCGImage.height)
@@ -220,9 +219,7 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
         var frames: [UIImage] = [UIImage(cgImage: firstCGImage, scale: scale, orientation: .up)]
         var duration: TimeInterval = frameDelay(source: source, index: 0)
         for index in 1..<count {
-            guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source,
-                                                                    index,
-                                                                    thumbnailOptions as CFDictionary) else { continue }
+            guard let cgImage = decodeFrame(from: source, at: index) else { continue }
             frames.append(UIImage(cgImage: cgImage, scale: scale, orientation: .up))
             duration += frameDelay(source: source, index: index)
         }
@@ -230,6 +227,71 @@ public final class PoweredByGiniLoadingIndicatorView: UIView {
             ? duration
             : TimeInterval(frames.count) * Constants.fallbackFrameDelay
         return ExtractedFrames(frames: frames, duration: safeDuration)
+    }
+
+    /**
+     Picks the alpha-preserving decode path for the running iOS version. iOS 16+
+     uses the hardware thumbnail decoder; iOS 15 falls back to a full-image
+     decode plus `CGContext` downsample because the thumbnail decoder drops
+     HEIC alpha on that OS.
+     */
+    static func decodeFrame(from source: CGImageSource,
+                            at index: Int) -> CGImage? {
+        if #available(iOS 16, *) {
+            return CGImageSourceCreateThumbnailAtIndex(source,
+                                                      index,
+                                                      hardwareThumbnailOptions as CFDictionary)
+        }
+        return decodeFrameWithAlpha(from: source, at: index)
+    }
+
+    private static let hardwareThumbnailOptions: [CFString: Any] = [
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceThumbnailMaxPixelSize: Constants.thumbnailMaxPixelSize
+    ]
+
+    /**
+     iOS 15 fallback: decode the full HEIC frame (alpha intact) and redraw it
+     into a `CGContext` sized to `Constants.thumbnailMaxPixelSize` with
+     premultiplied-last alpha. Preserves transparency the hardware thumbnail
+     path strips on iOS 15.
+
+     Exposed as `internal` (via `@testable`) so unit tests can exercise the iOS 15
+     path on any CI simulator — picking the branch dynamically would skip the
+     fallback entirely on iOS 16+ runners.
+     */
+    static func decodeFrameWithAlpha(from source: CGImageSource,
+                                     at index: Int) -> CGImage? {
+        guard let fullImage = CGImageSourceCreateImageAtIndex(source, index, nil) else {
+            return nil
+        }
+        let maxSide = max(fullImage.width, fullImage.height)
+        guard maxSide > 0 else { return nil }
+        let ratio = CGFloat(Constants.thumbnailMaxPixelSize) / CGFloat(maxSide)
+        /// Skip downsample when the source already fits — avoids an upscale and a redundant redraw.
+        if ratio >= 1 { return fullImage }
+        let targetWidth = Int((CGFloat(fullImage.width) * ratio).rounded())
+        let targetHeight = Int((CGFloat(fullImage.height) * ratio).rounded())
+        guard targetWidth > 0, targetHeight > 0 else { return nil }
+
+        let colorSpace = fullImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo.byteOrder32Big.rawValue
+            | CGImageAlphaInfo.premultipliedLast.rawValue
+        guard let context = CGContext(data: nil,
+                                      width: targetWidth,
+                                      height: targetHeight,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: 0,
+                                      space: colorSpace,
+                                      bitmapInfo: bitmapInfo) else {
+            return nil
+        }
+        context.interpolationQuality = .high
+        context.clear(CGRect(x: 0, y: 0, width: targetWidth, height: targetHeight))
+        context.draw(fullImage,
+                     in: CGRect(x: 0, y: 0, width: targetWidth, height: targetHeight))
+        return context.makeImage()
     }
 
     /// Process-wide cache keyed by `UIUserInterfaceStyle.rawValue`; bounded by

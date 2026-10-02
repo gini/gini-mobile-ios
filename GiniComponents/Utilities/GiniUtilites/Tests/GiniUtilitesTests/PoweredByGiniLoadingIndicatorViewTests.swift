@@ -116,4 +116,101 @@ struct PoweredByGiniLoadingIndicatorViewTests {
         #expect(imageView?.isAccessibilityElement == false,
                 "Expected the inner UIImageView to be excluded from VoiceOver focus (view is the a11y container)")
     }
+
+    // MARK: - iOS 15 alpha-preserving fallback
+
+    /// Loads the shipped light HEIC as a `CGImageSource` for the fallback tests.
+    private func makeHEICImageSource() throws -> CGImageSource {
+        let asset = try #require(NSDataAsset(name: "gini_loading_indicator_light", bundle: .module),
+                                 "Expected the shipped light HEIC dataset to resolve from GiniUtilites.module")
+        let source = try #require(CGImageSourceCreateWithData(asset.data as CFData, nil),
+                                  "Expected CGImageSource to open the shipped HEIC payload")
+        return source
+    }
+
+    @Test("iOS 15 fallback preserves alpha channel in the decoded frame")
+    func decodeFrameWithAlphaKeepsAlphaChannel() throws {
+        let source = try makeHEICImageSource()
+
+        let cgImage = try #require(PoweredByGiniLoadingIndicatorView.decodeFrameWithAlpha(from: source, at: 0),
+                                   "Expected the fallback to decode a frame from the shipped HEIC")
+
+        let alphaInfo = cgImage.alphaInfo
+        /// The hardware thumbnail path on iOS 15 flattens to `.none` / `.noneSkipLast` and composites against black.
+        /// The fallback must land on an alpha-bearing format so transparent pixels stay transparent.
+        let alphaBearing: Set<CGImageAlphaInfo> = [.premultipliedLast, .premultipliedFirst, .last, .first]
+        #expect(alphaBearing.contains(alphaInfo),
+                "Expected an alpha-bearing CGImageAlphaInfo, got \(alphaInfo.rawValue)")
+    }
+
+    @Test("iOS 15 fallback: a corner pixel of the Gini mark decodes as transparent, not solid black")
+    func decodeFrameWithAlphaKeepsCornerPixelTransparent() throws {
+        let source = try makeHEICImageSource()
+        let cgImage = try #require(PoweredByGiniLoadingIndicatorView.decodeFrameWithAlpha(from: source, at: 0),
+                                   "Expected the fallback to decode a frame from the shipped HEIC")
+
+        /// Crop to the top-left 1×1 region. `CGImage.cropping(to:)` uses the image's own
+        /// coordinate space with origin at top-left, so this is unambiguous — unlike drawing
+        /// into a probe context with a negative Y translation, which is coordinate-order sensitive.
+        /// The Gini "g" mark sits centered on a transparent canvas, so the corner must be transparent;
+        /// a fully-opaque black sample here means the alpha channel was dropped.
+        let topLeft = try #require(cgImage.cropping(to: CGRect(x: 0, y: 0, width: 1, height: 1)),
+                                   "Expected to crop a 1×1 top-left region from the decoded frame")
+
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo.byteOrder32Big.rawValue
+            | CGImageAlphaInfo.premultipliedLast.rawValue
+        var pixel: [UInt8] = [0, 0, 0, 0]
+        let context = try #require(CGContext(data: &pixel,
+                                             width: 1,
+                                             height: 1,
+                                             bitsPerComponent: 8,
+                                             bytesPerRow: 4,
+                                             space: colorSpace,
+                                             bitmapInfo: bitmapInfo),
+                                   "Expected to build a 1×1 RGBA probe context")
+        context.draw(topLeft, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+
+        #expect(pixel[3] == 0,
+                "Expected the corner pixel's alpha to be 0 (transparent canvas); got \(pixel[3])")
+    }
+
+    @Test("iOS 15 fallback downsamples a large source to within the thumbnail cap")
+    func decodeFrameWithAlphaDownsamplesLargeSource() throws {
+        let source = try makeHEICImageSource()
+        let fullImage = try #require(CGImageSourceCreateImageAtIndex(source, 0, nil),
+                                     "Expected the full HEIC frame to decode for the size comparison")
+
+        let decoded = try #require(PoweredByGiniLoadingIndicatorView.decodeFrameWithAlpha(from: source, at: 0),
+                                   "Expected the fallback to decode a frame from the shipped HEIC")
+
+        /// The shipped asset is 1006×1006 at @1x; thumbnailMaxPixelSize is 405 px. Downsampled frame
+        /// must fit under the cap on its longest edge, and must be strictly smaller than the source.
+        let maxSide = max(decoded.width, decoded.height)
+        #expect(maxSide <= 405,
+                "Expected downsample to clamp the longest edge to 405 px; got \(maxSide)")
+        #expect(decoded.width < fullImage.width && decoded.height < fullImage.height,
+                "Expected the fallback output to be smaller than the full source (\(fullImage.width)x\(fullImage.height)")
+    }
+
+    @Test("iOS 15 fallback returns nil when the frame index is out of range")
+    func decodeFrameWithAlphaReturnsNilForInvalidIndex() throws {
+        let source = try makeHEICImageSource()
+
+        let decoded = PoweredByGiniLoadingIndicatorView.decodeFrameWithAlpha(from: source, at: Int.max)
+
+        #expect(decoded == nil,
+                "Expected nil for an out-of-range frame index (CGImageSource returns nil)")
+    }
+
+    @Test("decodeFrame dispatches via #available: on iOS 16+ it still returns a usable CGImage")
+    func decodeFrameDispatchReturnsCGImage() throws {
+        let source = try makeHEICImageSource()
+
+        let decoded = try #require(PoweredByGiniLoadingIndicatorView.decodeFrame(from: source, at: 0),
+                                   "Expected decodeFrame to produce a CGImage for either iOS branch")
+
+        #expect(decoded.width > 0 && decoded.height > 0,
+                "Expected a non-empty decoded frame regardless of which decode branch ran")
+    }
 }
