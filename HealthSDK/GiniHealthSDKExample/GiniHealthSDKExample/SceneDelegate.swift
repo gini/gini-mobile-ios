@@ -37,13 +37,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    func scene(_ scene: UIScene,
+               openURLContexts URLContexts: Set<UIOpenURLContext>) {
         for context in URLContexts {
             handle(url: context.url, sourceApplication: context.options.sourceApplication)
         }
     }
 
-    private func handle(url: URL, sourceApplication: String?) {
+    private func handle(url: URL,
+                        sourceApplication: String?) {
         if url.host == "payment-requester" {
             coordinator.processBankUrl(url: url)
         } else {
