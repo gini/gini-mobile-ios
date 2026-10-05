@@ -80,8 +80,8 @@ Grep targets that reliably surface issues in this monorepo:
 
 ### 4. Sendability & captures
 
-- **`@Sendable` closures capturing non-`Sendable` mutable state.** Value types are `Sendable`; reference types need an actor or `Sendable` conformance.
-- **`Task { [weak self] in … }` for background work on view-owned tasks.** Prevents the task keeping a VC or ViewModel alive past teardown.
+- **`@Sendable` closures capturing non-`Sendable` mutable state.** A value type is `Sendable` only if every stored property and associated value is itself `Sendable` — a `struct` that holds a shared mutable class reference is not. Verify explicit or inferred `Sendable` conformance, and check the closure's captured bindings, not just the surface type. Reference types need an actor, immutability, or an audited `Sendable` conformance.
+- **`Task { [weak self] in … }` for background work on view-owned tasks.** Necessary but not sufficient — a `guard let self` or an awaited instance method re-strongifies `self` for the remainder of the task, so a long-lived or suspended task can keep the owner alive past teardown. Pair weak captures with storing the `Task` on the owner and cancelling it in `deinit` / screen teardown (see group 3).
 - **Reference types passed across actor boundaries.** If a class is shared between the main actor and a background task, it needs actor isolation, immutability, or a documented locking strategy.
 
 **Boundary:** UIKit escaping-closure lifecycle (`self` strong captures in `UIView.animate`, `URLSession.dataTask` completion, target/action) is `uikit-specialist`'s territory. Focus here on `@Sendable` closure captures and `Task` captures specifically.
@@ -102,7 +102,7 @@ Grep targets that reliably surface issues in this monorepo:
 
 - **`withCheckedContinuation` / `withUnsafeContinuation` that can fail to `resume`** — every path must resume exactly once.
 - **`AsyncStream` continuations not finished** on the producer's completion.
-- **Combine bridges:** `Publisher.values` (iOS 15+) and `Future.value` are the sanctioned bridges to async. Manual bridging via `sink { }` inside a `Task` needs the subscription stored somewhere with a defined lifetime.
+- **Combine bridges:** `Publisher.values` (iOS 15+) is the sanctioned bridge to async; a `Future` can be awaited via its `.values` stream (`for await v in future.values { … }`) since `Future` is a `Publisher`. There is no built-in `Future.value` property — flag a recommendation that assumes one. Manual bridging via `sink { }` inside a `Task` needs the subscription stored with a defined lifetime and cancelled when the awaiting `Task` is cancelled.
 
 ### 8. Mixed-model reality (async/await ↔ completion handlers)
 
