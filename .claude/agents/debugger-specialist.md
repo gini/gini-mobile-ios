@@ -29,7 +29,7 @@ The repo-wide standards live in **`.claude/rules/mandatory-rules.md`**. What mat
   - Per-package: `xcodebuild -workspace GiniMobile.xcworkspace -scheme <SDK>` (e.g. `GiniBankSDK`, `GiniCaptureSDK`, `GiniHealthSDK`, `GiniInternalPaymentSDK`, `GiniBankAPILibrary`, `GiniHealthAPILibrary`, `GiniUtilites`).
   - Test schemes match the package names; the canonical `xcodebuild test` invocation is in **`CLAUDE.md` › Build & Test Commands** — it targets `BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj` with scheme `GiniBankSDKExampleTests`; swap the project/scheme for other SDKs.
 - **Test framework:** Swift Testing (`@Suite`/`@Test`/`#expect`) with manual protocol mocks and JSON fixtures in `Tests/Resources/`. Some XCTest still exists in older packages.
-- **Deployment baselines:** iOS 15+ (BankSDK, CaptureSDK, BankAPILibrary, HealthAPILibrary, GiniUtilites, GiniInternalPaymentSDK), iOS 17+ (HealthSDK, HealthAPILibrary). A crash referencing an iOS 16/17-only symbol on iOS 15 is a `@available` bug, not a runtime bug.
+- **Deployment baselines:** iOS 15+ (BankSDK, CaptureSDK, BankAPILibrary, GiniUtilites), iOS 17+ (HealthSDK, HealthAPILibrary, GiniInternalPaymentSDK). A crash referencing an iOS 16/17-only symbol on an iOS 15 target is a `@available` bug, not a runtime bug.
 - **Local test-run caveat:** on some developer machines the iOS Simulator is unavailable (CoreSimulator version mismatch, missing iOS 26.x platform). If `xcodebuild test` cannot run locally, pivot to build-only diagnosis, static analysis, and CI log inspection — do not conclude "not reproducible" just because the simulator won't start.
 
 ## Knowledge Source
@@ -51,7 +51,7 @@ Route by symptom. Do not run all four investigations at once — pick the one th
 
 ### Crashes
 1. **Symbolication status.** If the trace is unsymbolicated, ask for dSYM/archive before analysis. Never guess frames.
-2. **Signal + top frame.** `EXC_BAD_ACCESS` at a Swift optional getter usually means a weak reference nilled between check and use, or an object accessed after `deinit`. `EXC_BAD_INSTRUCTION` in a Swift closure often means force-unwrap or index out of range.
+2. **Signal + top frame.** `EXC_BAD_ACCESS` means invalid memory access — typically a dangling `unowned` reference whose target has been deallocated, an Objective-C object used after `release` (zombie), or an unsafe pointer dereferenced after its owner is gone. A **weak** reference nilling is *safe* by itself (the getter returns `nil`); the crash only follows if nil is then force-unwrapped — which traps as `EXC_BAD_INSTRUCTION` in Swift, not `EXC_BAD_ACCESS`. `EXC_BAD_INSTRUCTION` in a Swift closure is usually force-unwrap of nil, index out of range, integer overflow, or a `precondition`/`fatalError` trap.
 3. **Retain-cycle post-mortem vs. released-object post-mortem.** If the trace shows work on a deallocated object (`objc_msgSend` on a zombie, or a Swift class after `deinit`), look for a `weak`/`unowned` reference that outlived its target — Timer, DisplayLink, NotificationCenter observer, `Combine` sink, camera session delegate.
 4. **UIKit-off-main.** UI mutation from a background queue is a classic Gini crash surface (image capture callbacks, network completion handlers). Check the stack for `AVCaptureSessionQueue`/`com.apple.AVFoundation.*` frames leading into `UIKit`.
 5. **Threading assertion trips.** `_dispatch_assert_queue_fail`, `Main Thread Checker`, TSan reports — treat as first-class evidence, not noise.

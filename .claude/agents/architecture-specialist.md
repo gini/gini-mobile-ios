@@ -53,7 +53,7 @@ Invariants derived from the graph:
 
 ### Product SDK shape
 
-- **Entry point is a static factory returning `UIViewController`.** For BankSDK, `GiniBank.swift` in `BankSDK/Sources/GiniBankSDK/Core/`; same pattern for CaptureSDK and HealthSDK. The host app never instantiates a screen directly — it asks the SDK. SwiftUI screens (SwiftUI-first for new UI) embed via `UIHostingController` behind that factory.
+- **Required standard: entry point is a static factory returning `UIViewController`.** For BankSDK, `GiniBank.swift` in `BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/`; for CaptureSDK, `GiniCapture.swift` in `CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/`. HealthSDK (`HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/GiniHealth.swift`) currently exposes an **instance class** (`init(with:)` + instance methods), not a static VC factory — treat that as a known divergence from the standard and flag any new entry points that follow the HealthSDK shape instead of the BankSDK/Capture shape. The host app never instantiates a screen directly — it asks the SDK. SwiftUI screens (SwiftUI-first for new UI) embed via `UIHostingController` behind that factory.
 - **API access via `GiniBankAPI.Builder` / equivalent.** Constructor DI into ViewModels; no service locators, no ambient state.
 - **MVVM + Coordinator.** ViewControllers lay out UI and forward events; ViewModels hold state and business logic; Coordinators own navigation.
 - **ViewModels never import UIKit.** Not `UIColor`, not `UIImage`, not `UIViewController`. Colors/images cross the seam as tokens/IDs or via bridging types owned by the view layer.

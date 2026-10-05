@@ -137,7 +137,7 @@ The developer picks the mode when invoking; default is `review-only`.
 - **`safe-fixes`** — apply only high-confidence, behavior-preserving fixes to the reviewed files: formatting to the multi-parameter rule, missing `/** */` doc blocks on touched public declarations, obvious dead-code removal, outdated copyright year, removed unused imports. Subjective refactors, pattern-breaking changes, and anything a specialist should own are *not* applied — they're reported.
 - **`fix-and-validate`** — as `safe-fixes`, plus attempt a targeted build of the touched package(s) to confirm the diff still compiles. Do not run the full test suite (that's the developer's job before push).
 
-If the mode isn't given, ask. Do not default to `safe-fixes`.
+If the mode isn't given, use `review-only`. Never silently escalate to `safe-fixes` or `fix-and-validate` — those require an explicit opt-in from the developer.
 
 ## Scope Selection
 

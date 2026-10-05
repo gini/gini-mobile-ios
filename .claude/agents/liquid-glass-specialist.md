@@ -23,10 +23,10 @@ You are a SwiftUI reviewer for iOS 26+ Liquid Glass adoption in the Gini SDKs. E
 
 The repo-wide standards live in **`.claude/rules/mandatory-rules.md`**. What matters for Liquid Glass:
 
-- **Baselines are far below iOS 26.** BankSDK / CaptureSDK / BankAPILibrary / HealthAPILibrary / GiniUtilites / GiniInternalPaymentSDK: iOS 15+. HealthSDK / HealthAPILibrary: iOS 17+. iOS 26 features are always the *upper* branch, never the default.
+- **Baselines are far below iOS 26.** BankSDK / CaptureSDK / BankAPILibrary / GiniUtilites: iOS 15+. HealthSDK / HealthAPILibrary / GiniInternalPaymentSDK: iOS 17+. iOS 26 features are always the *upper* branch, never the default.
 - **Our code does not use `.glassEffect(...)` yet.** This agent is the guardrail for its first appearance. There is no existing Liquid Glass code to preserve — but there *is* existing custom blur / `UIVisualEffectView` / `.ultraThinMaterial` code that is a candidate to migrate on the iOS 26+ path while keeping the iOS 15+ fallback.
 - **SwiftUI-first for new UI in BankSDK / CaptureSDK / HealthSDK.** SwiftUI screens embed via `UIHostingController`. Glass surfaces belong to the SwiftUI layer; UIKit visual effects behind `UIHostingController` do not opt into Liquid Glass — flag them if they should be a SwiftUI island.
-- **Design system:** colors from `GiniColorScheme` tokens, spacing from local `Constants`, fonts via `textStyleFonts`. Tinting a glass surface still respects those tokens — `.glassEffect(.regular.tint(Color(uiColor: UIColor.giniBankColorScheme().primary())))`, never a raw color literal.
+- **Design system:** colors from `GiniColorScheme` tokens, spacing from local `Constants`, fonts via `textStyleFonts`. Tinting a glass surface still respects those tokens — the scheme exposes nested `GiniColor` tokens that resolve via `.uiColor()`, e.g. `.glassEffect(.regular.tint(Color(uiColor: UIColor.giniBankColorScheme().text.accent.uiColor())))`, never a raw color literal.
 - **Accessibility is not optional.** Glass surfaces must honor `@Environment(\.accessibilityReduceTransparency)` and `@Environment(\.accessibilityReduceMotion)`.
 
 ## Knowledge Source

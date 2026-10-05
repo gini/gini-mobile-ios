@@ -74,7 +74,7 @@ Read the code. Flag these issues:
 20. **Image loading on the scroll path without downsampling or cancellation.** Cancel in-flight decode when the cell scrolls off screen; downsample to display size.
 
 ### Retain Cycles
-21. **Escaping/stored closures capturing `self` without `[weak self]`.** ViewModel callbacks, network completion handlers, `Combine` sinks stored in `Set<AnyCancellable>`, `Task { ... }` bodies that outlive the view.
+21. **Stored closures that capture `self` strongly where `self` also owns the storage.** A cycle requires an ownership path *back* to the closure — pure escaping (a one-shot network completion that the caller doesn't retain) is fine. Flag only when `self` retains the thing that retains the closure: `self`-owned `Set<AnyCancellable>` holding sinks that capture `self`; `self`-owned timers / display links / `NotificationCenter` observer tokens whose block captures `self`; long-lived `Task { }` stored on `self` and capturing `self`; ViewModel callbacks held by a VC that also owns the ViewModel. If you can't name the retention path, don't flag it.
 22. **Delegate properties not `weak`.** Especially between coordinator ↔ VC, ViewModel ↔ VC, custom camera controllers ↔ session delegates.
 23. **`NotificationCenter` observers using block form without capture control.** `NotificationCenter.default.addObserver(forName:...:using:)` retains its block — store the returned token and remove in `deinit`, and use `[weak self]`.
 24. **`Timer`/`CADisplayLink`/`DispatchSourceTimer` retaining their target.** `Timer.scheduledTimer(withTimeInterval:...:block:)` retains the block; `CADisplayLink` retains its target. Invalidate in `viewWillDisappear`/`deinit`; break the cycle with a proxy or `[weak self]`.
@@ -97,7 +97,7 @@ Read the code. Flag these issues:
 - [ ] Hot leaf views are `Equatable`/`.equatable()` where over-recomputation is real
 - [ ] Cell reuse resets content; formatters/assets cached at type level
 - [ ] Image decode on scroll paths is downsampled and cancellable
-- [ ] `[weak self]` in escaping/stored closures; delegates are `weak`
+- [ ] `[weak self]` in self-retained stored closures (cycle path identified); delegates are `weak`
 - [ ] Notification/Timer/DisplayLink observers invalidated and captured weakly
 - [ ] `Combine` sinks stored, cancelled, and don't strong-`assign` to `self`
 - [ ] Profiled on real device / Release before / after a fix; numbers reported
