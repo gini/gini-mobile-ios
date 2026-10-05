@@ -10,23 +10,21 @@ struct ExtractionsContainer {
     let extractions: [Extraction]
     let compoundExtractions: CompoundExtractions?
     let candidates: [String: [Extraction.Candidate]]
-    let returnReasons: [ReturnReason]?
-    
+
     enum CodingKeys: String, CodingKey {
         case extractions
         case compoundExtractions
         case candidates
-        case returnReasons
     }
 }
 
 // MARK: - Decodable
 
 extension ExtractionsContainer: Decodable {
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let decodedExtractions = try container.decode([String: Extraction].self,
                                                       forKey: .extractions)
         compoundExtractions = try container.decodeIfPresent(CompoundExtractions.self,
@@ -35,13 +33,11 @@ extension ExtractionsContainer: Decodable {
         self.candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,
                                                        forKey: .candidates) ?? [:]
 
-        
+
         extractions = decodedExtractions.map { (key, value) in
             let extraction = value
             extraction.name = key
             return extraction
         }
-
-        returnReasons = try container.decodeIfPresent([ReturnReason].self, forKey: .returnReasons)
     }
 }

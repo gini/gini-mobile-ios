@@ -13,13 +13,8 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
-    private var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
-    private var navigationBarHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
-    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
     private lazy var skipButton = GiniBarButton(ofType: .skip)
 
     init() {
@@ -67,9 +62,6 @@ class OnboardingViewController: UIViewController {
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         configureCollectionView()
         configureBasicNavigation()
-        if configuration.bottomNavigationBarEnabled {
-            configureBottomNavigation()
-        }
         configurePageControl()
     }
 
@@ -82,19 +74,8 @@ class OnboardingViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         if UIDevice.current.isIphone {
+            nextButton?.isHidden = false
             if view.currentInterfaceOrientation.isLandscape {
-
-                if configuration.onboardingNavigationBarBottomAdapter != nil {
-                    bottomNavigationBar?.isHidden = false
-                    nextButton?.isHidden = true
-                    skipBottomBarButton?.isHidden = true
-                } else {
-                    bottomNavigationBar?.isHidden = true
-                    nextButton?.isHidden = false
-                    skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled
-                        || pageControl.currentPage == dataSource.pageModels.count - 1
-                }
-
                 let safeareaLeftPadding = view.safeAreaInsets.left
                 let safeareaRightPadding = view.safeAreaInsets.right
 
@@ -123,9 +104,6 @@ class OnboardingViewController: UIViewController {
                 buttonCenterXConstraint.constant = 0
                 collectionViewToViewBottomConstraint.isActive = false
                 collectionViewToPageControlConstraint.isActive = true
-                bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
-                nextButton?.isHidden = configuration.bottomNavigationBarEnabled
-                skipBottomBarButton?.isHidden = true
             }
             pagesCollection.reloadData()
         }
@@ -144,75 +122,15 @@ class OnboardingViewController: UIViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: currentCell)
     }
 
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-        bottomPaddingPageIndicatorConstraint = navigationBar.topAnchor.constraint(
-            equalTo: pageControl.bottomAnchor,
-            constant: getBottomPaddingForPageController()
-        )
-        navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
-        NSLayoutConstraint.activate([
-            bottomPaddingPageIndicatorConstraint,
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBarHeightConstraint
-        ])
-    }
-
     private func configureBasicNavigation() {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
         nextButton.titleLabel?.numberOfLines = 1
 
-        skipBottomBarButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        skipBottomBarButton.configure(with: GiniConfiguration.shared.transparentButtonConfiguration)
-        skipBottomBarButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
-
         configureNextButton()
-        configureSkipBottomButton()
 
         configureSkipButton()
-    }
-
-    private func hideTopNavigation() {
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    private func configureBottomNavigation() {
-        hideTopNavigation()
-        removeButtons()
-        if let customBottomNavigationBar = configuration.onboardingNavigationBarBottomAdapter {
-            navigationBarBottomAdapter = customBottomNavigationBar
-        } else {
-            navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
-        }
-        navigationBarBottomAdapter?.setNextButtonClickedActionCallback { [weak self] in
-            self?.nextPage()
-        }
-        navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
-            self?.skipTapped()
-        }
-        navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
-            self?.getStartedButtonAction()
-        }
-        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-            bottomNavigationBar = navigationBar
-            view.addSubview(navigationBar)
-            layoutBottomNavigationBar(navigationBar)
-            navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next], navigationBar: navigationBar)
-
-            configureNextButton()
-            nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-
-            configureSkipButton()
-        }
-    }
-
-    private func removeButtons() {
-        nextButton.isHidden = true
     }
 
     private func configureSkipButton() {
@@ -225,13 +143,6 @@ class OnboardingViewController: UIViewController {
                                                                comment: "Get Started button")
 
         nextButton.setTitle(getStartedTitle, for: .normal)
-    }
-
-    private func configureSkipBottomButton() {
-        let title = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
-                                                     comment: "Skip button")
-
-        skipBottomBarButton.setTitle(title, for: .normal)
     }
 
     private func configureNextButton() {
@@ -294,11 +205,6 @@ class OnboardingViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        if configuration.bottomNavigationBarEnabled {
-            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
-            navigationBarHeightConstraint.constant = getBottomBarHeight()
-        }
-
         // Calculate the current visible page index
         let visiblePageIndex = Int(round(pagesCollection.contentOffset.x / pagesCollection.bounds.width))
 
@@ -337,10 +243,6 @@ class OnboardingViewController: UIViewController {
         }
     }
 
-    deinit {
-        navigationBarBottomAdapter?.onDeinit()
-    }
-
     private func updatePageControlAndNavigationButtons(at pageIndex: Int) {
         configureNavigationButtons(for: pageIndex)
         pageControl.currentPage = pageIndex
@@ -367,37 +269,15 @@ extension OnboardingViewController: OnboardingScreen {
     private func configureNavigationButtons(for pageIndex: Int) {
         switch pageIndex {
         case dataSource.pageModels.count - 1:
-            if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
-                navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
-                                                        navigationBar: bottomNavigationBar)
-                skipBottomBarButton.isHidden = true
-                if nextButton != nil {
-                    configureGetStartedButton()
-                }
-            } else {
-                navigationItem.rightBarButtonItem = nil
-                if nextButton != nil {
-                    configureGetStartedButton()
-                }
+            navigationItem.rightBarButtonItem = nil
+            if nextButton != nil {
+                configureGetStartedButton()
             }
         default:
-            if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar,
-               configuration.onboardingNavigationBarBottomAdapter == nil {
-                navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
-                                                        navigationBar: bottomNavigationBar)
-                skipBottomBarButton.isHidden = !(UIDevice.current.isIphone &&
-                                                 view.currentInterfaceOrientation.isLandscape)
-                if nextButton != nil {
-                    configureNextButton()
-                }
-            } else {
-                configureSkipButton()
+            configureSkipButton()
 
-                if nextButton != nil {
-                    configureNextButton()
-                }
+            if nextButton != nil {
+                configureNextButton()
             }
         }
     }
@@ -411,30 +291,8 @@ class CollectionFlowLayout: UICollectionViewFlowLayout {
 
 private extension OnboardingViewController {
     enum Constants {
-        static let pageControlBottomBarPadding: CGFloat = 46
-        static let pageControlBottomBarPaddingLandscape: CGFloat = 0
-        static let bottomBarHeightPortrait: CGFloat = 110
-        static let bottomBarHeightLandscape: CGFloat = 64
         static let iconPadding: CGFloat = 56
         static let iconWidth: CGFloat = 220
         static let accessibilityFocusDelay: TimeInterval = 1.0
-    }
-
-    func getBottomPaddingForPageController() -> CGFloat {
-        if isiPhoneAndLandscape() {
-            return Constants.pageControlBottomBarPaddingLandscape
-        }
-        return Constants.pageControlBottomBarPadding
-    }
-
-    func getBottomBarHeight() -> CGFloat {
-        if isiPhoneAndLandscape() {
-            return Constants.bottomBarHeightLandscape
-        }
-        return Constants.bottomBarHeightPortrait
-    }
-
-    func isiPhoneAndLandscape() -> Bool {
-        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }

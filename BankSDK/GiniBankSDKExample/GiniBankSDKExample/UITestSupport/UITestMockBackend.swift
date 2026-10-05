@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 import GiniBankAPILibrary
 import GiniCaptureSDK
 
@@ -95,14 +96,33 @@ final class UITestMockBackend {
     private let clientConfigurationOverrides: [String: Bool]
 
     /**
+     Screen names delivered as `ClientConfiguration.ingredientBrandScreens`.
+     Empty means the ingredient-brand flag is off. Populated from
+     `-UITestMockIngredientBrandScreens "Analysis"` (comma-separated).
+     */
+    private let ingredientBrandScreens: [String]
+
+    /**
+     Optional delay applied inside `analyse` before completing. Keeps the
+     Analysis screen visible long enough to assert loading-state elements —
+     the synchronous mock otherwise replaces it before XCUITest queries it.
+     Populated from `-UITestMockAnalysisDelaySeconds "5.0"`; default 0.
+     */
+    private let analysisDelay: TimeInterval
+
+    /**
      The single fake API document handed back for every upload/analysis.
      */
     private let mockDocument: Document
 
     init(scenario: UITestMockScenario,
-         clientConfigurationOverrides: [String: Bool]) {
+         clientConfigurationOverrides: [String: Bool],
+         ingredientBrandScreens: [String],
+         analysisDelay: TimeInterval) {
         self.scenario = scenario
         self.clientConfigurationOverrides = clientConfigurationOverrides
+        self.ingredientBrandScreens = ingredientBrandScreens
+        self.analysisDelay = analysisDelay
 
         /// The literal is known-valid; force-unwrap so any future breakage fails
         /// loudly instead of silently rerouting tests to a `.noResponse` fallback.
@@ -128,8 +148,39 @@ final class UITestMockBackend {
             preconditionFailure("Unknown UITestMockScenario: \(scenarioName)")
         }
         let overridesString = UserDefaults.standard.string(forKey: "UITestMockClientConfig")
+        let ingredientBrandScreensString = UserDefaults.standard.string(forKey: "UITestMockIngredientBrandScreens")
+        let analysisDelayString = UserDefaults.standard.string(forKey: "UITestMockAnalysisDelaySeconds")
         return UITestMockBackend(scenario: scenario,
-                                 clientConfigurationOverrides: parseClientConfigurationOverrides(from: overridesString))
+                                 clientConfigurationOverrides: parseClientConfigurationOverrides(from: overridesString),
+                                 ingredientBrandScreens: parseIngredientBrandScreens(from: ingredientBrandScreensString),
+                                 analysisDelay: parseAnalysisDelay(from: analysisDelayString))
+    }
+
+    /**
+     Parses `"Analysis,Something"` into a `[String]`. Empty / nil yields an empty array.
+     Whitespace around each entry is trimmed; empty entries are dropped.
+     */
+    private static func parseIngredientBrandScreens(from string: String?) -> [String] {
+        guard let string, !string.isEmpty else { return [] }
+        return string
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+    }
+
+    /**
+     Parses `"5.0"` into a `TimeInterval`. Empty / nil / unparseable yields 0.
+     A negative value traps loudly — signals a typo rather than testing zero delay silently.
+     */
+    private static func parseAnalysisDelay(from string: String?) -> TimeInterval {
+        guard let string, !string.isEmpty else { return 0 }
+        guard let value = TimeInterval(string) else {
+            preconditionFailure("Invalid UITestMockAnalysisDelaySeconds: \(string)")
+        }
+        guard value >= 0 else {
+            preconditionFailure("UITestMockAnalysisDelaySeconds must be non-negative: \(value)")
+        }
+        return value
     }
 
     // MARK: - Client configuration assembly
@@ -229,7 +280,6 @@ final class UITestMockBackend {
         }
         return ExtractionResult(extractions: extractions,
                                 lineItems: [],
-                                returnReasons: [],
                                 candidates: [:])
     }
 }
@@ -249,12 +299,19 @@ extension UITestMockBackend: GiniCaptureNetworkService {
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
                  completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
-        print("🧪 UI test mock backend - analyse (scenario: \(scenario.rawValue))")
-        switch scenario.analysisOutcome {
-        case .success(let extractionResult):
-            completion(.success((document: mockDocument, extractionResult: extractionResult)))
-        case .failure(let error):
-            completion(.failure(error))
+        print("🧪 UI test mock backend - analyse (scenario: \(scenario.rawValue), delay: \(analysisDelay)s)")
+        let deliver = { [scenario, mockDocument] in
+            switch scenario.analysisOutcome {
+            case .success(let extractionResult):
+                completion(.success((document: mockDocument, extractionResult: extractionResult)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        if analysisDelay > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + analysisDelay, execute: deliver)
+        } else {
+            deliver()
         }
     }
 
@@ -283,6 +340,95 @@ extension UITestMockBackend: GiniCaptureNetworkService {
     }
 }
 
+// MARK: - UI-test helpers (custom loading indicator + delegate observers)
+
+/**
+ UI-test stand-in for `CustomLoadingIndicatorAdapter`. Attached when
+ `-UITestInjectCustomLoadingIndicator` is passed so tests can prove the branded Gini
+ indicator wins over an integrator-provided one when the flag is on.
+ */
+final class UITestCustomLoadingIndicator: UIView, CustomLoadingIndicatorAdapter {
+
+    /**
+     Stable identifier XCUITest queries via `app.otherElements[…]`.
+     */
+    static let accessibilityID = "analysis.customLoadingIndicator"
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        accessibilityIdentifier = Self.accessibilityID
+        isAccessibilityElement = true
+        accessibilityLabel = "UI test custom loading indicator"
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    /// Non-zero intrinsic size — XCUITest skips zero-sized `.other` elements from its accessibility snapshot.
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: 44, height: 44)
+    }
+
+    func startAnimation() {}
+    func stopAnimation() {}
+
+    func injectedView() -> UIView { self }
+    func onDeinit() {}
+}
+
+/**
+ UI-test bridge for observing SDK delegate callbacks. `install()` arms the bridge;
+ firings attach a fresh 1x1 marker view to the key window so XCUITest can resolve the
+ transition via `waitForExistence(timeout:)`.
+ */
+enum UITestDelegateObservers {
+
+    static let didCancelCapturingIdentifier = "uitest.observer.didCancelCapturing"
+    static let giniCaptureAnalysisDidFinishIdentifier = "uitest.observer.giniCaptureAnalysisDidFinishWith"
+
+    private static var armed = false
+
+    static func install() {
+        armed = true
+    }
+
+    static func recordDidCancelCapturing() {
+        guard armed else { return }
+        DispatchQueue.main.async {
+            attachMarkerIfNeeded(identifier: didCancelCapturingIdentifier)
+        }
+    }
+
+    static func recordGiniCaptureAnalysisDidFinish() {
+        guard armed else { return }
+        DispatchQueue.main.async {
+            attachMarkerIfNeeded(identifier: giniCaptureAnalysisDidFinishIdentifier)
+        }
+    }
+
+    private static func attachMarkerIfNeeded(identifier: String) {
+        guard let window = Self.keyWindow() else { return }
+        let alreadyThere = window.subviews.contains {
+            $0.accessibilityIdentifier == identifier
+        }
+        guard !alreadyThere else { return }
+        let marker = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+        marker.backgroundColor = .clear
+        marker.accessibilityIdentifier = identifier
+        marker.isAccessibilityElement = true
+        window.addSubview(marker)
+    }
+
+    private static func keyWindow() -> UIWindow? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
+}
+
 // MARK: - ClientConfigurationServiceProtocol
 
 extension UITestMockBackend: ClientConfigurationServiceProtocol {
@@ -302,7 +448,8 @@ extension UITestMockBackend: ClientConfigurationServiceProtocol {
                                                 paymentDueHintEnabled: flag("paymentDueHintEnabled"),
                                                 creditNoteHintEnabled: flag("creditNoteHintEnabled"),
                                                 paymentScheduleHintEnabled: flag("paymentScheduleHintEnabled"),
-                                                unsupportedQRCodeWarningEnabled: flag("unsupportedQRCodeWarningEnabled"))
+                                                unsupportedQRCodeWarningEnabled: flag("unsupportedQRCodeWarningEnabled"),
+                                                ingredientBrandScreens: ingredientBrandScreens)
         completion(.success(configuration))
     }
 }
