@@ -120,6 +120,11 @@ private extension BankSelectionTableViewCell {
         bankNameLabel.font = cellViewModel.bankNameFont
         bankNameLabel.textColor = cellViewModel.colors.bankNameAccentColor
 
+        /// Stable accessibility identifier for UI tests (XCUITest). Keyed by bank name so each
+        /// bank row is addressable without depending on cell index or on-screen position.
+        /// Example: a cell labeled "Black bank" is queried as `"bankSelection.cell.Black bank"`.
+        accessibilityIdentifier = "bankSelection.cell.\(cellViewModel.bankName)"
+
         cellView.backgroundColor = cellViewModel.colors.backgroundColor
         cellView.layer.borderWidth = isSelected ? Constants.selectedBorderWidth : Constants.notSelectedBorderWidth
         cellView.layer.borderColor = isSelected ? cellViewModel.colors.selectedBankBorderColor.cgColor : cellViewModel.colors.notSelectedBankBorderColor.cgColor

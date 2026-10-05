@@ -314,6 +314,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .recipient,
                                            inputState: viewModel.recipientInputState,
                                            lockedIcon: viewModel.lockIcon))
+        .accessibilityIdentifier("paymentReview.recipient")
         .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .recipient,
@@ -328,7 +329,7 @@ struct PaymentReviewPaymentInformationView: View {
             viewModel.clearErrorOnTextChange(for: \.recipientInputState)
         }
     }
-    
+
     @ViewBuilder
     private var ibanTextField: some View {
         TextField("", text: $viewModel.ibanInputState.text)
@@ -343,6 +344,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .iban,
                                            inputState: viewModel.ibanInputState,
                                            lockedIcon: viewModel.lockIcon))
+        .accessibilityIdentifier("paymentReview.iban")
         .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .iban,
@@ -377,6 +379,7 @@ struct PaymentReviewPaymentInformationView: View {
                 field: .amount,
                 inputState: viewModel.amountInputState
             ))
+            .accessibilityIdentifier("paymentReview.amount")
             // Attach the UIKit Done accessory to whichever UITextField SwiftUI creates for this
             // field. Done via responder-chain traversal (see GiniKeyboardAccessoryInstaller): reliable
             // because `UITextField.inputAccessoryView` is glued to the keyboard's own window by
@@ -407,6 +410,7 @@ struct PaymentReviewPaymentInformationView: View {
                                            field: .paymentPurpose,
                                            inputState: viewModel.paymentPurposeInputState,
                                            lockedIcon: viewModel.lockIcon))
+        .accessibilityIdentifier("paymentReview.reference")
         .onChange(of: focusedField) { _, newFocus in
             Task { @MainActor in
                 viewModel.handleFocusChange(isFocused: newFocus == .paymentPurpose,
@@ -467,8 +471,9 @@ struct PaymentReviewPaymentInformationView: View {
         )
         .accessibilityLabel(viewModelStrings.bankSelectionAccessibility.selectBankText)
         .accessibilityHint(viewModelStrings.bankSelectionAccessibility.selectBankHint)
+        .accessibilityIdentifier("paymentReview.bankPicker")
     }
-    
+
     @ViewBuilder
     private var payButton: some View {
         if let selectedPaymentProviderBackgroundColor = viewModel.selectedPaymentProvider.colors.background.toColor(),
@@ -503,6 +508,7 @@ struct PaymentReviewPaymentInformationView: View {
             .frame(minHeight: Constants.payButtonHeight)
             .accessibilityLabel(viewModel.model.strings.payInvoiceLabelText)
             .accessibilityHint(viewModelStrings.bankSelectionAccessibility.payInvoiceHint)
+            .accessibilityIdentifier("paymentReview.payButton")
         }
     }
     
