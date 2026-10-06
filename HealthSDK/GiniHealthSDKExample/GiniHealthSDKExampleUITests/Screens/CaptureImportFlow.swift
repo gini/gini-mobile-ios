@@ -64,13 +64,24 @@ final class CaptureImportFlow {
     /**
      Opens the system photo picker from the camera screen:
      Files button → Upload photo. Expects the camera screen to be visible.
+
+     CaptureSDK exposes the Files button through `BottomLabelButton` with
+     `accessibilityValue` set to the localised label — no `accessibilityLabel`
+     and no `accessibilityIdentifier`. XCUITest's `label` query misses the
+     control entirely, so the predicate below also matches on `value`.
      */
     func tapImportThenPhotoLibrary() {
-        let filesButton = app.buttons.matching(NSPredicate(format: "label IN %@", filesButtonTitles)).firstMatch
+        let filesButton = app.buttons
+            .matching(NSPredicate(format: "(label IN %@) OR (value IN %@)",
+                                  filesButtonTitles, filesButtonTitles))
+            .firstMatch
         XCTAssertTrue(filesButton.waitForExistence(timeout: 10),
                       "Files entry not found on the Capture screen.")
         filesButton.tap()
-        let uploadPhoto = app.buttons.matching(NSPredicate(format: "label IN %@", uploadPhotoButtonTitles)).firstMatch
+        let uploadPhoto = app.buttons
+            .matching(NSPredicate(format: "(label IN %@) OR (value IN %@)",
+                                  uploadPhotoButtonTitles, uploadPhotoButtonTitles))
+            .firstMatch
         XCTAssertTrue(uploadPhoto.waitForExistence(timeout: 10),
                       "Upload photo entry not found in the import sheet.")
         uploadPhoto.tap()
