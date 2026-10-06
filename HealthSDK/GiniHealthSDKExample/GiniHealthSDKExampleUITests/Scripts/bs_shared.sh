@@ -113,25 +113,29 @@ upload_media() {
 # Outputs: IPA at $IPA_OUTPUT, test runner at $TEST_SUITE_OUTPUT.
 bs_build() {
     mkdir -p "$DERIVED_DATA"
-    # Signing mirrors Bank SDK's `bs_shared.sh` verbatim: automatic signing with team
-    # `JA825X8F7Z`, Apple Development identity, no explicit provisioning profile —
-    # xcodebuild `-allowProvisioningUpdates` picks a matching profile from the
-    # developer's Xcode login at build time. Entitlements are NOT stripped: Bank's
-    # example app ships the same iCloud container claims (`iCloud.net.gini.banksdk.example`
-    # + CloudDocuments + ubiquity-kvstore) and its BrowserStack smoke build runs fine
-    # on BS devices, so Health's `iCloud.net.gini.healthsdk.example` + CloudKit
-    # entitlements should be preserved identically through BrowserStack's
-    # `"resignApp": "true"` step.
+    # Automatic signing with team `JA825X8F7Z`, Apple Development identity, no
+    # explicit provisioning profile — xcodebuild `-allowProvisioningUpdates` picks
+    # a matching profile from the developer's Xcode login at build time.
     #
-    # If a run fails with "Application does not have a process ID" after a 60-second
-    # XCTest launch timeout, SpringBoard refused the entitlements; re-add
-    # `CODE_SIGN_ENTITLEMENTS =` here to strip them (smoke never exercises iCloud).
+    # Entitlements are stripped (`CODE_SIGN_ENTITLEMENTS =`) because the host app's
+    # `GiniHealthSDKExample.entitlements` claims the `iCloud.net.gini.healthsdk.example`
+    # container (CloudDocuments + CloudKit + ubiquity-kvstore), and the first smoke
+    # run on BrowserStack failed with a `devicectl` error 1002 ("No provider was
+    # found") during install: the BS enterprise cert used by `"resignApp": "true"`
+    # cannot fulfil the iCloud capability, so the device refuses to install the IPA.
+    #
+    # The smoke suite never exercises iCloud — a BS build with no entitlements is
+    # functionally identical to the signed one for every scenario in it, but the
+    # IPA installs and the app launches. Local app development on real devices and
+    # simulators still uses the signed entitlements file; this override only applies
+    # to the `bs_build` invocation.
     cat > "$SIGNING_CONFIG" <<'XCCONFIG'
 CODE_SIGN_STYLE = Automatic
 CODE_SIGN_IDENTITY = Apple Development
 DEVELOPMENT_TEAM = JA825X8F7Z
 PROVISIONING_PROFILE_SPECIFIER =
 PROVISIONING_PROFILE =
+CODE_SIGN_ENTITLEMENTS =
 XCCONFIG
 
     echo "[1/3] Building for testing..."
