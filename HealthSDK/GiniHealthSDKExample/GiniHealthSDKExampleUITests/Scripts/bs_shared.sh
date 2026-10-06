@@ -113,33 +113,25 @@ upload_media() {
 # Outputs: IPA at $IPA_OUTPUT, test runner at $TEST_SUITE_OUTPUT.
 bs_build() {
     mkdir -p "$DERIVED_DATA"
-    # Entitlements are stripped on purpose. The host app's
-    # `GiniHealthSDKExample.entitlements` claims the `iCloud.net.gini.healthsdk.example`
-    # container (CloudDocuments + CloudKit + ubiquity-kvstore). BrowserStack re-signs
-    # every uploaded IPA with its enterprise cert (`"resignApp": "true"` in the build
-    # trigger); that cert cannot fulfil the iCloud capability, so SpringBoard refuses
-    # to start the app on the device and the test runner reports "Application does
-    # not have a process ID" after XCTest's 60-second launch timeout. The smoke suite
-    # never exercises iCloud, so a BS build with no entitlements is functionally
-    # identical to a signed one for the smoke scenarios — but it launches.
+    # Signing mirrors Bank SDK's `bs_shared.sh` verbatim: automatic signing with team
+    # `JA825X8F7Z`, Apple Development identity, no explicit provisioning profile —
+    # xcodebuild `-allowProvisioningUpdates` picks a matching profile from the
+    # developer's Xcode login at build time. Entitlements are NOT stripped: Bank's
+    # example app ships the same iCloud container claims (`iCloud.net.gini.banksdk.example`
+    # + CloudDocuments + ubiquity-kvstore) and its BrowserStack smoke build runs fine
+    # on BS devices, so Health's `iCloud.net.gini.healthsdk.example` + CloudKit
+    # entitlements should be preserved identically through BrowserStack's
+    # `"resignApp": "true"` step.
     #
-    # Automatic signing is used rather than a manual AdHoc profile because the
-    # workspace's SPM dependencies (nanopb via Firebase) reject manually-specified
-    # provisioning profiles at build time with "<target> does not support
-    # provisioning profiles". xcconfig has no per-target scoping syntax, so the only
-    # way to combine manual signing on the host app with automatic signing on the
-    # SPM targets is a pbxproj surgery that permanently alters what every developer
-    # sees in Xcode locally — not worth it for a BrowserStack-only workaround.
-    #
-    # Keep local-app development on the signed entitlements file; this override only
-    # applies to the BS build (xcodebuild picks the xcconfig up for this invocation).
+    # If a run fails with "Application does not have a process ID" after a 60-second
+    # XCTest launch timeout, SpringBoard refused the entitlements; re-add
+    # `CODE_SIGN_ENTITLEMENTS =` here to strip them (smoke never exercises iCloud).
     cat > "$SIGNING_CONFIG" <<'XCCONFIG'
 CODE_SIGN_STYLE = Automatic
 CODE_SIGN_IDENTITY = Apple Development
 DEVELOPMENT_TEAM = JA825X8F7Z
 PROVISIONING_PROFILE_SPECIFIER =
 PROVISIONING_PROFILE =
-CODE_SIGN_ENTITLEMENTS =
 XCCONFIG
 
     echo "[1/3] Building for testing..."
