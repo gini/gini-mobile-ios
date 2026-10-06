@@ -113,25 +113,25 @@ upload_media() {
 # Outputs: IPA at $IPA_OUTPUT, test runner at $TEST_SUITE_OUTPUT.
 bs_build() {
     mkdir -p "$DERIVED_DATA"
-    # Entitlements are stripped on purpose. The host app's
-    # `GiniHealthSDKExample.entitlements` claims the `iCloud.net.gini.healthsdk.example`
-    # container (CloudDocuments + CloudKit + ubiquity-kvstore). BrowserStack re-signs
-    # every uploaded IPA with its enterprise cert (`"resignApp": "true"` in the build
-    # trigger); that cert cannot fulfil the iCloud capability, so SpringBoard refuses
-    # to start the app on the device and the test runner reports "Application does
-    # not have a process ID" after XCTest's 60-second launch timeout. The smoke suite
-    # never exercises iCloud, so a BS build with no entitlements is functionally
-    # identical to a signed one for the smoke scenarios — but it launches.
+    # Manual signing with the fastlane-match AdHoc profile. The host app's
+    # `GiniHealthSDKExample.entitlements` claims the
+    # `iCloud.net.gini.healthsdk.example` container (CloudDocuments + CloudKit +
+    # ubiquity-kvstore); the matching AdHoc provisioning profile
+    # `match AdHoc net.gini.healthsdk.example` is the one registered against this
+    # explicit App ID, so the capabilities validate cleanly at build time and the
+    # IPA survives BrowserStack's `resignApp: "true"` re-sign step.
     #
-    # Keep local-app development on the signed entitlements file; this override only
-    # applies to the BS build (xcodebuild picks the xcconfig up for this invocation).
+    # Automatic signing with the current Xcode login was tried first — it signed
+    # with the right team (JA825X8F7Z) but the auto-generated "iOS Team
+    # Provisioning Profile: *" was issued without the iCloud container registered,
+    # so BrowserStack-side resigning stripped entitlements the Health app needs
+    # and SpringBoard silently refused to launch the app on the device (XCTest
+    # reported "Application does not have a process ID" after a 60 s timeout).
     cat > "$SIGNING_CONFIG" <<'XCCONFIG'
-CODE_SIGN_STYLE = Automatic
-CODE_SIGN_IDENTITY = Apple Development
+CODE_SIGN_STYLE = Manual
 DEVELOPMENT_TEAM = JA825X8F7Z
-PROVISIONING_PROFILE_SPECIFIER =
-PROVISIONING_PROFILE =
-CODE_SIGN_ENTITLEMENTS =
+CODE_SIGN_IDENTITY = Apple Distribution
+PROVISIONING_PROFILE_SPECIFIER = match AdHoc net.gini.healthsdk.example
 XCCONFIG
 
     echo "[1/3] Building for testing..."
