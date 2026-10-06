@@ -29,16 +29,20 @@ final class CaptureImportFlow {
         self.locale = locale
     }
 
-    private var getStartedTitles: [String] {
-        ["Get Started", "Jetzt starten", "Loslegen"]
+    private var skipButtonTitles: [String] {
+        /// CaptureSDK's onboarding puts a Skip button in the top-right of the nav bar
+        /// (per Bank SDK's OnboardingScreen page object).
+        ["Skip", "Überspringen"]
     }
 
-    private var importButtonTitles: [String] {
-        ["Files", "Dateien", "Import", "Importieren"]
+    private var filesButtonTitles: [String] {
+        /// First tap on the camera screen — opens the import sheet.
+        ["Files", "Dateien"]
     }
 
-    private var photoLibraryTitles: [String] {
-        ["Photo Library", "Photos", "Fotos", "Fotomediathek", "Choose Photo"]
+    private var uploadPhotoButtonTitles: [String] {
+        /// Entry inside the import sheet that opens the system photo picker.
+        ["Upload photo", "Fotos hochladen"]
     }
 
     private var processButtonTitles: [String] {
@@ -46,30 +50,30 @@ final class CaptureImportFlow {
     }
 
     /**
-     Skips the onboarding carousel if it is presented. CaptureSDK versions
-     vary — some ship no onboarding at all for returning users — so a missing
-     "Get Started" button is not a failure.
+     Dismisses the onboarding carousel by tapping the Skip button in the nav bar.
+     CaptureSDK versions vary — some ship no onboarding at all for returning users —
+     so a missing Skip button within `timeout` is not a failure.
      */
     func skipOnboardingIfPresented(timeout: TimeInterval = 5) {
-        let getStarted = app.buttons.matching(NSPredicate(format: "label IN %@", getStartedTitles)).firstMatch
-        if getStarted.waitForExistence(timeout: timeout), getStarted.isHittable {
-            getStarted.tap()
+        let skip = app.navigationBars.buttons.matching(NSPredicate(format: "label IN %@", skipButtonTitles)).firstMatch
+        if skip.waitForExistence(timeout: timeout), skip.isHittable {
+            skip.tap()
         }
     }
 
     /**
-     Taps the Files/Import entry and then the Photo Library option so the
-     system photo picker opens. Expects the camera screen to already be visible.
+     Opens the system photo picker from the camera screen:
+     Files button → Upload photo. Expects the camera screen to be visible.
      */
     func tapImportThenPhotoLibrary() {
-        let importButton = app.buttons.matching(NSPredicate(format: "label IN %@", importButtonTitles)).firstMatch
-        XCTAssertTrue(importButton.waitForExistence(timeout: 10),
-                      "Import entry not found on the Capture screen.")
-        importButton.tap()
-        let photoLibrary = app.buttons.matching(NSPredicate(format: "label IN %@", photoLibraryTitles)).firstMatch
-        XCTAssertTrue(photoLibrary.waitForExistence(timeout: 10),
-                      "Photo Library option not found in the import sheet.")
-        photoLibrary.tap()
+        let filesButton = app.buttons.matching(NSPredicate(format: "label IN %@", filesButtonTitles)).firstMatch
+        XCTAssertTrue(filesButton.waitForExistence(timeout: 10),
+                      "Files entry not found on the Capture screen.")
+        filesButton.tap()
+        let uploadPhoto = app.buttons.matching(NSPredicate(format: "label IN %@", uploadPhotoButtonTitles)).firstMatch
+        XCTAssertTrue(uploadPhoto.waitForExistence(timeout: 10),
+                      "Upload photo entry not found in the import sheet.")
+        uploadPhoto.tap()
     }
 
     /**
