@@ -171,10 +171,14 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10),
                       "Docked Payment Component Select-bank button not found at the bottom of the Invoices List.")
         paymentComponentScreen.selectBankButton.tap()
-        let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
-        XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                      "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
-        blackBankCell.tap()
+        // Pick the first available bank — the local client config may list a
+        // different lineup than the HEAL-282 BrowserStack build (e.g. no "Bank"
+        // row), and HEAL-285 only needs to prove the flow lands on Payment
+        // Review, not which specific bank is selected.
+        let bankCell = bankSelectionBottomSheet.anyBankCell
+        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
+                      "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
+        bankCell.tap()
 
         // Now the first invoice's Transfer directly button opens Payment Review.
         invoicesListScreen.transferDirectlyButton.tap()
