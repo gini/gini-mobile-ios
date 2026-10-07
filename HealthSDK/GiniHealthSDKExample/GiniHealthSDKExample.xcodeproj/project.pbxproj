@@ -7,14 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0161C0576128BB1B913C9118 /* GiniHealthSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF0A0A275E46CFFF518497 /* GiniHealthSDKExampleUITests.swift */; };
+		1D5C1A33CC5019F4AFFAEC90 /* BrowserStackTestHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E0BE8F6D91B9367B450EA0 /* BrowserStackTestHelper.xcframework */; };
+		235F519522E376BF0773743D /* BankSelectionBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEDB849602E65153287B832 /* BankSelectionBottomSheet.swift */; };
 		282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */; };
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
 		288F88502E4A5563004D7A60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F884F2E4A5563004D7A60 /* FirebaseAnalytics */; };
 		288F88522E4A5563004D7A60 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88512E4A5563004D7A60 /* FirebaseCrashlytics */; };
 		288F88542E4A5563004D7A60 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88532E4A5563004D7A60 /* FirebasePerformance */; };
 		288F88562E4A6289004D7A60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288F88552E4A6289004D7A60 /* GoogleService-Info.plist */; };
+		3627509F41030393EAF14CFA /* BrowserStackTestHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55622C1D4C807761358419F5 /* BrowserStackTestHelper.xcframework */; };
+		44A1E440CD5D4489629E9100 /* testMedInvoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F19D4EB9DB2D8A0D70CA112E /* testMedInvoice.pdf */; };
+		4FA664D23981BC09927EC49A /* BrowserStackTestHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 95E0BE8F6D91B9367B450EA0 /* BrowserStackTestHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */; };
+		5377654E722654F9BF896028 /* multi-invoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 30D19F0EE8F6F7F583F4007B /* multi-invoice.pdf */; };
+		547051CF551C3F65C2B4FBA6 /* PaymentComponentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */; };
+		5D7AD3E8CA8517FF055E0821 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B3AE18488D68AFA5B600E /* MainScreen.swift */; };
+		724F1FC46823FEC9695E033C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417B82765E29944CA005580F /* Foundation.framework */; };
+		75B65D5ADA7003C7AC420E1E /* InvoicesListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A4FD40FE43142EF05E2C10 /* InvoicesListScreen.swift */; };
 		7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7D6161C52BE1327E0091000B /* test_pdf.pdf */; };
+		7D6775773D110DEA97232756 /* testMedInvoice.png in Resources */ = {isa = PBXBuildFile; fileRef = CA5792E8AB8FD01F083477DF /* testMedInvoice.png */; };
 		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
 		7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661842B554A6F004537AA /* InvoicesListViewController.swift */; };
 		7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */; };
@@ -37,6 +49,14 @@
 		8A142EBC2CC7C50D007B268A /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */; };
 		8A142EBE2CC7C528007B268A /* OrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBD2CC7C528007B268A /* OrderDetailView.swift */; };
 		8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */; };
+		A2B96FED359FDEC3EBB27541 /* BrowserStackTestHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 55622C1D4C807761358419F5 /* BrowserStackTestHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A47D3D58DDD7CB8F55B46349 /* PaymentReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65731EA9029A4755A30A4580 /* PaymentReviewScreen.swift */; };
+		ADD2D2EAFDB5B6AEE124FFF6 /* multi-invoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FB72F6366625E0AD89CC0484 /* multi-invoice.pdf */; };
+		C95F699C8A83D889006FEDDE /* testMedInvoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9C43E272075F9536C8773257 /* testMedInvoice.pdf */; };
+		D0DEAEA14423822562297575 /* GiniHealthSmokeJourneysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4DBAA962E0FD6CC41016E /* GiniHealthSmokeJourneysUITests.swift */; };
+		D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */; };
+		E26C8B20456269F631CC5244 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A170FFD43B849C064DEC95D /* TestFixtures.swift */; };
+		E53040CFF3F8AF6577225ABA /* CaptureImportFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -62,6 +82,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D492C7497B928F0E7064CE13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4EC38BE273C21E4007045DC;
+			remoteInfo = GiniHealthSDKExample;
+		};
 		F484E8F82F4F555300547A9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
@@ -71,11 +98,39 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		14B1DE81F15689747C21621A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A2B96FED359FDEC3EBB27541 /* BrowserStackTestHelper.xcframework in Embed Frameworks */,
+				4FA664D23981BC09927EC49A /* BrowserStackTestHelper.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0A170FFD43B849C064DEC95D /* TestFixtures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
+		16E4DBAA962E0FD6CC41016E /* GiniHealthSmokeJourneysUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSmokeJourneysUITests.swift; sourceTree = "<group>"; };
+		204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CaptureImportFlow.swift; sourceTree = "<group>"; };
 		282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		288F88552E4A6289004D7A60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2EF04D8514B462937ABFD68B /* GiniHealthSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D19F0EE8F6F7F583F4007B /* multi-invoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; path = "multi-invoice.pdf"; sourceTree = "<group>"; };
+		351055B5C55C9E0D97EC2780 /* CaptureImportFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CaptureImportFlow.swift; sourceTree = "<group>"; };
+		3EEDB849602E65153287B832 /* BankSelectionBottomSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BankSelectionBottomSheet.swift; sourceTree = "<group>"; };
+		417B82765E29944CA005580F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		465F28BD6FBBB2DE5F126563 /* BankSelectionBottomSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BankSelectionBottomSheet.swift; sourceTree = "<group>"; };
 		50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
+		55622C1D4C807761358419F5 /* BrowserStackTestHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = BrowserStackTestHelper.xcframework; sourceTree = "<group>"; };
+		65731EA9029A4755A30A4580 /* PaymentReviewScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaymentReviewScreen.swift; sourceTree = "<group>"; };
+		74557929B6F0C5A9D54BEFDA /* PaymentReviewScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaymentReviewScreen.swift; sourceTree = "<group>"; };
+		7CF6ADCA2FC033E43C7C9049 /* MainScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
 		7DB661842B554A6F004537AA /* InvoicesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +145,7 @@
 		7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
 		7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
 		7DD0B95D2CF75E9100C5176C /* invoice-13MB.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "invoice-13MB.pdf"; sourceTree = "<group>"; };
+		80BFDB9F719B4E734DF0F3F7 /* GiniHealthSDKExampleUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKExampleUITests.swift; sourceTree = "<group>"; };
 		8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardcodedOrders.swift; sourceTree = "<group>"; };
 		8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListCoordinator.swift; sourceTree = "<group>"; };
 		8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +155,17 @@
 		8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		8A142EBD2CC7C528007B268A /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
 		8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-12MB.png"; sourceTree = "<group>"; };
+		8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrdersListScreen.swift; sourceTree = "<group>"; };
+		920383E670F3DB00DAF28415 /* TestFixtures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
+		95E0BE8F6D91B9367B450EA0 /* BrowserStackTestHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = BrowserStackTestHelper.xcframework; sourceTree = "<group>"; };
+		9C43E272075F9536C8773257 /* testMedInvoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.pdf; path = testMedInvoice.pdf; sourceTree = "<group>"; };
+		A8A4FD40FE43142EF05E2C10 /* InvoicesListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InvoicesListScreen.swift; sourceTree = "<group>"; };
+		B70D945D5C300A0BDFE4DF43 /* GiniHealthSmokeJourneysUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSmokeJourneysUITests.swift; sourceTree = "<group>"; };
+		CA5792E8AB8FD01F083477DF /* testMedInvoice.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = testMedInvoice.png; sourceTree = "<group>"; };
+		D0AF0A0A275E46CFFF518497 /* GiniHealthSDKExampleUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKExampleUITests.swift; sourceTree = "<group>"; };
+		D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaymentComponentScreen.swift; sourceTree = "<group>"; };
+		F19D4EB9DB2D8A0D70CA112E /* testMedInvoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; path = testMedInvoice.pdf; sourceTree = "<group>"; };
+		F38D8D2D9E4C914F7E0EC8B1 /* testMedInvoice.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = testMedInvoice.png; sourceTree = "<group>"; };
 		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthNetworkingService.swift; sourceTree = "<group>"; };
@@ -126,13 +193,35 @@
 		F4EC3907273C2621007045DC /* SelectAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
 		F4EC3908273C2622007045DC /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F4EC3912273C2B41007045DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F53B3AE18488D68AFA5B600E /* MainScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		FB72F6366625E0AD89CC0484 /* multi-invoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.pdf; path = "multi-invoice.pdf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F484E8F52F4F555300547A9B /* GiniHealthSDKExampleTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GiniHealthSDKExampleTests; sourceTree = "<group>"; };
+		F484E8F52F4F555300547A9B /* GiniHealthSDKExampleTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = GiniHealthSDKExampleTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4D44604C7AF4AA96168C6E27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				724F1FC46823FEC9695E033C /* Foundation.framework in Frameworks */,
+				3627509F41030393EAF14CFA /* BrowserStackTestHelper.xcframework in Frameworks */,
+				1D5C1A33CC5019F4AFFAEC90 /* BrowserStackTestHelper.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F484E8F12F4F555300547A9B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,6 +245,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29D648598231E9E8C01F534C /* GiniHealthSDKExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6EE4806F637DF25E4FC62FCB /* Screens */,
+				ECB9F3CAB61FFBF7D9D911BE /* TestSamples */,
+				CAEB0197B513B9721665DA21 /* Frameworks */,
+				80BFDB9F719B4E734DF0F3F7 /* GiniHealthSDKExampleUITests.swift */,
+				B70D945D5C300A0BDFE4DF43 /* GiniHealthSmokeJourneysUITests.swift */,
+				920383E670F3DB00DAF28415 /* TestFixtures.swift */,
+			);
+			name = GiniHealthSDKExampleUITests;
+			path = GiniHealthSDKExampleUITests;
+			sourceTree = "<group>";
+		};
+		3AA92EB22E0EB3DFC8460E07 /* HealthSDK */ = {
+			isa = PBXGroup;
+			children = (
+				6785D6008913D2747A31DEA7 /* GiniHealthSDKExample */,
+			);
+			name = HealthSDK;
+			sourceTree = "<group>";
+		};
+		59035D73FD37089F875B68D8 /* TestSamples */ = {
+			isa = PBXGroup;
+			children = (
+				9C26A369485FC0E22428DC2F /* TestSamplesForBS */,
+			);
+			name = TestSamples;
+			sourceTree = "<group>";
+		};
+		6729C611E255362821F9FF96 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				55622C1D4C807761358419F5 /* BrowserStackTestHelper.xcframework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		6785D6008913D2747A31DEA7 /* GiniHealthSDKExample */ = {
+			isa = PBXGroup;
+			children = (
+				29D648598231E9E8C01F534C /* GiniHealthSDKExampleUITests */,
+			);
+			name = GiniHealthSDKExample;
+			sourceTree = "<group>";
+		};
+		6E7236B098C66D8C6960D0B9 /* TestSamplesForBS */ = {
+			isa = PBXGroup;
+			children = (
+				F19D4EB9DB2D8A0D70CA112E /* testMedInvoice.pdf */,
+				F38D8D2D9E4C914F7E0EC8B1 /* testMedInvoice.png */,
+				30D19F0EE8F6F7F583F4007B /* multi-invoice.pdf */,
+			);
+			name = TestSamplesForBS;
+			path = TestSamples/TestSamplesForBS;
+			sourceTree = "<group>";
+		};
+		6EE4806F637DF25E4FC62FCB /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				465F28BD6FBBB2DE5F126563 /* BankSelectionBottomSheet.swift */,
+				351055B5C55C9E0D97EC2780 /* CaptureImportFlow.swift */,
+				A8A4FD40FE43142EF05E2C10 /* InvoicesListScreen.swift */,
+				7CF6ADCA2FC033E43C7C9049 /* MainScreen.swift */,
+				74557929B6F0C5A9D54BEFDA /* PaymentReviewScreen.swift */,
+				D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */,
+				8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */,
+			);
+			name = Screens;
+			path = Screens;
+			sourceTree = "<group>";
+		};
 		7DB661882B554A79004537AA /* InvoicesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,15 +372,77 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		95A11F7198C819FFD34C5837 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				417B82765E29944CA005580F /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		9C26A369485FC0E22428DC2F /* TestSamplesForBS */ = {
+			isa = PBXGroup;
+			children = (
+				9C43E272075F9536C8773257 /* testMedInvoice.pdf */,
+				CA5792E8AB8FD01F083477DF /* testMedInvoice.png */,
+				FB72F6366625E0AD89CC0484 /* multi-invoice.pdf */,
+			);
+			name = TestSamplesForBS;
+			path = TestSamples/TestSamplesForBS;
+			sourceTree = "<group>";
+		};
+		CAEB0197B513B9721665DA21 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				95E0BE8F6D91B9367B450EA0 /* BrowserStackTestHelper.xcframework */,
+			);
+			name = Frameworks;
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		D240C0265D23AE4D10ECF034 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3EEDB849602E65153287B832 /* BankSelectionBottomSheet.swift */,
+				204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */,
+				F53B3AE18488D68AFA5B600E /* MainScreen.swift */,
+				65731EA9029A4755A30A4580 /* PaymentReviewScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		E801425FE0A470BCFE0C23B7 /* GiniHealthSDKExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D240C0265D23AE4D10ECF034 /* Screens */,
+				59035D73FD37089F875B68D8 /* TestSamples */,
+				6729C611E255362821F9FF96 /* Frameworks */,
+				D0AF0A0A275E46CFFF518497 /* GiniHealthSDKExampleUITests.swift */,
+				16E4DBAA962E0FD6CC41016E /* GiniHealthSmokeJourneysUITests.swift */,
+				0A170FFD43B849C064DEC95D /* TestFixtures.swift */,
+			);
+			path = GiniHealthSDKExampleUITests;
+			sourceTree = "<group>";
+		};
+		ECB9F3CAB61FFBF7D9D911BE /* TestSamples */ = {
+			isa = PBXGroup;
+			children = (
+				6E7236B098C66D8C6960D0B9 /* TestSamplesForBS */,
+			);
+			name = TestSamples;
+			sourceTree = "<group>";
+		};
 		F4C36A7F270C6EBF00CCC69C = {
 			isa = PBXGroup;
 			children = (
 				288F88552E4A6289004D7A60 /* GoogleService-Info.plist */,
+				E801425FE0A470BCFE0C23B7 /* GiniHealthSDKExampleUITests */,
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F484E8F52F4F555300547A9B /* GiniHealthSDKExampleTests */,
 				F4C36A89270C6EBF00CCC69C /* Products */,
 				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
+				3AA92EB22E0EB3DFC8460E07 /* HealthSDK */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,6 +451,7 @@
 			children = (
 				F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */,
 				F484E8F42F4F555300547A9B /* GiniHealthSDKExampleTests.xctest */,
+				2EF04D8514B462937ABFD68B /* GiniHealthSDKExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -245,6 +469,7 @@
 			isa = PBXGroup;
 			children = (
 				F42377252799ABB000FAC3D6 /* CloudKit.framework */,
+				95A11F7198C819FFD34C5837 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -283,6 +508,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		71988E0D7AF875FDA3DA1011 /* GiniHealthSDKExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B463AC1D03D00AF9DF1F0995 /* Build configuration list for PBXNativeTarget "GiniHealthSDKExampleUITests" */;
+			buildPhases = (
+				27CED9766E769AD34820E930 /* Sources */,
+				4D44604C7AF4AA96168C6E27 /* Frameworks */,
+				0CF90EE1D407B247EB0D4721 /* Resources */,
+				14B1DE81F15689747C21621A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE6E6A80689BA0A64A298DF1 /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDKExampleUITests;
+			productName = GiniHealthSDKExampleUITests;
+			productReference = 2EF04D8514B462937ABFD68B /* GiniHealthSDKExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		F484E8F32F4F555300547A9B /* GiniHealthSDKExampleTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F484E8FC2F4F555300547A9B /* Build configuration list for PBXNativeTarget "GiniHealthSDKExampleTests" */;
@@ -300,8 +544,6 @@
 				F484E8F52F4F555300547A9B /* GiniHealthSDKExampleTests */,
 			);
 			name = GiniHealthSDKExampleTests;
-			packageProductDependencies = (
-			);
 			productName = GiniHealthSDKExampleTests;
 			productReference = F484E8F42F4F555300547A9B /* GiniHealthSDKExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -342,6 +584,9 @@
 				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					71988E0D7AF875FDA3DA1011 = {
+						TestTargetID = F4EC38BE273C21E4007045DC;
+					};
 					F484E8F32F4F555300547A9B = {
 						CreatedOnToolsVersion = 13.1;
 						TestTargetID = F4EC38BE273C21E4007045DC;
@@ -370,11 +615,24 @@
 			targets = (
 				F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */,
 				F484E8F32F4F555300547A9B /* GiniHealthSDKExampleTests */,
+				71988E0D7AF875FDA3DA1011 /* GiniHealthSDKExampleUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0CF90EE1D407B247EB0D4721 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C95F699C8A83D889006FEDDE /* testMedInvoice.pdf in Resources */,
+				7D6775773D110DEA97232756 /* testMedInvoice.png in Resources */,
+				ADD2D2EAFDB5B6AEE124FFF6 /* multi-invoice.pdf in Resources */,
+				44A1E440CD5D4489629E9100 /* testMedInvoice.pdf in Resources */,
+				5377654E722654F9BF896028 /* multi-invoice.pdf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F484E8F22F4F555300547A9B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -455,6 +713,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		27CED9766E769AD34820E930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0161C0576128BB1B913C9118 /* GiniHealthSDKExampleUITests.swift in Sources */,
+				D0DEAEA14423822562297575 /* GiniHealthSmokeJourneysUITests.swift in Sources */,
+				E26C8B20456269F631CC5244 /* TestFixtures.swift in Sources */,
+				235F519522E376BF0773743D /* BankSelectionBottomSheet.swift in Sources */,
+				E53040CFF3F8AF6577225ABA /* CaptureImportFlow.swift in Sources */,
+				5D7AD3E8CA8517FF055E0821 /* MainScreen.swift in Sources */,
+				A47D3D58DDD7CB8F55B46349 /* PaymentReviewScreen.swift in Sources */,
+				75B65D5ADA7003C7AC420E1E /* InvoicesListScreen.swift in Sources */,
+				547051CF551C3F65C2B4FBA6 /* PaymentComponentScreen.swift in Sources */,
+				D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F484E8F02F4F555300547A9B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -500,6 +775,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE6E6A80689BA0A64A298DF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GiniHealthSDKExample;
+			target = F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */;
+			targetProxy = D492C7497B928F0E7064CE13 /* PBXContainerItemProxy */;
+		};
 		F484E8F92F4F555300547A9B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */;
@@ -528,6 +809,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		488D098010F753F2F83F286B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gini.net.GiniHealthSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniHealthSDKExample;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1C876E63C0DAE9C0314D62A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gini.net.GiniHealthSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniHealthSDKExample;
+			};
+			name = Debug;
+		};
 		F484E8FA2F4F555300547A9B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -806,6 +1130,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B463AC1D03D00AF9DF1F0995 /* Build configuration list for PBXNativeTarget "GiniHealthSDKExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				488D098010F753F2F83F286B /* Release */,
+				A1C876E63C0DAE9C0314D62A /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F484E8FC2F4F555300547A9B /* Build configuration list for PBXNativeTarget "GiniHealthSDKExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
