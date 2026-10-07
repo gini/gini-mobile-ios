@@ -66,33 +66,33 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         invoicesListScreen.transferDirectlyButton.tap()
 
         // Payment Component bottom sheet always opens after Transfer directly.
-        // When no bank has been selected yet the Select-bank button reads
-        // "Your bank"; once a bank is picked the sheet still shows the Select-
-        // bank button with the chosen bank's name AND a "Continue to overview"
-        // primary button that opens the Payment Review Screen.
+        // Always drive through the Bank Selection sheet to pick "Bank":
+        // - Fresh install: the Payment Component has no bank selected, so the
+        //   Bank Selection sheet opens and we pick Bank.
+        // - Returning user: Payment Component already has a bank; tapping
+        //   Select-bank re-opens the Bank Selection sheet and we pick Bank
+        //   again (idempotent — picking the already-selected bank just
+        //   dismisses the sheet with no state change).
         //
-        // Fresh install path: tap Select-bank → pick Bank in the Bank Selection
-        // sheet → sheet dismisses, Payment Component now shows "Continue to
-        // overview". Returning-user path: skip the bank picking step; Continue
-        // to overview is already visible.
-        //
-        // BrowserStack normally wipes app state between builds, so the fresh
-        // path is the default — the fall-through keeps the test idempotent if
-        // a retry runs against a partially warm device.
+        // Why unconditional instead of a `continueToOverviewButton.exists`
+        // branch: SwiftUI's accessibility tree keeps the Continue button in
+        // place even when `viewModel.hasBankSelected == false` sets its
+        // `isHidden`, so `.exists` returns `true` on the simulator for the
+        // hidden element and the branch is unreliable. Always picking a bank
+        // guarantees Continue-to-overview is visible and hittable when the
+        // test reaches the next step.
         XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
                       "Payment Component bottom sheet did not appear after Transfer directly.")
-        if !paymentComponentScreen.continueToOverviewButton.exists {
-            paymentComponentScreen.selectBankButton.tap()
-            /// HEAL-282 calls the target "Black bank" after its solid-black BANK icon;
-            /// the client's payment-provider config exposes it as just "Bank" (verified
-            /// against the Bank Selection sheet's visible rows: Gini-Test-Payment-
-            /// Provider, GiniBank, Consorsbank Test, BNP Paribas myPrivateBank Test,
-            /// Bank, Gini Bank SDK Example, easybank, Consorsbank, Sparkasse, …).
-            let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
-            XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                          "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
-            blackBankCell.tap()
-        }
+        paymentComponentScreen.selectBankButton.tap()
+        /// HEAL-282 calls the target "Black bank" after its solid-black BANK icon;
+        /// the client's payment-provider config exposes it as just "Bank" (verified
+        /// against the Bank Selection sheet's visible rows: Gini-Test-Payment-
+        /// Provider, GiniBank, Consorsbank Test, BNP Paribas myPrivateBank Test,
+        /// Bank, Gini Bank SDK Example, easybank, Consorsbank, Sparkasse, …).
+        let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
+        XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
+                      "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
+        blackBankCell.tap()
 
         // Tap Continue to overview — this is the step that actually opens the
         // Payment Review Screen. Uses the helper's coordinate-fallback tap: the
