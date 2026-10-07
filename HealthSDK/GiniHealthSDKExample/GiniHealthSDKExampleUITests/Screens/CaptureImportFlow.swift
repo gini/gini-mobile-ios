@@ -45,6 +45,13 @@ final class CaptureImportFlow {
         ["Upload photo", "Fotos hochladen"]
     }
 
+    private var uploadFilesButtonTitles: [String] {
+        /// Entry inside the import sheet that opens the system Files picker.
+        /// Localised in CaptureSDK as `ginicapture.camera.popupOptionFiles`
+        /// ("Upload files" / "Dokument hochladen").
+        ["Upload files", "Dokument hochladen"]
+    }
+
     private var processButtonTitles: [String] {
         ["Process", "Next", "Weiter", "Verarbeiten"]
     }
@@ -160,6 +167,51 @@ final class CaptureImportFlow {
             if processButton.exists { return }
         }
         XCTFail("Gallery confirm button not found and the review screen did not appear.")
+    }
+
+    /**
+     Opens the system Files picker from the camera screen:
+     Files button → Upload files. Expects the camera screen to be visible.
+     Mirrors `tapImportThenPhotoLibrary` but routes to the Files picker
+     instead of the Photos picker.
+     */
+    func tapImportThenFiles() {
+        let filesButton = app.buttons
+            .matching(NSPredicate(format: "(label IN %@) OR (value IN %@)",
+                                  filesButtonTitles, filesButtonTitles))
+            .firstMatch
+        XCTAssertTrue(filesButton.waitForExistence(timeout: 10),
+                      "Files entry not found on the Capture screen.")
+        filesButton.tap()
+        let uploadFiles = app.buttons
+            .matching(NSPredicate(format: "(label IN %@) OR (value IN %@)",
+                                  uploadFilesButtonTitles, uploadFilesButtonTitles))
+            .firstMatch
+        XCTAssertTrue(uploadFiles.waitForExistence(timeout: 10),
+                      "Upload files entry not found in the import sheet.")
+        uploadFiles.tap()
+    }
+
+    /**
+     Picks a PDF from the system Files picker by name. Works on both
+     BrowserStack (fixture staged in Custom_Files) and the simulator
+     (fixture staged in the app's Documents folder by
+     `copyFixturesToSimulator`). Looks for the file in the current view;
+     falls back to tapping "On My iPhone" if the file is not immediately
+     visible.
+     */
+    func pickPDFFromFilesPicker(fileName: String) {
+        let fileCell = app.staticTexts[fileName].firstMatch
+        if !fileCell.waitForExistence(timeout: 5) {
+            /// Narrow the Files picker to the local on-device location.
+            let onMyPhone = app.buttons["On My iPhone"].firstMatch
+            if onMyPhone.waitForExistence(timeout: 3), onMyPhone.isHittable {
+                onMyPhone.tap()
+            }
+        }
+        XCTAssertTrue(fileCell.waitForExistence(timeout: 10),
+                      "File \"\(fileName)\" not found in the Files picker — fixture may not be staged.")
+        fileCell.tap()
     }
 
     /**
