@@ -161,38 +161,27 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
                       "Invoices List did not populate with a hardcoded invoice — extraction may have failed or timed out.")
 
-        // On the Invoices-List entry, the Payment Component is **docked** at the
-        // bottom of the list rather than opening modally after Transfer directly.
-        // The bank must be picked here first; Transfer directly only navigates to
-        // Payment Review when a bank is already selected on the docked sheet.
-        //
-        // This diverges from HEAL-282's flow where the Payment Component opens
-        // as a modal AFTER Transfer directly on the capture-SDK-produced invoice —
-        // the two entry points share screens but sequence the taps differently.
-        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10),
-                      "Docked Payment Component Select-bank button not found at the bottom of the Invoices List.")
+        // Mirrors HEAL-282's post-Transfer-directly flow — the Payment Component
+        // is modal in both entry paths. The sequence is: tap Transfer directly →
+        // modal Payment Component appears → tap Select-bank → Bank Selection sheet
+        // → tap any bank → sheet dismisses → Continue to overview button appears
+        // → tap it → Payment Review Screen opens.
+        invoicesListScreen.transferDirectlyButton.tap()
+
+        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
+                      "Payment Component bottom sheet did not appear after Transfer directly.")
         paymentComponentScreen.selectBankButton.tap()
-        // Pick the first available bank — the local client config may list a
-        // different lineup than the HEAL-282 BrowserStack build (e.g. no "Bank"
-        // row), and HEAL-285 only needs to prove the flow lands on Payment
-        // Review, not which specific bank is selected.
         let bankCell = bankSelectionBottomSheet.anyBankCell
         XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
                       "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
         bankCell.tap()
 
-        // Now the first invoice's Transfer directly button opens Payment Review.
-        invoicesListScreen.transferDirectlyButton.tap()
-
-        // Some Payment Component configurations present a Continue to overview
-        // modal between Transfer directly and Payment Review; tap it if it
-        // appears, otherwise fall through to the Payment Review assertion.
-        if paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 5) {
-            paymentComponentScreen.tapContinueToOverview()
-        }
+        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
+                      "Continue to overview button did not appear on the Payment Component after bank selection.")
+        paymentComponentScreen.tapContinueToOverview()
 
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear after Transfer directly (bank was selected before the tap).")
+                      "Payment Review Screen did not appear after Continue to overview.")
         for field in [paymentReviewScreen.ibanField,
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
