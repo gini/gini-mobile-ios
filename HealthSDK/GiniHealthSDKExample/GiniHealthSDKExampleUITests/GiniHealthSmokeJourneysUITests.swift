@@ -151,34 +151,43 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
     func testHEAL285_InvoicesListEntryShowsPaymentFlow() throws {
         // Entry — host app's Invoices-List button. The host coordinator opens
         // InvoicesListViewController and HardcodedInvoicesController uploads the
-        // bundled sample invoices in the background; the first row appears once
-        // the first extraction completes.
+        // bundled sample invoices in the background; rows appear once the first
+        // extraction completes.
         XCTAssertTrue(mainScreen.invoicesListButton.waitForExistence(timeout: 10),
                       "Main screen did not render — host app launch failed.")
         mainScreen.invoicesListButton.tap()
 
         XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
                       "Invoices List did not populate with a hardcoded invoice — extraction may have failed or timed out.")
+
+        // On the Invoices-List entry, the Payment Component is **docked** at the
+        // bottom of the list rather than opening modally after Transfer directly.
+        // The bank must be picked here first; Transfer directly only navigates to
+        // Payment Review when a bank is already selected on the docked sheet.
+        //
+        // This diverges from HEAL-282's flow where the Payment Component opens
+        // as a modal AFTER Transfer directly on the capture-SDK-produced invoice —
+        // the two entry points share screens but sequence the taps differently.
+        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10),
+                      "Docked Payment Component Select-bank button not found at the bottom of the Invoices List.")
+        paymentComponentScreen.selectBankButton.tap()
+        let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
+        XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
+                      "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
+        blackBankCell.tap()
+
+        // Now the first invoice's Transfer directly button opens Payment Review.
         invoicesListScreen.transferDirectlyButton.tap()
 
-        // Shared tail with HEAL-282: Payment Component → optional Bank Selection
-        // → Continue to overview → Payment Review Screen populated → Pay button.
-        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
-                      "Payment Component bottom sheet did not appear after Transfer directly.")
-        if !paymentComponentScreen.continueToOverviewButton.exists {
-            paymentComponentScreen.selectBankButton.tap()
-            let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
-            XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                          "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
-            blackBankCell.tap()
+        // Some Payment Component configurations present a Continue to overview
+        // modal between Transfer directly and Payment Review; tap it if it
+        // appears, otherwise fall through to the Payment Review assertion.
+        if paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 5) {
+            paymentComponentScreen.tapContinueToOverview()
         }
 
-        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
-                      "Continue to overview button did not appear on the Payment Component after bank selection.")
-        paymentComponentScreen.tapContinueToOverview()
-
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear after Continue to overview.")
+                      "Payment Review Screen did not appear after Transfer directly (bank was selected before the tap).")
         for field in [paymentReviewScreen.ibanField,
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
