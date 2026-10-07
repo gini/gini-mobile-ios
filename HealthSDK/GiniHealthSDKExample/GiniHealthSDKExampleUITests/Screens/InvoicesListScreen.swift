@@ -40,8 +40,9 @@ final class InvoicesListScreen {
      Invoices List is empty; tapping this button triggers the host app's
      `HardcodedInvoicesController` to upload the bundled sample documents
      to the Gini API, which then appear as rows once extraction completes.
-     Title is hardcoded in `InvoicesListViewController.setupNavigationBar`
-     with no localisation hook, so a label match is stable.
+     Addressed by the accessibility identifier set in
+     `InvoicesListViewController.setupNavigationBar` so the test is robust
+     to the ↑ Unicode glyph and locale changes.
      */
     let uploadInvoicesButton: XCUIElement
 
@@ -49,8 +50,7 @@ final class InvoicesListScreen {
         self.app = app
         self.navBar = app.navigationBars["Invoices List"]
         self.transferDirectlyButton = app.buttons["Transfer directly"].firstMatch
-        self.uploadInvoicesButton = app.navigationBars["Invoices List"]
-            .buttons["↑ Invoices"].firstMatch
+        self.uploadInvoicesButton = app.buttons["invoicesList.uploadInvoices"]
     }
 
     /**
