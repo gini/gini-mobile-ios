@@ -189,9 +189,12 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Main screen did not render — host app launch failed.")
         mainScreen.ordersListButton.tap()
 
-        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
-                      "Orders list did not populate with a hardcoded order — extraction may have failed or timed out.")
-        invoicesListScreen.transferDirectlyButton.tap()
+        /// Orders list rows are tapped directly — no per-row Transfer directly
+        /// button like the Invoices list has. Pick the first row to open the
+        /// Payment Component bottom sheet.
+        XCTAssertTrue(ordersListScreen.waitForFirstRow(timeout: 60),
+                      "Orders list did not populate with a hardcoded order — HardcodedInvoicesController seed may have failed or timed out.")
+        ordersListScreen.firstRow.tap()
 
         drivePaymentFlowThroughBankSelectionToPaymentReview()
         assertPaymentReviewReachedWithPopulatedFields()

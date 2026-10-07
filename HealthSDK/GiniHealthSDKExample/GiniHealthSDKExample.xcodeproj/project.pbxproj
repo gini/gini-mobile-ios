@@ -54,6 +54,7 @@
 		ADD2D2EAFDB5B6AEE124FFF6 /* multi-invoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FB72F6366625E0AD89CC0484 /* multi-invoice.pdf */; };
 		C95F699C8A83D889006FEDDE /* testMedInvoice.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9C43E272075F9536C8773257 /* testMedInvoice.pdf */; };
 		D0DEAEA14423822562297575 /* GiniHealthSmokeJourneysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4DBAA962E0FD6CC41016E /* GiniHealthSmokeJourneysUITests.swift */; };
+		D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */; };
 		E26C8B20456269F631CC5244 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A170FFD43B849C064DEC95D /* TestFixtures.swift */; };
 		E53040CFF3F8AF6577225ABA /* CaptureImportFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
@@ -154,6 +155,7 @@
 		8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		8A142EBD2CC7C528007B268A /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
 		8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-12MB.png"; sourceTree = "<group>"; };
+		8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrdersListScreen.swift; sourceTree = "<group>"; };
 		920383E670F3DB00DAF28415 /* TestFixtures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
 		95E0BE8F6D91B9367B450EA0 /* BrowserStackTestHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = BrowserStackTestHelper.xcframework; sourceTree = "<group>"; };
 		9C43E272075F9536C8773257 /* testMedInvoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.pdf; path = testMedInvoice.pdf; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				7CF6ADCA2FC033E43C7C9049 /* MainScreen.swift */,
 				74557929B6F0C5A9D54BEFDA /* PaymentReviewScreen.swift */,
 				D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */,
+				8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */,
 			);
 			name = Screens;
 			path = Screens;
@@ -723,6 +726,7 @@
 				A47D3D58DDD7CB8F55B46349 /* PaymentReviewScreen.swift in Sources */,
 				75B65D5ADA7003C7AC420E1E /* InvoicesListScreen.swift in Sources */,
 				547051CF551C3F65C2B4FBA6 /* PaymentComponentScreen.swift in Sources */,
+				D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
