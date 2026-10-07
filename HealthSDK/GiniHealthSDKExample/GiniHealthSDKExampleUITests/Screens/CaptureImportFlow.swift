@@ -49,6 +49,19 @@ final class CaptureImportFlow {
         ["Process", "Next", "Weiter", "Verarbeiten"]
     }
 
+    private var galleryNavTitles: [String] {
+        /// Photos picker's root nav title — the Albums list screen.
+        ["Albums", "Alben"]
+    }
+
+    private var confirmGallerySelectionTitles: [String] {
+        /// Picker confirm button varies by iOS version and locale.
+        /// `\u{0010}Done` is the legacy iOS < 18 glyph; `Done` is iOS 18+.
+        /// Multipage-off builds advance straight to the review screen with
+        /// no confirm step — handled in `pickLatestPhoto`.
+        ["\u{0010}Done", "Done", "Fertig", "Add", "Hinzufügen"]
+    }
+
     /**
      Dismisses the onboarding carousel by tapping the Skip button in the nav bar.
      CaptureSDK versions vary — some ship no onboarding at all for returning users —
@@ -88,20 +101,30 @@ final class CaptureImportFlow {
     }
 
     /**
-     Taps the most recently added gallery image.
+     Taps the most recently added gallery image. Mirrors Bank's
+     `uploadLatestPhotoFromGallery` so Health follows the same proven pattern.
 
-     The Albums navigation is a two-step process on iOS 15+ — tap the first
-     album entry, then the last image in the collection. Older iOS variants
-     may skip the album picker; in that case the image grid is already visible
-     and the fallback-collection-view path handles it.
+     Steps:
+     1. Wait for the Photos picker's **Albums** nav bar.
+     2. Tap the first table row (opens the first album, usually Recents).
+     3. Wait for the image collection to load; tap the LAST cell
+        (most recently added — on BrowserStack this is `testMedInvoice.png`
+        uploaded via `uploadMedia`).
+     4. Confirm the selection with Done/Fertig/Add. If multipage is disabled
+        the picker already advanced to the review screen — the confirm step
+        is skipped in that case.
      */
     func pickLatestPhoto() {
-        let albumsTable = app.tables.firstMatch
-        if albumsTable.waitForExistence(timeout: 5) {
-            albumsTable.cells.firstMatch.tap()
-        }
+        let albumsNavBar = app.navigationBars
+            .matching(NSPredicate(format: "identifier IN %@ OR title IN %@",
+                                  galleryNavTitles, galleryNavTitles))
+            .firstMatch
+        XCTAssertTrue(albumsNavBar.waitForExistence(timeout: 10),
+                      "Photos picker Albums screen did not appear.")
+        app.tables.cells.firstMatch.tap()
+
         let imageGrid = app.collectionViews.firstMatch
-        XCTAssertTrue(imageGrid.waitForExistence(timeout: 10),
+        XCTAssertTrue(imageGrid.cells.firstMatch.waitForExistence(timeout: 10),
                       "Photo picker image grid did not appear.")
         let cells = imageGrid.cells.allElementsBoundByIndex
         guard let last = cells.last else {
@@ -109,6 +132,34 @@ final class CaptureImportFlow {
             return
         }
         last.tap()
+
+        confirmGallerySelectionIfNeeded()
+    }
+
+    /**
+     Confirms the gallery selection by tapping Done / Fertig / Add — iOS and
+     locale variants are tried in sequence. Multipage-off builds already
+     advanced to CaptureSDK's review screen, in which case the Process button
+     exists and the confirm step is a no-op. Fails only if neither signal
+     appears within 10 polling cycles.
+     */
+    private func confirmGallerySelectionIfNeeded() {
+        let confirmButton = app.buttons
+            .matching(NSPredicate(format: "label IN %@", confirmGallerySelectionTitles))
+            .firstMatch
+        let processButton = app.buttons
+            .matching(NSPredicate(format: "(label IN %@) OR (value IN %@)",
+                                  processButtonTitles, processButtonTitles))
+            .firstMatch
+        for _ in 0..<10 {
+            if confirmButton.waitForExistence(timeout: 1), confirmButton.isHittable {
+                confirmButton.tap()
+                return
+            }
+            /// Multipage-off: the picker already advanced to the review screen.
+            if processButton.exists { return }
+        }
+        XCTFail("Gallery confirm button not found and the review screen did not appear.")
     }
 
     /**
