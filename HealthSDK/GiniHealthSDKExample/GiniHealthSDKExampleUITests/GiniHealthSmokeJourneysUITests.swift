@@ -84,15 +84,16 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
                       "Payment Component bottom sheet did not appear after Transfer directly.")
         paymentComponentScreen.selectBankButton.tap()
-        /// HEAL-282 calls the target "Black bank" after its solid-black BANK icon;
-        /// the client's payment-provider config exposes it as just "Bank" (verified
-        /// against the Bank Selection sheet's visible rows: Gini-Test-Payment-
-        /// Provider, GiniBank, Consorsbank Test, BNP Paribas myPrivateBank Test,
-        /// Bank, Gini Bank SDK Example, easybank, Consorsbank, Sparkasse, …).
-        let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
-        XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                      "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
-        blackBankCell.tap()
+        /// Pick the first available bank — HEAL-282 originally named the target
+        /// "Black bank" after its solid-black BANK icon (cell title "Bank" in the
+        /// BrowserStack client's provider list), but the sheet's contents are
+        /// client-config-driven and may change. Any bank picked here is enough to
+        /// prove the flow — the test's goal is to reach Payment Review, not to
+        /// assert a specific provider was selected.
+        let bankCell = bankSelectionBottomSheet.anyBankCell
+        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
+                      "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
+        bankCell.tap()
 
         // Tap Continue to overview — this is the step that actually opens the
         // Payment Review Screen. Uses the helper's coordinate-fallback tap: the
