@@ -35,9 +35,36 @@ final class InvoicesListScreen {
      */
     let transferDirectlyButton: XCUIElement
 
+    /**
+     Nav-bar "↑ Invoices" button on the right side. On a fresh install the
+     Invoices List is empty; tapping this button triggers the host app's
+     `HardcodedInvoicesController` to upload the bundled sample documents
+     to the Gini API, which then appear as rows once extraction completes.
+     Title is hardcoded in `InvoicesListViewController.setupNavigationBar`
+     with no localisation hook, so a label match is stable.
+     */
+    let uploadInvoicesButton: XCUIElement
+
     init(app: XCUIApplication) {
         self.app = app
         self.navBar = app.navigationBars["Invoices List"]
         self.transferDirectlyButton = app.buttons["Transfer directly"].firstMatch
+        self.uploadInvoicesButton = app.navigationBars["Invoices List"]
+            .buttons["↑ Invoices"].firstMatch
+    }
+
+    /**
+     Ensures the Invoices List carries at least one row with a Transfer
+     directly button. If the list is empty, taps ↑ Invoices to seed the
+     hardcoded sample documents, then waits for the first row to appear.
+     Idempotent: if a row is already visible the upload tap is skipped.
+     */
+    func seedIfEmpty(uploadTimeout: TimeInterval = 60) {
+        if transferDirectlyButton.waitForExistence(timeout: 10) { return }
+        XCTAssertTrue(uploadInvoicesButton.waitForExistence(timeout: 5),
+                      "↑ Invoices nav button not found on the empty Invoices List — host app may have changed the title string.")
+        uploadInvoicesButton.tap()
+        XCTAssertTrue(transferDirectlyButton.waitForExistence(timeout: uploadTimeout),
+                      "Invoices did not populate within \(Int(uploadTimeout)) s after tapping ↑ Invoices — HardcodedInvoicesController upload or extraction may have failed.")
     }
 }

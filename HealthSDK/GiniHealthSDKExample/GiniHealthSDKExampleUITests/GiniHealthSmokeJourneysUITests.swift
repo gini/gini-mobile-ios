@@ -166,8 +166,7 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Main screen did not render — host app launch failed.")
         mainScreen.invoicesListButton.tap()
 
-        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
-                      "Invoices List did not populate with a hardcoded invoice — extraction may have failed or timed out.")
+        invoicesListScreen.seedIfEmpty()
         invoicesListScreen.transferDirectlyButton.tap()
 
         drivePaymentFlowThroughBankSelectionToPaymentReview()
@@ -217,8 +216,7 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Main screen did not render — host app launch failed.")
         mainScreen.invoicesListButton.tap()
 
-        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
-                      "Invoices List did not populate — GPC flow entry blocked.")
+        invoicesListScreen.seedIfEmpty()
         invoicesListScreen.transferDirectlyButton.tap()
 
         drivePaymentFlowThroughBankSelectionToPaymentReview()
@@ -242,8 +240,7 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Main screen did not render — host app launch failed.")
         mainScreen.invoicesListButton.tap()
 
-        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
-                      "Invoices List did not populate — edit-fields entry blocked.")
+        invoicesListScreen.seedIfEmpty()
         invoicesListScreen.transferDirectlyButton.tap()
 
         drivePaymentFlowThroughBankSelectionToPaymentReview()
@@ -288,8 +285,7 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Main screen did not render — host app launch failed.")
         mainScreen.invoicesListButton.tap()
 
-        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
-                      "Invoices List did not populate — Pay-handoff entry blocked.")
+        invoicesListScreen.seedIfEmpty()
         invoicesListScreen.transferDirectlyButton.tap()
 
         drivePaymentFlowThroughBankSelectionToPaymentReview()
