@@ -68,9 +68,14 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         // if a retry runs against a partially warm device.
         if paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10) {
             paymentComponentScreen.selectBankButton.tap()
-            let blackBankCell = bankSelectionBottomSheet.cell(for: "Black bank")
+            /// HEAL-282 calls the target "Black bank" after its solid-black BANK icon;
+            /// the client's payment-provider config exposes it as just "Bank" (verified
+            /// against the Bank Selection sheet's visible rows: Gini-Test-Payment-
+            /// Provider, GiniBank, Consorsbank Test, BNP Paribas myPrivateBank Test,
+            /// Bank, Gini Bank SDK Example, easybank, Consorsbank, Sparkasse, …).
+            let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
             XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                          "Black bank row not found in the Bank Selection sheet — client config may not list it.")
+                          "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
             blackBankCell.tap()
         }
 
