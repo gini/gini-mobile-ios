@@ -86,10 +86,15 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         }
 
         // Tap Continue to overview — this is the step that actually opens the
-        // Payment Review Screen.
+        // Payment Review Screen. Uses the helper's coordinate-fallback tap: the
+        // button sits near the bottom of the Payment Component sheet and iOS
+        // sometimes reports `isHittable == false` even though it is visible,
+        // because the sheet layout places the button just inside the home-
+        // indicator safe-area or because the Bank Selection sheet's dismiss
+        // animation briefly overlays it.
         XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
                       "Continue to overview button did not appear on the Payment Component after bank selection.")
-        paymentComponentScreen.continueToOverviewButton.tap()
+        paymentComponentScreen.tapContinueToOverview()
 
         // Payment Review Screen populated with extracted values.
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
