@@ -49,6 +49,7 @@ public final class PaymentComponentView: UIView {
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         button.accessibilityLabel = viewModel.strings.ctaLabelText
+        button.accessibilityIdentifier = "paymentComponent.continueToOverview"
         return button
     }()
     

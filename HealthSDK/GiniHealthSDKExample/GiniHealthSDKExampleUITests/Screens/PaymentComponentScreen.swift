@@ -28,8 +28,16 @@ final class PaymentComponentScreen {
      */
     let selectBankButton: XCUIElement
 
+    /**
+     The "Continue to overview" primary button that appears only once a bank
+     has been selected. Tapping it dismisses this sheet and opens the full
+     Payment Review Screen.
+     */
+    let continueToOverviewButton: XCUIElement
+
     init(app: XCUIApplication) {
         self.app = app
         self.selectBankButton = app.buttons["paymentComponent.selectBank"]
+        self.continueToOverviewButton = app.buttons["paymentComponent.continueToOverview"]
     }
 }

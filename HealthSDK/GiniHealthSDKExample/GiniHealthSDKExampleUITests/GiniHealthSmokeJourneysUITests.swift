@@ -56,17 +56,23 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Invoices List did not appear with the imported invoice — extraction may have failed or timed out.")
         invoicesListScreen.transferDirectlyButton.tap()
 
-        // Fresh-install vs. returning-user branch:
-        // - Fresh install (no previously selected bank): the Payment Component
-        //   bottom sheet opens; tap its Select-bank button → Bank Selection
-        //   sheet → Black bank cell → Payment Review Screen appears.
-        // - Returning user (bank remembered from a prior run on this device):
-        //   the Payment Component is skipped and the Payment Review Screen
-        //   opens directly with the remembered bank preselected.
+        // Payment Component bottom sheet always opens after Transfer directly.
+        // When no bank has been selected yet the Select-bank button reads
+        // "Your bank"; once a bank is picked the sheet still shows the Select-
+        // bank button with the chosen bank's name AND a "Continue to overview"
+        // primary button that opens the Payment Review Screen.
+        //
+        // Fresh install path: tap Select-bank → pick Bank in the Bank Selection
+        // sheet → sheet dismisses, Payment Component now shows "Continue to
+        // overview". Returning-user path: skip the bank picking step; Continue
+        // to overview is already visible.
+        //
         // BrowserStack normally wipes app state between builds, so the fresh
-        // path is the default — the fall-through keeps the test idempotent
-        // if a retry runs against a partially warm device.
-        if paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10) {
+        // path is the default — the fall-through keeps the test idempotent if
+        // a retry runs against a partially warm device.
+        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
+                      "Payment Component bottom sheet did not appear after Transfer directly.")
+        if !paymentComponentScreen.continueToOverviewButton.exists {
             paymentComponentScreen.selectBankButton.tap()
             /// HEAL-282 calls the target "Black bank" after its solid-black BANK icon;
             /// the client's payment-provider config exposes it as just "Bank" (verified
@@ -79,9 +85,15 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
             blackBankCell.tap()
         }
 
+        // Tap Continue to overview — this is the step that actually opens the
+        // Payment Review Screen.
+        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
+                      "Continue to overview button did not appear on the Payment Component after bank selection.")
+        paymentComponentScreen.continueToOverviewButton.tap()
+
         // Payment Review Screen populated with extracted values.
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear after Transfer directly / bank selection.")
+                      "Payment Review Screen did not appear after Continue to overview.")
         for field in [paymentReviewScreen.ibanField,
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
