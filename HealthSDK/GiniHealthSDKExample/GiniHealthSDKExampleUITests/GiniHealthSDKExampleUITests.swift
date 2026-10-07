@@ -32,12 +32,11 @@ class GiniHealthSDKExampleUITests: XCTestCase {
     var paymentComponentScreen: PaymentComponentScreen!
 
     override func setUpWithError() throws {
-        /// Simulator skip is deliberate: the smoke suite relies on BrowserStack-staged media
-        /// (Photos gallery, Custom_Files) that the local simulator has no equivalent for.
-        /// Local developers use the host app directly rather than run the UI suite.
-        #if targetEnvironment(simulator)
-            throw XCTSkip("Health SDK UI tests only run on a device (BrowserStack).")
-        #endif
+        /// Tests that need BrowserStack-staged media (Photos gallery, Custom_Files)
+        /// skip inside their own method via `XCTSkip` — see HEAL-282. Tests that
+        /// enter through the `invoicesList` or `startWithTestDocument` buttons
+        /// (HEAL-285, HEAL-286, …) run on both simulator and device because the
+        /// host app seeds the Invoices List itself via `HardcodedInvoicesController`.
         continueAfterFailure = false
         copyFixturesToSimulator()
         app = XCUIApplication()

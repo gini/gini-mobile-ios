@@ -36,6 +36,15 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
      coverage lives in `GiniHealthSDKExampleTests` integration tests.
      */
     func testHEAL282_ImageImportExtractsAndShowsBankSelection() throws {
+        /// Device-only: HEAL-282 needs an invoice PNG in the Photos library,
+        /// which BrowserStack stages via `uploadMedia`. The simulator has no
+        /// equivalent — run `testHEAL285_InvoicesListEntryShowsPaymentFlow`
+        /// locally instead; it covers the same Payment Component → Bank
+        /// Selection → Payment Review flow via the pre-seeded Invoices List.
+        #if targetEnvironment(simulator)
+            throw XCTSkip("HEAL-282 requires a Photos-library invoice (BrowserStack-staged); use HEAL-285 locally.")
+        #endif
+
         // Entry — host app
         XCTAssertTrue(mainScreen.startWithGiniCaptureButton.waitForExistence(timeout: 10),
                       "Main screen did not render — host app launch failed.")
@@ -110,6 +119,73 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         // Pay button reachable means the handoff is set up — we cannot complete
         // the payment on BrowserStack (no real bank app installed), but the
         // button being present with a selected bank proves the flow landed.
+        XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
+                      "Pay button not reachable after bank selection — handoff setup incomplete.")
+    }
+
+    /**
+     Local-friendly sibling of HEAL-282. Uses the host app's Invoices-List entry
+     button, which seeds hardcoded test invoices via `HardcodedInvoicesController`
+     (bundled files uploaded to the Gini API in the background on launch) — no
+     camera, no gallery picker, no CaptureSDK dance. Runs on both the simulator
+     and BrowserStack, so iterating on the Payment Component → Bank Selection →
+     Payment Review flow does not need a full BS cycle.
+
+     Still needs:
+     - Network access to the Gini API (same as HEAL-282 — extraction is online).
+     - Valid `CredentialsManager` client ID/secret in the host app bundle.
+
+     To run from the command line against a booted simulator:
+
+     ```bash
+     xcodebuild test \
+       -workspace GiniMobile.xcworkspace \
+       -scheme GiniHealthSDKExample \
+       -destination 'platform=iOS Simulator,name=iPhone 16' \
+       -only-testing:GiniHealthSDKExampleUITests/GiniHealthSmokeJourneysUITests/testHEAL285_InvoicesListEntryShowsPaymentFlow \
+       CODE_SIGNING_ALLOWED=NO
+     ```
+
+     Or run from Xcode by clicking the diamond next to the test method.
+     */
+    func testHEAL285_InvoicesListEntryShowsPaymentFlow() throws {
+        // Entry — host app's Invoices-List button. The host coordinator opens
+        // InvoicesListViewController and HardcodedInvoicesController uploads the
+        // bundled sample invoices in the background; the first row appears once
+        // the first extraction completes.
+        XCTAssertTrue(mainScreen.invoicesListButton.waitForExistence(timeout: 10),
+                      "Main screen did not render — host app launch failed.")
+        mainScreen.invoicesListButton.tap()
+
+        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
+                      "Invoices List did not populate with a hardcoded invoice — extraction may have failed or timed out.")
+        invoicesListScreen.transferDirectlyButton.tap()
+
+        // Shared tail with HEAL-282: Payment Component → optional Bank Selection
+        // → Continue to overview → Payment Review Screen populated → Pay button.
+        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
+                      "Payment Component bottom sheet did not appear after Transfer directly.")
+        if !paymentComponentScreen.continueToOverviewButton.exists {
+            paymentComponentScreen.selectBankButton.tap()
+            let blackBankCell = bankSelectionBottomSheet.cell(for: "Bank")
+            XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
+                          "Black bank (cell title \"Bank\") not found in the Bank Selection sheet — client config may have changed.")
+            blackBankCell.tap()
+        }
+
+        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
+                      "Continue to overview button did not appear on the Payment Component after bank selection.")
+        paymentComponentScreen.tapContinueToOverview()
+
+        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
+                      "Payment Review Screen did not appear after Continue to overview.")
+        for field in [paymentReviewScreen.ibanField,
+                      paymentReviewScreen.recipientField,
+                      paymentReviewScreen.amountField,
+                      paymentReviewScreen.referenceField] {
+            XCTAssertFalse(paymentReviewScreen.value(of: field).isEmpty,
+                           "Payment Review field \(field.identifier) is empty after extraction.")
+        }
         XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
                       "Pay button not reachable after bank selection — handoff setup incomplete.")
     }
