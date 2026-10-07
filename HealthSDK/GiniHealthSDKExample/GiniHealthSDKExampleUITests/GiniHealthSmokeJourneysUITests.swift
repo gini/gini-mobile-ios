@@ -56,23 +56,27 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       "Invoices List did not appear with the imported invoice — extraction may have failed or timed out.")
         invoicesListScreen.transferDirectlyButton.tap()
 
-        // On first use (no bank selected yet) Health shows the Payment Component
-        // bottom sheet rather than the full Payment Review Screen. Tap its
-        // Select-bank button to open the Bank Selection list.
-        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 30),
-                      "Payment Component bottom sheet did not appear after Transfer directly.")
-        paymentComponentScreen.selectBankButton.tap()
-
-        // Bank Selection sheet → tap Black bank. The sheet dismisses and the
-        // Payment Review Screen opens with Black bank preselected.
-        let blackBankCell = bankSelectionBottomSheet.cell(for: "Black bank")
-        XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
-                      "Black bank row not found in the Bank Selection sheet — client config may not list it.")
-        blackBankCell.tap()
+        // Fresh-install vs. returning-user branch:
+        // - Fresh install (no previously selected bank): the Payment Component
+        //   bottom sheet opens; tap its Select-bank button → Bank Selection
+        //   sheet → Black bank cell → Payment Review Screen appears.
+        // - Returning user (bank remembered from a prior run on this device):
+        //   the Payment Component is skipped and the Payment Review Screen
+        //   opens directly with the remembered bank preselected.
+        // BrowserStack normally wipes app state between builds, so the fresh
+        // path is the default — the fall-through keeps the test idempotent
+        // if a retry runs against a partially warm device.
+        if paymentComponentScreen.selectBankButton.waitForExistence(timeout: 10) {
+            paymentComponentScreen.selectBankButton.tap()
+            let blackBankCell = bankSelectionBottomSheet.cell(for: "Black bank")
+            XCTAssertTrue(blackBankCell.waitForExistence(timeout: 10),
+                          "Black bank row not found in the Bank Selection sheet — client config may not list it.")
+            blackBankCell.tap()
+        }
 
         // Payment Review Screen populated with extracted values.
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear after bank selection.")
+                      "Payment Review Screen did not appear after Transfer directly / bank selection.")
         for field in [paymentReviewScreen.ibanField,
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
