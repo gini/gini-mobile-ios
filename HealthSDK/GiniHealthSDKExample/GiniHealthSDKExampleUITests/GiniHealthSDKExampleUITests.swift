@@ -28,6 +28,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
     var paymentReviewScreen: PaymentReviewScreen!
     var bankSelectionBottomSheet: BankSelectionBottomSheet!
     var captureImportFlow: CaptureImportFlow!
+    var invoicesListScreen: InvoicesListScreen!
 
     override func setUpWithError() throws {
         /// Simulator skip is deliberate: the smoke suite relies on BrowserStack-staged media
@@ -48,6 +49,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
         paymentReviewScreen = PaymentReviewScreen(app: app)
         bankSelectionBottomSheet = BankSelectionBottomSheet(app: app)
         captureImportFlow = CaptureImportFlow(app: app, locale: locale)
+        invoicesListScreen = InvoicesListScreen(app: app)
     }
 
     override func tearDownWithError() throws {

@@ -49,9 +49,16 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         captureImportFlow.pickLatestPhoto()
         captureImportFlow.tapProcessOnReview()
 
+        // Health SDK example app routes the extracted invoice through its own
+        // InvoicesList before Payment Review opens — tap the newest invoice's
+        // "Transfer directly" button to jump into Payment Review.
+        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
+                      "Invoices List did not appear with the imported invoice — extraction may have failed or timed out.")
+        invoicesListScreen.transferDirectlyButton.tap()
+
         // Payment Review Screen populated with extracted values
-        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 60),
-                      "Payment Review Screen did not appear — extraction may have failed or timed out.")
+        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
+                      "Payment Review Screen did not appear after Transfer directly.")
         for field in [paymentReviewScreen.ibanField,
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
