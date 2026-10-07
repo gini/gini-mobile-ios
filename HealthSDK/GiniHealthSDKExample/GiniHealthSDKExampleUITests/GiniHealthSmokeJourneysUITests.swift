@@ -66,21 +66,13 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         invoicesListScreen.transferDirectlyButton.tap()
 
         // Payment Component bottom sheet always opens after Transfer directly.
-        // Always drive through the Bank Selection sheet to pick "Bank":
-        // - Fresh install: the Payment Component has no bank selected, so the
-        //   Bank Selection sheet opens and we pick Bank.
-        // - Returning user: Payment Component already has a bank; tapping
-        //   Select-bank re-opens the Bank Selection sheet and we pick Bank
-        //   again (idempotent — picking the already-selected bank just
-        //   dismisses the sheet with no state change).
-        //
-        // Why unconditional instead of a `continueToOverviewButton.exists`
-        // branch: SwiftUI's accessibility tree keeps the Continue button in
-        // place even when `viewModel.hasBankSelected == false` sets its
-        // `isHidden`, so `.exists` returns `true` on the simulator for the
-        // hidden element and the branch is unreliable. Always picking a bank
-        // guarantees Continue-to-overview is visible and hittable when the
-        // test reaches the next step.
+        // Always drive through the Bank Selection sheet unconditionally — picking
+        // the same bank twice (returning-user case) is a no-op, and the
+        // alternative `if !continueToOverviewButton.exists` branch is unreliable
+        // because SwiftUI keeps the Continue button in the accessibility tree
+        // even when `viewModel.hasBankSelected == false` sets its `isHidden`,
+        // so `.exists` returns `true` on the simulator for the hidden element.
+        // HEAL-285's local run proved this unconditional flow works.
         XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
                       "Payment Component bottom sheet did not appear after Transfer directly.")
         paymentComponentScreen.selectBankButton.tap()
