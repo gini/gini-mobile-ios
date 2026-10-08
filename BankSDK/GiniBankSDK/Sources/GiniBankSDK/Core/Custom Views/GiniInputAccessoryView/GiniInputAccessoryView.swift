@@ -66,10 +66,8 @@ final class GiniInputAccessoryView: UIView {
     // MARK: - Initialization
 
     init(fields: [UIView]) {
-        let toolbarHeight: Int = 44
-
         self.textFields = fields
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: Constants.innerToolbarHeight))
         setupView()
         updateButtonStates()
     }
@@ -78,15 +76,29 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// On iOS 26 the container grows so the Liquid Glass Done pill does not clip into the keyboard.
+    override var intrinsicContentSize: CGSize {
+        if #available(iOS 26, *) {
+            return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iOS26ContainerHeight)
+        }
+        return super.intrinsicContentSize
+    }
+
     // MARK: - Setup
     private func setupView() {
         addSubview(toolbar)
 
+        let bottomInset: CGFloat
+        if #available(iOS 26, *) {
+            bottomInset = Constants.iOS26ToolbarBottomInset
+        } else {
+            bottomInset = 0
+        }
         NSLayoutConstraint.activate([
-            toolbar.topAnchor.constraint(equalTo: topAnchor),
             toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor)
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: bottomInset),
+            toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight)
         ])
 
         setupToolbarItems()
@@ -135,5 +147,14 @@ final class GiniInputAccessoryView: UIView {
 
     @objc private func cancelTapped() {
         delegate?.inputAccessoryViewDidCancel(self)
+    }
+
+    private enum Constants {
+        /// Height of the `UIToolbar` itself — UIKit's standard toolbar metric. Also the container height on iOS <26.
+        static let innerToolbarHeight: CGFloat = 44
+        /// Outer container height on iOS 26 — gives the Liquid Glass Done pill room above the toolbar.
+        static let iOS26ContainerHeight: CGFloat = 56
+        /// Lift the toolbar on iOS 26 to keep the Done pill clear of the keyboard.
+        static let iOS26ToolbarBottomInset: CGFloat = -4
     }
 }
