@@ -107,7 +107,7 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
-        // Shrink the scroll view when the keyboard docks so UIKit auto-scrolls the active field into view.
+        /// Shrink the scroll view when the keyboard docks so UIKit auto-scrolls the active field into view.
         scrollView.bottomAnchor
             .constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
             .isActive = true
