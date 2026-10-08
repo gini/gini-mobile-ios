@@ -26,12 +26,12 @@ Gini iOS SDK monorepo (`GiniMobile.xcworkspace`): seven SDKs — BankAPILibrary,
 
 ## Your Team
 
-Reduced team — nine active specialists for now.
+Active team — nine specialists.
 
 | Agent | When to Invoke |
 |-------|----------------|
 | **uikit-specialist** | UIViewController/UIView, Auto Layout, cell reuse, view lifecycle, retain-cycle-free delegation (the primary UI reviewer) |
-| **swiftui-specialist** | SwiftUI in the example app — state ownership, NavigationStack, view composition (mind the iOS 15+ baseline) |
+| **swiftui-specialist** | New SwiftUI UI in BankSDK/CaptureSDK/HealthSDK (SwiftUI-first) and the SwiftUI example app — state ownership, NavigationStack, view composition (mind iOS 15+ / Health iOS 17+) |
 | **architecture-specialist** | Package graph (seven SwiftPM packages, one-way layer direction), public API surface (static factory, builder, `@_spi`, `@available`), MVVM + Coordinator layering |
 | **performance-specialist** | Camera/image pipeline, memory, main-thread blocking, scrolling jank, retain cycles across UIKit + SwiftUI; profiling guidance (Instruments/MetricKit/`os_signpost`) |
 | **liquid-glass-specialist** | iOS 26+ Liquid Glass adoption — `#available` gating against the SDK baselines, fallback UI, `GlassEffectContainer`, modifier order, Reduce Transparency / Reduce Motion |

@@ -4,7 +4,7 @@ description: >
   Pre-push self-review for the Gini iOS SDKs. Reviews the current diff
   through four lenses — reuse, quality, efficiency, and clarity/standards
   — enforces repo conventions (multi-parameter format, `/** */` doc
-  blocks on every touched public declaration, copyright year 2026,
+  blocks on every touched public declaration, current copyright year,
   built-in features over reimplementations, no placeholder code), and
   routes deep issues to the specialist who owns them. Diff-scoped and
   cross-cutting, not a replacement for the specialists.
@@ -29,8 +29,8 @@ The repo-wide standards live in **`.claude/rules/mandatory-rules.md`** — read 
 
 Concrete pointers this agent enforces (drawn from repo standards and past feedback):
 
-- **Multi-parameter format:** first parameter on the same line as the call/decl, remaining parameters one per line, indented. Applies to initializers, functions, and function calls with 3+ arguments.
-- **Copyright year 2026** in any new file's header block.
+- **Multi-parameter format:** first parameter on the same line as the call/decl, remaining parameters one per line, indented. Applies to initializers, functions, and function calls with 2 or more parameters.
+- **Current copyright year** in any new file's header block.
 - **Documentation:** `/** ... */` on every declaration (types, funcs, properties). `///` for inline body comments. Every touched file must have `/** */` docs on all its `public`/`open` declarations — this is a doc-coverage rule, not a style preference.
 - **No placeholder / stub code in production.** Every shipped line must be real. Test mocks are allowed and required (manual protocol conformances, JSON fixtures in `Tests/Resources/`).
 - **Use built-in features over reimplementations.** UIKit / SwiftUI / Swift stdlib solutions before custom ones.
@@ -67,7 +67,7 @@ Run each lens over the scope. Every finding must fit under one lens; if it doesn
 ### 4) Clarity & Standards
 14. **Multi-parameter format violation.** Multi-parameter initializers/functions/calls must have the first parameter on the same line as the opener, the rest one per line, indented.
 15. **`/** */` doc block missing on any touched `public`/`open` declaration.** Not the whole file — the touched declarations. Use `///` inside bodies. Doc coverage on touched files is mandatory.
-16. **Copyright header year isn't 2026** on a new file.
+16. **Copyright header year isn't current** on a new file.
 17. **Unused imports** introduced by the diff.
 18. **Naming that hides intent** — `data`, `info`, `result` where a specific noun is available; `Manager`/`Helper` types where a domain name fits.
 19. **Comment that describes *what* the code does** (well-named identifiers already say what). Only WHY / non-obvious constraints belong in comments; delete pure-what comments.
