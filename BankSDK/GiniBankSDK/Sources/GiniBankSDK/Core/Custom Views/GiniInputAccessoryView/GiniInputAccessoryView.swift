@@ -62,6 +62,7 @@ final class GiniInputAccessoryView: UIView {
 
     weak var delegate: GiniInputAccessoryViewDelegate?
     private var currentIndex: Int = 0
+    private var toolbarBottomConstraint: NSLayoutConstraint?
 
     // MARK: - Initialization
 
@@ -76,28 +77,43 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// On iOS 26 the container grows so the Liquid Glass Done pill does not clip into the keyboard.
+    /** Grows the container on iOS 26 portrait so the Liquid Glass Done pill clears the keyboard. */
     override var intrinsicContentSize: CGSize {
-        if #available(iOS 26, *) {
+        if shouldUseExpandedLayout {
             return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iOS26ContainerHeight)
         }
         return super.intrinsicContentSize
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass else { return }
+        invalidateIntrinsicContentSize()
+        toolbarBottomConstraint?.constant = currentToolbarBottomInset
+    }
+
+    private var shouldUseExpandedLayout: Bool {
+        if #available(iOS 26, *) {
+            return traitCollection.verticalSizeClass == .regular
+        }
+        return false
+    }
+
+    private var currentToolbarBottomInset: CGFloat {
+        shouldUseExpandedLayout ? Constants.iOS26ToolbarBottomInset : 0
     }
 
     // MARK: - Setup
     private func setupView() {
         addSubview(toolbar)
 
-        let bottomInset: CGFloat
-        if #available(iOS 26, *) {
-            bottomInset = Constants.iOS26ToolbarBottomInset
-        } else {
-            bottomInset = 0
-        }
+        let bottomConstraint = toolbar.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                                               constant: currentToolbarBottomInset)
+        toolbarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: bottomInset),
+            bottomConstraint,
             toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight)
         ])
 
@@ -150,11 +166,8 @@ final class GiniInputAccessoryView: UIView {
     }
 
     private enum Constants {
-        /// Height of the `UIToolbar` itself — UIKit's standard toolbar metric. Also the container height on iOS <26.
         static let innerToolbarHeight: CGFloat = 44
-        /// Outer container height on iOS 26 — gives the Liquid Glass Done pill room above the toolbar.
         static let iOS26ContainerHeight: CGFloat = 56
-        /// Lift the toolbar on iOS 26 to keep the Done pill clear of the keyboard.
         static let iOS26ToolbarBottomInset: CGFloat = -4
     }
 }
