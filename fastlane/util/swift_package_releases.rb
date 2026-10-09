@@ -20,15 +20,21 @@ def copy_swift_package_to_release_repo(release_repo_path, project_folder, packag
   end
 end
 
-def update_release_repo(release_repo_path, version)
+##
+# Commits the staged release contents and publishes them to `main` of the release
+# repo as a signed commit (via `push_as_signed_commit`), then creates the version
+# tag on the remote via the GitHub API so it points at the signed commit.
+#
+# `release_repo_url` is the HTTPS URL of the release repo (e.g.
+# "https://github.com/gini/bank-sdk-ios.git"); it is reduced to the `owner/name`
+# form the GitHub API expects.
+#
+def update_release_repo(release_repo_path, release_repo_url, version, ui)
+  repo = release_repo_url.sub(%r{^https://github.com/}, '').delete_suffix('.git') # e.g. gini/bank-sdk-ios
   Dir.chdir(release_repo_path) do
-    # Stage changes
     sh('git add --all')
-    # Commit
-    sh("git commit -m 'Release version #{version}' --author='Team Mobile Schorsch <team-mobile@gini.net>'")
-    # Tag
-    sh("git tag -a -m 'Release version #{version}' #{version}")
-    # Push
-    sh('git push --tags && git push')
+    sh("git commit -m 'Release version #{version}'")
+    sha = push_as_signed_commit(repo, 'main', ui)
+    sh("gh api repos/#{repo}/git/refs -f ref=refs/tags/#{version} -f sha=#{sha}")
   end
 end

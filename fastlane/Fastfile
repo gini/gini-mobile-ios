@@ -66,7 +66,7 @@ platform :ios do
 
         copy_swift_package_to_release_repo(release_repo_path, project_folder, package_folder)
 
-        update_release_repo(release_repo_path, package_version)
+        update_release_repo(release_repo_path, repo_url, package_version, UI)
       end
 
       UI.success <<~MESSAGE
