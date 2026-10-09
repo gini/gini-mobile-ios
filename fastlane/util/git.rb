@@ -1,4 +1,5 @@
 require 'shellwords'
+require 'securerandom'
 
 ##
 # Publishes the local HEAD commit to `branch` as a commit that GitHub creates and signs.
@@ -11,7 +12,11 @@ def push_as_signed_commit(repo, branch, ui, attempts: 3)
     message = sh("git log -1 --format=%B", log: false).strip
     tree = sh("git rev-parse 'HEAD^{tree}'", log: false).strip
     parent = sh("git rev-parse HEAD~1", log: false).strip
-    tmp_branch = "ci-signing-tmp-#{Time.now.to_i}"
+    # Random suffix (not a timestamp): two CI jobs starting in the same
+    # second must not collide on the temp ref — a losing `git push` would
+    # fail before entering the `begin...ensure` block, defeating the
+    # retry/cleanup contract.
+    tmp_branch = "ci-signing-tmp-#{SecureRandom.hex(6)}"
 
     # Upload the files so GitHub can build the commit from them.
     sh("git push origin HEAD:refs/heads/#{tmp_branch}")

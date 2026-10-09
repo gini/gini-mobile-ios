@@ -394,7 +394,8 @@ retry.
   "does github.com see a Verified commit", which only an integration test
   can tell. Smoke tests on throwaway branches cover this.
 - GitHub API quota / rate-limiting under high churn — out of scope; the
-  helper issues at most 4 API calls per push.
+  helper issues 3 API calls per attempt (POST commit, PATCH ref, DELETE
+  temp ref), so up to 9 per push with the default 3 retries.
 - `gh` CLI version drift — assume the stable `gh` preinstalled on
   GitHub-hosted macOS runners.
 
