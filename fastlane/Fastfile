@@ -500,12 +500,14 @@ platform :ios do
     # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
     sh "cp -r #{sdk_folder} #{podspecs_repo_sdk_folder_path}/"
 
-    # Step 6: Commit the changes to gini-podspecs repo
-    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{pod_name} (#{version_folder})'" 
-
-    # Step 7: Push the changes to gini-podspecs repo
-    if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
-      sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
+    # Step 6: Commit the changes to the gini-podspecs repo and (on confirmation)
+    # publish them as a signed commit via the GitHub API.
+    Dir.chdir(podspecs_repo_sdk_folder_path) do
+      sh "git add ."
+      sh "git commit -m '[Update] #{pod_name} (#{version_folder})'"
+      if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
+        push_as_signed_commit("gini/gini-podspecs", "master", UI)
+      end
     end
   end
 
