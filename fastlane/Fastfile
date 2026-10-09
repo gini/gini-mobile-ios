@@ -137,9 +137,11 @@ platform :ios do
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
       end
 
-      if ci
-        configure_git_on_ci_machines("Team Mobile", "team-mobile@gini.net")
-      end
+      # No `git config user.{name,email}` override here any more: the commit
+      # that lands on `gh-pages` is created by GitHub via the REST API in
+      # `push_as_signed_commit`, so the author identity comes from the
+      # GH_TOKEN's bot association, not local git config. The `ci` parameter
+      # is still accepted for backward compatibility with existing callers.
 
       build_docs(project_folder: project_folder, package_folder: package_folder)
 
@@ -214,8 +216,13 @@ platform :ios do
           if !dry_run
             UI.message "Commit and push the new documentation"
             sh("git add --all")
-            sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
-            git_push_with_retry("gh-pages", UI)
+            # Skip empty commits on idempotent re-runs (same tag, same output).
+            if sh("git diff --cached --quiet && echo same || echo changed", log: false).strip == "changed"
+              sh("git commit -m 'Release #{package_folder} documentation for tag #{git_tag}'")
+              push_as_signed_commit("gini/gini-mobile-ios", "gh-pages", UI)
+            else
+              UI.message "No documentation changes to commit"
+            end
           else
             UI.message "Skipping commit and push (dry run)"
           end
