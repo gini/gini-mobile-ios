@@ -1,3 +1,35 @@
+require 'shellwords'
+
+##
+# Publishes the local HEAD commit to `branch` as a commit that GitHub creates and signs.
+# Retries with a rebase if the branch moved meanwhile (e.g. two docs jobs at once).
+#
+# Repo is in `owner/name` form (e.g. "gini/gini-mobile-ios"), not a URL.
+#
+def push_as_signed_commit(repo, branch, ui, attempts: 3)
+  attempts.times do |attempt|
+    message = sh("git log -1 --format=%B", log: false).strip
+    tree = sh("git rev-parse 'HEAD^{tree}'", log: false).strip
+    parent = sh("git rev-parse HEAD~1", log: false).strip
+    tmp_branch = "ci-signing-tmp-#{Time.now.to_i}"
+
+    # Upload the files so GitHub can build the commit from them.
+    sh("git push origin HEAD:refs/heads/#{tmp_branch}")
+    begin
+      sha = sh("gh api repos/#{repo}/git/commits -f message=#{message.shellescape} " \
+               "-f tree=#{tree} -f 'parents[]=#{parent}' --jq .sha").strip
+      sh("gh api -X PATCH repos/#{repo}/git/refs/heads/#{branch} -f sha=#{sha} -F force=false")
+      return sha
+    rescue => e
+      raise if attempt == attempts - 1
+      ui.message "#{branch} moved, rebasing and retrying: #{e.message}"
+      sh("git pull --rebase origin #{branch}")
+    ensure
+      sh("gh api -X DELETE repos/#{repo}/git/refs/heads/#{tmp_branch} || true")
+    end
+  end
+end
+
 ##
 # Configures a temporary git credential helper that reads GH_TOKEN from the environment,
 # yields to the given block, then cleans up the helper and git config on exit.
