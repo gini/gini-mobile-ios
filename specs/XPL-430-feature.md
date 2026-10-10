@@ -430,19 +430,6 @@ retry.
 
 ## Open questions
 
-- **Auth identity.** `GH_TOKEN` on CI — is it a GitHub App installation
-  token (bot identity `gini-mobile-ci[bot]`, matching the ticket's author
-  claim) or a classic / fine-grained PAT (would carry a human owner,
-  contradicting the ticket)? Confirm with DevOps / check
-  `.github/workflows/*.yml` secret references before the smoke test, so
-  R2's author-identity assertion lands as expected.
-- **Lightweight vs annotated tags on release repos.** The current
-  `update_release_repo` creates an annotated tag (`git tag -a -m ...`);
-  the artifact's rewrite uses a lightweight tag via
-  `POST /git/refs refs/tags/<v>`. If downstream release automation reads
-  the tag's annotation body, we need to use `POST /git/tags` first (to
-  create an annotated tag object) and then `POST /git/refs` pointing at
-  it. Flag during review of the release-repo smoke test (test 1).
 - **Android file paths.** The `fastlane/util/git.rb` location in the
   Android repo may differ (Gradle-centric repos sometimes put Fastlane
   under `android/fastlane/`). /gini-build on the Android side verifies
@@ -460,6 +447,24 @@ retry.
 - **Tag flavor on release repos:** lightweight tag via `POST /git/refs`
   (matching the artifact). If downstream automation needs the annotation
   body, follow up with a two-call annotated-tag variant.
+- **Auth identity (`GH_TOKEN` on CI is a GitHub App installation token).**
+  `.github/workflows/sdk.publish.docs.yml`, `.github/workflows/sdk.release.yml`,
+  and `.github/workflows/generate-sboms.yml` mint `GH_TOKEN` via
+  `actions/create-github-app-token@v2.0.0` with `app-id:
+  secrets.MOBILE_CI_APP_ID` + `private-key: secrets.MOBILE_CI_APP_PRIVATE_KEY`
+  and `owner: gini`. The workflow also sets
+  `git config user.name '${app-slug}[bot]'`, confirming the author
+  identity model R2 depends on.
+- **REST `POST /git/commits` DOES auto-sign for App installation tokens.**
+  Verified on CI via a throwaway probe workflow against
+  `gini/gini-mobile-ios` (run 38028219213). The two resulting commits —
+  `03be913b` (POST /git/commits) and `b83ad038` (PUT /contents) — show
+  Verified + `reason: valid` + a `web-flow` GPG signature + author
+  `gini-mobile-ci[bot]`. Caveat: this behavior is undocumented but
+  reproducible for App installations; it does NOT hold for classic/
+  fine-grained PATs (verified separately against a personal probe repo —
+  returned `unsigned`). Our helper is correct as shipped; no GraphQL
+  `createCommitOnBranch` pivot needed.
 
 ## Implementation plan
 - [x] 1. Add `push_as_signed_commit(repo, branch, ui, attempts: 3)` to `fastlane/util/git.rb` (R1, R7, R8, R9, R10)
