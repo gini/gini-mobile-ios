@@ -27,6 +27,11 @@ def push_as_signed_commit(repo, branch, ui, attempts: 3)
       return sha
     rescue => e
       raise if attempt == attempts - 1
+      # Only non-fast-forward failures on the PATCH call are rebase-and-retry
+      # territory; re-raise auth, permission, validation, and rate-limit
+      # failures immediately so the real error reaches the lane boundary
+      # instead of being masked by the retry loop.
+      raise unless e.message.match?(/not a fast forward|is at .+ but expected/i)
       ui.message "#{branch} moved, rebasing and retrying: #{e.message}"
       sh("git pull --rebase origin #{branch}")
     ensure
