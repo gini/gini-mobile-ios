@@ -22,7 +22,11 @@ name: XPL-430 signing probe (throwaway)
 #     and deleted inside the job.
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'fix/XPL-430-sign-ci-bot-commits'
+    paths:
+      - '.github/workflows/xpl-430-signing-probe.yml'
 
 permissions:
   contents: read
