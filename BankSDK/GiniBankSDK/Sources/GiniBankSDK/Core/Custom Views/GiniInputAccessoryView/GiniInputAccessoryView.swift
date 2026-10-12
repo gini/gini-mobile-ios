@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 protocol GiniInputAccessoryViewDelegate: AnyObject {
     func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView)
@@ -107,15 +108,13 @@ final class GiniInputAccessoryView: UIView {
     private func setupView() {
         addSubview(toolbar)
 
-        let bottomConstraint = toolbar.bottomAnchor.constraint(equalTo: bottomAnchor,
-                                                               constant: currentToolbarBottomInset)
-        toolbarBottomConstraint = bottomConstraint
-        NSLayoutConstraint.activate([
-            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bottomConstraint,
-            toolbar.heightAnchor.constraint(equalToConstant: Constants.innerToolbarHeight)
-        ])
+        toolbar.giniMakeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().constant(currentToolbarBottomInset)
+            make.height.equalTo(Constants.innerToolbarHeight)
+            self.toolbarBottomConstraint = make.constraint(for: .bottom)
+        }
 
         setupToolbarItems()
     }
