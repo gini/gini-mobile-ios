@@ -43,9 +43,10 @@ R3 (MUST, happy): Given `update_release_repo` publishes a Swift package to
 a release repo, when the lane runs, then (a) a signed commit lands on
 `main` of the release repo via the helper, and (b) a release tag of the
 form `<version>` is created pointing at that signed commit via
-`POST /repos/:owner/:repo/git/refs` — not via `git push --tags`, so the
-tag references the signed commit that actually landed, not a local
-unsigned one.
+`POST /repos/:owner/:repo/git/refs` (invoked through the `gh` CLI as
+`gh api repos/<owner>/<name>/git/refs -f ref=refs/tags/<version> -f sha=<sha>`)
+— not via `git push --tags`, so the tag references the signed commit that
+actually landed, not a local unsigned one.
 
 R4 (MUST, happy): Given `publish_docs` runs with real changes staged for
 `gh-pages`, when the lane runs, then (a) a signed commit lands on
