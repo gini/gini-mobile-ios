@@ -66,7 +66,7 @@ platform :ios do
 
         copy_swift_package_to_release_repo(release_repo_path, project_folder, package_folder)
 
-        update_release_repo(release_repo_path, package_version)
+        update_release_repo(release_repo_path, repo_url, package_version, UI)
       end
 
       UI.success <<~MESSAGE
@@ -137,9 +137,11 @@ platform :ios do
         UI.abort_with_message! "GH_TOKEN environment variable is required for publish_docs"
       end
 
-      if ci
-        configure_git_on_ci_machines("Team Mobile", "team-mobile@gini.net")
-      end
+      # No `git config user.{name,email}` override here any more: the commit
+      # that lands on `gh-pages` is created by GitHub via the REST API in
+      # `push_as_signed_commit`, so the author identity comes from the
+      # GH_TOKEN's bot association, not local git config. The `ci` parameter
+      # is still accepted for backward compatibility with existing callers.
 
       build_docs(project_folder: project_folder, package_folder: package_folder)
 
@@ -214,8 +216,13 @@ platform :ios do
           if !dry_run
             UI.message "Commit and push the new documentation"
             sh("git add --all")
-            sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
-            git_push_with_retry("gh-pages", UI)
+            # Skip empty commits on idempotent re-runs (same tag, same output).
+            if sh("git diff --cached --quiet && echo same || echo changed", log: false).strip == "changed"
+              sh("git commit -m 'Release #{package_folder} documentation for tag #{git_tag}'")
+              push_as_signed_commit("gini/gini-mobile-ios", "gh-pages", UI)
+            else
+              UI.message "No documentation changes to commit"
+            end
           else
             UI.message "Skipping commit and push (dry run)"
           end
@@ -493,12 +500,14 @@ platform :ios do
     # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
     sh "cp -r #{sdk_folder} #{podspecs_repo_sdk_folder_path}/"
 
-    # Step 6: Commit the changes to gini-podspecs repo
-    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{pod_name} (#{version_folder})'" 
-
-    # Step 7: Push the changes to gini-podspecs repo
-    if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
-      sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
+    # Step 6: Commit the changes to the gini-podspecs repo and (on confirmation)
+    # publish them as a signed commit via the GitHub API.
+    Dir.chdir(podspecs_repo_sdk_folder_path) do
+      sh "git add ."
+      sh "git commit -m '[Update] #{pod_name} (#{version_folder})'"
+      if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
+        push_as_signed_commit("gini/gini-podspecs", "master", UI)
+      end
     end
   end
 
