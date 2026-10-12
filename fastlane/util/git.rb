@@ -1,3 +1,45 @@
+require 'shellwords'
+require 'securerandom'
+
+##
+# Publishes the local HEAD commit to `branch` as a commit that GitHub creates and signs.
+# Retries with a rebase if the branch moved meanwhile (e.g. two docs jobs at once).
+#
+# Repo is in `owner/name` form (e.g. "gini/gini-mobile-ios"), not a URL.
+#
+def push_as_signed_commit(repo, branch, ui, attempts: 3)
+  attempts.times do |attempt|
+    message = sh("git log -1 --format=%B", log: false).strip
+    tree = sh("git rev-parse 'HEAD^{tree}'", log: false).strip
+    parent = sh("git rev-parse HEAD~1", log: false).strip
+    # Random suffix (not a timestamp): two CI jobs starting in the same
+    # second must not collide on the temp ref — a losing `git push` would
+    # fail before entering the `begin...ensure` block, defeating the
+    # retry/cleanup contract.
+    tmp_branch = "ci-signing-tmp-#{SecureRandom.hex(6)}"
+
+    # Upload the files so GitHub can build the commit from them.
+    sh("git push origin HEAD:refs/heads/#{tmp_branch}")
+    begin
+      sha = sh("gh api repos/#{repo}/git/commits -f message=#{message.shellescape} " \
+               "-f tree=#{tree} -f 'parents[]=#{parent}' --jq .sha").strip
+      sh("gh api -X PATCH repos/#{repo}/git/refs/heads/#{branch} -f sha=#{sha} -F force=false")
+      return sha
+    rescue => e
+      raise if attempt == attempts - 1
+      # Only non-fast-forward failures on the PATCH call are rebase-and-retry
+      # territory; re-raise auth, permission, validation, and rate-limit
+      # failures immediately so the real error reaches the lane boundary
+      # instead of being masked by the retry loop.
+      raise unless e.message.match?(/not a fast forward|is at .+ but expected/i)
+      ui.message "#{branch} moved, rebasing and retrying: #{e.message}"
+      sh("git pull --rebase origin #{branch}")
+    ensure
+      sh("gh api -X DELETE repos/#{repo}/git/refs/heads/#{tmp_branch} || true")
+    end
+  end
+end
+
 ##
 # Configures a temporary git credential helper that reads GH_TOKEN from the environment,
 # yields to the given block, then cleans up the helper and git config on exit.
