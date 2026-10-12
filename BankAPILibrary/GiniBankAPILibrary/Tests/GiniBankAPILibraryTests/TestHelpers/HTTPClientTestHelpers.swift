@@ -13,6 +13,14 @@ final class MockHTTPClient: GiniHTTPClient {
     var uploadRequestCalled = false
     var downloadRequestCalled = false
 
+    /**
+     Optional response override for `dataRequest`. When non-nil, the completion is
+     called with this exact tuple instead of the default `(nil, nil, nil)`. Lets
+     tests hit branches URLProtocol can't reach — e.g., a 2xx `HTTPURLResponse`
+     paired with `nil` data (URLSession always delivers `Data()`).
+     */
+    var dataResponse: (Data?, URLResponse?, Error?)?
+
     private func makeCancellableTask() -> (task: AnyCancellableTask, wasCancelled: () -> Bool) {
         var cancelCalled = false
         let task = AnyCancellableTask { cancelCalled = true }
@@ -24,7 +32,11 @@ final class MockHTTPClient: GiniHTTPClient {
                      completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> CancellableTask {
         dataRequestCalled = true
         let (task, _) = makeCancellableTask()
-        completion(nil, nil, nil)
+        if let response = dataResponse {
+            completion(response.0, response.1, response.2)
+        } else {
+            completion(nil, nil, nil)
+        }
         return task
     }
 

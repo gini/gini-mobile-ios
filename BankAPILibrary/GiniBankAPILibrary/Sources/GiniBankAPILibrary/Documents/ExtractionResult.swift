@@ -22,11 +22,6 @@ final public class ExtractionResult: NSObject {
     public var lineItems: [[Extraction]]?
 
     /**
-     Return reasons from which users can pick one when deselecting line items.
-     */
-    public var returnReasons: [ReturnReason]?
-
-    /**
      The Skonto information extractions.
      */
     public var skontoDiscounts: [[Extraction]]?
@@ -43,13 +38,11 @@ final public class ExtractionResult: NSObject {
 
     public init(extractions: [Extraction],
                 lineItems: [[Extraction]]? = nil,
-                returnReasons: [ReturnReason]? = nil,
                 skontoDiscounts: [[Extraction]]? = nil,
                 crossBorderPayment: [[Extraction]]? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
         self.extractions = extractions
         self.lineItems = lineItems
-        self.returnReasons = returnReasons
         self.skontoDiscounts = skontoDiscounts
         self.crossBorderPayment = crossBorderPayment
         self.candidates = candidates
@@ -61,7 +54,6 @@ final public class ExtractionResult: NSObject {
 
         self.init(extractions: extractionsContainer.extractions,
                   lineItems: extractionsContainer.compoundExtractions?.lineItems,
-                  returnReasons: extractionsContainer.returnReasons,
                   skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   crossBorderPayment: extractionsContainer.compoundExtractions?.crossBorderPayment,
                   candidates: extractionsContainer.candidates)

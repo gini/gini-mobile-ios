@@ -57,11 +57,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
     lazy fileprivate(set) var albumsController: AlbumsPickerViewController = {
         let albumsPickerVC = AlbumsPickerViewController(galleryManager: self.galleryManager)
         albumsPickerVC.delegate = self
-        if giniConfiguration.bottomNavigationBarEnabled {
-            albumsPickerVC.navigationItem.rightBarButtonItem = self.cancelButton
-        } else {
-            albumsPickerVC.navigationItem.leftBarButtonItem = self.cancelButton
-        }
+        albumsPickerVC.navigationItem.leftBarButtonItem = self.cancelButton
         return albumsPickerVC
     }()
 
@@ -142,12 +138,10 @@ final class GalleryCoordinator: NSObject, Coordinator {
         imagePickerViewController.delegate = self
         imagePickerViewController.navigationItem.rightBarButtonItem = cancelButton
         imagePickerViewController.navigationItem.setHidesBackButton(true, animated: false)
-        if !giniConfiguration.bottomNavigationBarEnabled {
-            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.images.backToAlbums", comment: "Albums")
-            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-            backButton.addAction(self, #selector(backAction))
-            imagePickerViewController.navigationItem.leftBarButtonItem = backButton.barButton
-        }
+        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.images.backToAlbums", comment: "Albums")
+        let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+        backButton.addAction(self, #selector(backAction))
+        imagePickerViewController.navigationItem.leftBarButtonItem = backButton.barButton
 
         return imagePickerViewController
     }
@@ -257,9 +251,10 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
         var data = data
 
         // Some pictures have a wrong bytes structure and are not processed as images.
+        /// Transcode via `CGImageDestination` so EXIF/TIFF/GPS survive — earlier
+        /// versions used `UIImage.jpegData`, which drops all embedded metadata.
         if !data.isImage {
-            if let image = UIImage(data: data),
-                let imageData = image.jpegData(compressionQuality: 1.0) {
+            if let imageData = data.jpegDataPreservingMetadata() {
                 data = imageData
             }
         }

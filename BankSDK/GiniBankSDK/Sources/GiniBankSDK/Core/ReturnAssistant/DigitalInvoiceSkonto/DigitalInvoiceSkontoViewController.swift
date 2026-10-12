@@ -71,9 +71,6 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
 
-    private var navigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
-    private var bottomNavigationBar: UIView?
-
     private var firstAppearance = true
 
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor
@@ -117,17 +114,13 @@ class DigitalInvoiceSkontoViewController: UIViewController {
                                                                        comment: "Back")
         edgesForExtendedLayout = []
         view.backgroundColor = .giniBankColorScheme().background.primary.uiColor()
-        if !configuration.bottomNavigationBarEnabled {
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped))
-            navigationItem.rightBarButtonItem = helpButton.barButton
+        let helpButton = GiniBarButton(ofType: .help)
+        helpButton.addAction(self, #selector(helpButtonTapped))
+        navigationItem.rightBarButtonItem = helpButton.barButton
 
-            let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
-            backButton.addAction(self, #selector(backButtonTapped))
-            navigationItem.leftBarButtonItem = backButton.barButton
-        } else {
-            navigationItem.hidesBackButton = true
-        }
+        let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+        backButton.addAction(self, #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton.barButton
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(documentPreviewView)
@@ -137,7 +130,6 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         withDiscountContainerView.addSubview(withDiscountPriceView)
         withDiscountContainerView.addSubview(expiryDateView)
 
-        setupBottomNavigationBar()
         setupTapGesture()
         bindViewModel()
     }
@@ -226,38 +218,6 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             expiryDateView.bottomAnchor.constraint(equalTo: withDiscountContainerView.bottomAnchor,
                                                    constant: -Constants.horizontalPadding)
         ])
-    }
-
-    private func setupBottomNavigationBar() {
-        guard configuration.bottomNavigationBarEnabled else { return }
-        if let bottomBarAdapter = configuration.digitalInvoiceSkontoNavigationBarBottomAdapter {
-            navigationBarBottomAdapter = bottomBarAdapter
-        } else {
-            navigationBarBottomAdapter = DefaultDigitalInvoiceSkontoNavigationBarBottomAdapter()
-        }
-
-        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-            self?.helpButtonTapped()
-        }
-
-        navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-            self?.backButtonTapped()
-        }
-
-        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-            bottomNavigationBar = navigationBar
-            view.addSubview(navigationBar)
-
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-            scrollViewBottomConstraint.isActive = false
-            NSLayoutConstraint.activate([
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
-            ])
-        }
     }
 
     private func sendAnalyticsScreenShown() {
@@ -412,6 +372,5 @@ private extension DigitalInvoiceSkontoViewController {
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
         static let tabletWidthMultiplier: CGFloat = 0.7
-        static let navigationBarHeight: CGFloat = 114
     }
 }

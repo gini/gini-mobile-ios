@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import Testing
+import UIKit
 @testable import GiniCaptureSDK
 final class GiniScreenAPICoordinatorTests: XCTestCase {
     
@@ -223,5 +225,147 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertTrue(errorScreen?.errorHeader.text == ErrorType.outage.title(), "Error title should match server error type")
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.outage.content(), "Error content should match server error type")
 
+    }
+}
+
+// MARK: - Swift Testing coverage for the positiveAction decision
+
+@Suite("GiniScreenAPICoordinator.positiveAction decision")
+@MainActor
+struct GiniScreenAPICoordinatorPositiveActionTests {
+
+    /// Manual, minimal `GiniCaptureDelegate` conformance for the coordinator under test.
+    /// `GiniCaptureDelegate` is an `@objc` protocol, so the stub must subclass `NSObject`.
+    private final class DelegateStub: NSObject, GiniCaptureDelegate {
+        func didPressEnterManually() {}
+        func didCapture(document: GiniCaptureDocument,
+                        networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didReview(documents: [GiniCaptureDocument],
+                       networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didCancelCapturing() {}
+        func didCancelReview(for document: GiniCaptureDocument) {}
+        func didCancelAnalysis() {}
+    }
+
+    /// Builds a minimal coordinator + picker pair for the pure decision under test.
+    /// No window, no presentation, no async — `positiveAction(...)` is a pure function.
+    private func makeSubject() -> (coordinator: GiniScreenAPICoordinator,
+                                   picker: DocumentPickerCoordinator) {
+        let configuration = GiniConfiguration()
+        configuration.openWithEnabled = true
+        configuration.multipageEnabled = true
+
+        let delegate = DelegateStub()
+        let coordinator = GiniScreenAPICoordinator(withDelegate: delegate,
+                                                   giniConfiguration: configuration)
+        let picker = DocumentPickerCoordinator(giniConfiguration: configuration)
+        return (coordinator, picker)
+    }
+
+    @Test("maxFilesPickedCountExceeded with existing pages returns a non-nil action")
+    func testMaxFilesExceededWithExistingPagesReturnsAction() {
+        let subject = makeSubject()
+        let action = subject.coordinator.positiveAction(for: FilePickerError.maxFilesPickedCountExceeded,
+                                                        hasExistingPages: true,
+                                                        coordinator: subject.picker)
+        #expect(action != nil)
+    }
+
+    @Test("maxFilesPickedCountExceeded with no existing pages returns nil")
+    func testMaxFilesExceededWithoutExistingPagesReturnsNil() {
+        let subject = makeSubject()
+        let action = subject.coordinator.positiveAction(for: FilePickerError.maxFilesPickedCountExceeded,
+                                                        hasExistingPages: false,
+                                                        coordinator: subject.picker)
+        #expect(action == nil)
+    }
+
+    @Test("mixedDocumentsUnsupported with no existing pages returns nil")
+    func testMixedDocumentsWithoutExistingPagesReturnsNil() {
+        let subject = makeSubject()
+        let action = subject.coordinator.positiveAction(for: FilePickerError.mixedDocumentsUnsupported,
+                                                        hasExistingPages: false,
+                                                        coordinator: subject.picker)
+        #expect(action == nil)
+    }
+
+    @Test("photoLibraryAccessDenied always returns nil")
+    func testPhotoLibraryAccessDeniedReturnsNil() {
+        let subject = makeSubject()
+        let actionWithPages = subject.coordinator.positiveAction(for: FilePickerError.photoLibraryAccessDenied,
+                                                                 hasExistingPages: true,
+                                                                 coordinator: subject.picker)
+        let actionWithoutPages = subject.coordinator.positiveAction(for: FilePickerError.photoLibraryAccessDenied,
+                                                                    hasExistingPages: false,
+                                                                    coordinator: subject.picker)
+        #expect(actionWithPages == nil)
+        #expect(actionWithoutPages == nil)
+    }
+
+    @Test("Non-FilePickerError returns nil regardless of existing pages")
+    func testNonFilePickerErrorReturnsNil() {
+        let subject = makeSubject()
+        let error = NSError(domain: "test", code: 0)
+        let action = subject.coordinator.positiveAction(for: error,
+                                                        hasExistingPages: true,
+                                                        coordinator: subject.picker)
+        #expect(action == nil)
+    }
+
+    // MARK: - documentPicker(_:didPick:) end-to-end
+
+    /**
+     Runs the main run loop briefly so the async `validate(_:completion:)` pipeline
+     can hop back to main and invoke the coordinator's success/failure handlers.
+     */
+    private func spinRunLoop(times: Int = 25) async {
+        for _ in 0..<times {
+            await Task.yield()
+            RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+        }
+    }
+
+    /**
+     Exercises the failure path through the public delegate entry: passing more
+     than `maxPagesCount` documents trips `.maxFilesPickedCountExceeded`, which
+     drives `handleFailure` → `positiveAction` → `presentError`. In a bare-bones
+     coordinator neither `cameraScreen` nor `currentPickerViewController` is
+     set, so `?.showErrorDialog(...)` no-ops cleanly. The invariant asserted:
+     validation failure must not add pages to the document collection.
+     */
+    @Test("documentPicker(_:didPick:) with over-limit documents leaves pages unchanged")
+    func testDocumentPickerFailurePathLeavesPagesUnchanged() async throws {
+        let subject = makeSubject()
+        let before = subject.coordinator.pages.count
+        let overLimit = (0..<11).map { _ in
+            GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        }
+
+        subject.coordinator.documentPicker(subject.picker, didPick: overLimit)
+        await spinRunLoop()
+
+        #expect(subject.coordinator.pages.count == before)
+    }
+
+    /**
+     Exercises the success path through the public delegate entry: a single
+     valid image passes validation, drives `handlePickSuccess` →
+     `addToDocuments` → navigation. The invariant asserted: a successful
+     pick appends exactly one page to the collection.
+     */
+    @Test("documentPicker(_:didPick:) with valid document adds one page")
+    func testDocumentPickerSuccessPathAppendsOnePage() async throws {
+        let subject = makeSubject()
+        // Prime the coordinator so cameraScreen exists and post-success
+        // navigation has a nav stack to push onto — otherwise the closure
+        // reaches for `nil` and the added page never lands.
+        _ = subject.coordinator.start(withDocuments: nil)
+        let before = subject.coordinator.pages.count
+        let document = GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+
+        subject.coordinator.documentPicker(subject.picker, didPick: [document])
+        await spinRunLoop()
+
+        #expect(subject.coordinator.pages.count == before + 1)
     }
 }

@@ -2,7 +2,6 @@
 //  KeychainStoreMock.swift
 //  GiniExampleTests
 //
-//  Created by Enrique del Pozo Gómez on 1/21/18.
 //  Copyright © 2018 Gini. All rights reserved.
 //
 

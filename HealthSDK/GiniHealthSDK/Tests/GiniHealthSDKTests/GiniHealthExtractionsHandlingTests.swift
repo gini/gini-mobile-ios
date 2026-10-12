@@ -372,4 +372,101 @@ final class GiniHealthExtractionsHandlingTests: GiniHealthTestCase {
         XCTAssertNotNil(receivedDoctorExtraction, "Doctor name extraction should not be nil")
         XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName, "Doctor name extraction value should match expected name")
     }
+
+    // MARK: - Silent-drop regression tests (PR #1260)
+    //
+    // The two tests below prove that dropping the caller's strong reference to
+    // `GiniHealth` between the `fetchDocument` completion and the `extractions`
+    // completion does not silently drop the caller's `completion`. Before PR
+    // #1260, the inner extractions closures in
+    // `checkIfDocumentContainsMultipleInvoices` and `fetchExtractions` (used
+    // by `getExtractions`) captured `[weak self]` and called
+    // `self?.handleXxxExtractionResult(...)` — when `self` was nil, the method
+    // call became a no-op and `completion` was never invoked. The fix
+    // switched the inner captures to strong `self`, so the closure keeps the
+    // SDK alive until the callback runs.
+    //
+    // These tests use `DelayableMockSessionManager` to introduce a 100ms
+    // window between the (synchronous) `fetchDocument` return and the
+    // extractions callback firing. The test then drops its strong reference
+    // to `GiniHealth` during that window. Any regression that re-introduces
+    // `[weak self]` on the inner closures makes the completion silently drop
+    // and times the test out.
+    //
+    // Note: the tests do NOT assert that `GiniHealth` deallocates after the
+    // callback fires. `GiniHealth` and `PaymentComponentsController` currently
+    // hold each other strongly (see HEAL-563 for the pre-existing retain
+    // cycle), so the SDK stays alive even after the caller releases its
+    // strong reference. The invariant these tests protect is *completion
+    // fires*, not *SDK is released*.
+
+    /// Regression test — `getExtractions` completion must fire even when the
+    /// caller releases `GiniHealth` between the request start and the response.
+    func testGetExtractionsFiresCompletionWhenSDKReleasedMidRequest() {
+        let sessionManager = DelayableMockSessionManager(extractionsDelay: 0.1)
+        let documentService = DefaultDocumentService(sessionManager: sessionManager,
+                                                     apiVersion: 5)
+        let paymentService = PaymentService(sessionManager: sessionManager,
+                                            apiVersion: 5)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManager,
+                                                                    apiVersion: 5)
+        let api = GiniHealthAPI(documentService: documentService,
+                                paymentService: paymentService,
+                                clientConfigurationService: clientConfigurationService)
+        var sut: GiniHealth? = GiniHealth(giniApiLib: api)
+
+        let completionExpectation = self.expectation(description: "Completion fires after caller drops SDK reference")
+        var receivedResult: Result<[GiniHealthSDK.Extraction], GiniHealthError>?
+
+        sut?.getExtractions(docId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+            receivedResult = result
+            completionExpectation.fulfill()
+        }
+
+        // Drop the caller's strong reference before the extractions callback
+        // fires. Only the pending closure keeps the SDK alive from here on.
+        sut = nil
+
+        wait(for: [completionExpectation], timeout: 2)
+
+        XCTAssertNotNil(receivedResult,
+                        "Completion must fire even when the caller releases the SDK mid-request")
+        if case .failure(let error) = receivedResult {
+            XCTFail("Expected success from the extractionsWithPayment fixture, got failure: \(error)")
+        }
+    }
+
+    /// Regression test — `checkIfDocumentContainsMultipleInvoices` completion
+    /// must fire even when the caller releases `GiniHealth` mid-request.
+    func testCheckIfDocumentContainsMultipleInvoicesFiresCompletionWhenSDKReleasedMidRequest() {
+        let sessionManager = DelayableMockSessionManager(extractionsDelay: 0.1)
+        let documentService = DefaultDocumentService(sessionManager: sessionManager,
+                                                     apiVersion: 5)
+        let paymentService = PaymentService(sessionManager: sessionManager,
+                                            apiVersion: 5)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManager,
+                                                                    apiVersion: 5)
+        let api = GiniHealthAPI(documentService: documentService,
+                                paymentService: paymentService,
+                                clientConfigurationService: clientConfigurationService)
+        var sut: GiniHealth? = GiniHealth(giniApiLib: api)
+
+        let completionExpectation = self.expectation(description: "Completion fires after caller drops SDK reference")
+        var receivedResult: Result<Bool, GiniHealthError>?
+
+        sut?.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.notPayableDocumentID) { result in
+            receivedResult = result
+            completionExpectation.fulfill()
+        }
+
+        sut = nil
+
+        wait(for: [completionExpectation], timeout: 2)
+
+        XCTAssertNotNil(receivedResult,
+                        "Completion must fire even when the caller releases the SDK mid-request")
+        if case .failure(let error) = receivedResult {
+            XCTFail("Expected success from the extractionResultWithoutIBAN fixture, got failure: \(error)")
+        }
+    }
 }

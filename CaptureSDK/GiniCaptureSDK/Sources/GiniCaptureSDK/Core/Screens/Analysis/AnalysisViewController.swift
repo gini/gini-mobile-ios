@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import GiniUtilites
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -40,6 +41,7 @@ import Photos
 
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
+    private let screenViewModel: AnalysisViewModel
     private let useCustomLoadingView: Bool = true
     private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
@@ -47,6 +49,10 @@ import Photos
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
     private var educationAnimationFinished: Bool = false
+    /// Exposed to `@testable` consumers so cancellation coverage can observe the
+    /// task after `viewWillDisappear`. Matches the visibility of
+    /// `poweredByGiniLoadingIndicatorView` in this file.
+    private(set) var educationTask: Task<Void, Never>?
     private var shouldShowOriginalFlow: Bool {
         guard let state = educationFlowController?.nextState() else {
             return false
@@ -72,6 +78,7 @@ import Photos
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .large
         indicatorView.startAnimating()
+        indicatorView.accessibilityIdentifier = AccessibilityIdentifiers.defaultLoadingIndicator
         return indicatorView
     }()
 
@@ -113,6 +120,44 @@ import Photos
 
     private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
+    private var poweredByGiniBadgeView: PoweredByGiniBadgeView?
+
+    private struct SizeClassConstraints {
+        let regular: [NSLayoutConstraint]
+        let compact: [NSLayoutConstraint]
+
+        func apply(for sizeClass: UIUserInterfaceSizeClass) {
+            let (active, inactive) = sizeClass == .compact ? (compact, regular) : (regular, compact)
+            NSLayoutConstraint.deactivate(inactive)
+            NSLayoutConstraint.activate(active)
+        }
+    }
+
+    private var giniIndicatorConstraints: SizeClassConstraints?
+
+    /**
+     `true` once the Gini indicator has been added as a persistent subview in
+     `setupView`. Stays `false` while the education carousel is active; the
+     indicator is lazy-installed by `showBrandedLoadingIndicator(_:)` when the
+     standard loading state takes over.
+     */
+    private var giniIndicatorAddedPersistently: Bool = false
+
+    /**
+     Animated Gini loading indicator shown when `ingredientBrandScreens` contains
+     `"Analysis"`. Nil when the flag is off or the asset failed to decode — in
+     both cases the SDK falls back to the default `UIActivityIndicatorView` (or
+     the integrator's `CustomLoadingIndicatorAdapter`). Exposed as `internal`
+     so tests can pre-empt the lazy value to exercise the fallback path.
+     */
+    lazy var poweredByGiniLoadingIndicatorView: PoweredByGiniLoadingIndicatorView? = {
+        guard screenViewModel.isIngredientBrandEnabled else {
+            return nil
+        }
+        let indicator = PoweredByGiniLoadingIndicatorView()
+        indicator.accessibilityIdentifier = AccessibilityIdentifiers.IngredientBrand.poweredByGiniLoadingIndicator
+        return indicator.hasValidAsset ? indicator : nil
+    }()
 
     var pages: [GiniCapturePage]?
 
@@ -128,6 +173,7 @@ import Photos
                 giniConfiguration: GiniConfiguration) {
         self.document = document
         self.giniConfiguration = giniConfiguration
+        self.screenViewModel = LiveAnalysisViewModel()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -172,10 +218,29 @@ import Photos
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
     }
 
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        /// Resume the Gini loading indicator when returning to foreground while
+        /// analysis is still ongoing. `startAnimation()` is idempotent so this is
+        /// safe even on first appearance (already started in `showOriginalLoadingMessage`).
+        poweredByGiniLoadingIndicatorView?.startAnimation()
+    }
+
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         removeCaptureSuggestions()
+
+        /// Release the Gini indicator's animation loop while the screen is offscreen.
+        poweredByGiniLoadingIndicatorView?.stopAnimation()
+
+        /// Cancel the education flow task so its trailing `markMessageAsShown()`
+        /// does not fire when the user leaves the Analysis screen before the
+        /// animation finished — otherwise the message is silently marked as seen
+        /// and the user never gets it again.
+        educationTask?.cancel()
+        educationTask = nil
     }
 
     public override func viewDidLayoutSubviews() {
@@ -186,22 +251,56 @@ import Photos
         }
     }
 
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass {
+            applyGiniIndicatorConstraintsForCurrentTraits()
+        }
+    }
+
     // MARK: Toggle animation
+
+    private enum ActiveLoadingIndicator {
+        case branded(PoweredByGiniLoadingIndicatorView)
+        case custom(CustomLoadingIndicatorAdapter)
+        case standard
+    }
+
+    /**
+     Prioritized fallback chain: the branded Gini indicator (if the feature flag
+     is on and the asset decoded), else the integrator's custom indicator (if
+     configured), else the default `UIActivityIndicatorView`.
+     */
+    private var activeLoadingIndicator: ActiveLoadingIndicator {
+        if let giniIndicator = poweredByGiniLoadingIndicatorView {
+            return .branded(giniIndicator)
+        } else if let custom = giniConfiguration.customLoadingIndicator {
+            return .custom(custom)
+        } else {
+            return .standard
+        }
+    }
 
     /// Displays a loading activity indicator. Should be called when document analysis is started.
     public func showAnimation() {
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            loadingIndicator.startAnimation()
-        } else {
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            indicator.startAnimation()
+        case .custom(let indicator):
+            indicator.startAnimation()
+        case .standard:
             loadingIndicatorView.startAnimating()
         }
     }
 
     /// Hides the loading activity indicator. Should be called when document analysis is finished.
     public func hideAnimation() {
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            loadingIndicator.stopAnimation()
-        } else {
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            indicator.stopAnimation()
+        case .custom(let indicator):
+            indicator.stopAnimation()
+        case .standard:
             loadingIndicatorView.stopAnimating()
         }
     }
@@ -221,8 +320,40 @@ import Photos
             imageView.image = document.previewImage
         }
 
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
+
+        addPersistentGiniIndicatorIfEnabled()
         configureLoadingIndicator()
         addOverlay()
+        addPoweredByGiniBadgeIfEnabled()
+    }
+
+    /**
+     Installs the Gini loading indicator as a persistent subview for the
+     standard loading state. Skipped when the next education state is
+     `.showMessage`, in which case the indicator is lazy-installed later by
+     `showBrandedLoadingIndicator(_:)` once the carousel finishes.
+     */
+    private func addPersistentGiniIndicatorIfEnabled() {
+        guard let giniIndicator = poweredByGiniLoadingIndicatorView else { return }
+        if case .showMessage = educationFlowController?.nextState() { return }
+        addGiniLoadingIndicator(giniIndicator)
+        giniIndicatorAddedPersistently = true
+    }
+
+    /// Adds the "Powered by Gini" badge if the Analysis screen is enabled. No-op otherwise.
+    private func addPoweredByGiniBadgeIfEnabled() {
+        guard screenViewModel.isIngredientBrandEnabled else { return }
+
+        let badge = PoweredByGiniBadgeView()
+        badge.accessibilityIdentifier = AccessibilityIdentifiers.IngredientBrand.poweredByGiniBadge
+        view.addSubview(badge)
+        badge.giniMakeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeBottom).constant(-Constants.badgeBottomInset)
+        }
+        poweredByGiniBadgeView = badge
     }
 
     private func addImageView() {
@@ -250,9 +381,6 @@ import Photos
 
     private func configureLoadingIndicator() {
         // For cross border Extractions we don't want to show the education flow, so we can skip directly to showing the original loading message
-        educationFlowController = EducationFlowController
-            .captureInvoiceFlowController(displayIfNeeded: shouldDisplayEducationFlow)
-
         let nextState = educationFlowController?.nextState()
         switch nextState {
         case .showMessage:
@@ -269,13 +397,17 @@ import Photos
                                                dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
-        addLoadingContainer()
-        addLoadingView(intoContainer: loadingIndicatorContainer)
-
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            addLoadingText(below: loadingIndicator.injectedView())
-            loadingIndicator.startAnimation()
-        } else {
+        switch activeLoadingIndicator {
+        case .branded(let indicator):
+            showBrandedLoadingIndicator(indicator)
+        case .custom(let indicator):
+            addLoadingContainer()
+            addLoadingView(intoContainer: loadingIndicatorContainer)
+            addLoadingText(below: indicator.injectedView())
+            indicator.startAnimation()
+        case .standard:
+            addLoadingContainer()
+            addLoadingView(intoContainer: loadingIndicatorContainer)
             addLoadingText(below: loadingIndicatorView)
             loadingIndicatorView.startAnimating()
         }
@@ -284,44 +416,120 @@ import Photos
         animationCompletionContinuations.removeAll()
     }
 
+    private func showBrandedLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
+        if !giniIndicatorAddedPersistently {
+            addGiniLoadingIndicator(indicator)
+        }
+        addGiniLoadingText(below: indicator)
+        indicator.startAnimation()
+    }
+
+    /**
+     Adds the Gini loading indicator to the root view. The g mark renders at its
+     intrinsic Figma size (~135pt tall) in **both** orientations — only the vertical
+     center changes:
+     - **Regular vertical** (portrait iPhone, iPad): centerY at 40% of view height
+       from the top, matching Figma `top: calc(50% - 80.5px)` on the reference frame.
+     - **Compact vertical** (landscape iPhone): centerY at ~28% of view height from
+       the top, so the g mark + the loading text below it stay above the
+       capture-suggestions tip banner without shrinking the mark.
+
+     The two constraint sets are swapped in `traitCollectionDidChange` when the
+     vertical size class flips at runtime.
+     */
+    private func addGiniLoadingIndicator(_ indicator: PoweredByGiniLoadingIndicatorView) {
+        view.addSubview(indicator)
+        indicator.giniMakeConstraints { $0.centerX.equalTo(view.centerX) }
+
+        let regular = indicator.giniMakeConstraints {
+            $0.centerY.equalTo(view.centerY)
+                .multipliedBy(Constants.giniIndicatorRegularVerticalCenterYMultiplier)
+        }
+        let compact = indicator.giniMakeConstraints {
+            $0.centerY.equalTo(view.centerY)
+                .multipliedBy(Constants.giniIndicatorCompactVerticalCenterYMultiplier)
+        }
+        /// Both size-class-specific centerY sets are activated on creation by the
+        /// DSL; deactivate them up front so `applyGiniIndicatorConstraintsForCurrentTraits`
+        /// installs only the one that matches the current vertical size class.
+        NSLayoutConstraint.deactivate(regular + compact)
+        giniIndicatorConstraints = SizeClassConstraints(regular: regular, compact: compact)
+
+        applyGiniIndicatorConstraintsForCurrentTraits()
+    }
+
+    /**
+     Activates the size-class-appropriate constraint set for the Gini indicator.
+     No-op when the Gini path isn't active (`giniIndicatorConstraints` is `nil`),
+     so this is safe to call from `traitCollectionDidChange` regardless of which
+     loading path is running.
+     */
+    private func applyGiniIndicatorConstraintsForCurrentTraits() {
+        giniIndicatorConstraints?.apply(for: traitCollection.verticalSizeClass)
+    }
+
+    /**
+     Pins `loadingIndicatorText` directly to the root view (not the spinner container),
+     below the Gini indicator. Layout parallels `addLoadingText(below:)` but scopes the
+     text into the root view since the Gini path bypasses `loadingIndicatorContainer`.
+     */
+    private func addGiniLoadingText(below giniIndicator: UIView) {
+        view.addSubview(loadingIndicatorText)
+        loadingIndicatorText.giniMakeConstraints {
+            $0.top.equalTo(giniIndicator.bottom).constant(Constants.padding)
+            $0.leading.equalTo(imageView.leading)
+            $0.centerX.equalTo(imageView.centerX)
+            $0.bottom.lessThanOrEqualTo(view.safeBottom).constant(-Constants.padding)
+        }
+    }
+
     private func showEducationLoadingMessage() {
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
         let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
-        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
+        customLoadingView.giniMakeConstraints {
+            $0.centerX.equalTo(view.centerX)
+            $0.centerY.equalTo(view.centerY)
+            $0.leading.greaterThanOrEqualTo(view.leading).constant(Constants.educationLoadingViewPadding)
+            $0.trailing.lessThanOrEqualTo(view.trailing).constant(-Constants.educationLoadingViewPadding)
+        }
 
-        NSLayoutConstraint.activate([
-            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                       constant: Constants.educationLoadingViewPadding),
-            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                        constant: -Constants.educationLoadingViewPadding)
-        ])
+        educationTask = Task { [weak self] in
+            await self?.finalizeEducationAnimation(viewModel)
 
-        Task {
-            await finalizeEducationAnimation(viewModel)
+            /// If the VC was dismissed mid-animation, skip cleanup — the view is
+            /// already gone and `showOriginalLoadingMessage()` would touch stale
+            /// state on a screen the user has left.
+            guard let self, !Task.isCancelled else { return }
 
             ///  remove QRCodeEducationLoadingView once animation finished
             customLoadingView.removeFromSuperview()
+
+            /// Keep the Analysis screen populated while extraction continues in
+            /// the background — without this, removing the education view leaves
+            /// a blank screen for the remainder of the extraction request.
+            self.showOriginalLoadingMessage()
         }
     }
 
     /**
      Handles the finalization of the education animation sequence:
      - Starts the view model lifecycle.
-     - Resumes all pending animation completion continuations.
-     - Clears the continuation list to avoid memory leaks or duplicate calls.
+     - Resumes all pending animation completion continuations (always, even on
+       cancellation, so callers of `waitUntilAnimationCompleted()` do not hang).
      - Flags the animation as finished to update UI state.
-     - Marks the educational message as shown to prevent it from appearing again.
+     - Marks the educational message as shown, unless the surrounding task was
+       cancelled (screen dismissed mid-animation) — the user never saw the
+       message, so it should surface again on the next launch.
      */
     private func finalizeEducationAnimation(_ viewModel: QRCodeEducationLoadingViewModel) async {
         await viewModel.start()
         animationCompletionContinuations.forEach { $0.resume() }
         animationCompletionContinuations.removeAll()
         educationAnimationFinished = true
+        guard !Task.isCancelled else { return }
         educationFlowController?.markMessageAsShown()
     }
 
@@ -417,9 +625,16 @@ import Photos
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        captureSuggestions?.start()
+        let suggestions = CaptureSuggestionsView(superView: view,
+                                                 bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        /// Hide the badge on the first banner appearance and keep it hidden — ignoring
+        /// banner-hidden transitions avoids re-showing the badge between banner cycles.
+        suggestions.onBannerVisibilityChange = { [weak self] isBannerVisible in
+            guard isBannerVisible else { return }
+            self?.poweredByGiniBadgeView?.isHidden = true
+        }
+        captureSuggestions = suggestions
+        suggestions.start()
     }
 
     /**
@@ -430,6 +645,8 @@ import Photos
     public func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
+        /// Restore visibility in case the badge was hidden by the banner-visibility callback.
+        poweredByGiniBadgeView?.isHidden = false
     }
 
 }
@@ -441,6 +658,42 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+        static let badgeBottomInset: CGFloat = 16
+        /// Places the Gini ingredient-brand loading indicator's centerY at 40% of
+        /// view height from the top — the fraction Figma's `top: calc(50% - 80.5px)`
+        /// resolves to on the 812pt reference screen. Used in regular vertical size
+        /// class (portrait iPhone, iPad).
+        static let giniIndicatorRegularVerticalCenterYMultiplier: CGFloat = 0.80
+        /// Places the Gini indicator at ~28% of view height from the top in compact
+        /// vertical size class (landscape iPhone) so the loading text below it stays
+        /// clear of the capture-suggestions tip banner. The indicator itself retains
+        /// its intrinsic Figma height (~135pt) — only the centerY changes between
+        /// orientations, not the mark's size.
+        static let giniIndicatorCompactVerticalCenterYMultiplier: CGFloat = 0.55
+    }
+
+    /**
+     Stable accessibility identifiers applied to the Analysis screen for
+     UI-automation. Values are duplicated in the `GiniBankSDKExampleUITests`
+     target as `IngredientBrandScreenAccessibilityIdentifiers` — keep both
+     sides in sync.
+     */
+    struct AccessibilityIdentifiers {
+        private init() {
+            // Namespace-only; instantiation is disabled.
+        }
+
+        /// Default loading state (flag off / no branded indicator).
+        static let defaultLoadingIndicator = "analysis.defaultLoadingIndicator"
+
+        /// Ingredient-brand elements shown when `ingredientBrandScreens` contains "Analysis".
+        struct IngredientBrand {
+            private init() {
+                // Namespace-only; instantiation is disabled.
+            }
+            static let poweredByGiniLoadingIndicator = "analysis.ingredientBrand.poweredByGiniLoadingIndicator"
+            static let poweredByGiniBadge = "analysis.ingredientBrand.poweredByGiniBadge"
+        }
     }
 
     struct Strings {

@@ -1,0 +1,131 @@
+{
+  "bezahl_dispatcher": {
+    "input": "bank://singlepaymentsepa?bic=TESTBIC123&name=John%20Doe&iban=DE89370400440532013000&reason=Test%20Payment&amount=EUR100.50",
+    "expected": {
+      "bic": "TESTBIC123",
+      "paymentRecipient": "John Doe",
+      "iban": "DE89370400440532013000",
+      "paymentReference": "Test Payment",
+      "amountToPay": "100.50:EUR"
+    }
+  },
+  "epc06912_dispatcher": {
+    "input": "BCD\n002\n1\nSCT\nTESTBIC123\nJohn Doe\nDE89370400440532013000\nEUR100.50\n\nTest Payment\n",
+    "expected": {
+      "bic": "TESTBIC123",
+      "paymentRecipient": "John Doe",
+      "iban": "DE89370400440532013000",
+      "paymentReference": "Test Payment",
+      "amountToPay": "100.50:EUR"
+    }
+  },
+  "eps4mobile_url": {
+    "input": "epspayment://qr.eps-payment.at/public/qrcode/12345",
+    "expected": {
+      "epsPaymentQRCodeUrl": "epspayment://qr.eps-payment.at/public/qrcode/12345"
+    }
+  },
+  "giniqrcode_url": {
+    "input": "https://pay.gini.net/payment/12345",
+    "expected": {
+      "giniPaymentQRCodeUrl": "https://pay.gini.net/payment/12345"
+    }
+  },
+  "bezahl_all_fields": {
+    "input": "bank://singlepaymentsepa?bic=DEUTDEFF&name=Max%20Mustermann&iban=DE89370400440532013000&reason=Rechnung%20123&amount=EUR50.00&currency=EUR",
+    "expected": {
+      "bic": "DEUTDEFF",
+      "paymentRecipient": "Max Mustermann",
+      "iban": "DE89370400440532013000",
+      "paymentReference": "Rechnung 123",
+      "amountToPay": "50.00:EUR"
+    }
+  },
+  "bezahl_missing_fields": {
+    "input": "bank://singlepaymentsepa?iban=DE89370400440532013000",
+    "expected": {
+      "bic": null,
+      "paymentRecipient": null,
+      "iban": "DE89370400440532013000",
+      "paymentReference": null,
+      "amountToPay": null
+    }
+  },
+  "bezahl_invalid_iban": {
+    "input": "bank://singlepaymentsepa?iban=INVALID_IBAN",
+    "expected": {
+      "iban": null
+    }
+  },
+  "bezahl_reason1_fallback": {
+    "input": "bank://singlepaymentsepa?reason1=AlternativeReason",
+    "expected": {
+      "paymentReference": "AlternativeReason"
+    }
+  },
+  "bezahl_special_characters": {
+    "input": "bank://singlepaymentsepa?name=Test%20%26%20Co.&reason=50%25%20discount",
+    "expected": {
+      "paymentRecipient": "Test & Co.",
+      "paymentReference": "50% discount"
+    }
+  },
+  "epc06912_all_fields": {
+    "input": "BCD\n002\n1\nSCT\nDEUTDEFF500\nMax Mustermann\nDE89370400440532013000\nEUR123.45\n\nInvoice 12345\n\nAdditional info",
+    "expected": {
+      "bic": "DEUTDEFF500",
+      "paymentRecipient": "Max Mustermann",
+      "iban": "DE89370400440532013000",
+      "paymentReference": "Invoice 12345",
+      "amountToPay": "123.45:EUR"
+    }
+  },
+  "epc06912_minimal_fields": {
+    "input": "BCD\n002",
+    "expected": {
+      "bic": "",
+      "paymentRecipient": "",
+      "iban": "",
+      "paymentReference": "",
+      "amountToPay": ""
+    }
+  },
+  "epc06912_empty_amount": {
+    "input": "BCD\n002\n1\nSCT\nDEUTDEFF\nTest Company\nDE89370400440532013000\n\n\nPayment for services",
+    "expected": {
+      "bic": "DEUTDEFF",
+      "paymentRecipient": "Test Company",
+      "iban": "DE89370400440532013000",
+      "paymentReference": "Payment for services",
+      "amountToPay": ""
+    }
+  },
+  "epc06912_invalid_iban": {
+    "input": "BCD\n002\n1\nSCT\nDEUTDEFF\nTest Company\nINVALID_IBAN_12345\nEUR50.00\n\nPayment",
+    "expected": {
+      "iban": ""
+    }
+  },
+  "epc06912_empty_string": {
+    "input": "",
+    "expected": {
+      "bic": "",
+      "paymentRecipient": "",
+      "iban": "",
+      "paymentReference": "",
+      "amountToPay": ""
+    }
+  },
+  "epc06912_currency_prefix": {
+    "input": "BCD\n002\n1\nSCT\nBIC\nName\nDE89370400440532013000\nUSD100.50",
+    "expected": {
+      "amountToPay": "100.50:USD"
+    }
+  },
+  "bezahl_explicit_currency": {
+    "input": "bank://singlepaymentsepa?amount=100&currency=CHF",
+    "expected": {
+      "amountToPay": "100:CHF"
+    }
+  }
+}

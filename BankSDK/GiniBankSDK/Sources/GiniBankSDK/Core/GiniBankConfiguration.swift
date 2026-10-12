@@ -41,11 +41,6 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Bottom navigation bar is no longer supported. Setting this property has no effect.
-     */
-    internal let bottomNavigationBarEnabled: Bool = false
-
-    /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
      multiple pages can be processed, showing a different review screen when capturing.
      */
@@ -127,7 +122,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                        withBlurEffect: true)
     /**
      A configuration that defines the appearance of the transparent button, including its background color, border color, title color,
-     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Onboarding` screen in the bottom navigation bar.
+     shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect.
      */
     public lazy var transparentButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                          borderColor: .clear,
@@ -202,11 +197,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var flashOnByDefault = false
 
-    /**
-     Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
-
     // MARK: - Onboarding screens
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
@@ -228,11 +218,6 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-     Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
-
-    /**
      Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
      */
     public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
@@ -252,28 +237,12 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
 
-    // MARK: - Review screen
-    /**
-     Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
-
-    // MARK: - Gallery screen
-    /**
-     Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
-
     // MARK: - Help screens
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
      a new option with the `Open with` tutorial will be shown on the Help menu.
      */
     public var openWithEnabled = false
-    /**
-     Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
 
     /**
      Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen.
@@ -299,18 +268,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var openWithAppNameForTexts = Bundle.main.appName
 
-    // MARK: - Error screens
-    /**
-     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
-
-    // MARK: - No results screen
-    /**
-     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
-
     // MARK: - Digital Invoice
 
     /**
@@ -326,29 +283,9 @@ public final class GiniBankConfiguration: NSObject {
     public var returnAssistantEnabled = true
 
     /**
-     Custom bottom navigation adapters (like `DigitalInvoiceHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter? = nil
-
-    /**
-     Custom bottom navigation adapters (like `DigitalInvoiceOnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter? = nil
-
-    /**
-     Custom bottom navigation adapters (like `DigitalInvoiceNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter? = nil
-
-    /**
      `Return Reasons` feature is no longer supported. Setting this property has no effect.
      */
     internal let enableReturnReasons: Bool = false
-
-    /**
-     Custom bottom navigation adapters (like `DigitalInvoiceSkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter? = nil
 
     // MARK: - Skonto feature
 
@@ -358,16 +295,6 @@ public final class GiniBankConfiguration: NSObject {
      to pay the invoice with or without applying Skonto.
      */
     public var skontoEnabled: Bool = true
-
-    /**
-     Custom bottom navigation adapters (like `SkontoNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter? = nil
-
-    /**
-     Custom bottom navigation adapters (like `SkontoHelpNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter? = nil
 
     // MARK: - Transaction Docs feature
     /**

@@ -8,6 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
+import GiniUtilites
 
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
@@ -308,6 +309,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.savePhotosLocallyEnabled = configuration.savePhotosLocallyEnabled
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
+                    GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
+                    self.prewarmIngredientBrandIndicatorIfEnabled(for: configuration)
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -318,6 +321,15 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             }
         }
         return start(withDocuments: documents, animated: animated)
+    }
+
+    /**
+     Warm the branded-indicator HEIC cache off-main so the first Analysis
+     / QR-overlay entry hits it synchronously (avoids a ~1.5–2 s stall).
+     */
+    private func prewarmIngredientBrandIndicatorIfEnabled(for configuration: ClientConfiguration) {
+        guard !configuration.ingredientBrandScreens.isEmpty else { return }
+        Task { await PoweredByGiniLoadingIndicatorView.prewarm() }
     }
 
     public static func closeSDK() {
@@ -345,7 +357,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
             let extractions = createExtractions(for: key, from: document)
             let extractionResult = ExtractionResult(extractions: extractions,
                                                     lineItems: [],
-                                                    returnReasons: [],
                                                     candidates: [:])
             deliver(result: extractionResult, analysisDelegate: networkDelegate)
         }
@@ -458,7 +469,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                                 userJourneyAnalyticsEnabled: analyticsEnabled)
 
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
                                                   .bankSDKVersion: GiniBankSDKVersion,
                                                   .instantPaymentEnabled: configuration.instantPaymentEnabled])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration,
@@ -920,26 +930,24 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
         let filteredExtractions = extractionResult.extractions.filter { $0.name != "amountToPay" }
         return ExtractionResult(extractions: filteredExtractions,
                                 lineItems: extractionResult.lineItems,
-                                returnReasons: extractionResult.returnReasons,
                                 skontoDiscounts: extractionResult.skontoDiscounts,
                                 candidates: extractionResult.candidates)
     }
 
     /**
      Returns a copy of the extraction result with the compound extractions
-     (`lineItems`, `skontoDiscounts`) and `returnReasons` removed.
+     (`lineItems`, `skontoDiscounts`) removed.
      */
     func excludingCompoundExtractions(from extractionResult: ExtractionResult) -> ExtractionResult {
         return ExtractionResult(extractions: extractionResult.extractions,
                                 lineItems: nil,
-                                returnReasons: nil,
                                 skontoDiscounts: nil,
                                 candidates: extractionResult.candidates)
     }
 
     /**
      Builds the extraction result delivered for a confirmed credit-note document:
-     compound extractions (`lineItems`, `skontoDiscounts`, `returnReasons`) are stripped so
+     compound extractions (`lineItems`, `skontoDiscounts`) are stripped so
      the Return Assistant and Skonto flows are never triggered, and `amountToPay` is removed
      so the host app does not pre-fill a payment amount for a credit note.
      */

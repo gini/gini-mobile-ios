@@ -2,7 +2,6 @@
 //  CameraViewController.swift
 //  
 //
-//  Created by Krzysztof Kryniecki on 06/09/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -18,7 +17,6 @@ final class CameraViewController: UIViewController {
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var cameraNeedsInitializing: Bool { !cameraPreviewViewController.hasInitialized }
     var shouldShowHelp: Bool { isPresentedOnScreen && !validQRCodeProcessing }
-    var topNavBarAnchor: NSLayoutYAxisAnchor? { bottomNavigationBar?.topAnchor }
 
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
@@ -77,8 +75,6 @@ final class CameraViewController: UIViewController {
     @IBOutlet weak var cameraPaneHorizontal: CameraPane!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
-    private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
-    private var bottomNavigationBar: UIView?
     private let cameraLensSwitcherView: CameraLensSwitcherView
 
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
@@ -137,7 +133,7 @@ final class CameraViewController: UIViewController {
             cameraPane.toggleCaptureButtonActivation(state: true)
             cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
         }
-        cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
+        cameraPaneHorizontal?.setupTitlesHidden(isHidden: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -218,14 +214,9 @@ final class CameraViewController: UIViewController {
         if qrCodeScanningOnlyEnabled {
             cameraPane.alpha = 0
             cameraPaneHorizontal?.alpha = 0
-            if giniConfiguration.bottomNavigationBarEnabled {
-                configureCustomTopNavigationBar(containsImage: false)
-            } else {
-                navigationItem.rightBarButtonItem = nil
-            }
+            navigationItem.rightBarButtonItem = nil
         } else {
             configureCameraPaneButtons()
-            configureBottomNavigationBar()
         }
     }
 
@@ -254,120 +245,12 @@ final class CameraViewController: UIViewController {
         return availableLenses
     }
 
-    private func configureCustomTopNavigationBar(containsImage: Bool) {
-        navigationItem.leftBarButtonItem = nil
-        navigationItem.hidesBackButton = true
-        if !containsImage {
-            let cancelBarButton = GiniBarButton(ofType: .cancel)
-            cancelBarButton.addAction(cameraButtonsViewModel, #selector(cameraButtonsViewModel.cancelPressed))
-            navigationItem.rightBarButtonItem = cancelBarButton.barButton
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-
-    private func updateCustomNavigationBars(containsImage: Bool) {
-        guard let bottomNavigationBar = bottomNavigationBar else {
-            return
-        }
-        configureCustomTopNavigationBar(containsImage: containsImage)
-        if containsImage {
-            navigationBarBottomAdapter?.showButtons(
-                navigationBar: bottomNavigationBar,
-                navigationButtons: [.help, .back])
-        } else {
-            navigationBarBottomAdapter?.showButtons(
-                navigationBar: bottomNavigationBar,
-                navigationButtons: [.help])
-        }
-    }
-
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = giniConfiguration.cameraNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
-            }
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.helpAction?()
-            }
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.backButtonAction?()
-            }
-
-            if let bar =
-                navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = bar
-                view.addSubview(bar)
-                layoutBottomNavigationBar(bar)
-            }
-            updateCustomNavigationBars(
-                containsImage: cameraButtonsViewModel.images.count > 0)
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        if UIDevice.current.isIpad {
-            view.removeConstraints([cameraPreviewBottomContraint, iPadBottomPaneConstraint])
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(navigationBar)
-            NSLayoutConstraint.activate([
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
-                cameraPane.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
-                cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: navigationBar.topAnchor)
-            ])
-        } else {
-            view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(navigationBar)
-            cameraPaneHorizontalBottomConstraint.constant = CameraBottomNavigationBar.Constants.heightLandscape
-            NSLayoutConstraint.activate([
-                navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                cameraPane.leftButtonsStack.bottomAnchor.constraint(equalTo: cameraPane.bottomAnchor)
-            ])
-        }
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
-    }
-
     private func configureCameraPaneButtons() {
         cameraPane.setupAuthorization(isHidden: isIphoneLandscape)
         cameraPaneHorizontal?.setupAuthorization(isHidden: !isIphoneLandscape)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
-            self?.sendGiniAnalyticsEventCapture()
-            self?.cameraPane.toggleCaptureButtonActivation(state: false)
-            self?.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
-            self?.cameraPreviewViewController.captureImage { [weak self] data, error in
-                guard let self = self else { return }
-                var processedImageData = data
-                if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
-                    let croppedImage = self.crop(image: image)
-                    processedImageData = croppedImage.jpegData(compressionQuality: 1)
-#if targetEnvironment(simulator)
-                    processedImageData = imageData
-#endif
-                }
-
-                if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
-                                                                      processedImageData: processedImageData,
-                                                                      error: error,
-                                                                      orientation: UIWindow.orientation,
-                                                                      giniConfiguration: self.giniConfiguration) {
-
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    self.didPick(image)
-                }
-                self.cameraPane.toggleCaptureButtonActivation(state: true)
-                self.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
-            }
+            self?.handleCaptureAction()
         }
 
         cameraPane.captureButton.addTarget(cameraButtonsViewModel,
@@ -382,26 +265,62 @@ final class CameraViewController: UIViewController {
             }
         }
         cameraButtonsViewModel.imagesUpdated = { [weak self] images in
-            if let lastImage = images.last {
-                self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count,
-                                                                             lastImage: lastImage))
-                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .filled(count: images.count,
-                                                                                        lastImage: lastImage))
-            } else {
-                self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
-                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
-            }
-            if self?.giniConfiguration.bottomNavigationBarEnabled == true {
-                self?.updateCustomNavigationBars(containsImage: images.last != nil)
-            }
+            self?.handleUpdatedImages(images)
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)
-        cameraPane.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
-                                                           action: #selector(cameraButtonsViewModel.thumbnailPressed),
-                                                           for: .touchUpInside)
-        cameraPaneHorizontal?.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
-                                                           action: #selector(cameraButtonsViewModel.thumbnailPressed),
-                                                           for: .touchUpInside)
+        cameraPane.thumbnailView
+            .thumbnailButton.addTarget(cameraButtonsViewModel,
+                                       action: #selector(cameraButtonsViewModel.thumbnailPressed),
+                                       for: .touchUpInside)
+        cameraPaneHorizontal?.thumbnailView
+            .thumbnailButton.addTarget(cameraButtonsViewModel,
+                                       action: #selector(cameraButtonsViewModel.thumbnailPressed),
+                                       for: .touchUpInside)
+    }
+
+    private func handleCaptureAction() {
+        sendGiniAnalyticsEventCapture()
+        setCaptureButtonsEnabled(false)
+
+        cameraPreviewViewController.captureImage { [weak self] data, error in
+            guard let self = self else { return }
+
+            var processedImageData = data
+            if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
+                let croppedImage = self.crop(image: image)
+                processedImageData = croppedImage.jpegData(compressionQuality: 1)
+#if targetEnvironment(simulator)
+                processedImageData = imageData
+#endif
+            }
+
+            if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
+                                                                  processedImageData: processedImageData,
+                                                                  error: error,
+                                                                  orientation: UIWindow.orientation,
+                                                                  giniConfiguration: self.giniConfiguration) {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                self.didPick(image)
+            }
+
+            self.setCaptureButtonsEnabled(true)
+        }
+    }
+
+    private func handleUpdatedImages(_ images: [UIImage]) {
+        if let lastImage = images.last {
+            let filledState = ThumbnailView.State.filled(count: images.count, lastImage: lastImage)
+            cameraPane.thumbnailView.updateStackStatus(to: filledState)
+            cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: filledState)
+        } else {
+            cameraPane.thumbnailView.updateStackStatus(to: .empty)
+            cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .empty)
+        }
+    }
+
+    private func setCaptureButtonsEnabled(_ enabled: Bool) {
+        cameraPane.toggleCaptureButtonActivation(state: enabled)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: enabled)
     }
 
     private func sendGiniAnalyticsEventCapture() {
@@ -804,9 +723,7 @@ final class CameraViewController: UIViewController {
 
     private func playVoiceOverMessage(success: Bool) {
         // Determine the appropriate message based on success
-        let message = success
-        ? NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct", comment: "QR Detected")
-        : NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title", comment: "Unknown QR")
+        let message = success ? Strings.qrDetectedVoiceOverMessage : Strings.unknownQRVoiceOverMessage
 
         // Post the announcement for VoiceOver
         UIAccessibility.post(notification: .announcement, argument: message)
@@ -926,29 +843,26 @@ private extension CameraViewController {
     }
 
     private struct Strings {
-        static let onlyInvoice = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
-                                                                  comment: "Info label")
-        static let onlyQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
-                                                             comment: "Info label")
-        static let invoiceAndQr = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
-                                                                   comment: "Info label")
-        static let cameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
-                                                                  comment: "Camera title")
+        static let onlyInvoice = giniLocalized("ginicapture.camera.infoLabel.only.invoice",
+                                               comment: "Only invoice label")
+        static let onlyQr = giniLocalized("ginicapture.camera.infoLabel.only.qr",
+                                          comment: "Only QRCode label")
+        static let invoiceAndQr = giniLocalized("ginicapture.camera.infoLabel.invoice.and.qr",
+                                                comment: "Invoice and QRCode label")
+        static let cameraTitle = giniLocalized("ginicapture.navigationbar.camera.title",
+                                               comment: "Camera title")
 
-        static let unsupportedQRAlertTitleKey = "ginicapture.QRscanning.alert.title"
-        static let unsupportedQRAlertTitleComment = "Unsupported QR code alert title"
-        static let unsupportedQRAlertTitle = NSLocalizedStringPreferredFormat(unsupportedQRAlertTitleKey,
-                                                                              comment: unsupportedQRAlertTitleComment)
+        static let qrDetectedVoiceOverMessage = giniLocalized("ginicapture.QRscanning.correct",
+                                                              comment: "QR Detected")
+        static let unknownQRVoiceOverMessage = giniLocalized("ginicapture.QRscanning.incorrect.title",
+                                                             comment: "Unknown QR")
 
-        static let scanAnotherQRCodeKey = "ginicapture.QRscanning.alert.scanAnother"
-        static let scanAnotherQRCodeComment = "Scan another QR code button"
-        static let scanAnotherQRCode = NSLocalizedStringPreferredFormat(scanAnotherQRCodeKey,
-                                                                        comment: scanAnotherQRCodeComment)
-
-        static let takePhotoOfDocumentKey = "ginicapture.QRscanning.alert.takePhoto"
-        static let takePhotoOfDocumentComment = "Take photo of document button"
-        static let takePhotoOfDocument = NSLocalizedStringPreferredFormat(takePhotoOfDocumentKey,
-                                                                          comment: takePhotoOfDocumentComment)
+        static let unsupportedQRAlertTitle = giniLocalized("ginicapture.QRscanning.alert.title",
+                                                           comment: "Unsupported QR code alert title")
+        static let scanAnotherQRCode = giniLocalized("ginicapture.QRscanning.alert.scanAnother",
+                                                     comment: "Scan another QR code button")
+        static let takePhotoOfDocument = giniLocalized("ginicapture.QRscanning.alert.takePhoto",
+                                                       comment: "Take photo of document button")
     }
 }
 // swiftlint:enable type_body_length

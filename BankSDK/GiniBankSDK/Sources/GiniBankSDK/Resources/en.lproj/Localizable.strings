@@ -38,9 +38,6 @@
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Deselect item";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Select item";
 
-"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Your reasons to return this item";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
-
 "ginibank.digitalinvoice.headermessage.primary" = "Scan successful!";
 "ginibank.digitalinvoice.headermessage.secondary" = "You can now deselect items you would like to return.";
 

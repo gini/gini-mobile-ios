@@ -37,19 +37,9 @@ class ErrorScreenViewController: UIViewController {
         return scrollView
     }()
 
-    private lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
-        guard let bottomNavigationBar else {
-            return nil
-        }
-        let constraint = bottomNavigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
-        return constraint
-    }()
-
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
-    private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var buttonsBottomConstraint: NSLayoutConstraint?
-    private var bottomNavigationBar: UIView?
 
     private var numberOfButtons: Int {
         [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
@@ -84,11 +74,6 @@ class ErrorScreenViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        navigationBarHeightConstraint?.constant = getBottomBarHeight()
-    }
-
     private func sendAnalyticsScreenShown() {
         let errorAnalytics = errorType.errorAnalytics()
         var eventProperties = [GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type)]
@@ -117,7 +102,7 @@ class ErrorScreenViewController: UIViewController {
         view.addSubview(buttonsView)
         configureButtons()
         configureConstraints()
-        configureBottomNavigationBar()
+        configureBackButton()
     }
 
     private func configureErrorHeader() {
@@ -141,50 +126,10 @@ class ErrorScreenViewController: UIViewController {
                                            for: .touchUpInside)
     }
 
-    private func configureBottomNavigationBar() {
-        let buttonTitle = Strings.backToCameraTitle
-        if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.setHidesBackButton(true, animated: false)
-            navigationItem.leftBarButtonItem = nil
-            if let bottomBar = giniConfiguration.errorNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
-            } else {
-                navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
-            }
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.didPressBack()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(navigationBar)
-
-                layoutBottomNavigationBar(navigationBar)
-            }
-        } else {
-            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
-            backButton.addAction(self, #selector(didPressBack))
-            navigationItem.leftBarButtonItem = backButton.barButton
-        }
-    }
-
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        buttonsBottomConstraint?.isActive = false
-
-        if let heightConstraint = navigationBarHeightConstraint {
-            NSLayoutConstraint.activate([
-                buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
-                                                    constant: -GiniMargins.margin),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                heightConstraint
-            ])
-        }
-
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
+    private func configureBackButton() {
+        let backButton = GiniBarButton(ofType: .back(title: Strings.backToCameraTitle))
+        backButton.addAction(self, #selector(didPressBack))
+        navigationItem.leftBarButtonItem = backButton.barButton
     }
 
     @objc func didPressEnterManually() {
@@ -303,8 +248,6 @@ private extension ErrorScreenViewController {
         static let sidePadding: CGFloat = 24
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let iPadButtonsWidth: CGFloat = 280
-        static let navigationBarHeight: CGFloat = 110
-        static let navigationBarHeightLandscape: CGFloat = 64
     }
 
     private struct Strings {
@@ -319,12 +262,5 @@ private extension ErrorScreenViewController {
 
         static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
                                                                         comment: "Back to camera")
-    }
-
-    func getBottomBarHeight() -> CGFloat {
-        if UIDevice.current.isIphoneAndLandscape {
-            return Constants.navigationBarHeightLandscape
-        }
-        return Constants.navigationBarHeight
     }
 }

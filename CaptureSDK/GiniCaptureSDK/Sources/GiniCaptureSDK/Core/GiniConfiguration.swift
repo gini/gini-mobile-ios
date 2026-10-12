@@ -232,46 +232,6 @@ import GiniUtilites
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * Bottom navigation bar is no longer supported. Setting this property has no effect.
-     */
-    internal let bottomNavigationBarEnabled: Bool = false
-
-    /**
-      * Custom bottom navigation adapters (like `HelpBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter? = nil
-
-    /**
-      * Custom bottom navigation adapters (like `CameraBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter? = nil
-
-    /**
-      * Custom bottom navigation adapters (like `ReviewScreenBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter? = nil
-
-    /**
-      * Custom bottom navigation adapters (like `ImagePickerBottomNavigationBarAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter? = nil
-
-    /**
-     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
-
-    /**
-     Custom bottom navigation adapters (like `ErrorNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter? = nil
-
-    /**
-      * Custom bottom navigation adapters (like `OnboardingNavigationBarBottomAdapter`) are no longer supported. Setting this property has no effect.
-     */
-    internal let onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter? = nil
-
-    /**
       * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
      */
     public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
