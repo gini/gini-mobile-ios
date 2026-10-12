@@ -47,7 +47,12 @@ def update_release_repo(release_repo_path, release_repo_url, version, ui)
       sha = sh("git rev-parse HEAD", log: false).strip
     end
     # Idempotently create the version tag against the signed commit SHA.
-    existing = sh("gh api repos/#{repo}/git/refs/tags/#{version} --jq .object.sha 2>/dev/null || true", log: false).strip
+    # Branch on gh's exit status instead of swallowing errors with `|| true` —
+    # on a 404 gh writes the error JSON to stdout, so masking the exit code
+    # made the check treat a missing tag as if it existed at a garbage SHA.
+    existing = sh("gh api repos/#{repo}/git/refs/tags/#{version} --jq .object.sha", log: false) do |status, result|
+      status.success? ? result.strip : ""
+    end
     if existing.empty?
       sh("gh api repos/#{repo}/git/refs -f ref=refs/tags/#{version} -f sha=#{sha}")
     elsif existing == sha
