@@ -10,13 +10,17 @@ import UIKit
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
+    private var appDelegate: AppDelegate {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            preconditionFailure("Expected AppDelegate on UIApplication.shared.delegate")
+        }
+        return appDelegate
+    }
+
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            preconditionFailure("Expected AppDelegate on UIApplication.shared.delegate")
-        }
 
         let window = UIWindow(windowScene: windowScene)
         self.window = window
@@ -37,9 +41,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func handle(urlContexts: Set<UIOpenURLContext>) {
         guard let url = urlContexts.first?.url else { return }
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            preconditionFailure("Expected AppDelegate on UIApplication.shared.delegate")
-        }
         appDelegate.handle(url: url)
     }
 }
