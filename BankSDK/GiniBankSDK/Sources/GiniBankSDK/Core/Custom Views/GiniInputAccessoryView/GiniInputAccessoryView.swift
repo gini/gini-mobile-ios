@@ -86,16 +86,9 @@ final class GiniInputAccessoryView: UIView {
         return super.intrinsicContentSize
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass else { return }
-        invalidateIntrinsicContentSize()
-        toolbarBottomConstraint?.constant = currentToolbarBottomInset
-    }
-
     private var shouldUseExpandedLayout: Bool {
         if #available(iOS 26, *) {
-            return traitCollection.verticalSizeClass == .regular
+            return true
         }
         return false
     }
