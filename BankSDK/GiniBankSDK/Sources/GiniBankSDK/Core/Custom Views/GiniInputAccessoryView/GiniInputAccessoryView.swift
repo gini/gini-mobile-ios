@@ -78,7 +78,9 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /** Grows the container on iOS 26 portrait so the Liquid Glass Done pill clears the keyboard. */
+    /**
+     Grows the container on iOS 26 so the Liquid Glass `Done` pill clears the keyboard.
+     */
     override var intrinsicContentSize: CGSize {
         if shouldUseExpandedLayout {
             return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iOS26ContainerHeight)
