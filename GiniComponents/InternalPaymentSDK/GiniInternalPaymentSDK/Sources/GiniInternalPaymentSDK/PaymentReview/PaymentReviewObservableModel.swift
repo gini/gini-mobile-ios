@@ -89,7 +89,7 @@ final class PaymentReviewObservableModel: ObservableObject {
     @Published var isImagesLoading: Bool = false
     @Published var isLoading: Bool = false
     
-    var document: Document? {
+    var document: GiniHealthAPILibrary.Document? {
         model.document
     }
     

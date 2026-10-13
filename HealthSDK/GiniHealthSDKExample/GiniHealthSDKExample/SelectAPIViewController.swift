@@ -51,7 +51,13 @@ final class SelectAPIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
+        let metaTitle = """
+            Gini Capture SDK: (\(GiniCapture.versionString)) / Gini Health SDK: (\(GiniHealthSDKVersion))
+            Client id: \(self.clientId ?? "")
+            """
+        metaInformationButton.titleLabel?.numberOfLines = 0
+        metaInformationButton.titleLabel?.lineBreakMode = .byWordWrapping
+        metaInformationButton.titleLabel?.textAlignment = .center
         metaInformationButton.setTitle(metaTitle, for: .normal)
         metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
     
