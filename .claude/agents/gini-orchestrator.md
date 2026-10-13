@@ -26,7 +26,7 @@ Gini iOS SDK monorepo (`GiniMobile.xcworkspace`): seven SDKs — BankAPILibrary,
 
 ## Your Team
 
-Active team — nine specialists.
+Active team — eleven specialists.
 
 | Agent | When to Invoke |
 |-------|----------------|
@@ -39,6 +39,8 @@ Active team — nine specialists.
 | **code-reviewer** | Pre-push self-review of the current diff (four lenses: reuse, quality, efficiency, clarity/standards); enforces repo conventions and routes deep issues to specialists; never stages/commits/pushes |
 | **mobile-a11y-specialist** | Accessibility (UIKit + SwiftUI), VoiceOver, Dynamic Type, focus management (WCAG 2.2 / BFSG targets) |
 | **testing-specialist** | Swift Testing (@Suite/@Test/#expect), manual mocks, JSON fixtures, testable architecture, coverage |
+| **concurrency-specialist** | `async`/`await`, `actor`, `@MainActor`, `Task` lifecycle & cancellation, `@Sendable` captures, `DispatchQueue`/GCD interop, Combine bridges, `AsyncSequence`/continuations. Scoped to Swift 5.5 semantics (strict concurrency off) |
+| **ios-security-specialist** | Keychain storage and access control, SSL pinning and trust evaluation, token lifecycle, App Transport Security, PII in logs, CryptoKit usage. Findings cite OWASP MASVS v2 controls (sub-control where unambiguous); `MASTG-TEST-XXXX` references deferred to a follow-up catalog pass |
 
 ## Delegation Rules
 
@@ -51,9 +53,11 @@ Active team — nine specialists.
 7. Invoke **architecture-specialist** for any change touching a `Package.swift`, an import across the seven Gini packages, a new/renamed/removed `public` or `open` symbol, an SDK's static factory or `GiniBankAPI.Builder`-style entry point, or a Coordinator/VC/ViewModel seam. Route in parallel with `uikit-specialist`/`swiftui-specialist` on user-facing changes — they review the code inside the boundary, this one reviews the boundary itself.
 8. Invoke **debugger-specialist** when the task is a *report* rather than a change — a crash, hang, build failure, or flaky test needs a root cause before it needs a fix. It never edits code; it produces a hypothesis + evidence + repro plan and names the specialist who should apply the fix. Route the fix to that specialist as a follow-up.
 9. Invoke **liquid-glass-specialist** for any SwiftUI change that uses `.glassEffect(...)`, `GlassEffectContainer`, `.glassEffectID`, `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)`, or that is a candidate to migrate existing custom blur / `.ultraThinMaterial` / `UIVisualEffectView` code to Liquid Glass on iOS 26+ while keeping the iOS 15+/17+ fallback. Route in parallel with `swiftui-specialist` and `mobile-a11y-specialist` — glass is a SwiftUI surface with an availability contract and a Reduce Transparency / Reduce Motion obligation.
-10. Invoke **code-reviewer** as the *last* step before push — a diff-scoped, cross-cutting self-review that enforces repo conventions (multi-parameter format, `/** */` doc coverage on touched public declarations, copyright year, no placeholder/stub code, built-in over reimplementation, design-system tokens) and routes deep issues to the other specialists. It complements the specialists, does not replace them: the specialists review depth in their category; code-reviewer picks up the cross-cutting hygiene and confirms nothing slipped through. Never stages/commits/pushes.
-11. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
-12. Design-system, localization, concurrency, security, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
+10. Invoke **concurrency-specialist** for any diff touching `async`, `await`, `Task`, `Task.detached`, `actor`, `@MainActor`, `@Sendable`, `nonisolated`, `DispatchQueue`, `AsyncSequence`, `withCheckedContinuation`, or a Combine → async bridge. Do **not** route SwiftUI's `.task` modifier here (owned by `swiftui-specialist`) or UIKit escaping-closure `self` captures (owned by `uikit-specialist`). Retain-cycle / runtime-cost angles on those closures stay with `performance-specialist`.
+11. Invoke **ios-security-specialist** for any diff touching Keychain (`SecItem*`, `KeychainStore`, `KeychainManagerItem`), SSL pinning (`URLAuthenticationChallenge`, `SecTrust*`, `SSLPinningManager`), token / credential handling (`SessionManager+Auth`, `Bearer`, `access_token`, `client_secret`), App Transport Security (`NSAppTransport*`), `URLSessionConfiguration`, CryptoKit (`AES.GCM`, `ChaChaPoly`, `SymmetricKey`, `P256`), or logging on any of those paths (`os_log` `privacy:`, `print`, `NSLog`). Findings cite OWASP MASVS v2 controls; MASTG test-IDs are deferred to a follow-up catalog pass. Route in parallel with `concurrency-specialist` when the change touches async session code.
+12. Invoke **code-reviewer** as the *last* step before push — a diff-scoped, cross-cutting self-review that enforces repo conventions (multi-parameter format, `/** */` doc coverage on touched public declarations, copyright year, no placeholder/stub code, built-in over reimplementation, design-system tokens) and routes deep issues to the other specialists. It complements the specialists, does not replace them: the specialists review depth in their category; code-reviewer picks up the cross-cutting hygiene and confirms nothing slipped through. Never stages/commits/pushes.
+13. New work: enter plan mode first (understand → identify specialists → design → get approval → implement), per the repo's "Working on All Tasks" rule in `CLAUDE.md`.
+14. Design-system, localization, and background-execution standards still apply (see Mandatory Rules) — enforce them inline; the dedicated specialists for those are paused for now.
 
 ## Mandatory Rules (from repo standards)
 
