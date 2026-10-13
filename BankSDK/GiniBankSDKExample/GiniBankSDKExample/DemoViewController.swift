@@ -2,7 +2,7 @@
 //  DemoViewController.swift
 //  GiniBankSDKExample
 //
-//  Created by Nadya Karaban on 18.02.21.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -51,20 +51,24 @@ final class DemoViewController: UIViewController {
         return ImageAsset.settingsIcon.image.tintedImageWithColor(iconColor)
     }
 
+    private var constants = Constants.initial
+
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        giniLogoTopConstraint.constant = Constants.giniLogoTopConstant
-        metaInformationLabelTopConstraint.constant = Constants.metaInformationLabelTopConstant
-        entrypointContentStackView.spacing = Constants.entryPointContentStackViewSpacing
+
+        constants = Constants.make(in: view)
+
+        giniLogoTopConstraint.constant = constants.giniLogoTopConstant
+        metaInformationLabelTopConstraint.constant = constants.metaInformationLabelTopConstant
+        entrypointContentStackView.spacing = constants.entryPointContentStackViewSpacing
 
         configureWelcomeTitle()
         configureScreenDescriptionTitle()
-        
-        stackViewTopConstraint.constant = Constants.stackViewTopConstant
+
+        stackViewTopConstraint.constant = constants.stackViewTopConstant
         stackViewMarginConstraints.forEach {
-            $0.constant = Constants.stackViewMarginConstant
+            $0.constant = constants.stackViewMarginConstant
         }
         configureIbanTextField()
         configurePhotoPaymentButton()
@@ -90,7 +94,7 @@ final class DemoViewController: UIViewController {
     // MARK: - Configure UI
     
     private func configureWelcomeTitle() {
-        welcomeTitleTopConstraint.constant = Constants.welcomeTitleTopConstant
+        welcomeTitleTopConstraint.constant = constants.welcomeTitleTopConstant
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
         welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
@@ -284,12 +288,30 @@ extension DemoViewController: UITextFieldDelegate {
 }
 
 private extension DemoViewController {
-    enum Constants {
-        static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 85 : 48
-        static let giniLogoTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 150 : 112
-        static let stackViewTopConstant: CGFloat = Device.small ? 24 : 72
-        static let stackViewMarginConstant: CGFloat = UIDevice.current.isIpad ? 64 : 16
-        static let entryPointContentStackViewSpacing: CGFloat = Device.small ? 16 : 24
-        static let metaInformationLabelTopConstant: CGFloat = Device.small ? 24 : 44
+    struct Constants {
+        let welcomeTitleTopConstant: CGFloat
+        let giniLogoTopConstant: CGFloat
+        let stackViewTopConstant: CGFloat
+        let stackViewMarginConstant: CGFloat
+        let entryPointContentStackViewSpacing: CGFloat
+        let metaInformationLabelTopConstant: CGFloat
+
+        static let initial = Constants(welcomeTitleTopConstant: 0,
+                                       giniLogoTopConstant: 0,
+                                       stackViewTopConstant: 0,
+                                       stackViewMarginConstant: 0,
+                                       entryPointContentStackViewSpacing: 0,
+                                       metaInformationLabelTopConstant: 0)
+
+        static func make(in view: UIView) -> Constants {
+            let small = Device.small(in: view)
+            let ipad = UIDevice.current.isIpad
+            return Constants(welcomeTitleTopConstant: small ? 24 : ipad ? 85 : 48,
+                             giniLogoTopConstant: small ? 24 : ipad ? 150 : 112,
+                             stackViewTopConstant: small ? 24 : 72,
+                             stackViewMarginConstant: ipad ? 64 : 16,
+                             entryPointContentStackViewSpacing: small ? 16 : 24,
+                             metaInformationLabelTopConstant: small ? 24 : 44)
+        }
     }
 }
