@@ -51,13 +51,11 @@ final class DemoViewController: UIViewController {
         return ImageAsset.settingsIcon.image.tintedImageWithColor(iconColor)
     }
 
-    private var constants = Constants.initial
+    private lazy var constants: Constants = Constants.make(in: self.view)
 
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        constants = Constants.make(in: view)
 
         giniLogoTopConstraint.constant = constants.giniLogoTopConstant
         metaInformationLabelTopConstraint.constant = constants.metaInformationLabelTopConstant
@@ -295,13 +293,6 @@ private extension DemoViewController {
         let stackViewMarginConstant: CGFloat
         let entryPointContentStackViewSpacing: CGFloat
         let metaInformationLabelTopConstant: CGFloat
-
-        static let initial = Constants(welcomeTitleTopConstant: 0,
-                                       giniLogoTopConstant: 0,
-                                       stackViewTopConstant: 0,
-                                       stackViewMarginConstant: 0,
-                                       entryPointContentStackViewSpacing: 0,
-                                       metaInformationLabelTopConstant: 0)
 
         static func make(in view: UIView) -> Constants {
             let small = Device.small(in: view)

@@ -36,7 +36,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func handle(urlContexts: Set<UIOpenURLContext>) {
         guard GiniBankConfiguration.shared.openWithEnabled else {
-            coordinator?.displayOpenWithAlertView()
+            coordinator.displayOpenWithAlertView()
             return
         }
 
