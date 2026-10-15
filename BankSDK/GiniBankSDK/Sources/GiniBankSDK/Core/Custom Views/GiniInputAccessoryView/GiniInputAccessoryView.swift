@@ -63,7 +63,7 @@ final class GiniInputAccessoryView: UIView {
 
     weak var delegate: GiniInputAccessoryViewDelegate?
     private var currentIndex: Int = 0
-    private var toolbarBottomConstraint: NSLayoutConstraint?
+    private var toolbarHeightConstraint: NSLayoutConstraint?
 
     // MARK: - Initialization
 
@@ -78,14 +78,22 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /**
-     Grows the container on iOS 26 so the Liquid Glass `Done` pill clears the keyboard.
-     */
+    /** Reports the toolbar height so UIKit sizes the accessory view to match. */
     override var intrinsicContentSize: CGSize {
         if shouldUseExpandedLayout {
-            return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iOS26ContainerHeight)
+            return CGSize(width: UIView.noIntrinsicMetric, height: currentInnerToolbarHeight)
         }
         return super.intrinsicContentSize
+    }
+
+    /** Updates the toolbar height on rotation when the vertical size class changes. */
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass else {
+            return
+        }
+        toolbarHeightConstraint?.constant = currentInnerToolbarHeight
+        invalidateIntrinsicContentSize()
     }
 
     private var shouldUseExpandedLayout: Bool {
@@ -95,8 +103,12 @@ final class GiniInputAccessoryView: UIView {
         return false
     }
 
-    private var currentToolbarBottomInset: CGFloat {
-        shouldUseExpandedLayout ? Constants.iOS26ToolbarBottomInset : 0
+    /** Returns 44pt on iOS 15–25, 50pt on iOS 26+ portrait, 44pt on iOS 26+ landscape. */
+    private var currentInnerToolbarHeight: CGFloat {
+        guard shouldUseExpandedLayout else { return Constants.innerToolbarHeight }
+        return traitCollection.verticalSizeClass == .compact
+            ? Constants.iOS26InnerToolbarHeightCompact
+            : Constants.iOS26InnerToolbarHeight
     }
 
     // MARK: - Setup
@@ -106,9 +118,9 @@ final class GiniInputAccessoryView: UIView {
         toolbar.giniMakeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().constant(currentToolbarBottomInset)
-            make.height.equalTo(Constants.innerToolbarHeight)
-            self.toolbarBottomConstraint = make.constraint(for: .bottom)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(currentInnerToolbarHeight)
+            self.toolbarHeightConstraint = make.constraint(for: .height)
         }
 
         setupToolbarItems()
@@ -161,7 +173,7 @@ final class GiniInputAccessoryView: UIView {
 
     private enum Constants {
         static let innerToolbarHeight: CGFloat = 44
-        static let iOS26ContainerHeight: CGFloat = 56
-        static let iOS26ToolbarBottomInset: CGFloat = -4
+        static let iOS26InnerToolbarHeight: CGFloat = 50
+        static let iOS26InnerToolbarHeightCompact: CGFloat = 44
     }
 }
