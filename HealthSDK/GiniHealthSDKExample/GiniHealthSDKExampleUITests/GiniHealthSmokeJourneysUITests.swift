@@ -24,86 +24,10 @@ import XCTest
  */
 final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
 
-    // MARK: - Shared flow helpers
-
-    /**
-     Drives the modal Payment Component sheet all the way to the Payment
-     Review Screen when it appears: taps Select-bank, picks any available bank,
-     then taps Continue to overview (with the coordinate-tap fallback for the
-     iOS 26 safe-area quirk).
-
-     Two post-TransferDirectly paths exist:
-     1. **Payment Component sheet** — first-time flow with no bank selected.
-        Drive Select-bank → bank cell → Continue to overview.
-     2. **Direct to Payment Review Screen** — a bank was previously selected
-        (persisted across launches in the same runner session, or auto-chosen
-        by extraction) and the Payment Component intermediate is skipped.
-
-     Both paths are raced for up to ~15 s. If the Payment Review Screen opened
-     directly, this returns immediately with nothing to drive; the caller still
-     runs `assertPaymentReviewReachedWithPopulatedFields` to verify fields.
-     */
-    private func drivePaymentFlowThroughBankSelectionToPaymentReview() {
-        let selectBank = paymentComponentScreen.selectBankButton
-        let ibanField = paymentReviewScreen.ibanField
-        let deadline = Date().addingTimeInterval(60)
-        while Date() < deadline {
-            if ibanField.exists {
-                /// Payment Review opened directly — nothing to drive.
-                return
-            }
-            if selectBank.exists { break }
-            Thread.sleep(forTimeInterval: 0.5)
-        }
-        XCTAssertTrue(selectBank.exists,
-                      "Neither Payment Component bottom sheet nor Payment Review Screen appeared after Transfer directly.")
-        selectBank.tap()
-        let bankCell = bankSelectionBottomSheet.anyBankCell
-        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
-                      "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
-        bankCell.tap()
-        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
-                      "Continue to overview button did not appear on the Payment Component after bank selection.")
-        paymentComponentScreen.tapContinueToOverview()
-    }
-
-    /**
-     Asserts the Payment Review Screen reached, all four payment fields
-     (IBAN, Recipient, Amount, Reference) carry non-empty extracted
-     values, and the Pay button is reachable (handoff setup is complete).
-
-     Values are not asserted literally — the smoke suite only verifies
-     that the pipeline landed on Payment Review with a populated model;
-     specific-value coverage lives in `GiniHealthSDKExampleTests`
-     integration tests.
-
-     Each field value is **polled** rather than read once because the SwiftUI
-     `TextField`s render immediately with their binding target
-     (`viewModel.<field>InputState.text`) still empty — the viewModel's async
-     load happens shortly after. HEAL-285/287 reach this screen through the
-     Payment Component Select-bank → Continue path which adds a few seconds
-     of natural wait, hiding the race; HEAL-282/284 reach it directly after
-     Transfer directly, so a one-shot read fires `XCTAssertFalse(isEmpty)`
-     before the bindings populate. 15 s per field is well over the typical
-     load (<2 s) and still fails fast if the extraction model never arrived.
-     */
-    private func assertPaymentReviewReachedWithPopulatedFields() {
-        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear after Continue to overview.")
-        for field in [paymentReviewScreen.ibanField,
-                      paymentReviewScreen.recipientField,
-                      paymentReviewScreen.amountField,
-                      paymentReviewScreen.referenceField] {
-            let deadline = Date().addingTimeInterval(15)
-            while Date() < deadline, paymentReviewScreen.value(of: field).isEmpty {
-                Thread.sleep(forTimeInterval: 0.3)
-            }
-            XCTAssertFalse(paymentReviewScreen.value(of: field).isEmpty,
-                           "Payment Review field \(field.identifier) still empty 15 s after screen appeared — extraction model may not have arrived.")
-        }
-        XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
-                      "Pay button not reachable after bank selection — handoff setup incomplete.")
-    }
+    /// Shared `drivePaymentFlowThroughBankSelectionToPaymentReview` and
+    /// `assertPaymentReviewReachedWithPopulatedFields` live on the base class
+    /// `GiniHealthSDKExampleUITests` so both the journeys and screens suites
+    /// can call them. See `GiniHealthSDKExampleUITests.swift` for the bodies.
 
     // MARK: - HEAL-282 — Image gallery import
 
