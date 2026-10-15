@@ -34,6 +34,34 @@ import XCTest
  ## Explicitly manual (not here)
  - HEAL-283  Live camera QR scan — camera-only entry
  - HEAL-302  No-network default error — BrowserStack blocks WiFi toggling
+
+ ## Lessons already captured in the journey suite — reuse, don't rediscover
+ - **Payment Review entry:** use the shared
+   `drivePaymentFlowThroughBankSelectionToPaymentReview` helper from
+   `GiniHealthSmokeJourneysUITests`. It races `paymentComponent.selectBank`
+   against `paymentReview.iban` and handles both the first-time Payment
+   Component path and the direct-to-Payment-Review path (previously selected
+   bank persists across launches in `singleRunnerInvocation` runs).
+ - **Field reads:** poll — don't read once. SwiftUI `TextField`s render
+   immediately with their `viewModel.*InputState.text` bindings still empty;
+   `assertPaymentReviewReachedWithPopulatedFields` polls each field up to 15s.
+   Pattern: `while Date() < deadline, value.isEmpty { Thread.sleep(0.3) }`.
+ - **PDF import skips the Review screen.** `GiniScreenAPICoordinator.initialViewControllers`
+   routes `.image` to Review and anything else straight to Analysis. HEAL-294
+   must NOT call `tapProcessOnReview` — there is no Process button in the
+   PDF path.
+ - **Files picker (HEAL-294):** `pickPDFFromFilesPicker` is adaptive — BS
+   `Custom_Files` vs local `On My iPhone → GiniHealthSDKExample` — and taps
+   the nav-bar `Open` / `Öffnen` after the file label is selected. Tapping
+   the label alone only selects (blue checkmark); it never confirms.
+ - **System permissions:** `handleSystemPermission` queries both SpringBoard
+   AND the host app. iOS 17+ `PHPickerViewController` limited-access consent
+   is presented in-process.
+ - **Install App bottom sheet (HEAL-303):** `InstallAppBottomView` has no
+   literal "Install App" text and no accessibility identifier. Match on
+   stable localised phrases — `Forward` / `Weiter` button, OR element
+   containing `install` / `installieren` / `App Store` / `App-Store`. See
+   HEAL-304 in the journey suite for the exact predicate.
  */
 final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
 
@@ -94,6 +122,20 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      Uses `TestFixtures.Files.multiInvoice` (multi-invoice.pdf, staged by
      the BrowserStack script's `uploadMedia` to Custom_Files; locally
      seeded by `copyFixturesToSimulator`).
+
+     **Entry pattern** (reuse from `GiniHealthSmokeJourneysUITests` HEAL-284):
+     ```
+     mainScreen.startWithGiniCaptureButton.tap()
+     mainScreen.handleSystemPermission(answer: true)
+     captureImportFlow.skipOnboardingIfPresented()
+     captureImportFlow.tapImportThenFiles()
+     captureImportFlow.pickPDFFromFilesPicker(fileName: TestFixtures.Files.multiInvoice)
+     // No tapProcessOnReview — PDFs skip the Review screen.
+     // Wait for Invoices List with Transfer directly, tap it, then
+     // drivePaymentFlowThroughBankSelectionToPaymentReview().
+     ```
+     Then assert pagination-dot indicators are present on the Payment
+     Review Screen's document preview.
      */
     func testMultiPageInvoiceShowsPaginationDots() throws {
         throw XCTSkip("HEAL-294 — pending implementation")
@@ -173,6 +215,20 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
 
      Device-only on BrowserStack (host app is sandboxed, bank apps are
      never installed, so the sheet always appears).
+
+     **Detection pattern** (same as HEAL-304 journey test): no "Install App"
+     literal exists on the sheet and no accessibility identifier is set
+     upstream, so match on stable localised phrases from
+     `InstallAppBottomView`'s strings. Reuse the predicate shape:
+     ```swift
+     let forwardButton = app.buttons
+         .matching(NSPredicate(format: "label IN %@", ["Forward", "Weiter"]))
+         .firstMatch
+     let installPhraseAny = app.descendants(matching: .any)
+         .matching(NSPredicate(format:
+             "label CONTAINS[c] 'install' OR label CONTAINS[c] 'App Store' OR label CONTAINS[c] 'App-Store'"))
+         .firstMatch
+     ```
      */
     func testInstallAppBottomSheetAppearsWhenBankMissing() throws {
         throw XCTSkip("HEAL-303 — pending implementation")
