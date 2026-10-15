@@ -58,6 +58,7 @@
 		D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */; };
 		E26C8B20456269F631CC5244 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A170FFD43B849C064DEC95D /* TestFixtures.swift */; };
 		E53040CFF3F8AF6577225ABA /* CaptureImportFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */; };
+		E951BB96FED076C1BCC361BD /* GiniHealthSmokeScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDA8333CCD34735993DB463 /* GiniHealthSmokeScreensUITests.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -117,6 +118,7 @@
 /* Begin PBXFileReference section */
 		0A170FFD43B849C064DEC95D /* TestFixtures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
 		16E4DBAA962E0FD6CC41016E /* GiniHealthSmokeJourneysUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSmokeJourneysUITests.swift; sourceTree = "<group>"; };
+		1BDA8333CCD34735993DB463 /* GiniHealthSmokeScreensUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSmokeScreensUITests.swift; sourceTree = "<group>"; };
 		204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CaptureImportFlow.swift; sourceTree = "<group>"; };
 		282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				80BFDB9F719B4E734DF0F3F7 /* GiniHealthSDKExampleUITests.swift */,
 				B70D945D5C300A0BDFE4DF43 /* GiniHealthSmokeJourneysUITests.swift */,
 				920383E670F3DB00DAF28415 /* TestFixtures.swift */,
+				1BDA8333CCD34735993DB463 /* GiniHealthSmokeScreensUITests.swift */,
 			);
 			name = GiniHealthSDKExampleUITests;
 			path = GiniHealthSDKExampleUITests;
@@ -731,6 +734,7 @@
 				547051CF551C3F65C2B4FBA6 /* PaymentComponentScreen.swift in Sources */,
 				D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */,
 				2741113DAB4B60BD0220EB83 /* OrderDetailsScreen.swift in Sources */,
+				E951BB96FED076C1BCC361BD /* GiniHealthSmokeScreensUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
