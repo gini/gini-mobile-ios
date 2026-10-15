@@ -50,7 +50,7 @@ final class SelectAPIViewController: UIViewController {
     // MARK: View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+
         let metaTitle = """
             Gini Capture SDK: (\(GiniCapture.versionString)) / Gini Health SDK: (\(GiniHealthSDKVersion))
             Client id: \(self.clientId ?? "")
@@ -60,7 +60,14 @@ final class SelectAPIViewController: UIViewController {
         metaInformationButton.titleLabel?.textAlignment = .center
         metaInformationButton.setTitle(metaTitle, for: .normal)
         metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
-    
+
+        /// Accessibility identifiers for UI tests (XCUITest). Set programmatically so the xib
+        /// does not need to be touched; the identifiers survive even if the xib is regenerated.
+        startWithTestDocumentButton.accessibilityIdentifier = "health.main.startWithTestDocument"
+        startWithGiniCaptureButton.accessibilityIdentifier = "health.main.startWithGiniCapture"
+        invoicesListButton.accessibilityIdentifier = "health.main.invoicesList"
+        ordersListButton.accessibilityIdentifier = "health.main.ordersList"
+
         if #available(iOS 13.0, *) {
             activityIndicator.style = .large
         } else {
