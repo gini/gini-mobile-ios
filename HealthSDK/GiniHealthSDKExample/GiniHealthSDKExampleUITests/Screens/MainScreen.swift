@@ -42,21 +42,38 @@ final class MainScreen {
     /**
      Handles the system permission alert shown after a flow requests access.
 
-     The springboard alert buttons are localised; `answer == true` taps the first
-     "Allow"-equivalent found, `false` taps "Don't Allow". Returns silently if no
-     alert appears within `timeout` — some BrowserStack sessions prime the alert
-     before the test attaches, in which case it is already dismissed.
+     Button labels are localised and the hosting process differs by iOS version:
+
+     - Classic alerts (camera, microphone, pre-iOS 17 photo library) live in
+       **SpringBoard**.
+     - iOS 17+ `PHPickerViewController` limited-access consent sheet lives
+       **in-process** in the host app's accessibility tree (behind the camera
+       screen, with photo previews). SpringBoard does not host it.
+
+     Both locations are checked; `answer == true` taps the first "Allow"-equivalent
+     found, `false` taps "Don't Allow". Returns silently if no alert appears within
+     `timeout` — some BrowserStack sessions prime the alert before the test attaches,
+     in which case it is already dismissed.
      */
     func handleSystemPermission(answer: Bool, timeout: TimeInterval = 5) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         _ = springboard.wait(for: .runningForeground, timeout: timeout)
-        let allowTitles = ["Allow", "OK", "Allow Full Access", "Allow Access to All Photos"]
+        let allowTitles = ["Allow",
+                           "OK",
+                           "Allow Full Access",
+                           "Allow Access to All Photos",
+                           "Zugriff auf alle Fotos erlauben"]
         let denyTitles = ["Don't Allow", "Don\u{2019}t Allow", "Nicht erlauben"]
         let targets = answer ? allowTitles : denyTitles
         for title in targets {
-            let button = springboard.buttons[title]
-            if button.waitForExistence(timeout: 1), button.isHittable {
-                button.tap()
+            let sbButton = springboard.buttons[title]
+            if sbButton.waitForExistence(timeout: 1), sbButton.isHittable {
+                sbButton.tap()
+                return
+            }
+            let appButton = app.buttons[title]
+            if appButton.waitForExistence(timeout: 1), appButton.isHittable {
+                appButton.tap()
                 return
             }
         }

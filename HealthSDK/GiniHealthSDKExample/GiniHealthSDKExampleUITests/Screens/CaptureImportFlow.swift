@@ -193,25 +193,165 @@ final class CaptureImportFlow {
     }
 
     /**
-     Picks a PDF from the system Files picker by name. Works on both
-     BrowserStack (fixture staged in Custom_Files) and the simulator
-     (fixture staged in the app's Documents folder by
-     `copyFixturesToSimulator`). Looks for the file in the current view;
-     falls back to tapping "On My iPhone" if the file is not immediately
-     visible.
+     Picks a PDF from the system Files picker by name. Adaptive wrapper:
+     on BrowserStack the file is staged in `Custom_Files` by `uploadMedia`,
+     and on the local simulator it is staged in
+     `On My iPhone → GiniHealthSDKExample` by `copyFixturesToSimulator`.
+     Checks for the BrowserStack folder first and falls back to the local
+     path when it is absent, so the same call works in both environments.
+
+     Mirrors Bank SDK's `MainScreen.tapFileFromBestAvailableSource`
+     (`BankSDK/GiniBankSDKExample/GiniBankSDKExampleUITests/Screens/MainScreen.swift`),
+     which is the proven path for Files-picker import on BrowserStack.
      */
     func pickPDFFromFilesPicker(fileName: String) {
-        let fileCell = app.staticTexts[fileName].firstMatch
-        if !fileCell.waitForExistence(timeout: 5) {
-            /// Narrow the Files picker to the local on-device location.
-            let onMyPhone = app.buttons["On My iPhone"].firstMatch
-            if onMyPhone.waitForExistence(timeout: 3), onMyPhone.isHittable {
-                onMyPhone.tap()
+        let customFilesAny = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+
+        /// When the picker opens on the Browse locations screen (not Recents),
+        /// Custom_Files is already visible — tapping Browse again navigates to a
+        /// different level and breaks detection.
+        if !customFilesAny.waitForExistence(timeout: 3) {
+            let browseButton = app.buttons["Browse"].firstMatch
+            if browseButton.waitForExistence(timeout: 3) {
+                browseButton.tap()
+                /// Give the Files app time to render the Browse location list
+                /// (BrowserStack can be slow).
+                sleep(5)
             }
         }
-        XCTAssertTrue(fileCell.waitForExistence(timeout: 10),
-                      "File \"\(fileName)\" not found in the Files picker — fixture may not be staged.")
-        fileCell.tap()
+
+        /// On iOS 15/16 the picker's Browse level shows only the locations list —
+        /// Custom_Files lives under "On My iPhone" there instead of at the top level.
+        if !customFilesAny.waitForExistence(timeout: 15) {
+            let onMyPhoneButton = app.buttons["On My iPhone"].firstMatch
+            let onMyPhoneText = app.staticTexts["On My iPhone"].firstMatch
+            _ = onMyPhoneButton.waitForExistence(timeout: 3) || onMyPhoneText.waitForExistence(timeout: 2)
+            if onMyPhoneButton.exists {
+                onMyPhoneButton.tap()
+            } else if onMyPhoneText.exists {
+                onMyPhoneText.tap()
+            }
+        }
+
+        if customFilesAny.waitForExistence(timeout: 5) {
+            /// BrowserStack: Custom_Files is visible — navigate into it and pick the file.
+            tapFileFromBSCustomFiles(fileName: fileName)
+        } else {
+            /// Local: fixture lives under On My iPhone → GiniHealthSDKExample.
+            tapFileFromOnMyPhone(fileName: fileName)
+        }
+    }
+
+    /**
+     Navigates the document picker to BrowserStack's `Custom_Files` folder and
+     taps the file. BrowserStack stages non-media files via `uploadMedia`
+     under **Custom_Files**; when the picker launches scoped to the host app's
+     container (iOS 17+ default), that folder appears as the only child inside
+     `GiniHealthSDKExample`, so no `Browse` navigation is required to reach it.
+
+     The staged filename carries a timestamp suffix
+     (e.g. `testMedInvoice_1792076678`), so the file is matched with `CONTAINS[c]`.
+     Tapping the file label only **selects** it (blue checkmark); the picker
+     stays open until the **Open** / **Öffnen** nav-bar confirm button is tapped,
+     which this helper does last.
+
+     - Parameter fileName: File name without extension (matched with CONTAINS[c]).
+     */
+    private func tapFileFromBSCustomFiles(fileName: String) {
+        let customFilesFolder = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS[c] 'Custom_Files'")).firstMatch
+        XCTAssertTrue(customFilesFolder.waitForExistence(timeout: 5),
+                      "Custom_Files folder not found — ensure the file was uploaded via BrowserStack before running the test.")
+        customFilesFolder.tap()
+
+        let fileElement = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 5),
+                      "File '\(fileName)' not found in Custom_Files folder.")
+        fileElement.tap()
+
+        /// Selecting a file in Custom_Files puts a blue checkmark on it and
+        /// surfaces the Open button in the nav bar; the picker only dismisses
+        /// after that confirm. Mirrors the Open-button tap at the end of
+        /// `tapFileFromOnMyPhone`.
+        let openButton = app.buttons["Open"].firstMatch
+        let openButtonDE = app.buttons["Öffnen"].firstMatch
+        if openButton.waitForExistence(timeout: 3) {
+            openButton.tap()
+        } else if openButtonDE.waitForExistence(timeout: 1) {
+            openButtonDE.tap()
+        }
+    }
+
+    /**
+     Navigates the document picker to the local `On My iPhone →
+     GiniHealthSDKExample` folder (seeded by `copyFixturesToSimulator`) and
+     taps the file. Falls back through sidebar discovery, swipe-to-find, and
+     cell-first matching so a filename label tap doesn't open the file preview
+     instead of selecting it. Confirms the selection by tapping the picker's
+     **Open** / **Öffnen** button when it appears.
+
+     - Parameter fileName: File name without extension (matched with CONTAINS[c]).
+     */
+    private func tapFileFromOnMyPhone(fileName: String) {
+        let browseButton = app.buttons["Browse"].firstMatch
+        if browseButton.waitForExistence(timeout: 3) {
+            browseButton.tap()
+        }
+
+        let onMyPhoneButton = app.buttons["On My iPhone"].firstMatch
+        let onMyPhoneText = app.staticTexts["On My iPhone"].firstMatch
+        _ = onMyPhoneButton.waitForExistence(timeout: 5) || onMyPhoneText.waitForExistence(timeout: 5)
+        if onMyPhoneButton.exists {
+            onMyPhoneButton.tap()
+        } else if onMyPhoneText.exists {
+            onMyPhoneText.tap()
+        }
+
+        let appFolder = app.staticTexts["GiniHealthSDKExample"].firstMatch
+        XCTAssertTrue(appFolder.waitForExistence(timeout: 5),
+                      "GiniHealthSDKExample folder not found. Ensure PDFs exist in GiniHealthSDKExampleUITests/TestSamples/TestSamplesForBS.")
+        appFolder.tap()
+
+        sleep(1)
+
+        /// Cells must be tried before staticTexts: tapping a staticText (the
+        /// filename label) in the Files picker opens a full-screen preview and
+        /// stays in Files app. Tapping the cell row properly selects the file
+        /// for the document picker.
+        func findFileElement() -> XCUIElement? {
+            let byCell = app.cells.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byCell.exists { return byCell }
+            let byStaticText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byStaticText.exists { return byStaticText }
+            let byButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", fileName)).firstMatch
+            if byButton.exists { return byButton }
+            return nil
+        }
+
+        var swipeAttempts = 0
+        while findFileElement() == nil && swipeAttempts < 5 {
+            app.swipeUp()
+            swipeAttempts += 1
+            sleep(1)
+        }
+
+        guard let fileElement = findFileElement() else {
+            XCTFail("File '\(fileName)' not found. Ensure it exists in GiniHealthSDKExampleUITests/TestSamples/TestSamplesForBS.")
+            return
+        }
+        fileElement.tap()
+
+        /// After selecting a file from a folder in "On My iPhone", the document
+        /// picker shows an Open button in the navigation bar to confirm the
+        /// selection. Tap it here so callers do not need a separate confirm step.
+        let openButton = app.buttons["Open"].firstMatch
+        let openButtonDE = app.buttons["Öffnen"].firstMatch
+        if openButton.waitForExistence(timeout: 3) {
+            openButton.tap()
+        } else if openButtonDE.waitForExistence(timeout: 1) {
+            openButtonDE.tap()
+        }
     }
 
     /**

@@ -30,6 +30,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
     var captureImportFlow: CaptureImportFlow!
     var invoicesListScreen: InvoicesListScreen!
     var ordersListScreen: OrdersListScreen!
+    var orderDetailsScreen: OrderDetailsScreen!
     var paymentComponentScreen: PaymentComponentScreen!
 
     override func setUpWithError() throws {
@@ -52,6 +53,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
         captureImportFlow = CaptureImportFlow(app: app, locale: locale)
         invoicesListScreen = InvoicesListScreen(app: app)
         ordersListScreen = OrdersListScreen(app: app)
+        orderDetailsScreen = OrderDetailsScreen(app: app)
         paymentComponentScreen = PaymentComponentScreen(app: app)
     }
 

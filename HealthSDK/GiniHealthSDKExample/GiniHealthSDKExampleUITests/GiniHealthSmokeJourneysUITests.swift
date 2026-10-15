@@ -28,19 +28,36 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
 
     /**
      Drives the modal Payment Component sheet all the way to the Payment
-     Review Screen: taps Select-bank, picks any available bank, then taps
-     Continue to overview (with the coordinate-tap fallback for the
+     Review Screen when it appears: taps Select-bank, picks any available bank,
+     then taps Continue to overview (with the coordinate-tap fallback for the
      iOS 26 safe-area quirk).
 
-     Assumes the modal Payment Component bottom sheet is already visible —
-     i.e. the test has already tapped Transfer directly or the equivalent
-     entry trigger. On return, the Payment Review Screen has started
-     opening (fields may still be loading).
+     Two post-TransferDirectly paths exist:
+     1. **Payment Component sheet** — first-time flow with no bank selected.
+        Drive Select-bank → bank cell → Continue to overview.
+     2. **Direct to Payment Review Screen** — a bank was previously selected
+        (persisted across launches in the same runner session, or auto-chosen
+        by extraction) and the Payment Component intermediate is skipped.
+
+     Both paths are raced for up to ~15 s. If the Payment Review Screen opened
+     directly, this returns immediately with nothing to drive; the caller still
+     runs `assertPaymentReviewReachedWithPopulatedFields` to verify fields.
      */
     private func drivePaymentFlowThroughBankSelectionToPaymentReview() {
-        XCTAssertTrue(paymentComponentScreen.selectBankButton.waitForExistence(timeout: 60),
-                      "Payment Component bottom sheet did not appear after Transfer directly.")
-        paymentComponentScreen.selectBankButton.tap()
+        let selectBank = paymentComponentScreen.selectBankButton
+        let ibanField = paymentReviewScreen.ibanField
+        let deadline = Date().addingTimeInterval(60)
+        while Date() < deadline {
+            if ibanField.exists {
+                /// Payment Review opened directly — nothing to drive.
+                return
+            }
+            if selectBank.exists { break }
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+        XCTAssertTrue(selectBank.exists,
+                      "Neither Payment Component bottom sheet nor Payment Review Screen appeared after Transfer directly.")
+        selectBank.tap()
         let bankCell = bankSelectionBottomSheet.anyBankCell
         XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
                       "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
@@ -59,6 +76,16 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
      that the pipeline landed on Payment Review with a populated model;
      specific-value coverage lives in `GiniHealthSDKExampleTests`
      integration tests.
+
+     Each field value is **polled** rather than read once because the SwiftUI
+     `TextField`s render immediately with their binding target
+     (`viewModel.<field>InputState.text`) still empty — the viewModel's async
+     load happens shortly after. HEAL-285/287 reach this screen through the
+     Payment Component Select-bank → Continue path which adds a few seconds
+     of natural wait, hiding the race; HEAL-282/284 reach it directly after
+     Transfer directly, so a one-shot read fires `XCTAssertFalse(isEmpty)`
+     before the bindings populate. 15 s per field is well over the typical
+     load (<2 s) and still fails fast if the extraction model never arrived.
      */
     private func assertPaymentReviewReachedWithPopulatedFields() {
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
@@ -67,8 +94,12 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                       paymentReviewScreen.recipientField,
                       paymentReviewScreen.amountField,
                       paymentReviewScreen.referenceField] {
+            let deadline = Date().addingTimeInterval(15)
+            while Date() < deadline, paymentReviewScreen.value(of: field).isEmpty {
+                Thread.sleep(forTimeInterval: 0.3)
+            }
             XCTAssertFalse(paymentReviewScreen.value(of: field).isEmpty,
-                           "Payment Review field \(field.identifier) is empty after extraction.")
+                           "Payment Review field \(field.identifier) still empty 15 s after screen appeared — extraction model may not have arrived.")
         }
         XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
                       "Pay button not reachable after bank selection — handoff setup incomplete.")
@@ -128,7 +159,13 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         captureImportFlow.skipOnboardingIfPresented()
         captureImportFlow.tapImportThenFiles()
         captureImportFlow.pickPDFFromFilesPicker(fileName: TestFixtures.Files.medInvoice)
-        captureImportFlow.tapProcessOnReview()
+
+        /// CaptureSDK's `GiniScreenAPICoordinator.initialViewControllers` routes
+        /// imported pages by document type: images land on the Review screen
+        /// (Process button), **PDFs skip Review and go directly to the Analysis
+        /// screen**. HEAL-282 (image import) still calls `tapProcessOnReview`;
+        /// HEAL-284 (PDF import) must not — the Process button never exists in
+        /// this path and waiting for it would just time out.
 
         XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
                       "Invoices List did not appear with the imported PDF — extraction may have failed or timed out.")
@@ -180,23 +217,26 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
      Recipient, Amount and Reference correctly in Payment Review Screen and
      Black bank".
 
-     Mirror of HEAL-285 using the Orders-list entry button instead of the
-     Invoices-list button. The host app's Orders flow seeds its own
-     hardcoded documents via `HardcodedInvoicesController`.
+     The Orders entry has a different flow from the Invoices entry (HEAL-285):
+     the row push lands on the host app's Order Details screen
+     (`OrderDetailViewController`) which carries its own Pay button. Tapping
+     Pay starts the Health SDK's payment flow and opens the Payment Review
+     Screen directly as a bottom sheet — the Payment Component Select-bank
+     intermediate sheet is skipped. `drivePaymentFlowThroughBankSelectionToPaymentReview`
+     is deliberately NOT reused here.
+
+     The host app seeds its own orders via `HardcodedInvoicesController`.
      */
     func testOrdersListEntryShowsPaymentReview() throws {
         XCTAssertTrue(mainScreen.ordersListButton.waitForExistence(timeout: 10),
                       "Main screen did not render — host app launch failed.")
         mainScreen.ordersListButton.tap()
 
-        /// Orders list rows are tapped directly — no per-row Transfer directly
-        /// button like the Invoices list has. Pick the first row to open the
-        /// Payment Component bottom sheet.
         XCTAssertTrue(ordersListScreen.waitForFirstRow(timeout: 60),
                       "Orders list did not populate with a hardcoded order — HardcodedInvoicesController seed may have failed or timed out.")
         ordersListScreen.firstRow.tap()
 
-        drivePaymentFlowThroughBankSelectionToPaymentReview()
+        orderDetailsScreen.tapPay()
         assertPaymentReviewReachedWithPopulatedFields()
     }
 
@@ -297,10 +337,25 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
 
         paymentReviewScreen.payButton.tap()
 
-        /// Expect one of: the app backgrounded (deeplink succeeded) or an Install
-        /// App bottom sheet appeared (bank not installed on this device). Either
-        /// signals the handoff was attempted. If neither occurs within 10 s the
-        /// pay-tap silently did nothing — a regression worth flagging.
+        /// Expect one of: the app backgrounded (deeplink succeeded) or the
+        /// Install App bottom sheet appeared (bank not installed on this device).
+        /// Either signals the handoff was attempted. If neither occurs within
+        /// 10 s the pay-tap silently did nothing — a regression worth flagging.
+        ///
+        /// The sheet's accessibility identifiers are not set upstream
+        /// (`InstallAppBottomView` in `GiniInternalPaymentSDK`), so we match on
+        /// stable phrases from its localised strings:
+        ///   - button "Forward" (EN) / "Weiter" (DE) — unique to this sheet.
+        ///   - note containing "install" (EN) / "installieren" (DE) — covers
+        ///     both locales via `CONTAINS[c]`.
+        ///   - the "App Store" / "App-Store" footer label.
+        let installPhraseAny = app.descendants(matching: .any)
+            .matching(NSPredicate(format:
+                "label CONTAINS[c] 'install' OR label CONTAINS[c] 'App Store' OR label CONTAINS[c] 'App-Store'"))
+            .firstMatch
+        let forwardButton = app.buttons
+            .matching(NSPredicate(format: "label IN %@", ["Forward", "Weiter"]))
+            .firstMatch
         let appStateDeadline = Date().addingTimeInterval(10)
         var handoffDetected = false
         while Date() < appStateDeadline {
@@ -308,14 +363,13 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
                 handoffDetected = true
                 break
             }
-            let installAppIndicator = app.staticTexts["Install App"].firstMatch
-            if installAppIndicator.exists {
+            if forwardButton.exists || installPhraseAny.exists {
                 handoffDetected = true
                 break
             }
             Thread.sleep(forTimeInterval: 0.5)
         }
         XCTAssertTrue(handoffDetected,
-                      "Pay button tap did not produce a handoff signal (no app background, no Install App sheet) within 10 s.")
+                      "Pay button tap did not produce a handoff signal (no app background, no Install App bottom sheet) within 10 s.")
     }
 }
