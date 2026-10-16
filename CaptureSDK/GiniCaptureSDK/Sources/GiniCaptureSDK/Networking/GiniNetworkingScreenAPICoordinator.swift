@@ -107,12 +107,7 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     }
     
     /**
-     Instance wrapper around `Self.mapWeroExtractions(_:scannedPayload:)` that
-     looks up the raw scanned payload from the first `GiniQRCodeDocument` in
-     the coordinator's `pages`. Non-camera uploads (picture / PDF open-with)
-     have no `GiniQRCodeDocument` so the lookup returns `nil` and the pure
-     mapper leaves the result unchanged — the existing no-results flow then
-     fires, matching today's behaviour for a picture/PDF of a Wero QR code.
+     Looks up the scanned payload from `pages` and feeds it to `mapWeroExtractions`.
      */
     public func mapWeroExtractionsIfApplicable(_ result: ExtractionResult) -> ExtractionResult {
         let scannedPayload = pages.lazy
@@ -122,33 +117,9 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     }
 
     /**
-     Transforms an `/analysis` extraction result into the Wero-specific
-     single-extraction result when the backend has classified the uploaded
-     payload as a Wero QR code.
-
-     Preconditions for the Wero rewrite — all must hold or the input is
-     returned unchanged (so recognised codes and non-Wero backend responses
-     keep their current path):
-
-       - `GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled` is `true`
-         (seeded from the backend `ClientConfiguration`). Nil / unset reads as
-         `false` — fail-closed.
-       - `result.extractions` contains an entry whose `name` or `entity`
-         equals `QRCodesExtractor.paymentQRCodeTypeKey` with its `value`
-         equal to `QRCodesExtractor.weroPaymentQRCodeTypeValue`
-         (case-insensitive on both).
-       - `scannedPayload` is non-nil — the raw payload scanned on-device,
-         used verbatim as the extraction value. The backend classifies but
-         does not echo the URL.
-
-     When all three hold, the output is a result containing exactly one
-     `Extraction` with `box: nil`, `candidates: nil`,
-     `entity == name == weroPaymentQRCodeUrlKey`, and `value` set to
-     `scannedPayload`. Compound extractions and candidates are cleared so
-     the result mirrors the EPS single-extraction shape delivered to
-     integrators.
-
-     Pure of coordinator state so it can be unit-tested in isolation.
+     Rewrites `result` to a single `weroPaymentQRCodeUrl` extraction when the
+     Wero flag is on, the backend tagged the payload as Wero, and a scanned
+     payload is available. Returns `result` unchanged otherwise.
      */
     public static func mapWeroExtractions(_ result: ExtractionResult,
                                           scannedPayload: String?) -> ExtractionResult {
@@ -171,10 +142,7 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     }
 
     /**
-     Backend classification of the uploaded payload as a Wero QR code — the
-     `name`/`entity` key and the `wero` value are both compared
-     case-insensitively so a casing drift between environments can't flip
-     the recognition off.
+     Case-insensitive match for a `paymentQRCodeType = wero` extraction.
      */
     private static func isWeroPaymentQRCodeTypeExtraction(_ extraction: Extraction) -> Bool {
         let key = QRCodesExtractor.paymentQRCodeTypeKey
@@ -206,7 +174,6 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else if self.shouldRouteBackToCameraForWeroFallback(extractionResult: result) {
-                /// Wero fallback — see docstring on the helper.
                 analysisDelegate.tryDisplayInvalidQRMessage?()
                 self.documentService.resetToInitialState()
             } else {
@@ -217,12 +184,8 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     }
 
     /**
-     Mirror of the BankSDK helper — same contract, lives on the CaptureSDK
-     coordinator so integrators who use the default networking flow (without
-     BankSDK) also get the Wero fallback UX. Only fires when `pages` holds a
-     Wero candidate (camera-scanned `GiniQRCodeDocument` with
-     `qrCodeFormat == nil`) — recognised QR formats that happen to be
-     uploaded for extraction are not hijacked.
+     True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
+     flag is on, and the result carries no `weroPaymentQRCodeUrl`.
      */
     func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false

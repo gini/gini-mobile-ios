@@ -104,20 +104,12 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             guard let cameraVC = self.screenAPINavigationController
                 .viewControllers
                 .first(where: { $0 is CameraViewController }) as? CameraViewController else {
-                /// Camera isn't in the nav stack (unlikely — upload path implies camera was there).
-                /// Fall back to the pre-existing no-results screen rather than silently losing the response.
                 self.tryDisplayNoResultsScreen()
                 return
             }
-            /// Drop the just-uploaded `GiniQRCodeDocument` from `pages`.
-            /// Without this the next scan appends a second QR document, the
-            /// composite upload includes both, and the Review-screen thumbnail
-            /// path hits `UIImage.downsample` on QR JSON data and crashes.
             self.clearDocuments()
             self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
-            /// Showing the alert after the pop lets the modal present on top of the
-            /// settled camera; without the delay the alert can arrive before the nav
-            /// transition completes and get swallowed.
+            /// Delay so the alert presents after the pop transition settles.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 cameraVC.showUnsupportedQRCodeFeedback()
             }

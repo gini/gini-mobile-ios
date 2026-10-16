@@ -51,7 +51,7 @@ public struct ClientConfiguration: Codable {
      - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the payment-hint bottom sheet is enabled.
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      - ingredientBrandScreens: Screen names on which the "Powered by Gini" ingredient brand is shown. An empty array disables it everywhere.
-     - weroQRCodeScanningEnabled: A flag indicating whether Wero QR code scanning is enabled. When `true`, unknown QR payloads are uploaded to the backend for Wero classification; when `false`, unknown payloads trigger the "unsupported QR code" flow as before.
+     - weroQRCodeScanningEnabled: A flag indicating whether Wero QR code scanning is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,

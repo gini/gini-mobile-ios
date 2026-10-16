@@ -30,15 +30,7 @@ import GiniUtilites
     func tryDisplayNoResultsScreen()
 
     /**
-     Routes the user back to the camera and surfaces the "unsupported QR
-     code" feedback the camera shows for unknown QR payloads, instead of
-     pushing the no-results screen. Used by the Wero flow when the backend
-     uploads an unknown QR candidate but returns no classification — so the
-     user ends up in the same visual state as if the camera itself had
-     rejected the payload client-side.
-
-     Added as `@objc optional` so integrators that implement
-     `AnalysisDelegate` directly keep compiling without changes.
+     Routes the user back to the camera and surfaces the "unsupported QR code" feedback.
      */
     @objc optional func tryDisplayInvalidQRMessage()
 }

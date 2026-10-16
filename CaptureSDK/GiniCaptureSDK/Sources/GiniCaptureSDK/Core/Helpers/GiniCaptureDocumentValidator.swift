@@ -128,12 +128,7 @@ fileprivate extension GiniCaptureDocumentValidator {
             // SPD IBANs include non-SEPA formats; require presence but not strict validation.
             try validateNonEmptyIBAN(in: document)
         case .none:
-            // Wero candidate: on-device recognition can't tell a Wero URL (legacy iDEAL,
-            // legacy Payconiq, or native Wero) from any other unknown payload, so when the
-            // Wero flag is enabled the SDK lets the unknown QR through validation and the
-            // backend classifies it via `paymentQRCodeType` in the extraction response.
-            // Flag off (or unset) keeps today's behaviour: throw and surface the
-            // "unsupported QR code" alert without uploading.
+            /// When the Wero flag is on, let unknown payloads through so the backend can classify them.
             let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
             guard weroEnabled else {
                 throw DocumentValidationError.qrCodeFormatNotValid

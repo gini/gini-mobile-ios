@@ -67,25 +67,17 @@ public final class QRCodesExtractor {
     public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
 
     /**
-     Extraction key under which the SDK delivers a recognised Wero URL to the
-     host app via the existing `giniCaptureAnalysisDidFinishWith(result:)`
-     callback. Mirrors `epsCodeUrlKey` in shape; the value is the raw scanned
-     payload (iDEAL / Payconiq / native Wero), forwarded verbatim.
+     Extraction key delivering a recognised Wero URL to the host app.
      */
     public static let weroPaymentQRCodeUrlKey = "weroPaymentQRCodeUrl"
 
     /**
-     Backend extraction key carrying the classification label for the
-     uploaded QR payload (`"epc"`, `"wero"`, `"other"`, …). The SDK reads
-     this on the `/analysis` response and surfaces a Wero result only when
-     the value equals `weroPaymentQRCodeTypeValue` (case-insensitive).
+     Backend extraction key carrying the QR classification label.
      */
     public static let paymentQRCodeTypeKey = "paymentQRCodeType"
 
     /**
-     Expected `paymentQRCodeType` value for a Wero-classified payload.
-     Compared case-insensitively against the backend response so a casing
-     drift between environments cannot flip the recognition off.
+     `paymentQRCodeType` value that marks a Wero-classified payload.
      */
     public static let weroPaymentQRCodeTypeValue = "wero"
 

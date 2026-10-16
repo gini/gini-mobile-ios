@@ -534,11 +534,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        /// Wero fallback: a camera-scanned QR passed the Wero gate, got
-        /// uploaded, and the backend returned no classification (nor any
-        /// payment extractions). Route back to the camera's "unsupported QR
-        /// code" feedback instead of pushing the no-results screen — matches
-        /// the pre-Wero behaviour for an unknown QR scanned on-device.
         if shouldRouteBackToCameraForWeroFallback(extractionResult: extractionResult) {
             delegate.tryDisplayInvalidQRMessage?()
             documentService.resetToInitialState()
@@ -993,21 +988,8 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     /**
-     Decides whether the Wero fallback UX ("back to camera + unsupported-QR
-     feedback") should fire instead of the regular delivery path. True iff
-     all of the following hold:
-
-     - The Wero feature flag is on in `GiniCaptureUserDefaultsStorage` (i.e.
-       the backend's `/configurations` enabled Wero for this client).
-     - `pages` contains a camera-scanned `GiniQRCodeDocument` whose
-       `qrCodeFormat` is `nil` — i.e. this upload only reached the backend
-       because the Wero gate let an unrecognised payload through. Recognised
-       QR formats (BezahlCode, EPC, Stuzza, Swiss QR-bill, …) also upload
-       via `/document` for extraction, and the Wero fallback must not
-       hijack their payment-extraction result.
-     - The post-mapper extraction result does not contain the
-       `weroPaymentQRCodeUrl` key (i.e. backend did not classify this URL as
-       Wero, or returned no classification at all).
+     True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
+     flag is on, and the result carries no `weroPaymentQRCodeUrl`.
      */
     func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false

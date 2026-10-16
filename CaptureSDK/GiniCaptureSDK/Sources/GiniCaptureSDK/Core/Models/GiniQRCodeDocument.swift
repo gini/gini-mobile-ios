@@ -49,12 +49,7 @@ import GiniUtilites
     let scannedString: String
 
     /**
-     The raw payload read from the QR code, as scanned. Exposed so networking
-     code (including the BankSDK coordinator that handles Wero classification)
-     can forward unknown payloads verbatim as the extraction value, without
-     round-tripping through the backend. The payment-data contract remains
-     `data` / `extractedParameters`; this accessor is intended for SDK-internal
-     networking paths.
+     The raw payload read from the QR code, as scanned.
      */
     public var scannedPayload: String { scannedString }
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
