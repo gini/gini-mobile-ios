@@ -534,7 +534,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        if shouldRouteBackToCameraForWeroFallback(extractionResult: extractionResult) {
+        if GiniNetworkingScreenAPICoordinator.shouldRouteBackToCameraForWeroFallback(pages: pages,
+                                                                                     extractionResult: extractionResult) {
             delegate.tryDisplayInvalidQRMessage?()
             documentService.resetToInitialState()
             return
@@ -985,25 +986,6 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func shouldShowNoResultsForCrossBorder(for result: ExtractionResult) -> Bool {
         guard isCrossBorderPayment() else { return false }
         return result.crossBorderPayment == nil || result.crossBorderPayment?.isEmpty == true
-    }
-
-    /**
-     True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
-     flag is on, and the result carries no `weroPaymentQRCodeUrl`.
-     */
-    func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
-        let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
-        guard weroEnabled else { return false }
-        let weroCandidateInPages = pages.contains(where: { page in
-            guard let qrDocument = page.document as? GiniQRCodeDocument else { return false }
-            return qrDocument.qrCodeFormat == nil
-        })
-        guard weroCandidateInPages else { return false }
-        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
-        let hasWeroExtraction = extractionResult.extractions.contains { extraction in
-            extraction.name == weroKey || extraction.entity == weroKey
-        }
-        return !hasWeroExtraction
     }
 
     /**

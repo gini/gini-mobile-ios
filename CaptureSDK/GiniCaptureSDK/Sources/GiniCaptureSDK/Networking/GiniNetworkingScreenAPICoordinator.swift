@@ -109,7 +109,7 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     /**
      Looks up the scanned payload from `pages` and feeds it to `mapWeroExtractions`.
      */
-    public func mapWeroExtractionsIfApplicable(_ result: ExtractionResult) -> ExtractionResult {
+    func mapWeroExtractionsIfApplicable(_ result: ExtractionResult) -> ExtractionResult {
         let scannedPayload = pages.lazy
             .compactMap({ $0.document as? GiniQRCodeDocument })
             .first?.scannedPayload
@@ -173,7 +173,8 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                                             candidates: result.candidates)
 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-            } else if self.shouldRouteBackToCameraForWeroFallback(extractionResult: result) {
+            } else if Self.shouldRouteBackToCameraForWeroFallback(pages: self.pages,
+                                                                  extractionResult: result) {
                 analysisDelegate.tryDisplayInvalidQRMessage?()
                 self.documentService.resetToInitialState()
             } else {
@@ -185,9 +186,12 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
 
     /**
      True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
-     flag is on, and the result carries no `weroPaymentQRCodeUrl`.
+     flag is on, and `extractionResult` carries no `weroPaymentQRCodeUrl`.
+     Pure of coordinator state so both the CaptureSDK and BankSDK networking
+     coordinators can share the gate without duplicating the logic.
      */
-    func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
+    public static func shouldRouteBackToCameraForWeroFallback(pages: [GiniCapturePage],
+                                                              extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
         guard weroEnabled else { return false }
         let weroCandidateInPages = pages.contains(where: { page in
@@ -196,10 +200,9 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
         })
         guard weroCandidateInPages else { return false }
         let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
-        let hasWeroExtraction = extractionResult.extractions.contains { extraction in
+        return !extractionResult.extractions.contains { extraction in
             extraction.name == weroKey || extraction.entity == weroKey
         }
-        return !hasWeroExtraction
     }
 }
 

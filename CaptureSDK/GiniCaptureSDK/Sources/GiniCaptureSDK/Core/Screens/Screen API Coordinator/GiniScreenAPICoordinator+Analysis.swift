@@ -110,10 +110,14 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             self.clearDocuments()
             self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
             /// Delay so the alert presents after the pop transition settles.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + WeroFallbackConstants.popToCameraSettleDelay) {
                 cameraVC.showUnsupportedQRCodeFeedback()
             }
         }
+    }
+
+    private enum WeroFallbackConstants {
+        static let popToCameraSettleDelay: TimeInterval = 0.4
     }
 
     public func tryDisplayNoResultsScreen() {
