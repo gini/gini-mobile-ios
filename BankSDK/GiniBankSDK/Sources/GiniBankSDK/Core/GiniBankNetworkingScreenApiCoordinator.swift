@@ -994,13 +994,17 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
 
     /**
      Decides whether the Wero fallback UX ("back to camera + unsupported-QR
-     feedback") should fire instead of the no-results screen. True iff all
-     of the following hold:
+     feedback") should fire instead of the regular delivery path. True iff
+     all of the following hold:
 
      - The Wero feature flag is on in `GiniCaptureUserDefaultsStorage` (i.e.
        the backend's `/configurations` enabled Wero for this client).
-     - `pages` contains a camera-scanned `GiniQRCodeDocument` — not a
-       picture or PDF upload, where the no-results screen remains correct.
+     - `pages` contains a camera-scanned `GiniQRCodeDocument` whose
+       `qrCodeFormat` is `nil` — i.e. this upload only reached the backend
+       because the Wero gate let an unrecognised payload through. Recognised
+       QR formats (BezahlCode, EPC, Stuzza, Swiss QR-bill, …) also upload
+       via `/document` for extraction, and the Wero fallback must not
+       hijack their payment-extraction result.
      - The post-mapper extraction result does not contain the
        `weroPaymentQRCodeUrl` key (i.e. backend did not classify this URL as
        Wero, or returned no classification at all).
@@ -1008,8 +1012,11 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
         guard weroEnabled else { return false }
-        let cameraScannedQR = pages.contains(where: { $0.document is GiniQRCodeDocument })
-        guard cameraScannedQR else { return false }
+        let weroCandidateInPages = pages.contains(where: { page in
+            guard let qrDocument = page.document as? GiniQRCodeDocument else { return false }
+            return qrDocument.qrCodeFormat == nil
+        })
+        guard weroCandidateInPages else { return false }
         let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
         let hasWeroExtraction = extractionResult.extractions.contains { extraction in
             extraction.name == weroKey || extraction.entity == weroKey

@@ -219,13 +219,19 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     /**
      Mirror of the BankSDK helper — same contract, lives on the CaptureSDK
      coordinator so integrators who use the default networking flow (without
-     BankSDK) also get the Wero fallback UX.
+     BankSDK) also get the Wero fallback UX. Only fires when `pages` holds a
+     Wero candidate (camera-scanned `GiniQRCodeDocument` with
+     `qrCodeFormat == nil`) — recognised QR formats that happen to be
+     uploaded for extraction are not hijacked.
      */
     func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
         guard weroEnabled else { return false }
-        let cameraScannedQR = pages.contains(where: { $0.document is GiniQRCodeDocument })
-        guard cameraScannedQR else { return false }
+        let weroCandidateInPages = pages.contains(where: { page in
+            guard let qrDocument = page.document as? GiniQRCodeDocument else { return false }
+            return qrDocument.qrCodeFormat == nil
+        })
+        guard weroCandidateInPages else { return false }
         let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
         let hasWeroExtraction = extractionResult.extractions.contains { extraction in
             extraction.name == weroKey || extraction.entity == weroKey
