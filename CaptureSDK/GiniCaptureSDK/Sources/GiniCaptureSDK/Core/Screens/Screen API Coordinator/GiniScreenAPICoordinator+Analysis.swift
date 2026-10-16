@@ -109,6 +109,11 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                 self.tryDisplayNoResultsScreen()
                 return
             }
+            /// Drop the just-uploaded `GiniQRCodeDocument` from `pages`.
+            /// Without this the next scan appends a second QR document, the
+            /// composite upload includes both, and the Review-screen thumbnail
+            /// path hits `UIImage.downsample` on QR JSON data and crashes.
+            self.clearDocuments()
             self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
             /// Showing the alert after the pop lets the modal present on top of the
             /// settled camera; without the delay the alert can arrive before the nav

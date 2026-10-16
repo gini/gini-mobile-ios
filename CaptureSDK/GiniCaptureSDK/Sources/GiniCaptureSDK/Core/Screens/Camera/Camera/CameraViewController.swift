@@ -579,8 +579,16 @@ final class CameraViewController: UIViewController {
      The dedup nil-out and camera-detection resume both live inside the
      alert's "Scan another QR code" action — we only need to clear the
      visuals left over from the upload hop here.
+
+     `hideAnimation()` is called before setting `isHidden = true` because
+     the overlay's child containers (`loadingContainer`, `educationLoadingView`)
+     keep their own `isHidden` state. Without this, the next scan reveals
+     the parent overlay while the loading container is still internally
+     visible, and the checkmark painted by `configureQrCodeOverlay` renders
+     on top of the retrieving-invoice animation.
      */
     public func showUnsupportedQRCodeFeedback() {
+        qrCodeOverLay.hideAnimation()
         qrCodeOverLay.isHidden = true
         cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
         cameraPane.isUserInteractionEnabled = true
@@ -624,6 +632,10 @@ final class CameraViewController: UIViewController {
         cameraPaneHorizontal?.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
+            // Hide the small QR-only-mode brackets if they were turned on by
+            // handleScanAnotherQRCode — otherwise they stay drawn inside the
+            // big processing overlay on the next scan.
+            self.cameraPreviewViewController.qrCodeFrameView.isHidden = true
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
 
