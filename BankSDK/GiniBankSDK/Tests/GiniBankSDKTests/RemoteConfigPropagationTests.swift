@@ -47,6 +47,20 @@ extension GiniConfigurationSharedStateSuite {
             #expect(GiniCaptureUserDefaultsStorage.ingredientBrandScreens == [])
         }
 
+        @Test("weroQRCodeScanningEnabled=true from remote config is written to storage")
+        func propagatesWeroQRCodeScanningEnabledTrue() async {
+            await runStartSDK(withWeroQRCodeScanningEnabled: true)
+
+            #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == true)
+        }
+
+        @Test("weroQRCodeScanningEnabled=false from remote config is written to storage")
+        func propagatesWeroQRCodeScanningEnabledFalse() async {
+            await runStartSDK(withWeroQRCodeScanningEnabled: false)
+
+            #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == false)
+        }
+
         // MARK: - Helpers
 
         private func runStartSDK(withUnsupportedQRCodeWarningEnabled flag: Bool) async {
@@ -99,8 +113,33 @@ extension GiniConfigurationSharedStateSuite {
             GiniBank.closeCurrentSDK()
         }
 
+        private func runStartSDK(withWeroQRCodeScanningEnabled flag: Bool) async {
+            GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = nil
+
+            let configuration = makeClientConfiguration(weroQRCodeScanningEnabled: flag)
+            let configService = MockClientConfigurationService(result: .success(configuration))
+
+            let coordinator = GiniBankNetworkingScreenApiCoordinator(
+                resultsDelegate: MockCaptureResultsDelegate(),
+                configuration: GiniBankConfiguration(),
+                documentMetadata: nil,
+                trackingDelegate: nil,
+                captureNetworkService: MockCaptureNetworkService(),
+                configurationService: configService
+            )
+
+            _ = coordinator.startSDK(withDocuments: nil, animated: false)
+
+            await withCheckedContinuation { continuation in
+                DispatchQueue.main.async { continuation.resume() }
+            }
+
+            GiniBank.closeCurrentSDK()
+        }
+
         private func makeClientConfiguration(unsupportedQRCodeWarningEnabled: Bool = false,
-                                             ingredientBrandScreens: [String] = []) -> ClientConfiguration {
+                                             ingredientBrandScreens: [String] = [],
+                                             weroQRCodeScanningEnabled: Bool = false) -> ClientConfiguration {
             ClientConfiguration(clientID: "test",
                                 userJourneyAnalyticsEnabled: false,
                                 skontoEnabled: false,
@@ -115,7 +154,8 @@ extension GiniConfigurationSharedStateSuite {
                                 creditNoteHintEnabled: false,
                                 paymentScheduleHintEnabled: false,
                                 unsupportedQRCodeWarningEnabled: unsupportedQRCodeWarningEnabled,
-                                ingredientBrandScreens: ingredientBrandScreens)
+                                ingredientBrandScreens: ingredientBrandScreens,
+                                weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
         }
     }
 }
