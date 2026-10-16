@@ -310,6 +310,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
                     GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
+                    GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = configuration.weroQRCodeScanningEnabled
                     self.prewarmIngredientBrandIndicatorIfEnabled(for: configuration)
                     self.initializeAnalytics(with: configuration)
                 }
@@ -496,9 +497,14 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
+                let scannedPayload = self.pages.lazy
+                    .compactMap({ $0.document as? GiniQRCodeDocument })
+                    .first?.scannedPayload
+                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(extractionResult,
+                                                                                   scannedPayload: scannedPayload)
                 self.setDocumentIdAsUserProperty()
                 Task {
-                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                    await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
                 }
             case .failure(let error):
                 guard error != .requestCancelled else { return }
@@ -527,6 +533,13 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
+
+        if GiniNetworkingScreenAPICoordinator.shouldRouteBackToCameraForWeroFallback(pages: pages,
+                                                                                     extractionResult: extractionResult) {
+            delegate.tryDisplayInvalidQRMessage?()
+            documentService.resetToInitialState()
+            return
+        }
 
         // Cross border flow: if no crossBorderPayment extractions were returned, show
         // the no-results screen instead of delivering anything to the bank.

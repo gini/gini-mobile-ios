@@ -1,0 +1,52 @@
+{
+    "wero_type_only": {
+        "paymentQRCodeType": {
+            "entity": "paymentqrcodetype",
+            "value": "wero"
+        }
+    },
+    "wero_with_payment_extractions": {
+        "paymentQRCodeType": {
+            "entity": "paymentqrcodetype",
+            "value": "wero"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE89370400440532013000"
+        },
+        "amountToPay": {
+            "entity": "amount",
+            "value": "47.65:EUR"
+        },
+        "paymentRecipient": {
+            "entity": "companyname",
+            "value": "Gini Online Shop"
+        }
+    },
+    "wero_mixed_case": {
+        "PaymentQRCodeType": {
+            "entity": "PaymentQRCodeType",
+            "value": "WERO"
+        }
+    },
+    "non_wero_classification": {
+        "paymentQRCodeType": {
+            "entity": "paymentqrcodetype",
+            "value": "epc"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE89370400440532013000"
+        }
+    },
+    "missing_payment_qr_code_type": {
+        "iban": {
+            "entity": "iban",
+            "value": "DE89370400440532013000"
+        },
+        "amountToPay": {
+            "entity": "amount",
+            "value": "47.65:EUR"
+        }
+    }
+}

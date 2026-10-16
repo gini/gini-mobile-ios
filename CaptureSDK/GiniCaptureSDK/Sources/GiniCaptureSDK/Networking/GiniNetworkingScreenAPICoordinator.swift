@@ -106,31 +106,102 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                   lib: lib)
     }
     
+    /**
+     Looks up the scanned payload from `pages` and feeds it to `mapWeroExtractions`.
+     */
+    func mapWeroExtractionsIfApplicable(_ result: ExtractionResult) -> ExtractionResult {
+        let scannedPayload = pages.lazy
+            .compactMap({ $0.document as? GiniQRCodeDocument })
+            .first?.scannedPayload
+        return Self.mapWeroExtractions(result, scannedPayload: scannedPayload)
+    }
+
+    /**
+     Rewrites `result` to a single `weroPaymentQRCodeUrl` extraction when the
+     Wero flag is on, the backend tagged the payload as Wero, and a scanned
+     payload is available. Returns `result` unchanged otherwise.
+     */
+    public static func mapWeroExtractions(_ result: ExtractionResult,
+                                          scannedPayload: String?) -> ExtractionResult {
+        let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
+        guard weroEnabled,
+              result.extractions.contains(where: isWeroPaymentQRCodeTypeExtraction),
+              let scannedPayload else {
+            return result
+        }
+        let weroExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: QRCodesExtractor.weroPaymentQRCodeUrlKey,
+                                        value: scannedPayload,
+                                        name: QRCodesExtractor.weroPaymentQRCodeUrlKey)
+        return ExtractionResult(extractions: [weroExtraction],
+                                lineItems: nil,
+                                skontoDiscounts: nil,
+                                crossBorderPayment: nil,
+                                candidates: [:])
+    }
+
+    /**
+     Case-insensitive match for a `paymentQRCodeType = wero` extraction.
+     */
+    private static func isWeroPaymentQRCodeTypeExtraction(_ extraction: Extraction) -> Bool {
+        let key = QRCodesExtractor.paymentQRCodeTypeKey
+        let matchesKey = extraction.name?.caseInsensitiveCompare(key) == .orderedSame
+            || extraction.entity.caseInsensitiveCompare(key) == .orderedSame
+        return matchesKey
+            && extraction.value.caseInsensitiveCompare(QRCodesExtractor.weroPaymentQRCodeTypeValue) == .orderedSame
+    }
+
     public func deliver(result: ExtractionResult, and document: Document? = nil, to analysisDelegate: AnalysisDelegate) {
         let hasExtactions = result.extractions.count > 0
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if hasExtactions {
                 let images = self.pages.compactMap { $0.document.previewImage }
                 let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
                     guard let name = $0.name else { return nil }
-                    
+
                     return (name, $0)
                 })
-                
-                
-                let result = AnalysisResult(extractions: extractions, 
+
+
+                let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
                                             document: document,
                                             candidates: result.candidates)
 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+            } else if Self.shouldRouteBackToCameraForWeroFallback(pages: self.pages,
+                                                                  extractionResult: result) {
+                analysisDelegate.tryDisplayInvalidQRMessage?()
+                self.documentService.resetToInitialState()
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
+        }
+    }
+
+    /**
+     True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
+     flag is on, and `extractionResult` carries no `weroPaymentQRCodeUrl`.
+     Pure of coordinator state so both the CaptureSDK and BankSDK networking
+     coordinators can share the gate without duplicating the logic.
+     */
+    public static func shouldRouteBackToCameraForWeroFallback(pages: [GiniCapturePage],
+                                                              extractionResult: ExtractionResult) -> Bool {
+        let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
+        guard weroEnabled else { return false }
+        let weroCandidateInPages = pages.contains(where: { page in
+            guard let qrDocument = page.document as? GiniQRCodeDocument else { return false }
+            return qrDocument.qrCodeFormat == nil
+        })
+        guard weroCandidateInPages else { return false }
+        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        return !extractionResult.extractions.contains { extraction in
+            extraction.name == weroKey || extraction.entity == weroKey
         }
     }
 }
@@ -142,7 +213,8 @@ extension GiniNetworkingScreenAPICoordinator {
         self.documentService.startAnalysis { result in
             switch result {
             case .success(let extractions):
-                self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
+                let mapped = self.mapWeroExtractionsIfApplicable(extractions)
+                self.deliver(result: mapped, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
                 guard error != .requestCancelled else { return }
                 DispatchQueue.main.async {

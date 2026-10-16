@@ -46,7 +46,12 @@ import GiniUtilites
 
         return try? JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
     }()
-    fileprivate let scannedString: String
+    let scannedString: String
+
+    /**
+     The raw payload read from the QR code, as scanned.
+     */
+    public var scannedPayload: String { scannedString }
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     public lazy var qrCodeFormat: QRCodesFormat? = {

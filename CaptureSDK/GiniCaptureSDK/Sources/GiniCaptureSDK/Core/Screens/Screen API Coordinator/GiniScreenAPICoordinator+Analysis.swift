@@ -98,6 +98,28 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
 
+    public func tryDisplayInvalidQRMessage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            guard let cameraVC = self.screenAPINavigationController
+                .viewControllers
+                .first(where: { $0 is CameraViewController }) as? CameraViewController else {
+                self.tryDisplayNoResultsScreen()
+                return
+            }
+            self.clearDocuments()
+            self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
+            /// Delay so the alert presents after the pop transition settles.
+            DispatchQueue.main.asyncAfter(deadline: .now() + WeroFallbackConstants.popToCameraSettleDelay) {
+                cameraVC.showUnsupportedQRCodeFeedback()
+            }
+        }
+    }
+
+    private enum WeroFallbackConstants {
+        static let popToCameraSettleDelay: TimeInterval = 0.4
+    }
+
     public func tryDisplayNoResultsScreen() {
         var shouldDisplay = false
         var noResultType: NoResultScreenViewController.NoResultType?

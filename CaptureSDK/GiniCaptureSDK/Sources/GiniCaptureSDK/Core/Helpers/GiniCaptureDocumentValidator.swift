@@ -128,7 +128,11 @@ fileprivate extension GiniCaptureDocumentValidator {
             // SPD IBANs include non-SEPA formats; require presence but not strict validation.
             try validateNonEmptyIBAN(in: document)
         case .none:
-            throw DocumentValidationError.qrCodeFormatNotValid
+            /// When the Wero flag is on, let unknown payloads through so the backend can classify them.
+            let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
+            guard weroEnabled else {
+                throw DocumentValidationError.qrCodeFormatNotValid
+            }
         }
     }
 

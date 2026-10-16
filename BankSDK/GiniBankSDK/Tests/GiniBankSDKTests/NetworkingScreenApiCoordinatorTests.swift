@@ -596,7 +596,8 @@ extension ClientConfiguration {
     init(alreadyPaidHintEnabled: Bool = false,
          paymentDueHintEnabled: Bool = false,
          creditNoteHintEnabled: Bool = false,
-         paymentScheduleHintEnabled: Bool = false) {
+         paymentScheduleHintEnabled: Bool = false,
+         weroQRCodeScanningEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -610,6 +611,8 @@ extension ClientConfiguration {
                   paymentDueHintEnabled: paymentDueHintEnabled,
                   creditNoteHintEnabled: creditNoteHintEnabled,
                   paymentScheduleHintEnabled: paymentScheduleHintEnabled,
-                  unsupportedQRCodeWarningEnabled: false)
+                  unsupportedQRCodeWarningEnabled: false,
+                  ingredientBrandScreens: [],
+                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
     }
 }
