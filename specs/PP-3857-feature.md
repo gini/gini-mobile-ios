@@ -1,11 +1,12 @@
 # PP-3857: [iOS] Return Wero URL for unrecognised QR codes
 
-Status: in progress
+Status: implemented, tests green (CVIE classification pending — see Rollout)
 Ticket: https://ginis.atlassian.net/browse/PP-3857
 Parent epic: PP-2666 "[Q4] Wero QR code support"
-Backend companion: PP-3856 "[BAC] Wero client feature flag — per client" — **DEPLOYED** (the
-backend's `ClientConfiguration` payload now carries `weroQRCodeScanningEnabled`).
-Branch: `feat/wero-qr-code`
+Backend companions:
+- PP-3856 "[BAC] Wero client feature flag — per client" — **DEPLOYED** (`/configurations` carries `weroQRCodeScanningEnabled`).
+- PP-3860 "[CVIE] Label mapping for paymentQRCodeType in general extractions, including Wero" — **PENDING**. Until CVIE ships, the backend returns no `paymentQRCodeType` label, so every unknown URL falls through to the AC6 fallback (camera + "unsupported QR" alert) by design.
+Branch: `feat/PP-3857-wero-qr-support`
 
 ## Source documents (read in full before implementation)
 
@@ -30,7 +31,7 @@ Branch: `feat/wero-qr-code`
 | 2 | It's a payment QR we already support | Nothing changes |
 | 3 | It's unknown and the customer has Wero enabled | Short processing indicator (~1–2 s) while the SDK checks with the backend — the existing QR `/document` upload indicator, which follows the ingredient-brand rule (D7 / R10) |
 | 4 | Wero confirmed by backend | App receives `weroPaymentQRCodeUrl` through the existing extraction callback |
-| 5 | Not Wero, or unknown QR code | Familiar "unsupported QR code" message, unchanged |
+| 5 | Not Wero, or unknown QR code | Camera's "unsupported QR code" feedback — nav stack pops back to the camera and `handleInvalidQRCode()` fires. See D8 for the fallback mechanics; the user-visible wording / alert style is unchanged. |
 | 6 | Backend check fails (error or timeout) | Reuse the existing `/document` partial-upload error flow — no Wero-specific branch |
 
 ## Problem
@@ -116,11 +117,12 @@ code hit (Q10 in PP-3511) does not apply here: the flag is read inside
   `paymentQRCodeType = wero` as the signal.
 - **D4 — Backend errors go through the existing QR `/document` error flow.** No bespoke Wero
   error handling.
-- **D5 — Picture / PDF open-with paths follow the same gate.** The flag is read before the
-  upload fires, regardless of source. For picture / PDF uploads of a Wero QR, there is no
-  on-device `GiniQRCodeDocument` to pull the raw payload from — the mapper returns the
-  extraction result unchanged, so the existing no-results flow fires (per user decision
-  during implementation review).
+- **D5 — Picture / PDF open-with paths keep today's no-results screen.** For picture / PDF
+  uploads of a Wero QR there is no on-device `GiniQRCodeDocument` to pull the raw payload
+  from — the mapper returns the extraction result unchanged and the AC6 fallback (D8) does
+  not fire (`shouldRouteBackToCameraForWeroFallback` requires a camera-scanned
+  `GiniQRCodeDocument` in `pages`), so the pre-existing no-results screen remains the
+  terminal state for this source.
 - **D6 — The SDK does not parse the Wero URL structure.** Backend owns classification. No
   client-side URL parser, no domain allow-list, no MSCT structural check. Keeps R9
   (keyword independence) honest.
@@ -128,6 +130,15 @@ code hit (Q10 in PP-3511) does not apply here: the flag is read inside
   override.** The ~1–2 s overlay shown during the Wero `/document` upload is the existing QR
   overlay. Its indicator selection already honours `ingredientBrandScreens` via PP-3511's
   `IngredientBrandScreen.isEnabled` — nothing new needed. See R10.
+- **D8 — Non-Wero / no-classification response routes back to the camera, not the no-results
+  screen.** The `/analysis` no-results screen is a nav push with "Retake images" / "Enter
+  manually" buttons — meaningless for a user who scanned exactly one QR. The AC6 fallback
+  pops the nav stack back to the `CameraViewController` and triggers `handleInvalidQRCode()`,
+  so the user ends up in the same visual state as if the camera itself had rejected the
+  payload client-side (modal alert when `unsupportedQRCodeWarningEnabled` is true, yellow
+  overlay otherwise). Gate narrowed to `qrCodeFormat == nil` so recognised formats
+  (BezahlCode, EPC, Stuzza, Swiss QR-bill, …) that happen to upload via `/document` for
+  extraction keep their payment-extraction result delivery untouched.
 
 ## Requirements
 
@@ -146,7 +157,8 @@ Numbered so unit tests and PR review can tag back.
   today's behaviour for every unknown QR code.
 - **R3 (MUST, unhappy path, not Wero).** Given the Wero flag is ON and the backend returns
   `paymentQRCodeType` either missing or not equal to `wero`, no `weroPaymentQRCodeUrl`
-  extraction is produced and the existing "unsupported QR code" UX fires.
+  extraction is produced and the camera-side "unsupported QR code" feedback fires via the
+  AC6 fallback (nav pops back to camera, `handleInvalidQRCode()` runs). See D8.
 - **R4 (MUST, configuration seam).** The Wero flag is read via
   `GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled` (seeded from
   `ClientConfiguration.weroQRCodeScanningEnabled`). The default when the backend omits the
@@ -158,11 +170,20 @@ Numbered so unit tests and PR review can tag back.
 - **R6 (MUST, backend error).** When `/document` upload or `/analysis` fails (HTTP 5xx or
   network failure) while the Wero flag is ON, the SDK surfaces the same error UX a
   GiroCode upload failure takes today. No Wero-specific error branch.
-- **R7 (MUST, no public API change).** The only addition to the SDK's public surface is
-  (a) the string value `"weroPaymentQRCodeUrl"` as an extraction key, and (b) one new
-  `ClientConfiguration` field (`weroQRCodeScanningEnabled: Bool`) that integrators do not
-  construct themselves — the SDK consumes it from the backend. No new delegate method, no
-  new callback, no new builder step.
+- **R7 (MUST, additive public API only).** Additions:
+  (a) `"weroPaymentQRCodeUrl"` extraction key — consumed via `AnalysisResult.extractions`.
+  (b) `ClientConfiguration.weroQRCodeScanningEnabled: Bool` field with `= false` default —
+      integrators do not construct this manually.
+  (c) `AnalysisDelegate.tryDisplayInvalidQRMessage()` — `@objc optional`, so existing
+      conformers (including Objective-C integrators) keep compiling without changes.
+  (d) `CameraViewController.showUnsupportedQRCodeFeedback()` — public forwarder to the
+      pre-existing `handleInvalidQRCode()`, used by the AC6 fallback plumbing.
+  (e) `GiniQRCodeDocument.scannedPayload: String` — public accessor exposing the raw
+      scanned string so the networking coordinators can forward it verbatim.
+  (f) `GiniNetworkingScreenAPICoordinator.mapWeroExtractions(_:scannedPayload:)` /
+      `.mapWeroExtractionsIfApplicable(_:)` — public so BankSDK can reuse the same mapper
+      from its own `startAnalysisWithReturnAssistant` call-site.
+  No breaking changes. No new init parameter on the SDK entry point. No new builder step.
 - **R8 (SHOULD, parity with EPS).** The `Extraction` built for Wero has `box: nil`,
   `candidates: nil`, `name == entity == "weroPaymentQRCodeUrl"`, and
   `AnalysisResult.document == nil`, `images == []`, `lineItems == []`, `candidates == [:]`.
@@ -185,13 +206,17 @@ Numbered so unit tests and PR review can tag back.
 | Config storage | `CaptureSDK/.../Core/Storage/GiniCaptureUserDefaultsStorage.swift` | Add `@GiniUserDefault("ginicapture.defaults.clientConfigurations.weroQRCodeScanningEnabled", defaultValue: nil) public static var weroQRCodeScanningEnabled: Bool?`. |
 | Config bridge | `BankSDK/.../Core/GiniBankNetworkingScreenApiCoordinator.swift` (around line 312) | One line: `GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = configuration.weroQRCodeScanningEnabled`. |
 | Flag gate for unknown QR | `CaptureSDK/.../Core/Helpers/GiniCaptureDocumentValidator.swift` | `.none` branch of `validate(qrCode:)` — if `GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == true` let the unknown QR pass validation; otherwise keep today's throw. No new import. |
-| Extraction result mapping | `CaptureSDK/.../Networking/GiniNetworkingScreenAPICoordinator.swift` | Mapper around `startAnalysis` success path: if flag ON + extractions contain `paymentQRCodeType = wero` + scanned payload available → return single-extraction result with `weroPaymentQRCodeUrl`; otherwise pass-through. |
-| Extraction key constant | `CaptureSDK/.../Core/Helpers/QRCodesExtractor.swift` | `public static let weroPaymentQRCodeUrlKey = "weroPaymentQRCodeUrl"` + `paymentQRCodeTypeKey` + `weroPaymentQRCodeTypeValue`. |
-| QR document payload | `CaptureSDK/.../Core/Models/GiniQRCodeDocument.swift` | Expose scanned payload internally so the mapper can read it. Public contract unchanged. |
+| Extraction result mapping | `CaptureSDK/.../Networking/GiniNetworkingScreenAPICoordinator.swift` | Public static `mapWeroExtractions(_:scannedPayload:)` + instance `mapWeroExtractionsIfApplicable(_:)`. If flag ON + extractions contain `paymentQRCodeType = wero` + scanned payload available → return single-extraction result with `weroPaymentQRCodeUrl`; otherwise pass-through. Also `shouldRouteBackToCameraForWeroFallback` + the `deliver(…)` fallback branch calling `tryDisplayInvalidQRMessage?()`. Gate narrowed to `qrCodeFormat == nil`. |
+| Mapper call-site (BankSDK) | `BankSDK/GiniBankSDK/.../Core/GiniBankNetworkingScreenApiCoordinator.swift` | BankSDK has its own `startAnalysisWithReturnAssistant` + `deliver` (siblings of CaptureSDK's, not inherited). Call `GiniNetworkingScreenAPICoordinator.mapWeroExtractions` on `.success` before `handleSuccessfulAnalysis`; `presentNextScreen` intercepts the Wero fallback via its own `shouldRouteBackToCameraForWeroFallback`. |
+| Extraction key constants | `CaptureSDK/.../Core/Helpers/QRCodesExtractor.swift` | `public static let weroPaymentQRCodeUrlKey = "weroPaymentQRCodeUrl"` + `paymentQRCodeTypeKey` + `weroPaymentQRCodeTypeValue`. |
+| QR document payload | `CaptureSDK/.../Core/Models/GiniQRCodeDocument.swift` | Promote `scannedPayload` to `public` so the mapper (now in both coordinators) can read the raw scanned payload. Public contract otherwise unchanged. |
+| AC6 fallback protocol | `CaptureSDK/.../Core/Screens/Analysis/AnalysisViewController.swift` | Add `@objc optional func tryDisplayInvalidQRMessage()` to `AnalysisDelegate`. |
+| AC6 fallback impl | `CaptureSDK/.../Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Analysis.swift` | Implement `tryDisplayInvalidQRMessage` — `clearDocuments()`, pop nav stack to `CameraViewController`, after 0.4 s call `cameraVC.showUnsupportedQRCodeFeedback()`. Falls back to `tryDisplayNoResultsScreen` if the camera is not in the stack. |
+| Camera public forwarder | `CaptureSDK/.../Core/Screens/Camera/Camera/CameraViewController.swift` | Expose `public func showUnsupportedQRCodeFeedback()` — resets overlay visuals (`qrCodeOverLay.hideAnimation()`, hide, re-enable interaction, reset `validQRCodeProcessing`), then runs `handleInvalidQRCode()`. Also hides `qrCodeFrameView` from `showValidQRCodeFeedback` to prevent the small QR-only brackets drawing inside the big processing overlay on rescans. |
 | UI test harness | `BankSDK/GiniBankSDKExample/.../UITestSupport/UITestMockBackend.swift` | Add `weroQRCodeScanningEnabled` to the override list and the flag factory. |
 | Test fixtures | `BankAPILibrary/.../Tests/.../Resources/clientConfiguration*.json` | Add `weroQRCodeScanningEnabled` key to all fixtures (except the ones that intentionally omit a required field earlier in decode order). |
-| Test fixtures | `CaptureSDK/.../Tests/.../Resources/Wero/wero_extraction_fixtures.json` (new) | Single file keyed by variant (`wero_type_only`, `wero_with_payment_extractions`, `wero_mixed_case`, `non_wero_classification`, `missing_payment_qr_code_type`) — mapper tests ask for a variant by name. |
-| Unit tests | `CaptureSDK/.../Tests/.../Wero*Tests.swift` (new) + updates to `GiniQRCodeDocumentTests` + `ClientConfigurationTests` + `NetworkingScreenApiCoordinatorTests` convenience init | See Testing section. |
+| Test fixtures | `CaptureSDK/.../Tests/.../Resources/wero_extraction_fixtures.json` (new) | Single flat file keyed by variant (`wero_type_only`, `wero_with_payment_extractions`, `wero_mixed_case`, `non_wero_classification`, `missing_payment_qr_code_type`) — mapper tests ask for a variant by name. |
+| Unit tests | Folded into existing SUT-named files per repo pattern — no new `Wero*Tests.swift` files. See Testing section. |
 
 Not touched by this PR:
 - `GiniQRCodeDocument.paymentInformation` serialisation — unchanged. Unknown payloads today
@@ -222,7 +247,8 @@ Not touched by this PR:
 - **Additive:** one new `ClientConfiguration` field. Default on the public init is `false`,
   so existing integrator code that constructs `ClientConfiguration(...)` manually keeps
   compiling. SDK consumption is read-only (via the backend fetch) in production.
-- No new delegate, no new init parameter on the SDK entry point, no breaking change.
+- **Additive protocol method:** `AnalysisDelegate.tryDisplayInvalidQRMessage()` as `@objc optional` — existing conformers (including Objective-C integrators) keep compiling without changes.
+- No new init parameter on the SDK entry point, no breaking change.
 
 ## Testing plan
 
@@ -291,15 +317,17 @@ Not in this PR (follow-up tickets):
 
 ## Rollout sequencing
 
-1. **This PR (`feat/wero-qr-code`):** config field + storage + gate + mapper + unit tests.
-   No hardcoded flag. Default `false` for every client until the backend flips the per-client
-   value.
-2. **Backend flip for Sparkasse (ops):** after the SDK release ships, PP-3856 operations task
-   flips `weroQRCodeScanningEnabled: true` for the Sparkasse `client_id`.
-3. **GiniBankSDKExample integration (separate task):** example app reads
+1. **This PR (`feat/PP-3857-wero-qr-support`):** config field + storage + gate + mapper +
+   AC6 fallback + unit tests. No hardcoded flag. Default `false` for every client.
+2. **PP-3860 (CVIE) backend classification ships:** `/analysis` extractions begin carrying
+   `paymentQRCodeType = wero` for payloads matching the Sparkasse Wero URL list. Until this
+   lands, every unknown URL falls through to the AC6 camera fallback by design — the mobile
+   code is contract-complete and self-activates once CVIE ships, no SDK release required.
+3. **Backend flip for Sparkasse (ops):** operations flips `weroQRCodeScanningEnabled: true`
+   for the Sparkasse `client_id` so the per-client flag is on in `/configurations`.
+4. **GiniBankSDKExample integration (separate task):** example app reads
    `weroPaymentQRCodeUrl` from the callback and opens / logs the Wero URL. Needed for QA
-   case `M-TC-F` (integrator handoff) called out in `specs/PP-3859-review-comment.md` (if
-   that file exists at review time; otherwise raised as a QA follow-up).
+   case `M-TC-F` (integrator handoff).
 
 ## Out of scope
 
@@ -355,14 +383,22 @@ read sites in CaptureSDK, then the mapper, then UI-test harness, then new test s
     throws" cases to seed `GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true`
     and assert `XCTAssertNoThrow`. Add a `tearDown` that resets the flag so other suites
     are not polluted.
-14. **New suites:** `WeroFlagGateTests`, `WeroExtractionMapperTests`,
-    `WeroProcessingOverlayIndicatorTests`. A single consolidated fixture file
-    `CaptureSDK/.../Tests/.../Resources/Wero/wero_extraction_fixtures.json`
-    holds every variant (`wero_type_only`, `wero_with_payment_extractions`,
-    `wero_mixed_case`, `non_wero_classification`,
-    `missing_payment_qr_code_type`) keyed by name — the mapper tests load
-    the bundle once and ask for a named variant.
-15. **Build + test:** `xcodebuild clean test` on `GiniBankAPILibraryTests`,
-    `GiniCaptureSDKTests`, and `GiniBankSDKExampleTests` per the CLAUDE.md command.
+14. **New Swift Testing suites folded into existing SUT-named files:**
+    `GiniCaptureDocumentValidatorWeroGateTests` appended to
+    `GiniCaptureDocumentValidatorTests.swift`;
+    `GiniNetworkingScreenAPICoordinatorWeroMapperTests` appended to
+    `GiniScreenAPICoordinatorTests.swift`.
+    R10 overlay parity inherits coverage from the existing `QRCodeOverlayTests`.
+    A single consolidated fixture
+    `CaptureSDK/.../Tests/.../Resources/wero_extraction_fixtures.json` keyed by variant
+    (`wero_type_only`, `wero_with_payment_extractions`, `wero_mixed_case`,
+    `non_wero_classification`, `missing_payment_qr_code_type`) feeds the mapper suite.
+    Shared storage-flag mutex lives on `GiniCaptureTestsHelper` (`withWeroFlag`,
+    `acquireFlagLock`, `releaseFlagLock`) so Swift Testing and XCTest don't race.
+15. **AC6 UX wiring:** `AnalysisDelegate.tryDisplayInvalidQRMessage` (`@objc optional`),
+    `GiniScreenAPICoordinator+Analysis` impl (pop + alert), `CameraViewController`
+    public `showUnsupportedQRCodeFeedback()`, gate narrowed to `qrCodeFormat == nil`.
+16. **Build + test:** `xcodebuild clean test` on `GiniBankAPILibraryTests`,
+    `GiniCaptureSDKTests`, and `GiniBankSDKTests` per the CLAUDE.md command.
     `make lint` is currently broken on this machine by a local Ruby/bundler mismatch —
     not a code issue; verify compilation + tests pass instead.
