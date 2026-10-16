@@ -59,6 +59,7 @@
 		E26C8B20456269F631CC5244 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A170FFD43B849C064DEC95D /* TestFixtures.swift */; };
 		E53040CFF3F8AF6577225ABA /* CaptureImportFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204C2A409DFE5D08E89D7163 /* CaptureImportFlow.swift */; };
 		E951BB96FED076C1BCC361BD /* GiniHealthSmokeScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDA8333CCD34735993DB463 /* GiniHealthSmokeScreensUITests.swift */; };
+		EBA21570F12F51F1E2597AED /* PaymentInfoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC8D7F71E517C908DE9F34 /* PaymentInfoScreen.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -167,6 +168,7 @@
 		B70D945D5C300A0BDFE4DF43 /* GiniHealthSmokeJourneysUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSmokeJourneysUITests.swift; sourceTree = "<group>"; };
 		CA5792E8AB8FD01F083477DF /* testMedInvoice.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = testMedInvoice.png; sourceTree = "<group>"; };
 		D0AF0A0A275E46CFFF518497 /* GiniHealthSDKExampleUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKExampleUITests.swift; sourceTree = "<group>"; };
+		D2FC8D7F71E517C908DE9F34 /* PaymentInfoScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaymentInfoScreen.swift; sourceTree = "<group>"; };
 		D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaymentComponentScreen.swift; sourceTree = "<group>"; };
 		F19D4EB9DB2D8A0D70CA112E /* testMedInvoice.pdf */ = {isa = PBXFileReference; includeInIndex = 1; path = testMedInvoice.pdf; sourceTree = "<group>"; };
 		F38D8D2D9E4C914F7E0EC8B1 /* testMedInvoice.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = testMedInvoice.png; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				D3B8364309F86241F3194C35 /* PaymentComponentScreen.swift */,
 				8D02113621ADB3C6CEBFDE8A /* OrdersListScreen.swift */,
 				600ED375302EB3BDDCC6947C /* OrderDetailsScreen.swift */,
+				D2FC8D7F71E517C908DE9F34 /* PaymentInfoScreen.swift */,
 			);
 			name = Screens;
 			path = Screens;
@@ -735,6 +738,7 @@
 				D89DC7811A1794E2E94A4AEF /* OrdersListScreen.swift in Sources */,
 				2741113DAB4B60BD0220EB83 /* OrderDetailsScreen.swift in Sources */,
 				E951BB96FED076C1BCC361BD /* GiniHealthSmokeScreensUITests.swift in Sources */,
+				EBA21570F12F51F1E2597AED /* PaymentInfoScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

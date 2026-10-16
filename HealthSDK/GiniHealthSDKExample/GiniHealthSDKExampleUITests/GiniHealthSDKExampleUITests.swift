@@ -32,6 +32,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
     var ordersListScreen: OrdersListScreen!
     var orderDetailsScreen: OrderDetailsScreen!
     var paymentComponentScreen: PaymentComponentScreen!
+    var paymentInfoScreen: PaymentInfoScreen!
 
     override func setUpWithError() throws {
         /// Tests that need BrowserStack-staged media (Photos gallery, Custom_Files)
@@ -55,6 +56,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
         ordersListScreen = OrdersListScreen(app: app)
         orderDetailsScreen = OrderDetailsScreen(app: app)
         paymentComponentScreen = PaymentComponentScreen(app: app)
+        paymentInfoScreen = PaymentInfoScreen(app: app)
     }
 
     override func tearDownWithError() throws {

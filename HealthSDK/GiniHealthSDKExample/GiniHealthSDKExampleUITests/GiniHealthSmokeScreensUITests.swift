@@ -108,30 +108,84 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-290 — Bank Selection sheet carries the "More information" entry
-     at the bottom; tapping it opens the Payment Feature screen.
+     HEAL-290 — Bank Selection sheet carries the inline **More Information**
+     link at the bottom; tapping it presents the Payment Info screen.
+
+     Verifies the sheet's nav-bar title ("More information" /
+     "Weitere Informationen") rendered by `PaymentInfoViewController` wrapped
+     in its hosting `UINavigationController`.
      */
     func testBankSelectionSheetMoreInformationOpensPaymentFeature() throws {
-        throw XCTSkip("HEAL-290 — pending implementation (Payment Feature screen page object not yet defined)")
+        openPaymentInfoFromBankSelection()
+        XCTAssertTrue(paymentInfoScreen.navBarTitle.waitForExistence(timeout: 10),
+                      "Payment Info screen did not appear after tapping More Information on the Bank Selection sheet.")
     }
 
-    // MARK: - More Info / Payment Feature (HEAL-291, 292)
+    // MARK: - Payment Info navigation helper
 
     /**
-     HEAL-291 — Payment Feature screen displays the SDK's informational
-     copy and the primary Continue action.
+     Shared entry: reach Payment Review, open the Bank Selection sheet via
+     the bank picker, scroll if needed to make the inline More Information
+     link visible, and tap it. On return the Payment Info screen is
+     presenting (nav title may still be animating in).
+     */
+    private func openPaymentInfoFromBankSelection() {
+        reachPaymentReviewFromInvoicesList()
+        XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
+                      "Payment Review bank picker not reachable.")
+        paymentReviewScreen.bankPickerButton.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.anyBankCell.waitForExistence(timeout: 10),
+                      "Bank Selection sheet did not open from the Payment Review bank picker.")
+        let moreInfo = paymentInfoScreen.moreInformationTrigger
+        /// The inline More Information link sits at the bottom of the
+        /// `BanksBottomView` stack and may be offscreen on compact-height
+        /// devices; a few swipe-up attempts bring it into view before we
+        /// give up and let the existence check fail with context.
+        var attempts = 0
+        while !moreInfo.exists && attempts < 5 {
+            app.swipeUp()
+            attempts += 1
+        }
+        XCTAssertTrue(moreInfo.waitForExistence(timeout: 5),
+                      "More Information link not found on Bank Selection sheet.")
+        moreInfo.tap()
+    }
+
+    // MARK: - More Info / Payment Info screen (HEAL-291, 292)
+
+    /**
+     HEAL-291 — Payment Info screen renders its informational content.
+
+     Reaches the Bank Selection sheet via the Payment Review bank picker,
+     taps the inline **More Information** link, and asserts the Payment Info
+     screen is presented with both its nav-bar title ("More information" /
+     "Weitere Informationen") and the FAQ section title visible.
+     The upstream view (`PaymentInfoViewController`) has no Continue button —
+     the SDK's "primary action" at this surface is dismissal, covered by
+     HEAL-292.
      */
     func testPaymentFeatureScreenRendersCopyAndContinue() throws {
-        throw XCTSkip("HEAL-291 — pending implementation")
+        openPaymentInfoFromBankSelection()
+        XCTAssertTrue(paymentInfoScreen.navBarTitle.waitForExistence(timeout: 10),
+                      "Payment Info screen nav-bar title (More information / Weitere Informationen) not visible.")
+        XCTAssertTrue(paymentInfoScreen.faqTitle.waitForExistence(timeout: 10),
+                      "Payment Info FAQ title (Frequently Asked Questions / Häufig gestellte Fragen) not visible.")
     }
 
     /**
-     HEAL-292 — Payment Feature screen's Continue action dismisses the
-     screen and returns the user to the previous surface
-     (Bank Selection sheet or Payment Component).
+     HEAL-292 — Payment Info screen's primary action dismisses the sheet
+     and returns to the Bank Selection sheet underneath.
+
+     The upstream `PaymentInfoViewController` has no close button or
+     Continue action; it inherits `GiniBottomSheetViewController` and is
+     dismissed by the iOS 13+ modal swipe-down gesture. XCUITest cannot
+     reliably simulate that drag against the sheet's drag indicator, so
+     this test is skipped until a stable programmatic dismiss hook is
+     added upstream (e.g. an accessibility-identified Close bar-button in
+     the hosting `UINavigationController`).
      */
     func testPaymentFeatureContinueReturnsToPreviousScreen() throws {
-        throw XCTSkip("HEAL-292 — pending implementation")
+        throw XCTSkip("HEAL-292 — PaymentInfoViewController has no Close/Continue control; needs an upstream accessibility-identified dismiss hook before this can be automated.")
     }
 
     // MARK: - Payment Review Screen (HEAL-294, 295, 296, 297, 298, 299, 300, 301, 306)
