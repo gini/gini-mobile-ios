@@ -310,6 +310,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
                     GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
+                    GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = configuration.weroQRCodeScanningEnabled
                     self.prewarmIngredientBrandIndicatorIfEnabled(for: configuration)
                     self.initializeAnalytics(with: configuration)
                 }
@@ -496,9 +497,14 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
+                let scannedPayload = self.pages.lazy
+                    .compactMap({ $0.document as? GiniQRCodeDocument })
+                    .first?.scannedPayload
+                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(extractionResult,
+                                                                                   scannedPayload: scannedPayload)
                 self.setDocumentIdAsUserProperty()
                 Task {
-                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                    await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
                 }
             case .failure(let error):
                 guard error != .requestCancelled else { return }
@@ -527,6 +533,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
+
+        /// Wero fallback: a camera-scanned QR passed the Wero gate, got
+        /// uploaded, and the backend returned no classification (nor any
+        /// payment extractions). Route back to the camera's "unsupported QR
+        /// code" feedback instead of pushing the no-results screen — matches
+        /// the pre-Wero behaviour for an unknown QR scanned on-device.
+        if shouldRouteBackToCameraForWeroFallback(extractionResult: extractionResult) {
+            delegate.tryDisplayInvalidQRMessage?()
+            documentService.resetToInitialState()
+            return
+        }
 
         // Cross border flow: if no crossBorderPayment extractions were returned, show
         // the no-results screen instead of delivering anything to the bank.
@@ -973,6 +990,31 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
     func shouldShowNoResultsForCrossBorder(for result: ExtractionResult) -> Bool {
         guard isCrossBorderPayment() else { return false }
         return result.crossBorderPayment == nil || result.crossBorderPayment?.isEmpty == true
+    }
+
+    /**
+     Decides whether the Wero fallback UX ("back to camera + unsupported-QR
+     feedback") should fire instead of the no-results screen. True iff all
+     of the following hold:
+
+     - The Wero feature flag is on in `GiniCaptureUserDefaultsStorage` (i.e.
+       the backend's `/configurations` enabled Wero for this client).
+     - `pages` contains a camera-scanned `GiniQRCodeDocument` — not a
+       picture or PDF upload, where the no-results screen remains correct.
+     - The post-mapper extraction result does not contain the
+       `weroPaymentQRCodeUrl` key (i.e. backend did not classify this URL as
+       Wero, or returned no classification at all).
+     */
+    func shouldRouteBackToCameraForWeroFallback(extractionResult: ExtractionResult) -> Bool {
+        let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
+        guard weroEnabled else { return false }
+        let cameraScannedQR = pages.contains(where: { $0.document is GiniQRCodeDocument })
+        guard cameraScannedQR else { return false }
+        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        let hasWeroExtraction = extractionResult.extractions.contains { extraction in
+            extraction.name == weroKey || extraction.entity == weroKey
+        }
+        return !hasWeroExtraction
     }
 
     /**
