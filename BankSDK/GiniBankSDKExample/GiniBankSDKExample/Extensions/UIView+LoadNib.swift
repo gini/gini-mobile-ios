@@ -2,7 +2,7 @@
 //  UIView+LoadNib.swift
 //  GiniBankSDKExample
 //
-//  Created by Valentina Iancu on 23.06.23.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -14,8 +14,4 @@ extension UIView {
 		let nib = UINib(nibName: nibName, bundle: nil)
 		return nib.instantiate(withOwner: self, options: nil).first as! UIView
 	}
-    
-    var currentInterfaceOrientation: UIInterfaceOrientation {
-        window?.windowScene?.interfaceOrientation ?? UIApplication.shared.statusBarOrientation
-    }
 }

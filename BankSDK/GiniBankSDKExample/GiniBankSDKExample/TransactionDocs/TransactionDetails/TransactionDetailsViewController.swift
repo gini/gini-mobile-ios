@@ -1,7 +1,7 @@
 //
 //  TransactionDetailsViewController.swift
 //
-//  Copyright © 2025 Gini GmbH. All rights reserved.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 
@@ -68,10 +68,10 @@ class TransactionDetailsViewController: UIViewController {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.tableViewTopPadding),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.tableViewTopPadding),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.padding),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.padding),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding)
         ])
     }
 }
