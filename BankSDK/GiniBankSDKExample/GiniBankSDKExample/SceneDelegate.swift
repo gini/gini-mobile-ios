@@ -14,7 +14,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private let imageUrlKey = "incomingURL"
 
     var window: UIWindow?
-    var coordinator: AppCoordinator!
+    private var coordinator: AppCoordinator!
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
