@@ -565,6 +565,30 @@ final class CameraViewController: UIViewController {
         }
     }
 
+    /**
+     Shows the camera's standard "unsupported QR code" feedback — either the
+     modal alert (when `unsupportedQRCodeWarningEnabled`) or the yellow
+     overlay — exactly as the camera does when it detects an unknown QR
+     client-side. Exposed so the networking coordinator can route the Wero
+     fallback through the same visual state after the user pops back from
+     the upload path.
+
+     The overlay dismissal happens inline (not via `resetQRCodeScanning`,
+     which schedules a deferred `detectedQRCodeDocument = nil` task that
+     would race with the alert's own `handleScanAnotherQRCode` reset).
+     The dedup nil-out and camera-detection resume both live inside the
+     alert's "Scan another QR code" action — we only need to clear the
+     visuals left over from the upload hop here.
+     */
+    public func showUnsupportedQRCodeFeedback() {
+        qrCodeOverLay.isHidden = true
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
+        cameraPane.isUserInteractionEnabled = true
+        cameraPaneHorizontal?.isUserInteractionEnabled = true
+        validQRCodeProcessing = false
+        handleInvalidQRCode()
+    }
+
     private func handleInvalidQRCode() {
         guard !isValidIBANDetected else { return }
 

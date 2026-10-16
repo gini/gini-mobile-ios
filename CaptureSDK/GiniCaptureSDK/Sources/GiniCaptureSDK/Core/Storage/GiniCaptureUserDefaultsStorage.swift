@@ -42,6 +42,17 @@ public struct GiniCaptureUserDefaultsStorage {
                      defaultValue: nil)
     public static var ingredientBrandScreens: [String]?
 
+    /**
+     Configuration flag for Wero QR code scanning. When `true`, unknown QR
+     payloads are uploaded to the backend for Wero classification. When
+     `false` or `nil` (fail-closed default on fresh install), unknown
+     payloads trigger the existing "unsupported QR code" flow and no upload
+     fires. Seeded by the client-configuration fetch at SDK start.
+     */
+    @GiniUserDefault("ginicapture.defaults.clientConfigurations.weroQRCodeScanningEnabled",
+                     defaultValue: nil)
+    public static var weroQRCodeScanningEnabled: Bool?
+
     // User preference for the Save photos locally feature
     @GiniUserDefault("ginicapture.defaults.userSettings.savePhotosSwitchOn",
                      defaultValue: nil)

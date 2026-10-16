@@ -98,6 +98,27 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
 
+    public func tryDisplayInvalidQRMessage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            guard let cameraVC = self.screenAPINavigationController
+                .viewControllers
+                .first(where: { $0 is CameraViewController }) as? CameraViewController else {
+                /// Camera isn't in the nav stack (unlikely — upload path implies camera was there).
+                /// Fall back to the pre-existing no-results screen rather than silently losing the response.
+                self.tryDisplayNoResultsScreen()
+                return
+            }
+            self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
+            /// Showing the alert after the pop lets the modal present on top of the
+            /// settled camera; without the delay the alert can arrive before the nav
+            /// transition completes and get swallowed.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                cameraVC.showUnsupportedQRCodeFeedback()
+            }
+        }
+    }
+
     public func tryDisplayNoResultsScreen() {
         var shouldDisplay = false
         var noResultType: NoResultScreenViewController.NoResultType?
