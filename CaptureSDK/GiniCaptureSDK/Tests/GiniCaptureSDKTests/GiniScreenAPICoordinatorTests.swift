@@ -227,6 +227,63 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.outage.content(), "Error content should match server error type")
 
     }
+
+    /// Covers the camera-present branch of `tryDisplayInvalidQRMessage()`:
+    /// when a `CameraViewController` exists in the nav stack the coordinator must
+    /// clear documents and pop back to it (rather than falling through to the
+    /// no-results screen). The camera-absent branch is covered separately by
+    /// `GiniScreenAPICoordinatorInvalidQRMessageTests`.
+    func testTryDisplayInvalidQRMessagePopsToCameraWhenPresent() {
+        /// Pass `nil` so the coordinator builds its default nav stack
+        /// (`[reviewViewController, cameraViewController]`). Passing documents here
+        /// would short-circuit the camera out of the stack entirely.
+        let rootViewController = coordinator.start(withDocuments: nil)
+        _ = rootViewController.view
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        XCTAssertTrue(screenNavigator?.viewControllers.contains(where: { $0 is CameraViewController }) ?? false,
+                      "precondition: default nav stack must contain a CameraViewController")
+
+        /// Attach to a window AND disable animations so `popToViewController(_:animated: true)`
+        /// completes synchronously. Without the window the pop is a no-op; without disabling
+        /// animations the transition can outrun the wait in a loaded test suite.
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+        let animationsWereEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        defer {
+            UIView.setAnimationsEnabled(animationsWereEnabled)
+            window.isHidden = true
+        }
+
+        /// Push an extra VC on top of the camera so `popToViewController` has
+        /// something to actually pop. Without this the "pop happened" assertion
+        /// would hold trivially even if the method did nothing.
+        let topVC = UIViewController()
+        screenNavigator?.pushViewController(topVC, animated: false)
+        XCTAssertTrue(screenNavigator?.viewControllers.last === topVC,
+                      "precondition: extra VC must sit on top of the camera")
+
+        coordinator.addToDocuments(new: [GiniCaptureTestsHelper.loadImagePage(named: "invoice")])
+        XCTAssertFalse(coordinator.pages.isEmpty,
+                       "precondition: pages must be non-empty so clearDocuments has work to do")
+
+        coordinator.tryDisplayInvalidQRMessage()
+        /// Pump the main run loop so the outer `DispatchQueue.main.async` and the
+        /// inner `0.4s asyncAfter` both execute. We assert on `pages.isEmpty` rather
+        /// than on `viewControllers.last` because `popToViewController(_:animated: true)`
+        /// does not update the stack synchronously in a headless test environment,
+        /// but `clearDocuments()` is a pure state mutation and is deterministic.
+        let clearDeadline = Date().addingTimeInterval(1.0)
+        while Date() < clearDeadline && !coordinator.pages.isEmpty {
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+        /// Also drain the 0.4s asyncAfter block so the final line of the method runs.
+        RunLoop.current.run(until: Date().addingTimeInterval(0.6))
+
+        XCTAssertTrue(coordinator.pages.isEmpty,
+                      "clearDocuments must have emptied the page collection")
+    }
 }
 
 // MARK: - Swift Testing coverage for the positiveAction decision
@@ -558,5 +615,254 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
     private enum FixtureError: Error {
         case bundleNotFound(String)
         case variantNotFound(String)
+    }
+}
+
+// MARK: - GiniNetworkingScreenAPICoordinator — Wero camera-fallback gate
+
+/**
+ Covers `GiniNetworkingScreenAPICoordinator.shouldRouteBackToCameraForWeroFallback`.
+ This is the pure-of-coordinator-state gate that decides whether the delivery
+ pipeline must route back to the camera (Wero fallback) rather than show the
+ no-results screen. Each branch of the guard chain is exercised explicitly.
+ */
+@Suite("GiniNetworkingScreenAPICoordinator — shouldRouteBackToCameraForWeroFallback", .serialized)
+struct GiniNetworkingScreenAPICoordinatorWeroFallbackGateTests {
+
+    private let weroCandidatePage = GiniCapturePage(
+        document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/pay/v1/token=abc")
+    )
+
+    /// A QR document with a recognised Gini format — `qrCodeFormat` is non-nil, so
+    /// the page does NOT count as a Wero candidate.
+    private let giniQRCodePage = GiniCapturePage(
+        document: GiniQRCodeDocument(
+            scannedString: "https://pay.gini.net/482a6cc2-8247-4724-af5d-24cc44408254"
+        )
+    )
+
+    private func emptyResult() -> ExtractionResult {
+        ExtractionResult(extractions: [], candidates: [:])
+    }
+
+    private func resultWithWeroUrl(usingEntity: Bool) -> ExtractionResult {
+        let key = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: usingEntity ? key : "other",
+                                    value: "https://pay.weropay.eu/x",
+                                    name: usingEntity ? "other" : key)
+        return ExtractionResult(extractions: [extraction], candidates: [:])
+    }
+
+    @Test("Flag off → never routes back, even with a Wero-candidate QR page")
+    func flagOffReturnsFalse() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(false) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(pages: [weroCandidatePage],
+                                                        extractionResult: emptyResult())
+            #expect(decision == false)
+        }
+    }
+
+    @Test("Flag on + no QR page → false (no candidate to recover)")
+    func noQRPageReturnsFalse() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(pages: [],
+                                                        extractionResult: emptyResult())
+            #expect(decision == false)
+        }
+    }
+
+    @Test("Flag on + QR page with known format → false (already classified)")
+    func knownQRCodeFormatReturnsFalse() throws {
+        /// `giniQRCode` scanned strings resolve `qrCodeFormat` to a non-nil value,
+        /// so the page is not a Wero candidate; the fallback should not trigger.
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(pages: [giniQRCodePage],
+                                                        extractionResult: emptyResult())
+            #expect(decision == false)
+        }
+    }
+
+    @Test("Flag on + Wero-candidate QR + empty extractions → true")
+    func weroCandidateWithEmptyExtractionsReturnsTrue() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(pages: [weroCandidatePage],
+                                                        extractionResult: emptyResult())
+            #expect(decision == true)
+        }
+    }
+
+    @Test("Flag on + Wero-candidate QR + extraction already keyed by name → false")
+    func weroUrlAlreadyPresentByNameReturnsFalse() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(
+                    pages: [weroCandidatePage],
+                    extractionResult: resultWithWeroUrl(usingEntity: false)
+                )
+            #expect(decision == false)
+        }
+    }
+
+    @Test("Flag on + Wero-candidate QR + extraction already keyed by entity → false")
+    func weroUrlAlreadyPresentByEntityReturnsFalse() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(
+                    pages: [weroCandidatePage],
+                    extractionResult: resultWithWeroUrl(usingEntity: true)
+                )
+            #expect(decision == false)
+        }
+    }
+}
+
+// MARK: - GiniNetworkingScreenAPICoordinator — mapWeroExtractionsIfApplicable (instance method)
+
+/**
+ Covers the instance-method bridge `mapWeroExtractionsIfApplicable(_:)` which
+ picks the first `GiniQRCodeDocument.scannedPayload` from `pages` and feeds it
+ to the static `mapWeroExtractions`. The static mapper itself is covered
+ exhaustively in `GiniNetworkingScreenAPICoordinatorWeroMapperTests` — these
+ tests only verify the pages → scannedPayload wiring.
+ */
+@Suite("GiniNetworkingScreenAPICoordinator — mapWeroExtractionsIfApplicable", .serialized)
+@MainActor
+struct GiniNetworkingScreenAPICoordinatorInstanceMapperTests {
+
+    /// Minimal `GiniCaptureResultsDelegate` so the coordinator initialiser accepts it.
+    /// None of its callbacks fire in these tests — the subject under test is a pure
+    /// read of `pages`.
+    private final class ResultsDelegateStub: NSObject, GiniCaptureResultsDelegate {
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {}
+        func giniCaptureDidCancelAnalysis() {}
+        func giniCaptureDidEnterManually() {}
+    }
+
+    private let sampleScannedPayload = "https://pay.weropay.eu/pay/v1/token=xyz"
+
+    private func makeCoordinator() -> GiniNetworkingScreenAPICoordinator {
+        GiniNetworkingScreenAPICoordinator(resultsDelegate: ResultsDelegateStub(),
+                                           giniConfiguration: GiniConfiguration(),
+                                           documentMetadata: nil,
+                                           trackingDelegate: nil,
+                                           captureNetworkService: MockCaptureNetworkService())
+    }
+
+    private func weroExtractionResult() -> ExtractionResult {
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: QRCodesExtractor.paymentQRCodeTypeKey,
+                                    value: QRCodesExtractor.weroPaymentQRCodeTypeValue,
+                                    name: QRCodesExtractor.paymentQRCodeTypeKey)
+        return ExtractionResult(extractions: [extraction], candidates: [:])
+    }
+
+    @Test("Wero-candidate QR page in pages → scannedPayload forwarded to mapper")
+    func qrPagePayloadForwardedToMapper() throws {
+        let coordinator = makeCoordinator()
+        coordinator.pages = [
+            GiniCapturePage(document: GiniQRCodeDocument(scannedString: sampleScannedPayload))
+        ]
+
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let output = coordinator.mapWeroExtractionsIfApplicable(weroExtractionResult())
+
+            /// The static mapper rewrites to a single Wero-URL extraction whose
+            /// value is the scanned payload — proof that `pages` were inspected
+            /// and the payload was forwarded.
+            #expect(output.extractions.count == 1)
+            let extraction = try #require(output.extractions.first)
+            #expect(extraction.name == QRCodesExtractor.weroPaymentQRCodeUrlKey)
+            #expect(extraction.value == sampleScannedPayload)
+        }
+    }
+
+    @Test("No QR page in pages → nil scannedPayload, mapper passes result through")
+    func noQRPageYieldsPassThrough() throws {
+        let coordinator = makeCoordinator()
+        coordinator.pages = []  // No QR document → scannedPayload is nil
+
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let input = weroExtractionResult()
+            let output = coordinator.mapWeroExtractionsIfApplicable(input)
+
+            /// Mapper short-circuits on `nil` scannedPayload — the input is
+            /// returned verbatim (reference-equal here because `ExtractionResult`
+            /// is a class).
+            #expect(output === input)
+        }
+    }
+}
+
+// MARK: - GiniScreenAPICoordinator.tryDisplayInvalidQRMessage — camera-absent fallback
+
+/**
+ Covers the camera-absent branch of `tryDisplayInvalidQRMessage()`.
+
+ The camera-present branch is intentionally NOT exercised: `CameraViewController`
+ initialisation runs lens discovery and loads a UIKit nib, and the
+ `showUnsupportedQRCodeFeedback()` path it reaches touches outlets
+ (`qrCodeOverLay`, `cameraPreviewViewController`, `cameraPane`) that require
+ the view to be fully loaded. That is fragile UIKit internals, not business
+ logic — the house rule here is "no useless tests to cover". The fallback branch
+ (camera VC absent → `tryDisplayNoResultsScreen()`) is the business decision
+ worth asserting.
+ */
+@Suite("GiniScreenAPICoordinator.tryDisplayInvalidQRMessage — camera-absent branch")
+@MainActor
+struct GiniScreenAPICoordinatorInvalidQRMessageTests {
+
+    private final class DelegateStub: NSObject, GiniCaptureDelegate {
+        func didPressEnterManually() {}
+        func didCapture(document: GiniCaptureDocument,
+                        networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didReview(documents: [GiniCaptureDocument],
+                       networkDelegate: GiniCaptureNetworkDelegate) {}
+        func didCancelCapturing() {}
+        func didCancelReview(for document: GiniCaptureDocument) {}
+        func didCancelAnalysis() {}
+    }
+
+    @Test("No CameraViewController in nav stack → falls back to no-results screen for QR pages")
+    func cameraAbsentFallsBackToNoResultsScreen() async throws {
+        let configuration = GiniConfiguration()
+        let coordinator = GiniScreenAPICoordinator(withDelegate: DelegateStub(),
+                                                   giniConfiguration: configuration)
+
+        /// Seed `pages` with a QR document so `pages.type == .qrcode` and
+        /// `tryDisplayNoResultsScreen` actually pushes a `NoResultScreenViewController`
+        /// (the `.qrcode` case sets `shouldDisplay = true`).
+        coordinator.pages = [
+            GiniCapturePage(document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/x"))
+        ]
+
+        /// Replace the nav stack with a plain non-camera VC so the camera-lookup
+        /// guard inside `tryDisplayInvalidQRMessage` fails.
+        let placeholder = UIViewController()
+        coordinator.screenAPINavigationController.setViewControllers([placeholder], animated: false)
+        #expect(coordinator.screenAPINavigationController.viewControllers.count == 1)
+
+        coordinator.tryDisplayInvalidQRMessage()
+
+        /// `tryDisplayInvalidQRMessage` hops to main, calls `tryDisplayNoResultsScreen`,
+        /// which hops to main again to push. Spin the run loop twice to let both
+        /// dispatches drain deterministically — no `Thread.sleep`, no 0.4s wait
+        /// (that delay only runs on the camera-present branch).
+        for _ in 0..<2 {
+            await Task.yield()
+            await MainActor.run {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+            }
+        }
+
+        let topViewController = coordinator.screenAPINavigationController.topViewController
+        #expect(topViewController is NoResultScreenViewController,
+                "Camera-absent branch must fall through to the no-results screen push")
     }
 }

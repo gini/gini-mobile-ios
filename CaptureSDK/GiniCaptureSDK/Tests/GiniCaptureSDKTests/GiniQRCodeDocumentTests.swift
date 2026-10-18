@@ -527,6 +527,18 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         XCTAssertNotNil(image?.cgImage, "returned UIImage must be bitmap-backed (non-nil .cgImage)")
     }
 
+    // MARK: - scannedPayload
+
+    func testScannedPayloadReturnsRawInput() {
+        /// `scannedPayload` is the raw payload read from the QR, surfaced so the
+        /// networking layer can forward it as the Wero fallback URL. It must round-trip
+        /// the init string verbatim (apart from the defensive null-byte strip in init).
+        let payload = "https://pay.weropay.eu/pay/v1/token=abc123"
+        let qrDocument = GiniQRCodeDocument(scannedString: payload)
+        XCTAssertEqual(qrDocument.scannedPayload, payload,
+                       "scannedPayload must mirror the scanned string")
+    }
+
     // MARK: - GiniTrackingPermissionManager
 
     func testTrackingAuthorizedReturnsTrueWhenStatusIsNotDetermined() {
