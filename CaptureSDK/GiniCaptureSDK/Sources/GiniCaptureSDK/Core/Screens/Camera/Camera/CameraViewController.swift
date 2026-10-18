@@ -571,6 +571,8 @@ final class CameraViewController: UIViewController {
     public func showUnsupportedQRCodeFeedback() {
         qrCodeOverLay.hideAnimation()
         qrCodeOverLay.isHidden = true
+        /// Restore the guide hidden by `resetQRCodeScanning(isValid: true)`.
+        cameraPreviewViewController.cameraFrameView.isHidden = false
         cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
         cameraPane.isUserInteractionEnabled = true
         cameraPaneHorizontal?.isUserInteractionEnabled = true
