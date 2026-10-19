@@ -534,10 +534,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
 
-        if GiniNetworkingScreenAPICoordinator.shouldRouteBackToCameraForWeroFallback(pages: pages,
-                                                                                     extractionResult: extractionResult) {
-            delegate.tryDisplayInvalidQRMessage?()
-            documentService.resetToInitialState()
+        if GiniNetworkingScreenAPICoordinator.performWeroFallbackIfNeeded(pages: pages,
+                                                                          extractionResult: extractionResult,
+                                                                          delegate: delegate,
+                                                                          documentService: documentService) {
             return
         }
 

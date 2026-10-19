@@ -173,10 +173,11 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                                             candidates: result.candidates)
 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-            } else if Self.shouldRouteBackToCameraForWeroFallback(pages: self.pages,
-                                                                  extractionResult: result) {
-                analysisDelegate.tryDisplayInvalidQRMessage?()
-                self.documentService.resetToInitialState()
+            } else if Self.performWeroFallbackIfNeeded(pages: self.pages,
+                                                       extractionResult: result,
+                                                       delegate: analysisDelegate,
+                                                       documentService: self.documentService) {
+                /// Fallback handled by the shared helper.
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -203,6 +204,26 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
         return !extractionResult.extractions.contains { extraction in
             extraction.name == weroKey || extraction.entity == weroKey
         }
+    }
+
+    /**
+     Shared executor for the Wero camera fallback. Returns `true` when the
+     Wero gate fires and the caller should stop further navigation. Keeps
+     the CaptureSDK `deliver` and BankSDK `presentNextScreen` call sites
+     in sync.
+     */
+    @MainActor
+    public static func performWeroFallbackIfNeeded(pages: [GiniCapturePage],
+                                                   extractionResult: ExtractionResult,
+                                                   delegate: AnalysisDelegate,
+                                                   documentService: DocumentServiceProtocol) -> Bool {
+        guard shouldRouteBackToCameraForWeroFallback(pages: pages,
+                                                     extractionResult: extractionResult) else {
+            return false
+        }
+        delegate.tryDisplayInvalidQRMessage?()
+        documentService.resetToInitialState()
+        return true
     }
 }
 

@@ -722,6 +722,109 @@ struct GiniNetworkingScreenAPICoordinatorWeroFallbackGateTests {
     }
 }
 
+// MARK: - GiniNetworkingScreenAPICoordinator — performWeroFallbackIfNeeded (shared executor)
+
+/**
+ Covers the shared executor `performWeroFallbackIfNeeded` used by both the
+ CaptureSDK `deliver` call site and the BankSDK `presentNextScreen` call
+ site. The gate branches are already covered in
+ `GiniNetworkingScreenAPICoordinatorWeroFallbackGateTests`; these tests
+ lock down the side-effects (delegate call + documentService reset) that
+ fire when the gate returns true, plus the no-op path when it returns false.
+ */
+@Suite("GiniNetworkingScreenAPICoordinator — performWeroFallbackIfNeeded", .serialized)
+@MainActor
+struct GiniNetworkingScreenAPICoordinatorPerformWeroFallbackTests {
+
+    /// Manual, minimal `AnalysisDelegate` stub that records whether the
+    /// optional `tryDisplayInvalidQRMessage()` method was called.
+    private final class AnalysisDelegateSpy: NSObject, AnalysisDelegate {
+        var tryDisplayInvalidQRMessageCallCount = 0
+        var tryDisplayNoResultsScreenCallCount = 0
+        func displayError(errorType: ErrorType, animated: Bool) {}
+        func tryDisplayNoResultsScreen() { tryDisplayNoResultsScreenCallCount += 1 }
+        func tryDisplayInvalidQRMessage() { tryDisplayInvalidQRMessageCallCount += 1 }
+    }
+
+    /// Manual `DocumentServiceProtocol` stub that only observes
+    /// `resetToInitialState()`. All other requirements are no-op since the
+    /// subject under test does not call them.
+    private final class DocumentServiceSpy: DocumentServiceProtocol {
+        var document: Document?
+        var metadata: Document.Metadata?
+        var analysisCancellationToken: CancellationToken?
+        var resetToInitialStateCallCount = 0
+
+        func cancelAnalysis() {}
+        func remove(document: GiniCaptureDocument) {}
+        func resetToInitialState() { resetToInitialStateCallCount += 1 }
+        func sendFeedback(with updatedExtractions: [Extraction],
+                          updatedCompoundExtractions: [String: [[Extraction]]]?) {}
+        func sendSkontoFeedback(with updatedExtractions: [Extraction],
+                                updatedCompoundExtractions: [String: [[Extraction]]]?,
+                                retryCount: Int) {}
+        func startAnalysis(completion: @escaping AnalysisCompletion) {}
+        func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument]) {}
+        func upload(document: GiniCaptureDocument, completion: UploadDocumentCompletion?) {}
+        func update(imageDocument: GiniImageDocument) {}
+        func log(errorEvent: ErrorEvent) {}
+        func layout(completion: @escaping DocumentLayoutCompletion) {}
+        func pages(completion: @escaping DocumentPagsCompletion) {}
+        func documentPage(pageNumber: Int,
+                          size: Document.Page.Size,
+                          completion: @escaping DocumentPagePreviewCompletion) {}
+    }
+
+    private let weroCandidatePage = GiniCapturePage(
+        document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/pay/v1/token=abc")
+    )
+
+    private func emptyResult() -> ExtractionResult {
+        ExtractionResult(extractions: [], candidates: [:])
+    }
+
+    @Test("Gate fires → delegate notified, documentService reset, returns true")
+    func fallbackFiresWhenGateReturnsTrue() throws {
+        let delegate = AnalysisDelegateSpy()
+        let documentService = DocumentServiceSpy()
+        var didFallback = false
+
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            didFallback = GiniNetworkingScreenAPICoordinator.performWeroFallbackIfNeeded(
+                pages: [weroCandidatePage],
+                extractionResult: emptyResult(),
+                delegate: delegate,
+                documentService: documentService
+            )
+        }
+
+        #expect(didFallback == true)
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 1)
+        #expect(documentService.resetToInitialStateCallCount == 1)
+    }
+
+    @Test("Gate does not fire → no side effects, returns false")
+    func fallbackSkippedWhenGateReturnsFalse() throws {
+        let delegate = AnalysisDelegateSpy()
+        let documentService = DocumentServiceSpy()
+        var didFallback = true
+
+        /// Flag off → gate returns false regardless of pages/extractions.
+        try GiniCaptureTestsHelper.withWeroFlag(false) {
+            didFallback = GiniNetworkingScreenAPICoordinator.performWeroFallbackIfNeeded(
+                pages: [weroCandidatePage],
+                extractionResult: emptyResult(),
+                delegate: delegate,
+                documentService: documentService
+            )
+        }
+
+        #expect(didFallback == false)
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 0)
+        #expect(documentService.resetToInitialStateCallCount == 0)
+    }
+}
+
 // MARK: - GiniNetworkingScreenAPICoordinator — mapWeroExtractionsIfApplicable (instance method)
 
 /**
