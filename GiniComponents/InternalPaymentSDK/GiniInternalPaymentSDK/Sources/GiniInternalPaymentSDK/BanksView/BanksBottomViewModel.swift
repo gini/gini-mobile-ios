@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 import GiniUtilites
 import GiniHealthAPILibrary
 
@@ -46,13 +47,19 @@ public final class BanksBottomViewModel {
     var heightTableView: CGFloat = 0
 
     private var urlOpener: URLOpener
-    
+
+    /// Fires on main when `paymentProviders` is replaced by a new publisher emission.
+    var onPaymentProvidersUpdated: (() -> Void)?
+
+    private var cancellables = Set<AnyCancellable>()
+
     var clientConfiguration: ClientConfiguration?
     var shouldShowBrandedView: Bool {
         clientConfiguration?.ingredientBrandType == .paymentComponent || clientConfiguration?.ingredientBrandType == .fullVisible
     }
 
     public init(paymentProviders: PaymentProviders,
+                paymentProvidersPublisher: AnyPublisher<PaymentProviders, Never>,
                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?,
                 configuration: BankSelectionConfiguration,
                 strings: BanksBottomStrings,
@@ -73,31 +80,42 @@ public final class BanksBottomViewModel {
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
 
         self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.uniqued(by: { $0.id }),
+                                                         paymentProvidersPublisher: paymentProvidersPublisher,
                                                          configuration: paymentInfoConfiguration,
                                                          strings: paymentInfoStrings,
                                                          poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                          poweredByGiniStrings: poweredByGiniStrings,
                                                          clientConfiguration: clientConfiguration,
                                                          configurationRefresher: paymentInfoConfigurationProvider)
-        
+
         self.clientConfiguration = clientConfiguration
 
-        self.paymentProviders = paymentProviders
+        self.applyPaymentProviders(paymentProviders)
+
+        paymentProvidersPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] providers in
+                self?.applyPaymentProviders(providers)
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Wraps raw providers, filters iOS-supported, dedupes, sorts installed-first, notifies the view.
+    private func applyPaymentProviders(_ raw: PaymentProviders) {
+        self.paymentProviders = raw
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
             .filter { $0.paymentProvider.gpcSupportedPlatforms.contains(.ios) || $0.paymentProvider.openWithSupportedPlatforms.contains(.ios) }
             .uniqued(by: { $0.paymentProvider.id })
             .sorted {
-                // First, sort by isInstalled
                 if $0.isInstalled != $1.isInstalled {
                     return $0.isInstalled && !$1.isInstalled
                 }
-                // Then sort by paymentProvider.index if both have the same isInstalled value
                 return ($0.paymentProvider.index ?? 0) < ($1.paymentProvider.index ?? 0)
             }
-
         self.calculateHeights()
+        self.onPaymentProvidersUpdated?()
     }
 
     func calculateHeights() {

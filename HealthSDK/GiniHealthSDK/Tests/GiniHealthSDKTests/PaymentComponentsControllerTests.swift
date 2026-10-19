@@ -6,6 +6,7 @@
 
 
 import XCTest
+import Combine
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -116,6 +117,37 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertEqual(paymentInfoVC.viewModel.paymentProviders, [], "Payment providers should be empty initially")
     }
     
+    // MARK: - paymentProvidersPublisher
+
+    func testPaymentProvidersPublisherEmitsEmptyOnSubscribe() {
+        let controller = PaymentComponentsController(giniHealth: giniHealth)
+        var received: [GiniHealthAPILibrary.PaymentProviders] = []
+        let cancellable = controller.paymentProvidersPublisher.sink { received.append($0) }
+
+        XCTAssertEqual(received.count, 1,
+                       "Subscribe must deliver exactly one replay")
+        XCTAssertEqual(received.first, [],
+                       "CurrentValueSubject must replay [] before any fetch resolves")
+        cancellable.cancel()
+    }
+
+    func testPaymentProvidersPublisherDeliversToMultipleSubscribers() {
+        let controller = PaymentComponentsController(giniHealth: giniHealth)
+        var r1: [GiniHealthAPILibrary.PaymentProviders] = []
+        var r2: [GiniHealthAPILibrary.PaymentProviders] = []
+
+        let c1 = controller.paymentProvidersPublisher.sink { r1.append($0) }
+        let c2 = controller.paymentProvidersPublisher.sink { r2.append($0) }
+
+        XCTAssertEqual(r1.count, 1, "Subscriber 1 must receive the replay on subscribe")
+        XCTAssertEqual(r2.count, 1, "Subscriber 2 must receive the replay on subscribe")
+        XCTAssertEqual(r1.first, r2.first,
+                       "Both subscribers must observe the same replay value")
+
+        c1.cancel()
+        c2.cancel()
+    }
+
     func testPaymentProvidersSorting() {
         let fileName = "notSortedBanks"
         guard let givenPaymentProviders = loadProviders(fileName: fileName) else {
@@ -126,6 +158,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
 
         let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders.map { $0.toHealthPaymentProvider() },
+                                                   paymentProvidersPublisher: Just([]).eraseToAnyPublisher(),
                                                    selectedPaymentProvider: nil,
                                                    configuration: giniHealth.bankSelectionConfiguration,
                                                    strings: giniHealth.banksBottomStrings,

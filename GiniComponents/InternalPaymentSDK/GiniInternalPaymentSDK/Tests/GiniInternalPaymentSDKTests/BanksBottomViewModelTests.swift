@@ -6,6 +6,7 @@
 //
 
 import Testing
+import Combine
 import UIKit
 import GiniHealthAPILibrary
 import GiniUtilites
@@ -19,9 +20,11 @@ struct BanksBottomViewModelTests {
 
     private func makeSUT(providers: [PaymentProvider] = [.fixture()],
                          selectedProvider: PaymentProvider? = nil,
+                         publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          urlOpener: MockURLOpener = MockURLOpener(),
                          clientConfiguration: ClientConfiguration? = nil) -> BanksBottomViewModel {
         BanksBottomViewModel(paymentProviders: providers,
+                             paymentProvidersPublisher: publisher,
                              selectedPaymentProvider: selectedProvider,
                              configuration: .test,
                              strings: .test,
@@ -33,6 +36,105 @@ struct BanksBottomViewModelTests {
                              paymentInfoStrings: .test,
                              urlOpener: URLOpener(urlOpener),
                              clientConfiguration: clientConfiguration)
+    }
+
+    // MARK: - Reactive publisher subscription
+
+    @Test("Replays the publisher's current value on init", .timeLimit(.minutes(1)))
+    func replaysCurrentValueOnInit() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([.fixture()])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        await awaitProvidersUpdate(on: sut)
+
+        #expect(sut.paymentProviders.count == 1,
+                "CurrentValueSubject replays its current value on subscribe; init must apply it")
+    }
+
+    @Test("Late publisher emission reapplies providers and fires the update closure", .timeLimit(.minutes(1)))
+    func lateEmissionReappliesAndFiresClosure() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        await awaitProvidersUpdate(on: sut) {
+            subject.send([.fixture(id: "a"), .fixture(id: "b")])
+        }
+
+        #expect(sut.paymentProviders.count == 2,
+                "paymentProviders must reflect the latest emission from the publisher")
+    }
+
+    @Test("Empty emission still fires the update closure", .timeLimit(.minutes(1)))
+    func emptyEmissionStillFiresClosure() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([.fixture()])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        await awaitProvidersUpdate(on: sut)
+
+        await awaitProvidersUpdate(on: sut) {
+            subject.send([])
+        }
+
+        #expect(sut.paymentProviders.isEmpty,
+                "An empty emission must drain the applied providers")
+    }
+
+    @Test("Late emission applies the iOS-platform filter", .timeLimit(.minutes(1)))
+    func lateEmissionAppliesIOSFilter() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        let iosProvider = PaymentProvider.fixture(id: "ios-ok")
+        let androidOnly = PaymentProvider.fixture(id: "android-only",
+                                                  gpcSupportedPlatforms: [.android],
+                                                  openWithSupportedPlatforms: [])
+
+        await awaitProvidersUpdate(on: sut) {
+            subject.send([iosProvider, androidOnly])
+        }
+
+        #expect(sut.paymentProviders.count == 1,
+                "Android-only providers must be filtered out on late emissions too")
+        #expect(sut.paymentProviders.first?.paymentProvider.id == "ios-ok",
+                "Only the iOS-supported provider should remain after filtering")
+    }
+
+    @Test("Delivers emission on the main queue regardless of send queue", .timeLimit(.minutes(1)))
+    func deliversOnMainQueueFromBackgroundSend() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        let onMain = await withCheckedContinuation { (cont: CheckedContinuation<Bool, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume(returning: Thread.isMainThread)
+            }
+            DispatchQueue.global().async {
+                subject.send([.fixture()])
+            }
+        }
+
+        #expect(onMain,
+                "Subscription uses .receive(on: .main); closure must fire on the main thread even when send happens on a background queue")
+    }
+
+    /// Waits for the next `onPaymentProvidersUpdated` invocation. Pass a
+    /// trigger closure to run after installing the one-shot handler — useful
+    /// for `subject.send(...)` calls. Deterministic, no sleep.
+    private func awaitProvidersUpdate(on sut: BanksBottomViewModel,
+                                      trigger: (() -> Void)? = nil) async {
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            trigger?()
+        }
     }
 
     // MARK: - Filtering

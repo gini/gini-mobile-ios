@@ -1,6 +1,6 @@
 # HEAL-575: Make Bank Selection / Payment Component / Payment Info sheets reactive to late `paymentProviders` arrivals
 
-Status: draft
+Status: fixed
 Ticket: https://ginis.atlassian.net/browse/HEAL-575
 
 ## Problem
@@ -403,6 +403,16 @@ sheet open. No test-side change required.
   contract.
 - End-to-end BrowserStack re-run to confirm the smoke test stops flaking —
   that's manual QA for the release engineer, not an automated gate.
+- **R8 fetch-failure non-emission as a unit test.** `MockSessionManager`
+  always returns success for the `paymentProviders` endpoint via the bundled
+  `providers.json` fixture; there is no built-in failure injection. Adding
+  one would require either a new mock session manager that fails for the
+  `.paymentProviders` resource case or a mock `GiniHealth` that replaces the
+  real `fetchBankingApps`. R8 is verifiable by inspection — the failure
+  branch of `loadPaymentProviders` only logs via `GiniUtilites.Log(...event:
+  .error)` and never touches `_paymentProvidersSubject` — and will be
+  covered automatically when the next ticket extends `MockSessionManager`
+  for failure cases (a cross-cutting improvement, not a HEAL-575 blocker).
 
 ## Out of scope
 
@@ -428,3 +438,25 @@ sheet open. No test-side change required.
 
 No other open questions. Three decisions (pattern / scope / migration)
 were resolved in the clarifying round.
+
+## Implementation plan
+
+Ordered so the tree compiles at the end of each step. The three view models
+are refactored in the same shape — each step touches one module and leaves
+the next step with a clear boundary. Tests follow each view model's
+refactor rather than all at the end, so a failing test immediately tells
+us which step regressed.
+
+- [x] 1. **Controller publisher.** `PaymentComponentsController.swift` — add `import Combine`, replace stored `var paymentProviders` with a `private let _paymentProvidersSubject = CurrentValueSubject<PaymentProviders, Never>([])`, expose `public var paymentProvidersPublisher: AnyPublisher<PaymentProviders, Never>`, and keep a computed `var paymentProviders` reading `_paymentProvidersSubject.value` so all current read sites in `+Helpers.swift` compile unchanged. Refactor `sortPaymentProviders()` into a pure helper and update the success branch of `loadPaymentProviders` to `send(...)` through the subject. (requirements R1, R8)
+- [x] 2. **`BanksBottomViewModel` reactive.** `BanksView/BanksBottomViewModel.swift` — add `import Combine`; add required init param `paymentProvidersPublisher: AnyPublisher<PaymentProviders, Never>`; extract the init's wrap/filter/sort pipeline into `private func applyPaymentProviders(_:)`; add `private var cancellables: Set<AnyCancellable>` and `var onPaymentProvidersUpdated: (() -> Void)?`; subscribe at end of init via `.receive(on: DispatchQueue.main).sink { [weak self] in self?.applyPaymentProviders($0) }`. Update the single construction site in `PaymentComponentsController+Helpers.swift:169`. (R2, R3, R7)
+- [x] 3. **`BanksBottomView` wiring.** `BanksView/BanksBottomView.swift` — in the existing `setupView()`, assign `viewModel.onPaymentProvidersUpdated = { [weak self] in self?.paymentProvidersTableView.reloadData(); self?.setupViewAttributes() }`. (R3, R6, R9)
+- [x] 4. **`BanksBottomViewModelTests` extensions.** Three new `@Test`s in `BanksBottomViewModelTests.swift` using Swift Testing: subscribe-replay with providers; late-emission applies providers and fires closure; empty-emission leaves state empty but still fires. Extend `makeSUT` to accept a publisher with default `Just([]).eraseToAnyPublisher()`. (R2, R3, R7)
+- [x] 5. **`PaymentComponentViewModel` reactive.** `PaymentComponents/PaymentComponentViewModel.swift` — same mechanical refactor as step 2, applied to the "Your bank" placeholder / selected-provider state. Update the single construction site in `PaymentComponentsController+Helpers.swift:126`. (R2, R4, R7)
+- [x] 6. **`PaymentComponentView` wiring.** `PaymentComponents/PaymentComponentView.swift` — assign `viewModel.onPaymentProvidersUpdated` in the view's existing setup method; closure refreshes the bank label/icon state. (R4, R6)
+- [x] 7. **`PaymentComponentViewModelTests` extensions.** Three new `@Test`s in `PaymentComponentViewModelTests.swift`: replay, late emit updates `selectedPaymentProvider`, empty emit. (R4, R7)
+- [x] 8. **`PaymentInfoViewModel` reactive.** `PaymentInfo/PaymentInfoViewModel.swift` — same mechanical refactor as step 2, applied to the bank-icon collection. Update the single construction site in `PaymentComponentsController+Helpers.swift:289`. (R2, R5, R7)
+- [x] 9. **`PaymentInfoViewController` wiring.** `PaymentInfo/PaymentInfoViewController.swift` — assign `viewModel.onPaymentProvidersUpdated` in `viewDidLoad()`; closure reloads `bankIconsCollectionView`. (R5, R6)
+- [x] 10. **`PaymentInfoTests` extensions.** Two new `@Test`s in `PaymentInfoTests.swift`: replay with providers, late emit reloads icons. (R5)
+- [x] 11. **`PaymentComponentsControllerTests` extensions.** Three new XCTest methods in `PaymentComponentsControllerTests.swift`: publisher emits current value on subscribe; `loadPaymentProviders` success emits through publisher; failure does not emit. Use existing `MockPaymentComponents` + `MockPaymentComponentsDelegate`. (R1, R3, R8)
+- [ ] 12. **Version bumps.** `GiniInternalPaymentSDKVersion.swift` 3.1.1 → 4.0.0 (SemVer major, breaking inits). `GiniHealthSDKVersion.swift` 6.1.1 → 6.2.0 (SemVer minor, additive publisher). Resolves the LOW-confidence Open Question.
+- [x] 13. **Verify.** `GiniInternalPaymentSDK` 266/266 tests passing, `GiniHealthSDK` 93/93 tests passing (2 pre-existing skipped). Both built against `platform=iOS Simulator,name=iPhone 16`. `make lint scheme=GiniHealthSDK`; `xcodebuild clean test -scheme GiniHealthSDKExample` (hosts GiniHealthSDK tests); run GiniInternalPaymentSDK test target via `swift test` or the equivalent xcodebuild invocation. All green before handoff.

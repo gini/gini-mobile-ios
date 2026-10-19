@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 import GiniInternalPaymentSDK
 import GiniUtilites
@@ -87,7 +88,21 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     unowned let giniSDK: GiniHealth
     private weak var trackingDelegate: GiniHealthTrackingDelegate?
 
-    var paymentProviders: GiniHealthAPILibrary.PaymentProviders = []
+    /// Single source of truth for the fetched payment-provider list.
+    let _paymentProvidersSubject = CurrentValueSubject<GiniHealthAPILibrary.PaymentProviders, Never>([])
+
+    /**
+     Publishes the controller's payment-provider list. Emits the current
+     value on subscribe and every subsequent successful load.
+     */
+    public var paymentProvidersPublisher: AnyPublisher<GiniHealthAPILibrary.PaymentProviders, Never> {
+        _paymentProvidersSubject.eraseToAnyPublisher()
+    }
+
+    /// Read-only accessor backed by the subject; writes go through `send(...)`.
+    var paymentProviders: GiniHealthAPILibrary.PaymentProviders {
+        _paymentProvidersSubject.value
+    }
 
     var configurationProvider: PaymentComponentsConfigurationProvider
     let stringsProvider: PaymentComponentsStringsProvider

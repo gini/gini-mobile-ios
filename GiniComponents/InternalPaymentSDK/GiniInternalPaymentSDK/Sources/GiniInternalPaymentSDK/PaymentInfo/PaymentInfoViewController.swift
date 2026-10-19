@@ -154,6 +154,15 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         self.setupView()
         bindToTableViewSizeUpdates()
         observeContentSizeCategory()
+        bindToViewModelUpdates()
+    }
+
+    /// Reloads the bank-icons collection when the view model's publisher
+    /// subscription receives a late provider arrival.
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            self?.bankIconsCollectionView.reloadData()
+        }
     }
 
     public override func viewWillAppear(_ animated: Bool) {

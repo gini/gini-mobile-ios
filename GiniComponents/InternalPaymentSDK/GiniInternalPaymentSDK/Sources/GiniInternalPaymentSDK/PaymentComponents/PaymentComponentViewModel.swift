@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 
 public protocol PaymentComponentViewProtocol: AnyObject {
@@ -72,7 +73,14 @@ public final class PaymentComponentViewModel {
         showPaymentComponentInOneRow ? strings.placeholderBankNameText : bankName ?? strings.placeholderBankNameText
     }
 
+    /// Fires on main when the publisher emits. Auto-selecting a bank post-emission
+    /// needs a separate selected-provider publisher — not implemented here.
+    var onPaymentProvidersUpdated: (() -> Void)?
+
+    private var cancellables = Set<AnyCancellable>()
+
     public init(paymentProvider: GiniHealthAPILibrary.PaymentProvider?,
+                paymentProvidersPublisher: AnyPublisher<GiniHealthAPILibrary.PaymentProviders, Never>,
                 primaryButtonConfiguration: ButtonConfiguration,
                 secondaryButtonConfiguration: ButtonConfiguration,
                 configuration: PaymentComponentsConfiguration,
@@ -101,6 +109,13 @@ public final class PaymentComponentViewModel {
 
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
+
+        paymentProvidersPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.onPaymentProvidersUpdated?()
+            }
+            .store(in: &cancellables)
     }
     
     func tapOnMoreInformation() {

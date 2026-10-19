@@ -6,6 +6,7 @@
 //
 
 import Testing
+import Combine
 import UIKit
 import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -17,9 +18,11 @@ struct PaymentComponentViewModelTests {
     // MARK: - Helpers
 
     private func makeSUT(provider: PaymentProvider? = .fixture(),
+                         publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          paymentComponentConfiguration: PaymentComponentConfiguration? = nil,
                          clientConfiguration: ClientConfiguration? = nil) -> PaymentComponentViewModel {
         PaymentComponentViewModel(paymentProvider: provider,
+                                  paymentProvidersPublisher: publisher,
                                   primaryButtonConfiguration: .test,
                                   secondaryButtonConfiguration: .test,
                                   configuration: .test,
@@ -31,6 +34,23 @@ struct PaymentComponentViewModelTests {
                                   minimumButtonsHeight: 44,
                                   paymentComponentConfiguration: paymentComponentConfiguration,
                                   clientConfiguration: clientConfiguration)
+    }
+
+    // MARK: - Reactive publisher subscription
+
+    @Test("Publisher emission fires the update closure", .timeLimit(.minutes(1)))
+    func publisherEmissionFiresClosure() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher())
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([.fixture()])
+        }
     }
 
     // MARK: - hasBankSelected

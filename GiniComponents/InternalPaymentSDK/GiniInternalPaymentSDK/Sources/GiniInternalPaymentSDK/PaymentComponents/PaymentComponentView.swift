@@ -108,6 +108,17 @@ public final class PaymentComponentView: UIView {
         setupGestures()
         setupAccessibility()
         updateBottomStackOrientation()
+        bindToViewModelUpdates()
+    }
+
+    /// Refreshes bank-selection and button visibility when the view model's
+    /// publisher subscription receives a late provider arrival.
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            guard let self else { return }
+            self.updateAvailableViews()
+            self.updateButtonsViews()
+        }
     }
 
     private func setupAccessibility() {

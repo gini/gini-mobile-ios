@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 
 struct FAQSection {
@@ -38,14 +39,20 @@ public final class PaymentInfoViewModel {
     var shouldShowBrandedView: Bool {
         clientConfiguration?.ingredientBrandType == .fullVisible
     }
-    
+
     var accessibilityBankListText: String {
         let bankNames = paymentProviders.map { $0.name }.joined(separator: ", ")
-        
+
         return String(format: strings.supportedBanksText, bankNames)
     }
 
+    /// Fires on main when `paymentProviders` is replaced by a new publisher emission.
+    var onPaymentProvidersUpdated: (() -> Void)?
+
+    private var cancellables = Set<AnyCancellable>()
+
     public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
+                paymentProvidersPublisher: AnyPublisher<GiniHealthAPILibrary.PaymentProviders, Never>,
                 configuration: PaymentInfoConfiguration,
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
@@ -63,6 +70,19 @@ public final class PaymentInfoViewModel {
 
         configurePayBillsGiniLink()
         setupQuestions()
+
+        paymentProvidersPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] providers in
+                self?.applyPaymentProviders(providers)
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Replaces the bank-icon source list and notifies the view.
+    private func applyPaymentProviders(_ raw: GiniHealthAPILibrary.PaymentProviders) {
+        self.paymentProviders = raw
+        self.onPaymentProvidersUpdated?()
     }
     
     private func setupQuestions() {

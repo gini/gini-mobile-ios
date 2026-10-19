@@ -6,6 +6,7 @@
 //
 
 import Testing
+import Combine
 import UIKit
 import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -17,9 +18,11 @@ struct PaymentInfoViewModelTests {
     // MARK: - Helpers
 
     private func makeSUT(providers: [PaymentProvider] = [],
+                         publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          strings: PaymentInfoStrings = .test,
                          clientConfiguration: ClientConfiguration? = nil) -> PaymentInfoViewModel {
         PaymentInfoViewModel(paymentProviders: providers,
+                             paymentProvidersPublisher: publisher,
                              configuration: .test,
                              strings: strings,
                              poweredByGiniConfiguration: .test,
@@ -44,6 +47,46 @@ struct PaymentInfoViewModelTests {
                                       answers: answers,
                                       accessibilityExpandedText: "Expanded",
                                       accessibilityCollapsedText: "Collapsed"))
+    }
+
+    // MARK: - Reactive publisher subscription
+
+    @Test("Replays the publisher's current value on init", .timeLimit(.minutes(1)))
+    func replaysCurrentValueOnInit() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([.fixture()])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        await awaitProvidersUpdate(on: sut)
+
+        #expect(sut.paymentProviders.count == 1,
+                "CurrentValueSubject must replay its current value on subscribe")
+    }
+
+    @Test("Late emission replaces providers and fires the update closure", .timeLimit(.minutes(1)))
+    func lateEmissionReplacesProvidersAndFiresClosure() async {
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(providers: [],
+                          publisher: subject.eraseToAnyPublisher())
+
+        await awaitProvidersUpdate(on: sut) {
+            subject.send([.fixture(id: "x"), .fixture(id: "y")])
+        }
+
+        #expect(sut.paymentProviders.count == 2,
+                "paymentProviders must reflect the latest emission")
+    }
+
+    /// Waits for the next `onPaymentProvidersUpdated` invocation. Deterministic, no sleep.
+    private func awaitProvidersUpdate(on sut: PaymentInfoViewModel,
+                                      trigger: (() -> Void)? = nil) async {
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            trigger?()
+        }
     }
 
     // MARK: - shouldShowBrandedView
