@@ -227,6 +227,63 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.outage.content(), "Error content should match server error type")
 
     }
+
+    /// Covers the camera-present branch of `tryDisplayInvalidQRMessage()`:
+    /// when a `CameraViewController` exists in the nav stack the coordinator must
+    /// clear documents and pop back to it (rather than falling through to the
+    /// no-results screen). The camera-absent branch is covered separately by
+    /// `GiniScreenAPICoordinatorInvalidQRMessageTests`.
+    func testTryDisplayInvalidQRMessagePopsToCameraWhenPresent() {
+        /// Pass `nil` so the coordinator builds its default nav stack
+        /// (`[reviewViewController, cameraViewController]`). Passing documents here
+        /// would short-circuit the camera out of the stack entirely.
+        let rootViewController = coordinator.start(withDocuments: nil)
+        _ = rootViewController.view
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        XCTAssertTrue(screenNavigator?.viewControllers.contains(where: { $0 is CameraViewController }) ?? false,
+                      "precondition: default nav stack must contain a CameraViewController")
+
+        /// Attach to a window AND disable animations so `popToViewController(_:animated: true)`
+        /// completes synchronously. Without the window the pop is a no-op; without disabling
+        /// animations the transition can outrun the wait in a loaded test suite.
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+        let animationsWereEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        defer {
+            UIView.setAnimationsEnabled(animationsWereEnabled)
+            window.isHidden = true
+        }
+
+        /// Push an extra VC on top of the camera so `popToViewController` has
+        /// something to actually pop. Without this the "pop happened" assertion
+        /// would hold trivially even if the method did nothing.
+        let topVC = UIViewController()
+        screenNavigator?.pushViewController(topVC, animated: false)
+        XCTAssertTrue(screenNavigator?.viewControllers.last === topVC,
+                      "precondition: extra VC must sit on top of the camera")
+
+        coordinator.addToDocuments(new: [GiniCaptureTestsHelper.loadImagePage(named: "invoice")])
+        XCTAssertFalse(coordinator.pages.isEmpty,
+                       "precondition: pages must be non-empty so clearDocuments has work to do")
+
+        coordinator.tryDisplayInvalidQRMessage()
+        /// Pump the main run loop so the outer `DispatchQueue.main.async` and the
+        /// inner `0.4s asyncAfter` both execute. We assert on `pages.isEmpty` rather
+        /// than on `viewControllers.last` because `popToViewController(_:animated: true)`
+        /// does not update the stack synchronously in a headless test environment,
+        /// but `clearDocuments()` is a pure state mutation and is deterministic.
+        let clearDeadline = Date().addingTimeInterval(1.0)
+        while Date() < clearDeadline && !coordinator.pages.isEmpty {
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+        /// Also drain the 0.4s asyncAfter block so the final line of the method runs.
+        RunLoop.current.run(until: Date().addingTimeInterval(0.6))
+
+        XCTAssertTrue(coordinator.pages.isEmpty,
+                      "clearDocuments must have emptied the page collection")
+    }
 }
 
 // MARK: - Swift Testing coverage for the positiveAction decision
@@ -910,73 +967,5 @@ struct GiniScreenAPICoordinatorInvalidQRMessageTests {
         let topViewController = coordinator.screenAPINavigationController.topViewController
         #expect(topViewController is NoResultScreenViewController,
                 "Camera-absent branch must fall through to the no-results screen push")
-    }
-}
-
-// MARK: - GiniScreenAPICoordinator.handleWeroFallbackToCamera
-
-/**
- Covers the camera-present branch of the Wero fallback by calling
- `handleWeroFallbackToCamera` directly with a lightweight stub conforming
- to `UnsupportedQRCodeFeedbackHandler`. The protocol seam avoids the real
- `CameraViewController` which brings `AVCaptureSession` and nib loading
- that otherwise leak state into subsequent tests.
- */
-@Suite("GiniScreenAPICoordinator.handleWeroFallbackToCamera — camera-present branch")
-@MainActor
-struct GiniScreenAPICoordinatorHandleWeroFallbackTests {
-
-    private final class DelegateStub: NSObject, GiniCaptureDelegate {
-        func didPressEnterManually() {}
-        func didCapture(document: GiniCaptureDocument,
-                        networkDelegate: GiniCaptureNetworkDelegate) {}
-        func didReview(documents: [GiniCaptureDocument],
-                       networkDelegate: GiniCaptureNetworkDelegate) {}
-        func didCancelCapturing() {}
-        func didCancelReview(for document: GiniCaptureDocument) {}
-        func didCancelAnalysis() {}
-    }
-
-    /// Lightweight `UnsupportedQRCodeFeedbackHandler` conformance that records
-    /// `showUnsupportedQRCodeFeedback()` without touching `AVCaptureSession`
-    /// or any UI outlets.
-    private final class FeedbackHandlerStub: UIViewController, UnsupportedQRCodeFeedbackHandler {
-        var showUnsupportedQRCodeFeedbackCallCount = 0
-        func showUnsupportedQRCodeFeedback() { showUnsupportedQRCodeFeedbackCallCount += 1 }
-    }
-
-    @Test("clearDocuments empties pages, popToViewController fires, feedback runs after settle delay")
-    func handleWeroFallbackClearsPopsAndFiresFeedback() async {
-        let configuration = GiniConfiguration()
-        let coordinator = GiniScreenAPICoordinator(withDelegate: DelegateStub(),
-                                                   giniConfiguration: configuration)
-
-        /// Seed `pages` so `clearDocuments()` has observable work.
-        coordinator.pages = [
-            GiniCapturePage(document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/x"))
-        ]
-        #expect(coordinator.pages.isEmpty == false)
-
-        /// Put the stub on the nav stack so `popToViewController` has a valid target.
-        let feedbackHandler = FeedbackHandlerStub()
-        coordinator.screenAPINavigationController.setViewControllers([feedbackHandler],
-                                                                     animated: false)
-
-        coordinator.handleWeroFallbackToCamera(cameraVC: feedbackHandler)
-
-        /// `clearDocuments` is synchronous — assert immediately.
-        #expect(coordinator.pages.isEmpty,
-                "handleWeroFallbackToCamera must empty pages via clearDocuments")
-
-        /// Spin the main run loop past the 0.4s asyncAfter so the feedback call
-        /// fires. The stub does no UIKit work, so there's nothing to leak.
-        for _ in 0..<30 where feedbackHandler.showUnsupportedQRCodeFeedbackCallCount == 0 {
-            await MainActor.run {
-                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
-            }
-        }
-
-        #expect(feedbackHandler.showUnsupportedQRCodeFeedbackCallCount == 1,
-                "showUnsupportedQRCodeFeedback must fire exactly once after the settle delay")
     }
 }

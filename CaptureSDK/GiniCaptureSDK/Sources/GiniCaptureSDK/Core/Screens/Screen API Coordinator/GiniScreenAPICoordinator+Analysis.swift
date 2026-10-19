@@ -103,29 +103,16 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             guard let self else { return }
             guard let cameraVC = self.screenAPINavigationController
                 .viewControllers
-                .first(where: { $0 is UnsupportedQRCodeFeedbackHandler }) as? UnsupportedQRCodeFeedbackHandler else {
+                .first(where: { $0 is CameraViewController }) as? CameraViewController else {
                 self.tryDisplayNoResultsScreen()
                 return
             }
-            self.handleWeroFallbackToCamera(cameraVC: cameraVC)
-        }
-    }
-
-    /**
-     Clears pending pages, pops back to the camera view controller, and triggers
-     the unsupported-QR-code feedback after a short settle delay.
-
-     - Parameters:
-       - cameraVC: Any view controller conforming to
-         `UnsupportedQRCodeFeedbackHandler`. A protocol seam lets tests
-         substitute a lightweight stub for `CameraViewController`.
-     */
-    func handleWeroFallbackToCamera(cameraVC: UnsupportedQRCodeFeedbackHandler) {
-        clearDocuments()
-        screenAPINavigationController.popToViewController(cameraVC, animated: true)
-        /// Delay so the alert presents after the pop transition settles.
-        DispatchQueue.main.asyncAfter(deadline: .now() + WeroFallbackConstants.popToCameraSettleDelay) {
-            cameraVC.showUnsupportedQRCodeFeedback()
+            self.clearDocuments()
+            self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
+            /// Delay so the alert presents after the pop transition settles.
+            DispatchQueue.main.asyncAfter(deadline: .now() + WeroFallbackConstants.popToCameraSettleDelay) {
+                cameraVC.showUnsupportedQRCodeFeedback()
+            }
         }
     }
 
