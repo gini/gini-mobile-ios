@@ -78,7 +78,9 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /** Reports the toolbar height so UIKit sizes the accessory view to match. */
+    /**
+     Reports the toolbar height so UIKit sizes the accessory view to match.
+     */
     override var intrinsicContentSize: CGSize {
         if shouldUseExpandedLayout {
             return CGSize(width: UIView.noIntrinsicMetric, height: currentInnerToolbarHeight)
@@ -86,7 +88,9 @@ final class GiniInputAccessoryView: UIView {
         return super.intrinsicContentSize
     }
 
-    /** Updates the toolbar height on rotation when the vertical size class changes. */
+    /**
+     Updates the toolbar height on rotation when the vertical size class changes.
+     */
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass else {
@@ -103,7 +107,9 @@ final class GiniInputAccessoryView: UIView {
         return false
     }
 
-    /** Returns 44pt on iOS 15–25, 50pt on iOS 26+ portrait, 44pt on iOS 26+ landscape. */
+    /**
+     Returns 44pt on iOS 15–25, 50pt on iOS 26+ portrait, 44pt on iOS 26+ landscape.
+     */
     private var currentInnerToolbarHeight: CGFloat {
         guard shouldUseExpandedLayout else { return Constants.innerToolbarHeight }
         return traitCollection.verticalSizeClass == .compact
