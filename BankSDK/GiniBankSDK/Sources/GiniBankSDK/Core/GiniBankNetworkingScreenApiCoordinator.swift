@@ -497,11 +497,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
-                let scannedPayload = self.pages.lazy
-                    .compactMap({ $0.document as? GiniQRCodeDocument })
-                    .first?.scannedPayload
-                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(extractionResult,
-                                                                                   scannedPayload: scannedPayload)
+                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(
+                    extractionResult, pages: self.pages)
                 self.setDocumentIdAsUserProperty()
                 Task {
                     await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)

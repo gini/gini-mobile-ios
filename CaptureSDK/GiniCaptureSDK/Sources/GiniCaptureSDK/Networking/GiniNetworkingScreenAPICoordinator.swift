@@ -110,10 +110,21 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
      Looks up the scanned payload from `pages` and feeds it to `mapWeroExtractions`.
      */
     func mapWeroExtractionsIfApplicable(_ result: ExtractionResult) -> ExtractionResult {
+        return Self.mapWeroExtractionsIfApplicable(result, pages: pages)
+    }
+
+    /**
+     Static sibling of `mapWeroExtractionsIfApplicable(_:)` so callers that do
+     not inherit from this coordinator (notably the BankSDK coordinator) can
+     reuse the "pick the first QR document's scanned payload" step without
+     duplicating the pages lookup.
+     */
+    public static func mapWeroExtractionsIfApplicable(_ result: ExtractionResult,
+                                                      pages: [GiniCapturePage]) -> ExtractionResult {
         let scannedPayload = pages.lazy
             .compactMap({ $0.document as? GiniQRCodeDocument })
             .first?.scannedPayload
-        return Self.mapWeroExtractions(result, scannedPayload: scannedPayload)
+        return mapWeroExtractions(result, scannedPayload: scannedPayload)
     }
 
     /**
