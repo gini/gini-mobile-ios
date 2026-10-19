@@ -912,3 +912,135 @@ struct GiniScreenAPICoordinatorInvalidQRMessageTests {
                 "Camera-absent branch must fall through to the no-results screen push")
     }
 }
+
+// MARK: - GiniNetworkingScreenAPICoordinator — deliver(result:and:to:)
+
+/**
+ Covers the three branches of `deliver(result:and:to:)` on the shared
+ `GiniNetworkingScreenAPICoordinator`: the extractions-success path, the
+ Wero-fallback path, and the no-results path. The main dispatch is drained
+ via `RunLoop` so each branch runs synchronously enough to assert on the
+ side-effects captured by the spies.
+ */
+@Suite("GiniNetworkingScreenAPICoordinator — deliver(result:and:to:)", .serialized)
+@MainActor
+struct GiniNetworkingScreenAPICoordinatorDeliverTests {
+
+    private final class ResultsDelegateSpy: NSObject, GiniCaptureResultsDelegate {
+        var didFinishResultCallCount = 0
+        var lastResult: AnalysisResult?
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            didFinishResultCallCount += 1
+            lastResult = result
+        }
+        func giniCaptureDidCancelAnalysis() {}
+        func giniCaptureDidEnterManually() {}
+    }
+
+    private final class AnalysisDelegateSpy: NSObject, AnalysisDelegate {
+        var tryDisplayInvalidQRMessageCallCount = 0
+        var tryDisplayNoResultsScreenCallCount = 0
+        func displayError(errorType: ErrorType, animated: Bool) {}
+        func tryDisplayNoResultsScreen() { tryDisplayNoResultsScreenCallCount += 1 }
+        func tryDisplayInvalidQRMessage() { tryDisplayInvalidQRMessageCallCount += 1 }
+    }
+
+    private func makeCoordinator(resultsDelegate: ResultsDelegateSpy = .init()) -> (
+        coordinator: GiniNetworkingScreenAPICoordinator,
+        resultsDelegate: ResultsDelegateSpy
+    ) {
+        let coordinator = GiniNetworkingScreenAPICoordinator(resultsDelegate: resultsDelegate,
+                                                             giniConfiguration: GiniConfiguration(),
+                                                             documentMetadata: nil,
+                                                             trackingDelegate: nil,
+                                                             captureNetworkService: MockCaptureNetworkService())
+        return (coordinator, resultsDelegate)
+    }
+
+    /// Drains main-queue work queued by `deliver(result:and:to:)` so the spies observe it.
+    /// Mirrors the pattern used by `GiniScreenAPICoordinatorInvalidQRMessageTests`.
+    private func drainMain(iterations: Int = 10) async {
+        for _ in 0..<iterations {
+            await Task.yield()
+            await MainActor.run {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+            }
+        }
+    }
+
+    @Test("Extractions present → results delegate receives AnalysisResult")
+    func extractionsPresentDeliversToResultsDelegate() async throws {
+        let subject = makeCoordinator()
+        let delegate = AnalysisDelegateSpy()
+
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: "amount",
+                                    value: "42.00:EUR",
+                                    name: "amountToPay")
+        let result = ExtractionResult(extractions: [extraction], candidates: [:])
+
+        subject.coordinator.deliver(result: result, to: delegate)
+        await drainMain()
+
+        #expect(subject.resultsDelegate.didFinishResultCallCount == 1)
+        #expect(subject.resultsDelegate.lastResult?.extractions["amountToPay"] != nil)
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 0)
+        #expect(delegate.tryDisplayNoResultsScreenCallCount == 0)
+    }
+
+    @Test("Empty extractions + Wero candidate + flag on → invalid-QR message")
+    func noExtractionsWithWeroCandidateHitsFallback() async throws {
+        let subject = makeCoordinator()
+        let delegate = AnalysisDelegateSpy()
+
+        subject.coordinator.pages = [
+            GiniCapturePage(document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/x"))
+        ]
+
+        /// Acquire the flag lock manually (not via `withWeroFlag`) because the
+        /// Wero gate check runs inside `deliver`'s async main dispatch, and we
+        /// need the flag to stay set across the `await drainMain()` call.
+        let previousFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureTestsHelper.acquireFlagLock()
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+        defer {
+            GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = previousFlag
+            GiniCaptureTestsHelper.releaseFlagLock()
+        }
+
+        subject.coordinator.deliver(result: ExtractionResult(extractions: [], candidates: [:]),
+                                    to: delegate)
+        await drainMain()
+
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 1,
+                "Wero fallback must notify the delegate when the gate fires")
+        #expect(delegate.tryDisplayNoResultsScreenCallCount == 0,
+                "No-results path must be skipped when Wero fallback fires")
+        #expect(subject.resultsDelegate.didFinishResultCallCount == 0)
+    }
+
+    @Test("Empty extractions + no Wero candidate → no-results screen")
+    func noExtractionsWithoutWeroCandidateFallsThroughToNoResults() async throws {
+        let subject = makeCoordinator()
+        let delegate = AnalysisDelegateSpy()
+
+        /// No pages → `shouldRouteBackToCameraForWeroFallback` returns false
+        /// regardless of flag → fall through to the no-results path.
+        let previousFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureTestsHelper.acquireFlagLock()
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+        defer {
+            GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = previousFlag
+            GiniCaptureTestsHelper.releaseFlagLock()
+        }
+
+        subject.coordinator.deliver(result: ExtractionResult(extractions: [], candidates: [:]),
+                                    to: delegate)
+        await drainMain()
+
+        #expect(delegate.tryDisplayNoResultsScreenCallCount == 1)
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 0)
+        #expect(subject.resultsDelegate.didFinishResultCallCount == 0)
+    }
+}
