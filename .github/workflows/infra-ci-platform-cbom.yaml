@@ -1,0 +1,171 @@
+name: CBOM
+
+# Synced to all repos by infra-ci-platform. On every push to main/master (the default
+# branch across Gini repos), generate a CycloneDX CBOM and upload it to the
+# gini-sbom-artifacts S3 bucket.
+on:
+  push:
+    branches: [main, master]
+
+# One CBOM run per repo at a time, newest wins. Out-of-order finishes would otherwise let
+# an older run overwrite `latest`; a cancelled run just skips its per-SHA copy.
+concurrency:
+  group: cbom-${{ github.workflow }}
+  cancel-in-progress: true
+
+# Permissions are declared per job below: only `upload` may mint the OIDC token.
+#
+# Source leg only. The artifact legs live in a composite action in infra-ci-platform,
+# which a public repo cannot resolve. Every Go and JVM crypto-bearing repo at Gini is
+# private, so this costs no real coverage - revisit if a public repo ever ships crypto.
+# Schema validation still applies here.
+jobs:
+  scan:
+    name: Generate CBOM
+    runs-on: ubuntu-latest
+    # No id-token here. The third-party cbomkit container runs in this job and any step in
+    # a job with id-token:write can mint the OIDC token for the uploader role.
+    permissions:
+      contents: read
+    outputs:
+      found: ${{ steps.check.outputs.found }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Generate CycloneDX CBOM (source leg)
+        id: cbom
+        # Upstream crashes hard on some sources (PythonScannerService
+        # UnsupportedOperationException) -> never fail a repo's main build on it.
+        continue-on-error: true
+        env:
+          # The image is run DIRECTLY, by digest, instead of `uses: cbomkit/cbomkit-action`.
+          # Pinning that action to a SHA pins only its action.yml, which then dispatches to
+          # `docker://ghcr.io/cbomkit/cbomkit-action:v2.3.0` - a MUTABLE tag. The SHA pin
+          # therefore bought nothing against a republished image (the Trivy action vector).
+          CBOMKIT_IMAGE: ghcr.io/cbomkit/cbomkit-action@sha256:47c2505267dc5f055152616ffa0d0076b7d0824fe9e0de670b572d1ebad2fc4b # v2.3.0
+          CBOMKIT_LANGUAGES: java, python, go
+          # Java regex, comma-separated, matched on paths RELATIVE to the workspace:
+          # `/vendor/` never matches, `(^|/)vendor/` does.
+          # Setting this OVERRIDES the built-in test exclusion -> test patterns re-added below.
+          CBOMKIT_EXCLUDE: (^|/)vendor/,(^|/)node_modules/,(^|/)\.git/,_test\.go$,.*Test\.java$,.*Tests\.java$,(^|/)test_.*\.py$,.*_test\.py$,(^|/)src/test/,(^|/)tests?/
+          # Default true throws when a Java repo has no build artifacts. Blanket sync never
+          # builds -> source-only scan. Measured cost is small: cross-class constants only.
+          CBOMKIT_JAVA_REQUIRE_BUILD: "false"
+          # One consolidated CBOM per repo; per-module files would need per-repo S3 keys.
+          CBOMKIT_GENERATE_MODULE_CBOMS: "false"
+          CBOMKIT_OUTPUT_DIR: cbom
+        run: |
+          # Same contract the action sets up: workspace mounted at /github/workspace and
+          # made the working directory, which is where CBOMKIT_OUTPUT_DIR is resolved.
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/github/workspace" \
+            -w /github/workspace \
+            -e GITHUB_WORKSPACE=/github/workspace \
+            -e GITHUB_OUTPUT=/dev/null \
+            -e GITHUB_SERVER_URL -e GITHUB_REPOSITORY -e GITHUB_REF_NAME -e GITHUB_SHA \
+            -e CBOMKIT_LANGUAGES -e CBOMKIT_EXCLUDE -e CBOMKIT_JAVA_REQUIRE_BUILD \
+            -e CBOMKIT_GENERATE_MODULE_CBOMS -e CBOMKIT_OUTPUT_DIR \
+            "${CBOMKIT_IMAGE}"
+
+      - name: Promote the source leg
+        run: |
+          # Source leg is the whole CBOM here. Parse before promoting: cbomkit can crash
+          # mid-write and leave truncated JSON that would fail validation downstream.
+          if [ -s cbom/cbom.json ] && jq -e . cbom/cbom.json > /dev/null 2>&1; then
+            cp cbom/cbom.json cbom.cdx.json
+          elif [ -s cbom/cbom.json ]; then
+            echo "::warning::source CBOM is not valid JSON; nothing to promote"
+          fi
+
+      - name: Check a CBOM was produced
+        id: check
+        run: |
+          # A zero-component document is still uploaded. All the leg-status evidence
+          # (which legs ran, which builds failed, which were skipped and why) lives in
+          # that document, so suppressing it loses the record exactly for the repos whose
+          # coverage is in question - and "scanned, found nothing" would be
+          # indistinguishable from "never scanned" in S3.
+          COUNT=0
+          if [ -s cbom.cdx.json ] && jq -e . cbom.cdx.json > /dev/null 2>&1; then
+            COUNT="$(jq '.components | length' cbom.cdx.json 2>/dev/null || echo 0)"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "::error::no valid CBOM document was produced at all"
+          fi
+          echo "components=${COUNT}" >> "$GITHUB_OUTPUT"
+          if [ "${COUNT}" -eq 0 ]; then
+            echo "::warning::CBOM has no components - every leg empty, scan failed, or no supported language; uploading it as the coverage record"
+          fi
+
+      - name: Validate against the CycloneDX schema
+        # Deliberately NOT continue-on-error. A malformed document is a defect in our own
+        # tooling, and publishing invalid compliance evidence is worse than a red build.
+        if: steps.check.outputs.found == 'true'
+        env:
+          CDX_VERSION: v0.33.1
+          CDX_SHA256: bfc8b2538da86fe239bc53658bbb63c1c8c510a293c1e6891aa5bea5d3c58746
+        run: |
+          curl -sSL --retry 3 -o /tmp/cyclonedx \
+            "https://github.com/CycloneDX/cyclonedx-cli/releases/download/${CDX_VERSION}/cyclonedx-linux-x64"
+          echo "${CDX_SHA256}  /tmp/cyclonedx" | sha256sum -c -
+          chmod +x /tmp/cyclonedx
+          # --fail-on-errors is REQUIRED: without it the CLI prints "BOM is not valid."
+          # and still exits 0, so the gate would pass every malformed document.
+          /tmp/cyclonedx validate --input-file cbom.cdx.json --input-format json \
+            --input-version v1_6 --fail-on-errors
+          # cyclonedx-cli does NOT flag duplicate bom-refs - measured: a document with
+          # two identical refs validates successfully. CycloneDX requires them unique, so
+          # check it here or the schema gate gives false assurance.
+          SPEC="$(jq -r '.specVersion // "missing"' cbom.cdx.json)"
+          if [ "${SPEC}" != "1.6" ]; then
+            echo "::error::CBOM specVersion is ${SPEC}, but validation targets 1.6 - the source scanner changed its output version"
+            exit 1
+          fi
+          DUPES="$(jq -r '[.components[]? | ."bom-ref" // empty] | group_by(.) | map(select(length > 1) | .[0]) | join(",")' cbom.cdx.json)"
+          if [ -n "${DUPES}" ]; then
+            echo "::error::duplicate bom-refs in the merged CBOM: ${DUPES}"
+            exit 1
+          fi
+
+      - name: Upload CBOM for the upload job
+        if: steps.check.outputs.found == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cbom
+          path: cbom.cdx.json
+          retention-days: 1
+
+  upload:
+    name: Upload CBOM to S3
+    needs: scan
+    if: needs.scan.outputs.found == 'true'
+    runs-on: ubuntu-latest
+    # Credential minting is isolated to this job: it runs no third-party code beyond the
+    # two pinned first-party actions below.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download CBOM
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: cbom
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
+        with:
+          role-to-assume: arn:aws:iam::794883792908:role/github-actions-sbom-uploader
+          aws-region: eu-central-1
+
+      - name: Upload CBOM to S3
+        env:
+          BUCKET: gini-sbom-artifacts
+          # github.repository is "owner/name"; strip the owner to key by repo name.
+          GH_REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          REPO="${GH_REPO##*/}"
+          aws s3 cp cbom.cdx.json "s3://${BUCKET}/${REPO}/${SHA}/cbom.cdx.json"
+          aws s3 cp cbom.cdx.json "s3://${BUCKET}/${REPO}/latest/cbom.cdx.json"
