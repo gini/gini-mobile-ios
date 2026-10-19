@@ -80,8 +80,8 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
                       "Payment Review bank picker not reachable after bank selection.")
         paymentReviewScreen.bankPickerButton.tap()
-        XCTAssertTrue(bankSelectionBottomSheet.anyBankCell.waitForExistence(timeout: 10),
-                      "Bank Selection sheet did not render any provider cells (identifier starts with 'bankSelection.cell.').")
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not render any provider cells after 30 s (identifier starts with 'bankSelection.cell.').")
     }
 
     /**
@@ -97,9 +97,9 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
                       "Payment Review bank picker not reachable after bank selection.")
         paymentReviewScreen.bankPickerButton.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not render any provider cells after 30 s.")
         let bankCell = bankSelectionBottomSheet.anyBankCell
-        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
-                      "Bank Selection sheet did not render any provider cells.")
         bankCell.tap()
         XCTAssertTrue(bankCell.waitForNonExistence(timeout: 10),
                       "Bank Selection sheet did not dismiss after tapping a bank cell.")
@@ -134,8 +134,8 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
                       "Payment Review bank picker not reachable.")
         paymentReviewScreen.bankPickerButton.tap()
-        XCTAssertTrue(bankSelectionBottomSheet.anyBankCell.waitForExistence(timeout: 10),
-                      "Bank Selection sheet did not open from the Payment Review bank picker.")
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not open with provider cells within 30 s.")
         let moreInfo = paymentInfoScreen.moreInformationTrigger
         /// The inline More Information link sits at the bottom of the
         /// `BanksBottomView` stack and may be offscreen on compact-height
@@ -270,8 +270,8 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
                       "Payment Review bank picker not reachable after bank selection.")
         paymentReviewScreen.bankPickerButton.tap()
-        XCTAssertTrue(bankSelectionBottomSheet.anyBankCell.waitForExistence(timeout: 10),
-                      "Bank Selection sheet did not open after tapping the Payment Review bank picker.")
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not open with provider cells within 30 s after tapping the Payment Review bank picker.")
     }
 
     /**

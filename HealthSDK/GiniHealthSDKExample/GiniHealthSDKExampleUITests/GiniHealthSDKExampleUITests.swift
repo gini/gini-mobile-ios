@@ -157,10 +157,9 @@ extension GiniHealthSDKExampleUITests {
         XCTAssertTrue(selectBank.exists,
                       "Neither Payment Component bottom sheet nor Payment Review Screen appeared after Transfer directly.")
         selectBank.tap()
-        let bankCell = bankSelectionBottomSheet.anyBankCell
-        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
-                      "No bank cells found in the Bank Selection sheet — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
-        bankCell.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "No bank cells found in the Bank Selection sheet after 30 s — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
+        bankSelectionBottomSheet.anyBankCell.tap()
         XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
                       "Continue to overview button did not appear on the Payment Component after bank selection.")
         paymentComponentScreen.tapContinueToOverview()

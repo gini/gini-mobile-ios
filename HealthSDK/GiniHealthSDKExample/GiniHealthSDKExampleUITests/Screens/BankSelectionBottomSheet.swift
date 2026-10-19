@@ -42,4 +42,18 @@ final class BankSelectionBottomSheet {
             .matching(NSPredicate(format: "identifier BEGINSWITH %@", "bankSelection.cell."))
             .firstMatch
     }
+
+    /**
+     Call after tapping the sheet's trigger (Payment Component `selectBank`
+     or Payment Review `bankPicker`). Short settle lets the sheet attach;
+     30 s tolerates slow `paymentProviders` fetches on BrowserStack without
+     masking a genuine "no providers configured" failure.
+     */
+    @discardableResult
+    func waitForProviders(timeout: TimeInterval = 30, settle: TimeInterval = 1.0) -> Bool {
+        if settle > 0 {
+            Thread.sleep(forTimeInterval: settle)
+        }
+        return anyBankCell.waitForExistence(timeout: timeout)
+    }
 }
