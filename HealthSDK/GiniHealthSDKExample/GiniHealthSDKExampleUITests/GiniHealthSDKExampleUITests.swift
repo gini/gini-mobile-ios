@@ -49,14 +49,14 @@ class GiniHealthSDKExampleUITests: XCTestCase {
         app.launch()
         let locale = Locale.current.language.languageCode?.identifier ?? "en"
         mainScreen = MainScreen(app: app)
-        paymentReviewScreen = PaymentReviewScreen(app: app)
+        paymentReviewScreen = PaymentReviewScreen(app: app, locale: locale)
         bankSelectionBottomSheet = BankSelectionBottomSheet(app: app)
         captureImportFlow = CaptureImportFlow(app: app, locale: locale)
         invoicesListScreen = InvoicesListScreen(app: app)
         ordersListScreen = OrdersListScreen(app: app)
         orderDetailsScreen = OrderDetailsScreen(app: app)
         paymentComponentScreen = PaymentComponentScreen(app: app)
-        paymentInfoScreen = PaymentInfoScreen(app: app)
+        paymentInfoScreen = PaymentInfoScreen(app: app, locale: locale)
     }
 
     override func tearDownWithError() throws {

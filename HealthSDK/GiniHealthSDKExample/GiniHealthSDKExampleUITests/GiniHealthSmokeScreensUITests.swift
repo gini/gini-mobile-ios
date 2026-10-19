@@ -112,7 +112,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      link at the bottom; tapping it presents the Payment Info screen.
 
      Verifies the sheet's nav-bar title ("More information" /
-     "Weitere Informationen") rendered by `PaymentInfoViewController` wrapped
+     "Mehr Informationen") rendered by `PaymentInfoViewController` wrapped
      in its hosting `UINavigationController`.
      */
     func testBankSelectionSheetMoreInformationOpensPaymentFeature() throws {
@@ -159,7 +159,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      Reaches the Bank Selection sheet via the Payment Review bank picker,
      taps the inline **More Information** link, and asserts the Payment Info
      screen is presented with both its nav-bar title ("More information" /
-     "Weitere Informationen") and the FAQ section title visible.
+     "Mehr Informationen") and the FAQ section title visible.
      The upstream view (`PaymentInfoViewController`) has no Continue button —
      the SDK's "primary action" at this surface is dismissal, covered by
      HEAL-292.
@@ -167,7 +167,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     func testPaymentFeatureScreenRendersCopyAndContinue() throws {
         openPaymentInfoFromBankSelection()
         XCTAssertTrue(paymentInfoScreen.navBarTitle.waitForExistence(timeout: 10),
-                      "Payment Info screen nav-bar title (More information / Weitere Informationen) not visible.")
+                      "Payment Info screen nav-bar title not visible.")
         XCTAssertTrue(paymentInfoScreen.faqTitle.waitForExistence(timeout: 10),
                       "Payment Info FAQ title (Frequently Asked Questions / Häufig gestellte Fragen) not visible.")
     }
@@ -285,21 +285,14 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     /**
      HEAL-301 — Payment Review Screen's close button dismisses the sheet
      and returns to the previous surface (Invoices List).
-
-     The close button has no accessibility identifier upstream; it sets
-     `accessibilityLabel` from `closeButtonAccessibilityLabel` strings
-     (`Close` / `Schließen`). Matched here via label predicate.
      */
     func testPaymentReviewCloseDismissesSheet() throws {
         reachPaymentReviewFromInvoicesList()
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
                       "Payment Review Screen did not appear.")
-        let closeButton = app.buttons
-            .matching(NSPredicate(format: "label IN %@", ["Close", "Schließen"]))
-            .firstMatch
-        XCTAssertTrue(closeButton.waitForExistence(timeout: 10),
-                      "Close button (label Close / Schließen) not found on Payment Review Screen.")
-        closeButton.tap()
+        XCTAssertTrue(paymentReviewScreen.closeButton.waitForExistence(timeout: 10),
+                      "Close button not found on Payment Review Screen.")
+        paymentReviewScreen.closeButton.tap()
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForNonExistence(timeout: 10),
                       "Payment Review Screen did not dismiss after tapping Close.")
     }
@@ -307,21 +300,14 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     /**
      HEAL-306 — Payment Review Screen displays the extraction info banner
      ("Please check the pre-filled data.") when fields were populated by
-     the extraction pipeline. Matches EN + DE (formal/informal) strings
-     from `gini.health.reviewscreen.infobar.message`.
+     the extraction pipeline.
      */
     func testPaymentReviewShowsPrefilledDataBanner() throws {
         reachPaymentReviewFromInvoicesList()
         XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
                       "Payment Review Screen did not appear.")
-        let bannerCandidates = ["Please check the pre-filled data.",
-                                "Bitte überprüfen Sie die vorausgefüllten Felder",
-                                "Bitte überprüfe die vorausgefüllten Felder"]
-        let banner = app.staticTexts
-            .matching(NSPredicate(format: "label IN %@", bannerCandidates))
-            .firstMatch
-        XCTAssertTrue(banner.waitForExistence(timeout: 10),
-                      "Prefilled-data banner (gini.health.reviewscreen.infobar.message) not found on Payment Review Screen.")
+        XCTAssertTrue(paymentReviewScreen.prefilledBanner.waitForExistence(timeout: 10),
+                      "Prefilled-data banner not found on Payment Review Screen.")
     }
 
     // MARK: - Field-edit shared helper
