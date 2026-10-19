@@ -8,8 +8,21 @@
 import AVFoundation
 import UIKit
 
+/**
+ Routes the Wero camera fallback through a protocol so the coordinator does
+ not depend on `CameraViewController` directly. Lets tests substitute a
+ lightweight stub when exercising `handleWeroFallbackToCamera`.
+ */
+protocol UnsupportedQRCodeFeedbackHandler: UIViewController {
+    /**
+     Resets the camera's QR scanning overlay and surfaces the "unsupported
+     QR code" alert.
+     */
+    func showUnsupportedQRCodeFeedback()
+}
+
 // swiftlint:disable type_body_length
-final class CameraViewController: UIViewController {
+final class CameraViewController: UIViewController, UnsupportedQRCodeFeedbackHandler {
     /**
      The object that acts as the delegate of the camera view controller.
      */
