@@ -588,6 +588,58 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
                        "100.00:EUR",
                        "Candidates should be carried over unchanged")
     }
+
+    /**
+     Covers the Wero camera-fallback branch of
+     `presentNextScreen(extractionResult:delegate:)` by driving the full
+     `didReview → startAnalysisWithReturnAssistant → handleSuccessfulAnalysis
+      → presentNextScreen → performWeroFallbackIfNeeded → return` chain
+     through the public `GiniCaptureDelegate.didReview` entry point.
+     `StubAnalysisCaptureNetworkService` fires the analysis completion with
+     an empty extraction set, and the Wero QR page seeded on `pages` makes
+     `performWeroFallbackIfNeeded` return `true` so the branch body runs.
+     */
+    @MainActor
+    func testDidReviewWithWeroCandidateFiresCameraFallback() async throws {
+        let originalFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+        defer { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = originalFlag }
+
+        let originalMultipage = configuration.multipageEnabled
+        configuration.multipageEnabled = true
+        defer { configuration.multipageEnabled = originalMultipage }
+
+        let stubService = StubAnalysisCaptureNetworkService(
+            extractionResult: ExtractionResult(extractions: [], candidates: [:])
+        )
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(
+            resultsDelegate: resultsDelegate,
+            configuration: configuration,
+            documentMetadata: metadata,
+            trackingDelegate: trackingDelegate,
+            captureNetworkService: stubService,
+            configurationService: nil
+        )
+
+        let weroDocument = GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/pay/v1/token=xyz")
+        coordinator.pages = [GiniCapturePage(document: weroDocument)]
+
+        let networkDelegate = MockCaptureNetworkDelegate()
+        coordinator.didReview(documents: [weroDocument], networkDelegate: networkDelegate)
+
+        /// Pump the main run loop so the DispatchQueue hops and the
+        /// `Task { await handleSuccessfulAnalysis(...) }` all land before
+        /// the assertion. Bounded so a hang surfaces as a failed assertion.
+        for _ in 0..<40 where networkDelegate.invalidQRMessageCallCount == 0 {
+            await Task.yield()
+            await MainActor.run {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+            }
+        }
+
+        XCTAssertEqual(networkDelegate.invalidQRMessageCallCount, 1,
+                       "Wero fallback branch inside presentNextScreen must notify the delegate")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
