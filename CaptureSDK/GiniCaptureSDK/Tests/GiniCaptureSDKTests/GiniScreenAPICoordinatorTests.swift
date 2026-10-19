@@ -535,8 +535,10 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
         return ExtractionResult(extractions: extractions, candidates: [:])
     }
 
-    /// Shape-asserts that `result` is the Wero single-extraction result with
-    /// the expected scanned payload as the extraction value.
+    /**
+     Shape-asserts that `result` is the Wero single-extraction result with
+     the expected scanned payload as the extraction value.
+     */
     private func expectWeroResult(_ result: ExtractionResult, payload: String) throws {
         #expect(result.extractions.count == 1, "Wero result must contain exactly one extraction")
         let extraction = try #require(result.extractions.first,
@@ -679,8 +681,10 @@ struct GiniNetworkingScreenAPICoordinatorWeroFallbackGateTests {
 @MainActor
 struct GiniNetworkingScreenAPICoordinatorPerformWeroFallbackTests {
 
-    /// Manual, minimal `AnalysisDelegate` stub that records whether the
-    /// optional `tryDisplayInvalidQRMessage()` method was called.
+    /**
+     Manual, minimal `AnalysisDelegate` stub that records whether the
+     optional `tryDisplayInvalidQRMessage()` method was called.
+     */
     private final class AnalysisDelegateSpy: NSObject, AnalysisDelegate {
         var tryDisplayInvalidQRMessageCallCount = 0
         var tryDisplayNoResultsScreenCallCount = 0
@@ -689,9 +693,11 @@ struct GiniNetworkingScreenAPICoordinatorPerformWeroFallbackTests {
         func tryDisplayInvalidQRMessage() { tryDisplayInvalidQRMessageCallCount += 1 }
     }
 
-    /// Manual `DocumentServiceProtocol` stub that only observes
-    /// `resetToInitialState()`. All other requirements are no-op since the
-    /// subject under test does not call them.
+    /**
+     Manual `DocumentServiceProtocol` stub that only observes
+     `resetToInitialState()`. All other requirements are no-op since the
+     subject under test does not call them.
+     */
     private final class DocumentServiceSpy: DocumentServiceProtocol {
         var document: Document?
         var metadata: Document.Metadata?
@@ -781,9 +787,11 @@ struct GiniNetworkingScreenAPICoordinatorPerformWeroFallbackTests {
 @MainActor
 struct GiniNetworkingScreenAPICoordinatorInstanceMapperTests {
 
-    /// Minimal `GiniCaptureResultsDelegate` so the coordinator initialiser accepts it.
-    /// None of its callbacks fire in these tests — the subject under test is a pure
-    /// read of `pages`.
+    /**
+     Minimal `GiniCaptureResultsDelegate` so the coordinator initialiser accepts it.
+     None of its callbacks fire in these tests — the subject under test is a pure
+     read of `pages`.
+     */
     private final class ResultsDelegateStub: NSObject, GiniCaptureResultsDelegate {
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {}
         func giniCaptureDidCancelAnalysis() {}
@@ -957,8 +965,10 @@ struct GiniNetworkingScreenAPICoordinatorDeliverTests {
         return (coordinator, resultsDelegate)
     }
 
-    /// Drains main-queue work queued by `deliver(result:and:to:)` so the spies observe it.
-    /// Mirrors the pattern used by `GiniScreenAPICoordinatorInvalidQRMessageTests`.
+    /**
+     Drains main-queue work queued by `deliver(result:and:to:)` so the spies observe it.
+     Mirrors the pattern used by `GiniScreenAPICoordinatorInvalidQRMessageTests`.
+     */
     private func drainMain(iterations: Int = 10) async {
         for _ in 0..<iterations {
             await Task.yield()

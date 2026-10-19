@@ -177,8 +177,10 @@ final class MockCaptureNetworkDelegate: NSObject, GiniCaptureNetworkDelegate {
         noResultsCallCount += 1
     }
 
-    /// `@objc optional` on `AnalysisDelegate`; the Wero camera fallback path
-    /// (`performWeroFallbackIfNeeded`) invokes this to pop back to the camera.
+    /**
+     `@objc optional` on `AnalysisDelegate`; the Wero camera fallback path
+     (`performWeroFallbackIfNeeded`) invokes this to pop back to the camera.
+     */
     func tryDisplayInvalidQRMessage() {
         invalidQRMessageCallCount += 1
     }
