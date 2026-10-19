@@ -34,7 +34,7 @@ extension PaymentComponentsController {
             case let .success(paymentProviders):
                 let mapped = paymentProviders.map { $0.toHealthPaymentProvider() }
                 let sorted = Self.sortPaymentProviders(mapped)
-                self?._paymentProvidersSubject.send(sorted)
+                self?.paymentProvidersSubject.send(sorted)
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):

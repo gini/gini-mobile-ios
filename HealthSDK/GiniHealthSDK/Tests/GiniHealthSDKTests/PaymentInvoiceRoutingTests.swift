@@ -334,7 +334,7 @@ final class PaymentInvoiceRoutingTests {
 
         // `savedPaymentProvider` only returns the decoded provider if its id is in
         // `paymentProviders`. Preload the SDK's known list with the same id.
-        sut._paymentProvidersSubject.send([provider.toHealthPaymentProvider()])
+        sut.paymentProvidersSubject.send([provider.toHealthPaymentProvider()])
 
         let saved = try #require(sut.savedPaymentProvider(),
                                   "Saved provider should be returned when its id is in the known providers list")
@@ -348,7 +348,7 @@ final class PaymentInvoiceRoutingTests {
 
         // Populate the known providers with a DIFFERENT id so the stored one won't match.
         let unrelated = Self.makeProvider(gpcOnIOS: false, openWithOnIOS: true)
-        sut._paymentProvidersSubject.send([unrelated.toHealthPaymentProvider()])
+        sut.paymentProvidersSubject.send([unrelated.toHealthPaymentProvider()])
 
         #expect(sut.savedPaymentProvider() == nil,
                 "Stored provider is discarded when its id is not among the known providers")
