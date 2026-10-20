@@ -44,6 +44,20 @@ final class BankSelectionBottomSheet {
     }
 
     /**
+     Returns the first bank cell that is *not* currently marked selected
+     (i.e. its `.selected` accessibility trait is unset — see
+     `BankSelectionTableViewCell.updateCell(_:)`). Used by tests that must
+     actually flip the selection state to prove the picker wires the choice
+     back into the Payment Component — tapping the already-selected row
+     dismisses the sheet without exercising the selection pipeline.
+     */
+    var firstUnselectedBankCell: XCUIElement {
+        app.cells
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@ AND selected == NO", "bankSelection.cell."))
+            .firstMatch
+    }
+
+    /**
      Call after tapping the sheet's trigger (Payment Component `selectBank`
      or Payment Review `bankPicker`). Short settle lets the sheet attach;
      30 s tolerates slow `paymentProviders` fetches on BrowserStack without

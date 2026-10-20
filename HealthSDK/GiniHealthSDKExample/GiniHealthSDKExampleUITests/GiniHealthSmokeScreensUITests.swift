@@ -88,9 +88,13 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      HEAL-289 — Picking a bank from the Bank Selection sheet dismisses the
      sheet and the Payment Review Screen's bank picker reflects the choice.
 
-     Reaches Payment Review, opens the Bank Selection sheet via the bank
-     picker, taps any available cell, and verifies the sheet is dismissed
-     (`anyBankCell` no longer exists) while the Pay button remains reachable.
+     Reaches Payment Review, opens the sheet, picks an *unselected* bank
+     (tapping the already-selected row still dismisses the sheet, which
+     would false-pass the test even if the selection pipeline were broken),
+     captures its identifier, verifies the sheet dismissed and Pay stayed
+     reachable, then reopens the sheet and asserts the same bank is now
+     marked `.selected` — proving the choice persisted into the Payment
+     Component / provider state.
      */
     func testBankSelectionSheetSelectionUpdatesPaymentComponent() throws {
         reachPaymentReviewFromInvoicesList()
@@ -99,12 +103,23 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         paymentReviewScreen.bankPickerButton.tap()
         XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
                       "Bank Selection sheet did not render any provider cells after 30 s.")
-        let bankCell = bankSelectionBottomSheet.anyBankCell
+        let bankCell = bankSelectionBottomSheet.firstUnselectedBankCell
+        XCTAssertTrue(bankCell.waitForExistence(timeout: 10),
+                      "No unselected bank cell available — the sheet reported every provider as already selected.")
+        let bankID = bankCell.identifier
         bankCell.tap()
         XCTAssertTrue(bankCell.waitForNonExistence(timeout: 10),
                       "Bank Selection sheet did not dismiss after tapping a bank cell.")
         XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
                       "Pay button not reachable after returning from Bank Selection sheet.")
+        paymentReviewScreen.bankPickerButton.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not reopen for selection verification.")
+        let reopened = app.cells[bankID]
+        XCTAssertTrue(reopened.waitForExistence(timeout: 10),
+                      "Previously picked bank \(bankID) is missing from the reopened sheet.")
+        XCTAssertTrue(reopened.isSelected,
+                      "Previously picked bank \(bankID) is not marked selected after reopening — selection may not have propagated to the provider state.")
     }
 
     /**
@@ -301,13 +316,23 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      HEAL-306 — Payment Review Screen displays the extraction info banner
      ("Please check the pre-filled data.") when fields were populated by
      the extraction pipeline.
+
+     The banner has a ~3 s auto-dismiss timer that starts the instant the
+     Payment Review Screen appears (`popupAnimationDuration` default is 3.0
+     in `PaymentReviewConfiguration`), so observe it immediately with tight
+     polling rather than waiting for the IBAN field first — a slow
+     BrowserStack device can hit the IBAN check *after* the banner has
+     already auto-dismissed.
      */
     func testPaymentReviewShowsPrefilledDataBanner() throws {
         reachPaymentReviewFromInvoicesList()
-        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
-                      "Payment Review Screen did not appear.")
-        XCTAssertTrue(paymentReviewScreen.prefilledBanner.waitForExistence(timeout: 10),
-                      "Prefilled-data banner not found on Payment Review Screen.")
+        let banner = paymentReviewScreen.prefilledBanner
+        let deadline = Date().addingTimeInterval(15)
+        while Date() < deadline, !banner.exists {
+            Thread.sleep(forTimeInterval: 0.1)
+        }
+        XCTAssertTrue(banner.exists,
+                      "Prefilled-data banner not observed on Payment Review Screen within its ~3 s display window.")
     }
 
     // MARK: - Field-edit shared helper
@@ -316,8 +341,17 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      Reaches Payment Review, polls the field until it carries a non-empty
      extracted value (SwiftUI binding race, same shape as
      `assertPaymentReviewReachedWithPopulatedFields`), focuses the field,
-     appends `sentinel`, and asserts the value changed. Mirrors HEAL-293's
-     edit smoke pattern.
+     appends `sentinel`, and asserts the value grew by at least
+     `sentinel.count` characters. Mirrors HEAL-293's edit smoke pattern.
+
+     Baseline is captured **after** focus-formatting settles: the Amount
+     field strips its currency symbol on focus
+     (`handleAmountFocusChange` in `PaymentReviewPaymentInformationObservableModel`),
+     so a baseline taken before focus would differ from the post-focus
+     value even if typing was dropped — a bare `assertNotEqual` would
+     false-pass. Growth-by-length is also robust against the IBAN sentinel
+     ("00") already occurring in the extracted baseline (so a `.contains`
+     check wouldn't catch dropped typing either).
      */
     private func assertPaymentReviewFieldAcceptsAppend(field: XCUIElement, sentinel: String) {
         reachPaymentReviewFromInvoicesList()
@@ -327,14 +361,28 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         while Date() < settleDeadline, paymentReviewScreen.value(of: field).isEmpty {
             Thread.sleep(forTimeInterval: 0.3)
         }
-        let original = paymentReviewScreen.value(of: field)
-        XCTAssertFalse(original.isEmpty,
+        XCTAssertFalse(paymentReviewScreen.value(of: field).isEmpty,
                        "Payment Review field \(field.identifier) still empty 15 s after screen appeared — extraction model may not have arrived.")
         field.tap()
+        var baseline = paymentReviewScreen.value(of: field)
+        let focusDeadline = Date().addingTimeInterval(2)
+        while Date() < focusDeadline {
+            Thread.sleep(forTimeInterval: 0.2)
+            let next = paymentReviewScreen.value(of: field)
+            if next == baseline { break }
+            baseline = next
+        }
         field.typeText(sentinel)
-        let edited = paymentReviewScreen.value(of: field)
-        XCTAssertNotEqual(original, edited,
-                          "Payment Review field \(field.identifier) value did not change after typing — the field may not be editable.")
+        let expectedMinLength = baseline.count + sentinel.count
+        let typedDeadline = Date().addingTimeInterval(5)
+        var observedValue = baseline
+        while Date() < typedDeadline {
+            observedValue = paymentReviewScreen.value(of: field)
+            if observedValue.count >= expectedMinLength { break }
+            Thread.sleep(forTimeInterval: 0.2)
+        }
+        XCTAssertTrue(observedValue.count >= expectedMinLength,
+                      "Payment Review field \(field.identifier) did not accept typed input — value is '\(observedValue)' (length \(observedValue.count)) after typing '\(sentinel)' into baseline '\(baseline)' (expected length ≥ \(expectedMinLength)).")
     }
 
     // MARK: - Install App bottom sheet (HEAL-303)
