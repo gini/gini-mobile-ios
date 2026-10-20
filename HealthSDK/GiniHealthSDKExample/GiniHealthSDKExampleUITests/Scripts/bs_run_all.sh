@@ -171,7 +171,7 @@ trigger_scenario() {
         TRIGGERED_SUMMARY="$TRIGGERED_SUMMARY
   $build_name
     TRIGGER FAILED — app upload error, see response above"
-        return
+        return 1
     fi
 
     ## BrowserStack rejects new builds when the account's queue is full; retry a few
@@ -219,18 +219,22 @@ trigger_scenario() {
         TRIGGERED_SUMMARY="$TRIGGERED_SUMMARY
   $build_name
     TRIGGER FAILED after $attempts attempts — see responses above"
+        return 1
     fi
 }
 
 # ── Scenario builds ────────────────────────────────────────────────────────────
+# `|| TRIGGER_FAILURES=…` keeps the batch intent intact: if the first scenario
+# fails to trigger, `set -e` would otherwise abort before the second is attempted.
+TRIGGER_FAILURES=0
 
 trigger_scenario "smoke_journeys_${RELEASE_VERSION}" '[
   "GiniHealthSDKExampleUITests/GiniHealthSmokeJourneysUITests"
-]' "[\"$MED_INVOICE_PDF_URL\", \"$MED_INVOICE_PNG_URL\"]"
+]' "[\"$MED_INVOICE_PDF_URL\", \"$MED_INVOICE_PNG_URL\"]" || TRIGGER_FAILURES=$((TRIGGER_FAILURES + 1))
 
 trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniHealthSDKExampleUITests/GiniHealthSmokeScreensUITests"
-]' "[\"$MED_INVOICE_PDF_URL\", \"$MULTI_INVOICE_PDF_URL\"]"
+]' "[\"$MED_INVOICE_PDF_URL\", \"$MULTI_INVOICE_PDF_URL\"]" || TRIGGER_FAILURES=$((TRIGGER_FAILURES + 1))
 
 # ── Cleanup ────────────────────────────────────────────────────────────────────
 bs_cleanup
@@ -238,3 +242,9 @@ bs_cleanup
 echo ""
 echo "Done! Scenario builds triggered:"
 echo "$TRIGGERED_SUMMARY"
+
+if [ "$TRIGGER_FAILURES" -gt 0 ]; then
+    echo ""
+    echo "ERROR: $TRIGGER_FAILURES scenario(s) failed to trigger — see summary above."
+    exit 1
+fi
