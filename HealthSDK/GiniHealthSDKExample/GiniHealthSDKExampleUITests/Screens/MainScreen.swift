@@ -18,17 +18,19 @@ final class MainScreen {
 
     let app: XCUIApplication
 
-    /// "Start with Test Document" — launches the SDK with a pre-canned document.
+    /** "Start with Test Document" — launches the SDK with a pre-canned document. */
     let startWithTestDocumentButton: XCUIElement
 
-    /// "Start with Gini Capture" — launches the Capture SDK's camera/import flow.
-    /// HEAL-282 (image import) and HEAL-284 (PDF import) enter here.
+    /**
+     "Start with Gini Capture" — launches the Capture SDK's camera/import flow.
+     HEAL-282 (image import) and HEAL-284 (PDF import) enter here.
+     */
     let startWithGiniCaptureButton: XCUIElement
 
-    /// "Invoices List" — entry point for HEAL-285.
+    /** "Invoices List" — entry point for HEAL-285. */
     let invoicesListButton: XCUIElement
 
-    /// "Orders List" — entry point for HEAL-286, HEAL-300, HEAL-301.
+    /** "Orders List" — entry point for HEAL-286, HEAL-300, HEAL-301. */
     let ordersListButton: XCUIElement
 
     init(app: XCUIApplication) {

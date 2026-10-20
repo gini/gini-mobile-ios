@@ -17,7 +17,7 @@
  */
 enum TestFixtures {
 
-    /// Files-app documents (no extension — the picker only shows base names).
+    /** Files-app documents (no extension — the picker only shows base names). */
     enum Files {
         /**
          Primary health invoice PDF. Extracts a known-good IBAN/Recipient/Amount/Reference
@@ -32,7 +32,7 @@ enum TestFixtures {
         static let multiInvoice = "multi-invoice"
     }
 
-    /// Gallery images staged into the Photos library.
+    /** Gallery images staged into the Photos library. */
     enum Gallery {
         /**
          PNG rendering of `Files.medInvoice`'s first page. Used by HEAL-282

@@ -68,11 +68,7 @@ final class SelectAPIViewController: UIViewController {
         invoicesListButton.accessibilityIdentifier = "health.main.invoicesList"
         ordersListButton.accessibilityIdentifier = "health.main.ordersList"
 
-        if #available(iOS 13.0, *) {
-            activityIndicator.style = .large
-        } else {
-            activityIndicator.style = .whiteLarge
-        }
+        activityIndicator.style = .large
     }
     
     // MARK: User interaction
