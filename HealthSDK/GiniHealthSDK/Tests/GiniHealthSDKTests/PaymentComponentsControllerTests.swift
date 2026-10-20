@@ -148,6 +148,31 @@ final class PaymentComponentsControllerTests: XCTestCase {
         c2.cancel()
     }
 
+    /// Verifies that a live subscriber receives a non-empty value delivered
+    /// through the controller's publisher after `loadPaymentProviders` resolves
+    /// — not just the `[]` replay. The subscription is kept alive until the
+    /// expected emission arrives, so a regression that drops the subject's
+    /// `send(...)` after a successful fetch would fail this test.
+    func testPaymentProvidersPublisherDeliversNonEmptyValueAfterLoad() {
+        let controller = PaymentComponentsController(giniHealth: giniHealth)
+
+        let expectation = expectation(description: "Receives non-empty providers through publisher")
+        expectation.assertForOverFulfill = false
+        var received: [GiniHealthAPILibrary.PaymentProviders] = []
+
+        let cancellable = controller.paymentProvidersPublisher.sink { value in
+            received.append(value)
+            if !value.isEmpty { expectation.fulfill() }
+        }
+
+        wait(for: [expectation], timeout: 5)
+        XCTAssertFalse(received.isEmpty,
+                       "Subscriber must observe at least one emission")
+        XCTAssertFalse(received.last?.isEmpty ?? true,
+                       "The final emission must carry the fetched providers, not the [] replay")
+        cancellable.cancel()
+    }
+
     func testPaymentProvidersSorting() {
         let fileName = "notSortedBanks"
         guard let givenPaymentProviders = loadProviders(fileName: fileName) else {

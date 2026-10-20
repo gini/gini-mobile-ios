@@ -136,7 +136,14 @@ extension PaymentComponentsController {
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
             paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
-            clientConfiguration: configurationProvider.clientConfiguration
+            clientConfiguration: configurationProvider.clientConfiguration,
+            selectedProviderResolver: { providers in
+                guard let data = UserDefaults.standard.data(forKey: PaymentComponentsController.Constants.kDefaultPaymentProvider),
+                      let saved = try? JSONDecoder().decode(GiniHealthSDK.PaymentProvider.self, from: data) else {
+                    return nil
+                }
+                return providers.first(where: { $0.id == saved.id })
+            }
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId

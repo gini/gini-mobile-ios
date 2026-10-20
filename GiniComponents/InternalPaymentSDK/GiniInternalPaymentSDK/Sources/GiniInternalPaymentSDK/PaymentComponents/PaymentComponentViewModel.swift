@@ -39,17 +39,17 @@ public final class PaymentComponentViewModel {
     let strings: PaymentComponentsStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
-    let paymentProviderColors: GiniHealthAPILibrary.ProviderColors?
-    let bankImageIcon: UIImage?
+    var paymentProviderColors: GiniHealthAPILibrary.ProviderColors?
+    var bankImageIcon: UIImage?
 
     private var paymentProviderScheme: String?
 
     public weak var delegate: PaymentComponentViewProtocol?
-    
+
     public var documentId: String?
 
     var minimumButtonsHeight: CGFloat
-    
+
     var hasBankSelected: Bool
 
     var paymentComponentConfiguration: PaymentComponentConfiguration?
@@ -73,9 +73,17 @@ public final class PaymentComponentViewModel {
         showPaymentComponentInOneRow ? strings.placeholderBankNameText : bankName ?? strings.placeholderBankNameText
     }
 
-    /// Fires on main when the publisher emits. Auto-selecting a bank post-emission
-    /// needs a separate selected-provider publisher — not implemented here.
+    /// Fires on main after each publisher emission is applied — including any
+    /// bank-state updates resolved via `selectedProviderResolver`.
     var onPaymentProvidersUpdated: (() -> Void)?
+
+    /**
+     Resolves the current selected provider from a provider list. Supplied by
+     the owning controller (which stores the saved default in UserDefaults).
+     Called after each emission so a component shown before `fetchBankingApps`
+     resolves can adopt the restored bank once providers arrive.
+     */
+    private let selectedProviderResolver: ((GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProvider?)?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -91,13 +99,15 @@ public final class PaymentComponentViewModel {
                 moreInformationStrings: MoreInformationStrings,
                 minimumButtonsHeight: CGFloat,
                 paymentComponentConfiguration: PaymentComponentConfiguration?,
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                selectedProviderResolver: ((GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProvider?)? = nil) {
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.paymentComponentConfiguration = paymentComponentConfiguration
         self.clientConfiguration = clientConfiguration
+        self.selectedProviderResolver = selectedProviderResolver
 
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIcon = paymentProvider?.iconData.toImage
@@ -112,10 +122,24 @@ public final class PaymentComponentViewModel {
 
         paymentProvidersPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.onPaymentProvidersUpdated?()
+            .sink { [weak self] providers in
+                self?.applyPaymentProviders(providers)
             }
             .store(in: &cancellables)
+    }
+
+    /// Adopts a provider resolved from the latest emission (typically the
+    /// controller's restored default) so the sheet can swap its placeholder
+    /// for the real bank once a late fetch arrives.
+    private func applyPaymentProviders(_ providers: GiniHealthAPILibrary.PaymentProviders) {
+        if let resolved = selectedProviderResolver?(providers) {
+            hasBankSelected = true
+            bankName = resolved.name
+            bankImageIcon = resolved.iconData.toImage
+            paymentProviderColors = resolved.colors
+            paymentProviderScheme = resolved.appSchemeIOS
+        }
+        onPaymentProvidersUpdated?()
     }
     
     func tapOnMoreInformation() {

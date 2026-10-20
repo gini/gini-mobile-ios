@@ -158,10 +158,14 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
     }
 
     /// Reloads the bank-icons collection when the view model's publisher
-    /// subscription receives a late provider arrival.
+    /// subscription receives a late provider arrival. Also refreshes the
+    /// collection's accessibility label so VoiceOver announces the new
+    /// bank list instead of the empty-list text captured at init.
     private func bindToViewModelUpdates() {
         viewModel.onPaymentProvidersUpdated = { [weak self] in
-            self?.bankIconsCollectionView.reloadData()
+            guard let self else { return }
+            self.bankIconsCollectionView.reloadData()
+            self.bankIconsCollectionView.accessibilityLabel = self.viewModel.accessibilityBankListText
         }
     }
 

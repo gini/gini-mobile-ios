@@ -20,7 +20,8 @@ struct PaymentComponentViewModelTests {
     private func makeSUT(provider: PaymentProvider? = .fixture(),
                          publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          paymentComponentConfiguration: PaymentComponentConfiguration? = nil,
-                         clientConfiguration: ClientConfiguration? = nil) -> PaymentComponentViewModel {
+                         clientConfiguration: ClientConfiguration? = nil,
+                         selectedProviderResolver: ((PaymentProviders) -> PaymentProvider?)? = nil) -> PaymentComponentViewModel {
         PaymentComponentViewModel(paymentProvider: provider,
                                   paymentProvidersPublisher: publisher,
                                   primaryButtonConfiguration: .test,
@@ -33,14 +34,54 @@ struct PaymentComponentViewModelTests {
                                   moreInformationStrings: .test,
                                   minimumButtonsHeight: 44,
                                   paymentComponentConfiguration: paymentComponentConfiguration,
-                                  clientConfiguration: clientConfiguration)
+                                  clientConfiguration: clientConfiguration,
+                                  selectedProviderResolver: selectedProviderResolver)
     }
 
     // MARK: - Reactive publisher subscription
 
+    @Test("Late publisher emission adopts the resolver's provider and fires the update closure", .timeLimit(.minutes(1)))
+    func lateEmissionAdoptsResolvedProvider() async {
+        let restored = PaymentProvider.fixture(id: "restored", name: "Restored Bank")
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher(),
+                          selectedProviderResolver: { providers in
+                              providers.first(where: { $0.id == restored.id })
+                          })
+
+        // Drain the initial `[]` replay so the next closure fire is caused
+        // by the late `.send(...)` below, not by the subject's current value.
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+        }
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([restored])
+        }
+
+        #expect(sut.hasBankSelected == true,
+                "hasBankSelected must flip to true once the resolver resolves a provider")
+        #expect(sut.bankName == "Restored Bank",
+                "bankName must reflect the resolved provider's name")
+        #expect(sut.paymentProviderColors != nil,
+                "paymentProviderColors must adopt the resolved provider's colors")
+    }
+
     @Test("Publisher emission fires the update closure", .timeLimit(.minutes(1)))
     func publisherEmissionFiresClosure() async {
-        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        // PassthroughSubject (no replay) so only the explicit `.send(...)`
+        // below can resume the continuation — a CurrentValueSubject would
+        // replay its initial `[]` and let the test pass even if the `.send`
+        // was removed or later emissions were ignored by the sink.
+        let subject = PassthroughSubject<[PaymentProvider], Never>()
         let sut = makeSUT(provider: nil,
                           publisher: subject.eraseToAnyPublisher())
 

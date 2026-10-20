@@ -9,6 +9,7 @@
 import UIKit
 import Combine
 import GiniHealthAPILibrary
+import GiniUtilites
 
 struct FAQSection {
     let title: String
@@ -80,8 +81,10 @@ public final class PaymentInfoViewModel {
     }
 
     /// Replaces the bank-icon source list and notifies the view.
+    /// Dedupes by provider id so the collection matches the snapshot invariant
+    /// applied by the parent (`BanksBottomViewModel`) at construction time.
     private func applyPaymentProviders(_ raw: GiniHealthAPILibrary.PaymentProviders) {
-        self.paymentProviders = raw
+        self.paymentProviders = raw.uniqued(by: { $0.id })
         self.onPaymentProvidersUpdated?()
     }
     

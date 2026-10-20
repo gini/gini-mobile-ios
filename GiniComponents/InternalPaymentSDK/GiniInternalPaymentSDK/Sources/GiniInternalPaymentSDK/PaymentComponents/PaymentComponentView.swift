@@ -112,12 +112,17 @@ public final class PaymentComponentView: UIView {
     }
 
     /// Refreshes bank-selection and button visibility when the view model's
-    /// publisher subscription receives a late provider arrival.
+    /// publisher subscription receives a late provider arrival. The pay button
+    /// is re-customised so its colors reflect the newly resolved provider
+    /// instead of the init-time values captured when no bank was selected.
     private func bindToViewModelUpdates() {
         viewModel.onPaymentProvidersUpdated = { [weak self] in
             guard let self else { return }
             self.updateAvailableViews()
             self.updateButtonsViews()
+            self.payInvoiceButton.customConfigure(text: self.viewModel.strings.ctaLabelText,
+                                                  textColor: self.viewModel.paymentProviderColors?.text.toColor(),
+                                                  backgroundColor: self.viewModel.paymentProviderColors?.background.toColor())
         }
     }
 
