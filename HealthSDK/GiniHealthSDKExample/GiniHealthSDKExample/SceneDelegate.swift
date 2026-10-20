@@ -18,6 +18,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
 
+        // UI tests run the host app in a separate process without the XCTest env
+        // var, so detect them via the launch arg the UI test target sets. Skip
+        // Firebase (committed plist's API key is a dev placeholder that trips
+        // `FIRInstallations.validateAPIKey:` on local sim) but keep the
+        // coordinator running — tests need the real screens. Kept out of DEBUG
+        // so Release-built UI test runs (e.g. BrowserStack) also skip Firebase.
+        let isUITest = CommandLine.arguments.contains("-StartFromCleanState")
+
         #if DEBUG
         // Unit tests host the test code in-process; skip the whole app lifecycle.
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
@@ -25,14 +33,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.makeKeyAndVisible()
             return
         }
-        // UI tests run the host app in a separate process without the XCTest env
-        // var, so detect them via the launch arg the UI test target sets. Skip
-        // Firebase (committed plist's API key is a dev placeholder that trips
-        // `FIRInstallations.validateAPIKey:` on local sim) but keep the
-        // coordinator running — tests need the real screens.
-        let isUITest = CommandLine.arguments.contains("-StartFromCleanState")
-        #else
-        let isUITest = false
         #endif
 
         if !isUITest {

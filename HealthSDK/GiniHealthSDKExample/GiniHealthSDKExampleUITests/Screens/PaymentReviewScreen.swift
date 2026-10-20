@@ -62,7 +62,9 @@ final class PaymentReviewScreen {
             // Fall back to EN for any locale other than DE — unsupported
             // locales must not crash the test runner.
             self.closeButton = app.buttons["Close"]
-            self.prefilledBanner = app.staticTexts["Please check the pre-filled data."]
+            self.prefilledBanner = app.staticTexts
+                .matching(NSPredicate(format: "label CONTAINS[c] %@", "pre-filled data"))
+                .firstMatch
         }
     }
 
