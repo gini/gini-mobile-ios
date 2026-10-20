@@ -171,6 +171,38 @@ final class PaymentComponentsControllerTests: XCTestCase {
         cancellable.cancel()
     }
 
+    /**
+     Regression test for R8 (HEAL-575): when `loadPaymentProviders` resolves with `.failure`,
+     the publisher must emit only the `[]` replay — the subject must not forward anything
+     on the failure branch. Pairs with the success-branch coverage above.
+     */
+    func testPaymentProvidersPublisherDoesNotEmitOnFetchFailure() {
+        let failingSessionManager = MockSessionManager()
+        failingSessionManager.paymentProvidersFailure = .noResponse
+        let failingDocumentService = DefaultDocumentService(sessionManager: failingSessionManager,
+                                                            apiVersion: versionAPI)
+        let failingPaymentService = PaymentService(sessionManager: failingSessionManager,
+                                                   apiVersion: versionAPI)
+        let failingHealthAPI = GiniHealthAPI(documentService: failingDocumentService,
+                                             paymentService: failingPaymentService,
+                                             clientConfigurationService: nil)
+        let failingHealth = GiniHealth(giniApiLib: failingHealthAPI)
+
+        let controller = PaymentComponentsController(giniHealth: failingHealth)
+        var received: [GiniHealthAPILibrary.PaymentProviders] = []
+        let cancellable = controller.paymentProvidersPublisher.sink { received.append($0) }
+
+        pumpMain(for: 0.3)
+
+        XCTAssertEqual(received.count, 1,
+                       "On failure the publisher must emit only the initial [] replay")
+        XCTAssertEqual(received.first, [],
+                       "The sole emission must be the [] seed, never a provider list")
+        XCTAssertEqual(controller.paymentProviders, [],
+                       "Controller's paymentProviders accessor must remain empty on failure")
+        cancellable.cancel()
+    }
+
     // MARK: - sortPaymentProviders (static pipeline)
 
     func testSortPaymentProvidersReturnsEmptyForEmptyInput() {
