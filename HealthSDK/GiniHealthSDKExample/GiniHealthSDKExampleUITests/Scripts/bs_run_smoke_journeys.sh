@@ -34,11 +34,9 @@ set -e
 #
 # Optional: BS_DEVICE (single device or comma-separated list), BS_LANGUAGE.
 #
-# Single-test mode: set BS_TEST to run exactly one test (or class) instead of
-# the whole journeys class — the fast path for reproducing a flake:
-#   BS_TEST="GiniHealthSDKExampleUITests/GiniHealthSmokeJourneysUITests/testHEAL282_ImageImport" ./bs_run_smoke_journeys.sh
-# ⚠️ BrowserStack matches only-testing METHOD entries by NAME PREFIX — the method
-# name must be no other test's prefix. Single runner is disabled in this mode.
+# Single-test mode — set BS_TEST to one method path (BrowserStack matches
+# by name prefix; single runner is disabled):
+#   BS_TEST="GiniHealthSDKExampleUITests/GiniHealthSmokeJourneysUITests/testImageImportExtractsAndShowsPaymentReview" ./bs_run_smoke_journeys.sh
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=bs_shared.sh

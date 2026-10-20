@@ -265,6 +265,8 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         /// Install App bottom sheet appeared (bank not installed on this device).
         /// Either signals the handoff was attempted. If neither occurs within
         /// 10 s the pay-tap silently did nothing — a regression worth flagging.
+        /// `.notRunning` is excluded — it also covers crashes; a real deeplink
+        /// handoff transitions through `.runningBackground*` first.
         ///
         /// The sheet's accessibility identifiers are not set upstream
         /// (`InstallAppBottomView` in `GiniInternalPaymentSDK`), so we match on
@@ -283,7 +285,7 @@ final class GiniHealthSmokeJourneysUITests: GiniHealthSDKExampleUITests {
         let appStateDeadline = Date().addingTimeInterval(10)
         var handoffDetected = false
         while Date() < appStateDeadline {
-            if app.state == .runningBackground || app.state == .runningBackgroundSuspended || app.state == .notRunning {
+            if app.state == .runningBackground || app.state == .runningBackgroundSuspended {
                 handoffDetected = true
                 break
             }
