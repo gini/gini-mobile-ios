@@ -58,8 +58,7 @@ struct BanksBottomViewModelTests {
         let sut = makeSUT(providers: [],
                           publisher: subject.eraseToAnyPublisher())
 
-        // Drain the replay of the subject's current `[]` first so the next
-        // closure fire is unambiguously caused by the late `.send(...)` below.
+        // Drain the initial `[]` replay so the next fire is caused by the late send below.
         await awaitProvidersUpdate(on: sut)
 
         await awaitProvidersUpdate(on: sut) {
@@ -109,10 +108,7 @@ struct BanksBottomViewModelTests {
 
     @Test("Delivers emission on the main queue regardless of send queue", .timeLimit(.minutes(1)))
     func deliversOnMainQueueFromBackgroundSend() async {
-        // PassthroughSubject (no replay) so only the explicit background send
-        // can resume the continuation — a CurrentValueSubject would replay its
-        // initial value on main first and let the test pass without exercising
-        // background-to-main delivery.
+        // PassthroughSubject (no replay) so only the background send can resume the continuation.
         let subject = PassthroughSubject<[PaymentProvider], Never>()
         let sut = makeSUT(providers: [],
                           publisher: subject.eraseToAnyPublisher())

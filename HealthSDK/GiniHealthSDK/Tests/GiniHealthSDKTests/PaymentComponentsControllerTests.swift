@@ -148,11 +148,9 @@ final class PaymentComponentsControllerTests: XCTestCase {
         c2.cancel()
     }
 
-    /// Verifies that a live subscriber receives a non-empty value delivered
-    /// through the controller's publisher after `loadPaymentProviders` resolves
-    /// — not just the `[]` replay. The subscription is kept alive until the
-    /// expected emission arrives, so a regression that drops the subject's
-    /// `send(...)` after a successful fetch would fail this test.
+    /**
+     A live subscriber receives the non-empty value sent after `loadPaymentProviders`, not just the `[]` replay.
+     */
     func testPaymentProvidersPublisherDeliversNonEmptyValueAfterLoad() {
         let controller = PaymentComponentsController(giniHealth: giniHealth)
 

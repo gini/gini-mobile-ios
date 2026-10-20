@@ -80,9 +80,9 @@ public final class PaymentInfoViewModel {
             .store(in: &cancellables)
     }
 
-    /// Replaces the bank-icon source list and notifies the view.
-    /// Dedupes by provider id so the collection matches the snapshot invariant
-    /// applied by the parent (`BanksBottomViewModel`) at construction time.
+    /**
+     Dedupes by id and notifies the view, matching the parent's snapshot invariant.
+     */
     private func applyPaymentProviders(_ raw: GiniHealthAPILibrary.PaymentProviders) {
         self.paymentProviders = raw.uniqued(by: { $0.id })
         self.onPaymentProvidersUpdated?()

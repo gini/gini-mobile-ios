@@ -73,15 +73,13 @@ public final class PaymentComponentViewModel {
         showPaymentComponentInOneRow ? strings.placeholderBankNameText : bankName ?? strings.placeholderBankNameText
     }
 
-    /// Fires on main after each publisher emission is applied — including any
-    /// bank-state updates resolved via `selectedProviderResolver`.
+    /**
+     Called on main after each emission is applied.
+     */
     var onPaymentProvidersUpdated: (() -> Void)?
 
     /**
-     Resolves the current selected provider from a provider list. Supplied by
-     the owning controller (which stores the saved default in UserDefaults).
-     Called after each emission so a component shown before `fetchBankingApps`
-     resolves can adopt the restored bank once providers arrive.
+     Resolves the saved default provider from the latest emission. Supplied by the controller.
      */
     private let selectedProviderResolver: ((GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProvider?)?
 
@@ -128,9 +126,9 @@ public final class PaymentComponentViewModel {
             .store(in: &cancellables)
     }
 
-    /// Adopts a provider resolved from the latest emission (typically the
-    /// controller's restored default) so the sheet can swap its placeholder
-    /// for the real bank once a late fetch arrives.
+    /**
+     Adopts the resolver's provider so the placeholder swaps for the restored bank.
+     */
     private func applyPaymentProviders(_ providers: GiniHealthAPILibrary.PaymentProviders) {
         if let resolved = selectedProviderResolver?(providers) {
             hasBankSelected = true

@@ -50,8 +50,7 @@ struct PaymentComponentViewModelTests {
                               providers.first(where: { $0.id == restored.id })
                           })
 
-        // Drain the initial `[]` replay so the next closure fire is caused
-        // by the late `.send(...)` below, not by the subject's current value.
+        // Drain the initial `[]` replay so the next fire is caused by the late send below.
         await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
             sut.onPaymentProvidersUpdated = {
                 sut.onPaymentProvidersUpdated = nil
@@ -77,10 +76,7 @@ struct PaymentComponentViewModelTests {
 
     @Test("Publisher emission fires the update closure", .timeLimit(.minutes(1)))
     func publisherEmissionFiresClosure() async {
-        // PassthroughSubject (no replay) so only the explicit `.send(...)`
-        // below can resume the continuation — a CurrentValueSubject would
-        // replay its initial `[]` and let the test pass even if the `.send`
-        // was removed or later emissions were ignored by the sink.
+        // PassthroughSubject (no replay) so only the explicit send below can resume the continuation.
         let subject = PassthroughSubject<[PaymentProvider], Never>()
         let sut = makeSUT(provider: nil,
                           publisher: subject.eraseToAnyPublisher())

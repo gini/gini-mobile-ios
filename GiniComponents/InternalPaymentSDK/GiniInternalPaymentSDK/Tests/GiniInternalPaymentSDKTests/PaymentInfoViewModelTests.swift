@@ -69,8 +69,7 @@ struct PaymentInfoViewModelTests {
         let sut = makeSUT(providers: [],
                           publisher: subject.eraseToAnyPublisher())
 
-        // Drain the replay of the subject's current `[]` first so the next
-        // closure fire is unambiguously caused by the late `.send(...)` below.
+        // Drain the initial `[]` replay so the next fire is caused by the late send below.
         await awaitProvidersUpdate(on: sut)
 
         await awaitProvidersUpdate(on: sut) {
