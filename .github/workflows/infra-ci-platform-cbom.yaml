@@ -35,19 +35,15 @@ jobs:
 
       - name: Generate CycloneDX CBOM (source leg)
         id: cbom
-        # Upstream crashes hard on some sources (PythonScannerService
-        # UnsupportedOperationException) -> never fail a repo's main build on it.
+        # Upstream crashes on some sources -> never fail a repo's main build on it.
         continue-on-error: true
         env:
-          # The image is run DIRECTLY, by digest, instead of `uses: cbomkit/cbomkit-action`.
-          # Pinning that action to a SHA pins only its action.yml, which then dispatches to
-          # `docker://ghcr.io/cbomkit/cbomkit-action:v2.3.0` - a MUTABLE tag. The SHA pin
-          # therefore bought nothing against a republished image (the Trivy action vector).
+          # Run by digest, not `uses:` - that action's SHA pins only its action.yml, which
+          # dispatches to a MUTABLE image tag.
           CBOMKIT_IMAGE: ghcr.io/cbomkit/cbomkit-action@sha256:47c2505267dc5f055152616ffa0d0076b7d0824fe9e0de670b572d1ebad2fc4b # v2.3.0
           CBOMKIT_LANGUAGES: java, python, go
-          # Java regex, comma-separated, matched on paths RELATIVE to the workspace:
-          # `/vendor/` never matches, `(^|/)vendor/` does.
-          # Setting this OVERRIDES the built-in test exclusion -> test patterns re-added below.
+          # Java regex on paths RELATIVE to the workspace: `/vendor/` never matches.
+          # Setting it OVERRIDES the built-in test exclusion -> test patterns re-added.
           CBOMKIT_EXCLUDE: (^|/)vendor/,(^|/)node_modules/,(^|/)\.git/,_test\.go$,.*Test\.java$,.*Tests\.java$,(^|/)test_.*\.py$,.*_test\.py$,(^|/)src/test/,(^|/)tests?/
           # Default true throws when a Java repo has no build artifacts. Blanket sync never
           # builds -> source-only scan. Measured cost is small: cross-class constants only.
@@ -81,11 +77,8 @@ jobs:
       - name: Check a CBOM was produced
         id: check
         run: |
-          # A zero-component document is still uploaded. All the leg-status evidence
-          # (which legs ran, which builds failed, which were skipped and why) lives in
-          # that document, so suppressing it loses the record exactly for the repos whose
-          # coverage is in question - and "scanned, found nothing" would be
-          # indistinguishable from "never scanned" in S3.
+          # A zero-component document is still uploaded: it carries the leg-status
+          # evidence, so "scanned, found nothing" stays distinct from "never scanned".
           COUNT=0
           if [ -s cbom.cdx.json ] && jq -e . cbom.cdx.json > /dev/null 2>&1; then
             COUNT="$(jq '.components | length' cbom.cdx.json 2>/dev/null || echo 0)"
@@ -100,8 +93,7 @@ jobs:
           fi
 
       - name: Validate against the CycloneDX schema
-        # Deliberately NOT continue-on-error. A malformed document is a defect in our own
-        # tooling, and publishing invalid compliance evidence is worse than a red build.
+        # NOT continue-on-error: publishing invalid evidence is worse than a red build.
         if: steps.check.outputs.found == 'true'
         env:
           CDX_VERSION: v0.33.1
@@ -115,9 +107,8 @@ jobs:
           # and still exits 0, so the gate would pass every malformed document.
           /tmp/cyclonedx validate --input-file cbom.cdx.json --input-format json \
             --input-version v1_6 --fail-on-errors
-          # cyclonedx-cli does NOT flag duplicate bom-refs - measured: a document with
-          # two identical refs validates successfully. CycloneDX requires them unique, so
-          # check it here or the schema gate gives false assurance.
+          # cyclonedx-cli does NOT flag duplicate bom-refs (measured), so check here or
+          # the schema gate gives false assurance.
           SPEC="$(jq -r '.specVersion // "missing"' cbom.cdx.json)"
           if [ "${SPEC}" != "1.6" ]; then
             echo "::error::CBOM specVersion is ${SPEC}, but validation targets 1.6 - the source scanner changed its output version"
