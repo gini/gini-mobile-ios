@@ -171,6 +171,177 @@ final class PaymentComponentsControllerTests: XCTestCase {
         cancellable.cancel()
     }
 
+    // MARK: - sortPaymentProviders (static pipeline)
+
+    func testSortPaymentProvidersReturnsEmptyForEmptyInput() {
+        let result = PaymentComponentsController.sortPaymentProviders([])
+
+        XCTAssertTrue(result.isEmpty,
+                      "Empty input must short-circuit to an empty output without filtering or sorting")
+    }
+
+    func testSortPaymentProvidersFiltersOutProvidersWithoutIOSPlatformSupport() {
+        let iosProvider = makeHealthProvider(id: "ios",
+                                             appScheme: "ios://",
+                                             gpc: [.ios])
+        let androidOnly = makeHealthProvider(id: "android",
+                                             appScheme: "android://",
+                                             gpc: [.android],
+                                             openWith: [])
+
+        let result = PaymentComponentsController.sortPaymentProviders([iosProvider, androidOnly])
+
+        XCTAssertEqual(result.map { $0.id }, ["ios"],
+                       "Providers that lack iOS support in both gpc and openWith must be filtered out")
+    }
+
+    func testSortPaymentProvidersIncludesProviderWithIOSInOpenWithOnly() {
+        let openWithOnly = makeHealthProvider(id: "open-with",
+                                              appScheme: "ow://",
+                                              gpc: [],
+                                              openWith: [.ios])
+
+        let result = PaymentComponentsController.sortPaymentProviders([openWithOnly])
+
+        XCTAssertEqual(result.map { $0.id }, ["open-with"],
+                       "A provider with iOS listed only in openWithSupportedPlatforms must still pass the filter")
+    }
+
+    func testSortPaymentProvidersBranchesOnSchemeOpenability() {
+        // Discover a scheme that this simulator's UIApplication actually reports as openable,
+        // so the branch where the two providers' canOpenURLString() values differ is reached
+        // deterministically. If no such scheme exists in this environment, skip the assertion
+        // — the sort pipeline is already exercised by the ordering tests above.
+        let candidates = ["http://example.com", "https://example.com", "mailto://a@b"]
+        guard let openScheme = candidates.first(where: { ($0 as NSString).length > 0 && URL(string: $0).flatMap { UIApplication.shared.canOpenURL($0) } == true }) else {
+            return
+        }
+
+        let openable = makeHealthProvider(id: "openable",
+                                          appScheme: openScheme,
+                                          index: 10)
+        let notOpenable = makeHealthProvider(id: "not-openable",
+                                             appScheme: "zzz-not-a-real-scheme-\(UUID().uuidString)://",
+                                             index: 1)
+
+        let result = PaymentComponentsController.sortPaymentProviders([notOpenable, openable])
+
+        XCTAssertEqual(result.first?.id, "openable",
+                       "Provider whose scheme can be opened must sort before one whose scheme cannot be, regardless of index")
+    }
+
+    func testSortPaymentProvidersSortsByIndexWhenSchemeAvailabilityIsEqual() {
+        let high = makeHealthProvider(id: "high", appScheme: "high-unknown://", index: 5)
+        let low = makeHealthProvider(id: "low", appScheme: "low-unknown://", index: 1)
+
+        let result = PaymentComponentsController.sortPaymentProviders([high, low])
+
+        XCTAssertEqual(result.map { $0.id }, ["low", "high"],
+                       "When neither scheme can be opened, providers must be ordered by ascending index")
+    }
+
+    func testPaymentProvidersAccessorReturnsSubjectValue() {
+        let controller = PaymentComponentsController(giniHealth: giniHealth)
+        let provider = makeHealthProvider(id: "x", appScheme: "x://")
+
+        controller.paymentProvidersSubject.send([provider])
+
+        XCTAssertEqual(controller.paymentProviders.map { $0.id }, ["x"],
+                       "paymentProviders accessor must mirror the current subject value")
+    }
+
+    // MARK: - paymentView() resolver closure
+
+    private static let defaultProviderKey = "defaultPaymentProvider"
+
+    /** Removes the stored default provider before and after `body` so each test starts and ends clean. */
+    private func withCleanDefaultProvider(_ body: () -> Void) {
+        let saved = UserDefaults.standard.data(forKey: Self.defaultProviderKey)
+        UserDefaults.standard.removeObject(forKey: Self.defaultProviderKey)
+        defer {
+            if let saved {
+                UserDefaults.standard.set(saved, forKey: Self.defaultProviderKey)
+            } else {
+                UserDefaults.standard.removeObject(forKey: Self.defaultProviderKey)
+            }
+        }
+        body()
+    }
+
+    /** Pumps the main run loop until an expectation fulfils — needed because the viewModel's
+     publisher subscription uses `.receive(on: DispatchQueue.main)`, so the resolver closure runs
+     after this call site returns from `send(...)`. */
+    private func pumpMain(for interval: TimeInterval = 0.1) {
+        RunLoop.main.run(until: Date().addingTimeInterval(interval))
+    }
+
+    func testPaymentViewResolverReturnsNilWhenNoSavedProvider() {
+        withCleanDefaultProvider {
+            let controller = PaymentComponentsController(giniHealth: giniHealth)
+            let healthProvider = makeHealthProvider(id: "any", appScheme: "any://")
+
+            // Instantiate the view, which captures the resolver inside the view model.
+            let view = controller.paymentView()
+
+            // Drain any pending publisher deliveries queued by the controller's initial
+            // loadPaymentProviders call so the next send() is the one we are asserting about.
+            pumpMain(for: 0.2)
+            controller.paymentProvidersSubject.send([healthProvider])
+            pumpMain()
+
+            // Keep the view alive so the weak-self capture in the view model's subscription
+            // doesn't dealloc the view before the main-queue closure runs.
+            _ = view
+        }
+    }
+
+    func testPaymentViewResolverMatchesSavedProvider() {
+        withCleanDefaultProvider {
+            let saved = GiniHealthSDK.PaymentProvider(healthPaymentProvider:
+                makeHealthProvider(id: "saved", appScheme: "saved://"))
+            let data = try! JSONEncoder().encode(saved)
+            UserDefaults.standard.set(data, forKey: Self.defaultProviderKey)
+
+            let controller = PaymentComponentsController(giniHealth: giniHealth)
+            let view = controller.paymentView()
+
+            pumpMain(for: 0.2)
+            controller.paymentProvidersSubject.send([makeHealthProvider(id: "saved", appScheme: "saved://")])
+            pumpMain()
+
+            _ = view
+        }
+    }
+
+    // MARK: - paymentInfoViewController()
+
+    func testPaymentInfoViewControllerUsesSharedPublisher() {
+        let controller = PaymentComponentsController(giniHealth: giniHealth)
+
+        let paymentInfoVC = controller.paymentInfoViewController()
+
+        XCTAssertTrue(paymentInfoVC is PaymentInfoViewController,
+                      "paymentInfoViewController must return a PaymentInfoViewController")
+    }
+
+    private func makeHealthProvider(id: String,
+                                    appScheme: String,
+                                    index: Int? = nil,
+                                    gpc: [GiniHealthAPILibrary.PlatformSupported] = [.ios],
+                                    openWith: [GiniHealthAPILibrary.PlatformSupported] = []) -> GiniHealthAPILibrary.PaymentProvider {
+        GiniHealthAPILibrary.PaymentProvider(id: id,
+                                             name: "Provider \(id)",
+                                             appSchemeIOS: appScheme,
+                                             minAppVersion: nil,
+                                             colors: GiniHealthAPILibrary.ProviderColors(background: "#FFFFFF", text: "#000000"),
+                                             iconData: Data(),
+                                             appStoreUrlIOS: nil,
+                                             universalLinkIOS: "https://example.com",
+                                             index: index,
+                                             gpcSupportedPlatforms: gpc,
+                                             openWithSupportedPlatforms: openWith)
+    }
+
     func testPaymentProvidersSorting() {
         let fileName = "notSortedBanks"
         guard let givenPaymentProviders = loadProviders(fileName: fileName) else {

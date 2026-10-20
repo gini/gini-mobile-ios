@@ -90,6 +90,62 @@ struct PaymentComponentViewModelTests {
         }
     }
 
+    @Test("Resolver returning nil keeps bank state unchanged but still fires the update closure", .timeLimit(.minutes(1)))
+    func resolverReturningNilLeavesStateUnchanged() async {
+        let subject = PassthroughSubject<[PaymentProvider], Never>()
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher(),
+                          selectedProviderResolver: { _ in nil })
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([.fixture()])
+        }
+
+        #expect(sut.hasBankSelected == false,
+                "A resolver that returns nil must not flip hasBankSelected")
+        #expect(sut.bankName == nil,
+                "A resolver that returns nil must leave bankName untouched")
+    }
+
+    // MARK: - PaymentComponentViewProtocol default-arg extension forwarding
+
+    @Test("Default didTapOnMoreInformation() forwards with a nil documentId")
+    func protocolExtensionMoreInformationForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnMoreInformation()
+
+        #expect(delegate.didTapMoreInfoCalled == true,
+                "The no-argument extension must forward to didTapOnMoreInformation(documentId: nil)")
+    }
+
+    @Test("Default didTapOnBankPicker() forwards with a nil documentId")
+    func protocolExtensionBankPickerForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnBankPicker()
+
+        #expect(delegate.didTapBankPickerCalled == true,
+                "The no-argument extension must forward to didTapOnBankPicker(documentId: nil)")
+    }
+
+    @Test("Default didTapOnPayInvoice() forwards with a nil documentId")
+    func protocolExtensionPayInvoiceForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnPayInvoice()
+
+        #expect(delegate.didTapPayInvoiceCalled == true,
+                "The no-argument extension must forward to didTapOnPayInvoice(documentId: nil)")
+    }
+
     // MARK: - hasBankSelected
 
     @Test("hasBankSelected is true when a payment provider is given")
