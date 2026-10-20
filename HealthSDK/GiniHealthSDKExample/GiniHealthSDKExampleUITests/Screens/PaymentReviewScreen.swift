@@ -67,12 +67,12 @@ final class PaymentReviewScreen {
     }
 
     /**
-     Reads the field's current value, falling back to its label when the
-     SwiftUI TextField reports no value (iOS versions differ in which one
-     carries the extracted text).
+     Reads the field's current value. `GiniTextFieldStyle` overrides
+     `.accessibilityLabel` with the field title ("IBAN", "Recipient", …),
+     so a label fallback would false-positive empty-field checks against the
+     static title. Return only the actual value — callers poll on `.isEmpty`.
      */
     func value(of field: XCUIElement) -> String {
-        if let text = field.value as? String, !text.isEmpty { return text }
-        return field.label
+        (field.value as? String) ?? ""
     }
 }
