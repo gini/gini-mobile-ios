@@ -395,7 +395,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Wero label + scanned payload + flag on → single-extraction result")
     func weroLabelProducesSingleExtraction() throws {
-        let input = try loadResult(fromFixture: "wero_type_only")
+        let input = try loadWeroFixtureResult("wero_type_only")
         try GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -407,7 +407,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Wero label with other extractions → only Wero survives")
     func weroLabelDropsOtherExtractions() throws {
-        let input = try loadResult(fromFixture: "wero_with_payment_extractions")
+        let input = try loadWeroFixtureResult("wero_with_payment_extractions")
         try GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -423,7 +423,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Mixed-case Wero key and value match case-insensitively")
     func weroLabelMatchesCaseInsensitively() throws {
-        let input = try loadResult(fromFixture: "wero_mixed_case")
+        let input = try loadWeroFixtureResult("wero_mixed_case")
         try GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -437,7 +437,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Non-Wero classification → pass-through")
     func nonWeroClassificationPassesThrough() throws {
-        let input = try loadResult(fromFixture: "non_wero_classification")
+        let input = try loadWeroFixtureResult("non_wero_classification")
         GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -449,7 +449,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("paymentQRCodeType missing from response → pass-through")
     func missingClassificationPassesThrough() throws {
-        let input = try loadResult(fromFixture: "missing_payment_qr_code_type")
+        let input = try loadWeroFixtureResult("missing_payment_qr_code_type")
         GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -461,7 +461,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Flag off → pass-through even when the backend returned the Wero label")
     func weroLabelPassesThroughWhenFlagOff() throws {
-        let input = try loadResult(fromFixture: "wero_type_only")
+        let input = try loadWeroFixtureResult("wero_type_only")
         GiniCaptureTestsHelper.withWeroFlag(false) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -473,7 +473,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     @Test("Scanned payload nil → pass-through (picture/PDF open-with path)")
     func nilScannedPayloadPassesThrough() throws {
-        let input = try loadResult(fromFixture: "wero_type_only")
+        let input = try loadWeroFixtureResult("wero_type_only")
         GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -501,7 +501,7 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
             "https://payconiq.com/t/1/ABCDEF"
           ])
     func scannedPayloadRoundTripsVerbatim(_ payload: String) throws {
-        let input = try loadResult(fromFixture: "wero_type_only")
+        let input = try loadWeroFixtureResult("wero_type_only")
         try GiniCaptureTestsHelper.withWeroFlag(true) {
             let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
                 input,
@@ -512,28 +512,6 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
     }
 
     // MARK: - Helpers
-
-    private static let fixtureBundleName = "wero_extraction_fixtures"
-
-    private func loadResult(fromFixture variant: String) throws -> ExtractionResult {
-        guard let fixtureURL = Bundle.module.url(forResource: Self.fixtureBundleName,
-                                                 withExtension: "json") else {
-            throw FixtureError.bundleNotFound(Self.fixtureBundleName)
-        }
-        let data = try Data(contentsOf: fixtureURL)
-        let bundle = try JSONDecoder().decode([String: [String: ExtractionFixture]].self, from: data)
-        guard let raw = bundle[variant] else {
-            throw FixtureError.variantNotFound(variant)
-        }
-        let extractions = raw.map { key, value in
-            Extraction(box: nil,
-                       candidates: nil,
-                       entity: value.entity,
-                       value: value.value,
-                       name: key)
-        }
-        return ExtractionResult(extractions: extractions, candidates: [:])
-    }
 
     /**
      Shape-asserts that `result` is the Wero single-extraction result with
@@ -551,16 +529,45 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
         #expect(extraction.box == nil, "box must be nil")
         #expect(extraction.candidates == nil, "candidates must be nil")
     }
+}
 
-    private struct ExtractionFixture: Decodable {
-        let entity: String
-        let value: String
-    }
+// MARK: - Wero fixture loader (shared across suites)
 
-    private enum FixtureError: Error {
-        case bundleNotFound(String)
-        case variantNotFound(String)
+private let weroFixtureBundleName = "wero_extraction_fixtures"
+
+private struct WeroExtractionFixture: Decodable {
+    let entity: String
+    let value: String
+}
+
+private enum WeroFixtureError: Error {
+    case bundleNotFound(String)
+    case variantNotFound(String)
+}
+
+/**
+ Loads a named variant from `Resources/wero_extraction_fixtures.json` into
+ an `ExtractionResult`. Shared by all suites that need fixture-driven Wero
+ inputs (mapper tests, deliver tests).
+ */
+private func loadWeroFixtureResult(_ variant: String) throws -> ExtractionResult {
+    guard let fixtureURL = Bundle.module.url(forResource: weroFixtureBundleName,
+                                             withExtension: "json") else {
+        throw WeroFixtureError.bundleNotFound(weroFixtureBundleName)
     }
+    let data = try Data(contentsOf: fixtureURL)
+    let bundle = try JSONDecoder().decode([String: [String: WeroExtractionFixture]].self, from: data)
+    guard let raw = bundle[variant] else {
+        throw WeroFixtureError.variantNotFound(variant)
+    }
+    let extractions = raw.map { key, value in
+        Extraction(box: nil,
+                   candidates: nil,
+                   entity: value.entity,
+                   value: value.value,
+                   name: key)
+    }
+    return ExtractionResult(extractions: extractions, candidates: [:])
 }
 
 // MARK: - GiniNetworkingScreenAPICoordinator — Wero camera-fallback gate
@@ -999,6 +1006,57 @@ struct GiniNetworkingScreenAPICoordinatorDeliverTests {
         #expect(delegate.tryDisplayNoResultsScreenCallCount == 0)
     }
 
+    @Test("Wero extractions present → URL-only AnalysisResult (EPS parity)")
+    func weroExtractionsDeliverURLOnlyShape() async throws {
+        let subject = makeCoordinator()
+        let delegate = AnalysisDelegateSpy()
+        let result = try loadWeroFixtureResult("confirmed_wero_url")
+        let expectedURL = try #require(result.extractions.first?.value)
+
+        subject.coordinator.deliver(result: result, to: delegate)
+        await drainMain()
+
+        #expect(subject.resultsDelegate.didFinishResultCallCount == 1)
+        let delivered = try #require(subject.resultsDelegate.lastResult)
+        #expect(delivered.extractions[QRCodesExtractor.weroPaymentQRCodeUrlKey]?.value == expectedURL)
+        /// EPS parity: no document, images, or line items on a Wero delivery.
+        #expect(delivered.document == nil)
+        #expect(delivered.images.isEmpty)
+        #expect(delivered.lineItems?.count == 0)
+    }
+
+    @Test("Nonempty non-Wero extractions + Wero candidate + flag on → invalid-QR message")
+    func nonEmptyNonWeroExtractionsWithWeroCandidateHitsFallback() async throws {
+        let subject = makeCoordinator()
+        let delegate = AnalysisDelegateSpy()
+
+        subject.coordinator.pages = [
+            GiniCapturePage(document: GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/x"))
+        ]
+
+        /// `non_wero_classification` fixture: `paymentQRCodeType=epc` + an IBAN.
+        /// Simulates a backend response that is nonempty but is NOT a confirmed Wero.
+        let result = try loadWeroFixtureResult("non_wero_classification")
+
+        let previousFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureTestsHelper.acquireFlagLock()
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+        defer {
+            GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = previousFlag
+            GiniCaptureTestsHelper.releaseFlagLock()
+        }
+
+        subject.coordinator.deliver(result: result, to: delegate)
+        await drainMain()
+
+        #expect(delegate.tryDisplayInvalidQRMessageCallCount == 1,
+                "Wero fallback must fire for a Wero-candidate scan with a non-Wero response")
+        #expect(subject.resultsDelegate.didFinishResultCallCount == 0,
+                "Garbage data must not reach the results callback")
+        #expect(delegate.tryDisplayNoResultsScreenCallCount == 0,
+                "No-results path is bypassed when the fallback fires")
+    }
+
     @Test("Empty extractions + Wero candidate + flag on → invalid-QR message")
     func noExtractionsWithWeroCandidateHitsFallback() async throws {
         let subject = makeCoordinator()
@@ -1036,15 +1094,7 @@ struct GiniNetworkingScreenAPICoordinatorDeliverTests {
         let delegate = AnalysisDelegateSpy()
 
         /// No pages → `shouldRouteBackToCameraForWeroFallback` returns false
-        /// regardless of flag → fall through to the no-results path.
-        let previousFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
-        GiniCaptureTestsHelper.acquireFlagLock()
-        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
-        defer {
-            GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = previousFlag
-            GiniCaptureTestsHelper.releaseFlagLock()
-        }
-
+        /// regardless of flag → no flag override is needed here.
         subject.coordinator.deliver(result: ExtractionResult(extractions: [], candidates: [:]),
                                     to: delegate)
         await drainMain()

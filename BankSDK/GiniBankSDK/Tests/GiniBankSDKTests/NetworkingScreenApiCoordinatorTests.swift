@@ -656,15 +656,9 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         configuration.transactionDocsEnabled = true
         defer { configuration.transactionDocsEnabled = originalTransactionDocs }
 
-        let weroPayload = "https://pay.weropay.eu/pay/v1/token=xyz"
-        let weroExtraction = Extraction(box: nil,
-                                        candidates: nil,
-                                        entity: QRCodesExtractor.weroPaymentQRCodeUrlKey,
-                                        value: weroPayload,
-                                        name: QRCodesExtractor.weroPaymentQRCodeUrlKey)
-        let stubService = StubAnalysisCaptureNetworkService(
-            extractionResult: ExtractionResult(extractions: [weroExtraction], candidates: [:])
-        )
+        let fixtureResult = try loadWeroDeliveryFixture("confirmed_wero_url")
+        let weroPayload = try XCTUnwrap(fixtureResult.extractions.first?.value)
+        let stubService = StubAnalysisCaptureNetworkService(extractionResult: fixtureResult)
         let coordinator = GiniBankNetworkingScreenApiCoordinator(
             resultsDelegate: resultsDelegate,
             configuration: configuration,
@@ -690,9 +684,14 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(resultsDelegate.deliveredResultsCount, 1,
                        "Confirmed Wero result must deliver directly through the results callback")
-        XCTAssertEqual(resultsDelegate.deliveredResults.first?.extractions[QRCodesExtractor.weroPaymentQRCodeUrlKey]?.value,
+        let delivered = try XCTUnwrap(resultsDelegate.deliveredResults.first)
+        XCTAssertEqual(delivered.extractions[QRCodesExtractor.weroPaymentQRCodeUrlKey]?.value,
                        weroPayload,
                        "The delivered Wero URL must match the scanned payload")
+        /// URL-only shape (EPS parity): no document, images or line items.
+        XCTAssertNil(delivered.document, "Wero delivery must carry no document")
+        XCTAssertEqual(delivered.images.count, 0, "Wero delivery must carry no images")
+        XCTAssertEqual(delivered.lineItems?.count, 0, "Wero delivery must carry no line items")
         XCTAssertEqual(networkDelegate.invalidQRMessageCallCount, 0,
                        "Direct-delivery Wero must not trigger the camera fallback")
         XCTAssertEqual(networkDelegate.noResultsCallCount, 0,
@@ -725,4 +724,28 @@ extension ClientConfiguration {
                   ingredientBrandScreens: [],
                   weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
     }
+}
+
+// MARK: - Wero delivery fixture loader
+
+private struct WeroDeliveryExtractionFixture: Decodable {
+    let entity: String
+    let value: String
+}
+
+/**
+ Loads a named variant from `Resources/wero_delivery_fixtures.json` into an
+ `ExtractionResult`. Mirrors the CaptureSDK side so test data lives in JSON
+ rather than inline literals.
+ */
+private func loadWeroDeliveryFixture(_ variant: String) throws -> ExtractionResult {
+    let data = try XCTUnwrap(FileLoader.loadFile(withName: "wero_delivery_fixtures", ofType: "json"),
+                             "wero_delivery_fixtures.json missing from Bank SDK test bundle")
+    let bundle = try JSONDecoder().decode([String: [String: WeroDeliveryExtractionFixture]].self, from: data)
+    let raw = try XCTUnwrap(bundle[variant], "variant \(variant) not found in fixture")
+    let extractions = raw.map { key, value in
+        Extraction(box: nil, candidates: nil,
+                   entity: value.entity, value: value.value, name: key)
+    }
+    return ExtractionResult(extractions: extractions, candidates: [:])
 }

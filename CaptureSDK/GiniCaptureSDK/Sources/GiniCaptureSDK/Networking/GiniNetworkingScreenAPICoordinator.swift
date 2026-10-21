@@ -165,30 +165,48 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
 
     public func deliver(result: ExtractionResult, and document: Document? = nil, to analysisDelegate: AnalysisDelegate) {
         let hasExtactions = result.extractions.count > 0
+        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        let isWeroResult = result.extractions.contains { $0.name == weroKey || $0.entity == weroKey }
 
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+
+            /// Check the Wero camera fallback first: a Wero-candidate scan
+            /// whose backend response isn't a confirmed Wero URL (empty OR
+            /// unrelated extractions) must pop back to the camera rather
+            /// than deliver garbage data to the host app.
+            if Self.performWeroFallbackIfNeeded(pages: self.pages,
+                                                extractionResult: result,
+                                                delegate: analysisDelegate,
+                                                documentService: self.documentService) {
+                return
+            }
+
             if hasExtactions {
-                let images = self.pages.compactMap { $0.document.previewImage }
                 let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
                     guard let name = $0.name else { return nil }
 
                     return (name, $0)
                 })
 
+                /// URL-only shape matching EPS when the result is a confirmed Wero.
+                let analysisResult: AnalysisResult
+                if isWeroResult {
+                    analysisResult = AnalysisResult(extractions: extractions,
+                                                    lineItems: [],
+                                                    images: [],
+                                                    document: nil,
+                                                    candidates: result.candidates)
+                } else {
+                    let images = self.pages.compactMap { $0.document.previewImage }
+                    analysisResult = AnalysisResult(extractions: extractions,
+                                                    lineItems: result.lineItems,
+                                                    images: images,
+                                                    document: document,
+                                                    candidates: result.candidates)
+                }
 
-                let result = AnalysisResult(extractions: extractions,
-                                            lineItems: result.lineItems,
-                                            images: images,
-                                            document: document,
-                                            candidates: result.candidates)
-
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-            } else if Self.performWeroFallbackIfNeeded(pages: self.pages,
-                                                       extractionResult: result,
-                                                       delegate: analysisDelegate,
-                                                       documentService: self.documentService) {
-                /// Fallback handled by the shared helper.
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()

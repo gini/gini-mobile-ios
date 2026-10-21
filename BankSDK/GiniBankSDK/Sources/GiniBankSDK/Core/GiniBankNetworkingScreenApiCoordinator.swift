@@ -538,8 +538,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     /**
      Delivers a Wero result through the results callback and resets the
-     document service, bypassing feature flows. Mirrors the EPS shape used
-     by `GiniNetworkingScreenAPICoordinator.deliver`.
+     document service, bypassing feature flows. URL-only shape matching
+     EPS: no document, images or line items.
      */
     @MainActor
     private func deliverWeroResult(_ extractionResult: ExtractionResult) {
@@ -548,9 +548,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             return (name, $0)
         })
         let analysisResult = AnalysisResult(extractions: extractions,
-                                            lineItems: extractionResult.lineItems,
-                                            images: pages.compactMap { $0.document.previewImage },
-                                            document: documentService.document,
+                                            lineItems: [],
+                                            images: [],
+                                            document: nil,
                                             candidates: extractionResult.candidates)
         resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
         documentService.resetToInitialState()
