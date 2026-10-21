@@ -524,7 +524,36 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             _ = await task.value
         }
 
+        /// Confirmed Wero: URL is complete payment info — skip invoice flows.
+        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        if extractionResult.extractions.contains(where: {
+            $0.name == weroKey || $0.entity == weroKey
+        }) {
+            deliverWeroResult(extractionResult)
+            return
+        }
+
         presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
+    }
+
+    /**
+     Delivers a Wero result through the results callback and resets the
+     document service, bypassing feature flows. Mirrors the EPS shape used
+     by `GiniNetworkingScreenAPICoordinator.deliver`.
+     */
+    @MainActor
+    private func deliverWeroResult(_ extractionResult: ExtractionResult) {
+        let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
+            guard let name = $0.name else { return nil }
+            return (name, $0)
+        })
+        let analysisResult = AnalysisResult(extractions: extractions,
+                                            lineItems: extractionResult.lineItems,
+                                            images: pages.compactMap { $0.document.previewImage },
+                                            document: documentService.document,
+                                            candidates: extractionResult.candidates)
+        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+        documentService.resetToInitialState()
     }
 
     @MainActor
