@@ -8,67 +8,50 @@
 import XCTest
 
 /**
- Per-screen UI smoke tests mapped from the HEAL Xray SmokeTestSuite
- folder (`/Health SDK Test Cases/SmokeTestSuite`), covering the 16 cases
- that complement the end-to-end journeys in
- `GiniHealthSmokeJourneysUITests`.
+ Per-screen UI smoke tests complementing the end-to-end journeys in
+ `GiniHealthSmokeJourneysUITests`. Runs on BrowserStack via
+ `bs_run_smoke_screens.sh`.
 
- Each test method targets one Xray row; the HEAL ticket number is kept in
- the method's docstring (not the method name) so failures surface with a
- descriptive, grep-friendly name and reviewers map back to Xray via the
- inline reference.
-
- The suite runs on BrowserStack via `bs_run_smoke_screens.sh` which pairs
- with `bs_run_smoke_journeys.sh` — together they cover the full
- automatable smoke subset. Each method starts with an `XCTSkip` sentinel
- so a scaffold-only merge compiles and reports every planned test as
- "skipped (pending implementation)" rather than failing.
-
- ## Scope split
- - Bank Selection sheet          HEAL-288, 289, 290
- - More Info / Payment Feature   HEAL-291, 292
- - Payment Review Screen         HEAL-294, 295, 296, 297, 298, 299, 300, 301, 306
- - Install App bottom sheet      HEAL-303
- - Open With / Share with        HEAL-305
+ ## Scope
+ - Bank Selection sheet, More Info / Payment Info screens
+ - Payment Review Screen (fields, bank picker, close, prefilled banner)
+ - Install App bottom sheet, Share-with QR sheet
 
  ## Explicitly manual (not here)
- - HEAL-283  Live camera QR scan — camera-only entry
- - HEAL-302  No-network default error — BrowserStack blocks WiFi toggling
+ - Live camera QR scan — camera-only entry
+ - No-network default error — BrowserStack blocks WiFi toggling
 
- ## Lessons already captured in the journey suite — reuse, don't rediscover
+ ## Lessons reused from the journey suite
  - **Payment Review entry:** use the shared
-   `drivePaymentFlowThroughBankSelectionToPaymentReview` helper from
-   `GiniHealthSmokeJourneysUITests`. It races `paymentComponent.selectBank`
-   against `paymentReview.iban` and handles both the first-time Payment
-   Component path and the direct-to-Payment-Review path (previously selected
-   bank persists across launches in `singleRunnerInvocation` runs).
+   `drivePaymentFlowThroughBankSelectionToPaymentReview` helper. It races
+   `paymentComponent.selectBank` against `paymentReview.iban` and handles
+   both the first-time Payment Component path and the direct-to-Payment-Review
+   path (previously selected bank persists across launches in
+   `singleRunnerInvocation` runs).
  - **Field reads:** poll — don't read once. SwiftUI `TextField`s render
    immediately with their `viewModel.*InputState.text` bindings still empty;
    `assertPaymentReviewReachedWithPopulatedFields` polls each field up to 15s.
-   Pattern: `while Date() < deadline, value.isEmpty { Thread.sleep(0.3) }`.
  - **PDF import skips the Review screen.** `GiniScreenAPICoordinator.initialViewControllers`
-   routes `.image` to Review and anything else straight to Analysis. HEAL-294
-   must NOT call `tapProcessOnReview` — there is no Process button in the
-   PDF path.
- - **Files picker (HEAL-294):** `pickPDFFromFilesPicker` is adaptive — BS
-   `Custom_Files` vs local `On My iPhone → GiniHealthSDKExample` — and taps
-   the nav-bar `Open` / `Öffnen` after the file label is selected. Tapping
-   the label alone only selects (blue checkmark); it never confirms.
+   routes `.image` to Review and anything else straight to Analysis — the
+   PDF path never shows the Process button.
+ - **Files picker:** `pickPDFFromFilesPicker` is adaptive — BS `Custom_Files`
+   vs local `On My iPhone → GiniHealthSDKExample` — and taps the nav-bar
+   `Open` / `Öffnen` after the file label is selected. Tapping the label
+   alone only selects (blue checkmark); it never confirms.
  - **System permissions:** `handleSystemPermission` queries both SpringBoard
    AND the host app. iOS 17+ `PHPickerViewController` limited-access consent
    is presented in-process.
- - **Install App bottom sheet (HEAL-303):** `InstallAppBottomView` has no
-   literal "Install App" text and no accessibility identifier. Match on
-   stable localised phrases — `Forward` / `Weiter` button, OR element
-   containing `install` / `installieren` / `App Store` / `App-Store`. See
-   HEAL-304 in the journey suite for the exact predicate.
+ - **Install App bottom sheet:** `InstallAppBottomView` has no literal
+   "Install App" text and no accessibility identifier. Match on stable
+   localised phrases — `Forward` / `Weiter` button, OR element containing
+   `install` / `installieren` / `App Store` / `App-Store`.
  */
 final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
 
-    // MARK: - Bank Selection sheet (HEAL-288, 289, 290)
+    // MARK: - Bank Selection sheet
 
     /**
-     HEAL-288 — Bank Selection sheet renders the configured provider list.
+     Bank Selection sheet renders the configured provider list.
 
      Reaches the Payment Review Screen via the Invoices-List entry (adaptive
      helper handles both first-time and persisted-bank paths), then taps the
@@ -85,7 +68,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-289 — Picking a bank from the Bank Selection sheet dismisses the
+     Picking a bank from the Bank Selection sheet dismisses the
      sheet and the Payment Review Screen's bank picker reflects the choice.
 
      Reaches Payment Review, opens the sheet, picks an *unselected* bank
@@ -123,7 +106,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-290 — Bank Selection sheet carries the inline **More Information**
+     Bank Selection sheet carries the inline **More Information**
      link at the bottom; tapping it presents the Payment Info screen.
 
      Verifies the sheet's nav-bar title ("More information" /
@@ -166,18 +149,16 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
         moreInfo.tap()
     }
 
-    // MARK: - More Info / Payment Info screen (HEAL-291, 292)
+    // MARK: - More Info / Payment Info screen
 
     /**
-     HEAL-291 — Payment Info screen renders its informational content.
+     Payment Info screen renders its informational content.
 
      Reaches the Bank Selection sheet via the Payment Review bank picker,
      taps the inline **More Information** link, and asserts the Payment Info
      screen is presented with both its nav-bar title ("More information" /
-     "Mehr Informationen") and the FAQ section title visible.
-     The upstream view (`PaymentInfoViewController`) has no Continue button —
-     the SDK's "primary action" at this surface is dismissal, covered by
-     HEAL-292.
+     "Mehr Informationen") and the FAQ section title visible. The screen
+     has no Continue button — dismissal is covered by the swipe-down test.
      */
     func testPaymentFeatureScreenRendersCopyAndContinue() throws {
         openPaymentInfoFromBankSelection()
@@ -188,55 +169,94 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-292 — Payment Info screen's primary action dismisses the sheet
-     and returns to the Bank Selection sheet underneath.
-
-     The upstream `PaymentInfoViewController` has no close button or
-     Continue action; it inherits `GiniBottomSheetViewController` and is
-     dismissed by the iOS 13+ modal swipe-down gesture. XCUITest cannot
-     reliably simulate that drag against the sheet's drag indicator, so
-     this test is skipped until a stable programmatic dismiss hook is
-     added upstream (e.g. an accessibility-identified Close bar-button in
-     the hosting `UINavigationController`).
+     Payment Info sheet dismiss returns to the Bank Selection sheet underneath.
+     `PaymentInfoViewController` has no Close control — dismissal is the iOS 15+
+     `UISheetPresentationController` swipe-down, driven here via a coordinate
+     drag from the grabber band past the window's bottom edge.
      */
     func testPaymentFeatureContinueReturnsToPreviousScreen() throws {
-        throw XCTSkip("HEAL-292 — PaymentInfoViewController has no Close/Continue control; needs an upstream accessibility-identified dismiss hook before this can be automated.")
+        openPaymentInfoFromBankSelection()
+        XCTAssertTrue(paymentInfoScreen.navBarTitle.waitForExistence(timeout: 10),
+                      "Payment Info screen did not open — swipe-down dismiss cannot be exercised.")
+
+        /// `swipeDown()` on the sheet root is unreliable — the inner
+        /// `ScrollView` absorbs short drags for its own offset. A long
+        /// coordinate drag past the window's bottom edge is the proven
+        /// path: iOS routes it to the frontmost presentable sheet
+        /// regardless of where the touch starts.
+        let window = app.windows.firstMatch
+        let start = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.08))
+        let end = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95))
+        start.press(forDuration: 0.1, thenDragTo: end)
+
+        XCTAssertTrue(paymentInfoScreen.navBarTitle.waitForNonExistence(timeout: 10),
+                      "Payment Info screen did not dismiss after swipe-down — grabber band may have shifted or the drag was absorbed by inner scroll.")
+        XCTAssertTrue(bankSelectionBottomSheet.anyBankCell.waitForExistence(timeout: 10),
+                      "Bank Selection sheet underneath not restored after Payment Info dismiss.")
     }
 
-    // MARK: - Payment Review Screen (HEAL-294, 295, 296, 297, 298, 299, 300, 301, 306)
+    // MARK: - Payment Review Screen
 
     /**
-     HEAL-294 — Multi-page PDF import shows pagination dots on the
-     Payment Review Screen's document preview.
-
-     Uses `TestFixtures.Files.multiInvoice` (multi-invoice.pdf, staged by
-     the BrowserStack script's `uploadMedia` to Custom_Files; locally
-     seeded by `copyFixturesToSimulator`).
-
-     **Entry pattern** (reuse from `GiniHealthSmokeJourneysUITests` HEAL-284):
-     ```
-     mainScreen.startWithGiniCaptureButton.tap()
-     mainScreen.handleSystemPermission(answer: true)
-     captureImportFlow.skipOnboardingIfPresented()
-     captureImportFlow.tapImportThenFiles()
-     captureImportFlow.pickPDFFromFilesPicker(fileName: TestFixtures.Files.multiInvoice)
-     // No tapProcessOnReview — PDFs skip the Review screen.
-     // Wait for Invoices List with Transfer directly, tap it, then
-     // drivePaymentFlowThroughBankSelectionToPaymentReview().
-     ```
-     Then assert pagination-dot indicators are present on the Payment
-     Review Screen's document preview.
+     Multi-page PDF import renders pagination dots on the Payment Review
+     document preview. `TestFixtures.Files.multiPage` yields N > 1 preview
+     images; the SwiftUI `PageTabViewStyle` in `GiniCarouselView` surfaces as
+     `XCUIElementType.pageIndicator` with an a11y value of "page X of Y".
      */
     func testMultiPageInvoiceShowsPaginationDots() throws {
-        throw XCTSkip("HEAL-294 — pending implementation")
+        XCTAssertTrue(mainScreen.startWithGiniCaptureButton.waitForExistence(timeout: 10),
+                      "Main screen did not render — host app launch failed.")
+        mainScreen.startWithGiniCaptureButton.tap()
+        mainScreen.handleSystemPermission(answer: true)
+
+        captureImportFlow.skipOnboardingIfPresented()
+        captureImportFlow.tapImportThenFiles()
+        captureImportFlow.pickPDFFromFilesPicker(fileName: TestFixtures.Files.multiPage)
+
+        /// PDFs skip the Review screen — `GiniScreenAPICoordinator` routes
+        /// non-image payloads straight to Analysis, so wait for the Invoices
+        /// List without tapping Process.
+        XCTAssertTrue(invoicesListScreen.transferDirectlyButton.waitForExistence(timeout: 60),
+                      "Invoices List did not appear with the imported multi-page PDF.")
+        invoicesListScreen.transferDirectlyButton.tap()
+
+        drivePaymentFlowThroughBankSelectionToPaymentReview()
+        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
+                      "Payment Review Screen did not appear for the multi-page PDF.")
+
+        let pageIndicator = app.pageIndicators.firstMatch
+        XCTAssertTrue(pageIndicator.waitForExistence(timeout: 10),
+                      "No pagination indicator rendered on Payment Review Screen for multi-page PDF.")
+
+        /// `waitForExistence` returns as soon as the indicator enters the
+        /// a11y tree, but SwiftUI's `accessibilityValue` ("page X of Y" EN /
+        /// "Seite X von Y" DE) can lag by hundreds of ms. Poll the value
+        /// until the parsed count is > 1, so a slow BrowserStack device
+        /// doesn't false-fail reading an empty string.
+        let deadline = Date().addingTimeInterval(10)
+        var rawValue = ""
+        var pageCount = 0
+        while Date() < deadline {
+            rawValue = (pageIndicator.value as? String) ?? ""
+            pageCount = Self.pageCount(fromIndicatorValue: rawValue)
+            if pageCount > 1 { break }
+            Thread.sleep(forTimeInterval: 0.3)
+        }
+        XCTAssertGreaterThan(pageCount, 1,
+                             "Pagination indicator reports \(pageCount) page(s) for multi-page PDF; expected ≥ 2. Raw value: '\(rawValue)'.")
+    }
+
+    private static func pageCount(fromIndicatorValue value: String) -> Int {
+        let digits = value.split(whereSeparator: { !$0.isNumber })
+        return digits.last.flatMap { Int($0) } ?? 0
     }
 
     /**
-     HEAL-295 — Payment Review Screen's IBAN field accepts user input.
+     Payment Review Screen's IBAN field accepts user input.
 
      Reaches Payment Review, waits for the field to carry an extracted value
      (SwiftUI binding race), focuses the field, appends a sentinel, and
-     asserts the value changed. Mirrors the HEAL-293 edit smoke pattern:
+     asserts the value changed. Mirrors the field-edit smoke pattern:
      appending rather than clearing avoids iOS 15–26 SwiftUI selection
      differences — the smoke suite only verifies the field is editable.
      */
@@ -246,7 +266,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-296 — Payment Review Screen's Recipient field accepts user input.
+     Payment Review Screen's Recipient field accepts user input.
      */
     func testPaymentReviewRecipientFieldAcceptsInput() throws {
         assertPaymentReviewFieldAcceptsAppend(field: paymentReviewScreen.recipientField,
@@ -254,7 +274,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-297 — Payment Review Screen's Amount field accepts decimal input.
+     Payment Review Screen's Amount field accepts decimal input.
 
      The amount field uses `.keyboardType(.decimalPad)` and a custom
      keyboard accessory (`GiniKeyboardAccessoryInstaller`). Appending a
@@ -267,7 +287,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-298 — Payment Review Screen's Reference field accepts user input.
+     Payment Review Screen's Reference field accepts user input.
      */
     func testPaymentReviewReferenceFieldAcceptsInput() throws {
         assertPaymentReviewFieldAcceptsAppend(field: paymentReviewScreen.referenceField,
@@ -275,7 +295,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-299 — Payment Review Screen's bank picker opens the Bank
+     Payment Review Screen's bank picker opens the Bank
      Selection sheet. Taps `paymentReview.bankPicker` and asserts a
      `bankSelection.cell.*` row appears, proving the sheet rendered its
      provider list.
@@ -290,15 +310,57 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-300 — Payment Review Screen validates required fields before
-     enabling the Pay button; empty IBAN or amount keeps Pay disabled.
+     Clearing IBAN and tapping Pay blocks the handoff — no Install App sheet
+     and no Share-QR sheet appear. `ibanField.exists` alone is not enough:
+     both overlay Payment Review without dismissing it, so a silent regression
+     where the SDK ignores empty-field validation would still leave the sheet
+     visible. Asserting no handoff signal fires catches that case.
      */
     func testPaymentReviewRequiredFieldValidation() throws {
-        throw XCTSkip("HEAL-300 — pending implementation (needs clear-field helper tolerant of SwiftUI 15–26 selection differences)")
+        reachPaymentReviewFromInvoicesList()
+        assertPaymentReviewReachedWithPopulatedFields()
+
+        paymentReviewScreen.ibanField.clearText()
+        XCTAssertEqual(paymentReviewScreen.value(of: paymentReviewScreen.ibanField), "",
+                       "IBAN not cleared — cannot validate error path.")
+
+        paymentReviewScreen.payButton.tap()
+
+        /// Any handoff signal within 3 s means validation did NOT block the
+        /// invalid Pay tap. Install App sheet uses the HEAL-304 predicate
+        /// shape; Share-QR sheet uses its localised title fragment.
+        let installPhrase = app.descendants(matching: .any)
+            .matching(NSPredicate(format:
+                "label CONTAINS[c] 'install' OR label CONTAINS[c] 'App Store' OR label CONTAINS[c] 'App-Store'"))
+            .firstMatch
+        let forwardButton = app.buttons
+            .matching(NSPredicate(format: "label IN %@", ["Forward", "Weiter"]))
+            .firstMatch
+        let shareSheetTitle = app.staticTexts
+            .matching(NSPredicate(format:
+                "label CONTAINS[c] 'QR payment code' OR label CONTAINS[c] 'QR-Zahlungscode'"))
+            .firstMatch
+
+        let deadline = Date().addingTimeInterval(3)
+        var handoffDetected = false
+        while Date() < deadline {
+            if installPhrase.exists || forwardButton.exists || shareSheetTitle.exists {
+                handoffDetected = true
+                break
+            }
+            Thread.sleep(forTimeInterval: 0.3)
+        }
+        XCTAssertFalse(handoffDetected,
+                       "A handoff sheet (Install App or Share-QR) appeared after Pay with empty IBAN — validation did not block.")
+
+        XCTAssertTrue(paymentReviewScreen.ibanField.exists,
+                      "Payment Review Screen dismissed on Pay with empty IBAN — handoff was not blocked.")
+        XCTAssertEqual(paymentReviewScreen.value(of: paymentReviewScreen.ibanField), "",
+                       "IBAN field re-populated by SDK after Pay — field should remain empty.")
     }
 
     /**
-     HEAL-301 — Payment Review Screen's close button dismisses the sheet
+     Payment Review Screen's close button dismisses the sheet
      and returns to the previous surface (Invoices List).
      */
     func testPaymentReviewCloseDismissesSheet() throws {
@@ -313,7 +375,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
     }
 
     /**
-     HEAL-306 — Payment Review Screen displays the extraction info banner
+     Payment Review Screen displays the extraction info banner
      ("Please check the pre-filled data.") when fields were populated by
      the extraction pipeline.
 
@@ -342,7 +404,7 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
      extracted value (SwiftUI binding race, same shape as
      `assertPaymentReviewReachedWithPopulatedFields`), focuses the field,
      appends `sentinel`, and asserts the value grew by at least
-     `sentinel.count` characters. Mirrors HEAL-293's edit smoke pattern.
+     `sentinel.count` characters. Mirrors the field-edit smoke pattern.
 
      Baseline is captured **after** focus-formatting settles: the Amount
      field strips its currency symbol on focus
@@ -385,42 +447,97 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
                       "Payment Review field \(field.identifier) did not accept typed input — value is '\(observedValue)' (length \(observedValue.count)) after typing '\(sentinel)' into baseline '\(baseline)' (expected length ≥ \(expectedMinLength)).")
     }
 
-    // MARK: - Install App bottom sheet (HEAL-303)
+    // MARK: - Install App bottom sheet
 
     /**
-     HEAL-303 — Install App bottom sheet appears when the selected bank's
-     app is not installed and the user taps the Pay button. Verifies the
-     sheet's title, note, and Forward/Weiter button are present.
-
-     Device-only on BrowserStack (host app is sandboxed, bank apps are
-     never installed, so the sheet always appears).
-
-     **Detection pattern** (same as HEAL-304 journey test): no "Install App"
-     literal exists on the sheet and no accessibility identifier is set
-     upstream, so match on stable localised phrases from
-     `InstallAppBottomView`'s strings. Reuse the predicate shape:
-     ```swift
-     let forwardButton = app.buttons
-         .matching(NSPredicate(format: "label IN %@", ["Forward", "Weiter"]))
-         .firstMatch
-     let installPhraseAny = app.descendants(matching: .any)
-         .matching(NSPredicate(format:
-             "label CONTAINS[c] 'install' OR label CONTAINS[c] 'App Store' OR label CONTAINS[c] 'App-Store'"))
-         .firstMatch
-     ```
+     Install App bottom sheet appears when the user taps Pay with a bank
+     whose app is not installed. Reliable on simulator (no bank apps) and
+     BrowserStack (sandboxed, no banking apps pre-installed). Matches
+     `InstallAppBottomView` by its localised `Forward` / `Weiter` button or
+     install / App Store phrase — no accessibility identifier upstream.
      */
     func testInstallAppBottomSheetAppearsWhenBankMissing() throws {
-        throw XCTSkip("HEAL-303 — pending implementation")
+        reachPaymentReviewFromInvoicesList()
+        XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 30),
+                      "Pay button not reachable — Payment Review Screen may not have loaded.")
+
+        paymentReviewScreen.payButton.tap()
+
+        let forwardButton = app.buttons
+            .matching(NSPredicate(format: "label IN %@", ["Forward", "Weiter"]))
+            .firstMatch
+        let installPhraseAny = app.descendants(matching: .any)
+            .matching(NSPredicate(format:
+                "label CONTAINS[c] 'install' OR label CONTAINS[c] 'App Store' OR label CONTAINS[c] 'App-Store'"))
+            .firstMatch
+
+        let deadline = Date().addingTimeInterval(10)
+        var sheetDetected = false
+        while Date() < deadline {
+            if forwardButton.exists || installPhraseAny.exists {
+                sheetDetected = true
+                break
+            }
+            Thread.sleep(forTimeInterval: 0.3)
+        }
+        XCTAssertTrue(sheetDetected,
+                      "Install App bottom sheet did not appear within 10 s after tapping Pay — expected Forward/Weiter button or install/App Store phrase.")
     }
 
-    // MARK: - Open With / Share with (HEAL-305)
+    // MARK: - Open With / Share with
 
     /**
-     HEAL-305 — Open With / Share flow surfaces the payment request to
-     the system share sheet when the user triggers the handoff via the
-     dedicated share entry.
+     Share-with flow surfaces the QR payment-code bottom sheet when the user
+     taps Pay after selecting a share-only bank. Picks `Gini Bank SDK Example`
+     from the Bank Selection sheet — this provider routes to
+     `ShareInvoiceBottomView` instead of a deeplink or Install App fallback.
+     Detects the sheet by its localised title ("Share this QR payment code" /
+     "QR-Zahlungscode") — `ShareInvoiceBottomView` has no accessibility
+     identifier upstream, same approach as the Install App sheet detection.
      */
     func testOpenWithShareHandoffShowsShareSheet() throws {
-        throw XCTSkip("HEAL-305 — pending implementation")
+        reachPaymentReviewFromInvoicesList()
+        XCTAssertTrue(paymentReviewScreen.bankPickerButton.waitForExistence(timeout: 10),
+                      "Payment Review bank picker not reachable — cannot re-select share-only bank.")
+        paymentReviewScreen.bankPickerButton.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "Bank Selection sheet did not open with provider cells within 30 s.")
+
+        let shareBankCell = bankSelectionBottomSheet.cell(for: "Gini Bank SDK Example")
+        /// Compact-height devices or lineups where installed banks sort
+        /// above can push the target row offscreen — scroll a few times
+        /// before giving up (same pattern as `openPaymentInfoFromBankSelection`).
+        var attempts = 0
+        while !shareBankCell.exists && attempts < 5 {
+            app.swipeUp()
+            attempts += 1
+        }
+        XCTAssertTrue(shareBankCell.waitForExistence(timeout: 10),
+                      "Expected 'Gini Bank SDK Example' provider cell in Bank Selection — share-with flow cannot be exercised without it.")
+        shareBankCell.tap()
+
+        XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
+                      "Pay button not reachable after selecting Gini Bank SDK Example.")
+        paymentReviewScreen.payButton.tap()
+
+        /// Match the sheet by its unique title fragment — "QR" works for EN
+        /// ("Share this QR payment code") and both DE variants ("QR-Zahlungscode").
+        /// No upstream accessibility identifier on `ShareInvoiceBottomView`.
+        let shareSheetTitle = app.staticTexts
+            .matching(NSPredicate(format:
+                "label CONTAINS[c] 'QR payment code' OR label CONTAINS[c] 'QR-Zahlungscode'"))
+            .firstMatch
+
+        let deadline = Date().addingTimeInterval(10)
+        var sheetDetected = false
+        while Date() < deadline {
+            if shareSheetTitle.exists {
+                sheetDetected = true
+                break
+            }
+            Thread.sleep(forTimeInterval: 0.3)
+        }
+        XCTAssertTrue(sheetDetected,
+                      "Share-QR bottom sheet did not appear within 10 s after tapping Pay with Gini Bank SDK Example — expected sheet title containing 'QR payment code' or 'QR-Zahlungscode'.")
     }
 }

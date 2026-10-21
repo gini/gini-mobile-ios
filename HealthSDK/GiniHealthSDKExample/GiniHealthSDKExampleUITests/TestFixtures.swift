@@ -27,9 +27,16 @@ enum TestFixtures {
         static let medInvoice = "testMedInvoice"
 
         /**
-         Multi-page invoice PDF used by the pagination-dots smoke check.
+         PDF carrying two embedded invoice blocks in a single document.
+         Reserved for tests that need multiple invoices per file.
          */
         static let multiInvoice = "multi-invoice"
+
+        /**
+         Two-page invoice PDF — produces N > 1 preview images so the
+         `GiniCarouselView` page dots actually render.
+         */
+        static let multiPage = "health_multi_page"
     }
 
     /** Gallery images staged into the Photos library. */
