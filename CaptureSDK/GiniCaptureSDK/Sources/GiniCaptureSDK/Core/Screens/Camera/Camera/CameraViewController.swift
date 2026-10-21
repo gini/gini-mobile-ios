@@ -615,9 +615,9 @@ final class CameraViewController: UIViewController {
         cameraPaneHorizontal?.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
-            // Hide the small QR-only-mode brackets if they were turned on by
-            // handleScanAnotherQRCode — otherwise they stay drawn inside the
-            // big processing overlay on the next scan.
+            /// Hide the small QR-only-mode brackets if they were turned on by
+            /// handleScanAnotherQRCode — otherwise they stay drawn inside the
+            /// big processing overlay on the next scan.
             self.cameraPreviewViewController.qrCodeFrameView.isHidden = true
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }

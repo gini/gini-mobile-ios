@@ -130,6 +130,8 @@ extension GiniConfigurationSharedStateSuite {
 
             _ = coordinator.startSDK(withDocuments: nil, animated: false)
 
+            /// startSDK dispatches the assignments to main asynchronously; hop once to
+            /// let the queued block drain before asserting.
             await withCheckedContinuation { continuation in
                 DispatchQueue.main.async { continuation.resume() }
             }

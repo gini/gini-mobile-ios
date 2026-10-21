@@ -497,8 +497,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
-                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(
-                    extractionResult, pages: self.pages)
+                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(extractionResult,
+                                                                                               pages: self.pages)
                 self.setDocumentIdAsUserProperty()
                 Task {
                     await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
