@@ -779,6 +779,34 @@ struct GiniNetworkingScreenAPICoordinatorPerformWeroFallbackTests {
         #expect(delegate.tryDisplayInvalidQRMessageCallCount == 0)
         #expect(documentService.resetToInitialStateCallCount == 0)
     }
+
+    /// Delegate that omits the `@objc optional tryDisplayInvalidQRMessage`.
+    private final class AnalysisDelegateWithoutOptionalSpy: NSObject, AnalysisDelegate {
+        var tryDisplayNoResultsScreenCallCount = 0
+        func displayError(errorType: ErrorType, animated: Bool) {}
+        func tryDisplayNoResultsScreen() { tryDisplayNoResultsScreenCallCount += 1 }
+    }
+
+    @Test("Gate fires + delegate omits optional method → tryDisplayNoResultsScreen fallback")
+    func fallbackCallsNoResultsWhenOptionalIsMissing() throws {
+        let delegate = AnalysisDelegateWithoutOptionalSpy()
+        let documentService = DocumentServiceSpy()
+        var didFallback = false
+
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            didFallback = GiniNetworkingScreenAPICoordinator.performWeroFallbackIfNeeded(
+                pages: [weroCandidatePage],
+                extractionResult: emptyResult(),
+                delegate: delegate,
+                documentService: documentService
+            )
+        }
+
+        #expect(didFallback == true)
+        #expect(delegate.tryDisplayNoResultsScreenCallCount == 1,
+                "Must fall back to tryDisplayNoResultsScreen when the optional isn't implemented")
+        #expect(documentService.resetToInitialStateCallCount == 1)
+    }
 }
 
 // MARK: - GiniNetworkingScreenAPICoordinator — mapWeroExtractionsIfApplicable (instance method)

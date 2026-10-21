@@ -250,7 +250,13 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                                                      extractionResult: extractionResult) else {
             return false
         }
-        delegate.tryDisplayInvalidQRMessage?()
+        /// `tryDisplayInvalidQRMessage` is `@objc optional`; fall back to the
+        /// required `tryDisplayNoResultsScreen` so processing never gets stuck.
+        if (delegate as AnyObject).responds(to: #selector(AnalysisDelegate.tryDisplayInvalidQRMessage)) {
+            delegate.tryDisplayInvalidQRMessage?()
+        } else {
+            delegate.tryDisplayNoResultsScreen()
+        }
         documentService.resetToInitialState()
         return true
     }
