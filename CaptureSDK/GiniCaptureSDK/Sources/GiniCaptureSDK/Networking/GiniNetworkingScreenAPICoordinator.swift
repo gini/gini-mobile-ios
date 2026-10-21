@@ -205,7 +205,6 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                                                     document: document,
                                                     candidates: result.candidates)
                 }
-
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
