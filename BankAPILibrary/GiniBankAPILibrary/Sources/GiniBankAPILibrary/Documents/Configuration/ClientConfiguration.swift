@@ -68,7 +68,7 @@ public struct ClientConfiguration: Codable {
                 paymentScheduleHintEnabled: Bool,
                 unsupportedQRCodeWarningEnabled: Bool,
                 ingredientBrandScreens: [String] = [],
-                weroQRCodeScanningEnabled: Bool = false) {
+                weroQRCodeScanningEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled

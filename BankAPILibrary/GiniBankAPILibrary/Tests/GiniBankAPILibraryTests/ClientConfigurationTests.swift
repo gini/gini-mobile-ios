@@ -332,32 +332,4 @@ struct ClientConfigurationTests {
         #expect(config.weroQRCodeScanningEnabled, "Expected weroQRCodeScanningEnabled to be true")
     }
 
-    // MARK: - weroQRCodeScanningEnabled Tests
-
-    /**
-     Pins the public init default so an integrator who constructs a
-     `ClientConfiguration` without specifying the Wero flag keeps the Wero
-     flow off. The SDK's gate is fail-closed, and this test guards against a
-     silent flip of the default on upgrade.
-     */
-    @Test("weroQRCodeScanningEnabled defaults to false when omitted from the public init")
-    func weroQRCodeScanningEnabledDefaultsToFalse() {
-        let config = ClientConfiguration(clientID: testClientID,
-                                         userJourneyAnalyticsEnabled: false,
-                                         skontoEnabled: false,
-                                         returnAssistantEnabled: false,
-                                         transactionDocsEnabled: false,
-                                         instantPaymentEnabled: false,
-                                         qrCodeEducationEnabled: false,
-                                         eInvoiceEnabled: false,
-                                         savePhotosLocallyEnabled: false,
-                                         alreadyPaidHintEnabled: false,
-                                         paymentDueHintEnabled: false,
-                                         creditNoteHintEnabled: false,
-                                         paymentScheduleHintEnabled: false,
-                                         unsupportedQRCodeWarningEnabled: false)
-
-        #expect(!config.weroQRCodeScanningEnabled,
-                "weroQRCodeScanningEnabled must default to false when omitted (fail-closed)")
-    }
 }
