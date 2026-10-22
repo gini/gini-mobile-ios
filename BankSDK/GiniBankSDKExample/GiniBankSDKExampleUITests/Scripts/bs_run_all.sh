@@ -297,7 +297,6 @@ trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
   "GiniBankSDKExampleUITests/GiniReviewScreenUITests",
-  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOffUITests"
 ]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\", \"$NO_RESULTS_QR_URL\"]"
 

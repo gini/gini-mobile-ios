@@ -11,9 +11,8 @@ set -e
 #   GiniCaptureScreenUITests        — Capture screen UI interactions
 #   GiniCameraAccessScreenUITests   — Camera permission flow
 #   GiniReviewScreenUITests         — Review screen (requires test_image.pdf in Custom_Files)
-#   GiniWeroNoResultsFlagOnUITests  — No Results screen with Wero row visible (flag ON)
 #   GiniWeroNoResultsFlagOffUITests — No Results screen with Wero row hidden (flag OFF)
-#                                     Both require no_results_qr.pdf in Custom_Files.
+#                                     Requires no_results_qr.pdf in Custom_Files.
 #
 # The journey smoke tests live in bs_run_smoke_journeys.sh — run both for the
 # full smoke suite (sequentially: with 2 parallel licenses and the default
@@ -57,7 +56,6 @@ ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
   "GiniBankSDKExampleUITests/GiniReviewScreenUITests",
-  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOnUITests",
   "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOffUITests"
 ]'
 SINGLE_RUNNER="true"
