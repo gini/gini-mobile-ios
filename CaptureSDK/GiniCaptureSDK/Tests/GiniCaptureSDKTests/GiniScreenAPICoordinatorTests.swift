@@ -486,11 +486,13 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
 
     // MARK: - Keyword independence
 
-    /// Six URL shapes that must all round-trip through the mapper unchanged in
-    /// value — four Sparkasse production domains plus two legacy EU payment
-    /// schemes that count as Wero but contain neither the string "wero" nor
-    /// any Wero-specific keyword. The mapper must not inspect the payload
-    /// format; it only forwards whatever the camera scanned.
+    /**
+     Six URL shapes that must all round-trip through the mapper unchanged in
+     value — four Sparkasse production domains plus two legacy EU payment
+     schemes that count as Wero but contain neither the string "wero" nor
+     any Wero-specific keyword. The mapper must not inspect the payload
+     format; it only forwards whatever the camera scanned.
+     */
     @Test("Scanned payload is passed through verbatim regardless of URL shape",
           arguments: [
             "https://pay.weropay.eu/pay/v1/eyJhbGciOiJIUzI1NiJ9",

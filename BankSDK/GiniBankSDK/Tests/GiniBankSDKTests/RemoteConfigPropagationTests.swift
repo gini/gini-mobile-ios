@@ -21,60 +21,48 @@ extension GiniConfigurationSharedStateSuite {
 
         @Test("unsupportedQRCodeWarningEnabled=true from remote config is written to storage")
         func propagatesUnsupportedQRCodeWarningTrue() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled = nil },
-                configuration: makeClientConfiguration(unsupportedQRCodeWarningEnabled: true)
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled = nil },
+                              configuration: makeClientConfiguration(unsupportedQRCodeWarningEnabled: true))
 
             #expect(GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled == true)
         }
 
         @Test("unsupportedQRCodeWarningEnabled=false from remote config is written to storage")
         func propagatesUnsupportedQRCodeWarningFalse() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled = nil },
-                configuration: makeClientConfiguration(unsupportedQRCodeWarningEnabled: false)
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled = nil },
+                              configuration: makeClientConfiguration(unsupportedQRCodeWarningEnabled: false))
 
             #expect(GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled == false)
         }
 
         @Test("ingredientBrandScreens=[\"Analysis\"] from remote config is written to storage")
         func propagatesIngredientBrandScreensAnalysis() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil },
-                configuration: makeClientConfiguration(ingredientBrandScreens: ["Analysis"])
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil },
+                              configuration: makeClientConfiguration(ingredientBrandScreens: ["Analysis"]))
 
             #expect(GiniCaptureUserDefaultsStorage.ingredientBrandScreens == ["Analysis"])
         }
 
         @Test("ingredientBrandScreens=[] from remote config is written to storage")
         func propagatesIngredientBrandScreensEmpty() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil },
-                configuration: makeClientConfiguration(ingredientBrandScreens: [])
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.ingredientBrandScreens = nil },
+                              configuration: makeClientConfiguration(ingredientBrandScreens: []))
 
             #expect(GiniCaptureUserDefaultsStorage.ingredientBrandScreens == [])
         }
 
         @Test("weroQRCodeScanningEnabled=true from remote config is written to storage")
         func propagatesWeroQRCodeScanningEnabledTrue() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = nil },
-                configuration: makeClientConfiguration(weroQRCodeScanningEnabled: true)
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = nil },
+                              configuration: makeClientConfiguration(weroQRCodeScanningEnabled: true))
 
             #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == true)
         }
 
         @Test("weroQRCodeScanningEnabled=false from remote config is written to storage")
         func propagatesWeroQRCodeScanningEnabledFalse() async {
-            await runStartSDK(
-                resetStorage: { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = nil },
-                configuration: makeClientConfiguration(weroQRCodeScanningEnabled: false)
-            )
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = nil },
+                              configuration: makeClientConfiguration(weroQRCodeScanningEnabled: false))
 
             #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == false)
         }
