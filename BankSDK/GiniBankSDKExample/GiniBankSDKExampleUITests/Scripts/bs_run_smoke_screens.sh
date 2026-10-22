@@ -11,6 +11,9 @@ set -e
 #   GiniCaptureScreenUITests        — Capture screen UI interactions
 #   GiniCameraAccessScreenUITests   — Camera permission flow
 #   GiniReviewScreenUITests         — Review screen (requires test_image.pdf in Custom_Files)
+#   GiniWeroNoResultsFlagOnUITests  — No Results screen with Wero row visible (flag ON)
+#   GiniWeroNoResultsFlagOffUITests — No Results screen with Wero row hidden (flag OFF)
+#                                     Both require no_results_qr.pdf in Custom_Files.
 #
 # The journey smoke tests live in bs_run_smoke_journeys.sh — run both for the
 # full smoke suite (sequentially: with 2 parallel licenses and the default
@@ -45,6 +48,7 @@ fi
 # ── Media files ────────────────────────────────────────────────────────────────
 TEST_IMAGE_PNG_FILE="$SAMPLES_DIR/test_image.png" # → Photos gallery (GiniReviewScreenUITests gallery test)
 TEST_IMAGE_PDF_FILE="$SAMPLES_DIR/test_image.pdf" # → Custom_Files (Review screen file import)
+NO_RESULTS_QR_PDF_FILE="$SAMPLES_DIR/no_results_qr.pdf" # → Custom_Files (Wero No Results flag matrix)
 
 # ── Test selection ─────────────────────────────────────────────────────────────
 ONLY_TESTING='[
@@ -52,7 +56,9 @@ ONLY_TESTING='[
   "GiniBankSDKExampleUITests/GiniErrorScreenUITests",
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
-  "GiniBankSDKExampleUITests/GiniReviewScreenUITests"
+  "GiniBankSDKExampleUITests/GiniReviewScreenUITests",
+  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOnUITests",
+  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOffUITests"
 ]'
 SINGLE_RUNNER="true"
 if [ -n "${BS_TEST:-}" ]; then
@@ -66,8 +72,9 @@ bs_build
 
 # ── Upload media ───────────────────────────────────────────────────────────────
 echo "Uploading media files..."
-upload_media TEST_IMAGE_PNG_URL "$TEST_IMAGE_PNG_FILE" "TestImage"    "test_image.png (Photos gallery)"
-upload_media TEST_IMAGE_PDF_URL "$TEST_IMAGE_PDF_FILE" "TestImagePDF" "test_image.pdf (Custom_Files)"
+upload_media TEST_IMAGE_PNG_URL    "$TEST_IMAGE_PNG_FILE"    "TestImage"      "test_image.png (Photos gallery)"
+upload_media TEST_IMAGE_PDF_URL    "$TEST_IMAGE_PDF_FILE"    "TestImagePDF"   "test_image.pdf (Custom_Files)"
+upload_media NO_RESULTS_QR_PDF_URL "$NO_RESULTS_QR_PDF_FILE" "NoResultsQRPDF" "no_results_qr.pdf (Custom_Files — Wero No Results)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -94,7 +101,7 @@ BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
     \"timeout\": 7200,
     \"singleRunnerInvocation\": \"$SINGLE_RUNNER\",
     $LANGUAGE_FIELD
-    \"uploadMedia\": [\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\"],
+    \"uploadMedia\": [\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\", \"$NO_RESULTS_QR_PDF_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"

@@ -68,6 +68,7 @@ upload_media PP_CAMERA_URL        "$SAMPLES_DIR/Photopayment_Invoice1.png"      
 upload_media CX_GALLERY_URL       "$SAMPLES_DIR/cx_invoice.png"                  "CXGalleryImage"          "cx_invoice.png (gallery)"
 upload_media CX_PDF_URL           "$SAMPLES_DIR/cx_invoice.pdf"                  "CXInvoicePDF"            "cx_invoice.pdf (Custom_Files)"
 upload_media NO_RESULTS_URL    "$SAMPLES_DIR/no_results_invoice.pdf"       "NoResultsInvoice"      "no_results_invoice.pdf (Custom_Files)"
+upload_media NO_RESULTS_QR_URL "$SAMPLES_DIR/no_results_qr.pdf"            "NoResultsQR"           "no_results_qr.pdf (Custom_Files — Wero No Results)"
 # Multipage media parked with the all_cx_multipage scenario (see below):
 # upload_media CX_MULTI_PDF_URL     "$SAMPLES_DIR/cx_invoice_multi_page.pdf"       "CXMultiPageInvoicePDF"   "cx_invoice_multi_page.pdf (Custom_Files)"
 # upload_media CX_PAGE1_URL         "$SAMPLES_DIR/multi_page_invoice_CX_page1.png" "CXMultiPageInvoicePage1" "multi_page_invoice_CX_page1.png (gallery, first)"
@@ -295,8 +296,10 @@ trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniErrorScreenUITests",
   "GiniBankSDKExampleUITests/GiniCaptureScreenUITests",
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
-  "GiniBankSDKExampleUITests/GiniReviewScreenUITests"
-]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\"]"
+  "GiniBankSDKExampleUITests/GiniReviewScreenUITests",
+  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOnUITests",
+  "GiniBankSDKExampleUITests/GiniWeroNoResultsFlagOffUITests"
+]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\", \"$NO_RESULTS_QR_URL\"]"
 
 trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
