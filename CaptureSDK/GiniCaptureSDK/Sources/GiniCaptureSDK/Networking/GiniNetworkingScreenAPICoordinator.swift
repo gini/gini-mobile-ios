@@ -216,11 +216,9 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     /**
      True when `pages` holds a Wero-candidate QR (`qrCodeFormat == nil`), the
      flag is on, and `extractionResult` carries no `weroPaymentQRCodeUrl`.
-     Pure of coordinator state so both the CaptureSDK and BankSDK networking
-     coordinators can share the gate without duplicating the logic.
      */
-    public static func shouldRouteBackToCameraForWeroFallback(pages: [GiniCapturePage],
-                                                              extractionResult: ExtractionResult) -> Bool {
+    static func shouldRouteBackToCameraForWeroFallback(pages: [GiniCapturePage],
+                                                       extractionResult: ExtractionResult) -> Bool {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
         guard weroEnabled else { return false }
         let weroCandidateInPages = pages.contains(where: { page in
