@@ -46,7 +46,7 @@ import GiniUtilites
 
         return try? JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
     }()
-    let scannedString: String
+    fileprivate let scannedString: String
 
     /**
      The raw payload read from the QR code, as scanned.
