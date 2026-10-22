@@ -37,6 +37,15 @@ enum TestFixtures {
         static let noResultsInvoice = "no_results_invoice"
 
         /**
+         QR code (non-payment URL payload) that the on-device detector recognises
+         as a QR but no payment format matches. Combined with the mock backend's
+         `noResults` scenario, drives the No Results screen in its QR flavour
+         (`pages.type == .qrcode`) — used to verify the Wero row on the
+         supported-formats list.
+         */
+        static let noResultsQR = "no_results_qr"
+
+        /**
          Multi-page CX invoice PDF.
          */
         static let cxMultiPageInvoicePDF = "cx_invoice_multi_page"

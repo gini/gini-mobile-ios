@@ -66,6 +66,14 @@ enum UITestMockScenario: String {
     case analysisError
 
     /**
+     Analysis succeeds with empty extractions — drives the No Results screen
+     when combined with a document the import pipeline recognises (image, PDF,
+     or QR). Used to verify the QR-flavoured No Results screen without relying
+     on real backend classification.
+     */
+    case noResults
+
+    /**
      The canned outcome delivered by `analyse`.
      */
     var analysisOutcome: Result<ExtractionResult, GiniError> {
@@ -76,6 +84,8 @@ enum UITestMockScenario: String {
             return .success(UITestMockBackend.extractionResult(withBusinessDocType: nil))
         case .analysisError:
             return .failure(.noResponse)
+        case .noResults:
+            return .success(ExtractionResult(extractions: [], lineItems: [], candidates: [:]))
         }
     }
 }
