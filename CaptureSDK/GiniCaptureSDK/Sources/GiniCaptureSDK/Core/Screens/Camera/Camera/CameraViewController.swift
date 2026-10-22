@@ -568,7 +568,7 @@ final class CameraViewController: UIViewController {
     /**
      Shows the camera's standard "unsupported QR code" feedback.
      */
-    public func showUnsupportedQRCodeFeedback() {
+    func showUnsupportedQRCodeFeedback() {
         qrCodeOverLay.hideAnimation()
         qrCodeOverLay.isHidden = true
         /// Restore the guide hidden by `resetQRCodeScanning(isValid: true)`.

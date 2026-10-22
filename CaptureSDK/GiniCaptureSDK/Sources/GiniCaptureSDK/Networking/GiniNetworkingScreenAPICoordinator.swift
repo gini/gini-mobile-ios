@@ -132,8 +132,8 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
      Wero flag is on, the backend tagged the payload as Wero, and a scanned
      payload is available. Returns `result` unchanged otherwise.
      */
-    public static func mapWeroExtractions(_ result: ExtractionResult,
-                                          scannedPayload: String?) -> ExtractionResult {
+    static func mapWeroExtractions(_ result: ExtractionResult,
+                                   scannedPayload: String?) -> ExtractionResult {
         let weroEnabled = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false
         guard weroEnabled,
               result.extractions.contains(where: isWeroPaymentQRCodeTypeExtraction),

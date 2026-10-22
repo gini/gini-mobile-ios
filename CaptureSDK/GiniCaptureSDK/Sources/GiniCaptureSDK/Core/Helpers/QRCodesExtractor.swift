@@ -74,12 +74,12 @@ public final class QRCodesExtractor {
     /**
      Backend extraction key carrying the QR classification label.
      */
-    public static let paymentQRCodeTypeKey = "paymentQRCodeType"
+    static let paymentQRCodeTypeKey = "paymentQRCodeType"
 
     /**
      `paymentQRCodeType` value that marks a Wero-classified payload.
      */
-    public static let weroPaymentQRCodeTypeValue = "wero"
+    static let weroPaymentQRCodeTypeValue = "wero"
 
     static func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
