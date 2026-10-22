@@ -30,7 +30,7 @@ struct HelpFormatsDataSourceWeroTests {
     ]
 
     @Test("Flag ON appends Wero at slot 11 after HUB3 (R1)")
-    func weroFlagOn_qrCodeSection_appendsWeroAtSlot11() {
+    func weroFlagOnQRCodeSectionAppendsWeroAtSlot11() {
         GiniCaptureTestsHelper.withWeroFlag(true) {
             let dataSource = HelpFormatsDataSource(isQRCodeContent: true)
             let formats = dataSource.qrCodeItemSections[0].formats
@@ -43,7 +43,7 @@ struct HelpFormatsDataSourceWeroTests {
     }
 
     @Test("Flag OFF yields the original 10-item list (R2)")
-    func weroFlagOff_qrCodeSection_isTenItemsNoWero() {
+    func weroFlagOffQRCodeSectionIsTenItemsNoWero() {
         GiniCaptureTestsHelper.withWeroFlag(false) {
             let dataSource = HelpFormatsDataSource(isQRCodeContent: true)
             let formats = dataSource.qrCodeItemSections[0].formats
@@ -55,7 +55,7 @@ struct HelpFormatsDataSourceWeroTests {
     }
 
     @Test("Flag missing (nil) yields the original 10-item list (R3)")
-    func weroFlagMissing_qrCodeSection_isTenItemsNoWero() {
+    func weroFlagMissingQRCodeSectionIsTenItemsNoWero() {
         GiniCaptureTestsHelper.withWeroFlag(nil) {
             let dataSource = HelpFormatsDataSource(isQRCodeContent: true)
             let formats = dataSource.qrCodeItemSections[0].formats
@@ -70,7 +70,7 @@ struct HelpFormatsDataSourceWeroTests {
         "pdfItemSections unchanged under every flag value (R4)",
         arguments: [nil, false, true] as [Bool?]
     )
-    func pdfItemSections_unchanged_underEveryFlagValue(flag: Bool?) {
+    func pdfItemSectionsUnchangedUnderEveryFlagValue(flag: Bool?) {
         var baselineSectionCount = 0
         var baselineRowCounts: [Int] = []
         var baselineFormats: [[String]] = []
@@ -93,13 +93,13 @@ struct HelpFormatsDataSourceWeroTests {
     }
 
     @Test("Wero localization key resolves to \"Wero QR code\" (R6)")
-    func weroStringKey_resolves() {
+    func weroStringKeyResolves() {
         #expect(Self.weroString == "Wero QR code")
     }
 
     @Test("Slot-11 row renders the Wero string with supportedFormats icon (R5)")
     @MainActor
-    func weroRow_rendersSupportedFormatsIcon_andText() throws {
+    func weroRowRendersSupportedFormatsIconAndText() throws {
         try GiniCaptureTestsHelper.withWeroFlag(true) {
             let dataSource = HelpFormatsDataSource(isQRCodeContent: true)
             let tableView = UITableView(frame: .zero, style: .insetGrouped)
