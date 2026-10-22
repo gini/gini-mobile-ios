@@ -28,17 +28,8 @@ class NoResultsScreen {
      */
     let enterManuallyButton: XCUIElement
 
-    /**
-     Supported-formats row for "Wero QR code". Only present when
-     `weroQRCodeScanningEnabled` is on. The string is identical in EN and DE
-     (brand label), so the predicate is locale-independent.
-     */
-    let weroFormatCell: XCUIElement
-
     init(app: XCUIApplication, locale: String) {
         self.app = app
-        weroFormatCell = app.cells.containing(
-            NSPredicate(format: "label == %@", "Wero QR code")).firstMatch
 
         switch locale {
         case "en":

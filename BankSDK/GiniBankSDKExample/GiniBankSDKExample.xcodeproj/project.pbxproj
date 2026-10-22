@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		19A6B4825E12CEB0ECF9F97A /* no_results_qr.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 169E9868D478117463A0B870 /* no_results_qr.pdf */; };
 		28004ED62E4CC5D600B89DAC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED52E4CC5D600B89DAC /* FirebaseCrashlytics */; };
 		28004ED82E4CC5D600B89DAC /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 28004ED72E4CC5D600B89DAC /* FirebasePerformance */; };
 		280427BA2E705D0F000D658A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 280427B92E705D0F000D658A /* FirebaseCrashlytics */; };
@@ -203,10 +202,8 @@
 		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
 		84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */; };
 		84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */; };
-		8985D9FF2896373ED50165CF /* no_results_qr.png in Resources */ = {isa = PBXBuildFile; fileRef = AD9662761EE539F4E415973A /* no_results_qr.png */; };
 		A1B5BA952F8FAD540060D899 /* GiniCXOnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */; };
 		AA0000012C00000000000001 /* ExtractionResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000002C00000000000001 /* ExtractionResultCell.swift */; };
-		C193BBC4E494F90874F8ACC3 /* GiniWeroNoResultsFlagOffUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F773D2BACCA296F1E00045AE /* GiniWeroNoResultsFlagOffUITests.swift */; };
 		CE000000000000010000001A /* CreditNoteWarningScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE000000000000020000001A /* CreditNoteWarningScreen.swift */; };
 		CE000000000000030000001A /* GiniCreditNoteScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE000000000000040000001A /* GiniCreditNoteScreenUITests.swift */; };
 		CE000000000000050000001A /* UITestMockBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE000000000000060000001A /* UITestMockBackend.swift */; };
@@ -340,7 +337,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		169E9868D478117463A0B870 /* no_results_qr.pdf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.pdf; path = no_results_qr.pdf; sourceTree = "<group>"; };
 		281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_instant_payment_remslips.json; sourceTree = "<group>"; };
 		281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_instant_payment_remslips_after_feedback.json; sourceTree = "<group>"; };
 		281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_instant_payment_remslips.pdf; sourceTree = "<group>"; };
@@ -521,7 +517,6 @@
 		88FE9E39066C8394CF485D66 /* ExampleHTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExampleHTTPClient.swift; sourceTree = "<group>"; };
 		A1B5BA942F8FAD540060D899 /* GiniCXOnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCXOnboardingUITests.swift; sourceTree = "<group>"; };
 		AA0000002C00000000000001 /* ExtractionResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultCell.swift; sourceTree = "<group>"; };
-		AD9662761EE539F4E415973A /* no_results_qr.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = no_results_qr.png; sourceTree = "<group>"; };
 		CE000000000000020000001A /* CreditNoteWarningScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditNoteWarningScreen.swift; sourceTree = "<group>"; };
 		CE000000000000040000001A /* GiniCreditNoteScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCreditNoteScreenUITests.swift; sourceTree = "<group>"; };
 		CE000000000000060000001A /* UITestMockBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestMockBackend.swift; sourceTree = "<group>"; };
@@ -592,7 +587,6 @@
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F4F9AA2C29E99CB1001C69A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F773D2BACCA296F1E00045AE /* GiniWeroNoResultsFlagOffUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GiniWeroNoResultsFlagOffUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -923,8 +917,6 @@
 				28C0330200000000000000B3 /* invoice_future_due.pdf */,
 				28C0330200000000000000B4 /* invoice_no_due_date.pdf */,
 				28C0330200000000000000B5 /* invoice_future_due.jpeg */,
-				169E9868D478117463A0B870 /* no_results_qr.pdf */,
-				AD9662761EE539F4E415973A /* no_results_qr.png */,
 			);
 			path = TestSamplesForBS;
 			sourceTree = "<group>";
@@ -1137,14 +1129,6 @@
 			path = Strings;
 			sourceTree = "<group>";
 		};
-		54D74A60AC82E7A138DAF8B1 /* Wero */ = {
-			isa = PBXGroup;
-			children = (
-				F773D2BACCA296F1E00045AE /* GiniWeroNoResultsFlagOffUITests.swift */,
-			);
-			path = Wero;
-			sourceTree = "<group>";
-		};
 		5DCC9FA32C779BC000C1B76A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1195,7 +1179,6 @@
 				28DAF48C2CD293140035A1FF /* Screens */,
 				28D35CA82F83D81B000339B4 /* Frameworks */,
 				28D35CB32F83D933000339B4 /* TestSamples */,
-				54D74A60AC82E7A138DAF8B1 /* Wero */,
 			);
 			path = GiniBankSDKExampleUITests;
 			sourceTree = "<group>";
@@ -1684,8 +1667,6 @@
 				28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */,
 				28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */,
 				28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */,
-				19A6B4825E12CEB0ECF9F97A /* no_results_qr.pdf in Resources */,
-				8985D9FF2896373ED50165CF /* no_results_qr.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1981,7 +1962,6 @@
 				CX000001000000070000001A /* GiniCXNoResultsUITests.swift in Sources */,
 				CX000001000000080000001A /* GiniCXErrorScreenUITests.swift in Sources */,
 				CX000001000000090000001A /* GiniCXMultiPageUITests.swift in Sources */,
-				C193BBC4E494F90874F8ACC3 /* GiniWeroNoResultsFlagOffUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
