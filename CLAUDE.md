@@ -258,10 +258,10 @@ Generates manual test cases from a Jira ticket, local spec file, or pasted text,
 
 ### `/update-figma-links`
 
-Migrates the Figma design links on the iOS Gini Bank SDK "Figma Links in public documentation" Confluence page from one SDK version's UI-customisation guide to a newer one (e.g. 4.3 → 4.4). Verifies each node-id resolves to the correct screen, standardises links to live embed previews, and writes back safely with a post-write diff.
+Migrates the Figma design links on the Gini Bank SDK "Figma Links in public documentation" Confluence page (iOS and Android) to a new SDK version's UI-customisation guide, then updates the `.fig` download on the "UI Customisation Guides" page. It is not part of this repository any more: it lives in the shared `explat-skills` plugin ([gini/explat-claude-skills](https://github.com/gini/explat-claude-skills)).
 
-- **Skill prompt:** `.claude/skills/update-figma-links/SKILL.md`
-- **Helper script:** `.claude/skills/update-figma-links/transform_links.py`
+- **Install:** `/plugin marketplace add gini/explat-claude-skills`, then `/plugin install explat-skills@explat-claude-skills`
+- **Usage (iOS):** `/update-figma-links https://www.figma.com/design/<NEW_KEY>/iOS-Gini-Bank-SDK-<version>-UI-Customisation`
 
 ### `/gini-doc`
 

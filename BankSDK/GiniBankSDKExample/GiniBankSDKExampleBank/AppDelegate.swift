@@ -2,33 +2,25 @@
 //  AppDelegate.swift
 //  Bank
 //
-//  Created by Nadya Karaban on 30.04.21.
+//  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
 import GiniBankAPILibrary
 import GiniBankSDK
 import UIKit
-@UIApplicationMain
+
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
     var paymentRequestId: String = ""
     let apiLib = GiniBankAPI.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let paymentViewController = PaymentViewController.instantiate(with: apiLib)
-
-        let navigationController = UINavigationController(rootViewController: paymentViewController)
-        window?.rootViewController = navigationController
-
-        window?.makeKeyAndVisible()
+        // Window and root view controller setup live in SceneDelegate.scene(_:willConnectTo:options:).
         return true
     }
-    
-    func application(_ app: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+
+    func handle(url: URL) {
         receivePaymentRequestId(url: url) { result in
             switch result {
             case let .success(requestId):
@@ -37,6 +29,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 break
             }
         }
-        return true
     }
 }
