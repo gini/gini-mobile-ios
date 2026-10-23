@@ -125,7 +125,11 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cbom
-          path: cbom.cdx.json
+          # The events file rides along: it is produced in this job, where the checkout
+          # exists to read the commit time from.
+          path: |
+            cbom.cdx.json
+            cbom-events.ndjson
           retention-days: 1
 
   upload:
@@ -160,3 +164,13 @@ jobs:
           REPO="${GH_REPO##*/}"
           aws s3 cp cbom.cdx.json "s3://${BUCKET}/${REPO}/${SHA}/cbom.cdx.json"
           aws s3 cp cbom.cdx.json "s3://${BUCKET}/${REPO}/latest/cbom.cdx.json"
+          # Panther reads cbom-events/ and nothing else in this bucket: `latest` is
+          # mutable and would re-ingest the same commit on every later push.
+          if [ -s cbom-events.ndjson ]; then
+            aws s3 cp cbom-events.ndjson "s3://${BUCKET}/cbom-events/${REPO}/${SHA}.ndjson"
+          else
+            # Never silent: no events means no evidence for this commit, and the gap is
+            # invisible in Panther precisely because nothing arrives. Expected on public
+            # repos, which cannot resolve the private action that flattens the document.
+            echo "::warning::no Panther events produced; this commit will be absent from the crypto timeline"
+          fi
