@@ -9,8 +9,27 @@
 import XCTest
 @testable import GiniCaptureSDK
 final class GiniQRCodeDocumentTests: XCTestCase {
-    
+
     let giniConfiguration: GiniConfiguration = GiniConfiguration()
+
+    /// The three "unknown payload passes validation" cases below rely on the
+    /// Wero feature flag being on. Seed the storage so the validator's
+    /// `.none` branch takes the Wero-enabled path. Reset in `tearDown` so
+    /// other suites in this target start from a clean slate.
+    private var originalWeroFlag: Bool?
+
+    override func setUp() {
+        super.setUp()
+        GiniCaptureTestsHelper.acquireFlagLock()
+        originalWeroFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+    }
+
+    override func tearDown() {
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = originalWeroFlag
+        GiniCaptureTestsHelper.releaseFlagLock()
+        super.tearDown()
+    }
     
     func testBezahlQRCodeExtractions() {
         let qrDocument = GiniQRCodeDocument(scannedString:
@@ -71,6 +90,11 @@ final class GiniQRCodeDocumentTests: XCTestCase {
     }
     
     func testNotValidQRCodeFormat() {
+        /// `"invalidQRCodeFormat"` passes the PayBySquare base32hex heuristic in
+        /// `GiniQRCodeDocument`, so `qrCodeFormat` resolves to `.payBySquare`.
+        /// That takes it through strict-IBAN validation, which still throws
+        /// `qrCodeFormatNotValid` — the Wero gate (`.none` branch) is not
+        /// reached, so this behaviour is unaffected by the Wero flag.
         let qrDocument = GiniQRCodeDocument(scannedString: "invalidQRCodeFormat")
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                       withConfig: giniConfiguration)) { error in
@@ -78,21 +102,29 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                           "validation should throw a DocumentaValidationError")
         }
     }
-    
+
     func testNotValidEPC06912QRCodeFormat() {
+        /// Malformed EPC06912 (bad version marker in line 1) → `qrCodeFormat` is
+        /// `nil` → treated as "unknown payload" by the Wero gate (seeded ON in
+        /// `setUp`), so validation passes and the networking layer uploads it.
         let scannedString = "1\n003\n3\nSCT\n5\n6\n7\n8\n9\n10\n11"
         let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
-        XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
-                                                                      withConfig: giniConfiguration),
-                             "validation should throw a DocumentaValidationError")
+        XCTAssertNil(qrDocument.qrCodeFormat, "Unrecognised EPC-ish payload keeps qrCodeFormat == nil")
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "Wero flag ON lets malformed EPC payloads through validation")
     }
-    
+
     func testGiroCodeQRWithInvalidIBAN(){
+        /// EPC06912 whose IBAN at line 6 fails the check-digit test — `qrCodeFormat`
+        /// returns `nil`, so the Wero gate (seeded ON in `setUp`) lets the payload
+        /// through for backend classification.
         let scannedString = "BCD\n001\n1\nSCT\n\nMister Smith\nDE0212030000000020251\nEUR30\n\n\nTest"
         let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
-        XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
-                                                                      withConfig: giniConfiguration),
-                             "validation should throw a DocumentaValidationError")
+        XCTAssertNil(qrDocument.qrCodeFormat, "EPC with invalid IBAN keeps qrCodeFormat == nil")
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "Wero flag ON lets EPC-with-invalid-IBAN through validation")
     }
     
     func testValidStuzzaQR(){
@@ -151,18 +183,17 @@ final class GiniQRCodeDocumentTests: XCTestCase {
     }
 
     func testEPC06912QRCodeMissingIBANDoesNotCrash() {
-        // Malformed EPC QR code: starts with BCD but IBAN field (index 6) is absent
-        // Reproduces PP-2591: "AUTOHAUS MARTIN WURST GMBH" case where QR code stops at beneficiary name
+        /// Malformed EPC QR code: starts with BCD but the IBAN field (index 6) is
+        /// absent. The anti-crash guarantee is the point of this test; with the
+        /// Wero flag seeded ON in `setUp` the validator additionally lets such
+        /// payloads through so the backend can classify them.
         let scannedString = "BCD\r\n001\r\n2\r\nSCT\r\nGENODES1NUE\r\nAUTOHAUS MARTIN WURST GMBH"
         let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
-        XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
-                                                                      withConfig: giniConfiguration),
-                             "should throw a validation error for EPC QR code missing IBAN") { error in
-            XCTAssertTrue(error as? DocumentValidationError == DocumentValidationError.qrCodeFormatNotValid,
-                          "should throw qrCodeFormatNotValid")
-        }
         XCTAssertNil(qrDocument.qrCodeFormat,
                      "qrCodeFormat should be nil for EPC QR code missing IBAN")
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "Wero flag ON lets EPC-missing-IBAN through validation")
     }
 
     // MARK: - unpackByteModePayload regression tests
@@ -494,6 +525,18 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         let image = UIImage(qrData: data)
         XCTAssertNotNil(image, "QR code image must be generated for non-empty payload data")
         XCTAssertNotNil(image?.cgImage, "returned UIImage must be bitmap-backed (non-nil .cgImage)")
+    }
+
+    // MARK: - scannedPayload
+
+    func testScannedPayloadReturnsRawInput() {
+        /// `scannedPayload` is the raw payload read from the QR, surfaced so the
+        /// networking layer can forward it as the Wero fallback URL. It must round-trip
+        /// the init string verbatim (apart from the defensive null-byte strip in init).
+        let payload = "https://pay.weropay.eu/pay/v1/token=abc123"
+        let qrDocument = GiniQRCodeDocument(scannedString: payload)
+        XCTAssertEqual(qrDocument.scannedPayload, payload,
+                       "scannedPayload must mirror the scanned string")
     }
 
     // MARK: - GiniTrackingPermissionManager
