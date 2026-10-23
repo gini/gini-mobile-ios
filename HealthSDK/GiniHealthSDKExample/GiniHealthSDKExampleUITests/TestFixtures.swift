@@ -27,12 +27,6 @@ enum TestFixtures {
         static let medInvoice = "testMedInvoice"
 
         /**
-         PDF carrying two embedded invoice blocks in a single document.
-         Reserved for tests that need multiple invoices per file.
-         */
-        static let multiInvoice = "multi-invoice"
-
-        /**
          Two-page invoice PDF — produces N > 1 preview images so the
          `GiniCarouselView` page dots actually render.
          */
