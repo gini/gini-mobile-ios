@@ -135,6 +135,26 @@ jobs:
           INPUT_GROUPS: testers
           INPUT_RELEASENOTESFILE: release_notes.txt
 
+      - name: Prepare Jira comment body
+        id: jira_comment
+        env:
+          TESTING_URI: ${{ steps.distribute.outputs.TESTING_URI }}
+          FIREBASE_CONSOLE_URI: ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
+        run: |
+          {
+            cat release_notes.txt
+            echo ""
+            echo "[Install on device|${TESTING_URI}]  ·  [Firebase console|${FIREBASE_CONSOLE_URI}]"
+          } > jira_comment.txt
+          {
+            echo "body<<EOF_JIRA_COMMENT"
+            cat jira_comment.txt
+            echo "EOF_JIRA_COMMENT"
+          } >> "$GITHUB_OUTPUT"
+          echo "----- jira comment preview -----"
+          cat jira_comment.txt
+          echo "--------------------------------"
+
       - name: Extract Jira ticket
         id: extract_jira_ticket
         run: |
@@ -183,4 +203,4 @@ jobs:
         uses: atlassian/gajira-comment@76589d6b6d0b94b1ca6b01171c01a6affb5d6701 # v3.0.0
         with:
           issue: ${{ env.JIRA_TICKET_NAME }}
-          comment: Build bank example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }} and app tester build can be downloaded from here ${{ steps.distribute.outputs.TESTING_URI }}
+          comment: ${{ steps.jira_comment.outputs.body }}
