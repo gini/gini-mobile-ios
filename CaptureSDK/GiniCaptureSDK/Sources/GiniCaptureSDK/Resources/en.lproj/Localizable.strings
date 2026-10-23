@@ -156,6 +156,7 @@
 "ginicapture.help.supportedFormats.qrcode.item.8" = "Pay by Square (SK)";
 "ginicapture.help.supportedFormats.qrcode.item.9" = "UPN QR (SI)";
 "ginicapture.help.supportedFormats.qrcode.item.10" = "HUB3 (HR)";
+"ginicapture.help.supportedFormats.qrcode.item.11" = "Wero QR code";
 
 "ginicapture.help.menu.title" = "Help";
 "ginicapture.help.menu.tips" = "Tips for best results from photos";
