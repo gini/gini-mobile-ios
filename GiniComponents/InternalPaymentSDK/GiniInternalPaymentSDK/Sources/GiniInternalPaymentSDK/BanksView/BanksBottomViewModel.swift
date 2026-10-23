@@ -100,7 +100,7 @@ public final class BanksBottomViewModel {
             .store(in: &cancellables)
     }
 
-    /// Wraps raw providers, filters iOS-supported, dedupes, sorts installed-first, notifies the view.
+    /** Wraps raw providers, filters iOS-supported, dedupes, sorts installed-first, notifies the view. */
     private func applyPaymentProviders(_ raw: PaymentProviders) {
         self.paymentProviders = raw
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,

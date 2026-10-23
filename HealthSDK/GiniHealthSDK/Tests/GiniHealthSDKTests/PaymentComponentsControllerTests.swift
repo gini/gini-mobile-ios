@@ -239,14 +239,14 @@ final class PaymentComponentsControllerTests: XCTestCase {
                        "A provider with iOS listed only in openWithSupportedPlatforms must still pass the filter")
     }
 
-    func testSortPaymentProvidersBranchesOnSchemeOpenability() {
+    func testSortPaymentProvidersBranchesOnSchemeOpenability() throws {
         // Discover a scheme that this simulator's UIApplication actually reports as openable,
         // so the branch where the two providers' canOpenURLString() values differ is reached
         // deterministically. If no such scheme exists in this environment, skip the assertion
         // — the sort pipeline is already exercised by the ordering tests above.
         let candidates = ["http://example.com", "https://example.com", "mailto://a@b"]
         guard let openScheme = candidates.first(where: { ($0 as NSString).length > 0 && URL(string: $0).flatMap { UIApplication.shared.canOpenURL($0) } == true }) else {
-            return
+            throw XCTSkip("No URL scheme openable in this simulator — sort-pipeline ordering is already exercised by other tests.")
         }
 
         let openable = makeHealthProvider(id: "openable",

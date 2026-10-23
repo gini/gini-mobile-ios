@@ -99,7 +99,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         paymentProvidersSubject.eraseToAnyPublisher()
     }
 
-    /// Read-only accessor backed by the subject; writes go through `send(...)`.
+    /** Read-only accessor backed by the subject; writes go through `send(...)`. */
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders {
         paymentProvidersSubject.value
     }

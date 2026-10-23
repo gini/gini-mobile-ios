@@ -76,7 +76,7 @@ extension PaymentComponentsController {
         return nil
     }
     
-    /// Pure filter + sort pipeline. Returns the sorted list instead of mutating state.
+    /** Pure filter + sort pipeline. Returns the sorted list instead of mutating state. */
     static func sortPaymentProviders(_ providers: GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProviders {
         guard !providers.isEmpty else { return providers }
         return providers
@@ -137,12 +137,9 @@ extension PaymentComponentsController {
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
             paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
             clientConfiguration: configurationProvider.clientConfiguration,
-            selectedProviderResolver: { providers in
-                guard let data = UserDefaults.standard.data(forKey: PaymentComponentsController.Constants.kDefaultPaymentProvider),
-                      let saved = try? JSONDecoder().decode(GiniHealthSDK.PaymentProvider.self, from: data) else {
-                    return nil
-                }
-                return providers.first(where: { $0.id == saved.id })
+            selectedProviderResolver: { [weak self] providers in
+                guard let savedId = self?.savedPaymentProvider()?.id else { return nil }
+                return providers.first(where: { $0.id == savedId })
             }
         )
         paymentComponentViewModel.delegate = self
