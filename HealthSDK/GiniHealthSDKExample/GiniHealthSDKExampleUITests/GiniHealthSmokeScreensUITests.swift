@@ -246,6 +246,13 @@ final class GiniHealthSmokeScreensUITests: GiniHealthSDKExampleUITests {
                              "Pagination indicator reports \(pageCount) page(s) for multi-page PDF; expected ≥ 2. Raw value: '\(rawValue)'.")
     }
 
+    /**
+     Parses the total page count from an `XCUIElement.pageIndicator` a11y
+     value such as "page 1 of 3" (EN) or "Seite 1 von 3" (DE). Splits on
+     non-numeric characters and returns the trailing number — the total.
+     Returns `0` when no digits are present so callers can treat a lagging
+     a11y update as "not yet ready".
+     */
     private static func pageCount(fromIndicatorValue value: String) -> Int {
         let digits = value.split(whereSeparator: { !$0.isNumber })
         return digits.last.flatMap { Int($0) } ?? 0
