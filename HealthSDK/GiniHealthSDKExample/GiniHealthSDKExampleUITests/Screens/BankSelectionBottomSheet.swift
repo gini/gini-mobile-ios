@@ -34,8 +34,7 @@ final class BankSelectionBottomSheet {
      Returns the first available bank cell — any row whose identifier starts
      with `bankSelection.cell.`. Used by tests that only need to prove the
      flow landed in Payment Review and don't care which specific bank is
-     picked (e.g. HEAL-285 locally, where the client config may list a
-     different lineup than the HEAL-282 BrowserStack build).
+     picked.
      */
     var anyBankCell: XCUIElement {
         app.cells

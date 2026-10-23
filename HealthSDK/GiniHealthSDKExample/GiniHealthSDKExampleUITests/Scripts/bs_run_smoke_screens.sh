@@ -45,8 +45,9 @@ if [ -n "${BS_LANGUAGE:-}" ]; then
 fi
 
 # ── Media files ────────────────────────────────────────────────────────────────
-MED_INVOICE_PDF="$SAMPLES_DIR/testMedInvoice.pdf"  # → Custom_Files (most screen tests)
-MULTI_INVOICE_PDF="$SAMPLES_DIR/multi-invoice.pdf" # → Custom_Files (HEAL-294 pagination dots)
+MED_INVOICE_PDF="$SAMPLES_DIR/testMedInvoice.pdf"       # → Custom_Files (most screen tests)
+MULTI_INVOICE_PDF="$SAMPLES_DIR/multi-invoice.pdf"      # → Custom_Files (reserved: 2-invoice document)
+MULTI_PAGE_PDF="$SAMPLES_DIR/health_multi_page.pdf"     # → Custom_Files (HEAL-294 pagination dots)
 
 # ── Test selection ─────────────────────────────────────────────────────────────
 ONLY_TESTING='[
@@ -65,6 +66,7 @@ bs_build
 echo "Uploading media files..."
 upload_media MED_INVOICE_PDF_URL   "$MED_INVOICE_PDF"   "MedInvoicePDF"   "testMedInvoice.pdf (Custom_Files)"
 upload_media MULTI_INVOICE_PDF_URL "$MULTI_INVOICE_PDF" "MultiInvoicePDF" "multi-invoice.pdf (Custom_Files)"
+upload_media MULTI_PAGE_PDF_URL    "$MULTI_PAGE_PDF"    "MultiPagePDF"    "health_multi_page.pdf (Custom_Files)"
 
 # ── Upload app & test suite ────────────────────────────────────────────────────
 echo "Uploading app and test suite..."
@@ -91,7 +93,7 @@ BUILD_RESPONSE=$(bs_curl -u "$BS_USER:$BS_KEY" \
     \"timeout\": 7200,
     \"singleRunnerInvocation\": \"$SINGLE_RUNNER\",
     $LANGUAGE_FIELD
-    \"uploadMedia\": [\"$MED_INVOICE_PDF_URL\", \"$MULTI_INVOICE_PDF_URL\"],
+    \"uploadMedia\": [\"$MED_INVOICE_PDF_URL\", \"$MULTI_INVOICE_PDF_URL\", \"$MULTI_PAGE_PDF_URL\"],
     \"resignApp\": \"true\"
   }")
 echo "Build response: $BUILD_RESPONSE"

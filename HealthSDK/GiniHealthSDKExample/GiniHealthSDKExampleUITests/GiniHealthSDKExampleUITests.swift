@@ -122,6 +122,21 @@ extension XCUIElement {
         let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: self)
         return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
     }
+
+    /**
+     Focuses the field and deletes its current contents. Taps the field, then
+     taps near its trailing edge to place the cursor at text end (sidesteps
+     iOS 15–26 SwiftUI selection quirks), then sends backspaces equal to the
+     current value's length. Mirrors the proven BankSDK `clearInputField`
+     pattern.
+     */
+    func clearText() {
+        tap()
+        coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        let text = (value as? String) ?? ""
+        guard !text.isEmpty else { return }
+        typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count))
+    }
 }
 
 // MARK: - Shared payment-flow helpers
