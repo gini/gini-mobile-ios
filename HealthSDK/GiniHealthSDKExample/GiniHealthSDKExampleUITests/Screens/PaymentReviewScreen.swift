@@ -11,8 +11,9 @@ import XCTest
  SwiftUI Payment Review Screen (`PaymentReviewPaymentInformationView`).
 
  Fields are addressed by the accessibility identifiers set in
- `PaymentReviewPaymentInformationView.swift` — the IDs are stable across locales
- and survive future layout changes as long as the modifier stays on the field.
+ `PaymentReviewPaymentInformationView.swift` — the IDs are stable across
+ locales. The close button and prefilled-data banner have no upstream
+ identifier, so they are resolved per locale in init.
  */
 final class PaymentReviewScreen {
 
@@ -25,7 +26,22 @@ final class PaymentReviewScreen {
     let bankPickerButton: XCUIElement
     let payButton: XCUIElement
 
-    init(app: XCUIApplication) {
+    /**
+     Nav-bar close button on the Payment Review Screen. Resolved from
+     `gini.health.close.button.accessibility.label` (EN "Close",
+     DE "Schließen"; the DE informal variant uses the same string).
+     */
+    let closeButton: XCUIElement
+
+    /**
+     The extraction info banner ("Please check the pre-filled data.") shown
+     when fields were populated by the extraction pipeline. Resolved from
+     `gini.health.reviewscreen.infobar.message`; the DE formal and informal
+     variants differ, so DE matches both via `label IN %@`.
+     */
+    let prefilledBanner: XCUIElement
+
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         self.recipientField = app.textFields["paymentReview.recipient"]
         self.ibanField = app.textFields["paymentReview.iban"]
@@ -33,6 +49,23 @@ final class PaymentReviewScreen {
         self.referenceField = app.textFields["paymentReview.reference"]
         self.bankPickerButton = app.buttons["paymentReview.bankPicker"]
         self.payButton = app.buttons["paymentReview.payButton"]
+
+        switch locale {
+        case "de":
+            self.closeButton = app.buttons["Schließen"]
+            let bannerCandidates = ["Bitte überprüfen Sie die vorausgefüllten Felder",
+                                    "Bitte überprüfe die vorausgefüllten Felder"]
+            self.prefilledBanner = app.staticTexts
+                .matching(NSPredicate(format: "label IN %@", bannerCandidates))
+                .firstMatch
+        default:
+            // Fall back to EN for any locale other than DE — unsupported
+            // locales must not crash the test runner.
+            self.closeButton = app.buttons["Close"]
+            self.prefilledBanner = app.staticTexts
+                .matching(NSPredicate(format: "label CONTAINS[c] %@", "pre-filled data"))
+                .firstMatch
+        }
     }
 
     /**

@@ -32,6 +32,7 @@ class GiniHealthSDKExampleUITests: XCTestCase {
     var ordersListScreen: OrdersListScreen!
     var orderDetailsScreen: OrderDetailsScreen!
     var paymentComponentScreen: PaymentComponentScreen!
+    var paymentInfoScreen: PaymentInfoScreen!
 
     override func setUpWithError() throws {
         /// Tests that need BrowserStack-staged media (Photos gallery, Custom_Files)
@@ -48,13 +49,14 @@ class GiniHealthSDKExampleUITests: XCTestCase {
         app.launch()
         let locale = Locale.current.language.languageCode?.identifier ?? "en"
         mainScreen = MainScreen(app: app)
-        paymentReviewScreen = PaymentReviewScreen(app: app)
+        paymentReviewScreen = PaymentReviewScreen(app: app, locale: locale)
         bankSelectionBottomSheet = BankSelectionBottomSheet(app: app)
         captureImportFlow = CaptureImportFlow(app: app, locale: locale)
         invoicesListScreen = InvoicesListScreen(app: app)
         ordersListScreen = OrdersListScreen(app: app)
         orderDetailsScreen = OrderDetailsScreen(app: app)
         paymentComponentScreen = PaymentComponentScreen(app: app)
+        paymentInfoScreen = PaymentInfoScreen(app: app, locale: locale)
     }
 
     override func tearDownWithError() throws {
@@ -119,5 +121,112 @@ extension XCUIElement {
         let gonePredicate = NSPredicate(format: "exists == false")
         let expectation = XCTNSPredicateExpectation(predicate: gonePredicate, object: self)
         return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
+    }
+
+    /**
+     Focuses the field and deletes its current contents. Taps the field, then
+     taps near its trailing edge to place the cursor at text end (sidesteps
+     iOS 15–26 SwiftUI selection quirks), then sends backspaces equal to the
+     current value's length. Mirrors the proven BankSDK `clearInputField`
+     pattern.
+     */
+    func clearText() {
+        tap()
+        coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        let text = (value as? String) ?? ""
+        guard !text.isEmpty else { return }
+        typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count))
+    }
+}
+
+// MARK: - Shared payment-flow helpers
+
+extension GiniHealthSDKExampleUITests {
+
+    /**
+     Drives the modal Payment Component sheet all the way to the Payment
+     Review Screen when it appears: taps Select-bank, picks any available bank,
+     then taps Continue to overview (with the coordinate-tap fallback for the
+     iOS 26 safe-area quirk).
+
+     Two post-TransferDirectly paths exist:
+     1. **Payment Component sheet** — first-time flow with no bank selected.
+        Drive Select-bank → bank cell → Continue to overview.
+     2. **Direct to Payment Review Screen** — a bank was previously selected
+        (persisted across launches in the same runner session, or auto-chosen
+        by extraction) and the Payment Component intermediate is skipped.
+
+     Both paths are raced for up to ~60 s. If the Payment Review Screen opened
+     directly, this returns immediately with nothing to drive; the caller still
+     runs `assertPaymentReviewReachedWithPopulatedFields` to verify fields.
+     */
+    func drivePaymentFlowThroughBankSelectionToPaymentReview() {
+        let selectBank = paymentComponentScreen.selectBankButton
+        let ibanField = paymentReviewScreen.ibanField
+        let deadline = Date().addingTimeInterval(60)
+        while Date() < deadline {
+            if ibanField.exists { return }
+            if selectBank.exists { break }
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+        XCTAssertTrue(selectBank.exists,
+                      "Neither Payment Component bottom sheet nor Payment Review Screen appeared after Transfer directly.")
+        selectBank.tap()
+        XCTAssertTrue(bankSelectionBottomSheet.waitForProviders(),
+                      "No bank cells found in the Bank Selection sheet after 30 s — Select-bank tap may not have opened the sheet, or client config returned no payment providers.")
+        bankSelectionBottomSheet.anyBankCell.tap()
+        XCTAssertTrue(paymentComponentScreen.continueToOverviewButton.waitForExistence(timeout: 10),
+                      "Continue to overview button did not appear on the Payment Component after bank selection.")
+        paymentComponentScreen.tapContinueToOverview()
+    }
+
+    /**
+     Asserts the Payment Review Screen reached, all four payment fields
+     (IBAN, Recipient, Amount, Reference) carry non-empty extracted
+     values, and the Pay button is reachable (handoff setup is complete).
+
+     Each field value is **polled** rather than read once because the SwiftUI
+     `TextField`s render immediately with their binding target
+     (`viewModel.<field>InputState.text`) still empty — the viewModel's async
+     load happens shortly after. 15 s per field is well over the typical load
+     (<2 s) and still fails fast if the extraction model never arrived.
+     */
+    func assertPaymentReviewReachedWithPopulatedFields() {
+        XCTAssertTrue(paymentReviewScreen.ibanField.waitForExistence(timeout: 30),
+                      "Payment Review Screen did not appear after Continue to overview.")
+        for field in [paymentReviewScreen.ibanField,
+                      paymentReviewScreen.recipientField,
+                      paymentReviewScreen.amountField,
+                      paymentReviewScreen.referenceField] {
+            let deadline = Date().addingTimeInterval(15)
+            while Date() < deadline, paymentReviewScreen.value(of: field).isEmpty {
+                Thread.sleep(forTimeInterval: 0.3)
+            }
+            XCTAssertFalse(paymentReviewScreen.value(of: field).isEmpty,
+                           "Payment Review field \(field.identifier) still empty 15 s after screen appeared — extraction model may not have arrived.")
+        }
+        XCTAssertTrue(paymentReviewScreen.payButton.waitForExistence(timeout: 10),
+                      "Pay button not reachable after bank selection — handoff setup incomplete.")
+    }
+
+    /**
+     Convenience entry for screen tests: taps Invoices List on the main
+     screen, seeds the hardcoded invoices if the list is empty, taps the
+     first "Transfer directly" button, and drives through to the Payment
+     Review Screen using the adaptive helper.
+
+     On return, the Payment Review Screen is reached (ibanField exists) but
+     field values may still be settling — callers should poll via
+     `paymentReviewScreen.value(of:)` or call
+     `assertPaymentReviewReachedWithPopulatedFields` if they also need the
+     fields verified.
+     */
+    func reachPaymentReviewFromInvoicesList() {
+        XCTAssertTrue(mainScreen.invoicesListButton.waitForExistence(timeout: 10),
+                      "Main screen did not render — host app launch failed.")
+        mainScreen.invoicesListButton.tap()
+        invoicesListScreen.seedIfEmpty()
+        invoicesListScreen.transferDirectlyButton.tap()
+        drivePaymentFlowThroughBankSelectionToPaymentReview()
     }
 }

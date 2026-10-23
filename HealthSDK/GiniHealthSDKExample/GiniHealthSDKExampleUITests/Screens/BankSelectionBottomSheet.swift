@@ -34,12 +34,39 @@ final class BankSelectionBottomSheet {
      Returns the first available bank cell — any row whose identifier starts
      with `bankSelection.cell.`. Used by tests that only need to prove the
      flow landed in Payment Review and don't care which specific bank is
-     picked (e.g. HEAL-285 locally, where the client config may list a
-     different lineup than the HEAL-282 BrowserStack build).
+     picked.
      */
     var anyBankCell: XCUIElement {
         app.cells
             .matching(NSPredicate(format: "identifier BEGINSWITH %@", "bankSelection.cell."))
             .firstMatch
+    }
+
+    /**
+     Returns the first bank cell that is *not* currently marked selected
+     (i.e. its `.selected` accessibility trait is unset — see
+     `BankSelectionTableViewCell.updateCell(_:)`). Used by tests that must
+     actually flip the selection state to prove the picker wires the choice
+     back into the Payment Component — tapping the already-selected row
+     dismisses the sheet without exercising the selection pipeline.
+     */
+    var firstUnselectedBankCell: XCUIElement {
+        app.cells
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@ AND selected == NO", "bankSelection.cell."))
+            .firstMatch
+    }
+
+    /**
+     Call after tapping the sheet's trigger (Payment Component `selectBank`
+     or Payment Review `bankPicker`). Short settle lets the sheet attach;
+     30 s tolerates slow `paymentProviders` fetches on BrowserStack without
+     masking a genuine "no providers configured" failure.
+     */
+    @discardableResult
+    func waitForProviders(timeout: TimeInterval = 30, settle: TimeInterval = 1.0) -> Bool {
+        if settle > 0 {
+            Thread.sleep(forTimeInterval: settle)
+        }
+        return anyBankCell.waitForExistence(timeout: timeout)
     }
 }
