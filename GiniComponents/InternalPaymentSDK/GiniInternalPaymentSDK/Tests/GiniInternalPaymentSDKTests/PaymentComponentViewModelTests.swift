@@ -6,6 +6,7 @@
 //
 
 import Testing
+import Combine
 import UIKit
 import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -17,9 +18,12 @@ struct PaymentComponentViewModelTests {
     // MARK: - Helpers
 
     private func makeSUT(provider: PaymentProvider? = .fixture(),
+                         publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          paymentComponentConfiguration: PaymentComponentConfiguration? = nil,
-                         clientConfiguration: ClientConfiguration? = nil) -> PaymentComponentViewModel {
+                         clientConfiguration: ClientConfiguration? = nil,
+                         selectedProviderResolver: ((PaymentProviders) -> PaymentProvider?)? = nil) -> PaymentComponentViewModel {
         PaymentComponentViewModel(paymentProvider: provider,
+                                  paymentProvidersPublisher: publisher,
                                   primaryButtonConfiguration: .test,
                                   secondaryButtonConfiguration: .test,
                                   configuration: .test,
@@ -30,7 +34,116 @@ struct PaymentComponentViewModelTests {
                                   moreInformationStrings: .test,
                                   minimumButtonsHeight: 44,
                                   paymentComponentConfiguration: paymentComponentConfiguration,
-                                  clientConfiguration: clientConfiguration)
+                                  clientConfiguration: clientConfiguration,
+                                  selectedProviderResolver: selectedProviderResolver)
+    }
+
+    // MARK: - Reactive publisher subscription
+
+    @Test("Late publisher emission adopts the resolver's provider and fires the update closure", .timeLimit(.minutes(1)))
+    func lateEmissionAdoptsResolvedProvider() async {
+        let restored = PaymentProvider.fixture(id: "restored", name: "Restored Bank")
+        let subject = CurrentValueSubject<[PaymentProvider], Never>([])
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher(),
+                          selectedProviderResolver: { providers in
+                              providers.first(where: { $0.id == restored.id })
+                          })
+
+        // Drain the initial `[]` replay so the next fire is caused by the late send below.
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+        }
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([restored])
+        }
+
+        #expect(sut.hasBankSelected == true,
+                "hasBankSelected must flip to true once the resolver resolves a provider")
+        #expect(sut.bankName == "Restored Bank",
+                "bankName must reflect the resolved provider's name")
+        #expect(sut.paymentProviderColors != nil,
+                "paymentProviderColors must adopt the resolved provider's colors")
+    }
+
+    @Test("Publisher emission fires the update closure", .timeLimit(.minutes(1)))
+    func publisherEmissionFiresClosure() async {
+        // PassthroughSubject (no replay) so only the explicit send below can resume the continuation.
+        let subject = PassthroughSubject<[PaymentProvider], Never>()
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher())
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([.fixture()])
+        }
+    }
+
+    @Test("Resolver returning nil keeps bank state unchanged but still fires the update closure", .timeLimit(.minutes(1)))
+    func resolverReturningNilLeavesStateUnchanged() async {
+        let subject = PassthroughSubject<[PaymentProvider], Never>()
+        let sut = makeSUT(provider: nil,
+                          publisher: subject.eraseToAnyPublisher(),
+                          selectedProviderResolver: { _ in nil })
+
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            sut.onPaymentProvidersUpdated = {
+                sut.onPaymentProvidersUpdated = nil
+                cont.resume()
+            }
+            subject.send([.fixture()])
+        }
+
+        #expect(sut.hasBankSelected == false,
+                "A resolver that returns nil must not flip hasBankSelected")
+        #expect(sut.bankName == nil,
+                "A resolver that returns nil must leave bankName untouched")
+    }
+
+    // MARK: - PaymentComponentViewProtocol default-arg extension forwarding
+
+    @Test("Default didTapOnMoreInformation() forwards with a nil documentId")
+    func protocolExtensionMoreInformationForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnMoreInformation()
+
+        #expect(delegate.didTapMoreInfoCalled == true,
+                "The no-argument extension must forward to didTapOnMoreInformation(documentId: nil)")
+    }
+
+    @Test("Default didTapOnBankPicker() forwards with a nil documentId")
+    func protocolExtensionBankPickerForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnBankPicker()
+
+        #expect(delegate.didTapBankPickerCalled == true,
+                "The no-argument extension must forward to didTapOnBankPicker(documentId: nil)")
+    }
+
+    @Test("Default didTapOnPayInvoice() forwards with a nil documentId")
+    func protocolExtensionPayInvoiceForwardsNilId() {
+        let delegate = MockPaymentComponentDelegate()
+        let delegateProtocol: PaymentComponentViewProtocol = delegate
+
+        delegateProtocol.didTapOnPayInvoice()
+
+        #expect(delegate.didTapPayInvoiceCalled == true,
+                "The no-argument extension must forward to didTapOnPayInvoice(documentId: nil)")
     }
 
     // MARK: - hasBankSelected

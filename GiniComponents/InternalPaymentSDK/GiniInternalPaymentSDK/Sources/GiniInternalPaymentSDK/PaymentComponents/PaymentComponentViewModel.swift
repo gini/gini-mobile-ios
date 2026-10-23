@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 
 public protocol PaymentComponentViewProtocol: AnyObject {
@@ -38,17 +39,17 @@ public final class PaymentComponentViewModel {
     let strings: PaymentComponentsStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
-    let paymentProviderColors: GiniHealthAPILibrary.ProviderColors?
-    let bankImageIcon: UIImage?
+    var paymentProviderColors: GiniHealthAPILibrary.ProviderColors?
+    var bankImageIcon: UIImage?
 
     private var paymentProviderScheme: String?
 
     public weak var delegate: PaymentComponentViewProtocol?
-    
+
     public var documentId: String?
 
     var minimumButtonsHeight: CGFloat
-    
+
     var hasBankSelected: Bool
 
     var paymentComponentConfiguration: PaymentComponentConfiguration?
@@ -72,7 +73,20 @@ public final class PaymentComponentViewModel {
         showPaymentComponentInOneRow ? strings.placeholderBankNameText : bankName ?? strings.placeholderBankNameText
     }
 
+    /**
+     Called on main after each emission is applied.
+     */
+    var onPaymentProvidersUpdated: (() -> Void)?
+
+    /**
+     Resolves the saved default provider from the latest emission. Supplied by the controller.
+     */
+    private let selectedProviderResolver: ((GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProvider?)?
+
+    private var cancellables = Set<AnyCancellable>()
+
     public init(paymentProvider: GiniHealthAPILibrary.PaymentProvider?,
+                paymentProvidersPublisher: AnyPublisher<GiniHealthAPILibrary.PaymentProviders, Never>,
                 primaryButtonConfiguration: ButtonConfiguration,
                 secondaryButtonConfiguration: ButtonConfiguration,
                 configuration: PaymentComponentsConfiguration,
@@ -83,13 +97,15 @@ public final class PaymentComponentViewModel {
                 moreInformationStrings: MoreInformationStrings,
                 minimumButtonsHeight: CGFloat,
                 paymentComponentConfiguration: PaymentComponentConfiguration?,
-                clientConfiguration: ClientConfiguration?) {
+                clientConfiguration: ClientConfiguration?,
+                selectedProviderResolver: ((GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProvider?)? = nil) {
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.paymentComponentConfiguration = paymentComponentConfiguration
         self.clientConfiguration = clientConfiguration
+        self.selectedProviderResolver = selectedProviderResolver
 
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIcon = paymentProvider?.iconData.toImage
@@ -101,6 +117,27 @@ public final class PaymentComponentViewModel {
 
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
+
+        paymentProvidersPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] providers in
+                self?.applyPaymentProviders(providers)
+            }
+            .store(in: &cancellables)
+    }
+
+    /**
+     Adopts the resolver's provider so the placeholder swaps for the restored bank.
+     */
+    private func applyPaymentProviders(_ providers: GiniHealthAPILibrary.PaymentProviders) {
+        if let resolved = selectedProviderResolver?(providers) {
+            hasBankSelected = true
+            bankName = resolved.name
+            bankImageIcon = resolved.iconData.toImage
+            paymentProviderColors = resolved.colors
+            paymentProviderScheme = resolved.appSchemeIOS
+        }
+        onPaymentProvidersUpdated?()
     }
     
     func tapOnMoreInformation() {

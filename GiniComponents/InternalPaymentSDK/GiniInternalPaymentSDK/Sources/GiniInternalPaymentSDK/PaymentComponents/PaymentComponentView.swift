@@ -108,6 +108,21 @@ public final class PaymentComponentView: UIView {
         setupGestures()
         setupAccessibility()
         updateBottomStackOrientation()
+        bindToViewModelUpdates()
+    }
+
+    /**
+     Rebinds bank/button state and pay-button colors to the resolved provider on each emission.
+     */
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            guard let self else { return }
+            self.updateAvailableViews()
+            self.updateButtonsViews()
+            self.payInvoiceButton.customConfigure(text: self.viewModel.strings.ctaLabelText,
+                                                  textColor: self.viewModel.paymentProviderColors?.text.toColor(),
+                                                  backgroundColor: self.viewModel.paymentProviderColors?.background.toColor())
+        }
     }
 
     private func setupAccessibility() {
