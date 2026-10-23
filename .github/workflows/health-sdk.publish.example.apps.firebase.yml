@@ -91,6 +91,23 @@ jobs:
       - run: npm install -g firebase-tools@13.17.0
         shell: bash
 
+      - name: Generate release notes
+        env:
+          APP_NAME: GiniHealthSDKExample
+          BUILD: ${{ github.run_number }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          AUTHOR: ${{ github.event.pull_request.user.login || github.actor }}
+        run: |
+          chmod +x .github/generate_firebase_release_notes.sh
+          .github/generate_firebase_release_notes.sh > release_notes.txt
+          echo "----- release note preview -----"
+          cat release_notes.txt
+          echo "--------------------------------"
+
       - name: Distribute health-sdk example ipa to Firebase App Distribution
         id: distribute
         run: |
@@ -102,9 +119,7 @@ jobs:
           INPUT_SERVICECREDENTIALSFILECONTENT: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           INPUT_FILE: GiniHealthSDKExample.ipa
           INPUT_GROUPS: testers
-          INPUT_RELEASENOTES: |
-            ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-            ${{ github.event.head_commit.message }}
+          INPUT_RELEASENOTESFILE: release_notes.txt
 
       - name: Extract Jira ticket
         id: extract_jira_ticket
