@@ -65,6 +65,11 @@ on:
         required: false
         default: ''
         type: string
+      use_env_local:
+        description: 'When true, write .env.local from the per-key secrets below so the Bank example app build phase can generate Credentials.swift. Mutually exclusive with the legacy plist/manager/plist paths above.'
+        required: false
+        default: false
+        type: boolean
     secrets:
       MATCH_GIT_URL:
         required: true
@@ -83,6 +88,10 @@ on:
       GINI_MOBILE_CI_USERNAME:
         required: false
       GINI_MOBILE_CI_PASSWORD:
+        required: false
+      GINI_MOBILE_CI_CX_USERNAME:
+        required: false
+      GINI_MOBILE_CI_CX_PASSWORD:
         required: false
 
 jobs:
@@ -121,6 +130,34 @@ jobs:
           # step then re-signs with the AppStore profiles above). Extension targets sign
           # with AppStore profiles in Release, so they are excluded here on purpose.
           DISTRIBUTION_TYPE=adhoc APP_IDENTIFIER=${{ inputs.bundle_identifier }} bundle exec fastlane download_profiles
+
+      - name: Setup .env.local
+        if: inputs.use_env_local
+        env:
+          GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          GINI_CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+          GINI_CX_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+        run: |
+          if [ -z "$GINI_CLIENT_ID" ] || [ -z "$GINI_CLIENT_PASSWORD" ]; then
+            echo "GINI_MOBILE_CI_USERNAME/GINI_MOBILE_CI_PASSWORD secrets are empty — refusing to ship placeholder credentials" >&2
+            exit 1
+          fi
+          if [ -z "$FIREBASE_API_KEY" ]; then
+            echo "FIREBASE_API_KEY secret is empty — refusing to ship placeholder API key (app would crash at launch)" >&2
+            exit 1
+          fi
+          cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
+          GINI_CLIENT_ID=$GINI_CLIENT_ID
+          GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
+          GINI_CLIENT_DOMAIN=gini.net
+          GINI_CX_CLIENT_ID=$GINI_CX_CLIENT_ID
+          GINI_CX_CLIENT_PASSWORD=$GINI_CX_CLIENT_PASSWORD
+          GINI_STAGE_CLIENT_ID=
+          GINI_STAGE_CLIENT_PASSWORD=
+          FIREBASE_API_KEY=$FIREBASE_API_KEY
+          ENV
 
       - name: Setup Credentials (plist)
         if: inputs.credentials_plist_path != ''
