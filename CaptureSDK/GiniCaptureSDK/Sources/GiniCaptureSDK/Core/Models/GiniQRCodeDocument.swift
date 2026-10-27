@@ -39,8 +39,11 @@ import GiniUtilites
     fileprivate lazy var paymentInformation: Data? = {
         var jsonDict: [String: Any] = ["qrcode": self.scannedString]
 
-        // Include paymentdata only if the format is not giniQRCode
-        if self.qrCodeFormat != .giniQRCode {
+        /// Include `paymentdata` only when the format isn't giniQRCode AND we actually
+        /// parsed parameters. Mirrors Android (`PaymentQRCodeData.toJson`), which omits
+        /// the field when empty. Sending `paymentdata: {}` suppresses backend
+        /// `paymentQRCodeType` inference (CVIE skips Wero detection in that case).
+        if self.qrCodeFormat != .giniQRCode, !self.extractedParameters.isEmpty {
             jsonDict["paymentdata"] = self.extractedParameters
         }
 
