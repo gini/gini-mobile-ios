@@ -151,6 +151,19 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupViewAttributes()
         setupLayout()
         updateBottomStackOrientation()
+        bindToViewModelUpdates()
+    }
+
+    /**
+     Reloads the provider table and recomputes the sheet height when the
+     view model's publisher subscription receives a late provider arrival.
+     */
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            guard let self else { return }
+            self.paymentProvidersTableView.reloadData()
+            self.setupViewAttributes()
+        }
     }
 
     private func setupViewHierarchy() {
