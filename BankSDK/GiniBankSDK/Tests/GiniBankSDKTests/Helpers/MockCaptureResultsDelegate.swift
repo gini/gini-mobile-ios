@@ -10,9 +10,11 @@
 class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
     private(set) var closeCalled: Bool = false
     private(set) var scheduleRequestedResults: [AnalysisResult] = []
+    private(set) var deliveredResults: [AnalysisResult] = []
+    var deliveredResultsCount: Int { deliveredResults.count }
 
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        // This method will remain empty; no implementation is needed.
+        deliveredResults.append(result)
     }
 
     func giniCaptureDidCancelAnalysis() {

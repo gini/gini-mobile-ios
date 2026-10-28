@@ -98,6 +98,29 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
 
+    public func tryDisplayInvalidQRMessage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            guard let cameraVC = self.screenAPINavigationController
+                .viewControllers
+                .first(where: { $0 is CameraViewController }) as? CameraViewController else {
+                self.tryDisplayNoResultsScreen()
+                return
+            }
+            self.clearDocuments()
+            self.screenAPINavigationController.popToViewController(cameraVC, animated: true)
+            /// Fire exactly when the pop transition finishes; falls through
+            /// immediately if there is no in-flight transition (e.g. headless tests).
+            if let coordinator = self.screenAPINavigationController.transitionCoordinator {
+                coordinator.animate(alongsideTransition: nil) { _ in
+                    cameraVC.showUnsupportedQRCodeFeedback()
+                }
+            } else {
+                cameraVC.showUnsupportedQRCodeFeedback()
+            }
+        }
+    }
+
     public func tryDisplayNoResultsScreen() {
         var shouldDisplay = false
         var noResultType: NoResultScreenViewController.NoResultType?

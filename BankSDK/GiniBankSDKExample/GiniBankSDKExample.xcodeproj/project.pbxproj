@@ -92,12 +92,12 @@
 		28C0330200000000000000A0 /* PaymentHintScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */; };
 		28C0330200000000000000A1 /* PaymentHintScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B1 /* PaymentHintScreen.swift */; };
 		28C0330200000000000000A2 /* PaymentHintFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */; };
-		28C0330300000000000000A0 /* IngredientBrandScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */; };
-		28C0330300000000000000A1 /* IngredientBrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B1 /* IngredientBrandScreen.swift */; };
-		28C0330300000000000000A2 /* IngredientBrandFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */; };
 		28C0330200000000000000A3 /* invoice_future_due.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B3 /* invoice_future_due.pdf */; };
 		28C0330200000000000000A4 /* invoice_no_due_date.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B4 /* invoice_no_due_date.pdf */; };
 		28C0330200000000000000A5 /* invoice_future_due.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 28C0330200000000000000B5 /* invoice_future_due.jpeg */; };
+		28C0330300000000000000A0 /* IngredientBrandScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */; };
+		28C0330300000000000000A1 /* IngredientBrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B1 /* IngredientBrandScreen.swift */; };
+		28C0330300000000000000A2 /* IngredientBrandFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */; };
 		28C1114F2F101158007C255F /* ExampleAppUserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1114E2F101154007C255F /* ExampleAppUserDefaultsStorage.swift */; };
 		28C79E812F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */; };
 		28C79E832F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */; };
@@ -143,7 +143,6 @@
 		28DAF47F2CD292DD0035A1FF /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 28C3443B2C5CF8C500FD03C5 /* GiniCaptureSDK */; };
 		28DAF4A62CD293140035A1FF /* GiniCameraAccessScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */; };
 		28DAF4A72CD293140035A1FF /* GiniSkontoScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48E2CD293140035A1FF /* GiniSkontoScreenUITests.swift */; };
-		28E5C0A2310A4B00000000A2 /* GiniSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E5C0A1310A4B00000000A1 /* GiniSmokeUITests.swift */; };
 		28DAF4A82CD293140035A1FF /* GiniBankSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */; };
 		28DAF4A92CD293140035A1FF /* GiniErrorScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */; };
 		28DAF4AA2CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */; };
@@ -167,6 +166,7 @@
 		28DAF4D52CD3A9060035A1FF /* SkontoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48A2CD293140035A1FF /* SkontoScreen.swift */; };
 		28DAF4D62CD3A9090035A1FF /* TransactionDocsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48B2CD293140035A1FF /* TransactionDocsScreen.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
+		28E5C0A2310A4B00000000A2 /* GiniSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E5C0A1310A4B00000000A1 /* GiniSmokeUITests.swift */; };
 		28EB9C4F303F4BB300043D48 /* credit_note.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EB9C4E303F4BB300043D48 /* credit_note.png */; };
 		28EB9C51303F4BB800043D48 /* credit_note.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28EB9C50303F4BB800043D48 /* credit_note.pdf */; };
 		28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC10722AB345400080FD4F /* UIImage+TintColor.swift */; };
@@ -411,12 +411,12 @@
 		28C0330200000000000000B0 /* PaymentHintScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B1 /* PaymentHintScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintScreen.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B2 /* PaymentHintFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHintFlowUITests.swift; sourceTree = "<group>"; };
-		28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
-		28C0330300000000000000B1 /* IngredientBrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreen.swift; sourceTree = "<group>"; };
-		28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandFlowUITests.swift; sourceTree = "<group>"; };
 		28C0330200000000000000B3 /* invoice_future_due.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_future_due.pdf; sourceTree = "<group>"; };
 		28C0330200000000000000B4 /* invoice_no_due_date.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = invoice_no_due_date.pdf; sourceTree = "<group>"; };
 		28C0330200000000000000B5 /* invoice_future_due.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = invoice_future_due.jpeg; sourceTree = "<group>"; };
+		28C0330300000000000000B0 /* IngredientBrandScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		28C0330300000000000000B1 /* IngredientBrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandScreen.swift; sourceTree = "<group>"; };
+		28C0330300000000000000B2 /* IngredientBrandFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientBrandFlowUITests.swift; sourceTree = "<group>"; };
 		28C1114E2F101154007C255F /* ExampleAppUserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppUserDefaultsStorage.swift; sourceTree = "<group>"; };
 		28C79E802F744D7C00B92760 /* CXTransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXTransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
 		28C79E822F744DD300B92760 /* BaseIntegrationTest+CXTransferSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseIntegrationTest+CXTransferSummary.swift"; sourceTree = "<group>"; };
@@ -466,7 +466,6 @@
 		28DAF48B2CD293140035A1FF /* TransactionDocsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDocsScreen.swift; sourceTree = "<group>"; };
 		28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniCameraAccessScreenUITests.swift; sourceTree = "<group>"; };
 		28DAF48E2CD293140035A1FF /* GiniSkontoScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniSkontoScreenUITests.swift; sourceTree = "<group>"; };
-		28E5C0A1310A4B00000000A1 /* GiniSmokeUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniSmokeUITests.swift; sourceTree = "<group>"; };
 		28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleUITests.swift; sourceTree = "<group>"; };
 		28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniErrorScreenUITests.swift; sourceTree = "<group>"; };
 		28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
@@ -479,6 +478,7 @@
 		28DAF4992CD293140035A1FF /* GiniReviewScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniReviewScreenUITests.swift; sourceTree = "<group>"; };
 		28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniCaptureScreenUITests.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
+		28E5C0A1310A4B00000000A1 /* GiniSmokeUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniSmokeUITests.swift; sourceTree = "<group>"; };
 		28EB9C4E303F4BB300043D48 /* credit_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = credit_note.png; sourceTree = "<group>"; };
 		28EB9C50303F4BB800043D48 /* credit_note.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = credit_note.pdf; sourceTree = "<group>"; };
 		28EC10722AB345400080FD4F /* UIImage+TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TintColor.swift"; sourceTree = "<group>"; };
@@ -1437,8 +1437,6 @@
 				28FB83C72E673C8700DE88EE /* PBXTargetDependency */,
 			);
 			name = GiniBankSDKExampleSwiftUITests;
-			packageProductDependencies = (
-			);
 			productName = GiniBankSDKExampleSwiftUITests;
 			productReference = 28FB83C52E673C8700DE88EE /* GiniBankSDKExampleSwiftUITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1457,8 +1455,6 @@
 				28FB83D12E673C8700DE88EE /* PBXTargetDependency */,
 			);
 			name = GiniBankSDKExampleSwiftUIUITests;
-			packageProductDependencies = (
-			);
 			productName = GiniBankSDKExampleSwiftUIUITests;
 			productReference = 28FB83CF2E673C8700DE88EE /* GiniBankSDKExampleSwiftUIUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";

@@ -310,6 +310,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     GiniCaptureUserDefaultsStorage.unsupportedQRCodeWarningEnabled =
                         configuration.unsupportedQRCodeWarningEnabled
                     GiniCaptureUserDefaultsStorage.ingredientBrandScreens = configuration.ingredientBrandScreens
+                    GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = configuration.weroQRCodeScanningEnabled
                     self.prewarmIngredientBrandIndicatorIfEnabled(for: configuration)
                     self.initializeAnalytics(with: configuration)
                 }
@@ -496,9 +497,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
+                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(extractionResult,
+                                                                                               pages: self.pages)
                 self.setDocumentIdAsUserProperty()
                 Task {
-                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                    await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
                 }
             case .failure(let error):
                 guard error != .requestCancelled else { return }
@@ -521,12 +524,48 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             _ = await task.value
         }
 
+        /// Confirmed Wero: URL is complete payment info — skip invoice flows.
+        let weroKey = QRCodesExtractor.weroPaymentQRCodeUrlKey
+        if extractionResult.extractions.contains(where: {
+            $0.name == weroKey || $0.entity == weroKey
+        }) {
+            deliverWeroResult(extractionResult)
+            return
+        }
+
         presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
+    }
+
+    /**
+     Delivers a Wero result through the results callback and resets the
+     document service, bypassing feature flows. URL-only shape matching
+     EPS: no document, images or line items.
+     */
+    @MainActor
+    private func deliverWeroResult(_ extractionResult: ExtractionResult) {
+        let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
+            guard let name = $0.name else { return nil }
+            return (name, $0)
+        })
+        let analysisResult = AnalysisResult(extractions: extractions,
+                                            lineItems: [],
+                                            images: [],
+                                            document: nil,
+                                            candidates: extractionResult.candidates)
+        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+        documentService.resetToInitialState()
     }
 
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
+
+        if GiniNetworkingScreenAPICoordinator.performWeroFallbackIfNeeded(pages: pages,
+                                                                          extractionResult: extractionResult,
+                                                                          delegate: delegate,
+                                                                          documentService: documentService) {
+            return
+        }
 
         // Cross border flow: if no crossBorderPayment extractions were returned, show
         // the no-results screen instead of delivering anything to the bank.
