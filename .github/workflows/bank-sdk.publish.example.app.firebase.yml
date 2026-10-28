@@ -55,23 +55,24 @@ jobs:
               "ci": "true"
             }
 
-      - name: Setup Credentials
+      - name: Setup .env.local
         env:
-          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
-          CX_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
-          CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
-        run: |
-            plutil -replace client_id -string "$TEST_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "$TEST_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace cx_client_id -string "$CX_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace cx_client_password -string "$CX_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-
-      - name: Setup Firebase API Key
-        env:
+          GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          GINI_CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+          GINI_CX_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
         run: |
-            plutil -replace API_KEY -string "$FIREBASE_API_KEY" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
+            cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
+            GINI_CLIENT_ID=$GINI_CLIENT_ID
+            GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
+            GINI_CLIENT_DOMAIN=gini.net
+            GINI_CX_CLIENT_ID=$GINI_CX_CLIENT_ID
+            GINI_CX_CLIENT_PASSWORD=$GINI_CX_CLIENT_PASSWORD
+            GINI_STAGE_CLIENT_ID=
+            GINI_STAGE_CLIENT_PASSWORD=
+            FIREBASE_API_KEY=$FIREBASE_API_KEY
+            ENV
 
       - name: Set build number
         run: |

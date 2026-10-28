@@ -1,0 +1,36 @@
+#!/bin/bash
+# Pre-commit hook — refuses commits that stage files known to carry secrets.
+# Activate once per clone: git config core.hooksPath .githooks
+#
+# If you really need to override (e.g. a legitimately-tracked placeholder),
+# first confirm no real secrets are in the diff, then run `git commit --no-verify`.
+
+set -eu
+
+protected_paths=(
+    "BankSDK/GiniBankSDKExample/.env.local"
+    "BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist"
+    "BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist"
+)
+
+# Only check adds / modifications; deletions of a protected path are safe
+# (that's how a project removes a leaked file from tracking).
+staged=$(git diff --cached --name-only --diff-filter=d)
+
+leaked=()
+for p in "${protected_paths[@]}"; do
+    if echo "$staged" | grep -Fxq "$p"; then
+        leaked+=("$p")
+    fi
+done
+
+if [ "${#leaked[@]}" -gt 0 ]; then
+    printf >&2 '\033[31m✗ pre-commit: refusing to commit protected files:\033[0m\n'
+    for p in "${leaked[@]}"; do
+        printf >&2 '  %s\n' "$p"
+    done
+    printf >&2 '\n'
+    printf >&2 'If you really need to override, confirm the diff first, then:\n'
+    printf >&2 '  git commit --no-verify\n'
+    exit 1
+fi

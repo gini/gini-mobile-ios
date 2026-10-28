@@ -93,6 +93,26 @@ jobs:
         name: sonar-coverage-bank-sdk
         path: BankSDK/coverage.xml
         retention-days: 1
+    - name: Setup .env.local
+      if: ${{ matrix.target == 'GiniBankSDK' }}
+      env:
+        GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+        GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        GINI_CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+        GINI_CX_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+        FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      run: |
+        cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
+        GINI_CLIENT_ID=$GINI_CLIENT_ID
+        GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
+        GINI_CLIENT_DOMAIN=gini.net
+        GINI_CX_CLIENT_ID=$GINI_CX_CLIENT_ID
+        GINI_CX_CLIENT_PASSWORD=$GINI_CX_CLIENT_PASSWORD
+        GINI_STAGE_CLIENT_ID=
+        GINI_STAGE_CLIENT_PASSWORD=
+        FIREBASE_API_KEY=$FIREBASE_API_KEY
+        ENV
+
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests
       env:

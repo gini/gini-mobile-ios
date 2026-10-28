@@ -41,8 +41,7 @@ jobs:
       bundle_identifier: 'net.gini.banksdk.example'
       bundle_identifier_extension: 'net.gini.banksdk.example.ShareExtension'
       ipa_name: 'GiniBankSDKExample'
-      credentials_plist_path: 'BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist'
-      google_services_plist_path: 'BankSDK/GiniBankSDKExample/GoogleService-Info.plist'
+      use_env_local: true
     secrets:
       MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -53,3 +52,5 @@ jobs:
       FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
       GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+      GINI_MOBILE_CI_CX_USERNAME: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+      GINI_MOBILE_CI_CX_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
