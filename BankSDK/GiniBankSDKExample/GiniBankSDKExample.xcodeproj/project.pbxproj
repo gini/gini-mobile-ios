@@ -1936,11 +1936,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.env.local",
 			);
 			name = "Generate Credentials.swift";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(SRCROOT)/Generated/Credentials.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
@@ -1956,11 +1958,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.env.local",
 			);
 			name = "Generate Credentials.swift";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(SRCROOT)/Generated/Credentials.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
@@ -1976,11 +1980,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.env.local",
 			);
 			name = "Generate Credentials.swift";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(SRCROOT)/Generated/Credentials.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
