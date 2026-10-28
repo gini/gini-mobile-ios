@@ -66,6 +66,21 @@ public final class QRCodesExtractor {
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
     public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
 
+    /**
+     Extraction key delivering a recognised Wero URL to the host app.
+     */
+    public static let weroPaymentQRCodeUrlKey = "weroPaymentQRCodeUrl"
+
+    /**
+     Backend extraction key carrying the QR classification label.
+     */
+    static let paymentQRCodeTypeKey = "paymentQRCodeType"
+
+    /**
+     `paymentQRCodeType` value that marks a Wero-classified payload.
+     */
+    static let weroPaymentQRCodeTypeValue = "wero"
+
     static func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):

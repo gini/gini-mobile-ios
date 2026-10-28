@@ -14,7 +14,8 @@
         "creditNoteHintEnabled": true,
         "paymentScheduleHintEnabled": true,
         "unsupportedQRCodeWarningEnabled": false,
-        "ingredientBrandScreens": ["Analysis", "Foo", "UNKNOWN"]
+        "ingredientBrandScreens": ["Analysis", "Foo", "UNKNOWN"],
+        "weroQRCodeScanningEnabled": false
     },
     "malformed": {
         "clientID": "test-client",

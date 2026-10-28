@@ -565,6 +565,21 @@ final class CameraViewController: UIViewController {
         }
     }
 
+    /**
+     Shows the camera's standard "unsupported QR code" feedback.
+     */
+    func showUnsupportedQRCodeFeedback() {
+        qrCodeOverLay.hideAnimation()
+        qrCodeOverLay.isHidden = true
+        /// Restore the guide hidden by `resetQRCodeScanning(isValid: true)`.
+        cameraPreviewViewController.cameraFrameView.isHidden = false
+        cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
+        cameraPane.isUserInteractionEnabled = true
+        cameraPaneHorizontal?.isUserInteractionEnabled = true
+        validQRCodeProcessing = false
+        handleInvalidQRCode()
+    }
+
     private func handleInvalidQRCode() {
         guard !isValidIBANDetected else { return }
 
@@ -600,6 +615,10 @@ final class CameraViewController: UIViewController {
         cameraPaneHorizontal?.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
+            /// Hide the small QR-only-mode brackets if they were turned on by
+            /// handleScanAnotherQRCode — otherwise they stay drawn inside the
+            /// big processing overlay on the next scan.
+            self.cameraPreviewViewController.qrCodeFrameView.isHidden = true
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
 

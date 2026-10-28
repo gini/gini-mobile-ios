@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 import GiniUtilites
 @testable import GiniInternalPaymentSDK
@@ -113,6 +114,7 @@ final class MockBottomSheetsProvider: BottomSheetsProviderProtocol {
     func bankSelectionBottomSheet() -> UIViewController {
         guard returnRealBanksView else { return UIViewController() }
         let vm = BanksBottomViewModel(paymentProviders: [],
+                                      paymentProvidersPublisher: Just([]).eraseToAnyPublisher(),
                                       selectedPaymentProvider: .test,
                                       configuration: .test,
                                       strings: .test,

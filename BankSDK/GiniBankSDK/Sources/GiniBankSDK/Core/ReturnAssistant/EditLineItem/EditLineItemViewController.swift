@@ -103,8 +103,14 @@ final class EditLineItemViewController: GiniBottomSheetViewController {
     private func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.giniMakeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
+        /// Shrink the scroll view when the keyboard docks so UIKit auto-scrolls the active field into view.
+        scrollView.bottomAnchor
+            .constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+            .isActive = true
     }
 
     private func setupContent() {
