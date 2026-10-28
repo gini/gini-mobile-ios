@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Testing
 @testable import GiniCaptureSDK
 final class GiniQRCodeDocumentTests: XCTestCase {
 
@@ -559,5 +560,63 @@ final class GiniQRCodeDocumentTests: XCTestCase {
     func testTrackingAuthorizedReturnsFalseWhenStatusIsRestricted() {
         let manager = GiniTrackingPermissionManager(statusProvider: { .restricted })
         XCTAssertFalse(manager.trackingAuthorized())
+    }
+}
+
+/**
+ Pins down the shape of the JSON uploaded to `POST /documents` for QR scans.
+
+ Regression guard for the iOS/Android payload parity fix in
+ `GiniQRCodeDocument.paymentInformation`: `paymentdata` must be omitted when
+ the format isn't `.giniQRCode` and the extracted parameters are empty, so
+ the backend's CVIE can infer `paymentQRCodeType` (e.g. Wero). Mirrors
+ Android `PaymentQRCodeData.toJson` behaviour.
+ */
+@Suite("GiniQRCodeDocument.data payload shape")
+struct GiniQRCodeDocumentPaymentDataTests {
+
+    @Test("Unknown-format URL (Wero candidate) omits paymentdata")
+    func unknownFormatOmitsPaymentData() throws {
+        let scanned = "https://pay.weropay.eu/some/path"
+        let document = GiniQRCodeDocument(scannedString: scanned)
+
+        let payload = try #require(decode(document.data))
+
+        #expect(document.qrCodeFormat == nil, "Precondition: Wero URL must not match any known format")
+        #expect(payload["qrcode"] as? String == scanned)
+        #expect(payload["paymentdata"] == nil,
+                "paymentdata must be omitted when there are no extracted parameters, otherwise the backend skips paymentQRCodeType inference")
+    }
+
+    @Test("Bezahl URL keeps paymentdata when parameters are parsed")
+    func bezahlFormatKeepsPaymentData() throws {
+        let scanned = "bank://singlepaymentsepa?name=Gini Online Shop&reason=A12345-6789" +
+                     "&iban=DE89370400440532013000&bic=GINIBICXXX&amount=47,65&currency=EUR"
+        let document = GiniQRCodeDocument(scannedString: scanned)
+
+        let payload = try #require(decode(document.data))
+        let paymentData = try #require(payload["paymentdata"] as? [String: String])
+
+        #expect(document.qrCodeFormat == .bezahl)
+        #expect(payload["qrcode"] as? String == scanned)
+        #expect(!paymentData.isEmpty, "Known formats with extracted parameters must still send paymentdata")
+        #expect(paymentData["iban"] == "DE89370400440532013000")
+    }
+
+    @Test("Gini QR URL omits paymentdata regardless of parsed parameters")
+    func giniQRCodeFormatAlwaysOmitsPaymentData() throws {
+        let scanned = "https://pay.gini.net/00000000-0000-0000-0000-000000000000"
+        let document = GiniQRCodeDocument(scannedString: scanned)
+
+        let payload = try #require(decode(document.data))
+
+        #expect(document.qrCodeFormat == .giniQRCode)
+        #expect(payload["qrcode"] as? String == scanned)
+        #expect(payload["paymentdata"] == nil,
+                "giniQRCode has always excluded paymentdata (EC-130); regression guard")
+    }
+
+    private func decode(_ data: Data) -> [String: Any]? {
+        try? JSONSerialization.jsonObject(with: data) as? [String: Any]
     }
 }
