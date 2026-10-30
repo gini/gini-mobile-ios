@@ -19,7 +19,7 @@ To manually generate SBOM JSONs for our Swift Packages you need to do the follow
 
 ## AI coding agents and credential files
 
-Local testing needs secrets inside the working copy (example-app `.env.local`, the generated `Credentials.swift`, legacy `Credentials.plist`, signing material). Gini's Secure Development Procedure (3.3.2 / 7.5) forbids sharing secrets with AI tools, so the checked-in `.claude/settings.json` denies Claude Code read and edit access to those files for everyone who clones this repo. Builds and tests are unaffected: the Xcode build phase that regenerates credentials runs outside the agent.
+Local testing needs secrets inside the working copy (example-app `.env.local`, the generated `Credentials.swift`, `CredentialsManager.swift`, legacy `Credentials.plist`, signing material). Gini's Secure Development Procedure (3.3.2 / 7.5) forbids sharing secrets with AI tools, so the checked-in `.claude/settings.json` denies Claude Code read and edit access to those files for everyone who clones this repo. Builds and tests are unaffected: the Xcode build phase that regenerates credentials runs outside the agent.
 
 Covered patterns (relative to the repo root, any depth):
 
@@ -28,6 +28,7 @@ Covered patterns (relative to the repo root, any depth):
 | `.env`, `.env.local`, `.env.*.local` | Example-app credentials (`.env.example` stays readable) |
 | `Generated/**` | `Credentials.swift` produced by `scripts/generate_credentials.sh` |
 | `Credentials.plist` | Legacy example-app credentials |
+| `CredentialsManager.swift` | Example-app source with client id/secret filled in locally (and by CI for the Health example) |
 | `*.p12`, `*.p8`, `*.mobileprovision`, `*.pem`, `*.key` | Signing certificates, App Store Connect API keys, private keys |
 
 When you add a new secret-bearing file, add a matching `Read(...)` and `Edit(...)` entry to the `permissions.deny` list in `.claude/settings.json` in the same PR.

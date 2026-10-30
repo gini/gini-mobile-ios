@@ -6,6 +6,7 @@
       "Read(/**/.env.*.local)",
       "Read(/**/Generated/**)",
       "Read(/**/Credentials.plist)",
+      "Read(/**/CredentialsManager.swift)",
       "Read(/**/*.p12)",
       "Read(/**/*.p8)",
       "Read(/**/*.mobileprovision)",
@@ -15,7 +16,8 @@
       "Edit(/**/.env.local)",
       "Edit(/**/.env.*.local)",
       "Edit(/**/Generated/**)",
-      "Edit(/**/Credentials.plist)"
+      "Edit(/**/Credentials.plist)",
+      "Edit(/**/CredentialsManager.swift)"
     ]
   },
   "hooks": {
