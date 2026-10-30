@@ -33,16 +33,13 @@ Covered patterns (relative to the repo root, any depth):
 
 When you add a new secret-bearing file, add a matching `Read(...)` and `Edit(...)` entry to the `permissions.deny` list in `.claude/settings.json` in the same PR.
 
-Recommended user-level denies for your own `~/.claude/settings.json` (not enforced by the repo):
+Recommended user-level denies for your own `~/.claude/settings.json` (not enforced by the repo). Denying broad folders such as `~/Downloads` or `~/Documents` also blocks files you drag into the chat from there, so this list is kept to paths that only ever hold secrets:
 
 ```json
 {
   "permissions": {
     "deny": [
       "Read(~/.ssh/**)",
-      "Read(~/Documents/**)",
-      "Read(~/Downloads/**)",
-      "Read(~/Desktop/**)",
       "Read(**/.env*)"
     ]
   }
