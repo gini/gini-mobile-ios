@@ -1,4 +1,23 @@
 {
+  "permissions": {
+    "deny": [
+      "Read(/**/.env)",
+      "Read(/**/.env.local)",
+      "Read(/**/.env.*.local)",
+      "Read(/**/Generated/**)",
+      "Read(/**/Credentials.plist)",
+      "Read(/**/*.p12)",
+      "Read(/**/*.p8)",
+      "Read(/**/*.mobileprovision)",
+      "Read(/**/*.pem)",
+      "Read(/**/*.key)",
+      "Edit(/**/.env)",
+      "Edit(/**/.env.local)",
+      "Edit(/**/.env.*.local)",
+      "Edit(/**/Generated/**)",
+      "Edit(/**/Credentials.plist)"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {

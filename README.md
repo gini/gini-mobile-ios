@@ -16,3 +16,34 @@ To manually generate SBOM JSONs for our Swift Packages you need to do the follow
    ci:"false"
    ```
 3. The SBOM JSONs will be located at `fastlane/sbom-jsons.zip`
+
+## AI coding agents and credential files
+
+Local testing needs secrets inside the working copy (example-app `.env.local`, the generated `Credentials.swift`, legacy `Credentials.plist`, signing material). Gini's Secure Development Procedure (3.3.2 / 7.5) forbids sharing secrets with AI tools, so the checked-in `.claude/settings.json` denies Claude Code read and edit access to those files for everyone who clones this repo. Builds and tests are unaffected: the Xcode build phase that regenerates credentials runs outside the agent.
+
+Covered patterns (relative to the repo root, any depth):
+
+| Pattern | What it protects |
+| --- | --- |
+| `.env`, `.env.local`, `.env.*.local` | Example-app credentials (`.env.example` stays readable) |
+| `Generated/**` | `Credentials.swift` produced by `scripts/generate_credentials.sh` |
+| `Credentials.plist` | Legacy example-app credentials |
+| `*.p12`, `*.p8`, `*.mobileprovision`, `*.pem`, `*.key` | Signing certificates, App Store Connect API keys, private keys |
+
+When you add a new secret-bearing file, add a matching `Read(...)` and `Edit(...)` entry to the `permissions.deny` list in `.claude/settings.json` in the same PR.
+
+Recommended user-level denies for your own `~/.claude/settings.json` (not enforced by the repo):
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/Documents/**)",
+      "Read(~/Downloads/**)",
+      "Read(~/Desktop/**)",
+      "Read(**/.env*)"
+    ]
+  }
+}
+```
