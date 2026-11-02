@@ -497,12 +497,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case .success(let extractionResult):
-                let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(extractionResult,
-                                                                                               pages: self.pages)
-                self.setDocumentIdAsUserProperty()
-                Task {
-                    await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
-                }
+                self.handleAnalysisSuccess(extractionResult, networkDelegate: networkDelegate)
             case .failure(let error):
                 guard error != .requestCancelled else { return }
 
@@ -510,6 +505,16 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     self?.displayError(errorType: ErrorType(error: error), animated: true)
                 }
             }
+        }
+    }
+
+    private func handleAnalysisSuccess(_ extractionResult: ExtractionResult,
+                                       networkDelegate: GiniCaptureNetworkDelegate) {
+        let mapped = GiniNetworkingScreenAPICoordinator.mapWeroExtractionsIfApplicable(extractionResult,
+                                                                                      pages: pages)
+        setDocumentIdAsUserProperty()
+        Task {
+            await self.handleSuccessfulAnalysis(with: mapped, networkDelegate: networkDelegate)
         }
     }
 

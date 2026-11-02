@@ -32,15 +32,22 @@ extension PaymentComponentsController {
             self?.isLoading = false
             switch result {
             case let .success(paymentProviders):
-                let mapped = paymentProviders.map { $0.toHealthPaymentProvider() }
-                let sorted = Self.sortPaymentProviders(mapped)
-                self?.paymentProvidersSubject.send(sorted)
-                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
-                self?.delegate?.didFetchedPaymentProviders()
+                self?.applyFetchedPaymentProviders(paymentProviders)
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
             }
         }
+    }
+
+    /**
+     Applies a freshly fetched payment-provider list: maps, sorts, publishes, selects a default and notifies the delegate.
+     */
+    private func applyFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
+        let mapped = paymentProviders.map { $0.toHealthPaymentProvider() }
+        let sorted = Self.sortPaymentProviders(mapped)
+        paymentProvidersSubject.send(sorted)
+        selectedPaymentProvider = defaultInstalledPaymentProvider()
+        delegate?.didFetchedPaymentProviders()
     }
     
     /**

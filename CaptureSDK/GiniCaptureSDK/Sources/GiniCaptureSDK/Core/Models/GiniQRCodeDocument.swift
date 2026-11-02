@@ -55,6 +55,11 @@ import GiniUtilites
      The raw payload read from the QR code, as scanned.
      */
     var scannedPayload: String { scannedString }
+    /**
+     Key-value fields parsed from the raw QR payload for the detected `qrCodeFormat`
+     (e.g. `iban`, `bic`, `amount`, `name`). Empty when the format is unknown or no
+     fields could be extracted. Evaluated lazily on first access.
+     */
     public lazy var extractedParameters: [String: String] = QRCodesExtractor
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     public lazy var qrCodeFormat: QRCodesFormat? = {
