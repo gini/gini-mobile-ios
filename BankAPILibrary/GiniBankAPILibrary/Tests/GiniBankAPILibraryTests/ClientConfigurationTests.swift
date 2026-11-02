@@ -47,7 +47,7 @@ struct ClientConfigurationTests {
         #expect(config.creditNoteHintEnabled, "Expected creditNoteHintEnabled to be true")
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true")
         #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
-        #expect(config.weroQRCodeScanningEnabled, "Expected weroQRCodeScanningEnabled to be true")
+        #expect(config.weroQRCodeScanningEnabled == true, "Expected weroQRCodeScanningEnabled to be true")
     }
 
     @Test("Initialization with all flags disabled")
@@ -83,7 +83,7 @@ struct ClientConfigurationTests {
         #expect(!config.creditNoteHintEnabled, "Expected creditNoteHintEnabled to be false")
         #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false")
-        #expect(!config.weroQRCodeScanningEnabled, "Expected weroQRCodeScanningEnabled to be false")
+        #expect(config.weroQRCodeScanningEnabled == false, "Expected weroQRCodeScanningEnabled to be false")
     }
 
     // MARK: - JSON Decoding Tests
@@ -109,7 +109,7 @@ struct ClientConfigurationTests {
         #expect(config.creditNoteHintEnabled, "Expected creditNoteHintEnabled to be true from JSON")
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true from JSON")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false from JSON")
-        #expect(config.weroQRCodeScanningEnabled, "Expected weroQRCodeScanningEnabled to be true from JSON")
+        #expect(config.weroQRCodeScanningEnabled == true, "Expected weroQRCodeScanningEnabled to be true from JSON")
     }
 
     @Test("paymentScheduleHintEnabled decodes from JSON payload")
@@ -136,12 +136,11 @@ struct ClientConfigurationTests {
     }
 
     /**
-     Pins the current synthesized-`Codable` behavior: every feature flag is a
-     non-optional `Bool` without a default, so a payload that omits
-     `creditNoteHintEnabled` fails to decode entirely instead of falling back
-     to a default value. This is a known limitation of the current model —
-     if it ever starts decoding successfully, the model's decoding strategy
-     changed and this test (and its callers' assumptions) must be revisited.
+     Pins the current synthesized-`Codable` behavior: non-optional feature
+     flags without a default fail to decode entirely when their key is
+     absent, instead of falling back to a value. `weroQRCodeScanningEnabled`
+     is the single exception — it is modelled as `Bool?` so backend rollout
+     timing cannot brick config decoding.
      */
     @Test("Decoding fails when the creditNoteHintEnabled key is absent from JSON")
     func decodingFailsWhenCreditNoteHintEnabledKeyIsAbsent() {
@@ -158,6 +157,17 @@ struct ClientConfigurationTests {
         }
         #expect(missingKey.stringValue == "creditNoteHintEnabled",
                 "Expected the missing key to be `creditNoteHintEnabled`, got `\(missingKey.stringValue)`")
+    }
+
+    @Test("Decoding succeeds with nil weroQRCodeScanningEnabled when the key is absent from JSON")
+    func decodingSucceedsWithNilWeroQRCodeScanningEnabledWhenKeyIsAbsent() throws {
+        let data = loadFile(withName: "clientConfigurationMissingWeroQRCodeScanning", ofType: "json")
+        let decoder = JSONDecoder()
+
+        let config = try decoder.decode(ClientConfiguration.self, from: data)
+
+        #expect(config.weroQRCodeScanningEnabled == nil,
+                "Expected weroQRCodeScanningEnabled to decode as nil when backend omits the key")
     }
 
     // MARK: - JSON Encoding Tests
@@ -329,7 +339,7 @@ struct ClientConfigurationTests {
         #expect(config.creditNoteHintEnabled, "Expected creditNoteHintEnabled to be true")
         #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
         #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
-        #expect(config.weroQRCodeScanningEnabled, "Expected weroQRCodeScanningEnabled to be true")
+        #expect(config.weroQRCodeScanningEnabled == true, "Expected weroQRCodeScanningEnabled to be true")
     }
 
 }

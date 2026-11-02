@@ -67,6 +67,14 @@ extension GiniConfigurationSharedStateSuite {
             #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == false)
         }
 
+        @Test("weroQRCodeScanningEnabled=nil from remote config clears previously persisted storage")
+        func propagatesWeroQRCodeScanningEnabledNilClearsStorage() async {
+            await runStartSDK(resetStorage: { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true },
+                              configuration: makeClientConfiguration(weroQRCodeScanningEnabled: nil))
+
+            #expect(GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled == nil)
+        }
+
         // MARK: - Helpers
 
         /**
@@ -102,7 +110,7 @@ extension GiniConfigurationSharedStateSuite {
 
         private func makeClientConfiguration(unsupportedQRCodeWarningEnabled: Bool = false,
                                              ingredientBrandScreens: [String] = [],
-                                             weroQRCodeScanningEnabled: Bool = false) -> ClientConfiguration {
+                                             weroQRCodeScanningEnabled: Bool? = false) -> ClientConfiguration {
             ClientConfiguration(clientID: "test",
                                 userJourneyAnalyticsEnabled: false,
                                 skontoEnabled: false,
