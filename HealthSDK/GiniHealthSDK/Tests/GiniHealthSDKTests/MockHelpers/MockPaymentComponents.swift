@@ -115,12 +115,14 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
 
     func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
-                                                        paymentProvidersPublisher: Just([]).eraseToAnyPublisher(),
+        let providersBundle = PaymentProvidersBundle(initial: paymentProviders.map { $0.toHealthPaymentProvider() },
+                                                     publisher: Just([]).eraseToAnyPublisher())
+        let poweredByGiniBundle = PoweredByGiniBundle(configuration: giniHealth.poweredByGiniConfiguration,
+                                                      strings: giniHealth.poweredByGiniStrings)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: providersBundle,
                                                         configuration: giniHealth.paymentInfoConfiguration,
                                                         strings: giniHealth.paymentInfoStrings,
-                                                        poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: giniHealth.poweredByGiniStrings,
+                                                        poweredByGini: poweredByGiniBundle,
                                                         clientConfiguration: configurationProvider.clientConfiguration)
         let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController

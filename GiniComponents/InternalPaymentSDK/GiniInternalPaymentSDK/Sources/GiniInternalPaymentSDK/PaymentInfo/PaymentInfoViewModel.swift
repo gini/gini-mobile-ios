@@ -52,19 +52,18 @@ public final class PaymentInfoViewModel {
 
     private var cancellables = Set<AnyCancellable>()
 
-    public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
-                paymentProvidersPublisher: AnyPublisher<GiniHealthAPILibrary.PaymentProviders, Never>,
+    public init(paymentProviders: PaymentProvidersBundle,
                 configuration: PaymentInfoConfiguration,
                 strings: PaymentInfoStrings,
-                poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings,
+                poweredByGini: PoweredByGiniBundle,
                 clientConfiguration: ClientConfiguration?,
                 configurationRefresher: (() -> PaymentInfoConfiguration?)? = nil) {
-        self.paymentProviders = paymentProviders
+        self.paymentProviders = paymentProviders.initial
         self.configuration = configuration
         self.configurationRefresher = configurationRefresher
         self.strings = strings
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGini.configuration,
+                                                             strings: poweredByGini.strings)
         self.clientConfiguration = clientConfiguration
 
         payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
@@ -72,7 +71,7 @@ public final class PaymentInfoViewModel {
         configurePayBillsGiniLink()
         setupQuestions()
 
-        paymentProvidersPublisher
+        paymentProviders.publisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] providers in
                 self?.applyPaymentProviders(providers)

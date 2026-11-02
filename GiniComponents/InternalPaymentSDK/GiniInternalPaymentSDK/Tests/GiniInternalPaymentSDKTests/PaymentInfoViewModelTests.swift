@@ -21,12 +21,10 @@ struct PaymentInfoViewModelTests {
                          publisher: AnyPublisher<[PaymentProvider], Never> = Just([]).eraseToAnyPublisher(),
                          strings: PaymentInfoStrings = .test,
                          clientConfiguration: ClientConfiguration? = nil) -> PaymentInfoViewModel {
-        PaymentInfoViewModel(paymentProviders: providers,
-                             paymentProvidersPublisher: publisher,
+        PaymentInfoViewModel(paymentProviders: PaymentProvidersBundle(initial: providers, publisher: publisher),
                              configuration: .test,
                              strings: strings,
-                             poweredByGiniConfiguration: .test,
-                             poweredByGiniStrings: .test,
+                             poweredByGini: PoweredByGiniBundle(configuration: .test, strings: .test),
                              clientConfiguration: clientConfiguration)
     }
 

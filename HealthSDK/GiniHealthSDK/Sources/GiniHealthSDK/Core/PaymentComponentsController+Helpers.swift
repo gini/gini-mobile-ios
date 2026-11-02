@@ -299,12 +299,14 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying payment information.
      */
     func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
-                                                        paymentProvidersPublisher: paymentProvidersPublisher,
+        let providersBundle = PaymentProvidersBundle(initial: paymentProviders,
+                                                     publisher: paymentProvidersPublisher)
+        let poweredByGiniBundle = PoweredByGiniBundle(configuration: configurationProvider.poweredByGiniConfiguration,
+                                                      strings: stringsProvider.poweredByGiniStrings)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: providersBundle,
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
-                                                        poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        poweredByGini: poweredByGiniBundle,
                                                         clientConfiguration: configurationProvider.clientConfiguration,
                                                         configurationRefresher: { [weak self] in
                                                             self?.configurationProvider.paymentInfoConfiguration

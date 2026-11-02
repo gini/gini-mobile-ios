@@ -79,12 +79,14 @@ public final class BanksBottomViewModel {
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
 
-        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.uniqued(by: { $0.id }),
-                                                         paymentProvidersPublisher: paymentProvidersPublisher,
+        let providersBundle = PaymentProvidersBundle(initial: paymentProviders.uniqued(by: { $0.id }),
+                                                     publisher: paymentProvidersPublisher)
+        let poweredByGiniBundle = PoweredByGiniBundle(configuration: poweredByGiniConfiguration,
+                                                      strings: poweredByGiniStrings)
+        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: providersBundle,
                                                          configuration: paymentInfoConfiguration,
                                                          strings: paymentInfoStrings,
-                                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                         poweredByGiniStrings: poweredByGiniStrings,
+                                                         poweredByGini: poweredByGiniBundle,
                                                          clientConfiguration: clientConfiguration,
                                                          configurationRefresher: paymentInfoConfigurationProvider)
 
