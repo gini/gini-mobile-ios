@@ -30,7 +30,7 @@ public struct ClientConfiguration: Codable {
     public let paymentScheduleHintEnabled: Bool
     public let unsupportedQRCodeWarningEnabled: Bool
     public let ingredientBrandScreens: [String]
-    public let weroQRCodeScanningEnabled: Bool
+    public let weroQRCodeScanningEnabled: Bool?
 
     /**
      Creates a new `ClientConfiguration` instance.
@@ -51,7 +51,7 @@ public struct ClientConfiguration: Codable {
      - paymentScheduleHintEnabled: A flag indicating whether the Schedule Payment state of the payment-hint bottom sheet is enabled.
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      - ingredientBrandScreens: Screen names on which the "Powered by Gini" ingredient brand is shown. An empty array disables it everywhere.
-     - weroQRCodeScanningEnabled: A flag indicating whether Wero QR code scanning is enabled.
+     - weroQRCodeScanningEnabled: A flag indicating whether Wero QR code scanning is enabled. `nil` when the backend omits the key — treated as disabled at every read site so the SDK degrades gracefully when the server-side rollout has not yet reached the integrator.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
@@ -68,7 +68,7 @@ public struct ClientConfiguration: Codable {
                 paymentScheduleHintEnabled: Bool,
                 unsupportedQRCodeWarningEnabled: Bool,
                 ingredientBrandScreens: [String] = [],
-                weroQRCodeScanningEnabled: Bool) {
+                weroQRCodeScanningEnabled: Bool?) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
