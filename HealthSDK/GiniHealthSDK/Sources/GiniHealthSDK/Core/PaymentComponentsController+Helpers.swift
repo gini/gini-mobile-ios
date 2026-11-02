@@ -42,7 +42,7 @@ extension PaymentComponentsController {
     /**
      Applies a freshly fetched payment-provider list: maps, sorts, publishes, selects a default and notifies the delegate.
      */
-    private func applyFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
+    private func applyFetchedPaymentProviders(_ paymentProviders: PaymentProviders) {
         let mapped = paymentProviders.map { $0.toHealthPaymentProvider() }
         let sorted = Self.sortPaymentProviders(mapped)
         paymentProvidersSubject.send(sorted)
