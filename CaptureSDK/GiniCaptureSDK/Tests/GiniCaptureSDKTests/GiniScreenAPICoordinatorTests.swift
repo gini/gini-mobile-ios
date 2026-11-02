@@ -619,6 +619,16 @@ struct GiniNetworkingScreenAPICoordinatorWeroFallbackGateTests {
         }
     }
 
+    @Test("Flag unset → never routes back (nil fallback branch of ?? false)")
+    func flagUnsetReturnsFalse() throws {
+        try GiniCaptureTestsHelper.withWeroFlag(nil) {
+            let decision = GiniNetworkingScreenAPICoordinator
+                .shouldRouteBackToCameraForWeroFallback(pages: [weroCandidatePage],
+                                                        extractionResult: emptyResult())
+            #expect(decision == false)
+        }
+    }
+
     @Test("Flag on + no QR page → false (no candidate to recover)")
     func noQRPageReturnsFalse() throws {
         try GiniCaptureTestsHelper.withWeroFlag(true) {
