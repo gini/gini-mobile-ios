@@ -22,7 +22,14 @@ Common failures:
 
 CI builds (TestFlight + Firebase App Distribution) write `.env.local` from GitHub Secrets in a `Setup .env.local` workflow step; no local file is checked in.
 
-The Health example app will follow the same pattern at `HealthSDK/GiniHealthSDKExample/.env.local` as part of PP-3923.
+The **Health example app** (`GiniHealthSDKExample`) uses the same mechanism, with its own gitignored `HealthSDK/GiniHealthSDKExample/.env.local`:
+
+1. `cp HealthSDK/GiniHealthSDKExample/.env.example HealthSDK/GiniHealthSDKExample/.env.local`
+2. Fill in the 4 required keys: `GINI_CLIENT_ID`, `GINI_CLIENT_PASSWORD`, `GINI_CLIENT_DOMAIN`, `FIREBASE_API_KEY`. Health does not have CX or stage credentials.
+3. The pre-commit hook already covers the Health path once `git config core.hooksPath .githooks` has been activated.
+4. Bootstrap the generated file before the first build:
+   `SRCROOT="$PWD/HealthSDK/GiniHealthSDKExample" ./scripts/generate_credentials.sh`
+5. Open `GiniMobile.xcworkspace` and build `GiniHealthSDKExample`.
 
 ## Generate SBOM JSONs manually
 
