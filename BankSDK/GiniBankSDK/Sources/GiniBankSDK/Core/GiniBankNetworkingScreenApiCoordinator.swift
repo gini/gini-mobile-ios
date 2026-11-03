@@ -274,7 +274,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                self.deliverAnalysisResult(result)
                 documentService.resetToInitialState()
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -557,7 +557,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
-        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+        deliverAnalysisResult(analysisResult)
         documentService.resetToInitialState()
     }
 
@@ -676,7 +676,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             document: documentService.document,
                                             candidates: result.candidates)
                 sendAnalyticsEventSDKClose()
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                self.deliverAnalysisResult(result)
 
                 if !isCrossBorderPayment() {
                     self.giniBankConfiguration.lineItems = result.lineItems
@@ -1102,7 +1102,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                self.deliverAnalysisResult(result)
 
                 self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
                 self.sendSkontoTransferSummary(extractions: extractions)
