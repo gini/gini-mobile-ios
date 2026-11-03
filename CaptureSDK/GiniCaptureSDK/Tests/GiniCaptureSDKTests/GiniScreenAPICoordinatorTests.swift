@@ -471,6 +471,32 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
         }
     }
 
+    @Test("Flag unset → pass-through (nil fallback branch of ?? false)")
+    func weroLabelPassesThroughWhenFlagUnset() throws {
+        let input = try loadWeroFixtureResult("wero_type_only")
+        GiniCaptureTestsHelper.withWeroFlag(nil) {
+            let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
+                input,
+                scannedPayload: sampleScannedPayload
+            )
+            #expect(output === input,
+                    "Nil flag must fail-closed via ?? false so no mapping fires without an opt-in")
+        }
+    }
+
+    @Test("Empty extractions array + flag on → pass-through (contains short-circuit)")
+    func emptyExtractionsPassThrough() throws {
+        let input = ExtractionResult(extractions: [], candidates: [:])
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
+                input,
+                scannedPayload: sampleScannedPayload
+            )
+            #expect(output === input,
+                    "Empty extractions must short-circuit contains(where:) without touching the closure")
+        }
+    }
+
     @Test("Scanned payload nil → pass-through (picture/PDF open-with path)")
     func nilScannedPayloadPassesThrough() throws {
         let input = try loadWeroFixtureResult("wero_type_only")
