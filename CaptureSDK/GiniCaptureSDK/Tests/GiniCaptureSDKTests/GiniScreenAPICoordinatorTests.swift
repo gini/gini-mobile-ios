@@ -484,6 +484,53 @@ struct GiniNetworkingScreenAPICoordinatorWeroMapperTests {
         }
     }
 
+    // MARK: - Key-match branch coverage
+
+    /**
+     The `isWeroPaymentQRCodeTypeExtraction` gate OR's name against entity. Every fixture
+     sets both to the key, so the name-side always short-circuits and the entity side of
+     the OR is never exercised. Here `name` is nil → the entity branch is the only one
+     that can match.
+     */
+    @Test("Nil extraction name + entity classification → mapper still rewrites to Wero")
+    func nilNameWithEntityClassificationMatches() throws {
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: QRCodesExtractor.paymentQRCodeTypeKey,
+                                    value: QRCodesExtractor.weroPaymentQRCodeTypeValue,
+                                    name: nil)
+        let input = ExtractionResult(extractions: [extraction], candidates: [:])
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
+                input,
+                scannedPayload: sampleScannedPayload
+            )
+            try expectWeroResult(output, payload: sampleScannedPayload)
+        }
+    }
+
+    /**
+     Companion of the nil-name case: `name` is set to an unrelated value, so the OR
+     short-circuits past the name branch and only the entity branch can satisfy
+     `matchesKey`.
+     */
+    @Test("Mismatched name + entity classification → mapper still rewrites to Wero")
+    func mismatchedNameWithEntityClassificationMatches() throws {
+        let extraction = Extraction(box: nil,
+                                    candidates: nil,
+                                    entity: QRCodesExtractor.paymentQRCodeTypeKey,
+                                    value: QRCodesExtractor.weroPaymentQRCodeTypeValue,
+                                    name: "unrelatedField")
+        let input = ExtractionResult(extractions: [extraction], candidates: [:])
+        try GiniCaptureTestsHelper.withWeroFlag(true) {
+            let output = GiniNetworkingScreenAPICoordinator.mapWeroExtractions(
+                input,
+                scannedPayload: sampleScannedPayload
+            )
+            try expectWeroResult(output, payload: sampleScannedPayload)
+        }
+    }
+
     // MARK: - Keyword independence
 
     /**
