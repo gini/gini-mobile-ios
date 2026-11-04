@@ -18,6 +18,7 @@ protocol SettingsViewModelDelegate: AnyObject {
 
 final class SettingsViewModel {
     static private(set) var shouldCloseSDKAfterTenSeconds = false
+    static private(set) var sdkPresentationStyle: UIModalPresentationStyle = .overFullScreen
     private var giniConfiguration: GiniBankConfiguration
     private var settingsButtonStates: SettingsButtonStates
     private var documentValidationsState: DocumentValidationsState
@@ -302,7 +303,28 @@ final class SettingsViewModel {
                                                             isSwitchOn: documentValidationsState.isSwitchOn)))
         debugSection.items.append(.switchOption(data: .init(type: .closeSDK,
                                                             isSwitchOn: Self.shouldCloseSDKAfterTenSeconds)))
+        debugSection.items.append(.segmentedOption(data: SDKPresentationSegmentedOptionModel(selectedIndex: selectedPresentationIndex)))
         return debugSection
+    }
+
+    private var selectedPresentationIndex: Int {
+        switch Self.sdkPresentationStyle {
+        case .overFullScreen: return 0
+        case .fullScreen:     return 1
+        case .pageSheet:      return 2
+        case .formSheet:      return 3
+        default:              return 0
+        }
+    }
+
+    func handleSDKPresentationStyleOption(selectedIndex: Int) {
+        switch selectedIndex {
+        case 0: Self.sdkPresentationStyle = .overFullScreen
+        case 1: Self.sdkPresentationStyle = .fullScreen
+        case 2: Self.sdkPresentationStyle = .pageSheet
+        case 3: Self.sdkPresentationStyle = .formSheet
+        default: Self.sdkPresentationStyle = .overFullScreen
+        }
     }
 
     func handleOnToggle(at indexPath: IndexPath, isSwitchOn: Bool) {
