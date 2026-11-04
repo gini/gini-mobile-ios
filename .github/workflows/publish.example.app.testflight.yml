@@ -66,10 +66,15 @@ on:
         default: ''
         type: string
       use_env_local:
-        description: 'When true, write .env.local from the per-key secrets below so the Bank example app build phase can generate Credentials.swift. Mutually exclusive with the legacy plist/manager/plist paths above.'
+        description: 'When true, write .env.local from the per-key secrets below so the example app build phase can generate Credentials.swift. Mutually exclusive with the legacy plist/manager/plist paths above.'
         required: false
         default: false
         type: boolean
+      env_local_path:
+        description: 'Path to the .env.local file to write when use_env_local is true. Defaults to the Bank example app path for backward compatibility with callers that predate PP-3923.'
+        required: false
+        default: 'BankSDK/GiniBankSDKExample/.env.local'
+        type: string
     secrets:
       MATCH_GIT_URL:
         required: true
@@ -148,7 +153,8 @@ jobs:
             echo "FIREBASE_API_KEY secret is empty — refusing to ship placeholder API key (app would crash at launch)" >&2
             exit 1
           fi
-          cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
+          mkdir -p "$(dirname "${{ inputs.env_local_path }}")"
+          cat > "${{ inputs.env_local_path }}" <<ENV
           GINI_CLIENT_ID=$GINI_CLIENT_ID
           GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
           GINI_CLIENT_DOMAIN=gini.net

@@ -24,9 +24,11 @@ DerivedData
 BankSDK/GiniBankSDKExample/.env.local
 BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
 BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist
+HealthSDK/GiniHealthSDKExample/.env.local
 
 # Generated Credentials.swift (produced by scripts/generate_credentials.sh)
 BankSDK/GiniBankSDKExample/Generated/
+HealthSDK/GiniHealthSDKExample/Generated/
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/

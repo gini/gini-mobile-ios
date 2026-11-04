@@ -29,8 +29,10 @@ setup_case() {
     # Mirror the repo shape so the hook's path patterns match.
     mkdir -p BankSDK/GiniBankSDKExample/GiniBankSDKExample
     mkdir -p BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank
+    mkdir -p HealthSDK/GiniHealthSDKExample
     mkdir -p .githooks
     env_local_path="BankSDK/GiniBankSDKExample/.env.local"
+    health_env_local_path="HealthSDK/GiniHealthSDKExample/.env.local"
     cp "$HOOK" .githooks/pre-commit
     chmod +x .githooks/pre-commit
     git config core.hooksPath .githooks
@@ -126,6 +128,17 @@ else
     pass=$((pass + 1))
     echo "  ✓ stderr does not mention the unrelated file"
 fi
+teardown_case
+
+# ───── Case 5: staging the Health .env.local is rejected ─────
+setup_case "Case 5: staging Health .env.local rejected"
+echo "GINI_CLIENT_ID=secret" > "$health_env_local_path"
+git add -f "$health_env_local_path"
+stderr_file="$tmp_root/stderr.txt"
+git commit -m "attempt" 2>"$stderr_file"
+rc=$?
+assert_exit_code $rc 1 "commit rejected"
+assert_stderr_contains "$stderr_file" "HealthSDK/GiniHealthSDKExample/.env.local" "stderr lists Health .env.local"
 teardown_case
 
 echo

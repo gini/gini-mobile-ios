@@ -11,6 +11,7 @@ protected_paths=(
     "BankSDK/GiniBankSDKExample/.env.local"
     "BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist"
     "BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist"
+    "HealthSDK/GiniHealthSDKExample/.env.local"
 )
 
 # Only check adds / modifications; deletions of a protected path are safe
