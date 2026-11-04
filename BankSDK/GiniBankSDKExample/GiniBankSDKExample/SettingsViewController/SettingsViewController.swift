@@ -220,6 +220,8 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             viewModel.handleProductTagOption(selectedIndex: newData.selectedIndex)
         } else if newData is SDKTypeSegmentedOptionModel {
             handleSDKTypeOption(index: newData.selectedIndex)
+        } else if newData is SDKPresentationSegmentedOptionModel {
+            viewModel.handleSDKPresentationStyleOption(selectedIndex: newData.selectedIndex)
         }
     }
 

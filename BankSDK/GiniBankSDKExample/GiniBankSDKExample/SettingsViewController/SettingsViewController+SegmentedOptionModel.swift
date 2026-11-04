@@ -76,6 +76,22 @@ struct ProductTagSegmentedOptionModel: SegmentedOptionModelProtocol {
     }
 }
 
+struct SDKPresentationSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return ["Over Full Screen", "Full Screen", "Page Sheet", "Form Sheet"]
+    }
+
+    var title: String {
+        return "SDK Presentation Style"
+    }
+
+    var description: String? {
+        return "How the bank presents the SDK — spike PP-3938 uses this to exercise the mismatch modal at different presentation levels."
+    }
+}
+
 struct SDKTypeSegmentedOptionModel: SegmentedOptionModelProtocol {
     var selectedIndex: Int = 0
 
