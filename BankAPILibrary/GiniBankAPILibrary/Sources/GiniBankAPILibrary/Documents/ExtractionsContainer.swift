@@ -9,12 +9,17 @@ import Foundation
 struct ExtractionsContainer {
     let extractions: [Extraction]
     let compoundExtractions: CompoundExtractions?
+    let fraudSignalsRaw: [[Extraction]]?
     let candidates: [String: [Extraction.Candidate]]
 
     enum CodingKeys: String, CodingKey {
         case extractions
         case compoundExtractions
         case candidates
+    }
+
+    private enum FraudSignalsKey: String, CodingKey {
+        case fraudSignals
     }
 }
 
@@ -29,6 +34,20 @@ extension ExtractionsContainer: Decodable {
                                                       forKey: .extractions)
         compoundExtractions = try container.decodeIfPresent(CompoundExtractions.self,
                                                             forKey: .compoundExtractions)
+
+        if let compoundContainer = try? container.nestedContainer(keyedBy: FraudSignalsKey.self,
+                                                                  forKey: .compoundExtractions),
+           let rawFraudSignals = try compoundContainer.decodeIfPresent([[String: Extraction]].self,
+                                                                       forKey: .fraudSignals) {
+            fraudSignalsRaw = rawFraudSignals.map { dictionary in
+                dictionary.map { key, extraction in
+                    extraction.name = key
+                    return extraction
+                }
+            }
+        } else {
+            fraudSignalsRaw = nil
+        }
 
         self.candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,
                                                        forKey: .candidates) ?? [:]
