@@ -11,10 +11,10 @@ import Foundation
 /**
  Reads `ExtractionResult.fraudSignalsRaw` and projects it to typed `FraudSignal`s.
 
- Pure value transform, mirroring Android's `FraudSignalsParser` (PR #1028):
+ Pure value transform:
  - Elements with an unknown `signalCode`, or a missing/empty `severity` or `iban`,
    are skipped so a new backend signal never breaks the flow.
- - `IBAN_COUNTRY_MISMATCH` additionally requires `creditorCountry`.
+ - `.ibanCountryMismatch` additionally requires `creditorCountry`.
  - Results are deduplicated by `code` — the first element for a given code wins.
 
  Never throws.

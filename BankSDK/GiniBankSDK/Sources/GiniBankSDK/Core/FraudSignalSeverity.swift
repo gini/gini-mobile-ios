@@ -8,9 +8,10 @@
 import Foundation
 
 /**
- Severity levels for a fraud signal, matching the backend vocabulary from PP-3952
- and the Android reference (`FraudSignalSeverity` in PR #1028). An unknown value
- returns `nil` from `init(apiValue:)` so a new severity never breaks the flow.
+ Severity levels for a fraud signal.
+
+ An unknown value returns `nil` from `from(apiValue:)` so a new severity never
+ breaks the flow — it is silently dropped by `FraudSignalMapper`.
  */
 internal enum FraudSignalSeverity: String {
     case stop = "STOP"

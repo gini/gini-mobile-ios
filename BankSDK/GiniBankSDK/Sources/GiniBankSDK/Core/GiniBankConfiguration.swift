@@ -822,15 +822,16 @@ public final class GiniBankConfiguration: NSObject {
         return updatedCompoundExtractions
     }
 
-    /// Key for the fraud-signal compound extraction. Must never appear in feedback payloads.
+    /**
+     Key for the fraud-signal compound extraction. Must never appear in feedback payloads.
+     */
     internal static let fraudSignalsFeedbackKey = "fraudSignals"
 
     /**
-     Defensive filter mirroring Android's `FraudSignalsExtractions.withoutFraudSignals(…)`:
-     removes the `fraudSignals` key from a feedback payload if it is ever reintroduced
-     upstream. `GiniBankConfiguration` builds its own dictionaries and never copies the
-     key in — this strip is belt-and-braces so a future refactor cannot regress the
-     invariant that fraud signals stay SDK-internal.
+     Defensive filter that removes the `fraudSignals` key from a feedback payload if it
+     is ever reintroduced upstream. `GiniBankConfiguration` builds its own dictionaries
+     and never copies the key in — this strip is belt-and-braces so a future refactor
+     cannot regress the invariant that fraud signals stay SDK-internal.
      */
     internal static func stripFraudSignals(_ compoundExtractions: [String: [[Extraction]]]?) -> [String: [[Extraction]]]? {
         guard var filtered = compoundExtractions else { return nil }

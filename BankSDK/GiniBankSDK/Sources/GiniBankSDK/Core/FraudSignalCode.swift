@@ -11,14 +11,18 @@ import Foundation
  Fraud-signal codes the SDK understands.
 
  The raw backend `signalCode` string is case-sensitive and matches an enum case
- one-for-one. An unknown value returns `nil` from `init(apiValue:)` so a new
+ one-for-one. An unknown value returns `nil` from `from(apiValue:)` so a new
  backend code never breaks the flow — it is silently dropped by `FraudSignalMapper`.
  */
 internal enum FraudSignalCode: String {
-    /// The IBAN in the payment QR code matches none of the IBANs printed on the document.
+    /**
+     The IBAN in the payment QR code matches none of the IBANs printed on the document.
+     */
     case qrPrintedIbanMismatch = "QR_PRINTED_IBAN_MISMATCH"
 
-    /// The country of the delivered IBAN differs from the payment recipient's country.
+    /**
+     The country of the delivered IBAN differs from the payment recipient's country.
+     */
     case ibanCountryMismatch = "IBAN_COUNTRY_MISMATCH"
 
     /**
