@@ -32,6 +32,14 @@ final public class ExtractionResult: NSObject {
     public var crossBorderPayment: [[Extraction]]?
 
     /**
+     The raw `fraudSignals` compound extraction groups, kept for the SDK's own
+     fraud-warning pipeline. SPI-gated so integrators never see fraud-signal data
+     on the public surface and never echo it back as feedback.
+     */
+    @_spi(GiniCaptureInternal)
+    public var fraudSignalsRaw: [[Extraction]]?
+
+    /**
      The extraction candidates.
      */
     public let candidates: [String: [Extraction.Candidate]]
@@ -57,5 +65,6 @@ final public class ExtractionResult: NSObject {
                   skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   crossBorderPayment: extractionsContainer.compoundExtractions?.crossBorderPayment,
                   candidates: extractionsContainer.candidates)
+        self.fraudSignalsRaw = extractionsContainer.fraudSignalsRaw
     }
 }
