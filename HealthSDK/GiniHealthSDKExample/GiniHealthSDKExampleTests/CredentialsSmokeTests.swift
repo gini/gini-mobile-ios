@@ -5,7 +5,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
-import XCTest
+import Testing
 @testable import GiniHealthSDKExample
 
 /**
@@ -18,20 +18,23 @@ import XCTest
  generator wrote is observable through the global call sites the Health
  example app uses.
  */
-final class CredentialsSmokeTests: XCTestCase {
+@Suite("CredentialsManager — generated enum re-export")
+struct CredentialsSmokeTests {
 
-    func testCredentialsEnumExposesAllKeys() {
+    @Test("Generated Credentials enum exposes every expected key")
+    func credentialsEnumExposesAllKeys() {
         /// Compile-time proof the generated enum has every expected field.
         /// If the generator shape drifts, this suite fails to build.
-        XCTAssertFalse(Credentials.clientID.isEmpty,
-                       "`.env.local` must populate GINI_CLIENT_ID before this suite runs.")
+        #expect(!Credentials.clientID.isEmpty,
+                "`.env.local` must populate GINI_CLIENT_ID before this suite runs.")
         _ = Credentials.clientPassword
         _ = Credentials.clientDomain
     }
 
-    func testGlobalsMatchGeneratedEnum() {
-        XCTAssertEqual(clientID, Credentials.clientID)
-        XCTAssertEqual(clientPassword, Credentials.clientPassword)
-        XCTAssertEqual(clientDomain, Credentials.clientDomain)
+    @Test("CredentialsManager globals mirror the generated Credentials enum")
+    func globalsMatchGeneratedEnum() {
+        #expect(clientID == Credentials.clientID)
+        #expect(clientPassword == Credentials.clientPassword)
+        #expect(clientDomain == Credentials.clientDomain)
     }
 }
