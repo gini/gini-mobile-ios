@@ -165,6 +165,7 @@ final class MockCaptureNetworkDelegate: NSObject, GiniCaptureNetworkDelegate {
 
     private(set) var displayedErrorTypes: [ErrorType] = []
     private(set) var noResultsCallCount = 0
+    private(set) var invalidQRMessageCallCount = 0
     private(set) var uploadCompletedDocuments: [GiniCaptureDocument] = []
     private(set) var uploadFailedCallCount = 0
 
@@ -174,6 +175,14 @@ final class MockCaptureNetworkDelegate: NSObject, GiniCaptureNetworkDelegate {
 
     func tryDisplayNoResultsScreen() {
         noResultsCallCount += 1
+    }
+
+    /**
+     `@objc optional` on `AnalysisDelegate`; the Wero camera fallback path
+     (`performWeroFallbackIfNeeded`) invokes this to pop back to the camera.
+     */
+    func tryDisplayInvalidQRMessage() {
+        invalidQRMessageCallCount += 1
     }
 
     func uploadDidComplete(for document: GiniCaptureDocument) {

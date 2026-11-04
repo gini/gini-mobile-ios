@@ -28,6 +28,11 @@ import GiniUtilites
 
      */
     func tryDisplayNoResultsScreen()
+
+    /**
+     Routes the user back to the camera and surfaces the "unsupported QR code" feedback.
+     */
+    @objc optional func tryDisplayInvalidQRMessage()
 }
 
 /**

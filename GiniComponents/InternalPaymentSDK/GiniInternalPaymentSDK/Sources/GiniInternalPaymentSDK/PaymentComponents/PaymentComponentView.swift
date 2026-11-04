@@ -49,6 +49,7 @@ public final class PaymentComponentView: UIView {
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         button.accessibilityLabel = viewModel.strings.ctaLabelText
+        button.accessibilityIdentifier = "paymentComponent.continueToOverview"
         return button
     }()
     
@@ -108,6 +109,21 @@ public final class PaymentComponentView: UIView {
         setupGestures()
         setupAccessibility()
         updateBottomStackOrientation()
+        bindToViewModelUpdates()
+    }
+
+    /**
+     Rebinds bank/button state and pay-button colors to the resolved provider on each emission.
+     */
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            guard let self else { return }
+            self.updateAvailableViews()
+            self.updateButtonsViews()
+            self.payInvoiceButton.customConfigure(text: self.viewModel.strings.ctaLabelText,
+                                                  textColor: self.viewModel.paymentProviderColors?.text.toColor(),
+                                                  backgroundColor: self.viewModel.paymentProviderColors?.background.toColor())
+        }
     }
 
     private func setupAccessibility() {
@@ -154,6 +170,7 @@ public final class PaymentComponentView: UIView {
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
         selectBankButton.accessibilityLabel = viewModel.selectBankButtonText
         selectBankButton.accessibilityHint = viewModel.strings.selectYourBankAccessibilityHint
+        selectBankButton.accessibilityIdentifier = "paymentComponent.selectBank"
         selectBankButton.heightAnchor.constraint(greaterThanOrEqualToConstant: heightConstantSelectBankButton).isActive = true
     }
 

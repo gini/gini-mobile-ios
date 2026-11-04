@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 protocol GiniInputAccessoryViewDelegate: AnyObject {
     func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView)
@@ -62,14 +63,13 @@ final class GiniInputAccessoryView: UIView {
 
     weak var delegate: GiniInputAccessoryViewDelegate?
     private var currentIndex: Int = 0
+    private var toolbarHeightConstraint: NSLayoutConstraint?
 
     // MARK: - Initialization
 
     init(fields: [UIView]) {
-        let toolbarHeight: Int = 44
-
         self.textFields = fields
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: Constants.innerToolbarHeight))
         setupView()
         updateButtonStates()
     }
@@ -78,16 +78,56 @@ final class GiniInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /**
+     Reports the toolbar height so UIKit sizes the accessory view to match.
+     */
+    override var intrinsicContentSize: CGSize {
+        if shouldUseExpandedLayout {
+            return CGSize(width: UIView.noIntrinsicMetric, height: currentInnerToolbarHeight)
+        }
+        return super.intrinsicContentSize
+    }
+
+    /**
+     Updates the toolbar height on rotation when the vertical size class changes.
+     */
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.verticalSizeClass != traitCollection.verticalSizeClass else {
+            return
+        }
+        toolbarHeightConstraint?.constant = currentInnerToolbarHeight
+        invalidateIntrinsicContentSize()
+    }
+
+    private var shouldUseExpandedLayout: Bool {
+        if #available(iOS 26, *) {
+            return true
+        }
+        return false
+    }
+
+    /**
+     Returns 44pt on iOS 15–25, 50pt on iOS 26+ portrait, 44pt on iOS 26+ landscape.
+     */
+    private var currentInnerToolbarHeight: CGFloat {
+        guard shouldUseExpandedLayout else { return Constants.innerToolbarHeight }
+        return traitCollection.verticalSizeClass == .compact
+            ? Constants.iOS26InnerToolbarHeightCompact
+            : Constants.iOS26InnerToolbarHeight
+    }
+
     // MARK: - Setup
     private func setupView() {
         addSubview(toolbar)
 
-        NSLayoutConstraint.activate([
-            toolbar.topAnchor.constraint(equalTo: topAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+        toolbar.giniMakeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(currentInnerToolbarHeight)
+            self.toolbarHeightConstraint = make.constraint(for: .height)
+        }
 
         setupToolbarItems()
     }
@@ -135,5 +175,11 @@ final class GiniInputAccessoryView: UIView {
 
     @objc private func cancelTapped() {
         delegate?.inputAccessoryViewDidCancel(self)
+    }
+
+    private enum Constants {
+        static let innerToolbarHeight: CGFloat = 44
+        static let iOS26InnerToolbarHeight: CGFloat = 50
+        static let iOS26InnerToolbarHeightCompact: CGFloat = 44
     }
 }

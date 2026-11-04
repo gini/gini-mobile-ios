@@ -27,3 +27,17 @@ public struct PoweredByGiniStrings {
         self.poweredByGiniText = poweredByGiniText
     }
 }
+
+/**
+ Groups the configuration and strings needed to build a `PoweredByGiniViewModel`.
+ */
+public struct PoweredByGiniBundle {
+    public let configuration: PoweredByGiniConfiguration
+    public let strings: PoweredByGiniStrings
+
+    public init(configuration: PoweredByGiniConfiguration,
+                strings: PoweredByGiniStrings) {
+        self.configuration = configuration
+        self.strings = strings
+    }
+}

@@ -13,5 +13,6 @@
     "creditNoteHintEnabled": true,
     "paymentScheduleHintEnabled": true,
     "unsupportedQRCodeWarningEnabled": false,
-    "ingredientBrandScreens": []
+    "ingredientBrandScreens": [],
+    "weroQRCodeScanningEnabled": false
 }

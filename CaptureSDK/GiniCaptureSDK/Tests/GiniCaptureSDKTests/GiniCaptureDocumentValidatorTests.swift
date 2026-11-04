@@ -216,3 +216,194 @@ struct GiniCaptureDocumentValidatorSwiftTests {
         }
     }
 }
+
+// MARK: - Wero gate on unknown QR payloads
+
+/**
+ Pins the `.none` branch of `GiniCaptureDocumentValidator.validate(qrCode:)`.
+ When the Wero flag is off (or unset), an unknown QR payload throws
+ `qrCodeFormatNotValid` so the camera surfaces the "unsupported QR code"
+ alert and no upload fires. When the flag is on, the same payload passes
+ validation so the networking layer can upload it for backend classification.
+ Payloads with a recognised `qrCodeFormat` never reach the gate.
+
+ Shares the cross-suite flag lock on `GiniCaptureTestsHelper` with `GiniQRCodeDocumentTests`
+ so the two can't race on the global `weroQRCodeScanningEnabled` key.
+ */
+@Suite("GiniCaptureDocumentValidator — Wero gate on unknown QR payloads", .serialized)
+struct GiniCaptureDocumentValidatorWeroGateTests {
+
+    private let configuration = GiniConfiguration()
+
+    /// An EPC QR missing the IBAN field — `qrCodeFormat` resolves to `nil`,
+    /// so the validator reaches the Wero gate.
+    private let unknownPayload = "BCD\r\n001\r\n2\r\nSCT\r\nGENODES1NUE\r\nAUTOHAUS MARTIN WURST GMBH"
+
+    /// A valid EPC06912 payload — `qrCodeFormat == .epc06912`, so validation
+    /// takes the strict-IBAN path and never consults the Wero flag.
+    private let validEpcPayload = "BCD\n001\n2\nSCT\nGENODEF1KIL\nMax Mustermann\nDE52210900070088299309\nEUR12.00\n\nRef\n"
+
+    @Test("Flag off: unknown payload throws qrCodeFormatNotValid")
+    func unknownPayloadThrowsWhenFlagOff() {
+        GiniCaptureTestsHelper.withWeroFlag(false) {
+            let document = GiniQRCodeDocument(scannedString: unknownPayload)
+            #expect(throws: DocumentValidationError.qrCodeFormatNotValid) {
+                try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+            }
+        }
+    }
+
+    @Test("Flag unset: unknown payload throws qrCodeFormatNotValid (fail-closed)")
+    func unknownPayloadThrowsWhenFlagUnset() {
+        GiniCaptureTestsHelper.withWeroFlag(nil) {
+            let document = GiniQRCodeDocument(scannedString: unknownPayload)
+            #expect(throws: DocumentValidationError.qrCodeFormatNotValid) {
+                try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+            }
+        }
+    }
+
+    @Test("Flag on: unknown payload passes validation")
+    func unknownPayloadPassesWhenFlagOn() {
+        GiniCaptureTestsHelper.withWeroFlag(true) {
+            let document = GiniQRCodeDocument(scannedString: unknownPayload)
+            #expect(document.qrCodeFormat == nil,
+                    "Precondition: unknown payload must resolve to a nil qrCodeFormat so the Wero gate is reached")
+            #expect(throws: Never.self) {
+                try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+            }
+        }
+    }
+
+    @Test("Flag on: recognised EPC payload still takes its format-specific path")
+    func recognisedPayloadIgnoresFlag() {
+        GiniCaptureTestsHelper.withWeroFlag(true) {
+            let document = GiniQRCodeDocument(scannedString: validEpcPayload)
+            #expect(document.qrCodeFormat != nil,
+                    "Precondition: a valid EPC payload must resolve to a non-nil qrCodeFormat")
+            #expect(throws: Never.self) {
+                try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+            }
+        }
+    }
+
+    @Test("Flag off: recognised EPC payload still takes its format-specific path")
+    func recognisedPayloadIgnoresDisabledFlag() {
+        GiniCaptureTestsHelper.withWeroFlag(false) {
+            let document = GiniQRCodeDocument(scannedString: validEpcPayload)
+            #expect(document.qrCodeFormat != nil,
+                    "Precondition: a valid EPC payload must resolve to a non-nil qrCodeFormat")
+            #expect(throws: Never.self) {
+                try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+            }
+        }
+    }
+}
+
+// MARK: - Residual uncovered paths
+
+/**
+ Fills the file-level branches that the other suites don't reach:
+ the custom-validation error propagation, the `.default` branch of
+ `validateType` (non-QR/PDF/Image documents), the non-image guard
+ inside `validate(imageDocument:)`, the early-return in
+ `ensurePDFUnlocked` when `CGPDFDocument` cannot decode a
+ PDF-signatured payload, and the EPS/SPD QR branches with both the
+ happy and empty-IBAN paths through `validateNonEmptyIBAN`.
+ */
+@Suite("GiniCaptureDocumentValidator — residual uncovered paths")
+struct GiniCaptureDocumentValidatorResidualPathsTests {
+
+    private let configuration = GiniConfiguration()
+
+    @Test("Custom validation failure propagates the custom error")
+    func customValidationFailurePropagatesError() throws {
+        let config = GiniConfiguration()
+        let expectedMessage = "custom-rejection"
+        config.customDocumentValidations = { _ in
+            .failure(withError: CustomDocumentValidationError(message: expectedMessage))
+        }
+        let image = GiniCaptureTestsHelper.loadImage(named: "invoice")
+        let jpegData = try #require(image.jpegData(compressionQuality: 0.2))
+        let document = GiniImageDocument(data: jpegData, imageSource: .camera)
+
+        var thrown: Error?
+        do {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: config)
+        } catch {
+            thrown = error
+        }
+
+        let custom = try #require(thrown as? CustomDocumentValidationError)
+        #expect(custom.message == expectedMessage)
+    }
+
+    @Test("XML document hits the default branch of validateType without throwing")
+    func xmlDocumentPassesTypeValidation() {
+        let document = GiniXMLDocument(data: Data("<x/>".utf8), fileName: "sample.xml")
+        #expect(throws: Never.self) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+
+    @Test("Non-image bytes wrapped in GiniImageDocument throw .fileFormatNotValid")
+    func nonImageBytesThrowFileFormatNotValid() {
+        /// First byte `0x6E` ('n') is not a known image signature, so
+        /// `Data.mimeType` falls through to `application/octet-stream` and
+        /// `isImage` returns false — the first guard inside
+        /// `validate(imageDocument:)` throws.
+        let document = GiniImageDocument(data: Data("not-an-image".utf8), imageSource: .external)
+        #expect(throws: DocumentValidationError.fileFormatNotValid) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+
+    @Test("PDF-signatured garbage short-circuits ensurePDFUnlocked and later trips the page-count guard")
+    func pdfSignaturedGarbageSkipsUnlockCheck() {
+        /// First byte `0x25` ('%') maps to `application/pdf`, so `isPDF`
+        /// returns true. `CGPDFDocument` fails on the malformed body, which
+        /// triggers the `else { return }` branch in `ensurePDFUnlocked`.
+        /// `numberPages` stays at 0, so `ensurePageCountValid` throws
+        /// `pdfPageLengthExceeded` next.
+        let document = GiniPDFDocument(data: Data("%PDF-not-a-real-pdf".utf8), fileName: nil)
+        #expect(throws: DocumentValidationError.pdfPageLengthExceeded) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+
+    @Test("EPS 4 Mobile payload passes validateContainsKey")
+    func epsPayloadPassesValidation() {
+        /// The EPS extractor always sets `epsCodeUrlKey` to the raw payload,
+        /// so this exercises the happy path of `validateContainsKey`.
+        let document = GiniQRCodeDocument(scannedString: "epspayment://example.com/abc")
+        #expect(document.qrCodeFormat == .eps4mobile,
+                "Precondition: the payload must resolve to the eps4mobile format")
+        #expect(throws: Never.self) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+
+    @Test("SPD payload with ACC passes validateNonEmptyIBAN")
+    func spdPayloadWithIBANPassesValidation() {
+        let payload = "SPD*1.0*ACC:CZ6508000000192000145399*AM:1000*CC:CZK"
+        let document = GiniQRCodeDocument(scannedString: payload)
+        #expect(document.qrCodeFormat == .spd,
+                "Precondition: the payload must resolve to the spd format")
+        #expect(document.extractedParameters["iban"] == "CZ6508000000192000145399")
+        #expect(throws: Never.self) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+
+    @Test("SPD payload without ACC throws .qrCodeFormatNotValid")
+    func spdPayloadWithoutIBANThrows() {
+        let payload = "SPD*1.0*AM:1000*CC:CZK"
+        let document = GiniQRCodeDocument(scannedString: payload)
+        #expect(document.qrCodeFormat == .spd)
+        #expect(document.extractedParameters["iban"] == nil,
+                "Precondition: the payload must omit the iban so the gate fires")
+        #expect(throws: DocumentValidationError.qrCodeFormatNotValid) {
+            try GiniCaptureDocumentValidator.validate(document, withConfig: configuration)
+        }
+    }
+}

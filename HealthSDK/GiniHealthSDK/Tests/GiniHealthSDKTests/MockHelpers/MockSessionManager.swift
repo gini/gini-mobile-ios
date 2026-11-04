@@ -9,8 +9,14 @@ import UIKit
 @testable import GiniHealthAPILibrary
 
 final class MockSessionManager: SessionManagerProtocol {
+    /**
+     Overrides the `.paymentProviders` endpoint to return `.failure(error)` when set.
+     Leave `nil` to preserve the default success-with-fixture behaviour.
+     */
+    var paymentProvidersFailure: GiniError?
+
     // MARK: - Public Test Constants (keep for backward compatibility)
-    
+
     static let payableDocumentID = MockTestData.Documents.payable
     static let notPayableDocumentID = MockTestData.Documents.notPayable
     static let failurePayableDocumentID = MockTestData.Documents.failurePayable
@@ -99,6 +105,10 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(providerResponse))
                 }
             case .paymentProviders:
+                if let paymentProvidersFailure {
+                    completion(.failure(paymentProvidersFailure))
+                    break
+                }
                 let paymentProvidersResponse: [PaymentProviderResponse]? = load(fromFile: "providers")
                 if let paymentProvidersResponse = paymentProvidersResponse as? T.ResponseType {
                     completion(.success(paymentProvidersResponse))

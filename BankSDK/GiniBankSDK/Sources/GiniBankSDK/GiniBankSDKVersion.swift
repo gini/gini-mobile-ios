@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniBankSDKVersion = "4.6.0"
+public let GiniBankSDKVersion = "4.7.0"

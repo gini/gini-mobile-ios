@@ -201,7 +201,8 @@ final class UITestMockBackend {
         "paymentDueHintEnabled",
         "creditNoteHintEnabled",
         "paymentScheduleHintEnabled",
-        "unsupportedQRCodeWarningEnabled"
+        "unsupportedQRCodeWarningEnabled",
+        "weroQRCodeScanningEnabled"
     ]
 
     /**
@@ -449,7 +450,8 @@ extension UITestMockBackend: ClientConfigurationServiceProtocol {
                                                 creditNoteHintEnabled: flag("creditNoteHintEnabled"),
                                                 paymentScheduleHintEnabled: flag("paymentScheduleHintEnabled"),
                                                 unsupportedQRCodeWarningEnabled: flag("unsupportedQRCodeWarningEnabled"),
-                                                ingredientBrandScreens: ingredientBrandScreens)
+                                                ingredientBrandScreens: ingredientBrandScreens,
+                                                weroQRCodeScanningEnabled: flag("weroQRCodeScanningEnabled"))
         completion(.success(configuration))
     }
 }

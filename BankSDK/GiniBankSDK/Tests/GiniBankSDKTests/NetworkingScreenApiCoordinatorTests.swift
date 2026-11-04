@@ -588,6 +588,115 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
                        "100.00:EUR",
                        "Candidates should be carried over unchanged")
     }
+
+    /**
+     Covers the Wero camera-fallback branch of
+     `presentNextScreen(extractionResult:delegate:)` by driving the full
+     `didReview → startAnalysisWithReturnAssistant → handleSuccessfulAnalysis
+      → presentNextScreen → performWeroFallbackIfNeeded → return` chain
+     through the public `GiniCaptureDelegate.didReview` entry point.
+     `StubAnalysisCaptureNetworkService` fires the analysis completion with
+     an empty extraction set, and the Wero QR page seeded on `pages` makes
+     `performWeroFallbackIfNeeded` return `true` so the branch body runs.
+     */
+    @MainActor
+    func testDidReviewWithWeroCandidateFiresCameraFallback() async throws {
+        let originalFlag = GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled
+        GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = true
+        defer { GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled = originalFlag }
+
+        let originalMultipage = configuration.multipageEnabled
+        configuration.multipageEnabled = true
+        defer { configuration.multipageEnabled = originalMultipage }
+
+        let stubService = StubAnalysisCaptureNetworkService(
+            extractionResult: ExtractionResult(extractions: [], candidates: [:])
+        )
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(
+            resultsDelegate: resultsDelegate,
+            configuration: configuration,
+            documentMetadata: metadata,
+            trackingDelegate: trackingDelegate,
+            captureNetworkService: stubService,
+            configurationService: nil
+        )
+
+        let weroDocument = GiniQRCodeDocument(scannedString: "https://pay.weropay.eu/pay/v1/token=xyz")
+        coordinator.pages = [GiniCapturePage(document: weroDocument)]
+
+        let networkDelegate = MockCaptureNetworkDelegate()
+        coordinator.didReview(documents: [weroDocument], networkDelegate: networkDelegate)
+
+        /// Pump the main run loop so the DispatchQueue hops and the
+        /// `Task { await handleSuccessfulAnalysis(...) }` all land before
+        /// the assertion. Bounded so a hang surfaces as a failed assertion.
+        for _ in 0..<40 where networkDelegate.invalidQRMessageCallCount == 0 {
+            await Task.yield()
+            await MainActor.run {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+            }
+        }
+
+        XCTAssertEqual(networkDelegate.invalidQRMessageCallCount, 1,
+                       "Wero fallback branch inside presentNextScreen must notify the delegate")
+    }
+
+    /**
+     Confirmed Wero (`weroPaymentQRCodeUrl` in extractions) delivers directly
+     via the results callback and bypasses `presentNextScreen`.
+     */
+    @MainActor
+    func testConfirmedWeroResultDeliversDirectlyAndSkipsFeatureFlows() async throws {
+        let originalMultipage = configuration.multipageEnabled
+        configuration.multipageEnabled = true
+        defer { configuration.multipageEnabled = originalMultipage }
+
+        /// TransactionDocs on → regression tripwire for the direct-delivery path.
+        let originalTransactionDocs = configuration.transactionDocsEnabled
+        configuration.transactionDocsEnabled = true
+        defer { configuration.transactionDocsEnabled = originalTransactionDocs }
+
+        let fixtureResult = try loadWeroDeliveryFixture("confirmed_wero_url")
+        let weroPayload = try XCTUnwrap(fixtureResult.extractions.first?.value)
+        let stubService = StubAnalysisCaptureNetworkService(extractionResult: fixtureResult)
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(
+            resultsDelegate: resultsDelegate,
+            configuration: configuration,
+            documentMetadata: metadata,
+            trackingDelegate: trackingDelegate,
+            captureNetworkService: stubService,
+            configurationService: nil
+        )
+
+        let weroDocument = GiniQRCodeDocument(scannedString: weroPayload)
+        coordinator.pages = [GiniCapturePage(document: weroDocument)]
+
+        let networkDelegate = MockCaptureNetworkDelegate()
+        coordinator.didReview(documents: [weroDocument], networkDelegate: networkDelegate)
+
+        /// Pump main until delivery; bounded so a hang surfaces as failed assertion.
+        for _ in 0..<40 where resultsDelegate.deliveredResultsCount == 0 {
+            await Task.yield()
+            await MainActor.run {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.02))
+            }
+        }
+
+        XCTAssertEqual(resultsDelegate.deliveredResultsCount, 1,
+                       "Confirmed Wero result must deliver directly through the results callback")
+        let delivered = try XCTUnwrap(resultsDelegate.deliveredResults.first)
+        XCTAssertEqual(delivered.extractions[QRCodesExtractor.weroPaymentQRCodeUrlKey]?.value,
+                       weroPayload,
+                       "The delivered Wero URL must match the scanned payload")
+        /// URL-only shape (EPS parity): no document, images or line items.
+        XCTAssertNil(delivered.document, "Wero delivery must carry no document")
+        XCTAssertEqual(delivered.images.count, 0, "Wero delivery must carry no images")
+        XCTAssertEqual(delivered.lineItems?.count, 0, "Wero delivery must carry no line items")
+        XCTAssertEqual(networkDelegate.invalidQRMessageCallCount, 0,
+                       "Direct-delivery Wero must not trigger the camera fallback")
+        XCTAssertEqual(networkDelegate.noResultsCallCount, 0,
+                       "Direct-delivery Wero must not trigger the no-results screen")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
@@ -596,7 +705,8 @@ extension ClientConfiguration {
     init(alreadyPaidHintEnabled: Bool = false,
          paymentDueHintEnabled: Bool = false,
          creditNoteHintEnabled: Bool = false,
-         paymentScheduleHintEnabled: Bool = false) {
+         paymentScheduleHintEnabled: Bool = false,
+         weroQRCodeScanningEnabled: Bool = false) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -610,6 +720,32 @@ extension ClientConfiguration {
                   paymentDueHintEnabled: paymentDueHintEnabled,
                   creditNoteHintEnabled: creditNoteHintEnabled,
                   paymentScheduleHintEnabled: paymentScheduleHintEnabled,
-                  unsupportedQRCodeWarningEnabled: false)
+                  unsupportedQRCodeWarningEnabled: false,
+                  ingredientBrandScreens: [],
+                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
     }
+}
+
+// MARK: - Wero delivery fixture loader
+
+private struct WeroDeliveryExtractionFixture: Decodable {
+    let entity: String
+    let value: String
+}
+
+/**
+ Loads a named variant from `Resources/wero_delivery_fixtures.json` into an
+ `ExtractionResult`. Mirrors the CaptureSDK side so test data lives in JSON
+ rather than inline literals.
+ */
+private func loadWeroDeliveryFixture(_ variant: String) throws -> ExtractionResult {
+    let data = try XCTUnwrap(FileLoader.loadFile(withName: "wero_delivery_fixtures", ofType: "json"),
+                             "wero_delivery_fixtures.json missing from Bank SDK test bundle")
+    let bundle = try JSONDecoder().decode([String: [String: WeroDeliveryExtractionFixture]].self, from: data)
+    let raw = try XCTUnwrap(bundle[variant], "variant \(variant) not found in fixture")
+    let extractions = raw.map { key, value in
+        Extraction(box: nil, candidates: nil,
+                   entity: value.entity, value: value.value, name: key)
+    }
+    return ExtractionResult(extractions: extractions, candidates: [:])
 }

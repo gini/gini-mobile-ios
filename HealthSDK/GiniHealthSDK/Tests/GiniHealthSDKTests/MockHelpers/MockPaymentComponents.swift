@@ -6,6 +6,7 @@
 
 
 import UIKit
+import Combine
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 @testable import GiniInternalPaymentSDK
@@ -73,6 +74,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     func paymentView() -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: healthSelectedPaymentProvider,
+            paymentProvidersPublisher: Just([]).eraseToAnyPublisher(),
             primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
             secondaryButtonConfiguration: configurationProvider.secondaryButtonConfiguration,
             configuration: configurationProvider.paymentComponentsConfiguration,
@@ -92,6 +94,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     
     func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
+                                                                   paymentProvidersPublisher: Just([]).eraseToAnyPublisher(),
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
                                                                    strings: stringsProvider.banksBottomStrings,
@@ -112,11 +115,14 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
 
     func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
+        let providersBundle = PaymentProvidersBundle(initial: paymentProviders.map { $0.toHealthPaymentProvider() },
+                                                     publisher: Just([]).eraseToAnyPublisher())
+        let poweredByGiniBundle = PoweredByGiniBundle(configuration: giniHealth.poweredByGiniConfiguration,
+                                                      strings: giniHealth.poweredByGiniStrings)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: providersBundle,
                                                         configuration: giniHealth.paymentInfoConfiguration,
                                                         strings: giniHealth.paymentInfoStrings,
-                                                        poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: giniHealth.poweredByGiniStrings,
+                                                        poweredByGini: poweredByGiniBundle,
                                                         clientConfiguration: configurationProvider.clientConfiguration)
         let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController

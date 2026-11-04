@@ -1,0 +1,8 @@
+{
+    "confirmed_wero_url": {
+        "weroPaymentQRCodeUrl": {
+            "entity": "weroPaymentQRCodeUrl",
+            "value": "https://pay.weropay.eu/pay/v1/token=xyz"
+        }
+    }
+}

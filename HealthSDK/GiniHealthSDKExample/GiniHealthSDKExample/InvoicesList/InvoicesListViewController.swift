@@ -91,16 +91,21 @@ final class InvoicesListViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.uploadInvoicesText, 
+        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.uploadInvoicesText,
                                                 style: .plain,
                                                 target: self,
                                                 action: #selector(uploadInvoicesButtonTapped))
+        /// Stable XCUITest hook — the user-facing title ("↑ Invoices") carries a
+        /// Unicode arrow glyph and is locale-dependent, which makes a label-based
+        /// query fragile.
+        uploadInvoiceItem.accessibilityIdentifier = "invoicesList.uploadInvoices"
         self.navigationItem.rightBarButtonItem = uploadInvoiceItem
 
         let cancelItem = UIBarButtonItem(title: viewModel.cancelText,
                                          style: .plain,
                                          target: self,
                                          action: #selector(dismissViewControllerTapped))
+        cancelItem.accessibilityIdentifier = "invoicesList.cancel"
         self.navigationItem.leftBarButtonItem = cancelItem
     }
     

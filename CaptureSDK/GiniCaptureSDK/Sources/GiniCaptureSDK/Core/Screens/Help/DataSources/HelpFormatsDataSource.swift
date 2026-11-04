@@ -15,7 +15,7 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     // MARK: - Properties
 
     lazy var qrCodeItemSections: [HelpFormatsCollectionSection] = {
-        let sections: [HelpFormatsCollectionSection] = [
+        var sections: [HelpFormatsCollectionSection] = [
             (title: Strings.section1Title,
              formats: [
                 Strings.qrcodeItem1,
@@ -31,6 +31,10 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
              ],
              formatsImage: Images.supportedFormatsIcon)
         ]
+
+        if GiniCaptureUserDefaultsStorage.weroQRCodeScanningEnabled ?? false {
+            sections[0].formats.append(Strings.qrcodeItem11)
+        }
 
         return sections
     }()
@@ -215,6 +219,11 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         static let qrcodeItem10 = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.qrcode.item.10",
             comment: "QR code type item 10"
+        )
+
+        static let qrcodeItem11 = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.qrcode.item.11",
+            comment: "QR code type item 11"
         )
 
         static let section1Item1 = NSLocalizedStringPreferredFormat(

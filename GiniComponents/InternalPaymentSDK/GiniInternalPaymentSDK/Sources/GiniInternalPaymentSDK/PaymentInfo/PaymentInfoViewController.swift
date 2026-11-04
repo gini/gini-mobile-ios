@@ -154,6 +154,18 @@ public final class PaymentInfoViewController: GiniBottomSheetViewController {
         self.setupView()
         bindToTableViewSizeUpdates()
         observeContentSizeCategory()
+        bindToViewModelUpdates()
+    }
+
+    /**
+     Reloads bank icons and refreshes the collection's accessibility label on each emission.
+     */
+    private func bindToViewModelUpdates() {
+        viewModel.onPaymentProvidersUpdated = { [weak self] in
+            guard let self else { return }
+            self.bankIconsCollectionView.reloadData()
+            self.bankIconsCollectionView.accessibilityLabel = self.viewModel.accessibilityBankListText
+        }
     }
 
     public override func viewWillAppear(_ animated: Bool) {

@@ -7,7 +7,9 @@
 
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
+import GiniUtilites
 
 struct FAQSection {
     let title: String
@@ -38,31 +40,51 @@ public final class PaymentInfoViewModel {
     var shouldShowBrandedView: Bool {
         clientConfiguration?.ingredientBrandType == .fullVisible
     }
-    
+
     var accessibilityBankListText: String {
         let bankNames = paymentProviders.map { $0.name }.joined(separator: ", ")
-        
+
         return String(format: strings.supportedBanksText, bankNames)
     }
 
-    public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
+    /// Fires on main when `paymentProviders` is replaced by a new publisher emission.
+    var onPaymentProvidersUpdated: (() -> Void)?
+
+    private var cancellables = Set<AnyCancellable>()
+
+    public init(paymentProviders: PaymentProvidersBundle,
                 configuration: PaymentInfoConfiguration,
                 strings: PaymentInfoStrings,
-                poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings,
+                poweredByGini: PoweredByGiniBundle,
                 clientConfiguration: ClientConfiguration?,
                 configurationRefresher: (() -> PaymentInfoConfiguration?)? = nil) {
-        self.paymentProviders = paymentProviders
+        self.paymentProviders = paymentProviders.initial
         self.configuration = configuration
         self.configurationRefresher = configurationRefresher
         self.strings = strings
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGini.configuration,
+                                                             strings: poweredByGini.strings)
         self.clientConfiguration = clientConfiguration
 
         payBillsDescriptionLinkAttributes = [.font: configuration.links.font]
 
         configurePayBillsGiniLink()
         setupQuestions()
+
+        paymentProviders.publisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] providers in
+                self?.applyPaymentProviders(providers)
+            }
+            .store(in: &cancellables)
+    }
+
+    /**
+     Dedupes by id and notifies the view, matching the parent's snapshot invariant.
+     */
+    private func applyPaymentProviders(_ raw: GiniHealthAPILibrary.PaymentProviders) {
+        self.paymentProviders = raw.uniqued(by: { $0.id })
+        self.onPaymentProvidersUpdated?()
     }
     
     private func setupQuestions() {

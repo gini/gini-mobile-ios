@@ -32,14 +32,22 @@ extension PaymentComponentsController {
             self?.isLoading = false
             switch result {
             case let .success(paymentProviders):
-                self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
-                self?.sortPaymentProviders()
-                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
-                self?.delegate?.didFetchedPaymentProviders()
+                self?.applyFetchedPaymentProviders(paymentProviders)
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
             }
         }
+    }
+
+    /**
+     Applies a freshly fetched payment-provider list: maps, sorts, publishes, selects a default and notifies the delegate.
+     */
+    private func applyFetchedPaymentProviders(_ paymentProviders: PaymentProviders) {
+        let mapped = paymentProviders.map { $0.toHealthPaymentProvider() }
+        let sorted = Self.sortPaymentProviders(mapped)
+        paymentProvidersSubject.send(sorted)
+        selectedPaymentProvider = defaultInstalledPaymentProvider()
+        delegate?.didFetchedPaymentProviders()
     }
     
     /**
@@ -75,16 +83,15 @@ extension PaymentComponentsController {
         return nil
     }
     
-    func sortPaymentProviders() {
-        guard !paymentProviders.isEmpty else { return }
-        self.paymentProviders = paymentProviders
+    /** Pure filter + sort pipeline. Returns the sorted list instead of mutating state. */
+    static func sortPaymentProviders(_ providers: GiniHealthAPILibrary.PaymentProviders) -> GiniHealthAPILibrary.PaymentProviders {
+        guard !providers.isEmpty else { return providers }
+        return providers
             .filter { $0.gpcSupportedPlatforms.contains(.ios) || $0.openWithSupportedPlatforms.contains(.ios) }
             .sorted {
-                // First sort by whether the app scheme can be opened
                 if $0.appSchemeIOS.canOpenURLString() != $1.appSchemeIOS.canOpenURLString() {
                     return $0.appSchemeIOS.canOpenURLString() && !$1.appSchemeIOS.canOpenURLString()
                 }
-                // Then sort by the index if the app scheme condition is the same
                 return ($0.index ?? 0) < ($1.index ?? 0)
             }
     }
@@ -125,6 +132,7 @@ extension PaymentComponentsController {
     func paymentView() -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: healthSelectedPaymentProvider,
+            paymentProvidersPublisher: paymentProvidersPublisher,
             primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
             secondaryButtonConfiguration: configurationProvider.secondaryButtonConfiguration,
             configuration: configurationProvider.paymentComponentsConfiguration,
@@ -135,7 +143,11 @@ extension PaymentComponentsController {
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
             paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
-            clientConfiguration: configurationProvider.clientConfiguration
+            clientConfiguration: configurationProvider.clientConfiguration,
+            selectedProviderResolver: { [weak self] providers in
+                guard let savedId = self?.savedPaymentProvider()?.id else { return nil }
+                return providers.first(where: { $0.id == savedId })
+            }
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -167,6 +179,7 @@ extension PaymentComponentsController {
      */
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
+                                                                   paymentProvidersPublisher: paymentProvidersPublisher,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
                                                                    strings: stringsProvider.banksBottomStrings,
@@ -286,11 +299,14 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying payment information.
      */
     func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
+        let providersBundle = PaymentProvidersBundle(initial: paymentProviders,
+                                                     publisher: paymentProvidersPublisher)
+        let poweredByGiniBundle = PoweredByGiniBundle(configuration: configurationProvider.poweredByGiniConfiguration,
+                                                      strings: stringsProvider.poweredByGiniStrings)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: providersBundle,
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
-                                                        poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        poweredByGini: poweredByGiniBundle,
                                                         clientConfiguration: configurationProvider.clientConfiguration,
                                                         configurationRefresher: { [weak self] in
                                                             self?.configurationProvider.paymentInfoConfiguration

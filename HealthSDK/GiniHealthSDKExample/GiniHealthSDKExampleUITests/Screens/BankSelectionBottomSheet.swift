@@ -1,0 +1,72 @@
+//
+//  BankSelectionBottomSheet.swift
+//  GiniHealthSDKExampleUITests
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+//
+
+import XCTest
+
+/**
+ UIKit bank-selection bottom sheet (`BanksBottomView` + `BankSelectionTableViewCell`).
+
+ Cells are keyed by bank name (identifier set in
+ `BankSelectionTableViewCell.updateCell(_:)`), so each bank is addressable
+ without relying on cell index or on-screen position.
+ */
+final class BankSelectionBottomSheet {
+
+    let app: XCUIApplication
+
+    init(app: XCUIApplication) {
+        self.app = app
+    }
+
+    /**
+     Returns the cell for the given bank display name
+     (e.g. `cell(for: "Bank")`).
+     */
+    func cell(for bankName: String) -> XCUIElement {
+        app.cells["bankSelection.cell.\(bankName)"]
+    }
+
+    /**
+     Returns the first available bank cell — any row whose identifier starts
+     with `bankSelection.cell.`. Used by tests that only need to prove the
+     flow landed in Payment Review and don't care which specific bank is
+     picked.
+     */
+    var anyBankCell: XCUIElement {
+        app.cells
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@", "bankSelection.cell."))
+            .firstMatch
+    }
+
+    /**
+     Returns the first bank cell that is *not* currently marked selected
+     (i.e. its `.selected` accessibility trait is unset — see
+     `BankSelectionTableViewCell.updateCell(_:)`). Used by tests that must
+     actually flip the selection state to prove the picker wires the choice
+     back into the Payment Component — tapping the already-selected row
+     dismisses the sheet without exercising the selection pipeline.
+     */
+    var firstUnselectedBankCell: XCUIElement {
+        app.cells
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@ AND selected == NO", "bankSelection.cell."))
+            .firstMatch
+    }
+
+    /**
+     Call after tapping the sheet's trigger (Payment Component `selectBank`
+     or Payment Review `bankPicker`). Short settle lets the sheet attach;
+     30 s tolerates slow `paymentProviders` fetches on BrowserStack without
+     masking a genuine "no providers configured" failure.
+     */
+    @discardableResult
+    func waitForProviders(timeout: TimeInterval = 30, settle: TimeInterval = 1.0) -> Bool {
+        if settle > 0 {
+            Thread.sleep(forTimeInterval: settle)
+        }
+        return anyBankCell.waitForExistence(timeout: timeout)
+    }
+}
