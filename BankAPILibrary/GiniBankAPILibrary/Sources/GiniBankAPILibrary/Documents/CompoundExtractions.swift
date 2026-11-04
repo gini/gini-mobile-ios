@@ -6,6 +6,16 @@
 
 import Foundation
 
+/**
+ Models the `compoundExtractions` nested object returned by `/documents/{id}/extractions`.
+
+ The `fraudSignals` key that lives alongside `lineItems`, `skontoDiscounts`, and
+ `crossBorderPayment` under the same JSON object is deliberately not a member of this
+ struct. It is decoded one level up on `ExtractionsContainer` and surfaced as
+ `ExtractionResult.fraudSignalsRaw` behind the `GiniCaptureInternal` SPI, so fraud
+ signals never leak onto integrator-visible surfaces (`AnalysisResult`) and never
+ participate in `sendFeedback` payloads.
+ */
 struct CompoundExtractions: Decodable {
     var lineItems: [[Extraction]]?
     var skontoDiscounts: [[Extraction]]?
