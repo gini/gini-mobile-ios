@@ -4,11 +4,12 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import Testing
 @_spi(GiniCaptureInternal) @testable import GiniBankAPILibrary
 @testable import GiniBankSDK
-import XCTest
 
-final class FraudSignalMapperTests: XCTestCase {
+@Suite("FraudSignalMapper")
+struct FraudSignalMapperTests {
 
     // MARK: - Fixture helpers
 
@@ -51,27 +52,29 @@ final class FraudSignalMapperTests: XCTestCase {
 
     // MARK: - Happy path
 
-    func testMapsBothKnownSignals() {
+    @Test("Both known signals map to typed values with the right code, severity, IBAN and creditor country")
+    func mapsBothKnownSignals() throws {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(),
                                     ibanCountryMismatchGroup()])
 
         let signals = FraudSignalMapper.map(extractionResult: result)
 
-        XCTAssertEqual(signals.count, 2)
-        XCTAssertEqual(signals[0].code, .qrPrintedIbanMismatch)
-        XCTAssertEqual(signals[0].severity, .check)
-        XCTAssertEqual(signals[0].iban, "DE89370400440532013000")
-        XCTAssertNil(signals[0].creditorCountry)
+        try #require(signals.count == 2)
+        #expect(signals[0].code == .qrPrintedIbanMismatch)
+        #expect(signals[0].severity == .check)
+        #expect(signals[0].iban == "DE89370400440532013000")
+        #expect(signals[0].creditorCountry == nil)
 
-        XCTAssertEqual(signals[1].code, .ibanCountryMismatch)
-        XCTAssertEqual(signals[1].severity, .stop)
-        XCTAssertEqual(signals[1].iban, "GB29NWBK60161331926819")
-        XCTAssertEqual(signals[1].creditorCountry, "DE")
+        #expect(signals[1].code == .ibanCountryMismatch)
+        #expect(signals[1].severity == .stop)
+        #expect(signals[1].iban == "GB29NWBK60161331926819")
+        #expect(signals[1].creditorCountry == "DE")
     }
 
     // MARK: - Error paths
 
-    func testDropsUnknownSignalCode() {
+    @Test("Unknown signalCode is dropped; a known sibling still survives")
+    func dropsUnknownSignalCode() {
         let unknown: [Extraction] = [
             extraction(name: "signalCode", value: "FOO_BAR"),
             extraction(name: "severity", value: "CHECK"),
@@ -81,11 +84,12 @@ final class FraudSignalMapperTests: XCTestCase {
 
         let signals = FraudSignalMapper.map(extractionResult: result)
 
-        XCTAssertEqual(signals.count, 1)
-        XCTAssertEqual(signals.first?.code, .qrPrintedIbanMismatch)
+        #expect(signals.count == 1)
+        #expect(signals.first?.code == .qrPrintedIbanMismatch)
     }
 
-    func testEmptyWhenAllSignalsUnknown() {
+    @Test("Every element having an unknown signalCode yields no typed signals")
+    func emptyWhenAllSignalsUnknown() {
         let unknown: [Extraction] = [
             extraction(name: "signalCode", value: "FOO_BAR"),
             extraction(name: "severity", value: "CHECK"),
@@ -93,67 +97,75 @@ final class FraudSignalMapperTests: XCTestCase {
         ]
         let result = resultWithRaw([unknown])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testEmptyWhenRawIsNil() {
+    @Test("A nil fraudSignalsRaw yields an empty array, not a crash")
+    func emptyWhenRawIsNil() {
         let result = resultWithRaw(nil)
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testEmptyWhenRawIsEmpty() {
+    @Test("An empty fraudSignalsRaw yields an empty array")
+    func emptyWhenRawIsEmpty() {
         let result = resultWithRaw([])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testDropsSignalMissingSeverity() {
+    @Test("Element missing severity is dropped")
+    func dropsSignalMissingSeverity() {
         let missingSeverity: [Extraction] = [
             extraction(name: "signalCode", value: "QR_PRINTED_IBAN_MISMATCH"),
             extraction(name: "iban", value: "DE89370400440532013000")
         ]
         let result = resultWithRaw([missingSeverity])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testDropsSignalWithUnknownSeverity() {
+    @Test("Element with an unknown severity vocabulary is dropped")
+    func dropsSignalWithUnknownSeverity() {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(severity: "MAYBE")])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testDropsSignalWithEmptyIban() {
+    @Test("Element with whitespace-only IBAN is dropped")
+    func dropsSignalWithEmptyIban() {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(iban: "   ")])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testDropsIBANCountryMismatchMissingCreditorCountry() {
+    @Test("IBAN_COUNTRY_MISMATCH without creditorCountry is dropped")
+    func dropsIBANCountryMismatchMissingCreditorCountry() {
         let result = resultWithRaw([ibanCountryMismatchGroup(creditorCountry: nil)])
 
-        XCTAssertTrue(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
     }
 
-    func testKeepsQRPrintedIBANMismatchWithoutCreditorCountry() {
+    @Test("QR_PRINTED_IBAN_MISMATCH without creditorCountry is kept")
+    func keepsQRPrintedIBANMismatchWithoutCreditorCountry() throws {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup()])
 
         let signals = FraudSignalMapper.map(extractionResult: result)
-        XCTAssertEqual(signals.count, 1)
-        XCTAssertNil(signals.first?.creditorCountry)
+        try #require(signals.count == 1)
+        #expect(signals.first?.creditorCountry == nil)
     }
 
     // MARK: - Dedup
 
-    func testDedupesByCodeKeepingFirst() {
+    @Test("Two groups mapping to the same code dedupe — the first element wins")
+    func dedupesByCodeKeepingFirst() {
         let firstQR = qrPrintedIbanMismatchGroup(iban: "DE89370400440532013000")
         let secondQR = qrPrintedIbanMismatchGroup(iban: "DE11111111111111111111")
         let result = resultWithRaw([firstQR, secondQR])
 
         let signals = FraudSignalMapper.map(extractionResult: result)
 
-        XCTAssertEqual(signals.count, 1)
-        XCTAssertEqual(signals.first?.iban, "DE89370400440532013000")
+        #expect(signals.count == 1)
+        #expect(signals.first?.iban == "DE89370400440532013000")
     }
 }
