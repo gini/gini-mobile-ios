@@ -32,27 +32,34 @@ struct CompoundExtractions: Decodable {
 
         if let lineItemsArray = try container.decodeIfPresent([[String: Extraction]].self, 
                                                               forKey: .lineItems) {
-            lineItems = mapExtractions(input: lineItemsArray)
+            lineItems = Self.mapExtractions(input: lineItemsArray)
         } else {
             lineItems = nil
         }
         
         if let skontoDiscountArray = try container.decodeIfPresent([[String: Extraction]].self,
                                                                    forKey: .skontoDiscounts) {
-            skontoDiscounts = mapExtractions(input: skontoDiscountArray)
+            skontoDiscounts = Self.mapExtractions(input: skontoDiscountArray)
         } else {
             skontoDiscounts = nil
         }
         
         if let crossBorderPaymentArray = try container.decodeIfPresent([[String: Extraction]].self,
                                                                        forKey: .crossBorderPayment) {
-            crossBorderPayment = mapExtractions(input: crossBorderPaymentArray)
+            crossBorderPayment = Self.mapExtractions(input: crossBorderPaymentArray)
         } else {
             crossBorderPayment = nil
         }
     }
 
-    private func mapExtractions(input: [[String: Extraction]]) -> [[Extraction]] {
+    /**
+     Flattens a decoded `[[String: Extraction]]` wire shape — one array element
+     per group, each a dictionary keyed by extraction name — into `[[Extraction]]`
+     with each `Extraction.name` assigned from its dictionary key. Shared by this
+     struct's `init(from:)` and by `ExtractionsContainer`'s nested-container
+     decode of `fraudSignals`.
+     */
+    internal static func mapExtractions(input: [[String: Extraction]]) -> [[Extraction]] {
         return input.map { dictionary in
             dictionary.map { key, extraction in
                 let modifiedExtraction = extraction

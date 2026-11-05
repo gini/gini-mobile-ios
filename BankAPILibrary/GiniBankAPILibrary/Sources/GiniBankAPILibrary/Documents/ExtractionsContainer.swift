@@ -39,12 +39,7 @@ extension ExtractionsContainer: Decodable {
                                                                   forKey: .compoundExtractions),
            let rawFraudSignals = try compoundContainer.decodeIfPresent([[String: Extraction]].self,
                                                                        forKey: .fraudSignals) {
-            fraudSignalsRaw = rawFraudSignals.map { dictionary in
-                dictionary.map { key, extraction in
-                    extraction.name = key
-                    return extraction
-                }
-            }
+            fraudSignalsRaw = CompoundExtractions.mapExtractions(input: rawFraudSignals)
         } else {
             fraudSignalsRaw = nil
         }
