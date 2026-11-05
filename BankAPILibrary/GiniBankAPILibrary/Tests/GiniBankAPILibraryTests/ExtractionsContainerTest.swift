@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@_spi(GiniCaptureInternal) @testable import GiniBankAPILibrary
+@testable import GiniBankAPILibrary
 
 final class ExtractionsContainerTest: XCTestCase {
     

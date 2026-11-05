@@ -5,7 +5,7 @@
 //
 
 import Testing
-@_spi(GiniCaptureInternal) @testable import GiniBankAPILibrary
+@testable import GiniBankAPILibrary
 @testable import GiniBankSDK
 
 @Suite("FraudSignalMapper")

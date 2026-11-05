@@ -4,7 +4,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
-@_spi(GiniCaptureInternal) @testable import GiniBankAPILibrary
+@testable import GiniBankAPILibrary
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
 import XCTest

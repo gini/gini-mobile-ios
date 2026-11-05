@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@_spi(GiniCaptureInternal) import GiniBankAPILibrary
+import GiniBankAPILibrary
 
 /**
  Reads `ExtractionResult.fraudSignalsRaw` and projects it to typed `FraudSignal`s.
