@@ -593,9 +593,9 @@ public final class GiniBankConfiguration: NSObject {
                                                           bic: bic,
                                                           amountToPayString: amountToPay.formattedString())
 
-        if let lineItems = lineItems {
+if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
-                                         updatedCompoundExtractions: ["lineItems": lineItems])
+                                         updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(["lineItems": lineItems]))
         } else {
             documentService.sendFeedback(with: updatedExtractions,
                                          updatedCompoundExtractions: nil)
@@ -656,7 +656,7 @@ public final class GiniBankConfiguration: NSObject {
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
         let updatedCompoundExtractions = addLineItems(to: [:])
         documentService?.sendFeedback(with: updatedExtractions,
-                                      updatedCompoundExtractions: updatedCompoundExtractions)
+                                      updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions))
     }
 
     /**
@@ -709,10 +709,10 @@ public final class GiniBankConfiguration: NSObject {
         if productTag == .cxExtractions {
             let compoundExtractions = ["crossBorderPayment": [extractionList]]
             documentService?.sendFeedback(with: [],
-                                          updatedCompoundExtractions: compoundExtractions)
+                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(compoundExtractions))
         } else {
             documentService?.sendFeedback(with: extractionList,
-                                          updatedCompoundExtractions: addLineItems(to: [:]))
+                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(addLineItems(to: [:])))
         }
     }
 
@@ -794,7 +794,7 @@ public final class GiniBankConfiguration: NSObject {
                                                             amountToPayString: amountToPayString)
         updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
         documentService?.sendSkontoFeedback(with: updatedExtractions,
-                                            updatedCompoundExtractions: updatedCompoundExtractions,
+                                            updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions),
                                             retryCount: retryCount)
     }
 
@@ -815,6 +815,23 @@ public final class GiniBankConfiguration: NSObject {
         var updatedCompoundExtractions = compoundExtractions ?? [:]
         updatedCompoundExtractions["lineItems"] = lineItems
         return updatedCompoundExtractions
+    }
+
+    /**
+     Key for the fraud-signal compound extraction. Must never appear in feedback payloads.
+     */
+    internal static let fraudSignalsFeedbackKey = "fraudSignals"
+
+    /**
+     Defensive filter that removes the `fraudSignals` key from a feedback payload if it
+     is ever reintroduced upstream. `GiniBankConfiguration` builds its own dictionaries
+     and never copies the key in — this strip is belt-and-braces so a future refactor
+     cannot regress the invariant that fraud signals stay SDK-internal.
+     */
+    internal static func stripFraudSignals(_ compoundExtractions: [String: [[Extraction]]]?) -> [String: [[Extraction]]]? {
+        guard var filtered = compoundExtractions else { return nil }
+        filtered.removeValue(forKey: fraudSignalsFeedbackKey)
+        return filtered
     }
 
     /**

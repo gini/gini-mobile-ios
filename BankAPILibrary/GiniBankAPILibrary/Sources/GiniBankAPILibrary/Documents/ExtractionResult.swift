@@ -32,6 +32,21 @@ final public class ExtractionResult: NSObject {
     public var crossBorderPayment: [[Extraction]]?
 
     /**
+     The raw `fraudSignals` compound extraction groups, kept for the SDK's own
+     fraud-warning pipeline.
+
+     Note: Intended for internal use in Gini SDKs only. Must never be surfaced
+     to integrators via `AnalysisResult` and must never be sent back as feedback.
+
+     `@nonobjc` so the property disappears from the Objective-C runtime (no
+     `valueForKey:`, KVO, or `class_copyPropertyList` access). Writable only
+     from within GiniBankAPILibrary; downstream SDK consumers read, they do
+     not reassign.
+     */
+    @nonobjc
+    public internal(set) var fraudSignalsRaw: [[Extraction]]?
+
+    /**
      The extraction candidates.
      */
     public let candidates: [String: [Extraction.Candidate]]
@@ -57,5 +72,6 @@ final public class ExtractionResult: NSObject {
                   skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   crossBorderPayment: extractionsContainer.compoundExtractions?.crossBorderPayment,
                   candidates: extractionsContainer.candidates)
+        self.fraudSignalsRaw = extractionsContainer.fraudSignalsRaw
     }
 }
