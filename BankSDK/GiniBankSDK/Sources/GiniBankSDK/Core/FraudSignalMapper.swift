@@ -12,6 +12,7 @@ import Foundation
  Reads `ExtractionResult.fraudSignalsRaw` and projects it to typed `FraudSignal`s.
 
  Pure value transform:
+ - Returns `[]` when the `fraudSignalsEnabled` client-configuration flag is off.
  - Elements with an unknown `signalCode`, or a missing/empty `severity` or `iban`,
    are skipped so a new backend signal never breaks the flow.
  - `.ibanCountryMismatch` additionally requires `creditorCountry`.
@@ -26,9 +27,14 @@ internal enum FraudSignalMapper {
      typed `FraudSignal` values.
 
      - Parameter extractionResult: Source of `fraudSignalsRaw`. `nil` raw yields `[]`.
+     - Parameter fraudSignalsEnabled: Client-configuration gate. When `false`, the
+       mapper returns `[]` even if raw signals are present — matches the backend's
+       per-client rollout semantics.
      - Returns: Zero or more typed signals, deduplicated by `code`.
      */
-    static func map(extractionResult: ExtractionResult) -> [FraudSignal] {
+    static func map(extractionResult: ExtractionResult,
+                    fraudSignalsEnabled: Bool) -> [FraudSignal] {
+        guard fraudSignalsEnabled else { return [] }
         guard let rawGroups = extractionResult.fraudSignalsRaw else { return [] }
 
         var seenCodes = Set<FraudSignalCode>()

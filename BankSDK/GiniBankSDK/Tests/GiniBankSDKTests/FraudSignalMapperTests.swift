@@ -57,7 +57,7 @@ struct FraudSignalMapperTests {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(),
                                     ibanCountryMismatchGroup()])
 
-        let signals = FraudSignalMapper.map(extractionResult: result)
+        let signals = FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true)
 
         try #require(signals.count == 2)
         #expect(signals[0].code == .qrPrintedIbanMismatch)
@@ -82,7 +82,7 @@ struct FraudSignalMapperTests {
         ]
         let result = resultWithRaw([unknown, qrPrintedIbanMismatchGroup()])
 
-        let signals = FraudSignalMapper.map(extractionResult: result)
+        let signals = FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true)
 
         #expect(signals.count == 1)
         #expect(signals.first?.code == .qrPrintedIbanMismatch)
@@ -97,21 +97,21 @@ struct FraudSignalMapperTests {
         ]
         let result = resultWithRaw([unknown])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("A nil fraudSignalsRaw yields an empty array, not a crash")
     func emptyWhenRawIsNil() {
         let result = resultWithRaw(nil)
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("An empty fraudSignalsRaw yields an empty array")
     func emptyWhenRawIsEmpty() {
         let result = resultWithRaw([])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("Element missing severity is dropped")
@@ -122,35 +122,35 @@ struct FraudSignalMapperTests {
         ]
         let result = resultWithRaw([missingSeverity])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("Element with an unknown severity vocabulary is dropped")
     func dropsSignalWithUnknownSeverity() {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(severity: "MAYBE")])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("Element with whitespace-only IBAN is dropped")
     func dropsSignalWithEmptyIban() {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup(iban: "   ")])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("IBAN_COUNTRY_MISMATCH without creditorCountry is dropped")
     func dropsIBANCountryMismatchMissingCreditorCountry() {
         let result = resultWithRaw([ibanCountryMismatchGroup(creditorCountry: nil)])
 
-        #expect(FraudSignalMapper.map(extractionResult: result).isEmpty)
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
     @Test("QR_PRINTED_IBAN_MISMATCH without creditorCountry is kept")
     func keepsQRPrintedIBANMismatchWithoutCreditorCountry() throws {
         let result = resultWithRaw([qrPrintedIbanMismatchGroup()])
 
-        let signals = FraudSignalMapper.map(extractionResult: result)
+        let signals = FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true)
         try #require(signals.count == 1)
         #expect(signals.first?.creditorCountry == nil)
     }
@@ -163,9 +163,26 @@ struct FraudSignalMapperTests {
         let secondQR = qrPrintedIbanMismatchGroup(iban: "DE11111111111111111111")
         let result = resultWithRaw([firstQR, secondQR])
 
-        let signals = FraudSignalMapper.map(extractionResult: result)
+        let signals = FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true)
 
         #expect(signals.count == 1)
         #expect(signals.first?.iban == "DE89370400440532013000")
+    }
+
+    // MARK: - Client-configuration flag
+
+    @Test("Flag off suppresses even valid raw signals")
+    func flagOffReturnsEmptyEvenWhenRawSignalsPresent() {
+        let result = resultWithRaw([qrPrintedIbanMismatchGroup(),
+                                    ibanCountryMismatchGroup()])
+
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: false).isEmpty)
+    }
+
+    @Test("Flag off with nil raw yields an empty array, not a crash")
+    func flagOffWithNilRawIsEmpty() {
+        let result = resultWithRaw(nil)
+
+        #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: false).isEmpty)
     }
 }
