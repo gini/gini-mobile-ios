@@ -51,7 +51,7 @@ extension NetworkingScreenApiCoordinatorTests {
         return result
     }
 
-    // MARK: R12 — AnalysisResult boundary
+    // MARK: - AnalysisResult boundary
 
     func testAnalysisResultHasNoFraudSignalKeysWhenFraudSignalsPresent() {
         let extractionResult = resultWithFraudSignals()
@@ -79,7 +79,7 @@ extension NetworkingScreenApiCoordinatorTests {
                        "Only the top-level extractions should survive — fraud data must not leak")
     }
 
-    // MARK: R13 — feedback hygiene
+    // MARK: - feedback hygiene
 
     func testStripFraudSignalsRemovesFraudKeyFromCompoundExtractions() {
         let dict: [String: [[Extraction]]] = [
