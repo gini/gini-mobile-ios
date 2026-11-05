@@ -33,11 +33,16 @@ final public class ExtractionResult: NSObject {
 
     /**
      The raw `fraudSignals` compound extraction groups, kept for the SDK's own
-     fraud-warning pipeline. SPI-gated so integrators never see fraud-signal data
-     on the public surface and never echo it back as feedback.
+     fraud-warning pipeline. SPI-gated and `@nonobjc` so integrators never see
+     fraud-signal data on the public surface — not from Swift (needs the SPI
+     import) and not from Objective-C (no runtime metadata is emitted for the
+     property, so `valueForKey:`, KVO, and `class_copyPropertyList` all skip it).
+     Writable only from within GiniBankAPILibrary; SPI consumers read, they
+     do not reassign.
      */
     @_spi(GiniCaptureInternal)
-    public var fraudSignalsRaw: [[Extraction]]?
+    @nonobjc
+    public internal(set) var fraudSignalsRaw: [[Extraction]]?
 
     /**
      The extraction candidates.
