@@ -451,7 +451,8 @@ extension UITestMockBackend: ClientConfigurationServiceProtocol {
                                                 paymentScheduleHintEnabled: flag("paymentScheduleHintEnabled"),
                                                 unsupportedQRCodeWarningEnabled: flag("unsupportedQRCodeWarningEnabled"),
                                                 ingredientBrandScreens: ingredientBrandScreens,
-                                                weroQRCodeScanningEnabled: flag("weroQRCodeScanningEnabled"))
+                                                weroQRCodeScanningEnabled: flag("weroQRCodeScanningEnabled"),
+                                                fraudSignalsEnabled: flag("fraudSignalsEnabled"))
         completion(.success(configuration))
     }
 }

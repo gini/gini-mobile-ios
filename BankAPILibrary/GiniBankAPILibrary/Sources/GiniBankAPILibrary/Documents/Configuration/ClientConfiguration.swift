@@ -71,7 +71,7 @@ public struct ClientConfiguration: Codable {
                 unsupportedQRCodeWarningEnabled: Bool,
                 ingredientBrandScreens: [String] = [],
                 weroQRCodeScanningEnabled: Bool?,
-                fraudSignalsEnabled: Bool? = nil) {
+                fraudSignalsEnabled: Bool?) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
