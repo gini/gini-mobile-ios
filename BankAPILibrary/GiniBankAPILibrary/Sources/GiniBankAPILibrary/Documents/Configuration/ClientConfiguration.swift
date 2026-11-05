@@ -53,7 +53,7 @@ public struct ClientConfiguration: Codable {
      - unsupportedQRCodeWarningEnabled: A flag indicating whether the unsupported QR code warning alert is enabled.
      - ingredientBrandScreens: Screen names on which the "Powered by Gini" ingredient brand is shown. An empty array disables it everywhere.
      - weroQRCodeScanningEnabled: A flag indicating whether Wero QR code scanning is enabled. `nil` when the backend omits the key — treated as disabled at every read site so the SDK degrades gracefully when the server-side rollout has not yet reached the integrator.
-     - fraudSignalsEnabled: A flag indicating whether the `fraudSignals` compound extraction is delivered to this client. `nil` when the backend omits the key — treated as disabled at every read site so older integrators continue to work before the server-side rollout reaches them.
+     - fraudSignalsEnabled: A flag indicating whether the `fraudSignals` compound extraction is delivered to this client. `nil` when the backend omits the key — treated as disabled at every read site so the SDK degrades gracefully when the server-side rollout has not yet reached the integrator.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
