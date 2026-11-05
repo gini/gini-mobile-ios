@@ -593,8 +593,7 @@ public final class GiniBankConfiguration: NSObject {
                                                           bic: bic,
                                                           amountToPayString: amountToPay.formattedString())
 
-        /// Fraud signals must never be included in the feedback payload — they are SDK-internal.
-        if let lineItems = lineItems {
+if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(["lineItems": lineItems]))
         } else {
@@ -656,7 +655,6 @@ public final class GiniBankConfiguration: NSObject {
 
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
         let updatedCompoundExtractions = addLineItems(to: [:])
-        /// Fraud signals must never be included in the feedback payload — they are SDK-internal.
         documentService?.sendFeedback(with: updatedExtractions,
                                       updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions))
     }
@@ -710,11 +708,9 @@ public final class GiniBankConfiguration: NSObject {
 
         if productTag == .cxExtractions {
             let compoundExtractions = ["crossBorderPayment": [extractionList]]
-            /// Fraud signals must never be included in the feedback payload — they are SDK-internal.
             documentService?.sendFeedback(with: [],
                                           updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(compoundExtractions))
         } else {
-            /// Fraud signals must never be included in the feedback payload — they are SDK-internal.
             documentService?.sendFeedback(with: extractionList,
                                           updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(addLineItems(to: [:])))
         }
@@ -797,7 +793,6 @@ public final class GiniBankConfiguration: NSObject {
         var updatedCompoundExtractions = addSkontoDiscounts(to: updatedExtractions,
                                                             amountToPayString: amountToPayString)
         updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
-        /// Fraud signals must never be included in the feedback payload — they are SDK-internal.
         documentService?.sendSkontoFeedback(with: updatedExtractions,
                                             updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions),
                                             retryCount: retryCount)
