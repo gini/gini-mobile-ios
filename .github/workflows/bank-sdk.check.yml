@@ -95,23 +95,13 @@ jobs:
         retention-days: 1
     - name: Setup .env.local
       if: ${{ matrix.target == 'GiniBankSDK' }}
-      env:
-        GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
-        GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-        GINI_CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
-        GINI_CX_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
-        FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-      run: |
-        cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
-        GINI_CLIENT_ID=$GINI_CLIENT_ID
-        GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
-        GINI_CLIENT_DOMAIN=gini.net
-        GINI_CX_CLIENT_ID=$GINI_CX_CLIENT_ID
-        GINI_CX_CLIENT_PASSWORD=$GINI_CX_CLIENT_PASSWORD
-        GINI_STAGE_CLIENT_ID=
-        GINI_STAGE_CLIENT_PASSWORD=
-        FIREBASE_API_KEY=$FIREBASE_API_KEY
-        ENV
+      uses: ./.github/actions/setup-env-local
+      with:
+        gini_client_id: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+        gini_client_password: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        gini_cx_client_id: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+        gini_cx_client_password: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+        firebase_api_key: ${{ secrets.FIREBASE_API_KEY }}
 
     # Run example app and run unit and integration tests for both GiniBankSDK and GiniBankSDKPinning
     - name: Build example app and run unit and integration tests

@@ -4,7 +4,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
-import XCTest
+import Testing
 @testable import GiniBankSDKExample
 @testable import GiniBankAPILibrary
 
@@ -18,13 +18,15 @@ import XCTest
  generator wrote is observable through the public `CredentialsManager`
  call sites that the app uses.
  */
-final class CredentialsSmokeTests: XCTestCase {
+@Suite("Credentials smoke tests")
+struct CredentialsSmokeTests {
 
-    func testCredentialsEnumExposesAllKeys() {
-        /// Compile-time proof the generated enum has every expected field.
-        /// If the generator shape drifts, this suite fails to build.
-        XCTAssertFalse(Credentials.clientID.isEmpty,
-                       "`.env.local` must populate GINI_CLIENT_ID before this suite runs.")
+    @Test("Generated Credentials enum exposes every expected key")
+    func credentialsEnumExposesAllKeys() {
+        // Compile-time proof the generated enum has every expected field.
+        // If the generator shape drifts, this suite fails to build.
+        #expect(!Credentials.clientID.isEmpty,
+                "`.env.local` must populate GINI_CLIENT_ID before this suite runs.")
         _ = Credentials.clientPassword
         _ = Credentials.clientDomain
         _ = Credentials.cxClientID
@@ -33,17 +35,19 @@ final class CredentialsSmokeTests: XCTestCase {
         _ = Credentials.stageClientPassword
     }
 
-    func testFetchClientFromBundleProducesClientID() {
+    @Test("fetchClientFromBundle returns the generated clientID triple")
+    func fetchClientFromBundleProducesClientID() {
         let client = CredentialsManager.fetchClientFromBundle()
-        XCTAssertEqual(client.id, Credentials.clientID)
-        XCTAssertEqual(client.secret, Credentials.clientPassword)
-        XCTAssertEqual(client.domain, Credentials.clientDomain)
+        #expect(client.id == Credentials.clientID)
+        #expect(client.secret == Credentials.clientPassword)
+        #expect(client.domain == Credentials.clientDomain)
     }
 
-    func testFetchCXClientFromBundleProducesCXID() {
+    @Test("fetchCXClientFromBundle returns the generated CX ID triple")
+    func fetchCXClientFromBundleProducesCXID() {
         let client = CredentialsManager.fetchCXClientFromBundle()
-        XCTAssertEqual(client.id, Credentials.cxClientID)
-        XCTAssertEqual(client.secret, Credentials.cxClientPassword)
-        XCTAssertEqual(client.domain, Credentials.clientDomain)
+        #expect(client.id == Credentials.cxClientID)
+        #expect(client.secret == Credentials.cxClientPassword)
+        #expect(client.domain == Credentials.clientDomain)
     }
 }
