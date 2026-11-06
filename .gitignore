@@ -19,6 +19,14 @@ DerivedData
 *.hmap
 *.ipa
 .env
+
+# Example-app secret-bearing files — generated or managed outside git.
+BankSDK/GiniBankSDKExample/.env.local
+BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist
+
+# Generated Credentials.swift (produced by scripts/generate_credentials.sh)
+BankSDK/GiniBankSDKExample/Generated/
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
