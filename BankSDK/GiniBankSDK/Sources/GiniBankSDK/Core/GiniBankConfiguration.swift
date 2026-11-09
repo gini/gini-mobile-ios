@@ -595,7 +595,7 @@ public final class GiniBankConfiguration: NSObject {
 
         if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
-                                         updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(["lineItems": lineItems]))
+                                         updatedCompoundExtractions: Self.stripFraudSignals(["lineItems": lineItems]))
         } else {
             documentService.sendFeedback(with: updatedExtractions,
                                          updatedCompoundExtractions: nil)
@@ -656,7 +656,7 @@ public final class GiniBankConfiguration: NSObject {
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
         let updatedCompoundExtractions = addLineItems(to: [:])
         documentService?.sendFeedback(with: updatedExtractions,
-                                      updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions))
+                                      updatedCompoundExtractions: Self.stripFraudSignals(updatedCompoundExtractions))
     }
 
     /**
@@ -709,10 +709,10 @@ public final class GiniBankConfiguration: NSObject {
         if productTag == .cxExtractions {
             let compoundExtractions = ["crossBorderPayment": [extractionList]]
             documentService?.sendFeedback(with: [],
-                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(compoundExtractions))
+                                          updatedCompoundExtractions: Self.stripFraudSignals(compoundExtractions))
         } else {
             documentService?.sendFeedback(with: extractionList,
-                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(addLineItems(to: [:])))
+                                          updatedCompoundExtractions: Self.stripFraudSignals(addLineItems(to: [:])))
         }
     }
 
@@ -794,7 +794,7 @@ public final class GiniBankConfiguration: NSObject {
                                                             amountToPayString: amountToPayString)
         updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
         documentService?.sendSkontoFeedback(with: updatedExtractions,
-                                            updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(updatedCompoundExtractions),
+                                            updatedCompoundExtractions: Self.stripFraudSignals(updatedCompoundExtractions),
                                             retryCount: retryCount)
     }
 
