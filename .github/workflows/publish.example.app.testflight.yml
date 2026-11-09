@@ -93,6 +93,10 @@ on:
         required: false
       GINI_MOBILE_CI_CX_PASSWORD:
         required: false
+      MOBILE_CI_APP_ID:
+        required: true
+      MOBILE_CI_APP_PRIVATE_KEY:
+        required: true
 
 jobs:
   upload-testflight:
@@ -113,6 +117,14 @@ jobs:
           ruby-version: '3.3.6'
           bundler-cache: true
 
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
       - name: Download Signing Certificates & Profiles (Match)
         env:
           APP_IDENTIFIER: >-
@@ -121,6 +133,7 @@ jobs:
               format(',{0}', inputs.bundle_identifier_extension) || ''
             }}
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |

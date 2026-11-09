@@ -64,12 +64,21 @@ jobs:
         run: |
             plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
 
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
           APP_IDENTIFIER: ${{ vars.HEALTH_BUNDLE_ID }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           APP_SCHEME: ${{ vars.HEALTH_TARGET_NAME }}

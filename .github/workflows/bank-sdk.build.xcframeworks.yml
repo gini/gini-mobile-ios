@@ -34,12 +34,21 @@ jobs:
         run: |
           ./build-GiniBankSDK-XCFrameworks.sh
 
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
+
       - name: Download profiles
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
           APP_IDENTIFIER: ${{ vars.BANK_BUNDLE_IDS }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         with:
