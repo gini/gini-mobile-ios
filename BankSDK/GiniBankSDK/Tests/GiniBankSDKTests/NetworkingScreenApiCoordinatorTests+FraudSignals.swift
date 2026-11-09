@@ -82,33 +82,33 @@ struct FraudSignalBoundaryTests {
 
     // MARK: - feedback hygiene
 
-    @Test("stripFraudSignals removes the fraudSignals key and keeps every sibling")
-    func stripFraudSignalsRemovesFraudKeyFromCompoundExtractions() {
+    @Test("strip removes the fraudSignals key and keeps every sibling")
+    func stripRemovesFraudKeyFromCompoundExtractions() {
         let dict: [String: [[Extraction]]] = [
             "lineItems": [[Extraction(box: nil, candidates: nil, entity: "amount",
                                       value: "1:EUR", name: "baseGross")]],
-            GiniBankConfiguration.fraudSignalsFeedbackKey: [qrPrintedIbanMismatchGroup()]
+            FraudSignalFeedbackScrubber.fraudSignalsKey: [qrPrintedIbanMismatchGroup()]
         ]
 
-        let stripped = GiniBankConfiguration.stripFraudSignals(dict)
+        let stripped = FraudSignalFeedbackScrubber.strip(dict)
 
         #expect(Set(stripped?.keys ?? [:].keys) == Set(["lineItems"]),
-                "stripFraudSignals must drop the fraudSignals key and keep everything else")
+                "strip must drop the fraudSignals key and keep everything else")
     }
 
-    @Test("stripFraudSignals returns nil when the input is nil")
-    func stripFraudSignalsPassesThroughNil() {
-        #expect(GiniBankConfiguration.stripFraudSignals(nil) == nil)
+    @Test("strip returns nil when the input is nil")
+    func stripPassesThroughNil() {
+        #expect(FraudSignalFeedbackScrubber.strip(nil) == nil)
     }
 
-    @Test("stripFraudSignals is a no-op when the fraudSignals key is already absent")
-    func stripFraudSignalsIsNoOpWhenAbsent() {
+    @Test("strip is a no-op when the fraudSignals key is already absent")
+    func stripIsNoOpWhenAbsent() {
         let dict: [String: [[Extraction]]] = [
             "lineItems": [[Extraction(box: nil, candidates: nil, entity: "amount",
                                       value: "1:EUR", name: "baseGross")]]
         ]
 
-        let stripped = GiniBankConfiguration.stripFraudSignals(dict)
+        let stripped = FraudSignalFeedbackScrubber.strip(dict)
 
         #expect(stripped?.keys.sorted() == ["lineItems"])
     }
@@ -129,7 +129,7 @@ struct FraudSignalBoundaryTests {
                               amountToPay: ExtractionAmount(value: Decimal(99.99), currency: .EUR))
 
         #expect(serviceMock.sendFeedbackCallCount == 1)
-        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+        #expect(serviceMock.capturedCompoundExtractions?[FraudSignalFeedbackScrubber.fraudSignalsKey] == nil,
                 "cleanup(paymentRecipient:…) must never emit fraudSignals in feedback")
     }
 
@@ -144,7 +144,7 @@ struct FraudSignalBoundaryTests {
                                                         "bic": "NWBKGB2L"])
 
         #expect(serviceMock.sendFeedbackCallCount == 1)
-        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+        #expect(serviceMock.capturedCompoundExtractions?[FraudSignalFeedbackScrubber.fraudSignalsKey] == nil,
                 "CX sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
     }
 
@@ -162,7 +162,7 @@ struct FraudSignalBoundaryTests {
                                                         "amountToPay": "950.00:EUR"])
 
         #expect(serviceMock.sendFeedbackCallCount == 1)
-        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+        #expect(serviceMock.capturedCompoundExtractions?[FraudSignalFeedbackScrubber.fraudSignalsKey] == nil,
                 "SEPA sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
     }
 }
