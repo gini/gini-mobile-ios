@@ -10,8 +10,8 @@ import Foundation
  Fraud-signal codes the SDK understands.
 
  The raw backend `signalCode` string is case-sensitive and matches an enum case
- one-for-one. An unknown value returns `nil` from `from(apiValue:)` so a new
- backend code never breaks the flow — it is silently dropped by `FraudSignalMapper`.
+ one-for-one. Unknown values are silently dropped by `FraudSignalMapper` so a new
+ backend code never breaks the flow.
  */
 internal enum FraudSignalCode: String {
     /**
@@ -23,12 +23,4 @@ internal enum FraudSignalCode: String {
      The country of the delivered IBAN differs from the payment recipient's country.
      */
     case ibanCountryMismatch = "IBAN_COUNTRY_MISMATCH"
-
-    /**
-     Resolves a backend wire value to a known code, or `nil` if the SDK does not know it.
-     */
-    static func from(apiValue: String?) -> FraudSignalCode? {
-        guard let apiValue else { return nil }
-        return FraudSignalCode(rawValue: apiValue)
-    }
 }

@@ -55,8 +55,8 @@ internal enum FraudSignalMapper {
             return (name, extraction)
         })
 
-        guard let code = FraudSignalCode.from(apiValue: value(for: "signalCode", in: byName)),
-              let severity = FraudSignalSeverity.from(apiValue: value(for: "severity", in: byName)),
+        guard let code = value(for: "signalCode", in: byName).flatMap(FraudSignalCode.init(rawValue:)),
+              let severity = value(for: "severity", in: byName).flatMap(FraudSignalSeverity.init(rawValue:)),
               let iban = value(for: "iban", in: byName) else {
             return nil
         }
