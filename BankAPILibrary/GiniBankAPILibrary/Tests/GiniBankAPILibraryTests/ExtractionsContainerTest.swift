@@ -111,7 +111,7 @@ final class ExtractionsContainerTest: XCTestCase {
         XCTAssertEqual(container.candidates["amounts"]!.first, candidate)
     }
 
-    // MARK: - Fraud signals (PP-3959)
+    // MARK: - Fraud signals
 
     /**
      Base fixture that holds both known signals. All other scenarios (QR-only,

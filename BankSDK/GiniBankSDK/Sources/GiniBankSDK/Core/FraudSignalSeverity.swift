@@ -1,6 +1,5 @@
 //
 //  FraudSignalSeverity.swift
-//  GiniBank
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //

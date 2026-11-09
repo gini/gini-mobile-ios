@@ -9,7 +9,7 @@
 @testable import GiniCaptureSDK
 import XCTest
 
-// MARK: - Fraud-signal boundary + feedback hygiene (PP-3959)
+// MARK: - Fraud-signal boundary + feedback hygiene
 
 extension NetworkingScreenApiCoordinatorTests {
 

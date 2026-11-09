@@ -593,7 +593,7 @@ public final class GiniBankConfiguration: NSObject {
                                                           bic: bic,
                                                           amountToPayString: amountToPay.formattedString())
 
-if let lineItems = lineItems {
+        if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
                                          updatedCompoundExtractions: GiniBankConfiguration.stripFraudSignals(["lineItems": lineItems]))
         } else {
