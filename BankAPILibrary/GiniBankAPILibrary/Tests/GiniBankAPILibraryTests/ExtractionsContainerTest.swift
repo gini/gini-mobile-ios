@@ -176,7 +176,7 @@ final class ExtractionsContainerTest: XCTestCase {
         setFraudSignalGroups([qr], in: &json)
 
         let container = try decode(json: json)
-        let groups = try XCTUnwrap(container.fraudSignalsRaw)
+        let groups = try XCTUnwrap(container.fraudSignals)
 
         XCTAssertEqual(groups.count, 1)
         let group = try XCTUnwrap(groups.first)
@@ -197,9 +197,9 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try decode(json: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertEqual(result.fraudSignalsRaw?.count, container.fraudSignalsRaw?.count)
-        let resultNames = result.fraudSignalsRaw?.first?.compactMap { $0.name }.sorted()
-        let containerNames = container.fraudSignalsRaw?.first?.compactMap { $0.name }.sorted()
+        XCTAssertEqual(result.fraudSignals?.count, container.fraudSignals?.count)
+        let resultNames = result.fraudSignals?.first?.compactMap { $0.name }.sorted()
+        let containerNames = container.fraudSignals?.first?.compactMap { $0.name }.sorted()
         XCTAssertEqual(resultNames, containerNames)
     }
 
@@ -210,7 +210,7 @@ final class ExtractionsContainerTest: XCTestCase {
         setFraudSignalGroups([country], in: &json)
 
         let container = try decode(json: json)
-        let groups = try XCTUnwrap(container.fraudSignalsRaw)
+        let groups = try XCTUnwrap(container.fraudSignals)
 
         XCTAssertEqual(groups.count, 1)
         let group = try XCTUnwrap(groups.first)
@@ -232,14 +232,14 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try decode(json: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertEqual(result.fraudSignalsRaw?.count, 1)
-        XCTAssertEqual(result.fraudSignalsRaw?.first?.count, 4)
+        XCTAssertEqual(result.fraudSignals?.count, 1)
+        XCTAssertEqual(result.fraudSignals?.first?.count, 4)
     }
 
     func testFraudSignalsBothDecoding() throws {
         let json = try baseFraudSignalsJSON()
         let container = try decode(json: json)
-        let groups = try XCTUnwrap(container.fraudSignalsRaw)
+        let groups = try XCTUnwrap(container.fraudSignals)
 
         XCTAssertEqual(groups.count, 2)
         let codes = groups.compactMap { group in
@@ -253,7 +253,7 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try decode(json: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertEqual(result.fraudSignalsRaw?.count, 2)
+        XCTAssertEqual(result.fraudSignals?.count, 2)
     }
 
     // MARK: Error paths
@@ -269,7 +269,7 @@ final class ExtractionsContainerTest: XCTestCase {
         setFraudSignalGroups(allGroups, in: &json)
 
         let container = try decode(json: json)
-        let groups = try XCTUnwrap(container.fraudSignalsRaw,
+        let groups = try XCTUnwrap(container.fraudSignals,
                                    "Unknown codes must not drop the element at decode time")
 
         XCTAssertEqual(groups.count, 1)
@@ -290,14 +290,14 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try decode(json: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertEqual(result.fraudSignalsRaw?.count, 1)
+        XCTAssertEqual(result.fraudSignals?.count, 1)
     }
 
     func testFraudSignalsAbsentDecoding() throws {
         let json = loadFile(withName: "extractionsContainer", ofType: "json")
         let container = try JSONDecoder().decode(ExtractionsContainer.self, from: json)
 
-        XCTAssertNil(container.fraudSignalsRaw, "Absent fraudSignals key must decode to nil")
+        XCTAssertNil(container.fraudSignals, "Absent fraudSignals key must decode to nil")
         XCTAssertNotNil(container.compoundExtractions?.lineItems, "lineItems must still decode")
         XCTAssertFalse(container.extractions.isEmpty, "extractions must still decode")
     }
@@ -307,7 +307,7 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try JSONDecoder().decode(ExtractionsContainer.self, from: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertNil(result.fraudSignalsRaw)
+        XCTAssertNil(result.fraudSignals)
     }
 
     func testFraudSignalsEmptyArrayDecoding() throws {
@@ -315,7 +315,7 @@ final class ExtractionsContainerTest: XCTestCase {
         setFraudSignalGroups([], in: &json)
 
         let container = try decode(json: json)
-        let groups = try XCTUnwrap(container.fraudSignalsRaw,
+        let groups = try XCTUnwrap(container.fraudSignals,
                                    "Explicit [] must decode to an empty array, not nil")
         XCTAssertEqual(groups.count, 0)
     }
@@ -327,6 +327,6 @@ final class ExtractionsContainerTest: XCTestCase {
         let container = try decode(json: json)
         let result = ExtractionResult(extractionsContainer: container)
 
-        XCTAssertEqual(result.fraudSignalsRaw?.count, 0)
+        XCTAssertEqual(result.fraudSignals?.count, 0)
     }
 }

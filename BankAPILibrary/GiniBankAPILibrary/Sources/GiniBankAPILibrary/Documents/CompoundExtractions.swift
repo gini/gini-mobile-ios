@@ -12,8 +12,8 @@ import Foundation
  The `fraudSignals` key that lives alongside `lineItems`, `skontoDiscounts`, and
  `crossBorderPayment` under the same JSON object is deliberately not a member of this
  struct. It is decoded one level up on `ExtractionsContainer` and surfaced as
- `ExtractionResult.fraudSignalsRaw` behind the `GiniCaptureInternal` SPI, so fraud
- signals never leak onto integrator-visible surfaces (`AnalysisResult`) and never
+ `ExtractionResult.fraudSignals` as an internal-set property, so fraud signals
+ never leak onto integrator-visible surfaces (`AnalysisResult`) and never
  participate in `sendFeedback` payloads.
  */
 struct CompoundExtractions: Decodable {

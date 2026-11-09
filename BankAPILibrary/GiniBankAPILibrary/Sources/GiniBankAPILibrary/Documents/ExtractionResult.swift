@@ -44,7 +44,7 @@ final public class ExtractionResult: NSObject {
      not reassign.
      */
     @nonobjc
-    public internal(set) var fraudSignalsRaw: [[Extraction]]?
+    public internal(set) var fraudSignals: [[Extraction]]?
 
     /**
      The extraction candidates.
@@ -72,6 +72,6 @@ final public class ExtractionResult: NSObject {
                   skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   crossBorderPayment: extractionsContainer.compoundExtractions?.crossBorderPayment,
                   candidates: extractionsContainer.candidates)
-        self.fraudSignalsRaw = extractionsContainer.fraudSignalsRaw
+        self.fraudSignals = extractionsContainer.fraudSignals
     }
 }

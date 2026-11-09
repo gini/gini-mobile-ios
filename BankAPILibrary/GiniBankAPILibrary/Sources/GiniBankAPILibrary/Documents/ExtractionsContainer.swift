@@ -9,7 +9,7 @@ import Foundation
 struct ExtractionsContainer {
     let extractions: [Extraction]
     let compoundExtractions: CompoundExtractions?
-    let fraudSignalsRaw: [[Extraction]]?
+    let fraudSignals: [[Extraction]]?
     let candidates: [String: [Extraction.Candidate]]
 
     enum CodingKeys: String, CodingKey {
@@ -39,9 +39,9 @@ extension ExtractionsContainer: Decodable {
                                                                   forKey: .compoundExtractions),
            let rawFraudSignals = try compoundContainer.decodeIfPresent([[String: Extraction]].self,
                                                                        forKey: .fraudSignals) {
-            fraudSignalsRaw = CompoundExtractions.mapExtractions(input: rawFraudSignals)
+            fraudSignals = CompoundExtractions.mapExtractions(input: rawFraudSignals)
         } else {
-            fraudSignalsRaw = nil
+            fraudSignals = nil
         }
 
         self.candidates = try container.decodeIfPresent([String: [Extraction.Candidate]].self,

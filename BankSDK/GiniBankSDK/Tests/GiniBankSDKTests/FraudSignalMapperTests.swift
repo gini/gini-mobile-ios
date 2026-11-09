@@ -46,7 +46,7 @@ struct FraudSignalMapperTests {
 
     private func resultWithRaw(_ raw: [[Extraction]]?) -> ExtractionResult {
         let result = ExtractionResult(extractions: [], candidates: [:])
-        result.fraudSignalsRaw = raw
+        result.fraudSignals = raw
         return result
     }
 
@@ -100,14 +100,14 @@ struct FraudSignalMapperTests {
         #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
-    @Test("A nil fraudSignalsRaw yields an empty array, not a crash")
+    @Test("A nil fraudSignals yields an empty array, not a crash")
     func emptyWhenRawIsNil() {
         let result = resultWithRaw(nil)
 
         #expect(FraudSignalMapper.map(extractionResult: result, fraudSignalsEnabled: true).isEmpty)
     }
 
-    @Test("An empty fraudSignalsRaw yields an empty array")
+    @Test("An empty fraudSignals yields an empty array")
     func emptyWhenRawIsEmpty() {
         let result = resultWithRaw([])
 

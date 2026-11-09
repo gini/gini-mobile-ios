@@ -8,7 +8,7 @@ import Foundation
 import GiniBankAPILibrary
 
 /**
- Reads `ExtractionResult.fraudSignalsRaw` and projects it to typed `FraudSignal`s.
+ Reads `ExtractionResult.fraudSignals` and projects it to typed `FraudSignal`s.
 
  Pure value transform:
  - Returns `[]` when the `fraudSignalsEnabled` client-configuration flag is off.
@@ -22,10 +22,10 @@ import GiniBankAPILibrary
 internal enum FraudSignalMapper {
 
     /**
-     Maps the raw fraud-signal groups on `extractionResult.fraudSignalsRaw` to
+     Maps the raw fraud-signal groups on `extractionResult.fraudSignals` to
      typed `FraudSignal` values.
 
-     - Parameter extractionResult: Source of `fraudSignalsRaw`. `nil` raw yields `[]`.
+     - Parameter extractionResult: Source of `fraudSignals`. `nil` raw yields `[]`.
      - Parameter fraudSignalsEnabled: Client-configuration gate. When `false`, the
        mapper returns `[]` even if raw signals are present — matches the backend's
        per-client rollout semantics.
@@ -34,7 +34,7 @@ internal enum FraudSignalMapper {
     static func map(extractionResult: ExtractionResult,
                     fraudSignalsEnabled: Bool) -> [FraudSignal] {
         guard fraudSignalsEnabled else { return [] }
-        guard let rawGroups = extractionResult.fraudSignalsRaw else { return [] }
+        guard let rawGroups = extractionResult.fraudSignals else { return [] }
 
         var seenCodes = Set<FraudSignalCode>()
         var result: [FraudSignal] = []

@@ -46,7 +46,7 @@ extension NetworkingScreenApiCoordinatorTests {
                                 value: "1200.00:EUR",
                                 name: "amountToPay")
         let result = ExtractionResult(extractions: [amount], candidates: [:])
-        result.fraudSignalsRaw = [qrPrintedIbanMismatchGroup(),
+        result.fraudSignals = [qrPrintedIbanMismatchGroup(),
                                   ibanCountryMismatchGroup()]
         return result
     }
