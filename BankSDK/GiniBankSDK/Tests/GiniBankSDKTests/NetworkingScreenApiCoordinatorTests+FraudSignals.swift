@@ -4,14 +4,14 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import Testing
+import Foundation
 @testable import GiniBankAPILibrary
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
-import XCTest
 
-// MARK: - Fraud-signal boundary + feedback hygiene
-
-extension NetworkingScreenApiCoordinatorTests {
+@Suite("Fraud signals / boundary + feedback hygiene")
+struct FraudSignalBoundaryTests {
 
     // MARK: Fixture helpers
 
@@ -47,13 +47,14 @@ extension NetworkingScreenApiCoordinatorTests {
                                 name: "amountToPay")
         let result = ExtractionResult(extractions: [amount], candidates: [:])
         result.fraudSignals = [qrPrintedIbanMismatchGroup(),
-                                  ibanCountryMismatchGroup()]
+                               ibanCountryMismatchGroup()]
         return result
     }
 
     // MARK: - AnalysisResult boundary
 
-    func testAnalysisResultHasNoFraudSignalKeysWhenFraudSignalsPresent() {
+    @Test("AnalysisResult carries no fraud-signal keys when the source ExtractionResult does")
+    func analysisResultHasNoFraudSignalKeysWhenFraudSignalsPresent() {
         let extractionResult = resultWithFraudSignals()
 
         let extractionsDict: [String: Extraction] = Dictionary(
@@ -67,21 +68,22 @@ extension NetworkingScreenApiCoordinatorTests {
                                             images: [],
                                             candidates: extractionResult.candidates)
 
-        XCTAssertNil(analysisResult.extractions["signalCode"],
-                     "AnalysisResult.extractions must not carry 'signalCode' when fraud signals are present")
-        XCTAssertNil(analysisResult.extractions["severity"],
-                     "AnalysisResult.extractions must not carry 'severity' when fraud signals are present")
-        XCTAssertNil(analysisResult.extractions["creditorCountry"],
-                     "AnalysisResult.extractions must not carry 'creditorCountry' when fraud signals are present")
-        XCTAssertTrue(analysisResult.candidates.isEmpty,
-                      "AnalysisResult.candidates must not grow from fraud signals")
-        XCTAssertEqual(analysisResult.extractions.keys.sorted(), ["amountToPay"],
-                       "Only the top-level extractions should survive — fraud data must not leak")
+        #expect(analysisResult.extractions["signalCode"] == nil,
+                "AnalysisResult.extractions must not carry 'signalCode' when fraud signals are present")
+        #expect(analysisResult.extractions["severity"] == nil,
+                "AnalysisResult.extractions must not carry 'severity' when fraud signals are present")
+        #expect(analysisResult.extractions["creditorCountry"] == nil,
+                "AnalysisResult.extractions must not carry 'creditorCountry' when fraud signals are present")
+        #expect(analysisResult.candidates.isEmpty,
+                "AnalysisResult.candidates must not grow from fraud signals")
+        #expect(analysisResult.extractions.keys.sorted() == ["amountToPay"],
+                "Only the top-level extractions should survive — fraud data must not leak")
     }
 
     // MARK: - feedback hygiene
 
-    func testStripFraudSignalsRemovesFraudKeyFromCompoundExtractions() {
+    @Test("stripFraudSignals removes the fraudSignals key and keeps every sibling")
+    func stripFraudSignalsRemovesFraudKeyFromCompoundExtractions() {
         let dict: [String: [[Extraction]]] = [
             "lineItems": [[Extraction(box: nil, candidates: nil, entity: "amount",
                                       value: "1:EUR", name: "baseGross")]],
@@ -90,15 +92,17 @@ extension NetworkingScreenApiCoordinatorTests {
 
         let stripped = GiniBankConfiguration.stripFraudSignals(dict)
 
-        XCTAssertEqual(Set(stripped?.keys ?? [:].keys), Set(["lineItems"]),
-                       "stripFraudSignals must drop the fraudSignals key and keep everything else")
+        #expect(Set(stripped?.keys ?? [:].keys) == Set(["lineItems"]),
+                "stripFraudSignals must drop the fraudSignals key and keep everything else")
     }
 
-    func testStripFraudSignalsPassesThroughNil() {
-        XCTAssertNil(GiniBankConfiguration.stripFraudSignals(nil))
+    @Test("stripFraudSignals returns nil when the input is nil")
+    func stripFraudSignalsPassesThroughNil() {
+        #expect(GiniBankConfiguration.stripFraudSignals(nil) == nil)
     }
 
-    func testStripFraudSignalsIsNoOpWhenAbsent() {
+    @Test("stripFraudSignals is a no-op when the fraudSignals key is already absent")
+    func stripFraudSignalsIsNoOpWhenAbsent() {
         let dict: [String: [[Extraction]]] = [
             "lineItems": [[Extraction(box: nil, candidates: nil, entity: "amount",
                                       value: "1:EUR", name: "baseGross")]]
@@ -106,10 +110,11 @@ extension NetworkingScreenApiCoordinatorTests {
 
         let stripped = GiniBankConfiguration.stripFraudSignals(dict)
 
-        XCTAssertEqual(stripped?.keys.sorted(), ["lineItems"])
+        #expect(stripped?.keys.sorted() == ["lineItems"])
     }
 
-    func testCleanupWithPaymentRecipientFeedbackPayloadHasNoFraudSignals() {
+    @Test("cleanup(paymentRecipient:…) never emits fraudSignals in its feedback payload")
+    func cleanupWithPaymentRecipientFeedbackPayloadHasNoFraudSignals() {
         let configuration = GiniBankConfiguration()
         let serviceMock = DocumentServiceMock()
         configuration.documentService = serviceMock
@@ -123,12 +128,13 @@ extension NetworkingScreenApiCoordinatorTests {
                               bic: "COBADEFFXXX",
                               amountToPay: ExtractionAmount(value: Decimal(99.99), currency: .EUR))
 
-        XCTAssertEqual(serviceMock.sendFeedbackCallCount, 1)
-        XCTAssertNil(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey],
-                     "cleanup(paymentRecipient:…) must never emit fraudSignals in feedback")
+        #expect(serviceMock.sendFeedbackCallCount == 1)
+        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+                "cleanup(paymentRecipient:…) must never emit fraudSignals in feedback")
     }
 
-    func testCXTransferSummaryFeedbackPayloadHasNoFraudSignals() {
+    @Test("CX sendTransferSummary(extractions:) never emits fraudSignals in its feedback payload")
+    func cxTransferSummaryFeedbackPayloadHasNoFraudSignals() {
         let configuration = GiniBankConfiguration()
         let serviceMock = DocumentServiceMock()
         configuration.documentService = serviceMock
@@ -137,12 +143,13 @@ extension NetworkingScreenApiCoordinatorTests {
         configuration.sendTransferSummary(extractions: ["iban": "GB29NWBK60161331926819",
                                                         "bic": "NWBKGB2L"])
 
-        XCTAssertEqual(serviceMock.sendFeedbackCallCount, 1)
-        XCTAssertNil(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey],
-                     "CX sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
+        #expect(serviceMock.sendFeedbackCallCount == 1)
+        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+                "CX sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
     }
 
-    func testSEPATransferSummaryFeedbackPayloadHasNoFraudSignals() {
+    @Test("SEPA sendTransferSummary(extractions:) never emits fraudSignals in its feedback payload")
+    func sepaTransferSummaryFeedbackPayloadHasNoFraudSignals() {
         let configuration = GiniBankConfiguration()
         let serviceMock = DocumentServiceMock()
         configuration.documentService = serviceMock
@@ -154,8 +161,8 @@ extension NetworkingScreenApiCoordinatorTests {
                                                         "bic": "COBADEFFXXX",
                                                         "amountToPay": "950.00:EUR"])
 
-        XCTAssertEqual(serviceMock.sendFeedbackCallCount, 1)
-        XCTAssertNil(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey],
-                     "SEPA sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
+        #expect(serviceMock.sendFeedbackCallCount == 1)
+        #expect(serviceMock.capturedCompoundExtractions?[GiniBankConfiguration.fraudSignalsFeedbackKey] == nil,
+                "SEPA sendTransferSummary(extractions:) must never emit fraudSignals in feedback")
     }
 }
