@@ -706,7 +706,8 @@ extension ClientConfiguration {
          paymentDueHintEnabled: Bool = false,
          creditNoteHintEnabled: Bool = false,
          paymentScheduleHintEnabled: Bool = false,
-         weroQRCodeScanningEnabled: Bool = false) {
+         weroQRCodeScanningEnabled: Bool = false,
+         fraudSignalsEnabled: Bool? = nil) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -722,7 +723,8 @@ extension ClientConfiguration {
                   paymentScheduleHintEnabled: paymentScheduleHintEnabled,
                   unsupportedQRCodeWarningEnabled: false,
                   ingredientBrandScreens: [],
-                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
+                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled,
+                  fraudSignalsEnabled: fraudSignalsEnabled)
     }
 }
 
