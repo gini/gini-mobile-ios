@@ -138,32 +138,15 @@ jobs:
 
       - name: Setup .env.local
         if: inputs.use_env_local
-        env:
-          GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
-          GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-          GINI_CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
-          GINI_CX_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-        run: |
-          if [ -z "$GINI_CLIENT_ID" ] || [ -z "$GINI_CLIENT_PASSWORD" ]; then
-            echo "GINI_MOBILE_CI_USERNAME/GINI_MOBILE_CI_PASSWORD secrets are empty — refusing to ship placeholder credentials" >&2
-            exit 1
-          fi
-          if [ -z "$FIREBASE_API_KEY" ]; then
-            echo "FIREBASE_API_KEY secret is empty — refusing to ship placeholder API key (app would crash at launch)" >&2
-            exit 1
-          fi
-          mkdir -p "$(dirname "${{ inputs.env_local_path }}")"
-          cat > "${{ inputs.env_local_path }}" <<ENV
-          GINI_CLIENT_ID=$GINI_CLIENT_ID
-          GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
-          GINI_CLIENT_DOMAIN=gini.net
-          GINI_CX_CLIENT_ID=$GINI_CX_CLIENT_ID
-          GINI_CX_CLIENT_PASSWORD=$GINI_CX_CLIENT_PASSWORD
-          GINI_STAGE_CLIENT_ID=
-          GINI_STAGE_CLIENT_PASSWORD=
-          FIREBASE_API_KEY=$FIREBASE_API_KEY
-          ENV
+        uses: ./.github/actions/setup-env-local
+        with:
+          gini_client_id: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          gini_client_password: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          gini_cx_client_id: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+          gini_cx_client_password: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+          firebase_api_key: ${{ secrets.FIREBASE_API_KEY }}
+          require_production_values: 'true'
+          env_local_path: ${{ inputs.env_local_path }}
 
       - name: Setup Credentials (plist)
         if: inputs.credentials_plist_path != ''
