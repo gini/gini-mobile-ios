@@ -63,6 +63,20 @@ jobs:
         ruby-version: ${{ needs.get-config.outputs.ruby-version }}
         bundler-cache: true
 
+    - name: Setup .env.local
+      if: ${{ matrix.target == 'GiniHealthSDKExampleTests' }}
+      env:
+        GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+        GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+        FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      run: |
+        cat > HealthSDK/GiniHealthSDKExample/.env.local <<ENV
+        GINI_CLIENT_ID=$GINI_CLIENT_ID
+        GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
+        GINI_CLIENT_DOMAIN=gini.net
+        FIREBASE_API_KEY=$FIREBASE_API_KEY
+        ENV
+
     - name: Build and run tests for "${{ matrix.target }}"
       uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       env:

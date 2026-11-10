@@ -50,19 +50,26 @@ jobs:
               "ci": "true"
             }
 
-      - name: Setup Credentials
+      - name: Setup .env.local
         env:
-          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          GINI_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          GINI_CLIENT_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
         run: |
-          sed -i '' \
-          -e "s/clientID = \"client_id\"/clientID = \"$TEST_CLIENT_ID\"/" \
-          -e "s/clientPassword = \"client_password\"/clientPassword = \"$TEST_CLIENT_SECRET\"/" \
-          HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+            cat > HealthSDK/GiniHealthSDKExample/.env.local <<ENV
+            GINI_CLIENT_ID=$GINI_CLIENT_ID
+            GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
+            GINI_CLIENT_DOMAIN=gini.net
+            FIREBASE_API_KEY=$FIREBASE_API_KEY
+            ENV
 
-      - name: Setup Firebase API Key
-        run: |
-            plutil -replace API_KEY -string "${{ secrets.FIREBASE_API_KEY }}" HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
 
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
@@ -70,6 +77,7 @@ jobs:
           APP_IDENTIFIER: ${{ vars.HEALTH_BUNDLE_ID }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           APP_SCHEME: ${{ vars.HEALTH_TARGET_NAME }}

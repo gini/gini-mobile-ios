@@ -40,8 +40,8 @@ jobs:
       scheme: 'GiniHealthSDKExample'
       bundle_identifier: 'net.gini.healthsdk.example'
       ipa_name: 'GiniHealthSDKExample'
-      credentials_manager_path: 'HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift'
-      google_services_plist_path: 'HealthSDK/GiniHealthSDKExample/GoogleService-Info.plist'
+      use_env_local: true
+      env_local_path: 'HealthSDK/GiniHealthSDKExample/.env.local'
     secrets:
       MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -52,3 +52,5 @@ jobs:
       FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       GINI_MOBILE_CI_USERNAME: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
       GINI_MOBILE_CI_PASSWORD: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+      MOBILE_CI_APP_ID: ${{ secrets.MOBILE_CI_APP_ID }}
+      MOBILE_CI_APP_PRIVATE_KEY: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
