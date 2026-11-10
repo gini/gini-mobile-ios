@@ -19,15 +19,23 @@ platform :ios do
   lane :download_profiles do
     setup_temp_keychain
     unlock_temp_keychain
-    
-    match(
-      app_identifier: ENV["APP_IDENTIFIER"],
-      type: ENV["DISTRIBUTION_TYPE"],
-      git_url: ENV["GIT_URL"],
-      keychain_name: "app-signing",
-      keychain_password: ENV['KEYCHAIN_PASSWORD'],
-      readonly: true
-    )
+
+    # GitHub's HTTPS endpoint 301-redirects non-canonical certificates-repo URLs
+    # and strips inline userinfo across the redirect, so embedding the PAT in
+    # MATCH_GIT_URL breaks sporadically. Route through the shared credential
+    # helper that injects `x-access-token:${GH_TOKEN}` on every HTTP request —
+    # including after redirects. Callers must set GH_TOKEN (the mobile-ci
+    # GitHub App token, via actions/create-github-app-token).
+    with_git_token_auth do
+      match(
+        app_identifier: ENV["APP_IDENTIFIER"],
+        type: ENV["DISTRIBUTION_TYPE"],
+        git_url: ENV["GIT_URL"],
+        keychain_name: "app-signing",
+        keychain_password: ENV['KEYCHAIN_PASSWORD'],
+        readonly: true
+      )
+    end
   end
 
   desc <<~DOC
