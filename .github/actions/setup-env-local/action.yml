@@ -31,6 +31,13 @@ inputs:
       secrets-misconfigured run never ships a placeholder build.
     required: false
     default: 'false'
+  env_local_path:
+    description: >
+      Path to the .env.local file to write. Defaults to the Bank example app
+      path so existing Bank callers keep working unchanged; Health's TestFlight
+      caller overrides it with the Health example app path (PP-3923).
+    required: false
+    default: 'BankSDK/GiniBankSDKExample/.env.local'
 
 runs:
   using: composite
@@ -44,6 +51,7 @@ runs:
         GINI_CX_CLIENT_PASSWORD: ${{ inputs.gini_cx_client_password }}
         FIREBASE_API_KEY: ${{ inputs.firebase_api_key }}
         REQUIRE_PRODUCTION_VALUES: ${{ inputs.require_production_values }}
+        ENV_LOCAL_PATH: ${{ inputs.env_local_path }}
       run: |
         if [ "$REQUIRE_PRODUCTION_VALUES" = "true" ]; then
           if [ -z "$GINI_CLIENT_ID" ] || [ -z "$GINI_CLIENT_PASSWORD" ]; then
@@ -55,7 +63,8 @@ runs:
             exit 1
           fi
         fi
-        cat > BankSDK/GiniBankSDKExample/.env.local <<ENV
+        mkdir -p "$(dirname "$ENV_LOCAL_PATH")"
+        cat > "$ENV_LOCAL_PATH" <<ENV
         GINI_CLIENT_ID=$GINI_CLIENT_ID
         GINI_CLIENT_PASSWORD=$GINI_CLIENT_PASSWORD
         GINI_CLIENT_DOMAIN=gini.net
