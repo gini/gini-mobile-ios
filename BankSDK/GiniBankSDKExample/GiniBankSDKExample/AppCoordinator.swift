@@ -239,7 +239,7 @@ final class AppCoordinator: Coordinator {
         screenAPICoordinator.start()
 	
         add(childCoordinator: screenAPICoordinator as Coordinator)
-		screenAPICoordinator.rootViewController.modalPresentationStyle = .overFullScreen
+		screenAPICoordinator.rootViewController.modalPresentationStyle = SettingsViewModel.sdkPresentationStyle
 		screenAPICoordinator.rootViewController.modalTransitionStyle = .coverVertical
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
