@@ -55,28 +55,27 @@ jobs:
               "ci": "true"
             }
 
-      - name: Setup Credentials
-        env:
-          TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
-          TEST_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
-          CX_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
-          CX_CLIENT_ID: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
-        run: |
-            plutil -replace client_id -string "$TEST_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "$TEST_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace cx_client_id -string "$CX_CLIENT_ID" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace cx_client_password -string "$CX_CLIENT_SECRET" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-
-      - name: Setup Firebase API Key
-        env:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-        run: |
-            plutil -replace API_KEY -string "$FIREBASE_API_KEY" BankSDK/GiniBankSDKExample/GoogleService-Info.plist
+      - name: Setup .env.local
+        uses: ./.github/actions/setup-env-local
+        with:
+          gini_client_id: ${{ secrets.GINI_MOBILE_CI_USERNAME }}
+          gini_client_password: ${{ secrets.GINI_MOBILE_CI_PASSWORD }}
+          gini_cx_client_id: ${{ secrets.GINI_MOBILE_CI_CX_USERNAME }}
+          gini_cx_client_password: ${{ secrets.GINI_MOBILE_CI_CX_PASSWORD }}
+          firebase_api_key: ${{ secrets.FIREBASE_API_KEY }}
 
       - name: Set build number
         run: |
           cd BankSDK/GiniBankSDKExample
           xcrun agvtool new-version -all ${{ github.run_number }}
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@064492a9a1762067169d50c792a7dc02bc3d1254 # v2.0.0
+        with:
+          app-id: ${{ secrets.MOBILE_CI_APP_ID }}
+          private-key: ${{ secrets.MOBILE_CI_APP_PRIVATE_KEY }}
+          owner: gini
 
       - name: Archiving project
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
@@ -84,6 +83,7 @@ jobs:
           APP_IDENTIFIER: ${{ vars.BANK_BUNDLE_IDS }}
           DISTRIBUTION_TYPE: adhoc
           GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           APP_SCHEME: ${{ vars.BANK_TARGET_NAME }}

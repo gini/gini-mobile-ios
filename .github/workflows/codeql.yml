@@ -129,6 +129,24 @@ jobs:
         languages: swift
         build-mode: manual
 
+    - name: Setup .env.local (synthetic, build-only)
+      if: steps.should-run.outputs.run == 'true'
+      run: |
+        # CodeQL only needs the build to succeed for static analysis — real secrets are
+        # not required. Writing synthetic non-empty values satisfies the generate_credentials.sh
+        # required-keys check that would otherwise fail the new Run Script build phase.
+        env_dir="$(dirname '${{ matrix.project }}')"
+        cat > "$env_dir/.env.local" <<'ENV'
+        GINI_CLIENT_ID=codeql-build-only
+        GINI_CLIENT_PASSWORD=codeql-build-only
+        GINI_CLIENT_DOMAIN=gini.net
+        GINI_CX_CLIENT_ID=codeql-build-only
+        GINI_CX_CLIENT_PASSWORD=codeql-build-only
+        GINI_STAGE_CLIENT_ID=
+        GINI_STAGE_CLIENT_PASSWORD=
+        FIREBASE_API_KEY=codeql-build-only
+        ENV
+
     - name: Build ${{ matrix.scheme }}
       if: steps.should-run.outputs.run == 'true'
       run: |
