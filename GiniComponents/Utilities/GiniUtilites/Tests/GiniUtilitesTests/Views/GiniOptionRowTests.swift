@@ -38,7 +38,8 @@ struct GiniOptionRowAccessibilityLabelTests {
             ("", "Title, Content, "),
             ("Warning", "Title, Content, Warning")
           ])
-    func accessibilityLabelPassesThroughEmptyFooter(footer: String, expected: String) {
+    func accessibilityLabelPassesThroughEmptyFooter(footer: String,
+                                                    expected: String) {
         let label = GiniOptionRowAccessibility.makeLabel(title: "Title",
                                                          content: "Content",
                                                          footer: footer)

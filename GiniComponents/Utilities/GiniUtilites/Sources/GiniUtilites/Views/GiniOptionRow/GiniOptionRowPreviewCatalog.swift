@@ -93,7 +93,9 @@ struct GiniOptionRowPreviewCatalog: View {
      imageset has no PDF, the SwiftUI slot falls back to a placeholder.
      */
     @ViewBuilder
-    private func rawAsset(name: String, caption: String, tint: Color? = nil) -> some View {
+    private func rawAsset(name: String,
+                          caption: String,
+                          tint: Color? = nil) -> some View {
         VStack(spacing: 4) {
             if let uiImage = preferredImage(named: name) {
                 let image = Image(uiImage: uiImage).resizable().frame(width: 24, height: 24)

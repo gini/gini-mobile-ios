@@ -158,7 +158,8 @@ public struct GiniOptionRow: View {
     private var rowLayout: some View {
         HStack(alignment: .center, spacing: Constants.horizontalSpacing) {
             if case .radio(let state) = variant {
-                Self.stateIcon(for: state, giniColorScheme: giniColorScheme)
+                Self.stateIcon(for: state,
+                               giniColorScheme: giniColorScheme)
                     .font(.title3)
                     .frame(width: Constants.iconSize, height: Constants.iconSize)
             }
@@ -214,7 +215,8 @@ public struct GiniOptionRow: View {
     /// to SF Symbol / custom shape when the asset is absent (expected until a
     /// designer exports the PDFs into the imagesets).
     @ViewBuilder
-    static func stateIcon(for state: RadioButtonState, giniColorScheme: GiniColorScheme) -> some View {
+    static func stateIcon(for state: RadioButtonState,
+                          giniColorScheme: GiniColorScheme) -> some View {
         switch state {
         case .unselected: unselectedIcon(giniColorScheme: giniColorScheme)
         case .selected:   selectedIcon(giniColorScheme: giniColorScheme)
@@ -294,7 +296,9 @@ public struct GiniOptionRow: View {
 enum GiniOptionRowAccessibility {
 
     /// Builds the combined VoiceOver label from the caller-provided (already localized) strings.
-    static func makeLabel(title: String, content: String, footer: String?) -> String {
+    static func makeLabel(title: String,
+                          content: String,
+                          footer: String?) -> String {
         if let footer {
             return "\(title), \(content), \(footer)"
         }
