@@ -92,9 +92,7 @@ public struct GiniOptionRow: View {
     let variant: Variant
     let giniColorScheme: GiniColorScheme
     let background: GiniColor?
-    let titleFont: Font
-    let contentFont: Font
-    let footerFont: Font
+    let fonts: FontConfiguration
     let onTap: (() -> Void)?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -126,9 +124,7 @@ public struct GiniOptionRow: View {
         self.variant = variant
         self.giniColorScheme = giniColorScheme
         self.background = background
-        self.titleFont = fonts.title.map { Font(giniFont: $0) } ?? .caption
-        self.contentFont = fonts.content.map { Font(giniFont: $0) } ?? .body
-        self.footerFont = fonts.footer.map { Font(giniFont: $0) } ?? .footnote
+        self.fonts = fonts
         self.onTap = onTap
     }
 
@@ -208,6 +204,18 @@ public struct GiniOptionRow: View {
 
     private var footerColor: Color {
         giniColorScheme.text.error.swiftUIColor()
+    }
+
+    private var titleFont: Font {
+        fonts.title.map { Font(giniFont: $0) } ?? .caption
+    }
+
+    private var contentFont: Font {
+        fonts.content.map { Font(giniFont: $0) } ?? .body
+    }
+
+    private var footerFont: Font {
+        fonts.footer.map { Font(giniFont: $0) } ?? .footnote
     }
 
     /// Visual icon for the row's radio state. Looks up a host-overridable asset
