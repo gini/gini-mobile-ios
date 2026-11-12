@@ -224,48 +224,28 @@ public struct GiniOptionRow: View {
         }
     }
 
-    @ViewBuilder
     private static func unselectedIcon(giniColorScheme: GiniColorScheme) -> some View {
-        let tint = giniColorScheme.icon.secondary.swiftUIColor()
-        if let uiImage = preferredImage(named: Icons.unselected) {
-            Image(uiImage: uiImage).resizable().foregroundStyle(tint)
-        } else {
-            Image(systemName: "circle").foregroundStyle(tint)
-        }
+        Image(uiImage: preferredImage(named: Icons.unselected)!)
+            .resizable()
+            .foregroundStyle(giniColorScheme.icon.secondary.swiftUIColor())
     }
 
     /**
      Selected asset ships with its own blue + white-interior colors
-     ("original" rendering), so no `.foregroundStyle` tint on the asset path.
+     ("original" rendering), so no `.foregroundStyle` tint is applied.
      */
-    @ViewBuilder
     private static func selectedIcon(giniColorScheme: GiniColorScheme) -> some View {
-        if let uiImage = preferredImage(named: Icons.selected) {
-            Image(uiImage: uiImage).resizable()
-        } else {
-            Circle()
-                .strokeBorder(giniColorScheme.text.accent.swiftUIColor(),
-                              lineWidth: Constants.selectedStrokeWidth)
-        }
+        Image(uiImage: preferredImage(named: Icons.selected)!)
+            .resizable()
     }
 
     /**
      Error asset ships with its own fill + stroke colors ("original"
-     rendering), so no `.foregroundStyle` tint on the asset path.
+     rendering), so no `.foregroundStyle` tint is applied.
      */
-    @ViewBuilder
     private static func errorIcon(giniColorScheme: GiniColorScheme) -> some View {
-        if let uiImage = preferredImage(named: Icons.error) {
-            Image(uiImage: uiImage).resizable()
-        } else {
-            Circle()
-                .fill(giniColorScheme.message.backgroundError.swiftUIColor())
-                .overlay {
-                    Circle()
-                        .strokeBorder(giniColorScheme.message.contentError.swiftUIColor(),
-                                      lineWidth: Constants.errorStrokeWidth)
-                }
-        }
+        Image(uiImage: preferredImage(named: Icons.error)!)
+            .resizable()
     }
 
     /// Asset-name constants for the radio icons shipped in `GiniIcons.xcassets`.
@@ -283,8 +263,6 @@ public struct GiniOptionRow: View {
         static let iconSize: CGFloat = 24
         static let cornerRadius: CGFloat = 12
         static let animationDuration: Double = 0.2
-        static let selectedStrokeWidth: CGFloat = 2.5
-        static let errorStrokeWidth: CGFloat = 1.5
     }
 }
 
