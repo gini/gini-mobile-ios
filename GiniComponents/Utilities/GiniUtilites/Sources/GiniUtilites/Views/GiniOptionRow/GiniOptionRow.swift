@@ -225,7 +225,7 @@ public struct GiniOptionRow: View {
     }
 
     private static func unselectedIcon(giniColorScheme: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.unselected)!)
+        Image(uiImage: preferredImage(named: Icons.unselected) ?? UIImage())
             .resizable()
             .foregroundStyle(giniColorScheme.icon.secondary.swiftUIColor())
     }
@@ -236,7 +236,7 @@ public struct GiniOptionRow: View {
      the scheme parameter stays for signature symmetry with `unselectedIcon`.
      */
     private static func selectedIcon(giniColorScheme _: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.selected)!)
+        Image(uiImage: preferredImage(named: Icons.selected) ?? UIImage())
             .resizable()
     }
 
@@ -246,7 +246,7 @@ public struct GiniOptionRow: View {
      the scheme parameter stays for signature symmetry with `unselectedIcon`.
      */
     private static func errorIcon(giniColorScheme _: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.error)!)
+        Image(uiImage: preferredImage(named: Icons.error) ?? UIImage())
             .resizable()
     }
 
