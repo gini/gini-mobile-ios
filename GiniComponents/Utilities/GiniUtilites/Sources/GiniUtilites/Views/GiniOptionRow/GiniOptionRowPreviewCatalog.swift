@@ -29,9 +29,9 @@ struct GiniOptionRowPreviewCatalog: View {
             VStack(alignment: .leading, spacing: 20) {
                 sectionHeader("Raw PDF assets (diagnostic — proves catalog load)")
                 HStack(spacing: 16) {
-                    rawAsset(name: "radio_unselected", caption: "unselected")
-                    rawAsset(name: "radio_selected", caption: "selected")
-                    rawAsset(name: "radio_error", caption: "error")
+                    rawAsset(name: GiniOptionRow.Icons.unselected)
+                    rawAsset(name: GiniOptionRow.Icons.selected)
+                    rawAsset(name: GiniOptionRow.Icons.error)
                 }
 
                 sectionHeader("Unselected")
@@ -88,28 +88,18 @@ struct GiniOptionRowPreviewCatalog: View {
     }
 
     /**
-     Displays the raw PDF asset side-by-side with its name so you can confirm the
-     `GiniIcons.xcassets` catalog is being picked up in preview. If a state's
-     imageset has no PDF, the SwiftUI slot falls back to a placeholder.
+     Displays the raw PDF asset so you can confirm the `GiniIcons.xcassets`
+     catalog is being picked up in preview. If the imageset has no PDF, the
+     SwiftUI slot falls back to a placeholder.
      */
     @ViewBuilder
-    private func rawAsset(name: String,
-                          caption: String,
-                          tint: Color? = nil) -> some View {
-        VStack(spacing: 4) {
-            if let uiImage = preferredImage(named: name) {
-                let image = Image(uiImage: uiImage).resizable().frame(width: 24, height: 24)
-                if let tint {
-                    image.foregroundStyle(tint)
-                } else {
-                    image
-                }
-            } else {
-                Image(systemName: "questionmark.square.dashed")
-                    .foregroundStyle(.secondary)
-                    .frame(width: 24, height: 24)
-            }
-            Text(caption).font(.caption2).foregroundStyle(.secondary)
+    private func rawAsset(name: String) -> some View {
+        if let uiImage = preferredImage(named: name) {
+            Image(uiImage: uiImage).resizable().frame(width: 24, height: 24)
+        } else {
+            Image(systemName: "questionmark.square.dashed")
+                .foregroundStyle(.secondary)
+                .frame(width: 24, height: 24)
         }
     }
 
