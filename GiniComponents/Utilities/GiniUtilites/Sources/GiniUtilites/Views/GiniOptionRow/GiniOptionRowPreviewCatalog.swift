@@ -71,7 +71,7 @@ struct GiniOptionRowPreviewCatalog: View {
                       footer: footer,
                       variant: .radio(state),
                       giniColorScheme: Self.previewScheme,
-                      onTap: {})
+                      onTap: { /* Preview-only: non-nil closure makes the row render as a Button so the pressed state is visible in previews; no action to perform. */ })
     }
 
     private func informationalRow(title: String,

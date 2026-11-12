@@ -59,20 +59,23 @@ public struct GiniOptionRow: View {
      - **CaptureSDK / BankSDK** — internal `textStyleFonts` dictionary on
        `GiniConfiguration` / `GiniBankConfiguration` (SDK-internal access only):
        ```swift
-       GiniOptionRow.FontConfig(title: giniBankConfiguration.textStyleFonts[.captions1],
-                                content: giniBankConfiguration.textStyleFonts[.body1],
-                                footer: giniBankConfiguration.textStyleFonts[.captions2])
+       GiniOptionRow.FontConfiguration(title: giniBankConfiguration.textStyleFonts[.captions1],
+                                       content: giniBankConfiguration.textStyleFonts[.body1],
+                                       footer: giniBankConfiguration.textStyleFonts[.captions2])
        ```
 
      - **HealthSDK** — public `GiniHealthConfiguration.font(for:)`, backed by
        the shared `FontProvider` (`GiniUtilites/Font/FontProvider.swift`):
        ```swift
-       GiniOptionRow.FontConfig(title: giniHealthConfiguration.font(for: .captions1),
-                                content: giniHealthConfiguration.font(for: .body1),
-                                footer: giniHealthConfiguration.font(for: .captions2))
+       GiniOptionRow.FontConfiguration(title: giniHealthConfiguration.font(for: .captions1),
+                                       content: giniHealthConfiguration.font(for: .body1),
+                                       footer: giniHealthConfiguration.font(for: .captions2))
        ```
+
+     An all-`nil` `FontConfiguration` (the init default) means "use SwiftUI
+     system fonts for all three lines."
      */
-    public struct FontConfig {
+    public struct FontConfiguration {
         public let title: UIFont?
         public let content: UIFont?
         public let footer: UIFont?
@@ -84,9 +87,6 @@ public struct GiniOptionRow: View {
             self.content = content
             self.footer = footer
         }
-
-        /// System-font defaults (`.caption` / `.body` / `.footnote`).
-        public static let `default` = FontConfig()
     }
 
     let title: String
@@ -112,7 +112,7 @@ public struct GiniOptionRow: View {
        - variant: `.radio(RadioButtonState)` for a selectable row with a leading circle, or `.informational` for a non-radio display row.
        - giniColorScheme: Design-system token source. Pass the host SDK's scheme (e.g. `UIColor.giniBankColorScheme()`).
        - background: Optional background color for the row. Typically `nil` for radio rows (parent sheet owns the surface) and a semantic token for informational rows that need to stand alone.
-       - fonts: Font bundle for the three text lines. See `FontConfig` for SDK-specific resolution examples. Defaults to system fonts.
+       - fonts: Font bundle for the three text lines. See `FontConfiguration` for SDK-specific resolution examples. Defaults to system fonts.
        - onTap: Invoked when the user taps a non-disabled row. Pass `nil` for a non-interactive row (common for `.informational`).
      */
     public init(title: String,
@@ -121,7 +121,7 @@ public struct GiniOptionRow: View {
                 variant: Variant,
                 giniColorScheme: GiniColorScheme,
                 background: GiniColor? = nil,
-                fonts: FontConfig = .default,
+                fonts: FontConfiguration = .init(),
                 onTap: (() -> Void)? = nil) {
         self.title = title
         self.content = content
@@ -226,44 +226,64 @@ public struct GiniOptionRow: View {
     @ViewBuilder
     static func stateIcon(for state: RadioButtonState, giniColorScheme: GiniColorScheme) -> some View {
         switch state {
-        case .unselected:
-            let tint = giniColorScheme.icon.secondary.swiftUIColor()
-            if let uiImage = preferredImage(named: Icons.unselected) {
-                Image(uiImage: uiImage).resizable().foregroundStyle(tint)
-            } else {
-                Image(systemName: "circle").foregroundStyle(tint)
-            }
-        case .selected:
-            if let uiImage = preferredImage(named: Icons.selected) {
-                // Selected asset ships with its own blue + white-interior colors
-                // ("original" rendering), so no `.foregroundStyle` tint here.
-                Image(uiImage: uiImage).resizable()
-            } else {
-                Circle()
-                    .strokeBorder(giniColorScheme.text.accent.swiftUIColor(),
-                                  lineWidth: Constants.selectedStrokeWidth)
-            }
-        case .disabled:
-            let tint = giniColorScheme.text.tertiary.swiftUIColor()
-            if let uiImage = preferredImage(named: Icons.disabled) {
-                Image(uiImage: uiImage).resizable().foregroundStyle(tint)
-            } else {
-                Image(systemName: "circle").foregroundStyle(tint)
-            }
-        case .error:
-            if let uiImage = preferredImage(named: Icons.error) {
-                // Error asset ships with its own fill + stroke colors ("original"
-                // rendering), so no `.foregroundStyle` tint here.
-                Image(uiImage: uiImage).resizable()
-            } else {
-                Circle()
-                    .fill(giniColorScheme.message.backgroundError.swiftUIColor())
-                    .overlay {
-                        Circle()
-                            .strokeBorder(giniColorScheme.message.contentError.swiftUIColor(),
-                                          lineWidth: Constants.errorStrokeWidth)
-                    }
-            }
+        case .unselected: unselectedIcon(giniColorScheme: giniColorScheme)
+        case .selected:   selectedIcon(giniColorScheme: giniColorScheme)
+        case .disabled:   disabledIcon(giniColorScheme: giniColorScheme)
+        case .error:      errorIcon(giniColorScheme: giniColorScheme)
+        }
+    }
+
+    @ViewBuilder
+    private static func unselectedIcon(giniColorScheme: GiniColorScheme) -> some View {
+        let tint = giniColorScheme.icon.secondary.swiftUIColor()
+        if let uiImage = preferredImage(named: Icons.unselected) {
+            Image(uiImage: uiImage).resizable().foregroundStyle(tint)
+        } else {
+            Image(systemName: "circle").foregroundStyle(tint)
+        }
+    }
+
+    /**
+     Selected asset ships with its own blue + white-interior colors
+     ("original" rendering), so no `.foregroundStyle` tint on the asset path.
+     */
+    @ViewBuilder
+    private static func selectedIcon(giniColorScheme: GiniColorScheme) -> some View {
+        if let uiImage = preferredImage(named: Icons.selected) {
+            Image(uiImage: uiImage).resizable()
+        } else {
+            Circle()
+                .strokeBorder(giniColorScheme.text.accent.swiftUIColor(),
+                              lineWidth: Constants.selectedStrokeWidth)
+        }
+    }
+
+    @ViewBuilder
+    private static func disabledIcon(giniColorScheme: GiniColorScheme) -> some View {
+        let tint = giniColorScheme.text.tertiary.swiftUIColor()
+        if let uiImage = preferredImage(named: Icons.disabled) {
+            Image(uiImage: uiImage).resizable().foregroundStyle(tint)
+        } else {
+            Image(systemName: "circle").foregroundStyle(tint)
+        }
+    }
+
+    /**
+     Error asset ships with its own fill + stroke colors ("original"
+     rendering), so no `.foregroundStyle` tint on the asset path.
+     */
+    @ViewBuilder
+    private static func errorIcon(giniColorScheme: GiniColorScheme) -> some View {
+        if let uiImage = preferredImage(named: Icons.error) {
+            Image(uiImage: uiImage).resizable()
+        } else {
+            Circle()
+                .fill(giniColorScheme.message.backgroundError.swiftUIColor())
+                .overlay {
+                    Circle()
+                        .strokeBorder(giniColorScheme.message.contentError.swiftUIColor(),
+                                      lineWidth: Constants.errorStrokeWidth)
+                }
         }
     }
 
