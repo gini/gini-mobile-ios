@@ -29,9 +29,9 @@ struct GiniOptionRowPreviewCatalog: View {
             VStack(alignment: .leading, spacing: 20) {
                 sectionHeader("Raw PDF assets (diagnostic — proves catalog load)")
                 HStack(spacing: 16) {
-                    rawAsset(name: GiniOptionRow.Icons.unselected)
-                    rawAsset(name: GiniOptionRow.Icons.selected)
-                    rawAsset(name: GiniOptionRow.Icons.error)
+                    rawAsset(.radioUnselected)
+                    rawAsset(.radioSelected)
+                    rawAsset(.radioError)
                 }
 
                 sectionHeader("Unselected")
@@ -93,8 +93,8 @@ struct GiniOptionRowPreviewCatalog: View {
      SwiftUI slot falls back to a placeholder.
      */
     @ViewBuilder
-    private func rawAsset(name: String) -> some View {
-        if let uiImage = preferredImage(named: name) {
+    private func rawAsset(_ icon: GiniIcons) -> some View {
+        if let uiImage = icon.image {
             Image(uiImage: uiImage).resizable().frame(width: 24, height: 24)
         } else {
             Image(systemName: "questionmark.square.dashed")

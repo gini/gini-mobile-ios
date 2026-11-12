@@ -116,12 +116,10 @@ struct GiniOptionRowStateIconTests {
     func stateIconBuildsForEveryState() {
         guard #available(iOS 16.0, *) else { return }
 
-        let scheme = GiniOptionRowPreviewCatalog.previewScheme
         let states: [GiniOptionRow.RadioButtonState] = [.unselected, .selected, .error]
 
         for state in states {
-            let hosting = UIHostingController(rootView: GiniOptionRow.stateIcon(for: state,
-                                                                                giniColorScheme: scheme))
+            let hosting = UIHostingController(rootView: GiniOptionRow.stateIcon(for: state))
             hosting.loadViewIfNeeded()
             hosting.view.setNeedsLayout()
             hosting.view.layoutIfNeeded()
@@ -239,18 +237,23 @@ struct GiniOptionRowRenderingTests {
     }
 }
 
-// MARK: - Icons enum
+// MARK: - GiniIcons enum
 
-@Suite("GiniOptionRow.Icons — asset-name constants match the shipped xcassets")
-struct GiniOptionRowIconsTests {
+@Suite("GiniIcons — asset-name raw values + .image resolution")
+struct GiniIconsTests {
 
-    @Test("Icons constants are the exact names shipped in GiniIcons.xcassets")
-    func iconNameMatchesAsset() {
-        guard #available(iOS 16.0, *) else { return }
+    @Test("Raw values are the exact names shipped in GiniIcons.xcassets")
+    func rawValueMatchesAsset() {
+        #expect(GiniIcons.radioUnselected.rawValue == "radio_unselected")
+        #expect(GiniIcons.radioSelected.rawValue == "radio_selected")
+        #expect(GiniIcons.radioError.rawValue == "radio_error")
+    }
 
-        #expect(GiniOptionRow.Icons.unselected == "radio_unselected")
-        #expect(GiniOptionRow.Icons.selected == "radio_selected")
-        #expect(GiniOptionRow.Icons.error == "radio_error")
+    @Test(".image resolves every case through the preferredImage chain and returns a non-nil UIImage from the module bundle",
+          arguments: [GiniIcons.radioUnselected, .radioSelected, .radioError])
+    func imageResolvesForEveryCase(icon: GiniIcons) {
+        #expect(icon.image != nil,
+                "Expected \(icon.rawValue) to load from the GiniUtilites .module bundle.")
     }
 }
 

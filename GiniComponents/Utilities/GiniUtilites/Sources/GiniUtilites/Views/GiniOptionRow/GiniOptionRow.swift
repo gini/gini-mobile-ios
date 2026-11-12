@@ -154,8 +154,7 @@ public struct GiniOptionRow: View {
     private var rowLayout: some View {
         HStack(alignment: .center, spacing: Constants.horizontalSpacing) {
             if case .radio(let state) = variant {
-                Self.stateIcon(for: state,
-                               giniColorScheme: giniColorScheme)
+                Self.stateIcon(for: state)
                     .font(.title3)
                     .frame(width: Constants.iconSize, height: Constants.iconSize)
             }
@@ -218,52 +217,22 @@ public struct GiniOptionRow: View {
         fonts.footer.map { Font(giniFont: $0) } ?? .footnote
     }
 
-    /// Visual icon for the row's radio state. Looks up a host-overridable asset
-    /// via `preferredImage(named:)` (main-bundle-first, then `.module`); falls back
-    /// to SF Symbol / custom shape when the asset is absent (expected until a
-    /// designer exports the PDFs into the imagesets).
-    @ViewBuilder
-    static func stateIcon(for state: RadioButtonState,
-                          giniColorScheme: GiniColorScheme) -> some View {
+    /**
+     Visual icon for the row's radio state. All three assets ship with
+     "original" rendering intent in `GiniIcons.xcassets`, so the PDFs
+     carry their own colors — no tinting or scheme input is needed.
+     */
+    static func stateIcon(for state: RadioButtonState) -> some View {
+        Image(uiImage: icon(for: state).image ?? UIImage())
+            .resizable()
+    }
+
+    private static func icon(for state: RadioButtonState) -> GiniIcons {
         switch state {
-        case .unselected: unselectedIcon(giniColorScheme: giniColorScheme)
-        case .selected:   selectedIcon(giniColorScheme: giniColorScheme)
-        case .error:      errorIcon(giniColorScheme: giniColorScheme)
+        case .unselected: .radioUnselected
+        case .selected:   .radioSelected
+        case .error:      .radioError
         }
-    }
-
-    private static func unselectedIcon(giniColorScheme: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.unselected) ?? UIImage())
-            .resizable()
-            .foregroundStyle(giniColorScheme.icon.secondary.swiftUIColor())
-    }
-
-    /**
-     Selected asset ships with its own blue + white-interior colors
-     ("original" rendering), so no `.foregroundStyle` tint is applied —
-     the scheme parameter stays for signature symmetry with `unselectedIcon`.
-     */
-    private static func selectedIcon(giniColorScheme _: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.selected) ?? UIImage())
-            .resizable()
-    }
-
-    /**
-     Error asset ships with its own fill + stroke colors ("original"
-     rendering), so no `.foregroundStyle` tint is applied —
-     the scheme parameter stays for signature symmetry with `unselectedIcon`.
-     */
-    private static func errorIcon(giniColorScheme _: GiniColorScheme) -> some View {
-        Image(uiImage: preferredImage(named: Icons.error) ?? UIImage())
-            .resizable()
-    }
-
-    /// Asset-name constants for the radio icons shipped in `GiniIcons.xcassets`.
-    /// Host apps override by including an asset with the same name in their main bundle.
-    enum Icons {
-        static let unselected = "radio_unselected"
-        static let selected = "radio_selected"
-        static let error = "radio_error"
     }
 
     enum Constants {
