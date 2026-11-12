@@ -232,18 +232,20 @@ public struct GiniOptionRow: View {
 
     /**
      Selected asset ships with its own blue + white-interior colors
-     ("original" rendering), so no `.foregroundStyle` tint is applied.
+     ("original" rendering), so no `.foregroundStyle` tint is applied —
+     the scheme parameter stays for signature symmetry with `unselectedIcon`.
      */
-    private static func selectedIcon(giniColorScheme: GiniColorScheme) -> some View {
+    private static func selectedIcon(giniColorScheme _: GiniColorScheme) -> some View {
         Image(uiImage: preferredImage(named: Icons.selected)!)
             .resizable()
     }
 
     /**
      Error asset ships with its own fill + stroke colors ("original"
-     rendering), so no `.foregroundStyle` tint is applied.
+     rendering), so no `.foregroundStyle` tint is applied —
+     the scheme parameter stays for signature symmetry with `unselectedIcon`.
      */
-    private static func errorIcon(giniColorScheme: GiniColorScheme) -> some View {
+    private static func errorIcon(giniColorScheme _: GiniColorScheme) -> some View {
         Image(uiImage: preferredImage(named: Icons.error)!)
             .resizable()
     }
