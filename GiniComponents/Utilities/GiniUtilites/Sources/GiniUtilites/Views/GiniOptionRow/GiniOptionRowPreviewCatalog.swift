@@ -31,7 +31,6 @@ struct GiniOptionRowPreviewCatalog: View {
                 HStack(spacing: 16) {
                     rawAsset(name: "radio_unselected", caption: "unselected")
                     rawAsset(name: "radio_selected", caption: "selected")
-                    rawAsset(name: "radio_disabled", caption: "disabled")
                     rawAsset(name: "radio_error", caption: "error")
                 }
 
@@ -46,10 +45,6 @@ struct GiniOptionRowPreviewCatalog: View {
                 sectionHeader("Error")
                 radioRow(title: Self.printedTitle, content: Self.printedIBAN, state: .error)
                 radioRow(title: Self.qrTitle, content: Self.qrIBAN, footer: Self.footer, state: .error)
-
-                sectionHeader("Disabled")
-                radioRow(title: Self.printedTitle, content: Self.printedIBAN, state: .disabled)
-                radioRow(title: Self.qrTitle, content: Self.qrIBAN, footer: Self.footer, state: .disabled)
 
                 sectionHeader("Informational (no radio, no background — parent owns the separator)")
                 informationalRow(title: Self.printedTitle, content: Self.printedIBAN)
@@ -92,9 +87,11 @@ struct GiniOptionRowPreviewCatalog: View {
             .foregroundStyle(.secondary)
     }
 
-    /// Displays the raw PDF asset side-by-side with its name so you can confirm the
-    /// `GiniIcons.xcassets` catalog is being picked up in preview. When a state's
-    /// imageset has no PDF yet (e.g. `radio_disabled`), the SwiftUI slot stays empty.
+    /**
+     Displays the raw PDF asset side-by-side with its name so you can confirm the
+     `GiniIcons.xcassets` catalog is being picked up in preview. If a state's
+     imageset has no PDF, the SwiftUI slot falls back to a placeholder.
+     */
     @ViewBuilder
     private func rawAsset(name: String, caption: String, tint: Color? = nil) -> some View {
         VStack(spacing: 4) {

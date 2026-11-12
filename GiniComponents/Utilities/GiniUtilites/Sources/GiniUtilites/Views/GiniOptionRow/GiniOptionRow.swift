@@ -15,8 +15,7 @@ import UIKit
 
  Variants:
  - `.radio(RadioButtonState)` — leading circle whose symbol and tint are driven
-   by one of four `RadioButtonState` cases (`unselected`, `selected`, `disabled`,
-   `error`).
+   by one of three `RadioButtonState` cases (`unselected`, `selected`, `error`).
  - `.informational` — no circle; typically rendered with a background so the
    row reads as a standalone card instead of a selectable list entry.
 
@@ -35,8 +34,6 @@ public struct GiniOptionRow: View {
         case unselected
         /// Chosen by the user; leading circle is filled with the accent tint.
         case selected
-        /// Non-interactive; muted colors; taps are swallowed.
-        case disabled
         /// Warning variant; leading circle and footer are tinted error-red.
         case error
     }
@@ -113,7 +110,7 @@ public struct GiniOptionRow: View {
        - giniColorScheme: Design-system token source. Pass the host SDK's scheme (e.g. `UIColor.giniBankColorScheme()`).
        - background: Optional background color for the row. Typically `nil` for radio rows (parent sheet owns the surface) and a semantic token for informational rows that need to stand alone.
        - fonts: Font bundle for the three text lines. See `FontConfiguration` for SDK-specific resolution examples. Defaults to system fonts.
-       - onTap: Invoked when the user taps a non-disabled row. Pass `nil` for a non-interactive row (common for `.informational`).
+       - onTap: Invoked when the user taps the row. Pass `nil` for a non-interactive row (common for `.informational`).
      */
     public init(title: String,
                 content: String,
@@ -153,7 +150,6 @@ public struct GiniOptionRow: View {
                 rowLayout
             }
             .buttonStyle(.plain)
-            .disabled(variant.isDisabled)
         } else {
             rowLayout
         }
@@ -202,17 +198,11 @@ public struct GiniOptionRow: View {
     // MARK: - Token resolution
 
     private var titleColor: Color {
-        if variant.isDisabled {
-            return giniColorScheme.text.tertiary.swiftUIColor()
-        }
-        return giniColorScheme.text.secondary.swiftUIColor()
+        giniColorScheme.text.secondary.swiftUIColor()
     }
 
     private var contentColor: Color {
-        if variant.isDisabled {
-            return giniColorScheme.text.tertiary.swiftUIColor()
-        }
-        return giniColorScheme.text.primary.swiftUIColor()
+        giniColorScheme.text.primary.swiftUIColor()
     }
 
     private var footerColor: Color {
@@ -228,7 +218,6 @@ public struct GiniOptionRow: View {
         switch state {
         case .unselected: unselectedIcon(giniColorScheme: giniColorScheme)
         case .selected:   selectedIcon(giniColorScheme: giniColorScheme)
-        case .disabled:   disabledIcon(giniColorScheme: giniColorScheme)
         case .error:      errorIcon(giniColorScheme: giniColorScheme)
         }
     }
@@ -258,16 +247,6 @@ public struct GiniOptionRow: View {
         }
     }
 
-    @ViewBuilder
-    private static func disabledIcon(giniColorScheme: GiniColorScheme) -> some View {
-        let tint = giniColorScheme.text.tertiary.swiftUIColor()
-        if let uiImage = preferredImage(named: Icons.disabled) {
-            Image(uiImage: uiImage).resizable().foregroundStyle(tint)
-        } else {
-            Image(systemName: "circle").foregroundStyle(tint)
-        }
-    }
-
     /**
      Error asset ships with its own fill + stroke colors ("original"
      rendering), so no `.foregroundStyle` tint on the asset path.
@@ -292,7 +271,6 @@ public struct GiniOptionRow: View {
     enum Icons {
         static let unselected = "radio_unselected"
         static let selected = "radio_selected"
-        static let disabled = "radio_disabled"
         static let error = "radio_error"
     }
 
@@ -328,12 +306,6 @@ enum GiniOptionRowAccessibility {
 
 @available(iOS 16.0, *)
 extension GiniOptionRow.Variant {
-
-    /// `true` for `.radio(.disabled)` only. `.informational` is never disabled.
-    var isDisabled: Bool {
-        if case .radio(.disabled) = self { return true }
-        return false
-    }
 
     /// `true` for `.radio(.selected)` only.
     var isSelected: Bool {
