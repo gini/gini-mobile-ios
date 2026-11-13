@@ -157,3 +157,7 @@
 
 // MARK: - Transaction Docs feature -  Transaction Details
 "ginibank.transactionDocs.preview.amount" = "Amount";
+
+// MARK: - Fraud prevention — expandable info card (consumed by PP-3960, PP-3962)
+"ginibank.fraud.protect.title" = "How do I protect myself?";
+"ginibank.fraud.protect.body" = "Documents are sometimes changed to redirect payments. If you’re unsure which IBAN is right, ask the sender using contact details you already know.";
