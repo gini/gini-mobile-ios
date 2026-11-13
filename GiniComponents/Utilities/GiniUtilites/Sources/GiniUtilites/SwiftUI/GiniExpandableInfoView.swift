@@ -102,12 +102,20 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
     private var chevron: some View {
         // Reduce Motion: swap the glyph instead of rotating, so the control
         // conveys state without any interpolated motion (WCAG 2.3.3).
-        Image(systemName: reduceMotion
-              ? (isExpanded ? "chevron.up" : "chevron.down")
-              : "chevron.down")
+        Image(systemName: chevronSymbolName)
             .imageScale(.medium)
             .foregroundStyle(viewModel.colorScheme.content.navigation.swiftUIColor())
-            .rotationEffect(.degrees(reduceMotion ? 0 : (isExpanded ? 180 : 0)))
+            .rotationEffect(.degrees(chevronRotationDegrees))
             .accessibility(hidden: true)
+    }
+
+    private var chevronSymbolName: String {
+        guard reduceMotion else { return "chevron.down" }
+        return isExpanded ? "chevron.up" : "chevron.down"
+    }
+
+    private var chevronRotationDegrees: Double {
+        guard !reduceMotion else { return 0 }
+        return isExpanded ? 180 : 0
     }
 }
