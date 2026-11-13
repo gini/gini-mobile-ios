@@ -59,6 +59,9 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
             headerButton
             if isExpanded {
                 expandedContent()
+                    // Align the expanded content's leading edge with the title's,
+                    // not the icon's — matches the Figma disclosure pattern.
+                    .padding(.leading, Constants.iconSize + Constants.headerSpacing)
                     .transition(.opacity)
             }
         }

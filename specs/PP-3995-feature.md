@@ -338,11 +338,15 @@ GiniExpandableInfoView(
   rotation so state is conveyed without motion (R8).
 - **Animation**: `.animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isExpanded)` applied to the outer `VStack`, driving both the chevron rotation and the expanded-content container.
 - **Expanded-content container**: a vertical `VStack` with
-  `if isExpanded { expandedContent().transition(.opacity) }`. The
-  `.transition(.opacity)` prevents a hard pop on reveal/dismiss; the
-  outer `.animation(_:value:)` drives the fade. SwiftUI's layout grows
-  the card to fit when expanded and shrinks it back to the header's
-  intrinsic height when collapsed — no `minHeight` is applied (see R4).
+  `if isExpanded { expandedContent().padding(.leading, iconSize + headerSpacing).transition(.opacity) }`.
+  The leading padding (icon width + header spacing = 24 + 12 = 36 pt)
+  indents the expanded content so its leading edge aligns with the
+  title text, not the icon — matches the Figma disclosure pattern.
+  The `.transition(.opacity)` prevents a hard pop on reveal/dismiss;
+  the outer `.animation(_:value:)` drives the fade. SwiftUI's layout
+  grows the card to fit when expanded and shrinks it back to the
+  header's intrinsic height when collapsed — no `minHeight` is applied
+  (see R4).
 - **Accessibility**:
   - Outer `.accessibilityElement(children: .contain)` so expanded
     content remains individually navigable (R5, review 2026-11-09).
