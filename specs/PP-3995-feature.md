@@ -51,9 +51,13 @@ transition, and the chevron rotates back to its "collapsed" position.
 **R4 (MUST, happy path — ScrollView host):** Given the component is placed
 inside a vertical `ScrollView { LazyVStack { … } }`, when it toggles
 between states, then the component's intrinsic height updates (collapsed
-height = Figma 136 pt at default Dynamic Type; expanded height = content
-height) and the surrounding `ScrollView` reflows without clipping the
-expanded content.
+height = header's natural height — Figma collapsed frame is 327 × 48 pt
+at default Dynamic Type; expanded height = header + expanded content)
+and the surrounding `ScrollView` reflows without clipping the expanded
+content. No `minHeight` is applied — a fixed floor would prevent the
+card from shrinking back on collapse (bug found while previewing on
+2026-11-13; the earlier "136 pt" number in this spec was a misread of
+the Figma frame).
 
 **R5 (MUST, entry — accessibility):** Given VoiceOver is active, when the
 user focuses the header, then VoiceOver announces the header as a
@@ -337,9 +341,8 @@ GiniExpandableInfoView(
   `if isExpanded { expandedContent().transition(.opacity) }`. The
   `.transition(.opacity)` prevents a hard pop on reveal/dismiss; the
   outer `.animation(_:value:)` drives the fade. SwiftUI's layout grows
-  the card to fit when expanded; collapsed frame is pinned via
-  `.frame(minHeight: Constants.collapsedMinHeight)` so the initial
-  render matches the 136 pt Figma spec but Dynamic Type can grow it.
+  the card to fit when expanded and shrinks it back to the header's
+  intrinsic height when collapsed — no `minHeight` is applied (see R4).
 - **Accessibility**:
   - Outer `.accessibilityElement(children: .contain)` so expanded
     content remains individually navigable (R5, review 2026-11-09).

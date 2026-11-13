@@ -12,7 +12,6 @@ private enum Constants {
     static let headerSpacing: CGFloat = 12
     static let verticalSpacing: CGFloat = 12
     static let contentPadding: CGFloat = 16
-    static let collapsedMinHeight: CGFloat = 136
     static let animationDuration: Double = 0.2
 }
 
@@ -64,9 +63,7 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
             }
         }
         .padding(Constants.contentPadding)
-        .frame(maxWidth: .infinity,
-               minHeight: Constants.collapsedMinHeight,
-               alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(viewModel.colorScheme.container.background.swiftUIColor())
         .animation(reduceMotion ? nil : .easeInOut(duration: Constants.animationDuration),
                    value: isExpanded)
