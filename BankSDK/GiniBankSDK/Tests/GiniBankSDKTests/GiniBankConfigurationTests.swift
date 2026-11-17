@@ -30,7 +30,7 @@ extension GiniConfigurationSharedStateSuite {
 
             // NOTE: Update this value whenever you add or remove a stored property.
             let propertyCount = mirror.children.count
-            let expectedCount = 54 // Current number of stored properties in GiniBankConfiguration
+            let expectedCount = 55 // Current number of stored properties in GiniBankConfiguration
             #expect(propertyCount == expectedCount,
                  "A new property was added to GiniBankConfiguration. Please update feature flag tests accordingly.")
         }
