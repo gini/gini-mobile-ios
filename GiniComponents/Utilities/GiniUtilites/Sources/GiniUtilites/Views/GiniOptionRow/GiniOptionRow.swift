@@ -28,18 +28,20 @@ import UIKit
 @available(iOS 16.0, *)
 public struct GiniOptionRow: View {
 
-    /// Visual state of the leading radio indicator (only used by the `.radio` variant).
+    /** Visual state of the leading radio indicator (only used by the `.radio` variant). */
     public enum RadioButtonState: Hashable {
-        /// Default, tappable, not selected.
+        /** Default, tappable, not selected. */
         case unselected
-        /// Chosen by the user; leading circle is filled with the accent tint.
+        /** Chosen by the user; leading circle is filled with the accent tint. */
         case selected
-        /// Warning variant; leading circle and footer are tinted error-red.
+        /** Warning variant; leading circle and footer are tinted error-red. */
         case error
     }
 
-    /// Row variant — a radio row with a leading indicator, or a plain
-    /// informational row with no indicator.
+    /**
+     Row variant — a radio row with a leading indicator, or a plain
+     informational row with no indicator.
+     */
     public enum Variant: Hashable {
         case radio(RadioButtonState)
         case informational
@@ -252,7 +254,7 @@ public struct GiniOptionRow: View {
  */
 enum GiniOptionRowAccessibility {
 
-    /// Builds the combined VoiceOver label from the caller-provided (already localized) strings.
+    /** Builds the combined VoiceOver label from the caller-provided (already localized) strings. */
     static func makeLabel(title: String,
                           content: String,
                           footer: String?) -> String {
@@ -268,7 +270,7 @@ enum GiniOptionRowAccessibility {
 @available(iOS 16.0, *)
 extension GiniOptionRow.Variant {
 
-    /// `true` for `.radio(.selected)` only.
+    /** `true` for `.radio(.selected)` only. */
     var isSelected: Bool {
         if case .radio(.selected) = self { return true }
         return false

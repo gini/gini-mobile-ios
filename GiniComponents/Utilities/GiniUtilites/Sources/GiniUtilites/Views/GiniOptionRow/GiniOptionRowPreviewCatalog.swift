@@ -103,8 +103,10 @@ struct GiniOptionRowPreviewCatalog: View {
         }
     }
 
-    /// A `GiniColorScheme` built from iOS system colors so the preview reflects
-    /// standard semantic hues without depending on an SDK-specific factory.
+    /**
+     A `GiniColorScheme` built from iOS system colors so the preview reflects
+     standard semantic hues without depending on an SDK-specific factory.
+     */
     static let previewScheme: GiniColorScheme = {
         let labelPair = pair(.label)
         let secondary = pair(.secondaryLabel)
