@@ -274,8 +274,20 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
+                #if DEBUG
+                if IBANSelectionSheetPreview.isEnabled {
+                    self.presentIBANSelectionSheetPreview(for: result) { [weak self] in
+                        self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                        documentService.resetToInitialState()
+                    }
+                } else {
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                    documentService.resetToInitialState()
+                }
+                #else
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
                 documentService.resetToInitialState()
+                #endif
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -557,6 +569,15 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
+        #if DEBUG
+        if IBANSelectionSheetPreview.isEnabled {
+            presentIBANSelectionSheetPreview(for: analysisResult) { [weak self] in
+                self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+                self?.documentService.resetToInitialState()
+            }
+            return
+        }
+        #endif
         resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
         documentService.resetToInitialState()
     }
@@ -676,15 +697,29 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             document: documentService.document,
                                             candidates: result.candidates)
                 sendAnalyticsEventSDKClose()
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                if !isCrossBorderPayment() {
-                    self.giniBankConfiguration.lineItems = result.lineItems
-                    if let skontoDiscounts = result.skontoDiscounts {
-                        self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                        self.sendSkontoTransferSummary(extractions: extractions)
+                let finishDelivery: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+
+                    if !self.isCrossBorderPayment() {
+                        self.giniBankConfiguration.lineItems = result.lineItems
+                        if let skontoDiscounts = result.skontoDiscounts {
+                            self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                            self.sendSkontoTransferSummary(extractions: extractions)
+                        }
                     }
                 }
+
+                #if DEBUG
+                if IBANSelectionSheetPreview.isEnabled {
+                    self.presentIBANSelectionSheetPreview(for: result, completion: finishDelivery)
+                } else {
+                    finishDelivery()
+                }
+                #else
+                finishDelivery()
+                #endif
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -1102,10 +1137,23 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                let finishSkontoDelivery: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-                self.sendSkontoTransferSummary(extractions: extractions)
+                    self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+                    self.sendSkontoTransferSummary(extractions: extractions)
+                }
+
+                #if DEBUG
+                if IBANSelectionSheetPreview.isEnabled {
+                    self.presentIBANSelectionSheetPreview(for: result, completion: finishSkontoDelivery)
+                } else {
+                    finishSkontoDelivery()
+                }
+                #else
+                finishSkontoDelivery()
+                #endif
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
