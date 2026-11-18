@@ -79,10 +79,11 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
         Button(action: { isExpanded.toggle() }) {
             HStack(spacing: Constants.headerSpacing) {
                 Image(uiImage: viewModel.icon)
-                    .renderingMode(.original)
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: Constants.iconSize, height: Constants.iconSize)
+                    .foregroundStyle(viewModel.iconTint.swiftUIColor())
                     .accessibility(hidden: true)
 
                 Text(viewModel.title)

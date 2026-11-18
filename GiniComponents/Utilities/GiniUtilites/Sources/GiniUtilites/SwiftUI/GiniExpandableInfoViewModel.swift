@@ -16,8 +16,21 @@ import UIKit
  */
 public struct GiniExpandableInfoViewModel {
 
-    /** Image rendered on the leading edge of the header row. */
+    /**
+     Image rendered on the leading edge of the header row.
+     Template-tinted from `iconTint` so a single PDF asset can flip color
+     between light and dark mode via the scheme's `GiniColor` pair — same
+     mechanism as the chevron.
+     */
     public let icon: UIImage
+
+    /**
+     Icon tint color. Supplied directly by the caller so each screen can
+     match the per-mode color from its Figma spec (e.g. the fraud card's
+     `#006ECF` light / `#007FEE` dark Gini blue pair) without inventing a
+     new scheme token for every use case.
+     */
+    public let iconTint: GiniColor
 
     /**
      Chevron glyph rendered on the trailing edge of the header row.
@@ -55,6 +68,7 @@ public struct GiniExpandableInfoViewModel {
 
      - Parameters:
        - icon: Image rendered on the leading edge of the header row.
+       - iconTint: Icon tint color (per-screen Figma spec).
        - chevronIcon: Chevron glyph rendered on the trailing edge; template-tinted from the color scheme.
        - title: Title shown next to the icon in the header row.
        - backgroundColor: Card surface color (per-screen Figma spec).
@@ -64,6 +78,7 @@ public struct GiniExpandableInfoViewModel {
        - collapsedAccessibilityValue: Already-localized VoiceOver value for the collapsed state.
      */
     public init(icon: UIImage,
+                iconTint: GiniColor,
                 chevronIcon: UIImage,
                 title: String,
                 backgroundColor: GiniColor,
@@ -72,6 +87,7 @@ public struct GiniExpandableInfoViewModel {
                 expandedAccessibilityValue: String,
                 collapsedAccessibilityValue: String) {
         self.icon = icon
+        self.iconTint = iconTint
         self.chevronIcon = chevronIcon
         self.title = title
         self.backgroundColor = backgroundColor
