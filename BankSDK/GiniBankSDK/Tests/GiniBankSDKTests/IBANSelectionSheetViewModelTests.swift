@@ -5,6 +5,7 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import SwiftUI
 import Testing
 import UIKit
 @testable import GiniBankSDK
@@ -232,3 +233,123 @@ struct IBANSelectionSheetStateTests {
         #expect(resolution == .revealError)
     }
 }
+
+// MARK: - IBANSelectionSheet rendering
+
+/// Renders the SwiftUI view in a hosting controller attached to a visible
+/// window so SwiftUI evaluates `body` and every styling helper. Mirrors the
+/// pattern `GiniOptionRow`'s own render tests use.
+@Suite("IBANSelectionSheet — body renders for every state")
+@MainActor
+struct IBANSelectionSheetRenderingTests {
+
+    @Test("Renders in the default state (no selection, no validation error)")
+    func rendersDefault() {
+        guard #available(iOS 16.0, *) else { return }
+        render(makeSheet(selection: .constant(nil)))
+    }
+
+    @Test("Renders with a selection (exercises the .selected row branch)")
+    func rendersWithSelection() {
+        guard #available(iOS 16.0, *) else { return }
+        let printed = IBANChoice.printed(iban: "DE89 3704 0044 0532 0130 00")
+        render(makeSheet(selection: .constant(printed)))
+    }
+
+    @Test("Renders with multiple printed IBANs (exercises the ForEach branch)")
+    func rendersMultiplePrintedIBANs() {
+        guard #available(iOS 16.0, *) else { return }
+        render(makeSheet(
+            selection: .constant(nil),
+            printedIBANs: ["DE89 3704 0044 0532 0130 00",
+                           "DE02 1203 0000 0000 2020 51",
+                           "GB29 NWBK 6016 1331 9268 19"]
+        ))
+    }
+
+    @Test("Renders at an accessibility Dynamic Type size (exercises the ScrollView branch)")
+    func rendersAtAccessibilitySize() {
+        guard #available(iOS 16.0, *) else { return }
+        let sheet = makeSheet(selection: .constant(nil))
+            .environment(\.dynamicTypeSize, .accessibility3)
+        render(sheet)
+    }
+
+    @Test("Renders with explicit UIFonts supplied via FontConfig")
+    func rendersWithExplicitFonts() {
+        guard #available(iOS 16.0, *) else { return }
+        let font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        let sheet = IBANSelectionSheet(
+            viewModel: Self.makeViewModel(
+                printedIBANs: ["DE89 3704 0044 0532 0130 00"],
+                sheetFonts: IBANSelectionSheetViewModel.FontConfig(title: font,
+                                                                    validationError: font,
+                                                                    footerHint: font,
+                                                                    continueCTA: font)
+            ),
+            selection: .constant(nil)
+        )
+        render(sheet)
+    }
+
+    // MARK: - Fixtures
+
+    @available(iOS 16.0, *)
+    private func makeSheet(selection: Binding<IBANChoice?>,
+                           printedIBANs: [String] = ["DE89 3704 0044 0532 0130 00"]) -> IBANSelectionSheet {
+        IBANSelectionSheet(viewModel: Self.makeViewModel(printedIBANs: printedIBANs),
+                           selection: selection)
+    }
+
+    @available(iOS 16.0, *)
+    private static func makeViewModel(printedIBANs: [String],
+                                       sheetFonts: IBANSelectionSheetViewModel.FontConfig = .init()) -> IBANSelectionSheetViewModel {
+        IBANSelectionSheetViewModel(
+            title: "To continue, select one of the IBANs",
+            qrRowTitle: "In the QR code",
+            printedRowTitle: "Printed on the document",
+            footerHint: "You can still check the IBAN on the next screen.",
+            continueCTA: "Continue",
+            validationErrorMessage: "Select an IBAN to continue",
+            continueHintWhenNoSelection: "Select an IBAN to continue",
+            qrIBAN: "PL12 1000 0111 0100 1000",
+            printedIBANs: printedIBANs,
+            giniColorScheme: UIColor.giniBankColorScheme(),
+            sheetFonts: sheetFonts
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private func render(_ sheet: some View) {
+        let hosting = UIHostingController(rootView: sheet)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 600))
+        window.rootViewController = hosting
+        window.isHidden = false
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
+    }
+}
+
+// MARK: - IBANSelectionSheetPreview flag
+
+#if DEBUG
+/// `IBANSelectionSheetPreview.isEnabled` reads `UserDefaults.standard`. The
+/// test flips the flag and asserts the read-side observes it.
+@Suite("IBANSelectionSheetPreview — UserDefaults flag")
+struct IBANSelectionSheetPreviewFlagTests {
+
+    @Test("isEnabled defaults to false when nothing is written")
+    func defaultsToFalse() {
+        UserDefaults.standard.removeObject(forKey: IBANSelectionSheetPreview.userDefaultsKey)
+        #expect(IBANSelectionSheetPreview.isEnabled == false)
+    }
+
+    @Test("isEnabled reflects the UserDefaults value",
+          arguments: [true, false])
+    func reflectsUserDefaultsValue(_ value: Bool) {
+        UserDefaults.standard.set(value, forKey: IBANSelectionSheetPreview.userDefaultsKey)
+        defer { UserDefaults.standard.removeObject(forKey: IBANSelectionSheetPreview.userDefaultsKey) }
+        #expect(IBANSelectionSheetPreview.isEnabled == value)
+    }
+}
+#endif
