@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Testing
+import UIKit
 @testable import GiniUtilites
 
 // Suites and tests cannot be marked `@available(iOS 16.0, *)` because Swift
@@ -45,5 +46,46 @@ struct ViewGiniBottomSheetTests {
         _ = EmptyView().giniBottomSheet(isPresented: isPresented) {
             Color.clear
         }
+    }
+}
+
+/// Renders a host view with `.giniBottomSheet` applied in a window so
+/// SwiftUI evaluates the modifier's body and the `detent` computed
+/// property. Exercises both the non-accessibility and the accessibility
+/// `dynamicTypeSize` branches.
+@Suite("View+GiniBottomSheet — rendering branches")
+@MainActor
+struct ViewGiniBottomSheetRenderingTests {
+
+    @Test("Host renders with isPresented false (detent set but sheet not shown)")
+    func rendersIsPresentedFalse() {
+        guard #available(iOS 16.0, *) else { return }
+        renderAndLayout(
+            Color.clear.giniBottomSheet(isPresented: .constant(false)) {
+                Text("sheet")
+            }
+        )
+    }
+
+    @Test("Host renders at an accessibility Dynamic Type size (.large detent branch)")
+    func rendersAtAccessibilitySize() {
+        guard #available(iOS 16.0, *) else { return }
+        renderAndLayout(
+            Color.clear
+                .giniBottomSheet(isPresented: .constant(false)) {
+                    Text("sheet")
+                }
+                .environment(\.dynamicTypeSize, .accessibility3)
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private func renderAndLayout(_ view: some View) {
+        let hosting = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 200))
+        window.rootViewController = hosting
+        window.isHidden = false
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
     }
 }
