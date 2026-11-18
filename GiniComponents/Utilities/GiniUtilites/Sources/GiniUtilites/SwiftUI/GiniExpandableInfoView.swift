@@ -69,7 +69,7 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
         }
         .padding(Constants.contentPadding)
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(viewModel.colorScheme.container.background.swiftUIColor())
+        .background(viewModel.backgroundColor.swiftUIColor())
         .animation(reduceMotion ? nil : .easeInOut(duration: Constants.animationDuration),
                    value: isExpanded)
         .accessibilityElement(children: .contain)

@@ -30,7 +30,15 @@ public struct GiniExpandableInfoViewModel {
     /** Title shown next to the icon in the header row. */
     public let title: String
 
-    /** Color scheme the view resolves its background, title, and chevron tint from. */
+    /**
+     Card surface color. Supplied directly by the caller so each screen
+     can match its own Figma spec (e.g. pale blue for the fraud warning,
+     neutral grey for info variants) without inventing a new scheme
+     token for every use case.
+     */
+    public let backgroundColor: GiniColor
+
+    /** Color scheme the view resolves its title and chevron tint from. */
     public let colorScheme: GiniColorScheme
 
     /** Title font; bridged into SwiftUI via `Font(giniFont:)` so Dynamic Type propagates. */
@@ -49,6 +57,7 @@ public struct GiniExpandableInfoViewModel {
        - icon: Image rendered on the leading edge of the header row.
        - chevronIcon: Chevron glyph rendered on the trailing edge; template-tinted from the color scheme.
        - title: Title shown next to the icon in the header row.
+       - backgroundColor: Card surface color (per-screen Figma spec).
        - colorScheme: Color scheme the view resolves its tokens from.
        - titleFont: UIKit font used for the title; bridged into SwiftUI via `Font(giniFont:)`.
        - expandedAccessibilityValue: Already-localized VoiceOver value for the expanded state.
@@ -57,6 +66,7 @@ public struct GiniExpandableInfoViewModel {
     public init(icon: UIImage,
                 chevronIcon: UIImage,
                 title: String,
+                backgroundColor: GiniColor,
                 colorScheme: GiniColorScheme,
                 titleFont: UIFont,
                 expandedAccessibilityValue: String,
@@ -64,6 +74,7 @@ public struct GiniExpandableInfoViewModel {
         self.icon = icon
         self.chevronIcon = chevronIcon
         self.title = title
+        self.backgroundColor = backgroundColor
         self.colorScheme = colorScheme
         self.titleFont = titleFont
         self.expandedAccessibilityValue = expandedAccessibilityValue

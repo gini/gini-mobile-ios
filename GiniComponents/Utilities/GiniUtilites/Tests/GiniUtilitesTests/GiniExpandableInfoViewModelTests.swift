@@ -30,9 +30,12 @@ struct GiniExpandableInfoViewModelTests {
         let sentinel = GiniColor(lightModeColor: .red, darkModeColor: .blue)
         let scheme = Self.makeColorScheme(withSentinel: sentinel)
 
+        let backgroundColor = GiniColor(lightModeColor: .green, darkModeColor: .black)
+
         let viewModel = GiniExpandableInfoViewModel(icon: icon,
                                                     chevronIcon: chevronIcon,
                                                     title: title,
+                                                    backgroundColor: backgroundColor,
                                                     colorScheme: scheme,
                                                     titleFont: titleFont,
                                                     expandedAccessibilityValue: expandedValue,
@@ -41,6 +44,7 @@ struct GiniExpandableInfoViewModelTests {
         #expect(viewModel.icon === icon)
         #expect(viewModel.chevronIcon === chevronIcon)
         #expect(viewModel.title == title)
+        #expect(viewModel.backgroundColor === backgroundColor)
         #expect(viewModel.titleFont === titleFont)
         #expect(viewModel.expandedAccessibilityValue == expandedValue)
         #expect(viewModel.collapsedAccessibilityValue == collapsedValue)
