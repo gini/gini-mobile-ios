@@ -151,3 +151,11 @@
 
 // MARK: - Transaction Docs feature -  Transaction Details
 "ginibank.transactionDocs.preview.amount" = "Betrag";
+
+// MARK: - Fraud prevention — IBAN selection sheet
+"ginibank.fraud.ibanSelection.title" = "Wählen Sie eine IBAN aus, um fortzufahren";
+"ginibank.fraud.ibanSelection.row.qr.label" = "Im QR-Code";
+"ginibank.fraud.ibanSelection.row.printed.label" = "Auf dem Dokument gedruckt";
+"ginibank.fraud.ibanSelection.footer.hint" = "Sie können die IBAN im nächsten Schritt noch prüfen.";
+"ginibank.fraud.ibanSelection.cta.continue" = "Weiter";
+"ginibank.fraud.ibanSelection.validation.selectIBAN" = "Wählen Sie eine IBAN, um fortzufahren";
