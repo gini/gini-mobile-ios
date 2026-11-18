@@ -684,9 +684,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                     images: images,
                                                     document: documentService.document,
                                                     candidates: result.candidates)
-                sendAnalyticsEventSDKClose()
                 self.presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
                     guard let self = self else { return }
+                    self.sendAnalyticsEventSDKClose()
                     self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: finalResult)
 
                     if !self.isCrossBorderPayment() {
@@ -917,9 +917,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: extractionResult.candidates)
-        sendAnalyticsEventSDKClose()
-        resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: analysisResult)
-        documentService.resetToInitialState()
+        presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+            guard let self = self else { return }
+            self.sendAnalyticsEventSDKClose()
+            self.resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: finalResult)
+            self.documentService.resetToInitialState()
+        }
     }
 
     /**

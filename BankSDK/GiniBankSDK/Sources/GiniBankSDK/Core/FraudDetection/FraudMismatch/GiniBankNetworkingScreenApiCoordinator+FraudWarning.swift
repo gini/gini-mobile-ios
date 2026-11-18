@@ -36,6 +36,8 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
             completion(result)
             return
         }
+        /// Drop a second delivery that arrives while the first warning is still on screen; replacing the parked tuple would null the first coordinator's weak delegate and leave its buttons inert.
+        guard fraudWarningPresentation == nil else { return }
         let coordinator = FraudWarningCoordinator(qrIBAN: FraudWarningStubs.qrIBAN,
                                                   printedIBAN: FraudWarningStubs.printedIBAN,
                                                   delegate: self)
@@ -58,6 +60,7 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
         guard takeFraudWarningPresentation() != nil else { return }
         screenAPINavigationController.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
+            self.restorePresenterAccessibility()
             self.resultsDelegate?.giniCaptureDidCancelAnalysis()
             self.documentService.resetToInitialState()
         }
@@ -65,9 +68,16 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
 
     func fraudWarningCoordinatorDidProceed(_: FraudWarningCoordinator) {
         guard let pending = takeFraudWarningPresentation() else { return }
-        screenAPINavigationController.dismiss(animated: true) {
+        screenAPINavigationController.dismiss(animated: true) { [weak self] in
+            self?.restorePresenterAccessibility()
             pending.completion(pending.result)
         }
+    }
+
+    private func restorePresenterAccessibility() {
+        screenAPINavigationController.view.accessibilityElementsHidden = false
+        UIAccessibility.post(notification: .screenChanged,
+                             argument: screenAPINavigationController.view)
     }
 
     private func takeFraudWarningPresentation() -> (coordinator: FraudWarningCoordinator,

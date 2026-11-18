@@ -79,6 +79,38 @@ struct GiniBankNetworkingScreenApiCoordinatorFraudWarningTests {
         #expect(coordinator.fraudWarningPresentation == nil)
     }
 
+    @Test("a second delivery while a presentation is parked is dropped (first-wins)")
+    func duplicateDeliveryDoesNotReplaceParkedTuple() {
+        _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
+
+        let configuration = GiniBankConfiguration()
+        configuration.fraudWarningEnabled = true
+
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: StubTokenSource(),
+                                                                 resultsDelegate: StubResultsDelegate(),
+                                                                 configuration: configuration,
+                                                                 documentMetadata: nil,
+                                                                 trackingDelegate: nil)
+
+        let parkedCoordinator = FraudWarningCoordinator(qrIBAN: "first-qr",
+                                                        printedIBAN: "first-printed",
+                                                        delegate: nil)
+        let parkedResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        coordinator.fraudWarningPresentation = (coordinator: parkedCoordinator,
+                                                result: parkedResult,
+                                                completion: { _ in })
+
+        var secondCompletionFired = false
+        coordinator.presentFraudWarningIfEnabled(result: parkedResult) { _ in
+            secondCompletionFired = true
+        }
+
+        #expect(coordinator.fraudWarningPresentation?.coordinator === parkedCoordinator,
+                "First presentation's coordinator must remain parked")
+        #expect(secondCompletionFired == false,
+                "Second delivery's completion must be dropped, not invoked")
+    }
+
     @Test("delegate proceed is a no-op when no presentation is parked")
     func proceedWithoutParkedPresentationIsNoOp() {
         _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
