@@ -19,6 +19,14 @@ public struct GiniExpandableInfoViewModel {
     /** Image rendered on the leading edge of the header row. */
     public let icon: UIImage
 
+    /**
+     Chevron glyph rendered on the trailing edge of the header row.
+     Template-tinted from `colorScheme.text.primary` so it matches the
+     title color and flips correctly between light and dark mode via the
+     scheme's `GiniColor` pair.
+     */
+    public let chevronIcon: UIImage
+
     /** Title shown next to the icon in the header row. */
     public let title: String
 
@@ -39,6 +47,7 @@ public struct GiniExpandableInfoViewModel {
 
      - Parameters:
        - icon: Image rendered on the leading edge of the header row.
+       - chevronIcon: Chevron glyph rendered on the trailing edge; template-tinted from the color scheme.
        - title: Title shown next to the icon in the header row.
        - colorScheme: Color scheme the view resolves its tokens from.
        - titleFont: UIKit font used for the title; bridged into SwiftUI via `Font(giniFont:)`.
@@ -46,12 +55,14 @@ public struct GiniExpandableInfoViewModel {
        - collapsedAccessibilityValue: Already-localized VoiceOver value for the collapsed state.
      */
     public init(icon: UIImage,
+                chevronIcon: UIImage,
                 title: String,
                 colorScheme: GiniColorScheme,
                 titleFont: UIFont,
                 expandedAccessibilityValue: String,
                 collapsedAccessibilityValue: String) {
         self.icon = icon
+        self.chevronIcon = chevronIcon
         self.title = title
         self.colorScheme = colorScheme
         self.titleFont = titleFont

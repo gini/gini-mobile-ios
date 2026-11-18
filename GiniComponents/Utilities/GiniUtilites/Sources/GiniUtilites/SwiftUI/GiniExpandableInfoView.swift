@@ -9,6 +9,7 @@ import UIKit
 
 private enum Constants {
     static let iconSize: CGFloat = 24
+    static let chevronSize: CGFloat = 16
     static let headerSpacing: CGFloat = 12
     static let verticalSpacing: CGFloat = 12
     static let contentPadding: CGFloat = 16
@@ -102,22 +103,16 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
     }
 
     private var chevron: some View {
-        // Reduce Motion: swap the glyph instead of rotating, so the control
-        // conveys state without any interpolated motion (WCAG 2.3.3).
-        Image(systemName: chevronSymbolName)
-            .imageScale(.medium)
-            .foregroundStyle(viewModel.colorScheme.content.navigation.swiftUIColor())
-            .rotationEffect(.degrees(chevronRotationDegrees))
+        // Rotation always reflects the expanded state. The outer .animation
+        // modifier (gated on reduceMotion) controls whether the rotation
+        // interpolates or snaps instantly — WCAG 2.3.3 is honored either way.
+        Image(uiImage: viewModel.chevronIcon)
+            .renderingMode(.template)
+            .resizable()
+            .scaledToFit()
+            .frame(width: Constants.chevronSize, height: Constants.chevronSize)
+            .foregroundStyle(viewModel.colorScheme.text.primary.swiftUIColor())
+            .rotationEffect(.degrees(isExpanded ? 180 : 0))
             .accessibility(hidden: true)
-    }
-
-    private var chevronSymbolName: String {
-        guard reduceMotion else { return "chevron.down" }
-        return isExpanded ? "chevron.up" : "chevron.down"
-    }
-
-    private var chevronRotationDegrees: Double {
-        guard !reduceMotion else { return 0 }
-        return isExpanded ? 180 : 0
     }
 }

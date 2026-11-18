@@ -22,6 +22,7 @@ struct GiniExpandableInfoViewModelTests {
     @Test
     func init_storesAllProperties() {
         let icon = UIImage()
+        let chevronIcon = UIImage()
         let title = "Fraud warning"
         let titleFont = UIFont.systemFont(ofSize: 17)
         let expandedValue = "Expanded"
@@ -30,6 +31,7 @@ struct GiniExpandableInfoViewModelTests {
         let scheme = Self.makeColorScheme(withSentinel: sentinel)
 
         let viewModel = GiniExpandableInfoViewModel(icon: icon,
+                                                    chevronIcon: chevronIcon,
                                                     title: title,
                                                     colorScheme: scheme,
                                                     titleFont: titleFont,
@@ -37,6 +39,7 @@ struct GiniExpandableInfoViewModelTests {
                                                     collapsedAccessibilityValue: collapsedValue)
 
         #expect(viewModel.icon === icon)
+        #expect(viewModel.chevronIcon === chevronIcon)
         #expect(viewModel.title == title)
         #expect(viewModel.titleFont === titleFont)
         #expect(viewModel.expandedAccessibilityValue == expandedValue)
