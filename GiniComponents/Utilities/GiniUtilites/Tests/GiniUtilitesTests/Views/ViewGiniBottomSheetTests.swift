@@ -79,6 +79,29 @@ struct ViewGiniBottomSheetRenderingTests {
         )
     }
 
+    @Test("Host renders with isPresented true so SwiftUI executes the sheet content closure")
+    func rendersIsPresentedTrue() {
+        guard #available(iOS 16.0, *) else { return }
+        renderAndLayout(
+            Color.clear.giniBottomSheet(isPresented: .constant(true),
+                                        onDismiss: { }) {
+                Text("sheet content")
+            }
+        )
+    }
+
+    @Test("Host renders with isPresented true at an accessibility size so both branches execute")
+    func rendersIsPresentedTrueAtAccessibilitySize() {
+        guard #available(iOS 16.0, *) else { return }
+        renderAndLayout(
+            Color.clear
+                .giniBottomSheet(isPresented: .constant(true)) {
+                    Text("sheet content")
+                }
+                .environment(\.dynamicTypeSize, .accessibility3)
+        )
+    }
+
     @available(iOS 16.0, *)
     private func renderAndLayout(_ view: some View) {
         let hosting = UIHostingController(rootView: view)
