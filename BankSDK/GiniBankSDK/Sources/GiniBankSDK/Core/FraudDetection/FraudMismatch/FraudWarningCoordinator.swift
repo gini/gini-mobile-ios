@@ -55,11 +55,11 @@ final class FraudWarningCoordinator: FraudWarningViewModelDelegate {
 
     // MARK: - FraudWarningViewModelDelegate
 
-    func fraudWarningViewModelDidCancel(_ viewModel: FraudWarningViewModel) {
+    func fraudWarningViewModelDidCancel(_: FraudWarningViewModel) {
         delegate?.fraudWarningCoordinatorDidCancel(self)
     }
 
-    func fraudWarningViewModelDidProceed(_ viewModel: FraudWarningViewModel) {
+    func fraudWarningViewModelDidProceed(_: FraudWarningViewModel) {
         delegate?.fraudWarningCoordinatorDidProceed(self)
     }
 }

@@ -28,7 +28,7 @@ struct FraudWarningView: View {
             Spacer()
 
             Button(action: onCancel) {
-                // TODO: localise and tokenize
+                // Hardcoded English scaffold — LocalizableStringResource wiring lands with the visual pass.
                 Text("Cancel transfer")
                     .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
@@ -41,7 +41,7 @@ struct FraudWarningView: View {
             }
 
             Button(action: onProceed) {
-                // TODO: localise and tokenize
+                // Hardcoded English scaffold — LocalizableStringResource wiring lands with the visual pass.
                 Text("Proceed anyway")
                     .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
