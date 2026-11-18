@@ -45,7 +45,7 @@ internal struct IBANSelectionSheet: View {
      hand-off. Drag-dismiss is handled by the `giniBottomSheet` modifier's
      `onDismiss` parameter.
      */
-    var onContinue: (IBANChoice) -> Void = { _ in }
+    var onContinue: (IBANChoice) -> Void = { _ in /* no-op default — caller opts in */ }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -336,7 +336,7 @@ private struct IBANSelectionSheetPreviewHost: View {
     var body: some View {
         IBANSelectionSheet(viewModel: makeViewModel(),
                            selection: $selection,
-                           onContinue: { _ in })
+                           onContinue: { _ in /* preview has no hand-off */ })
     }
 
     private func makeViewModel() -> IBANSelectionSheetViewModel {

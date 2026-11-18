@@ -68,7 +68,7 @@ private final class IBANSelectionSheetPreviewHostingController: UIHostingControl
     init(analysisResult: AnalysisResult,
          onConfirm: @escaping (UIViewController) -> Void) {
         super.init(rootView: IBANSelectionSheetPreviewView(analysisResult: analysisResult,
-                                                           onConfirm: { }))
+                                                           onConfirm: { /* overwritten by the next line; cannot reference self before super.init */ }))
         rootView = IBANSelectionSheetPreviewView(
             analysisResult: analysisResult,
             onConfirm: { [weak self] in
@@ -78,7 +78,7 @@ private final class IBANSelectionSheetPreviewHostingController: UIHostingControl
         )
     }
 
-    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor @objc required dynamic init?(coder _: NSCoder) {
         fatalError("init(coder:) is not implemented for the preview scaffold")
     }
 }
