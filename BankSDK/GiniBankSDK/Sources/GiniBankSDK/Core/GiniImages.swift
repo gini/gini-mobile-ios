@@ -16,6 +16,7 @@ enum GiniImages: String {
     case infoMessageIcon = "info_message_icon"
     case quantityMinusIcon = "quantity_minus_icon"
     case quantityPlusIcon = "quantity_plus_icon"
+    case shield = "shield"
     case chevronDown = "chevron_down"
     case chevronDownLight = "chevron_down_light"
     case chevronRight = "chevron_right"
