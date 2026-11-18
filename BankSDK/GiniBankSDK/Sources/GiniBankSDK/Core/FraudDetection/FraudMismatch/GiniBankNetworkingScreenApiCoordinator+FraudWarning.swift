@@ -54,7 +54,7 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
 
     // MARK: - FraudWarningCoordinatorDelegate
 
-    func fraudWarningCoordinatorDidCancel(_ coordinator: FraudWarningCoordinator) {
+    func fraudWarningCoordinatorDidCancel(_: FraudWarningCoordinator) {
         guard takeFraudWarningPresentation() != nil else { return }
         screenAPINavigationController.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -63,7 +63,7 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
         }
     }
 
-    func fraudWarningCoordinatorDidProceed(_ coordinator: FraudWarningCoordinator) {
+    func fraudWarningCoordinatorDidProceed(_: FraudWarningCoordinator) {
         guard let pending = takeFraudWarningPresentation() else { return }
         screenAPINavigationController.dismiss(animated: true) {
             pending.completion(pending.result)

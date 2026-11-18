@@ -30,6 +30,21 @@ struct IBANPickerPlaceholderTests {
         hosting.view.layoutIfNeeded()
     }
 
+    @Test("onConfirm closure is invoked exactly once per call")
+    func onConfirmInvokes() {
+        var invocationCount = 0
+        let placeholder = IBANPickerPlaceholder(onConfirm: { invocationCount += 1 })
+        placeholder.onConfirm()
+        placeholder.onConfirm()
+        #expect(invocationCount == 2)
+    }
+
+    @Test("default onConfirm is a safe no-op")
+    func defaultOnConfirmNoOp() {
+        let placeholder = IBANPickerPlaceholder()
+        placeholder.onConfirm()
+    }
+
 }
 
 /// Content-assertion coverage (e.g. "placeholder body contains the Qazi-ticket

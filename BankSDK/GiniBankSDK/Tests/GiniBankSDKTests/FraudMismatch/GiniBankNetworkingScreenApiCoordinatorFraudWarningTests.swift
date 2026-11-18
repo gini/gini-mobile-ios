@@ -62,6 +62,38 @@ struct GiniBankNetworkingScreenApiCoordinatorFraudWarningTests {
         #expect(coordinator.fraudWarningPresentation == nil,
                 "No presentation state should be parked when the toggle is off")
     }
+
+    @Test("delegate cancel is a no-op when no presentation is parked")
+    func cancelWithoutParkedPresentationIsNoOp() {
+        _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
+
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: StubTokenSource(),
+                                                                 resultsDelegate: StubResultsDelegate(),
+                                                                 configuration: GiniBankConfiguration(),
+                                                                 documentMetadata: nil,
+                                                                 trackingDelegate: nil)
+        let dummy = FraudWarningCoordinator(qrIBAN: "", printedIBAN: "", delegate: nil)
+
+        coordinator.fraudWarningCoordinatorDidCancel(dummy)
+
+        #expect(coordinator.fraudWarningPresentation == nil)
+    }
+
+    @Test("delegate proceed is a no-op when no presentation is parked")
+    func proceedWithoutParkedPresentationIsNoOp() {
+        _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
+
+        let coordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: StubTokenSource(),
+                                                                 resultsDelegate: StubResultsDelegate(),
+                                                                 configuration: GiniBankConfiguration(),
+                                                                 documentMetadata: nil,
+                                                                 trackingDelegate: nil)
+        let dummy = FraudWarningCoordinator(qrIBAN: "", printedIBAN: "", delegate: nil)
+
+        coordinator.fraudWarningCoordinatorDidProceed(dummy)
+
+        #expect(coordinator.fraudWarningPresentation == nil)
+    }
 }
 
 private final class StubTokenSource: AlternativeTokenSource {

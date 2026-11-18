@@ -15,7 +15,8 @@ import SwiftUI
  */
 struct IBANPickerPlaceholder: View {
 
-    var onConfirm: () -> Void = {}
+    /// Default is a no-op so previews and smoke tests can render the view without wiring; `FraudWarningContainer` injects the real closure at the call site.
+    var onConfirm: () -> Void = { }
 
     var body: some View {
         VStack {
