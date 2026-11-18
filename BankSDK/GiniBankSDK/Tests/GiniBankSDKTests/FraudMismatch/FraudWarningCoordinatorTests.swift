@@ -9,27 +9,46 @@ import Foundation
 import SwiftUI
 import UIKit
 import Testing
+import GiniUtilites
 @testable import GiniBankSDK
 
 @Suite("FraudWarningCoordinator")
 @MainActor
 struct FraudWarningCoordinatorTests {
 
-    @Test("start() returns a UIHostingController<FraudWarningContainer> with fullScreen + isModalInPresentation")
+    private static let stubQRIBAN = "PL12 1000 0111 0100 1000"
+    private static let stubPrintedIBAN = "DE89 3704 0044 0532 0130 00"
+
+    @Test("start() returns a GiniBottomSheetPresentable hosting controller with isModalInPresentation")
     func startReturnsConfiguredHostingController() {
-        let coordinator = FraudWarningCoordinator(delegate: nil)
+        let coordinator = FraudWarningCoordinator(qrIBAN: Self.stubQRIBAN,
+                                                  printedIBAN: Self.stubPrintedIBAN,
+                                                  delegate: nil)
 
-        let hosting = coordinator.start()
+        let hosting: GiniBottomSheetViewController = coordinator.start()
 
+        #expect(hosting is FraudWarningBottomSheetController)
         #expect(hosting is UIHostingController<FraudWarningContainer>)
-        #expect(hosting.modalPresentationStyle == .fullScreen)
         #expect(hosting.isModalInPresentation == true)
+        #expect(hosting.shouldShowDragIndicator == true)
+    }
+
+    @Test("init forwards qrIBAN and printedIBAN to the constructed VM")
+    func initForwardsIBANsToViewModel() {
+        let coordinator = FraudWarningCoordinator(qrIBAN: Self.stubQRIBAN,
+                                                  printedIBAN: Self.stubPrintedIBAN,
+                                                  delegate: nil)
+
+        #expect(coordinator.viewModel.qrIBAN == Self.stubQRIBAN)
+        #expect(coordinator.viewModel.printedIBAN == Self.stubPrintedIBAN)
     }
 
     @Test("viewModel didTapCancel forwards to coordinator delegate")
     func viewModelCancelForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(delegate: delegate)
+        let coordinator = FraudWarningCoordinator(qrIBAN: Self.stubQRIBAN,
+                                                  printedIBAN: Self.stubPrintedIBAN,
+                                                  delegate: delegate)
 
         coordinator.viewModel.didTapCancel()
 
@@ -40,7 +59,9 @@ struct FraudWarningCoordinatorTests {
     @Test("viewModel didTapProceed forwards to coordinator delegate")
     func viewModelProceedForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(delegate: delegate)
+        let coordinator = FraudWarningCoordinator(qrIBAN: Self.stubQRIBAN,
+                                                  printedIBAN: Self.stubPrintedIBAN,
+                                                  delegate: delegate)
 
         coordinator.viewModel.didTapProceed()
 

@@ -7,20 +7,27 @@
 import SwiftUI
 
 /**
- Composition root for the fraud warning screen.
-
- Observes a `FraudWarningViewModel` and wires `FraudWarningView`'s button
- callbacks to the ViewModel's tap methods, keeping `FraudWarningView` free
- of any state dependency. Hosted inside a `UIHostingController` by
- `FraudWarningCoordinator.start()`.
+ Composition root for the fraud warning screen. Observes
+ `FraudWarningViewModel` and drives the IBAN picker sheet at a medium
+ detent when the user taps Proceed. Hosted by `FraudWarningCoordinator.start()`.
  */
 struct FraudWarningContainer: View {
 
-    /** ViewModel backing the view; owned by the Coordinator, observed here. */
     @ObservedObject var viewModel: FraudWarningViewModel
 
+    @State private var isShowingPicker: Bool = false
+
     var body: some View {
-        FraudWarningView(onCancel: viewModel.didTapCancel,
-                         onProceed: viewModel.didTapProceed)
+        FraudWarningView(viewModel: viewModel,
+                         onCancel: viewModel.didTapCancel,
+                         onProceed: { isShowingPicker = true })
+            .sheet(isPresented: $isShowingPicker) {
+                IBANPickerPlaceholder(onConfirm: {
+                    isShowingPicker = false
+                    viewModel.didTapProceed()
+                })
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+            }
     }
 }
