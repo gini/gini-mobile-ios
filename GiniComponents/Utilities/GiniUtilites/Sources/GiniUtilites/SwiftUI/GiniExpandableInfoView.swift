@@ -11,10 +11,9 @@ private enum Constants {
     static let iconSize: CGFloat = 24
     static let chevronSize: CGFloat = 16
     static let headerSpacing: CGFloat = 12
-    static let verticalSpacing: CGFloat = 12
-    static let contentPadding: CGFloat = 16
+    static let verticalSpacing: CGFloat = 8
+    static let contentPadding: CGFloat = 12
     static let animationDuration: Double = 0.2
-    static let minHitTarget: CGFloat = 44
 }
 
 /**
@@ -93,7 +92,6 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
 
                 chevron
             }
-            .frame(minHeight: Constants.minHitTarget)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
