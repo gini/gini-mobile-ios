@@ -15,10 +15,12 @@ import UIKit
 // body uses `guard #available(iOS 16.0, *) else { return }`; on CI (iOS 26.2)
 // the guard always passes.
 
-/// Round-trip tests for `IBANSelectionSheetViewModel` — an immutable
-/// configuration carrier, so the surface worth testing is "every piece the
-/// sheet reads is stored by `init` verbatim." Behavior of the view itself
-/// is verified via previews + manual QA.
+/**
+ Round-trip tests for `IBANSelectionSheetViewModel` — an immutable
+ configuration carrier, so the surface worth testing is "every piece the
+ sheet reads is stored by `init` verbatim." Behavior of the view itself
+ is verified via previews + manual QA.
+ */
 @Suite("IBANSelectionSheetViewModel")
 struct IBANSelectionSheetViewModelTests {
 
@@ -161,8 +163,10 @@ struct IBANChoiceTests {
     }
 }
 
-/// Pure state transitions behind `IBANSelectionSheet` — factored out of the
-/// view so they can be tested without a view hosting harness.
+/**
+ Pure state transitions behind `IBANSelectionSheet` — factored out of the
+ view so they can be tested without a view hosting harness.
+ */
 @Suite("IBANSelectionSheetState")
 struct IBANSelectionSheetStateTests {
 

@@ -52,8 +52,10 @@ internal struct IBANSelectionSheet: View {
 
     @State private var showValidationError: Bool = false
 
-    /// Focus hook so VoiceOver reads the validation message rather than
-    /// staying on the Continue button (WCAG 4.1.3).
+    /**
+     Focus hook so VoiceOver reads the validation message rather than
+     staying on the Continue button (WCAG 4.1.3).
+     */
     @AccessibilityFocusState private var validationErrorFocused: Bool
 
     var body: some View {
@@ -318,9 +320,11 @@ internal enum IBANSelectionSheetState {
         .environment(\.sizeCategory, .accessibilityExtraLarge)
 }
 
-/// Wrapper view that owns the `selection` binding so previews can seed the
-/// sheet with a specific state. The validation-error state is reached by
-/// tapping the live Continue button, not via an injected preset.
+/**
+ Wrapper view that owns the `selection` binding so previews can seed the
+ sheet with a specific state. The validation-error state is reached by
+ tapping the live Continue button, not via an injected preset.
+ */
 @available(iOS 16.0, *)
 private struct IBANSelectionSheetPreviewHost: View {
 

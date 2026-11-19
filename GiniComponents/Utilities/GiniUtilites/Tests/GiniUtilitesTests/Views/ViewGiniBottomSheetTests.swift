@@ -15,8 +15,10 @@ import UIKit
 // body uses `guard #available(iOS 16.0, *) else { return }`; on CI (iOS 26.2)
 // the guard always passes.
 
-/// Compile-time smoke tests for the public API shape. Runtime sheet
-/// presentation is Apple's and is verified via previews + manual QA.
+/**
+ Compile-time smoke tests for the public API shape. Runtime sheet
+ presentation is Apple's and is verified via previews + manual QA.
+ */
 @Suite("View+GiniBottomSheet — public API shape")
 struct ViewGiniBottomSheetTests {
 
@@ -49,10 +51,12 @@ struct ViewGiniBottomSheetTests {
     }
 }
 
-/// Renders a host view with `.giniBottomSheet` applied in a window so
-/// SwiftUI evaluates the modifier's body and the `detent` computed
-/// property. Exercises both the non-accessibility and the accessibility
-/// `dynamicTypeSize` branches.
+/**
+ Renders a host view with `.giniBottomSheet` applied in a window so
+ SwiftUI evaluates the modifier's body and the `detent` computed
+ property. Exercises both the non-accessibility and the accessibility
+ `dynamicTypeSize` branches.
+ */
 @Suite("View+GiniBottomSheet — rendering branches")
 @MainActor
 struct ViewGiniBottomSheetRenderingTests {
