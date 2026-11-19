@@ -23,7 +23,7 @@ struct GiniExpandableInfoViewPreviewCatalog: View {
             GiniExpandableInfoView(
                 viewModel: .init(icon: GiniImages.shield.image ?? UIImage(),
                                  iconTint: Self.pair(.GiniBank.accent1),
-                                 chevronIcon: GiniImages.chevronDownLight.image ?? UIImage(),
+                                 chevronIcon: GiniImages.chevronDownThin.image ?? UIImage(),
                                  title: "How do I protect myself?",
                                  backgroundColor: Self.fraudCardBackground,
                                  colorScheme: UIColor.giniBankColorScheme(),
