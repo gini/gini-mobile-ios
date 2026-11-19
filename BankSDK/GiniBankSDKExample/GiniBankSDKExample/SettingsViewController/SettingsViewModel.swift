@@ -204,8 +204,15 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.paymentDueHintEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .creditNoteHintEnabled,
                                                                      isSwitchOn: giniConfiguration.creditNoteHintEnabled)))
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .fraudWarningEnabled,
+                                                                     isSwitchOn: giniConfiguration.fraudWarningEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .paymentScheduleHintEnabled,
                                                                      isSwitchOn: giniConfiguration.paymentScheduleHintEnabled)))
+        #if DEBUG
+        let previewFlagKey = "ginibank.example.ibanSelectionSheetPreviewEnabled"
+        featureTogglesSection.items.append(.switchOption(data: .init(type: .ibanSelectionSheetPreviewEnabled,
+                                                                     isSwitchOn: UserDefaults.standard.bool(forKey: previewFlagKey))))
+        #endif
         return featureTogglesSection
     }
 
@@ -378,6 +385,12 @@ final class SettingsViewModel {
             giniConfiguration.creditNoteHintEnabled = data.isSwitchOn
         case .paymentScheduleHintEnabled:
             giniConfiguration.paymentScheduleHintEnabled = data.isSwitchOn
+        case .fraudWarningEnabled:
+            giniConfiguration.fraudWarningEnabled = data.isSwitchOn
+        #if DEBUG
+        case .ibanSelectionSheetPreviewEnabled:
+            UserDefaults.standard.set(data.isSwitchOn, forKey: "ginibank.example.ibanSelectionSheetPreviewEnabled")
+        #endif
         case .savePhotosLocallyEnabled:
             giniConfiguration.savePhotosLocallyEnabled = data.isSwitchOn
         case .giniErrorLoggerIsOn:

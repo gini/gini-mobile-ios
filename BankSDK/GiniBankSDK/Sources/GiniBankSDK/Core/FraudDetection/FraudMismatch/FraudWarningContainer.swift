@@ -1,0 +1,43 @@
+//
+//  FraudWarningContainer.swift
+//
+//  Copyright © 2026 Gini GmbH. All rights reserved.
+//
+
+import SwiftUI
+
+/**
+ Composition root for the fraud warning screen. Observes
+ `FraudWarningViewModel` and drives the IBAN picker sheet at a medium
+ detent when the user taps Proceed. Hosted by `FraudWarningCoordinator.start()`.
+ */
+struct FraudWarningContainer: View {
+
+    @ObservedObject var viewModel: FraudWarningViewModel
+
+    @State private var isShowingPicker: Bool = false
+
+    var body: some View {
+        FraudWarningView(viewModel: viewModel,
+                         onCancel: viewModel.didTapCancel,
+                         onProceed: showPicker)
+            .sheet(isPresented: $isShowingPicker) {
+                pickerSheet
+            }
+    }
+
+    var pickerSheet: some View {
+        IBANPickerPlaceholder(onConfirm: handleConfirm)
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+    }
+
+    func showPicker() {
+        isShowingPicker = true
+    }
+
+    func handleConfirm() {
+        isShowingPicker = false
+        viewModel.didTapProceed()
+    }
+}

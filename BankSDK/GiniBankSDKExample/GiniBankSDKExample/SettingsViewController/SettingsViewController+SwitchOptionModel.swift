@@ -49,7 +49,11 @@ struct SwitchOptionModel {
         case paymentDueHintEnabled
         case creditNoteHintEnabled
         case paymentScheduleHintEnabled
+        case fraudWarningEnabled
         case closeSDK
+        #if DEBUG
+        case ibanSelectionSheetPreviewEnabled
+        #endif
 
 		var title: String {
 			switch self {
@@ -121,6 +125,8 @@ struct SwitchOptionModel {
                 return "Credit note hint feature"
             case .paymentScheduleHintEnabled:
                 return "Payment schedule hint feature"
+            case .fraudWarningEnabled:
+                return "Fraud warning feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:
@@ -133,6 +139,10 @@ struct SwitchOptionModel {
 				return "Debug mode"
             case .closeSDK:
                 return "Close SDK"
+            #if DEBUG
+            case .ibanSelectionSheetPreviewEnabled:
+                return "IBAN selection sheet preview"
+            #endif
             }
 		}
 		
@@ -210,6 +220,10 @@ struct SwitchOptionModel {
                 return "Features included under this flag paid state"
             case .closeSDK:
                 return "Self-destruct SDK after 10 seconds"
+            #if DEBUG
+            case .ibanSelectionSheetPreviewEnabled:
+                return "After analysis finishes, shows a developer preview that opens the IBAN selection bottom sheet. Debug builds only."
+            #endif
 			default:
 				return nil
 			}
