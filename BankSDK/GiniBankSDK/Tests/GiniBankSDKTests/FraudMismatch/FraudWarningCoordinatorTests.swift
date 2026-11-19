@@ -17,7 +17,9 @@ struct FraudWarningCoordinatorTests {
 
     @Test("start() returns a UIHostingController<FraudWarningContainer> with fullScreen + isModalInPresentation")
     func startReturnsConfiguredHostingController() {
-        let coordinator = FraudWarningCoordinator(delegate: nil)
+        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                  delegate: nil)
 
         let hosting = coordinator.start()
 
@@ -29,7 +31,9 @@ struct FraudWarningCoordinatorTests {
     @Test("viewModel didTapCancel forwards to coordinator delegate")
     func viewModelCancelForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(delegate: delegate)
+        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                  delegate: delegate)
 
         coordinator.viewModel.didTapCancel()
 
@@ -40,7 +44,9 @@ struct FraudWarningCoordinatorTests {
     @Test("viewModel didTapProceed forwards to coordinator delegate")
     func viewModelProceedForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(delegate: delegate)
+        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                  delegate: delegate)
 
         coordinator.viewModel.didTapProceed()
 
