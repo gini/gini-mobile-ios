@@ -273,6 +273,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     return (name, $0)
                 })
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
@@ -280,7 +281,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
-                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
                     #if DEBUG
                     if IBANSelectionSheetPreview.isEnabled {
@@ -578,7 +580,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
-        presentFraudWarningIfEnabled(result: analysisResult) { [weak self] analysisResult in
+        presentFraudWarningIfEnabled(result: analysisResult,
+                                     extractionResult: extractionResult) { [weak self] analysisResult in
             guard let self = self else { return }
             #if DEBUG
             if IBANSelectionSheetPreview.isEnabled {
@@ -701,6 +704,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
                                             lineItems: isCrossBorderPayment() ? nil : result.lineItems,
                                             skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
@@ -723,7 +727,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     }
                 }
 
-                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
                     #if DEBUG
                     if IBANSelectionSheetPreview.isEnabled {
@@ -1147,6 +1152,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: extractions,
                                             skontoDiscounts: result.skontoDiscounts,
                                             images: images,
@@ -1160,7 +1166,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     self.sendSkontoTransferSummary(extractions: extractions)
                 }
 
-                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
                     #if DEBUG
                     if IBANSelectionSheetPreview.isEnabled {

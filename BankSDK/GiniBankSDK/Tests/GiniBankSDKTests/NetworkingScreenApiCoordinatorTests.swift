@@ -697,6 +697,51 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertEqual(networkDelegate.noResultsCallCount, 0,
                        "Direct-delivery Wero must not trigger the no-results screen")
     }
+
+    // MARK: - presentFraudWarningIfEnabled short-circuit paths (PP-4080)
+
+    func testPresentFraudWarningIfEnabledShortCircuitsWhenFraudWarningFlagOff() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let originalFlag = coordinator.giniBankConfiguration.fraudWarningEnabled
+        coordinator.giniBankConfiguration.fraudWarningEnabled = false
+        defer { coordinator.giniBankConfiguration.fraudWarningEnabled = originalFlag }
+
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let extractionResult = ExtractionResult(extractions: [], candidates: [:])
+        var delivered: AnalysisResult?
+
+        coordinator.presentFraudWarningIfEnabled(result: analysisResult,
+                                                 extractionResult: extractionResult) { result in
+            delivered = result
+        }
+
+        XCTAssertTrue(delivered === analysisResult,
+                      "Completion must fire synchronously with the original AnalysisResult when fraudWarningEnabled is off")
+    }
+
+    func testPresentFraudWarningIfEnabledShortCircuitsWhenResolverReturnsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let originalFlag = coordinator.giniBankConfiguration.fraudWarningEnabled
+        coordinator.giniBankConfiguration.fraudWarningEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(fraudSignalsEnabled: true)
+        defer {
+            coordinator.giniBankConfiguration.fraudWarningEnabled = originalFlag
+            GiniBankUserDefaultsStorage.clientConfiguration = nil
+        }
+
+        /// Both gates on but no fraud signals in the payload → resolver returns nil → short-circuit.
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let extractionResult = ExtractionResult(extractions: [], candidates: [:])
+        var delivered: AnalysisResult?
+
+        coordinator.presentFraudWarningIfEnabled(result: analysisResult,
+                                                 extractionResult: extractionResult) { result in
+            delivered = result
+        }
+
+        XCTAssertTrue(delivered === analysisResult,
+                      "Completion must fire synchronously with the original AnalysisResult when the resolver returns nil (no triggering signal)")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
