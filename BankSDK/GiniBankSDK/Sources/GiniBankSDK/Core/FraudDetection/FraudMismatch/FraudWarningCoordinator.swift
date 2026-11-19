@@ -31,7 +31,7 @@ final class FraudWarningCoordinator: FraudWarningViewModelDelegate {
      - Parameter delegate: the parent that will be notified when the user
        resolves the warning. Retained weakly.
      */
-    init(delegate: FraudWarningCoordinatorDelegate?) {
+    init(delegate: FraudWarningCoordinatorDelegate? = nil) {
         self.delegate = delegate
         self.viewModel = FraudWarningViewModel(delegate: nil)
         self.viewModel.delegate = self
