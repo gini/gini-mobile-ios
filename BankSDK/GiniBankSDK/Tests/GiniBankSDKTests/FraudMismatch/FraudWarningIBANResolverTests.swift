@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import Testing
-import GiniBankAPILibrary
+@testable import GiniBankAPILibrary
 import GiniCaptureSDK
 @testable import GiniBankSDK
 
@@ -208,8 +208,11 @@ struct FraudWarningIBANResolverTests {
         return result
     }
 
-    /// Builds an `AnalysisResult` with a single `"iban"` extraction whose `.candidates` key
-    /// routes to a top-level `"ibans"` bucket containing the given string values.
+    /**
+     Builds an `AnalysisResult` with a single `"iban"` extraction whose
+     `.candidates` key routes to a top-level `"ibans"` bucket containing the
+     given string values.
+     */
     private static func analysisResult(candidateKey: String? = "ibans",
                                         candidates: [String]) -> AnalysisResult {
         let ibanExtraction = Extraction(box: nil,

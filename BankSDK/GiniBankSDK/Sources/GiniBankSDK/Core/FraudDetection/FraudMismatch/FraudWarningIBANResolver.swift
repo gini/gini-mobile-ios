@@ -29,12 +29,18 @@ import GiniCaptureSDK
 internal enum FraudWarningIBANResolver {
 
     /**
-     - Parameter result: The `AnalysisResult` whose `candidates` and `extractions`
-       source the printed-IBAN candidate list.
-     - Parameter extractionResult: The raw `ExtractionResult` from the same
-       analysis, used by `FraudSignalMapper` to parse typed fraud signals.
-     - Parameter fraudSignalsEnabled: Backend client-configuration flag. When
-       `false`, returns `nil` immediately.
+     Resolves the IBAN pair the fraud warning screen should display, or
+     returns `nil` when the warning must be suppressed. Applies the
+     backend-flag gate, then runs `FraudSignalMapper`, then the printed-IBAN
+     filter in that order.
+
+     - Parameters:
+       - result: The `AnalysisResult` whose `candidates` and `extractions`
+         source the printed-IBAN candidate list.
+       - extractionResult: The raw `ExtractionResult` from the same analysis,
+         used by `FraudSignalMapper` to parse typed fraud signals.
+       - fraudSignalsEnabled: Backend client-configuration flag. When
+         `false`, returns `nil` immediately.
      - Returns: `(qrIBAN, printedIBAN)` when all suppression rules pass, else `nil`.
      */
     static func resolve(result: AnalysisResult,
