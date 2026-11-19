@@ -163,9 +163,10 @@
 "ginibank.fraud.protect.body" = "Documents are sometimes changed to redirect payments. If you’re unsure which IBAN is right, ask the sender using contact details you already know.";
 
 // MARK: - Fraud prevention — IBAN selection sheet
-"ginibank.fraud.ibanSelection.title" = "To continue, select one of the IBANs";
-"ginibank.fraud.ibanSelection.row.qr.label" = "In the QR code";
-"ginibank.fraud.ibanSelection.row.printed.label" = "Printed on the document";
-"ginibank.fraud.ibanSelection.footer.hint" = "You can still check the IBAN on the next screen.";
-"ginibank.fraud.ibanSelection.cta.continue" = "Continue";
-"ginibank.fraud.ibanSelection.validation.selectIBAN" = "Select an IBAN to continue";
+"ginibank.fraud.iban.selection.title" = "To continue, select one of the IBANs";
+"ginibank.fraud.iban.selection.row.qr.label" = "In the QR code";
+"ginibank.fraud.iban.selection.row.printed.label" = "Printed on the document";
+"ginibank.fraud.iban.selection.footer.hint" = "You can still check the IBAN on the next screen.";
+"ginibank.fraud.iban.selection.cta.continue" = "Continue";
+"ginibank.fraud.iban.selection.validation.select.iban" = "Select an IBAN to continue";
+"ginibank.fraud.iban.selection.a11y.action.spell.out.iban" = "Spell out IBAN";

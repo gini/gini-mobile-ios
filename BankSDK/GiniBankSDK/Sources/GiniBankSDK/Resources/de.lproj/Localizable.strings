@@ -157,9 +157,10 @@
 "ginibank.fraud.protect.body" = "Dokumente werden manchmal verändert, um Zahlungen umzuleiten. Fragen Sie im Zweifel beim Absender nach, welche IBAN stimmt, über Kontaktdaten, die Sie bereits kennen.";
 
 // MARK: - Fraud prevention — IBAN selection sheet
-"ginibank.fraud.ibanSelection.title" = "Wählen Sie eine IBAN aus, um fortzufahren";
-"ginibank.fraud.ibanSelection.row.qr.label" = "Im QR-Code";
-"ginibank.fraud.ibanSelection.row.printed.label" = "Auf dem Dokument gedruckt";
-"ginibank.fraud.ibanSelection.footer.hint" = "Sie können die IBAN im nächsten Schritt noch prüfen.";
-"ginibank.fraud.ibanSelection.cta.continue" = "Weiter";
-"ginibank.fraud.ibanSelection.validation.selectIBAN" = "Wählen Sie eine IBAN, um fortzufahren";
+"ginibank.fraud.iban.selection.title" = "Wählen Sie eine IBAN aus, um fortzufahren";
+"ginibank.fraud.iban.selection.row.qr.label" = "Im QR-Code";
+"ginibank.fraud.iban.selection.row.printed.label" = "Auf dem Dokument gedruckt";
+"ginibank.fraud.iban.selection.footer.hint" = "Sie können die IBAN im nächsten Schritt noch prüfen.";
+"ginibank.fraud.iban.selection.cta.continue" = "Weiter";
+"ginibank.fraud.iban.selection.validation.select.iban" = "Wählen Sie eine IBAN, um fortzufahren";
+"ginibank.fraud.iban.selection.a11y.action.spell.out.iban" = "IBAN buchstabieren";

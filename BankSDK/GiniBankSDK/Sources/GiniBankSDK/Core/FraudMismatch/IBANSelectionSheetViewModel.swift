@@ -14,8 +14,7 @@ import UIKit
  and font bundles. The sheet performs no `NSLocalizedString` lookup, no
  `UIColor` resolution, and no `UIFont` math of its own.
  */
-@available(iOS 16.0, *)
-internal struct IBANSelectionSheetViewModel {
+struct IBANSelectionSheetViewModel {
 
     /**
      Fonts used by the sheet's non-row text and its CTA. Each is optional;
@@ -53,6 +52,13 @@ internal struct IBANSelectionSheetViewModel {
      */
     let continueHintWhenNoSelection: String
 
+    /**
+     VoiceOver rotor action label offered on every IBAN row — on activation
+     the row's IBAN is announced character by character so a blind user can
+     detect a single-character substitution on a fraud-mismatch sheet.
+     */
+    let spellOutIBANActionName: String
+
     let qrIBAN: String
 
     /**
@@ -73,6 +79,7 @@ internal struct IBANSelectionSheetViewModel {
          continueCTA: String,
          validationErrorMessage: String,
          continueHintWhenNoSelection: String,
+         spellOutIBANActionName: String,
          qrIBAN: String,
          printedIBANs: [String],
          giniColorScheme: GiniColorScheme,
@@ -85,6 +92,7 @@ internal struct IBANSelectionSheetViewModel {
         self.continueCTA = continueCTA
         self.validationErrorMessage = validationErrorMessage
         self.continueHintWhenNoSelection = continueHintWhenNoSelection
+        self.spellOutIBANActionName = spellOutIBANActionName
         self.qrIBAN = qrIBAN
         self.printedIBANs = printedIBANs
         self.giniColorScheme = giniColorScheme

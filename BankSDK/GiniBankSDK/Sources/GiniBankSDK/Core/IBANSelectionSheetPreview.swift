@@ -62,7 +62,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
 // MARK: - UIKit bridge
 
-@available(iOS 16.0, *)
 private final class IBANSelectionSheetPreviewHostingController: UIHostingController<IBANSelectionSheetPreviewView> {
 
     init(analysisResult: AnalysisResult,
@@ -85,7 +84,6 @@ private final class IBANSelectionSheetPreviewHostingController: UIHostingControl
 
 // MARK: - SwiftUI preview view
 
-@available(iOS 16.0, *)
 private struct IBANSelectionSheetPreviewView: View {
 
     let analysisResult: AnalysisResult
@@ -146,33 +144,37 @@ private struct IBANSelectionSheetPreviewView: View {
         let printedIBANs = printed.isEmpty ? ["DE89 3704 0044 0532 0130 00"] : printed
 
         let validationErrorMessage = NSLocalizedStringPreferredGiniBankFormat(
-            "ginibank.fraud.ibanSelection.validation.selectIBAN",
+            "ginibank.fraud.iban.selection.validation.select.iban",
             comment: "Inline error shown below the rows when the user taps Continue without picking an IBAN"
         )
 
         return IBANSelectionSheetViewModel(
             title: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.fraud.ibanSelection.title",
+                "ginibank.fraud.iban.selection.title",
                 comment: "Sheet title inviting the user to pick an IBAN before continuing"
             ),
             qrRowTitle: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.fraud.ibanSelection.row.qr.label",
+                "ginibank.fraud.iban.selection.row.qr.label",
                 comment: "Row label for the QR code IBAN option"
             ),
             printedRowTitle: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.fraud.ibanSelection.row.printed.label",
+                "ginibank.fraud.iban.selection.row.printed.label",
                 comment: "Row label for each printed IBAN option"
             ),
             footerHint: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.fraud.ibanSelection.footer.hint",
+                "ginibank.fraud.iban.selection.footer.hint",
                 comment: "Reassurance text shown below the rows, above the Continue button"
             ),
             continueCTA: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.fraud.ibanSelection.cta.continue",
+                "ginibank.fraud.iban.selection.cta.continue",
                 comment: "Primary CTA that confirms the user's IBAN selection"
             ),
             validationErrorMessage: validationErrorMessage,
             continueHintWhenNoSelection: validationErrorMessage,
+            spellOutIBANActionName: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.fraud.iban.selection.a11y.action.spell.out.iban",
+                comment: "VoiceOver rotor action name that spells out the row's IBAN character by character"
+            ),
             qrIBAN: qrIBAN,
             printedIBANs: printedIBANs,
             giniColorScheme: UIColor.giniBankColorScheme()

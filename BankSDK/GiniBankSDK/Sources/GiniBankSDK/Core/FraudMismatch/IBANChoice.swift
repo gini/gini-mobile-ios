@@ -7,7 +7,7 @@
 import Foundation
 
 /** The user's pick on the IBAN selection sheet. */
-internal enum IBANChoice: Hashable {
+enum IBANChoice: Hashable {
     case qr(iban: String)
     case printed(iban: String)
 

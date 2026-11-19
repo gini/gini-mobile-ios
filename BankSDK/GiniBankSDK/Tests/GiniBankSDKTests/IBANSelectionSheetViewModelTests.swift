@@ -35,18 +35,17 @@ struct IBANSelectionSheetViewModelTests {
     @Test("init stores every display string verbatim so the sheet reads pre-localized copy")
     func initStoresAllDisplayStrings() {
         guard #available(iOS 16.0, *) else { return }
-        let viewModel = IBANSelectionSheetViewModel(
-            title: "To continue, select one of the IBANs",
-            qrRowTitle: "In the QR code",
-            printedRowTitle: "Printed on the document",
-            footerHint: "You can still check the IBAN on the next screen.",
-            continueCTA: "Continue",
-            validationErrorMessage: "Select an IBAN to continue",
-            continueHintWhenNoSelection: "Select an IBAN to continue, then tap Continue",
-            qrIBAN: "PL12 1000 0111 0100 1000",
-            printedIBANs: ["DE89 3704 0044 0532 0130 00"],
-            giniColorScheme: Self.makeColorScheme()
-        )
+        let viewModel = IBANSelectionSheetViewModel(title: "To continue, select one of the IBANs",
+                                                    qrRowTitle: "In the QR code",
+                                                    printedRowTitle: "Printed on the document",
+                                                    footerHint: "You can still check the IBAN on the next screen.",
+                                                    continueCTA: "Continue",
+                                                    validationErrorMessage: "Select an IBAN to continue",
+                                                    continueHintWhenNoSelection: "Select an IBAN to continue, then tap Continue",
+                                                    spellOutIBANActionName: "Spell out IBAN",
+                                                    qrIBAN: "PL12 1000 0111 0100 1000",
+                                                    printedIBANs: ["DE89 3704 0044 0532 0130 00"],
+                                                    giniColorScheme: Self.makeColorScheme())
 
         #expect(viewModel.title == "To continue, select one of the IBANs")
         #expect(viewModel.qrRowTitle == "In the QR code")
@@ -55,6 +54,7 @@ struct IBANSelectionSheetViewModelTests {
         #expect(viewModel.continueCTA == "Continue")
         #expect(viewModel.validationErrorMessage == "Select an IBAN to continue")
         #expect(viewModel.continueHintWhenNoSelection == "Select an IBAN to continue, then tap Continue")
+        #expect(viewModel.spellOutIBANActionName == "Spell out IBAN")
         #expect(viewModel.qrIBAN == "PL12 1000 0111 0100 1000")
     }
 
@@ -65,18 +65,17 @@ struct IBANSelectionSheetViewModelTests {
                        "DE02 1203 0000 0000 2020 51",
                        "GB29 NWBK 6016 1331 9268 19"]
 
-        let viewModel = IBANSelectionSheetViewModel(
-            title: "t",
-            qrRowTitle: "q",
-            printedRowTitle: "p",
-            footerHint: "f",
-            continueCTA: "c",
-            validationErrorMessage: "v",
-            continueHintWhenNoSelection: "h",
-            qrIBAN: "QR",
-            printedIBANs: printed,
-            giniColorScheme: Self.makeColorScheme()
-        )
+        let viewModel = IBANSelectionSheetViewModel(title: "t",
+                                                    qrRowTitle: "q",
+                                                    printedRowTitle: "p",
+                                                    footerHint: "f",
+                                                    continueCTA: "c",
+                                                    validationErrorMessage: "v",
+                                                    continueHintWhenNoSelection: "h",
+                                                    spellOutIBANActionName: "s",
+                                                    qrIBAN: "QR",
+                                                    printedIBANs: printed,
+                                                    giniColorScheme: Self.makeColorScheme())
 
         #expect(viewModel.printedIBANs == printed)
     }
@@ -84,18 +83,17 @@ struct IBANSelectionSheetViewModelTests {
     @Test("Single printed IBAN is accepted")
     func initAcceptsSinglePrintedIBAN() {
         guard #available(iOS 16.0, *) else { return }
-        let viewModel = IBANSelectionSheetViewModel(
-            title: "t",
-            qrRowTitle: "q",
-            printedRowTitle: "p",
-            footerHint: "f",
-            continueCTA: "c",
-            validationErrorMessage: "v",
-            continueHintWhenNoSelection: "h",
-            qrIBAN: "QR",
-            printedIBANs: ["DE89 3704 0044 0532 0130 00"],
-            giniColorScheme: Self.makeColorScheme()
-        )
+        let viewModel = IBANSelectionSheetViewModel(title: "t",
+                                                    qrRowTitle: "q",
+                                                    printedRowTitle: "p",
+                                                    footerHint: "f",
+                                                    continueCTA: "c",
+                                                    validationErrorMessage: "v",
+                                                    continueHintWhenNoSelection: "h",
+                                                    spellOutIBANActionName: "s",
+                                                    qrIBAN: "QR",
+                                                    printedIBANs: ["DE89 3704 0044 0532 0130 00"],
+                                                    giniColorScheme: Self.makeColorScheme())
 
         #expect(viewModel.printedIBANs.count == 1)
         #expect(viewModel.printedIBANs.first == "DE89 3704 0044 0532 0130 00")
@@ -112,25 +110,24 @@ struct IBANSelectionSheetViewModelTests {
         let rowContentFont = Self.sentinelFont(size: 12)
         let rowFooterFont = Self.sentinelFont(size: 13)
 
-        let viewModel = IBANSelectionSheetViewModel(
-            title: "t",
-            qrRowTitle: "q",
-            printedRowTitle: "p",
-            footerHint: "f",
-            continueCTA: "c",
-            validationErrorMessage: "v",
-            continueHintWhenNoSelection: "h",
-            qrIBAN: "QR",
-            printedIBANs: ["P1"],
-            giniColorScheme: Self.makeColorScheme(),
-            rowFonts: GiniOptionRow.FontConfiguration(title: rowTitleFont,
-                                                      content: rowContentFont,
-                                                      footer: rowFooterFont),
-            sheetFonts: IBANSelectionSheetViewModel.FontConfig(title: sheetTitleFont,
-                                                                validationError: sheetValidationFont,
-                                                                footerHint: sheetFooterFont,
-                                                                continueCTA: sheetContinueFont)
-        )
+        let viewModel = IBANSelectionSheetViewModel(title: "t",
+                                                    qrRowTitle: "q",
+                                                    printedRowTitle: "p",
+                                                    footerHint: "f",
+                                                    continueCTA: "c",
+                                                    validationErrorMessage: "v",
+                                                    continueHintWhenNoSelection: "h",
+                                                    spellOutIBANActionName: "s",
+                                                    qrIBAN: "QR",
+                                                    printedIBANs: ["P1"],
+                                                    giniColorScheme: Self.makeColorScheme(),
+                                                    rowFonts: GiniOptionRow.FontConfiguration(title: rowTitleFont,
+                                                                                              content: rowContentFont,
+                                                                                              footer: rowFooterFont),
+                                                    sheetFonts: IBANSelectionSheetViewModel.FontConfig(title: sheetTitleFont,
+                                                                                                      validationError: sheetValidationFont,
+                                                                                                      footerHint: sheetFooterFont,
+                                                                                                      continueCTA: sheetContinueFont))
 
         #expect(viewModel.sheetFonts.title === sheetTitleFont)
         #expect(viewModel.sheetFonts.validationError === sheetValidationFont)

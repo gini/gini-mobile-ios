@@ -32,8 +32,7 @@ import UIKit
  }
  ```
  */
-@available(iOS 16.0, *)
-internal struct IBANSelectionSheet: View {
+struct IBANSelectionSheet: View {
 
     let viewModel: IBANSelectionSheetViewModel
 
@@ -120,6 +119,9 @@ internal struct IBANSelectionSheet: View {
                           giniColorScheme: viewModel.giniColorScheme,
                           fonts: viewModel.rowFonts,
                           onTap: { select(.qr(iban: viewModel.qrIBAN)) })
+                .accessibilityAction(named: Text(viewModel.spellOutIBANActionName)) {
+                    Self.announceSpelledOut(viewModel.qrIBAN)
+                }
 
             ForEach(Array(viewModel.printedIBANs.enumerated()), id: \.offset) { _, printedIBAN in
                 Divider()
@@ -129,8 +131,23 @@ internal struct IBANSelectionSheet: View {
                               giniColorScheme: viewModel.giniColorScheme,
                               fonts: viewModel.rowFonts,
                               onTap: { select(.printed(iban: printedIBAN)) })
+                    .accessibilityAction(named: Text(viewModel.spellOutIBANActionName)) {
+                        Self.announceSpelledOut(printedIBAN)
+                    }
             }
         }
+    }
+
+    /**
+     Posts an accessibility announcement that reads `iban` character by
+     character. Used by the per-row "Spell out IBAN" rotor action so a blind
+     user can detect a one-character substitution.
+     */
+    private static func announceSpelledOut(_ iban: String) {
+        var spelled = AttributedString(iban)
+        spelled.accessibilitySpeechSpellsOutCharacters = true
+        UIAccessibility.post(notification: .announcement,
+                             argument: NSAttributedString(spelled))
     }
 
     private var continueButton: some View {
@@ -158,9 +175,12 @@ internal struct IBANSelectionSheet: View {
     }
 
     private func select(_ choice: IBANChoice) {
+        let newState = IBANSelectionSheetState.select(choice,
+                                                      currentSelection: selection,
+                                                      showValidationError: showValidationError)
         let apply = {
-            selection = choice
-            showValidationError = false
+            selection = newState.selection
+            showValidationError = newState.showValidationError
         }
         if reduceMotion {
             apply()
@@ -170,19 +190,20 @@ internal struct IBANSelectionSheet: View {
     }
 
     private func handleContinueTap() {
-        if let selection {
-            onContinue(selection)
-            return
+        switch IBANSelectionSheetState.resolveContinueTap(selection: selection) {
+        case .confirm(let choice):
+            onContinue(choice)
+        case .revealError:
+            let apply = { showValidationError = true }
+            if reduceMotion {
+                apply()
+            } else {
+                withAnimation(.easeInOut(duration: Constants.animationDuration)) { apply() }
+            }
+            validationErrorFocused = true
+            UIAccessibility.post(notification: .announcement,
+                                 argument: viewModel.validationErrorMessage)
         }
-        let apply = { showValidationError = true }
-        if reduceMotion {
-            apply()
-        } else {
-            withAnimation(.easeInOut(duration: Constants.animationDuration)) { apply() }
-        }
-        validationErrorFocused = true
-        UIAccessibility.post(notification: .announcement,
-                             argument: viewModel.validationErrorMessage)
     }
 
     // MARK: - Styling helpers
@@ -242,14 +263,13 @@ internal struct IBANSelectionSheet: View {
  outside the view so the three helpers (`variant`, `select`,
  `resolveContinueTap`) can be unit-tested without a view hosting harness.
  */
-internal enum IBANSelectionSheetState {
+enum IBANSelectionSheetState {
 
     /**
      The `GiniOptionRow.Variant` for `choice` given the sheet's current
      `selection` and `showValidationError`. All rows turn `.error` together
      while the validation flag is on so the user sees the sheet is blocked.
      */
-    @available(iOS 16.0, *)
     static func variant(for choice: IBANChoice,
                         selection: IBANChoice?,
                         showValidationError: Bool) -> GiniOptionRow.Variant {
@@ -325,7 +345,6 @@ internal enum IBANSelectionSheetState {
  sheet with a specific state. The validation-error state is reached by
  tapping the live Continue button, not via an injected preset.
  */
-@available(iOS 16.0, *)
 private struct IBANSelectionSheetPreviewHost: View {
 
     @State private var selection: IBANChoice?
@@ -352,6 +371,7 @@ private struct IBANSelectionSheetPreviewHost: View {
             continueCTA: "Continue",
             validationErrorMessage: "Select an IBAN to continue",
             continueHintWhenNoSelection: "Select an IBAN to continue",
+            spellOutIBANActionName: "Spell out IBAN",
             qrIBAN: "PL12 1000 0111 0100 1000",
             printedIBANs: printedIBANs,
             giniColorScheme: UIColor.giniBankColorScheme()
