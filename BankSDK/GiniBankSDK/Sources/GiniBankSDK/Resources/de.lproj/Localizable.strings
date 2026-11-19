@@ -164,3 +164,12 @@
 "ginibank.fraud.iban.selection.cta.continue" = "Weiter";
 "ginibank.fraud.iban.selection.validation.select.iban" = "Wählen Sie eine IBAN, um fortzufahren";
 "ginibank.fraud.iban.selection.a11y.action.spell.out.iban" = "IBAN buchstabieren";
+
+// MARK: - Fraud warning screen (PP-4080) — TODO PP-4080: copy team review
+"ginibank.fraud.warning.title.qr.printed" = "Unterschiedliche IBANs in diesem Dokument";
+"ginibank.fraud.warning.body.qr.printed" = "Die IBAN im QR-Code stimmt nicht mit der gedruckten IBAN überein.";
+"ginibank.fraud.warning.ibans.header" = "Folgende IBANs wurden erkannt";
+"ginibank.fraud.warning.row.qr.label" = "Im QR-Code";
+"ginibank.fraud.warning.row.printed.label" = "Gedruckt auf dem Dokument";
+"ginibank.fraud.warning.cta.cancel" = "Überweisung abbrechen";
+"ginibank.fraud.warning.cta.proceed" = "Trotzdem fortfahren";
