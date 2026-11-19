@@ -20,14 +20,20 @@ struct FraudWarningContainer: View {
     var body: some View {
         FraudWarningView(viewModel: viewModel,
                          onCancel: viewModel.didTapCancel,
-                         onProceed: { isShowingPicker = true })
+                         onProceed: showPicker)
             .sheet(isPresented: $isShowingPicker) {
-                IBANPickerPlaceholder(onConfirm: {
-                    isShowingPicker = false
-                    viewModel.didTapProceed()
-                })
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
+                IBANPickerPlaceholder(onConfirm: handleConfirm)
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
             }
+    }
+
+    func showPicker() {
+        isShowingPicker = true
+    }
+
+    func handleConfirm() {
+        isShowingPicker = false
+        viewModel.didTapProceed()
     }
 }
