@@ -49,6 +49,7 @@ struct SwitchOptionModel {
         case paymentDueHintEnabled
         case creditNoteHintEnabled
         case paymentScheduleHintEnabled
+        case fraudWarningEnabled
         case closeSDK
         #if DEBUG
         case ibanSelectionSheetPreviewEnabled
@@ -124,6 +125,8 @@ struct SwitchOptionModel {
                 return "Credit note hint feature"
             case .paymentScheduleHintEnabled:
                 return "Payment schedule hint feature"
+            case .fraudWarningEnabled:
+                return "Fraud warning feature"
             case .savePhotosLocallyEnabled:
                 return "Save Photos Locally feature"
 			case .customDocumentValidations:

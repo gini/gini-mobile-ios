@@ -34,6 +34,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
+
     /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
      Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
      This is cast from the public-facing protocol for internal SDK use only.
