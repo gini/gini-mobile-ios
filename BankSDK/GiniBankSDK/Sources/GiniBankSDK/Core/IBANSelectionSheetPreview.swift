@@ -63,7 +63,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 // MARK: - UIKit bridge
 
 @available(iOS 16.0, *)
-private final class IBANSelectionSheetPreviewHostingController: UIHostingController<IBANSelectionSheetPreviewView> {
+internal final class IBANSelectionSheetPreviewHostingController: UIHostingController<IBANSelectionSheetPreviewView> {
 
     init(analysisResult: AnalysisResult,
          onConfirm: @escaping (UIViewController) -> Void) {
@@ -86,7 +86,7 @@ private final class IBANSelectionSheetPreviewHostingController: UIHostingControl
 // MARK: - SwiftUI preview view
 
 @available(iOS 16.0, *)
-private struct IBANSelectionSheetPreviewView: View {
+internal struct IBANSelectionSheetPreviewView: View {
 
     let analysisResult: AnalysisResult
     let onConfirm: () -> Void

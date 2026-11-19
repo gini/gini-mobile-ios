@@ -5,6 +5,8 @@
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
+import GiniCaptureSDK
 import SwiftUI
 import Testing
 import UIKit
@@ -334,8 +336,9 @@ struct IBANSelectionSheetRenderingTests {
 
 #if DEBUG
 /// `IBANSelectionSheetPreview.isEnabled` reads `UserDefaults.standard`. The
-/// test flips the flag and asserts the read-side observes it.
-@Suite("IBANSelectionSheetPreview — UserDefaults flag")
+/// suite is serialized because every test mutates the same UserDefaults
+/// key — parallel execution would race on it.
+@Suite("IBANSelectionSheetPreview — UserDefaults flag", .serialized)
 struct IBANSelectionSheetPreviewFlagTests {
 
     @Test("isEnabled defaults to false when nothing is written")
@@ -350,6 +353,78 @@ struct IBANSelectionSheetPreviewFlagTests {
         UserDefaults.standard.set(value, forKey: IBANSelectionSheetPreview.userDefaultsKey)
         defer { UserDefaults.standard.removeObject(forKey: IBANSelectionSheetPreview.userDefaultsKey) }
         #expect(IBANSelectionSheetPreview.isEnabled == value)
+    }
+}
+
+/// Renders `IBANSelectionSheetPreviewView` and the hosting controller in a
+/// visible window so SwiftUI evaluates the view body and the private
+/// `makeSheetViewModel(from:)` helper.
+@Suite("IBANSelectionSheetPreviewView — rendering")
+@MainActor
+struct IBANSelectionSheetPreviewRenderingTests {
+
+    @Test("View renders with an AnalysisResult that has no iban extractions")
+    func rendersWithEmptyAnalysisResult() {
+        guard #available(iOS 16.0, *) else { return }
+        let view = IBANSelectionSheetPreviewView(
+            analysisResult: Self.makeAnalysisResult(iban: nil, candidates: [:]),
+            onConfirm: { /* no-op */ }
+        )
+        renderAndLayout(view)
+    }
+
+    @Test("View renders with an AnalysisResult that contains a real iban extraction and printed candidates")
+    func rendersWithPopulatedAnalysisResult() {
+        guard #available(iOS 16.0, *) else { return }
+        let iban = Extraction(box: nil,
+                              candidates: "ibans",
+                              entity: "iban",
+                              value: "DE89370400440532013000",
+                              name: "iban")
+        let candidates = ["ibans": [Extraction.Candidate(box: nil,
+                                                          entity: "iban",
+                                                          value: "DE02120300000000202051")]]
+        let view = IBANSelectionSheetPreviewView(
+            analysisResult: Self.makeAnalysisResult(iban: iban, candidates: candidates),
+            onConfirm: { /* no-op */ }
+        )
+        renderAndLayout(view)
+    }
+
+    @Test("Hosting controller instantiates and lays out")
+    func hostingControllerLaysOut() {
+        guard #available(iOS 16.0, *) else { return }
+        let host = IBANSelectionSheetPreviewHostingController(
+            analysisResult: Self.makeAnalysisResult(iban: nil, candidates: [:]),
+            onConfirm: { _ in /* no-op */ }
+        )
+        host.modalPresentationStyle = .fullScreen
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 600))
+        window.rootViewController = host
+        window.isHidden = false
+        host.view.setNeedsLayout()
+        host.view.layoutIfNeeded()
+    }
+
+    private static func makeAnalysisResult(iban: Extraction?,
+                                            candidates: [String: [Extraction.Candidate]]) -> AnalysisResult {
+        var extractions: [String: Extraction] = [:]
+        if let iban {
+            extractions["iban"] = iban
+        }
+        return AnalysisResult(extractions: extractions,
+                              images: [],
+                              candidates: candidates)
+    }
+
+    @available(iOS 16.0, *)
+    private func renderAndLayout(_ view: some View) {
+        let hosting = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 600))
+        window.rootViewController = hosting
+        window.isHidden = false
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
     }
 }
 #endif
