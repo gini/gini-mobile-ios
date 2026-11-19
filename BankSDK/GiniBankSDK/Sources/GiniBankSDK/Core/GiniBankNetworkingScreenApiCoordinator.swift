@@ -34,6 +34,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
+    /** Retains the fraud warning Coordinator (so its weak delegate stays live) and parks the delivery while the warning is on screen. Cleared atomically on Cancel/Proceed. */
+    var fraudWarningPresentation: (coordinator: FraudWarningCoordinator,
+                                   result: AnalysisResult,
+                                   completion: (AnalysisResult) -> Void)?
+
 
     /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
      Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
@@ -275,20 +280,23 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
-                #if DEBUG
-                if IBANSelectionSheetPreview.isEnabled {
-                    self.presentIBANSelectionSheetPreview(for: result) { [weak self] in
-                        self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                    guard let self = self else { return }
+                    #if DEBUG
+                    if IBANSelectionSheetPreview.isEnabled {
+                        self.presentIBANSelectionSheetPreview(for: result) { [weak self] in
+                            self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                            documentService.resetToInitialState()
+                        }
+                    } else {
+                        self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
                         documentService.resetToInitialState()
                     }
-                } else {
+                    #else
                     self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
                     documentService.resetToInitialState()
+                    #endif
                 }
-                #else
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                documentService.resetToInitialState()
-                #endif
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -570,17 +578,20 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
-        #if DEBUG
-        if IBANSelectionSheetPreview.isEnabled {
-            presentIBANSelectionSheetPreview(for: analysisResult) { [weak self] in
-                self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-                self?.documentService.resetToInitialState()
+        presentFraudWarningIfEnabled(result: analysisResult) { [weak self] analysisResult in
+            guard let self = self else { return }
+            #if DEBUG
+            if IBANSelectionSheetPreview.isEnabled {
+                self.presentIBANSelectionSheetPreview(for: analysisResult) { [weak self] in
+                    self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+                    self?.documentService.resetToInitialState()
+                }
+                return
             }
-            return
+            #endif
+            self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+            self.documentService.resetToInitialState()
         }
-        #endif
-        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-        documentService.resetToInitialState()
     }
 
     @MainActor
@@ -712,15 +723,18 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     }
                 }
 
-                #if DEBUG
-                if IBANSelectionSheetPreview.isEnabled {
-                    self.presentIBANSelectionSheetPreview(for: result, completion: finishDelivery)
-                } else {
+                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                    guard let self = self else { return }
+                    #if DEBUG
+                    if IBANSelectionSheetPreview.isEnabled {
+                        self.presentIBANSelectionSheetPreview(for: result, completion: finishDelivery)
+                    } else {
+                        finishDelivery()
+                    }
+                    #else
                     finishDelivery()
+                    #endif
                 }
-                #else
-                finishDelivery()
-                #endif
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -1146,15 +1160,18 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     self.sendSkontoTransferSummary(extractions: extractions)
                 }
 
-                #if DEBUG
-                if IBANSelectionSheetPreview.isEnabled {
-                    self.presentIBANSelectionSheetPreview(for: result, completion: finishSkontoDelivery)
-                } else {
+                self.presentFraudWarningIfEnabled(result: result) { [weak self] result in
+                    guard let self = self else { return }
+                    #if DEBUG
+                    if IBANSelectionSheetPreview.isEnabled {
+                        self.presentIBANSelectionSheetPreview(for: result, completion: finishSkontoDelivery)
+                    } else {
+                        finishSkontoDelivery()
+                    }
+                    #else
                     finishSkontoDelivery()
+                    #endif
                 }
-                #else
-                finishSkontoDelivery()
-                #endif
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
