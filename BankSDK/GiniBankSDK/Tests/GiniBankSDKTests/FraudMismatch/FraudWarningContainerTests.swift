@@ -35,6 +35,21 @@ struct FraudWarningContainerTests {
         #expect(delegate.proceedCount == 1)
         #expect(delegate.cancelCount == 0)
     }
+
+    @Test("pickerSheet body renders without crashing")
+    func pickerSheetRenders() {
+        let viewModel = FraudWarningViewModel(qrIBAN: "qr",
+                                              printedIBAN: "pr",
+                                              delegate: nil)
+        let container = FraudWarningContainer(viewModel: viewModel)
+
+        let hosting = UIHostingController(rootView: container.pickerSheet)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 500))
+        window.rootViewController = hosting
+        window.isHidden = false
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
+    }
 }
 
 private final class CountingVMDelegate: FraudWarningViewModelDelegate {

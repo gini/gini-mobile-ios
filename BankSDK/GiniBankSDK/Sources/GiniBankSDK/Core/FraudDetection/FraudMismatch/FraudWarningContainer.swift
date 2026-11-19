@@ -22,10 +22,14 @@ struct FraudWarningContainer: View {
                          onCancel: viewModel.didTapCancel,
                          onProceed: showPicker)
             .sheet(isPresented: $isShowingPicker) {
-                IBANPickerPlaceholder(onConfirm: handleConfirm)
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
+                pickerSheet
             }
+    }
+
+    var pickerSheet: some View {
+        IBANPickerPlaceholder(onConfirm: handleConfirm)
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
     }
 
     func showPicker() {
