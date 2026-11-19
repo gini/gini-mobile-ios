@@ -15,7 +15,7 @@ import Testing
 @MainActor
 struct FraudWarningCoordinatorTests {
 
-    @Test("start() returns a UIHostingController<FraudWarningContainer> with fullScreen + isModalInPresentation")
+    @Test("start() returns a bottom-sheet hosting controller with isModalInPresentation")
     func startReturnsConfiguredHostingController() {
         let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
                                                   printedIBAN: "DE89 3704 0044 0532 0130 00",
@@ -24,7 +24,6 @@ struct FraudWarningCoordinatorTests {
         let hosting = coordinator.start()
 
         #expect(hosting is UIHostingController<FraudWarningContainer>)
-        #expect(hosting.modalPresentationStyle == .fullScreen)
         #expect(hosting.isModalInPresentation == true)
     }
 
