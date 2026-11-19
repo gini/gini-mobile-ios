@@ -34,6 +34,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
+    /** Retains the coordinator (so its weak delegate stays live) and parks the delivery while the warning is on screen. Cleared atomically on Cancel/Proceed. */
+    var fraudWarningPresentation: (coordinator: FraudWarningCoordinator,
+                                   result: AnalysisResult,
+                                   completion: (AnalysisResult) -> Void)?
+
 
     /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
      Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
@@ -268,15 +273,16 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     return (name, $0)
                 })
 
-                let result = AnalysisResult(extractions: extractions,
-                                            lineItems: result.lineItems,
-                                            images: images,
-                                            candidates: result.candidates)
+                let analysisResult = AnalysisResult(extractions: extractions,
+                                                    lineItems: result.lineItems,
+                                                    images: images,
+                                                    candidates: result.candidates)
 
-                let documentService = self.documentService
-
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                documentService.resetToInitialState()
+                self.presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+                    guard let self = self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: finalResult)
+                    self.documentService.resetToInitialState()
+                }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -558,8 +564,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
-        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-        documentService.resetToInitialState()
+        presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+            self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: finalResult)
+            self?.documentService.resetToInitialState()
+        }
     }
 
     @MainActor
@@ -669,21 +677,24 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
-                let result = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
-                                            lineItems: isCrossBorderPayment() ? nil : result.lineItems,
-                                            skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
-                                            crossBorderPayment: result.crossBorderPayment,
-                                            images: images,
-                                            document: documentService.document,
-                                            candidates: result.candidates)
-                sendAnalyticsEventSDKClose()
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                let analysisResult = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
+                                                    lineItems: isCrossBorderPayment() ? nil : result.lineItems,
+                                                    skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
+                                                    crossBorderPayment: result.crossBorderPayment,
+                                                    images: images,
+                                                    document: documentService.document,
+                                                    candidates: result.candidates)
+                self.presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+                    guard let self = self else { return }
+                    self.sendAnalyticsEventSDKClose()
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: finalResult)
 
-                if !isCrossBorderPayment() {
-                    self.giniBankConfiguration.lineItems = result.lineItems
-                    if let skontoDiscounts = result.skontoDiscounts {
-                        self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                        self.sendSkontoTransferSummary(extractions: extractions)
+                    if !self.isCrossBorderPayment() {
+                        self.giniBankConfiguration.lineItems = finalResult.lineItems
+                        if let skontoDiscounts = finalResult.skontoDiscounts {
+                            self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                            self.sendSkontoTransferSummary(extractions: extractions)
+                        }
                     }
                 }
             } else {
@@ -906,9 +917,12 @@ internal extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: extractionResult.candidates)
-        sendAnalyticsEventSDKClose()
-        resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: analysisResult)
-        documentService.resetToInitialState()
+        presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+            guard let self = self else { return }
+            self.sendAnalyticsEventSDKClose()
+            self.resultsDelegate?.giniCaptureDidRequestSchedulePayment?(result: finalResult)
+            self.documentService.resetToInitialState()
+        }
     }
 
     /**
@@ -1098,15 +1112,18 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
-                let result = AnalysisResult(extractions: extractions,
-                                            skontoDiscounts: result.skontoDiscounts,
-                                            images: images,
-                                            document: documentService.document,
-                                            candidates: result.candidates)
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                let analysisResult = AnalysisResult(extractions: extractions,
+                                                    skontoDiscounts: result.skontoDiscounts,
+                                                    images: images,
+                                                    document: documentService.document,
+                                                    candidates: result.candidates)
+                self.presentFraudWarningIfEnabled(result: analysisResult) { [weak self] finalResult in
+                    guard let self = self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: finalResult)
 
-                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-                self.sendSkontoTransferSummary(extractions: extractions)
+                    self.giniBankConfiguration.skontoDiscounts = finalResult.skontoDiscounts
+                    self.sendSkontoTransferSummary(extractions: extractions)
+                }
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
