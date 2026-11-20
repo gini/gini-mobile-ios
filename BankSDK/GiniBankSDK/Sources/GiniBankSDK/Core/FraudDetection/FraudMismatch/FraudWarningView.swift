@@ -77,6 +77,7 @@ struct FraudWarningView: View {
                                isExpanded: $viewModel.isExpandedProtectMyself) {
             Text(Self.localized("ginibank.fraud.protect.body"))
                 .font(Font(giniFont: Self.font(.footnote)))
+                .lineSpacing(Constants.expandableBodyLineSpacing)
                 .foregroundStyle(UIColor.giniBankColorScheme().text.secondary.swiftUIColor())
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -188,5 +189,8 @@ struct FraudWarningView: View {
          light and dark system backgrounds without a separate dark-mode value.
          */
         static let expandableCardTintAlpha: CGFloat = 0.2
+
+        /** Extra line spacing for the expandable body text. */
+        static let expandableBodyLineSpacing: CGFloat = 2
     }
 }
