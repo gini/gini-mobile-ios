@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import Testing
 @testable import GiniBankSDK
 
@@ -13,10 +14,18 @@ import Testing
 @MainActor
 struct FraudWarningViewModelTests {
 
+    private static let qrIBAN = "PL12 1000 0111 0100 1000"
+    private static let printedIBAN = "DE89 3704 0044 0532 0130 00"
+
     @Test("init with nil delegate does not crash")
     func initWithNilDelegate() {
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: nil)
 
         #expect(viewModel.delegate == nil)
@@ -25,8 +34,13 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel fires fraudWarningViewModelDidCancel exactly once")
     func didTapCancelFiresOnce() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapCancel()
@@ -38,8 +52,13 @@ struct FraudWarningViewModelTests {
     @Test("didTapProceed fires fraudWarningViewModelDidProceed exactly once")
     func didTapProceedFiresOnce() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapProceed()
@@ -51,14 +70,45 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel twice fires the delegate twice")
     func didTapCancelTwiceFiresTwice() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapCancel()
         viewModel.didTapCancel()
 
         #expect(delegate.cancelCount == 2)
+    }
+
+    @Test("isExpandedProtectMyself defaults to false")
+    func isExpandedProtectMyselfDefaultsToFalse() {
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: nil)
+
+        #expect(viewModel.isExpandedProtectMyself == false)
+    }
+
+    @Test("isExpandedProtectMyself mutation fires objectWillChange")
+    func isExpandedProtectMyselfFiresObjectWillChange() {
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: nil)
+        var fired = false
+        let cancellable = viewModel.objectWillChange.sink { _ in
+            fired = true
+        }
+
+        viewModel.isExpandedProtectMyself = true
+
+        #expect(fired == true)
+        #expect(viewModel.isExpandedProtectMyself == true)
+        cancellable.cancel()
     }
 }
 
