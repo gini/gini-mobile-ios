@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import Testing
 @testable import GiniBankSDK
 
@@ -82,6 +83,32 @@ struct FraudWarningViewModelTests {
         viewModel.didTapCancel()
 
         #expect(delegate.cancelCount == 2)
+    }
+
+    @Test("isExpandedProtectMyself defaults to false")
+    func isExpandedProtectMyselfDefaultsToFalse() {
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: nil)
+
+        #expect(viewModel.isExpandedProtectMyself == false)
+    }
+
+    @Test("isExpandedProtectMyself mutation fires objectWillChange")
+    func isExpandedProtectMyselfFiresObjectWillChange() {
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: nil)
+        var fired = false
+        let cancellable = viewModel.objectWillChange.sink { _ in
+            fired = true
+        }
+
+        viewModel.isExpandedProtectMyself = true
+
+        #expect(fired == true)
+        #expect(viewModel.isExpandedProtectMyself == true)
+        cancellable.cancel()
     }
 }
 
