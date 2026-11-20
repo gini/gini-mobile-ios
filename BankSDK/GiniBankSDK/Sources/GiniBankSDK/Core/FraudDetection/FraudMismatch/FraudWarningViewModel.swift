@@ -29,6 +29,13 @@ final class FraudWarningViewModel: ObservableObject {
     /** External binding target for the "How do I protect myself?" expandable. */
     @Published var isExpandedProtectMyself: Bool = false
 
+    /**
+     IBAN the user confirmed on the picker sheet, or `nil` until a pick lands.
+     Downstream screens (Coordinator / integrator hand-off) read this to decide
+     which IBAN flows forward.
+     */
+    @Published var selectedIBAN: IBANChoice?
+
     /** Parent that receives tap callbacks. Weak to avoid a retain cycle with the Coordinator. */
     weak var delegate: FraudWarningViewModelDelegate?
 
@@ -45,6 +52,16 @@ final class FraudWarningViewModel: ObservableObject {
     }
 
     func didTapProceed() {
+        delegate?.fraudWarningViewModelDidProceed(self)
+    }
+
+    /**
+     User picked an IBAN on the sheet and tapped Continue. Stores the choice
+     and fires the existing Proceed delegate so the Coordinator advances the
+     flow with the chosen IBAN available via `selectedIBAN`.
+     */
+    func didConfirmIBAN(_ choice: IBANChoice) {
+        selectedIBAN = choice
         delegate?.fraudWarningViewModelDidProceed(self)
     }
 }
