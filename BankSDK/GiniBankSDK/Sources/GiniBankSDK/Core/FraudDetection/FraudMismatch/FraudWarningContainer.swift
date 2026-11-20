@@ -53,26 +53,30 @@ struct FraudWarningContainer: View {
 
     /**
      Builds the `IBANSelectionSheetViewModel` from Bank SDK design-system
-     tokens. `static` so the view does not need a stored property — the
-     config is a value type and cheap to recompute on each body evaluation.
-     Strings are hardcoded English scaffolds; `LocalizableStringResource`
-     wiring lands with the final visual pass.
+     tokens and the `ginibank.fraud.iban.selection.*` localized strings.
+     `static` so the view does not need a stored property — the config is
+     a value type and cheap to recompute on each body evaluation.
      */
     private static func makePickerViewModel(qrIBAN: String,
                                             printedIBAN: String) -> IBANSelectionSheetViewModel {
-        IBANSelectionSheetViewModel(title: "To continue, select one of the IBANs",
-                                    qrRowTitle: "In the QR code",
-                                    printedRowTitle: "Printed on the document",
-                                    footerHint: "You can still check the IBAN on the next screen.",
-                                    continueCTA: "Continue",
-                                    validationErrorMessage: "Select an IBAN to continue",
-                                    continueHintWhenNoSelection: "Select an IBAN to continue",
-                                    spellOutIBANActionName: "Spell out IBAN",
+        IBANSelectionSheetViewModel(title: localized("ginibank.fraud.iban.selection.title"),
+                                    qrRowTitle: localized("ginibank.fraud.iban.selection.row.qr.label"),
+                                    printedRowTitle: localized("ginibank.fraud.iban.selection.row.printed.label"),
+                                    footerHint: localized("ginibank.fraud.iban.selection.footer.hint"),
+                                    continueCTA: localized("ginibank.fraud.iban.selection.cta.continue"),
+                                    validationErrorMessage: localized("ginibank.fraud.iban.selection.validation.select.iban"),
+                                    continueHintWhenNoSelection: localized("ginibank.fraud.iban.selection.validation.select.iban"),
+                                    spellOutIBANActionName: localized("ginibank.fraud.iban.selection.a11y.action.spell.out.iban"),
                                     qrIBAN: qrIBAN,
                                     printedIBANs: [printedIBAN],
                                     giniColorScheme: UIColor.giniBankColorScheme(),
                                     rowFonts: rowFonts,
                                     sheetFonts: sheetFonts)
+    }
+
+    /** Looks up a localized string in the Bank SDK bundle with host-app override support. */
+    private static func localized(_ key: String) -> String {
+        NSLocalizedStringPreferredGiniBankFormat(key, comment: "")
     }
 
     private static var rowFonts: GiniOptionRow.FontConfiguration {
