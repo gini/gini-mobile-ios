@@ -13,10 +13,18 @@ import Testing
 @MainActor
 struct FraudWarningViewModelTests {
 
+    private static let qrIBAN = "PL12 1000 0111 0100 1000"
+    private static let printedIBAN = "DE89 3704 0044 0532 0130 00"
+
     @Test("init with nil delegate does not crash")
     func initWithNilDelegate() {
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: nil)
 
         #expect(viewModel.delegate == nil)
@@ -25,8 +33,13 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel fires fraudWarningViewModelDidCancel exactly once")
     func didTapCancelFiresOnce() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapCancel()
@@ -38,8 +51,13 @@ struct FraudWarningViewModelTests {
     @Test("didTapProceed fires fraudWarningViewModelDidProceed exactly once")
     func didTapProceedFiresOnce() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapProceed()
@@ -51,8 +69,13 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel twice fires the delegate twice")
     func didTapCancelTwiceFiresTwice() {
         let delegate = Mock()
+<<<<<<< HEAD
         let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
                                               printedIBAN: "DE89 3704 0044 0532 0130 00",
+=======
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+>>>>>>> fc960d7ac (test(GiniBankSDK): Fix stale FraudWarning tests against current VM init)
                                               delegate: delegate)
 
         viewModel.didTapCancel()
