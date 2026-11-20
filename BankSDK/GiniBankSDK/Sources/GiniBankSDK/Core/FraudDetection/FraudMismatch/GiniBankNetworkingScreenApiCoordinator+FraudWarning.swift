@@ -24,8 +24,9 @@ import GiniUtilites
 
  Otherwise the warning presents as a large-detent bottom sheet with the
  resolved QR + printed IBANs; Cancel calls `giniCaptureDidCancelAnalysis` +
- resets `documentService`, Proceed invokes `completion` with the ORIGINAL
- result unchanged (chosen-IBAN propagation is deferred to the sheet follow-up).
+ resets `documentService`, Proceed applies the user's IBAN choice to the
+ parked result via `ChosenIBANExtractions` (rewriting `iban`, dropping
+ `bic` when the pick differs from the backend's) and invokes `completion`.
  */
 extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegate {
 
@@ -73,8 +74,10 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
         }
     }
 
-    func fraudWarningCoordinatorDidProceed(_: FraudWarningCoordinator) {
+    func fraudWarningCoordinatorDidProceed(_ coordinator: FraudWarningCoordinator) {
         guard let pending = takeFraudWarningPresentation() else { return }
+        pending.result.extractions = ChosenIBANExtractions.apply(pending.result.extractions,
+                                                                 chosenIBAN: coordinator.viewModel.selectedIBAN?.iban)
         screenAPINavigationController.dismiss(animated: true) { [weak self] in
             self?.restorePresenterAccessibility()
             pending.completion(pending.result)
