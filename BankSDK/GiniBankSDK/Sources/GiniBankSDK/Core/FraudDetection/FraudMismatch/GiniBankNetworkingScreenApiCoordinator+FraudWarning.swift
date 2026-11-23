@@ -38,16 +38,15 @@ extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegat
             return
         }
         let fraudSignalsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.fraudSignalsEnabled ?? false
-        guard let ibans = FraudWarningIBANResolver.resolve(result: result,
-                                                            extractionResult: extractionResult,
-                                                            fraudSignalsEnabled: fraudSignalsEnabled) else {
+        guard let content = FraudWarningIBANResolver.resolve(result: result,
+                                                             extractionResult: extractionResult,
+                                                             fraudSignalsEnabled: fraudSignalsEnabled) else {
             completion(result)
             return
         }
         /// Drop a second delivery that arrives while the first warning is still on screen; replacing the parked tuple would null the first coordinator's weak delegate and leave its buttons inert.
         guard fraudWarningPresentation == nil else { return }
-        let coordinator = FraudWarningCoordinator(qrIBAN: ibans.qrIBAN,
-                                                  printedIBAN: ibans.printedIBAN,
+        let coordinator = FraudWarningCoordinator(content: content,
                                                   delegate: self)
         fraudWarningPresentation = (coordinator: coordinator,
                                     result: result,

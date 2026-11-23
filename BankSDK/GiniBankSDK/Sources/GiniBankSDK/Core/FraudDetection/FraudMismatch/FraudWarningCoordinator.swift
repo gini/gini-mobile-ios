@@ -34,12 +34,10 @@ final class FraudWarningCoordinator: FraudWarningViewModelDelegate {
 
     let viewModel: FraudWarningViewModel
 
-    init(qrIBAN: String,
-         printedIBAN: String,
+    init(content: FraudWarningContent,
          delegate: FraudWarningCoordinatorDelegate? = nil) {
         self.delegate = delegate
-        self.viewModel = FraudWarningViewModel(qrIBAN: qrIBAN,
-                                               printedIBAN: printedIBAN,
+        self.viewModel = FraudWarningViewModel(content: content,
                                                delegate: nil)
         self.viewModel.delegate = self
     }
