@@ -742,6 +742,53 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(delivered === analysisResult,
                       "Completion must fire synchronously with the original AnalysisResult when the resolver returns nil (no triggering signal)")
     }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Proceed")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidCancelClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Cancel")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedWithNoPendingIsNoOp() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        /// No pending delivery set — the guard early-returns, nothing to assert beyond non-crash.
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation)
+    }
 }
 
 // MARK: - ClientConfiguration Extension
