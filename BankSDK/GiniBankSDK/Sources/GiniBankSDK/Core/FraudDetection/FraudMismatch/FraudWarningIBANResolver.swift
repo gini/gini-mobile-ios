@@ -49,7 +49,7 @@ internal enum FraudWarningIBANResolver {
         guard fraudSignalsEnabled else { return nil }
 
         let signals = FraudSignalMapper.map(extractionResult: extractionResult,
-                                            fraudSignalsEnabled: true)
+                                            fraudSignalsEnabled: fraudSignalsEnabled)
         guard let qrSignal = signals.first(where: { $0.code == .qrPrintedIbanMismatch }) else {
             return nil
         }
