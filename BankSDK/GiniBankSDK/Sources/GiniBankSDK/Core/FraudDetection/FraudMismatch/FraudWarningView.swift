@@ -94,8 +94,8 @@ struct FraudWarningView: View {
                                     backgroundColor: expandableBackground(from: scheme),
                                     colorScheme: scheme,
                                     titleFont: font(.subheadline),
-                                    expandedAccessibilityValue: "Expanded",
-                                    collapsedAccessibilityValue: "Collapsed")
+                                    expandedAccessibilityValue: localized("ginibank.fraud.protect.a11y.expanded"),
+                                    collapsedAccessibilityValue: localized("ginibank.fraud.protect.a11y.collapsed"))
     }
 
     /**
