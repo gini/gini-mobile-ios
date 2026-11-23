@@ -13,9 +13,9 @@ import GiniCaptureSDK
 @testable import GiniBankSDK
 
 /**
- Covers `FraudWarningIBANResolver.resolve(result:extractionResult:fraudSignalsEnabled:)` —
- the suppression rules (R2/R3/R4) and the resolved-value rules (R6/R7) from
- PP-4080.
+ Covers `FraudWarningIBANResolver.resolve(result:extractionResult:fraudSignalsEnabled:)`
+ — the suppression rules (R2/R3/R4) and the three-variant branching added in
+ PP-4090.
  */
 @Suite("FraudWarningIBANResolver")
 struct FraudWarningIBANResolverTests {
@@ -38,25 +38,9 @@ struct FraudWarningIBANResolverTests {
 
     // MARK: - R3 — no triggering signal
 
-    @Test("returns nil when the mapper produces no .qrPrintedIbanMismatch (empty signals)")
+    @Test("returns nil when the mapper produces no signals at all")
     func returnsNilWhenNoFraudSignals() {
         let extractionResult = Self.extractionResult(withFraudSignals: [])
-        let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"])
-
-        let resolved = FraudWarningIBANResolver.resolve(result: result,
-                                                         extractionResult: extractionResult,
-                                                         fraudSignalsEnabled: true)
-
-        #expect(resolved == nil)
-    }
-
-    @Test("returns nil when only an unrelated signal fires (country mismatch alone)")
-    func returnsNilWhenOnlyCountrySignal() {
-        let extractionResult = Self.extractionResult(withFraudSignals: [
-            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH",
-                             iban: "PL12 1000 0111 0100 1000",
-                             creditorCountry: "DE")
-        ])
         let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"])
 
         let resolved = FraudWarningIBANResolver.resolve(result: result,
@@ -84,10 +68,10 @@ struct FraudWarningIBANResolverTests {
         #expect(resolved == nil)
     }
 
-    // MARK: - R5 / R6 / R7 — happy path
+    // MARK: - QR vs Printed happy path
 
-    @Test("returns the resolved (qrIBAN, printedIBAN) pair when all conditions are met")
-    func returnsPairWhenAllConditionsMet() {
+    @Test("returns .qrPrinted when only the QR signal fires and a printed IBAN survives")
+    func returnsQrPrintedWhenAllConditionsMet() {
         let qrIban = "PL12 1000 0111 0100 1000"
         let printedIban = "DE89 3704 0044 0532 0130 00"
         let extractionResult = Self.extractionResult(withFraudSignals: [
@@ -99,11 +83,127 @@ struct FraudWarningIBANResolverTests {
                                                          extractionResult: extractionResult,
                                                          fraudSignalsEnabled: true)
 
-        #expect(resolved?.qrIBAN == qrIban)
-        #expect(resolved?.printedIBAN == printedIban)
+        #expect(resolved == .qrPrinted(qrIBAN: qrIban, printedIBAN: printedIban))
     }
 
-    // MARK: - R7 — printed-IBAN filter details
+    // MARK: - Country-only variant
+
+    @Test("returns .country when only the country signal fires with sender + country")
+    func returnsCountryWhenOnlyCountrySignalWithSender() {
+        let countryIban = "PL12 1000 0111 0100 1000"
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH",
+                             iban: countryIban,
+                             creditorCountry: "DE")
+        ])
+        let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"],
+                                          paymentRecipient: "Elektro Brandt GmbH")
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == .country(senderName: "Elektro Brandt GmbH",
+                                     senderCountry: "DE",
+                                     iban: countryIban))
+    }
+
+    @Test("returns .country with senderName nil when paymentRecipient is missing")
+    func returnsCountryWithNilSenderWhenRecipientMissing() {
+        let countryIban = "PL12 1000 0111 0100 1000"
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH",
+                             iban: countryIban,
+                             creditorCountry: "DE")
+        ])
+        let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"],
+                                          paymentRecipient: nil)
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == .country(senderName: nil, senderCountry: "DE", iban: countryIban))
+    }
+
+    @Test("returns .country with senderName nil when paymentRecipient is whitespace-only")
+    func returnsCountryWithNilSenderWhenRecipientWhitespaceOnly() {
+        let countryIban = "PL12 1000 0111 0100 1000"
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH",
+                             iban: countryIban,
+                             creditorCountry: "DE")
+        ])
+        let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"],
+                                          paymentRecipient: "   \n")
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == .country(senderName: nil, senderCountry: "DE", iban: countryIban))
+    }
+
+    @Test("returns nil when only country signal fires but creditorCountry is missing")
+    func returnsNilWhenCountrySignalHasNoCreditorCountry() {
+        /// The mapper drops `.ibanCountryMismatch` entries without `creditorCountry`, so
+        /// upstream we see no signal at all → nothing to show.
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH",
+                             iban: "PL12 1000 0111 0100 1000",
+                             creditorCountry: nil)
+        ])
+        let result = Self.analysisResult(candidates: ["DE89 3704 0044 0532 0130 00"])
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == nil)
+    }
+
+    // MARK: - Combined variant
+
+    @Test("returns .combined when both signals fire with a printed survivor")
+    func returnsCombinedWhenBothSignalsFire() {
+        let qrIban = "PL12 1000 0111 0100 1000"
+        let printedIban = "DE89 3704 0044 0532 0130 00"
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "QR_PRINTED_IBAN_MISMATCH", iban: qrIban),
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH", iban: qrIban, creditorCountry: "DE")
+        ])
+        let result = Self.analysisResult(candidates: [qrIban, printedIban],
+                                          paymentRecipient: "Elektro Brandt GmbH")
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == .combined(senderName: "Elektro Brandt GmbH",
+                                      senderCountry: "DE",
+                                      qrIBAN: qrIban,
+                                      printedIBAN: printedIban))
+    }
+
+    @Test("degrades to .qrPrinted when both signals fire but creditorCountry is missing")
+    func degradesToQrPrintedWhenCountryCreditorMissing() {
+        let qrIban = "PL12 1000 0111 0100 1000"
+        let printedIban = "DE89 3704 0044 0532 0130 00"
+        let extractionResult = Self.extractionResult(withFraudSignals: [
+            Self.signalGroup(code: "QR_PRINTED_IBAN_MISMATCH", iban: qrIban),
+            Self.signalGroup(code: "IBAN_COUNTRY_MISMATCH", iban: qrIban, creditorCountry: nil)
+        ])
+        let result = Self.analysisResult(candidates: [qrIban, printedIban],
+                                          paymentRecipient: "Elektro Brandt GmbH")
+
+        let resolved = FraudWarningIBANResolver.resolve(result: result,
+                                                         extractionResult: extractionResult,
+                                                         fraudSignalsEnabled: true)
+
+        #expect(resolved == .qrPrinted(qrIBAN: qrIban, printedIBAN: printedIban))
+    }
+
+    // MARK: - Printed-IBAN filter details
 
     @Test("excludes the QR IBAN even when whitespace and casing differ")
     func excludesQrIbanAcrossNormalization() {
@@ -122,7 +222,8 @@ struct FraudWarningIBANResolverTests {
                                                          extractionResult: extractionResult,
                                                          fraudSignalsEnabled: true)
 
-        #expect(resolved?.printedIBAN == "DE89 3704 0044 0532 0130 00")
+        #expect(resolved == .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                       printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
     @Test("dedupes by normalized form and returns the first-seen survivor")
@@ -141,7 +242,8 @@ struct FraudWarningIBANResolverTests {
                                                          extractionResult: extractionResult,
                                                          fraudSignalsEnabled: true)
 
-        #expect(resolved?.printedIBAN == "DE89 3704 0044 0532 0130 00")
+        #expect(resolved == .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                       printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
     @Test("skips empty and whitespace-only candidate values")
@@ -160,7 +262,8 @@ struct FraudWarningIBANResolverTests {
                                                          extractionResult: extractionResult,
                                                          fraudSignalsEnabled: true)
 
-        #expect(resolved?.printedIBAN == "DE89 3704 0044 0532 0130 00")
+        #expect(resolved == .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                       printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
     @Test("falls back to the \"ibans\" candidate-dict key when extractions[iban].candidates is nil")
@@ -179,7 +282,8 @@ struct FraudWarningIBANResolverTests {
                                                          extractionResult: extractionResult,
                                                          fraudSignalsEnabled: true)
 
-        #expect(resolved?.printedIBAN == "DE89 3704 0044 0532 0130 00")
+        #expect(resolved == .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                       printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
     // MARK: - Fixture helpers
@@ -211,19 +315,28 @@ struct FraudWarningIBANResolverTests {
     /**
      Builds an `AnalysisResult` with a single `"iban"` extraction whose
      `.candidates` key routes to a top-level `"ibans"` bucket containing the
-     given string values.
+     given string values. Optionally adds a `paymentRecipient` extraction.
      */
     private static func analysisResult(candidateKey: String? = "ibans",
-                                        candidates: [String]) -> AnalysisResult {
+                                        candidates: [String],
+                                        paymentRecipient: String? = nil) -> AnalysisResult {
         let ibanExtraction = Extraction(box: nil,
                                          candidates: candidateKey,
                                          entity: "iban",
                                          value: candidates.first ?? "",
                                          name: "iban")
+        var extractions: [String: Extraction] = ["iban": ibanExtraction]
+        if let paymentRecipient {
+            extractions["paymentRecipient"] = Extraction(box: nil,
+                                                          candidates: nil,
+                                                          entity: "text",
+                                                          value: paymentRecipient,
+                                                          name: "paymentRecipient")
+        }
         let candidateObjects = candidates.map {
             Extraction.Candidate(box: nil, entity: "iban", value: $0)
         }
-        return AnalysisResult(extractions: ["iban": ibanExtraction],
+        return AnalysisResult(extractions: extractions,
                                images: [],
                                candidates: ["ibans": candidateObjects])
     }
