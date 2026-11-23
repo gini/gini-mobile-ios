@@ -58,15 +58,20 @@ struct ChosenIBANExtractionsTests {
         #expect(output[ChosenIBANExtractions.bicKey] == nil)
     }
 
-    @Test("missing iban extraction returns input unchanged")
-    func missingIbanEntry_returnsInput() {
+    @Test("missing iban extraction creates one and removes bic")
+    func missingIbanEntry_createsIbanAndRemovesBIC() {
         let input = [ChosenIBANExtractions.bicKey: Self.makeExtraction(name: ChosenIBANExtractions.bicKey,
                                                                         value: Self.backendBIC,
                                                                         candidates: nil)]
         let output = ChosenIBANExtractions.apply(input, chosenIBAN: Self.printedIBAN)
 
-        #expect(output[ChosenIBANExtractions.ibanKey] == nil)
-        #expect(output[ChosenIBANExtractions.bicKey]?.value == Self.backendBIC)
+        let chosen = output[ChosenIBANExtractions.ibanKey]
+        #expect(chosen?.value == Self.printedIBAN)
+        #expect(chosen?.name == ChosenIBANExtractions.ibanKey)
+        #expect(chosen?.entity == ChosenIBANExtractions.ibanKey)
+        #expect(chosen?.box == nil)
+        #expect(chosen?.candidates == nil)
+        #expect(output[ChosenIBANExtractions.bicKey] == nil)
     }
 
     // MARK: - Fixtures
