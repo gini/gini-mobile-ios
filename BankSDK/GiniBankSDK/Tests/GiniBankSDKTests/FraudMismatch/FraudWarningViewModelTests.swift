@@ -16,12 +16,12 @@ struct FraudWarningViewModelTests {
 
     private static let qrIBAN = "PL12 1000 0111 0100 1000"
     private static let printedIBAN = "DE89 3704 0044 0532 0130 00"
+    private static let content: FraudWarningContent = .qrPrinted(qrIBAN: qrIBAN,
+                                                                 printedIBAN: printedIBAN)
 
     @Test("init with nil delegate does not crash")
     func initWithNilDelegate() {
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: nil)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: nil)
 
         #expect(viewModel.delegate == nil)
     }
@@ -29,9 +29,7 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel fires fraudWarningViewModelDidCancel exactly once")
     func didTapCancelFiresOnce() {
         let delegate = Mock()
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: delegate)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: delegate)
 
         viewModel.didTapCancel()
 
@@ -42,9 +40,7 @@ struct FraudWarningViewModelTests {
     @Test("didTapProceed fires fraudWarningViewModelDidProceed exactly once")
     func didTapProceedFiresOnce() {
         let delegate = Mock()
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: delegate)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: delegate)
 
         viewModel.didTapProceed()
 
@@ -55,9 +51,7 @@ struct FraudWarningViewModelTests {
     @Test("didTapCancel twice fires the delegate twice")
     func didTapCancelTwiceFiresTwice() {
         let delegate = Mock()
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: delegate)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: delegate)
 
         viewModel.didTapCancel()
         viewModel.didTapCancel()
@@ -67,18 +61,14 @@ struct FraudWarningViewModelTests {
 
     @Test("isExpandedProtectMyself defaults to false")
     func isExpandedProtectMyselfDefaultsToFalse() {
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: nil)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: nil)
 
         #expect(viewModel.isExpandedProtectMyself == false)
     }
 
     @Test("isExpandedProtectMyself mutation fires objectWillChange")
     func isExpandedProtectMyselfFiresObjectWillChange() {
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: nil)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: nil)
         var fired = false
         let cancellable = viewModel.objectWillChange.sink { _ in
             fired = true
@@ -93,9 +83,7 @@ struct FraudWarningViewModelTests {
 
     @Test("selectedIBAN defaults to nil")
     func selectedIBANDefaultsToNil() {
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: nil)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: nil)
 
         #expect(viewModel.selectedIBAN == nil)
     }
@@ -103,9 +91,7 @@ struct FraudWarningViewModelTests {
     @Test("didConfirmIBAN stores the choice and fires didProceed exactly once")
     func didConfirmIBANStoresAndFires() {
         let delegate = Mock()
-        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
-                                              printedIBAN: Self.printedIBAN,
-                                              delegate: delegate)
+        let viewModel = FraudWarningViewModel(content: Self.content, delegate: delegate)
         let choice: IBANChoice = .printed(iban: Self.printedIBAN)
 
         viewModel.didConfirmIBAN(choice)
