@@ -37,7 +37,7 @@ struct FraudWarningView: View {
                 warningIcon
                 titleAndSubtitle
                 protectMyselfExpandable
-                detectedIBANsSection
+                middleSection
                 buttonStack
             }
             .padding(Constants.outerPadding)
@@ -59,16 +59,32 @@ struct FraudWarningView: View {
     }
 
     private var titleAndSubtitle: some View {
-        VStack(spacing: Constants.titleToSubtitleSpacing) {
-            Text(Self.localized("ginibank.fraud.warning.title.qr.printed"))
+        let (titleKey, bodyKey) = Self.titleAndBodyKeys(for: viewModel.content)
+        return VStack(spacing: Constants.titleToSubtitleSpacing) {
+            Text(Self.localized(titleKey))
                 .font(.title2.weight(.bold))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
+                .accessibilityAddTraits(.isHeader)
 
-            Text(Self.localized("ginibank.fraud.warning.body.qr.printed"))
+            Text(Self.localized(bodyKey))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+        }
+    }
+
+    private static func titleAndBodyKeys(for content: FraudWarningContent) -> (String, String) {
+        switch content {
+        case .qrPrinted:
+            return ("ginibank.fraud.warning.title.qr.printed",
+                    "ginibank.fraud.warning.body.qr.printed")
+        case .country:
+            return ("ginibank.fraud.warning.title.country",
+                    "ginibank.fraud.warning.body.country")
+        case .combined:
+            return ("ginibank.fraud.warning.title.combined",
+                    "ginibank.fraud.warning.body.combined")
         }
     }
 
@@ -113,23 +129,126 @@ struct FraudWarningView: View {
         GiniBankConfiguration.shared.textStyleFonts[style] ?? UIFont.preferredFont(forTextStyle: style)
     }
 
-    private var detectedIBANsSection: some View {
+    @ViewBuilder
+    private var middleSection: some View {
+        switch viewModel.content {
+        case let .qrPrinted(qrIBAN, printedIBAN):
+            qrPrintedSection(qrIBAN: qrIBAN, printedIBAN: printedIBAN)
+        case let .country(senderName, senderCountry, iban):
+            countrySection(senderName: senderName,
+                           senderCountry: senderCountry,
+                           iban: iban)
+        case let .combined(senderName, senderCountry, qrIBAN, printedIBAN):
+            combinedSection(senderName: senderName,
+                            senderCountry: senderCountry,
+                            qrIBAN: qrIBAN,
+                            printedIBAN: printedIBAN)
+        }
+    }
+
+    private func qrPrintedSection(qrIBAN: String, printedIBAN: String) -> some View {
         VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
-            Text(Self.localized("ginibank.fraud.warning.ibans.header"))
-                .font(.headline)
-                .foregroundStyle(.primary)
+            detectedIBANsHeader
 
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
-                          content: viewModel.qrIBAN,
+                          content: qrIBAN,
                           variant: .informational,
                           giniColorScheme: UIColor.giniBankColorScheme())
 
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
-                          content: viewModel.printedIBAN,
+                          content: printedIBAN,
                           variant: .informational,
                           giniColorScheme: UIColor.giniBankColorScheme())
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func countrySection(senderName: String?,
+                                senderCountry: String,
+                                iban: String) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            senderOptionRow(senderName: senderName, senderCountry: senderCountry)
+            Divider()
+            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.document.label"),
+                          content: iban,
+                          footer: Self.countryHint(for: iban, senderCountry: senderCountry),
+                          variant: .informational,
+                          giniColorScheme: UIColor.giniBankColorScheme())
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func combinedSection(senderName: String?,
+                                 senderCountry: String,
+                                 qrIBAN: String,
+                                 printedIBAN: String) -> some View {
+        VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
+            senderCard(senderName: senderName, senderCountry: senderCountry)
+
+            detectedIBANsHeader
+
+            VStack(alignment: .leading, spacing: 0) {
+                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
+                              content: qrIBAN,
+                              footer: Self.countryHint(for: qrIBAN, senderCountry: senderCountry),
+                              variant: .informational,
+                              giniColorScheme: UIColor.giniBankColorScheme())
+                Divider()
+                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
+                              content: printedIBAN,
+                              footer: Self.countryHint(for: printedIBAN, senderCountry: senderCountry),
+                              variant: .informational,
+                              giniColorScheme: UIColor.giniBankColorScheme())
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var detectedIBANsHeader: some View {
+        Text(Self.localized("ginibank.fraud.warning.ibans.header"))
+            .font(.headline)
+            .foregroundStyle(.primary)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private func senderOptionRow(senderName: String?, senderCountry: String) -> some View {
+        GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
+                      content: Self.senderContent(senderName: senderName,
+                                                  senderCountry: senderCountry),
+                      variant: .informational,
+                      giniColorScheme: UIColor.giniBankColorScheme())
+    }
+
+    private func senderCard(senderName: String?, senderCountry: String) -> some View {
+        GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
+                      content: Self.senderContent(senderName: senderName,
+                                                  senderCountry: senderCountry),
+                      variant: .informational,
+                      giniColorScheme: UIColor.giniBankColorScheme(),
+                      background: Self.senderCardBackground)
+    }
+
+    private static let senderCardBackground: GiniColor = UIColor.giniBankColorScheme().placeholder.background
+
+    private static func senderContent(senderName: String?, senderCountry: String) -> String {
+        let country = FraudCountryName.display(code: senderCountry,
+                                               in: Self.countryNameLocale)
+        guard let name = senderName, !name.isEmpty else { return country }
+        return String(format: Self.localized("ginibank.fraud.warning.sender.with.country"),
+                      name, country)
+    }
+
+    private static func countryHint(for iban: String, senderCountry: String) -> String? {
+        guard let code = FraudWarningContent.hintCountryCode(for: iban,
+                                                             senderCountry: senderCountry) else {
+            return nil
+        }
+        let name = FraudCountryName.display(code: code, in: Self.countryNameLocale)
+        return String(format: Self.localized("ginibank.fraud.warning.row.country.hint"), name)
+    }
+
+    private static var countryNameLocale: Locale {
+        Locale(identifier: Self.localized("ginibank.fraud.country.name.locale"))
     }
 
     private var buttonStack: some View {
