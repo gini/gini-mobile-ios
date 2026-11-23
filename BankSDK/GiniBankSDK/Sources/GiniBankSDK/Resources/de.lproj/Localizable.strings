@@ -155,6 +155,8 @@
 // MARK: - Fraud prevention — expandable info card
 "ginibank.fraud.protect.title" = "Wie schütze ich mich?";
 "ginibank.fraud.protect.body" = "Dokumente werden manchmal verändert, um Zahlungen umzuleiten. Fragen Sie im Zweifel beim Absender nach, welche IBAN stimmt, über Kontaktdaten, die Sie bereits kennen.";
+"ginibank.fraud.protect.a11y.expanded" = "Erweitert";
+"ginibank.fraud.protect.a11y.collapsed" = "Reduziert";
 
 // MARK: - Fraud prevention — IBAN selection sheet
 "ginibank.fraud.iban.selection.title" = "Wählen Sie eine IBAN aus, um fortzufahren";

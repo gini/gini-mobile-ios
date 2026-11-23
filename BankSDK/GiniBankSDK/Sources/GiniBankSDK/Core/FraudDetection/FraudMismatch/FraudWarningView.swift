@@ -73,11 +73,47 @@ struct FraudWarningView: View {
     }
 
     private var protectMyselfExpandable: some View {
-        ExpandableInfoPlaceholder(title: Self.localized("ginibank.fraud.protect.title"),
-                                  message: Self.localized("ginibank.fraud.protect.body"),
-                                  icon: Image(systemName: "shield.lefthalf.filled"),
-                                  isExpanded: $viewModel.isExpandedProtectMyself)
-        /// Swap for `GiniExpandableInfoView` once that component lands.
+        let scheme = UIColor.giniBankColorScheme()
+        return GiniExpandableInfoView(viewModel: Self.makeExpandableViewModel(scheme: scheme),
+                                      isExpanded: $viewModel.isExpandedProtectMyself) {
+            Text(Self.localized("ginibank.fraud.protect.body"))
+                .font(Font(giniFont: Self.font(.footnote)))
+                .lineSpacing(Constants.expandableBodyLineSpacing)
+                .foregroundStyle(scheme.text.secondary.swiftUIColor())
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: Constants.expandableCornerRadius, style: .continuous))
+    }
+
+    private static func makeExpandableViewModel(scheme: GiniColorScheme) -> GiniExpandableInfoViewModel {
+        GiniExpandableInfoViewModel(icon: GiniImages.shield.image ?? UIImage(),
+                                    iconTint: scheme.text.accent,
+                                    chevronIcon: GiniImages.chevronDownThin.image ?? UIImage(),
+                                    title: localized("ginibank.fraud.protect.title"),
+                                    backgroundColor: expandableBackground(from: scheme),
+                                    colorScheme: scheme,
+                                    titleFont: font(.subheadline),
+                                    expandedAccessibilityValue: localized("ginibank.fraud.protect.a11y.expanded"),
+                                    collapsedAccessibilityValue: localized("ginibank.fraud.protect.a11y.collapsed"))
+    }
+
+    /**
+     Derives the expandable card surface from `scheme.text.accent`, applying the
+     tint alpha through a dynamic provider so iOS resolves the base color per
+     trait collection before compositing — dark mode gets a translucent accent
+     over the dark background instead of inheriting a baked light-mode tint.
+     */
+    private static func expandableBackground(from scheme: GiniColorScheme) -> GiniColor {
+        let base = scheme.text.accent.uiColor()
+        let tinted = UIColor { trait in
+            base.resolvedColor(with: trait).withAlphaComponent(Constants.expandableCardTintAlpha)
+        }
+        return GiniColor(lightModeColor: tinted, darkModeColor: tinted)
+    }
+
+    private static func font(_ style: UIFont.TextStyle) -> UIFont {
+        GiniBankConfiguration.shared.textStyleFonts[style] ?? UIFont.preferredFont(forTextStyle: style)
     }
 
     private var detectedIBANsSection: some View {
@@ -147,5 +183,11 @@ struct FraudWarningView: View {
         static let iconBackgroundCornerRadius: CGFloat = 14
         static let iconBackgroundOpacity: CGFloat = 0.15
         static let iconFontSize: CGFloat = 24
+
+        static let expandableCornerRadius: CGFloat = 12
+
+        static let expandableCardTintAlpha: CGFloat = 0.2
+
+        static let expandableBodyLineSpacing: CGFloat = 2
     }
 }
