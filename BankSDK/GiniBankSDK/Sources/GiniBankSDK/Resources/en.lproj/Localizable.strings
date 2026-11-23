@@ -179,3 +179,12 @@
 "ginibank.fraud.warning.row.printed.label" = "Printed on the document";
 "ginibank.fraud.warning.cta.cancel" = "Cancel transfer";
 "ginibank.fraud.warning.cta.proceed" = "Proceed anyway";
+
+// MARK: - Fraud warning screen — country variant
+"ginibank.fraud.warning.title.country" = "IBAN doesn’t match the sender’s country";
+"ginibank.fraud.warning.body.country" = "The country of the IBAN on the document is different from the sender’s country.";
+"ginibank.fraud.warning.sender.label" = "Sender";
+"ginibank.fraud.warning.sender.with.country" = "%@ · %@";
+"ginibank.fraud.warning.row.country.hint" = "From %@, not the sender’s country";
+"ginibank.fraud.warning.row.document.label" = "On the document";
+"ginibank.fraud.country.name.locale" = "en";
