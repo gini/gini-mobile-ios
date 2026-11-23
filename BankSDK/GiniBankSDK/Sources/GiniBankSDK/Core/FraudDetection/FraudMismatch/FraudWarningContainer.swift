@@ -23,22 +23,35 @@ struct FraudWarningContainer: View {
     var body: some View {
         FraudWarningView(viewModel: viewModel,
                          onCancel: viewModel.didTapCancel,
-                         onProceed: showPicker)
+                         onProceed: handleProceedTap)
             .giniBottomSheet(isPresented: $isShowingPicker,
                              onDismiss: resetPickerSelection) {
                 pickerSheet
             }
     }
 
+    @ViewBuilder
     private var pickerSheet: some View {
-        IBANSelectionSheet(viewModel: Self.makePickerViewModel(qrIBAN: viewModel.qrIBAN,
-                                                               printedIBAN: viewModel.printedIBAN),
-                           selection: $pickerSelection,
-                           onContinue: handleContinue)
+        if let ibans = viewModel.content.pickerIBANs {
+            IBANSelectionSheet(viewModel: Self.makePickerViewModel(qrIBAN: ibans.qrIBAN,
+                                                                   printedIBAN: ibans.printedIBAN),
+                               selection: $pickerSelection,
+                               onContinue: handleContinue)
+        }
     }
 
-    private func showPicker() {
-        isShowingPicker = true
+    /**
+     On Proceed: open the IBAN selection sheet when the current content has
+     an IBAN pair to pick from (`.qrPrinted` or `.combined`); otherwise fire
+     Proceed directly with no selection (`.country` has a single IBAN, so
+     there is nothing to choose).
+     */
+    private func handleProceedTap() {
+        if viewModel.content.presentsIBANPicker {
+            isShowingPicker = true
+        } else {
+            viewModel.didTapProceed()
+        }
     }
 
     private func resetPickerSelection() {
