@@ -170,3 +170,12 @@
 "ginibank.fraud.iban.selection.cta.continue" = "Continue";
 "ginibank.fraud.iban.selection.validation.select.iban" = "Select an IBAN to continue";
 "ginibank.fraud.iban.selection.a11y.action.spell.out.iban" = "Spell out IBAN";
+
+// MARK: - Fraud warning screen (PP-4080)
+"ginibank.fraud.warning.title.qr.printed" = "Different IBANs in this document";
+"ginibank.fraud.warning.body.qr.printed" = "The IBAN in the QR code doesn’t match the printed IBAN";
+"ginibank.fraud.warning.ibans.header" = "The following IBANs were detected";
+"ginibank.fraud.warning.row.qr.label" = "In the QR code";
+"ginibank.fraud.warning.row.printed.label" = "Printed on the document";
+"ginibank.fraud.warning.cta.cancel" = "Cancel transfer";
+"ginibank.fraud.warning.cta.proceed" = "Proceed anyway";

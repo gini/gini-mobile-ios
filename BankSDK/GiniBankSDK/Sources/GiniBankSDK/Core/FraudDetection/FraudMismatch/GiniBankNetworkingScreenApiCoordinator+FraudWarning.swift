@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniUtilites
 
@@ -12,34 +13,40 @@ import GiniUtilites
  Fraud warning presentation seam. Each of the four terminal delivery paths
  (`deliver(result:)`, `deliverWithReturnAssistant`, `deliverWithSkonto`,
  `deliverWeroResult`) wraps its terminal section in
- `presentFraudWarningIfEnabled(result:completion:)`.
+ `presentFraudWarningIfEnabled(result:extractionResult:completion:)`.
 
- Toggle off (default) → `completion` fires synchronously with the input
- result; delivery is unchanged. Toggle on → the warning presents as a
- large-detent bottom sheet; Cancel calls `giniCaptureDidCancelAnalysis` +
+ Short-circuits when any of these is true (completion fires synchronously
+ with the input result, delivery unchanged):
+ - `GiniBankConfiguration.fraudWarningEnabled == false` (integrator gate)
+ - backend's `ClientConfiguration.fraudSignalsEnabled` is `false` / `nil`
+ - `FraudWarningIBANResolver` returns `nil` (no `.qrPrintedIbanMismatch`
+   signal, or no printed-IBAN candidate to contrast against)
+
+ Otherwise the warning presents as a large-detent bottom sheet with the
+ resolved QR + printed IBANs; Cancel calls `giniCaptureDidCancelAnalysis` +
  resets `documentService`, Proceed invokes `completion` with the ORIGINAL
- result unchanged.
-
- IBANs shown are scaffold stubs; real extraction from
- `AnalysisResult.candidates` + chosen-IBAN propagation is deferred.
+ result unchanged (chosen-IBAN propagation is deferred to the sheet follow-up).
  */
 extension GiniBankNetworkingScreenApiCoordinator: FraudWarningCoordinatorDelegate {
 
-    private enum FraudWarningStubs {
-        static let qrIBAN = "PL12 1000 0111 0100 1000"
-        static let printedIBAN = "DE89 3704 0044 0532 0130 00"
-    }
-
     func presentFraudWarningIfEnabled(result: AnalysisResult,
+                                      extractionResult: ExtractionResult,
                                       completion: @escaping (AnalysisResult) -> Void) {
         guard giniBankConfiguration.fraudWarningEnabled else {
             completion(result)
             return
         }
+        let fraudSignalsEnabled = GiniBankUserDefaultsStorage.clientConfiguration?.fraudSignalsEnabled ?? false
+        guard let ibans = FraudWarningIBANResolver.resolve(result: result,
+                                                            extractionResult: extractionResult,
+                                                            fraudSignalsEnabled: fraudSignalsEnabled) else {
+            completion(result)
+            return
+        }
         /// Drop a second delivery that arrives while the first warning is still on screen; replacing the parked tuple would null the first coordinator's weak delegate and leave its buttons inert.
         guard fraudWarningPresentation == nil else { return }
-        let coordinator = FraudWarningCoordinator(qrIBAN: FraudWarningStubs.qrIBAN,
-                                                  printedIBAN: FraudWarningStubs.printedIBAN,
+        let coordinator = FraudWarningCoordinator(qrIBAN: ibans.qrIBAN,
+                                                  printedIBAN: ibans.printedIBAN,
                                                   delegate: self)
         fraudWarningPresentation = (coordinator: coordinator,
                                     result: result,

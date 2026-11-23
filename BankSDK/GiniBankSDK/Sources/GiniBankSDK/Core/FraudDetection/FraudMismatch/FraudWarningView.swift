@@ -60,12 +60,12 @@ struct FraudWarningView: View {
 
     private var titleAndSubtitle: some View {
         VStack(spacing: Constants.titleToSubtitleSpacing) {
-            Text("Different IBANs in this document")
+            Text(Self.localized("ginibank.fraud.warning.title.qr.printed"))
                 .font(.title2.weight(.bold))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
 
-            Text("The IBAN in the QR code doesn't match the printed IBAN")
+            Text(Self.localized("ginibank.fraud.warning.body.qr.printed"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -73,8 +73,8 @@ struct FraudWarningView: View {
     }
 
     private var protectMyselfExpandable: some View {
-        ExpandableInfoPlaceholder(title: "How do I protect myself?",
-                                  message: "Documents are sometimes changed to redirect payments. If you're unsure which IBAN is right, ask the sender using contact details you already know.",
+        ExpandableInfoPlaceholder(title: Self.localized("ginibank.fraud.protect.title"),
+                                  message: Self.localized("ginibank.fraud.protect.body"),
                                   icon: Image(systemName: "shield.lefthalf.filled"),
                                   isExpanded: $viewModel.isExpandedProtectMyself)
         /// Swap for `GiniExpandableInfoView` once that component lands.
@@ -82,16 +82,16 @@ struct FraudWarningView: View {
 
     private var detectedIBANsSection: some View {
         VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
-            Text("The following IBANs were detected")
+            Text(Self.localized("ginibank.fraud.warning.ibans.header"))
                 .font(.headline)
                 .foregroundStyle(.primary)
 
-            GiniOptionRow(title: Constants.qrRowTitle,
+            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
                           content: viewModel.qrIBAN,
                           variant: .informational,
                           giniColorScheme: UIColor.giniBankColorScheme())
 
-            GiniOptionRow(title: Constants.printedRowTitle,
+            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                           content: viewModel.printedIBAN,
                           variant: .informational,
                           giniColorScheme: UIColor.giniBankColorScheme())
@@ -102,7 +102,7 @@ struct FraudWarningView: View {
     private var buttonStack: some View {
         VStack(spacing: Constants.buttonSpacing) {
             Button(action: onCancel) {
-                Text("Cancel transfer")
+                Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
                     .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
                     .foregroundStyle(.white)
@@ -113,7 +113,7 @@ struct FraudWarningView: View {
             }
 
             Button(action: onProceed) {
-                Text("Proceed anyway")
+                Text(Self.localized("ginibank.fraud.warning.cta.proceed"))
                     .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
                     .foregroundStyle(Color.accentColor)
@@ -127,10 +127,11 @@ struct FraudWarningView: View {
         .padding(.top, Constants.buttonStackTopPadding)
     }
 
-    private enum Constants {
-        static let qrRowTitle = "In the QR code"
-        static let printedRowTitle = "Printed on the document"
+    private static func localized(_ key: String) -> String {
+        NSLocalizedStringPreferredGiniBankFormat(key, comment: "")
+    }
 
+    private enum Constants {
         static let sectionSpacing: CGFloat = 24
         static let outerPadding: CGFloat = 20
         static let titleToSubtitleSpacing: CGFloat = 8

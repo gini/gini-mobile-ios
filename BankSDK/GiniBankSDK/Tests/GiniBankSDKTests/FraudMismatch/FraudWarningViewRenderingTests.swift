@@ -17,7 +17,9 @@ struct FraudWarningViewRenderingTests {
 
     @Test("FraudWarningContainer renders without crashing")
     func containerRenders() {
-        let viewModel = FraudWarningViewModel(delegate: nil)
+        let viewModel = FraudWarningViewModel(qrIBAN: "PL12 1000 0111 0100 1000",
+                                              printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                              delegate: nil)
         let container = FraudWarningContainer(viewModel: viewModel)
 
         let hosting = UIHostingController(rootView: container)
