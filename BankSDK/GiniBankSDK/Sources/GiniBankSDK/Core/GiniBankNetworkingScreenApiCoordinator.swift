@@ -284,20 +284,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 self.presentFraudWarningIfEnabled(result: result,
                                                   extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
-                    #if DEBUG
-                    if IBANSelectionSheetPreview.isEnabled {
-                        self.presentIBANSelectionSheetPreview(for: result) { [weak self] in
-                            self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                            documentService.resetToInitialState()
-                        }
-                    } else {
-                        self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                        documentService.resetToInitialState()
-                    }
-                    #else
                     self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
                     documentService.resetToInitialState()
-                    #endif
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -583,15 +571,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         presentFraudWarningIfEnabled(result: analysisResult,
                                      extractionResult: extractionResult) { [weak self] analysisResult in
             guard let self = self else { return }
-            #if DEBUG
-            if IBANSelectionSheetPreview.isEnabled {
-                self.presentIBANSelectionSheetPreview(for: analysisResult) { [weak self] in
-                    self?.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-                    self?.documentService.resetToInitialState()
-                }
-                return
-            }
-            #endif
             self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
             self.documentService.resetToInitialState()
         }
@@ -730,15 +709,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.presentFraudWarningIfEnabled(result: result,
                                                   extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
-                    #if DEBUG
-                    if IBANSelectionSheetPreview.isEnabled {
-                        self.presentIBANSelectionSheetPreview(for: result, completion: finishDelivery)
-                    } else {
-                        finishDelivery()
-                    }
-                    #else
                     finishDelivery()
-                    #endif
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -1169,15 +1140,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.presentFraudWarningIfEnabled(result: result,
                                                   extractionResult: extractionResult) { [weak self] result in
                     guard let self = self else { return }
-                    #if DEBUG
-                    if IBANSelectionSheetPreview.isEnabled {
-                        self.presentIBANSelectionSheetPreview(for: result, completion: finishSkontoDelivery)
-                    } else {
-                        finishSkontoDelivery()
-                    }
-                    #else
                     finishSkontoDelivery()
-                    #endif
                 }
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()

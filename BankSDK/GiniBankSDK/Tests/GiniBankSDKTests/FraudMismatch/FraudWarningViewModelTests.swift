@@ -90,6 +90,30 @@ struct FraudWarningViewModelTests {
         #expect(viewModel.isExpandedProtectMyself == true)
         cancellable.cancel()
     }
+
+    @Test("selectedIBAN defaults to nil")
+    func selectedIBANDefaultsToNil() {
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: nil)
+
+        #expect(viewModel.selectedIBAN == nil)
+    }
+
+    @Test("didConfirmIBAN stores the choice and fires didProceed exactly once")
+    func didConfirmIBANStoresAndFires() {
+        let delegate = Mock()
+        let viewModel = FraudWarningViewModel(qrIBAN: Self.qrIBAN,
+                                              printedIBAN: Self.printedIBAN,
+                                              delegate: delegate)
+        let choice: IBANChoice = .printed(iban: Self.printedIBAN)
+
+        viewModel.didConfirmIBAN(choice)
+
+        #expect(viewModel.selectedIBAN == choice)
+        #expect(delegate.proceedCount == 1)
+        #expect(delegate.cancelCount == 0)
+    }
 }
 
 private final class Mock: FraudWarningViewModelDelegate {
