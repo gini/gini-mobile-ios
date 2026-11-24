@@ -101,7 +101,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                      borderColor: .clear,
                                                                      titleColor: .GiniBank.light1,
                                                                      shadowColor: .clear,
-                                                                     cornerRadius: 16,
+                                                                     cornerRadius: 14,
                                                                      borderWidth: 0,
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
@@ -116,8 +116,8 @@ public final class GiniBankConfiguration: NSObject {
                                                                                              dark: .GiniBank.light1)
                                                                         .uiColor(),
                                                                        shadowColor: .clear,
-                                                                       cornerRadius: 16,
-                                                                       borderWidth: 2,
+                                                                       cornerRadius: 14,
+                                                                       borderWidth: 1,
                                                                        shadowRadius: 14,
                                                                        withBlurEffect: true)
     /**

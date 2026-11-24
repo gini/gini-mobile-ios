@@ -17,7 +17,7 @@ import GiniUtilites
 final class FraudWarningBottomSheetController: UIHostingController<FraudWarningContainer>, GiniBottomSheetPresentable {
 
     var shouldShowDragIndicator: Bool { false }
-    var shouldShowInFullScreenInLandscapeMode: Bool { false }
+    var shouldShowInFullScreenInLandscapeMode: Bool { true }
 }
 
 /**

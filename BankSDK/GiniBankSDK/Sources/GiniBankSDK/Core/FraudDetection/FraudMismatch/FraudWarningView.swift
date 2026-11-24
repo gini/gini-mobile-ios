@@ -28,23 +28,46 @@ struct FraudWarningView: View {
 
     @ObservedObject var viewModel: FraudWarningViewModel
 
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
     var onCancel: () -> Void
     var onProceed: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
+        if verticalSizeClass == .compact {
+            // Landscape: everything scrolls together. When content overflows
+            // the sheet, the user scrolls down to reveal the buttons rather
+            // than having them pinned on top of the content.
             ScrollView {
-                VStack(spacing: Constants.sectionSpacing) {
-                    warningIcon
-                    titleAndSubtitle
-                    protectMyselfExpandable
-                    middleSection
+                VStack(spacing: Constants.majorSectionSpacing) {
+                    scrollContent
+                    buttonStack
                 }
                 .padding(Constants.outerPadding)
             }
-            buttonStack
-                .padding(.horizontal, Constants.outerPadding)
-                .padding(.bottom, Constants.outerPadding)
+        } else {
+            // Portrait: content scrolls, buttons pin to the bottom so the
+            // primary action stays reachable without scrolling.
+            VStack(spacing: 0) {
+                ScrollView {
+                    scrollContent
+                        .padding(Constants.outerPadding)
+                }
+                buttonStack
+                    .padding(.horizontal, Constants.outerPadding)
+                    .padding(.bottom, Constants.outerPadding)
+            }
+        }
+    }
+
+    private var scrollContent: some View {
+        VStack(spacing: Constants.majorSectionSpacing) {
+            VStack(spacing: Constants.topBlockSpacing) {
+                warningIcon
+                titleAndSubtitle
+                protectMyselfExpandable
+            }
+            middleSection
         }
     }
 
@@ -66,7 +89,7 @@ struct FraudWarningView: View {
                 .accessibilityAddTraits(.isHeader)
 
             Text(Self.localized(bodyKey))
-                .font(.subheadline)
+                .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
@@ -259,30 +282,42 @@ struct FraudWarningView: View {
         Locale(identifier: Self.localized("ginibank.fraud.country.name.locale"))
     }
 
+    /**
+     Cancel + Proceed stacked vertically in portrait, side-by-side in
+     landscape. Mirrors the UIKit `ButtonsView` axis flip and Android's
+     `GiniActionFooter` orientation split so fraud warning matches every
+     other secondary-button pair in the SDK.
+     */
+    @ViewBuilder
     private var buttonStack: some View {
-        VStack(spacing: Constants.buttonSpacing) {
-            Button(action: onCancel) {
-                Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
-                    .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
-                    .foregroundStyle(.white)
-                    .background(
-                        RoundedRectangle(cornerRadius: Constants.buttonCornerRadius)
-                            .fill(Color.accentColor)
-                    )
+        if verticalSizeClass == .compact {
+            HStack(spacing: Constants.buttonSpacing) {
+                cancelButton
+                proceedButton
             }
+        } else {
+            VStack(spacing: Constants.buttonSpacing) {
+                cancelButton
+                proceedButton
+            }
+        }
+    }
 
-            Button(action: onProceed) {
-                Text(Self.localized("ginibank.fraud.warning.cta.proceed"))
-                    .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
-                    .foregroundStyle(Color.accentColor)
-                    .background(
-                        RoundedRectangle(cornerRadius: Constants.buttonCornerRadius)
-                            .stroke(Color.gray.opacity(Constants.secondaryBorderOpacity),
-                                    lineWidth: Constants.secondaryBorderWidth)
-                    )
-            }
+    private var cancelButton: some View {
+        Button(action: onCancel) {
+            Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
+                .font(.body.weight(.semibold))
+                .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
+                .configure(with: GiniBankConfiguration.shared.primaryButtonConfiguration)
+        }
+    }
+
+    private var proceedButton: some View {
+        Button(action: onProceed) {
+            Text(Self.localized("ginibank.fraud.warning.cta.proceed"))
+                .font(.body.weight(.semibold))
+                .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
+                .configure(with: GiniBankConfiguration.shared.secondaryButtonConfiguration)
         }
     }
 
@@ -291,21 +326,15 @@ struct FraudWarningView: View {
     }
 
     private enum Constants {
-        static let sectionSpacing: CGFloat = 24
-        static let outerPadding: CGFloat = 20
-        static let titleToSubtitleSpacing: CGFloat = 8
+        static let majorSectionSpacing: CGFloat = 32
+        static let topBlockSpacing: CGFloat = 24
+        static let outerPadding: CGFloat = 24
+        static let titleToSubtitleSpacing: CGFloat = 12
         static let ibanSectionSpacing: CGFloat = 16
         static let buttonSpacing: CGFloat = 12
-        static let buttonStackTopPadding: CGFloat = 8
         static let buttonMinHeight: CGFloat = 50
-        static let buttonCornerRadius: CGFloat = 14
-        static let secondaryBorderOpacity: CGFloat = 0.3
-        static let secondaryBorderWidth: CGFloat = 1
 
-        static let iconBackgroundSize: CGFloat = 56
-        static let iconBackgroundCornerRadius: CGFloat = 14
-        static let iconBackgroundOpacity: CGFloat = 0.15
-        static let iconFontSize: CGFloat = 24
+        static let iconBackgroundSize: CGFloat = 50
 
         static let expandableCornerRadius: CGFloat = 12
 
