@@ -285,6 +285,112 @@ struct FraudWarningIBANResolverTests {
                                        printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
+    // MARK: - FraudWarningContent.presentsIBANPicker
+
+    @Test("presentsIBANPicker is true for qrPrinted")
+    func presentsIBANPickerTrueForQrPrinted() {
+        let content = FraudWarningContent.qrPrinted(qrIBAN: "PL12", printedIBAN: "DE89")
+
+        #expect(content.presentsIBANPicker == true)
+    }
+
+    @Test("presentsIBANPicker is true for combined")
+    func presentsIBANPickerTrueForCombined() {
+        let content = FraudWarningContent.combined(senderName: "Elektro Brandt GmbH",
+                                                   senderCountry: "DE",
+                                                   qrIBAN: "PL12",
+                                                   printedIBAN: "DE89")
+
+        #expect(content.presentsIBANPicker == true)
+    }
+
+    @Test("presentsIBANPicker is false for country")
+    func presentsIBANPickerFalseForCountry() {
+        let content = FraudWarningContent.country(senderName: nil,
+                                                  senderCountry: "DE",
+                                                  iban: "PL12")
+
+        #expect(content.presentsIBANPicker == false)
+    }
+
+    // MARK: - FraudWarningContent.pickerIBANs
+
+    @Test("pickerIBANs exposes both IBANs for qrPrinted")
+    func pickerIBANsExposedForQrPrinted() {
+        let content = FraudWarningContent.qrPrinted(qrIBAN: "PL12", printedIBAN: "DE89")
+
+        #expect(content.pickerIBANs?.qrIBAN == "PL12")
+        #expect(content.pickerIBANs?.printedIBAN == "DE89")
+    }
+
+    @Test("pickerIBANs exposes both IBANs for combined")
+    func pickerIBANsExposedForCombined() {
+        let content = FraudWarningContent.combined(senderName: nil,
+                                                   senderCountry: "DE",
+                                                   qrIBAN: "PL12",
+                                                   printedIBAN: "DE89")
+
+        #expect(content.pickerIBANs?.qrIBAN == "PL12")
+        #expect(content.pickerIBANs?.printedIBAN == "DE89")
+    }
+
+    @Test("pickerIBANs is nil for country")
+    func pickerIBANsNilForCountry() {
+        let content = FraudWarningContent.country(senderName: nil,
+                                                  senderCountry: "DE",
+                                                  iban: "PL12")
+
+        #expect(content.pickerIBANs == nil)
+    }
+
+    // MARK: - FraudWarningContent.hintCountryCode
+
+    @Test("hintCountryCode returns the prefix when it differs from the sender country")
+    func hintCountryCodeReturnsPrefixWhenDifferent() {
+        #expect(FraudWarningContent.hintCountryCode(for: "PL12 1000 0111 0100 1000",
+                                                    senderCountry: "DE") == "PL")
+    }
+
+    @Test("hintCountryCode returns nil when the prefix matches the sender country")
+    func hintCountryCodeNilWhenMatchesSender() {
+        #expect(FraudWarningContent.hintCountryCode(for: "de89 3704 0044 0532 0130 00",
+                                                    senderCountry: "DE") == nil)
+    }
+
+    @Test("hintCountryCode returns nil for IBANs shorter than two characters")
+    func hintCountryCodeNilForShortIBAN() {
+        #expect(FraudWarningContent.hintCountryCode(for: "D", senderCountry: "DE") == nil)
+    }
+
+    @Test("hintCountryCode returns nil when the prefix is not two letters")
+    func hintCountryCodeNilForNonLetterPrefix() {
+        #expect(FraudWarningContent.hintCountryCode(for: "12 3704 0044",
+                                                    senderCountry: "DE") == nil)
+    }
+
+    // MARK: - FraudCountryName.display
+
+    @Test("display returns the localized country name for a known code")
+    func displayReturnsLocalizedNameForKnownCode() {
+        let name = FraudCountryName.display(code: "DE", in: Locale(identifier: "en"))
+
+        #expect(name == "Germany")
+    }
+
+    @Test("display falls back to the raw uppercase code when the locale cannot resolve it")
+    func displayFallsBackToRawCodeWhenUnknown() {
+        let name = FraudCountryName.display(code: "ZZ", in: Locale(identifier: "en"))
+
+        #expect(name == "ZZ")
+    }
+
+    @Test("display uppercases the input before falling back")
+    func displayUppercasesInputBeforeFallback() {
+        let name = FraudCountryName.display(code: "zz", in: Locale(identifier: "en"))
+
+        #expect(name == "ZZ")
+    }
+
     // MARK: - Fixture helpers
 
     private static func signalGroup(code: String,
