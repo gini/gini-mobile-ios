@@ -33,40 +33,45 @@ struct FraudWarningView: View {
     var onProceed: () -> Void
 
     var body: some View {
-        if verticalSizeClass == .compact {
-            // Landscape: everything scrolls together. When content overflows
-            // the sheet, the user scrolls down to reveal the buttons rather
-            // than having them pinned on top of the content.
-            ScrollView {
-                VStack(spacing: Constants.majorSectionSpacing) {
-                    scrollContent
-                    buttonStack
-                }
-                .padding(Constants.outerPadding)
-            }
-        } else {
-            // Portrait: content scrolls, buttons pin to the bottom so the
-            // primary action stays reachable without scrolling.
-            VStack(spacing: 0) {
+        let scheme = UIColor.giniBankColorScheme()
+        let expandableVM = Self.makeExpandableViewModel(scheme: scheme)
+        return Group {
+            if verticalSizeClass == .compact {
+                // Landscape: everything scrolls together. When content overflows
+                // the sheet, the user scrolls down to reveal the buttons rather
+                // than having them pinned on top of the content.
                 ScrollView {
-                    scrollContent
-                        .padding(Constants.outerPadding)
+                    VStack(spacing: Constants.majorSectionSpacing) {
+                        scrollContent(scheme: scheme, expandableVM: expandableVM)
+                        buttonStack
+                    }
+                    .padding(Constants.outerPadding)
                 }
-                buttonStack
-                    .padding(.horizontal, Constants.outerPadding)
-                    .padding(.bottom, Constants.outerPadding)
+            } else {
+                // Portrait: content scrolls, buttons pin to the bottom so the
+                // primary action stays reachable without scrolling.
+                VStack(spacing: 0) {
+                    ScrollView {
+                        scrollContent(scheme: scheme, expandableVM: expandableVM)
+                            .padding(Constants.outerPadding)
+                    }
+                    buttonStack
+                        .padding(.horizontal, Constants.outerPadding)
+                        .padding(.bottom, Constants.outerPadding)
+                }
             }
         }
     }
 
-    private var scrollContent: some View {
+    private func scrollContent(scheme: GiniColorScheme,
+                               expandableVM: GiniExpandableInfoViewModel) -> some View {
         VStack(spacing: Constants.majorSectionSpacing) {
             VStack(spacing: Constants.topBlockSpacing) {
                 warningIcon
                 titleAndSubtitle
-                protectMyselfExpandable
+                protectMyselfExpandable(scheme: scheme, expandableVM: expandableVM)
             }
-            middleSection
+            middleSection(scheme: scheme)
         }
     }
 
@@ -108,10 +113,10 @@ struct FraudWarningView: View {
         }
     }
 
-    private var protectMyselfExpandable: some View {
-        let scheme = UIColor.giniBankColorScheme()
-        return GiniExpandableInfoView(viewModel: Self.makeExpandableViewModel(scheme: scheme),
-                                      isExpanded: $viewModel.isExpandedProtectMyself) {
+    private func protectMyselfExpandable(scheme: GiniColorScheme,
+                                         expandableVM: GiniExpandableInfoViewModel) -> some View {
+        GiniExpandableInfoView(viewModel: expandableVM,
+                               isExpanded: $viewModel.isExpandedProtectMyself) {
             Text(Self.localized("ginibank.fraud.protect.body"))
                 .font(Font(giniFont: Self.font(.footnote)))
                 .lineSpacing(Constants.expandableBodyLineSpacing)
@@ -153,51 +158,57 @@ struct FraudWarningView: View {
     }
 
     @ViewBuilder
-    private var middleSection: some View {
+    private func middleSection(scheme: GiniColorScheme) -> some View {
         switch viewModel.content {
         case let .qrPrinted(qrIBAN, printedIBAN):
-            qrPrintedSection(qrIBAN: qrIBAN, printedIBAN: printedIBAN)
+            qrPrintedSection(qrIBAN: qrIBAN, printedIBAN: printedIBAN, scheme: scheme)
         case let .country(senderName, senderCountry, iban):
             countrySection(senderName: senderName,
                            senderCountry: senderCountry,
-                           iban: iban)
+                           iban: iban,
+                           scheme: scheme)
         case let .combined(senderName, senderCountry, qrIBAN, printedIBAN):
             combinedSection(senderName: senderName,
                             senderCountry: senderCountry,
                             qrIBAN: qrIBAN,
-                            printedIBAN: printedIBAN)
+                            printedIBAN: printedIBAN,
+                            scheme: scheme)
         }
     }
 
     private func qrPrintedSection(qrIBAN: String,
-                                  printedIBAN: String) -> some View {
+                                  printedIBAN: String,
+                                  scheme: GiniColorScheme) -> some View {
         VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
             detectedIBANsHeader
 
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
                           content: qrIBAN,
                           variant: .informational,
-                          giniColorScheme: UIColor.giniBankColorScheme())
+                          giniColorScheme: scheme)
 
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                           content: printedIBAN,
                           variant: .informational,
-                          giniColorScheme: UIColor.giniBankColorScheme())
+                          giniColorScheme: scheme)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func countrySection(senderName: String?,
                                 senderCountry: String,
-                                iban: String) -> some View {
+                                iban: String,
+                                scheme: GiniColorScheme) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            senderOptionRow(senderName: senderName, senderCountry: senderCountry)
+            senderOptionRow(senderName: senderName,
+                            senderCountry: senderCountry,
+                            scheme: scheme)
             Divider()
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.document.label"),
                           content: iban,
                           footer: Self.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
-                          giniColorScheme: UIColor.giniBankColorScheme())
+                          giniColorScheme: scheme)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -205,9 +216,12 @@ struct FraudWarningView: View {
     private func combinedSection(senderName: String?,
                                  senderCountry: String,
                                  qrIBAN: String,
-                                 printedIBAN: String) -> some View {
+                                 printedIBAN: String,
+                                 scheme: GiniColorScheme) -> some View {
         VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
-            senderCard(senderName: senderName, senderCountry: senderCountry)
+            senderCard(senderName: senderName,
+                       senderCountry: senderCountry,
+                       scheme: scheme)
 
             detectedIBANsHeader
 
@@ -216,13 +230,13 @@ struct FraudWarningView: View {
                               content: qrIBAN,
                               footer: Self.countryHint(for: qrIBAN, senderCountry: senderCountry),
                               variant: .informational,
-                              giniColorScheme: UIColor.giniBankColorScheme())
+                              giniColorScheme: scheme)
                 Divider()
                 GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                               content: printedIBAN,
                               footer: Self.countryHint(for: printedIBAN, senderCountry: senderCountry),
                               variant: .informational,
-                              giniColorScheme: UIColor.giniBankColorScheme())
+                              giniColorScheme: scheme)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -236,26 +250,24 @@ struct FraudWarningView: View {
     }
 
     private func senderOptionRow(senderName: String?,
-                                 senderCountry: String) -> some View {
+                                 senderCountry: String,
+                                 scheme: GiniColorScheme) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
                       content: Self.senderContent(senderName: senderName,
                                                   senderCountry: senderCountry),
                       variant: .informational,
-                      giniColorScheme: UIColor.giniBankColorScheme())
+                      giniColorScheme: scheme)
     }
 
     private func senderCard(senderName: String?,
-                            senderCountry: String) -> some View {
+                            senderCountry: String,
+                            scheme: GiniColorScheme) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
                       content: Self.senderContent(senderName: senderName,
                                                   senderCountry: senderCountry),
                       variant: .informational,
-                      giniColorScheme: UIColor.giniBankColorScheme(),
-                      background: Self.senderCardBackground)
-    }
-
-    private static var senderCardBackground: GiniColor {
-        UIColor.giniBankColorScheme().placeholder.background
+                      giniColorScheme: scheme,
+                      background: scheme.placeholder.background)
     }
 
     private static func senderContent(senderName: String?,
@@ -287,18 +299,13 @@ struct FraudWarningView: View {
      `GiniActionFooter` orientation split so fraud warning matches every
      other secondary-button pair in the SDK.
      */
-    @ViewBuilder
     private var buttonStack: some View {
-        if verticalSizeClass == .compact {
-            HStack(spacing: Constants.buttonSpacing) {
-                cancelButton
-                proceedButton
-            }
-        } else {
-            VStack(spacing: Constants.buttonSpacing) {
-                cancelButton
-                proceedButton
-            }
+        let layout: AnyLayout = verticalSizeClass == .compact
+            ? AnyLayout(HStackLayout(spacing: Constants.buttonSpacing))
+            : AnyLayout(VStackLayout(spacing: Constants.buttonSpacing))
+        return layout {
+            cancelButton
+            proceedButton
         }
     }
 
