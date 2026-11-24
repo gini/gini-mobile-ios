@@ -504,7 +504,7 @@ struct PaymentReviewPaymentInformationView: View {
             .foregroundStyle(Color(selectedPaymentProviderTextColor))
             .background(Color(selectedPaymentProviderBackgroundColor))
             .clipShape(.rect(cornerRadius: viewModel.model.primaryButtonConfiguration.cornerRadius))
-            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont))
+            .font(Font(viewModel.model.primaryButtonConfiguration.titleFont ?? ButtonConfiguration.defaultTitleFont))
             .frame(minHeight: Constants.payButtonHeight)
             .accessibilityLabel(viewModel.model.strings.payInvoiceLabelText)
             .accessibilityHint(viewModelStrings.bankSelectionAccessibility.payInvoiceHint)

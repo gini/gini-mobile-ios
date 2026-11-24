@@ -98,24 +98,24 @@ public final class GiniHealthConfiguration: NSObject {
     public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.accent1.uiColor(),
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
-                                                                     titleFont: font(for: .button),
                                                                      shadowColor: .clear,
                                                                      cornerRadius: 12,
                                                                      borderWidth: 0,
                                                                      shadowRadius: 0,
-                                                                     withBlurEffect: false)
+                                                                     withBlurEffect: false,
+                                                                     titleFont: font(for: .button))
     /**
      A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View.
      */
     public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                        borderColor: GiniColor.standard5.uiColor(),
                                                                        titleColor: GiniColor.standard1.uiColor(),
-                                                                       titleFont: font(for: .input),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 12,
                                                                        borderWidth: 1,
                                                                        shadowRadius: 0,
-                                                                       withBlurEffect: true)
+                                                                       withBlurEffect: true,
+                                                                       titleFont: font(for: .input))
 
     // MARK: - Shared properties
 
