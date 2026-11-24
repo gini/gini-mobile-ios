@@ -194,16 +194,20 @@ struct IBANSelectionSheet: View {
         case .confirm(let choice):
             onContinue(choice)
         case .revealError:
-            let apply = { showValidationError = true }
-            if reduceMotion {
-                apply()
-            } else {
-                withAnimation(.easeInOut(duration: Constants.animationDuration)) { apply() }
-            }
-            validationErrorFocused = true
-            UIAccessibility.post(notification: .announcement,
-                                 argument: viewModel.validationErrorMessage)
+            revealValidationError()
         }
+    }
+
+    private func revealValidationError() {
+        let apply = { showValidationError = true }
+        if reduceMotion {
+            apply()
+        } else {
+            withAnimation(.easeInOut(duration: Constants.animationDuration)) { apply() }
+        }
+        validationErrorFocused = true
+        UIAccessibility.post(notification: .announcement,
+                             argument: viewModel.validationErrorMessage)
     }
 
     // MARK: - Styling helpers
