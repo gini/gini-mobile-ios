@@ -14,6 +14,7 @@ set -e
 # from BS_PROJECT — e.g. smoke_journeys_4.5.0):
 #   smoke_journeys_<v> — curated smoke journeys (smoke tests.csv mapping)
 #   smoke_screens_<v>  — Main/Error/Capture/CameraAccess/Review screen checks
+#   onboarding_<v>     — Xray "Onboarding Screens" folder (GiniOnboardingScreenUITest)
 #   cx_normal_<v>     — CX capture flows, feature flags, product tag, onboarding,
 #                       camera, transaction summary (camera injection enabled)
 #   cx_multipage_<v>  — CX multi-page invoice (disabled — see below)
@@ -188,6 +189,13 @@ trigger_scenario() {
         selection_field="\"only-testing\": $only_testing,"
     fi
 
+    ## Pass "-" as UPLOAD_MEDIA_JSON to omit the uploadMedia field — for scenarios
+    ## that need no media files.
+    local media_field=""
+    if [ "$upload_media" != "-" ]; then
+        media_field="\"uploadMedia\": $upload_media,"
+    fi
+
     ## Sessions this build consumes: shards use deviceSelection "any" (one session per
     ## shard); unsharded builds run once per device.
     local weight
@@ -241,7 +249,7 @@ trigger_scenario() {
             \"singleRunnerInvocation\": \"$single_runner\",
             $LANGUAGE_FIELD
             $extra_fields
-            \"uploadMedia\": $upload_media,
+            $media_field
             \"resignApp\": \"true\"
           }")
         build_id=$(echo "$response" | python3 -c "import sys,json; print(json.load(sys.stdin).get('build_id',''))" 2>/dev/null || true)
@@ -297,6 +305,12 @@ trigger_scenario "smoke_screens_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests",
   "GiniBankSDKExampleUITests/GiniReviewScreenUITests"
 ]' "[\"$TEST_IMAGE_PNG_URL\", \"$TEST_IMAGE_PDF_URL\"]"
+
+# Xray "Onboarding Screens" folder (PP-3884) — no media; the whole class, see
+# bs_run_onboarding.sh. testOnboardingGetStartedButton also runs in smoke_journeys.
+trigger_scenario "onboarding_${RELEASE_VERSION}" '[
+  "GiniBankSDKExampleUITests/GiniOnboardingScreenUITest"
+]' "-"
 
 trigger_scenario "cx_normal_${RELEASE_VERSION}" '[
   "GiniBankSDKExampleUITests/GiniCaptureFlowUITestsUsingBS",
