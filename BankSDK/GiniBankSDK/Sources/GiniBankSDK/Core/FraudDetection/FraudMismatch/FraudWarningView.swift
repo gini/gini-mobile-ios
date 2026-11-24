@@ -146,7 +146,8 @@ struct FraudWarningView: View {
         }
     }
 
-    private func qrPrintedSection(qrIBAN: String, printedIBAN: String) -> some View {
+    private func qrPrintedSection(qrIBAN: String,
+                                  printedIBAN: String) -> some View {
         VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
             detectedIBANsHeader
 
@@ -211,7 +212,8 @@ struct FraudWarningView: View {
             .accessibilityAddTraits(.isHeader)
     }
 
-    private func senderOptionRow(senderName: String?, senderCountry: String) -> some View {
+    private func senderOptionRow(senderName: String?,
+                                 senderCountry: String) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
                       content: Self.senderContent(senderName: senderName,
                                                   senderCountry: senderCountry),
@@ -219,7 +221,8 @@ struct FraudWarningView: View {
                       giniColorScheme: UIColor.giniBankColorScheme())
     }
 
-    private func senderCard(senderName: String?, senderCountry: String) -> some View {
+    private func senderCard(senderName: String?,
+                            senderCountry: String) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
                       content: Self.senderContent(senderName: senderName,
                                                   senderCountry: senderCountry),
@@ -228,9 +231,12 @@ struct FraudWarningView: View {
                       background: Self.senderCardBackground)
     }
 
-    private static let senderCardBackground: GiniColor = UIColor.giniBankColorScheme().placeholder.background
+    private static var senderCardBackground: GiniColor {
+        UIColor.giniBankColorScheme().placeholder.background
+    }
 
-    private static func senderContent(senderName: String?, senderCountry: String) -> String {
+    private static func senderContent(senderName: String?,
+                                      senderCountry: String) -> String {
         let country = FraudCountryName.display(code: senderCountry,
                                                in: Self.countryNameLocale)
         guard let name = senderName, !name.isEmpty else { return country }
@@ -238,7 +244,8 @@ struct FraudWarningView: View {
                       name, country)
     }
 
-    private static func countryHint(for iban: String, senderCountry: String) -> String? {
+    private static func countryHint(for iban: String,
+                                    senderCountry: String) -> String? {
         guard let code = FraudWarningContent.hintCountryCode(for: iban,
                                                              senderCountry: senderCountry) else {
             return nil
