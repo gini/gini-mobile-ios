@@ -377,18 +377,18 @@ struct FraudWarningIBANResolverTests {
         #expect(name == "Germany")
     }
 
-    @Test("display falls back to the raw uppercase code when the locale cannot resolve it")
-    func displayFallsBackToRawCodeWhenUnknown() {
-        let name = FraudCountryName.display(code: "ZZ", in: Locale(identifier: "en"))
+    @Test("display uppercases a lowercase input before resolving the region")
+    func displayUppercasesLowercaseInput() {
+        let name = FraudCountryName.display(code: "de", in: Locale(identifier: "en"))
 
-        #expect(name == "ZZ")
+        #expect(name == "Germany")
     }
 
-    @Test("display uppercases the input before falling back")
-    func displayUppercasesInputBeforeFallback() {
-        let name = FraudCountryName.display(code: "zz", in: Locale(identifier: "en"))
+    @Test("display falls back to the raw code when the locale returns an empty name")
+    func displayFallsBackWhenLocaleReturnsEmpty() {
+        let name = FraudCountryName.display(code: "", in: Locale(identifier: "en"))
 
-        #expect(name == "ZZ")
+        #expect(name == "")
     }
 
     // MARK: - Fixture helpers
