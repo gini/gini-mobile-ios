@@ -134,6 +134,7 @@ struct GiniOptionRowPreviewCatalog: View {
             text: .init(primary: labelPair,
                         secondary: secondary,
                         tertiary: tertiary,
+                        label: pair(.secondaryLabel),
                         accent: accent,
                         success: pair(.systemGreen),
                         error: error),

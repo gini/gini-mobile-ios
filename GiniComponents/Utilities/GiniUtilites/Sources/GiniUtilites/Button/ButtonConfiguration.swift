@@ -26,21 +26,17 @@ public struct ButtonConfiguration {
     public let withBlurEffect: Bool
 
     /**
-     Optional title font. When non-`nil`, callers (UIKit via
-     `titleLabel.font`, SwiftUI via `View.configure(with:)`) apply it as the
-     button's label font. When `nil`, the caller supplies the font itself —
-     the CaptureSDK / BankSDK side historically does this via
-     `textStyleFonts[.bodyBold]` outside the config.
-
-     Use `ButtonConfiguration.defaultTitleFont` as the fallback when
-     unwrapping from a call site that always expects a non-nil font.
+     Optional title font. UIKit buttons apply it via `titleLabel.font`,
+     SwiftUI buttons via `GiniButtonStyle`. `nil` means the caller supplies
+     the font separately; use `defaultTitleFont` when a concrete `UIFont`
+     is required.
      */
     public let titleFont: UIFont?
 
     /**
-     Dynamic-Type-aware fallback font for call sites that need a concrete
-     `UIFont` when `titleFont` is `nil`. Resolves to `.body` so the button
-     label scales with Dynamic Type when no explicit font is configured.
+     Fallback `UIFont` for call sites that need a non-nil font when
+     `titleFont` is `nil`. Resolves to `.body` so the label scales with
+     Dynamic Type.
      */
     public static var defaultTitleFont: UIFont {
         UIFont.preferredFont(forTextStyle: .body)
@@ -113,7 +109,7 @@ public struct GiniButtonStyle: ButtonStyle {
             .foregroundStyle(Color(uiColor: self.configuration.titleColor))
             .background {
                 if self.configuration.withBlurEffect {
-                    shape.fill(.clear)
+                    BlurAwareBackground(shape: shape)
                 } else {
                     shape.fill(Color(uiColor: self.configuration.backgroundColor))
                 }
@@ -126,4 +122,23 @@ public struct GiniButtonStyle: ButtonStyle {
     }
 
     private static let pressedOpacity: Double = 0.75
+}
+
+/**
+ Blur-path background: fully clear in light mode so the Liquid Glass
+ flat look matches Figma, `.ultraThinMaterial` in dark mode so the
+ button stays visible against the dark sheet (mirrors UIKit's blur
+ fallback).
+ */
+private struct BlurAwareBackground<Shape: SwiftUI.Shape>: View {
+    @Environment(\.colorScheme) private var colorScheme
+    let shape: Shape
+
+    var body: some View {
+        if colorScheme == .dark {
+            shape.fill(.ultraThinMaterial)
+        } else {
+            shape.fill(.clear)
+        }
+    }
 }

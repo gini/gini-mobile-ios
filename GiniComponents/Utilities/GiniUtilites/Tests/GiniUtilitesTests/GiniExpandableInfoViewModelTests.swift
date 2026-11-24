@@ -79,6 +79,7 @@ struct GiniExpandableInfoViewModelTests {
                         text: .init(primary: sentinel,
                                     secondary: sentinel,
                                     tertiary: sentinel,
+                                    label: sentinel,
                                     accent: sentinel,
                                     success: sentinel,
                                     error: sentinel),
