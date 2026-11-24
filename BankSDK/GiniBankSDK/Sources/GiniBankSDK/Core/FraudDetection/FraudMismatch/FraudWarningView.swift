@@ -324,8 +324,8 @@ struct FraudWarningView: View {
             Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
-                .configure(with: GiniBankConfiguration.shared.primaryButtonConfiguration)
         }
+        .buttonStyle(GiniButtonStyle(GiniBankConfiguration.shared.primaryButtonConfiguration))
     }
 
     private var proceedButton: some View {
@@ -333,8 +333,8 @@ struct FraudWarningView: View {
             Text(Self.localized("ginibank.fraud.warning.cta.proceed"))
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
-                .configure(with: GiniBankConfiguration.shared.secondaryButtonConfiguration)
         }
+        .buttonStyle(GiniButtonStyle(GiniBankConfiguration.shared.secondaryButtonConfiguration))
     }
 
     private static func localized(_ key: String) -> String {

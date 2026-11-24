@@ -78,42 +78,52 @@ public struct ButtonConfiguration {
     }
 }
 
-public extension View {
-    /**
-     Applies the given `ButtonConfiguration` to a SwiftUI view — the SwiftUI
-     mirror of the UIKit `configure(with:)` helpers in GiniCaptureSDK.
+/**
+ SwiftUI `ButtonStyle` that paints a Button using a `ButtonConfiguration`
+ — the SwiftUI counterpart to GiniCaptureSDK's UIKit `configure(with:)`
+ helpers. Scoped to Button (via `.buttonStyle(...)`) so it does not add a
+ universal modifier to every SwiftUI `View`, mirroring the UIKit side
+ which extends only the specific `GiniCaptureButton` / `BottomLabelButton`
+ classes instead of `UIView`.
 
-     Applies, in order: the configured `titleFont` (when non-`nil`) via
-     `font`; `titleColor` via `foregroundStyle`; a background
-     `RoundedRectangle` of `configuration.cornerRadius` that is either
-     filled with `configuration.backgroundColor` or rendered transparent
-     when `configuration.withBlurEffect` is `true` — mirroring UIKit's
-     `addBlurEffect(cornerRadius:)` which also discards `backgroundColor`
-     and lets the enclosing Liquid Glass surface show through; a border
-     drawn with `strokeBorder` so the line sits inside the shape instead
-     of straddling the edge; and a shadow using `configuration.shadowColor`
-     / `shadowRadius`.
-     */
-    func configure(with configuration: ButtonConfiguration) -> some View {
-        let shape = RoundedRectangle(cornerRadius: configuration.cornerRadius)
-        return self
-            .font(configuration.titleFont.map { Font(giniFont: $0) })
-            .foregroundStyle(Color(uiColor: configuration.titleColor))
+ Applies, in order: the configured `titleFont` (when non-`nil`) via
+ `font`; `titleColor` via `foregroundStyle`; a background
+ `RoundedRectangle` of `configuration.cornerRadius` that is either filled
+ with `configuration.backgroundColor` or rendered transparent when
+ `configuration.withBlurEffect` is `true` — mirroring UIKit's
+ `addBlurEffect(cornerRadius:)` which also discards `backgroundColor` and
+ lets the enclosing Liquid Glass surface show through; a border drawn
+ with `strokeBorder` so the line sits inside the shape instead of
+ straddling the edge; a shadow using `configuration.shadowColor` /
+ `shadowRadius`; and finally an `opacity` dip while the button is
+ pressed, matching the native button feedback UIKit provides via
+ `UIControl.State.highlighted`.
+ */
+public struct GiniButtonStyle: ButtonStyle {
+    public let configuration: ButtonConfiguration
+
+    public init(_ configuration: ButtonConfiguration) {
+        self.configuration = configuration
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
+        let shape = RoundedRectangle(cornerRadius: self.configuration.cornerRadius)
+        return configuration.label
+            .font(self.configuration.titleFont.map { Font(giniFont: $0) })
+            .foregroundStyle(Color(uiColor: self.configuration.titleColor))
             .background {
-                if configuration.withBlurEffect {
-                    // Mirror UIKit's `addBlurEffect(cornerRadius:)` which
-                    // discards `backgroundColor` before inserting the blur.
-                    // SwiftUI renders the button clean/transparent so the
-                    // enclosing surface shows through, matching the Liquid
-                    // Glass design direction for outlined buttons.
+                if self.configuration.withBlurEffect {
                     shape.fill(.clear)
                 } else {
-                    shape.fill(Color(uiColor: configuration.backgroundColor))
+                    shape.fill(Color(uiColor: self.configuration.backgroundColor))
                 }
             }
-            .overlay(shape.strokeBorder(Color(uiColor: configuration.borderColor),
-                                        lineWidth: configuration.borderWidth))
-            .shadow(color: Color(uiColor: configuration.shadowColor),
-                    radius: configuration.shadowRadius)
+            .overlay(shape.strokeBorder(Color(uiColor: self.configuration.borderColor),
+                                        lineWidth: self.configuration.borderWidth))
+            .shadow(color: Color(uiColor: self.configuration.shadowColor),
+                    radius: self.configuration.shadowRadius)
+            .opacity(configuration.isPressed ? Self.pressedOpacity : 1)
     }
+
+    private static let pressedOpacity: Double = 0.75
 }
