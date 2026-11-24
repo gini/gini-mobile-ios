@@ -20,6 +20,7 @@ The original monolithic script has been split into scenario-focused scripts that
 | `bs_run_ingredient_brand.sh` | `IngredientBrandFlowUITests` — Analysis-screen Powered-by-Gini badge + branded loading indicator flag matrix (mock backend) | `test_image.pdf` |
 | `bs_run_smoke_journeys.sh` | curated journey smoke methods: onboarding walk, `GiniSmokeUITests` (SEPA PDF/picture extractions, No-Results), RA full flow + edit name, Skonto flow + toggle | `sepa_invoice.pdf`, `sepa_invoice.png`, `no_results_invoice.pdf`, `return_asistant.pdf`, `skonto_past.pdf` |
 | `bs_run_smoke_screens.sh` | per-screen smoke checks: `GiniMainScreenUITests`, `GiniErrorScreenUITests`, `GiniCaptureScreenUITests`, `GiniCameraAccessScreenUITests`, `GiniReviewScreenUITests` | `test_image.png`, `test_image.pdf` |
+| `bs_run_onboarding.sh` | `GiniOnboardingScreenUITest` — the Xray "Onboarding Screens" folder (PP-3410…PP-3414): page walk, swipe back and forth, Skip on pages 1–3 | — (none) |
 | `bs_run_all.sh` | every scenario above — builds/uploads once, triggers one build per scenario, named `<scenario>_<release>` (e.g. `smoke_journeys_4.5.0`, version taken from `BS_PROJECT`) | all media files |
 | `bs_shared.sh` | — shared library, sourced by all `bs_run_*.sh` scripts | — |
 
@@ -79,6 +80,9 @@ Run from the `Scripts/` directory:
 
 # Ingredient Brand — Powered-by-Gini badge + branded loading indicator (mock backend)
 ./bs_run_ingredient_brand.sh
+
+# Onboarding — Xray "Onboarding Screens" folder; add BS_LANGUAGE="de" for the German titles
+./bs_run_onboarding.sh
 ```
 
 > ⚠️ `bs_run_credit_note.sh` needs `credit_note.pdf` and `credit_note.png` in
@@ -114,7 +118,7 @@ Three BrowserStack facts drive the strategy:
 
 1. **Queued jobs are canceled after 15 minutes of waiting.** Our scenario builds run 10–40 minutes, so any build waiting in the queue behind them dies. Never fire more sessions than licenses — `bs_run_all.sh` enforces this by polling its own builds and waiting for free licenses before each trigger (license-aware pacing).
 2. **`singleRunnerInvocation: "true"`** (set in every script) runs all tests of a session in one runner process instead of one per test — saves ~30–60 s per test. Trade-off: the retry-failed-tests API doesn't work in this mode.
-3. **Sharding gives no speedup on the current plan.** With 2 licenses and mandatory 2-device coverage there is no headroom: `deviceSelection: "any"` runs each shard on one random device (coverage lost), `"all"` needs shards × 2 licenses (overflow queues and dies). Sharding becomes useful once **licenses ≥ shards × devices** — i.e. a plan upgrade to 4+ parallels unlocks 2-way sharding. `trigger_scenario` in `bs_run_all.sh` already supports it (pass `"-"` as the test filter, a `shards` block as the 4th argument, shard count as the 5th).
+3. **Sharding gives no speedup on the current plan.** With 2 licenses and mandatory 2-device coverage there is no headroom: `deviceSelection: "any"` runs each shard on one random device (coverage lost), `"all"` needs shards × 2 licenses (overflow queues and dies). Sharding becomes useful once **licenses ≥ shards × devices** — i.e. a plan upgrade to 4+ parallels unlocks 2-way sharding. `trigger_scenario` in `bs_run_all.sh` already supports it (pass `"-"` as the test filter, a `shards` block as the 4th argument, shard count as the 5th). Pass `"-"` as the 3rd argument (media) to leave out `uploadMedia` for a scenario that needs no files, as `onboarding_<v>` does.
 
 ### Scaling as the suite grows
 
