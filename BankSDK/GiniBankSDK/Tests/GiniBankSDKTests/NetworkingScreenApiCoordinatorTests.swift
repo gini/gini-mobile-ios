@@ -747,8 +747,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testFraudWarningCoordinatorDidProceedClearsPendingState() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
         let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
-        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
                                                        delegate: nil)
         coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
                                                  result: analysisResult,
@@ -764,8 +764,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testFraudWarningCoordinatorDidCancelClearsPendingState() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
         let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
-        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
                                                        delegate: nil)
         coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
                                                  result: analysisResult,
@@ -780,8 +780,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     @MainActor
     func testFraudWarningCoordinatorDidProceedWithNoPendingIsNoOp() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
-        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
                                                        delegate: nil)
         // No pending delivery set — the guard early-returns, nothing to assert beyond non-crash.
         coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
@@ -794,8 +794,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testFraudWarningCoordinatorDidProceedDeliversOriginalResultAfterDismiss() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
         let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
-        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
                                                        delegate: nil)
         let completionExpectation = expectation(description: "completion fires after dismiss")
         var deliveredResult: AnalysisResult?
@@ -819,8 +819,8 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     func testFraudWarningCoordinatorDidCancelFiresCaptureCancelAfterDismiss() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
         let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
-        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
                                                        delegate: nil)
         coordinator.fraudWarningPresentation = (
             coordinator: sheetCoordinator,
