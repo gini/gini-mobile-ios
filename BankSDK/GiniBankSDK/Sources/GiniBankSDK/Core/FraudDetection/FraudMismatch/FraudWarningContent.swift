@@ -77,7 +77,8 @@ internal enum FraudWarningContent: Equatable {
      `senderCountry`, otherwise `nil`. Returns `nil` for IBANs whose first
      two characters are not two letters (defensive — malformed input).
      */
-    static func hintCountryCode(for iban: String, senderCountry: String) -> String? {
+    static func hintCountryCode(for iban: String,
+                                senderCountry: String) -> String? {
         let normalized = iban.filter { !$0.isWhitespace }.uppercased()
         guard normalized.count >= 2 else { return nil }
         let prefix = String(normalized.prefix(2))
@@ -100,7 +101,8 @@ internal enum FraudCountryName {
      code when the system returns nothing, a blank value, or echoes the
      code itself.
      */
-    static func display(code: String, in locale: Locale) -> String {
+    static func display(code: String,
+                        in locale: Locale) -> String {
         let normalized = code.uppercased()
         guard let name = locale.localizedString(forRegionCode: normalized)?
                 .trimmingCharacters(in: .whitespacesAndNewlines),

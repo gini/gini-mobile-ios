@@ -56,8 +56,8 @@ internal enum FraudWarningIBANResolver {
         let senderCountry = countrySignal?.creditorCountry?.uppercased()
         let senderName = Self.paymentRecipient(from: result)
 
-        // QR signal only produces a renderable row when there is a second
-        // printed IBAN to contrast against; mirror the pre-PP-4090 behaviour.
+        /// QR signal only produces a renderable row when there is a second
+        /// printed IBAN to contrast against.
         let printedIBAN = qrSignal.flatMap { Self.firstPrintedIBAN(from: result,
                                                                    excluding: $0.iban) }
 
