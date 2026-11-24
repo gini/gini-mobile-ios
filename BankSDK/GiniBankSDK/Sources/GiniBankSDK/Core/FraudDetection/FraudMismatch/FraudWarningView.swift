@@ -89,42 +89,45 @@ struct FraudWarningView: View {
     }
 
     private var protectMyselfExpandable: some View {
-        GiniExpandableInfoView(viewModel: Self.makeExpandableViewModel(),
-                               isExpanded: $viewModel.isExpandedProtectMyself) {
+        let scheme = UIColor.giniBankColorScheme()
+        return GiniExpandableInfoView(viewModel: Self.makeExpandableViewModel(scheme: scheme),
+                                      isExpanded: $viewModel.isExpandedProtectMyself) {
             Text(Self.localized("ginibank.fraud.protect.body"))
                 .font(Font(giniFont: Self.font(.footnote)))
                 .lineSpacing(Constants.expandableBodyLineSpacing)
-                .foregroundStyle(UIColor.giniBankColorScheme().text.secondary.swiftUIColor())
+                .foregroundStyle(scheme.text.secondary.swiftUIColor())
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .clipShape(RoundedRectangle(cornerRadius: Constants.expandableCornerRadius, style: .continuous))
     }
 
-    /**
-     Builds the `GiniExpandableInfoView` display configuration from Bank
-     SDK design-system tokens. `static` so the view does not need a stored
-     property — the config is a value type and cheap to recompute on each
-     body evaluation.
-     */
-    private static func makeExpandableViewModel() -> GiniExpandableInfoViewModel {
+    private static func makeExpandableViewModel(scheme: GiniColorScheme) -> GiniExpandableInfoViewModel {
         GiniExpandableInfoViewModel(icon: GiniImages.shield.image ?? UIImage(),
-                                    iconTint: pair(.GiniBank.accent1),
+                                    iconTint: scheme.text.accent,
                                     chevronIcon: GiniImages.chevronDownThin.image ?? UIImage(),
                                     title: localized("ginibank.fraud.protect.title"),
-                                    backgroundColor: pair(UIColor.GiniBank.accent5.withAlphaComponent(Constants.expandableCardTintAlpha)),
-                                    colorScheme: UIColor.giniBankColorScheme(),
+                                    backgroundColor: expandableBackground(from: scheme),
+                                    colorScheme: scheme,
                                     titleFont: font(.subheadline),
-                                    expandedAccessibilityValue: "Expanded",
-                                    collapsedAccessibilityValue: "Collapsed")
+                                    expandedAccessibilityValue: localized("ginibank.fraud.protect.a11y.expanded"),
+                                    collapsedAccessibilityValue: localized("ginibank.fraud.protect.a11y.collapsed"))
     }
 
-    /** Wraps a dynamic `UIColor` as a `GiniColor` (both arms share the same value). */
-    private static func pair(_ color: UIColor) -> GiniColor {
-        GiniColor(lightModeColor: color, darkModeColor: color)
+    /**
+     Derives the expandable card surface from `scheme.text.accent`, applying the
+     tint alpha through a dynamic provider so iOS resolves the base color per
+     trait collection before compositing — dark mode gets a translucent accent
+     over the dark background instead of inheriting a baked light-mode tint.
+     */
+    private static func expandableBackground(from scheme: GiniColorScheme) -> GiniColor {
+        let base = scheme.text.accent.uiColor()
+        let tinted = UIColor { trait in
+            base.resolvedColor(with: trait).withAlphaComponent(Constants.expandableCardTintAlpha)
+        }
+        return GiniColor(lightModeColor: tinted, darkModeColor: tinted)
     }
 
-    /** Resolves a Bank configuration font with a system fallback for the given text style. */
     private static func font(_ style: UIFont.TextStyle) -> UIFont {
         GiniBankConfiguration.shared.textStyleFonts[style] ?? UIFont.preferredFont(forTextStyle: style)
     }
@@ -309,14 +312,8 @@ struct FraudWarningView: View {
 
         static let expandableCornerRadius: CGFloat = 12
 
-        /**
-         Opacity applied to `UIColor.GiniBank.accent5` for the expandable card
-         surface. Kept translucent so the color composites naturally over both
-         light and dark system backgrounds without a separate dark-mode value.
-         */
         static let expandableCardTintAlpha: CGFloat = 0.2
 
-        /** Extra line spacing for the expandable body text. */
         static let expandableBodyLineSpacing: CGFloat = 2
     }
 }

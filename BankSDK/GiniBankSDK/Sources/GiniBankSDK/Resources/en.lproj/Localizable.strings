@@ -161,6 +161,8 @@
 // MARK: - Fraud prevention — expandable info card
 "ginibank.fraud.protect.title" = "How do I protect myself?";
 "ginibank.fraud.protect.body" = "Documents are sometimes changed to redirect payments. If you’re unsure which IBAN is right, ask the sender using contact details you already know.";
+"ginibank.fraud.protect.a11y.expanded" = "Expanded";
+"ginibank.fraud.protect.a11y.collapsed" = "Collapsed";
 
 // MARK: - Fraud prevention — IBAN selection sheet
 "ginibank.fraud.iban.selection.title" = "To continue, select one of the IBANs";

@@ -742,6 +742,101 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(delivered === analysisResult,
                       "Completion must fire synchronously with the original AnalysisResult when the resolver returns nil (no triggering signal)")
     }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Proceed")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidCancelClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Cancel")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedWithNoPendingIsNoOp() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        // No pending delivery set — the guard early-returns, nothing to assert beyond non-crash.
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation)
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedDeliversOriginalResultAfterDismiss() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        let completionExpectation = expectation(description: "completion fires after dismiss")
+        var deliveredResult: AnalysisResult?
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { result in
+                deliveredResult = result
+                completionExpectation.fulfill()
+            }
+        )
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        wait(for: [completionExpectation], timeout: 1.0)
+        XCTAssertTrue(deliveredResult === analysisResult,
+                      "Proceed must deliver the original AnalysisResult through the completion")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidCancelFiresCaptureCancelAfterDismiss() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                       printedIBAN: "DE89 3704 0044 0532 0130 00",
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { _ in }
+        )
+
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        /// Give the dismiss completion a run-loop tick, then confirm the cancel reached the results delegate.
+        let tick = expectation(description: "dismiss completion runs")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { tick.fulfill() }
+        wait(for: [tick], timeout: 1.0)
+        XCTAssertTrue(resultsDelegate.closeCalled,
+                      "Cancel must forward through giniCaptureDidCancelAnalysis after the dismiss completion runs")
+    }
 }
 
 // MARK: - ClientConfiguration Extension

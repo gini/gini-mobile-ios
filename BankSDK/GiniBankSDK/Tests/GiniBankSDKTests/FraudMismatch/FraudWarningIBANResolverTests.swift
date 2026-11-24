@@ -14,13 +14,12 @@ import GiniCaptureSDK
 
 /**
  Covers `FraudWarningIBANResolver.resolve(result:extractionResult:fraudSignalsEnabled:)`
- — the suppression rules (R2/R3/R4) and the three-variant branching added in
- PP-4090.
+ — the suppression rules and the three-variant branching.
  */
 @Suite("FraudWarningIBANResolver")
 struct FraudWarningIBANResolverTests {
 
-    // MARK: - R2 — backend-flag gate
+    // MARK: - Backend-flag gate
 
     @Test("returns nil when fraudSignalsEnabled is false")
     func returnsNilWhenFraudSignalsEnabledIsFalse() {
@@ -36,7 +35,7 @@ struct FraudWarningIBANResolverTests {
         #expect(resolved == nil)
     }
 
-    // MARK: - R3 — no triggering signal
+    // MARK: - No triggering signal
 
     @Test("returns nil when the mapper produces no signals at all")
     func returnsNilWhenNoFraudSignals() {
@@ -50,7 +49,7 @@ struct FraudWarningIBANResolverTests {
         #expect(resolved == nil)
     }
 
-    // MARK: - R4 — QR signal unexplainable (no printed candidate survives)
+    // MARK: - QR signal unexplainable (no printed candidate survives)
 
     @Test("returns nil when QR signal present but the printed-IBAN filter empties the candidate list")
     func returnsNilWhenPrintedCandidateFilterEmpty() {
@@ -58,7 +57,7 @@ struct FraudWarningIBANResolverTests {
         let extractionResult = Self.extractionResult(withFraudSignals: [
             Self.signalGroup(code: "QR_PRINTED_IBAN_MISMATCH", iban: qrIban)
         ])
-        /// Only candidate equals the QR IBAN → filter drops it, nothing left to contrast against.
+        // Only candidate equals the QR IBAN → filter drops it, nothing left to contrast against.
         let result = Self.analysisResult(candidates: [qrIban])
 
         let resolved = FraudWarningIBANResolver.resolve(result: result,
@@ -207,8 +206,8 @@ struct FraudWarningIBANResolverTests {
 
     @Test("excludes the QR IBAN even when whitespace and casing differ")
     func excludesQrIbanAcrossNormalization() {
-        /// QR signal carries the IBAN in spaced form; a candidate shows the same IBAN in
-        /// compact lowercase — both normalize equal, so the candidate must be dropped.
+        // QR signal carries the IBAN in spaced form; a candidate shows the same IBAN in
+        // compact lowercase — both normalize equal, so the candidate must be dropped.
         let extractionResult = Self.extractionResult(withFraudSignals: [
             Self.signalGroup(code: "QR_PRINTED_IBAN_MISMATCH",
                              iban: "PL12 1000 0111 0100 1000")
@@ -272,9 +271,9 @@ struct FraudWarningIBANResolverTests {
             Self.signalGroup(code: "QR_PRINTED_IBAN_MISMATCH",
                              iban: "PL12 1000 0111 0100 1000")
         ])
-        /// IBAN extraction has `candidates: nil` (no explicit key), but the top-level
-        /// candidate dict still has an "ibans" bucket — resolver must find it via the
-        /// fallback key.
+        // IBAN extraction has `candidates: nil` (no explicit key), but the top-level
+        // candidate dict still has an "ibans" bucket — resolver must find it via the
+        // fallback key.
         let result = Self.analysisResult(candidateKey: nil,
                                           candidates: ["DE89 3704 0044 0532 0130 00"])
 

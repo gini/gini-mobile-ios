@@ -32,7 +32,7 @@ final class FraudWarningViewModel: ObservableObject {
      Downstream screens (Coordinator / integrator hand-off) read this to decide
      which IBAN flows forward.
      */
-    @Published var selectedIBAN: IBANChoice?
+    var selectedIBAN: IBANChoice?
 
     /** Parent that receives tap callbacks. Weak to avoid a retain cycle with the Coordinator. */
     weak var delegate: FraudWarningViewModelDelegate?
