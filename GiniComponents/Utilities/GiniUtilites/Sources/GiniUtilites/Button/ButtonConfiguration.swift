@@ -83,12 +83,16 @@ public extension View {
      Applies the given `ButtonConfiguration` to a SwiftUI view — the SwiftUI
      mirror of the UIKit `configure(with:)` helpers in GiniCaptureSDK.
 
-     Applies, in order: title color via `foregroundStyle`; a background
-     `RoundedRectangle` of `configuration.cornerRadius` filled with
-     `configuration.backgroundColor`, with `.ultraThinMaterial` layered on
-     top when `configuration.withBlurEffect` is `true` (mirrors UIKit's
-     `addBlurEffect(cornerRadius:)`); a border stroke of the same shape;
-     and a shadow using `configuration.shadowColor` / `shadowRadius`.
+     Applies, in order: the configured `titleFont` (when non-`nil`) via
+     `font`; `titleColor` via `foregroundStyle`; a background
+     `RoundedRectangle` of `configuration.cornerRadius` that is either
+     filled with `configuration.backgroundColor` or rendered transparent
+     when `configuration.withBlurEffect` is `true` — mirroring UIKit's
+     `addBlurEffect(cornerRadius:)` which also discards `backgroundColor`
+     and lets the enclosing Liquid Glass surface show through; a border
+     drawn with `strokeBorder` so the line sits inside the shape instead
+     of straddling the edge; and a shadow using `configuration.shadowColor`
+     / `shadowRadius`.
      */
     func configure(with configuration: ButtonConfiguration) -> some View {
         let shape = RoundedRectangle(cornerRadius: configuration.cornerRadius)
@@ -107,8 +111,8 @@ public extension View {
                     shape.fill(Color(uiColor: configuration.backgroundColor))
                 }
             }
-            .overlay(shape.stroke(Color(uiColor: configuration.borderColor),
-                                  lineWidth: configuration.borderWidth))
+            .overlay(shape.strokeBorder(Color(uiColor: configuration.borderColor),
+                                        lineWidth: configuration.borderWidth))
             .shadow(color: Color(uiColor: configuration.shadowColor),
                     radius: configuration.shadowRadius)
     }

@@ -11,18 +11,17 @@ import GiniUtilites
 /**
  Fraud warning screen body.
 
- Renders, from top to bottom: a warning icon, the "Different IBANs in this
- document" title and subtitle, a "How do I protect myself?" expandable, the
- "The following IBANs were detected" section with two informational
- `GiniOptionRow` instances (QR + printed IBAN), and the Cancel / Proceed
- button stack. Content values and the expand state come from the owning
- `FraudWarningViewModel`; button taps bubble up as closures the composition
- root wires.
+ Renders, from top to bottom: a warning icon, the title + subtitle, the
+ "How do I protect myself?" expandable, the mismatch middle section
+ (QR + printed IBAN rows, sender + country rows, or the combined
+ variant), and the Cancel / Proceed button stack. Content values and
+ expand state come from the owning `FraudWarningViewModel`; button taps
+ bubble up as closures the composition root wires.
 
- Strings are hardcoded English and design-system tokens on the title /
- subtitle / buttons are deferred to the final visual pass. The two
- `GiniOptionRow` rows already resolve their colors through the BankSDK
- `GiniColorScheme`.
+ Buttons route through `GiniBankConfiguration.shared.primaryButtonConfiguration`
+ / `secondaryButtonConfiguration` so integrator overrides flow through
+ to this screen too. `GiniOptionRow` rows resolve their colors from
+ `GiniColorScheme` via `UIColor.giniBankColorScheme()`.
  */
 struct FraudWarningView: View {
 
@@ -303,6 +302,16 @@ struct FraudWarningView: View {
         }
     }
 
+    /**
+     "Cancel transfer" is wired to `primaryButtonConfiguration` on purpose —
+     fraud prevention nudges the user toward cancelling, so the filled
+     brand button carries the safer action. The outlined
+     `secondaryButtonConfiguration` goes to "Proceed anyway" so the
+     riskier action reads as subordinate. Do not swap these without a
+     product sign-off; a well-meaning "fix" to match the SDK's generic
+     Primary = forward / Secondary = cancel convention would invert the
+     entire fraud-prevention UX intent.
+     */
     private var cancelButton: some View {
         Button(action: onCancel) {
             Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
