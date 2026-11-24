@@ -32,30 +32,28 @@ struct FraudWarningView: View {
     var onProceed: () -> Void
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.sectionSpacing) {
-                warningIcon
-                titleAndSubtitle
-                protectMyselfExpandable
-                middleSection
-                buttonStack
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: Constants.sectionSpacing) {
+                    warningIcon
+                    titleAndSubtitle
+                    protectMyselfExpandable
+                    middleSection
+                }
+                .padding(Constants.outerPadding)
             }
-            .padding(Constants.outerPadding)
+            buttonStack
+                .padding(.horizontal, Constants.outerPadding)
+                .padding(.bottom, Constants.outerPadding)
         }
     }
 
     private var warningIcon: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: Constants.iconBackgroundCornerRadius)
-                .fill(Color.orange.opacity(Constants.iconBackgroundOpacity))
-                .frame(width: Constants.iconBackgroundSize,
-                       height: Constants.iconBackgroundSize)
-
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: Constants.iconFontSize, weight: .semibold))
-                .foregroundStyle(Color.orange)
-        }
-        /// SF Symbol placeholder — Figma glyph lands with the final visual pass.
+        Image(uiImage: GiniImages.fraudWarning.image ?? UIImage())
+            .resizable()
+            .scaledToFit()
+            .frame(width: Constants.iconBackgroundSize,
+                   height: Constants.iconBackgroundSize)
     }
 
     private var titleAndSubtitle: some View {
@@ -286,7 +284,6 @@ struct FraudWarningView: View {
                     )
             }
         }
-        .padding(.top, Constants.buttonStackTopPadding)
     }
 
     private static func localized(_ key: String) -> String {
