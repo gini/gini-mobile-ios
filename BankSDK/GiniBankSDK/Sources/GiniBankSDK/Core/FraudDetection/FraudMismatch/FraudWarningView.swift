@@ -185,12 +185,14 @@ struct FraudWarningView: View {
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
                           content: qrIBAN,
                           variant: .informational,
-                          giniColorScheme: scheme)
+                          giniColorScheme: scheme,
+                          contentPadding: Constants.flushRowPadding)
 
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                           content: printedIBAN,
                           variant: .informational,
-                          giniColorScheme: scheme)
+                          giniColorScheme: scheme,
+                          contentPadding: Constants.flushRowPadding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -208,7 +210,8 @@ struct FraudWarningView: View {
                           content: iban,
                           footer: Self.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
-                          giniColorScheme: scheme)
+                          giniColorScheme: scheme,
+                          contentPadding: Constants.flushRowPadding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -230,13 +233,15 @@ struct FraudWarningView: View {
                               content: qrIBAN,
                               footer: Self.countryHint(for: qrIBAN, senderCountry: senderCountry),
                               variant: .informational,
-                              giniColorScheme: scheme)
+                              giniColorScheme: scheme,
+                              contentPadding: Constants.flushRowPadding)
                 Divider()
                 GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                               content: printedIBAN,
                               footer: Self.countryHint(for: printedIBAN, senderCountry: senderCountry),
                               variant: .informational,
-                              giniColorScheme: scheme)
+                              giniColorScheme: scheme,
+                              contentPadding: Constants.flushRowPadding)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -244,7 +249,7 @@ struct FraudWarningView: View {
 
     private var detectedIBANsHeader: some View {
         Text(Self.localized("ginibank.fraud.warning.ibans.header"))
-            .font(.headline)
+            .font(.body.weight(.bold))
             .foregroundStyle(.primary)
             .accessibilityAddTraits(.isHeader)
     }
@@ -256,7 +261,8 @@ struct FraudWarningView: View {
                       content: Self.senderContent(senderName: senderName,
                                                   senderCountry: senderCountry),
                       variant: .informational,
-                      giniColorScheme: scheme)
+                      giniColorScheme: scheme,
+                      contentPadding: Constants.flushRowPadding)
     }
 
     private func senderCard(senderName: String?,
@@ -352,9 +358,18 @@ struct FraudWarningView: View {
 
         static let iconBackgroundSize: CGFloat = 50
 
+        /** 12pt vertical breathing room between rows but flush to the content
+         left/right edge, so the "In the QR code" / "Printed on the document"
+         labels line up with the "The following IBANs were detected" header
+         and the Sender card's outer edge. */
+        static let flushRowPadding = EdgeInsets(top: 12,
+                                                leading: 0,
+                                                bottom: 12,
+                                                trailing: 0)
+
         static let expandableCornerRadius: CGFloat = 12
 
-        static let expandableCardTintAlpha: CGFloat = 0.2
+        static let expandableCardTintAlpha: CGFloat = 0.1
 
         static let expandableBodyLineSpacing: CGFloat = 2
     }
