@@ -33,8 +33,9 @@ struct FraudWarningContainer: View {
     @ViewBuilder
     private var pickerSheet: some View {
         if let ibans = viewModel.content.pickerIBANs {
-            IBANSelectionSheet(viewModel: Self.makePickerViewModel(qrIBAN: ibans.qrIBAN,
-                                                                   printedIBAN: ibans.printedIBAN),
+            let pickerViewModel = Self.makePickerViewModel(qrIBAN: ibans.qrIBAN,
+                                                           printedIBAN: ibans.printedIBAN)
+            IBANSelectionSheet(viewModel: pickerViewModel,
                                selection: $pickerSelection,
                                onContinue: handleContinue)
         }
@@ -47,7 +48,7 @@ struct FraudWarningContainer: View {
      there is nothing to choose).
      */
     private func handleProceedTap() {
-        if viewModel.content.presentsIBANPicker {
+        if viewModel.content.shouldPresentIBANPicker {
             isShowingPicker = true
         } else {
             viewModel.didTapProceed()
