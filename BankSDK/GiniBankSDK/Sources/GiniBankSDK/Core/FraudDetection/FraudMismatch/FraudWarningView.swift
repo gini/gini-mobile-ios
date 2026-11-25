@@ -34,7 +34,7 @@ struct FraudWarningView: View {
 
     var body: some View {
         let scheme = UIColor.giniBankColorScheme()
-        let expandableVM = Self.makeExpandableViewModel(scheme: scheme)
+        let expandableVM = makeExpandableViewModel(scheme: scheme)
         return Group {
             if verticalSizeClass == .compact {
                 // Landscape: everything scrolls together. When content overflows
@@ -91,13 +91,13 @@ struct FraudWarningView: View {
 
     private var titleAndSubtitle: some View {
         VStack(spacing: Constants.titleToSubtitleSpacing) {
-            Text(Self.localized(viewModel.titleKey))
+            Text(viewModel.title)
                 .font(.title2.weight(.bold))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
 
-            Text(Self.localized(viewModel.bodyKey))
+            Text(viewModel.body)
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -108,7 +108,7 @@ struct FraudWarningView: View {
                                          expandableVM: GiniExpandableInfoViewModel) -> some View {
         GiniExpandableInfoView(viewModel: expandableVM,
                                isExpanded: $viewModel.isExpandedProtectMyself) {
-            Text(Self.localized("ginibank.fraud.protect.body"))
+            Text(viewModel.protectBody)
                 .font(Font(giniFont: Self.font(.footnote)))
                 .foregroundStyle(scheme.text.secondary.swiftUIColor())
                 .fixedSize(horizontal: false, vertical: true)
@@ -117,7 +117,7 @@ struct FraudWarningView: View {
         .clipShape(RoundedRectangle(cornerRadius: Constants.expandableCornerRadius, style: .continuous))
     }
 
-    private static func makeExpandableViewModel(scheme: GiniColorScheme) -> GiniExpandableInfoViewModel {
+    private func makeExpandableViewModel(scheme: GiniColorScheme) -> GiniExpandableInfoViewModel {
         GiniExpandableInfoViewModel(icon: GiniImages.shield.image
                                         ?? UIImage(systemName: "shield.fill")
                                         ?? UIImage(),
@@ -125,12 +125,12 @@ struct FraudWarningView: View {
                                     chevronIcon: GiniImages.chevronDownThin.image
                                                  ?? UIImage(systemName: "chevron.down")
                                                  ?? UIImage(),
-                                    title: localized("ginibank.fraud.protect.title"),
-                                    backgroundColor: expandableBackground(from: scheme),
+                                    title: viewModel.protectTitle,
+                                    backgroundColor: Self.expandableBackground(from: scheme),
                                     colorScheme: scheme,
-                                    titleFont: font(.subheadline),
-                                    expandedAccessibilityValue: localized("ginibank.fraud.protect.a11y.expanded"),
-                                    collapsedAccessibilityValue: localized("ginibank.fraud.protect.a11y.collapsed"))
+                                    titleFont: Self.font(.subheadline),
+                                    expandedAccessibilityValue: viewModel.protectExpandedA11yValue,
+                                    collapsedAccessibilityValue: viewModel.protectCollapsedA11yValue)
     }
 
     /**
@@ -177,13 +177,13 @@ struct FraudWarningView: View {
             detectedIBANsHeader
 
             VStack(alignment: .leading, spacing: 0) {
-                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
+                GiniOptionRow(title: viewModel.qrRowLabel,
                               content: qrIBAN,
                               variant: .informational,
                               giniColorScheme: scheme,
                               contentPadding: Constants.flushRowPadding)
                 Divider()
-                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
+                GiniOptionRow(title: viewModel.printedRowLabel,
                               content: printedIBAN,
                               variant: .informational,
                               giniColorScheme: scheme,
@@ -203,7 +203,7 @@ struct FraudWarningView: View {
                             scheme: scheme,
                             contentPadding: Constants.firstFlushRowPadding)
             Divider()
-            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.document.label"),
+            GiniOptionRow(title: viewModel.documentRowLabel,
                           content: iban,
                           footer: viewModel.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
@@ -227,14 +227,14 @@ struct FraudWarningView: View {
                 detectedIBANsHeader
 
                 VStack(alignment: .leading, spacing: 0) {
-                    GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
+                    GiniOptionRow(title: viewModel.qrRowLabel,
                                   content: qrIBAN,
                                   footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
                                   variant: .informational,
                                   giniColorScheme: scheme,
                                   contentPadding: Constants.firstFlushRowPadding)
                     Divider()
-                    GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
+                    GiniOptionRow(title: viewModel.printedRowLabel,
                                   content: printedIBAN,
                                   footer: viewModel.countryHint(for: printedIBAN, senderCountry: senderCountry),
                                   variant: .informational,
@@ -247,7 +247,7 @@ struct FraudWarningView: View {
     }
 
     private var detectedIBANsHeader: some View {
-        Text(Self.localized("ginibank.fraud.warning.ibans.header"))
+        Text(viewModel.ibansHeader)
             .font(.body.weight(.bold))
             .foregroundStyle(.primary)
             .accessibilityAddTraits(.isHeader)
@@ -257,7 +257,7 @@ struct FraudWarningView: View {
                                  senderCountry: String,
                                  scheme: GiniColorScheme,
                                  contentPadding: EdgeInsets) -> some View {
-        GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
+        GiniOptionRow(title: viewModel.senderLabel,
                       content: viewModel.senderContent(senderName: senderName,
                                                       senderCountry: senderCountry),
                       variant: .informational,
@@ -268,7 +268,7 @@ struct FraudWarningView: View {
     private func senderCard(senderName: String?,
                             senderCountry: String,
                             scheme: GiniColorScheme) -> some View {
-        GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
+        GiniOptionRow(title: viewModel.senderLabel,
                       content: viewModel.senderContent(senderName: senderName,
                                                       senderCountry: senderCountry),
                       variant: .informational,
@@ -304,7 +304,7 @@ struct FraudWarningView: View {
      */
     private var cancelButton: some View {
         Button(action: onCancel) {
-            Text(Self.localized("ginibank.fraud.warning.cta.cancel"))
+            Text(viewModel.cancelCTA)
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
         }
@@ -313,15 +313,11 @@ struct FraudWarningView: View {
 
     private var proceedButton: some View {
         Button(action: onProceed) {
-            Text(Self.localized("ginibank.fraud.warning.cta.proceed"))
+            Text(viewModel.proceedCTA)
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: Constants.buttonMinHeight)
         }
         .buttonStyle(GiniButtonStyle(GiniBankConfiguration.shared.secondaryButtonConfiguration))
-    }
-
-    private static func localized(_ key: String) -> String {
-        NSLocalizedStringPreferredGiniBankFormat(key, comment: "")
     }
 
     private enum Constants {

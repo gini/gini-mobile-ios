@@ -81,6 +81,45 @@ final class FraudWarningViewModel: ObservableObject {
         }
     }
 
+    /** Resolved title string for the current `content` variant. */
+    var title: String { Self.localized(titleKey) }
+
+    /** Resolved body/subtitle string for the current `content` variant. */
+    var body: String { Self.localized(bodyKey) }
+
+    /** Label on the QR-code IBAN row. */
+    var qrRowLabel: String { Self.localized("ginibank.fraud.warning.row.qr.label") }
+
+    /** Label on the printed IBAN row. */
+    var printedRowLabel: String { Self.localized("ginibank.fraud.warning.row.printed.label") }
+
+    /** Label on the country-only variant's single IBAN row. */
+    var documentRowLabel: String { Self.localized("ginibank.fraud.warning.row.document.label") }
+
+    /** Label above the sender card / sender row. */
+    var senderLabel: String { Self.localized("ginibank.fraud.warning.sender.label") }
+
+    /** Header text above the detected IBAN rows. */
+    var ibansHeader: String { Self.localized("ginibank.fraud.warning.ibans.header") }
+
+    /** "Cancel transfer" CTA label. */
+    var cancelCTA: String { Self.localized("ginibank.fraud.warning.cta.cancel") }
+
+    /** "Proceed anyway" CTA label. */
+    var proceedCTA: String { Self.localized("ginibank.fraud.warning.cta.proceed") }
+
+    /** "How do I protect myself?" expandable title. */
+    var protectTitle: String { Self.localized("ginibank.fraud.protect.title") }
+
+    /** "How do I protect myself?" expandable body. */
+    var protectBody: String { Self.localized("ginibank.fraud.protect.body") }
+
+    /** VoiceOver value announced when the protect-myself card is expanded. */
+    var protectExpandedA11yValue: String { Self.localized("ginibank.fraud.protect.a11y.expanded") }
+
+    /** VoiceOver value announced when the protect-myself card is collapsed. */
+    var protectCollapsedA11yValue: String { Self.localized("ginibank.fraud.protect.a11y.collapsed") }
+
     /**
      Sender-card value shown next to the "Sender" label. Returns
      `"Name · Country"` when both are available, the localized country
