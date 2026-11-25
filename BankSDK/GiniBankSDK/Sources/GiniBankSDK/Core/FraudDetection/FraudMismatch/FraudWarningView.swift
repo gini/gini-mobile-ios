@@ -45,7 +45,9 @@ struct FraudWarningView: View {
                         scrollContent(scheme: scheme, expandableVM: expandableVM)
                         buttonStack
                     }
-                    .padding(Constants.outerPadding)
+                    .padding(.horizontal, Constants.outerPadding)
+                    .padding(.top, Constants.topInset)
+                    .padding(.bottom, Constants.outerPadding)
                 }
             } else {
                 // Portrait: content scrolls, buttons pin to the bottom so the
@@ -53,7 +55,9 @@ struct FraudWarningView: View {
                 VStack(spacing: 0) {
                     ScrollView {
                         scrollContent(scheme: scheme, expandableVM: expandableVM)
-                            .padding(Constants.outerPadding)
+                            .padding(.horizontal, Constants.outerPadding)
+                            .padding(.top, Constants.topInset)
+                            .padding(.bottom, Constants.outerPadding)
                     }
                     buttonStack
                         .padding(.horizontal, Constants.outerPadding)
@@ -76,7 +80,9 @@ struct FraudWarningView: View {
     }
 
     private var warningIcon: some View {
-        Image(uiImage: GiniImages.fraudWarning.image ?? UIImage())
+        Image(uiImage: GiniImages.fraudWarning.image
+              ?? UIImage(systemName: "exclamationmark.triangle.fill")
+              ?? UIImage())
             .resizable()
             .scaledToFit()
             .frame(width: Constants.iconBackgroundSize,
@@ -113,9 +119,13 @@ struct FraudWarningView: View {
     }
 
     private static func makeExpandableViewModel(scheme: GiniColorScheme) -> GiniExpandableInfoViewModel {
-        GiniExpandableInfoViewModel(icon: GiniImages.shield.image ?? UIImage(),
+        GiniExpandableInfoViewModel(icon: GiniImages.shield.image
+                                        ?? UIImage(systemName: "shield.fill")
+                                        ?? UIImage(),
                                     iconTint: scheme.text.accent,
-                                    chevronIcon: GiniImages.chevronDownThin.image ?? UIImage(),
+                                    chevronIcon: GiniImages.chevronDownThin.image
+                                                 ?? UIImage(systemName: "chevron.down")
+                                                 ?? UIImage(),
                                     title: localized("ginibank.fraud.protect.title"),
                                     backgroundColor: expandableBackground(from: scheme),
                                     colorScheme: scheme,
@@ -313,6 +323,8 @@ struct FraudWarningView: View {
         static let majorSectionSpacing: CGFloat = 32
         static let topBlockSpacing: CGFloat = 24
         static let outerPadding: CGFloat = 24
+        /** Top padding from the sheet edge to the warning icon. Matches Figma's `space-500` token (32pt). */
+        static let topInset: CGFloat = 32
         static let titleToSubtitleSpacing: CGFloat = 12
         static let ibanSectionSpacing: CGFloat = 16
         static let buttonSpacing: CGFloat = 12
