@@ -37,9 +37,11 @@ final class FraudWarningCoordinator: FraudWarningViewModelDelegate {
     init(content: FraudWarningContent,
          delegate: FraudWarningCoordinatorDelegate? = nil) {
         self.delegate = delegate
+        /// `self` isn't available during stored-property init, so the VM's
+        /// event handler (which is this coordinator) is wired right after.
         self.viewModel = FraudWarningViewModel(content: content,
-                                               delegate: nil)
-        self.viewModel.delegate = self
+                                               eventHandler: nil)
+        self.viewModel.eventHandler = self
     }
 
     /**

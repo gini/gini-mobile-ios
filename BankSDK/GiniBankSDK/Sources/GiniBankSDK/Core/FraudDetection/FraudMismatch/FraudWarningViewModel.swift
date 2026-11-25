@@ -35,30 +35,30 @@ final class FraudWarningViewModel: ObservableObject {
     var selectedIBAN: IBANChoice?
 
     /** Parent that receives tap callbacks. Weak to avoid a retain cycle with the Coordinator. */
-    weak var delegate: FraudWarningViewModelDelegate?
+    weak var eventHandler: FraudWarningViewModelDelegate?
 
     init(content: FraudWarningContent,
-         delegate: FraudWarningViewModelDelegate?) {
+         eventHandler: FraudWarningViewModelDelegate?) {
         self.content = content
-        self.delegate = delegate
+        self.eventHandler = eventHandler
     }
 
     func didTapCancel() {
-        delegate?.fraudWarningViewModelDidCancel(self)
+        eventHandler?.fraudWarningViewModelDidCancel(self)
     }
 
     func didTapProceed() {
-        delegate?.fraudWarningViewModelDidProceed(self)
+        eventHandler?.fraudWarningViewModelDidProceed(self)
     }
 
     /**
      User picked an IBAN on the sheet and tapped Continue. Stores the choice
-     and fires the existing Proceed delegate so the Coordinator advances the
+     and fires the existing Proceed event so the Coordinator advances the
      flow with the chosen IBAN available via `selectedIBAN`.
      */
     func didConfirmIBAN(_ choice: IBANChoice) {
         selectedIBAN = choice
-        delegate?.fraudWarningViewModelDidProceed(self)
+        eventHandler?.fraudWarningViewModelDidProceed(self)
     }
 
     // MARK: - Derived display strings
