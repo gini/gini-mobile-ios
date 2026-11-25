@@ -110,7 +110,6 @@ struct FraudWarningView: View {
                                isExpanded: $viewModel.isExpandedProtectMyself) {
             Text(Self.localized("ginibank.fraud.protect.body"))
                 .font(Font(giniFont: Self.font(.footnote)))
-                .lineSpacing(Constants.expandableBodyLineSpacing)
                 .foregroundStyle(scheme.text.secondary.swiftUIColor())
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -174,20 +173,22 @@ struct FraudWarningView: View {
     private func qrPrintedSection(qrIBAN: String,
                                   printedIBAN: String,
                                   scheme: GiniColorScheme) -> some View {
-        VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
+        VStack(alignment: .leading, spacing: Constants.headerToRowsCardSpacing) {
             detectedIBANsHeader
 
-            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
-                          content: qrIBAN,
-                          variant: .informational,
-                          giniColorScheme: scheme,
-                          contentPadding: Constants.flushRowPadding)
-
-            GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
-                          content: printedIBAN,
-                          variant: .informational,
-                          giniColorScheme: scheme,
-                          contentPadding: Constants.flushRowPadding)
+            VStack(alignment: .leading, spacing: 0) {
+                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
+                              content: qrIBAN,
+                              variant: .informational,
+                              giniColorScheme: scheme,
+                              contentPadding: Constants.flushRowPadding)
+                Divider()
+                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
+                              content: printedIBAN,
+                              variant: .informational,
+                              giniColorScheme: scheme,
+                              contentPadding: Constants.flushRowPadding)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -199,14 +200,15 @@ struct FraudWarningView: View {
         VStack(alignment: .leading, spacing: 0) {
             senderOptionRow(senderName: senderName,
                             senderCountry: senderCountry,
-                            scheme: scheme)
+                            scheme: scheme,
+                            contentPadding: Constants.firstFlushRowPadding)
             Divider()
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.document.label"),
                           content: iban,
                           footer: viewModel.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
                           giniColorScheme: scheme,
-                          contentPadding: Constants.flushRowPadding)
+                          contentPadding: Constants.lastFlushRowPadding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -216,27 +218,29 @@ struct FraudWarningView: View {
                                  qrIBAN: String,
                                  printedIBAN: String,
                                  scheme: GiniColorScheme) -> some View {
-        VStack(alignment: .leading, spacing: Constants.ibanSectionSpacing) {
+        VStack(alignment: .leading, spacing: Constants.senderToSectionHeaderSpacing) {
             senderCard(senderName: senderName,
                        senderCountry: senderCountry,
                        scheme: scheme)
 
-            detectedIBANsHeader
+            VStack(alignment: .leading, spacing: Constants.sectionHeaderToRowsSpacing) {
+                detectedIBANsHeader
 
-            VStack(alignment: .leading, spacing: 0) {
-                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
-                              content: qrIBAN,
-                              footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
-                              variant: .informational,
-                              giniColorScheme: scheme,
-                              contentPadding: Constants.flushRowPadding)
-                Divider()
-                GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
-                              content: printedIBAN,
-                              footer: viewModel.countryHint(for: printedIBAN, senderCountry: senderCountry),
-                              variant: .informational,
-                              giniColorScheme: scheme,
-                              contentPadding: Constants.flushRowPadding)
+                VStack(alignment: .leading, spacing: 0) {
+                    GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
+                                  content: qrIBAN,
+                                  footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
+                                  variant: .informational,
+                                  giniColorScheme: scheme,
+                                  contentPadding: Constants.firstFlushRowPadding)
+                    Divider()
+                    GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
+                                  content: printedIBAN,
+                                  footer: viewModel.countryHint(for: printedIBAN, senderCountry: senderCountry),
+                                  variant: .informational,
+                                  giniColorScheme: scheme,
+                                  contentPadding: Constants.flushRowPadding)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -251,13 +255,14 @@ struct FraudWarningView: View {
 
     private func senderOptionRow(senderName: String?,
                                  senderCountry: String,
-                                 scheme: GiniColorScheme) -> some View {
+                                 scheme: GiniColorScheme,
+                                 contentPadding: EdgeInsets) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
                       content: viewModel.senderContent(senderName: senderName,
                                                       senderCountry: senderCountry),
                       variant: .informational,
                       giniColorScheme: scheme,
-                      contentPadding: Constants.flushRowPadding)
+                      contentPadding: contentPadding)
     }
 
     private func senderCard(senderName: String?,
@@ -323,28 +328,39 @@ struct FraudWarningView: View {
         static let majorSectionSpacing: CGFloat = 32
         static let topBlockSpacing: CGFloat = 24
         static let outerPadding: CGFloat = 24
-        /** Top padding from the sheet edge to the warning icon. Matches Figma's `space-500` token (32pt). */
-        static let topInset: CGFloat = 32
+        /**
+         Top padding from the sheet edge to the warning icon. Matches Figma's
+         outer sheet `pt-32` plus the content wrapper's internal `pt-16`, so
+         the icon sits 48pt below the sheet edge.
+         */
+        static let topInset: CGFloat = 48
+        /** Gap between the sender card and the "The following IBANs were detected" header. Matches Figma's `space-350`. */
+        static let senderToSectionHeaderSpacing: CGFloat = 20
+        /** Gap between the "The following IBANs were detected" header and the IBAN rows block. Figma literal 11pt (not a named token). */
+        static let sectionHeaderToRowsSpacing: CGFloat = 11
+        /** First row has no top padding so the 11pt header→rows VStack gap maps straight to Figma's 11pt label-to-content distance. */
+        static let firstFlushRowPadding = EdgeInsets.vertical(top: 0, bottom: 12)
+        /** Last row drops its bottom padding so the row's content sits flush with the section's bottom edge (used by the country variant where there's no containing card). */
+        static let lastFlushRowPadding = EdgeInsets.vertical(top: 12, bottom: 0)
+        /** 12pt vertical breathing room between rows but flush to the content left/right edge, so the labels line up with the "The following IBANs were detected" header and the Sender card's outer edge. */
+        static let flushRowPadding = EdgeInsets.vertical(top: 12, bottom: 12)
+        /** QR variant's header→rows gap: Figma's `space-250` — the rows container supplies its own 12pt top padding via `flushRowPadding`, so the visual distance from header to the first row's content is 12pt (gap) + 12pt (row padding) = 24pt. */
+        static let headerToRowsCardSpacing: CGFloat = 12
         static let titleToSubtitleSpacing: CGFloat = 12
-        static let ibanSectionSpacing: CGFloat = 16
         static let buttonSpacing: CGFloat = 12
         static let buttonMinHeight: CGFloat = 50
 
         static let iconBackgroundSize: CGFloat = 50
 
-        /** 12pt vertical breathing room between rows but flush to the content
-         left/right edge, so the "In the QR code" / "Printed on the document"
-         labels line up with the "The following IBANs were detected" header
-         and the Sender card's outer edge. */
-        static let flushRowPadding = EdgeInsets(top: 12,
-                                                leading: 0,
-                                                bottom: 12,
-                                                trailing: 0)
-
         static let expandableCornerRadius: CGFloat = 12
 
         static let expandableCardTintAlpha: CGFloat = 0.1
+    }
+}
 
-        static let expandableBodyLineSpacing: CGFloat = 2
+private extension EdgeInsets {
+    /** `EdgeInsets` shortcut for row paddings that use horizontal 0 and set only top/bottom. Reduces visual noise at the many `firstFlushRowPadding` / `flushRowPadding` / `lastFlushRowPadding` constant sites. */
+    static func vertical(top: CGFloat, bottom: CGFloat) -> EdgeInsets {
+        EdgeInsets(top: top, leading: 0, bottom: bottom, trailing: 0)
     }
 }
