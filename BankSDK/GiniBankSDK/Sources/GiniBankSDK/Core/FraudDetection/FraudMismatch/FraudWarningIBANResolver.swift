@@ -28,7 +28,7 @@ import GiniCaptureSDK
    contrast against is dropped; a lone country signal is still enough to
    render the country-only variant.
  */
-internal enum FraudWarningIBANResolver {
+enum FraudWarningIBANResolver {
 
     /**
      Resolves the content for the fraud warning screen, or returns `nil`

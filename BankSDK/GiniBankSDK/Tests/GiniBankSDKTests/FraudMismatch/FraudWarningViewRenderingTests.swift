@@ -39,7 +39,7 @@ struct FraudWarningViewRenderingTests {
     }
 
     private func renderContainer(for content: FraudWarningContent) {
-        let viewModel = FraudWarningViewModel(content: content, delegate: nil)
+        let viewModel = FraudWarningViewModel(content: content, eventHandler: nil)
         let container = FraudWarningContainer(viewModel: viewModel)
 
         let hosting = UIHostingController(rootView: container)

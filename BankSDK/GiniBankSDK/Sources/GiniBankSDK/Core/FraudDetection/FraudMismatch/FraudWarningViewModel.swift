@@ -35,30 +35,30 @@ final class FraudWarningViewModel: ObservableObject {
     var selectedIBAN: IBANChoice?
 
     /** Parent that receives tap callbacks. Weak to avoid a retain cycle with the Coordinator. */
-    weak var delegate: FraudWarningViewModelDelegate?
+    weak var eventHandler: FraudWarningViewModelDelegate?
 
     init(content: FraudWarningContent,
-         delegate: FraudWarningViewModelDelegate?) {
+         eventHandler: FraudWarningViewModelDelegate?) {
         self.content = content
-        self.delegate = delegate
+        self.eventHandler = eventHandler
     }
 
     func didTapCancel() {
-        delegate?.fraudWarningViewModelDidCancel(self)
+        eventHandler?.fraudWarningViewModelDidCancel(self)
     }
 
     func didTapProceed() {
-        delegate?.fraudWarningViewModelDidProceed(self)
+        eventHandler?.fraudWarningViewModelDidProceed(self)
     }
 
     /**
      User picked an IBAN on the sheet and tapped Continue. Stores the choice
-     and fires the existing Proceed delegate so the Coordinator advances the
+     and fires the existing Proceed event so the Coordinator advances the
      flow with the chosen IBAN available via `selectedIBAN`.
      */
     func didConfirmIBAN(_ choice: IBANChoice) {
         selectedIBAN = choice
-        delegate?.fraudWarningViewModelDidProceed(self)
+        eventHandler?.fraudWarningViewModelDidProceed(self)
     }
 
     // MARK: - Derived display strings
@@ -87,8 +87,8 @@ final class FraudWarningViewModel: ObservableObject {
      name alone when the name is missing/empty.
      */
     func senderContent(senderName: String?, senderCountry: String) -> String {
-        let country = FraudCountryName.display(code: senderCountry,
-                                               in: Self.countryNameLocale)
+        let country = FraudCountryName.displayCountry(code: senderCountry,
+                                                      in: Self.countryNameLocale)
         guard let name = senderName, !name.isEmpty else { return country }
         return String(format: Self.localized("ginibank.fraud.warning.sender.with.country"),
                       name, country)
@@ -103,7 +103,7 @@ final class FraudWarningViewModel: ObservableObject {
                                                              senderCountry: senderCountry) else {
             return nil
         }
-        let name = FraudCountryName.display(code: code, in: Self.countryNameLocale)
+        let name = FraudCountryName.displayCountry(code: code, in: Self.countryNameLocale)
         return String(format: Self.localized("ginibank.fraud.warning.row.country.hint"), name)
     }
 

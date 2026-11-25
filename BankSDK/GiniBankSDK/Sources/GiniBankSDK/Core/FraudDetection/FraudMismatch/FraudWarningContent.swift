@@ -16,7 +16,7 @@ import Foundation
  `NSLocalizedStringPreferredGiniBankFormat` and the per-row country hint
  via `hintCountryCode(for:senderCountry:)`.
  */
-internal enum FraudWarningContent: Equatable {
+enum FraudWarningContent: Equatable {
 
     /**
      QR code IBAN differs from the printed IBAN. No sender information is
@@ -50,7 +50,7 @@ internal enum FraudWarningContent: Equatable {
      sheet. `false` for the country-only variant — a single IBAN leaves
      nothing to pick.
      */
-    var presentsIBANPicker: Bool {
+    var shouldPresentIBANPicker: Bool {
         switch self {
         case .qrPrinted, .combined: return true
         case .country: return false
@@ -58,7 +58,7 @@ internal enum FraudWarningContent: Equatable {
     }
 
     /**
-     QR + printed IBAN pair for the picker when `presentsIBANPicker` is
+     QR + printed IBAN pair for the picker when `shouldPresentIBANPicker` is
      `true`, else `nil`. Used by `FraudWarningContainer` to build the
      `IBANSelectionSheetViewModel`.
      */
@@ -94,15 +94,15 @@ internal enum FraudWarningContent: Equatable {
  not know the region. Matches the Android `countryDisplayName(code, locale)`
  helper so both platforms share the same fallback behaviour.
  */
-internal enum FraudCountryName {
+enum FraudCountryName {
 
     /**
      Localized country name for `code` in `locale`, or the raw uppercase
      code when the system returns nothing, a blank value, or echoes the
      code itself.
      */
-    static func display(code: String,
-                        in locale: Locale) -> String {
+    static func displayCountry(code: String,
+                               in locale: Locale) -> String {
         let normalized = code.uppercased()
         guard let name = locale.localizedString(forRegionCode: normalized)?
                 .trimmingCharacters(in: .whitespacesAndNewlines),

@@ -15,6 +15,7 @@ import Foundation
  does not debounce taps — the integration seam above the Coordinator is
  where single-callback guarantees for the integrator are enforced.
  */
+@MainActor
 protocol FraudWarningViewModelDelegate: AnyObject {
 
     /** User tapped the Cancel button on the fraud warning. */
