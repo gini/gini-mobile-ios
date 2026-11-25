@@ -837,6 +837,42 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertTrue(resultsDelegate.closeCalled,
                       "Cancel must forward through giniCaptureDidCancelAnalysis after the dismiss completion runs")
     }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedCountryVariantForwardsExtractedIBAN() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let backendIBAN = "DE89 3704 0044 0532 0130 00"
+        let extractedIBAN = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "iban",
+                                       value: backendIBAN,
+                                       name: "iban")
+        let analysisResult = AnalysisResult(extractions: ["iban": extractedIBAN],
+                                             images: [],
+                                             candidates: [:])
+        /// Country-only content leaves `selectedIBAN` nil because the picker never ran —
+        /// Proceed must forward the backend's `extractions["iban"]` unchanged.
+        let sheetCoordinator = FraudWarningCoordinator(content: .country(senderName: "Elektro Brandt GmbH",
+                                                                          senderCountry: "DE",
+                                                                          iban: "PL12 1000 0111 0100 1000"),
+                                                       delegate: nil)
+        let completionExpectation = expectation(description: "completion fires after dismiss")
+        var deliveredResult: AnalysisResult?
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { result in
+                deliveredResult = result
+                completionExpectation.fulfill()
+            }
+        )
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        wait(for: [completionExpectation], timeout: 1.0)
+        XCTAssertEqual(deliveredResult?.extractions["iban"]?.value, backendIBAN,
+                       "Country-only Proceed must forward the backend's extracted IBAN unchanged")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
