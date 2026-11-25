@@ -86,7 +86,7 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
                     .accessibility(hidden: true)
 
                 Text(viewModel.title)
-                    .font(Font(giniFont: viewModel.titleFont))
+                    .font(.subheadline)
                     .foregroundStyle(viewModel.colorScheme.text.primary.swiftUIColor())
                     .frame(maxWidth: .infinity, alignment: .leading)
 
