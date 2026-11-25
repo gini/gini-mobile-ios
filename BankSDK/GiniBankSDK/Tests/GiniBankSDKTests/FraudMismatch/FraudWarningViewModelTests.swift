@@ -19,8 +19,19 @@ struct FraudWarningViewModelTests {
     private static let content: FraudWarningContent = .qrPrinted(qrIBAN: qrIBAN,
                                                                  printedIBAN: printedIBAN)
 
+    private let delegate: Mock
+    private let viewModel: FraudWarningViewModel
+
+    init() {
+        let delegate = Mock()
+        self.delegate = delegate
+        self.viewModel = FraudWarningViewModel(content: Self.content,
+                                               eventHandler: delegate)
+    }
+
     @Test("init with nil delegate does not crash")
     func initWithNilDelegate() {
+        /// Needs a dedicated viewmodel — the suite-level one uses the Mock handler.
         let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: nil)
 
         #expect(viewModel.eventHandler == nil)
@@ -28,9 +39,6 @@ struct FraudWarningViewModelTests {
 
     @Test("didTapCancel fires fraudWarningViewModelDidCancel exactly once")
     func didTapCancelFiresOnce() {
-        let delegate = Mock()
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: delegate)
-
         viewModel.didTapCancel()
 
         #expect(delegate.cancelCount == 1)
@@ -39,9 +47,6 @@ struct FraudWarningViewModelTests {
 
     @Test("didTapProceed fires fraudWarningViewModelDidProceed exactly once")
     func didTapProceedFiresOnce() {
-        let delegate = Mock()
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: delegate)
-
         viewModel.didTapProceed()
 
         #expect(delegate.proceedCount == 1)
@@ -50,9 +55,6 @@ struct FraudWarningViewModelTests {
 
     @Test("didTapCancel twice fires the delegate twice")
     func didTapCancelTwiceFiresTwice() {
-        let delegate = Mock()
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: delegate)
-
         viewModel.didTapCancel()
         viewModel.didTapCancel()
 
@@ -61,14 +63,11 @@ struct FraudWarningViewModelTests {
 
     @Test("isExpandedProtectMyself defaults to false")
     func isExpandedProtectMyselfDefaultsToFalse() {
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: nil)
-
         #expect(viewModel.isExpandedProtectMyself == false)
     }
 
     @Test("isExpandedProtectMyself mutation fires objectWillChange")
     func isExpandedProtectMyselfFiresObjectWillChange() {
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: nil)
         var fired = false
         let cancellable = viewModel.objectWillChange.sink { _ in
             fired = true
@@ -83,15 +82,11 @@ struct FraudWarningViewModelTests {
 
     @Test("selectedIBAN defaults to nil")
     func selectedIBANDefaultsToNil() {
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: nil)
-
         #expect(viewModel.selectedIBAN == nil)
     }
 
     @Test("didConfirmIBAN stores the choice and fires didProceed exactly once")
     func didConfirmIBANStoresAndFires() {
-        let delegate = Mock()
-        let viewModel = FraudWarningViewModel(content: Self.content, eventHandler: delegate)
         let choice: IBANChoice = .printed(iban: Self.printedIBAN)
 
         viewModel.didConfirmIBAN(choice)
