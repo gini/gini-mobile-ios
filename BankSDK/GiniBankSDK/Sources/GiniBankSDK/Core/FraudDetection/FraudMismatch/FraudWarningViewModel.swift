@@ -60,4 +60,60 @@ final class FraudWarningViewModel: ObservableObject {
         selectedIBAN = choice
         delegate?.fraudWarningViewModelDidProceed(self)
     }
+
+    // MARK: - Derived display strings
+
+    /** Localized title key for the current `content` variant. */
+    var titleKey: String {
+        switch content {
+        case .qrPrinted: return "ginibank.fraud.warning.title.qr.printed"
+        case .country:   return "ginibank.fraud.warning.title.country"
+        case .combined:  return "ginibank.fraud.warning.title.combined"
+        }
+    }
+
+    /** Localized body/subtitle key for the current `content` variant. */
+    var bodyKey: String {
+        switch content {
+        case .qrPrinted: return "ginibank.fraud.warning.body.qr.printed"
+        case .country:   return "ginibank.fraud.warning.body.country"
+        case .combined:  return "ginibank.fraud.warning.body.combined"
+        }
+    }
+
+    /**
+     Sender-card value shown next to the "Sender" label. Returns
+     `"Name · Country"` when both are available, the localized country
+     name alone when the name is missing/empty.
+     */
+    func senderContent(senderName: String?, senderCountry: String) -> String {
+        let country = FraudCountryName.display(code: senderCountry,
+                                               in: Self.countryNameLocale)
+        guard let name = senderName, !name.isEmpty else { return country }
+        return String(format: Self.localized("ginibank.fraud.warning.sender.with.country"),
+                      name, country)
+    }
+
+    /**
+     Red hint line shown below an IBAN row ("From Poland, not the sender's
+     country"). Returns `nil` when the IBAN's country matches the sender's.
+     */
+    func countryHint(for iban: String, senderCountry: String) -> String? {
+        guard let code = FraudWarningContent.hintCountryCode(for: iban,
+                                                             senderCountry: senderCountry) else {
+            return nil
+        }
+        let name = FraudCountryName.display(code: code, in: Self.countryNameLocale)
+        return String(format: Self.localized("ginibank.fraud.warning.row.country.hint"), name)
+    }
+
+    // MARK: - Localization helpers
+
+    private static func localized(_ key: String) -> String {
+        NSLocalizedStringPreferredGiniBankFormat(key, comment: "")
+    }
+
+    private static var countryNameLocale: Locale {
+        Locale(identifier: localized("ginibank.fraud.country.name.locale"))
+    }
 }

@@ -84,32 +84,17 @@ struct FraudWarningView: View {
     }
 
     private var titleAndSubtitle: some View {
-        let (titleKey, bodyKey) = Self.titleAndBodyKeys(for: viewModel.content)
-        return VStack(spacing: Constants.titleToSubtitleSpacing) {
-            Text(Self.localized(titleKey))
+        VStack(spacing: Constants.titleToSubtitleSpacing) {
+            Text(Self.localized(viewModel.titleKey))
                 .font(.title2.weight(.bold))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
 
-            Text(Self.localized(bodyKey))
+            Text(Self.localized(viewModel.bodyKey))
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-        }
-    }
-
-    private static func titleAndBodyKeys(for content: FraudWarningContent) -> (String, String) {
-        switch content {
-        case .qrPrinted:
-            return ("ginibank.fraud.warning.title.qr.printed",
-                    "ginibank.fraud.warning.body.qr.printed")
-        case .country:
-            return ("ginibank.fraud.warning.title.country",
-                    "ginibank.fraud.warning.body.country")
-        case .combined:
-            return ("ginibank.fraud.warning.title.combined",
-                    "ginibank.fraud.warning.body.combined")
         }
     }
 
@@ -208,7 +193,7 @@ struct FraudWarningView: View {
             Divider()
             GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.document.label"),
                           content: iban,
-                          footer: Self.countryHint(for: iban, senderCountry: senderCountry),
+                          footer: viewModel.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
                           giniColorScheme: scheme,
                           contentPadding: Constants.flushRowPadding)
@@ -231,14 +216,14 @@ struct FraudWarningView: View {
             VStack(alignment: .leading, spacing: 0) {
                 GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
                               content: qrIBAN,
-                              footer: Self.countryHint(for: qrIBAN, senderCountry: senderCountry),
+                              footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
                               variant: .informational,
                               giniColorScheme: scheme,
                               contentPadding: Constants.flushRowPadding)
                 Divider()
                 GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.printed.label"),
                               content: printedIBAN,
-                              footer: Self.countryHint(for: printedIBAN, senderCountry: senderCountry),
+                              footer: viewModel.countryHint(for: printedIBAN, senderCountry: senderCountry),
                               variant: .informational,
                               giniColorScheme: scheme,
                               contentPadding: Constants.flushRowPadding)
@@ -258,8 +243,8 @@ struct FraudWarningView: View {
                                  senderCountry: String,
                                  scheme: GiniColorScheme) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
-                      content: Self.senderContent(senderName: senderName,
-                                                  senderCountry: senderCountry),
+                      content: viewModel.senderContent(senderName: senderName,
+                                                      senderCountry: senderCountry),
                       variant: .informational,
                       giniColorScheme: scheme,
                       contentPadding: Constants.flushRowPadding)
@@ -269,34 +254,11 @@ struct FraudWarningView: View {
                             senderCountry: String,
                             scheme: GiniColorScheme) -> some View {
         GiniOptionRow(title: Self.localized("ginibank.fraud.warning.sender.label"),
-                      content: Self.senderContent(senderName: senderName,
-                                                  senderCountry: senderCountry),
+                      content: viewModel.senderContent(senderName: senderName,
+                                                      senderCountry: senderCountry),
                       variant: .informational,
                       giniColorScheme: scheme,
                       background: scheme.placeholder.background)
-    }
-
-    private static func senderContent(senderName: String?,
-                                      senderCountry: String) -> String {
-        let country = FraudCountryName.display(code: senderCountry,
-                                               in: Self.countryNameLocale)
-        guard let name = senderName, !name.isEmpty else { return country }
-        return String(format: Self.localized("ginibank.fraud.warning.sender.with.country"),
-                      name, country)
-    }
-
-    private static func countryHint(for iban: String,
-                                    senderCountry: String) -> String? {
-        guard let code = FraudWarningContent.hintCountryCode(for: iban,
-                                                             senderCountry: senderCountry) else {
-            return nil
-        }
-        let name = FraudCountryName.display(code: code, in: Self.countryNameLocale)
-        return String(format: Self.localized("ginibank.fraud.warning.row.country.hint"), name)
-    }
-
-    private static var countryNameLocale: Locale {
-        Locale(identifier: Self.localized("ginibank.fraud.country.name.locale"))
     }
 
     /**
