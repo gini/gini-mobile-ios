@@ -87,8 +87,8 @@ final class FraudWarningViewModel: ObservableObject {
      name alone when the name is missing/empty.
      */
     func senderContent(senderName: String?, senderCountry: String) -> String {
-        let country = FraudCountryName.display(code: senderCountry,
-                                               in: Self.countryNameLocale)
+        let country = FraudCountryName.displayCountry(code: senderCountry,
+                                                      in: Self.countryNameLocale)
         guard let name = senderName, !name.isEmpty else { return country }
         return String(format: Self.localized("ginibank.fraud.warning.sender.with.country"),
                       name, country)
@@ -103,7 +103,7 @@ final class FraudWarningViewModel: ObservableObject {
                                                              senderCountry: senderCountry) else {
             return nil
         }
-        let name = FraudCountryName.display(code: code, in: Self.countryNameLocale)
+        let name = FraudCountryName.displayCountry(code: code, in: Self.countryNameLocale)
         return String(format: Self.localized("ginibank.fraud.warning.row.country.hint"), name)
     }
 

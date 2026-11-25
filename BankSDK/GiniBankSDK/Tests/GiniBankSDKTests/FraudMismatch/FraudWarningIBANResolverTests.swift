@@ -285,32 +285,32 @@ struct FraudWarningIBANResolverTests {
                                        printedIBAN: "DE89 3704 0044 0532 0130 00"))
     }
 
-    // MARK: - FraudWarningContent.presentsIBANPicker
+    // MARK: - FraudWarningContent.shouldPresentIBANPicker
 
-    @Test("presentsIBANPicker is true for qrPrinted")
-    func presentsIBANPickerTrueForQrPrinted() {
+    @Test("shouldPresentIBANPicker is true for qrPrinted")
+    func shouldPresentIBANPickerTrueForQrPrinted() {
         let content = FraudWarningContent.qrPrinted(qrIBAN: "PL12", printedIBAN: "DE89")
 
-        #expect(content.presentsIBANPicker == true)
+        #expect(content.shouldPresentIBANPicker == true)
     }
 
-    @Test("presentsIBANPicker is true for combined")
-    func presentsIBANPickerTrueForCombined() {
+    @Test("shouldPresentIBANPicker is true for combined")
+    func shouldPresentIBANPickerTrueForCombined() {
         let content = FraudWarningContent.combined(senderName: "Elektro Brandt GmbH",
                                                    senderCountry: "DE",
                                                    qrIBAN: "PL12",
                                                    printedIBAN: "DE89")
 
-        #expect(content.presentsIBANPicker == true)
+        #expect(content.shouldPresentIBANPicker == true)
     }
 
-    @Test("presentsIBANPicker is false for country")
-    func presentsIBANPickerFalseForCountry() {
+    @Test("shouldPresentIBANPicker is false for country")
+    func shouldPresentIBANPickerFalseForCountry() {
         let content = FraudWarningContent.country(senderName: nil,
                                                   senderCountry: "DE",
                                                   iban: "PL12")
 
-        #expect(content.presentsIBANPicker == false)
+        #expect(content.shouldPresentIBANPicker == false)
     }
 
     // MARK: - FraudWarningContent.pickerIBANs
@@ -368,25 +368,25 @@ struct FraudWarningIBANResolverTests {
                                                     senderCountry: "DE") == nil)
     }
 
-    // MARK: - FraudCountryName.display
+    // MARK: - FraudCountryName.displayCountry
 
     @Test("display returns the localized country name for a known code")
     func displayReturnsLocalizedNameForKnownCode() {
-        let name = FraudCountryName.display(code: "DE", in: Locale(identifier: "en"))
+        let name = FraudCountryName.displayCountry(code: "DE", in: Locale(identifier: "en"))
 
         #expect(name == "Germany")
     }
 
     @Test("display uppercases a lowercase input before resolving the region")
     func displayUppercasesLowercaseInput() {
-        let name = FraudCountryName.display(code: "de", in: Locale(identifier: "en"))
+        let name = FraudCountryName.displayCountry(code: "de", in: Locale(identifier: "en"))
 
         #expect(name == "Germany")
     }
 
     @Test("display falls back to the raw code when the locale returns an empty name")
     func displayFallsBackWhenLocaleReturnsEmpty() {
-        let name = FraudCountryName.display(code: "", in: Locale(identifier: "en"))
+        let name = FraudCountryName.displayCountry(code: "", in: Locale(identifier: "en"))
 
         #expect(name == "")
     }
