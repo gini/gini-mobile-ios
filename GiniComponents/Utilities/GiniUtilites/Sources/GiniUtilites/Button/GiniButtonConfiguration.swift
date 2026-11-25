@@ -1,5 +1,5 @@
 //
-//  ButtonConfiguration.swift
+//  GiniButtonConfiguration.swift
 //
 //  Copyright © 2026 Gini GmbH. All rights reserved.
 //
@@ -14,7 +14,7 @@ import SwiftUI
  and SwiftUI views (via `View.configure(with:)` below) can read it
  without one SDK needing to import the other.
  */
-public struct ButtonConfiguration {
+public struct GiniButtonConfiguration {
     public let backgroundColor: UIColor
     public let borderColor: UIColor
     public let titleColor: UIColor
@@ -75,7 +75,15 @@ public struct ButtonConfiguration {
 }
 
 /**
- SwiftUI `ButtonStyle` that paints a Button using a `ButtonConfiguration`
+ Back-compat alias. Downstream SDKs re-export the shared button config
+ under the historical `ButtonConfiguration` name, so the GiniUtilites
+ symbol has to keep resolving under that name too — new call sites
+ should prefer `GiniButtonConfiguration`.
+ */
+public typealias ButtonConfiguration = GiniButtonConfiguration
+
+/**
+ SwiftUI `ButtonStyle` that paints a Button using a `GiniButtonConfiguration`
  — the SwiftUI counterpart to GiniCaptureSDK's UIKit `configure(with:)`
  helpers. Scoped to Button (via `.buttonStyle(...)`) so it does not add a
  universal modifier to every SwiftUI `View`, mirroring the UIKit side
@@ -96,9 +104,9 @@ public struct ButtonConfiguration {
  `UIControl.State.highlighted`.
  */
 public struct GiniButtonStyle: ButtonStyle {
-    public let configuration: ButtonConfiguration
+    public let configuration: GiniButtonConfiguration
 
-    public init(_ configuration: ButtonConfiguration) {
+    public init(_ configuration: GiniButtonConfiguration) {
         self.configuration = configuration
     }
 
