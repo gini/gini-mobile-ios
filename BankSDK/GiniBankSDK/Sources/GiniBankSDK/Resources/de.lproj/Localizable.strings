@@ -185,4 +185,3 @@
 "ginibank.fraud.warning.sender.with.country" = "%@ · %@";
 "ginibank.fraud.warning.row.country.hint" = "Aus %@, nicht aus dem Land des Absenders";
 "ginibank.fraud.warning.row.document.label" = "Auf dem Dokument";
-"ginibank.fraud.country.name.locale" = "de";
