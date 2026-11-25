@@ -105,6 +105,7 @@ struct IBANSelectionSheet: View {
                 }
             }
         }
+        .padding(.top, Constants.topPadding)
         .padding(.horizontal, Constants.horizontalPadding)
         .padding(.bottom, Constants.bottomPadding)
     }
@@ -254,6 +255,8 @@ struct IBANSelectionSheet: View {
         static let rowsToErrorSpacing: CGFloat = 4
         static let footerToButtonSpacing: CGFloat = 8
         static let errorLineHorizontalPadding: CGFloat = 8
+        /** Gap from the sheet's inner top edge to the title. Matches the Figma spec (44pt) so the title isn't flush against the drag indicator. */
+        static let topPadding: CGFloat = 44
         static let horizontalPadding: CGFloat = 24
         static let bottomPadding: CGFloat = 24
         static let buttonMinHeight: CGFloat = 50
