@@ -52,7 +52,7 @@ struct FraudWarningView: View {
             } else {
                 // Portrait: content scrolls, buttons pin to the bottom so the
                 // primary action stays reachable without scrolling.
-                VStack(spacing: 0) {
+                VStack() {
                     ScrollView {
                         scrollContent(scheme: scheme, expandableVM: expandableVM)
                             .padding(.horizontal, Constants.outerPadding)
@@ -196,7 +196,7 @@ struct FraudWarningView: View {
                                 senderCountry: String,
                                 iban: String,
                                 scheme: GiniColorScheme) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading) {
             senderOptionRow(senderName: senderName,
                             senderCountry: senderCountry,
                             scheme: scheme)
@@ -223,7 +223,7 @@ struct FraudWarningView: View {
 
             detectedIBANsHeader
 
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading) {
                 GiniOptionRow(title: Self.localized("ginibank.fraud.warning.row.qr.label"),
                               content: qrIBAN,
                               footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
