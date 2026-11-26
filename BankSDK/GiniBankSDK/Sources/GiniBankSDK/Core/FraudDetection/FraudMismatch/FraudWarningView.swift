@@ -46,7 +46,7 @@ struct FraudWarningView: View {
                         buttonStack
                     }
                     .padding(.horizontal, Constants.outerPadding)
-                    .padding(.top, Constants.topInset)
+                    .padding(.top, Constants.topPadding)
                     .padding(.bottom, Constants.outerPadding)
                 }
             } else {
@@ -56,7 +56,7 @@ struct FraudWarningView: View {
                     ScrollView {
                         scrollContent(scheme: scheme, expandableVM: expandableVM)
                             .padding(.horizontal, Constants.outerPadding)
-                            .padding(.top, Constants.topInset)
+                            .padding(.top, Constants.topPadding)
                             .padding(.bottom, Constants.outerPadding)
                     }
                     buttonStack
@@ -329,7 +329,7 @@ struct FraudWarningView: View {
          outer sheet `pt-32` plus the content wrapper's internal `pt-16`, so
          the icon sits 48pt below the sheet edge.
          */
-        static let topInset: CGFloat = 48
+        static let topPadding: CGFloat = 48
         /** Gap between the sender card and the "The following IBANs were detected" header. Matches Figma's `space-350`. */
         static let senderToSectionHeaderSpacing: CGFloat = 20
         /** Gap between the "The following IBANs were detected" header and the IBAN rows block. Figma literal 11pt (not a named token). */
