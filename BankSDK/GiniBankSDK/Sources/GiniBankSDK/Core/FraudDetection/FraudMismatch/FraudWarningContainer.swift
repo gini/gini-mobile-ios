@@ -80,7 +80,6 @@ struct FraudWarningContainer: View {
                                     continueCTA: localized("ginibank.fraud.iban.selection.cta.continue"),
                                     validationErrorMessage: localized("ginibank.fraud.iban.selection.validation.select.iban"),
                                     continueHintWhenNoSelection: localized("ginibank.fraud.iban.selection.validation.select.iban"),
-                                    spellOutIBANActionName: localized("ginibank.fraud.iban.selection.a11y.action.spell.out.iban"),
                                     qrIBAN: qrIBAN,
                                     printedIBANs: [printedIBAN],
                                     giniColorScheme: UIColor.giniBankColorScheme(),

@@ -116,39 +116,25 @@ struct IBANSelectionSheet: View {
         VStack(spacing: 0) {
             GiniOptionRow(title: viewModel.qrRowTitle,
                           content: viewModel.qrIBAN,
+                          spellsOutContent: true,
                           variant: variant(for: .qr(iban: viewModel.qrIBAN)),
                           giniColorScheme: viewModel.giniColorScheme,
                           fonts: viewModel.rowFonts,
+                          accessibilityValueWhenError: viewModel.validationErrorMessage,
                           onTap: { select(.qr(iban: viewModel.qrIBAN)) })
-                .accessibilityAction(named: Text(viewModel.spellOutIBANActionName)) {
-                    Self.announceSpelledOut(viewModel.qrIBAN)
-                }
 
             ForEach(Array(viewModel.printedIBANs.enumerated()), id: \.offset) { _, printedIBAN in
                 Divider()
                 GiniOptionRow(title: viewModel.printedRowTitle,
                               content: printedIBAN,
+                              spellsOutContent: true,
                               variant: variant(for: .printed(iban: printedIBAN)),
                               giniColorScheme: viewModel.giniColorScheme,
                               fonts: viewModel.rowFonts,
+                              accessibilityValueWhenError: viewModel.validationErrorMessage,
                               onTap: { select(.printed(iban: printedIBAN)) })
-                    .accessibilityAction(named: Text(viewModel.spellOutIBANActionName)) {
-                        Self.announceSpelledOut(printedIBAN)
-                    }
             }
         }
-    }
-
-    /**
-     Posts an accessibility announcement that reads `iban` character by
-     character. Used by the per-row "Spell out IBAN" rotor action so a blind
-     user can detect a one-character substitution.
-     */
-    private static func announceSpelledOut(_ iban: String) {
-        var spelled = AttributedString(iban)
-        spelled.accessibilitySpeechSpellsOutCharacters = true
-        UIAccessibility.post(notification: .announcement,
-                             argument: NSAttributedString(spelled))
     }
 
     private var continueButton: some View {
@@ -378,7 +364,6 @@ private struct IBANSelectionSheetPreviewHost: View {
             continueCTA: "Continue",
             validationErrorMessage: "Select an IBAN to continue",
             continueHintWhenNoSelection: "Select an IBAN to continue",
-            spellOutIBANActionName: "Spell out IBAN",
             qrIBAN: "PL12 1000 0111 0100 1000",
             printedIBANs: printedIBANs,
             giniColorScheme: UIColor.giniBankColorScheme()

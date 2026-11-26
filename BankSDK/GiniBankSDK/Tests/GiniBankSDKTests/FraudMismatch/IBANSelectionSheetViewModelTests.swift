@@ -42,7 +42,6 @@ struct IBANSelectionSheetViewModelTests {
                                                     continueCTA: "Continue",
                                                     validationErrorMessage: "Select an IBAN to continue",
                                                     continueHintWhenNoSelection: "Select an IBAN to continue, then tap Continue",
-                                                    spellOutIBANActionName: "Spell out IBAN",
                                                     qrIBAN: "PL12 1000 0111 0100 1000",
                                                     printedIBANs: ["DE89 3704 0044 0532 0130 00"],
                                                     giniColorScheme: Self.makeColorScheme())
@@ -54,7 +53,6 @@ struct IBANSelectionSheetViewModelTests {
         #expect(viewModel.continueCTA == "Continue")
         #expect(viewModel.validationErrorMessage == "Select an IBAN to continue")
         #expect(viewModel.continueHintWhenNoSelection == "Select an IBAN to continue, then tap Continue")
-        #expect(viewModel.spellOutIBANActionName == "Spell out IBAN")
         #expect(viewModel.qrIBAN == "PL12 1000 0111 0100 1000")
     }
 
@@ -72,7 +70,6 @@ struct IBANSelectionSheetViewModelTests {
                                                     continueCTA: "c",
                                                     validationErrorMessage: "v",
                                                     continueHintWhenNoSelection: "h",
-                                                    spellOutIBANActionName: "s",
                                                     qrIBAN: "QR",
                                                     printedIBANs: printed,
                                                     giniColorScheme: Self.makeColorScheme())
@@ -90,7 +87,6 @@ struct IBANSelectionSheetViewModelTests {
                                                     continueCTA: "c",
                                                     validationErrorMessage: "v",
                                                     continueHintWhenNoSelection: "h",
-                                                    spellOutIBANActionName: "s",
                                                     qrIBAN: "QR",
                                                     printedIBANs: ["DE89 3704 0044 0532 0130 00"],
                                                     giniColorScheme: Self.makeColorScheme())
@@ -117,7 +113,6 @@ struct IBANSelectionSheetViewModelTests {
                                                     continueCTA: "c",
                                                     validationErrorMessage: "v",
                                                     continueHintWhenNoSelection: "h",
-                                                    spellOutIBANActionName: "s",
                                                     qrIBAN: "QR",
                                                     printedIBANs: ["P1"],
                                                     giniColorScheme: Self.makeColorScheme(),
