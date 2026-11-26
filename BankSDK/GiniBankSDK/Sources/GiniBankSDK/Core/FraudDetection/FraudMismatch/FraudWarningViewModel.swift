@@ -152,7 +152,5 @@ final class FraudWarningViewModel: ObservableObject {
         NSLocalizedStringPreferredGiniBankFormat(key, comment: "")
     }
 
-    private static var countryNameLocale: Locale {
-        Locale(identifier: localized("ginibank.fraud.country.name.locale"))
-    }
+    private static var countryNameLocale: Locale { .current }
 }
