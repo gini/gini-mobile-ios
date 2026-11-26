@@ -113,7 +113,7 @@ public extension PaymentSecondaryButton {
         leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
 
         buttonTitleLabel.textColor = configuration.titleColor
-        buttonTitleLabel.font = configuration.titleFont
+        buttonTitleLabel.font = configuration.titleFont ?? ButtonConfiguration.defaultTitleFont
     }
 
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor?, shouldShowLabel: Bool) {

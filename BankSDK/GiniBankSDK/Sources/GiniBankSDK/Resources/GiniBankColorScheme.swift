@@ -97,6 +97,7 @@ extension UIColor {
             primary: GiniColor(lightModeColor: .GiniBank.dark1, darkModeColor: .GiniBank.light1),
             secondary: GiniColor(lightModeColor: .GiniBank.dark6, darkModeColor: .GiniBank.dark7),
             tertiary: GiniColor(lightModeColor: .GiniBank.dark7, darkModeColor: .GiniBank.dark7),
+            label: GiniColor(lightModeColor: .GiniBank.dark5, darkModeColor: .GiniBank.light6),
             accent: GiniColor(lightModeColor: .GiniBank.accent1, darkModeColor: .GiniBank.accent1),
             success: GiniColor(lightModeColor: .GiniBank.success3, darkModeColor: .GiniBank.success3),
             error: GiniColor(lightModeColor: .GiniBank.error3, darkModeColor: .GiniBank.error3)

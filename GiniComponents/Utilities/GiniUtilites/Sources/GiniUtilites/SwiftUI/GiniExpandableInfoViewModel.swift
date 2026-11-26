@@ -54,7 +54,13 @@ public struct GiniExpandableInfoViewModel {
     /** Color scheme the view resolves its title and chevron tint from. */
     public let colorScheme: GiniColorScheme
 
-    /** Title font; bridged into SwiftUI via `Font(giniFont:)` so Dynamic Type propagates. */
+    /**
+     Title font. Currently unused by `GiniExpandableInfoView`, which renders
+     the header title with SwiftUI's native `.subheadline` text style so it
+     scales correctly with Dynamic Type at runtime. Kept on the model for
+     source-compatibility with existing call sites; a future refactor can
+     drop it once we introduce an explicit text-style parameter.
+     */
     public let titleFont: UIFont
 
     /** Already-localized string VoiceOver announces as the accessibility value when the card is expanded. */
@@ -73,7 +79,7 @@ public struct GiniExpandableInfoViewModel {
        - title: Title shown next to the icon in the header row.
        - backgroundColor: Card surface color (per-screen Figma spec).
        - colorScheme: Color scheme the view resolves its tokens from.
-       - titleFont: UIKit font used for the title; bridged into SwiftUI via `Font(giniFont:)`.
+       - titleFont: UIKit font for the title. Currently unused — see the `titleFont` property doc.
        - expandedAccessibilityValue: Already-localized VoiceOver value for the expanded state.
        - collapsedAccessibilityValue: Already-localized VoiceOver value for the collapsed state.
      */

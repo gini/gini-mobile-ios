@@ -88,6 +88,16 @@ public struct GiniOptionRow: View {
         }
     }
 
+    /** Default `contentPadding` applied to every edge of the row. 12pt all
+     around matches the Figma spec for info rows that stand alone on a
+     surface; call sites that need a flush edge (e.g. a row sitting inside
+     a section whose header is already at 0pt) pass `EdgeInsets` with the
+     relevant side zeroed out. */
+    public static let defaultContentPadding: EdgeInsets = EdgeInsets(top: 12,
+                                                                     leading: 12,
+                                                                     bottom: 12,
+                                                                     trailing: 12)
+
     let title: String
     let content: String
     let footer: String?
@@ -95,6 +105,7 @@ public struct GiniOptionRow: View {
     let giniColorScheme: GiniColorScheme
     let background: GiniColor?
     let fonts: FontConfiguration
+    let contentPadding: EdgeInsets
     let onTap: (() -> Void)?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -110,6 +121,7 @@ public struct GiniOptionRow: View {
        - giniColorScheme: Design-system token source. Pass the host SDK's scheme (e.g. `UIColor.giniBankColorScheme()`).
        - background: Optional background color for the row. Typically `nil` for radio rows (parent sheet owns the surface) and a semantic token for informational rows that need to stand alone.
        - fonts: Font bundle for the three text lines. See `FontConfiguration` for SDK-specific resolution examples. Defaults to system fonts.
+       - contentPadding: Insets applied around the row's content. Defaults to `defaultContentPadding` (12pt on every edge); callers can zero individual edges to let the row sit flush with sibling content on that side.
        - onTap: Invoked when the user taps the row. Pass `nil` for a non-interactive row (common for `.informational`).
      */
     public init(title: String,
@@ -119,6 +131,7 @@ public struct GiniOptionRow: View {
                 giniColorScheme: GiniColorScheme,
                 background: GiniColor? = nil,
                 fonts: FontConfiguration = .init(),
+                contentPadding: EdgeInsets = Self.defaultContentPadding,
                 onTap: (() -> Void)? = nil) {
         self.title = title
         self.content = content
@@ -127,6 +140,7 @@ public struct GiniOptionRow: View {
         self.giniColorScheme = giniColorScheme
         self.background = background
         self.fonts = fonts
+        self.contentPadding = contentPadding
         self.onTap = onTap
     }
 
@@ -163,7 +177,7 @@ public struct GiniOptionRow: View {
             textStack
             Spacer(minLength: 0)
         }
-        .padding(Constants.contentPadding)
+        .padding(contentPadding)
         .background(backgroundLayer)
         .contentShape(Rectangle())
     }
@@ -196,7 +210,7 @@ public struct GiniOptionRow: View {
     // MARK: - Token resolution
 
     private var titleColor: Color {
-        giniColorScheme.text.secondary.swiftUIColor()
+        giniColorScheme.text.label.swiftUIColor()
     }
 
     private var contentColor: Color {

@@ -93,19 +93,29 @@ public struct GiniColorScheme {
         public var primary: GiniColor
         public var secondary: GiniColor
         public var tertiary: GiniColor
+        /**
+         Semantic token for low-emphasis UI labels — captions over
+         informational values (e.g. the "Sender" / "In the QR code" row
+         labels on the fraud warning). Sits between `primary` and
+         `secondary` on the contrast scale; maps to Figma's
+         `iOS/text/label` (#48484a).
+         */
+        public var label: GiniColor
         public var accent: GiniColor
         public var success: GiniColor
         public var error: GiniColor
-        
+
         public init(primary: GiniColor,
                     secondary: GiniColor,
                     tertiary: GiniColor,
+                    label: GiniColor,
                     accent: GiniColor,
                     success: GiniColor,
                     error: GiniColor) {
             self.primary = primary
             self.secondary = secondary
             self.tertiary = tertiary
+            self.label = label
             self.accent = accent
             self.success = success
             self.error = error

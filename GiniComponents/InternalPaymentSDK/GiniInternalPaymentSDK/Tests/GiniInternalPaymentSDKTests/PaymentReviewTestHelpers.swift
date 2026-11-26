@@ -65,12 +65,12 @@ extension ButtonConfiguration {
         ButtonConfiguration(backgroundColor: .systemBlue,
                             borderColor: .clear,
                             titleColor: .white,
-                            titleFont: .systemFont(ofSize: 16, weight: .semibold),
                             shadowColor: .clear,
                             cornerRadius: 8,
                             borderWidth: 0,
                             shadowRadius: 0,
-                            withBlurEffect: false)
+                            withBlurEffect: false,
+                            titleFont: .systemFont(ofSize: 16, weight: .semibold))
     }
 }
 

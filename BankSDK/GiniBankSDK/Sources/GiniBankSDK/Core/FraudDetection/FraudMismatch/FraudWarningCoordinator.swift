@@ -16,8 +16,8 @@ import GiniUtilites
  */
 final class FraudWarningBottomSheetController: UIHostingController<FraudWarningContainer>, GiniBottomSheetPresentable {
 
-    var shouldShowDragIndicator: Bool { true }
-    var shouldShowInFullScreenInLandscapeMode: Bool { false }
+    var shouldShowDragIndicator: Bool { false }
+    var shouldShowInFullScreenInLandscapeMode: Bool { true }
 }
 
 /**
@@ -34,14 +34,14 @@ final class FraudWarningCoordinator: FraudWarningViewModelDelegate {
 
     let viewModel: FraudWarningViewModel
 
-    init(qrIBAN: String,
-         printedIBAN: String,
+    init(content: FraudWarningContent,
          delegate: FraudWarningCoordinatorDelegate? = nil) {
         self.delegate = delegate
-        self.viewModel = FraudWarningViewModel(qrIBAN: qrIBAN,
-                                               printedIBAN: printedIBAN,
-                                               delegate: nil)
-        self.viewModel.delegate = self
+        /// `self` isn't available during stored-property init, so the VM's
+        /// event handler (which is this coordinator) is wired right after.
+        self.viewModel = FraudWarningViewModel(content: content,
+                                               eventHandler: nil)
+        self.viewModel.eventHandler = self
     }
 
     /**

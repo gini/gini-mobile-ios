@@ -15,11 +15,12 @@ import Testing
 @MainActor
 struct FraudWarningCoordinatorTests {
 
+    private static let content: FraudWarningContent = .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                 printedIBAN: "DE89 3704 0044 0532 0130 00")
+
     @Test("start() returns a bottom-sheet hosting controller with isModalInPresentation")
     func startReturnsConfiguredHostingController() {
-        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
-                                                  delegate: nil)
+        let coordinator = FraudWarningCoordinator(content: Self.content, delegate: nil)
 
         let hosting = coordinator.start()
 
@@ -30,9 +31,7 @@ struct FraudWarningCoordinatorTests {
     @Test("viewModel didTapCancel forwards to coordinator delegate")
     func viewModelCancelForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
-                                                  delegate: delegate)
+        let coordinator = FraudWarningCoordinator(content: Self.content, delegate: delegate)
 
         coordinator.viewModel.didTapCancel()
 
@@ -43,9 +42,7 @@ struct FraudWarningCoordinatorTests {
     @Test("viewModel didTapProceed forwards to coordinator delegate")
     func viewModelProceedForwards() {
         let delegate = Mock()
-        let coordinator = FraudWarningCoordinator(qrIBAN: "PL12 1000 0111 0100 1000",
-                                                  printedIBAN: "DE89 3704 0044 0532 0130 00",
-                                                  delegate: delegate)
+        let coordinator = FraudWarningCoordinator(content: Self.content, delegate: delegate)
 
         coordinator.viewModel.didTapProceed()
 

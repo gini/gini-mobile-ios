@@ -175,3 +175,13 @@
 "ginibank.fraud.warning.row.printed.label" = "Gedruckt auf dem Dokument";
 "ginibank.fraud.warning.cta.cancel" = "Überweisung abbrechen";
 "ginibank.fraud.warning.cta.proceed" = "Trotzdem fortfahren";
+
+// MARK: - Fraud warning screen — country and combined variants
+"ginibank.fraud.warning.title.country" = "IBAN passt nicht zum Land des Absenders";
+"ginibank.fraud.warning.body.country" = "Das Land der IBAN auf dem Dokument unterscheidet sich vom Land des Absenders.";
+"ginibank.fraud.warning.title.combined" = "Unterschiedliche IBANs und Länder auf diesem Dokument";
+"ginibank.fraud.warning.body.combined" = "Die IBAN im QR-Code unterscheidet sich von der gedruckten. Außerdem passt das IBAN-Land nicht zum Land des Absenders.";
+"ginibank.fraud.warning.sender.label" = "Absender";
+"ginibank.fraud.warning.sender.with.country" = "%@ · %@";
+"ginibank.fraud.warning.row.country.hint" = "Aus %@, nicht aus dem Land des Absenders";
+"ginibank.fraud.warning.row.document.label" = "Auf dem Dokument";
