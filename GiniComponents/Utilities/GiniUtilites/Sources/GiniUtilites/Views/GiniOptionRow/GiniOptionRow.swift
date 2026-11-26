@@ -117,14 +117,14 @@ public struct GiniOptionRow: View {
      - Parameters:
        - title: Small label above the content (e.g. "Printed on the document"). Already localized.
        - content: Primary value shown to the user (e.g. an IBAN). Already localized.
-       - spellsOutContent: When `true`, the content segment of the VoiceOver label is read character-by-character instead of as a word — set this for fields where a one-character substitution matters (IBANs, account numbers, confirmation codes). Visual rendering is unaffected.
+       - spellsOutContent: When `true`, the content segment of the VoiceOver label is read character-by-character — for fields where a one-character substitution matters (IBANs, account numbers). Visual rendering is unaffected.
        - footer: Optional warning line shown below the content, tinted error-red. Already localized.
        - variant: `.radio(RadioButtonState)` for a selectable row with a leading circle, or `.informational` for a non-radio display row.
        - giniColorScheme: Design-system token source. Pass the host SDK's scheme (e.g. `UIColor.giniBankColorScheme()`).
        - background: Optional background color for the row. Typically `nil` for radio rows (parent sheet owns the surface) and a semantic token for informational rows that need to stand alone.
        - fonts: Font bundle for the three text lines. See `FontConfiguration` for SDK-specific resolution examples. Defaults to system fonts.
        - contentPadding: Insets applied around the row's content. Defaults to `defaultContentPadding` (12pt on every edge); callers can zero individual edges to let the row sit flush with sibling content on that side.
-       - accessibilityValueWhenError: Optional already-localized string VoiceOver announces as the accessibility value when the row is in `.radio(.error)`. The red radio icon is the visual signal of the state; this string makes that signal non-visual too (WCAG 1.4.1). Frame it as a prompt rather than an error (e.g. "Select an IBAN to continue") — the state is a validation hint, not a failure.
+       - accessibilityValueWhenError: Pre-localized string VoiceOver announces as the accessibility value when the row is in `.radio(.error)` — makes the red-icon validation state non-visual (WCAG 1.4.1). Frame as a prompt, not an error (e.g. "Select an IBAN to continue").
        - onTap: Invoked when the user taps the row. Pass `nil` for a non-interactive row (common for `.informational`).
      */
     public init(title: String,
