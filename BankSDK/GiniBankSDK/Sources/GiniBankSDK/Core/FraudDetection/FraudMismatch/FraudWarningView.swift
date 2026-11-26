@@ -164,8 +164,7 @@ struct FraudWarningView: View {
         case let .combined(senderName, senderCountry, qrIBAN, printedIBAN):
             combinedSection(senderName: senderName,
                             senderCountry: senderCountry,
-                            qrIBAN: qrIBAN,
-                            printedIBAN: printedIBAN,
+                            qrIBAN: qrIBAN, printedIBAN: printedIBAN,
                             scheme: scheme)
         }
     }
