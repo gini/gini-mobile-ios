@@ -178,12 +178,14 @@ struct FraudWarningView: View {
             VStack(alignment: .leading, spacing: 0) {
                 GiniOptionRow(title: viewModel.qrRowLabel,
                               content: qrIBAN,
+                              spellsOutContent: true,
                               variant: .informational,
                               giniColorScheme: scheme,
                               contentPadding: Constants.flushRowPadding)
                 Divider()
                 GiniOptionRow(title: viewModel.printedRowLabel,
                               content: printedIBAN,
+                              spellsOutContent: true,
                               variant: .informational,
                               giniColorScheme: scheme,
                               contentPadding: Constants.flushRowPadding)
@@ -204,6 +206,7 @@ struct FraudWarningView: View {
             Divider()
             GiniOptionRow(title: viewModel.documentRowLabel,
                           content: iban,
+                          spellsOutContent: true,
                           footer: viewModel.countryHint(for: iban, senderCountry: senderCountry),
                           variant: .informational,
                           giniColorScheme: scheme,
@@ -228,6 +231,7 @@ struct FraudWarningView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     GiniOptionRow(title: viewModel.qrRowLabel,
                                   content: qrIBAN,
+                                  spellsOutContent: true,
                                   footer: viewModel.countryHint(for: qrIBAN, senderCountry: senderCountry),
                                   variant: .informational,
                                   giniColorScheme: scheme,
@@ -235,6 +239,7 @@ struct FraudWarningView: View {
                     Divider()
                     GiniOptionRow(title: viewModel.printedRowLabel,
                                   content: printedIBAN,
+                                  spellsOutContent: true,
                                   footer: viewModel.countryHint(for: printedIBAN, senderCountry: senderCountry),
                                   variant: .informational,
                                   giniColorScheme: scheme,

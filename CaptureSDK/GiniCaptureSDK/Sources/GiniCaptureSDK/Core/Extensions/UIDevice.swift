@@ -46,25 +46,7 @@ public extension UIDevice {
     }
 
     var isPortrait: Bool {
-        // iOS 16 and higher - the most reliable and up-to-date way
-        if #available(iOS 16.0, *) {
-            return interfaceOrientation?.isPortrait ?? UIDevice.current.orientation.isPortrait
-        } else {
-
-            // Check first the window orientation (more reliable than statusBarOrientation)
-            guard let interfaceOrientation = interfaceOrientation else {
-                // If we can't get the scene, we try with the physical orientation
-                return UIDevice.current.orientation.isPortrait
-            }
-
-            let isWindowPortrait = interfaceOrientation.isPortrait
-            let deviceOrientation = UIDevice.current.orientation
-
-            if deviceOrientation == .unknown || deviceOrientation == .faceUp || deviceOrientation == .faceDown {
-                return isWindowPortrait
-            }
-            return deviceOrientation.isPortrait
-        }
+        return interfaceOrientation?.isPortrait ?? UIDevice.current.orientation.isPortrait
     }
 
     /**

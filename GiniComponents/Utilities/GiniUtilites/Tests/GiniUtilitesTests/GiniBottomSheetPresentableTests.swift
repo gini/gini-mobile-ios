@@ -80,9 +80,7 @@ struct GiniBottomSheetPresentableTests {
 
         let presentationController = try #require(sheetController.sheetPresentationController)
         #expect(presentationController.detents.count == 1)
-        if #available(iOS 16, *) {
-            #expect(presentationController.detents.first?.identifier == .large)
-        }
+        #expect(presentationController.detents.first?.identifier == .large)
     }
 
     @Test("configureBottomSheet with full-screen landscape mode installs a single .medium detent")
@@ -94,12 +92,10 @@ struct GiniBottomSheetPresentableTests {
 
         let presentationController = try #require(sheetController.sheetPresentationController)
         #expect(presentationController.detents.count == 1)
-        if #available(iOS 16, *) {
-            #expect(presentationController.detents.first?.identifier == .medium)
-        }
+        #expect(presentationController.detents.first?.identifier == .medium)
     }
 
-    @Test("configureBottomSheet default configuration installs a single custom half-screen detent on iOS 16+")
+    @Test("configureBottomSheet default configuration installs a single custom half-screen detent")
     func configureDefaultInstallsCustomHalfScreenDetent() throws {
         let sheetController = BottomSheetHostViewController()
         sheetController.shouldShowInFullScreenInLandscapeMode = false
@@ -108,16 +104,14 @@ struct GiniBottomSheetPresentableTests {
 
         let presentationController = try #require(sheetController.sheetPresentationController)
         #expect(presentationController.detents.count == 1)
-        if #available(iOS 16, *) {
-            let identifier = try #require(presentationController.detents.first?.identifier)
-            #expect(identifier != .medium)
-            #expect(identifier != .large)
-        }
+        let identifier = try #require(presentationController.detents.first?.identifier)
+        #expect(identifier != .medium)
+        #expect(identifier != .large)
     }
 
     // MARK: - updateBottomSheetHeight
 
-    @Test("updateBottomSheetHeight installs and selects the customHeight detent on iOS 16+")
+    @Test("updateBottomSheetHeight installs and selects the customHeight detent")
     func updateHeightInstallsAndSelectsCustomDetent() throws {
         let sheetController = BottomSheetHostViewController()
         sheetController.configureBottomSheet()
@@ -125,12 +119,10 @@ struct GiniBottomSheetPresentableTests {
         sheetController.updateBottomSheetHeight(300)
 
         let presentationController = try #require(sheetController.sheetPresentationController)
-        if #available(iOS 16, *) {
-            #expect(presentationController.detents.count == 1)
-            let expectedIdentifier = UISheetPresentationController.Detent.Identifier("customHeight")
-            #expect(presentationController.detents.first?.identifier == expectedIdentifier)
-            #expect(presentationController.selectedDetentIdentifier == expectedIdentifier)
-        }
+        #expect(presentationController.detents.count == 1)
+        let expectedIdentifier = UISheetPresentationController.Detent.Identifier("customHeight")
+        #expect(presentationController.detents.first?.identifier == expectedIdentifier)
+        #expect(presentationController.selectedDetentIdentifier == expectedIdentifier)
     }
 
     @Test("updateBottomSheetHeight re-applies the drag indicator preference",
@@ -142,10 +134,8 @@ struct GiniBottomSheetPresentableTests {
 
         sheetController.updateBottomSheetHeight(240)
 
-        if #available(iOS 16, *) {
-            let presentationController = try #require(sheetController.sheetPresentationController)
-            #expect(presentationController.prefersGrabberVisible == shouldShowDragIndicator)
-        }
+        let presentationController = try #require(sheetController.sheetPresentationController)
+        #expect(presentationController.prefersGrabberVisible == shouldShowDragIndicator)
     }
 
     // MARK: - presentAsBottomSheet

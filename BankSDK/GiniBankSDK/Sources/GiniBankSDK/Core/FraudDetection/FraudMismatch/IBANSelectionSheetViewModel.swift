@@ -52,13 +52,6 @@ struct IBANSelectionSheetViewModel {
      */
     let continueHintWhenNoSelection: String
 
-    /**
-     VoiceOver rotor action label offered on every IBAN row — on activation
-     the row's IBAN is announced character by character so a blind user can
-     detect a single-character substitution on a fraud-mismatch sheet.
-     */
-    let spellOutIBANActionName: String
-
     let qrIBAN: String
 
     /**
@@ -79,7 +72,6 @@ struct IBANSelectionSheetViewModel {
          continueCTA: String,
          validationErrorMessage: String,
          continueHintWhenNoSelection: String,
-         spellOutIBANActionName: String,
          qrIBAN: String,
          printedIBANs: [String],
          giniColorScheme: GiniColorScheme,
@@ -92,7 +84,6 @@ struct IBANSelectionSheetViewModel {
         self.continueCTA = continueCTA
         self.validationErrorMessage = validationErrorMessage
         self.continueHintWhenNoSelection = continueHintWhenNoSelection
-        self.spellOutIBANActionName = spellOutIBANActionName
         self.qrIBAN = qrIBAN
         self.printedIBANs = printedIBANs
         self.giniColorScheme = giniColorScheme

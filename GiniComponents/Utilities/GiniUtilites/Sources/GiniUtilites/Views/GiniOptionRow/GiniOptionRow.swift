@@ -25,7 +25,6 @@ import UIKit
  The background is optional and caller-supplied, so a Liquid Glass sheet on
  iOS 26+ can keep owning its surface without the row double-stacking glass.
  */
-@available(iOS 16.0, *)
 public struct GiniOptionRow: View {
 
     /** Visual state of the leading radio indicator (only used by the `.radio` variant). */
@@ -100,12 +99,14 @@ public struct GiniOptionRow: View {
 
     let title: String
     let content: String
+    let spellsOutContent: Bool
     let footer: String?
     let variant: Variant
     let giniColorScheme: GiniColorScheme
     let background: GiniColor?
     let fonts: FontConfiguration
     let contentPadding: EdgeInsets
+    let accessibilityValueWhenError: String?
     let onTap: (() -> Void)?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -116,31 +117,37 @@ public struct GiniOptionRow: View {
      - Parameters:
        - title: Small label above the content (e.g. "Printed on the document"). Already localized.
        - content: Primary value shown to the user (e.g. an IBAN). Already localized.
+       - spellsOutContent: When `true`, the content segment of the VoiceOver label is read character-by-character instead of as a word — set this for fields where a one-character substitution matters (IBANs, account numbers, confirmation codes). Visual rendering is unaffected.
        - footer: Optional warning line shown below the content, tinted error-red. Already localized.
        - variant: `.radio(RadioButtonState)` for a selectable row with a leading circle, or `.informational` for a non-radio display row.
        - giniColorScheme: Design-system token source. Pass the host SDK's scheme (e.g. `UIColor.giniBankColorScheme()`).
        - background: Optional background color for the row. Typically `nil` for radio rows (parent sheet owns the surface) and a semantic token for informational rows that need to stand alone.
        - fonts: Font bundle for the three text lines. See `FontConfiguration` for SDK-specific resolution examples. Defaults to system fonts.
        - contentPadding: Insets applied around the row's content. Defaults to `defaultContentPadding` (12pt on every edge); callers can zero individual edges to let the row sit flush with sibling content on that side.
+       - accessibilityValueWhenError: Optional already-localized string VoiceOver announces as the accessibility value when the row is in `.radio(.error)`. The red radio icon is the visual signal of the state; this string makes that signal non-visual too (WCAG 1.4.1). Frame it as a prompt rather than an error (e.g. "Select an IBAN to continue") — the state is a validation hint, not a failure.
        - onTap: Invoked when the user taps the row. Pass `nil` for a non-interactive row (common for `.informational`).
      */
     public init(title: String,
                 content: String,
+                spellsOutContent: Bool = false,
                 footer: String? = nil,
                 variant: Variant,
                 giniColorScheme: GiniColorScheme,
                 background: GiniColor? = nil,
                 fonts: FontConfiguration = .init(),
                 contentPadding: EdgeInsets = Self.defaultContentPadding,
+                accessibilityValueWhenError: String? = nil,
                 onTap: (() -> Void)? = nil) {
         self.title = title
         self.content = content
+        self.spellsOutContent = spellsOutContent
         self.footer = footer
         self.variant = variant
         self.giniColorScheme = giniColorScheme
         self.background = background
         self.fonts = fonts
         self.contentPadding = contentPadding
+        self.accessibilityValueWhenError = accessibilityValueWhenError
         self.onTap = onTap
     }
 
@@ -149,10 +156,37 @@ public struct GiniOptionRow: View {
             .animation(reduceMotion ? nil : .easeInOut(duration: Constants.animationDuration),
                        value: variant)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(GiniOptionRowAccessibility.makeLabel(title: title,
-                                                                     content: content,
-                                                                     footer: footer))
-            .accessibilityAddTraits(variant.isSelected ? .isSelected : [])
+            .accessibilityLabel(Text(GiniOptionRowAccessibility.makeLabel(title: title,
+                                                                          content: content,
+                                                                          footer: footer,
+                                                                          spellsOutContent: spellsOutContent)))
+            .accessibilityAddTraits(composedAccessibilityTraits)
+            .accessibilityValue(errorStateAccessibilityValue)
+    }
+
+    /**
+     Delegates to `GiniOptionRowAccessibility.composedTraits` so the logic
+     can be unit-tested without a view-hosting harness. `.isButton` is
+     advertised when the row is tappable; `.isSelected` when the variant
+     reports selected.
+     */
+    private var composedAccessibilityTraits: AccessibilityTraits {
+        GiniOptionRowAccessibility.composedTraits(isTappable: onTap != nil,
+                                                   isSelected: variant.isSelected)
+    }
+
+    /**
+     Accessibility value applied to the row. When the row is in `.radio(.error)`
+     and the caller supplied `accessibilityValueWhenError`, that string is read
+     by VoiceOver so the state is non-visual. Otherwise an empty `Text` is
+     applied, which VoiceOver silently ignores.
+     */
+    private var errorStateAccessibilityValue: Text {
+        guard case .radio(.error) = variant,
+              let value = accessibilityValueWhenError else {
+            return Text(verbatim: "")
+        }
+        return Text(value)
     }
 
     @ViewBuilder
@@ -262,26 +296,50 @@ public struct GiniOptionRow: View {
 }
 
 /**
- Pure-string helpers for `GiniOptionRow`. Kept outside the `@available`-gated
- type so Swift Testing's `@Suite`/`@Test` macros can be applied directly — they
- cannot decorate `@available`-marked declarations.
+ Pure-string helpers for `GiniOptionRow`.
  */
 enum GiniOptionRowAccessibility {
 
-    /** Builds the combined VoiceOver label from the caller-provided (already localized) strings. */
+    /**
+     Composes the two orthogonal row-state traits: `.isButton` when tappable,
+     `.isSelected` when selected. The `children: .combine` outer element can
+     suppress the auto-emitted button trait, so an explicit opt-in is required.
+     */
+    static func composedTraits(isTappable: Bool,
+                               isSelected: Bool) -> AccessibilityTraits {
+        var traits: AccessibilityTraits = []
+        if isTappable { traits.insert(.isButton) }
+        if isSelected { traits.insert(.isSelected) }
+        return traits
+    }
+
+    /**
+     Composes the VoiceOver label from the caller-provided (already localized)
+     strings. When `spellsOutContent` is `true`, the content segment is marked
+     for character-by-character read — intended for IBANs and similar fields
+     where a one-character substitution is a security signal.
+     */
     static func makeLabel(title: String,
                           content: String,
-                          footer: String?) -> String {
-        if let footer {
-            return "\(title), \(content), \(footer)"
+                          footer: String?,
+                          spellsOutContent: Bool = false) -> AttributedString {
+        var contentSegment = AttributedString(content)
+        if spellsOutContent {
+            contentSegment.accessibilitySpeechSpellsOutCharacters = true
         }
-        return "\(title), \(content)"
+        var label = AttributedString(title)
+        label.append(AttributedString(", "))
+        label.append(contentSegment)
+        if let footer {
+            label.append(AttributedString(", "))
+            label.append(AttributedString(footer))
+        }
+        return label
     }
 }
 
 // MARK: - Variant convenience
 
-@available(iOS 16.0, *)
 extension GiniOptionRow.Variant {
 
     /** `true` for `.radio(.selected)` only. */
@@ -294,20 +352,17 @@ extension GiniOptionRow.Variant {
 #if DEBUG
 // MARK: - Preview
 
-@available(iOS 16.0, *)
 #Preview("All variants — light") {
     GiniOptionRowPreviewCatalog()
         .padding()
 }
 
-@available(iOS 16.0, *)
 #Preview("All variants — dark") {
     GiniOptionRowPreviewCatalog()
         .padding()
         .preferredColorScheme(.dark)
 }
 
-@available(iOS 16.0, *)
 #Preview("Dynamic Type — AX3") {
     GiniOptionRowPreviewCatalog()
         .padding()

@@ -60,9 +60,10 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
             headerButton
             if isExpanded {
                 expandedContent()
-                    // Align the expanded content's leading edge with the title's,
-                    // not the icon's — matches the Figma disclosure pattern.
-                    .padding(.leading, Constants.iconSize + Constants.headerSpacing)
+                    // Expanded content sits inside a symmetric gutter: left edge
+                    // aligns with the title (past the icon + header spacing), and
+                    // the right edge mirrors the same offset — matches Figma.
+                    .padding(.horizontal, Constants.iconSize + Constants.headerSpacing)
                     .transition(.opacity)
             }
         }
@@ -99,6 +100,7 @@ public struct GiniExpandableInfoView<ExpandedContent: View>: View {
         .accessibilityValue(Text(isExpanded
                                  ? viewModel.expandedAccessibilityValue
                                  : viewModel.collapsedAccessibilityValue))
+        .accessibilityAddTraits(.isButton)
     }
 
     private var chevron: some View {
