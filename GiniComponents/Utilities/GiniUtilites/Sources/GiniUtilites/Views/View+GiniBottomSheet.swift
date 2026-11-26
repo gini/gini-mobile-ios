@@ -6,7 +6,6 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
 public extension View {
 
     /**
@@ -34,7 +33,6 @@ public extension View {
     }
 }
 
-@available(iOS 16.0, *)
 private struct GiniBottomSheetModifier<SheetContent: View>: ViewModifier {
 
     @Binding var isPresented: Bool

@@ -15,7 +15,6 @@ import SwiftUI
  Kept in a separate `#if DEBUG` file so the verbose preview `GiniColorScheme`
  builder does not bloat the production view file.
  */
-@available(iOS 16.0, *)
 struct GiniOptionRowPreviewCatalog: View {
 
     private static let printedTitle = "Printed on the document"
