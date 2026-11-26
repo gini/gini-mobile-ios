@@ -160,8 +160,19 @@ public struct GiniOptionRow: View {
                                                                           content: content,
                                                                           footer: footer,
                                                                           spellsOutContent: spellsOutContent)))
-            .accessibilityAddTraits(variant.isSelected ? .isSelected : [])
+            .accessibilityAddTraits(composedAccessibilityTraits)
             .accessibilityValue(errorStateAccessibilityValue)
+    }
+
+    /**
+     Delegates to `GiniOptionRowAccessibility.composedTraits` so the logic
+     can be unit-tested without a view-hosting harness. `.isButton` is
+     advertised when the row is tappable; `.isSelected` when the variant
+     reports selected.
+     */
+    private var composedAccessibilityTraits: AccessibilityTraits {
+        GiniOptionRowAccessibility.composedTraits(isTappable: onTap != nil,
+                                                   isSelected: variant.isSelected)
     }
 
     /**
@@ -290,12 +301,23 @@ public struct GiniOptionRow: View {
 enum GiniOptionRowAccessibility {
 
     /**
-     Builds the combined VoiceOver label from the caller-provided (already
-     localized) strings. When `spellsOutContent` is `true`, the content segment
-     carries `accessibilitySpeechSpellsOutCharacters = true` so VoiceOver reads
-     it character-by-character — intended for IBANs and similar fields where a
-     one-character substitution is a security signal. Title and footer are
-     always read as words.
+     Composes the two orthogonal row-state traits: `.isButton` when tappable,
+     `.isSelected` when selected. The `children: .combine` outer element can
+     suppress the auto-emitted button trait, so an explicit opt-in is required.
+     */
+    static func composedTraits(isTappable: Bool,
+                               isSelected: Bool) -> AccessibilityTraits {
+        var traits: AccessibilityTraits = []
+        if isTappable { traits.insert(.isButton) }
+        if isSelected { traits.insert(.isSelected) }
+        return traits
+    }
+
+    /**
+     Composes the VoiceOver label from the caller-provided (already localized)
+     strings. When `spellsOutContent` is `true`, the content segment is marked
+     for character-by-character read — intended for IBANs and similar fields
+     where a one-character substitution is a security signal.
      */
     static func makeLabel(title: String,
                           content: String,

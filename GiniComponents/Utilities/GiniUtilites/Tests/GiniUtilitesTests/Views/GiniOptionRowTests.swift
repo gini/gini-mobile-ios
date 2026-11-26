@@ -91,6 +91,50 @@ struct GiniOptionRowAccessibilityLabelTests {
     }
 }
 
+// MARK: - Trait composition
+
+@Suite("GiniOptionRow — composedTraits locks the trait matrix for the four row states")
+struct GiniOptionRowComposedTraitsTests {
+
+    @Test("Non-tappable and not selected — no traits")
+    func composedTraitsEmpty() {
+        let traits = GiniOptionRowAccessibility.composedTraits(isTappable: false,
+                                                                isSelected: false)
+        #expect(traits == AccessibilityTraits(),
+                "An informational, non-tappable row carries no automatic traits.")
+    }
+
+    @Test("Tappable and not selected — only isButton")
+    func composedTraitsButtonOnly() {
+        let traits = GiniOptionRowAccessibility.composedTraits(isTappable: true,
+                                                                isSelected: false)
+        #expect(traits.contains(.isButton),
+                "A tappable row must advertise the button trait so VoiceOver says 'button'.")
+        #expect(!traits.contains(.isSelected),
+                "A row that is not in the selected variant must not claim isSelected.")
+    }
+
+    @Test("Non-tappable and selected — only isSelected")
+    func composedTraitsSelectedOnly() {
+        let traits = GiniOptionRowAccessibility.composedTraits(isTappable: false,
+                                                                isSelected: true)
+        #expect(traits.contains(.isSelected),
+                "A selected row must advertise the selected trait.")
+        #expect(!traits.contains(.isButton),
+                "A row with no onTap must not advertise the button trait.")
+    }
+
+    @Test("Tappable and selected — both isButton and isSelected")
+    func composedTraitsBoth() {
+        let traits = GiniOptionRowAccessibility.composedTraits(isTappable: true,
+                                                                isSelected: true)
+        #expect(traits.contains(.isButton),
+                "A tappable + selected row must advertise both traits — button first.")
+        #expect(traits.contains(.isSelected),
+                "A tappable + selected row must advertise both traits — selected second.")
+    }
+}
+
 // MARK: - Error-state accessibility value
 
 @Suite("GiniOptionRow — accessibilityValueWhenError gates on the error radio state")
