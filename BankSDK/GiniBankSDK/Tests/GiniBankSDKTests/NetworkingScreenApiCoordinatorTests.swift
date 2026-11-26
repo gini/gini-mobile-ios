@@ -698,7 +698,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
                        "Direct-delivery Wero must not trigger the no-results screen")
     }
 
-    // MARK: - presentFraudWarningIfEnabled short-circuit paths (PP-4080)
+    // MARK: - presentFraudWarningIfEnabled short-circuit paths
 
     func testPresentFraudWarningIfEnabledShortCircuitsWhenFraudWarningFlagOff() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
