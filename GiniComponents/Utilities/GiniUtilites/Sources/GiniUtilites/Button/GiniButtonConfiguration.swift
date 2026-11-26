@@ -42,17 +42,20 @@ public struct GiniButtonConfiguration {
         UIFont.preferredFont(forTextStyle: .body)
     }
 
-    /// Button configuration initalizer
-    /// - Parameters:
-    ///   - backgroundColor: the button's background color
-    ///   - borderColor: the button's border color
-    ///   - titleColor: the button's title color
-    ///   - shadowColor: the button's color of the shadow
-    ///   - cornerRadius: the button's corner radius
-    ///   - borderWidth: the button's border width
-    ///   - shadowRadius: the button's shadow radius
-    ///   - withBlurEffect: adds a blur effect on the button ignoring the background color and making it translucent
-    ///   - titleFont: optional title font; see property doc
+    /**
+     Button configuration initializer.
+
+     - Parameters:
+       - backgroundColor: the button's background color
+       - borderColor: the button's border color
+       - titleColor: the button's title color
+       - shadowColor: the button's color of the shadow
+       - cornerRadius: the button's corner radius
+       - borderWidth: the button's border width
+       - shadowRadius: the button's shadow radius
+       - withBlurEffect: adds a blur effect on the button ignoring the background color and making it translucent
+       - titleFont: optional title font; see property doc
+     */
     public init(backgroundColor: UIColor,
                 borderColor: UIColor,
                 titleColor: UIColor,
