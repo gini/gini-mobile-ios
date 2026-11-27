@@ -101,7 +101,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                      borderColor: .clear,
                                                                      titleColor: .GiniBank.light1,
                                                                      shadowColor: .clear,
-                                                                     cornerRadius: 16,
+                                                                     cornerRadius: 14,
                                                                      borderWidth: 0,
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
@@ -116,8 +116,8 @@ public final class GiniBankConfiguration: NSObject {
                                                                                              dark: .GiniBank.light1)
                                                                         .uiColor(),
                                                                        shadowColor: .clear,
-                                                                       cornerRadius: 16,
-                                                                       borderWidth: 2,
+                                                                       cornerRadius: 14,
+                                                                       borderWidth: 1,
                                                                        shadowRadius: 14,
                                                                        withBlurEffect: true)
     /**
@@ -345,6 +345,15 @@ public final class GiniBankConfiguration: NSObject {
      sheet is enabled. Takes priority over the Due Date Hint state.
      */
     public var paymentScheduleHintEnabled: Bool = true
+
+    // MARK: - Fraud Warning
+    /**
+     Indicates whether the fraud warning screen is enabled. When on, the SDK
+     presents a full-screen warning after analysis when the backend reports
+     fraud signals on the document, letting the user cancel the transfer or
+     proceed with the extracted IBAN.
+     */
+    public var fraudWarningEnabled: Bool = true
 
     // MARK: - Already Paid
     /**
@@ -595,7 +604,7 @@ public final class GiniBankConfiguration: NSObject {
 
         if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
-                                         updatedCompoundExtractions: ["lineItems": lineItems])
+                                         updatedCompoundExtractions: FraudSignalFeedbackScrubber.strip(["lineItems": lineItems]))
         } else {
             documentService.sendFeedback(with: updatedExtractions,
                                          updatedCompoundExtractions: nil)
@@ -656,7 +665,7 @@ public final class GiniBankConfiguration: NSObject {
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
         let updatedCompoundExtractions = addLineItems(to: [:])
         documentService?.sendFeedback(with: updatedExtractions,
-                                      updatedCompoundExtractions: updatedCompoundExtractions)
+                                      updatedCompoundExtractions: FraudSignalFeedbackScrubber.strip(updatedCompoundExtractions))
     }
 
     /**
@@ -709,10 +718,10 @@ public final class GiniBankConfiguration: NSObject {
         if productTag == .cxExtractions {
             let compoundExtractions = ["crossBorderPayment": [extractionList]]
             documentService?.sendFeedback(with: [],
-                                          updatedCompoundExtractions: compoundExtractions)
+                                          updatedCompoundExtractions: FraudSignalFeedbackScrubber.strip(compoundExtractions))
         } else {
             documentService?.sendFeedback(with: extractionList,
-                                          updatedCompoundExtractions: addLineItems(to: [:]))
+                                          updatedCompoundExtractions: FraudSignalFeedbackScrubber.strip(addLineItems(to: [:])))
         }
     }
 
@@ -794,7 +803,7 @@ public final class GiniBankConfiguration: NSObject {
                                                             amountToPayString: amountToPayString)
         updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
         documentService?.sendSkontoFeedback(with: updatedExtractions,
-                                            updatedCompoundExtractions: updatedCompoundExtractions,
+                                            updatedCompoundExtractions: FraudSignalFeedbackScrubber.strip(updatedCompoundExtractions),
                                             retryCount: retryCount)
     }
 

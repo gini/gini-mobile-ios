@@ -34,6 +34,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
+    /** Retains the fraud warning Coordinator (so its weak delegate stays live) and parks the delivery while the warning is on screen. Cleared atomically on Cancel/Proceed. */
+    var fraudWarningPresentation: (coordinator: FraudWarningCoordinator,
+                                   result: AnalysisResult,
+                                   completion: (AnalysisResult) -> Void)?
+
+
     /** Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
      Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
      This is cast from the public-facing protocol for internal SDK use only.
@@ -267,6 +273,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     return (name, $0)
                 })
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
@@ -274,8 +281,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                documentService.resetToInitialState()
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
+                    guard let self = self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                    documentService.resetToInitialState()
+                }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -557,8 +568,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             images: [],
                                             document: nil,
                                             candidates: extractionResult.candidates)
-        resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-        documentService.resetToInitialState()
+        presentFraudWarningIfEnabled(result: analysisResult,
+                                     extractionResult: extractionResult) { [weak self] analysisResult in
+            guard let self = self else { return }
+            self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+            self.documentService.resetToInitialState()
+        }
     }
 
     @MainActor
@@ -668,6 +683,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: isCrossBorderPayment() ? [:] : extractions,
                                             lineItems: isCrossBorderPayment() ? nil : result.lineItems,
                                             skontoDiscounts: isCrossBorderPayment() ? nil : result.skontoDiscounts,
@@ -676,14 +692,24 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                             document: documentService.document,
                                             candidates: result.candidates)
                 sendAnalyticsEventSDKClose()
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                if !isCrossBorderPayment() {
-                    self.giniBankConfiguration.lineItems = result.lineItems
-                    if let skontoDiscounts = result.skontoDiscounts {
-                        self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                        self.sendSkontoTransferSummary(extractions: extractions)
+                let finishDelivery: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+
+                    if !self.isCrossBorderPayment() {
+                        self.giniBankConfiguration.lineItems = result.lineItems
+                        if let skontoDiscounts = result.skontoDiscounts {
+                            self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                            self.sendSkontoTransferSummary(extractions: extractions)
+                        }
                     }
+                }
+
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
+                    guard let self = self else { return }
+                    finishDelivery()
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -1097,15 +1123,25 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 let documentService = self.documentService
 
+                let extractionResult = result
                 let result = AnalysisResult(extractions: extractions,
                                             skontoDiscounts: result.skontoDiscounts,
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                let finishSkontoDelivery: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-                self.sendSkontoTransferSummary(extractions: extractions)
+                    self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+                    self.sendSkontoTransferSummary(extractions: extractions)
+                }
+
+                self.presentFraudWarningIfEnabled(result: result,
+                                                  extractionResult: extractionResult) { [weak self] result in
+                    guard let self = self else { return }
+                    finishSkontoDelivery()
+                }
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()

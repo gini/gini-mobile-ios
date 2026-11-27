@@ -31,7 +31,8 @@ struct ClientConfigurationTests {
                                          paymentScheduleHintEnabled: true,
                                          unsupportedQRCodeWarningEnabled: true,
                                          ingredientBrandScreens: [],
-                                         weroQRCodeScanningEnabled: true)
+                                         weroQRCodeScanningEnabled: true,
+                                         fraudSignalsEnabled: true)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
@@ -48,6 +49,7 @@ struct ClientConfigurationTests {
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true")
         #expect(config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be true")
         #expect(config.weroQRCodeScanningEnabled == true, "Expected weroQRCodeScanningEnabled to be true")
+        #expect(config.fraudSignalsEnabled == true, "Expected fraudSignalsEnabled to be true")
     }
 
     @Test("Initialization with all flags disabled")
@@ -67,7 +69,8 @@ struct ClientConfigurationTests {
                                          paymentScheduleHintEnabled: false,
                                          unsupportedQRCodeWarningEnabled: false,
                                          ingredientBrandScreens: [],
-                                         weroQRCodeScanningEnabled: false)
+                                         weroQRCodeScanningEnabled: false,
+                                         fraudSignalsEnabled: false)
 
         #expect(config.clientID == testClientID, "Expected clientID to be \(testClientID)")
         #expect(!config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be false")
@@ -84,6 +87,7 @@ struct ClientConfigurationTests {
         #expect(!config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be false")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false")
         #expect(config.weroQRCodeScanningEnabled == false, "Expected weroQRCodeScanningEnabled to be false")
+        #expect(config.fraudSignalsEnabled == false, "Expected fraudSignalsEnabled to be false")
     }
 
     // MARK: - JSON Decoding Tests
@@ -110,6 +114,7 @@ struct ClientConfigurationTests {
         #expect(config.paymentScheduleHintEnabled, "Expected paymentScheduleHintEnabled to be true from JSON")
         #expect(!config.unsupportedQRCodeWarningEnabled, "Expected unsupportedQRCodeWarningEnabled to be false from JSON")
         #expect(config.weroQRCodeScanningEnabled == true, "Expected weroQRCodeScanningEnabled to be true from JSON")
+        #expect(config.fraudSignalsEnabled == true, "Expected fraudSignalsEnabled to be true from JSON")
     }
 
     @Test("paymentScheduleHintEnabled decodes from JSON payload")
@@ -170,6 +175,17 @@ struct ClientConfigurationTests {
                 "Expected weroQRCodeScanningEnabled to decode as nil when backend omits the key")
     }
 
+    @Test("Decoding succeeds with nil fraudSignalsEnabled when the key is absent from JSON")
+    func decodingSucceedsWithNilFraudSignalsEnabledWhenKeyIsAbsent() throws {
+        let data = loadFile(withName: "clientConfigurationMissingFraudSignals", ofType: "json")
+        let decoder = JSONDecoder()
+
+        let config = try decoder.decode(ClientConfiguration.self, from: data)
+
+        #expect(config.fraudSignalsEnabled == nil,
+                "Expected fraudSignalsEnabled to decode as nil when backend omits the key")
+    }
+
     // MARK: - JSON Encoding Tests
 
     @Test("Encoding to JSON preserves all properties")
@@ -189,7 +205,8 @@ struct ClientConfigurationTests {
                                          paymentScheduleHintEnabled: true,
                                          unsupportedQRCodeWarningEnabled: true,
                                          ingredientBrandScreens: [],
-                                         weroQRCodeScanningEnabled: true)
+                                         weroQRCodeScanningEnabled: true,
+                                         fraudSignalsEnabled: true)
 
         let encoder = JSONEncoder()
 
@@ -226,6 +243,8 @@ struct ClientConfigurationTests {
                 "Expected unsupportedQRCodeWarningEnabled to be preserved")
         #expect(decodedConfig.weroQRCodeScanningEnabled == config.weroQRCodeScanningEnabled,
                 "Expected weroQRCodeScanningEnabled to be preserved")
+        #expect(decodedConfig.fraudSignalsEnabled == config.fraudSignalsEnabled,
+                "Expected fraudSignalsEnabled to be preserved")
     }
 
     // MARK: - ingredientBrandScreens Tests
@@ -324,7 +343,8 @@ struct ClientConfigurationTests {
                                          paymentScheduleHintEnabled: false,
                                          unsupportedQRCodeWarningEnabled: true,
                                          ingredientBrandScreens: [],
-                                         weroQRCodeScanningEnabled: true)
+                                         weroQRCodeScanningEnabled: true,
+                                         fraudSignalsEnabled: true)
 
         #expect(config.userJourneyAnalyticsEnabled, "Expected userJourneyAnalyticsEnabled to be true")
         #expect(!config.skontoEnabled, "Expected skontoEnabled to be false")

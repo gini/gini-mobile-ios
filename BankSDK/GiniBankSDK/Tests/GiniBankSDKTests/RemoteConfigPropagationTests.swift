@@ -110,7 +110,8 @@ extension GiniConfigurationSharedStateSuite {
 
         private func makeClientConfiguration(unsupportedQRCodeWarningEnabled: Bool = false,
                                              ingredientBrandScreens: [String] = [],
-                                             weroQRCodeScanningEnabled: Bool? = false) -> ClientConfiguration {
+                                             weroQRCodeScanningEnabled: Bool? = false,
+                                             fraudSignalsEnabled: Bool? = nil) -> ClientConfiguration {
             ClientConfiguration(clientID: "test",
                                 userJourneyAnalyticsEnabled: false,
                                 skontoEnabled: false,
@@ -126,7 +127,8 @@ extension GiniConfigurationSharedStateSuite {
                                 paymentScheduleHintEnabled: false,
                                 unsupportedQRCodeWarningEnabled: unsupportedQRCodeWarningEnabled,
                                 ingredientBrandScreens: ingredientBrandScreens,
-                                weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
+                                weroQRCodeScanningEnabled: weroQRCodeScanningEnabled,
+                                fraudSignalsEnabled: fraudSignalsEnabled)
         }
     }
 }

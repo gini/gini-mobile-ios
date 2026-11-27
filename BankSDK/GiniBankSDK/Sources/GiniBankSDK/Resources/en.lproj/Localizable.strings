@@ -157,3 +157,36 @@
 
 // MARK: - Transaction Docs feature -  Transaction Details
 "ginibank.transactionDocs.preview.amount" = "Amount";
+
+// MARK: - Fraud prevention — expandable info card
+"ginibank.fraud.protect.title" = "How do I protect myself?";
+"ginibank.fraud.protect.body" = "Documents are sometimes changed to redirect payments. If you’re unsure which IBAN is right, ask the sender using contact details you already know.";
+"ginibank.fraud.protect.a11y.expanded" = "Expanded";
+"ginibank.fraud.protect.a11y.collapsed" = "Collapsed";
+
+// MARK: - Fraud prevention — IBAN selection sheet
+"ginibank.fraud.iban.selection.title" = "To continue, select one of the IBANs";
+"ginibank.fraud.iban.selection.row.qr.label" = "In the QR code";
+"ginibank.fraud.iban.selection.row.printed.label" = "Printed on the document";
+"ginibank.fraud.iban.selection.footer.hint" = "You can still check the IBAN on the next screen.";
+"ginibank.fraud.iban.selection.cta.continue" = "Continue";
+"ginibank.fraud.iban.selection.validation.select.iban" = "Select an IBAN to continue";
+
+// MARK: - Fraud warning screen
+"ginibank.fraud.warning.title.qr.printed" = "Different IBANs in this document";
+"ginibank.fraud.warning.body.qr.printed" = "The IBAN in the QR code doesn’t match the printed IBAN";
+"ginibank.fraud.warning.ibans.header" = "The following IBANs were detected";
+"ginibank.fraud.warning.row.qr.label" = "In the QR code";
+"ginibank.fraud.warning.row.printed.label" = "Printed on the document";
+"ginibank.fraud.warning.cta.cancel" = "Cancel transfer";
+"ginibank.fraud.warning.cta.proceed" = "Proceed anyway";
+
+// MARK: - Fraud warning screen — country and combined variants
+"ginibank.fraud.warning.title.country" = "IBAN doesn’t match the sender’s country";
+"ginibank.fraud.warning.body.country" = "The country of the IBAN on the document is different from the sender’s country.";
+"ginibank.fraud.warning.title.combined" = "Different IBANs and countries found on this document";
+"ginibank.fraud.warning.body.combined" = "The IBAN in the QR code is different from the printed one. The IBAN country also doesn’t match the sender’s country.";
+"ginibank.fraud.warning.sender.label" = "Sender";
+"ginibank.fraud.warning.sender.with.country" = "%@ · %@";
+"ginibank.fraud.warning.row.country.hint" = "From %@, not the sender’s country";
+"ginibank.fraud.warning.row.document.label" = "On the document";

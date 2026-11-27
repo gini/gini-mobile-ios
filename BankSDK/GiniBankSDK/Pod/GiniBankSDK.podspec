@@ -23,10 +23,10 @@ Pod::Spec.new do |spec|
                               LICENSE
                             }
   spec.source             = { :http => "https://github.com/gini/gini-podspecs/raw/master/GiniBankSDK/#{spec.version.to_s}/GiniBankSDK-XCFrameworks.zip" }
-  spec.swift_version      = "5.3"
+  spec.swift_version      = "5.7"
 
   # Supported deployment targets
-  spec.ios.deployment_target  = "15.0"
+  spec.ios.deployment_target  = "16.0"
 
   # Published binaries
   spec.vendored_frameworks = "GiniBankSDK.xcframework", "GiniCaptureSDK.xcframework", "GiniBankAPILibrary.xcframework"

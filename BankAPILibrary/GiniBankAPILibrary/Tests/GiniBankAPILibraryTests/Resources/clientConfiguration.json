@@ -14,5 +14,6 @@
     "paymentScheduleHintEnabled": true,
     "unsupportedQRCodeWarningEnabled": false,
     "ingredientBrandScreens": [],
-    "weroQRCodeScanningEnabled": true
+    "weroQRCodeScanningEnabled": true,
+    "fraudSignalsEnabled": true
 }

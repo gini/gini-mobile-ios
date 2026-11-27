@@ -119,7 +119,7 @@ public extension PaymentPrimaryButton {
         self.contentView.layer.shadowColor = configuration.shadowColor.cgColor
 
         self.buttonTitleLabel.textColor = configuration.titleColor
-        self.buttonTitleLabel.font = configuration.titleFont
+        self.buttonTitleLabel.font = configuration.titleFont ?? ButtonConfiguration.defaultTitleFont
     }
     
     func customConfigure(text: String,

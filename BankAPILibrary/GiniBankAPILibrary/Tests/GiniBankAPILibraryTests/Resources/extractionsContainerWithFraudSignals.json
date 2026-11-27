@@ -1,0 +1,102 @@
+{
+  "extractions": {
+    "amountToPay": {
+      "entity": "amount",
+      "value": "1200.00:EUR",
+      "candidates": "amounts",
+      "box": {
+        "page": 1,
+        "left": 400.0,
+        "top": 300.0,
+        "width": 60.0,
+        "height": 9.0
+      }
+    }
+  },
+  "compoundExtractions": {
+    "fraudSignals": [
+      {
+        "signalCode": {
+          "entity": "text",
+          "value": "QR_PRINTED_IBAN_MISMATCH",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 200.0,
+            "width": 180.0,
+            "height": 9.0
+          }
+        },
+        "severity": {
+          "entity": "text",
+          "value": "CHECK",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 215.0,
+            "width": 60.0,
+            "height": 9.0
+          }
+        },
+        "iban": {
+          "entity": "iban",
+          "value": "DE89370400440532013000",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 230.0,
+            "width": 140.0,
+            "height": 9.0
+          }
+        }
+      },
+      {
+        "signalCode": {
+          "entity": "text",
+          "value": "IBAN_COUNTRY_MISMATCH",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 260.0,
+            "width": 180.0,
+            "height": 9.0
+          }
+        },
+        "severity": {
+          "entity": "text",
+          "value": "STOP",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 275.0,
+            "width": 60.0,
+            "height": 9.0
+          }
+        },
+        "iban": {
+          "entity": "iban",
+          "value": "GB29NWBK60161331926819",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 290.0,
+            "width": 140.0,
+            "height": 9.0
+          }
+        },
+        "creditorCountry": {
+          "entity": "text",
+          "value": "DE",
+          "box": {
+            "page": 1,
+            "left": 72.0,
+            "top": 305.0,
+            "width": 30.0,
+            "height": 9.0
+          }
+        }
+      }
+    ]
+  },
+  "candidates": {}
+}

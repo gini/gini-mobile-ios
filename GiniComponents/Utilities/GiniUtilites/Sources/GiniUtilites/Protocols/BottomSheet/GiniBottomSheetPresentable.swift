@@ -70,17 +70,13 @@ public protocol GiniBottomSheetPresentable {
     
     /**
      Updates the bottom sheet to use a custom height detent.
-     
+
      This method creates a custom detent with the specified height and applies it to the
      sheet presentation controller. The custom detent becomes the selected detent.
-     
+
      - Parameters:
         - height: The desired height for the bottom sheet in points.
 
-     - Note: Custom detents are only available on iOS 16.0 and later.
-     On earlier versions, this method will have no effect and the view controller
-     will maintain its current presentation behavior.
-     
      ## Example
      ```swift
      // Set custom height of 300 points
@@ -96,7 +92,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
 
      - Parameters:
         - shouldIncludeLargeDetent: If `true`, the sheet will use a `.large()` detent.
-     Otherwise, a `.medium()` detent is used. On iOS 13–14, this falls back to `.pageSheet`.
+     Otherwise, a `.medium()` detent is used.
      */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
         modalPresentationStyle = .pageSheet
@@ -106,39 +102,33 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
             // when the height class is compact — such as in landscape mode on an iPhone.
             presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
-            
-            if #available(iOS 16, *) {
-                let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
-                    context.maximumDetentValue / 2
-                }
-                // In landscape mode, control whether the sheet should use a partial-height
-                // or a full-height detent based on the current configuration.
-                let landscapeDetent: UISheetPresentationController.Detent = shouldShowInFullScreenInLandscapeMode ? .medium() : halfScreenDetent
-                presentationController.detents = [shouldIncludeLargeDetent ? .large() : landscapeDetent]
-            } else {
-                presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
+
+            let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
+                context.maximumDetentValue / 2
             }
+            // In landscape mode, control whether the sheet should use a partial-height
+            // or a full-height detent based on the current configuration.
+            let landscapeDetent: UISheetPresentationController.Detent = shouldShowInFullScreenInLandscapeMode ? .medium() : halfScreenDetent
+            presentationController.detents = [shouldIncludeLargeDetent ? .large() : landscapeDetent]
         }
     }
     
     /**
      Dynamically updates the bottom sheet height using a custom detent.
 
-     On iOS 16+, it defines and applies a custom detent with the given height.
+     Defines and applies a custom detent with the given height.
 
      - Parameters:
         - height: The target height for the bottom sheet.
      */
     func updateBottomSheetHeight(_ height: CGFloat) {
-        /// For iOS versions prior to 16, this method will have no effect and the sheet will not be resized.
-        if #available(iOS 16, *),
-           let presentationController = sheetPresentationController {
+        if let presentationController = sheetPresentationController {
             let identifier = UISheetPresentationController.Detent.Identifier("customHeight")
-            
+
             let customDetent = UISheetPresentationController.Detent.custom(identifier: identifier) { context in
                 return height
             }
-            
+
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.detents = [customDetent]
             presentationController.selectedDetentIdentifier = identifier

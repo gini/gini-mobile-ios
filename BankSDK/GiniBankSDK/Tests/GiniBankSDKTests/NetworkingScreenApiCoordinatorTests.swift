@@ -697,6 +697,182 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         XCTAssertEqual(networkDelegate.noResultsCallCount, 0,
                        "Direct-delivery Wero must not trigger the no-results screen")
     }
+
+    // MARK: - presentFraudWarningIfEnabled short-circuit paths
+
+    func testPresentFraudWarningIfEnabledShortCircuitsWhenFraudWarningFlagOff() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let originalFlag = coordinator.giniBankConfiguration.fraudWarningEnabled
+        coordinator.giniBankConfiguration.fraudWarningEnabled = false
+        defer { coordinator.giniBankConfiguration.fraudWarningEnabled = originalFlag }
+
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let extractionResult = ExtractionResult(extractions: [], candidates: [:])
+        var delivered: AnalysisResult?
+
+        coordinator.presentFraudWarningIfEnabled(result: analysisResult,
+                                                 extractionResult: extractionResult) { result in
+            delivered = result
+        }
+
+        XCTAssertTrue(delivered === analysisResult,
+                      "Completion must fire synchronously with the original AnalysisResult when fraudWarningEnabled is off")
+    }
+
+    func testPresentFraudWarningIfEnabledShortCircuitsWhenResolverReturnsNil() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let originalFlag = coordinator.giniBankConfiguration.fraudWarningEnabled
+        coordinator.giniBankConfiguration.fraudWarningEnabled = true
+        GiniBankUserDefaultsStorage.clientConfiguration = ClientConfiguration(fraudSignalsEnabled: true)
+        defer {
+            coordinator.giniBankConfiguration.fraudWarningEnabled = originalFlag
+            GiniBankUserDefaultsStorage.clientConfiguration = nil
+        }
+
+        /// Both gates on but no fraud signals in the payload → resolver returns nil → short-circuit.
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let extractionResult = ExtractionResult(extractions: [], candidates: [:])
+        var delivered: AnalysisResult?
+
+        coordinator.presentFraudWarningIfEnabled(result: analysisResult,
+                                                 extractionResult: extractionResult) { result in
+            delivered = result
+        }
+
+        XCTAssertTrue(delivered === analysisResult,
+                      "Completion must fire synchronously with the original AnalysisResult when the resolver returns nil (no triggering signal)")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Proceed")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidCancelClearsPendingState() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (coordinator: sheetCoordinator,
+                                                 result: analysisResult,
+                                                 completion: { _ in })
+
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation,
+                     "takeFraudWarningPresentation() must atomically nil out the pending tuple on Cancel")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedWithNoPendingIsNoOp() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: false)
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
+                                                       delegate: nil)
+        // No pending delivery set — the guard early-returns, nothing to assert beyond non-crash.
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        XCTAssertNil(coordinator.fraudWarningPresentation)
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedDeliversOriginalResultAfterDismiss() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
+                                                       delegate: nil)
+        let completionExpectation = expectation(description: "completion fires after dismiss")
+        var deliveredResult: AnalysisResult?
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { result in
+                deliveredResult = result
+                completionExpectation.fulfill()
+            }
+        )
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        wait(for: [completionExpectation], timeout: 1.0)
+        XCTAssertTrue(deliveredResult === analysisResult,
+                      "Proceed must deliver the original AnalysisResult through the completion")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidCancelFiresCaptureCancelAfterDismiss() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let analysisResult = AnalysisResult(extractions: [:], images: [], candidates: [:])
+        let sheetCoordinator = FraudWarningCoordinator(content: .qrPrinted(qrIBAN: "PL12 1000 0111 0100 1000",
+                                                                            printedIBAN: "DE89 3704 0044 0532 0130 00"),
+                                                       delegate: nil)
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { _ in }
+        )
+
+        coordinator.fraudWarningCoordinatorDidCancel(sheetCoordinator)
+
+        /// Give the dismiss completion a run-loop tick, then confirm the cancel reached the results delegate.
+        let tick = expectation(description: "dismiss completion runs")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { tick.fulfill() }
+        wait(for: [tick], timeout: 1.0)
+        XCTAssertTrue(resultsDelegate.closeCalled,
+                      "Cancel must forward through giniCaptureDidCancelAnalysis after the dismiss completion runs")
+    }
+
+    @MainActor
+    func testFraudWarningCoordinatorDidProceedCountryVariantForwardsExtractedIBAN() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true)
+        let backendIBAN = "DE89 3704 0044 0532 0130 00"
+        let extractedIBAN = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "iban",
+                                       value: backendIBAN,
+                                       name: "iban")
+        let analysisResult = AnalysisResult(extractions: ["iban": extractedIBAN],
+                                             images: [],
+                                             candidates: [:])
+        /// Country-only content leaves `selectedIBAN` nil because the picker never ran —
+        /// Proceed must forward the backend's `extractions["iban"]` unchanged.
+        let sheetCoordinator = FraudWarningCoordinator(content: .country(senderName: "Elektro Brandt GmbH",
+                                                                          senderCountry: "DE",
+                                                                          iban: "PL12 1000 0111 0100 1000"),
+                                                       delegate: nil)
+        let completionExpectation = expectation(description: "completion fires after dismiss")
+        var deliveredResult: AnalysisResult?
+        coordinator.fraudWarningPresentation = (
+            coordinator: sheetCoordinator,
+            result: analysisResult,
+            completion: { result in
+                deliveredResult = result
+                completionExpectation.fulfill()
+            }
+        )
+
+        coordinator.fraudWarningCoordinatorDidProceed(sheetCoordinator)
+
+        wait(for: [completionExpectation], timeout: 1.0)
+        XCTAssertEqual(deliveredResult?.extractions["iban"]?.value, backendIBAN,
+                       "Country-only Proceed must forward the backend's extracted IBAN unchanged")
+    }
 }
 
 // MARK: - ClientConfiguration Extension
@@ -706,7 +882,8 @@ extension ClientConfiguration {
          paymentDueHintEnabled: Bool = false,
          creditNoteHintEnabled: Bool = false,
          paymentScheduleHintEnabled: Bool = false,
-         weroQRCodeScanningEnabled: Bool = false) {
+         weroQRCodeScanningEnabled: Bool = false,
+         fraudSignalsEnabled: Bool? = nil) {
         self.init(clientID: "test",
                   userJourneyAnalyticsEnabled: false,
                   skontoEnabled: false,
@@ -722,7 +899,8 @@ extension ClientConfiguration {
                   paymentScheduleHintEnabled: paymentScheduleHintEnabled,
                   unsupportedQRCodeWarningEnabled: false,
                   ingredientBrandScreens: [],
-                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled)
+                  weroQRCodeScanningEnabled: weroQRCodeScanningEnabled,
+                  fraudSignalsEnabled: fraudSignalsEnabled)
     }
 }
 
