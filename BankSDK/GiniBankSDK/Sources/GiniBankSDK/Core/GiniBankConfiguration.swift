@@ -353,7 +353,7 @@ public final class GiniBankConfiguration: NSObject {
      fraud signals on the document, letting the user cancel the transfer or
      proceed with the extracted IBAN.
      */
-    public var fraudWarningEnabled: Bool = false
+    public var fraudWarningEnabled: Bool = true
 
     // MARK: - Already Paid
     /**
